@@ -64,6 +64,7 @@ public slots:
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();
     void slotHelp();
+    void slotOpenPath(const QString& path);
 
 private slots:
     void slotDisplayIdle();
@@ -87,9 +88,10 @@ private:
     QAction *_actionHelp;
     QAction *_actionQuit;
 
-    Application *_app;
-
     QSignalMapper *_folderOpenActionMapper;
+    QSignalMapper *_recentItemsMapper;
+
+    Application *_app;
 
     QStringList _startupFails;
 };

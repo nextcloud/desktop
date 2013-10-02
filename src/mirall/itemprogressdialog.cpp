@@ -42,6 +42,8 @@ ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
     connect(ProgressDispatcher::instance(), SIGNAL(progressSyncProblem(const QString&,const Progress::SyncProblem&)),
             this, SLOT(slotProgressErrors(const QString&, const Progress::SyncProblem&)));
 
+    connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(slotOpenFile(QTreeWidgetItem*,int)));
+
     QStringList header;
     header << tr("Time");
     header << tr("File");
@@ -158,6 +160,7 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
              twitem->setToolTip(0, longTimeStr);
              twitem->setToolTip(3, tooltip);
              twitem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
+
              _ui->_treeWidget->insertTopLevelItem(0, twitem);
 
          }
@@ -299,6 +302,20 @@ void ItemProgressDialog::slotProgressErrors( const QString& folder, const Progre
   item->setToolTip(0, longTimeStr);
   _ui->_treeWidget->insertTopLevelItem(0, item);
   Q_UNUSED(item);
+}
+
+void ItemProgressDialog::slotOpenFile( QTreeWidgetItem *item, int )
+{
+    QString folderName = item->text(2);
+    QString fileName = item->text(1);
+
+    Folder *folder = FolderMan::instance()->folder(folderName);
+    if (folder) {
+        QString fullPath = folder->path() + '/' + fileName;
+        if (QFile(fullPath).exists()) {
+            Utility::showInFileManager(fullPath);
+        }
+    }
 }
 
 void ItemProgressDialog::slotProgressInfo( const QString& folder, const Progress::Info& progress )

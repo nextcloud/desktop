@@ -27,6 +27,7 @@
 
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QSignalMapper>
 
 namespace Mirall {
 
@@ -38,6 +39,8 @@ ownCloudGui::ownCloudGui(Application *parent) :
     _logBrowser(0),
     _contextMenu(0),
     _recentActionsMenu(0),
+    _folderOpenActionMapper(new QSignalMapper(this)),
+    _recentItemsMapper(new QSignalMapper(this)),
     _app(parent)
 {
     _tray = new Systray();
@@ -52,9 +55,11 @@ ownCloudGui::ownCloudGui(Application *parent) :
     _tray->show();
 
     /* use a signal mapper to map the open requests to the alias names */
-    _folderOpenActionMapper = new QSignalMapper(this);
-    connect(_folderOpenActionMapper, SIGNAL(mapped(const QString &)),
-            this, SLOT(slotFolderOpenAction(const QString &)));
+    connect(_folderOpenActionMapper, SIGNAL(mapped(QString)),
+            this, SLOT(slotFolderOpenAction(QString)));
+
+    connect(_recentItemsMapper, SIGNAL(mapped(QString)),
+            this, SLOT(slotOpenPath(QString)));
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect( pd, SIGNAL(progressInfo(QString,Progress::Info)), this,
@@ -125,6 +130,11 @@ void ownCloudGui::slotFoldersChanged()
 {
     slotComputeOverallSyncStatus();
     setupContextMenu();
+}
+
+void ownCloudGui::slotOpenPath(const QString &path)
+{
+    Utility::showInFileManager(path);
 }
 
 void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
@@ -347,7 +357,7 @@ void ownCloudGui::slotRebuildRecentMenus()
     const QList<Progress::Info>& progressInfoList = ProgressDispatcher::instance()->recentChangedItems(5);
 
     if( progressInfoList.size() == 0 ) {
-        _recentActionsMenu->addAction(tr("No items synced recently"));
+        _recentActionsMenu->addAction(tr("No items synced recently"))->setEnabled(false);
     } else {
         QListIterator<Progress::Info> i(progressInfoList);
 
@@ -357,10 +367,22 @@ void ownCloudGui::slotRebuildRecentMenus()
             QString timeStr = info.timestamp.toString("hh:mm");
 
             QString actionText = tr("%1 (%2, %3)").arg(info.current_file).arg(kindStr).arg(timeStr);
-            _recentActionsMenu->addAction( actionText );
+            QAction *action = _recentActionsMenu->addAction( actionText );
+
+            Folder *folder = FolderMan::instance()->folder(info.folder);
+            if (folder) {
+                QString fullPath = folder->path() + '/' + info.current_file;
+                if (QFile(fullPath).exists()) {
+                    _recentItemsMapper->setMapping(action, fullPath);
+                    connect(action, SIGNAL(triggered()), _recentItemsMapper, SLOT(map()));
+                } else {
+                    action->setEnabled(false);
+                }
+            }
         }
     }
     // add a more... entry.
+    _recentActionsMenu->addSeparator();
     _recentActionsMenu->addAction(_actionRecent);
 }
 

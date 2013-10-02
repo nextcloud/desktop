@@ -24,6 +24,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QProcess>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QDesktopServices>
@@ -403,45 +404,157 @@ void Utility::sleep(int sec)
 #endif
 }
 
+// ### helper functions for showInFileManager() ###
+
+// according to the QStandardDir impl from Qt5
+static QStringList xdgDataDirs()
+{
+    QStringList dirs;
+    // http://standards.freedesktop.org/basedir-spec/latest/
+    QString xdgDataDirsEnv = QFile::decodeName(qgetenv("XDG_DATA_DIRS"));
+    if (xdgDataDirsEnv.isEmpty()) {
+        dirs.append(QString::fromLatin1("/usr/local/share"));
+        dirs.append(QString::fromLatin1("/usr/share"));
+    } else {
+        dirs = xdgDataDirsEnv.split(QLatin1Char(':'));
+    }
+    // local location
+    QString xdgDataHome = QFile::decodeName(qgetenv("XDG_DATA_HOME"));
+    if (xdgDataHome.isEmpty()) {
+        xdgDataHome = QDir::homePath()+"/.local/share";
+    }
+    dirs.prepend(xdgDataHome);
+    return dirs;
+}
+
+// Linux impl only, make sure to process %u and %U which might be returned
+static QString findDefaultFileManager()
+{
+    QProcess p;
+    p.start("xdg-mime", QStringList() << "query" << "default" << "inode/directory", QFile::ReadOnly);
+    p.waitForFinished();
+    QString fileName = QString::fromUtf8(p.readAll().trimmed());
+    if (fileName.isEmpty())
+        return QString();
+
+    QFileInfo fi;
+    QStringList dirs = xdgDataDirs();
+    foreach(QString dir, dirs) {
+        fi.setFile(dir + "/applications/" + fileName);
+        if(fi.exists()) {
+            QSettings desktopFile(fi.absoluteFilePath(), QSettings::IniFormat);
+            QString exec = desktopFile.value("Desktop Entry/Exec").toString();
+            return exec;
+        }
+    }
+    return QString();
+}
+
+// early dolphin versions did not have --select
+static bool checkDolphinCanSelect()
+{
+    QProcess p;
+    p.start("dolphin", QStringList() << "--help", QFile::ReadOnly);
+    p.waitForFinished();
+    return p.readAll().contains("--select");
+}
+
 // inspired by Qt Creator's showInGraphicalShell();
 void Utility::showInFileManager(const QString &localPath)
 {
-#if defined(Q_OS_WIN)
-    const QString explorer = "explorer.exe" // FIXME: we trust it's in PATH
-    QStringList param;
-    if (!QFileInfo(pathIn).isDir())
-        param += QLatin1String("/select,");
-    param += QDir::toNativeSeparators(localPath);
-    QProcess::startDetached(explorer, param);
-#elif defined(Q_OS_MAC)
-    QStringList scriptArgs;
-    scriptArgs << QLatin1String("-e")
-               << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
-                  .arg(localPath);
-    QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
-    scriptArgs.clear();
-    scriptArgs << QLatin1String("-e")
-               << QLatin1String("tell application \"Finder\" to activate");
-    QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
-#else
-    QString app;
-    QStringList args;
-
-    if ( qgetenv("KDE_FULL_SESSION") == "true" ) {
-        app = "dolphin";
-        args << "-select" << path;
-    } else if (!qgetenv("GNOME_DESKTOP_SESSION_ID").isEmpty() ) {
-        // nautilus can only handle the name
-        app = "nautilus";
-        args << QDir(localPath).path();
-    }
-
-    if (app.isEmpty() || args.isEmpty()) {
-        QDesktopServices::openUrl(QUrl::fromLocalFile(localPath));
+    if (isWindows()) {
+        const QString explorer = "explorer.exe"; // FIXME: we trust it's in PATH
+        QStringList param;
+        if (!QFileInfo(localPath).isDir())
+            param += QLatin1String("/select,");
+        param += QDir::toNativeSeparators(localPath);
+        QProcess::startDetached(explorer, param);
+    } else if (isMac()) {
+        QStringList scriptArgs;
+        scriptArgs << QLatin1String("-e")
+                   << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
+                      .arg(localPath);
+        QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
+        scriptArgs.clear();
+        scriptArgs << QLatin1String("-e")
+                   << QLatin1String("tell application \"Finder\" to activate");
+        QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
     } else {
-        QProcess::execute(app, args);
+        QString app;
+        QStringList args;
+
+        QString defaultManager = findDefaultFileManager();
+        QString fileToOpen = QFileInfo(localPath).absoluteFilePath();
+        QString pathToOpen = QFileInfo(localPath).absolutePath();
+        bool cannotHandleFile = false;
+
+        args = defaultManager.split(' ');
+        if (args.count() > 0) app = args.takeFirst();
+
+        QString kdeSelectParam("--select");
+
+        if (app.contains("konqueror") && !args.contains(kdeSelectParam)) {
+            // konq needs '--select' in order not to launch the file
+            args.prepend(kdeSelectParam);
+        }
+
+        if (app.contains("dolphin"))
+        {
+            static bool dolphinCanSelect = checkDolphinCanSelect();
+            if (dolphinCanSelect && !args.contains(kdeSelectParam)) {
+                args.prepend(kdeSelectParam);
+            } else {
+                // When passing a file without '--select', dolphin will
+                // open the file. We don't want that.
+                cannotHandleFile = true;
+            }
+        }
+
+        if (cannotHandleFile) {
+            std::replace(args.begin(), args.end(), QString::fromLatin1("%u"), pathToOpen);
+            std::replace(args.begin(), args.end(), QString::fromLatin1("%U"), pathToOpen);
+            if (args.count() == 0) args << pathToOpen;
+        } else {
+            std::replace(args.begin(), args.end(), QString::fromLatin1("%u"), fileToOpen);
+            std::replace(args.begin(), args.end(), QString::fromLatin1("%U"), fileToOpen);
+            if (args.count() == 0) args << fileToOpen;
+        }
+
+        if (app.isEmpty() || args.isEmpty()) {
+            // fall back: open the default file manager, without ever selecting the file
+            QDesktopServices::openUrl(QUrl::fromLocalFile(pathToOpen));
+        } else {
+            QProcess::execute(app, args);
+        }
     }
+}
+
+bool Utility::isWindows()
+{
+#ifdef Q_OS_WIN
+    return true;
+#else
+    return false;
 #endif
 }
+
+bool Utility::isMac()
+{
+#ifdef Q_OS_MAC
+    return true;
+#else
+    return false;
+#endif
+}
+
+bool Utility::isUnix()
+{
+#ifdef Q_OS_UNIX
+    return true;
+#else
+    return false;
+#endif
+}
+
 
 } // namespace Mirall

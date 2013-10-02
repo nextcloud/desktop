@@ -22,6 +22,8 @@
 
 #include "ui_itemprogressdialog.h"
 
+class QSignalMapper;
+
 namespace Mirall {
 class SyncResult;
 
@@ -46,6 +48,7 @@ public slots:
     void accept();
     void slotProgressInfo( const QString& folder, const Progress::Info& progress );
     void slotProgressErrors( const QString& folder, const Progress::SyncProblem& problem );
+    void slotOpenFile( QTreeWidgetItem* item, int );
 
 protected slots:
     void copyToClipboard();

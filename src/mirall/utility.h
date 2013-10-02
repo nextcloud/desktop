@@ -51,6 +51,10 @@ namespace Utility
     QString escape(const QString&);
     QString dataLocation();
 
+    // convinience OS detection methods
+    bool isWindows();
+    bool isMac();
+    bool isUnix();
 }
 
 }
