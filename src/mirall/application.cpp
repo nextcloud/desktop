@@ -19,7 +19,6 @@
 #include "config.h"
 
 #include "mirall/application.h"
-#include "mirall/systray.h"
 #include "mirall/folder.h"
 #include "mirall/folderman.h"
 #include "mirall/folderwatcher.h"
@@ -32,10 +31,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/updatedetector.h"
 #include "mirall/logger.h"
-#include "mirall/settingsdialog.h"
-#include "mirall/itemprogressdialog.h"
 #include "mirall/utility.h"
-#include "mirall/inotify.h"
 #include "mirall/connectionvalidator.h"
 
 #include "creds/abstractcredentials.h"
@@ -55,14 +51,6 @@
 #include <QMessageBox>
 
 namespace Mirall {
-
-// application logging handler.
-void mirallLogCatcher(QtMsgType type, const char *msg)
-{
-  Q_UNUSED(type)
-  // qDebug() exports to local8Bit, which is not always UTF-8
-  Logger::instance()->mirallLog( QString::fromLocal8Bit(msg) );
-}
 
 namespace {
 
@@ -98,14 +86,13 @@ QString applicationTrPath()
 Application::Application(int &argc, char **argv) :
     SharedTools::QtSingleApplication(argc, argv),
     _gui(0),
-    _networkMgr(new QNetworkConfigurationManager(this)),
+    // _networkMgr(new QNetworkConfigurationManager(this)), <- Not used yet.
     _sslErrorDialog(0),
     _theme(Theme::instance()),
-    _logBrowser(0),
-    _logExpire(0),
+    _helpOnly(false),
     _showLogWindow(false),
-    _logFlush(false),
-    _helpOnly(false)
+    _logExpire(0),
+    _logFlush(false)
 {
     setApplicationName( _theme->appNameGUI() );
     setWindowIcon( _theme->applicationIcon() );
@@ -115,8 +102,12 @@ Application::Application(int &argc, char **argv) :
     if ( _helpOnly ) return;
 
     _gui = new ownCloudGui(this);
+    if( _showLogWindow ) {
+        _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
+    }
+    connect( _gui, SIGNAL(setupProxy()), SLOT(slotSetupProxy()));
 
-    setupLogBrowser();
+    setupLogging();
     setupTranslations();
 
     connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
@@ -127,11 +118,7 @@ Application::Application(int &argc, char **argv) :
     connect( Logger::instance(), SIGNAL(guiMessage(QString,QString)),
              _gui, SLOT(slotShowGuiMessage(QString,QString)));
 
-    // create folder manager for sync folder management
-    FolderMan *folderMan = FolderMan::instance();
-    connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
-             this,SLOT(slotSyncStateChange(QString)));
-    folderMan->setSyncEnabled(false);
+    FolderMan::instance()->setSyncEnabled(false);
 
     setQuitOnLastWindowClosed(false);
 
@@ -150,7 +137,7 @@ Application::Application(int &argc, char **argv) :
 
     slotSetupProxy();
 
-    folderMan->setupFolders();
+    FolderMan::instance()->setupFolders();
 
     // startup procedure.
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
@@ -169,17 +156,16 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
-    qDebug() << "* Mirall shutdown";
+    // qDebug() << "* Mirall shutdown";
 }
 
 void Application::slotCleanup()
 {
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
-    _gui->shutdown();
+    _gui->slotShutdown();
     _gui->deleteLater();
 
-    if (!_logBrowser.isNull()) _logBrowser->deleteLater();
 }
 
 void Application::slotStartUpdateDetector()
@@ -301,61 +287,21 @@ void Application::slotownCloudWizardDone( int res )
 
 }
 
-void Application::setupLogBrowser()
+void Application::setupLogging()
 {
     // might be called from second instance
-    if (_logBrowser.isNull()) {
-        // init the log browser.
-        qInstallMsgHandler( mirallLogCatcher );
-        _logBrowser = new LogBrowser;
-        // ## TODO: allow new log name maybe?
-        if (!_logDirectory.isEmpty()) {
-            enterNextLogFile();
-        } else if (!_logFile.isEmpty()) {
-            qDebug() << "Logging into logfile: " << _logFile << " with flush " << _logFlush;
-            _logBrowser->setLogFile( _logFile, _logFlush );
-        }
-    }
+    Logger::instance()->setLogFile(_logFile);
+    Logger::instance()->setLogDir(_logDir);
+    Logger::instance()->setLogExpire(_logExpire);
+    Logger::instance()->setLogFlush(_logFlush);
 
-    if (_showLogWindow)
-        slotOpenLogBrowser();
+    Logger::instance()->enterNextLogFile();
 
     qDebug() << QString::fromLatin1( "################## %1 %2 (%3) %4").arg(_theme->appName())
                 .arg( QLocale::system().name() )
                 .arg(property("ui_lang").toString())
                 .arg(_theme->version());
 
-}
-
-void Application::enterNextLogFile()
-{
-    if (_logBrowser && !_logDirectory.isEmpty()) {
-        QDir dir(_logDirectory);
-        if (!dir.exists()) {
-            dir.mkpath(".");
-        }
-
-        // Find out what is the file with the highest nymber if any
-        QStringList files = dir.entryList(QStringList("owncloud.log.*"),
-                                    QDir::Files);
-        QRegExp rx("owncloud.log.(\\d+)");
-        uint maxNumber = 0;
-        QDateTime now = QDateTime::currentDateTime();
-        foreach(const QString &s, files) {
-            if (rx.exactMatch(s)) {
-                maxNumber = qMax(maxNumber, rx.cap(1).toUInt());
-                if (_logExpire > 0) {
-                    QFileInfo fileInfo = dir.absoluteFilePath(s);
-                    if (fileInfo.lastModified().addSecs(60*60 * _logExpire) < now) {
-                        dir.remove(s);
-                    }
-                }
-            }
-        }
-
-        QString filename = _logDirectory + "/owncloud.log." + QString::number(maxNumber+1);
-        _logBrowser->setLogFile(filename  , _logFlush);
-    }
 }
 
 QNetworkProxy proxyFromConfig(const MirallConfigFile& cfg)
@@ -405,33 +351,14 @@ void Application::slotSetupProxy()
 
 void Application::slotUseMonoIconsChanged(bool)
 {
-    _gui->computeOverallSyncStatus();
-}
-
-void Application::slotOpenLogBrowser()
-{
-    _logBrowser->show();
-    _logBrowser->raise();
+    _gui->slotComputeOverallSyncStatus();
 }
 
 void Application::slotParseOptions(const QString &opts)
 {
     QStringList options = opts.split(QLatin1Char('|'));
     parseOptions(options);
-    setupLogBrowser();
-}
-
-// only used to start a new logfile
-void Application::slotSyncStateChange( const QString& alias )
-{
-    FolderMan *folderMan = FolderMan::instance();
-    const SyncResult& result = folderMan->syncResult( alias );
-
-    qDebug() << "Sync state changed for folder " << alias << ": "  << result.statusString();
-
-    if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
-        enterNextLogFile();
-    }
+    setupLogging();
 }
 
 void Application::parseOptions(const QStringList &options)
@@ -447,17 +374,17 @@ void Application::parseOptions(const QStringList &options)
             setHelp();
             break;
         } else if (option == QLatin1String("--logwindow") ||
-                option == QLatin1String("-l")) {
+                   option == QLatin1String("-l")) {
             _showLogWindow = true;
         } else if (option == QLatin1String("--logfile")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _logFile = it.next();
+               _logFile = it.next();
             } else {
                 setHelp();
             }
         } else if (option == QLatin1String("--logdir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _logDirectory = it.next();
+               _logDir = it.next();
             } else {
                 setHelp();
             }
@@ -480,7 +407,7 @@ void Application::parseOptions(const QStringList &options)
             setHelp();
             break;
         }
-        }
+    }
 }
 
 // Helpers for displaying messages. Note that there is no console on Windows.
@@ -522,7 +449,7 @@ void Application::showHelp()
            << QLatin1String(optionsC);
 
     if (_theme->appName() == QLatin1String("ownCloud"))
-        stream << endl << "For more information, see http://www.owncloud.org" << endl;
+        stream << endl << "For more information, see http://www.owncloud.org" << endl << endl;
 
     displayHelpText(helpText);
 }

@@ -63,7 +63,7 @@ protected:
     void parseOptions(const QStringList& );
     void setupTranslations();
     void setupContextMenu();
-    void setupLogBrowser();
+    void setupLogging();
     void enterNextLogFile();
     bool checkConfigExists(bool openSettings);
 
@@ -80,8 +80,6 @@ protected slots:
     void slotParseOptions( const QString& );
     void slotCheckConnection();
     void slotConnectionValidatorResult(ConnectionValidator::Status);
-    void slotSyncStateChange( const QString& );
-    void slotOpenLogBrowser();
     void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
     void slotStartUpdateDetector();
     void slotSetupProxy();
@@ -90,26 +88,26 @@ protected slots:
     void slotCleanup();
 private:
     void setHelp();
-    void raiseDialog( QWidget* );
-    void rebuildRecentMenus();
     void runValidator();
 
     QPointer<ownCloudGui> _gui;
-    QNetworkConfigurationManager *_networkMgr;
+    // QNetworkConfigurationManager *_networkMgr;
 
-    SslErrorDialog *_sslErrorDialog;
+    SslErrorDialog      *_sslErrorDialog;
     ConnectionValidator *_conValidator;
 
     Theme *_theme;
-    QPointer<LogBrowser>_logBrowser;
 
-    QString _logFile;
-    QString _logDirectory;
-
-    int _logExpire;
-    bool _showLogWindow;
-    bool _logFlush;
     bool _helpOnly;
+
+    // options from command line:
+    bool _showLogWindow;
+    QString _logFile;
+    QString _logDir;
+    int     _logExpire;
+    bool    _logFlush;
+
+
 };
 
 } // namespace Mirall

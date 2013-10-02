@@ -52,8 +52,7 @@ LogWidget::LogWidget(QWidget *parent)
 
 LogBrowser::LogBrowser(QWidget *parent) :
     QDialog(parent),
-    _logWidget( new LogWidget(parent) ),
-    _doFileFlush(false)
+    _logWidget( new LogWidget(parent) )
 {
     setObjectName("LogBrowser"); // for save/restoreGeometry()
     setWindowTitle(tr("Log Output"));
@@ -142,39 +141,8 @@ void LogBrowser::slotNewLog( const QString& msg )
     if( _logWidget->isVisible() ) {
         _logWidget->appendPlainText( msg );
     }
-
-    if( _logstream ) {
-        (*_logstream) << msg << endl;
-        if( _doFileFlush ) _logstream->flush();
-    }
 }
 
-void LogBrowser::setLogFile( const QString & name, bool flush )
-{
-    if( _logstream ) {
-        _logFile.close();
-    }
-
-    bool openSucceeded = false;
-    if (name == QLatin1String("-")) {
-        openSucceeded = _logFile.open(1, QIODevice::WriteOnly);
-    } else {
-        _logFile.setFileName( name );
-        openSucceeded = _logFile.open(QIODevice::WriteOnly);
-    }
-
-    if(!openSucceeded) {
-        QMessageBox::warning(
-                    this,
-                    tr("Error"),
-                    QString(tr("<nobr>File '%1'<br/>cannot be opened for writing.<br/><br/>"
-                               "The log output can <b>not</b> be saved!</nobr>"))
-                    .arg(name));
-        return;
-    }
-    _doFileFlush = flush;
-    _logstream.reset(new QTextStream( &_logFile ));
-}
 
 void LogBrowser::slotFind()
 {

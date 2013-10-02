@@ -22,6 +22,8 @@
 #include "mirall/itemprogressdialog.h"
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/settingsdialog.h"
+#include "mirall/logger.h"
+#include "mirall/logbrowser.h"
 
 #include <QDesktopServices>
 #include <QMessageBox>
@@ -30,7 +32,10 @@ namespace Mirall {
 
 ownCloudGui::ownCloudGui(Application *parent) :
     QObject(parent),
+    _tray(0),
     _settingsDialog(0),
+    _progressDialog(0),
+    _logBrowser(0),
     _contextMenu(0),
     _recentActionsMenu(0),
     _app(parent)
@@ -63,7 +68,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
 
 }
 
-// REFACTOR: This should rather be in application.... or rather in MirallConfigFile?
+// This should rather be in application.... or rather in MirallConfigFile?
 bool ownCloudGui::checkConfigExists(bool openSettings)
 {
     // if no config file is there, start the configuration wizard.
@@ -97,24 +102,22 @@ void ownCloudGui::slotSyncStateChange( const QString& alias )
     FolderMan *folderMan = FolderMan::instance();
     const SyncResult& result = folderMan->syncResult( alias );
 
-    computeOverallSyncStatus();
+    slotComputeOverallSyncStatus();
 
     qDebug() << "Sync state changed for folder " << alias << ": "  << result.statusString();
 
     if( _progressDialog ) {
         _progressDialog->setSyncResult(result);
     }
+    if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
+        Logger::instance()->enterNextLogFile();
+    }
 }
 
 void ownCloudGui::slotFoldersChanged()
 {
-    computeOverallSyncStatus();
+    slotComputeOverallSyncStatus();
     setupContextMenu();
-}
-
-void ownCloudGui::slotOpenLogBrowser()
-{
-    // REFACTOR: do somehting useful.
 }
 
 void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
@@ -136,7 +139,7 @@ void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
 
 }
 
-void ownCloudGui::computeOverallSyncStatus()
+void ownCloudGui::slotComputeOverallSyncStatus()
 {
     // display the info of the least successful sync (eg. not just display the result of the latest sync
     QString trayMessage;
@@ -328,10 +331,10 @@ void ownCloudGui::slotProgressSyncProblem(const QString& folder, const Progress:
     QIcon warnIcon(":/mirall/resources/warning-16");
     _actionRecent->setIcon(warnIcon);
 
-    rebuildRecentMenus();
+    slotRebuildRecentMenus();
 }
 
-void ownCloudGui::rebuildRecentMenus()
+void ownCloudGui::slotRebuildRecentMenus()
 {
     _recentActionsMenu->clear();
     const QList<Progress::Info>& progressInfoList = ProgressDispatcher::instance()->recentChangedItems(5);
@@ -373,11 +376,11 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
     // If there was a change in the file list, redo the progress menu.
     if( progress.kind == Progress::EndDownload || progress.kind == Progress::EndUpload ||
             progress.kind == Progress::EndDelete ) {
-        rebuildRecentMenus();
+        slotRebuildRecentMenus();
     }
 
     if (progress.kind == Progress::EndSync) {
-        rebuildRecentMenus();  // show errors.
+        slotRebuildRecentMenus();  // show errors.
         QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
     }
 }
@@ -420,11 +423,41 @@ void ownCloudGui::slotItemProgressDialog()
     Utility::raiseDialog(_progressDialog.data());
 }
 
-void ownCloudGui::shutdown()
+void ownCloudGui::slotShutdown()
 {
     // those do delete on close
     if (!_settingsDialog.isNull()) _settingsDialog->close();
     if (!_progressDialog.isNull()) _progressDialog->close();
+    if (!_logBrowser.isNull())     _logBrowser->deleteLater();
 }
+
+void ownCloudGui::slotToggleLogBrowser()
+{
+    if (_logBrowser.isNull()) {
+        // init the log browser.
+        _logBrowser = new LogBrowser;
+        // ## TODO: allow new log name maybe?
+    }
+
+    if (_logBrowser->isVisible() ) {
+        _logBrowser->hide();
+    } else {
+        Utility::raiseDialog(_logBrowser);
+    }
+}
+
+void ownCloudGui::slotOpenOwnCloud()
+{
+  MirallConfigFile cfgFile;
+
+  QString url = cfgFile.ownCloudUrl();
+  QDesktopServices::openUrl( url );
+}
+
+void ownCloudGui::slotHelp()
+{
+    QDesktopServices::openUrl(QUrl(Theme::instance()->helpUrl()));
+}
+
 
 } // end namespace

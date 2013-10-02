@@ -29,6 +29,7 @@ namespace Mirall {
 class SettingsDialog;
 class ItemProgressDialog;
 class Application;
+class LogBrowser;
 
 class ownCloudGui : public QObject
 {
@@ -42,24 +43,27 @@ public:
     bool checkConfigExists(bool openSettings);
 
 signals:
+    void setupProxy();
 
 public slots:
-    void computeOverallSyncStatus();
+    void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
     void slotFolderOpenAction( const QString& alias );
     void slotRefreshQuotaDisplay( qint64 total, qint64 used );
-    void rebuildRecentMenus();
+    void slotRebuildRecentMenus();
     void slotProgressSyncProblem(const QString& folder, const Progress::SyncProblem& problem);
     void slotUpdateProgress(const QString &folder, const Progress::Info& progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
     void slotItemProgressDialog();
     void slotSettings();
-    void shutdown();
+    void slotShutdown();
     void slotSyncStateChange( const QString& alias );
     void slotTrayClicked( QSystemTrayIcon::ActivationReason reason );
-    void slotOpenLogBrowser();
+    void slotToggleLogBrowser();
+    void slotOpenOwnCloud();
+    void slotHelp();
 
 private slots:
     void slotDisplayIdle();
@@ -70,8 +74,8 @@ private:
     QPointer<Systray> _tray;
     QPointer<SettingsDialog> _settingsDialog;
     QPointer<ItemProgressDialog> _progressDialog;
-
-    // tray's menu
+    QPointer<LogBrowser>_logBrowser;
+       // tray's menu
     QMenu *_contextMenu;
     QMenu *_recentActionsMenu;
 

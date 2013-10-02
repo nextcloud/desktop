@@ -14,7 +14,18 @@
 
 #include "mirall/logger.h"
 
+#include <QDir>
+#include <QStringList>
+
 namespace Mirall {
+
+// logging handler.
+void mirallLogCatcher(QtMsgType type, const char *msg)
+{
+  Q_UNUSED(type)
+  // qDebug() exports to local8Bit, which is not always UTF-8
+  Logger::instance()->mirallLog( QString::fromLocal8Bit(msg) );
+}
 
 Logger* Logger::_instance=0;
 
@@ -26,7 +37,10 @@ Logger::Logger( QObject* parent)
 
 Logger *Logger::instance()
 {
-    if( !Logger::_instance ) Logger::_instance = new Logger;
+    if( !Logger::_instance ) {
+        Logger::_instance = new Logger;
+        qInstallMsgHandler( mirallLogCatcher );
+    }
     return Logger::_instance;
 }
 
@@ -50,7 +64,7 @@ void Logger::postOptionalGuiLog(const QString &title, const QString &message)
 
 void Logger::postGuiMessage(const QString &title, const QString &message)
 {
-    emit postGuiMessage(title, message);
+    // emit postGuiMessage(title, message);
 }
 
 void Logger::log(Log log)
@@ -68,6 +82,12 @@ void Logger::log(Log log)
     msg += log.message;
     // _logs.append(log);
     // std::cout << qPrintable(log.message) << std::endl;
+
+    if( _logstream ) {
+        (*_logstream) << msg << endl;
+        if( _doFileFlush ) _logstream->flush();
+    }
+
     emit newLog(msg);
 }
 
@@ -89,6 +109,77 @@ void Logger::mirallLog( const QString& message )
     log_.message = message;
 
     Logger::instance()->log( log_ );
+}
+
+void Logger::setLogFile(const QString & name)
+{
+    if( _logstream ) {
+        _logFile.close();
+    }
+
+    bool openSucceeded = false;
+    if (name == QLatin1String("-")) {
+        openSucceeded = _logFile.open(1, QIODevice::WriteOnly);
+    } else {
+        _logFile.setFileName( name );
+        openSucceeded = _logFile.open(QIODevice::WriteOnly);
+    }
+
+    if(!openSucceeded) {
+        postGuiMessage( tr("Error"),
+                        QString(tr("<nobr>File '%1'<br/>cannot be opened for writing.<br/><br/>"
+                                   "The log output can <b>not</b> be saved!</nobr>"))
+                        .arg(name));
+        return;
+    }
+
+    _logstream.reset(new QTextStream( &_logFile ));
+}
+
+void Logger::setLogExpire( int expire )
+{
+    _logExpire = expire;
+}
+
+void Logger::setLogDir( const QString& dir )
+{
+    _logDirectory = dir;
+}
+
+void Logger::setLogFlush( bool flush )
+{
+    _doFileFlush = flush;
+}
+
+void Logger::enterNextLogFile()
+{
+    if (!_logDirectory.isEmpty()) {
+        QDir dir(_logDirectory);
+        if (!dir.exists()) {
+            dir.mkpath(".");
+        }
+
+        // Find out what is the file with the highest nymber if any
+        QStringList files = dir.entryList(QStringList("owncloud.log.*"),
+                                    QDir::Files);
+        QRegExp rx("owncloud.log.(\\d+)");
+        uint maxNumber = 0;
+        QDateTime now = QDateTime::currentDateTime();
+        foreach(const QString &s, files) {
+            if (rx.exactMatch(s)) {
+                maxNumber = qMax(maxNumber, rx.cap(1).toUInt());
+                if (_logExpire > 0) {
+                    QFileInfo fileInfo = dir.absoluteFilePath(s);
+                    if (fileInfo.lastModified().addSecs(60*60 * _logExpire) < now) {
+                        dir.remove(s);
+                    }
+                }
+            }
+        }
+
+        QString filename = _logDirectory + "/owncloud.log." + QString::number(maxNumber+1);
+        setLogFile(filename);
+    }
 }
 
 } // namespace Mirall

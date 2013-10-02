@@ -18,6 +18,8 @@
 #include <QObject>
 #include <QList>
 #include <QDateTime>
+#include <QFile>
+#include <QTextStream>
 
 namespace Mirall {
 
@@ -50,11 +52,18 @@ public:
   void postOptionalGuiLog(const QString& title, const QString& message);
   void postGuiMessage(const QString& title, const QString& message);
 
+  void setLogFile( const QString & name );
+  void setLogExpire( int expire );
+  void setLogDir( const QString& dir );
+  void setLogFlush( bool flush );
 signals:
   void newLog(const QString&);
   void guiLog(const QString&, const QString&);
   void guiMessage(const QString&, const QString&);
   void optionalGuiLog(const QString&, const QString&);
+
+public slots:
+  void enterNextLogFile();
 
 protected:
   Logger(QObject* parent=0);
@@ -63,6 +72,13 @@ protected:
   bool       _doLogging;
 
   static Logger* _instance;
+
+  QFile       _logFile;
+  bool        _doFileFlush;
+  int         _logExpire;
+  QScopedPointer<QTextStream> _logstream;
+  QString     _logDirectory;
+
 };
 
 } // namespace Mirall

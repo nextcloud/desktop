@@ -50,7 +50,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 
     _accountSettings = new AccountSettings(this);
     addAccount(tr("Account"), _accountSettings);
-    // slotUpdateAccountState(); REFACTOR: Do we still need this? Now in slotSyncStateChange
 
     QIcon generalIcon(QLatin1String(":/mirall/resources/settings.png"));
     QListWidgetItem *general = new QListWidgetItem(generalIcon, tr("General"), _ui->labelWidget);
@@ -65,9 +64,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     _ui->labelWidget->addItem(network);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
-    // REFACTOR check: connect(networkSettings, SIGNAL(proxySettingsChanged()), app, SLOT(slotSetupProxy()));
+    connect(networkSettings, SIGNAL(proxySettingsChanged()), gui, SIGNAL(setupProxy()));
 
-    //connect(generalSettings, SIGNAL(resizeToSizeHint()), SLOT(resizeToSizeHint()));
     FolderMan *folderMan = FolderMan::instance();
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
              this, SLOT(slotSyncStateChange(QString)));
@@ -92,7 +90,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
-    connect(showLogWindow, SIGNAL(triggered()), gui, SLOT(slotOpenLogBrowser()));
+    connect(showLogWindow, SIGNAL(triggered()), gui, SLOT(slotToggleLogBrowser()));
     addAction(showLogWindow);
 
     int iconSize = 32;

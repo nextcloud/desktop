@@ -64,9 +64,6 @@ private:
     QPushButton *_clearBtn;
     QLabel      *_statusLabel;
 
-    QFile       _logFile;
-    bool        _doFileFlush;
-    QScopedPointer<QTextStream> _logstream;
 };
 
 } // namespace
