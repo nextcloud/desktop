@@ -95,6 +95,7 @@ static char *c_iconv(const char* str, enum iconv_direction dir)
   size_t size;
   size_t outsize;
   char *out;
+  char *out_in;
   size_t ret;
 
   if (str == NULL) {
@@ -112,6 +113,8 @@ static char *c_iconv(const char* str, enum iconv_direction dir)
   size = strlen(in);
   outsize = size*2;
   out = c_malloc(outsize);
+  out_in = out;
+
   if (out == NULL) {
       return NULL;
   }
@@ -127,7 +130,7 @@ static char *c_iconv(const char* str, enum iconv_direction dir)
       return NULL;
   }
 
-  return out;
+  return out_in;
 }
 #endif /* defined(HAVE_ICONV) && defined(WITH_ICONV) */
 
