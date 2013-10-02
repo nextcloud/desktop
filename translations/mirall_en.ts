@@ -232,122 +232,6 @@
     </message>
 </context>
 <context>
-    <name>Mirall::Application</name>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="262"/>
-        <source>%1 Sync Started</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/mirall/application.cpp" line="263"/>
-        <source>Sync started for %n configured sync folder(s).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="336"/>
-        <source>Open %1 in browser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="338"/>
-        <source>Calculating quota...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="340"/>
-        <source>Unknown status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="342"/>
-        <source>Settings...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="343"/>
-        <source>Details...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="348"/>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="350"/>
-        <source>Quit %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="400"/>
-        <source>Open %1 folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="548"/>
-        <source>%1% of %2 in use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="620"/>
-        <source>Up to date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="379"/>
-        <source>None.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="383"/>
-        <source>Recent Changes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="410"/>
-        <source>Managed Folders:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="413"/>
-        <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="541"/>
-        <source>Quota n/a</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="574"/>
-        <source>No items synced recently</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="583"/>
-        <source>%1 (%2, %3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="598"/>
-        <source>Syncing %1 of %2 (%3 of %4) </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="845"/>
-        <source>Folder %1: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/application.cpp" line="851"/>
-        <source>No sync folders configured.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Mirall::CSyncThread</name>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="83"/>
@@ -514,7 +398,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="155"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="132"/>
+        <source>Unable to connect to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="156"/>
         <source>The provided credentials are not correct</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1638,6 +1527,122 @@ name</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="136"/>
         <source>Get update</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::ownCloudGui</name>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="131"/>
+        <source>%1 Sync Started</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/owncloudgui.cpp" line="132"/>
+        <source>Sync started for %n configured sync folder(s).</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="163"/>
+        <source>Folder %1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="169"/>
+        <source>No sync folders configured.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="188"/>
+        <source>None.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="192"/>
+        <source>Recent Changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="209"/>
+        <source>Open %1 folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="219"/>
+        <source>Managed Folders:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="222"/>
+        <source>Open folder &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="288"/>
+        <source>Open %1 in browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="290"/>
+        <source>Calculating quota...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="292"/>
+        <source>Unknown status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="294"/>
+        <source>Settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="295"/>
+        <source>Details...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="300"/>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="302"/>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="312"/>
+        <source>Quota n/a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="319"/>
+        <source>%1% of %2 in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="340"/>
+        <source>No items synced recently</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="349"/>
+        <source>%1 (%2, %3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="365"/>
+        <source>Syncing %1 of %2 (%3 of %4) </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="387"/>
+        <source>Up to date</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
