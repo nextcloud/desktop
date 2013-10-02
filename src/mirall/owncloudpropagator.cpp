@@ -93,7 +93,7 @@ void OwncloudPropagator::propagate(const SyncFileItem &item)
     }
     SyncFileItem newItem = item;
     newItem._instruction = _instruction;
-    newItem._errorDetail = _errorString;
+    newItem._errorString = _errorString;
     newItem._httpCode = _httpStatusCode;
     newItem._etag = _etag;
     emit completed(newItem, _errorCode);

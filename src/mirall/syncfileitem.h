@@ -76,7 +76,6 @@ public:
     quint64  _size;
 
     QString _errorString;
-    QString _errorDetail;
     int     _httpCode;
 
     Type      _type;

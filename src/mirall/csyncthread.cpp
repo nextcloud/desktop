@@ -470,8 +470,7 @@ void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_STATUS error
         int idx = _syncedItems.lastIndexOf(item, _iterator);
         if (idx >= 0) {
             _syncedItems[idx]._instruction = CSYNC_INSTRUCTION_ERROR;
-            _syncedItems[idx]._errorString = csyncErrorToString( error );
-            _syncedItems[idx]._errorDetail = item._errorDetail;
+            _syncedItems[idx]._errorString = item._errorString.isEmpty() ? csyncErrorToString( error ) : item._errorString;
             _syncedItems[idx]._httpCode    = item._httpCode;
             qDebug() << "File " << item._file << " propagator error " << _syncedItems[idx]._errorString
                      << "(" << item._errorString << ")";
