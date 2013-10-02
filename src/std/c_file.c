@@ -166,7 +166,7 @@ out:
   if (dstfd >= 0) {
       close(dstfd);
   }
-  if (rc < 0) {
+  if (rc < 0 && c_isfile(dst)) {
     unlink(dst);
   }
   return rc;
