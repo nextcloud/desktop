@@ -63,6 +63,9 @@ public:
 
     Q_INVOKABLE void startSync();
 
+    /* Abort the sync.  Called from the main thread */
+    void abort();
+
 signals:
     void csyncError( const QString& );
     void csyncWarning( const QString& );
@@ -120,6 +123,8 @@ private:
     Progress::Info _progressInfo;
     int _downloadLimit;
     int _uploadLimit;
+
+    QAtomicInt _abortRequested;
 
     friend struct CSyncRunScopeHelper;
 };

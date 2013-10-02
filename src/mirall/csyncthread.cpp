@@ -169,6 +169,10 @@ QString CSyncThread::csyncErrorToString(CSYNC_STATUS err)
         break;
     case CSYNC_STATUS_UNSUCCESSFUL:
         errStr = tr("CSync unspecified error.");
+        break;
+    case CSYNC_STATUS_ABORTED:
+        errStr = tr("Aborted by the user");
+        break;
 
     default:
         errStr = tr("An internal error number %1 happend.").arg( (int) err );
@@ -429,7 +433,8 @@ void CSyncThread::startSync()
     Q_ASSERT(session);
 
     _progressDataBase.load(_localPath);
-    _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath, &_progressDataBase));
+    _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath,
+                                              &_progressDataBase, &_abortRequested));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem, CSYNC_STATUS)),
             this, SLOT(transferCompleted(SyncFileItem, CSYNC_STATUS)), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)),
@@ -551,6 +556,7 @@ void CSyncThread::startNextTransfer()
     emit finished();
     _propagator.reset(0);
     _syncMutex.unlock();
+    thread()->quit();
 }
 
 Progress::Kind CSyncThread::csyncToProgressKind( enum csync_notify_type_e kind )
@@ -626,4 +632,12 @@ QString CSyncThread::adjustRenamedPath(const QString& original)
     }
     return original;
 }
+
+void CSyncThread::abort()
+{
+    csync_request_abort(_csync_ctx);
+    _abortRequested = true;
+}
+
+
 } // ns Mirall

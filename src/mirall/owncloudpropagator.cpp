@@ -61,6 +61,15 @@ void OwncloudPropagator::propagate(const SyncFileItem &item)
     _errorString.clear();
     _etag.clear();
     _httpStatusCode = 0;
+
+    if (_abortRequested->fetchAndAddRelaxed(0)) {
+        SyncFileItem newItem = item;
+        newItem._instruction = _instruction = CSYNC_INSTRUCTION_ERROR;
+        emit completed(newItem, CSYNC_STATUS_ABORTED);
+        return;
+    }
+
+
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
             _instruction = item._dir == SyncFileItem::Down ? localRemove(item) : remoteRemove(item);
@@ -210,6 +219,20 @@ csync_instructions_e OwncloudPropagator::remoteMkdir(const SyncFileItem &item)
     return CSYNC_INSTRUCTION_UPDATED;
 }
 
+// Log callback for httpbf
+static void _log_callback(const char *func, const char *text)
+{
+    qDebug() << func << text;
+}
+
+// abort callback for httpbf
+// FIXME: a bit a pitty we need to use a global variable here.
+static QAtomicInt *_user_want_abort_ptr;
+static int _user_want_abort()
+{
+    return _user_want_abort_ptr->fetchAndAddRelaxed(0);
+}
+
 
 csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
 {
@@ -231,6 +254,9 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
     do {
         Hbf_State state = HBF_SUCCESS;
         QScopedPointer<hbf_transfer_t, ScopedPointerHelpers> trans(hbf_init_transfer(uri.data()));
+        hbf_set_log_callback(trans.data(), _log_callback);
+        _user_want_abort_ptr = _abortRequested;
+        hbf_set_abort_callback(trans.data(), _user_want_abort);
         finished = true;
         Q_ASSERT(trans);
         state = hbf_splitlist(trans.data(), file.handle());
@@ -350,13 +376,23 @@ class DownloadContext {
 public:
     QIODevice *_file;
     QScopedPointer<ne_decompress, ScopedPointerHelpers> _decompress;
+    ne_session *_session;
+    QAtomicInt *_abortRequested;
 
-    explicit DownloadContext(QIODevice *file) : _file(file) {}
+    explicit DownloadContext(QIODevice *file,
+                             ne_session *session,
+                             QAtomicInt *abortRequested)
+        : _file(file), _session(session), _abortRequested(abortRequested) {}
 
     static int content_reader(void *userdata, const char *buf, size_t len)
     {
         DownloadContext *writeCtx = static_cast<DownloadContext *>(userdata);
         size_t written = 0;
+
+        if (writeCtx->_abortRequested->fetchAndAddRelaxed(0)) {
+            ne_set_error(writeCtx->_session, "Aborted by user");
+            return NE_ERROR;
+        }
 
         if(buf) {
             written = writeCtx->_file->write(buf, len);
@@ -444,7 +480,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     int retry = 0;
 
     QScopedPointer<char, QScopedPointerPodDeleter> uri(ne_path_escape((_remoteDir + item._file).toUtf8()));
-    DownloadContext writeCtx(&tmpFile);
+    DownloadContext writeCtx(&tmpFile, _session , _abortRequested);
 
     do {
         QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_session, "GET", uri.data()));

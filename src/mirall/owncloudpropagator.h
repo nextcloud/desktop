@@ -71,7 +71,7 @@ class OwncloudPropagator : public QObject {
 
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
-                       ProgressDatabase *progressDb)
+                       ProgressDatabase *progressDb, QAtomicInt *abortRequested)
             : _session(session)
             , _localDir(localDir)
             , _remoteDir(remoteDir)
@@ -79,6 +79,7 @@ public:
             , _errorCode(CSYNC_STATUS_OK)
             , _httpStatusCode(0)
             , _hasFatalError(false)
+            , _abortRequested(abortRequested)
     {
         if (!localDir.endsWith(QChar('/'))) _localDir+='/';
         if (!remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
@@ -89,6 +90,8 @@ public:
 
     int _downloadLimit;
     int _uploadLimit;
+
+    QAtomicInt *_abortRequested; // boolean set by the main thread to abort.
 
 signals:
     void completed(const SyncFileItem &, CSYNC_STATUS);

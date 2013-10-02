@@ -112,8 +112,8 @@ bool Folder::init()
 Folder::~Folder()
 {
     if( _thread ) {
+        _csync->abort();
         _thread->quit();
-        csync_request_abort(_csync_ctx);
         _thread->wait();
     }
     delete _csync;
@@ -408,8 +408,7 @@ void Folder::slotTerminateSync()
     qDebug() << "csync's Config Dir: " << configDir;
 
     if( _thread && _csync ) {
-        csync_request_abort(_csync_ctx);
-        _thread->quit();
+        _csync->abort();
         _thread->wait();
         _csync->deleteLater();
         delete _thread;
