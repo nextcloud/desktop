@@ -59,6 +59,7 @@ void OwncloudPropagator::propagate(const SyncFileItem &item)
 {
     _errorCode = CSYNC_STATUS_OK;
     _errorString.clear();
+    _etag.clear();
     _httpStatusCode = 0;
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
@@ -222,7 +223,6 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
     bool finished = true;
     int  attempts = 0;
 
-    _etag.clear(); // dangerous?
     /*
      * do ten tries to upload the file chunked. Check the file size and mtime
      * before submitting a chunk and after having submitted the last one.
