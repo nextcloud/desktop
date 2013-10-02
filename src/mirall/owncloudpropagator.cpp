@@ -250,8 +250,17 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
         _chunked_total_size = item._size;
         _currentFile = item._file;
 
+
         if( state == HBF_SUCCESS ) {
+            QByteArray previousEtag;
+            if (!item._etag.isEmpty() && item._etag != "empty_etag") {
+                // We add quotes because the owncloud server always add quotes around the etag, and
+                //  csync_owncloud.c's owncloud_file_id always strip the quotes.
+                previousEtag = '"' + item._etag + '"';
+                trans->previous_etag = previousEtag.data();
+            }
             _chunked_total_size = trans->stat_size;
+            qDebug() << "About to upload " << item._file << "  (" << previousEtag << item._size << ")";
             /* Transfer all the chunks through the HTTP session using PUT. */
             state = hbf_transfer( _session, trans.data(), "PUT" );
         }
