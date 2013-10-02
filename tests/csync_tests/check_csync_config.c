@@ -58,10 +58,6 @@ static void check_csync_config_load(void **state)
     rc = _csync_config_copy_default(TESTCONF);
     assert_int_equal(rc, 0);
 
-    /* Enable it, loading the default config should disable it */
-    rc = csync_enable_conflictcopys(csync);
-    assert_int_equal(rc, 0);
-
     rc = csync_config_parse_file(csync, TESTCONF);
     assert_int_equal(rc, 0);
 
