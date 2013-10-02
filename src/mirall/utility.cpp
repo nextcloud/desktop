@@ -278,12 +278,16 @@ static QString findDefaultFileManager()
 
     QFileInfo fi;
     QStringList dirs = xdgDataDirs();
+    QStringList subdirs;
+    subdirs << "/applications/" << "/applications/kde4/";
     foreach(QString dir, dirs) {
-        fi.setFile(dir + "/applications/" + fileName);
-        if(fi.exists()) {
-            QSettings desktopFile(fi.absoluteFilePath(), QSettings::IniFormat);
-            QString exec = desktopFile.value("Desktop Entry/Exec").toString();
-            return exec;
+        foreach(QString subdir, subdirs) {
+            fi.setFile(dir + subdir + fileName);
+            if(fi.exists()) {
+                QSettings desktopFile(fi.absoluteFilePath(), QSettings::IniFormat);
+                QString exec = desktopFile.value("Desktop Entry/Exec").toString();
+                return exec;
+            }
         }
     }
     return QString();
