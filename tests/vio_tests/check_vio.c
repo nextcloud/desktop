@@ -10,9 +10,11 @@
 #include "csync_private.h"
 #include "vio/csync_vio.h"
 
-#define CSYNC_TEST_DIR "/tmp/csync/"
-#define CSYNC_TEST_DIRS "/tmp/csync/this/is/a/mkdirs/test"
-#define CSYNC_TEST_FILE "/tmp/csync/file.txt"
+#define CSYNC_TEST_DIR "/tmp/csync_test/"
+#define CSYNC_TEST_DIRS "/tmp/csync_test/this/is/a/mkdirs/test"
+#define CSYNC_TEST_FILE "/tmp/csync_test/file.txt"
+
+#define MKDIR_MASK (S_IRWXU |S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH)
 
 #define WD_BUFFER_SIZE 255
 
@@ -25,7 +27,7 @@ static void setup(void **state)
 
     assert_non_null(getcwd(wd_buffer, WD_BUFFER_SIZE));
 
-    rc = system("rm -rf /tmp/csync/");
+    rc = system("rm -rf /tmp/csync_test");
     assert_int_equal(rc, 0);
 
     rc = csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
@@ -42,7 +44,7 @@ static void setup_dir(void **state) {
 
     setup(state);
 
-    rc = _tmkdir(dir, 0755);
+    rc = _tmkdir(dir, MKDIR_MASK);
     c_free_locale_string(dir);
     assert_int_equal(rc, 0);
 
@@ -57,7 +59,7 @@ static void setup_file(void **state) {
 
     setup_dir(state);
 
-    rc = system("echo \"This is a test\" > /tmp/csync/file.txt");
+    rc = system("echo \"This is a test\" > /tmp/csync_test/file.txt");
     assert_int_equal(rc, 0);
 }
 
@@ -71,7 +73,7 @@ static void teardown(void **state) {
     rc = chdir(wd_buffer);
     assert_int_equal(rc, 0);
 
-    rc = system("rm -rf /tmp/csync/");
+    rc = system("rm -rf /tmp/csync_test/");
     assert_int_equal(rc, 0);
 
     *state = NULL;
@@ -121,7 +123,7 @@ static void check_csync_vio_mkdir(void **state)
     int rc;
     mbchar_t *dir = c_utf8_to_locale(CSYNC_TEST_DIR);
 
-    rc = csync_vio_mkdir(csync, CSYNC_TEST_DIR, 0755);
+    rc = csync_vio_mkdir(csync, CSYNC_TEST_DIR, MKDIR_MASK);
     assert_int_equal(rc, 0);
 
     rc = _tstat(dir, &sb);
@@ -138,7 +140,7 @@ static void check_csync_vio_mkdirs(void **state)
     int rc;
     mbchar_t *dir = c_utf8_to_locale(CSYNC_TEST_DIR);
 
-    rc = csync_vio_mkdirs(csync, CSYNC_TEST_DIRS, 0755);
+    rc = csync_vio_mkdirs(csync, CSYNC_TEST_DIRS, MKDIR_MASK);
     assert_int_equal(rc, 0);
 
     rc = _tstat(dir, &sb);
@@ -152,13 +154,13 @@ static void check_csync_vio_mkdirs_some_exist(void **state)
 {
     CSYNC *csync = *state;
     csync_stat_t sb;
-    mbchar_t *this_dir = c_utf8_to_locale("/tmp/csync/this");
+    mbchar_t *this_dir = c_utf8_to_locale("/tmp/csync_test/this");
     mbchar_t *stat_dir = c_utf8_to_locale(CSYNC_TEST_DIRS);
     int rc;
 
-    rc = _tmkdir(this_dir, 0755);
+    rc = _tmkdir(this_dir, MKDIR_MASK);
     assert_int_equal(rc, 0);
-    rc = csync_vio_mkdirs(csync, CSYNC_TEST_DIRS, 0755);
+    rc = csync_vio_mkdirs(csync, CSYNC_TEST_DIRS, MKDIR_MASK);
     assert_int_equal(rc, 0);
 
     rc = _tstat(stat_dir, &sb);
@@ -175,7 +177,7 @@ static void check_csync_vio_rmdir(void **state)
     csync_stat_t sb;
     int rc;
 
-    rc = csync_vio_mkdir(csync, CSYNC_TEST_DIR, 0755);
+    rc = csync_vio_mkdir(csync, CSYNC_TEST_DIR, MKDIR_MASK);
     assert_int_equal(rc, 0);
 
     rc = lstat(CSYNC_TEST_DIR, &sb);
@@ -210,13 +212,15 @@ static void check_csync_vio_opendir_perm(void **state)
 
     assert_non_null(dir);
 
-    rc = _tmkdir(dir, 0200);
+    rc = _tmkdir(dir, S_IWUSR);
     assert_int_equal(rc, 0);
     c_free_locale_string(dir);
 
     dh = csync_vio_opendir(csync, CSYNC_TEST_DIR);
     assert_null(dh);
     assert_int_equal(errno, EACCES);
+
+    _tchmod(dir, S_IRWXU);
 }
 
 static void check_csync_vio_closedir_null(void **state)
@@ -410,7 +414,7 @@ static void check_csync_vio_stat_dir(void **state)
     rc = csync_vio_stat(csync, CSYNC_TEST_DIR, fs);
     assert_int_equal(rc, 0);
 
-    assert_string_equal(fs->name, "csync");
+    assert_string_equal(fs->name, "csync_test");
     assert_int_equal(fs->type, CSYNC_VIO_FILE_TYPE_DIRECTORY);
 
     csync_vio_file_stat_destroy(fs);
@@ -446,7 +450,7 @@ static void check_csync_vio_rename_dir(void **state)
     assert_non_null(dir);
     assert_non_null(dir2);
 
-    rc = _tmkdir(dir, 0755);
+    rc = _tmkdir(dir, MKDIR_MASK);
     assert_int_equal(rc, 0);
 
     rc = csync_vio_rename(csync, "test", "test2");
