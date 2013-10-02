@@ -23,6 +23,7 @@
 #include <QUrl>
 #include <QWidget>
 #include <QDebug>
+#include <QDesktopServices>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QDesktopServices>
@@ -399,6 +400,47 @@ void Utility::sleep(int sec)
     ::Sleep(sec*1000);
 #else
     ::sleep(sec);
+#endif
+}
+
+// inspired by Qt Creator's showInGraphicalShell();
+void Utility::showInFileManager(const QString &localPath)
+{
+#if defined(Q_OS_WIN)
+    const QString explorer = "explorer.exe" // FIXME: we trust it's in PATH
+    QStringList param;
+    if (!QFileInfo(pathIn).isDir())
+        param += QLatin1String("/select,");
+    param += QDir::toNativeSeparators(localPath);
+    QProcess::startDetached(explorer, param);
+#elif defined(Q_OS_MAC)
+    QStringList scriptArgs;
+    scriptArgs << QLatin1String("-e")
+               << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
+                  .arg(localPath);
+    QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
+    scriptArgs.clear();
+    scriptArgs << QLatin1String("-e")
+               << QLatin1String("tell application \"Finder\" to activate");
+    QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
+#else
+    QString app;
+    QStringList args;
+
+    if ( qgetenv("KDE_FULL_SESSION") == "true" ) {
+        app = "dolphin";
+        args << "-select" << path;
+    } else if (!qgetenv("GNOME_DESKTOP_SESSION_ID").isEmpty() ) {
+        // nautilus can only handle the name
+        app = "nautilus";
+        args << QDir(localPath).path();
+    }
+
+    if (app.isEmpty() || args.isEmpty()) {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(localPath));
+    } else {
+        QProcess::execute(app, args);
+    }
 #endif
 }
 

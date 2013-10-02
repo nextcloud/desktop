@@ -34,6 +34,7 @@ namespace Utility
     void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
     qint64 freeDiskSpace(const QString &path, bool *ok = 0);
     QString toCSyncScheme(const QString &urlStr);
+    void showInFileManager(const QString &localPath);
     /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
 
     /**
