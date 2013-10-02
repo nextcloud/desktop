@@ -99,10 +99,8 @@ static void check_iconv_ascii(void **state)
     (void) state; /* unused */
 }
 
-
-
-#define TESTSTRING "#äA\\#fß§4"
-#define LTESTSTRING L"#äA\\#fß§4"
+#define TESTSTRING "#cA\\#fß§4"
+#define LTESTSTRING L"#cA\\#fß§4"
 
 static void check_to_multibyte(void **state)
 {

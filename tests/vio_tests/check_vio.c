@@ -212,15 +212,15 @@ static void check_csync_vio_opendir_perm(void **state)
 
     assert_non_null(dir);
 
-    rc = _tmkdir(dir, S_IWUSR);
+    rc = _tmkdir(dir, (S_IWUSR|S_IXUSR));
     assert_int_equal(rc, 0);
-    c_free_locale_string(dir);
 
     dh = csync_vio_opendir(csync, CSYNC_TEST_DIR);
     assert_null(dh);
     assert_int_equal(errno, EACCES);
 
-    _tchmod(dir, S_IRWXU);
+    _tchmod(dir, MKDIR_MASK);
+    c_free_locale_string(dir);
 }
 
 static void check_csync_vio_closedir_null(void **state)
