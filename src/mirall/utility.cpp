@@ -1,5 +1,6 @@
 /*
  * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,13 +42,12 @@
 
 #include <stdarg.h>
 
-#if defined(Q_OS_MAC)
-#include <CoreServices/CoreServices.h>
-#include <CoreFoundation/CoreFoundation.h>
-#elif defined(Q_OS_WIN)
-#include <shlobj.h>
-#include <winbase.h>
-#include <windows.h>
+#if defined(Q_OS_WIN)
+#include "mirall/utility_win.cpp"
+#elif defined(Q_OS_MAC)
+#include "mirall/utility_mac.cpp"
+#else
+#include "mirall/utility_unix.cpp"
 #endif
 
 namespace Mirall {
@@ -70,46 +70,7 @@ QString Utility::formatFingerprint( const QByteArray& fmhash )
 
 void Utility::setupFavLink(const QString &folder)
 {
-#ifdef Q_OS_WIN
-    // Windows Explorer: Place under "Favorites" (Links)
-    wchar_t path[MAX_PATH];
-    SHGetSpecialFolderPath(0, path, CSIDL_PROFILE, FALSE);
-    QString profile =  QDir::fromNativeSeparators(QString::fromWCharArray(path));
-    QDir folderDir(QDir::fromNativeSeparators(folder));
-    QString linkName = profile+QLatin1String("/Links/") + folderDir.dirName() + QLatin1String(".lnk");
-    if (!QFile::link(folder, linkName))
-        qDebug() << Q_FUNC_INFO << "linking" << folder << "to" << linkName << "failed!";
-#elif defined (Q_OS_MAC)
-    // Finder: Place under "Places"/"Favorites" on the left sidebar
-    CFStringRef folderCFStr = CFStringCreateWithCString(0, folder.toUtf8().data(), kCFStringEncodingUTF8);
-    CFURLRef urlRef = CFURLCreateWithFileSystemPath (0, folderCFStr, kCFURLPOSIXPathStyle, true);
-
-    LSSharedFileListRef placesItems = LSSharedFileListCreate(0, kLSSharedFileListFavoriteItems, 0);
-    if (placesItems) {
-        //Insert an item to the list.
-        LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(placesItems,
-                                                                     kLSSharedFileListItemLast, 0, 0,
-                                                                     urlRef, 0, 0);
-        if (item)
-            CFRelease(item);
-    }
-    CFRelease(placesItems);
-    CFRelease(folderCFStr);
-    CFRelease(urlRef);
-#elif defined (Q_OS_UNIX)
-    // Nautilus: add to ~/.gtk-bookmarks
-    QFile gtkBookmarks(QDir::homePath()+QLatin1String("/.gtk-bookmarks"));
-    QByteArray folderUrl = "file://" + folder.toUtf8();
-    if (gtkBookmarks.open(QFile::ReadWrite)) {
-        QByteArray places = gtkBookmarks.readAll();
-        if (!places.contains(folderUrl)) {
-            places += folderUrl;
-            gtkBookmarks.reset();
-            gtkBookmarks.write(places + '\n');
-        }
-    }
-
-#endif
+    setupFavLink_private(folder);
 }
 
 QString Utility::octetsToString( qint64 octets )
@@ -190,136 +151,14 @@ void Utility::raiseDialog( QWidget *raiseWidget )
     }
 }
 
-static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
-
 bool Utility::hasLaunchOnStartup(const QString &appName)
 {
-#if defined(Q_OS_WIN)
-    QString runPath = QLatin1String(runPathC);
-    QSettings settings(runPath, QSettings::NativeFormat);
-    return settings.contains(appName);
-#elif defined(Q_OS_MAC)
-    // this is quite some duplicate code with setLaunchOnStartup, at some point we should fix this FIXME.
-    bool returnValue = false;
-    QString filePath = QDir(QCoreApplication::applicationDirPath()+QLatin1String("/../..")).absolutePath();
-    CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
-    CFURLRef urlRef = CFURLCreateWithFileSystemPath (0, folderCFStr, kCFURLPOSIXPathStyle, true);
-    LSSharedFileListRef loginItems = LSSharedFileListCreate(0, kLSSharedFileListSessionLoginItems, 0);
-    if (loginItems) {
-        // We need to iterate over the items and check which one is "ours".
-        UInt32 seedValue;
-        CFArrayRef itemsArray = LSSharedFileListCopySnapshot(loginItems, &seedValue);
-        CFStringRef appUrlRefString = CFURLGetString(urlRef); // no need for release
-        for (int i = 0; i < CFArrayGetCount(itemsArray); i++) {
-            LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
-            CFURLRef itemUrlRef = NULL;
-
-            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr) {
-                CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
-                if (CFStringCompare(itemUrlString,appUrlRefString,0) == kCFCompareEqualTo) {
-                    returnValue = true;
-                }
-                CFRelease(itemUrlRef);
-            }
-        }
-        CFRelease(itemsArray);
-    }
-    CFRelease(loginItems);
-    CFRelease(folderCFStr);
-    CFRelease(urlRef);
-    return returnValue;
-#elif defined(Q_OS_UNIX)
-    QString userAutoStartPath = QDir::homePath()+QLatin1String("/.config/autostart/");
-    QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
-    return QFile::exists(desktopFileLocation);
-#endif
-}
-
-namespace {
+    return hasLaunchOnStartup_private(appName);
 }
 
 void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName, bool enable)
 {
-#if defined(Q_OS_WIN)
-    Q_UNUSED(guiName)
-    QString runPath = QLatin1String(runPathC);
-    QSettings settings(runPath, QSettings::NativeFormat);
-    if (enable) {
-        settings.setValue(appName, QCoreApplication::applicationFilePath().replace('/','\\'));
-    } else {
-        settings.remove(appName);
-    }
-#elif defined(Q_OS_MAC)
-    Q_UNUSED(guiName)
-    QString filePath = QDir(QCoreApplication::applicationDirPath()+QLatin1String("/../..")).absolutePath();
-    CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
-    CFURLRef urlRef = CFURLCreateWithFileSystemPath (0, folderCFStr, kCFURLPOSIXPathStyle, true);
-    LSSharedFileListRef loginItems = LSSharedFileListCreate(0, kLSSharedFileListSessionLoginItems, 0);
-
-    if (loginItems && enable) {
-        //Insert an item to the list.
-        LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems,
-                                                                     kLSSharedFileListItemLast, 0, 0,
-                                                                     urlRef, 0, 0);
-        if (item)
-            CFRelease(item);
-        CFRelease(loginItems);
-    } else if (loginItems && !enable){
-        // We need to iterate over the items and check which one is "ours".
-        UInt32 seedValue;
-        CFArrayRef itemsArray = LSSharedFileListCopySnapshot(loginItems, &seedValue);
-        CFStringRef appUrlRefString = CFURLGetString(urlRef);
-        for (int i = 0; i < CFArrayGetCount(itemsArray); i++) {
-            LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
-            CFURLRef itemUrlRef = NULL;
-
-            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr) {
-                CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
-                if (CFStringCompare(itemUrlString,appUrlRefString,0) == kCFCompareEqualTo) {
-                    LSSharedFileListItemRemove(loginItems,item); // remove it!
-                }
-                CFRelease(itemUrlRef);
-            }
-        }
-        CFRelease(itemsArray);
-        CFRelease(loginItems);
-    };
-
-    CFRelease(folderCFStr);
-    CFRelease(urlRef);
-#elif defined(Q_OS_UNIX)
-    QString userAutoStartPath = QDir::homePath()+QLatin1String("/.config/autostart/");
-    QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
-    if (enable) {
-        if (!QDir().exists(userAutoStartPath) && !QDir().mkdir(userAutoStartPath)) {
-            qDebug() << "Could not create autostart directory";
-            return;
-        }
-        QFile iniFile(desktopFileLocation);
-        if (!iniFile.open(QIODevice::WriteOnly)) {
-            qDebug() << "Could not write auto start entry" << desktopFileLocation;
-            return;
-        }
-        QTextStream ts(&iniFile);
-        ts.setCodec("UTF-8");
-        ts << QLatin1String("[Desktop Entry]") << endl
-           << QLatin1String("Name=") << guiName << endl
-           << QLatin1String("GenericName=") << QLatin1String("File Synchronizer") << endl
-           << QLatin1String("Exec=") << QCoreApplication::applicationFilePath() << endl
-           << QLatin1String("Terminal=") << "false" << endl
-           << QLatin1String("Icon=") << appName << endl
-           << QLatin1String("Categories=") << QLatin1String("Network") << endl
-           << QLatin1String("Type=") << QLatin1String("Application") << endl
-           << QLatin1String("StartupNotify=") << "false" << endl
-           << QLatin1String("X-GNOME-Autostart-enabled=") << "true" << endl
-            ;
-    } else {
-        if (!QFile::remove(desktopFileLocation)) {
-            qDebug() << "Could not remove autostart desktop file";
-        }
-    }
-
-#endif
+    setLaunchOnStartup_private(appName, guiName, enable);
 }
 
 qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
