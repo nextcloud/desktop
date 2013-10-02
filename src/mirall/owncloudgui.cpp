@@ -66,6 +66,13 @@ ownCloudGui::ownCloudGui(Application *parent) :
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
              this,SLOT(slotSyncStateChange(QString)));
 
+    connect( Logger::instance(), SIGNAL(guiLog(QString,QString)),
+             SLOT(slotShowTrayMessage(QString,QString)));
+    connect( Logger::instance(), SIGNAL(optionalGuiLog(QString,QString)),
+             SLOT(slotShowOptionalTrayMessage(QString,QString)));
+    connect( Logger::instance(), SIGNAL(guiMessage(QString,QString)),
+             SLOT(slotShowGuiMessage(QString,QString)));
+
 }
 
 // This should rather be in application.... or rather in MirallConfigFile?

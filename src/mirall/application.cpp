@@ -111,12 +111,6 @@ Application::Application(int &argc, char **argv) :
     setupTranslations();
 
     connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
-    connect( Logger::instance(), SIGNAL(guiLog(QString,QString)),
-             _gui, SLOT(slotShowTrayMessage(QString,QString)));
-    connect( Logger::instance(), SIGNAL(optionalGuiLog(QString,QString)),
-             _gui, SLOT(slotShowOptionalTrayMessage(QString,QString)));
-    connect( Logger::instance(), SIGNAL(guiMessage(QString,QString)),
-             _gui, SLOT(slotShowGuiMessage(QString,QString)));
 
     FolderMan::instance()->setSyncEnabled(false);
 

@@ -56,6 +56,7 @@ public:
   void setLogExpire( int expire );
   void setLogDir( const QString& dir );
   void setLogFlush( bool flush );
+
 signals:
   void newLog(const QString&);
   void guiLog(const QString&, const QString&);

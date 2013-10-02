@@ -64,7 +64,7 @@ void Logger::postOptionalGuiLog(const QString &title, const QString &message)
 
 void Logger::postGuiMessage(const QString &title, const QString &message)
 {
-    // emit postGuiMessage(title, message);
+    emit guiMessage(title, message);
 }
 
 void Logger::log(Log log)
@@ -115,6 +115,10 @@ void Logger::setLogFile(const QString & name)
 {
     if( _logstream ) {
         _logFile.close();
+    }
+
+    if( name.isEmpty() ) {
+        return;
     }
 
     bool openSucceeded = false;
