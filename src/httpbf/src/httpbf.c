@@ -124,6 +124,7 @@ Hbf_State hbf_splitlist(hbf_transfer_t *transfer, int fd ) {
   transfer->fd        = fd;
   transfer->stat_size = sb.st_size;
   transfer->modtime   = sb.st_mtime;
+  transfer->previous_etag = NULL;
 #ifndef NDEBUG
   transfer->calc_size = 0;
 #endif
@@ -480,6 +481,10 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
                 if( transfer->modtime > 0 ) {
                     snprintf(buf, sizeof(buf), "%"PRId64, transfer->modtime);
                     ne_add_request_header(req, "X-OC-Mtime", buf);
+                }
+
+                if( transfer->previous_etag ) {
+                  ne_add_request_header(req, "If-Match", transfer->previous_etag);
                 }
 
                 if( transfer->block_cnt > 1 ) {

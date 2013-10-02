@@ -98,6 +98,7 @@ struct hbf_transfer_s {
     hbf_abort_callback abort_cb;
     hbf_log_callback log_cb;
     int modtime_accepted;
+    const char *previous_etag; /* etag send as the If-Match http header */
 
 #ifndef NDEBUG
     int64_t calc_size;
