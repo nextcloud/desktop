@@ -242,7 +242,7 @@ void ItemProgressDialog::accept()
     QDialog::accept();
 }
 
-void ItemProgressDialog::cleanErrors( const QString& /* folder */ ) // FIXME: Use the folder to detect which errors can be deleted.
+void ItemProgressDialog::cleanErrors( const QString& folder ) // FIXME: Use the folder to detect which errors can be deleted.
 {
     _problemCounter = 0;
     QList<QTreeWidgetItem*> wipeList;
@@ -252,7 +252,8 @@ void ItemProgressDialog::cleanErrors( const QString& /* folder */ ) // FIXME: Us
     for( int cnt = 0; cnt < itemCnt; cnt++ ) {
         QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(cnt);
         bool isErrorItem = item->data(0, ErrorIndicatorRole).toBool();
-        if( isErrorItem ) {
+        QString itemFolder = item->data(2, Qt::DisplayRole).toString();
+        if( isErrorItem && itemFolder == folder ) {
             wipeList.append(item);
         }
     }
