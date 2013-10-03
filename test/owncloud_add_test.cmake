@@ -8,7 +8,7 @@ macro(owncloud_add_test test_class)
     qt_wrap_cpp(${OWNCLOUD_TEST_CLASS}_MOCS test${OWNCLOUD_TEST_CLASS_LOWERCASE}.h)
 
     add_executable(${OWNCLOUD_TEST_CLASS}Test test${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp ${${OWNCLOUD_TEST_CLASS}_MOCS})
-    qt5_use_modules(${OWNCLOUD_TEST_CLASS}Test Test)
+    qt5_use_modules(${OWNCLOUD_TEST_CLASS}Test Test Sql)
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
         ${APPLICATION_EXECUTABLE}sync
