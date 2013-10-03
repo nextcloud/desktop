@@ -176,15 +176,16 @@ void ItemProgressDialog::setupList()
   bool haveSyncResult = false;
 
   foreach( Folder *f, map.values() ) {
-    if( f->syncResult().syncTime() > dt ) {
-        dt = f->syncResult().syncTime();
-        lastResult = f->syncResult();
-        haveSyncResult = true;
-    }
-  }
+      if( f->syncResult().syncTime() > dt ) {
+          dt = f->syncResult().syncTime();
+          lastResult = f->syncResult();
+          haveSyncResult = true;
+      }
 
-  if( haveSyncResult ) {
-      setSyncResult(lastResult);
+
+      if( haveSyncResult ) {
+          setSyncResult(lastResult);
+      }
   }
 
   QList<Progress::Info> progressList = ProgressDispatcher::instance()->recentChangedItems(0); // All.
