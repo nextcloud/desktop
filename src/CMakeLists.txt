@@ -52,6 +52,8 @@ set(libsync_SRCS
     mirall/csyncthread.cpp
     mirall/owncloudpropagator.cpp
     mirall/progressdatabase.cpp
+    mirall/syncjournalfilerecord.cpp
+    mirall/syncjournaldb.cpp
     mirall/fileutils.cpp
     mirall/theme.cpp
     mirall/owncloudtheme.cpp
@@ -81,6 +83,7 @@ set(libsync_HEADERS
     mirall/folderwatcher.h
     mirall/csyncthread.h
     mirall/owncloudpropagator.h
+    mirall/syncjournaldb.h
     mirall/theme.h
     mirall/owncloudtheme.h
     mirall/owncloudinfo.h
