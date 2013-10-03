@@ -595,6 +595,9 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool enabled ) const
     case SyncResult::SetupError:
         folderMessage = tr( "Setup Error." );
         break;
+    case SyncResult::SyncAbortRequested:
+        folderMessage = tr( "User Abort." );
+        break;
     // no default case on purpose, check compiler warnings
     }
     if( !enabled ) {
