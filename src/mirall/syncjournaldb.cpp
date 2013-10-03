@@ -17,7 +17,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
-#include <std/c_jhash.h>
+#include <c_jhash.h>
 #include <inttypes.h>
 
 #include "syncjournaldb.h"
