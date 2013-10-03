@@ -557,7 +557,8 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
             if ( overallResult.status() != SyncResult::Error )
                 overallResult.setStatus( SyncResult::SetupError );
             break;
-
+        case SyncResult::SyncAbortRequested:
+            break;
             // no default case on purpose, check compiler warnings
         }
     }
