@@ -28,6 +28,8 @@ public:
 
     SyncJournalFileRecord getFileRecord( const QString& filename );
 
+    bool setFileRecord( const SyncJournalFileRecord& record );
+
     QSqlDatabase *getDB(){ return &_db; }
     bool checkConnect();
     QString getPHash(const QString& ) const;

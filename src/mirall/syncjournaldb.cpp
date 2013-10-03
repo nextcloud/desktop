@@ -77,11 +77,73 @@ QString SyncJournalDb::getPHash(const QString& file) const
     QByteArray utf8File = file.toUtf8();
     uint64_t h;
 
+    if( file.isEmpty() ) {
+        return QString();
+    }
+
     int len = utf8File.length();
 
     h = c_jhash64((uint8_t *) utf8File.data(), len, 0);
 
     return QString::number(h);
+}
+
+bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
+{
+    QString phash = getPHash(record._path);
+
+    if( phash.isEmpty() ) {
+        return false;
+    }
+
+    if( checkConnect() ) {
+
+        QSqlQuery query( "SELECT phash FROM metadata WHERE phash=:phash" );
+        query.bindValue( ":phash", phash );
+
+        bool haveEntry = false;
+        if( query.next() ) {
+            haveEntry = true;
+        }
+
+        QString sql;
+
+        if( haveEntry ) {
+            sql = "UPDATE metadata ";
+            sql += "(pathlen, path, inode, uid, gid, mode, modtime, type, md5) "
+                    "VALUES (:plen, :path, :inode, :uid, :gid, :mode, :modtime, :type: :etag) "
+                    "WHERE phash=:phash";
+        } else {
+            sql = "INSERT INTO metadata ";
+            sql += "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) "
+                    "VALUES (:phash, :plen, :path, :inode, :uid, :gid, :mode, :modtime, :type: :etag)";
+        }
+
+        QSqlQuery writeQuery(sql);
+
+        QByteArray arr = record._path.toUtf8();
+        int plen = arr.length();
+
+        writeQuery.bindValue(":phash",   phash);
+        writeQuery.bindValue(":plen",    plen);
+        writeQuery.bindValue(":path",    record._path );
+        writeQuery.bindValue(":inode",   record._inode );
+        writeQuery.bindValue(":uid",     record._uid );
+        writeQuery.bindValue(":gid",     record._gid );
+        writeQuery.bindValue(":mode",    record._mode );
+        writeQuery.bindValue(":modtime", record._modtime.toTime_t());
+        writeQuery.bindValue(":type",    record._type );
+        writeQuery.bindValue(":etag",    record._etag );
+
+        if( !writeQuery.exec() ) {
+            qDebug() << "Exec error of SQL statement: " << writeQuery.lastError().text();
+            return false;
+        }
+        return true;
+    } else {
+        qDebug() << "Failed to connect database.";
+        return false; // checkConnect failed.
+    }
 }
 
 SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
@@ -94,6 +156,10 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
     CREATE INDEX metadata_inode ON metadata(inode);
     CREATE INDEX metadata_phash ON metadata(phash);
     */
+    if( phash.isEmpty() ) {
+        qDebug() << filename << "is invalid.";
+        return rec;
+    }
 
     if( checkConnect() ) {
         QSqlQuery query("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM metadata WHERE phash=:phash");
