@@ -442,7 +442,9 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
 {
     QString tmpFileName;
     const ProgressDatabase::DownloadInfo* progressInfo = _progressDb->getDownloadInfo(item._file);
+
     if (progressInfo) {
+        // if the etag has changed meanwhile, remove the already downloaded part.
         if (progressInfo->etag != item._etag) {
             QFile::remove(_localDir + progressInfo->tmpfile);
         } else {
@@ -450,6 +452,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
         }
         _progressDb->remove(item._file);
     }
+
     if (tmpFileName.isEmpty()) {
         tmpFileName = item._file;
         //add a dot at the begining of the filename to hide the file.
