@@ -283,10 +283,8 @@ static QString findDefaultFileManager()
     foreach(QString dir, dirs) {
         foreach(QString subdir, subdirs) {
             fi.setFile(dir + subdir + fileName);
-            if(fi.exists()) {
-                QSettings desktopFile(fi.absoluteFilePath(), QSettings::IniFormat);
-                QString exec = desktopFile.value("Desktop Entry/Exec").toString();
-                return exec;
+            if (fi.exists()) {
+                return fi.absoluteFilePath();
             }
         }
     }
@@ -326,12 +324,15 @@ void Utility::showInFileManager(const QString &localPath)
         QString app;
         QStringList args;
 
-        QString defaultManager = findDefaultFileManager();
+        static QString defaultManager = findDefaultFileManager();
+        QSettings desktopFile(defaultManager, QSettings::IniFormat);
+        QString exec = desktopFile.value("Desktop Entry/Exec").toString();
+
         QString fileToOpen = QFileInfo(localPath).absoluteFilePath();
         QString pathToOpen = QFileInfo(localPath).absolutePath();
-        bool cannotHandleFile = false;
+        bool canHandleFile = false; // assume dumb fm
 
-        args = defaultManager.split(' ');
+        args = exec.split(' ');
         if (args.count() > 0) app = args.takeFirst();
 
         QString kdeSelectParam("--select");
@@ -339,6 +340,7 @@ void Utility::showInFileManager(const QString &localPath)
         if (app.contains("konqueror") && !args.contains(kdeSelectParam)) {
             // konq needs '--select' in order not to launch the file
             args.prepend(kdeSelectParam);
+            canHandleFile = true;
         }
 
         if (app.contains("dolphin"))
@@ -346,24 +348,40 @@ void Utility::showInFileManager(const QString &localPath)
             static bool dolphinCanSelect = checkDolphinCanSelect();
             if (dolphinCanSelect && !args.contains(kdeSelectParam)) {
                 args.prepend(kdeSelectParam);
-            } else {
-                // When passing a file without '--select', dolphin will
-                // open the file. We don't want that.
-                cannotHandleFile = true;
+                canHandleFile = true;
             }
         }
 
-        if (cannotHandleFile) {
-            std::replace(args.begin(), args.end(), QString::fromLatin1("%u"), pathToOpen);
-            std::replace(args.begin(), args.end(), QString::fromLatin1("%U"), pathToOpen);
-            if (args.count() == 0) args << pathToOpen;
-        } else {
-            std::replace(args.begin(), args.end(), QString::fromLatin1("%u"), fileToOpen);
-            std::replace(args.begin(), args.end(), QString::fromLatin1("%U"), fileToOpen);
-            if (args.count() == 0) args << fileToOpen;
+        // whitelist
+        if (app.contains("nautilus") || app.contains("nemo")) {
+            canHandleFile = true;
         }
 
-        if (app.isEmpty() || args.isEmpty()) {
+        static QString name;
+        if (name.isEmpty()) {
+            name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name[%1]").arg(qApp->property("ui_lang").toString())).toString();
+            if (name.isEmpty()) {
+                name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name")).toString();
+            }
+        }
+
+        std::replace(args.begin(), args.end(), QString::fromLatin1("%c"), name);
+        std::replace(args.begin(), args.end(), QString::fromLatin1("%u"), fileToOpen);
+        std::replace(args.begin(), args.end(), QString::fromLatin1("%U"), fileToOpen);
+        std::replace(args.begin(), args.end(), QString::fromLatin1("%f"), fileToOpen);
+        std::replace(args.begin(), args.end(), QString::fromLatin1("%F"), fileToOpen);
+
+        // fixme: needs to append --icon, according to http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#exec-variables
+        QStringList::iterator it = std::find(args.begin(), args.end(), QString::fromLatin1("%i"));
+        if (it != args.end()) {
+            (*it) = desktopFile.value("Desktop Entry/Icon").toString();
+            args.insert(it, QString::fromLatin1("--icon")); // before
+        }
+
+
+        if (args.count() == 0) args << fileToOpen;
+
+        if (app.isEmpty() || args.isEmpty() || !canHandleFile) {
             // fall back: open the default file manager, without ever selecting the file
             QDesktopServices::openUrl(QUrl::fromLocalFile(pathToOpen));
         } else {
