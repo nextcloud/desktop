@@ -375,7 +375,7 @@ endif()
 
 set(OWNCLOUDCMD_SRC owncloudcmd/owncloudcmd.cpp)
 add_executable(owncloudcmd ${OWNCLOUDCMD_SRC})
-qt5_use_modules(owncloudcmd Network)
+qt5_use_modules(owncloudcmd Network Sql)
 set_target_properties( owncloudcmd PROPERTIES
 	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
 target_link_libraries(owncloudcmd owncloudsync)
