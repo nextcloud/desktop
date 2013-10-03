@@ -72,34 +72,31 @@ bool SyncJournalDb::checkConnect()
     return true;
 }
 
-QString SyncJournalDb::getPHash(const QString& file) const
+int64_t SyncJournalDb::getPHash(const QString& file) const
 {
     QByteArray utf8File = file.toUtf8();
-    uint64_t h;
+    int64_t h;
 
     if( file.isEmpty() ) {
-        return QString();
+        return -1;
     }
 
     int len = utf8File.length();
 
     h = c_jhash64((uint8_t *) utf8File.data(), len, 0);
 
-    return QString::number(h);
+    return h;
 }
 
 bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
 {
-    QString phash = getPHash(record._path);
-
-    if( phash.isEmpty() ) {
-        return false;
-    }
+    int64_t phash = getPHash(record._path);
 
     if( checkConnect() ) {
 
         QSqlQuery query( "SELECT phash FROM metadata WHERE phash=:phash" );
-        query.bindValue( ":phash", phash );
+
+        query.bindValue( ":phash", QVariant::fromValue(phash) );
 
         bool haveEntry = false;
         if( query.next() ) {
@@ -124,7 +121,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
         QByteArray arr = record._path.toUtf8();
         int plen = arr.length();
 
-        writeQuery.bindValue(":phash",   phash);
+        writeQuery.bindValue(":phash",   QVariant::fromValue(phash));
         writeQuery.bindValue(":plen",    plen);
         writeQuery.bindValue(":path",    record._path );
         writeQuery.bindValue(":inode",   record._inode );
@@ -148,7 +145,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
 
 SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
 {
-    const QString phash = getPHash( filename );
+    int64_t phash = getPHash( filename );
     SyncJournalFileRecord rec;
 
     /*
@@ -156,18 +153,17 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
     CREATE INDEX metadata_inode ON metadata(inode);
     CREATE INDEX metadata_phash ON metadata(phash);
     */
-    if( phash.isEmpty() ) {
-        qDebug() << filename << "is invalid.";
-        return rec;
-    }
 
     if( checkConnect() ) {
-        QSqlQuery query("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM metadata WHERE phash=:phash");
-        query.bindValue(":phash", phash);
+        QString sql = QString("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM "
+                "metadata WHERE phash=").arg(QString::number(phash));
+        QSqlQuery query(sql);
+        // query.bindValue(":ph", QString::number(phash), QSql::In);
 
-        bool ok;
+        query.exec();
 
         if( query.next() ) {
+            bool ok;
             rec._path    = query.value(0).toString();
             rec._inode   = query.value(1).toInt(&ok);
             rec._uid     = query.value(2).toInt(&ok);
@@ -177,6 +173,9 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._modtime = QDateTime::fromTime_t( mtime );
             rec._type    = query.value(6).toInt(&ok);
             rec._etag    = query.value(7).toString();
+        } else {
+            QString err = query.lastError().text();
+            qDebug() << "Can not query, Error: " << err;
         }
     }
     return rec;
