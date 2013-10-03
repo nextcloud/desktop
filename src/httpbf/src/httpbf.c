@@ -450,6 +450,7 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
             int do_abort = (transfer->abort_cb)();
             if( do_abort ) {
               state = HBF_USER_ABORTED;
+              transfer->start_id = block_id  % transfer->block_cnt;
             }
         }
 

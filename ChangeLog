@@ -1,6 +1,7 @@
 ChangeLog
 ==========
 version 0.90.1  (released 2013-09-24, ownCloud Client 1.4.1)
+  * no more check on the local inode in updater for win32 (bug #779)
   * detect if server does not send an etag after an upload 
     completed.
   * fix crash in case of network timeout, reported as

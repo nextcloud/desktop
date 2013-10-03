@@ -204,18 +204,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
    */
   if (csync_get_statedb_exists(ctx)) {
     tmp = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
-#if 0
-    /* this code could possibly replace the one in csync_vio.c stat and would be more efficient */
-    if(tmp) {
-        if( ctx->current == LOCAL_REPLICA ) {
-            if(fs->mtime == tmp->modtime && fs->size == tmp->size) {
-                /* filesystem modtime is still the same as the db mtime
-                 * thus the md5 sum is still valid. */
-                fs->md5 = c_strdup( tmp->md5 );
-            }
-        }
-    }
-#endif
+
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64 ", md5: %s <-> %s, inode: %" PRId64 " <-> %" PRId64,
@@ -225,8 +214,22 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             goto out;
         }
         if((ctx->current == REMOTE_REPLICA && !c_streq(fs->md5, tmp->md5 ))
-            || (ctx->current == LOCAL_REPLICA && (fs->mtime != tmp->modtime || fs->inode != tmp->inode))) {
-            // if (!fs->mtime > tmp->modtime) {
+            || (ctx->current == LOCAL_REPLICA && (fs->mtime != tmp->modtime
+#ifndef _WIN32
+                                                  || fs->inode != tmp->inode
+#endif
+                                                  ))) {
+            /* Comparison of the local inode is disabled because people reported problems
+             * on windows with flacky inode values, see github bug #779
+             *
+             * The inode needs to be observed because:
+             * $>  echo a > a.txt ; echo b > b.txt
+             * both files have the same mtime
+             * sync them.
+             * $> rm a.txt && mv b.txt a.txt
+             * makes b.txt appearing as a.txt yet a sync is not performed because
+             * both have the same modtime as mv does not change that.
+             */
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
