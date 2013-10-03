@@ -48,8 +48,6 @@ bool SyncJournalDb::checkConnect()
         return false;
     }
 
-    _db.setDatabaseName(_dbFile);
-
     QStringList list = QSqlDatabase::drivers();
     if( list.size() == 0 ) {
         qDebug() << "Database Drivers could not be loaded.";
@@ -62,11 +60,14 @@ bool SyncJournalDb::checkConnect()
     }
 
     _db = QSqlDatabase::addDatabase( QSQLITE );
+    _db.setDatabaseName(_dbFile);
 
-    if( _db.isOpenError() ) {
-        QSqlError error = _db.lastError();
-        qDebug() << "Error opening the db: " << error.text();
-        return false;
+    if (!_db.isOpen()) {
+        if( !_db.open() ) {
+            QSqlError error = _db.lastError();
+            qDebug() << "Error opening the db: " << error.text();
+            return false;
+        }
     }
 
     return true;
@@ -84,7 +85,6 @@ int64_t SyncJournalDb::getPHash(const QString& file) const
     int len = utf8File.length();
 
     h = c_jhash64((uint8_t *) utf8File.data(), len, 0);
-
     return h;
 }
 
@@ -145,7 +145,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
 
 SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
 {
-    int64_t phash = getPHash( filename );
+    qlonglong phash = getPHash( filename );
     SyncJournalFileRecord rec;
 
     /*
@@ -155,12 +155,15 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
     */
 
     if( checkConnect() ) {
-        QString sql = QString("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM "
-                "metadata WHERE phash=").arg(QString::number(phash));
-        QSqlQuery query(sql);
-        // query.bindValue(":ph", QString::number(phash), QSql::In);
+        QSqlQuery query("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM "
+                        "metadata WHERE phash=:ph");
+        query.bindValue(":ph", QString::number(phash));
 
-        query.exec();
+        if (!query.exec()) {
+            QString err = query.lastError().text();
+            qDebug() << "Error creating prepared statement: " << err;
+            return rec;
+        }
 
         if( query.next() ) {
             bool ok;
