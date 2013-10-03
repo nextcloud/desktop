@@ -27,7 +27,18 @@
 #include "mirall/syncjournalfilerecord.h"
 
 extern "C" {
-#include "csync_exclude.h"
+
+enum csync_exclude_type_e {
+  CSYNC_NOT_EXCLUDED   = 0,
+  CSYNC_FILE_SILENTLY_EXCLUDED,
+  CSYNC_FILE_EXCLUDE_AND_REMOVE,
+  CSYNC_FILE_EXCLUDE_LIST,
+  CSYNC_FILE_EXCLUDE_INVALID_CHAR
+};
+typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
+
+CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
+
 }
 
 #include <QDebug>
