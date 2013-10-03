@@ -24,6 +24,11 @@
 #include "mirall/utility.h"
 #include "folderman.h"
 #include "creds/abstractcredentials.h"
+#include "mirall/syncjournalfilerecord.h"
+
+extern "C" {
+#include "csync_exclude.h"
+}
 
 #include <QDebug>
 #include <QTimer>
@@ -45,6 +50,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _csync(0)
       , _csyncError(false)
       , _csyncUnavail(false)
+      , _journal(path)
       , _csync_ctx(0)
 {
     qsrand(QTime::currentTime().msec());
@@ -679,6 +685,62 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *
     }
 }
 
+SyncFileStatus Folder::fileStatus( const QString& fileName )
+{
+    /*
+    STATUS_NONE,
+    + STATUS_EVAL,
+    STATUS_REMOVE, (invalid for this case because it asks for local files)
+    STATUS_RENAME,
+    + STATUS_NEW,
+    STATUS_CONFLICT,(probably also invalid as we know the conflict only with server involvement)
+    + STATUS_IGNORE,
+    + STATUS_SYNC,
+    + STATUS_STAT_ERROR,
+    STATUS_ERROR,
+    STATUS_UPDATED
+    */
+
+    // FIXME: Find a way for STATUS_ERROR
+    SyncFileStatus stat = STATUS_NONE;
+
+    QString file = path() + fileName;
+    QFileInfo fi(file);
+
+    if( !fi.exists() ) {
+        stat = STATUS_STAT_ERROR; // not really possible.
+    }
+
+    SyncJournalFileRecord rec = _journal.getFileRecord(fileName);
+    if( stat == STATUS_NONE && !rec.isValid() ) {
+        stat = STATUS_NEW;
+    }
+
+    // file was locally modified.
+    if( stat == STATUS_NONE && fi.lastModified() != rec._modtime ) {
+        stat = STATUS_EVAL;
+    }
+
+    // file is ignored?
+    if( fi.isSymLink() ) {
+        stat = STATUS_IGNORE;
+    }
+    int type = CSYNC_FTW_TYPE_FILE;
+    if( fi.isDir() ) {
+        type = CSYNC_FTW_TYPE_DIR;
+    }
+    CSYNC_EXCLUDE_TYPE excl = csync_excluded(_csync_ctx, file.toUtf8(), type);
+
+    if( excl != CSYNC_NOT_EXCLUDED ) {
+        stat = STATUS_IGNORE;
+    }
+
+    if( stat == STATUS_NONE ) {
+        stat = STATUS_SYNC;
+    }
+
+    return stat;
+}
 
 } // namespace Mirall
 

@@ -20,6 +20,7 @@
 #include "mirall/syncresult.h"
 #include "mirall/progressdispatcher.h"
 #include "mirall/csyncthread.h"
+#include "mirall/syncjournaldb.h"
 
 #include <QDir>
 #include <QHash>
@@ -206,6 +207,8 @@ protected:
     QTimer        _pollTimer;
     QString       _lastEtag;
     QElapsedTimer _timeSinceLastSync;
+
+    SyncJournalDb _journal;
 
     CSYNC *_csync_ctx;
 
