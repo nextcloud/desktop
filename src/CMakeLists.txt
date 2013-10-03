@@ -40,6 +40,7 @@ set(3rdparty_INC
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qtsingleapplication
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/QProgressIndicator
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/fancylineedit
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/csync
     )
 
 set(libsync_SRCS
