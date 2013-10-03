@@ -702,41 +702,44 @@ SyncFileStatus Folder::fileStatus( const QString& fileName )
     */
 
     // FIXME: Find a way for STATUS_ERROR
-    SyncFileStatus stat = STATUS_NONE;
+    SyncFileStatus stat = FILE_STATUS_NONE;
 
     QString file = path() + fileName;
     QFileInfo fi(file);
 
     if( !fi.exists() ) {
-        stat = STATUS_STAT_ERROR; // not really possible.
-    }
-
-    SyncJournalFileRecord rec = _journal.getFileRecord(fileName);
-    if( stat == STATUS_NONE && !rec.isValid() ) {
-        stat = STATUS_NEW;
-    }
-
-    // file was locally modified.
-    if( stat == STATUS_NONE && fi.lastModified() != rec._modtime ) {
-        stat = STATUS_EVAL;
+        stat = FILE_STATUS_STAT_ERROR; // not really possible.
     }
 
     // file is ignored?
     if( fi.isSymLink() ) {
-        stat = STATUS_IGNORE;
+        stat = FILE_STATUS_IGNORE;
     }
     int type = CSYNC_FTW_TYPE_FILE;
     if( fi.isDir() ) {
         type = CSYNC_FTW_TYPE_DIR;
     }
-    CSYNC_EXCLUDE_TYPE excl = csync_excluded(_csync_ctx, file.toUtf8(), type);
 
-    if( excl != CSYNC_NOT_EXCLUDED ) {
-        stat = STATUS_IGNORE;
+    if( stat == FILE_STATUS_NONE ) {
+        CSYNC_EXCLUDE_TYPE excl = csync_excluded(_csync_ctx, file.toUtf8(), type);
+
+        if( excl != CSYNC_NOT_EXCLUDED ) {
+            stat = FILE_STATUS_IGNORE;
+        }
     }
 
-    if( stat == STATUS_NONE ) {
-        stat = STATUS_SYNC;
+    SyncJournalFileRecord rec = _journal.getFileRecord(fileName);
+    if( stat == FILE_STATUS_NONE && !rec.isValid() ) {
+        stat = FILE_STATUS_NEW;
+    }
+
+    // file was locally modified.
+    if( stat == FILE_STATUS_NONE && fi.lastModified() != rec._modtime ) {
+        stat = FILE_STATUS_EVAL;
+    }
+
+    if( stat == FILE_STATUS_NONE ) {
+        stat = FILE_STATUS_SYNC;
     }
 
     return stat;
