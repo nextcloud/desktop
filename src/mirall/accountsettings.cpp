@@ -235,7 +235,8 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     if( errorList.isEmpty() ) {
         if( (status == SyncResult::Error ||
              status == SyncResult::SetupError ||
-             status == SyncResult::Unavailable )) {
+             status == SyncResult::SyncAbortRequested ||
+             status == SyncResult::Unavailable)) {
             errorList <<  theme->statusHeaderText(status);
         }
     }
@@ -306,7 +307,7 @@ void AccountSettings::slotResetCurrentFolder()
         if( ret == QMessageBox::Yes ) {
             FolderMan *folderMan = FolderMan::instance();
             Folder *f = folderMan->folder(alias);
-            f->slotTerminateSync();
+            f->slotTerminateSync(true);
             f->wipe();
             folderMan->slotScheduleAllFolders();
         }
@@ -430,8 +431,9 @@ void AccountSettings::slotEnableCurrentFolder()
 
             // message box can return at any time while the thread keeps running,
             // so better check again after the user has responded.
-            if ( f->isBusy() && terminate )
-                folderMan->terminateSyncProcess( alias );
+            if ( f->isBusy() && terminate ) {
+                f->slotTerminateSync(false);
+            }
 
             folderMan->slotEnableFolder( alias, !folderEnabled );
             slotUpdateFolderState (f);

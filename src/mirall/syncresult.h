@@ -33,6 +33,7 @@ public:
       NotYetStarted,
       SyncPrepare,
       SyncRunning,
+      SyncAbortRequested,
       Success,
       Problem,
       Error,

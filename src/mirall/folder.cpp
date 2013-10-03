@@ -113,7 +113,6 @@ Folder::~Folder()
 {
     if( _thread ) {
         _csync->abort();
-        _thread->quit();
         _thread->wait();
     }
     delete _csync;
@@ -400,35 +399,25 @@ void Folder::slotCatchWatcherError(const QString& error)
     Logger::instance()->postGuiLog(tr("Error"), error);
 }
 
-void Folder::slotTerminateSync()
+void Folder::slotTerminateSync(bool block)
 {
     qDebug() << "folder " << alias() << " Terminating!";
-    MirallConfigFile cfg;
-    QString configDir = cfg.configPath();
-    qDebug() << "csync's Config Dir: " << configDir;
 
     if( _thread && _csync ) {
         _csync->abort();
+        _errors.append( tr("The CSync thread terminated.") );
+        _csyncError = true;
+        if (!block) {
+            setSyncState(SyncResult::SyncAbortRequested);
+            return;
+        }
+
         _thread->wait();
         _csync->deleteLater();
         delete _thread;
-        _csync = 0;
-        _thread = 0;
-        csync_resume(_csync_ctx);
+        slotCSyncFinished();
     }
 
-    if( ! configDir.isEmpty() ) {
-        QFile file( configDir + QLatin1String("/lock"));
-        if( file.exists() ) {
-            qDebug() << "After termination, lock file exists and gets removed.";
-            file.remove();
-        }
-    }
-
-    _errors.append( tr("The CSync thread terminated.") );
-    _csyncError = true;
-    qDebug() << "-> CSync Terminated!";
-    slotCSyncFinished();
 }
 
 // This removes the csync File database if the sync folder definition is removed

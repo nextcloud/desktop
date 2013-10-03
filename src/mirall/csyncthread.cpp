@@ -341,11 +341,15 @@ void CSyncThread::startSync()
     }
     qDebug() << Q_FUNC_INFO << "Sync started";
 
+
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
     _syncedItems.clear();
 
     _mutex.lock();
     _needsUpdate = false;
+    if (!_abortRequested.fetchAndAddRelease(0)) {
+        csync_resume(_csync_ctx);
+    }
     _mutex.unlock();
 
 
@@ -635,6 +639,7 @@ QString CSyncThread::adjustRenamedPath(const QString& original)
 
 void CSyncThread::abort()
 {
+    QMutexLocker locker(&_mutex);
     csync_request_abort(_csync_ctx);
     _abortRequested = true;
 }
