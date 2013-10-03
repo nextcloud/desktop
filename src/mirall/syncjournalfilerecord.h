@@ -19,10 +19,13 @@
 
 namespace Mirall {
 
+class SyncFileItem;
+
 class SyncJournalFileRecord
 {
 public:
     SyncJournalFileRecord();
+    SyncJournalFileRecord(const SyncFileItem&, const QString &localFileName);
 
     bool isValid() {
         return !_path.isEmpty();

@@ -174,7 +174,7 @@ csync_instructions_e OwncloudPropagator::localRemove(const SyncFileItem& item)
             return CSYNC_INSTRUCTION_DELETED;
         _errorString = file.errorString();
     }
-    return CSYNC_INSTRUCTION_NONE; // not ERROR so it is still written to the database
+    return CSYNC_INSTRUCTION_ERROR;
 }
 
 csync_instructions_e OwncloudPropagator::localMkdir(const SyncFileItem &item)
@@ -618,8 +618,7 @@ csync_instructions_e OwncloudPropagator::remoteRename(const SyncFileItem &item)
 
     int rc = ne_move(_session, 1, uri1.data(), uri2.data());
     if (updateErrorFromSession(rc)) {
-        // We set the instruction to UPDATED so next try we try to rename again
-        return CSYNC_INSTRUCTION_UPDATED;
+        return CSYNC_INSTRUCTION_ERROR;
     }
 
     updateMTimeAndETag(uri2.data(), item._modtime);

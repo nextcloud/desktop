@@ -565,7 +565,7 @@ void Folder::startSync(const QStringList &pathList)
     qDebug() << "*** Start syncing";
     _thread = new QThread(this);
     setIgnoredFiles();
-    _csync = new CSyncThread( _csync_ctx, path(), QUrl(ownCloudInfo::instance()->webdavUrl() + secondPath()).path());
+    _csync = new CSyncThread( _csync_ctx, path(), QUrl(ownCloudInfo::instance()->webdavUrl() + secondPath()).path(), &_journal);
     _csync->moveToThread(_thread);
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");

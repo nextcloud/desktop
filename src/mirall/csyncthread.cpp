@@ -20,6 +20,8 @@
 #include "mirall/owncloudinfo.h"
 #include "owncloudpropagator.h"
 #include "progressdatabase.h"
+#include "syncjournaldb.h"
+#include "syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
 
 #ifdef Q_OS_WIN
@@ -56,12 +58,13 @@ void csyncLogCatcher(int /*verbosity*/,
 QMutex CSyncThread::_mutex;
 QMutex CSyncThread::_syncMutex;
 
-CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &remotePath)
+CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &remotePath, SyncJournalDb *journal)
 {
     _mutex.lock();
     _localPath = localPath;
     _remotePath = remotePath;
     _csync_ctx = csync;
+    _journal = journal;
     _mutex.unlock();
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<CSYNC_STATUS>("CSYNC_STATUS");
@@ -239,8 +242,13 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
-        // No need to do anything.
-        return re;
+        if (item._isDirectory && remote) {
+            // Because we want still to update etags of directories
+            dir = SyncFileItem::None;
+        } else {
+            // No need to do anything.
+            return re;
+        }
         break;
     case CSYNC_INSTRUCTION_RENAME:
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
@@ -285,30 +293,6 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     _syncedItems.append(item);
 
     return re;
-}
-
-int CSyncThread::treewalkFinalize(TREE_WALK_FILE* file)
-{
-    if (file->instruction == CSYNC_INSTRUCTION_IGNORE)
-        return 0;
-
-    // Update the instruction and etag in the csync rb_tree so it is saved on the database
-    QHash<QByteArray, Action>::const_iterator action = _performedActions.constFind(file->path);
-    if (action != _performedActions.constEnd()) {
-        if (file->instruction != CSYNC_INSTRUCTION_NONE) {
-            // it is NONE if we are in the wrong tree (remote vs. local)
-
-            qDebug() << "UPDATING " << file->path << action->instruction;
-
-            file->instruction = action->instruction;
-        }
-
-        if (!action->etag.isNull()) {
-            // Update the etag even for INSTRUCTION_NONE (eg. renames)
-            file->md5 = action->etag.constData();
-        }
-    }
-    return 0;
 }
 
 void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
@@ -493,20 +477,30 @@ void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_STATUS error
         }
     }
 
-    a.etag = item._etag;
-    _performedActions.insert(item._originalFile, a);
 
-    if (item._instruction == CSYNC_INSTRUCTION_RENAME) {
-        if (a.instruction == CSYNC_INSTRUCTION_DELETED) {
-            // we should update the etag on the destination as well
-            a.instruction = CSYNC_INSTRUCTION_NONE;
-        } else { // ERROR
-            a.instruction = CSYNC_INSTRUCTION_ERROR;
+    if (item._instruction == CSYNC_INSTRUCTION_DELETED) {
+        _journal->deleteFileRecord(item._file);
+        if (!item._renameTarget.isEmpty()) {
+            SyncJournalFileRecord record(item, _localPath + item._file);
+            record._path = item._renameTarget;
+            _journal->setFileRecord(record);
         }
-        _performedActions.insert(item._renameTarget.toUtf8(), a);
+    } else if(item._instruction == CSYNC_INSTRUCTION_UPDATED) {
+        if (!item._isDirectory) {
+            SyncJournalFileRecord record(item, _localPath + item._file);
+            _journal->setFileRecord(record);
+        } else {
+            // directory must not be saved to the db before we finished processing them.
+            SyncJournalFileRecord record(item, _localPath + item._file);
+            _directoriesToUpdate.push(item);
+        }
+    } else if(item._instruction == CSYNC_INSTRUCTION_UPDATED) {
+        // Don't update parents directories
+        _directoriesToUpdate.clear();
     }
 
-    if (!item._isDirectory && a.instruction == CSYNC_INSTRUCTION_UPDATED) {
+
+    if (!item._isDirectory && item._instruction == CSYNC_INSTRUCTION_UPDATED) {
         slotProgress((item._dir != SyncFileItem::Up) ? Progress::EndDownload : Progress::EndUpload,
                      item._file, item._size, item._size);
         _progressInfo.current_file_no++;
@@ -521,16 +515,18 @@ void CSyncThread::startNextTransfer()
     while (_iterator < _syncedItems.size() && !_propagator->_hasFatalError) {
         const SyncFileItem &item = _syncedItems.at(_iterator);
         ++_iterator;
+
+        while (!_directoriesToUpdate.isEmpty() && !item._file.startsWith(_directoriesToUpdate.last()._file)) {
+            _journal->setFileRecord(_directoriesToUpdate.pop());
+        }
+
         if (!_lastDeleted.isEmpty() && item._file.startsWith(_lastDeleted)
                 && item._instruction == CSYNC_INSTRUCTION_REMOVE) {
             // If the item's name starts with the name of the previously deleted directory, we
             // can assume this file was already destroyed by the previous recursive call.
-            Action a;
-            a.instruction = CSYNC_INSTRUCTION_DELETED;
-            _performedActions.insert(item._originalFile, a);
+            _journal->deleteFileRecord(item._file);
             continue;
         }
-        _propagator->_etag.clear(); // FIXME : set to the right one
 
         if (item._instruction == CSYNC_INSTRUCTION_SYNC || item._instruction == CSYNC_INSTRUCTION_NEW
                 || item._instruction == CSYNC_INSTRUCTION_CONFLICT) {
@@ -542,16 +538,15 @@ void CSyncThread::startNextTransfer()
         return; //propagate is async.
     }
 
+    while (!_directoriesToUpdate.isEmpty()) {
+        _journal->setFileRecord(_directoriesToUpdate.pop());
+    }
+
     // Everything is finished.
     _progressDataBase.save(_localPath);
 
-    if( csync_walk_local_tree(_csync_ctx, &walkFinalize, 0) < 0 ||
-        csync_walk_remote_tree( _csync_ctx, &walkFinalize, 0 ) < 0 ) {
-        qDebug() << "Error in finalize treewalk.";
-    } else {
     // emit the treewalk results.
-        emit treeWalkResult(_syncedItems);
-    }
+    emit treeWalkResult(_syncedItems);
 
     csync_commit(_csync_ctx);
 

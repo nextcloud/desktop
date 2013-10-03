@@ -20,6 +20,7 @@
 #include <qdebug.h>
 
 #include "csyncthread.h"
+#include <syncjournaldb.h>
 #include "csync.h"
 
 using namespace Mirall;
@@ -108,7 +109,8 @@ int main(int argc, char **argv) {
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
 
 
-    CSyncThread csyncthread(_csync_ctx, QString::fromLocal8Bit(source_dir), QUrl(target_url).path());
+    SyncJournalDb db;
+    CSyncThread csyncthread(_csync_ctx, QString::fromLocal8Bit(source_dir), QUrl(target_url).path(), &db);
     QObject::connect(&csyncthread, SIGNAL(finished()), &app, SLOT(quit()));
     csyncthread.startSync();
 

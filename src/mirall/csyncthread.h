@@ -22,6 +22,7 @@
 #include <QThread>
 #include <QString>
 #include <qelapsedtimer.h>
+#include <qstack.h>
 #include <QNetworkProxy>
 #include <QNetworkCookie>
 
@@ -37,6 +38,10 @@ Q_DECLARE_METATYPE(CSYNC_STATUS)
 
 namespace Mirall {
 
+class SyncJournalFileRecord;
+
+class SyncJournalDb;
+
 class OwncloudPropagator;
 
 void csyncLogCatcher(int /*verbosity*/,
@@ -48,15 +53,8 @@ class CSyncThread : public QObject
 {
     Q_OBJECT
 
-    // Keep the actions that have been performed, in order to update the db
-    struct Action {
-        QByteArray etag;
-        csync_instructions_e instruction;
-    };
-    QHash<QByteArray, Action> _performedActions;
-
 public:
-    CSyncThread(CSYNC *, const QString &localPath, const QString &remotePath);
+    CSyncThread(CSYNC *, const QString &localPath, const QString &remotePath, SyncJournalDb *journal);
     ~CSyncThread();
 
     static QString csyncErrorToString( CSYNC_STATUS);
@@ -92,7 +90,6 @@ private:
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);
     int treewalkFile( TREE_WALK_FILE*, bool );
-    int treewalkFinalize( TREE_WALK_FILE* );
 
     Progress::Kind csyncToProgressKind( enum csync_notify_type_e kind );
     static int walkFinalize(TREE_WALK_FILE*, void* );
@@ -102,6 +99,7 @@ private:
     static QMutex _syncMutex;
     SyncFileItemVector _syncedItems;
     int _iterator; // index in _syncedItems for the next item to process.
+    QStack<SyncJournalFileRecord> _directoriesToUpdate;
     ProgressDatabase _progressDataBase;
 
 
@@ -109,6 +107,7 @@ private:
     bool _needsUpdate;
     QString _localPath;
     QString _remotePath;
+    SyncJournalDb *_journal;
     QScopedPointer <OwncloudPropagator> _propagator;
     QElapsedTimer _syncTime;
     QString _lastDeleted; // if the last item was a path and it has been deleted

@@ -32,9 +32,9 @@ public:
 
     typedef enum {
       UnknownType,
-      File,
-      Directory,
-      SoftLink
+      File = CSYNC_FTW_TYPE_FILE,
+      Directory = CSYNC_FTW_TYPE_DIR,
+      SoftLink = CSYNC_FTW_TYPE_SLINK
     } Type;
 
     SyncFileItem() {}
