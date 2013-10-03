@@ -21,7 +21,7 @@ class TestOwncloudPropagator : public QObject
 private slots:
     void testUpdateErrorFromSession()
     {
-        OwncloudPropagator propagator( NULL, QLatin1String("test1"), QLatin1String("test2"), new ProgressDatabase);
+//        OwncloudPropagator propagator( NULL, QLatin1String("test1"), QLatin1String("test2"), new ProgressDatabase);
         QVERIFY( true );
     }
 };
