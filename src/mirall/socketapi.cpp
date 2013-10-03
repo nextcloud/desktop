@@ -150,37 +150,37 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSo
         SyncFileStatus fileStatus = folder->fileStatus(absoluteFilePath.mid(folder->path().length()));
         switch(fileStatus)
         {
-            case STATUS_NONE:
+            case FILE_STATUS_NONE:
                 statusString = QLatin1String("STATUS_NONE");
                 break;
-            case STATUS_EVAL:
+            case FILE_STATUS_EVAL:
                 statusString = QLatin1String("STATUS_EVAL");
                 break;
-            case STATUS_REMOVE:
+            case FILE_STATUS_REMOVE:
                 statusString = QLatin1String("STATUS_REMOVE");
                 break;
-            case STATUS_RENAME:
+            case FILE_STATUS_RENAME:
                 statusString = QLatin1String("STATUS_RENAME");
                 break;
-            case STATUS_NEW:
+            case FILE_STATUS_NEW:
                 statusString = QLatin1String("STATUS_NEW");
                 break;
-            case STATUS_CONFLICT:
+            case FILE_STATUS_CONFLICT:
                 statusString = QLatin1String("STATUS_CONFLICT");
                 break;
-            case STATUS_IGNORE:
+            case FILE_STATUS_IGNORE:
                 statusString = QLatin1String("STATUS_IGNORE");
                 break;
-            case STATUS_SYNC:
+            case FILE_STATUS_SYNC:
                 statusString = QLatin1String("STATUS_SYNC");
                 break;
-            case STATUS_STAT_ERROR:
+            case FILE_STATUS_STAT_ERROR:
                 statusString = QLatin1String("STATUS_STAT_ERROR");
                 break;
-            case STATUS_ERROR:
+            case FILE_STATUS_ERROR:
                 statusString = QLatin1String("STATUS_ERROR");
                 break;
-            case STATUS_UPDATED:
+            case FILE_STATUS_UPDATED:
                 statusString = QLatin1String("STATUS_UPDATED");
                 break;
             default:
