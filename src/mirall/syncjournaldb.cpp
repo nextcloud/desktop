@@ -168,8 +168,8 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename)
 
     if( checkConnect() ) {
 
-        QSqlQuery query( "DELETE FROM metadata WHERE phash=:phash" );
-        query.bindValue( ":phash", QVariant::fromValue(phash) );
+        QSqlQuery query( "DELETE FROM metadata WHERE phash=?" );
+        query.bindValue( 0, QString::number(phash) );
 
         if( !query.exec() ) {
             qWarning() << "Exec error of SQL statement: " << query.lastQuery() <<  " : " << query.lastError().text();
