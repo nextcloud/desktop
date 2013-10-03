@@ -220,6 +220,7 @@ set(mirall_SRCS
     mirall/ignorelisteditor.cpp
     mirall/itemprogressdialog.cpp
     mirall/owncloudgui.cpp
+    mirall/socketapi.cpp
 )
 
 set(mirall_HEADERS
@@ -245,6 +246,7 @@ set(mirall_HEADERS
     mirall/ignorelisteditor.h
     mirall/itemprogressdialog.h
     mirall/owncloudgui.h
+    mirall/socketapi.h
 )
 
 if( UNIX AND NOT APPLE)

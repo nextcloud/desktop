@@ -44,6 +44,7 @@ class ownCloudInfo;
 class SslErrorDialog;
 class SettingsDialog;
 class ItemProgressDialog;
+class SocketApi;
 
 class Application : public SharedTools::QtSingleApplication
 {
@@ -91,6 +92,7 @@ private:
     void runValidator();
 
     QPointer<ownCloudGui> _gui;
+    QPointer<SocketApi> _socketApi;
     // QNetworkConfigurationManager *_networkMgr;
 
     SslErrorDialog      *_sslErrorDialog;

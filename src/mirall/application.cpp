@@ -33,6 +33,7 @@
 #include "mirall/logger.h"
 #include "mirall/utility.h"
 #include "mirall/connectionvalidator.h"
+#include "mirall/socketapi.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -146,6 +147,9 @@ Application::Application(int &argc, char **argv) :
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
 
     qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
+
+
+    _socketApi = new SocketApi(this, cfg.configPathWithAppName().append(QLatin1String("socket")));
 }
 
 Application::~Application()
@@ -159,7 +163,6 @@ void Application::slotCleanup()
     // that saving the geometries happens ASAP during a OS shutdown
     _gui->slotShutdown();
     _gui->deleteLater();
-
 }
 
 void Application::slotStartUpdateDetector()

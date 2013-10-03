@@ -33,6 +33,7 @@ public:
     enum Scope { UserScope, SystemScope };
 
     QString configPath() const;
+    QString configPathWithAppName() const;
     QString configFile() const;
     QString excludeFile(Scope scope) const;
 

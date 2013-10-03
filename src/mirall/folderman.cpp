@@ -429,6 +429,23 @@ void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceF
     settings.sync();
 }
 
+Folder *FolderMan::folderForPath(const QUrl &path)
+{
+    QString absolutePath = path.toLocalFile();
+    absolutePath.append("/");
+
+    foreach(Folder* folder, map().values())
+    {
+        if(absolutePath.startsWith(folder->path()))
+        {
+            qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
+            return folder;
+        }
+    }
+
+    return 0;
+}
+
 void FolderMan::removeAllFolderDefinitions()
 {
     foreach( Folder *f, _folderMap.values() ) {

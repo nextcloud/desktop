@@ -170,6 +170,12 @@ QString MirallConfigFile::configPath() const
     return dir;
 }
 
+QString MirallConfigFile::configPathWithAppName() const
+{
+    //HACK
+    return QFileInfo( configFile() ).dir().absolutePath().append("/");
+}
+
 QString MirallConfigFile::excludeFile(Scope scope) const
 {
     // prefer sync-exclude.lst, but if it does not exist, check for
