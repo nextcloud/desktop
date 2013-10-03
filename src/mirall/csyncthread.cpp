@@ -195,11 +195,6 @@ int CSyncThread::treewalkRemote( TREE_WALK_FILE* file, void *data )
     return static_cast<CSyncThread*>(data)->treewalkFile( file, true );
 }
 
-int CSyncThread::walkFinalize(TREE_WALK_FILE* file, void *data )
-{
-    return static_cast<CSyncThread*>(data)->treewalkFinalize( file);
-}
-
 int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
 {
     if( ! file ) return -1;
@@ -451,12 +446,10 @@ void CSyncThread::startSync()
 
 void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_STATUS error)
 {
-    Action a;
-    a.instruction = item._instruction;
 
     // if the propagator had an error for a file, put the error string into the synced item
     if( error != CSYNC_STATUS_OK
-            || a.instruction == CSYNC_INSTRUCTION_ERROR) {
+            || item._instruction == CSYNC_INSTRUCTION_ERROR) {
 
         // Search for the item in the starting from _iterator because it should be a bit before it.
         // This works because SyncFileItem::operator== only compare the file name;
@@ -469,8 +462,7 @@ void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_STATUS error
                      << "(" << item._errorString << ")";
         }
 
-        if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE
-                && a.instruction == CSYNC_INSTRUCTION_DELETED) {
+        if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_DELETED) {
             _lastDeleted = item._file;
         } else {
             _lastDeleted.clear();
@@ -481,26 +473,21 @@ void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_STATUS error
     if (item._instruction == CSYNC_INSTRUCTION_DELETED) {
         _journal->deleteFileRecord(item._file);
         if (!item._renameTarget.isEmpty()) {
-            SyncJournalFileRecord record(item, _localPath + item._file);
+            SyncJournalFileRecord record(item, _localPath + item._renameTarget);
             record._path = item._renameTarget;
             _journal->setFileRecord(record);
         }
-    } else if(item._instruction == CSYNC_INSTRUCTION_UPDATED) {
-        if (!item._isDirectory) {
-            SyncJournalFileRecord record(item, _localPath + item._file);
-            _journal->setFileRecord(record);
-        } else {
-            // directory must not be saved to the db before we finished processing them.
-            SyncJournalFileRecord record(item, _localPath + item._file);
-            _directoriesToUpdate.push(item);
-        }
-    } else if(item._instruction == CSYNC_INSTRUCTION_UPDATED) {
+    } else if(item._instruction == CSYNC_INSTRUCTION_ERROR) {
         // Don't update parents directories
         _directoriesToUpdate.clear();
-    }
+    } else if (item._isDirectory) {
+        // directory must not be saved to the db before we finished processing them.
+        SyncJournalFileRecord record(item, _localPath + item._file);
+        _directoriesToUpdate.push(record);
+    } else if(item._instruction == CSYNC_INSTRUCTION_UPDATED) {
+        SyncJournalFileRecord record(item, _localPath + item._file);
+        _journal->setFileRecord(record);
 
-
-    if (!item._isDirectory && item._instruction == CSYNC_INSTRUCTION_UPDATED) {
         slotProgress((item._dir != SyncFileItem::Up) ? Progress::EndDownload : Progress::EndUpload,
                      item._file, item._size, item._size);
         _progressInfo.current_file_no++;
@@ -516,7 +503,7 @@ void CSyncThread::startNextTransfer()
         const SyncFileItem &item = _syncedItems.at(_iterator);
         ++_iterator;
 
-        while (!_directoriesToUpdate.isEmpty() && !item._file.startsWith(_directoriesToUpdate.last()._file)) {
+        while (!_directoriesToUpdate.isEmpty() && !item._file.startsWith(_directoriesToUpdate.last()._path)) {
             _journal->setFileRecord(_directoriesToUpdate.pop());
         }
 

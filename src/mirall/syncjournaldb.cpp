@@ -70,6 +70,26 @@ bool SyncJournalDb::checkConnect()
         }
     }
 
+
+    QSqlQuery createQuery("CREATE TABLE IF NOT EXISTS metadata("
+                          "phash INTEGER(8),"
+                          "pathlen INTEGER,"
+                          "path VARCHAR(4096),"
+                          "inode INTEGER,"
+                          "uid INTEGER,"
+                          "gid INTEGER,"
+                          "mode INTEGER,"
+                          "modtime INTEGER(8),"
+                          "type INTEGER,"
+                          "md5 VARCHAR(32),"
+                          "PRIMARY KEY(phash)"
+                          ");" , _db);
+
+    if (!createQuery.exec()) {
+        qWarning() << "Error creating table metadata : " << createQuery.lastError().text();
+        return false;
+    }
+
     return true;
 }
 
@@ -90,58 +110,79 @@ int64_t SyncJournalDb::getPHash(const QString& file) const
 
 bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
 {
-    int64_t phash = getPHash(record._path);
+    qlonglong phash = getPHash(record._path);
 
     if( checkConnect() ) {
 
-        QSqlQuery query( "SELECT phash FROM metadata WHERE phash=:phash" );
+        QSqlQuery writeQuery( "INSERT OR REPLACE INTO metadata "
+                              "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) "
+                              "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ? )", _db );
+//                              "VALUES ( :phash , :plen, :path , :inode , :uid , :gid , :mode,  :modtime , :type , :etag )" );
 
-        query.bindValue( ":phash", QVariant::fromValue(phash) );
-
-        bool haveEntry = false;
-        if( query.next() ) {
-            haveEntry = true;
-        }
-
-        QString sql;
-
-        if( haveEntry ) {
-            sql = "UPDATE metadata ";
-            sql += "(pathlen, path, inode, uid, gid, mode, modtime, type, md5) "
-                    "VALUES (:plen, :path, :inode, :uid, :gid, :mode, :modtime, :type: :etag) "
-                    "WHERE phash=:phash";
-        } else {
-            sql = "INSERT INTO metadata ";
-            sql += "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) "
-                    "VALUES (:phash, :plen, :path, :inode, :uid, :gid, :mode, :modtime, :type: :etag)";
-        }
-
-        QSqlQuery writeQuery(sql);
 
         QByteArray arr = record._path.toUtf8();
         int plen = arr.length();
 
-        writeQuery.bindValue(":phash",   QVariant::fromValue(phash));
-        writeQuery.bindValue(":plen",    plen);
-        writeQuery.bindValue(":path",    record._path );
-        writeQuery.bindValue(":inode",   record._inode );
-        writeQuery.bindValue(":uid",     record._uid );
-        writeQuery.bindValue(":gid",     record._gid );
-        writeQuery.bindValue(":mode",    record._mode );
-        writeQuery.bindValue(":modtime", record._modtime.toTime_t());
-        writeQuery.bindValue(":type",    record._type );
-        writeQuery.bindValue(":etag",    record._etag );
+//         writeQuery.bindValue(":phash",   QString::number(phash));
+//         writeQuery.bindValue(":plen",    plen);
+//         writeQuery.bindValue(":path",    record._path );
+//         writeQuery.bindValue(":inode",   record._inode );
+//         writeQuery.bindValue(":uid",     record._uid );
+//         writeQuery.bindValue(":gid",     record._gid );
+//         writeQuery.bindValue(":mode",    record._mode );
+//         writeQuery.bindValue(":modtime", QString::number(record._modtime.toTime_t()));
+//         writeQuery.bindValue(":type",    QString::number(record._type) );
+//         writeQuery.bindValue(":etag",    record._etag );
+        writeQuery.bindValue(0, QString::number(phash));
+        writeQuery.bindValue(1, plen);
+        writeQuery.bindValue(2, record._path );
+        writeQuery.bindValue(3, record._inode );
+        writeQuery.bindValue(4, record._uid );
+        writeQuery.bindValue(5, record._gid );
+        writeQuery.bindValue(6, record._mode );
+        writeQuery.bindValue(7, QString::number(record._modtime.toTime_t()));
+        writeQuery.bindValue(8, QString::number(record._type) );
+        writeQuery.bindValue(9, record._etag );
+
 
         if( !writeQuery.exec() ) {
-            qDebug() << "Exec error of SQL statement: " << writeQuery.lastError().text();
+            qWarning() << "Exec error of SQL statement: " << writeQuery.lastQuery() <<  " :"   << writeQuery.lastError().text();
             return false;
         }
+
+        qDebug() <<  writeQuery.lastQuery() << phash << plen << record._path << record._inode
+                 << record._uid << record._gid << record._mode
+                 << QString::number(record._modtime.toTime_t()) << QString::number(record._type)
+                 << record._etag;
+
         return true;
     } else {
         qDebug() << "Failed to connect database.";
         return false; // checkConnect failed.
     }
 }
+
+bool SyncJournalDb::deleteFileRecord(const QString& filename)
+{
+    qlonglong phash = getPHash(filename);
+
+    if( checkConnect() ) {
+
+        QSqlQuery query( "DELETE FROM metadata WHERE phash=:phash" );
+        query.bindValue( ":phash", QVariant::fromValue(phash) );
+
+        if( !query.exec() ) {
+            qWarning() << "Exec error of SQL statement: " << query.lastQuery() <<  " : " << query.lastError().text();
+            return false;
+        }
+        qDebug() <<  query.executedQuery() << phash << filename;
+        return true;
+    } else {
+        qDebug() << "Failed to connect database.";
+        return false; // checkConnect failed.
+    }
+}
+
 
 SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
 {
@@ -156,12 +197,12 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
 
     if( checkConnect() ) {
         QSqlQuery query("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM "
-                        "metadata WHERE phash=:ph");
+                        "metadata WHERE phash=:ph" ,  _db);
         query.bindValue(":ph", QString::number(phash));
 
         if (!query.exec()) {
             QString err = query.lastError().text();
-            qDebug() << "Error creating prepared statement: " << err;
+            qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;;
             return rec;
         }
 
@@ -178,7 +219,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._etag    = query.value(7).toString();
         } else {
             QString err = query.lastError().text();
-            qDebug() << "Can not query, Error: " << err;
+            qDebug() << "Can not query " << query.lastQuery() << ", Error:" << err;
         }
     }
     return rec;

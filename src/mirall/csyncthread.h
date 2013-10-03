@@ -92,8 +92,6 @@ private:
     int treewalkFile( TREE_WALK_FILE*, bool );
 
     Progress::Kind csyncToProgressKind( enum csync_notify_type_e kind );
-    static int walkFinalize(TREE_WALK_FILE*, void* );
-
 
     static QMutex _mutex;
     static QMutex _syncMutex;

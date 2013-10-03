@@ -29,7 +29,7 @@ public:
     SyncJournalFileRecord getFileRecord( const QString& filename );
 
     bool setFileRecord( const SyncJournalFileRecord& record );
-    // bool deleteFileRecord( const QString& filename );
+    bool deleteFileRecord( const QString& filename );
 
     QSqlDatabase *getDB(){ return &_db; }
     bool checkConnect();

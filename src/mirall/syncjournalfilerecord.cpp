@@ -14,6 +14,7 @@
 #include "syncjournalfilerecord.h"
 #include "syncfileitem.h"
 #include <qfileinfo.h>
+#include <qdebug.h>
 
 #ifndef _WIN32
 #include <sys/stat.h>
@@ -44,7 +45,7 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
                      FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
     if( h == INVALID_HANDLE_VALUE ) {
         _inode = qrand();
-        qDebug() << "Failed to query the 'inode' because CreateFileW failed for file " << localFileName;
+        qWarning() << "Failed to query the 'inode' because CreateFileW failed for file " << localFileName;
     } else {
         FILETIME ftCreate, ftAccess, ftWrite;
         //     SYSTEMTIME stUTC;
@@ -61,14 +62,14 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
 
             _inode = FileIndex.QuadPart;
         } else {
-            qDebug() << "Failed to query the 'inode' for file " << localFileName;
+            qWarning() << "Failed to query the 'inode' for file " << localFileName;
             _inode = qrand();
         }
     }
 #else
     struct stat sb;
     if( stat(QFile::encodeName(localFileName).constData(), &sb) < 0) {
-        qDebug() << "Failed to query the 'inode' for file " << localFileName;
+        qWarning() << "Failed to query the 'inode' for file " << localFileName;
         _inode = qrand();
     } else {
         _inode = sb.st_ino;
