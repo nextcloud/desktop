@@ -83,9 +83,12 @@ void Logger::log(Log log)
     // _logs.append(log);
     // std::cout << qPrintable(log.message) << std::endl;
 
-    if( _logstream ) {
-        (*_logstream) << msg << endl;
-        if( _doFileFlush ) _logstream->flush();
+    {
+        QMutexLocker lock(&_mutex);
+        if( _logstream ) {
+            (*_logstream) << msg << endl;
+            if( _doFileFlush ) _logstream->flush();
+        }
     }
 
     emit newLog(msg);
@@ -113,7 +116,10 @@ void Logger::mirallLog( const QString& message )
 
 void Logger::setLogFile(const QString & name)
 {
+    QMutexLocker locker(&_mutex);
+
     if( _logstream ) {
+        _logstream.reset(0);
         _logFile.close();
     }
 
@@ -130,6 +136,7 @@ void Logger::setLogFile(const QString & name)
     }
 
     if(!openSucceeded) {
+        locker.unlock(); // Just in case postGuiMessage has a qDebug()
         postGuiMessage( tr("Error"),
                         QString(tr("<nobr>File '%1'<br/>cannot be opened for writing.<br/><br/>"
                                    "The log output can <b>not</b> be saved!</nobr>"))

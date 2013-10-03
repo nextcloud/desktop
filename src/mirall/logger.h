@@ -20,6 +20,7 @@
 #include <QDateTime>
 #include <QFile>
 #include <QTextStream>
+#include <qmutex.h>
 
 namespace Mirall {
 
@@ -78,6 +79,7 @@ protected:
   bool        _doFileFlush;
   int         _logExpire;
   QScopedPointer<QTextStream> _logstream;
+  QMutex      _mutex;
   QString     _logDirectory;
 
 };
