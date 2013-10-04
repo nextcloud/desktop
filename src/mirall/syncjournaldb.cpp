@@ -38,6 +38,11 @@ SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
     _dbFile.append(".csync_journal.db");
 }
 
+bool SyncJournalDb::exists()
+{
+    return (!_dbFile.isEmpty() && QFile::exists(_dbFile));
+}
+
 bool SyncJournalDb::checkConnect()
 {
     if( _db.isOpen() ) {
@@ -223,6 +228,27 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
         }
     }
     return rec;
+}
+
+int SyncJournalDb::getFileRecordCount()
+{
+    if( !checkConnect() )
+        return 0;
+
+    QSqlQuery query("SELECT COUNT(*) FROM metadata" ,  _db);
+
+    if (!query.exec()) {
+        QString err = query.lastError().text();
+        qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;;
+        return 0;
+    }
+
+    if (query.next()) {
+        int count = query.value(0).toInt();
+        return count;
+    }
+
+    return 0;
 }
 
 

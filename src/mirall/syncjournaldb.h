@@ -30,8 +30,10 @@ public:
 
     bool setFileRecord( const SyncJournalFileRecord& record );
     bool deleteFileRecord( const QString& filename );
+    int getFileRecordCount();
 
     QSqlDatabase *getDB(){ return &_db; }
+    bool exists();
     bool checkConnect();
     int64_t getPHash(const QString& ) const;
 

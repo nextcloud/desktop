@@ -335,6 +335,18 @@ void CSyncThread::startSync()
     // maybe move this somewhere else where it can influence a running sync?
     MirallConfigFile cfg;
 
+    int fileRecordCount = 0;
+    if (!_journal->exists()) {
+        qDebug() << "=====sync looks new (no DB exists), activating recursive PROPFIND if csync supports it";
+        bool no_recursive_propfind = false;
+        csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
+    } else if ((fileRecordCount = _journal->getFileRecordCount()) < 50) {
+        qDebug() << "=====sync DB has only" << fileRecordCount << "items, enable recursive PROPFIND if csync supports it";
+        bool no_recursive_propfind = false;
+        csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
+    } else {
+        qDebug() << "=====sync with existing DB";
+    }
 
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
