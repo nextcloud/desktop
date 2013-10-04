@@ -462,6 +462,8 @@ void CSyncThread::startSync()
 
 void CSyncThread::transferCompleted(const SyncFileItem &item)
 {
+    qDebug() << Q_FUNC_INFO << item._file << item._status << item._errorString;
+
     /* Update the _syncedItems vector */
 
     // Search for the item in the starting from _iterator because it should be a bit before it.

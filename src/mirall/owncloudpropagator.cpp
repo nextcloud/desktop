@@ -204,13 +204,10 @@ csync_instructions_e OwncloudPropagator::localMkdir(const SyncFileItem &item)
 
 csync_instructions_e OwncloudPropagator::remoteRemove(const SyncFileItem &item)
 {
-    bool error = false;
-
     QScopedPointer<char, QScopedPointerPodDeleter> uri(ne_path_escape((_remoteDir + item._file).toUtf8()));
     int rc = ne_delete(_session, uri.data());
 
-    error = updateErrorFromSession(rc);
-    if (error) {
+    if (updateErrorFromSession(rc)) {
         return CSYNC_INSTRUCTION_ERROR;
     }
     _status = SyncFileItem::Success;
@@ -676,24 +673,23 @@ bool OwncloudPropagator::updateErrorFromSession(int neon_code, ne_request *req, 
                 if (httpStatusCode) {
                     *httpStatusCode = status->code;
                 }
-                // FIXME: classify the error
-                _status = SyncFileItem::NormalError;
                 _errorString = QString::fromUtf8( status->reason_phrase );
-                return true;
             }
+        } else {
+            QString errorString = QString::fromUtf8(ne_get_error( _session ));
+            int code = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+            if (code >= 200 && code < 300) {
+                // No error
+                return false;
+            }
+            if (httpStatusCode) {
+                *httpStatusCode = code;
+            }
+            _errorString = errorString;
         }
 
-        _errorString = QString::fromUtf8(ne_get_error( _session ));
         // FIXME: classify the error
         _status = SyncFileItem::NormalError;
-        if( httpStatusCode && !_errorString.isEmpty() ) {
-            int firstSpace = _errorString.indexOf(QChar(' '));
-            if( firstSpace > 0 ) {
-                bool ok;
-                QString numStr = _errorString.mid(0, firstSpace);
-                *httpStatusCode = numStr.toInt(&ok);
-            }
-        }
         return true;
     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
