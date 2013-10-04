@@ -13,10 +13,13 @@
 
 #include "syncjournalfilerecord.h"
 #include "syncfileitem.h"
+
 #include <qfileinfo.h>
 #include <qdebug.h>
 
-#ifndef _WIN32
+#ifdef Q_OS_WIN
+#include <windows.h>
+#else
 #include <sys/stat.h>
 #endif
 
@@ -39,7 +42,7 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
 
     // Query the inode:
     //   based on code from csync_vio_local.c (csync_vio_local_stat)
-#ifdef _WIN32
+#ifdef Q_OS_WIN
     /* Get the Windows file id as an inode replacement. */
     HANDLE h = CreateFileW( (wchar_t*)localFileName.utf16(), 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                      FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );

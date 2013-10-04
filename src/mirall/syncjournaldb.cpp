@@ -98,7 +98,7 @@ bool SyncJournalDb::checkConnect()
     return true;
 }
 
-int64_t SyncJournalDb::getPHash(const QString& file) const
+qint64 SyncJournalDb::getPHash(const QString& file) const
 {
     QByteArray utf8File = file.toUtf8();
     int64_t h;

@@ -35,7 +35,7 @@ public:
     QSqlDatabase *getDB(){ return &_db; }
     bool exists();
     bool checkConnect();
-    int64_t getPHash(const QString& ) const;
+    qint64 getPHash(const QString& ) const;
 
 signals:
 
