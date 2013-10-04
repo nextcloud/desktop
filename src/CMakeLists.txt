@@ -327,9 +327,9 @@ else()
 
     #FIXME: hardcoded path
     if ( EXISTS ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so )
-        install(FILES ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins)
+        install(FILES ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns)
     else()
-        install(FILES /usr/local/lib/ocsync-0/ocsync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins)
+        install(FILES /usr/local/lib/ocsync-0/ocsync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns)
     endif()
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
@@ -361,7 +361,7 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install_qt4_executable(${OWNCLOUD_OSX_BUNDLE} "qsqlite"
-     "${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins/ocsync_owncloud.so"
+     "${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns/ocsync_owncloud.so"
       ${dirs})
 endif()
 
