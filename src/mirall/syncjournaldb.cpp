@@ -40,6 +40,7 @@ SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
 
 bool SyncJournalDb::exists()
 {
+    QMutexLocker locker(&_mutex);
     return (!_dbFile.isEmpty() && QFile::exists(_dbFile));
 }
 
@@ -115,6 +116,7 @@ qint64 SyncJournalDb::getPHash(const QString& file) const
 
 bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
 {
+    QMutexLocker locker(&_mutex);
     qlonglong phash = getPHash(record._path);
 
     if( checkConnect() ) {
@@ -169,6 +171,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
 
 bool SyncJournalDb::deleteFileRecord(const QString& filename)
 {
+    QMutexLocker locker(&_mutex);
     qlonglong phash = getPHash(filename);
 
     if( checkConnect() ) {
@@ -191,6 +194,8 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename)
 
 SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
 {
+    QMutexLocker locker(&_mutex);
+
     qlonglong phash = getPHash( filename );
     SyncJournalFileRecord rec;
 

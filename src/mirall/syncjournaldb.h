@@ -15,6 +15,7 @@
 #define SYNCJOURNALDB_H
 
 #include <QObject>
+#include <qmutex.h>
 #include <QSqlDatabase>
 
 namespace Mirall {
@@ -25,25 +26,22 @@ class SyncJournalDb : public QObject
     Q_OBJECT
 public:
     explicit SyncJournalDb(const QString& path, QObject *parent = 0);
-
     SyncJournalFileRecord getFileRecord( const QString& filename );
-
     bool setFileRecord( const SyncJournalFileRecord& record );
     bool deleteFileRecord( const QString& filename );
     int getFileRecordCount();
-
-    QSqlDatabase *getDB(){ return &_db; }
     bool exists();
-    bool checkConnect();
-    qint64 getPHash(const QString& ) const;
 
 signals:
 
 public slots:
 
 private:
+    qint64 getPHash(const QString& ) const;
+    bool checkConnect();
     QSqlDatabase _db;
     QString _dbFile;
+    QMutex _mutex; // Public functions are protected with the mutex.
 
 };
 
