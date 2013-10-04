@@ -130,7 +130,7 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
 
     path2 = c_dirname(path_tmp);
 
-    if (asprintf(&path, "%s/../Plugins/ocsync_%s.%s", path2, module, MODULE_EXTENSION) < 0) {
+    if (asprintf(&path, "%s/../PlugIns/ocsync_%s.%s", path2, module, MODULE_EXTENSION) < 0) {
       return -1;
     }
   }
