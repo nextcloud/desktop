@@ -306,6 +306,10 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     } else {
         emit csyncError(errStr);
     }
+    csync_commit(_csync_ctx);
+    emit finished();
+    _syncMutex.unlock();
+    thread()->quit();
 }
 
 void CSyncThread::startSync()
@@ -430,8 +434,8 @@ void CSyncThread::startSync()
     _progressDataBase.load(_localPath);
     _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath,
                                               &_progressDataBase, &_abortRequested));
-    connect(_propagator.data(), SIGNAL(completed(SyncFileItem, CSYNC_STATUS)),
-            this, SLOT(transferCompleted(SyncFileItem, CSYNC_STATUS)), Qt::QueuedConnection);
+    connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
+            this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)),
             this, SLOT(slotProgress(Progress::Kind,QString,quint64,quint64)));
     _iterator = 0;
@@ -456,31 +460,28 @@ void CSyncThread::startSync()
     startNextTransfer();
 }
 
-void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_STATUS error)
+void CSyncThread::transferCompleted(const SyncFileItem &item)
 {
+    /* Update the _syncedItems vector */
 
-    // if the propagator had an error for a file, put the error string into the synced item
-    if( error != CSYNC_STATUS_OK
-            || item._instruction == CSYNC_INSTRUCTION_ERROR) {
-
-        // Search for the item in the starting from _iterator because it should be a bit before it.
-        // This works because SyncFileItem::operator== only compare the file name;
-        int idx = _syncedItems.lastIndexOf(item, _iterator);
-        if (idx >= 0) {
-            _syncedItems[idx]._instruction = CSYNC_INSTRUCTION_ERROR;
-            _syncedItems[idx]._errorString = item._errorString.isEmpty() ? csyncErrorToString( error ) : item._errorString;
-            _syncedItems[idx]._httpCode    = item._httpCode;
-            qDebug() << "File " << item._file << " propagator error " << _syncedItems[idx]._errorString
-                     << "(" << item._errorString << ")";
-        }
-
-        if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_DELETED) {
-            _lastDeleted = item._file;
-        } else {
-            _lastDeleted.clear();
-        }
+    // Search for the item in the starting from _iterator because it should be a bit before it.
+    // This works because SyncFileItem::operator== only compare the file name;
+    int idx = _syncedItems.lastIndexOf(item, _iterator);
+    if (idx >= 0) {
+        _syncedItems[idx]._instruction = item._instruction;
+        _syncedItems[idx]._errorString = item._errorString;
+        _syncedItems[idx]._status = item._status;
     }
 
+    /* Remember deleted directory */
+
+    if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_DELETED) {
+        _lastDeleted = item._file;
+    } else {
+        _lastDeleted.clear();
+    }
+
+    /* Update the database */
 
     if (item._instruction == CSYNC_INSTRUCTION_DELETED) {
         _journal->deleteFileRecord(item._file);
@@ -504,14 +505,26 @@ void CSyncThread::transferCompleted(const SyncFileItem &item, CSYNC_STATUS error
                      item._file, item._size, item._size);
         _progressInfo.current_file_no++;
         _progressInfo.overall_current_bytes += item._size;
+
     }
 
-    startNextTransfer();
+    /* Start the transfer of the next file or abort if there is an error */
+
+    if (item._status != SyncFileItem::FatalError) {
+        startNextTransfer();
+    } else {
+        emit treeWalkResult(_syncedItems);
+        emit csyncError(item._errorString);
+        emit finished();
+        csync_commit(_csync_ctx);
+        _syncMutex.unlock();
+        thread()->quit();
+    }
 }
 
 void CSyncThread::startNextTransfer()
 {
-    while (_iterator < _syncedItems.size() && !_propagator->_hasFatalError) {
+    while (_iterator < _syncedItems.size()) {
         const SyncFileItem &item = _syncedItems.at(_iterator);
         ++_iterator;
 

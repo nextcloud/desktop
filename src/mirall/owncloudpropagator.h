@@ -39,9 +39,7 @@ class OwncloudPropagator : public QObject {
     ProgressDatabase *_progressDb;
 
     QString          _errorString;
-    CSYNC_STATUS _errorCode;
-    int              _httpStatusCode;
-    csync_instructions_e _instruction;
+    SyncFileItem::Status _status;
 
     bool check_neon_session();
 
@@ -56,15 +54,18 @@ class OwncloudPropagator : public QObject {
 
     void updateMTimeAndETag(const char *uri, time_t);
 
-    /* fetch the error code and string from the session */
-    bool updateErrorFromSession(int neon_code = 0, ne_request *req = NULL);
-
+    /* fetch the error code and string from the session
+     * updates _status, _httpStatusCode and _errorString. and httpStatusCode
+     * Returns true if there was an error.
+     */
+    bool updateErrorFromSession(int neon_code = 0, ne_request *req = 0, int *httpStatusCode = 0);
 
     QElapsedTimer _lastTime;
     quint64 _lastProgress;
     quint64 _chunked_total_size;
     quint64 _chunked_done;
     QString _currentFile;
+
 
     static void notify_status_cb (void *userdata, ne_session_status status,
                                   const ne_session_status_info *info);
@@ -76,9 +77,6 @@ public:
             , _localDir(localDir)
             , _remoteDir(remoteDir)
             , _progressDb(progressDb)
-            , _errorCode(CSYNC_STATUS_OK)
-            , _httpStatusCode(0)
-            , _hasFatalError(false)
             , _abortRequested(abortRequested)
     {
         if (!localDir.endsWith(QChar('/'))) _localDir+='/';
@@ -86,7 +84,6 @@ public:
     }
     void  propagate(const SyncFileItem &);
     QByteArray _etag;
-    bool             _hasFatalError;
 
     int _downloadLimit;
     int _uploadLimit;
@@ -94,7 +91,7 @@ public:
     QAtomicInt *_abortRequested; // boolean set by the main thread to abort.
 
 signals:
-    void completed(const SyncFileItem &, CSYNC_STATUS);
+    void completed(const SyncFileItem &);
     void progress(Progress::Kind, const QString &filename, quint64 bytes, quint64 total);
 
 };

@@ -80,7 +80,7 @@ signals:
     void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
 
 private slots:
-    void transferCompleted(const SyncFileItem& item, CSYNC_STATUS error);
+    void transferCompleted(const SyncFileItem& item);
     void startNextTransfer();
     void slotProgress(Progress::Kind kind, const QString& file, quint64, quint64);
 

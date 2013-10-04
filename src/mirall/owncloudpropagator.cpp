@@ -57,56 +57,63 @@ struct ScopedPointerHelpers {
 
 void OwncloudPropagator::propagate(const SyncFileItem &item)
 {
-    _errorCode = CSYNC_STATUS_OK;
     _errorString.clear();
     _etag = item._etag;
-    _httpStatusCode = 0;
 
     if (_abortRequested->fetchAndAddRelaxed(0)) {
         SyncFileItem newItem = item;
-        newItem._instruction = _instruction = CSYNC_INSTRUCTION_ERROR;
-        emit completed(newItem, CSYNC_STATUS_ABORTED);
+        newItem._instruction = CSYNC_INSTRUCTION_ERROR;
+        newItem._status = SyncFileItem::FatalError;
+        newItem._errorString = tr("Aborted");
+        emit completed(newItem);
         return;
     }
 
+    _status = SyncFileItem::NoStatus;
+    csync_instructions_e instruction;
 
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
-            _instruction = item._dir == SyncFileItem::Down ? localRemove(item) : remoteRemove(item);
+            instruction = item._dir == SyncFileItem::Down ? localRemove(item) : remoteRemove(item);
             break;
         case CSYNC_INSTRUCTION_NEW:
             if (item._isDirectory) {
-                _instruction = item._dir == SyncFileItem::Down ? localMkdir(item) : remoteMkdir(item);
+                instruction = item._dir == SyncFileItem::Down ? localMkdir(item) : remoteMkdir(item);
                 break;
             }   //fall trough
         case CSYNC_INSTRUCTION_SYNC:
             if (item._isDirectory) {
                 // Should we set the mtime?
-                _instruction = CSYNC_INSTRUCTION_UPDATED;
+                instruction = CSYNC_INSTRUCTION_UPDATED;
                 break;
             }
-            _instruction = item._dir == SyncFileItem::Down ? downloadFile(item) : uploadFile(item);
+            instruction = item._dir == SyncFileItem::Down ? downloadFile(item) : uploadFile(item);
             break;
         case CSYNC_INSTRUCTION_CONFLICT:
             if (item._isDirectory) {
-                _instruction = CSYNC_INSTRUCTION_UPDATED;
+                instruction = CSYNC_INSTRUCTION_UPDATED;
                 break;
             }
-            _instruction = downloadFile(item, true);
+            instruction = downloadFile(item, true);
             break;
         case CSYNC_INSTRUCTION_RENAME:
-            _instruction = remoteRename(item);
+            instruction = remoteRename(item);
+            break;
+        case CSYNC_INSTRUCTION_IGNORE:
+            _status = SyncFileItem::FileIgnored;
+            instruction = CSYNC_INSTRUCTION_IGNORE;
             break;
         default:
-            _instruction = item._instruction;
+            instruction = item._instruction;
             break;
     }
     SyncFileItem newItem = item;
-    newItem._instruction = _instruction;
+    newItem._instruction = instruction;
     newItem._errorString = _errorString;
-    newItem._httpCode = _httpStatusCode;
     newItem._etag = _etag;
-    emit completed(newItem, _errorCode);
+    newItem._status = _status;
+
+    emit completed(newItem);
 }
 
 // compare two files with given filename and return true if they have the same content
@@ -166,14 +173,20 @@ csync_instructions_e OwncloudPropagator::localRemove(const SyncFileItem& item)
 {
     QString filename = _localDir +  item._file;
     if (item._isDirectory) {
-        if (!QDir(filename).exists() || removeRecursively(filename))
+        if (!QDir(filename).exists() || removeRecursively(filename)) {
+            _status = SyncFileItem::Success;
             return CSYNC_INSTRUCTION_DELETED;
+        }
+        _errorString = tr("Could not remove directory %1").arg(filename);
     } else {
         QFile file(filename);
-        if (!file.exists() || file.remove())
+        if (!file.exists() || file.remove()) {
+            _status = SyncFileItem::Success;
             return CSYNC_INSTRUCTION_DELETED;
+        }
         _errorString = file.errorString();
     }
+    _status = SyncFileItem::NormalError;
     return CSYNC_INSTRUCTION_ERROR;
 }
 
@@ -182,8 +195,10 @@ csync_instructions_e OwncloudPropagator::localMkdir(const SyncFileItem &item)
     QDir d;
     if (!d.mkpath(_localDir + item._file)) {
         _errorString = "could not create directory " + _localDir + item._file;
+        _status = SyncFileItem::NormalError;
         return CSYNC_INSTRUCTION_ERROR;
     }
+    _status = SyncFileItem::Success;
     return CSYNC_INSTRUCTION_UPDATED;
 }
 
@@ -198,6 +213,7 @@ csync_instructions_e OwncloudPropagator::remoteRemove(const SyncFileItem &item)
     if (error) {
         return CSYNC_INSTRUCTION_ERROR;
     }
+    _status = SyncFileItem::Success;
     return CSYNC_INSTRUCTION_DELETED;
 }
 
@@ -207,15 +223,17 @@ csync_instructions_e OwncloudPropagator::remoteMkdir(const SyncFileItem &item)
     bool error = false;
 
     int rc = ne_mkcol(_session, uri.data());
-    error = updateErrorFromSession( rc );
+    int httpStatusCode = 0;
+    error = updateErrorFromSession( rc , 0, &httpStatusCode );
 
     if( error ) {
         /* Special for mkcol: it returns 405 if the directory already exists.
-         * Ignre that error */
-        if (_httpStatusCode != 405) {
+         * Ignore that error */
+        if (httpStatusCode != 405) {
             return CSYNC_INSTRUCTION_ERROR;
         }
     }
+    _status = SyncFileItem::Success;
     return CSYNC_INSTRUCTION_UPDATED;
 }
 
@@ -239,6 +257,7 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
     QFile file(_localDir + item._file);
     if (!file.open(QIODevice::ReadOnly)) {
         _errorString = file.errorString();
+        _status = SyncFileItem::NormalError;
         return CSYNC_INSTRUCTION_ERROR;
     }
     QScopedPointer<char, QScopedPointerPodDeleter> uri(ne_path_escape((_remoteDir + item._file).toUtf8()));
@@ -310,7 +329,9 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
 
             if( finished ) {
                 _errorString = hbf_error_string(trans.data(), state);
-                _httpStatusCode = hbf_fail_http_code(trans.data());
+                // FIXME: find out the error class.
+                //_httpStatusCode = hbf_fail_http_code(trans.data());
+                _status = SyncFileItem::NormalError;
 
                 if (trans->start_id > 0) {
                     ProgressDatabase::UploadInfo pi;
@@ -328,7 +349,7 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
     if( _etag.isEmpty() ) {
         updateMTimeAndETag(uri.data(), item._modtime);
     }
-
+    _status = SyncFileItem::Success;
     return CSYNC_INSTRUCTION_UPDATED;
 }
 
@@ -466,7 +487,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     QFile tmpFile(_localDir + tmpFileName);
     if (!tmpFile.open(QIODevice::Append)) {
         _errorString = tmpFile.errorString();
-        _errorCode = CSYNC_STATUS_LOCAL_CREATE_ERROR;
+        _status = SyncFileItem::NormalError;
         return CSYNC_INSTRUCTION_ERROR;
     }
 
@@ -548,6 +569,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
         if (fileEquals(fn, tmpFile.fileName())) {
             tmpFile.remove();
             _progressDb->remove(item._file);
+            _status = SyncFileItem::Success;
             return CSYNC_INSTRUCTION_UPDATED;
         }
 
@@ -562,6 +584,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
         if (!f.rename(fn)) {
             //If the rename fails, don't replace it.
             _errorString = f.errorString();
+            _status = SyncFileItem::NormalError;
             return CSYNC_INSTRUCTION_ERROR;
         }
     }
@@ -583,6 +606,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     if (!success) {
 
         _errorString = tmpFile.errorString();
+        _status = SyncFileItem::NormalError;
         return CSYNC_INSTRUCTION_ERROR;
     }
 #else //QT_OS_WIN
@@ -595,6 +619,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
                       (LPWSTR)&string, 0, NULL);
         _errorString = QString::fromWCharArray(string);
         LocalFree((HLOCAL)string);
+        _status = SyncFileItem::NormalError;
         return CSYNC_INSTRUCTION_ERROR;
     }
 #endif
@@ -606,13 +631,16 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     times[0].tv_usec = times[1].tv_usec = 0;
     c_utimes((_localDir + item._file).toUtf8().data(), times);
 
+    _status = isConflict ? SyncFileItem::Conflict : SyncFileItem::Success;
     return CSYNC_INSTRUCTION_UPDATED;
 }
 
 csync_instructions_e OwncloudPropagator::remoteRename(const SyncFileItem &item)
 {
-    if (item._file == item._renameTarget)
+    if (item._file == item._renameTarget) {
+        _status = SyncFileItem::Success;
         return CSYNC_INSTRUCTION_DELETED; // nothing to do;
+    }
     QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_remoteDir + item._file).toUtf8()));
     QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_remoteDir + item._renameTarget).toUtf8()));
 
@@ -624,103 +652,78 @@ csync_instructions_e OwncloudPropagator::remoteRename(const SyncFileItem &item)
 
     updateMTimeAndETag(uri2.data(), item._modtime);
 
+    _status = SyncFileItem::Success;
     return CSYNC_INSTRUCTION_DELETED;
 }
 
-bool OwncloudPropagator::check_neon_session()
-{
-    bool isOk = true;
-    if( !_session ) {
-        _errorCode = CSYNC_STATUS_PARAM_ERROR;
-        isOk = false;
-    } else {
-        const char *p = ne_get_error( _session );
-        _errorString = QString::fromUtf8(p);
-
-        if( !_errorString.isEmpty() ) {
-            int firstSpace = _errorString.indexOf(QChar(' '));
-            if( firstSpace > 0 ) {
-                bool ok;
-                QString numStr = _errorString.mid(0, firstSpace);
-                _httpStatusCode = numStr.toInt(&ok);
-
-                if( !ok ) {
-                    _httpStatusCode = 0;
-                }
-            }
-            isOk = false;
-        }
-    }
-    return isOk;
-}
 
 // returns true in case there was an error
-bool OwncloudPropagator::updateErrorFromSession(int neon_code, ne_request *req)
+bool OwncloudPropagator::updateErrorFromSession(int neon_code, ne_request *req, int *httpStatusCode)
 {
-    bool re = false;
-
     if( neon_code != NE_OK ) {
         qDebug("Neon error code was %d", neon_code);
-        re = true; // there was an error.
     }
 
     switch(neon_code) {
     case NE_OK:     /* Success, but still the possiblity of problems */
-        if( req != NULL ) {
+        if( req ) {
             const ne_status *status = ne_get_status(req);
-            if( status ) {
-                if( status->klass != 2 ) {
-                    _httpStatusCode = status->code;
-                    _errorCode = CSYNC_STATUS_HTTP_ERROR;
-                    _errorString = QString::fromUtf8( status->reason_phrase );
-                    re = true;
+            if (status) {
+                if ( status->klass == 2) {
+                    // Everything is ok, no error.
+                    return false;
                 }
-            } else {
-                re = true; // can not get the status
+                if (httpStatusCode) {
+                    *httpStatusCode = status->code;
+                }
+                // FIXME: classify the error
+                _status = SyncFileItem::NormalError;
+                _errorString = QString::fromUtf8( status->reason_phrase );
+                return true;
             }
-        } else {
-            // no neon request available.
-            re = check_neon_session();
         }
-        break;
+
+        _errorString = QString::fromUtf8(ne_get_error( _session ));
+        // FIXME: classify the error
+        _status = SyncFileItem::NormalError;
+        if( httpStatusCode && !_errorString.isEmpty() ) {
+            int firstSpace = _errorString.indexOf(QChar(' '));
+            if( firstSpace > 0 ) {
+                bool ok;
+                QString numStr = _errorString.mid(0, firstSpace);
+                *httpStatusCode = numStr.toInt(&ok);
+            }
+        }
+        return true;
     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_STATUS_HTTP_ERROR;
-        break;
+        _status = SyncFileItem::NormalError;
+        return true;
     case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_STATUS_LOOKUP_ERROR;
-        _hasFatalError = true;
         break;
     case NE_AUTH:     /* User authentication failed on server */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_STATUS_REMOTE_ACCESS_ERROR;
-        _hasFatalError = true;
         break;
     case NE_PROXYAUTH:  /* User authentication failed on proxy */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_STATUS_PROXY_AUTH_ERROR;
-        _hasFatalError = true;
         break;
     case NE_CONNECT:  /* Could not connect to server */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_STATUS_CONNECT_ERROR;
-        _hasFatalError = true;
         break;
     case NE_TIMEOUT:  /* Connection timed out */
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_STATUS_TIMEOUT;
-        _hasFatalError = true;
         break;
     case NE_FAILED:   /* The precondition failed */
     case NE_RETRY:    /* Retry request (ne_end_request ONLY) */
     case NE_REDIRECT: /* See ne_redirect.h */
     default:
         _errorString = QString::fromUtf8( ne_get_error(_session) );
-        _errorCode = CSYNC_STATUS_HTTP_ERROR;
-        break;
+        _status = SyncFileItem::SoftError;
+        return true;
     }
-    return re;
+    _status = SyncFileItem::FatalError;
+    return true;
 }
 
 void OwncloudPropagator::notify_status_cb(void* userdata, ne_session_status status,
