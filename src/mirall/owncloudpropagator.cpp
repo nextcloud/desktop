@@ -600,8 +600,8 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     QFile::remove(newName);
     success = tmpFile.rename(newName);
 #endif
+    // unixoids
     if (!success) {
-
         _errorString = tmpFile.errorString();
         _status = SyncFileItem::NormalError;
         return CSYNC_INSTRUCTION_ERROR;

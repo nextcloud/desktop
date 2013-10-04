@@ -534,8 +534,11 @@ void CSyncThread::startNextTransfer()
             _journal->setFileRecord(_directoriesToUpdate.pop());
         }
 
-        if (!_lastDeleted.isEmpty() && item._file.startsWith(_lastDeleted)
-                && item._instruction == CSYNC_INSTRUCTION_REMOVE) {
+        if (!_lastDeleted.isEmpty() &&
+            item._file.startsWith(_lastDeleted) ) {
+            if( item._instruction != CSYNC_INSTRUCTION_REMOVE ) {
+                qDebug() << "WRN: Child of a deleted directory has different instruction than delete.";
+            }
             // If the item's name starts with the name of the previously deleted directory, we
             // can assume this file was already destroyed by the previous recursive call.
             _journal->deleteFileRecord(item._file);
