@@ -129,102 +129,102 @@
         <translation>Συνέχεια</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="265"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="266"/>
         <source>Confirm Folder Remove</source>
         <translation>Επιβεβαίωση αφαίρεσης φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="266"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="267"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="299"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="300"/>
         <source>Confirm Folder Reset</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="300"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="301"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="348"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="349"/>
         <source>Checking %1 connection...</source>
         <translation>Έλεγχος σύνδεσης %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="353"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="354"/>
         <source>No %1 connection configured.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="421"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="422"/>
         <source>Sync Running</source>
         <translation>Ο Συγχρονισμός Εκτελείται</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="422"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="423"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Η λειτουργία συγχρονισμού λειτουργεί.&lt;br/&gt; Θέλετε να την τερματίσετε;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="488"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="490"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="489"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="491"/>
         <source>Version: %1 (%2)</source>
         <translation>Έκδοση: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="500"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="502"/>
         <source>unknown problem.</source>
         <translation>άγνωστο πρόβλημα.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="503"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="505"/>
         <source>&lt;p&gt;Failed to connect to %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Αποτυχία σύνδεσης με το %1: &lt;tt&gt;%2&lt;/tt&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="616"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="618"/>
         <source>Start</source>
         <translation>Έναρξη</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="625"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="627"/>
         <source>Currently</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="632"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="634"/>
         <source>Completely</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="664"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="666"/>
         <source>%1 %2 %3 (%4 of %5)</source>
         <translation>%1 %2 %3 (%4 από %5)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="667"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="669"/>
         <source>Completely finished.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="674"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="676"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 από %2, αρχείο %3 από %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="731"/>
         <source>%1 of %2 in use.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="733"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="735"/>
         <source>Currently there is no storage usage information available.</source>
         <translation type="unfinished"/>
     </message>
@@ -232,148 +232,153 @@
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="83"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
         <source>Success.</source>
         <translation>Επιτυχία.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
         <source>CSync failed to create a lock file.</source>
         <translation>Το CSync απέτυχε να δημιουργήσει ένα αρχείο κλειδώματος.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync απέτυχε να φορτώσει την βάση δεδομένων κατάστασης.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
         <source>CSync failed to write the state db.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="98"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>Το πρόσθετο του %1 για το csync δεν μπόρεσε να φορτωθεί.&lt;br/&gt;Παρακαλούμε επαληθεύσετε την εγκατάσταση!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="98"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="101"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Η ώρα του συστήματος μεταξύ του τοπικού υπολογιστή και του διακομιστή διαφέρει πάρα πολύ. Παρακαλούμε χρησιμοποιήστε μια υπηρεσία συγχρονισμός του χρόνου (NTP) και στους δύο υπολογιστές.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="103"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>To CSync δεν μπορούσε να ανιχνεύσει τον τύπο του αρχείου συστήματος.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="109"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>Το CSync έλαβε κάποιο μήνυμα λάθους κατά την επεξεργασία της εσωτερικής διεργασίας.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="109"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="112"/>
         <source>CSync failed to reserve memory.</source>
         <translation>Το CSync απέτυχε να διατηρήσει τη μνήμη.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="112"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="115"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync μοιραίο σφαλμα παράμετρου.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="115"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync ενημέρωση στάδιο επεξεργασίας απέτυχε. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync στάδιο επεξεργασίας συμφιλίωση απέτυχε. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="124"/>
         <source>CSync processing step propagate failed.</source>
         <translation>Η προώθηση του CSync απέτυχε.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="124"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="127"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ο στοχευμένος κατάλογος δεν υπάρχει.&lt;/p&gt;&lt;p&gt;Παρακαλώ ελέγξτε τις ρυθμίσεις συγχρονισμού.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="128"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Ένα απομακρυσμένο αρχείο δεν μπόρεσε να επεξεργαστεί. Παρακαλούμε ελέγξτε την απομακρυσμένη πρόσβαση.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="132"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Το τοπικό σύστημα αρχείων δεν μπορεί να εγγράψει. Παρακαλούμε ελέγξτε τα δικαιώματα.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>Το CSync απέτυχε να συνδεθεί μέσω ενός proxy. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync απέτυχε να lookup μεσολάβησης ή διακομιστή. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync απέτυχε τον έλεγχο ταυτότητας στο 1% διακομιστή. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSync απέτυχε λόγω μη γίνεται deniend άδεια. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
         <source>CSync failed to find a specific file.</source>
         <translation>Το CSync απέτυχε να βρει ένα συγκεκριμένο αρχείο. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>Το CSync προσπαθησε να δημιουργησει εναν χωρο αποθηκευσης που υπηρχε ηδη.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
         <location filename="../src/mirall/csyncthread.cpp" line="168"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Δεν υπαρχει διαθεσιμος χωρος στον %1 διακομιστη.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>CSync unspecified error.</source>
         <translation>CSync αγνωστο σφαλμα.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>CSync failed to connect to the network.</source>
         <translation>Το CSync απέτυχε να συνδεθεί με το δίκτυο.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>A network connection timeout happend.</source>
         <translation>Συνέβη ένα χρονικό όριο σύνδεσης δικτύου. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Ένα σφάλμα μετάδοσης HTTP συνέβη.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="177"/>
+        <source>Aborted by the user</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="181"/>
         <source>An internal error number %1 happend.</source>
         <translation>Ένα εσωτερικό σφάλμα με αριθμό %1 συνέβη.</translation>
     </message>
@@ -417,130 +422,130 @@
 <context>
     <name>Mirall::Folder</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="83"/>
+        <location filename="../src/mirall/folder.cpp" line="100"/>
         <source>Unable to create csync-context</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="140"/>
+        <location filename="../src/mirall/folder.cpp" line="156"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Δεν υπάρχει ο τοπικός φάκελος %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="143"/>
+        <location filename="../src/mirall/folder.cpp" line="159"/>
         <source>%1 should be a directory but is not.</source>
         <translation>%1 επρεπε να ειναι χωρος αποθηκευσης αλλα δεν ειναι.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="146"/>
+        <location filename="../src/mirall/folder.cpp" line="162"/>
         <source>%1 is not readable.</source>
         <translation> %1 δεν είναι αναγνώσιμο. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="288"/>
+        <location filename="../src/mirall/folder.cpp" line="304"/>
         <source>File %1: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="289"/>
+        <location filename="../src/mirall/folder.cpp" line="305"/>
         <source>File %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="340"/>
+        <location filename="../src/mirall/folder.cpp" line="356"/>
         <source>New file available</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="340"/>
+        <location filename="../src/mirall/folder.cpp" line="356"/>
         <source>&apos;%1&apos; has been synced to this machine.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="358"/>
         <source>New files available</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="342"/>
+        <location filename="../src/mirall/folder.cpp" line="358"/>
         <source>&apos;%1&apos; and %n other file(s) have been synced to this machine.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="348"/>
+        <location filename="../src/mirall/folder.cpp" line="364"/>
         <source>File removed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="348"/>
+        <location filename="../src/mirall/folder.cpp" line="364"/>
         <source>&apos;%1&apos; has been removed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="366"/>
         <source>Files removed</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="350"/>
+        <location filename="../src/mirall/folder.cpp" line="366"/>
         <source>&apos;%1&apos; and %n other file(s) have been removed.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="356"/>
+        <location filename="../src/mirall/folder.cpp" line="372"/>
         <source>File updated</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="356"/>
+        <location filename="../src/mirall/folder.cpp" line="372"/>
         <source>&apos;%1&apos; has been updated.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="358"/>
+        <location filename="../src/mirall/folder.cpp" line="374"/>
         <source>Files updated</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/folder.cpp" line="358"/>
+        <location filename="../src/mirall/folder.cpp" line="374"/>
         <source>&apos;%1&apos; and %n other file(s) have been updated.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="400"/>
+        <location filename="../src/mirall/folder.cpp" line="416"/>
         <source>Error</source>
         <translation>Σφάλμα</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="429"/>
+        <location filename="../src/mirall/folder.cpp" line="425"/>
         <source>The CSync thread terminated.</source>
         <translation>Η διεργασία CSync τερματίζεται.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="673"/>
+        <location filename="../src/mirall/folder.cpp" line="678"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="676"/>
+        <location filename="../src/mirall/folder.cpp" line="681"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="680"/>
+        <location filename="../src/mirall/folder.cpp" line="685"/>
         <source>Remove All Files?</source>
         <translation>Αφαίρεση Όλων των Αρχείων;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="682"/>
+        <location filename="../src/mirall/folder.cpp" line="687"/>
         <source>Remove all files</source>
         <translation>Αφαίρεση όλων των αρχείων</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="683"/>
+        <location filename="../src/mirall/folder.cpp" line="688"/>
         <source>Keep files</source>
         <translation>Διατήρηση αρχείων</translation>
     </message>
@@ -558,47 +563,52 @@ Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="575"/>
+        <location filename="../src/mirall/folderman.cpp" line="590"/>
         <source>Undefined State.</source>
         <translation>Απροσδιόριστη κατάσταση.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="578"/>
+        <location filename="../src/mirall/folderman.cpp" line="593"/>
         <source>Waits to start syncing.</source>
         <translation>Αναμονή έναρξης συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="581"/>
+        <location filename="../src/mirall/folderman.cpp" line="596"/>
         <source>Preparing for sync.</source>
         <translation>Προετοιμασία για συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="584"/>
+        <location filename="../src/mirall/folderman.cpp" line="599"/>
         <source>Sync is running.</source>
         <translation>Ο συγχρονισμός εκτελείται.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="587"/>
+        <location filename="../src/mirall/folderman.cpp" line="602"/>
         <source>Server is currently not available.</source>
         <translation>Ο διακομιστής δεν είναι διαθέσιμος προς το παρόν.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="590"/>
+        <location filename="../src/mirall/folderman.cpp" line="605"/>
         <source>Last Sync was successful.</source>
         <translation>Ο τελευταίος συγχρονισμός ήταν επιτυχής.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="595"/>
+        <location filename="../src/mirall/folderman.cpp" line="610"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="598"/>
+        <location filename="../src/mirall/folderman.cpp" line="613"/>
         <source>Setup Error.</source>
         <translation>Σφάλμα Ρύθμισης.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="604"/>
+        <location filename="../src/mirall/folderman.cpp" line="616"/>
+        <source>User Abort.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderman.cpp" line="622"/>
         <source>%1 (Sync is paused)</source>
         <translation type="unfinished"/>
     </message>
@@ -1020,14 +1030,14 @@ name</source>
 <context>
     <name>Mirall::Logger</name>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="133"/>
+        <location filename="../src/mirall/logger.cpp" line="140"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="134"/>
+        <location filename="../src/mirall/logger.cpp" line="141"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Το αρχειο &apos;%1&apos;&lt;br/&gt;δεν μπορει να ανοιχθει για το γραψιμο.&lt;br/&gt;&lt;br/&gt;Το αρχείο καταγραφής δεν &lt;b&gt;μπορεί&lt;/b&gt; να αποθηκευτεί!&lt;/nobr&gt; </translation>
     </message>
 </context>
 <context>
@@ -1194,6 +1204,19 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="158"/>
         <source>Update user credentials</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::OwncloudPropagator</name>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="67"/>
+        <source>Aborted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
+        <source>Could not remove directory %1</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2142,6 +2165,11 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
         <source>Preparing to sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="75"/>
+        <source>Aborting...</source>
         <translation type="unfinished"/>
     </message>
 </context>
