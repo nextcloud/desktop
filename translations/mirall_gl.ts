@@ -375,7 +375,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="177"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Interrompido polo usuario</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="181"/>
@@ -608,7 +608,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="616"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Interrompido polo usuario.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="622"/>
@@ -1227,12 +1227,12 @@ o nome orixinal</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="67"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Interrompido</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel retirar o directorio %1</translation>
     </message>
 </context>
 <context>
@@ -2185,7 +2185,7 @@ o nome orixinal</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>Interrompendo</translation>
     </message>
 </context>
 </TS>

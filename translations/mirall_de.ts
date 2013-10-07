@@ -376,7 +376,7 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="177"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Abbruch durch den Benutzer</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="181"/>
@@ -609,7 +609,7 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="616"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Benutzer-Abbruch</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="622"/>
@@ -1225,12 +1225,12 @@ name</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="67"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Abgebrochen</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Verzeichnis %1 konnte nicht entfernt werden</translation>
     </message>
 </context>
 <context>
@@ -2183,7 +2183,7 @@ name</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>Abbrechen...</translation>
     </message>
 </context>
 </TS>

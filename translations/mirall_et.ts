@@ -375,7 +375,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="177"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Kasutaja poolt tühistatud</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="181"/>
@@ -403,7 +403,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="132"/>
         <source>Unable to connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1-ga ühendumine ebaõnnestus</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="156"/>
@@ -608,7 +608,7 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="616"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Kasutaja tühistamine.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="622"/>
@@ -1226,12 +1226,12 @@ konflikt-failiks ning serveris asuv fail on saadaval algse nimega.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="67"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Tühistatud</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Kausta %1 ei saa eemaldada</translation>
     </message>
 </context>
 <context>
@@ -1573,7 +1573,7 @@ konflikt-failiks ning serveris asuv fail on saadaval algse nimega.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudgui.cpp" line="152"/>
         <source>Sync started for %n configured sync folder(s).</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Sünkroniseerimine alustati %n seadistatud sünkroniseeritavas kaustas.</numerusform><numerusform>Sünkroniseerimine alustati %n seadistatud sünkroniseeritavastes kaustades.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="183"/>
@@ -2184,7 +2184,7 @@ konflikt-failiks ning serveris asuv fail on saadaval algse nimega.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>Tühistamine ...</translation>
     </message>
 </context>
 </TS>

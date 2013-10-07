@@ -375,7 +375,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="177"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Interrotto dall&apos;utente</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="181"/>
@@ -608,7 +608,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="616"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Interrotto dall&apos;utente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="622"/>
@@ -1226,12 +1226,12 @@ conflitto, mentre il file sul server è disponibile con il nome originale</trans
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="67"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Interrotto</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rimuovere la cartella %1</translation>
     </message>
 </context>
 <context>
@@ -2184,7 +2184,7 @@ conflitto, mentre il file sul server è disponibile con il nome originale</trans
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>Interruzione in corso...</translation>
     </message>
 </context>
 </TS>

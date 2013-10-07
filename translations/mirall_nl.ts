@@ -375,7 +375,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="177"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Afgebroken door de gebruiker</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="181"/>
@@ -403,7 +403,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="132"/>
         <source>Unable to connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Niet in staat om verbinding te maken met %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="156"/>
@@ -608,7 +608,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="616"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Afgebroken door gebruiker.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="622"/>
@@ -1228,12 +1228,12 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="67"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Afgebroken</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Kon map %1 niet verwijderen</translation>
     </message>
 </context>
 <context>
@@ -1575,7 +1575,7 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
     <message numerus="yes">
         <location filename="../src/mirall/owncloudgui.cpp" line="152"/>
         <source>Sync started for %n configured sync folder(s).</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Synchronisatie begonnen voor %n geconfigureerde synchronisatie map(pen).</numerusform><numerusform>Synchronisatie begonnen voor %n geconfigureerde synchronisatie map(pen).</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="183"/>
@@ -2186,7 +2186,7 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>Aan het afbreken...</translation>
     </message>
 </context>
 </TS>
