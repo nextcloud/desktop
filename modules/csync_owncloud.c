@@ -1248,10 +1248,10 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
      */
 
     if( c_streq( write_ctx->method, "PUT") ) {
-      clear_propfind_recursive_cache();
-
       bool finished = true;
       int  attempts = 0;
+
+      clear_propfind_recursive_cache();
       /*
        * do ten tries to upload the file chunked. Check the file size and mtime
        * before submitting a chunk and after having submitted the last one.
