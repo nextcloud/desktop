@@ -78,7 +78,8 @@ void OwncloudWizardResultPage::initializePage()
         text = tr("Your entire account is synced to the local folder <i>%1</i>")
                 .arg(QDir::toNativeSeparators(localFolder));
     } else {
-        text = tr("ownCloud folder <i>%1</i> is synced to local folder <i>%2</i>")
+        text = tr("%1 folder <i>%1</i> is synced to local folder <i>%2</i>")
+                .arg(Theme::instance()->appNameGUI())
                 .arg(_remoteFolder).arg(QDir::toNativeSeparators(localFolder));
     }
     _ui.localFolderLabel->setText( text );
