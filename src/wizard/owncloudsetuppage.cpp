@@ -41,7 +41,7 @@ OwncloudSetupPage::OwncloudSetupPage()
 
     Theme *theme = Theme::instance();
     setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(theme->appNameGUI())));
-    setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Setup ownCloud server")));
+    setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Setup %1 server").arg(theme->appNameGUI())));
 
     registerField( QLatin1String("OCUrl*"), _ui.leUrl );
 
@@ -227,7 +227,8 @@ void OwncloudSetupPage::setConfigExists(  bool config )
     _configExists = config;
 
     if (config == true) {
-        setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update ownCloud server")));
+        setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update %1 server")
+                                                         .arg(Theme::instance()->appNameGUI())));
     }
 }
 
