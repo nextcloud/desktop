@@ -22,6 +22,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/progressdispatcher.h"
 #include "mirall/owncloudgui.h"
+#include "mirall/protocolwidget.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -51,6 +52,13 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     _accountSettings = new AccountSettings(this);
     addAccount(tr("Account"), _accountSettings);
 
+    QIcon protocolIcon(QLatin1String(":/mirall/resources/settings.png"));
+    QListWidgetItem *protocol= new QListWidgetItem(protocolIcon, tr("Protocol"), _ui->labelWidget);
+    protocol->setSizeHint(QSize(0, 32));
+    _ui->labelWidget->addItem(protocol);
+    ProtocolWidget *protocolWidget = new ProtocolWidget;
+    _protocolIdx = _ui->stack->addWidget(protocolWidget);
+
     QIcon generalIcon(QLatin1String(":/mirall/resources/settings.png"));
     QListWidgetItem *general = new QListWidgetItem(generalIcon, tr("General"), _ui->labelWidget);
     general->setSizeHint(QSize(0, 32));
@@ -73,7 +81,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              gui, SLOT(slotFolderOpenAction(QString)));
-    connect( _accountSettings, SIGNAL(openProgressDialog()), gui, SLOT(slotItemProgressDialog()));
+    connect( _accountSettings, SIGNAL(openProtocol()), SLOT(slotShowProtocol()));
 
     connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
              _accountSettings, SLOT(slotSetProgress(QString, Progress::Info)) );
@@ -138,6 +146,12 @@ void SettingsDialog::slotSyncStateChange(const QString& alias)
     if( folder ) {
         _accountSettings->slotUpdateFolderState(folder);
     }
+}
+
+void SettingsDialog::slotShowProtocol()
+{
+    qDebug() << "Show protocol window!";
+    _ui->labelWidget->setCurrentRow(_protocolIdx);
 }
 
 void SettingsDialog::setGeneralErrors(const QStringList &errors)

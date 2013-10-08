@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Mirall::ItemProgressDialog</class>
- <widget class="QWidget" name="Mirall::ItemProgressDialog">
+ <class>Mirall::ProtocolWidget</class>
+ <widget class="QWidget" name="Mirall::ProtocolWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -74,7 +74,7 @@
      <item>
       <widget class="QDialogButtonBox" name="_dialogButtonBox">
        <property name="standardButtons">
-        <set>QDialogButtonBox::Close</set>
+        <set>QDialogButtonBox::NoButton</set>
        </property>
       </widget>
      </item>

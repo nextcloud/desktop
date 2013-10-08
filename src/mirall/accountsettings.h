@@ -23,7 +23,6 @@
 
 #include "mirall/folder.h"
 #include "mirall/progressdispatcher.h"
-#include "mirall/itemprogressdialog.h"
 
 class QStandardItemModel;
 class QModelIndex;
@@ -38,7 +37,6 @@ class AccountSettings;
 }
 
 class FolderMan;
-class ItemProgressDialog;
 class IgnoreListEditor;
 
 class AccountSettings : public QWidget
@@ -54,7 +52,7 @@ public:
 
 signals:
     void folderChanged();
-    void openProgressDialog();
+    void openProtocol();
     void openFolderAlias( const QString& );
     void infoFolderAlias( const QString& );
 
@@ -94,7 +92,6 @@ private:
     void showConnectionLabel( const QString& message, const QString& tooltip = QString() );
 
     Ui::AccountSettings *ui;
-    QPointer<ItemProgressDialog> _fileItemDialog;
     QPointer<IgnoreListEditor> _ignoreEditor;
     QStandardItemModel *_model;
     QUrl   _OCUrl;

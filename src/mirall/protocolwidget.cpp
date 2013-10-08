@@ -16,7 +16,7 @@
 #include <QtWidgets>
 #endif
 
-#include "mirall/itemprogressdialog.h"
+#include "mirall/protocolwidget.h"
 #include "mirall/syncresult.h"
 #include "mirall/logger.h"
 #include "mirall/utility.h"
@@ -24,23 +24,23 @@
 #include "mirall/folderman.h"
 #include "mirall/syncfileitem.h"
 
-#include "ui_itemprogressdialog.h"
+#include "ui_protocolwidget.h"
 
 namespace Mirall {
 
-ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
-    QDialog(parent),
+ProtocolWidget::ProtocolWidget(QWidget *parent) :
+    QWidget(parent),
     ErrorIndicatorRole( Qt::UserRole +1 ),
-    _ui(new Ui::ItemProgressDialog)
+    _ui(new Ui::ProtocolWidget)
 {
     _ui->setupUi(this);
-    connect(_ui->_dialogButtonBox->button(QDialogButtonBox::Close), SIGNAL(clicked()),
-            this, SLOT(accept()));
+
+    _ui->_errorLabel->setVisible(false);
 
     connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString,Progress::Info)),
             this, SLOT(slotProgressInfo(QString,Progress::Info)));
     connect(ProgressDispatcher::instance(), SIGNAL(progressSyncProblem(const QString&,const Progress::SyncProblem&)),
-            this, SLOT(slotProgressErrors(const QString&, const Progress::SyncProblem&)));
+            this, SLOT(slotProgressProblem(const QString&, const Progress::SyncProblem&)));
 
     connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(slotOpenFile(QTreeWidgetItem*,int)));
 
@@ -61,11 +61,9 @@ ItemProgressDialog::ItemProgressDialog(Application*, QWidget *parent) :
     QPushButton *copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     connect(copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
 
-    setWindowTitle(tr("Sync Protocol"));
+ }
 
-}
-
-void ItemProgressDialog::setSyncResultStatus(const SyncResult& result )
+void ProtocolWidget::setSyncResultStatus(const SyncResult& result )
 {
      if( result.errorStrings().count() ) {
         _ui->_errorLabel->setVisible(true);
@@ -94,7 +92,7 @@ void ItemProgressDialog::setSyncResultStatus(const SyncResult& result )
 
 }
 
-void ItemProgressDialog::setSyncResult( const SyncResult& result )
+void ProtocolWidget::setSyncResult( const SyncResult& result )
 {
     setSyncResultStatus(result);
 
@@ -167,7 +165,7 @@ void ItemProgressDialog::setSyncResult( const SyncResult& result )
     }
 }
 
-void ItemProgressDialog::setupList()
+void ProtocolWidget::setupList()
 {
   // get the folders to set up the top level list.
   Folder::Map map = FolderMan::instance()->map();
@@ -199,17 +197,17 @@ void ItemProgressDialog::setupList()
 
   QList<Progress::SyncProblem> problemList = ProgressDispatcher::instance()->recentProblems(0);
   foreach( Progress::SyncProblem prob, problemList ) {
-    slotProgressErrors(prob.folder, prob);
+    slotProgressProblem(prob.folder, prob);
     folderHash[prob.folder] = 1;
   }
 }
 
-ItemProgressDialog::~ItemProgressDialog()
+ProtocolWidget::~ProtocolWidget()
 {
     delete _ui;
 }
 
-void ItemProgressDialog::copyToClipboard()
+void ProtocolWidget::copyToClipboard()
 {
     QString text;
     QTextStream ts(&text);
@@ -238,12 +236,7 @@ void ItemProgressDialog::copyToClipboard()
     emit guiLog(tr("Copied to clipboard"), tr("The sync protocol has been copied to the clipboard."));
 }
 
-void ItemProgressDialog::accept()
-{
-    QDialog::accept();
-}
-
-void ItemProgressDialog::cleanErrors( const QString& folder ) // FIXME: Use the folder to detect which errors can be deleted.
+void ProtocolWidget::cleanErrors( const QString& folder ) // FIXME: Use the folder to detect which errors can be deleted.
 {
     _problemCounter = 0;
     QList<QTreeWidgetItem*> wipeList;
@@ -261,7 +254,7 @@ void ItemProgressDialog::cleanErrors( const QString& folder ) // FIXME: Use the 
     qDeleteAll(wipeList.begin(), wipeList.end());
 }
 
-QString ItemProgressDialog::timeString(QDateTime dt, QLocale::FormatType format) const
+QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) const
 {
     QLocale loc = QLocale::system();
     QString timeStr;
@@ -279,7 +272,7 @@ QString ItemProgressDialog::timeString(QDateTime dt, QLocale::FormatType format)
     return timeStr;
 }
 
-void ItemProgressDialog::slotProgressErrors( const QString& folder, const Progress::SyncProblem& problem )
+void ProtocolWidget::slotProgressProblem( const QString& folder, const Progress::SyncProblem& problem )
 {
   QStringList columns;
   QString timeStr = timeString(problem.timestamp);
@@ -306,7 +299,7 @@ void ItemProgressDialog::slotProgressErrors( const QString& folder, const Progre
   Q_UNUSED(item);
 }
 
-void ItemProgressDialog::slotOpenFile( QTreeWidgetItem *item, int )
+void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
 {
     QString folderName = item->text(2);
     QString fileName = item->text(1);
@@ -320,7 +313,7 @@ void ItemProgressDialog::slotOpenFile( QTreeWidgetItem *item, int )
     }
 }
 
-void ItemProgressDialog::slotProgressInfo( const QString& folder, const Progress::Info& progress )
+void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::Info& progress )
 {
     if( progress.kind == Progress::StartSync ) {
       cleanErrors( folder );

@@ -19,7 +19,6 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/utility.h"
 #include "mirall/progressdispatcher.h"
-#include "mirall/itemprogressdialog.h"
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/settingsdialog.h"
 #include "mirall/logger.h"
@@ -35,7 +34,6 @@ ownCloudGui::ownCloudGui(Application *parent) :
     QObject(parent),
     _tray(0),
     _settingsDialog(0),
-    _progressDialog(0),
     _logBrowser(0),
     _contextMenu(0),
     _recentActionsMenu(0),
@@ -118,9 +116,10 @@ void ownCloudGui::slotSyncStateChange( const QString& alias )
 
     qDebug() << "Sync state changed for folder " << alias << ": "  << result.statusString();
 
-    if( _progressDialog ) {
-        _progressDialog->setSyncResult(result);
-    }
+    // Promote sync result to settings-dialog for sync protocol?
+    // if( _progressDialog ) {
+    //     _progressDialog->setSyncResult(result);
+    // }
     if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();
     }
@@ -315,7 +314,7 @@ void ownCloudGui::setupActions()
     _actionRecent = new QAction(tr("Details..."), this);
     _actionRecent->setEnabled( true );
 
-    QObject::connect(_actionRecent, SIGNAL(triggered(bool)), SLOT(slotItemProgressDialog()));
+    QObject::connect(_actionRecent, SIGNAL(triggered(bool)), SLOT(slotShowSyncProtocol()));
     QObject::connect(_actionSettings, SIGNAL(triggered(bool)), SLOT(slotSettings()));
     _actionHelp = new QAction(tr("Help"), this);
     QObject::connect(_actionHelp, SIGNAL(triggered(bool)), SLOT(slotHelp()));
@@ -441,22 +440,17 @@ void ownCloudGui::slotSettings()
     Utility::raiseDialog(_settingsDialog.data());
 }
 
-void ownCloudGui::slotItemProgressDialog()
+// open sync protocol widget
+void ownCloudGui::slotShowSyncProtocol()
 {
-    if (_progressDialog.isNull()) {
-        _progressDialog = new ItemProgressDialog(_app);
-        _progressDialog->setAttribute( Qt::WA_DeleteOnClose, true );
-        _progressDialog->setupList();
-        _progressDialog->show();
-    }
-    Utility::raiseDialog(_progressDialog.data());
+    slotSettings();  // FIXME: Show the protocol tab.
+    _settingsDialog->slotShowProtocol();
 }
 
 void ownCloudGui::slotShutdown()
 {
     // those do delete on close
     if (!_settingsDialog.isNull()) _settingsDialog->close();
-    if (!_progressDialog.isNull()) _progressDialog->close();
     if (!_logBrowser.isNull())     _logBrowser->deleteLater();
 }
 

@@ -43,7 +43,6 @@ class FolderWatcher;
 class ownCloudInfo;
 class SslErrorDialog;
 class SettingsDialog;
-class ItemProgressDialog;
 class SocketApi;
 
 class Application : public SharedTools::QtSingleApplication

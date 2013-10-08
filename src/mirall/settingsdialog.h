@@ -45,6 +45,7 @@ public:
 
 public slots:
     void slotSyncStateChange(const QString& alias);
+    void slotShowProtocol();
 
 protected:
     void reject();
@@ -54,6 +55,8 @@ private:
     Ui::SettingsDialog *_ui;
     AccountSettings *_accountSettings;
     QListWidgetItem *_accountItem;
+
+    int _protocolIdx;
 };
 
 }

@@ -187,7 +187,7 @@ mirall/generalsettings.ui
 mirall/networksettings.ui
 mirall/accountsettings.ui
 mirall/ignorelisteditor.ui
-mirall/itemprogressdialog.ui
+mirall/protocolwidget.ui
 wizard/owncloudsetupnocredspage.ui
 wizard/owncloudhttpcredspage.ui
 wizard/owncloudwizardresultpage.ui
@@ -201,6 +201,7 @@ set(mirall_SRCS
     mirall/systray.cpp
     mirall/folderwizard.cpp
     mirall/folderstatusmodel.cpp
+    mirall/protocolwidget.cpp
     wizard/owncloudwizard.cpp
     wizard/owncloudsetuppage.cpp
     wizard/owncloudhttpcredspage.cpp
@@ -218,7 +219,6 @@ set(mirall_SRCS
     mirall/networksettings.cpp
     mirall/accountsettings.cpp
     mirall/ignorelisteditor.cpp
-    mirall/itemprogressdialog.cpp
     mirall/owncloudgui.cpp
     mirall/socketapi.cpp
 )
@@ -244,7 +244,7 @@ set(mirall_HEADERS
     mirall/networksettings.h
     mirall/accountsettings.h
     mirall/ignorelisteditor.h
-    mirall/itemprogressdialog.h
+    mirall/protocolwidget.h
     mirall/owncloudgui.h
     mirall/socketapi.h
 )

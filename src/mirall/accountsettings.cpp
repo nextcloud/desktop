@@ -25,7 +25,6 @@
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/ignorelisteditor.h"
-#include "mirall/itemprogressdialog.h"
 
 #include <math.h>
 
@@ -749,7 +748,7 @@ void AccountSettings::slotIgnoreFilesEditor()
 
 void AccountSettings::slotInfoAboutCurrentFolder()
 {
-    emit(openProgressDialog());
+    emit(openProtocol());
 }
 
 AccountSettings::~AccountSettings()

@@ -27,7 +27,6 @@
 namespace Mirall {
 
 class SettingsDialog;
-class ItemProgressDialog;
 class Application;
 class LogBrowser;
 
@@ -56,7 +55,7 @@ public slots:
     void slotUpdateProgress(const QString &folder, const Progress::Info& progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
-    void slotItemProgressDialog();
+    void slotShowSyncProtocol();
     void slotSettings();
     void slotShutdown();
     void slotSyncStateChange( const QString& alias );
@@ -74,7 +73,6 @@ private:
 
     QPointer<Systray> _tray;
     QPointer<SettingsDialog> _settingsDialog;
-    QPointer<ItemProgressDialog> _progressDialog;
     QPointer<LogBrowser>_logBrowser;
        // tray's menu
     QMenu *_contextMenu;
