@@ -18,6 +18,7 @@
 #include <QHash>
 #include <QTime>
 #include <QQueue>
+#include <QElapsedTimer>
 
 namespace Mirall {
 
@@ -119,6 +120,8 @@ private:
     QList<Progress::SyncProblem> _recentProblems;
 
     QHash<QString, Progress::Kind> _currentAction;
+
+    QElapsedTimer _timer;
     static ProgressDispatcher* _instance;
 };
 
