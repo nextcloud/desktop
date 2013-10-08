@@ -177,7 +177,7 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
             newProgress.overall_current_bytes = newProgress.overall_transmission_size;
             newProgress.current_file_no = newProgress.overall_file_count;
             _currentAction.remove(newProgress.folder);
-            int64_t msecs = _timer.elapsed();
+            qint64 msecs = _timer.elapsed();
 
             qDebug()<< "[PROGRESS] progressed " << newProgress.overall_transmission_size
                     << " bytes in " << newProgress.overall_file_count << " files"
