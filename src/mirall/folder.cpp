@@ -434,7 +434,7 @@ void Folder::slotTerminateSync(bool block)
         delete _thread;
         slotCSyncFinished();
     }
-
+    setSyncEnabled(false);
 }
 
 // This removes the csync File database if the sync folder definition is removed
