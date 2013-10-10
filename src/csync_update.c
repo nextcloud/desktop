@@ -215,7 +215,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         }
         if((ctx->current == REMOTE_REPLICA && !c_streq(fs->md5, tmp->md5 ))
             || (ctx->current == LOCAL_REPLICA && (fs->mtime != tmp->modtime
-#ifndef _WIN32
+#if 0
                                                   || fs->inode != tmp->inode
 #endif
                                                   ))) {
