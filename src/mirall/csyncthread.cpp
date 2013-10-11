@@ -295,7 +295,6 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     const char *errMsg = csync_get_status_string( ctx );
     QString errStr = csyncErrorToString(err);
     if( errMsg ) {
-        errStr += QLatin1String("<br/>");
         errStr += QString::fromUtf8(errMsg);
     }
     qDebug() << " #### ERROR during "<< state << ": " << errStr;
