@@ -140,6 +140,7 @@ private:
     QString _logFile;
     QString _logDirectory;
     QStringList _startupFail;
+    bool _startupNetworkError;
 
     int _logExpire;
     bool _showLogWindow;
