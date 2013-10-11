@@ -159,7 +159,7 @@ QString CSyncThread::csyncErrorToString( CSYNC_ERROR_CODE err, const char *errSt
     }
 
     if( errString ) {
-        errStr += tr("<br/>Backend Message: ")+QString::fromUtf8(errString);
+        errStr += tr(" Backend Message: ")+QString::fromUtf8(errString);
     }
     return errStr;
 
