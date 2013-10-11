@@ -104,8 +104,8 @@ Application::Application(int &argc, char **argv) :
     _recentActionsMenu(0),
     _theme(Theme::instance()),
     _logBrowser(0),
-    _logExpire(0),
     _startupNetworkError(false),
+    _logExpire(0),
     _showLogWindow(false),
     _logFlush(false),
     _helpOnly(false)
