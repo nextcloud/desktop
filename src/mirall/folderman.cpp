@@ -546,6 +546,7 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
         case SyncResult::Unavailable:
             overallResult.setStatus( SyncResult::Unavailable );
             break;
+        case SyncResult::Problem:
         case SyncResult::Success:
             if( overallResult.status() == SyncResult::Undefined )
                 overallResult.setStatus( SyncResult::Success );
@@ -557,10 +558,7 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
             if ( overallResult.status() != SyncResult::Error )
                 overallResult.setStatus( SyncResult::SetupError );
             break;
-        case SyncResult::Problem:
-            if ( overallResult.status() != SyncResult::Problem )
-                overallResult.setStatus( SyncResult::Problem );
-            break;
+
         // no default case on purpose, check compiler warnings
         }
     }
