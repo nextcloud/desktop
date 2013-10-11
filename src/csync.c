@@ -942,7 +942,6 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path) {
   if (ctx == NULL || path == NULL) {
     return -1;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
 
   return csync_exclude_load(ctx, path);
 }
@@ -956,7 +955,6 @@ const char *csync_get_config_dir(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
 
   return ctx->options.config_dir;
 }
@@ -965,7 +963,6 @@ int csync_set_config_dir(CSYNC *ctx, const char *path) {
   if (ctx == NULL || path == NULL) {
     return -1;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
 
   SAFE_FREE(ctx->options.config_dir);
   ctx->options.config_dir = c_strdup(path);
@@ -1015,7 +1012,6 @@ int csync_is_statedb_disabled(CSYNC *ctx) {
   if (ctx == NULL) {
     return -1;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
   return ctx->statedb.disabled;
 }
 
@@ -1023,7 +1019,6 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   if (ctx == NULL || cb == NULL) {
     return -1;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
   if (ctx->status & CSYNC_STATUS_INIT) {
     ctx->status_code = CSYNC_STATUS_CSYNC_STATUS_ERROR;
     fprintf(stderr, "This function must be called before initialization.");
@@ -1047,8 +1042,6 @@ void *csync_get_userdata(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
-
   return ctx->callbacks.userdata;
 }
 
@@ -1056,7 +1049,6 @@ int csync_set_userdata(CSYNC *ctx, void *userdata) {
   if (ctx == NULL) {
     return -1;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
 
   ctx->callbacks.userdata = userdata;
 
@@ -1067,7 +1059,6 @@ csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
 
   return ctx->callbacks.auth_function;
 }
@@ -1076,7 +1067,6 @@ int csync_set_status(CSYNC *ctx, int status) {
   if (ctx == NULL || status < 0) {
     return -1;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
 
   ctx->status = status;
 
@@ -1087,7 +1077,6 @@ int csync_get_status(CSYNC *ctx) {
   if (ctx == NULL) {
     return -1;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
 
   return ctx->status;
 }
@@ -1096,7 +1085,6 @@ int csync_enable_conflictcopys(CSYNC* ctx){
   if (ctx == NULL) {
     return -1;
   }
-  ctx->status_code = CSYNC_STATUS_OK;
 
   if (ctx->status & CSYNC_STATUS_INIT) {
     fprintf(stderr, "This function must be called before initialization.");
