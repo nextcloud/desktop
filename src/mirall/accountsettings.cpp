@@ -35,6 +35,8 @@
 #include <QMessageBox>
 #include <QAction>
 #include <QKeySequence>
+#include <QIcon>
+#include <QVariant>
 
 namespace Mirall {
 
@@ -50,7 +52,8 @@ static const char progressBarStyleC[] =
 
 AccountSettings::AccountSettings(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::AccountSettings)
+    ui(new Ui::AccountSettings),
+    _wasDisabledBefore(false)
 {
     ui->setupUi(this);
 
@@ -226,11 +229,20 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     Theme *theme = Theme::instance();
     item->setData( theme->statusHeaderText( status ),  Qt::ToolTipRole );
     if( f->syncEnabled() ) {
-        item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
+        if( status == SyncResult::SyncPrepare ) {
+            if( _wasDisabledBefore ) {
+                // if the folder was disabled before, set the sync icon
+                item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
+            }  // we keep the previous icon for the SyncPrepare state.
+        } else {
+            // kepp the previous icon for the prepare phase.
+            item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
+        }
     } else {
-        item->setData( theme->folderDisabledIcon( ),   FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
+        item->setData( theme->folderDisabledIcon( ), FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
+        _wasDisabledBefore = false;
     }
-    item->setData( theme->statusHeaderText( status ),  FolderStatusDelegate::FolderStatus );
+    item->setData( theme->statusHeaderText( status ), FolderStatusDelegate::FolderStatus );
 
     if( errorList.isEmpty() ) {
         if( (status == SyncResult::Error ||
@@ -434,6 +446,10 @@ void AccountSettings::slotEnableCurrentFolder()
                 folderMan->terminateSyncProcess( alias );
 
             folderMan->slotEnableFolder( alias, !folderEnabled );
+
+            // keep state for the icon setting.
+            if( !folderEnabled ) _wasDisabledBefore = true;
+
             slotUpdateFolderState (f);
             // set the button text accordingly.
             slotFolderActivated( selected );

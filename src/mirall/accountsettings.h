@@ -101,7 +101,7 @@ private:
     QHash<QStandardItem*, QTimer*> _hideProgressTimers;
     QString _kindContext;
     QStringList _generalErrors;
-
+    bool _wasDisabledBefore;
 };
 
 } // namespace Mirall
