@@ -1086,7 +1086,7 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Configurer le serveur %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="100"/>
@@ -1101,7 +1101,7 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="230"/>
         <source>Update %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Mettre à jour le serveur %1</translation>
     </message>
 </context>
 <context>
@@ -1267,7 +1267,7 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="81"/>
         <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 le dossier &lt;i&gt;%1&lt;/i&gt; est synchronisé au dossier local &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
@@ -1275,117 +1275,122 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Protocole de synchronisation détaillé</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="57"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="62"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Zone de texte</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="48"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Heure</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Fichier</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
         <source>Folder</source>
-        <translation type="unfinished"/>
+        <translation>Dossier</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Action</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="52"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Taille</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="61"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Copier</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="123"/>
         <source>Soft Link ignored</source>
-        <translation type="unfinished"/>
+        <translation>Lien symbolique ignoré</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="124"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories</source>
-        <translation type="unfinished"/>
+        <translation>Les liens symboliques cassent la sémantique de la synchronisation.
+Veuillez ne pas les utiliser dans les dossiers synchronisés.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="127"/>
         <source>file</source>
-        <translation type="unfinished"/>
+        <translation>fichier</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="129"/>
         <source>directory</source>
-        <translation type="unfinished"/>
+        <translation>dossier</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="131"/>
         <source>The %1 was ignored because it is listed in the clients ignore list
 or the %1 name contains characters that are not syncable
 in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>Le %1 a été ignoré car il est présent dans la liste des clients à ignorer
+ou le nom de %1 contient des caractères qui ne sont pas synchronisables
+dans un environnement multi-plateforme</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="134"/>
         <source>Item ignored</source>
-        <translation type="unfinished"/>
+        <translation>Item ignoré</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="136"/>
         <source>%1 on ignore list</source>
-        <translation type="unfinished"/>
+        <translation>%1 dans la liste à ignorer</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="137"/>
         <source>The %1 was skipped because it is listed on the clients
 list of names to ignore</source>
-        <translation type="unfinished"/>
+        <translation>Le %1 a été ignoré car il est présent dans la liste des
+noms de clients à ignorer</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="140"/>
         <source>Invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>Caractères invalides</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="141"/>
         <source>The %1 name contains one or more invalid characters which break
 syncing in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>Le nom de %1 contient un ou plusieurs caractères invalides qui ne
+sont pas synchronisables dans un environnement multi-plateforme</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="146"/>
         <source>Conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Fichier de conflits</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="147"/>
@@ -1393,27 +1398,29 @@ syncing in a cross platform environment</source>
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
 name</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier a été modifié sur le serveur mais également sur le dépôt local
+ce qui crée un conflit. La modification locale est copiée dans le fichier de
+conflits et le fichier côté serveur est disponible sous son nom original.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="236"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copié dans le presse-papiers</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="236"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Le protocole synchronisation choisi a été copié dans le presse-papiers.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="284"/>
         <source>Problem: %1</source>
-        <translation type="unfinished"/>
+        <translation>Problème : %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>No more storage space available on server.</source>
-        <translation type="unfinished"/>
+        <translation>Plus aucun espace de stockage n&apos;est disponible sur le serveur.</translation>
     </message>
 </context>
 <context>
@@ -1431,7 +1438,7 @@ name</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="56"/>
         <source>Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Protocole</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="63"/>
@@ -1960,7 +1967,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="79"/>
         <source>Enter the URL of the server that you want to connect to (without http or https).</source>
-        <translation type="unfinished"/>
+        <translation>Saisissez l&apos;URL du serveur auquel vous souhaitez vous connecter (sans http ni https).</translation>
     </message>
 </context>
 <context>

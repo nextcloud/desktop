@@ -1268,7 +1268,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Lomake</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="27"/>
@@ -1278,42 +1278,42 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="57"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="62"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TekstiLeima</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="48"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Aika</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
         <source>Folder</source>
-        <translation type="unfinished"/>
+        <translation>Kansio</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Toiminto</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="52"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Koko</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="61"/>
@@ -1334,12 +1334,12 @@ Please do not use them in synced directories</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="127"/>
         <source>file</source>
-        <translation type="unfinished"/>
+        <translation>tiedosto</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="129"/>
         <source>directory</source>
-        <translation type="unfinished"/>
+        <translation>kansio</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="131"/>
@@ -1367,7 +1367,7 @@ list of names to ignore</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="140"/>
         <source>Invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>Virheellisiä merkkejä</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="141"/>
@@ -1391,7 +1391,7 @@ name</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="236"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopioitu leikepöydälle</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="236"/>
@@ -1401,12 +1401,12 @@ name</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="284"/>
         <source>Problem: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ongelma: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>No more storage space available on server.</source>
-        <translation type="unfinished"/>
+        <translation>Palvelimella ei ole enää tallennustilaa käytettävissä.</translation>
     </message>
 </context>
 <context>

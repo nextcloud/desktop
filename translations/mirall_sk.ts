@@ -1275,57 +1275,57 @@ Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri ods
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulár</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Detailný záznam synchronizácie</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="57"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="62"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="48"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Čas</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Súbor</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
         <source>Folder</source>
-        <translation type="unfinished"/>
+        <translation>Priečinok</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Akcia</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="52"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Veľkosť</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="61"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopírovať</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="123"/>
@@ -1341,12 +1341,12 @@ Please do not use them in synced directories</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="127"/>
         <source>file</source>
-        <translation type="unfinished"/>
+        <translation>súbor</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="129"/>
         <source>directory</source>
-        <translation type="unfinished"/>
+        <translation>priečinok</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="131"/>
@@ -1385,7 +1385,7 @@ syncing in a cross platform environment</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="146"/>
         <source>Conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Konfliktný súbor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="147"/>
@@ -1393,27 +1393,29 @@ syncing in a cross platform environment</source>
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
 name</source>
-        <translation type="unfinished"/>
+        <translation>Súbor bol pozmenený na serveri a lokálnom repozitári, čoho výsledkom bolo
+vytvorenie takzvaného konfliktu. Lokálna zmena je kopírovaná do konfliktného
+súboru, pokým súbor zo strany servera je dostupný z originálnym názvom</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="236"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Skopírované do &quot;clipboard&quot;</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="236"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Záznam synchronizácie bol skopírovaný do &quot;clipboard&quot;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="284"/>
         <source>Problem: %1</source>
-        <translation type="unfinished"/>
+        <translation>Problém: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>No more storage space available on server.</source>
-        <translation type="unfinished"/>
+        <translation>Nedostatok diskovej kapacity na serveri.</translation>
     </message>
 </context>
 <context>

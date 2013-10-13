@@ -1268,12 +1268,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Űrlap</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizációs protokoll bővebben</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="57"/>
@@ -1288,37 +1288,37 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="48"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Idő</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Fájl</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
         <source>Folder</source>
-        <translation type="unfinished"/>
+        <translation>Mappa</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Művelet</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="52"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Méret</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="61"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Másolás</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="123"/>
@@ -1334,12 +1334,12 @@ Please do not use them in synced directories</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="127"/>
         <source>file</source>
-        <translation type="unfinished"/>
+        <translation>fájl</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="129"/>
         <source>directory</source>
-        <translation type="unfinished"/>
+        <translation>mappa</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="131"/>
@@ -1391,17 +1391,17 @@ name</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="236"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Bemásolva a vágólapra</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="236"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>A sync protokoll bemásolva a vágólapra.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="284"/>
         <source>Problem: %1</source>
-        <translation type="unfinished"/>
+        <translation>Probléma: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
@@ -1727,7 +1727,7 @@ name</source>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="223"/>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="262"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="75"/>
@@ -1796,7 +1796,7 @@ name</source>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="109"/>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="122"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>

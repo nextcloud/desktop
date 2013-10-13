@@ -1275,117 +1275,122 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Vorm</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="27"/>
         <source>Detailed Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Detailne Sync protokoll</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="57"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="62"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="70"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Tekstisilt</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="48"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Aeg</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Fail</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
         <source>Folder</source>
-        <translation type="unfinished"/>
+        <translation>Kaust</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Tegevus</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="52"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Suurus</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="61"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="123"/>
         <source>Soft Link ignored</source>
-        <translation type="unfinished"/>
+        <translation>Soft linki ingnoreeriti</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="124"/>
         <source>Softlinks break the semantics of synchronization.
 Please do not use them in synced directories</source>
-        <translation type="unfinished"/>
+        <translation>Softlingid lõhuvad sünkroniseeringu.
+Palun ära kasuta neid sünkroniseeritavates kataloogides</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="127"/>
         <source>file</source>
-        <translation type="unfinished"/>
+        <translation>fail</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="129"/>
         <source>directory</source>
-        <translation type="unfinished"/>
+        <translation>kaust</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="131"/>
         <source>The %1 was ignored because it is listed in the clients ignore list
 or the %1 name contains characters that are not syncable
 in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>Faili %1 ignoreeriti kuna see on märigitud kliendi ignoreeritavate nimekirjas⏎
+või sisaldab %1 faili nimi sümboleid, mida ei saa sünkroniseerida erinevate⏎
+keskkonna platvormide vahel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="134"/>
         <source>Item ignored</source>
-        <translation type="unfinished"/>
+        <translation>Üksust ignoreeriti</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="136"/>
         <source>%1 on ignore list</source>
-        <translation type="unfinished"/>
+        <translation>%1 on ingoreeritavate nimistus</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="137"/>
         <source>The %1 was skipped because it is listed on the clients
 list of names to ignore</source>
-        <translation type="unfinished"/>
+        <translation>%1 jäeti vahele, kuna see on märgitud kliendi⏎
+ignoreeritavate nimistus</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="140"/>
         <source>Invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>Sobimatud sümbolid</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="141"/>
         <source>The %1 name contains one or more invalid characters which break
 syncing in a cross platform environment</source>
-        <translation type="unfinished"/>
+        <translation>%1 nimi sisaldab ühte või rohkemat sobimatut sümbolit, mis rikub⏎
+sünkroniseeringu erinevate keskkonna platvormide vahel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="146"/>
         <source>Conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Konfliktne fail.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="147"/>
@@ -1393,27 +1398,29 @@ syncing in a cross platform environment</source>
 created a so called conflict. The local change is copied to the conflict
 file while the file from the server side is available under the original
 name</source>
-        <translation type="unfinished"/>
+        <translation>Faili on muudetud serveris ning kohalikus repostitiooriumis ning selle 
+tulemusel on tekitatud nn konflikt. Kohalik muudatus on kopeeritud 
+konflikt-failiks ning serveris asuv fail on saadaval algse nimega.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="236"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeritud lõikepuhvrisse</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="236"/>
         <source>The sync protocol has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Sync protokoll on kopeeritud lõikepuhvrisse.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="284"/>
         <source>Problem: %1</source>
-        <translation type="unfinished"/>
+        <translation>Probleem: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>No more storage space available on server.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris pole rohkem vaba ruumi.</translation>
     </message>
 </context>
 <context>
