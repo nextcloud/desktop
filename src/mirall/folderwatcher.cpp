@@ -79,7 +79,7 @@ void FolderWatcher::addIgnoreListFile( const QString& file )
 
     while (!infile.atEnd()) {
         QString line = QString::fromLocal8Bit( infile.readLine() ).trimmed();
-        if( !line.startsWith( QLatin1Char('#') ) && line.isEmpty() ) {
+        if( !(line.startsWith( QLatin1Char('#') ) || line.isEmpty()) ) {
             _ignores.append(line);
         }
     }
