@@ -589,7 +589,7 @@ void AccountSettings::slotProgressProblem(const QString& folder, const Progress:
 
 void AccountSettings::slotSetProgress(const QString& folder, const Progress::Info &progress )
 {
-    // qDebug() << "================================> Progress for folder " << folder << " file " << file << ": "<< p1;
+    // qDebug() << "================================> Progress for folder " << folder << " progress " << Progress::asResultString(progress.kind);
     QStandardItem *item = itemForFolder( folder );
     qint64 prog1 = progress.current_file_bytes;
     qint64 prog2 = progress.file_size;
@@ -601,6 +601,11 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     // Hotfix for a crash that I experienced in a very rare case/setup
     if (progress.kind == Mirall::Progress::Invalid) {
         qDebug() << "================================> INVALID Progress for folder " << folder;
+        return;
+    }
+    if( (progress.kind == Progress::StartSync || progress.kind == Progress::EndSync)
+            && progress.overall_file_count == 0 ) {
+        // do not show progress if nothing is transmitted.
         return;
     }
 
