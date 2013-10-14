@@ -150,6 +150,9 @@ public slots:
       */
       void startSync(const QStringList &pathList = QStringList());
 
+      void setProxyDirty(bool value);
+      bool proxyDirty();
+
 private slots:
     void slotCSyncStarted();
     void slotCSyncError(const QString& );
@@ -202,6 +205,7 @@ protected:
     bool         _csyncError;
     bool         _csyncUnavail;
     bool         _wipeDb;
+    bool         _proxyDirty;
     Progress::Kind _progressKind;
     QTimer        _pollTimer;
     QString       _lastEtag;

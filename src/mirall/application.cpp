@@ -164,9 +164,9 @@ Application::Application(int &argc, char **argv) :
 
     setupActions();
     setupSystemTray();
-    slotSetupProxy();
 
     folderMan->setupFolders();
+    slotSetupProxy(); // folders have to be defined first.
 
     // startup procedure.
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));

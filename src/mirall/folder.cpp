@@ -54,6 +54,8 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _csync(0)
       , _csyncError(false)
       , _csyncUnavail(false)
+      , _wipeDb(false)
+      , _proxyDirty(true)
       , _csync_ctx(0)
 {
     qsrand(QTime::currentTime().msec());
@@ -501,10 +503,21 @@ void Folder::setProxy()
         csync_set_module_property(_csync_ctx, "proxy_user", proxy.user().toUtf8().data()     );
         csync_set_module_property(_csync_ctx, "proxy_pwd" , proxy.password().toUtf8().data() );
 
-        FolderMan::instance()->setDirtyProxy(false);
+        setProxyDirty(false);
+    } else {
+        qDebug() << "WRN: Unable to set Proxy without csync-ctx!";
     }
 }
 
+void Folder::setProxyDirty(bool value)
+{
+    _proxyDirty = value;
+}
+
+bool Folder::proxyDirty()
+{
+    return _proxyDirty;
+}
 
 const char* Folder::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 {
@@ -540,7 +553,7 @@ void Folder::startSync(const QStringList &pathList)
             QMetaObject::invokeMethod(this, "slotCSyncFinished", Qt::QueuedConnection);
             return;
         }
-    } else if (FolderMan::instance()->isDirtyProxy()) {
+    } else if (proxyDirty()) {
         setProxy();
     }
 
