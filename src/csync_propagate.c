@@ -1661,13 +1661,15 @@ static int _csync_propagation_file_count_visitor(void *obj, void *data) {
       break;
     case CSYNC_FTW_TYPE_FILE:
       switch (st->instruction) {
-        case CSYNC_INSTRUCTION_NEW:
-        case CSYNC_INSTRUCTION_SYNC:
-        case CSYNC_INSTRUCTION_CONFLICT:
+      case CSYNC_INSTRUCTION_NEW:
+      case CSYNC_INSTRUCTION_SYNC:
+      case CSYNC_INSTRUCTION_CONFLICT:
+      case CSYNC_INSTRUCTION_REMOVE:
+      case CSYNC_INSTRUCTION_RENAME:
           ctx->overall_progress.file_count++;
           ctx->overall_progress.byte_sum += st->size;
           break;
-        default:
+      default:
           break;
       }
       break;
