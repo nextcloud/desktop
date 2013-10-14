@@ -289,7 +289,7 @@ void Folder::bubbleUpSyncResult()
     foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
         if( item._instruction == CSYNC_INSTRUCTION_ERROR ) {
             slotCSyncError( tr("File %1: %2").arg(item._file).arg(item._errorString) );
-            logger->postGuiLog(tr("File %1").arg(item._file), item._errorString);
+            logger->postOptionalGuiLog(tr("File %1").arg(item._file), item._errorString);
 
         } else {
             if (item._dir == SyncFileItem::Down) {
@@ -340,25 +340,25 @@ void Folder::bubbleUpSyncResult()
     if (newItems > 0) {
         QString file = QDir::toNativeSeparators(firstItemNew._file);
         if (newItems == 1)
-            logger->postGuiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
+            logger->postOptionalGuiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
         else
-            logger->postGuiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
+            logger->postOptionalGuiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
                                                              "", newItems-1).arg(file));
     }
     if (removedItems > 0) {
         QString file = QDir::toNativeSeparators(firstItemDeleted._file);
         if (removedItems == 1)
-            logger->postGuiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
+            logger->postOptionalGuiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
         else
-            logger->postGuiLog(tr("Files removed"), tr("'%1' and %n other file(s) have been removed.",
+            logger->postOptionalGuiLog(tr("Files removed"), tr("'%1' and %n other file(s) have been removed.",
                                                         "", removedItems-1).arg(file));
     }
     if (updatedItems > 0) {
         QString file = QDir::toNativeSeparators(firstItemUpdated._file);
         if (updatedItems == 1)
-            logger->postGuiLog(tr("File updated"), tr("'%1' has been updated.").arg(file));
+            logger->postOptionalGuiLog(tr("File updated"), tr("'%1' has been updated.").arg(file));
         else
-            logger->postGuiLog(tr("Files updated"), tr("'%1' and %n other file(s) have been updated.",
+            logger->postOptionalGuiLog(tr("Files updated"), tr("'%1' and %n other file(s) have been updated.",
                                                        "", updatedItems-1).arg(file));
     }
 }
@@ -400,7 +400,7 @@ void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
 
 void Folder::slotCatchWatcherError(const QString& error)
 {
-    Logger::instance()->postGuiLog(tr("Error"), error);
+    Logger::instance()->postOptionalGuiLog(tr("Error"), error);
 }
 
 void Folder::slotTerminateSync()
