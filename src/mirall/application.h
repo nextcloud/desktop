@@ -100,6 +100,7 @@ private:
     Theme *_theme;
 
     bool _helpOnly;
+    bool _startupNetworkError;
 
     // options from command line:
     bool _showLogWindow;
@@ -108,7 +109,7 @@ private:
     int     _logExpire;
     bool    _logFlush;
 
-
+    friend class ownCloudGui; // for _startupNetworkError
 };
 
 } // namespace Mirall

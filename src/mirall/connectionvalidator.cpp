@@ -28,7 +28,8 @@ ConnectionValidator::ConnectionValidator(QObject *parent) :
 
 ConnectionValidator::ConnectionValidator(const QString& connection, QObject *parent)
     : QObject(parent),
-      _connection(connection)
+      _connection(connection),
+      _networkError(QNetworkReply::NoError)
 {
     ownCloudInfo::instance()->setCustomConfigHandle(_connection);
 }
@@ -36,6 +37,11 @@ ConnectionValidator::ConnectionValidator(const QString& connection, QObject *par
 QStringList ConnectionValidator::errors() const
 {
     return _errors;
+}
+
+bool ConnectionValidator::networkError() const
+{
+    return _networkError;
 }
 
 QString ConnectionValidator::statusString( Status stat ) const
@@ -131,6 +137,7 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 
     _errors.append(tr("Unable to connect to %1").arg(reply->url().toString()));
     _errors.append( reply->errorString() );
+    _networkError = (reply->error() != QNetworkReply::NoError);
     emit connectionResult( StatusNotFound );
 
 }

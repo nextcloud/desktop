@@ -91,6 +91,7 @@ Application::Application(int &argc, char **argv) :
     _sslErrorDialog(0),
     _theme(Theme::instance()),
     _helpOnly(false),
+    _startupNetworkError(false),
     _showLogWindow(false),
     _logExpire(0),
     _logFlush(false)
@@ -126,13 +127,15 @@ Application::Application(int &argc, char **argv) :
     }
 #endif
 
+//    connect(_networkMgr, SIGNAL(onlineStateChanged(bool)), SLOT(slotCheckConnection()));
+
     MirallConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect (_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));
 
-    slotSetupProxy();
 
     FolderMan::instance()->setupFolders();
+    slotSetupProxy(); // folders have to be defined first.
 
     // startup procedure.
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
@@ -224,6 +227,8 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         FolderMan::instance()->setSyncEnabled(false);
 
         startupFails = _conValidator->errors();
+        _startupNetworkError = _conValidator->networkError();
+        QTimer::singleShot(30*1000, this, SLOT(slotCheckConnection()));
     }
     _gui->startupConnected( (status == ConnectionValidator::Connected), startupFails);
 
@@ -325,6 +330,7 @@ void Application::slotSetupProxy()
 
     switch(proxyType) {
     case QNetworkProxy::NoProxy:
+        QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
         break;
     case QNetworkProxy::DefaultProxy:
@@ -332,10 +338,12 @@ void Application::slotSetupProxy()
         break;
     case QNetworkProxy::Socks5Proxy:
         proxy.setType(QNetworkProxy::Socks5Proxy);
+        QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;
     case QNetworkProxy::HttpProxy:
         proxy.setType(QNetworkProxy::HttpProxy);
+        QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;
     default:

@@ -37,8 +37,7 @@ FolderMan* FolderMan::_instance = 0;
 
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
-    _syncEnabled( true ),
-    _dirtyProxy( true )
+    _syncEnabled( true )
 {
     // if QDir::mkpath would not be so stupid, I would not need to have this
     // duplication of folderConfigPath() here
@@ -536,6 +535,14 @@ bool FolderMan::startFromScratch( const QString& localFolder )
     }
     return false;
 }
+
+void FolderMan::setDirtyProxy(bool value)
+{
+    foreach( Folder *f, _folderMap.values() ) {
+        f->setProxyDirty(value);
+    }
+}
+
 
 SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
 {

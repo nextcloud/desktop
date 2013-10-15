@@ -112,8 +112,7 @@ public slots:
 
     void slotScheduleAllFolders();
 
-    bool isDirtyProxy() { return _dirtyProxy; }
-    void setDirtyProxy(bool value = true) { _dirtyProxy = value; }
+    void setDirtyProxy(bool value = true);
 
 private slots:
     // slot to add a folder to the syncing queue

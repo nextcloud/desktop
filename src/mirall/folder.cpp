@@ -61,6 +61,8 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _csync(0)
       , _csyncError(false)
       , _csyncUnavail(false)
+      , _wipeDb(false)
+      , _proxyDirty(true)
       , _journal(path)
       , _csync_ctx(0)
 {
@@ -302,7 +304,7 @@ void Folder::bubbleUpSyncResult()
     foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
         if( item._instruction == CSYNC_INSTRUCTION_ERROR ) {
             slotCSyncError( tr("File %1: %2").arg(item._file).arg(item._errorString) );
-            logger->postGuiLog(tr("File %1").arg(item._file), item._errorString);
+            logger->postOptionalGuiLog(tr("File %1").arg(item._file), item._errorString);
 
         } else {
             if (item._dir == SyncFileItem::Down) {
@@ -353,25 +355,25 @@ void Folder::bubbleUpSyncResult()
     if (newItems > 0) {
         QString file = QDir::toNativeSeparators(firstItemNew._file);
         if (newItems == 1)
-            logger->postGuiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
+            logger->postOptionalGuiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
         else
-            logger->postGuiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
+            logger->postOptionalGuiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
                                                              "", newItems-1).arg(file));
     }
     if (removedItems > 0) {
         QString file = QDir::toNativeSeparators(firstItemDeleted._file);
         if (removedItems == 1)
-            logger->postGuiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
+            logger->postOptionalGuiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
         else
-            logger->postGuiLog(tr("Files removed"), tr("'%1' and %n other file(s) have been removed.",
+            logger->postOptionalGuiLog(tr("Files removed"), tr("'%1' and %n other file(s) have been removed.",
                                                         "", removedItems-1).arg(file));
     }
     if (updatedItems > 0) {
         QString file = QDir::toNativeSeparators(firstItemUpdated._file);
         if (updatedItems == 1)
-            logger->postGuiLog(tr("File updated"), tr("'%1' has been updated.").arg(file));
+            logger->postOptionalGuiLog(tr("File updated"), tr("'%1' has been updated.").arg(file));
         else
-            logger->postGuiLog(tr("Files updated"), tr("'%1' and %n other file(s) have been updated.",
+            logger->postOptionalGuiLog(tr("Files updated"), tr("'%1' and %n other file(s) have been updated.",
                                                        "", updatedItems-1).arg(file));
     }
 }
@@ -413,7 +415,7 @@ void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
 
 void Folder::slotCatchWatcherError(const QString& error)
 {
-    Logger::instance()->postGuiLog(tr("Error"), error);
+    Logger::instance()->postOptionalGuiLog(tr("Error"), error);
 }
 
 void Folder::slotTerminateSync(bool block)
@@ -502,10 +504,21 @@ void Folder::setProxy()
         csync_set_module_property(_csync_ctx, "proxy_user", proxy.user().toUtf8().data()     );
         csync_set_module_property(_csync_ctx, "proxy_pwd" , proxy.password().toUtf8().data() );
 
-        FolderMan::instance()->setDirtyProxy(false);
+        setProxyDirty(false);
+    } else {
+        qDebug() << "WRN: Unable to set Proxy without csync-ctx!";
     }
 }
 
+void Folder::setProxyDirty(bool value)
+{
+    _proxyDirty = value;
+}
+
+bool Folder::proxyDirty()
+{
+    return _proxyDirty;
+}
 
 const char* Folder::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 {
@@ -541,7 +554,7 @@ void Folder::startSync(const QStringList &pathList)
             QMetaObject::invokeMethod(this, "slotCSyncFinished", Qt::QueuedConnection);
             return;
         }
-    } else if (FolderMan::instance()->isDirtyProxy()) {
+    } else if (proxyDirty()) {
         setProxy();
     }
 

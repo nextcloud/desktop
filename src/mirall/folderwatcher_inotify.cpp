@@ -132,7 +132,16 @@ void FolderWatcherPrivate::slotINotifyEvent(int mask, int /*cookie*/, const QStr
         //qDebug() << cookie << " OTHER " << mask << " :" << path;
     }
 
-    foreach (const QString& pattern, _parent->ignores()) {
+     QStringList ignores = _parent->ignores();
+
+     if( path.endsWith(".csync_journal.db.ctmp") ||
+            path.endsWith(".csync_journal.db.ctmp-journal") ||
+            path.endsWith(".csync_journal.db")) {
+        qDebug() << " ** Inotify ignored for " <<path;
+        return;
+    }
+
+    foreach (const QString& pattern, ignores) {
         QRegExp regexp(pattern);
         regexp.setPatternSyntax(QRegExp::Wildcard);
 

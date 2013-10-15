@@ -42,6 +42,7 @@ public:
     };
 
     QStringList errors() const;
+    bool networkError() const;
 
     void checkConnection();
 
@@ -64,6 +65,7 @@ protected slots:
 private:
     QStringList _errors;
     QString     _connection;
+    bool  _networkError;
 };
 
 }

@@ -169,7 +169,13 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     if( !_startupFails.isEmpty() ) {
         trayMessage = _startupFails.join(QLatin1String("\n"));
-        QIcon statusIcon = Theme::instance()->syncStateIcon( SyncResult::Error, true );
+        QIcon statusIcon;
+        if (_app->_startupNetworkError) {
+            statusIcon = Theme::instance()->syncStateIcon( SyncResult::NotYetStarted, true );
+        } else {
+            statusIcon = Theme::instance()->syncStateIcon( SyncResult::Error, true );
+        }
+
         _tray->setIcon( statusIcon );
         _tray->setToolTip(trayMessage);
     } else {
