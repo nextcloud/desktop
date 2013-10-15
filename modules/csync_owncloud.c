@@ -1400,9 +1400,9 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
             }
 
             set_errno_from_neon_errcode(neon_stat);
-            DEBUG_WEBDAV("Error GET: Neon: %d, errno %d", neon_stat, errno);
+            DEBUG_WEBDAV("Error GET: Neon: %d, errno %d, string %s", neon_stat, errno, dav_session.error_string);
             error_code = errno;
-            if( status != NULL ) {
+            if( status != NULL && errno != ERRNO_ERROR_STRING ) {
                 SAFE_FREE(dav_session.error_string);
                 dav_session.error_string = c_strdup(status->reason_phrase);
             }

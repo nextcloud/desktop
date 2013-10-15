@@ -1019,6 +1019,7 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   if (ctx == NULL || cb == NULL) {
     return -1;
   }
+
   if (ctx->status & CSYNC_STATUS_INIT) {
     ctx->status_code = CSYNC_STATUS_CSYNC_STATUS_ERROR;
     fprintf(stderr, "This function must be called before initialization.");
