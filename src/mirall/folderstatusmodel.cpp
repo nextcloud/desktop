@@ -251,8 +251,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       painter->save();
 
       // Sizes-Text
-      QRect octetRect = subFm.boundingRect( overallString );
-      int progressTextWidth = octetRect.width();
+      QRect octetRect = progressFm.boundingRect( overallString );
+      int progressTextWidth = octetRect.width() + 2;
 
       // Overall Progress Bar.
       QRect pBRect;
@@ -281,8 +281,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       overallProgressRect.setWidth( progressTextWidth );
       painter->setFont(progressFont);
 
-      QString elidedText = progressFm.elidedText(overallString, Qt::ElideLeft, overallProgressRect.width());
-      painter->drawText( overallProgressRect, Qt::AlignRight+Qt::AlignVCenter, elidedText);
+      painter->drawText( overallProgressRect, Qt::AlignRight+Qt::AlignVCenter, overallString);
     // painter->drawRect(overallProgressRect);
 
       // Individual File Progress
@@ -291,7 +290,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       fileRect.setLeft( iconRect.left());
       fileRect.setWidth(overallWidth);
       fileRect.setHeight(fileNameTextHeight);
-      elidedText = progressFm.elidedText(itemString, Qt::ElideLeft, fileRect.width());
+      QString elidedText = progressFm.elidedText(itemString, Qt::ElideLeft, fileRect.width());
 
       painter->drawText( fileRect, Qt::AlignLeft+Qt::AlignVCenter, elidedText);
 
