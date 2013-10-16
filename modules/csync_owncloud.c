@@ -1201,13 +1201,15 @@ static csync_vio_method_handle_t *owncloud_creat(const char *durl, mode_t mode) 
     return handle;
 }
 
-static int _user_want_abort()
+static int _user_want_abort(void *userdata)
 {
+    (void)userdata;
     return csync_abort_requested(dav_session.csync_ctx);
 }
 
-static void _log_callback(const char *func, const char *text)
+static void _log_callback(const char *func, const char *text, void *userdata)
 {
+    (void)userdata;
     csync_log(CSYNC_LOG_PRIORITY_TRACE, func, "%s", text);
 }
 
@@ -1355,7 +1357,7 @@ static int owncloud_sendfile(csync_vio_method_handle_t *src, csync_vio_method_ha
         if (write_ctx->req)
           ne_request_destroy( write_ctx->req );
 
-        if( _user_want_abort() ) {
+        if( _user_want_abort(0) ) {
             errno = ERRNO_USER_ABORT;
             break;
         }

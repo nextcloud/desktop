@@ -42,7 +42,7 @@
 #define DEBUG_HBF(...) { if(transfer->log_cb) { \
         char buf[1024];                         \
         snprintf(buf, 1024, __VA_ARGS__);       \
-        transfer->log_cb(__FUNCTION__, buf);    \
+        transfer->log_cb(__FUNCTION__, buf, transfer->user_data);    \
   }  }
 #endif
 
@@ -447,7 +447,7 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
         if( ! block ) state = HBF_PARAM_FAIL;
 
         if( transfer->abort_cb ) {
-            int do_abort = (transfer->abort_cb)();
+            int do_abort = (transfer->abort_cb)(transfer->user_data);
             if( do_abort ) {
               state = HBF_USER_ABORTED;
               transfer->start_id = block_id  % transfer->block_cnt;
@@ -513,6 +513,10 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
                        free( transfer_url );
                        return _hbf_transfer_no_chunk(session, transfer, verb);
                     }
+                }
+
+                if (state == HBF_TRANSFER_SUCCESS && transfer->chunk_finished_cb) {
+                    transfer->chunk_finished_cb(transfer, block_id, transfer->user_data);
                 }
 
             } else {

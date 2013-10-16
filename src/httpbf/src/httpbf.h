@@ -72,12 +72,12 @@ struct hbf_block_s {
     int tries;
 };
 
-/* Callback for to check on abort */
-typedef int (*hbf_abort_callback) ();
-typedef void (*hbf_log_callback) (const char *, const char *);
-
-
 typedef struct hbf_transfer_s hbf_transfer_t;
+
+/* Callback for to check on abort */
+typedef int (*hbf_abort_callback) (void *);
+typedef void (*hbf_log_callback) (const char *, const char *, void*);
+typedef void (*hbf_chunk_finished_callback) (hbf_transfer_t*,int, void*);
 
 struct hbf_transfer_s {
     hbf_block_t **block_arr;
@@ -95,8 +95,10 @@ struct hbf_transfer_s {
     int64_t block_size;
     int64_t threshold;
 
+    void *user_data;
     hbf_abort_callback abort_cb;
     hbf_log_callback log_cb;
+    hbf_chunk_finished_callback chunk_finished_cb;
     int modtime_accepted;
     const char *previous_etag; /* etag send as the If-Match http header */
 
