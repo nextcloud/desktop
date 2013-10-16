@@ -29,7 +29,6 @@
 #include <csync.h>
 
 #include "mirall/syncfileitem.h"
-#include "progressdatabase.h"
 #include "mirall/progressdispatcher.h"
 
 class QProcess;
@@ -98,8 +97,6 @@ private:
     SyncFileItemVector _syncedItems;
     int _iterator; // index in _syncedItems for the next item to process.
     QStack<SyncJournalFileRecord> _directoriesToUpdate;
-    ProgressDatabase _progressDataBase;
-
 
     CSYNC *_csync_ctx;
     bool _needsUpdate;

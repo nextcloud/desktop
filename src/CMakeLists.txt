@@ -52,7 +52,6 @@ set(libsync_SRCS
     mirall/mirallconfigfile.cpp
     mirall/csyncthread.cpp
     mirall/owncloudpropagator.cpp
-    mirall/progressdatabase.cpp
     mirall/syncjournalfilerecord.cpp
     mirall/syncjournaldb.cpp
     mirall/fileutils.cpp

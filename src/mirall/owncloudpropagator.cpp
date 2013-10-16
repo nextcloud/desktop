@@ -14,7 +14,7 @@
  */
 
 #include "owncloudpropagator.h"
-#include "progressdatabase.h"
+#include "syncjournaldb.h"
 #include <httpbf.h>
 #include <qfile.h>
 #include <qdir.h>
@@ -278,12 +278,12 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
         Q_ASSERT(trans);
         state = hbf_splitlist(trans.data(), file.handle());
 
-        if (const ProgressDatabase::UploadInfo* progressInfo = _progressDb->getUploadInfo(item._file)) {
-            if (progressInfo->mtime == item._modtime) {
-                trans->start_id = progressInfo->chunk;
-                trans->transfer_id = progressInfo->transferid;
+        const SyncJournalDb::UploadInfo progressInfo = _journal->getUploadInfo(item._file);
+        if (progressInfo._valid) {
+            if (progressInfo._modtime.toTime_t() == item._modtime) {
+                trans->start_id = progressInfo._chunk;
+                trans->transfer_id = progressInfo._transferid;
             }
-            _progressDb->remove(item._file);
         }
 
         ne_set_notifier(_session, notify_status_cb, this);
@@ -331,11 +331,12 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
                 _status = SyncFileItem::NormalError;
 
                 if (trans->start_id > 0) {
-                    ProgressDatabase::UploadInfo pi;
-                    pi.chunk = trans->start_id;
-                    pi.transferid = trans->transfer_id;
-                    pi.mtime = item._modtime;
-                    _progressDb->setUploadInfo(item._file, pi);
+                    SyncJournalDb::UploadInfo pi;
+                    pi._valid = true;
+                    pi._chunk = trans->start_id;
+                    pi._transferid = trans->transfer_id;
+                    pi._modtime =  QDateTime::fromTime_t(item._modtime);
+                    _journal->setUploadInfo(item._file, pi);
                 }
                 return CSYNC_INSTRUCTION_ERROR;
             }
@@ -347,6 +348,10 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
         updateMTimeAndETag(uri.data(), item._modtime);
     }
     _status = SyncFileItem::Success;
+
+    // Remove entries from the database
+    _journal->setUploadInfo(item._file, SyncJournalDb::UploadInfo());
+
     return CSYNC_INSTRUCTION_UPDATED;
 }
 
@@ -460,16 +465,16 @@ public:
 csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, bool isConflict)
 {
     QString tmpFileName;
-    const ProgressDatabase::DownloadInfo* progressInfo = _progressDb->getDownloadInfo(item._file);
-
-    if (progressInfo) {
+    const SyncJournalDb::DownloadInfo progressInfo = _journal->getDownloadInfo(item._file);
+    if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
-        if (progressInfo->etag != item._etag) {
-            QFile::remove(_localDir + progressInfo->tmpfile);
+        if (progressInfo._etag != item._etag) {
+            QFile::remove(_localDir + progressInfo._tmpfile);
+            _journal->setDownloadInfo(item._file, SyncJournalDb::DownloadInfo());
         } else {
-            tmpFileName = progressInfo->tmpfile;
+            tmpFileName = progressInfo._tmpfile;
         }
-        _progressDb->remove(item._file);
+
     }
 
     if (tmpFileName.isEmpty()) {
@@ -491,11 +496,11 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     csync_win32_set_file_hidden(tmpFileName.toUtf8().constData(), true);
 
     {
-        ProgressDatabase::DownloadInfo pi;
-        pi.etag = item._etag;
-        pi.tmpfile = tmpFileName;
-        _progressDb->setDownloadInfo(item._file, pi);
-        _progressDb->save(_localDir);
+        SyncJournalDb::DownloadInfo pi;
+        pi._etag = item._etag;
+        pi._tmpfile = tmpFileName;
+        pi._valid = true;
+        _journal->setDownloadInfo(item._file, pi);
     }
 
     /* actually do the request */
@@ -545,7 +550,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
                 // don't keep the temporary file if it is empty.
                 tmpFile.close();
                 tmpFile.remove();
-                _progressDb->remove(item._file);
+                _journal->setDownloadInfo(item._file, SyncJournalDb::DownloadInfo());
             }
             return CSYNC_INSTRUCTION_ERROR;
         }
@@ -565,7 +570,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
         // compare the files to see if there was an actual conflict.
         if (fileEquals(fn, tmpFile.fileName())) {
             tmpFile.remove();
-            _progressDb->remove(item._file);
+            _journal->setDownloadInfo(item._file, SyncJournalDb::DownloadInfo());
             _status = SyncFileItem::Success;
             return CSYNC_INSTRUCTION_UPDATED;
         }
@@ -621,7 +626,7 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
     }
 #endif
 
-    _progressDb->remove(item._file);
+    _journal->setDownloadInfo(item._file, SyncJournalDb::DownloadInfo());
 
     struct timeval times[2];
     times[0].tv_sec = times[1].tv_sec = item._modtime;

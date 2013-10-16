@@ -19,7 +19,6 @@
 #include "mirall/logger.h"
 #include "mirall/owncloudinfo.h"
 #include "owncloudpropagator.h"
-#include "progressdatabase.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
@@ -430,9 +429,8 @@ void CSyncThread::startSync()
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
     Q_ASSERT(session);
 
-    _progressDataBase.load(_localPath);
     _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath,
-                                              &_progressDataBase, &_abortRequested));
+                                              _journal, &_abortRequested));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
             this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)),
@@ -557,9 +555,6 @@ void CSyncThread::startNextTransfer()
     while (!_directoriesToUpdate.isEmpty()) {
         _journal->setFileRecord(_directoriesToUpdate.pop());
     }
-
-    // Everything is finished.
-    _progressDataBase.save(_localPath);
 
     // emit the treewalk results.
     emit treeWalkResult(_syncedItems);

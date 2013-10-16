@@ -28,7 +28,7 @@ struct ne_decompress_s;
 
 namespace Mirall {
 
-class ProgressDatabase;
+class SyncJournalDb;
 
 class OwncloudPropagator : public QObject {
     Q_OBJECT
@@ -36,7 +36,7 @@ class OwncloudPropagator : public QObject {
     ne_session_s *_session;
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteDir; // path to the root of the remote. ends with '/'
-    ProgressDatabase *_progressDb;
+    SyncJournalDb *_journal;
 
     QString          _errorString;
     SyncFileItem::Status _status;
@@ -72,11 +72,11 @@ class OwncloudPropagator : public QObject {
 
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
-                       ProgressDatabase *progressDb, QAtomicInt *abortRequested)
+                       SyncJournalDb *progressDb, QAtomicInt *abortRequested)
             : _session(session)
             , _localDir(localDir)
             , _remoteDir(remoteDir)
-            , _progressDb(progressDb)
+            , _journal(progressDb)
             , _abortRequested(abortRequested)
     {
         if (!localDir.endsWith(QChar('/'))) _localDir+='/';
