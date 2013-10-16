@@ -235,17 +235,30 @@ csync_instructions_e OwncloudPropagator::remoteMkdir(const SyncFileItem &item)
 }
 
 // Log callback for httpbf
-static void _log_callback(const char *func, const char *text)
+static void _log_callback(const char *func, const char *text, void*)
 {
     qDebug() << func << text;
 }
 
 // abort callback for httpbf
-// FIXME: a bit a pitty we need to use a global variable here.
-static QAtomicInt *_user_want_abort_ptr;
-static int _user_want_abort()
+static int _user_want_abort(void *userData)
 {
-    return _user_want_abort_ptr->fetchAndAddRelaxed(0);
+    return  static_cast<OwncloudPropagator *>(userData)->_abortRequested->fetchAndAddRelaxed(0);
+}
+
+// callback from httpbf when a chunk is finished
+void OwncloudPropagator::chunk_finished_cb(hbf_transfer_s *trans, int chunk, void* userdata)
+{
+    OwncloudPropagator *that = static_cast<OwncloudPropagator *>(userdata);
+    Q_ASSERT(that);
+    if (trans->block_cnt > 1) {
+        SyncJournalDb::UploadInfo pi;
+        pi._valid = true;
+        pi._chunk = chunk + 1; // next chunk to start with
+        pi._transferid = trans->transfer_id;
+        pi._modtime =  QDateTime::fromTime_t(trans->modtime);
+        that->_journal->setUploadInfo(that->_currentFile, pi);
+    }
 }
 
 
@@ -271,9 +284,10 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
     do {
         Hbf_State state = HBF_SUCCESS;
         QScopedPointer<hbf_transfer_t, ScopedPointerHelpers> trans(hbf_init_transfer(uri.data()));
+        trans->user_data = this;
         hbf_set_log_callback(trans.data(), _log_callback);
-        _user_want_abort_ptr = _abortRequested;
         hbf_set_abort_callback(trans.data(), _user_want_abort);
+        trans.data()->chunk_finished_cb = chunk_finished_cb;
         finished = true;
         Q_ASSERT(trans);
         state = hbf_splitlist(trans.data(), file.handle());
@@ -329,15 +343,6 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
                 // FIXME: find out the error class.
                 //_httpStatusCode = hbf_fail_http_code(trans.data());
                 _status = SyncFileItem::NormalError;
-
-                if (trans->start_id > 0) {
-                    SyncJournalDb::UploadInfo pi;
-                    pi._valid = true;
-                    pi._chunk = trans->start_id;
-                    pi._transferid = trans->transfer_id;
-                    pi._modtime =  QDateTime::fromTime_t(item._modtime);
-                    _journal->setUploadInfo(item._file, pi);
-                }
                 return CSYNC_INSTRUCTION_ERROR;
             }
         }

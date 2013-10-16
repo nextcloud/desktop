@@ -23,6 +23,7 @@
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
 
+struct hbf_transfer_s;
 struct ne_session_s;
 struct ne_decompress_s;
 
@@ -69,6 +70,8 @@ class OwncloudPropagator : public QObject {
 
     static void notify_status_cb (void *userdata, ne_session_status status,
                                   const ne_session_status_info *info);
+
+    static void chunk_finished_cb(hbf_transfer_s *,int, void *userdata);
 
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
