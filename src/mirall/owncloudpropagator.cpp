@@ -648,9 +648,19 @@ csync_instructions_e OwncloudPropagator::remoteRename(const SyncFileItem &item)
         _status = SyncFileItem::Success;
         return CSYNC_INSTRUCTION_DELETED; // nothing to do;
     }
+
+    // Check if it is the toplevel Shared folder and do not propagate it.
+    if (item._file == QLatin1String("Shared") ) {
+        if( QFile::rename( _localDir + item._renameTarget, _localDir + QLatin1String("Shared")) ) {
+            _errorString = tr("This folder must not be renamed. It is renamed back to its original name.");
+        } else {
+            _errorString = tr("This folder must not be renamed. Please name it back to Shared.");
+        }
+        return CSYNC_INSTRUCTION_ERROR;
+    }
+
     QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_remoteDir + item._file).toUtf8()));
     QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_remoteDir + item._renameTarget).toUtf8()));
-
 
     int rc = ne_move(_session, 1, uri1.data(), uri2.data());
     if (updateErrorFromSession(rc)) {
