@@ -645,8 +645,16 @@ csync_instructions_e OwncloudPropagator::downloadFile(const SyncFileItem &item, 
 csync_instructions_e OwncloudPropagator::remoteRename(const SyncFileItem &item)
 {
     if (item._file == item._renameTarget) {
+        if (!item._isDirectory) {
+            // The parents has been renamed already so there is nothing more to do.
+            // But we still need to fetch the new ETAG
+            // FIXME   maybe do a recusrsive propfind after having moced the parent.
+            // Note: we also update the mtime because the server do not keep the mtime when moving files
+            QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_remoteDir + item._renameTarget).toUtf8()));
+            updateMTimeAndETag(uri2.data(), item._modtime);
+        }
         _status = SyncFileItem::Success;
-        return CSYNC_INSTRUCTION_DELETED; // nothing to do;
+        return CSYNC_INSTRUCTION_DELETED;
     }
 
     // Check if it is the toplevel Shared folder and do not propagate it.

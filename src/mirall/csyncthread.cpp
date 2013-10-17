@@ -483,7 +483,7 @@ void CSyncThread::transferCompleted(const SyncFileItem &item)
     /* Update the database */
 
     if (item._instruction == CSYNC_INSTRUCTION_DELETED) {
-        _journal->deleteFileRecord(item._file);
+        _journal->deleteFileRecord(item._originalFile);
         if (!item._renameTarget.isEmpty()) {
             SyncJournalFileRecord record(item, _localPath + item._renameTarget);
             record._path = item._renameTarget;
