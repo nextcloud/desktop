@@ -36,15 +36,16 @@
 #include <neon/ne_request.h>
 #include <neon/ne_basic.h>
 
-#ifdef NDEBUG
-#define DEBUG_HBF(...)
-#else
+// #ifdef NDEBUG
+// #define DEBUG_HBF(...)
+// #else
 #define DEBUG_HBF(...) { if(transfer->log_cb) { \
         char buf[1024];                         \
         snprintf(buf, 1024, __VA_ARGS__);       \
         transfer->log_cb(__FUNCTION__, buf);    \
   }  }
-#endif
+
+// #endif
 
 #define DEFAULT_BLOCK_SIZE (10*1024*1024)
 
