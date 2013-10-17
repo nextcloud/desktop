@@ -232,153 +232,153 @@
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="85"/>
         <source>Success.</source>
         <translation>Sikerült.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="88"/>
         <source>CSync failed to create a lock file.</source>
         <translation>A CSync nem tudott létrehozni lock fájlt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="91"/>
         <source>CSync failed to load the state db.</source>
         <translation>A CSync nem tudta betölteni a státus adatbázist.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="94"/>
         <source>CSync failed to write the state db.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="98"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="97"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Az %1 beépülőmodul a csync-hez nem tölthető be.&lt;br/&gt;Ellenőrizze a telepítést!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="101"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="100"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>A helyi rendszeridő különbözik a kiszolgáló rendszeridejétől. Használjon időszinkronizációs szolgáltatást (NTP) a rendszerén és a szerveren is, hogy az idő mindig megeggyezzen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>A CSync nem tudta megállapítani a fájlrendszer típusát.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="109"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>A CSync hibába ütközött a belső adatok feldolgozása közben.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="112"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="111"/>
         <source>CSync failed to reserve memory.</source>
         <translation>Hiba a CSync memórifoglalásakor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="115"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync hibás paraméterhiba.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="117"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync frissítés feldolgozása meghíusult.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="120"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync egyeztetési lépés meghíusult.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="124"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="123"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync propagálási lépés meghíusult.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="127"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="126"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;A célmappa nem létezik.&lt;/p&gt;&lt;p&gt;Ellenőrizze a sync beállításait.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="130"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Egy távoli fájl nem írható. Kérlek, ellenőrizd a távoli elérést.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="134"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>A helyi fájlrendszer nem írható. Kérlek, ellenőrizd az engedélyeket.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="137"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync proxy kapcsolódási hiba.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="140"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="143"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>A CSync nem találja a proxy kiszolgálót.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>A CSync nem tuja azonosítani magát a %1 kiszolgálón.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSync hiba, nincs kezelési jogosultság.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync failed to find a specific file.</source>
         <translation>A CSync nem találja a megadott fájlt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>A CSync megpróbált létrehozni egy már létező mappát.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
-        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="167"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="170"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Nincs szabad tárhely az %1 kiszolgálón.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="173"/>
         <source>CSync unspecified error.</source>
         <translation>CSync ismeretlen hiba.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync hálózati kapcsolódási hiba.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>A network connection timeout happend.</source>
         <translation>Hálózati kapcsolat időtúllépési hiba lépett fel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>A HTTP transmission error happened.</source>
         <translation>HTTP átviteli hiba történt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="177"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="176"/>
         <source>Aborted by the user</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="181"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="180"/>
         <source>An internal error number %1 happend.</source>
         <translation>Belső hiba történt, száma: %1.</translation>
     </message>
@@ -1066,6 +1066,16 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
         <source>Could not remove directory %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="663"/>
+        <source>This folder must not be renamed. It is renamed back to its original name.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="665"/>
+        <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation type="unfinished"/>
     </message>
 </context>

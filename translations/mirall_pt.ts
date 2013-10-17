@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="131"/>
         <source>Select a destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Seleccione a pasta de destino</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="143"/>
@@ -232,154 +232,154 @@
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="85"/>
         <source>Success.</source>
         <translation>Sucesso</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="88"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync falhou a criação do ficheiro de lock.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="91"/>
         <source>CSync failed to load the state db.</source>
         <translation>Csync falhou a carregar a base de dados de status.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="94"/>
         <source>CSync failed to write the state db.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="98"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="97"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;O plugin %1 para o CSync não foi carregado.&lt;br/&gt;Por favor verifique a instalação!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="101"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="100"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>A data/hora neste cliente é difere da data/hora do servidor.
 Por favor utilize um servidor de sincronização horária (NTP), no servidor e nos clientes para garantir que a data/hora são iguais.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>Csync não conseguiu detectar o tipo de sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="109"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>Csync obteve um erro enquanto processava as árvores internas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="112"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="111"/>
         <source>CSync failed to reserve memory.</source>
         <translation>O CSync falhou a reservar memória</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="115"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
         <source>CSync fatal parameter error.</source>
         <translation>Parametro errado, CSync falhou</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="117"/>
         <source>CSync processing step update failed.</source>
         <translation>O passo de processamento do CSyn falhou</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="120"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync: Processo de reconciliação falhou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="124"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="123"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync: O processo de propagação falhou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="127"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="126"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;A pasta de destino não existe.&lt;/p&gt;&lt;p&gt;Por favor verifique a configuração da sincronização.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="130"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Não é possivel escrever num ficheiro remoto. Por favor verifique o acesso remoto.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="134"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Não é possivel escrever no sistema de ficheiros local. Por favor verifique as permissões.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="137"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync: Erro a ligar através do proxy</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="140"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="143"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync: Erro a contactar o proxy ou o servidor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync: Erro a autenticar no servidor %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSync: Erro devido a permissões de negação não tratadas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync failed to find a specific file.</source>
         <translation>CSync: Erro a encontrar um ficheiro específico.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>O CSync tentou criar uma pasta que já existe.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="168"/>
-        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="167"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="170"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Não ha espaço disponível no servidor %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="173"/>
         <source>CSync unspecified error.</source>
         <translation>CSync: erro não especificado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync: Erro na conecção à rede</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>A network connection timeout happend.</source>
         <translation>Houve um erro de timeout de rede (fim de tempo)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Ocorreu um erro de transmissão HTTP</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="177"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="176"/>
         <source>Aborted by the user</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="181"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="180"/>
         <source>An internal error number %1 happend.</source>
         <translation>Ocorreu o erro interno %1.</translation>
     </message>
@@ -1069,6 +1069,16 @@ Checked items will also be deleted if they prevent a directory from being remove
         <source>Could not remove directory %1</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="663"/>
+        <source>This folder must not be renamed. It is renamed back to its original name.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="665"/>
+        <source>This folder must not be renamed. Please name it back to Shared.</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>Mirall::OwncloudSetupPage</name>
@@ -1090,7 +1100,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure. You should not use it.</source>
-        <translation type="unfinished"/>
+        <translation>Este endereço não é seguro. É recomendado que não o use.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="230"/>
@@ -1168,7 +1178,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="365"/>
         <source>The remote folder could not be accessed!</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível aceder á pasta remota!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="369"/>
@@ -1199,7 +1209,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>A criação da pasta remota falhou, provavelmente por ter introduzido as credenciais erradas.&lt;br/&gt;Por favor, verifique as suas credenciais.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="414"/>
@@ -1537,7 +1547,7 @@ name</source>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="134"/>
         <source>Skip update</source>
-        <translation type="unfinished"/>
+        <translation>Saltar a actualização</translation>
     </message>
     <message>
         <location filename="../src/mirall/updatedetector.cpp" line="135"/>
@@ -1733,7 +1743,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="75"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Pasta Local</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="91"/>
@@ -1781,7 +1791,7 @@ name</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>Nome de &amp;utilizador</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="48"/>
@@ -1881,7 +1891,7 @@ name</source>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="107"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Pasta Local</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="123"/>
@@ -1917,18 +1927,18 @@ name</source>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="254"/>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="63"/>
         <source>Server &amp;Address</source>
-        <translation type="unfinished"/>
+        <translation>Endereço do servidor</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="273"/>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="82"/>
         <source>https://...</source>
-        <translation type="unfinished"/>
+        <translation>https://...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="280"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>Nome de &amp;utilizador</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="309"/>
@@ -1944,7 +1954,7 @@ name</source>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="393"/>
         <source>Advanced &amp;Settings</source>
-        <translation type="unfinished"/>
+        <translation>Opções avançadas</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage_ng.ui" line="415"/>
