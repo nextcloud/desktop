@@ -528,18 +528,22 @@ void CSyncThread::startNextTransfer()
         ++_iterator;
 
         while (!_directoriesToUpdate.isEmpty() && !item._file.startsWith(_directoriesToUpdate.last()._path)) {
+            // We are leaving a directory. Everything we needed to download from that directory is done.
+            // Update the directory etag in the database to the new one.
             _journal->setFileRecord(_directoriesToUpdate.pop());
         }
 
         if (!_lastDeleted.isEmpty() &&
             item._file.startsWith(_lastDeleted) ) {
             if( item._instruction != CSYNC_INSTRUCTION_REMOVE ) {
-                qDebug() << "WRN: Child of a deleted directory has different instruction than delete.";
+                qDebug() << "WRN: Child of a deleted directory has different instruction than delete."
+                         << item._file << _lastDeleted << item._instruction;
+            } else {
+                // If the item's name starts with the name of the previously deleted directory, we
+                // can assume this file was already destroyed by the previous call.
+                _journal->deleteFileRecord(item._file);
+                continue;
             }
-            // If the item's name starts with the name of the previously deleted directory, we
-            // can assume this file was already destroyed by the previous recursive call.
-            _journal->deleteFileRecord(item._file);
-            continue;
         }
 
         if (item._instruction == CSYNC_INSTRUCTION_SYNC || item._instruction == CSYNC_INSTRUCTION_NEW
@@ -552,7 +556,10 @@ void CSyncThread::startNextTransfer()
         return; //propagate is async.
     }
 
+    // We are finished !!
+
     while (!_directoriesToUpdate.isEmpty()) {
+        // Save the etag of directories to the database.
         _journal->setFileRecord(_directoriesToUpdate.pop());
     }
 
