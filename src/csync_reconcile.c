@@ -109,9 +109,9 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     if( tmp->path ) {
                         len = strlen( tmp->path );
                         h = c_jhash64((uint8_t *) tmp->path, len, 0);
-
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "PHash of temporary opposite: %" PRIu64, h);
                         node = c_rbtree_find(tree, &h);
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "PHash of temporary opposite (%s): %" PRIu64 " %s",
+                                  tmp->path , h, node ? "found": "not found" );
                     }
                     if(node) {
                         other = (csync_file_stat_t*)node->data;
