@@ -113,8 +113,7 @@ QNetworkReply* ownCloudInfo::getWebDAVPath( const QString& path )
     _directories[reply] = path;
     return reply;
 }
-
-QNetworkReply* ownCloudInfo::getRequest( const QUrl& url )
+QNetworkReply* ownCloudInfo::simpleGetRequest( const QUrl& url )
 {
     qDebug() << "Get Request to " << url;
 
@@ -122,7 +121,14 @@ QNetworkReply* ownCloudInfo::getRequest( const QUrl& url )
     request.setUrl( url );
     setupHeaders( request, 0 );
 
-    QNetworkReply *reply = _manager->get( request );
+    return  _manager->get( request );
+}
+
+QNetworkReply* ownCloudInfo::getRequest( const QUrl& url )
+{
+
+    QNetworkReply *reply = simpleGetRequest(url);
+
     connect( reply, SIGNAL(finished()), SLOT(slotReplyFinished()));
 
     if( !_configHandle.isEmpty() ) {
@@ -549,71 +555,7 @@ QString ownCloudInfo::webdavUrl(const QString &connection)
     return url;
 }
 
-RequestEtagJob::RequestEtagJob(const QString& dir, QObject* parent)
-    : QObject(parent)
-{
-    QNetworkRequest req;
-    req.setUrl( QUrl( ownCloudInfo::instance()->webdavUrl(ownCloudInfo::instance()->_connection) + dir ) );
-    if (dir.isEmpty() || dir == "/") {
-        /* For the root directory, we need to query the etags of all the sub directories
-         * because, at the time I am writing this comment (Owncloud 5.0.9), the etag of the
-         * root directory is not updated when the sub directories changes */
-        req.setRawHeader("Depth", "1");
-    } else {
-        req.setRawHeader("Depth", "0");
-    }
-    QByteArray xml("<?xml version=\"1.0\" ?>\n"
-                   "<d:propfind xmlns:d=\"DAV:\">\n"
-                   "  <d:prop>\n"
-                   "    <d:getetag/>"
-                   "  </d:prop>\n"
-                   "</d:propfind>\n");
-    QBuffer *buf = new QBuffer;
-    buf->setData(xml);
-    buf->open(QIODevice::ReadOnly);
-    _reply = ownCloudInfo::instance()->davRequest("PROPFIND", req, buf);
-    buf->setParent(_reply);
+/*************************************************************************************/
 
-    if( _reply->error() != QNetworkReply::NoError ) {
-        qDebug() << "getting etag: request network error: " << _reply->errorString();
-    }
-
-    connect( _reply, SIGNAL( finished()), SLOT(slotFinished()) );
-    connect( _reply, SIGNAL(error(QNetworkReply::NetworkError)),
-             this, SLOT(slotError()));
-    connect( _reply, SIGNAL(error(QNetworkReply::NetworkError)),
-             ownCloudInfo::instance(), SLOT(slotError(QNetworkReply::NetworkError)));
-}
-
-void RequestEtagJob::slotFinished()
-{
-    if (_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
-        // Parse DAV response
-        QXmlStreamReader reader(_reply);
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
-        QString etag;
-        while (!reader.atEnd()) {
-            QXmlStreamReader::TokenType type = reader.readNext();
-            if (type == QXmlStreamReader::StartElement &&
-                    reader.namespaceUri() == QLatin1String("DAV:")) {
-                QString name = reader.name().toString();
-                if (name == QLatin1String("getetag")) {
-                    etag += reader.readElementText();
-                }
-            }
-        }
-        emit etagRetreived(etag);
-    }
-    _reply->deleteLater();
-    deleteLater();
-}
-
-void RequestEtagJob::slotError()
-{
-    qDebug() << "RequestEtagJob Error: " << _reply->errorString();
-    _reply->deleteLater();
-    deleteLater();
-    emit networkError();
-}
 
 } // ns Mirall

@@ -135,6 +135,7 @@ private:
      * a general GET request to the ownCloud WebDAV.
      */
     QNetworkReply* getRequest( const QUrl &url);
+    QNetworkReply* simpleGetRequest( const QUrl &url);
     QNetworkReply* davRequest(const QByteArray&, QNetworkRequest&, QIODevice* );
 
     ~ownCloudInfo();
@@ -158,28 +159,10 @@ private:
     qint64                         _lastQuotaTotalBytes;
     QString                        _lastEtag;
 
-    friend class RequestEtagJob;
+    friend class AbstractNetworkJob;
 };
 
 
-
-
-class RequestEtagJob : public QObject {
-    Q_OBJECT
-
-    QNetworkReply *_reply;
-
-public:
-    explicit RequestEtagJob(const QString &dir , QObject* parent = 0);
-
-private slots:
-    void slotFinished();
-    void slotError();
-
-signals:
-    void etagRetreived(const QString &etag);
-    void networkError();
-};
 
 } // ns Mirall
 

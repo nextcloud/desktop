@@ -25,6 +25,7 @@
 #include "folderman.h"
 #include "creds/abstractcredentials.h"
 #include "mirall/syncjournalfilerecord.h"
+#include "mirall/networkjobs.h"
 
 extern "C" {
 

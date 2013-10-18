@@ -65,6 +65,7 @@ set(libsync_SRCS
     mirall/connectionvalidator.cpp
     mirall/progressdispatcher.cpp
     mirall/mirallaccessmanager.cpp
+    mirall/networkjobs.cpp
     creds/dummycredentials.cpp
     creds/httpcredentials.cpp
     creds/credentialsfactory.cpp
@@ -94,6 +95,7 @@ set(libsync_HEADERS
     mirall/connectionvalidator.h
     mirall/progressdispatcher.h
     mirall/mirallaccessmanager.h
+    mirall/networkjobs.h
     creds/abstractcredentials.h
     creds/dummycredentials.h
     creds/httpcredentials.h
