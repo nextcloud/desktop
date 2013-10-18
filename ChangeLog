@@ -1,5 +1,21 @@
 ChangeLog
 =========
+
+version 1.4.2 (release 2013-10-18 ), csync 0.90.4 required
+
+  * Do not show the warning icon in the tray (#944)
+  * Fix manual proxy support when switching (#1016)
+  * Add folder column to detailed sync protocol (#1037)
+  * Fix possible endless loop in inotify (#1041)
+  * Do not elide the progress text (#1049)
+  * Fix high CPU load (#1073)
+  * Reconnect if network is unavailable after startup (#1080)
+  * Ensure paused folder stays paused when syncing with more than one folder (#1083)
+  * Don't show desktop notification when the user doesn't want to (#1093)
+  * System tray: Avoid quick flickering up of the ok-icon for the sync prepare state
+  * Progress: Do not show progress if nothing is transmitted
+  * Progress: Show number of deletes.
+
 version 1.4.1 (release 2013-09-24 ), csync 0.90.1 required
 
   * Translation and documentation fixes.
