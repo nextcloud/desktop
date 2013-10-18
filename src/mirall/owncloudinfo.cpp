@@ -18,6 +18,8 @@
 #include "mirall/logger.h"
 #include "creds/abstractcredentials.h"
 
+#include "json.h"
+
 #include <QtCore>
 #include <QtGui>
 #include <QAuthenticator>
@@ -408,17 +410,13 @@ void ownCloudInfo::slotReplyFinished()
         return;
     }
 
-    // TODO: check if this is always the correct encoding
-    const QString version = QString::fromUtf8( reply->readAll() );
     const QString url = reply->url().toString();
     QString plainUrl(url);
     plainUrl.remove( QLatin1String("/status.php"));
 
-    QString info( version );
-
     if( url.endsWith( QLatin1String("status.php")) ) {
         // it was a call to status.php
-        if( reply->error() == QNetworkReply::NoError && info.isEmpty() ) {
+        if( reply->error() == QNetworkReply::NoError && reply->size() == 0 ) {
             // This seems to be a bit strange behaviour of QNetworkAccessManager.
             // It calls the finised slot multiple times but only the first read wins.
             // That happend when the code connected the finished signal of the manager.
@@ -427,40 +425,25 @@ void ownCloudInfo::slotReplyFinished()
             reply->deleteLater();
             return;
         }
-        qDebug() << "status.php returns: " << info << " " << reply->error() << " Reply: " << reply;
-        if( info.contains(QLatin1String("installed"))
-                && info.contains(QLatin1String("version"))
-                && info.contains(QLatin1String("versionstring")) ) {
-            info.remove(0,1); // remove first char which is a "{"
-            info.remove(-1,1); // remove the last char which is a "}"
-            QStringList li = info.split( QLatin1Char(',') );
 
-            QString versionStr;
-            QString version;
-            QString edition;
+        bool success = false;
+        QVariantMap status = QtJson::parse(QString::fromUtf8(reply->readAll()), success).toMap();
+        // empty or invalid response
+        if (!success || status.isEmpty()) {
+            qDebug() << "status.php from server is not valid JSON!";
+            reply->deleteLater();
+        }
 
-            foreach ( const QString& infoString, li ) {
-                QStringList touple = infoString.split( QLatin1Char(':'));
-                QString key = touple[0];
-                key.remove(QLatin1Char('"'));
-                QString val = touple[1];
-                val.remove(QLatin1Char('"'));
+        qDebug() << "status.php returns: " << status << " " << reply->error() << " Reply: " << reply;
+        if( status.contains("installed")
+                && status.contains("version")
+                && status.contains("versionstring") ) {
 
-                if( key == QLatin1String("versionstring") ) {
-                    // get the versionstring out.
-                    versionStr = val;
-                } else if( key == QLatin1String( "version") ) {
-                    // get version out
-                    version = val;
-                } else if( key == QLatin1String( "edition") ) {
-                    // get version out
-                    edition = val;
-                } else if(key == QLatin1String("installed")) {
-                    // Silently ignoring "installed = true" information
-                } else {
-                    qDebug() << "Unknown info from ownCloud status.php: "<< key << "=" << val;
-                }
-            }
+//            bool installed = status.value("installed").toBool();
+            QString version = status.value("version").toString();
+            QString versionStr = status.value("versionstring").toString();
+            QString edition = status.value("edition").toString();
+
             emit ownCloudInfoFound( plainUrl, versionStr, version, edition );
         } else {
             qDebug() << "No proper answer on " << url;

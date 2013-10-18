@@ -41,6 +41,7 @@ set(3rdparty_INC
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/QProgressIndicator
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/fancylineedit
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/csync
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qjson
     )
 
 set(libsync_SRCS
@@ -76,6 +77,7 @@ set(libsync_SRCS
     creds/shibboleth/shibbolethrefresher.cpp
     creds/shibboleth/shibbolethconfigfile.cpp
     creds/credentialscommon.cpp
+    3rdparty/qjson/json.cpp
 )
 
 set(libsync_HEADERS
@@ -105,6 +107,7 @@ set(libsync_HEADERS
     creds/shibboleth/shibbolethrefresher.h
     creds/shibboleth/shibbolethconfigfile.h
     creds/credentialscommon.h
+    3rdparty/qjson/json.h
 )
 
 IF( INOTIFY_FOUND )
