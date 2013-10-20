@@ -1077,12 +1077,12 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="663"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Esta pasta não pode ser renomeada. Ele será renomeado de volta ao seu nome original.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="665"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Esta pasta não pode ser renomeada. Por favor, nomeie-a de volta para Compartilhada.</translation>
     </message>
 </context>
 <context>

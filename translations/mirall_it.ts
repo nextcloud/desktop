@@ -1078,12 +1078,12 @@ Gli elementi marcati saranno inoltre eliminati se impediscono la rimozione di un
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="663"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Questa cartella non può essere rinominato. Il nome originale è stato ripristinato.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="665"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Questa cartella non può essere rinominata. Ripristina il nome Shared.</translation>
     </message>
 </context>
 <context>
@@ -1277,7 +1277,7 @@ Gli elementi marcati saranno inoltre eliminati se impediscono la rimozione di un
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="81"/>
         <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>La cartella &lt;i&gt;%1&lt;/i&gt; è sincronizzata con la cartella locale &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
