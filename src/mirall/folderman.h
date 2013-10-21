@@ -91,7 +91,7 @@ signals:
 
 public slots:
     void slotRemoveFolder( const QString& );
-    void slotEnableFolder( const QString&, bool );
+    void slotGuiPauseFolder( const QString&, bool );
 
     void slotFolderSyncStarted();
     void slotFolderSyncFinished( const SyncResult& );

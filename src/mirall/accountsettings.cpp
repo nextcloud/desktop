@@ -219,7 +219,7 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     item->setData( f->nativePath(),        FolderStatusDelegate::FolderPathRole );
     item->setData( f->secondPath(),        FolderStatusDelegate::FolderSecondPathRole );
     item->setData( f->alias(),             FolderStatusDelegate::FolderAliasRole );
-    item->setData( f->syncEnabled(),       FolderStatusDelegate::FolderSyncEnabled );
+    item->setData( f->userSyncEnabled() && f->syncEnabled(),   FolderStatusDelegate::FolderSyncEnabled );
 
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
@@ -228,7 +228,7 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
 
     Theme *theme = Theme::instance();
     item->setData( theme->statusHeaderText( status ),  Qt::ToolTipRole );
-    if( f->syncEnabled() ) {
+    if( f->syncEnabled() && f->userSyncEnabled() ) {
         if( status == SyncResult::SyncPrepare ) {
             if( _wasDisabledBefore ) {
                 // if the folder was disabled before, set the sync icon
@@ -445,7 +445,7 @@ void AccountSettings::slotEnableCurrentFolder()
             if ( f->isBusy() && terminate )
                 folderMan->terminateSyncProcess( alias );
 
-            folderMan->slotEnableFolder( alias, !folderEnabled );
+            folderMan->slotGuiPauseFolder( alias, !folderEnabled );
 
             // keep state for the icon setting.
             if( !folderEnabled ) _wasDisabledBefore = true;

@@ -269,7 +269,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     return folder;
 }
 
-void FolderMan::slotEnableFolder( const QString& alias, bool enable )
+void FolderMan::slotGuiPauseFolder( const QString& alias, bool enable )
 {
     if( ! _folderMap.contains( alias ) ) {
       qDebug() << "!! Can not enable alias " << alias << ", can not be found in folderMap.";
@@ -278,7 +278,7 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
 
     Folder *f = _folderMap[alias];
     if( f ) {
-        f->setSyncEnabled(enable);
+        f->slotSetSyncUserEnabled(enable);
         f->evaluateSync(QStringList());
     }
 }

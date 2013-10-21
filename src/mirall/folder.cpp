@@ -50,6 +50,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _secondPath(secondPath)
       , _alias(alias)
       , _enabled(true)
+      , _userSyncEnabled(true)
       , _thread(0)
       , _csync(0)
       , _csyncError(false)
@@ -200,14 +201,30 @@ void Folder::setSyncEnabled( bool doit )
 {
   _enabled = doit;
 
-  if( doit ) {
+  if( doit && userSyncEnabled() ) {
       // qDebug() << "Syncing enabled on folder " << name();
+      _pollTimer.start();
+      _watcher->clearPendingEvents(); // FIXME 1.5: Why isn't that happening in setEventsEnabled?
+      _watcher->setEventsEnabled(true);
+      _timeSinceLastSync.restart();
   } else {
       // do not stop or start the watcher here, that is done internally by
       // folder class. Even if the watcher fires, the folder does not
       // schedule itself because it checks the var. _enabled before.
       _pollTimer.stop();
+      _watcher->setEventsEnabled(false);
   }
+}
+
+bool Folder::userSyncEnabled()
+{
+    return _userSyncEnabled;
+}
+
+void Folder::slotSetSyncUserEnabled( bool enable )
+{
+    _userSyncEnabled = enable;
+    setSyncEnabled( syncEnabled() ); // no change on the system enable flag.
 }
 
 void Folder::setSyncState(SyncResult::Status state)
@@ -222,11 +239,15 @@ SyncResult Folder::syncResult() const
 
 void Folder::evaluateSync(const QStringList &/*pathList*/)
 {
-  if( !_enabled ) {
+  if( !syncEnabled() ) {
     qDebug() << "*" << alias() << "sync skipped, disabled!";
     return;
   }
 
+  if( !userSyncEnabled() ) {
+      qDebug() << "*" << alias() << "sync skipped, user disabled!";
+      return;
+  }
   _syncResult.setStatus( SyncResult::NotYetStarted );
   _syncResult.clearErrors();
   emit scheduleToSync( alias() );
@@ -237,8 +258,9 @@ void Folder::slotPollTimerTimeout()
 {
     qDebug() << "* Polling" << alias() << "for changes. (time since next sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
 
+    // Force sync if the last sync is a long time ago or if there was a serious problem.
     if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval() ||
-            _syncResult.status() != SyncResult::Success ) {
+            !(_syncResult.status() == SyncResult::Success || _syncResult.status() == SyncResult::Problem)) {
         qDebug() << "** Force Sync now";
         evaluateSync(QStringList());
     } else {
@@ -627,10 +649,13 @@ void Folder::slotCsyncUnavailable()
 
 void Folder::slotCSyncFinished()
 {
-    qDebug() << "-> CSync Finished slot with error " << _csyncError;
-    _watcher->setEventsEnabledDelayed(2000);
-    _pollTimer.start();
-    _timeSinceLastSync.restart();
+    qDebug() << "-> CSync Finished slot for" << alias() << "with error" << _csyncError;
+    if( syncEnabled() && userSyncEnabled() ) {
+        qDebug() << "Sync is enabled - starting the polltimer again.";
+        _watcher->setEventsEnabledDelayed(2000);
+        _pollTimer.start();
+        _timeSinceLastSync.restart();
+    }
 
     bubbleUpSyncResult();
 

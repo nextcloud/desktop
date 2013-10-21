@@ -153,6 +153,13 @@ public slots:
       void setProxyDirty(bool value);
       bool proxyDirty();
 
+      /**
+       * @brief slotSetSyncUserEnabled - slot that sets the enable/disable flag from the GUI
+       * @param enable
+       */
+      void slotSetSyncUserEnabled( bool enable );
+      bool userSyncEnabled();
+
 private slots:
     void slotCSyncStarted();
     void slotCSyncError(const QString& );
@@ -197,6 +204,7 @@ protected:
     QString   _configFile;
     QFileSystemWatcher *_pathWatcher;
     bool       _enabled;
+    bool       _userSyncEnabled; // enabled by user interaction?
     FolderWatcher *_watcher;
     SyncResult _syncResult;
     QThread     *_thread;
