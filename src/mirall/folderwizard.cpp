@@ -300,7 +300,7 @@ bool FolderWizardTargetPage::isComplete() const
     Folder::Map::const_iterator i = map.constBegin();
     for(i = map.constBegin();i != map.constEnd(); i++ ) {
         Folder *f = static_cast<Folder*>(i.value());
-        QString curDir = f->secondPath();
+        QString curDir = f->remotePath();
         if (dir == curDir) {
             showWarn( tr("This directory is already being synced.") );
             return false;

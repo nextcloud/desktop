@@ -15,17 +15,19 @@
  */
 #include "config.h"
 
+#include "mirall/account.h"
 #include "mirall/folder.h"
+#include "mirall/folderman.h"
 #include "mirall/folderwatcher.h"
-#include "mirall/mirallconfigfile.h"
-#include "mirall/syncresult.h"
 #include "mirall/logger.h"
-#include "mirall/owncloudinfo.h"
-#include "mirall/utility.h"
-#include "folderman.h"
-#include "creds/abstractcredentials.h"
-#include "mirall/syncjournalfilerecord.h"
+#include "mirall/mirallconfigfile.h"
 #include "mirall/networkjobs.h"
+#include "mirall/syncjournalfilerecord.h"
+#include "mirall/syncresult.h"
+#include "mirall/utility.h"
+
+#include "creds/abstractcredentials.h"
+
 
 extern "C" {
 
@@ -55,7 +57,7 @@ namespace Mirall {
 Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
     : QObject(parent)
       , _path(path)
-      , _secondPath(secondPath)
+      , _remotePath(secondPath)
       , _alias(alias)
       , _enabled(true)
       , _thread(0)
@@ -95,7 +97,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
 bool Folder::init()
 {
-    QString url = Utility::toCSyncScheme(ownCloudInfo::instance()->webdavUrl() + secondPath());
+    QString url = Utility::toCSyncScheme(remoteUrl().toString());
     QString localpath = path();
 
     if( csync_create( &_csync_ctx, localpath.toUtf8().data(), url.toUtf8().data() ) < 0 ) {
@@ -195,9 +197,23 @@ bool Folder::isBusy() const
     return ( _thread && _thread->isRunning() );
 }
 
-QString Folder::secondPath() const
+QString Folder::remotePath() const
 {
-    return _secondPath;
+    return _remotePath;
+}
+
+QUrl Folder::remoteUrl() const
+{
+    Account *account = AccountManager::instance()->account();
+    QUrl url = account->url();
+    QString path = url.path();
+    if (path.endsWith('/')) {
+        path.append('/');
+    }
+    path.append(_remotePath);
+    url.setPath(path);
+
+    return url;
 }
 
 QString Folder::nativePath() const
@@ -256,7 +272,7 @@ void Folder::slotPollTimerTimeout()
         qDebug() << "** Force Sync now";
         evaluateSync(QStringList());
     } else {
-        RequestEtagJob* job = new RequestEtagJob(secondPath(), this);
+        RequestEtagJob* job = new RequestEtagJob(remotePath(), this);
         // check if the etag is different
         QObject::connect(job, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
         QObject::connect(job, SIGNAL(networkError()), this, SLOT(slotNetworkUnavailable()));
@@ -486,7 +502,7 @@ void Folder::setProxy()
 {
     if( _csync_ctx ) {
         /* Store proxy */
-        QUrl proxyUrl(ownCloudInfo::instance()->webdavUrl());
+        QUrl proxyUrl = remoteUrl();
         QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(proxyUrl));
         // We set at least one in Application
         Q_ASSERT(proxies.count() > 0);
@@ -579,7 +595,7 @@ void Folder::startSync(const QStringList &pathList)
     qDebug() << "*** Start syncing";
     _thread = new QThread(this);
     setIgnoredFiles();
-    _csync = new CSyncThread( _csync_ctx, path(), QUrl(ownCloudInfo::instance()->webdavUrl() + secondPath()).path(), &_journal);
+    _csync = new CSyncThread( _csync_ctx, path(), remoteUrl().toString(), &_journal);
     _csync->moveToThread(_thread);
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
@@ -654,7 +670,8 @@ void Folder::slotCSyncFinished()
         _thread->quit();
     }
     emit syncStateChange();
-    ownCloudInfo::instance()->getQuotaRequest("/");
+//  ### TODO: Where to rig up the quotas
+//    ownCloudInfo::instance()->getQuotaRequest("/");
     emit syncFinished( _syncResult );
 }
 
@@ -666,8 +683,7 @@ void Folder::slotTransmissionProgress(const Progress::Info& progress)
     if(newInfo.current_file.startsWith(QLatin1String("ownclouds://")) ||
             newInfo.current_file.startsWith(QLatin1String("owncloud://")) ) {
         // rip off the whole ownCloud URL.
-        QString remotePathUrl = ownCloudInfo::instance()->webdavUrl() + secondPath();
-        newInfo.current_file.remove(Utility::toCSyncScheme(remotePathUrl));
+        newInfo.current_file.remove(Utility::toCSyncScheme(remoteUrl().toString()));
     }
     QString localPath = path();
     if( newInfo.current_file.startsWith(localPath) ) {

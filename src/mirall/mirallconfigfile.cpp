@@ -15,7 +15,6 @@
 #include "config.h"
 
 #include "mirall/mirallconfigfile.h"
-#include "mirall/owncloudinfo.h"
 #include "mirall/owncloudtheme.h"
 #include "mirall/theme.h"
 #include "mirall/utility.h"
@@ -25,6 +24,12 @@
 
 #include <QWidget>
 #include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QSettings>
+#include <QDebug>
+#include <QNetworkProxy>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000

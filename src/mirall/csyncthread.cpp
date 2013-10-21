@@ -17,7 +17,6 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
 #include "mirall/logger.h"
-#include "mirall/owncloudinfo.h"
 #include "owncloudpropagator.h"
 #include "progressdatabase.h"
 #include "syncjournaldb.h"

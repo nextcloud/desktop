@@ -34,6 +34,7 @@
 #include "mirall/utility.h"
 #include "mirall/connectionvalidator.h"
 #include "mirall/socketapi.h"
+#include "mirall/account.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -114,6 +115,7 @@ Application::Application(int &argc, char **argv) :
 
     connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
 
+    AccountManager::instance()->setAccount(Account::restore(Theme::instance()->appName()));
     FolderMan::instance()->setSyncEnabled(false);
 
     setQuitOnLastWindowClosed(false);
@@ -132,7 +134,6 @@ Application::Application(int &argc, char **argv) :
     MirallConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect (_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));
-
 
     FolderMan::instance()->setupFolders();
     slotSetupProxy(); // folders have to be defined first.

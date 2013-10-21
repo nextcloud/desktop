@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
  *
@@ -24,6 +24,8 @@ class QUrl;
 
 namespace Mirall {
 
+class Account;
+
 /**
  * @brief The AbstractNetworkJob class
  */
@@ -32,6 +34,9 @@ class AbstractNetworkJob : public QObject {
 public:
     explicit AbstractNetworkJob(QObject* parent = 0);
     virtual ~AbstractNetworkJob();
+
+    void setAccount(Account *account);
+    Account* account() const { return _account; }
 
     void setReply(QNetworkReply *reply);
     QNetworkReply* reply() const { return _reply; }
@@ -51,6 +56,7 @@ private slots:
 
 private:
     QNetworkReply *_reply;
+    Account *_account;
 };
 
 /**

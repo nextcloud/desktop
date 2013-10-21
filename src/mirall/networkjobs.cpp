@@ -15,16 +15,23 @@
 
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
+#include <QBuffer>
+#include <QXmlStreamReader>
+#include <QStringList>
+
+#include <QDebug>
 
 #include "json.h"
 
-#include "mirall/owncloudinfo.h"
 #include "mirall/networkjobs.h"
+#include "mirall/account.h"
 
 namespace Mirall {
 
 AbstractNetworkJob::AbstractNetworkJob(QObject *parent)
-    : QObject(parent), _reply(0)
+    : QObject(parent)
+    , _reply(0)
+    , _account(AccountManager::instance()->account())
 {
 }
 
@@ -38,6 +45,11 @@ QNetworkReply *AbstractNetworkJob::takeReply()
     QNetworkReply *reply = _reply;
     _reply = 0;
     return reply;
+}
+
+void AbstractNetworkJob::setAccount(Account *account)
+{
+    _account = account;
 }
 
 void AbstractNetworkJob::slotError()
@@ -58,12 +70,12 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 
 QNetworkReply* AbstractNetworkJob::davRequest(const QByteArray &verb, QNetworkRequest &req, QIODevice *data)
 {
-    return ownCloudInfo::instance()->davRequest(verb, req, data);
+    return _account->davRequest(verb, req, data);
 }
 
 QNetworkReply* AbstractNetworkJob::getRequest(const QUrl &url)
 {
-    return ownCloudInfo::instance()->simpleGetRequest(url);
+    return _account->getRequest(url);
 }
 
 AbstractNetworkJob::~AbstractNetworkJob() {

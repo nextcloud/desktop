@@ -1,3 +1,5 @@
+add_subdirectory(integration)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 qt_add_resources(MIRALL_RC_SRC ../mirall.qrc)
@@ -27,6 +29,7 @@ set(3rdparty_HEADER
 3rdparty/fancylineedit/fancylineedit.h
 3rdparty/QProgressIndicator/QProgressIndicator.h
 )
+
 qt_wrap_cpp(3rdparty_MOC ${3rdparty_HEADER})
 
 if(NOT WIN32)
@@ -59,13 +62,14 @@ set(libsync_SRCS
     mirall/fileutils.cpp
     mirall/theme.cpp
     mirall/owncloudtheme.cpp
-    mirall/owncloudinfo.cpp
+#    mirall/owncloudinfo.cpp
     mirall/logger.cpp
     mirall/utility.cpp
     mirall/connectionvalidator.cpp
     mirall/progressdispatcher.cpp
     mirall/mirallaccessmanager.cpp
     mirall/networkjobs.cpp
+    mirall/account.cpp
     creds/dummycredentials.cpp
     creds/httpcredentials.cpp
     creds/credentialsfactory.cpp
@@ -90,12 +94,13 @@ set(libsync_HEADERS
     mirall/syncjournaldb.h
     mirall/theme.h
     mirall/owncloudtheme.h
-    mirall/owncloudinfo.h
+#    mirall/owncloudinfo.h
     mirall/logger.h
     mirall/connectionvalidator.h
     mirall/progressdispatcher.h
     mirall/mirallaccessmanager.h
     mirall/networkjobs.h
+    mirall/account.h
     creds/abstractcredentials.h
     creds/dummycredentials.h
     creds/httpcredentials.h

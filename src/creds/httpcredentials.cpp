@@ -15,14 +15,16 @@
  */
 
 #include <QMutex>
+#include <QDebug>
+#include <QNetworkReply>
 
-#include "creds/httpcredentials.h"
-#include "mirall/owncloudinfo.h"
+#include "mirall/account.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/utility.h"
-#include "creds/http/credentialstore.h"
 #include "creds/credentialscommon.h"
+#include "creds/http/credentialstore.h"
+#include "creds/httpcredentials.h"
 
 namespace Mirall
 {
@@ -105,7 +107,7 @@ void HttpCredentials::syncContextPreStart (CSYNC* ctx)
     // any way to get "session_key" module property from csync. Had we
     // have it, then we could remove this code and keep it in
     // csyncthread code (or folder code, git remembers).
-    QList<QNetworkCookie> cookies(ownCloudInfo::instance()->getLastAuthCookies());
+    QList<QNetworkCookie> cookies(AccountManager::instance()->account()->lastAuthCookies());
     QString cookiesAsString;
 
     // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply

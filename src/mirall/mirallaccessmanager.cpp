@@ -21,14 +21,23 @@ namespace Mirall
 
 MirallAccessManager::MirallAccessManager(QObject* parent)
     : QNetworkAccessManager (parent)
-{}
+{
+}
 
 QNetworkReply* MirallAccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)
 {
     QNetworkRequest newRequest(request);
-
-    newRequest.setRawHeader( QByteArray("User-Agent"), Utility::userAgentString());
-    return QNetworkAccessManager::createRequest (op, newRequest, outgoingData);
+    newRequest.setRawHeader(QByteArray("User-Agent"), Utility::userAgentString());
+    if (outgoingData) {
+        newRequest.setHeader( QNetworkRequest::ContentLengthHeader, outgoingData->size());
+    }
+    QByteArray verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
+    // For PROPFIND (assumed to be a WebDAV op), set xml/utf8 as content type/encoding
+    // This needs extension
+    if (verb == "PROPFIND") {
+        newRequest.setHeader( QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml; charset=utf-8"));
+    }
+    return QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
 }
 
 } // ns Mirall

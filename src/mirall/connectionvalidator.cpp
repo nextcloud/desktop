@@ -12,9 +12,9 @@
  */
 
 #include <QtCore>
+#include <QNetworkReply>
 
 #include "mirall/connectionvalidator.h"
-#include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
 

@@ -80,10 +80,16 @@ public:
      * local folder path
      */
     QString path() const;
+
     /**
      * remote folder path
      */
-    QString secondPath() const;
+    QString remotePath() const;
+
+    /**
+     * remote folder path with server url
+     */
+    QUrl remoteUrl() const;
 
     /**
      * local folder path with native separators
@@ -193,7 +199,7 @@ protected:
     void checkLocalPath();
 
     QString   _path;
-    QString   _secondPath;
+    QString   _remotePath;
     QString   _alias;
     QString   _configFile;
     QFileSystemWatcher *_pathWatcher;

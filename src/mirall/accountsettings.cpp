@@ -216,7 +216,7 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     if( ! item || !f ) return;
 
     item->setData( f->nativePath(),        FolderStatusDelegate::FolderPathRole );
-    item->setData( f->secondPath(),        FolderStatusDelegate::FolderSecondPathRole );
+    item->setData( f->remotePath(),        FolderStatusDelegate::FolderSecondPathRole );
     item->setData( f->alias(),             FolderStatusDelegate::FolderAliasRole );
     item->setData( f->syncEnabled(),       FolderStatusDelegate::FolderSyncEnabled );
 
@@ -568,7 +568,7 @@ QString AccountSettings::shortenFilename( const QString& folder, const QString& 
         // rip off the whole ownCloud URL.
         Folder *f = FolderMan::instance()->folder(folder);
         if( f ) {
-            QString remotePathUrl = ownCloudInfo::instance()->webdavUrl() + QLatin1Char('/') + f->secondPath();
+            QString remotePathUrl = ownCloudInfo::instance()->webdavUrl() + QLatin1Char('/') + f->remotePath();
             shortFile.remove(Utility::toCSyncScheme(remotePathUrl));
 
         }
