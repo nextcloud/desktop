@@ -1078,12 +1078,12 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="663"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel renomear este cartafol. Non se lle cambiou o nome, mantense o orixinal.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="665"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel renomear este cartafol. Devólvalle o nome ao compartido.</translation>
     </message>
 </context>
 <context>
