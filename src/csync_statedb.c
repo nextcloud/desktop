@@ -800,10 +800,10 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode) {
   /* clear the whole structure */
   ZERO_STRUCTP(st);
 
-  st->phash = atoll(result->vector[0], NULL, 10);
+  st->phash = atoll(result->vector[0]);
   st->pathlen = atoi(result->vector[1]);
   memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
-  st->inode = atoll(result->vector[3], NULL, 10);
+  st->inode = atoll(result->vector[3]);
   st->uid = atoi(result->vector[4]);
   st->gid = atoi(result->vector[5]);
   st->mode = atoi(result->vector[6]);
