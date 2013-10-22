@@ -137,6 +137,12 @@ list(APPEND libsync_LINK_TARGETS
     ${HTTPBF_LIBRARY}
 )
 
+IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+   list(APPEND libsync_LINK_TARGETS
+      inotify
+   )
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+
 if(QTKEYCHAIN_FOUND)
     list(APPEND libsync_LINK_TARGETS ${QTKEYCHAIN_LIBRARY})
     include_directories(${QTKEYCHAIN_INCLUDE_DIR})
