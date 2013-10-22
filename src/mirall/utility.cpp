@@ -111,7 +111,7 @@ QString Utility::platform()
 #elif defined(Q_OS_LINUX)
     return QLatin1String("Linux");
 #elif defined(__DragonFly__) // Q_OS_FREEBSD also defined
-    return "DragonFlyBSD";
+    return QLatin1String("DragonFlyBSD");
 #elif defined(Q_OS_FREEBSD)
     return QLatin1String("FreeBSD");
 #elif defined(Q_OS_NETBSD)
@@ -119,9 +119,9 @@ QString Utility::platform()
 #elif defined(Q_OS_OPENBSD)
     return QLatin1String("OpenBSD");
 #elif defined(Q_OS_SOLARIS)
-    return "Solaris";
+    return QLatin1String("Solaris");
 #else
-    return "Unknown OS"
+    return QLatin1String("Unknown OS");
 #endif
 }
 
