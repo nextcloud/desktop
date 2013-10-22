@@ -199,7 +199,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64 ", md5: %s <-> %s, inode: %" PRId64 " <-> %" PRId64,
-                  ((int64_t) fs->mtime), ((int64_t) tmp->modtime), fs->md5, tmp->md5, (int64_t) fs->inode, (int64_t) tmp->inode);
+                  ((int64_t) fs->mtime), ((int64_t) tmp->modtime), fs->md5, tmp->md5, (uint64_t) fs->inode, (uint64_t) tmp->inode);
         if( !fs->md5) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
@@ -230,7 +230,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         if (ctx->current == LOCAL_REPLICA) {
             tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
             if (tmp && tmp->inode == fs->inode && (tmp->modtime == fs->mtime || fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)) {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %" PRId64 " <-> %" PRId64, (int64_t) tmp->inode, (int64_t) fs->inode);
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %" PRId64 " <-> %" PRId64, (uint64_t) tmp->inode, (uint64_t) fs->inode);
                 /* inode found so the file has been renamed */
                 st->instruction = CSYNC_INSTRUCTION_RENAME;
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {

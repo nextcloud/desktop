@@ -737,7 +737,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash) {
 
       st->pathlen = sqlite3_column_int(_by_hash_stmt, 1);
       memcpy(st->path, (len ? (char*) sqlite3_column_text(_by_hash_stmt, 2) : ""), len + 1);
-      st->inode = sqlite3_column_int(_by_hash_stmt,3);
+      st->inode = sqlite3_column_int64(_by_hash_stmt,3);
       st->uid = sqlite3_column_int(_by_hash_stmt, 4);
       st->gid = sqlite3_column_int(_by_hash_stmt, 5);
       st->mode = sqlite3_column_int(_by_hash_stmt, 6);
@@ -774,7 +774,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode) {
   size_t len = 0;
 
   stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE inode='%lld'",
-			 (long long unsigned int) inode);
+             (long long signed int) inode);
   if (stmt == NULL) {
     return NULL;
   }
@@ -800,10 +800,10 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode) {
   /* clear the whole structure */
   ZERO_STRUCTP(st);
 
-  st->phash = strtoull(result->vector[0], NULL, 10);
+  st->phash = atoll(result->vector[0], NULL, 10);
   st->pathlen = atoi(result->vector[1]);
   memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
-  st->inode = atoi(result->vector[3]);
+  st->inode = atoll(result->vector[3], NULL, 10);
   st->uid = atoi(result->vector[4]);
   st->gid = atoi(result->vector[5]);
   st->mode = atoi(result->vector[6]);
