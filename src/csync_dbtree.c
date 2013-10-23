@@ -137,7 +137,7 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
         fs->name = c_strdup(column+strlen(path)+1);
 
         column = list->vector[base+2]; /* inode    */
-        fs->inode = atoi(column);
+        fs->inode = atoll(column);
         fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
 
         column = list->vector[base+3]; /* uid      */

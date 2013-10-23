@@ -1,5 +1,16 @@
 ChangeLog
 ==========
+version 0.90.4  (released 2013-10-18, ownCloud Client 1.4.2)
+
+  * Count renamed and deleted files for progress information.
+  * Do not reset csync internal error state in helper funcs 
+    and do not overwrite error messages.
+    That fixes error reporting to the client.
+  * Disable check on inodes on all platforms as inodes are not 
+    reliable.
+  * Fix resuming after user aborting the sync process.
+  * enabled HBF debugging permanently.
+
 version 0.90.1  (released 2013-09-24, ownCloud Client 1.4.1)
   * no more check on the local inode in updater for win32 (bug #779)
   * detect if server does not send an etag after an upload 
