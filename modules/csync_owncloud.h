@@ -72,8 +72,6 @@ enum resource_type {
     resr_error
 };
 
-#define DAV_STRTOL strtoll
-
 /* Struct to store data for each resource found during an opendir operation.
  * It represents a single file entry.
  */

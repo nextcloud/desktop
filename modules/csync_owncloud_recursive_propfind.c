@@ -168,14 +168,9 @@ static void propfind_results_recursive(void *userdata,
     }
 
     /* DEBUG_WEBDAV("Parsing Modtime: %s -> %llu", modtime, (unsigned long long) newres->modtime ); */
-
+    newres->size = 0;
     if (clength) {
-        char *p;
-
-        newres->size = DAV_STRTOL(clength, &p, 10);
-        if (*p) {
-            newres->size = 0;
-        }
+        newres->size = atoll(clength);
         /* DEBUG_WEBDAV("Parsed File size for %s from %s: %lld", newres->name, clength, (long long)newres->size ); */
     }
 
