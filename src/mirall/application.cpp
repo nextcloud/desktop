@@ -116,7 +116,10 @@ Application::Application(int &argc, char **argv) :
 
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    AccountManager::instance()->setAccount(Account::restore(settings));
+    Account *account = Account::restore(settings);
+    account->setSslErrorHandler(new SslDialogErrorHandler);
+    AccountManager::instance()->setAccount(account);
+
     FolderMan::instance()->setSyncEnabled(false);
 
     setQuitOnLastWindowClosed(false);
@@ -166,6 +169,12 @@ void Application::slotCleanup()
 {
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
+    Account *account = AccountManager::instance()->account();
+    MirallConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    if (account) {
+        account->save(settings);
+    }
     _gui->slotShutdown();
     _gui->deleteLater();
 }

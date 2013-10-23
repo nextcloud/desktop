@@ -21,6 +21,7 @@
 #include <QMutex>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
+#include <QSslSocket>
 
 namespace Mirall {
 
@@ -51,6 +52,8 @@ Account::Account(QObject *parent)
     : QObject(parent)
     , _am(0)
     , _credentials(0)
+    , _treatSslErrorsAsFailure(false)
+    , _sslErrorHandler(0)
 {
 }
 
@@ -62,18 +65,30 @@ void Account::save(QSettings &settings)
     if (_credentials) {
         settings.setValue(QLatin1String(authTypeC), _credentials->authType());
     }
+    // ### TODO port away from ConfigFile
+    MirallConfigFile cfg;
+    qDebug() << "Saving " << approvedCerts().count() << " unknown certs.";
+    QByteArray certs;
+    foreach( const QSslCertificate& cert, approvedCerts() ) {
+        certs += cert.toPem() + '\n';
+    }
+    if (!certs.isEmpty()) {
+        cfg.setCaCerts( certs );
+    }
 }
 
 Account* Account::restore(QSettings &settings)
 {
     QString groupName = Theme::instance()->appName();
     if (settings.childGroups().contains(groupName)) {
+        MirallConfigFile cfg;
         Account *acc = new Account;
+        acc->setApprovedCerts(QSslCertificate::fromData(cfg.caCerts()));
         settings.beginGroup(groupName);
         acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
         acc->setUser(settings.value(QLatin1String(userC)).toString());
-        MirallConfigFile cfg;
         acc->setCredentials(cfg.getCredentials());
+
         return acc;
     } else {
         return 0;
@@ -93,6 +108,8 @@ void Account::setCredentials(AbstractCredentials *cred)
        _am->deleteLater();
     }
     _am = _credentials->getQNAM();
+    connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
+            SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
 }
 
 static const char WEBDAV_PATH[] = "remote.php/webdav/";
@@ -121,6 +138,21 @@ QNetworkReply *Account::davRequest(const QByteArray &verb, const QString &relPat
     return _am->sendCustomRequest(req, verb, data);
 }
 
+void Account::setCertificateChain(const QList<QSslCertificate> &certs)
+{
+    _certificateChain = certs;
+}
+
+void Account::setApprovedCerts(const QList<QSslCertificate> certs)
+{
+    _approvedCerts = certs;
+}
+
+void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
+{
+    _sslErrorHandler = handler;
+}
+
 void Account::setUrl(const QUrl &url)
 {
     _url = url;
@@ -129,16 +161,6 @@ void Account::setUrl(const QUrl &url)
 void Account::setUser(const QString &user)
 {
     _user = user;
-}
-
-void Account::setCaCerts(const QByteArray &caCerts)
-{
-    _caCerts = caCerts;
-}
-
-QList<QSslCertificate> Account::certificateChain() const
-{
-    return QList<QSslCertificate>();
 }
 
 QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)
@@ -151,6 +173,30 @@ QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)
     path += concatPath;
     tmpUrl.setPath(path);
     return tmpUrl;
+}
+
+void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
+{
+    qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
+
+    if( _treatSslErrorsAsFailure ) {
+        // User decided once not to trust. Honor this decision.
+        qDebug() << "Certs not trusted by user decision, returning.";
+        return;
+    }
+
+    QList<QSslCertificate> approvedCerts;
+    AbstractSslErrorHandler *handler = sslErrorHandler();
+    if (handler && handler->handleErrors(errors, &approvedCerts, this)) {
+        QSslSocket::addDefaultCaCertificates(approvedCerts);
+        setApprovedCerts(approvedCerts);
+        // all ssl certs are known and accepted. We can ignore the problems right away.
+        qDebug() << "Certs are already known and trusted, Warnings are not valid.";
+        reply->ignoreSslErrors();
+    } else {
+        _treatSslErrorsAsFailure = true;
+        return;
+    }
 }
 
 } // namespace Mirall

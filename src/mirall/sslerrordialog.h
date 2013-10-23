@@ -19,6 +19,8 @@
 #include <QSslCertificate>
 #include <QList>
 
+#include "mirall/account.h"
+
 class QSslError;
 class QSslCertificate;
 
@@ -29,25 +31,20 @@ namespace Ui {
 class SslErrorDialog;
 }
 
+class SslDialogErrorHandler : public AbstractSslErrorHandler {
+public:
+    bool handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, Account*);
+};
+
 class SslErrorDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit SslErrorDialog(QWidget *parent = 0);
+    explicit SslErrorDialog(Account *account, QWidget *parent = 0);
     ~SslErrorDialog();
-    
-    bool setErrorList( QList<QSslError> errors );
-
+    bool checkFailingCertsValid( const QList<QSslError> &errors );
     bool trustConnection();
-
-    void setCustomConfigHandle( const QString& );
-
-    QList<QSslCertificate> storedCACerts();
-
-signals:
-    
-public slots:
-    void accept();
+    QList<QSslCertificate> unknownCerts() const { return _unknownCerts; }
 
 private:
     QString styleSheet() const;
@@ -58,6 +55,7 @@ private:
     QList<QSslCertificate> _unknownCerts;
     QString                _customConfigHandle;
     Ui::SslErrorDialog     *_ui;
+    Account                *_account;
 };
 } // end namespace
 

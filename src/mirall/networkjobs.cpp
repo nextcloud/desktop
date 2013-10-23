@@ -15,6 +15,7 @@
 
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
+#include <QSslConfiguration>
 #include <QBuffer>
 #include <QXmlStreamReader>
 #include <QStringList>
@@ -257,6 +258,8 @@ void CheckServerJob::slotFinished()
         deleteLater();
         return;
     }
+
+    account()->setCertificateChain(reply()->sslConfiguration().peerCertificateChain());
 
     // ### the qDebugs here should be exported via displayErrors() so they
     // ### can be presented to the user if the job executor has a GUI

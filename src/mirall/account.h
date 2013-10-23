@@ -20,6 +20,7 @@
 #include <QNetworkCookie>
 #include <QNetworkRequest>
 #include <QSslCertificate>
+#include <QSslError>
 
 class QSettings;
 class QNetworkReply;
@@ -45,10 +46,17 @@ private:
     static AccountManager *_instance;
 };
 
+/* Reimplement this to handle SSL errors */
+class AbstractSslErrorHandler {
+public:
+    virtual bool handleErrors(QList<QSslError>, QList<QSslCertificate>*, Account*) = 0;
+};
+
 /**
  * @brief This class represents an account on an ownCloud Server
  */
 class Account : public QObject {
+    Q_OBJECT
 public:
     Account(QObject *parent = 0);
     /**
@@ -82,24 +90,30 @@ public:
     QNetworkReply* davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data = 0);
 
     /** The certificates of the account */
-    QByteArray caCerts() const { return _caCerts; }
-    void setCaCerts(const QByteArray &certs);
+    QList<QSslCertificate> certificateChain() const { return _certificateChain; }
+    void setCertificateChain(const QList<QSslCertificate> &certs);
     /** The certificates of the account */
-    QByteArray acceptedCaCerts() const { return _acceptedCaCerts; }
-    void setAcceptedCaCerts(const QByteArray &certs);
+    QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
+    void setApprovedCerts(const QList<QSslCertificate> certs);
 
-    QList<QSslCertificate> certificateChain() const;
+    AbstractSslErrorHandler* sslErrorHandler() const { return _sslErrorHandler; }
+    void setSslErrorHandler(AbstractSslErrorHandler *handler);
 
     static QUrl concatUrlPath(const QUrl &url, const QString &concatPath);
 
+private slots:
+    void slotHandleErrors(QNetworkReply*,QList<QSslError>);
+
 private:
     QNetworkAccessManager *_am;
-    QByteArray _caCerts;
-    QByteArray _acceptedCaCerts;
+    QList<QSslCertificate> _caCerts;
     QUrl _url;
     QString _user;
     AbstractCredentials* _credentials;
+    QList<QSslCertificate> _approvedCerts;
     QList<QSslCertificate> _certificateChain;
+    bool _treatSslErrorsAsFailure;
+    AbstractSslErrorHandler *_sslErrorHandler;
 };
 
 }
