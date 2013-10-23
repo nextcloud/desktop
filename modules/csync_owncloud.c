@@ -1024,7 +1024,7 @@ static csync_vio_capabilities_t *owncloud_capabilities(void)
   return &_owncloud_capabilities;
 }
 
-static const char* owncloud_file_id( const char *path )
+static const char* owncloud_get_etag( const char *path )
 {
     ne_request *req    = NULL;
     const char *header = NULL;
@@ -1887,7 +1887,7 @@ static int owncloud_set_property(const char *key, void *data) {
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
     .get_capabilities = owncloud_capabilities,
-    .get_file_id = owncloud_file_id,
+    .get_etag = owncloud_get_etag,
     .open = owncloud_open,
     .creat = owncloud_creat,
     .close = owncloud_close,

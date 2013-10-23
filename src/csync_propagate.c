@@ -174,7 +174,7 @@ static const char*_get_md5( CSYNC *ctx, const char *path ) {
       return 0;
   }
 
-  md5 = csync_vio_file_id(ctx, buf);
+  md5 = csync_vio_get_etag(ctx, buf);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "MD5 for %s: %s", buf, md5 ? md5 : "<null>");
   SAFE_FREE(buf);

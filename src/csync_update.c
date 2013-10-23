@@ -411,7 +411,7 @@ static int _check_read_from_db(CSYNC *ctx, const char *uri) {
           tmp = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
           if (tmp) {
             md5_local = tmp->md5;
-            md5_remote = csync_vio_file_id(ctx, uri);
+            md5_remote = csync_vio_get_etag(ctx, uri);
 
             CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Compare directory ids for %s: %s -> %s", mpath, md5_local, md5_remote );
 

@@ -227,8 +227,8 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     return -1;
   }
 
-  if (! VIO_METHOD_HAS_FUNC(m, get_file_id)) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "module %s has no get_file_id fn", module);
+  if (! VIO_METHOD_HAS_FUNC(m, get_etag)) {
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "module %s has no get_etag fn", module);
   }
 
   ctx->module.method = m;
@@ -634,13 +634,13 @@ int csync_vio_rmdir(CSYNC *ctx, const char *uri) {
   return rc;
 }
 
-const char *csync_vio_file_id(CSYNC *ctx, const char *path)
+const char *csync_vio_get_etag(CSYNC *ctx, const char *path)
 {
     const char *re = NULL;
     /* We always use the remote method here. */
     if(ctx->module.method &&
-            VIO_METHOD_HAS_FUNC(ctx->module.method, get_file_id)) {
-        re = ctx->module.method->get_file_id(path);
+            VIO_METHOD_HAS_FUNC(ctx->module.method, get_etag)) {
+        re = ctx->module.method->get_etag(path);
     }
     return re;
 }

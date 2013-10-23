@@ -53,7 +53,7 @@ typedef csync_vio_method_t *(*csync_vio_method_init_fn)(const char *method_name,
 typedef void (*csync_vio_method_finish_fn)(csync_vio_method_t *method);
 
 typedef csync_vio_capabilities_t *(*csync_method_get_capabilities_fn)(void);
-typedef const char* (*csync_method_get_file_id_fn)(const char* path);
+typedef const char* (*csync_method_get_etag_fn)(const char* path);
 typedef csync_vio_method_handle_t *(*csync_method_open_fn)(const char *durl, int flags, mode_t mode);
 typedef csync_vio_method_handle_t *(*csync_method_creat_fn)(const char *durl, mode_t mode);
 typedef int (*csync_method_close_fn)(csync_vio_method_handle_t *fhandle);
@@ -116,7 +116,7 @@ struct csync_vio_method_s {
   csync_method_commit_fn commit;
   csync_method_put_fn put;
   csync_method_get_fn get;
-  csync_method_get_file_id_fn get_file_id;
+  csync_method_get_etag_fn get_etag;
   csync_method_sendfile_fn sendfile;
 };
 
