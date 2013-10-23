@@ -231,9 +231,6 @@ static int _csync_push_file(CSYNC *ctx, csync_file_stat_t *st) {
 
   bool transmission_done = false;
 
-  /* Check if there is progress info stored in the database for this file */
-  progress_info = csync_statedb_get_progressinfo(ctx, st->phash, st->modtime, st->md5);
-
   rep_bak = ctx->replica;
 
 #ifdef BLACKLIST_ON_ERROR
@@ -824,8 +821,6 @@ out:
     progress_info = NULL;
   }
 
-  csync_statedb_free_progressinfo(progress_info);
-
   SAFE_FREE(prev_tdir);
   SAFE_FREE(suri);
   SAFE_FREE(duri);
@@ -1108,7 +1103,6 @@ out:
     }
   }
 
-  csync_statedb_free_progressinfo(pi);
   return rc;
 }
 
@@ -1228,7 +1222,6 @@ out:
     pi = NULL;
   }
 
-  csync_statedb_free_progressinfo(pi);
   return rc;
 }
 
@@ -1343,7 +1336,6 @@ out:
     pi = NULL;
   }
 
-  csync_statedb_free_progressinfo(pi);
   return rc;
 }
 
@@ -1440,7 +1432,6 @@ out:
     pi = NULL;
   }
 
-  csync_statedb_free_progressinfo(pi);
   return rc;
 }
 

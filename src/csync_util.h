@@ -30,8 +30,6 @@ const char *csync_instruction_str(enum csync_instructions_e instr);
 
 void csync_memstat_check(void);
 
-int csync_merge_file_trees(CSYNC *ctx);
-
 int csync_unix_extensions(CSYNC *ctx);
 
 void csync_win32_set_file_hidden( const char *file, bool hidden );

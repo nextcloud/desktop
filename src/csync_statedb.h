@@ -103,14 +103,6 @@ c_strlist_t *csync_statedb_query(sqlite3 *db, const char *statement);
  * @return  The rowid of the most recent INSERT on success, 0 if the query
  *          wasn't successful.
  */
-int csync_statedb_insert(sqlite3 *db, const char *statement);
-
-int csync_statedb_create_tables(sqlite3 *db);
-
-int csync_statedb_drop_tables(sqlite3 *db);
-
-int csync_statedb_insert_metadata(CSYNC *ctx, sqlite3 *db);
-
 typedef struct csync_progressinfo_s {
   struct csync_progressinfo_s *next;
   uint64_t phash;
@@ -122,11 +114,6 @@ typedef struct csync_progressinfo_s {
   char *tmpfile;
   char *error_string;
 } csync_progressinfo_t;
-
-csync_progressinfo_t *csync_statedb_get_progressinfo(CSYNC *ctx, uint64_t phash, uint64_t modtime, const char *md5);
-void csync_statedb_free_progressinfo(csync_progressinfo_t *pi);
-int csync_statedb_write_progressinfo(CSYNC *ctx, csync_progressinfo_t *pi);
-
 
 /**
  * }@

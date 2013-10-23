@@ -736,62 +736,11 @@ static void _tree_destructor(void *data) {
   csync_file_stat_free(freedata);
 }
 
-static int  _merge_and_write_statedb(CSYNC *ctx) {
-  struct timespec start, finish;
-  char errbuf[256] = {0};
-  int jwritten = 0;
-  int rc = 0;
-
-  /* if we have a statedb */
-  if (ctx->statedb.db != NULL) {
-    /* and we have successfully synchronized */
-    if (ctx->status >= CSYNC_STATUS_DONE) {
-      /* merge trees */
-      if (csync_merge_file_trees(ctx) < 0) {
-        C_STRERROR(errno, errbuf, sizeof(errbuf));
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to merge trees: %s",
-                  errbuf);
-        ctx->status_code = CSYNC_STATUS_MERGE_FILETREE_ERROR;
-        rc = -1;
-      } else {
-        csync_gettime(&start);
-        /* write the statedb to disk */
-        rc = csync_statedb_write(ctx, ctx->statedb.db);
-        if (rc == 0) {
-          jwritten = 1;
-          csync_gettime(&finish);
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-              "Writing the statedb of %zu files to disk took %.2f seconds",
-              c_rbtree_size(ctx->local.tree), c_secdiff(finish, start));
-        } else {
-          C_STRERROR(errno, errbuf, sizeof(errbuf));
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Unable to write statedb: %s",
-                    errbuf);
-          ctx->status_code = CSYNC_STATUS_STATEDB_WRITE_ERROR;
-          rc = -1;
-        }
-      }
-    }
-
-    if (csync_statedb_close(ctx->statedb.file, ctx->statedb.db, jwritten) < 0) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: closing of statedb failed.");
-      rc = -1;
-    }
-  }
-  return rc;
-}
-
 /* reset all the list to empty.
  * used by csync_commit and csync_destroy */
 static void _csync_clean_ctx(CSYNC *ctx)
 {
     c_list_t * walk;
-
-    while (ctx->progress_info) {
-        csync_progressinfo_t *next = ctx->progress_info->next;
-        csync_statedb_free_progressinfo(ctx->progress_info);
-        ctx->progress_info = next;
-    }
 
     /* destroy the rbtrees */
     if (c_rbtree_size(ctx->local.tree) > 0) {
@@ -835,16 +784,6 @@ int csync_commit(CSYNC *ctx) {
   }
 
   ctx->status_code = CSYNC_STATUS_OK;
-
-  rc = _merge_and_write_statedb(ctx);
-  if (rc < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Merge and Write database failed!");
-    if (ctx->status_code == CSYNC_STATUS_OK) {
-      ctx->status_code = CSYNC_STATUS_STATEDB_WRITE_ERROR;
-    }
-    rc = 1;  /* Set to soft error. */
-    /* The other steps happen anyway, what else can we do? */
-  }
 
   rc = csync_vio_commit(ctx);
   if (rc < 0) {
@@ -892,15 +831,6 @@ int csync_destroy(CSYNC *ctx) {
   ctx->status_code = CSYNC_STATUS_OK;
 
   csync_vio_shutdown(ctx);
-
-  rc = _merge_and_write_statedb(ctx);
-  if (rc < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "destroy: Merge and Write database failed!");
-    if (ctx->status_code == CSYNC_STATUS_OK) {
-      ctx->status_code = CSYNC_STATUS_STATEDB_WRITE_ERROR;
-    }
-    /* The other steps happen anyway, what else can we do? */
-  }
 
   /* destroy exclude list */
   csync_exclude_destroy(ctx);
