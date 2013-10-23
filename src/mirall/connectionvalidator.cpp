@@ -17,6 +17,8 @@
 #include "mirall/connectionvalidator.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
+#include "mirall/account.h"
+#include "mirall/networkjobs.h"
 
 namespace Mirall {
 
@@ -26,12 +28,11 @@ ConnectionValidator::ConnectionValidator(QObject *parent) :
 
 }
 
-ConnectionValidator::ConnectionValidator(const QString& connection, QObject *parent)
+ConnectionValidator::ConnectionValidator(Account *account, QObject *parent)
     : QObject(parent),
-      _connection(connection),
+      _account(account),
       _networkError(QNetworkReply::NoError)
 {
-    ownCloudInfo::instance()->setCustomConfigHandle(_connection);
 }
 
 QStringList ConnectionValidator::errors() const
@@ -85,37 +86,27 @@ QString ConnectionValidator::statusString( Status stat ) const
 
 void ConnectionValidator::checkConnection()
 {
-    if( ownCloudInfo::instance()->isConfigured() ) {
-        connect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-                 SLOT(slotStatusFound(QString,QString,QString,QString)));
-
-        connect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
-                 SLOT(slotNoStatusFound(QNetworkReply*)));
-
-        // checks for status.php
-        ownCloudInfo::instance()->checkInstallation();
+    if( AccountManager::instance()->account() ) {
+        CheckServerJob *checkJob = new CheckServerJob(_account, false, this);
+        connect(checkJob, SIGNAL(instanceFound(QVariantMap)), SLOT(slotStatusFound(QVariantMap)));
+        connect(checkJob, SIGNAL(networkError(QNetworkReply::NetworkError,QString)),
+                                 SLOT(slotNoStatusFound(QNetworkReply::NetworkError,QString)));
     } else {
-        _errors << tr("No ownCloud connection configured");
+        _errors << tr("No ownCloud account configured");
         emit connectionResult( NotConfigured );
     }
 }
 
-void ConnectionValidator::slotStatusFound( const QString& url, const QString& versionStr, const QString& version, const QString& /*edition*/)
+void ConnectionValidator::slotStatusFound( const QVariantMap &info )
 {
     // status.php was found.
-    qDebug() << "** Application: ownCloud found: " << url << " with version " << versionStr << "(" << version << ")";
+    qDebug() << "** Application: ownCloud found: "
+             << _account->url() << " with version "
+             << CheckServerJob::versionString(info)
+             << "(" << CheckServerJob::version(info) << ")";
     // now check the authentication
-    MirallConfigFile cfgFile(_connection);
 
-    cfgFile.setOwnCloudVersion( version );
-    // disconnect from ownCloudInfo
-    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-                this, SLOT(slotStatusFound(QString,QString,QString,QString)));
-
-    disconnect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
-                this, SLOT(slotNoStatusFound(QNetworkReply*)));
-
-    if( version.startsWith("4.0") ) {
+    if( CheckServerJob::version(info).startsWith("4.0") ) {
         _errors.append( tr("The configured server for this client is too old") );
         _errors.append( tr("Please update to the latest server and restart the client.") );
         emit connectionResult( ServerVersionMismatch );
@@ -126,52 +117,46 @@ void ConnectionValidator::slotStatusFound( const QString& url, const QString& ve
 }
 
 // status.php could not be loaded.
-void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
+void ConnectionValidator::slotNoStatusFound(QNetworkReply::NetworkError error, const QString &errStr)
 {
-    // disconnect from ownCloudInfo
-    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-                this, SLOT(slotStatusFound(QString,QString,QString,QString)));
-
-    disconnect( ownCloudInfo::instance(),SIGNAL(noOwncloudFound(QNetworkReply*)),
-                this, SLOT(slotNoStatusFound(QNetworkReply*)));
-
-    _errors.append(tr("Unable to connect to %1").arg(reply->url().toString()));
-    _errors.append( reply->errorString() );
-    _networkError = (reply->error() != QNetworkReply::NoError);
+    // ### TODO
+    _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
+    _errors.append( errStr );
+    _networkError = (error != QNetworkReply::NoError);
     emit connectionResult( StatusNotFound );
 
 }
 
 void ConnectionValidator::slotCheckAuthentication()
 {
-    connect( ownCloudInfo::instance(), SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-             this, SLOT(slotAuthCheck(QString,QNetworkReply*)));
-
-    qDebug() << "# checking for authentication settings.";
-    ownCloudInfo::instance()->getWebDAVPath(QLatin1String("/") ); // this call needs to be authenticated.
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
+    PropfindJob *propFind = new PropfindJob(_account, "/", QList<QByteArray>() << "getlastmodified", this);
+    connect(propFind, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
+    connect(propFind, SIGNAL(networkError(QNetworkReply::NetworkError, QString)),
+            SLOT(slotAuthFailed(QNetworkReply::NetworkError, QString)));
+    qDebug() << "# checking for authentication settings.";
 }
 
-void ConnectionValidator::slotAuthCheck( const QString&, QNetworkReply *reply )
+void ConnectionValidator::slotAuthFailed(QNetworkReply::NetworkError error, const QString& errString)
 {
-    Status stat = Connected;
+    Status stat = StatusNotFound;
 
-    if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
-            reply->error() == QNetworkReply::OperationCanceledError ) { // returned if the user is wrong.
+    if( error == QNetworkReply::AuthenticationRequiredError ||
+            error == QNetworkReply::OperationCanceledError ) { // returned if the user is wrong.
         qDebug() << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
-    } else if( reply->error() != QNetworkReply::NoError ) {
-        _errors << reply->errorString();
+    } else if( error != QNetworkReply::NoError ) {
+        _errors << errString;
     }
-
-    // disconnect from ownCloud Info signals
-    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-             this,SLOT(slotAuthCheck(QString,QNetworkReply*)));
 
     emit connectionResult( stat );
 }
 
-
+void ConnectionValidator::slotAuthSuccess()
+{
+    emit connectionResult(Connected);
 }
+
+} // namespace Mirall

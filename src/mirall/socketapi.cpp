@@ -30,6 +30,8 @@
 #include <QDir>
 #include <QApplication>
 
+#include "mirall/utility.h"
+
 namespace Mirall {
 
 #define DEBUG qDebug() << "SocketApi: "
@@ -38,7 +40,13 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
     : QObject(parent)
     , _localServer(0)
 {
-    QString socketPath = localFile.toLocalFile();
+    QString socketPath;
+    if (Utility::isWindows()) {
+        socketPath = QLatin1String("\\\\.\\pipe\\");
+    } else {
+        socketPath = localFile.toLocalFile();
+
+    }
     DEBUG << "ctor: " << socketPath;
 
     // setup socket

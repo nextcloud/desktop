@@ -12,18 +12,20 @@
  */
 
 #include "mirall/account.h"
-#include "mirall/mirallaccessmanager.h"
 #include "mirall/theme.h"
+#include "mirall/mirallconfigfile.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
 
 #include <QSettings>
 #include <QMutex>
 #include <QNetworkReply>
+#include <QNetworkAccessManager>
 
 namespace Mirall {
 
 static const char urlC[] = "url";
+static const char userC[] = "user";
 static const char authTypeC[] = "authType";
 
 AccountManager *AccountManager::_instance = 0;
@@ -47,7 +49,7 @@ AccountManager *AccountManager::instance()
 
 Account::Account(QObject *parent)
     : QObject(parent)
-    , _am(new MirallAccessManager)
+    , _am(0)
     , _credentials(0)
 {
 }
@@ -55,19 +57,27 @@ Account::Account(QObject *parent)
 void Account::save(QSettings &settings)
 {
     settings.beginGroup(Theme::instance()->appName());
+    settings.setValue(QLatin1String(userC), _user);
     settings.setValue(QLatin1String(urlC), _url);
     if (_credentials) {
         settings.setValue(QLatin1String(authTypeC), _credentials->authType());
     }
 }
 
-Account* Account::restore(QSettings settings)
+Account* Account::restore(QSettings &settings)
 {
-    Account *acc = new Account;
-    settings.beginGroup(Theme::instance()->appName());
-    acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
-    acc->setCredentials(CredentialsFactory::create(settings.value(QLatin1String(authTypeC)).toString()));
-    return acc;
+    QString groupName = Theme::instance()->appName();
+    if (settings.childGroups().contains(groupName)) {
+        Account *acc = new Account;
+        settings.beginGroup(groupName);
+        acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
+        acc->setUser(settings.value(QLatin1String(userC)).toString());
+        MirallConfigFile cfg;
+        acc->setCredentials(cfg.getCredentials());
+        return acc;
+    } else {
+        return 0;
+    }
 }
 
 AbstractCredentials *Account::credentials() const
@@ -78,11 +88,11 @@ AbstractCredentials *Account::credentials() const
 void Account::setCredentials(AbstractCredentials *cred)
 {
     _credentials = cred;
-}
-
-QUrl Account::url() const
-{
-    return _url;
+    // set active credential manager
+    if (_am) {
+       _am->deleteLater();
+    }
+    _am = _credentials->getQNAM();
 }
 
 static const char WEBDAV_PATH[] = "remote.php/webdav/";
@@ -104,11 +114,11 @@ QNetworkReply *Account::getRequest(const QString &relPath)
     return _am->get(request);
 }
 
-QNetworkReply *Account::davRequest(const QString &relPath, const QByteArray &verb, QIODevice *data)
+QNetworkReply *Account::davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data)
 {
-    QNetworkRequest request(concatUrlPath(davUrl(), relPath));
+    req.setUrl(concatUrlPath(davUrl(), relPath));
     // ### error handling
-    return _am->sendCustomRequest(request, verb, data);
+    return _am->sendCustomRequest(req, verb, data);
 }
 
 void Account::setUrl(const QUrl &url)
@@ -116,9 +126,9 @@ void Account::setUrl(const QUrl &url)
     _url = url;
 }
 
-QByteArray Account::caCerts() const
+void Account::setUser(const QString &user)
 {
-    return _caCerts;
+    _user = user;
 }
 
 void Account::setCaCerts(const QByteArray &caCerts)
@@ -126,7 +136,12 @@ void Account::setCaCerts(const QByteArray &caCerts)
     _caCerts = caCerts;
 }
 
-QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath) const
+QList<QSslCertificate> Account::certificateChain() const
+{
+    return QList<QSslCertificate>();
+}
+
+QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)
 {
     QUrl tmpUrl = url;
     QString path = tmpUrl.path();

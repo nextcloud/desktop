@@ -15,7 +15,6 @@
 #include "mirall/owncloudgui.h"
 #include "mirall/theme.h"
 #include "mirall/folderman.h"
-#include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/utility.h"
 #include "mirall/progressdispatcher.h"
@@ -23,6 +22,7 @@
 #include "mirall/settingsdialog.h"
 #include "mirall/logger.h"
 #include "mirall/logbrowser.h"
+#include "mirall/account.h"
 
 #include <QDesktopServices>
 #include <QMessageBox>
@@ -91,7 +91,8 @@ bool ownCloudGui::checkConfigExists(bool openSettings)
         return true;
     } else {
         qDebug() << "No configured folders yet, starting setup wizard";
-        OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
+        //### TODO
+        //OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
         return false;
     }
 }
@@ -202,9 +203,9 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
 void ownCloudGui::setupContextMenu()
 {
-    bool isConfigured = ownCloudInfo::instance()->isConfigured();
     FolderMan *folderMan = FolderMan::instance();
 
+    bool isConfigured = (AccountManager::instance()->account() != 0);
     _actionOpenoC->setEnabled(isConfigured);
 
     if( _contextMenu ) {
@@ -327,8 +328,9 @@ void ownCloudGui::setupActions()
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), _app, SLOT(quit()));
 
-    connect( ownCloudInfo::instance(), SIGNAL(quotaUpdated(qint64,qint64)),
-             SLOT(slotRefreshQuotaDisplay(qint64, qint64)));
+//    ### TODO
+//    connect( ownCloudInfo::instance(), SIGNAL(quotaUpdated(qint64,qint64)),
+//             SLOT(slotRefreshQuotaDisplay(qint64, qint64)));
 }
 
 void ownCloudGui::slotRefreshQuotaDisplay( qint64 total, qint64 used )

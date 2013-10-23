@@ -19,10 +19,12 @@
 #include <QString>
 #include <QSslCertificate>
 
+#include <QDebug>
+
 #include "creds/credentialscommon.h"
 
 #include "mirall/utility.h"
-#include "mirall/owncloudinfo.h"
+#include "mirall/account.h"
 
 namespace Mirall
 {
@@ -46,7 +48,7 @@ int handleNeonSSLProblems(const char* prompt,
         int pos = 0;
         // This is the set of certificates which QNAM accepted, so we should accept
         // them as well
-        QList<QSslCertificate> certs = ownCloudInfo::instance()->certificateChain();
+        QList<QSslCertificate> certs = AccountManager::instance()->account()->certificateChain();
 
         while (!certOk && (pos = regexp.indexIn(qPrompt, 1+pos)) != -1) {
             QString neon_fingerprint = regexp.cap(1);

@@ -23,10 +23,12 @@
 #include "wizard/owncloudwizard.h"
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/mirallconfigfile.h"
-#include "mirall/owncloudinfo.h"
 #include "mirall/folderman.h"
 #include "mirall/utility.h"
 #include "mirall/mirallaccessmanager.h"
+#include "mirall/account.h"
+#include "mirall/networkjobs.h"
+
 #include "creds/abstractcredentials.h"
 #include "creds/dummycredentials.h"
 
@@ -80,11 +82,14 @@ void OwncloudSetupWizard::startWizard()
 {
     // Set useful default values.
     MirallConfigFile cfgFile;
+
+    Account *account = AccountManager::instance()->account();
+
+    _ocWizard->setConfigExists( account != 0 );
     // Fill the entry fields with existing values.
-    QString url = cfgFile.ownCloudUrl();
+    QString url = account->url();
     //QString user = cfgFile.ownCloudUser();
     bool configExists = !( url.isEmpty()/* || user.isEmpty()*/ );
-    _ocWizard->setConfigExists( configExists );
 
     if( !url.isEmpty() ) {
         _ocWizard->setOCUrl( url );

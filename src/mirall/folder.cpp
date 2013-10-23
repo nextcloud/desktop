@@ -205,7 +205,7 @@ QString Folder::remotePath() const
 QUrl Folder::remoteUrl() const
 {
     Account *account = AccountManager::instance()->account();
-    QUrl url = account->url();
+    QUrl url = account->davUrl();
     QString path = url.path();
     if (path.endsWith('/')) {
         path.append('/');
@@ -272,7 +272,7 @@ void Folder::slotPollTimerTimeout()
         qDebug() << "** Force Sync now";
         evaluateSync(QStringList());
     } else {
-        RequestEtagJob* job = new RequestEtagJob(remotePath(), this);
+        RequestEtagJob* job = new RequestEtagJob(AccountManager::instance()->account(), remotePath(), this);
         // check if the etag is different
         QObject::connect(job, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
         QObject::connect(job, SIGNAL(networkError()), this, SLOT(slotNetworkUnavailable()));

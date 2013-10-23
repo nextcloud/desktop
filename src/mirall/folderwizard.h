@@ -76,7 +76,8 @@ protected slots:
     void showWarn( const QString& = QString() ) const;
     void slotAddRemoteFolder();
     void slotCreateRemoteFolder(QString);
-    void slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error );
+    void slotCreateRemoteFolderFinished();
+    void slotHandleNetworkError(QNetworkReply::NetworkError, const QString& error);
     void slotUpdateDirectories(QStringList);
     void slotRefreshFolders();
     void slotItemExpanded(QTreeWidgetItem*);

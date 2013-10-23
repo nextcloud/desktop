@@ -60,9 +60,6 @@ public slots:
     void slotFolderActivated( const QModelIndex& );
     void slotOpenOC();
     void slotUpdateFolderState( Folder* );
-    void slotCheckConnection();
-    void slotOCInfo( const QString&, const QString&, const QString&, const QString& );
-    void slotOCInfoFail( QNetworkReply* );
     void slotDoubleClicked( const QModelIndex& );
     void slotFolderOpenAction( const QString& );
     void slotSetProgress(const QString&, const Progress::Info& progress);

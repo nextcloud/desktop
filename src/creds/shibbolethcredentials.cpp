@@ -12,14 +12,17 @@
  * for more details.
  */
 
+#include <QDebug>
+#include <QMutex>
+
 #include "creds/shibbolethcredentials.h"
 #include "creds/shibboleth/shibbolethaccessmanager.h"
 #include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibboleth/shibbolethrefresher.h"
 #include "creds/shibboleth/shibbolethconfigfile.h"
 #include "creds/credentialscommon.h"
-#include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/account.h"
 
 namespace Mirall
 {
@@ -88,7 +91,7 @@ QByteArray ShibbolethCredentials::prepareCookieData() const
     // have any way to get "session_key" module property from
     // csync. Had we have it, then we could just append shibboleth
     // cookies to the "session_key" value and set it in csync module.
-    QList<QNetworkCookie> cookies(ownCloudInfo::instance()->getLastAuthCookies());
+    QList<QNetworkCookie> cookies(AccountManager::instance()->account()->lastAuthCookies());
     QMap<QString, QString> uniqueCookies;
 
     cookies << _shibCookie;

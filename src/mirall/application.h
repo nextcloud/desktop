@@ -40,7 +40,6 @@ namespace Mirall {
 class Theme;
 class Folder;
 class FolderWatcher;
-class ownCloudInfo;
 class SslErrorDialog;
 class SettingsDialog;
 class SocketApi;

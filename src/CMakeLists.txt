@@ -212,14 +212,14 @@ set(mirall_SRCS
     mirall/folderwizard.cpp
     mirall/folderstatusmodel.cpp
     mirall/protocolwidget.cpp
-    wizard/owncloudwizard.cpp
-    wizard/owncloudsetuppage.cpp
-    wizard/owncloudhttpcredspage.cpp
-    wizard/owncloudwizardresultpage.cpp
-    wizard/owncloudwizardcommon.cpp
-    wizard/owncloudshibbolethcredspage.cpp
-    wizard/owncloudadvancedsetuppage.cpp
-    mirall/owncloudsetupwizard.cpp
+#    wizard/owncloudwizard.cpp
+#    wizard/owncloudsetuppage.cpp
+#    wizard/owncloudhttpcredspage.cpp
+#    wizard/owncloudwizardresultpage.cpp
+#    wizard/owncloudwizardcommon.cpp
+#    wizard/owncloudshibbolethcredspage.cpp
+#    wizard/owncloudadvancedsetuppage.cpp
+#    mirall/owncloudsetupwizard.cpp
     mirall/updatedetector.cpp
     mirall/occinfo.cpp
     mirall/sslerrordialog.cpp
@@ -237,14 +237,14 @@ set(mirall_HEADERS
     mirall/application.h
     mirall/systray.h
     mirall/folderwizard.h
-    mirall/owncloudsetupwizard.h
-    wizard/owncloudwizard.h
-    wizard/owncloudsetuppage.h
-    wizard/owncloudhttpcredspage.h
-    wizard/owncloudwizardresultpage.h
-    wizard/owncloudwizardcommon.h
-    wizard/owncloudshibbolethcredspage.h
-    wizard/owncloudadvancedsetuppage.h
+#    mirall/owncloudsetupwizard.h
+#    wizard/owncloudwizard.h
+#    wizard/owncloudsetuppage.h
+#    wizard/owncloudhttpcredspage.h
+#    wizard/owncloudwizardresultpage.h
+#    wizard/owncloudwizardcommon.h
+#    wizard/owncloudshibbolethcredspage.h
+#    wizard/owncloudadvancedsetuppage.h
     mirall/folderstatusmodel.h
     mirall/updatedetector.h
     mirall/sslerrordialog.h

@@ -14,9 +14,10 @@
 
 #include "mirall/folderwizard.h"
 #include "mirall/folderman.h"
-#include "mirall/owncloudinfo.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
+#include "mirall/networkjobs.h"
+#include "mirall/account.h"
 
 #include <QDebug>
 #include <QDesktopServices>
@@ -176,6 +177,8 @@ FolderWizardTargetPage::FolderWizardTargetPage()
     connect(_ui.refreshButton, SIGNAL(clicked()), SLOT(slotRefreshFolders()));
     connect(_ui.folderTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SIGNAL(completeChanged()));
     connect(_ui.folderTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SIGNAL(completeChanged()));
+    connect(_ui.folderTreeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(slotItemExpanded(QTreeWidgetItem*)));
+
 }
 
 void FolderWizardTargetPage::slotAddRemoteFolder()
@@ -199,21 +202,26 @@ void FolderWizardTargetPage::slotAddRemoteFolder()
 void FolderWizardTargetPage::slotCreateRemoteFolder(QString folder)
 {
     if( folder.isEmpty() ) return;
-    ownCloudInfo::instance()->mkdirRequest( folder );
+
+    MkColJob *job = new MkColJob(AccountManager::instance()->account(), folder, this);
+    /* check the owncloud configuration file and query the ownCloud */
+    connect(job, SIGNAL(finished()), SLOT(slotCreateRemoteFolderFinished()));
+    connect(job, SIGNAL(networkError(QNetworkReply::NetworkError,QString)),
+            SLOT(slotHandleNetworkError(QNetworkReply::NetworkError,QString)));
 }
 
-void FolderWizardTargetPage::slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error )
+void FolderWizardTargetPage::slotCreateRemoteFolderFinished()
 {
-  qDebug() << "** webdav mkdir request finished " << error;
-
-  // the webDAV server seems to return a 202 even if mkdir was successful.
-  if( error == QNetworkReply::NoError ||
-          error == QNetworkReply::ContentOperationNotPermittedError) {
-    showWarn( tr("Folder was successfully created on %1.").arg( Theme::instance()->appNameGUI() ) );
+    qDebug() << "** webdav mkdir request finished";
+    showWarn(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
     slotRefreshFolders();
-  } else {
-    showWarn( tr("Failed to create the folder on %1.<br/>Please check manually.").arg( Theme::instance()->appNameGUI() ) );
-  }
+}
+
+void FolderWizardTargetPage::slotHandleNetworkError(QNetworkReply::NetworkError, const QString& error)
+{
+    qDebug() << "** webdav mkdir request failed:" << error;
+    showWarn(tr("Failed to create the folder on %1.<br/>Please check manually.")
+             .arg(Theme::instance()->appNameGUI()));
 }
 
 static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)
@@ -254,7 +262,7 @@ static void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QStr
 
 void FolderWizardTargetPage::slotUpdateDirectories(QStringList list)
 {
-    QString webdavFolder = QUrl(ownCloudInfo::instance()->webdavUrl()).path();
+    QString webdavFolder = QUrl(AccountManager::instance()->account()->davUrl()).path();
 
     QTreeWidgetItem *root = _ui.folderTreeWidget->topLevelItem(0);
     if (!root) {
@@ -275,13 +283,18 @@ void FolderWizardTargetPage::slotUpdateDirectories(QStringList list)
 
 void FolderWizardTargetPage::slotRefreshFolders()
 {
-    ownCloudInfo::instance()->getDirectoryListing("/");
+    LsColJob *job = new LsColJob(AccountManager::instance()->account(), "/", this);
+    connect(job, SIGNAL(directoryListingUpdated(QStringList)),
+            SLOT(slotUpdateDirectories(QStringList)));
     _ui.folderTreeWidget->clear();
 }
 
 void FolderWizardTargetPage::slotItemExpanded(QTreeWidgetItem *item)
 {
-    ownCloudInfo::instance()->getDirectoryListing(item->data(0, Qt::UserRole).toString());
+    QString dir = item->data(0, Qt::UserRole).toString();
+    LsColJob *job = new LsColJob(AccountManager::instance()->account(), dir, this);
+    connect(job, SIGNAL(directoryListingUpdated(QStringList)),
+            SLOT(slotUpdateDirectories(QStringList)));
 }
 
 FolderWizardTargetPage::~FolderWizardTargetPage()
@@ -329,21 +342,7 @@ void FolderWizardTargetPage::cleanupPage()
 void FolderWizardTargetPage::initializePage()
 {
     showWarn();
-
-    /* check the owncloud configuration file and query the ownCloud */
-    ownCloudInfo *ocInfo = ownCloudInfo::instance();
-    if( ocInfo->isConfigured() ) {
-        connect( ocInfo, SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-                 SLOT(slotDirCheckReply(QString,QNetworkReply*)));
-        connect( ocInfo, SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
-                 SLOT(slotCreateRemoteFolderFinished( QNetworkReply::NetworkError )));
-        connect( ocInfo, SIGNAL(directoryListingUpdated(QStringList)),
-                 SLOT(slotUpdateDirectories(QStringList)));
-        connect(_ui.folderTreeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)),
-                SLOT(slotItemExpanded(QTreeWidgetItem*)));
-
-        slotRefreshFolders();
-    }
+    slotRefreshFolders();
 }
 
 void FolderWizardTargetPage::showWarn( const QString& msg ) const

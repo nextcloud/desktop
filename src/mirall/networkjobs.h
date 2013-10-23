@@ -32,11 +32,13 @@ class Account;
 class AbstractNetworkJob : public QObject {
     Q_OBJECT
 public:
-    explicit AbstractNetworkJob(QObject* parent = 0);
+    explicit AbstractNetworkJob(Account *account, const QString &path, QObject* parent = 0);
     virtual ~AbstractNetworkJob();
 
     void setAccount(Account *account);
     Account* account() const { return _account; }
+    void setPath(const QString &path);
+    QString path() const { return _path; }
 
     void setReply(QNetworkReply *reply);
     QNetworkReply* reply() const { return _reply; }
@@ -47,8 +49,10 @@ signals:
 
 protected:
     void setupConnections(QNetworkReply *reply);
-    QNetworkReply* davRequest(const QByteArray& verb, QNetworkRequest& req, QIODevice *data);
-    QNetworkReply* getRequest(const QUrl& url);
+    QNetworkReply* davRequest(const QByteArray& verb, const QString &relPath,
+                              QNetworkRequest req = QNetworkRequest(),
+                              QIODevice *data = 0);
+    QNetworkReply* getRequest(const QString &relPath);
 
 private slots:
     virtual void slotFinished() = 0;
@@ -57,6 +61,7 @@ private slots:
 private:
     QNetworkReply *_reply;
     Account *_account;
+    QString _path;
 };
 
 /**
@@ -65,7 +70,7 @@ private:
 class LsColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit LsColJob(const QUrl& url, QObject* parent = 0);
+    explicit LsColJob(Account *account, const QString &path, QObject *parent = 0);
 
 signals:
     void directoryListing(const QStringList &items);
@@ -75,10 +80,30 @@ private slots:
     virtual void slotFinished();
 };
 
+/**
+ * @brief The CheckQuotaJob class
+ */
+class PropfindJob : public AbstractNetworkJob {
+    Q_OBJECT
+public:
+    explicit PropfindJob(Account *account, const QString &path,
+                         QList<QByteArray> properties,
+                         QObject *parent = 0);
+
+signals:
+    void result(const QVariantMap &values);
+
+private slots:
+    virtual void slotFinished();
+};
+
+/**
+ * @brief The MkColJob class
+ */
 class MkColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit MkColJob(const QUrl& url, QObject* parent = 0);
+    explicit MkColJob(Account *account, const QString &path, QObject *parent = 0);
 
 signals:
     void finished();
@@ -91,10 +116,14 @@ private slots:
 /**
  * @brief The CheckOwncloudJob class
  */
-class CheckOwncloudJob : public AbstractNetworkJob {
+class CheckServerJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit CheckOwncloudJob(const QUrl& url, bool followRedirect = false, QObject* parent = 0);
+    explicit CheckServerJob(Account *account, bool followRedirect = false, QObject *parent = 0);
+
+    static QString version(const QVariantMap &info);
+    static QString versionString(const QVariantMap &info);
+    static bool installed(const QVariantMap &info);
 
 signals:
     void instanceFound(const QVariantMap &info);
@@ -117,7 +146,7 @@ private:
 class RequestEtagJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit RequestEtagJob(const QUrl &url, bool isRoot = false, QObject* parent = 0);
+    explicit RequestEtagJob(Account *account, const QString &path, QObject *parent = 0);
 
 signals:
     void etagRetreived(const QString &etag);
@@ -126,21 +155,6 @@ private slots:
     virtual void slotFinished();
 };
 
-
-/**
- * @brief The CheckQuotaJob class
- */
-class CheckQuotaJob : public AbstractNetworkJob {
-    Q_OBJECT
-public:
-    explicit CheckQuotaJob(const QUrl &url, QObject* parent = 0);
-
-signals:
-    void quotaRetreived(qint64 total, qint64 quotaUsedBytes);
-
-private slots:
-    virtual void slotFinished();
-};
 } // namespace Mirall
 
 #endif // NETWORKJOBS_H

@@ -14,7 +14,6 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/utility.h"
 #include "mirall/sslerrordialog.h"
-#include "mirall/owncloudinfo.h"
 
 #include <QtGui>
 #include <QtNetwork>

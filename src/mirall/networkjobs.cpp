@@ -18,6 +18,7 @@
 #include <QBuffer>
 #include <QXmlStreamReader>
 #include <QStringList>
+#include <QStack>
 
 #include <QDebug>
 
@@ -28,10 +29,11 @@
 
 namespace Mirall {
 
-AbstractNetworkJob::AbstractNetworkJob(QObject *parent)
+AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QObject *parent)
     : QObject(parent)
     , _reply(0)
-    , _account(AccountManager::instance()->account())
+    , _account(account)
+    , _path(path)
 {
 }
 
@@ -52,6 +54,11 @@ void AbstractNetworkJob::setAccount(Account *account)
     _account = account;
 }
 
+void AbstractNetworkJob::setPath(const QString &path)
+{
+    _path = path;
+}
+
 void AbstractNetworkJob::slotError()
 {
     qDebug() << metaObject()->className() << "Error:" << _reply->errorString();
@@ -64,18 +71,20 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
     connect( reply, SIGNAL( finished()), SLOT(slotFinished()) );
     connect( reply, SIGNAL(error(QNetworkReply::NetworkError)),
              this, SLOT(slotError()));
-    connect( reply, SIGNAL(error(QNetworkReply::NetworkError)),
-             ownCloudInfo::instance(), SLOT(slotError(QNetworkReply::NetworkError)));
+
+//    connect( reply, SIGNAL(error(QNetworkReply::NetworkError)),
+//             ownCloudInfo::instance(), SLOT(slotError(QNetworkReply::NetworkError)));
 }
 
-QNetworkReply* AbstractNetworkJob::davRequest(const QByteArray &verb, QNetworkRequest &req, QIODevice *data)
+QNetworkReply* AbstractNetworkJob::davRequest(const QByteArray &verb, const QString &relPath,
+                                              QNetworkRequest req, QIODevice *data)
 {
-    return _account->davRequest(verb, req, data);
+    return _account->davRequest(verb, relPath, req, data);
 }
 
-QNetworkReply* AbstractNetworkJob::getRequest(const QUrl &url)
+QNetworkReply* AbstractNetworkJob::getRequest(const QString &relPath)
 {
-    return _account->getRequest(url);
+    return _account->getRequest(relPath);
 }
 
 AbstractNetworkJob::~AbstractNetworkJob() {
@@ -84,11 +93,11 @@ AbstractNetworkJob::~AbstractNetworkJob() {
 
 /*********************************************************************************************/
 
-RequestEtagJob::RequestEtagJob(const QUrl &url, bool isRoot, QObject *parent)
-    : AbstractNetworkJob(parent)
+RequestEtagJob::RequestEtagJob(Account *account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
 {
-    QNetworkRequest req(url);
-    if (isRoot) {
+    QNetworkRequest req;
+    if (path.isEmpty() || path == QLatin1String("/")) {
         /* For the root directory, we need to query the etags of all the sub directories
          * because, at the time I am writing this comment (Owncloud 5.0.9), the etag of the
          * root directory is not updated when the sub directories changes */
@@ -99,14 +108,14 @@ RequestEtagJob::RequestEtagJob(const QUrl &url, bool isRoot, QObject *parent)
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\">\n"
                    "  <d:prop>\n"
-                   "    <d:getetag/>"
+                   "    <d:getetag/>\n"
                    "  </d:prop>\n"
                    "</d:propfind>\n");
     QBuffer *buf = new QBuffer;
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     // assumes ownership
-    setReply(davRequest("PROPFIND", req, buf));
+    setReply(davRequest("PROPFIND", path, req, buf));
     buf->setParent(reply());
     setupConnections(reply());
 
@@ -140,12 +149,11 @@ void RequestEtagJob::slotFinished()
 
 /*********************************************************************************************/
 
-MkColJob::MkColJob(const QUrl &url, QObject* parent)
-    : AbstractNetworkJob(parent)
+MkColJob::MkColJob(Account *account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
 {
-    QNetworkRequest req(url);
      // assumes ownership
-    QNetworkReply *reply = davRequest("MKCOL", req, 0);
+    QNetworkReply *reply = davRequest("MKCOL", path);
     setReply(reply);
     setupConnections(reply);
 }
@@ -160,10 +168,10 @@ void MkColJob::slotFinished()
 
 /*********************************************************************************************/
 
-LsColJob::LsColJob(const QUrl &url, QObject* parent)
-    : AbstractNetworkJob(parent)
+LsColJob::LsColJob(Account *account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
 {
-    QNetworkRequest req(url);
+    QNetworkRequest req;
     req.setRawHeader("Depth", "1");
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\">\n"
@@ -174,7 +182,7 @@ LsColJob::LsColJob(const QUrl &url, QObject* parent)
     QBuffer *buf = new QBuffer;
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
-    QNetworkReply *reply = davRequest("PROPFIND", req, buf);
+    QNetworkReply *reply = davRequest("PROPFIND", path, req, buf);
     buf->setParent(reply);
     setReply(reply);
     setupConnections(reply);
@@ -212,15 +220,32 @@ void LsColJob::slotFinished()
 
 /*********************************************************************************************/
 
-CheckOwncloudJob::CheckOwncloudJob(const QUrl &url, bool followRedirect, QObject *parent)
-    : AbstractNetworkJob(parent), _followRedirects(followRedirect), _redirectCount(0)
+CheckServerJob::CheckServerJob(Account *account, bool followRedirect, QObject *parent)
+    : AbstractNetworkJob(account, QLatin1String("/status.php") , parent)
+    , _followRedirects(followRedirect)
+    , _redirectCount(0)
 {
     // ### perform update of certificate chain
-    setReply(getRequest(url));
+    setReply(getRequest(path()));
     setupConnections(reply());
 }
 
-void CheckOwncloudJob::slotFinished()
+QString CheckServerJob::version(const QVariantMap &info)
+{
+    return info.value(QLatin1String("version")).toString();
+}
+
+QString CheckServerJob::versionString(const QVariantMap &info)
+{
+    return info.value(QLatin1String("versionstring")).toString();
+}
+
+bool CheckServerJob::installed(const QVariantMap &info)
+{
+    return info.value(QLatin1String("installed")).toBool();
+}
+
+void CheckServerJob::slotFinished()
 {
     // ### this should no longer be needed
     if( reply()->error() == QNetworkReply::NoError && reply()->size() == 0 ) {
@@ -246,7 +271,8 @@ void CheckOwncloudJob::slotFinished()
                 qDebug() << Q_FUNC_INFO << "Redirect loop detected!";
         } else {
             takeReply()->deleteLater();
-            setReply(getRequest(redirectUrl));
+            // ### FIXME
+            //setReply(getRequest(redirectUrl));
             setupConnections(reply());
             return;
         }
@@ -270,30 +296,37 @@ void CheckOwncloudJob::slotFinished()
     deleteLater();
 }
 
-CheckQuotaJob::CheckQuotaJob(const QUrl &url, QObject *parent)
-    : AbstractNetworkJob(parent)
+PropfindJob::PropfindJob(Account *account, const QString &path,
+                         QList<QByteArray> properties,
+                         QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
 {
-    QNetworkRequest req(url);
+    if (properties.isEmpty()) {
+        properties << "allprop";
+    }
+    QNetworkRequest req;
     req.setRawHeader("Depth", "0");
-    QByteArray xml("<?xml version=\"1.0\" ?>\n"
-                   "<d:propfind xmlns:d=\"DAV:\">\n"
-                   "  <d:prop>\n"
-                   "    <d:quota-available-bytes/>\n"
-                   "    <d:quota-used-bytes/>\n"
-                   "    <d:getetag/>"
-                   "  </d:prop>\n"
-                   "</d:propfind>\n");
+    QByteArray propStr;
+    foreach (const QByteArray &prop, properties) {
+        propStr += "    <d:" + prop + " />\n";
+    }
+    QByteArray xml = "<?xml version=\"1.0\" ?>\n"
+                     "<d:propfind xmlns:d=\"DAV:\">\n"
+                     "  <d:prop>\n"
+                     + propStr +
+                     "  </d:prop>\n"
+                     "</d:propfind>\n";
+
     QBuffer *buf = new QBuffer;
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
-    setReply(davRequest("PROPFIND", req, buf));
+    setReply(davRequest("PROPFIND", path, req, buf));
     buf->setParent(reply());
     setupConnections(reply());
 }
 
-void CheckQuotaJob::slotFinished()
+void PropfindJob::slotFinished()
 {
-    bool ok = true;
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if (http_result_code == 207) {
@@ -301,26 +334,28 @@ void CheckQuotaJob::slotFinished()
         QXmlStreamReader reader(reply());
         reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
 
-        qint64 quotaUsedBytes = 0;
-        qint64 quotaAvailableBytes = 0;
+        QVariantMap items;
+        // introduced to nesting is ignored
+        QStack<QString> curElement;
 
         while (!reader.atEnd()) {
             QXmlStreamReader::TokenType type = reader.readNext();
             if (type == QXmlStreamReader::StartElement &&
                     reader.namespaceUri() == QLatin1String("DAV:")) {
-                QString name = reader.name().toString();
-                if (name == QLatin1String("quota-used-bytes")) {
-                    quotaUsedBytes = reader.readElementText().toLongLong(&ok);
-                    if (!ok) quotaUsedBytes = 0;
-                } else if (name == QLatin1String("quota-available-bytes")) {
-                    quotaAvailableBytes = reader.readElementText().toLongLong(&ok);
-                    if (!ok) quotaAvailableBytes = 0;
+                if (curElement.isEmpty()) {
+                    curElement.push(reader.name().toString());
+                    items.insert(reader.name().toString(), reader.text().toString());
                 }
             }
-        }
+            if (type == QXmlStreamReader::EndElement &&
+                    reader.namespaceUri() == QLatin1String("DAV:")) {
+                if(curElement.top() == reader.name()) {
+                    curElement.pop();
+                }
+            }
 
-        qint64 total = quotaUsedBytes + quotaAvailableBytes;
-        emit quotaRetreived(total, quotaUsedBytes);
+        }
+        emit result(items);
     } else {
         qDebug() << "Quota request *not* successful, http result code is " << http_result_code;
     }

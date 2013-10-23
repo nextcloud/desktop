@@ -18,14 +18,16 @@
 #include <QByteArray>
 #include <QUrl>
 #include <QNetworkCookie>
+#include <QNetworkRequest>
+#include <QSslCertificate>
 
 class QSettings;
 class QNetworkReply;
 class QUrl;
+class QNetworkAccessManager;
 
 namespace Mirall {
 
-class MirallAccessManager;
 class AbstractCredentials;
 class Account;
 
@@ -38,7 +40,7 @@ public:
     Account *account() { return _account; }
 
 private:
-    AccountManager();
+    AccountManager() {}
     Account *_account;
     static AccountManager *_instance;
 };
@@ -48,6 +50,7 @@ private:
  */
 class Account : public QObject {
 public:
+    Account(QObject *parent = 0);
     /**
      * Saves the account to a given settings file
      */
@@ -56,7 +59,7 @@ public:
     /**
      * Creates an account object from from a given settings file.
      */
-    static Account* restore(QSettings settings);
+    static Account* restore(QSettings &settings);
 
     /** Holds the accounts credentials */
     AbstractCredentials* credentials() const;
@@ -64,7 +67,11 @@ public:
 
     /** Server url of the account */
     void setUrl(const QUrl &url);
-    QUrl url() const;
+    QUrl url() const { return _url; }
+
+    /** User name of the account */
+    void setUser(const QString &user);
+    QString user() const { return _user; }
 
     /** Returns webdav entry URL, based on url() */
     QUrl davUrl() const;
@@ -72,21 +79,27 @@ public:
     QList<QNetworkCookie> lastAuthCookies() const;
 
     QNetworkReply* getRequest(const QString &relPath);
-    QNetworkReply* davRequest(const QString &relPath, const QByteArray &verb, QIODevice *data = 0);
+    QNetworkReply* davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data = 0);
 
     /** The certificates of the account */
-    QByteArray caCerts() const;
+    QByteArray caCerts() const { return _caCerts; }
     void setCaCerts(const QByteArray &certs);
+    /** The certificates of the account */
+    QByteArray acceptedCaCerts() const { return _acceptedCaCerts; }
+    void setAcceptedCaCerts(const QByteArray &certs);
 
-protected:
-    QUrl concatUrlPath(const QUrl &url, const QString &concatPath) const;
+    QList<QSslCertificate> certificateChain() const;
+
+    static QUrl concatUrlPath(const QUrl &url, const QString &concatPath);
 
 private:
-    Account(QObject *parent = 0);
-    MirallAccessManager *_am;
+    QNetworkAccessManager *_am;
     QByteArray _caCerts;
+    QByteArray _acceptedCaCerts;
     QUrl _url;
+    QString _user;
     AbstractCredentials* _credentials;
+    QList<QSslCertificate> _certificateChain;
 };
 
 }

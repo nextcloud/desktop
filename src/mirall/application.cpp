@@ -25,7 +25,6 @@
 #include "mirall/networklocation.h"
 #include "mirall/folder.h"
 #include "mirall/owncloudsetupwizard.h"
-#include "mirall/owncloudinfo.h"
 #include "mirall/sslerrordialog.h"
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
@@ -115,7 +114,9 @@ Application::Application(int &argc, char **argv) :
 
     connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
 
-    AccountManager::instance()->setAccount(Account::restore(Theme::instance()->appName()));
+    MirallConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    AccountManager::instance()->setAccount(Account::restore(settings));
     FolderMan::instance()->setSyncEnabled(false);
 
     setQuitOnLastWindowClosed(false);
@@ -131,7 +132,6 @@ Application::Application(int &argc, char **argv) :
 
 //    connect(_networkMgr, SIGNAL(onlineStateChanged(bool)), SLOT(slotCheckConnection()));
 
-    MirallConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect (_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));
 
@@ -145,8 +145,9 @@ Application::Application(int &argc, char **argv) :
         QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
     }
 
-    connect( ownCloudInfo::instance(), SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)),
-             this,SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)));
+//  ###
+//    connect( ownCloudInfo::instance(), SIGNAL(sslFailed(QNetworkReply*, QList<QSslError>)),
+//             this,SLOT(slotSSLFailed(QNetworkReply*, QList<QSslError>)));
 
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
 
@@ -206,7 +207,7 @@ void Application::slotCredentialsFetched()
 
 void Application::runValidator()
 {
-    _conValidator = new ConnectionValidator();
+    _conValidator = new ConnectionValidator(AccountManager::instance()->account());
     connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
              this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
     _conValidator->checkConnection();
@@ -238,38 +239,38 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
 
 void Application::slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors )
 {
-    qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
+//    qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
 
-    if( ownCloudInfo::instance()->certsUntrusted() ) {
-        // User decided once to untrust. Honor this decision.
-        qDebug() << "Untrusted by user decision, returning.";
-        return;
-    }
+//    if( ownCloudInfo::instance()->certsUntrusted() ) {
+//        // User decided once to untrust. Honor this decision.
+//        qDebug() << "Untrusted by user decision, returning.";
+//        return;
+//    }
 
-    QString configHandle = ownCloudInfo::instance()->configHandle(reply);
+//    QString configHandle = ownCloudInfo::instance()->configHandle(reply);
 
-    // make the ssl dialog aware of the custom config. It loads known certs.
-    if( ! _sslErrorDialog ) {
-        _sslErrorDialog = new SslErrorDialog;
-    }
-    _sslErrorDialog->setCustomConfigHandle( configHandle );
+//    // make the ssl dialog aware of the custom config. It loads known certs.
+//    if( ! _sslErrorDialog ) {
+//        _sslErrorDialog = new SslErrorDialog;
+//    }
+//    _sslErrorDialog->setCustomConfigHandle( configHandle );
 
-    if( _sslErrorDialog->setErrorList( errors ) ) {
-        // all ssl certs are known and accepted. We can ignore the problems right away.
-        qDebug() << "Certs are already known and trusted, Warnings are not valid.";
-        reply->ignoreSslErrors();
-    } else {
-        if( _sslErrorDialog->exec() == QDialog::Accepted ) {
-            if( _sslErrorDialog->trustConnection() ) {
-                reply->ignoreSslErrors();
-            } else {
-                // User does not want to trust.
-                ownCloudInfo::instance()->setCertsUntrusted(true);
-            }
-        } else {
-            ownCloudInfo::instance()->setCertsUntrusted(true);
-        }
-    }
+//    if( _sslErrorDialog->setErrorList( errors ) ) {
+//        // all ssl certs are known and accepted. We can ignore the problems right away.
+//        qDebug() << "Certs are already known and trusted, Warnings are not valid.";
+//        reply->ignoreSslErrors();
+//    } else {
+//        if( _sslErrorDialog->exec() == QDialog::Accepted ) {
+//            if( _sslErrorDialog->trustConnection() ) {
+//                reply->ignoreSslErrors();
+//            } else {
+//                // User does not want to trust.
+//                ownCloudInfo::instance()->setCertsUntrusted(true);
+//            }
+//        } else {
+//            ownCloudInfo::instance()->setCertsUntrusted(true);
+//        }
+//    }
 }
 
 void Application::slotownCloudWizardDone( int res )

@@ -17,7 +17,6 @@
 
 #include "mirall/theme.h"
 #include "mirall/folderman.h"
-#include "mirall/owncloudinfo.h"
 #include "mirall/folderwizard.h"
 #include "mirall/folderstatusmodel.h"
 #include "mirall/utility.h"
@@ -25,6 +24,8 @@
 #include "mirall/owncloudsetupwizard.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/ignorelisteditor.h"
+#include "mirall/account.h"
+#include "mirall/networkjobs.h"
 
 #include <math.h>
 
@@ -88,15 +89,18 @@ AccountSettings::AccountSettings(QWidget *parent) :
 
     QColor color = palette().highlight().color();
     ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
-    ownCloudInfo *ocInfo = ownCloudInfo::instance();
-    slotUpdateQuota(ocInfo->lastQuotaTotalBytes(), ocInfo->lastQuotaUsedBytes());
-    connect(ocInfo, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotUpdateQuota(qint64,qint64)));
+
+// ### TODO: merge with etag job when porting?
+//    ownCloudInfo *ocInfo = ownCloudInfo::instance();
+//    slotUpdateQuota(ocInfo->lastQuotaTotalBytes(), ocInfo->lastQuotaUsedBytes());
+//    connect(ocInfo, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotUpdateQuota(qint64,qint64)));
 
     ui->connectLabel->setWordWrap( true );
 
     setFolderList(FolderMan::instance()->map());
 
-    slotCheckConnection();
+    // ### TODO
+    //slotCheckConnection();
 }
 
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
@@ -170,7 +174,8 @@ void AccountSettings::slotFolderWizardRejected()
 void AccountSettings::slotOpenAccountWizard()
 {
     this->topLevelWidget()->close();
-    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
+    // ### TODO
+    //OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
 }
 
 void AccountSettings::slotAddFolder( Folder *folder )
@@ -180,7 +185,8 @@ void AccountSettings::slotAddFolder( Folder *folder )
     QStandardItem *item = new QStandardItem();
     folderToModelItem( item, folder );
     _model->appendRow( item );
-    slotCheckConnection();
+    // ### TODO
+    //slotCheckConnection();
 }
 
 
@@ -299,7 +305,8 @@ void AccountSettings::slotRemoveCurrentFolder()
             _model->removeRow(row);
 
             emit folderChanged();
-            slotCheckConnection();
+            // ### TODO
+            //slotCheckConnection();
         }
     }
 }
@@ -346,24 +353,6 @@ void AccountSettings::showConnectionLabel( const QString& message, const QString
         ui->connectLabel->setText( msg );
         ui->connectLabel->setToolTip(QString());
         ui->connectLabel->setStyleSheet(errStyle);
-    }
-}
-
-void AccountSettings::slotCheckConnection()
-{
-    if( ownCloudInfo::instance()->isConfigured() ) {
-        connect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
-                this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
-        connect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-                this, SLOT(slotOCInfoFail(QNetworkReply*)));
-
-        showConnectionLabel( tr("Checking %1 connection...").arg(Theme::instance()->appNameGUI()));
-        qDebug() << "Check status.php from statusdialog.";
-        ownCloudInfo::instance()->checkInstallation();
-    } else {
-        // ownCloud is not yet configured.
-        showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
-        ui->_ButtonAdd->setEnabled( false);
     }
 }
 
@@ -480,52 +469,14 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
     } else {
         // the dialog is not visible.
     }
-    slotCheckConnection();
+    // ### TODO
+    //slotCheckConnection();
 }
 
-void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr, const QString& version, const QString& )
-{
-#ifdef Q_OS_WIN32
-        // work around a bug in QDesktopServices on Win32, see i-net
-        QString filePath = url;
+//    showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()),
+//                         tr("Version: %1 (%2)").arg(versionStr).arg(version) );
+//    ui->_ButtonAdd->setEnabled(true);
 
-        if (filePath.startsWith("\\\\") || filePath.startsWith("//"))
-            _OCUrl.setUrl(QDir::toNativeSeparators(filePath));
-        else
-            _OCUrl = QUrl::fromLocalFile(filePath);
-#else
-    _OCUrl = QUrl::fromLocalFile(url);
-#endif
-
-    qDebug() << "#-------# oC found on " << url;
-    /* enable the open button */
-    ui->connectLabel->setOpenExternalLinks(true);
-    QUrl safeUrl(url);
-    safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
-    showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()),
-                         tr("Version: %1 (%2)").arg(versionStr).arg(version) );
-    ui->_ButtonAdd->setEnabled(true);
-
-    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
-            this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
-    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-            this, SLOT(slotOCInfoFail(QNetworkReply*)));
-}
-
-void AccountSettings::slotOCInfoFail( QNetworkReply *reply)
-{
-    QString errStr = tr("unknown problem.");
-    if( reply ) errStr = reply->errorString();
-
-    showConnectionLabel( tr("<p>Failed to connect to %1: <tt>%2</tt></p>").arg(Theme::instance()->appNameGUI()).arg(errStr) );
-    ui->_ButtonAdd->setEnabled( false);
-
-    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
-            this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
-    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-            this, SLOT(slotOCInfoFail(QNetworkReply*)));
-
-}
 
 void AccountSettings::slotOpenOC()
 {
@@ -568,9 +519,8 @@ QString AccountSettings::shortenFilename( const QString& folder, const QString& 
         // rip off the whole ownCloud URL.
         Folder *f = FolderMan::instance()->folder(folder);
         if( f ) {
-            QString remotePathUrl = ownCloudInfo::instance()->webdavUrl() + QLatin1Char('/') + f->remotePath();
+            QString remotePathUrl = f->remoteUrl().toString();
             shortFile.remove(Utility::toCSyncScheme(remotePathUrl));
-
         }
     }
     return shortFile;
