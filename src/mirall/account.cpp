@@ -150,7 +150,7 @@ void Account::setApprovedCerts(const QList<QSslCertificate> certs)
 
 void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 {
-    _sslErrorHandler = handler;
+    _sslErrorHandler.reset(handler);
 }
 
 void Account::setUrl(const QUrl &url)
@@ -186,8 +186,7 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
     }
 
     QList<QSslCertificate> approvedCerts;
-    AbstractSslErrorHandler *handler = sslErrorHandler();
-    if (handler && handler->handleErrors(errors, &approvedCerts, this)) {
+    if (!_sslErrorHandler.isNull() && _sslErrorHandler->handleErrors(errors, &approvedCerts, this)) {
         QSslSocket::addDefaultCaCertificates(approvedCerts);
         setApprovedCerts(approvedCerts);
         // all ssl certs are known and accepted. We can ignore the problems right away.

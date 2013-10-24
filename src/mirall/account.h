@@ -49,6 +49,7 @@ private:
 /* Reimplement this to handle SSL errors */
 class AbstractSslErrorHandler {
 public:
+    virtual ~AbstractSslErrorHandler() {}
     virtual bool handleErrors(QList<QSslError>, QList<QSslCertificate>*, Account*) = 0;
 };
 
@@ -96,7 +97,6 @@ public:
     QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
     void setApprovedCerts(const QList<QSslCertificate> certs);
 
-    AbstractSslErrorHandler* sslErrorHandler() const { return _sslErrorHandler; }
     void setSslErrorHandler(AbstractSslErrorHandler *handler);
 
     static QUrl concatUrlPath(const QUrl &url, const QString &concatPath);
@@ -113,7 +113,7 @@ private:
     QList<QSslCertificate> _approvedCerts;
     QList<QSslCertificate> _certificateChain;
     bool _treatSslErrorsAsFailure;
-    AbstractSslErrorHandler *_sslErrorHandler;
+    QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
 };
 
 }

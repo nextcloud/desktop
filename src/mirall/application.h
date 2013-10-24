@@ -79,7 +79,6 @@ protected slots:
     void slotParseOptions( const QString& );
     void slotCheckConnection();
     void slotConnectionValidatorResult(ConnectionValidator::Status);
-    void slotSSLFailed( QNetworkReply *reply, QList<QSslError> errors );
     void slotStartUpdateDetector();
     void slotSetupProxy();
     void slotUseMonoIconsChanged( bool );
