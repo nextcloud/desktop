@@ -210,7 +210,7 @@ void hbf_free_transfer( hbf_transfer_t *transfer ) {
     }
     free( transfer->block_arr );
     free( transfer->url );
-
+    free( transfer->file_id );
     if( transfer->error_string) free( (void*) transfer->error_string );
 
     free( transfer );
@@ -323,6 +323,11 @@ static int _hbf_dav_request(hbf_transfer_t *transfer, ne_request *req, int fd, h
             if( etag && strcmp(etag, "accepted") == 0 ) {
                 /* the server acknowledged that the mtime was set. */
                 transfer->modtime_accepted = 1;
+            }
+
+            etag = ne_get_response_header(req, "X-OC-FileID");
+            if( etag ) {
+                transfer->file_id = strdup( etag );
             }
         }
         break;
@@ -576,6 +581,15 @@ const char *hbf_transfer_etag( hbf_transfer_t *transfer )
         }
     }
     return etag;
+}
+
+const char *hbf_transfer_file_id( hbf_transfer_t *transfer )
+{
+    const char *re = NULL;
+    if(transfer) {
+        re = transfer->file_id;
+    }
+    return re;
 }
 
 const char *hbf_error_string(hbf_transfer_t *transfer, Hbf_State state)

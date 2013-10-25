@@ -101,6 +101,7 @@ struct hbf_transfer_s {
     hbf_chunk_finished_callback chunk_finished_cb;
     int modtime_accepted;
     const char *previous_etag; /* etag send as the If-Match http header */
+    char *file_id;
 
 #ifndef NDEBUG
     int64_t calc_size;
@@ -118,6 +119,8 @@ void hbf_free_transfer( hbf_transfer_t *transfer );
 const char *hbf_error_string(hbf_transfer_t* transfer, Hbf_State state);
 
 const char *hbf_transfer_etag( hbf_transfer_t *transfer );
+
+const char *hbf_transfer_file_id( hbf_transfer_t *transfer );
 
 void hbf_set_abort_callback( hbf_transfer_t *transfer, hbf_abort_callback cb);
 void hbf_set_log_callback( hbf_transfer_t *transfer, hbf_log_callback cb);
