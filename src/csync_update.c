@@ -416,7 +416,7 @@ static int _check_read_from_db(CSYNC *ctx, const char *uri) {
 
             CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Compare directory ids for %s: %s -> %s", mpath, md5_local, md5_remote );
 
-            if( c_streq(md5_local, md5_remote) ) {
+            if( strlen(tmp->file_id) > 0 && c_streq(md5_local, md5_remote) ) {
               ctx->remote.read_from_db = 1;
             }
             SAFE_FREE(md5_remote);
