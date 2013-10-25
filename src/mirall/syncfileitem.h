@@ -84,13 +84,14 @@ public:
     // Variables used by the propagator
     QByteArray _originalFile; // as it is in the csync tree
     csync_instructions_e _instruction;
-    time_t _modtime;
-    QByteArray _etag;
-    quint64  _size;
+    time_t               _modtime;
+    QByteArray           _etag;
+    quint64              _size;
 
     // Variables usefull to report to the user
-    Status  _status;
-    QString _errorString; // Contains a string only in case of error
+    Status              _status;
+    QString             _errorString; // Contains a string only in case of error
+    QString             _fileId;
 };
 
 

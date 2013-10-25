@@ -202,6 +202,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._originalFile = file->path;
     item._instruction = file->instruction;
     item._dir = SyncFileItem::None;
+    item._fileId = QString::fromUtf8(file->file_id);
 
     if(file->error_string) {
         item._errorString = QString::fromUtf8(file->error_string);

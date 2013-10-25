@@ -59,6 +59,7 @@ void OwncloudPropagator::propagate(const SyncFileItem &item)
 {
     _errorString.clear();
     _etag = item._etag;
+    _fileId = item._fileId;
 
     if (_abortRequested->fetchAndAddRelaxed(0)) {
         SyncFileItem newItem = item;
@@ -112,6 +113,7 @@ void OwncloudPropagator::propagate(const SyncFileItem &item)
     newItem._errorString = _errorString;
     newItem._etag = _etag;
     newItem._status = _status;
+    newItem._fileId = _fileId;
 
     emit completed(newItem);
 }
@@ -325,6 +327,8 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
         if( trans->modtime_accepted ) {
             _etag =  QByteArray(hbf_transfer_etag( trans.data() ));
         }
+
+        _fileId = QString::fromUtf8( hbf_transfer_file_id( trans.data() ));
 
         /* Handle errors. */
         if ( state != HBF_SUCCESS ) {
