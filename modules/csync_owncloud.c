@@ -42,6 +42,7 @@ static void free_fetchCtx( struct listdir_context *ctx )
         SAFE_FREE(res->uri);
         SAFE_FREE(res->name);
         SAFE_FREE(res->md5);
+        memset( res->file_id, 0, FILE_ID_BUF_SIZE+1 );
 
         newres = res->next;
         SAFE_FREE(res);
@@ -80,6 +81,7 @@ static void clean_caches() {
 
     SAFE_FREE(_stat_cache.name);
     SAFE_FREE(_stat_cache.md5 );
+    memset( _stat_cache.file_id, 0, FILE_ID_BUF_SIZE+1 );
 
     SAFE_FREE(_id_cache.uri);
     SAFE_FREE(_id_cache.id);
@@ -627,6 +629,7 @@ static void results(void *userdata,
     const char *clength, *modtime = NULL;
     const char *resourcetype = NULL;
     const char *md5sum = NULL;
+    const char *file_id = NULL;
     const ne_status *status = NULL;
     char *path = ne_path_unescape( uri->path );
 
@@ -650,6 +653,7 @@ static void results(void *userdata,
     clength      = ne_propset_value( set, &ls_props[1] );
     resourcetype = ne_propset_value( set, &ls_props[2] );
     md5sum       = ne_propset_value( set, &ls_props[3] );
+    file_id      = ne_propset_value( set, &ls_props[4] );
 
     newres->type = resr_normal;
     if( clength == NULL && resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
@@ -676,6 +680,8 @@ static void results(void *userdata,
             newres->md5[len] = '\0';
         }
     }
+
+    csync_vio_set_file_id(newres->file_id, file_id);
 
     /* prepend the new resource to the result list */
     newres->next   = fetchCtx->list;
@@ -821,6 +827,8 @@ static void fill_stat_cache( csync_vio_file_stat_t *lfs ) {
     _stat_cache.fields = lfs->fields;
     _stat_cache.type   = lfs->type;
     _stat_cache.size   = lfs->size;
+    csync_vio_file_stat_set_file_id(&_stat_cache, lfs->file_id);
+
     if( lfs->md5 ) {
         _stat_cache.md5    = c_strdup(lfs->md5);
     }
@@ -858,17 +866,17 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
-
-        buf->fields = _stat_cache.fields;
-        buf->type   = _stat_cache.type;
-        buf->mtime  = _stat_cache.mtime;
-        buf->size   = _stat_cache.size;
-        buf->mode   = _stat_perms( _stat_cache.type );
-        buf->md5    = NULL;
+        buf->fields  = _stat_cache.fields;
+        buf->type    = _stat_cache.type;
+        buf->mtime   = _stat_cache.mtime;
+        buf->size    = _stat_cache.size;
+        buf->mode    = _stat_perms( _stat_cache.type );
+        buf->md5     = NULL;
         if( _stat_cache.md5 ) {
             buf->md5    = c_strdup( _stat_cache.md5 );
             buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
         }
+        csync_vio_file_stat_set_file_id( buf, _stat_cache.file_id );
         return 0;
     }
     DEBUG_WEBDAV("owncloud_stat => Could not find in stat cache %s", uri);
@@ -922,6 +930,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
             if( lfs->md5 ) {
                 buf->md5    = c_strdup( lfs->md5 );
             }
+            csync_vio_file_stat_set_file_id( buf, lfs->file_id );
 
             /* fill the static stat buf as input for the stat function */
             csync_vio_file_stat_destroy( lfs );
@@ -1058,7 +1067,7 @@ static const char* owncloud_get_etag( const char *path )
         /* ... and do a stat call. */
         fs = csync_vio_file_stat_new();
         if(fs == NULL) {
-            DEBUG_WEBDAV( "owncloud_file_id: memory fault.");
+            DEBUG_WEBDAV( "owncloud_get_etag: memory fault.");
             errno = ENOMEM;
             return NULL;
         }
@@ -1760,8 +1769,6 @@ static int owncloud_commit() {
 
   return 0;
 }
-
-
 
 static int owncloud_utimes(const char *uri, const struct timeval *times) {
 

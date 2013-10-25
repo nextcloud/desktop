@@ -26,11 +26,14 @@
  * that would cause circular inclusion
  */
 #include "c_private.h"
-
+#include "csync.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdint.h>
+
+#define FILE_ID_BUF_SIZE 21
+#define INVALID_FILE_ID "-invalid_fileid-"
 
 typedef struct csync_vio_file_stat_s csync_vio_file_stat_t;
 
@@ -71,6 +74,7 @@ enum csync_vio_file_stat_fields_e {
   CSYNC_VIO_FILE_STAT_FIELDS_UID = 1 << 15,
   CSYNC_VIO_FILE_STAT_FIELDS_GID = 1 << 16,
   CSYNC_VIO_FILE_STAT_FIELDS_MD5 = 1 << 17,
+  CSYNC_VIO_FILE_STAT_FIELDS_FILE_ID = 1 << 18
 };
 
 
@@ -83,6 +87,7 @@ struct csync_vio_file_stat_s {
   void *acl;
   char *name;
   char *md5;
+  char file_id[FILE_ID_BUF_SIZE+1];
 
   uid_t uid;
   gid_t gid;
@@ -114,5 +119,9 @@ struct csync_vio_file_stat_s {
 csync_vio_file_stat_t *csync_vio_file_stat_new(void);
 
 void csync_vio_file_stat_destroy(csync_vio_file_stat_t *fstat);
+
+void csync_vio_file_stat_set_file_id( csync_vio_file_stat_t* dst, const char* src );
+
+void csync_vio_set_file_id(char* dst, const char *src );
 
 #endif /* _CSYNC_VIO_METHOD_H */

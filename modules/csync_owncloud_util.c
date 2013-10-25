@@ -312,6 +312,8 @@ csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
         lfs->md5   = c_strdup(res->md5);
     }
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+    csync_vio_file_stat_set_file_id(lfs, res->file_id);
+
     return lfs;
 }
 

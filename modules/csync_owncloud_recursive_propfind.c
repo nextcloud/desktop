@@ -36,6 +36,8 @@ static struct resource* resource_dup(struct resource* o) {
     r->modtime = o->modtime;
     r->md5 = c_strdup(o->md5);
     r->next = o->next;
+    csync_vio_set_file_id(r->file_id, o->file_id);
+
     return r;
 }
 static void resource_free(struct resource* o) {
@@ -126,7 +128,7 @@ static void propfind_results_recursive(void *userdata,
                     const ne_prop_result_set *set)
 {
     struct resource *newres = 0;
-    const char *clength, *modtime = NULL;
+    const char *clength, *modtime, *file_id = NULL;
     const char *resourcetype = NULL;
     const char *md5sum = NULL;
     const ne_status *status = NULL;
@@ -153,6 +155,7 @@ static void propfind_results_recursive(void *userdata,
     clength      = ne_propset_value( set, &ls_props[1] );
     resourcetype = ne_propset_value( set, &ls_props[2] );
     md5sum       = ne_propset_value( set, &ls_props[3] );
+    file_id      = ne_propset_value( set, &ls_props[4] );
 
     newres->type = resr_normal;
     if( resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
@@ -184,6 +187,7 @@ static void propfind_results_recursive(void *userdata,
         }
     }
 
+    csync_vio_set_file_id(newres->file_id, file_id);
     /*
     DEBUG_WEBDAV("propfind_results_recursive %s [%s] %s", newres->uri, newres->type == resr_collection ? "collection" : "file", newres->md5);
     */

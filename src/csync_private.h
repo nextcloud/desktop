@@ -41,6 +41,7 @@
 #include "c_private.h"
 #include "csync.h"
 #include "csync_misc.h"
+#include "vio/csync_vio_file_stat.h"
 
 #ifdef WITH_ICONV
 #include <iconv.h>
@@ -195,6 +196,7 @@ struct csync_file_stat_s {
 
   char *destpath;   /* for renames */
   const char *md5;
+  char file_id[FILE_ID_BUF_SIZE+1];  /* the ownCloud file id is fixed width of 21 byte. */
   const char *error_string;
 
   enum csync_instructions_e instruction; /* u32 */

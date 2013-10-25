@@ -84,6 +84,7 @@ typedef struct resource {
     int64_t              size;
     time_t             modtime;
     char*              md5;
+    char               file_id[FILE_ID_BUF_SIZE+1];
 
     struct resource    *next;
 } resource;
@@ -177,6 +178,7 @@ static const ne_propname ls_props[] = {
     { "DAV:", "getcontentlength" },
     { "DAV:", "resourcetype" },
     { "DAV:", "getetag"},
+    { "http://owncloud.org/ns", "id"},
     { NULL, NULL }
 };
 

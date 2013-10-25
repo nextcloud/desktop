@@ -29,6 +29,7 @@ csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
     return NULL;
   }
   file_stat->md5 = NULL;
+  memset(file_stat->file_id, 0, FILE_ID_BUF_SIZE+1);
   return file_stat;
 }
 
@@ -51,3 +52,21 @@ void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {
   SAFE_FREE(file_stat);
 }
 
+void csync_vio_file_stat_set_file_id( csync_vio_file_stat_t *dst, const char* src ) {
+
+    csync_vio_set_file_id( dst->file_id, src );
+    if( c_streq( dst->file_id, INVALID_FILE_ID )) {
+        return;
+    }
+    dst->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FILE_ID;
+}
+
+void csync_vio_set_file_id( char* dst, const char *src ) {
+    if( src && dst ) {
+        if( strlen(src) > FILE_ID_BUF_SIZE ) {
+            strcpy(dst, INVALID_FILE_ID);
+        } else {
+            strcpy(dst, src);
+        }
+    }
+}
