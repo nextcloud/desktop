@@ -54,13 +54,14 @@ int csync_get_statedb_exists(CSYNC *ctx);
  */
 int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb);
 
-int csync_statedb_write(CSYNC *ctx, sqlite3 *db);
-
 int csync_statedb_close(const char *statedb, sqlite3 *db, int jwritten);
 
 csync_file_stat_t *csync_statedb_get_stat_by_hash(sqlite3 *db, uint64_t phash);
 
 csync_file_stat_t *csync_statedb_get_stat_by_inode(sqlite3 *db, ino_t inode);
+
+csync_file_stat_t *csync_statedb_get_stat_by_file_id( sqlite3 *db,
+                                                     const char *file_id );
 
 char *csync_statedb_get_uniqId(CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_t *buf);
 

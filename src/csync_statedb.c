@@ -410,6 +410,64 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(sqlite3 *db,
   return st;
 }
 
+csync_file_stat_t *csync_statedb_get_stat_by_file_id( sqlite3 *db,
+                                                     const char *file_id ) {
+   csync_file_stat_t *st = NULL;
+   c_strlist_t *result = NULL;
+   char *stmt = NULL;
+   size_t len = 0;
+
+   if (!file_id) {
+       return 0;
+   }
+   stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE fileid='%q'",
+                          file_id);
+
+   if (stmt == NULL) {
+     return NULL;
+   }
+
+   result = csync_statedb_query(db, stmt);
+   sqlite3_free(stmt);
+   if (result == NULL) {
+     return NULL;
+   }
+
+   if (result->count <= 6) {
+     c_strlist_destroy(result);
+     return NULL;
+   }
+
+   /* phash, pathlen, path, inode, uid, gid, mode, modtime */
+   len = strlen(result->vector[2]);
+   st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
+   if (st == NULL) {
+     c_strlist_destroy(result);
+     return NULL;
+   }
+   /* clear the whole structure */
+   ZERO_STRUCTP(st);
+
+   st->phash    = atoll(result->vector[0]);
+   st->pathlen  = atoi(result->vector[1]);
+   memcpy(st->path, (len ? result->vector[2] : ""), len + 1);
+   st->inode    = atoll(result->vector[3]);
+   st->uid      = atoi(result->vector[4]);
+   st->gid      = atoi(result->vector[5]);
+   st->mode     = atoi(result->vector[6]);
+   st->modtime  = strtoul(result->vector[7], NULL, 10);
+   st->type     = atoi(result->vector[8]);
+   if( result->vector[9] )
+     st->md5    = c_strdup(result->vector[9]);
+
+   csync_vio_set_file_id(st->file_id, file_id);
+
+   c_strlist_destroy(result);
+
+   return st;
+ }
+
+
 /* caller must free the memory */
 csync_file_stat_t *csync_statedb_get_stat_by_inode(sqlite3 *db,
                                                    ino_t inode) {
