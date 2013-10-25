@@ -356,6 +356,10 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
     if( _etag.isEmpty() ) {
         updateMTimeAndETag(uri.data(), item._modtime);
     }
+    // the file id should only be empty for new files up- or downloaded
+    if( _fileId.isEmpty() ) {
+        getFileId( uri.data() );
+    }
     _status = SyncFileItem::Success;
 
     // Remove entries from the database
@@ -401,6 +405,24 @@ void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
         qDebug() << "Could not issue HEAD request for ETag.";
     } else {
         _etag = parseEtag(req.data());
+    }
+}
+
+void OwncloudPropagator::getFileId( const char *uri ) {
+
+    if( ! uri ) return;
+
+    QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_session, "HEAD", uri));
+    int neon_stat = ne_request_dispatch(req.data());
+
+    if( updateErrorFromSession(neon_stat, req.data()) ) {
+        // error happend
+        qDebug() << "Could not issue HEAD request for FileID.";
+    } else {
+        const char *header = ne_get_response_header(req.data(), "X-OC-FileId");
+        if( header ) {
+            _fileId = QString::fromUtf8(header);
+        }
     }
 }
 

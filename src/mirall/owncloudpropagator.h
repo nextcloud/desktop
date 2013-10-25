@@ -55,6 +55,8 @@ class OwncloudPropagator : public QObject {
 
     void updateMTimeAndETag(const char *uri, time_t);
 
+    void getFileId( const char *uri );
+
     /* fetch the error code and string from the session
      * updates _status, _httpStatusCode and _errorString. and httpStatusCode
      * Returns true if there was an error.
@@ -87,6 +89,7 @@ public:
     }
     void  propagate(const SyncFileItem &);
     QByteArray _etag;
+    QString    _fileId;
 
     int _downloadLimit;
     int _uploadLimit;
