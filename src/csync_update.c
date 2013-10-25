@@ -288,6 +288,7 @@ out:
   if( fs->md5 ) {
       st->md5  = c_strdup(fs->md5);
   }
+  csync_vio_set_file_id(st->file_id, fs->file_id);
 
 fastout:  /* target if the file information is read from database into st */
   st->phash = h;
