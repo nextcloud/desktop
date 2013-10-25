@@ -176,6 +176,7 @@ typedef struct csync_progress_s CSYNC_PROGRESS;
  * which is seen.
  *
  */
+
 struct csync_tree_walk_file_s {
     const char *path;
     int64_t     size;
@@ -194,6 +195,8 @@ struct csync_tree_walk_file_s {
     const char *rename_path;
     const char *md5;
     const char *error_string;
+    const char *file_id;
+
 };
 typedef struct csync_tree_walk_file_s TREE_WALK_FILE;
 

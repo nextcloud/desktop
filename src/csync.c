@@ -630,16 +630,18 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
 
     visitor = (c_rbtree_visit_func*)(twctx->user_visitor);
     if (visitor != NULL) {
-      trav.path =   cur->path;
-      trav.size =   cur->size;
-      trav.modtime = cur->modtime;
-      trav.uid =    cur->uid;
-      trav.gid =    cur->gid;
-      trav.mode =   cur->mode;
-      trav.type =   cur->type;
-      trav.instruction = cur->instruction;
-      trav.rename_path = cur->destpath;
-      trav.md5 =    cur->md5;
+      trav.path         = cur->path;
+      trav.size         = cur->size;
+      trav.modtime      = cur->modtime;
+      trav.uid          = cur->uid;
+      trav.gid          = cur->gid;
+      trav.mode         = cur->mode;
+      trav.type         = cur->type;
+      trav.instruction  = cur->instruction;
+      trav.rename_path  = cur->destpath;
+      trav.md5          = cur->md5;
+      trav.file_id      = cur->file_id;
+
       trav.error_string = cur->error_string;
 
       rc = (*visitor)(&trav, twctx->userdata);
