@@ -32,6 +32,7 @@ public:
     bool deleteFileRecord( const QString& filename );
     int getFileRecordCount();
     bool exists();
+    QStringList tableColumns( const QString& table );
 
     struct DownloadInfo {
         DownloadInfo() : _errorCount(0), _valid(false) {}
@@ -61,6 +62,8 @@ public slots:
 
 private:
     qint64 getPHash(const QString& ) const;
+    bool updateDatabaseStructure();
+
     bool checkConnect();
     QSqlDatabase _db;
     QString _dbFile;

@@ -124,7 +124,47 @@ bool SyncJournalDb::checkConnect()
         return false;
     }
 
+    bool rc = updateDatabaseStructure();
+
+    return rc;
+}
+
+bool SyncJournalDb::updateDatabaseStructure()
+{
+    QStringList columns = tableColumns("metadata");
+
+    // check if the file_id column is there and create it if not
+    if( columns.indexOf(QLatin1String("fileid")) == -1 ) {
+        QSqlQuery addFileIdColQuery("ALTER TABLE metadata ADD COLUMN fileid VARCHAR(128);", _db);
+        addFileIdColQuery.exec();
+        QSqlQuery indx("CREATE INDEX metadata_file_id ON metadata(fileid);", _db);
+        indx.exec();
+    }
     return true;
+}
+
+QStringList SyncJournalDb::tableColumns( const QString& table )
+{
+    QStringList columns;
+    if( !table.isEmpty() ) {
+
+        QString q = QString("PRAGMA table_info(%1);").arg(table);
+        QSqlQuery query(q, _db);
+
+        if(!query.exec()) {
+            QString err = query.lastError().text();
+            qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;;
+            return columns;
+        }
+
+        while( query.next() ) {
+            columns.append( query.value(1).toString() );
+        }
+        query.finish();
+    }
+    qDebug() << "Columns in the current journal: " << columns;
+
+    return columns;
 }
 
 qint64 SyncJournalDb::getPHash(const QString& file) const
@@ -150,24 +190,12 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
     if( checkConnect() ) {
 
         QSqlQuery writeQuery( "INSERT OR REPLACE INTO metadata "
-                              "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) "
-                              "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ? )", _db );
-//                              "VALUES ( :phash , :plen, :path , :inode , :uid , :gid , :mode,  :modtime , :type , :etag )" );
-
+                              "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid) "
+                              "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ?, ? )", _db );
 
         QByteArray arr = record._path.toUtf8();
         int plen = arr.length();
 
-//         writeQuery.bindValue(":phash",   QString::number(phash));
-//         writeQuery.bindValue(":plen",    plen);
-//         writeQuery.bindValue(":path",    record._path );
-//         writeQuery.bindValue(":inode",   record._inode );
-//         writeQuery.bindValue(":uid",     record._uid );
-//         writeQuery.bindValue(":gid",     record._gid );
-//         writeQuery.bindValue(":mode",    record._mode );
-//         writeQuery.bindValue(":modtime", QString::number(record._modtime.toTime_t()));
-//         writeQuery.bindValue(":type",    QString::number(record._type) );
-//         writeQuery.bindValue(":etag",    record._etag );
         writeQuery.bindValue(0, QString::number(phash));
         writeQuery.bindValue(1, plen);
         writeQuery.bindValue(2, record._path );
@@ -178,17 +206,18 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
         writeQuery.bindValue(7, QString::number(record._modtime.toTime_t()));
         writeQuery.bindValue(8, QString::number(record._type) );
         writeQuery.bindValue(9, record._etag );
-
+        writeQuery.bindValue(10, record._fileId );
 
         if( !writeQuery.exec() ) {
-            qWarning() << "Exec error of SQL statement: " << writeQuery.lastQuery() <<  " :"   << writeQuery.lastError().text();
+            qWarning() << "Exec error of SQL statement: " << writeQuery.lastQuery() <<  " :"
+                       << writeQuery.lastError().text();
             return false;
         }
 
         qDebug() <<  writeQuery.lastQuery() << phash << plen << record._path << record._inode
                  << record._uid << record._gid << record._mode
                  << QString::number(record._modtime.toTime_t()) << QString::number(record._type)
-                 << record._etag;
+                 << record._etag << record._fileId;
 
         return true;
     } else {
@@ -234,7 +263,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
     */
 
     if( checkConnect() ) {
-        QSqlQuery query("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM "
+        QSqlQuery query("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid FROM "
                         "metadata WHERE phash=:ph" ,  _db);
         query.bindValue(":ph", QString::number(phash));
 
@@ -254,6 +283,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._modtime = QDateTime::fromTime_t(query.value(5).toLongLong(&ok));
             rec._type    = query.value(6).toInt(&ok);
             rec._etag    = query.value(7).toString();
+            rec._fileId  = query.value(8).toString();
         } else {
             QString err = query.lastError().text();
             qDebug() << "Can not query " << query.lastQuery() << ", Error:" << err;
