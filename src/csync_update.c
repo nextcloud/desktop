@@ -238,7 +238,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         /* check if it's a file and has been renamed */
         if (ctx->current == LOCAL_REPLICA) {
             tmp = csync_statedb_get_stat_by_inode(ctx->statedb.db, fs->inode);
-            if (tmp && tmp->inode == fs->inode && (tmp->modtime == fs->mtime || fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)) {
+            if (tmp && tmp->inode == fs->inode && (tmp->modtime == fs->mtime ||
+                                                   fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)) {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %" PRId64 " <-> %" PRId64, (uint64_t) tmp->inode, (uint64_t) fs->inode);
                 /* inode found so the file has been renamed */
                 st->instruction = CSYNC_INSTRUCTION_RENAME;
@@ -251,8 +252,33 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 st->instruction = CSYNC_INSTRUCTION_NEW;
                 goto out;
             }
+        } else {
+            /* Remote Replica Rename check */
+            tmp = csync_statedb_get_stat_by_file_id(ctx->statedb.db, fs->file_id);
+            if(tmp ) {                           /* tmp existing at all */
+                if( fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY ) {
+                    if( tmp->type != CSYNC_VIO_FILE_TYPE_DIRECTORY ) {
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "WARN: expected directory but is not!");
+                        st->instruction = CSYNC_INSTRUCTION_NEW;
+                        goto out;
+                    }
+                    st->instruction = CSYNC_INSTRUCTION_RENAME;
+                    // FIXME: csync_rename_record here ?
+
+                    if( c_streq(tmp->md5, fs->md5) ) {    /* FIXME !! md5 still the same */
+
+                    } else {
+                        /* The etag has changed as well => changes within the dir */
+                    }
+                    goto out;
+                }
+                else {
+                    /* file not found in statedb */
+                    st->instruction = CSYNC_INSTRUCTION_NEW;
+                    goto out;
+                }
+            }
         }
-        /* directory, remote and file not found in statedb */
         st->instruction = CSYNC_INSTRUCTION_NEW;
     }
   } else  {
