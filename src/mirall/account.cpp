@@ -48,13 +48,14 @@ AccountManager *AccountManager::instance()
 }
 
 
-Account::Account(QObject *parent)
+Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     : QObject(parent)
     , _am(0)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
     , _sslErrorHandler(0)
 {
+    setSslErrorHandler(sslErrorHandler);
 }
 
 void Account::save(QSettings &settings)
@@ -112,11 +113,9 @@ void Account::setCredentials(AbstractCredentials *cred)
             SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
 }
 
-static const char WEBDAV_PATH[] = "remote.php/webdav/";
-
 QUrl Account::davUrl() const
 {
-    return concatUrlPath(url(), WEBDAV_PATH);
+    return concatUrlPath(url(), davPath());
 }
 
 QList<QNetworkCookie> Account::lastAuthCookies() const
@@ -124,17 +123,36 @@ QList<QNetworkCookie> Account::lastAuthCookies() const
     return _am->cookieJar()->cookiesForUrl(_url);
 }
 
+QNetworkReply *Account::headRequest(const QString &relPath)
+{
+    return headRequest(concatUrlPath(url(), relPath));
+}
+
+QNetworkReply *Account::headRequest(const QUrl &url)
+{
+    QNetworkRequest request(url);
+    return _am->head(request);
+}
+
 QNetworkReply *Account::getRequest(const QString &relPath)
 {
-    QNetworkRequest request(concatUrlPath(url(), relPath));
-    // ### error handling
+    return getRequest(concatUrlPath(url(), relPath));
+}
+
+QNetworkReply *Account::getRequest(const QUrl &url)
+{
+    QNetworkRequest request(url);
     return _am->get(request);
 }
 
 QNetworkReply *Account::davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data)
 {
-    req.setUrl(concatUrlPath(davUrl(), relPath));
-    // ### error handling
+    return davRequest(verb, concatUrlPath(davUrl(), relPath), req, data);
+}
+
+QNetworkReply *Account::davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
+{
+    req.setUrl(url);
     return _am->sendCustomRequest(req, verb, data);
 }
 
@@ -167,7 +185,7 @@ QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)
 {
     QUrl tmpUrl = url;
     QString path = tmpUrl.path();
-    if (!path.endsWith('/')) {
+    if (!path.endsWith('/') || !concatPath.startsWith('/')) {
         path += QLatin1Char('/');
     }
     path += concatPath;

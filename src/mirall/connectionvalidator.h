@@ -58,11 +58,11 @@ signals:
 public slots:
 
 protected slots:
-    void slotStatusFound( const QVariantMap &info );
-    void slotNoStatusFound(QNetworkReply::NetworkError error, const QString& errString);
+    void slotStatusFound(const QUrl&url, const QVariantMap &info);
+    void slotNoStatusFound(QNetworkReply *reply);
 
     void slotCheckAuthentication();
-    void slotAuthFailed(QNetworkReply::NetworkError error, const QString& errString);
+    void slotAuthFailed(QNetworkReply *reply);
     void slotAuthSuccess();
 
 private:

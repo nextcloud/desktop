@@ -28,7 +28,9 @@
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/account.h"
 #include "mirall/networkjobs.h"
+#include "mirall/sslerrordialog.h"
 
+#include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
 #include "creds/dummycredentials.h"
 
@@ -36,11 +38,8 @@ namespace Mirall {
 
 OwncloudSetupWizard::OwncloudSetupWizard(QObject* parent) :
     QObject( parent ),
+    _account(0),
     _ocWizard(new OwncloudWizard),
-    _mkdirRequestReply(),
-    _checkInstallationRequest(),
-    _checkRemoteFolderRequest(),
-    _configHandle(),
     _remoteFolder()
 {
     connect( _ocWizard, SIGNAL(determineAuthType(const QString&)),
@@ -80,24 +79,15 @@ void OwncloudSetupWizard::runWizard(QObject* obj, const char* amember, QWidget *
 
 void OwncloudSetupWizard::startWizard()
 {
-    // Set useful default values.
-    MirallConfigFile cfgFile;
-
     Account *account = AccountManager::instance()->account();
-
-    _ocWizard->setConfigExists( account != 0 );
-    // Fill the entry fields with existing values.
-    QString url = account->url();
-    //QString user = cfgFile.ownCloudUser();
-    bool configExists = !( url.isEmpty()/* || user.isEmpty()*/ );
-
-    if( !url.isEmpty() ) {
-        _ocWizard->setOCUrl( url );
+    if (!account) {
+        account = new Account(new SslDialogErrorHandler);
+        account->setCredentials(CredentialsFactory::create("dummy"));
     }
+    _ocWizard->setAccount(account);
 
     _remoteFolder = Theme::instance()->defaultServerFolder();
     // remoteFolder may be empty, which means /
-
     QString localFolder = Theme::instance()->defaultClientFolder();
 
     // if its a relative path, prepend with users home dir, otherwise use as absolute path
@@ -118,184 +108,62 @@ void OwncloudSetupWizard::startWizard()
     _ocWizard->raise();
 }
 
-void OwncloudSetupWizard::slotDetermineAuthType(const QString& serverUrl)
+// also checks if an installation is valid and determines auth type in a second step
+void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
 {
-    QString url(serverUrl);
-    qDebug() << "Connect to url: " << url;
-    _ocWizard->setField(QLatin1String("OCUrl"), url );
-    _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 to determine authentication type...")
-                                        .arg( Theme::instance()->appNameGUI() ).arg(url) );
-    // write a temporary config.
-    QDateTime now = QDateTime::currentDateTime();
-
-    // remove a possibly existing custom config.
-    if( ! _configHandle.isEmpty() ) {
-        // remove the old config file.
-        MirallConfigFile oldConfig( _configHandle );
-        oldConfig.cleanupCustomConfig();
+    QString fixedUrl = urlString;
+    QUrl url = QUrl::fromUserInput(fixedUrl);
+    // fromUserInput defaults to http, not http if no scheme is specified
+    if (!fixedUrl.startsWith("http://") || !fixedUrl.startsWith("https://")) {
+        url.setScheme("https");
     }
-
-    _configHandle = now.toString(QLatin1String("MMddyyhhmmss"));
-
-    MirallConfigFile cfgFile( _configHandle, true );
-    if( url.isEmpty() ) return;
-    if( !( url.startsWith(QLatin1String("https://")) || url.startsWith(QLatin1String("http://"))) ) {
-        qDebug() << "url does not start with a valid protocol, assuming https.";
-        url.prepend(QLatin1String("https://"));
-        // FIXME: give a hint about the auto completion
-        _ocWizard->setOCUrl(url);
-    }
-    cfgFile.writeOwncloudConfig( Theme::instance()->appName(),
-                                 url,
-                                 new DummyCredentials);
-
-    ownCloudInfo* info = ownCloudInfo::instance();
-    info->setCustomConfigHandle( _configHandle );
-    if( info->isConfigured() ) {
-        // reset the SSL Untrust flag to let the SSL dialog appear again.
-        info->resetSSLUntrust();
-        connect(info, SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-                SLOT(slotOwnCloudFoundAuth(QString,QString,QString,QString)));
-        connect(info, SIGNAL(noOwncloudFound(QNetworkReply*)),
-                SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
-        _checkInstallationRequest = info->checkInstallation();
-    } else {
-        qDebug() << "   ownCloud seems not to be configured, can not start test connect.";
-    }
+    Account *account = _ocWizard->account();
+    account->setUrl(url);
+    CheckServerJob *job = new CheckServerJob(_ocWizard->account(), false, this);
+    connect(job, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotOwnCloudFoundAuth(QUrl,QVariantMap)));
+    connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
 }
 
-void OwncloudSetupWizard::slotOwnCloudFoundAuth( const QString& url, const QString& infoString, const QString& version, const QString& )
+void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantMap &info)
 {
-    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-               this, SLOT(slotOwnCloudFoundAuth(QString,QString,QString,QString)));
-    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-               this, SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
-
     _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
-                                    .arg( url ).arg(Theme::instance()->appNameGUI()).arg(infoString).arg(version));
+                                        .arg(url.toString())
+                                        .arg(Theme::instance()->appNameGUI())
+                                        .arg(CheckServerJob::versionString(info))
+                                        .arg(CheckServerJob::version(info)));
 
-    MirallAccessManager* nm = new MirallAccessManager(this);
-    // TODO: We should get this path from owncloud info.
-    QNetworkReply* reply = nm->get (QNetworkRequest (url + "/remote.php/webdav/"));
-
-    connect (reply, SIGNAL(finished()),
-             this, SLOT(slotAuthCheckReplyFinished()));
-
-    nm->setProperty ("mirallRedirs", QVariant (0));
+    DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_ocWizard->account(), this);
+    connect(job, SIGNAL(authType(WizardCommon::AuthType)),
+            _ocWizard, SLOT(setAuthType(WizardCommon::AuthType)));
 }
 
-void OwncloudSetupWizard::slotAuthCheckReplyFinished()
+void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
 {
-    QNetworkReply* reply = qobject_cast< QNetworkReply* > (sender ());
-    QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    QNetworkAccessManager* nm = reply->manager ();
-    const int redirCount = nm->property ("mirallRedirs").toInt();
-
-    if (redirCount > 10) {
-        redirection.clear ();
-    }
-
-    disconnect (reply, SIGNAL(finished()),
-                this, SLOT(slotAuthCheckReplyFinished()));
-    if ((reply->error () == QNetworkReply::AuthenticationRequiredError) || redirection.isEmpty()) {
-        reply->deleteLater();
-        nm->deleteLater();
-        _ocWizard->setAuthType (WizardCommon::HttpCreds);
-    } else if (redirection.toString().endsWith ("/remote.php/webdav/")) {
-        QNetworkReply* newReply = nm->get (QNetworkRequest(redirection));
-
-        connect (newReply, SIGNAL(error(QNetworkReply::NetworkError)),
-                 this, SLOT(slotAuthCheckReplyError(QNetworkReply::NetworkError)));
-        connect (newReply, SIGNAL(finished()),
-                 this, SLOT(slotAuthCheckReplyFinished(QNetworkReply::NetworkError)));
-        reply->deleteLater();
-
-        nm->setProperty ("mirallRedirs", QVariant(redirCount + 1));
-    } else {
-        QRegExp shibbolethyWords ("SAML|wayf");
-
-        shibbolethyWords.setCaseSensitivity (Qt::CaseInsensitive);
-        if (redirection.toString ().contains (shibbolethyWords)) {
-            _ocWizard->setAuthType(WizardCommon::Shibboleth);
-        } else {
-            // TODO: Send an error.
-            // eh?
-            _ocWizard->setAuthType (WizardCommon::HttpCreds);
-        }
-        reply->deleteLater();
-        nm->deleteLater();
-    }
-}
-
-void OwncloudSetupWizard::slotNoOwnCloudFoundAuth( QNetworkReply *err )
-{
-    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(QString,QString,QString,QString)),
-               this, SLOT(slotOwnCloudFound(QString,QString,QString,QString)));
-    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-               this, SLOT(slotNoOwnCloudFound(QNetworkReply*)));
-
-    _ocWizard->displayError(tr("Failed to connect to %1:<br/>%2").
-                            arg(Theme::instance()->appNameGUI()).arg(err->errorString()));
-
-    // remove the config file again
-    MirallConfigFile cfgFile( _configHandle );
-    cfgFile.cleanupCustomConfig();
+    _ocWizard->displayError(tr("Failed to connect to %1 at %2:<br/>%3")
+                                .arg(Theme::instance()->appNameGUI())
+                            .arg(reply->url().toString())
+                            .arg(reply->errorString()));
 }
 
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
 {
   qDebug() << "Connect to url: " << url;
+  _ocWizard->account()->setCredentials(_ocWizard->getCredentials());
   _ocWizard->setField(QLatin1String("OCUrl"), url );
   _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2...")
                                   .arg( Theme::instance()->appNameGUI() ).arg(url) );
+
   testOwnCloudConnect();
 }
 
 void OwncloudSetupWizard::testOwnCloudConnect()
 {
-    // write a temporary config.
-    QDateTime now = QDateTime::currentDateTime();
-
-    if( _configHandle.isEmpty() ) {
-        _configHandle = now.toString(QLatin1String("MMddyyhhmmss"));
-    }
-
-    MirallConfigFile cfgFile( _configHandle, true );
-    QString url = _ocWizard->field(QLatin1String("OCUrl")).toString();
-    if( url.isEmpty() ) return;
-    if( !( url.startsWith(QLatin1String("https://")) || url.startsWith(QLatin1String("http://"))) ) {
-        qDebug() << "url does not start with a valid protocol, assuming https.";
-        url.prepend(QLatin1String("https://"));
-        // FIXME: give a hint about the auto completion
-        _ocWizard->setOCUrl(url);
-    }
-    cfgFile.writeOwncloudConfig( Theme::instance()->appName(),
-                                 url,
-                                 _ocWizard->getCredentials());
-
-    ownCloudInfo* info(ownCloudInfo::instance());
-    info->setCustomConfigHandle( _configHandle );
-    // If there is already a config, take its proxy config.
-    if( info->isConfigured() ) {
-        MirallConfigFile prevCfg;
-        cfgFile.setProxyType( prevCfg.proxyType(), prevCfg.proxyHostName(), prevCfg.proxyPort(),
-                              prevCfg.proxyNeedsAuth(), prevCfg.proxyUser(), prevCfg.proxyPassword() );
-    }
-
-    connect( info,SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-             this,SLOT(slotConnectionCheck(QString,QNetworkReply*)));
-
-    qDebug() << "# checking for authentication settings.";
-    _checkRemoteFolderRequest = info->getWebDAVPath(_remoteFolder ); // this call needs to be authenticated.
-    // continue in slotConnectionCheck
+    ValidateDavAuthJob *job = new ValidateDavAuthJob(_ocWizard->account(), this);
+    connect(job, SIGNAL(authResult(QNetworkReply*)), SLOT(slotConnectionCheck(QNetworkReply*)));
 }
 
-void OwncloudSetupWizard::slotConnectionCheck(const QString&, QNetworkReply* reply)
+void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
 {
-    // disconnect from ownCloud Info signals
-    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-               this, SLOT(slotConnectionCheck(QString,QNetworkReply*)));
-
     switch (reply->error()) {
     case QNetworkReply::NoError:
     case QNetworkReply::ContentNotFoundError:
@@ -312,8 +180,6 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
 {
     qDebug() << "Setup local sync folder for new oC connection " << localFolder;
     const QDir fi( localFolder );
-    // FIXME: Show problems with local folder properly.
-    bool localFolderOk = true;
 
     if( fi.exists() ) {
         // there is an existing local folder. If its non empty, it can only be synced if the
@@ -325,38 +191,20 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
             Utility::setupFavLink( localFolder );
             // FIXME: Create a local sync folder.
             res += tr("ok");
+            EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), remoteFolder, this);
+            connect(job, SIGNAL(exists(QNetworkReply*)), SLOT(slotAuthCheckReply(QNetworkReply*)));
         } else {
             res += tr("failed.");
             qDebug() << "Failed to create " << fi.path();
-            localFolderOk = false;
             _ocWizard->displayError(tr("Could not create local folder %1").arg(localFolder));
         }
         _ocWizard->appendToConfigurationLog( res );
     }
-
-    if( localFolderOk ) {
-        checkRemoteFolder(remoteFolder);
-    }
 }
 
-void OwncloudSetupWizard::checkRemoteFolder(const QString& remoteFolder)
+// ### TODO move into EntityExistsJob once we decide if/how to return gui strings from jobs
+void OwncloudSetupWizard::slotAuthCheckReply(QNetworkReply *reply)
 {
-    ownCloudInfo* info(ownCloudInfo::instance());
-    connect( info,SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-             this,SLOT(slotAuthCheckReply(QString,QNetworkReply*)));
-
-    qDebug() << "# checking for existence of remote folder.";
-    info->setCustomConfigHandle(_configHandle);
-    _checkRemoteFolderRequest = info->getWebDAVPath(remoteFolder); // this call needs to be authenticated.
-    // continue in slotAuthCheckReply
-}
-
-void OwncloudSetupWizard::slotAuthCheckReply( const QString&, QNetworkReply *reply )
-{
-    // disconnect from ownCloud Info signals
-    disconnect( ownCloudInfo::instance(),SIGNAL(ownCloudDirExists(QString,QNetworkReply*)),
-             this,SLOT(slotAuthCheckReply(QString,QNetworkReply*)));
-
     bool ok = true;
     QString error;
     QNetworkReply::NetworkError errId = reply->error();
@@ -364,11 +212,11 @@ void OwncloudSetupWizard::slotAuthCheckReply( const QString&, QNetworkReply *rep
     if( errId == QNetworkReply::NoError ) {
         qDebug() << "******** Remote folder found, all cool!";
     } else if( errId == QNetworkReply::ContentNotFoundError ) {
-        if( createRemoteFolder() ) {
-            return; // Finish here, the mkdir request will go on.
-        } else {
-            error = tr("The remote folder could not be accessed!");
+        if( _remoteFolder.isEmpty() ) {
+            error = tr("No remote folder specified!");
             ok = false;
+        } else {
+            createRemoteFolder();
         }
     } else {
         error = tr("Error: %1").arg(reply->errorString());
@@ -382,25 +230,19 @@ void OwncloudSetupWizard::slotAuthCheckReply( const QString&, QNetworkReply *rep
     finalizeSetup( ok );
 }
 
-bool OwncloudSetupWizard::createRemoteFolder()
+void OwncloudSetupWizard::createRemoteFolder()
 {
-    if( _remoteFolder.isEmpty() ) return false;
-
     _ocWizard->appendToConfigurationLog( tr("creating folder on ownCloud: %1" ).arg( _remoteFolder ));
-    ownCloudInfo* info(ownCloudInfo::instance());
-    connect(info, SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
-            this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 
-    _mkdirRequestReply = info->mkdirRequest( _remoteFolder );
-
-    return (_mkdirRequestReply != NULL);
+    MkColJob *job = new MkColJob(_ocWizard->account(), _remoteFolder, this);
+    connect(job, SIGNAL(finished(QNetworkReply::NetworkError)), SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 }
 
 void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error )
 {
     qDebug() << "** webdav mkdir request finished " << error;
-    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
-               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
+//    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
+//               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 
     bool success = true;
 
@@ -459,7 +301,7 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
 // accept the custom config to be the main one if Accepted.
 void OwncloudSetupWizard::slotAssistantFinished( int result )
 {
-    MirallConfigFile cfg( _configHandle );
+    MirallConfigFile cfg;
     FolderMan *folderMan = FolderMan::instance();
 
     if( result == QDialog::Rejected ) {
@@ -535,29 +377,63 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         }
     }
 
-    // clear the custom config handle
-    _configHandle.clear();
-    ownCloudInfo::instance()->setCustomConfigHandle( QString::null );
+//    // clear the custom config handle
+//    _configHandle.clear();
+//    ownCloudInfo::instance()->setCustomConfigHandle( QString::null );
 
     // notify others.
     emit ownCloudWizardDone( result );
 }
 
-void OwncloudSetupWizard::slotClearPendingRequests()
+DetermineAuthTypeJob::DetermineAuthTypeJob(Account *account, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent)
+    , _redirects(0)
 {
-    qDebug() << "Pending request: " << _mkdirRequestReply;
-    if( _mkdirRequestReply && _mkdirRequestReply->isRunning() ) {
-        qDebug() << "ABORTing pending mkdir request.";
-        _mkdirRequestReply->abort();
+    QNetworkReply *reply = getRequest(Account::davPath());
+    setReply(reply);
+    setupConnections(reply);
+}
+
+void DetermineAuthTypeJob::slotFinished()
+{
+    QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if (_redirects >= maxRedirects()) {
+        redirection.clear();
     }
-    if( _checkInstallationRequest && _checkInstallationRequest->isRunning() ) {
-        qDebug() << "ABORTing pending check installation request.";
-        _checkInstallationRequest->abort();
+    if ((reply()->error() == QNetworkReply::AuthenticationRequiredError) || redirection.isEmpty()) {
+        emit authType(WizardCommon::HttpCreds);
+    } else if (redirection.toString().endsWith(Account::davPath())) {
+        // do a new run
+        _redirects++;
+        setReply(getRequest(redirection));
+        setupConnections(reply());
+    } else {
+        QRegExp shibbolethyWords("SAML|wayf");
+
+        shibbolethyWords.setCaseSensitivity(Qt::CaseInsensitive);
+        if (redirection.toString().contains(shibbolethyWords)) {
+            emit authType(WizardCommon::Shibboleth);
+        } else {
+            // TODO: Send an error.
+            // eh?
+            emit authType(WizardCommon::HttpCreds);
+        }
     }
-    if( _checkRemoteFolderRequest && _checkRemoteFolderRequest->isRunning() ) {
-        qDebug() << "ABORTing pending remote folder check request.";
-        _checkRemoteFolderRequest->abort();
-    }
+    deleteLater();
+}
+
+ValidateDavAuthJob::ValidateDavAuthJob(Account *account, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent)
+{
+    QNetworkReply *reply = getRequest(Account::davPath());
+    setReply(reply);
+    setupConnections(reply);
+}
+
+void ValidateDavAuthJob::slotFinished()
+{
+    emit authResult(reply());
+    deleteLater();
 }
 
 } // ns Mirall

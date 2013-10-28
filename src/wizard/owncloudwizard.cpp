@@ -14,9 +14,11 @@
  * for more details.
  */
 
-#include "wizard/owncloudwizard.h"
+#include "mirall/account.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
+
+#include "wizard/owncloudwizard.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
 #include "wizard/owncloudshibbolethcredspage.h"
@@ -75,6 +77,16 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setOption( QWizard::NoCancelButton );
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
+}
+
+void OwncloudWizard::setAccount(Account *account)
+{
+    _account = account;
+}
+
+Account *OwncloudWizard::account() const
+{
+    return _account;
 }
 
 void OwncloudWizard::setMultipleFoldersExist(bool exist)

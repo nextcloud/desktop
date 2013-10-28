@@ -91,8 +91,7 @@ bool ownCloudGui::checkConfigExists(bool openSettings)
         return true;
     } else {
         qDebug() << "No configured folders yet, starting setup wizard";
-        //### TODO
-        //OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
+        OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
         return false;
     }
 }

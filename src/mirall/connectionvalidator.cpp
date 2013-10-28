@@ -88,20 +88,19 @@ void ConnectionValidator::checkConnection()
 {
     if( AccountManager::instance()->account() ) {
         CheckServerJob *checkJob = new CheckServerJob(_account, false, this);
-        connect(checkJob, SIGNAL(instanceFound(QVariantMap)), SLOT(slotStatusFound(QVariantMap)));
-        connect(checkJob, SIGNAL(networkError(QNetworkReply::NetworkError,QString)),
-                                 SLOT(slotNoStatusFound(QNetworkReply::NetworkError,QString)));
+        connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
+        connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
     } else {
         _errors << tr("No ownCloud account configured");
         emit connectionResult( NotConfigured );
     }
 }
 
-void ConnectionValidator::slotStatusFound( const QVariantMap &info )
+void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &info)
 {
     // status.php was found.
     qDebug() << "** Application: ownCloud found: "
-             << _account->url() << " with version "
+             << url << " with version "
              << CheckServerJob::versionString(info)
              << "(" << CheckServerJob::version(info) << ")";
     // now check the authentication
@@ -117,12 +116,12 @@ void ConnectionValidator::slotStatusFound( const QVariantMap &info )
 }
 
 // status.php could not be loaded.
-void ConnectionValidator::slotNoStatusFound(QNetworkReply::NetworkError error, const QString &errStr)
+void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
     // ### TODO
     _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
-    _errors.append( errStr );
-    _networkError = (error != QNetworkReply::NoError);
+    _errors.append( reply->errorString() );
+    _networkError = (reply->error() != QNetworkReply::NoError);
     emit connectionResult( StatusNotFound );
 
 }
@@ -133,22 +132,21 @@ void ConnectionValidator::slotCheckAuthentication()
     // continue in slotAuthCheck here :-)
     PropfindJob *propFind = new PropfindJob(_account, "/", QList<QByteArray>() << "getlastmodified", this);
     connect(propFind, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
-    connect(propFind, SIGNAL(networkError(QNetworkReply::NetworkError, QString)),
-            SLOT(slotAuthFailed(QNetworkReply::NetworkError, QString)));
+    connect(propFind, SIGNAL(networkError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));
     qDebug() << "# checking for authentication settings.";
 }
 
-void ConnectionValidator::slotAuthFailed(QNetworkReply::NetworkError error, const QString& errString)
+void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 {
     Status stat = StatusNotFound;
 
-    if( error == QNetworkReply::AuthenticationRequiredError ||
-            error == QNetworkReply::OperationCanceledError ) { // returned if the user is wrong.
+    if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
+            reply->error() == QNetworkReply::OperationCanceledError ) { // returned if the user is wrong.
         qDebug() << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
-    } else if( error != QNetworkReply::NoError ) {
-        _errors << errString;
+    } else if( reply->error() != QNetworkReply::NoError ) {
+        _errors << reply->errorString();
     }
 
     emit connectionResult( stat );

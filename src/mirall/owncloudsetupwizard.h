@@ -22,10 +22,37 @@
 #include <QPointer>
 
 #include "mirall/theme.h"
+#include "mirall/networkjobs.h"
+
+#include "wizard/owncloudwizardcommon.h"
 
 namespace Mirall {
 
 class OwncloudWizard;
+class Account;
+
+class ValidateDavAuthJob : public AbstractNetworkJob {
+    Q_OBJECT
+public:
+    ValidateDavAuthJob(Account* account, QObject *parent = 0);
+signals:
+    void authResult(QNetworkReply*);
+private slots:
+    void slotFinished();
+};
+
+class DetermineAuthTypeJob : public AbstractNetworkJob {
+    Q_OBJECT
+public:
+    explicit DetermineAuthTypeJob(Account *account, QObject *parent = 0);
+signals:
+    void authType(WizardCommon::AuthType);
+private slots:
+    void slotFinished();
+private:
+    int _redirects;
+};
+
 
 class OwncloudSetupWizard : public QObject
 {
@@ -40,18 +67,16 @@ signals:
 
 private slots:
     void slotDetermineAuthType(const QString&);
-    void slotOwnCloudFoundAuth(const QString&, const QString&, const QString&, const QString&);
-    void slotAuthCheckReplyFinished();
-    void slotNoOwnCloudFoundAuth(QNetworkReply*);
+    void slotOwnCloudFoundAuth(const QUrl&, const QVariantMap&);
+    void slotNoOwnCloudFoundAuth(QNetworkReply *reply);
 
     void slotConnectToOCUrl(const QString&);
-    void slotConnectionCheck(const QString&, QNetworkReply*);
+    void slotConnectionCheck(QNetworkReply*);
 
     void slotCreateLocalAndRemoteFolders(const QString&, const QString&);
-    void slotAuthCheckReply(const QString&, QNetworkReply*);
+    void slotAuthCheckReply(QNetworkReply*);
     void slotCreateRemoteFolderFinished(QNetworkReply::NetworkError);
     void slotAssistantFinished( int );
-    void slotClearPendingRequests();
 
 private:
     explicit OwncloudSetupWizard(QObject *parent = 0 );
@@ -59,16 +84,13 @@ private:
 
     void startWizard();
     void testOwnCloudConnect();
-    void checkRemoteFolder(const QString& remoteFolder);
-    bool createRemoteFolder();
+    void createRemoteFolder();
     void finalizeSetup( bool );
 
+    Account* _account;
     OwncloudWizard* _ocWizard;
-    QPointer<QNetworkReply>  _mkdirRequestReply;
-    QPointer<QNetworkReply>  _checkInstallationRequest;
-    QPointer<QNetworkReply>  _checkRemoteFolderRequest;
-    QString _configHandle;
     QString _remoteFolder;
+
 };
 
 }

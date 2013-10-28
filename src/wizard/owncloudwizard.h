@@ -23,6 +23,7 @@
 
 namespace Mirall {
 
+class Account;
 class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
 class OwncloudShibbolethCredsPage;
@@ -43,6 +44,8 @@ public:
 
     OwncloudWizard(QWidget *parent = 0);
 
+    void setAccount(Account *account);
+    Account* account() const;
     void setOCUrl( const QString& );
 
     void setupCustomMedia( QVariant, QLabel* );
@@ -56,10 +59,10 @@ public:
     void setConfigExists( bool );
     bool configExists();
     void successfulStep();
-    void setAuthType(WizardCommon::AuthType type);
     AbstractCredentials* getCredentials() const;
 
 public slots:
+    void setAuthType(WizardCommon::AuthType type);
     void setRemoteFolder( const QString& );
     void appendToConfigurationLog( const QString& msg, LogType type = LogParagraph );
     void slotCurrentPageChanged( int );
@@ -73,6 +76,7 @@ signals:
     void basicSetupFinished( int );
 
 private:
+    Account* _account;
     OwncloudSetupPage* _setupPage;
     OwncloudHttpCredsPage* _httpCredsPage;
     OwncloudShibbolethCredsPage* _shibbolethCredsPage;

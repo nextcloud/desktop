@@ -117,8 +117,10 @@ Application::Application(int &argc, char **argv) :
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     Account *account = Account::restore(settings);
-    account->setSslErrorHandler(new SslDialogErrorHandler);
-    AccountManager::instance()->setAccount(account);
+    if (account) {
+        account->setSslErrorHandler(new SslDialogErrorHandler);
+        AccountManager::instance()->setAccount(account);
+    }
 
     FolderMan::instance()->setSyncEnabled(false);
 

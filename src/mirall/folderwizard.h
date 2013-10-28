@@ -77,7 +77,7 @@ protected slots:
     void slotAddRemoteFolder();
     void slotCreateRemoteFolder(QString);
     void slotCreateRemoteFolderFinished();
-    void slotHandleNetworkError(QNetworkReply::NetworkError, const QString& error);
+    void slotHandleNetworkError(QNetworkReply*);
     void slotUpdateDirectories(QStringList);
     void slotRefreshFolders();
     void slotItemExpanded(QTreeWidgetItem*);

@@ -17,14 +17,15 @@
 #define NETWORKJOBS_H
 
 #include <QObject>
+#include <QNetworkRequest>
 #include <QNetworkReply>
 
-class QNetworkReply;
 class QUrl;
 
 namespace Mirall {
 
 class Account;
+class AbstractSslErrorHandler;
 
 /**
  * @brief The AbstractNetworkJob class
@@ -42,17 +43,23 @@ public:
 
     void setReply(QNetworkReply *reply);
     QNetworkReply* reply() const { return _reply; }
-    QNetworkReply* takeReply(); // for redirect handling
 
 signals:
-    void networkError(QNetworkReply::NetworkError, const QString& errorString);
-
+    void networkError(QNetworkReply *reply);
 protected:
     void setupConnections(QNetworkReply *reply);
     QNetworkReply* davRequest(const QByteArray& verb, const QString &relPath,
                               QNetworkRequest req = QNetworkRequest(),
                               QIODevice *data = 0);
+    QNetworkReply* davRequest(const QByteArray& verb, const QUrl &url,
+                              QNetworkRequest req = QNetworkRequest(),
+                              QIODevice *data = 0);
     QNetworkReply* getRequest(const QString &relPath);
+    QNetworkReply* getRequest(const QUrl &url);
+    QNetworkReply* headRequest(const QString &relPath);
+    QNetworkReply* headRequest(const QUrl &url);
+
+    int maxRedirects() const { return 10; }
 
 private slots:
     virtual void slotFinished() = 0;
@@ -65,6 +72,20 @@ private:
 };
 
 /**
+ * @brief The EntityExistsJob class
+ */
+class EntityExistsJob : public AbstractNetworkJob {
+    Q_OBJECT
+public:
+    explicit EntityExistsJob(Account *account, const QString &path, QObject* parent = 0);
+signals:
+    void exists(QNetworkReply*);
+
+private slots:
+    virtual void slotFinished();
+};
+
+/**
  * @brief The LsColJob class
  */
 class LsColJob : public AbstractNetworkJob {
@@ -74,7 +95,6 @@ public:
 
 signals:
     void directoryListing(const QStringList &items);
-    void networkError();
 
 private slots:
     virtual void slotFinished();
@@ -106,8 +126,7 @@ public:
     explicit MkColJob(Account *account, const QString &path, QObject *parent = 0);
 
 signals:
-    void finished();
-    void networkError();
+    void finished(QNetworkReply::NetworkError);
 
 private slots:
     virtual void slotFinished();
@@ -126,8 +145,7 @@ public:
     static bool installed(const QVariantMap &info);
 
 signals:
-    void instanceFound(const QVariantMap &info);
-    void networkError();
+    void instanceFound(const QUrl&url, const QVariantMap &info);
 
 private slots:
     virtual void slotFinished();
@@ -135,8 +153,6 @@ private slots:
 private:
     bool _followRedirects;
     bool _redirectCount;
-
-    static const int MAX_REDIRECTS = 10;
 };
 
 

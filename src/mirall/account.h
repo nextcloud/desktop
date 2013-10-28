@@ -41,7 +41,7 @@ public:
     Account *account() { return _account; }
 
 private:
-    AccountManager() {}
+    AccountManager() : _account(0) {}
     Account *_account;
     static AccountManager *_instance;
 };
@@ -59,7 +59,9 @@ public:
 class Account : public QObject {
     Q_OBJECT
 public:
-    Account(QObject *parent = 0);
+    static QString davPath() { return "remote.php/webdav/"; }
+
+    Account(AbstractSslErrorHandler *sslErrorHandler = 0, QObject *parent = 0);
     /**
      * Saves the account to a given settings file
      */
@@ -69,6 +71,14 @@ public:
      * Creates an account object from from a given settings file.
      */
     static Account* restore(QSettings &settings);
+    /**
+     * @brief Creates a minimal account object
+     *
+     * This will set up a ssl error handler
+     *
+     * @return A new Account object
+     */
+    static Account* create(const QUrl &url);
 
     /** Holds the accounts credentials */
     AbstractCredentials* credentials() const;
@@ -87,8 +97,12 @@ public:
 
     QList<QNetworkCookie> lastAuthCookies() const;
 
+    QNetworkReply* headRequest(const QString &relPath);
+    QNetworkReply* headRequest(const QUrl &url);
     QNetworkReply* getRequest(const QString &relPath);
+    QNetworkReply* getRequest(const QUrl &url);
     QNetworkReply* davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data = 0);
+    QNetworkReply* davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data = 0);
 
     /** The certificates of the account */
     QList<QSslCertificate> certificateChain() const { return _certificateChain; }
@@ -101,7 +115,7 @@ public:
 
     static QUrl concatUrlPath(const QUrl &url, const QString &concatPath);
 
-private slots:
+protected slots:
     void slotHandleErrors(QNetworkReply*,QList<QSslError>);
 
 private:

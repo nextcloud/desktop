@@ -15,6 +15,8 @@
 
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QSslConfiguration>
 #include <QBuffer>
 #include <QXmlStreamReader>
@@ -28,6 +30,8 @@
 #include "mirall/networkjobs.h"
 #include "mirall/account.h"
 
+#include "creds/credentialsfactory.h"
+
 namespace Mirall {
 
 AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QObject *parent)
@@ -40,14 +44,10 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
 {
+    if (_reply) {
+        _reply->deleteLater();
+    }
     _reply = reply;
-}
-
-QNetworkReply *AbstractNetworkJob::takeReply()
-{
-    QNetworkReply *reply = _reply;
-    _reply = 0;
-    return reply;
 }
 
 void AbstractNetworkJob::setAccount(Account *account)
@@ -63,18 +63,15 @@ void AbstractNetworkJob::setPath(const QString &path)
 void AbstractNetworkJob::slotError()
 {
     qDebug() << metaObject()->className() << "Error:" << _reply->errorString();
-    emit networkError(_reply->error(), _reply->errorString());
+    emit networkError(_reply);
     deleteLater();
 }
 
 void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
-    connect( reply, SIGNAL( finished()), SLOT(slotFinished()) );
-    connect( reply, SIGNAL(error(QNetworkReply::NetworkError)),
-             this, SLOT(slotError()));
-
-//    connect( reply, SIGNAL(error(QNetworkReply::NetworkError)),
-//             ownCloudInfo::instance(), SLOT(slotError(QNetworkReply::NetworkError)));
+    connect(reply, SIGNAL(finished()), SLOT(slotFinished()));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+            this, SLOT(slotError()));
 }
 
 QNetworkReply* AbstractNetworkJob::davRequest(const QByteArray &verb, const QString &relPath,
@@ -83,9 +80,29 @@ QNetworkReply* AbstractNetworkJob::davRequest(const QByteArray &verb, const QStr
     return _account->davRequest(verb, relPath, req, data);
 }
 
+QNetworkReply *AbstractNetworkJob::davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
+{
+    return _account->davRequest(verb, url, req, data);
+}
+
 QNetworkReply* AbstractNetworkJob::getRequest(const QString &relPath)
 {
     return _account->getRequest(relPath);
+}
+
+QNetworkReply *AbstractNetworkJob::getRequest(const QUrl &url)
+{
+    return _account->getRequest(url);
+}
+
+QNetworkReply *AbstractNetworkJob::headRequest(const QString &relPath)
+{
+    return _account->headRequest(relPath);
+}
+
+QNetworkReply *AbstractNetworkJob::headRequest(const QUrl &url)
+{
+    return _account->headRequest(url);
 }
 
 AbstractNetworkJob::~AbstractNetworkJob() {
@@ -161,9 +178,7 @@ MkColJob::MkColJob(Account *account, const QString &path, QObject *parent)
 
 void MkColJob::slotFinished()
 {
-    // ### useful error handling?
-    // QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
-    emit finished();
+    emit finished(reply()->error());
     deleteLater();
 }
 
@@ -222,7 +237,7 @@ void LsColJob::slotFinished()
 /*********************************************************************************************/
 
 CheckServerJob::CheckServerJob(Account *account, bool followRedirect, QObject *parent)
-    : AbstractNetworkJob(account, QLatin1String("/status.php") , parent)
+    : AbstractNetworkJob(account, QLatin1String("status.php") , parent)
     , _followRedirects(followRedirect)
     , _redirectCount(0)
 {
@@ -251,7 +266,7 @@ void CheckServerJob::slotFinished()
     // ### this should no longer be needed
     if( reply()->error() == QNetworkReply::NoError && reply()->size() == 0 ) {
         // This seems to be a bit strange behaviour of QNetworkAccessManager.
-        // It calls the finised slot multiple times but only the first read wins.
+        // It calls the finished slot multiple times but only the first read wins.
         // That happend when the code connected the finished signal of the manager.
         // It did not happen when the code connected to the reply finish signal.
         qDebug() << "WRN: NetworkReply with not content but also no error! " << reply();
@@ -270,12 +285,10 @@ void CheckServerJob::slotFinished()
         if (requestedUrl.scheme() == QLatin1String("https") &&
                 redirectUrl.scheme() == QLatin1String("http")) {
                 qDebug() << Q_FUNC_INFO << "HTTPS->HTTP downgrade detected!";
-        } else if (requestedUrl == redirectUrl || _redirectCount >= MAX_REDIRECTS) {
+        } else if (requestedUrl == redirectUrl || _redirectCount >= maxRedirects()) {
                 qDebug() << Q_FUNC_INFO << "Redirect loop detected!";
         } else {
-            takeReply()->deleteLater();
-            // ### FIXME
-            //setReply(getRequest(redirectUrl));
+            setReply(getRequest(redirectUrl));
             setupConnections(reply());
             return;
         }
@@ -292,7 +305,7 @@ void CheckServerJob::slotFinished()
     if( status.contains("installed")
             && status.contains("version")
             && status.contains("versionstring") ) {
-        emit instanceFound(status);
+        emit instanceFound(reply()->url(), status);
     } else {
         qDebug() << "No proper answer on " << requestedUrl;
     }
@@ -364,6 +377,18 @@ void PropfindJob::slotFinished()
     }
 
     deleteLater();
+}
+
+EntityExistsJob::EntityExistsJob(Account *account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+    setReply(headRequest(path));
+    setupConnections(reply());
+}
+
+void EntityExistsJob::slotFinished()
+{
+    emit exists(reply());
 }
 
 } // namespace Mirall
