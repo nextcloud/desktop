@@ -239,7 +239,7 @@ csync_instructions_e OwncloudPropagator::remoteMkdir(const SyncFileItem &item)
 // Log callback for httpbf
 static void _log_callback(const char *func, const char *text, void*)
 {
-    qDebug() << func << text;
+    qDebug() << "  " << func << text;
 }
 
 // abort callback for httpbf
@@ -283,6 +283,7 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
      * before submitting a chunk and after having submitted the last one.
      * If the file has changed, retry.
     */
+    qDebug() << "** PUT request to" << uri.data();
     do {
         Hbf_State state = HBF_SUCCESS;
         QScopedPointer<hbf_transfer_t, ScopedPointerHelpers> trans(hbf_init_transfer(uri.data()));
@@ -319,7 +320,7 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
                 trans->previous_etag = previousEtag.data();
             }
             _chunked_total_size = trans->stat_size;
-            qDebug() << "About to upload " << item._file << "  (" << previousEtag << item._size << ")";
+            qDebug() << "About to upload " << item._file << "  (" << previousEtag << item._size << " bytes )";
             /* Transfer all the chunks through the HTTP session using PUT. */
             state = hbf_transfer( _session, trans.data(), "PUT" );
         }
@@ -328,7 +329,22 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
             _etag =  QByteArray(hbf_transfer_etag( trans.data() ));
         }
 
-        _fileId = QString::fromUtf8( hbf_transfer_file_id( trans.data() ));
+        // the file id should only be empty for new files up- or downloaded
+        QString fid = QString::fromUtf8( hbf_transfer_file_id( trans.data() ));
+        if( _fileId.isEmpty() ) {
+            if( fid.isEmpty() ) {
+                const char *plain_uri = uri.data();
+                getFileId(plain_uri);
+            } else {
+                _fileId = fid;
+            }
+        } else {
+            if( _fileId != fid ) {
+                qDebug() << "WARN: File ID changed!" << _fileId << fid;
+            } else {
+                qDebug() << "FileID remains" << _fileId;
+            }
+        }
 
         /* Handle errors. */
         if ( state != HBF_SUCCESS ) {
@@ -356,10 +372,7 @@ csync_instructions_e OwncloudPropagator::uploadFile(const SyncFileItem &item)
     if( _etag.isEmpty() ) {
         updateMTimeAndETag(uri.data(), item._modtime);
     }
-    // the file id should only be empty for new files up- or downloaded
-    if( _fileId.isEmpty() ) {
-        getFileId( uri.data() );
-    }
+
     _status = SyncFileItem::Success;
 
     // Remove entries from the database
@@ -376,6 +389,17 @@ static QByteArray parseEtag(ne_request *req) {
         return header;
     }
 }
+
+static QString parseFileId(ne_request *req) {
+    QString fileId;
+
+    const char *header = ne_get_response_header(req, "X-OC-FileId");
+    if( header ) {
+        fileId = QString::fromUtf8(header);
+    }
+    return fileId;
+}
+
 
 void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
 {
@@ -405,6 +429,15 @@ void OwncloudPropagator::updateMTimeAndETag(const char* uri, time_t mtime)
         qDebug() << "Could not issue HEAD request for ETag.";
     } else {
         _etag = parseEtag(req.data());
+        QString fid = parseFileId(req.data());
+        if( _fileId.isEmpty() ) {
+            _fileId = fid;
+            qDebug() << "FileID was empty, set it to " << _fileId;
+        } else {
+            if( !fid.isEmpty() && fid != _fileId ) {
+                qDebug() << "WARN: FileID seems to have changed: "<< fid << _fileId;
+            }
+        }
     }
 }
 
@@ -415,14 +448,14 @@ void OwncloudPropagator::getFileId( const char *uri ) {
     QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_session, "HEAD", uri));
     int neon_stat = ne_request_dispatch(req.data());
 
+    qDebug() << "Querying the fileID from " << uri;
+
     if( updateErrorFromSession(neon_stat, req.data()) ) {
         // error happend
         qDebug() << "Could not issue HEAD request for FileID.";
     } else {
-        const char *header = ne_get_response_header(req.data(), "X-OC-FileId");
-        if( header ) {
-            _fileId = QString::fromUtf8(header);
-        }
+        _fileId = parseFileId( req.data() );
+        qDebug() << "Fetched fileID: " << _fileId;
     }
 }
 
