@@ -824,12 +824,16 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
 
 void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
 {
+    /* This builds all the job needed for the propagation.
+     * Each directories is a PropagateDirectory job, which contains the files in it.
+     * In order to do that we sort the items by destination. and loop over it. When we enter a
+     * directory, we can create the directory job and push it on the stack. */
     SyncFileItemVector items = _syncedItems;
     std::sort(items.begin(), items.end());
     _rootJob.reset(new PropagateDirectory(this));
-    QStack<QPair<QString, PropagateDirectory *> > directories;
+    QStack<QPair<QString /* directory name */, PropagateDirectory* /* job */> > directories;
     directories.push(qMakePair(QString(), _rootJob.data()));
-    QVector<PropagateDirectory *> directoriesToRemove;
+    QVector<PropagatorJob*> directoriesToRemove;
     QString removedDirectory;
     foreach(const SyncFileItem &item, items) {
         if (item._instruction == CSYNC_INSTRUCTION_REMOVE
