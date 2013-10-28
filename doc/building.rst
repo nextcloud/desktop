@@ -91,8 +91,8 @@ For the installer, the NSIS installer package is also required::
 You will also need to manually download and install the following files with
 ``rpm -ivh <package>`` (They will also work with OpenSUSE 12.2)::
 
-  rpm -ihv http://pmbs.links2linux.org/download/mingw:/32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-processes-0-1.1.x86_64.rpm
-  rpm -ihv http://pmbs.links2linux.org/download/mingw:/32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-uac-0-3.1.x86_64.rpm
+  rpm -ihv http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-processes-0-1.1.x86_64.rpm
+  rpm -ihv http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-uac-0-3.1.x86_64.rpm
 
 Now, follow the `generic build instructions`_, but pay attention to
 the following differences:
