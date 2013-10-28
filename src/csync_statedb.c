@@ -420,6 +420,9 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id( sqlite3 *db,
    if (!file_id) {
        return 0;
    }
+   if( c_streq(file_id, "")) {
+       return 0;
+   }
    stmt = sqlite3_mprintf("SELECT * FROM metadata WHERE fileid='%q'",
                           file_id);
 
