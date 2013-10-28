@@ -22,6 +22,7 @@
 
 #include "csyncthread.h"
 #include <syncjournaldb.h>
+#include "logger.h"
 #include "csync.h"
 
 using namespace Mirall;
@@ -121,6 +122,7 @@ int main(int argc, char **argv) {
 
     csync_set_log_level(11);
     csync_enable_conflictcopys(_csync_ctx);
+    Logger::instance()->setLogFile("-");
 
     csync_set_auth_callback( _csync_ctx, getauth );
 
@@ -140,5 +142,6 @@ int main(int argc, char **argv) {
     app.exec();
 
     csync_destroy(_csync_ctx);
+
     return 0;
 }

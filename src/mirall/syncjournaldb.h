@@ -29,7 +29,7 @@ public:
     explicit SyncJournalDb(const QString& path, QObject *parent = 0);
     SyncJournalFileRecord getFileRecord( const QString& filename );
     bool setFileRecord( const SyncJournalFileRecord& record );
-    bool deleteFileRecord( const QString& filename );
+    bool deleteFileRecord( const QString& filename, bool recursively = false );
     int getFileRecordCount();
     bool exists();
     QStringList tableColumns( const QString& table );

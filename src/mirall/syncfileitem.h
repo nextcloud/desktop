@@ -56,12 +56,6 @@ public:
     }
 
     friend bool operator<(const SyncFileItem& item1, const SyncFileItem& item2) {
-        // Delete at the end:
-        if (item1._instruction == CSYNC_INSTRUCTION_REMOVE && item2._instruction != CSYNC_INSTRUCTION_REMOVE)
-            return false;
-        if (item1._instruction != CSYNC_INSTRUCTION_REMOVE && item2._instruction == CSYNC_INSTRUCTION_REMOVE)
-            return true;
-
         // Sort by destination
         return item1.destination() < item2.destination();
     }
