@@ -120,5 +120,6 @@ int main(int argc, char **argv) {
     app.exec();
 
     csync_destroy(_csync_ctx);
+
     return 0;
 }

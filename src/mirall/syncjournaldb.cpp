@@ -226,22 +226,33 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
     }
 }
 
-bool SyncJournalDb::deleteFileRecord(const QString& filename)
+bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
 {
     QMutexLocker locker(&_mutex);
-    qlonglong phash = getPHash(filename);
 
     if( checkConnect() ) {
+        if (recursively) {
+            qlonglong phash = getPHash(filename);
+            QSqlQuery query( "DELETE FROM metadata WHERE phash=?", _db );
+            query.bindValue( 0, QString::number(phash) );
 
-        QSqlQuery query( "DELETE FROM metadata WHERE phash=?" );
-        query.bindValue( 0, QString::number(phash) );
+            if( !query.exec() ) {
+                qWarning() << "Exec error of SQL statement: " << query.lastQuery() <<  " : " << query.lastError().text();
+                return false;
+            }
+            qDebug() <<  query.executedQuery() << phash << filename;
+            return true;
+        } else {
+            QSqlQuery query( "DELETE FROM metadata WHERE path LIKE(?||'/%')", _db );
+            query.bindValue( 0, filename );
 
-        if( !query.exec() ) {
-            qWarning() << "Exec error of SQL statement: " << query.lastQuery() <<  " : " << query.lastError().text();
-            return false;
+            if( !query.exec() ) {
+                qWarning() << "Exec error of SQL statement: " << query.lastQuery() <<  " : " << query.lastError().text();
+                return false;
+            }
+            qDebug() <<  query.executedQuery()  << filename;
+            return true;
         }
-        qDebug() <<  query.executedQuery() << phash << filename;
-        return true;
     } else {
         qDebug() << "Failed to connect database.";
         return false; // checkConnect failed.

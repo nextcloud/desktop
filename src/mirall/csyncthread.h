@@ -33,8 +33,6 @@
 
 class QProcess;
 
-Q_DECLARE_METATYPE(CSYNC_STATUS)
-
 namespace Mirall {
 
 class SyncJournalFileRecord;
@@ -80,7 +78,7 @@ signals:
 
 private slots:
     void transferCompleted(const SyncFileItem& item);
-    void startNextTransfer();
+    void slotFinished();
     void slotProgress(Progress::Kind kind, const QString& file, quint64, quint64);
 
 private:
@@ -90,13 +88,9 @@ private:
     static int treewalkRemote( TREE_WALK_FILE*, void *);
     int treewalkFile( TREE_WALK_FILE*, bool );
 
-    Progress::Kind csyncToProgressKind( enum csync_notify_type_e kind );
-
     static QMutex _mutex;
     static QMutex _syncMutex;
     SyncFileItemVector _syncedItems;
-    int _iterator; // index in _syncedItems for the next item to process.
-    QStack<SyncJournalFileRecord> _directoriesToUpdate;
 
     CSYNC *_csync_ctx;
     bool _needsUpdate;

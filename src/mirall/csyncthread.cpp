@@ -66,7 +66,7 @@ CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &
     _journal = journal;
     _mutex.unlock();
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
-    qRegisterMetaType<CSYNC_STATUS>("CSYNC_STATUS");
+    qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
 }
 
 CSyncThread::~CSyncThread()
@@ -410,8 +410,6 @@ void CSyncThread::startSync()
         it->_file = adjustRenamedPath(it->_file);
     }
 
-    qSort(_syncedItems);
-
     if (!_hasFiles && !_syncedItems.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be removed, asking the user";
         bool cancel = false;
@@ -436,7 +434,7 @@ void CSyncThread::startSync()
             this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)),
             this, SLOT(slotProgress(Progress::Kind,QString,quint64,quint64)));
-    _iterator = 0;
+    connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()));
 
     int downloadLimit = 0;
     if (cfg.useDownloadLimit()) {
@@ -454,8 +452,7 @@ void CSyncThread::startSync()
     _propagator->_uploadLimit = uploadLimit;
 
     slotProgress(Progress::StartSync, QString(), 0, 0);
-
-    startNextTransfer();
+    _propagator->start(_syncedItems);
 }
 
 void CSyncThread::transferCompleted(const SyncFileItem &item)
@@ -463,107 +460,20 @@ void CSyncThread::transferCompleted(const SyncFileItem &item)
     qDebug() << Q_FUNC_INFO << item._file << item._status << item._errorString;
 
     /* Update the _syncedItems vector */
-
-    // Search for the item in the starting from _iterator because it should be a bit before it.
-    // This works because SyncFileItem::operator== only compare the file name;
-    int idx = _syncedItems.lastIndexOf(item, _iterator);
+    int idx = _syncedItems.indexOf(item);
     if (idx >= 0) {
         _syncedItems[idx]._instruction = item._instruction;
         _syncedItems[idx]._errorString = item._errorString;
         _syncedItems[idx]._status = item._status;
     }
 
-    /* Remember deleted directory */
-
-    if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_DELETED) {
-        _lastDeleted = item._file;
-    } else {
-        _lastDeleted.clear();
-    }
-
-    /* Update the database */
-
-    if (item._instruction == CSYNC_INSTRUCTION_DELETED) {
-        _journal->deleteFileRecord(item._originalFile);
-        if (!item._renameTarget.isEmpty()) {
-            SyncJournalFileRecord record(item, _localPath + item._renameTarget);
-            record._path = item._renameTarget;
-            _journal->setFileRecord(record);
-        }
-    } else if(item._instruction == CSYNC_INSTRUCTION_ERROR) {
-        // Don't update parents directories
-        _directoriesToUpdate.clear();
-    } else if (item._isDirectory) {
-        // directory must not be saved to the db before we finished processing them.
-        SyncJournalFileRecord record(item, _localPath + item._file);
-        _directoriesToUpdate.push(record);
-    } else if(item._instruction == CSYNC_INSTRUCTION_UPDATED) {
-        SyncJournalFileRecord record(item, _localPath + item._file);
-        _journal->setFileRecord(record);
-
-        slotProgress((item._dir != SyncFileItem::Up) ? Progress::EndDownload : Progress::EndUpload,
-                     item._file, item._size, item._size);
-        _progressInfo.current_file_no++;
-        _progressInfo.overall_current_bytes += item._size;
-
-    }
-
-    /* Start the transfer of the next file or abort if there is an error */
-
-    if (item._status != SyncFileItem::FatalError) {
-        startNextTransfer();
-    } else {
-        emit treeWalkResult(_syncedItems);
+    if (item._status == SyncFileItem::FatalError) {
         emit csyncError(item._errorString);
-        emit finished();
-        csync_commit(_csync_ctx);
-        _syncMutex.unlock();
-        thread()->quit();
     }
 }
 
-void CSyncThread::startNextTransfer()
+void CSyncThread::slotFinished()
 {
-    while (_iterator < _syncedItems.size()) {
-        const SyncFileItem &item = _syncedItems.at(_iterator);
-        ++_iterator;
-
-        while (!_directoriesToUpdate.isEmpty() && !item._file.startsWith(_directoriesToUpdate.last()._path)) {
-            // We are leaving a directory. Everything we needed to download from that directory is done.
-            // Update the directory etag in the database to the new one.
-            _journal->setFileRecord(_directoriesToUpdate.pop());
-        }
-
-        if (!_lastDeleted.isEmpty() &&
-            item._file.startsWith(_lastDeleted) ) {
-            if( item._instruction != CSYNC_INSTRUCTION_REMOVE ) {
-                qDebug() << "WRN: Child of a deleted directory has different instruction than delete."
-                         << item._file << _lastDeleted << item._instruction;
-            } else {
-                // If the item's name starts with the name of the previously deleted directory, we
-                // can assume this file was already destroyed by the previous call.
-                _journal->deleteFileRecord(item._file);
-                continue;
-            }
-        }
-
-        if (item._instruction == CSYNC_INSTRUCTION_SYNC || item._instruction == CSYNC_INSTRUCTION_NEW
-                || item._instruction == CSYNC_INSTRUCTION_CONFLICT) {
-            slotProgress((item._dir != SyncFileItem::Up) ? Progress::StartDownload : Progress::StartUpload,
-                         item._file, 0, item._size);
-        }
-
-        _propagator->propagate(item);
-        return; //propagate is async.
-    }
-
-    // We are finished !!
-
-    while (!_directoriesToUpdate.isEmpty()) {
-        // Save the etag of directories to the database.
-        _journal->setFileRecord(_directoriesToUpdate.pop());
-    }
-
     // emit the treewalk results.
     emit treeWalkResult(_syncedItems);
 
@@ -575,51 +485,6 @@ void CSyncThread::startNextTransfer()
     _propagator.reset(0);
     _syncMutex.unlock();
     thread()->quit();
-}
-
-Progress::Kind CSyncThread::csyncToProgressKind( enum csync_notify_type_e kind )
-{
-    Progress::Kind pKind = Progress::Invalid;
-
-    switch(kind) {
-    case CSYNC_NOTIFY_INVALID:
-        pKind = Progress::Invalid;
-        break;
-    case CSYNC_NOTIFY_START_SYNC_SEQUENCE:
-        pKind = Progress::StartSync;
-        break;
-    case CSYNC_NOTIFY_START_DOWNLOAD:
-        pKind = Progress::StartDownload;
-        break;
-    case CSYNC_NOTIFY_START_UPLOAD:
-        pKind = Progress::StartUpload;
-        break;
-    case CSYNC_NOTIFY_PROGRESS:
-        pKind = Progress::Context;
-        break;
-    case CSYNC_NOTIFY_FINISHED_DOWNLOAD:
-        pKind = Progress::EndDownload;
-        break;
-    case CSYNC_NOTIFY_FINISHED_UPLOAD:
-        pKind = Progress::EndUpload;
-        break;
-    case CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE:
-        pKind = Progress::EndSync;
-        break;
-    case CSYNC_NOTIFY_START_DELETE:
-        pKind = Progress::StartDelete;
-        break;
-    case CSYNC_NOTIFY_END_DELETE:
-        pKind = Progress::EndDelete;
-        break;
-    case CSYNC_NOTIFY_ERROR:
-        pKind = Progress::Error;
-        break;
-    default:
-        pKind = Progress::Invalid;
-        break;
-    }
-    return pKind;
 }
 
 void CSyncThread::slotProgress(Progress::Kind kind, const QString &file, quint64 curr, quint64 total)
