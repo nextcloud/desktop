@@ -623,20 +623,10 @@ void PropagateDownloadFile::start()
     tmpFile.flush();
     QString fn = _propagator->_localDir + _item._file;
 
+    bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT
+            && !fileEquals(fn, tmpFile.fileName()); // compare the files to see if there was an actual conflict.
     //In case of conflict, make a backup of the old file
-    bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT;
     if (isConflict) {
-        // compare the files to see if there was an actual conflict.
-        if (fileEquals(fn, tmpFile.fileName())) {
-            tmpFile.remove();
-            _item._instruction = CSYNC_INSTRUCTION_UPDATED;
-            _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
-            _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
-            emit progress(Progress::EndDownload, _item._file, 0, _item._size);
-            done(SyncFileItem::Success);
-            return;
-        }
-
         QFile f(fn);
         // Add _conflict-XXXX  before the extention.
         int dotLocation = fn.lastIndexOf('.');
