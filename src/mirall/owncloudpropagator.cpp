@@ -692,6 +692,7 @@ void PropagateDownloadFile::start()
     _item._instruction = CSYNC_INSTRUCTION_UPDATED;
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+    emit progress(Progress::EndDownload, _item._file, 0, _item._size);
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
 
@@ -735,7 +736,6 @@ void PropagateRemoteRename::start()
     SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
     record._path = _item._renameTarget;
     _propagator->_journal->setFileRecord(record);
-    emit progress(Progress::EndDownload, _item._file, 0, _item._size);
     done(SyncFileItem::Success);
 }
 
