@@ -16,14 +16,6 @@ set(MODULES_PRIVATE_INCLUDE_DIRS
   ${HTTPBF_PUBLIC_INCLUDE_DIRS}
 )
 
-set(SMB_PLUGIN
-  ocsync_smb
-)
-
-set(SFTP_PLUGIN
-  ocsync_sftp
-)
-
 set(OWNCLOUD_PLUGIN
   ocsync_owncloud
 )
@@ -32,35 +24,6 @@ include_directories(
   ${MODULES_PUBLIC_INCLUDE_DIRS}
   ${MODULES_PRIVATE_INCLUDE_DIRS}
 )
-
-find_package(SMBClient)
-if(SMBCLIENT_LIBRARY)
-    include_directories(${SMBCLIENT_INCLUDE_DIRS})
-    macro_add_plugin(${SMB_PLUGIN} csync_smb.c)
-    target_link_libraries(${SMB_PLUGIN} ${CSYNC_LIBRARY} ${SMBCLIENT_LIBRARIES})
-
-    install(
-        TARGETS
-            ${SMB_PLUGIN}
-        DESTINATION
-            ${PLUGIN_VERSION_INSTALL_DIR}
-    )
-endif(SMBCLIENT_LIBRARY)
-
-macro_add_plugin(ocsync_dummy csync_dummy.c)
-target_link_libraries(ocsync_dummy ${CSYNC_LIBRARY})
-
-if (LIBSSH_FOUND)
-macro_add_plugin(${SFTP_PLUGIN} csync_sftp.c)
-target_link_libraries(${SFTP_PLUGIN} ${CSYNC_LIBRARY} ${LIBSSH_LIBRARIES})
-
-install(
-  TARGETS
-    ${SFTP_PLUGIN}
-  DESTINATION
-    ${PLUGIN_VERSION_INSTALL_DIR}
-)
-endif (LIBSSH_FOUND)
 
 if (NEON_FOUND)
     include_directories( ${NEON_INCLUDE_DIRS} )
