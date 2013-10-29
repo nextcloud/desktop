@@ -59,7 +59,6 @@ endif (MEM_NULL_TESTS)
 
 add_subdirectory(src)
 add_subdirectory(modules)
-add_subdirectory(client)
 add_subdirectory(config)
 add_subdirectory(doc)
 

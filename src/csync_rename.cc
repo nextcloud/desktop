@@ -20,7 +20,6 @@
 
 extern "C" {
 #include "csync_private.h"
-#include "csync_propagate.h"
 }
 
 #include <map>
@@ -91,31 +90,5 @@ char* csync_rename_adjust_path(CSYNC* ctx, const char* path)
     }
     return c_strdup(path);
 }
-
-int csync_propagate_renames(CSYNC* ctx)
-{
-    csync_rename_s* d = csync_rename_s::get(ctx);
-    d->folder_renamed_to.clear();
-
-    if (c_rbtree_walk(ctx->remote.tree, (void *) ctx, _csync_rename_record) < 0) {
-        return -1;
-    }
-
-    // we need to procceed in order of the size of the destpath to be sure that we do the roots first.
-    std::sort(d->todo.begin(), d->todo.end());
-    for (std::vector< csync_rename_s::renameop >::iterator it = d->todo.begin();
-         it != d->todo.end(); ++it) {
-
-        int r = csync_propagate_rename_file(ctx, it->st);
-        if (r < 0)
-            return -1;
-        if (r > 0)
-            continue;
-        d->folder_renamed_to[it->st->path] = it->st->destpath;
-    }
-
-    return 0;
-}
-
 
 };

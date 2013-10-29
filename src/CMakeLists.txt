@@ -64,7 +64,6 @@ set(csync_SRCS
 
   csync_update.c
   csync_reconcile.c
-  csync_propagate.c
 
   csync_rename.cc
 

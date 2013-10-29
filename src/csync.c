@@ -53,7 +53,6 @@
 
 #include "csync_update.h"
 #include "csync_reconcile.h"
-#include "csync_propagate.h"
 
 #include "vio/csync_vio.h"
 
@@ -503,92 +502,6 @@ int csync_reconcile(CSYNC *ctx) {
   }
 
   ctx->status |= CSYNC_STATUS_RECONCILE;
-
-  return 0;
-}
-
-int csync_propagate(CSYNC *ctx) {
-  int rc = -1;
-  struct timespec start, finish;
-
-  if (ctx == NULL) {
-    errno = EBADF;
-    return -1;
-  }
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  rc = csync_init_progress(ctx);
-  if (rc < 0) {
-    if( ctx->status_code == CSYNC_STATUS_OK )
-        ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_PROPAGATE_ERROR);
-    return -1;
-  }
-
-  ctx->current = REMOTE_REPLICA;
-  ctx->replica = ctx->remote.type;
-  rc = csync_propagate_renames(ctx);
-  if (rc < 0) {
-      if( ctx->status_code == CSYNC_STATUS_OK )
-          ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_PROPAGATE_ERROR);
-      return -1;
-  }
-
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  /* Initialize the database for the overall progress callback. */
-  rc = csync_init_progress(ctx);
-  if (rc < 0) {
-      if (ctx->status_code == CSYNC_STATUS_OK) {
-          ctx->status_code = CSYNC_STATUS_PROPAGATE_ERROR;
-      }
-      return -1;
-  }
-
-  /* Reconciliation for local replica */
-  csync_gettime(&start);
-
-  ctx->current = LOCAL_REPLICA;
-  ctx->replica = ctx->local.type;
-
-  rc = csync_propagate_files(ctx);
-
-  csync_gettime(&finish);
-
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-      "Propagation for local replica took %.2f seconds visiting %zu files.",
-      c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
-
-  if (rc < 0) {
-      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
-          ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_PROPAGATE_ERROR );
-      }
-      return -1;
-  }
-
-  /* Reconciliation for local replica */
-  csync_gettime(&start);
-
-  ctx->current = REMOTE_REPLICA;
-  ctx->replica = ctx->remote.type;
-
-  rc = csync_propagate_files(ctx);
-
-  csync_gettime(&finish);
-
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-      "Propagation for remote replica took %.2f seconds visiting %zu files.",
-      c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
-
-  csync_finalize_progress(ctx);
-
-  if (rc < 0) {
-      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
-          ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_PROPAGATE_ERROR );
-      }
-      return -1;
-  }
-
-  ctx->status |= CSYNC_STATUS_PROPAGATE;
 
   return 0;
 }
