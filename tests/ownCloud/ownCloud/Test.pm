@@ -172,8 +172,7 @@ sub csync(  )
     $url = "owncloud://$user:$passwd@". $url;
     print "CSync URL: $url\n";
 
-    my $args = "--exclude-file=exclude.cfg -c";
-    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $args $localDir $url";
+    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $localDir $url";
     print "Starting: $cmd\n";
 
     system( $cmd ) == 0 or die("CSync died!\n");
