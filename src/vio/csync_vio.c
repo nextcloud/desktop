@@ -200,11 +200,6 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     return -1;
   }
 
-  if (! VIO_METHOD_HAS_FUNC(m, open)) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s has no open fn", module);
-    return -1;
-  }
-
   if (! VIO_METHOD_HAS_FUNC(m, opendir)) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s has no opendir fn", module);
     return -1;
@@ -220,11 +215,6 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     ctx->module.capabilities = *(m->get_capabilities());
   } else {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "module %s has no capabilities fn", module);
-  }
-
-  if (! VIO_METHOD_HAS_FUNC(m, open)) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s has no stat fn", module);
-    return -1;
   }
 
   if (! VIO_METHOD_HAS_FUNC(m, get_etag)) {

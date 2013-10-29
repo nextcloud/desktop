@@ -116,25 +116,6 @@ void fill_recursive_propfind_cache(const char *uri, const char *curi);
 struct listdir_context *get_listdir_context_from_cache(const char *curi);
 void fetch_resource_list_recursive(const char *uri, const char *curi);
 
-
-/*
- * context to store info about a temp file for GET and PUT requests
- * which store the data in a local file to save memory and secure the
- * transmission.
- */
-struct transfer_context {
-    ne_request *req;            /* the neon request */
-    int         fd;             /* file descriptor of the file to read or write from */
-    const char  *method;        /* the HTTP method, either PUT or GET  */
-    ne_decompress *decompress;  /* the decompress context */
-    char        *url;
-
-    /* Used for limiting the bandwidth */
-    struct timeval last_time;
-    ne_off_t last_progress;
-    int64_t get_size;
-};
-
 typedef int (*csync_owncloud_redirect_callback_t)(CSYNC* ctx, const char* uri);
 
 /* Struct with the WebDAV session */
