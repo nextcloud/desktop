@@ -325,7 +325,7 @@ static int _hbf_dav_request(hbf_transfer_t *transfer, ne_request *req, int fd, h
                 transfer->modtime_accepted = 1;
             }
 
-            etag = ne_get_response_header(req, "X-OC-FileID");
+            etag = ne_get_response_header(req, "OC-FileID");
             if( etag ) {
                 transfer->file_id = strdup( etag );
             }
