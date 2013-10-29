@@ -166,7 +166,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                 }
                 if (is_equal_files) {
                     /* The files are considered equal. */
-                    cur->instruction = CSYNC_INSTRUCTION_NONE;
+                    cur->instruction = CSYNC_INSTRUCTION_UPDATED; /* update the DB */
                     other->instruction = CSYNC_INSTRUCTION_NONE;
 
                     if( !cur->md5 && other->md5 ) cur->md5 = c_strdup(other->md5);
