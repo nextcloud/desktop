@@ -809,7 +809,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
                 // Should we set the mtime?
                 return 0;
             }
-            if (item._dir == SyncFileItem::Down) return new PropagateDownloadFile(this, item);
+            if (item._dir != SyncFileItem::Up) return new PropagateDownloadFile(this, item);
             else return new PropagateUploadFile(this, item);
         case CSYNC_INSTRUCTION_RENAME:
             Q_ASSERT(item._dir == SyncFileItem::Up); // only supported for remote
