@@ -302,7 +302,7 @@ void Folder::bubbleUpSyncResult()
     Logger *logger = Logger::instance();
 
     foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
-        if( item._instruction == CSYNC_INSTRUCTION_ERROR ) {
+        if( item._status == SyncFileItem::FatalError || item._status == SyncFileItem::NormalError ) {
             slotCSyncError( tr("File %1: %2").arg(item._file).arg(item._errorString) );
             logger->postOptionalGuiLog(tr("File %1").arg(item._file), item._errorString);
 
