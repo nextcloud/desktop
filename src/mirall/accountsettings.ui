@@ -59,21 +59,21 @@
       <item row="1" column="1">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QPushButton" name="_ButtonAdd">
+         <widget class="QPushButton" name="_buttonAdd">
           <property name="text">
            <string>Add Folder...</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="_ButtonEnable">
+         <widget class="QPushButton" name="_buttonEnable">
           <property name="text">
            <string>Pause</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="_ButtonRemove">
+         <widget class="QPushButton" name="_buttonRemove">
           <property name="text">
            <string>Remove</string>
           </property>
@@ -93,7 +93,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="_ButtonInfo">
+         <widget class="QPushButton" name="_buttonInfo">
           <property name="text">
            <string>Info...</string>
           </property>

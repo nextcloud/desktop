@@ -66,20 +66,20 @@ AccountSettings::AccountSettings(QWidget *parent) :
     ui->_folderList->setMinimumWidth( 300 );
     ui->_folderList->setEditTriggers( QAbstractItemView::NoEditTriggers );
 
-    ui->_ButtonRemove->setEnabled(false);
-    ui->_ButtonEnable->setEnabled(false);
-    ui->_ButtonInfo->setEnabled(false);
-    ui->_ButtonAdd->setEnabled(true);
+    ui->_buttonRemove->setEnabled(false);
+    ui->_buttonEnable->setEnabled(false);
+    ui->_buttonInfo->setEnabled(false);
+    ui->_buttonAdd->setEnabled(true);
 
     QAction *resetFolderAction = new QAction(this);
     resetFolderAction->setShortcut(QKeySequence(Qt::Key_F5));
     connect(resetFolderAction, SIGNAL(triggered()), SLOT(slotResetCurrentFolder()));
     addAction(resetFolderAction);
 
-    connect(ui->_ButtonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveCurrentFolder()));
-    connect(ui->_ButtonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
-    connect(ui->_ButtonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoAboutCurrentFolder()));
-    connect(ui->_ButtonAdd,    SIGNAL(clicked()), this, SLOT(slotAddFolder()));
+    connect(ui->_buttonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveCurrentFolder()));
+    connect(ui->_buttonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
+    connect(ui->_buttonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoAboutCurrentFolder()));
+    connect(ui->_buttonAdd,    SIGNAL(clicked()), this, SLOT(slotAddFolder()));
     connect(ui->modifyAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
     connect(ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));;
 
@@ -103,17 +103,17 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
 {
   bool state = indx.isValid();
 
-  ui->_ButtonRemove->setEnabled( state );
-  ui->_ButtonEnable->setEnabled( state );
-  ui->_ButtonInfo->setEnabled( state );
+  ui->_buttonRemove->setEnabled( state );
+  ui->_buttonEnable->setEnabled( state );
+  ui->_buttonInfo->setEnabled( state );
 
   if ( state ) {
     bool folderEnabled = _model->data( indx, FolderStatusDelegate::FolderSyncEnabled).toBool();
     qDebug() << "folder is sync enabled: " << folderEnabled;
     if ( folderEnabled ) {
-      ui->_ButtonEnable->setText( tr( "Pause" ) );
+      ui->_buttonEnable->setText( tr( "Pause" ) );
     } else {
-      ui->_ButtonEnable->setText( tr( "Resume" ) );
+      ui->_buttonEnable->setText( tr( "Resume" ) );
     }
   }
 }
@@ -189,21 +189,21 @@ void AccountSettings::buttonsSetEnabled()
 {
     bool haveFolders = ui->_folderList->model()->rowCount() > 0;
 
-    ui->_ButtonRemove->setEnabled(false);
+    ui->_buttonRemove->setEnabled(false);
     if( Theme::instance()->singleSyncFolder() ) {
         // only one folder synced folder allowed.
-        ui->_ButtonAdd->setVisible(!haveFolders);
+        ui->_buttonAdd->setVisible(!haveFolders);
     } else {
-        ui->_ButtonAdd->setVisible(true);
-        ui->_ButtonAdd->setEnabled(true);
+        ui->_buttonAdd->setVisible(true);
+        ui->_buttonAdd->setEnabled(true);
     }
 
     QModelIndex selected = ui->_folderList->currentIndex();
     bool isSelected = selected.isValid();
 
-    ui->_ButtonEnable->setEnabled(isSelected);
-    ui->_ButtonRemove->setEnabled(isSelected);
-    ui->_ButtonInfo->setEnabled(isSelected);
+    ui->_buttonEnable->setEnabled(isSelected);
+    ui->_buttonRemove->setEnabled(isSelected);
+    ui->_buttonInfo->setEnabled(isSelected);
 }
 
 void AccountSettings::setGeneralErrors( const QStringList& errors )
@@ -363,7 +363,7 @@ void AccountSettings::slotCheckConnection()
     } else {
         // ownCloud is not yet configured.
         showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
-        ui->_ButtonAdd->setEnabled( false);
+        ui->_buttonAdd->setEnabled( false);
     }
 }
 
@@ -504,7 +504,7 @@ void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr,
     safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
     showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()),
                          tr("Version: %1 (%2)").arg(versionStr).arg(version) );
-    ui->_ButtonAdd->setEnabled(true);
+    ui->_buttonAdd->setEnabled(true);
 
     disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
             this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
@@ -518,7 +518,7 @@ void AccountSettings::slotOCInfoFail( QNetworkReply *reply)
     if( reply ) errStr = reply->errorString();
 
     showConnectionLabel( tr("<p>Failed to connect to %1: <tt>%2</tt></p>").arg(Theme::instance()->appNameGUI()).arg(errStr) );
-    ui->_ButtonAdd->setEnabled( false);
+    ui->_buttonAdd->setEnabled( false);
 
     disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
             this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
