@@ -401,6 +401,8 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
         } else {
             if( !fid.isEmpty() && fid != _item._fileId ) {
                 qDebug() << "WARN: FileID seems to have changed: "<< fid << _item._fileId;
+            } else {
+                qDebug() << "FileID is " << _item._fileId;
             }
         }
     }
@@ -682,6 +684,41 @@ void PropagateDownloadFile::start()
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
 
+DECLARE_JOB(PropagateLocalRename)
+
+void PropagateLocalRename::start()
+{
+    if (_item._file == _item._renameTarget) {
+        if (!_item._isDirectory) {
+            // The parents has been renamed already so there is nothing more to do.
+            // But we still need to fetch the new ETAG
+            // FIXME   maybe do a recusrsive propfind after having moved the parent.
+            // Note: we also update the mtime because the server do not keep the mtime when moving files
+        }
+    } else if (_item._file == QLatin1String("Shared") ) { // in theory this cant happen.
+        // Check if it is the toplevel Shared folder and do not propagate it.
+        if( QFile::rename(  _propagator->_localDir + _item._renameTarget, _propagator->_localDir + QLatin1String("Shared")) ) {
+            done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
+        } else {
+            done(SyncFileItem::NormalError, tr("This folder must not be renamed. Please name it back to Shared."));
+        }
+        return;
+    } else {
+        qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
+        QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
+    }
+
+    _item._instruction = CSYNC_INSTRUCTION_DELETED;
+    _propagator->_journal->deleteFileRecord(_item._originalFile);
+
+    SyncJournalFileRecord record(_item, _propagator->_remoteDir + _item._file);
+    record._path = _item._renameTarget;
+    _propagator->_journal->setFileRecord(record);
+    emit progress(Progress::EndDownload, _item._file, 0, _item._size);
+    done(SyncFileItem::Success);
+
+}
+
 DECLARE_JOB(PropagateRemoteRename)
 
 void PropagateRemoteRename::start()
@@ -690,7 +727,7 @@ void PropagateRemoteRename::start()
         if (!_item._isDirectory) {
             // The parents has been renamed already so there is nothing more to do.
             // But we still need to fetch the new ETAG
-            // FIXME   maybe do a recusrsive propfind after having moced the parent.
+            // FIXME   maybe do a recusrsive propfind after having moved the parent.
             // Note: we also update the mtime because the server do not keep the mtime when moving files
             QScopedPointer<char, QScopedPointerPodDeleter> uri2(
                 ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
@@ -747,7 +784,7 @@ bool PropagateItemJob::updateErrorFromSession(int neon_code, ne_request* req, in
             }
         } else {
             errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-            int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+            httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
             if ((httpStatusCode >= 200 && httpStatusCode < 300)
                 || (httpStatusCode != 0 && httpStatusCode == ignoreHttpCode)) {
                 // No error
@@ -803,8 +840,11 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
             if (item._dir != SyncFileItem::Up) return new PropagateDownloadFile(this, item);
             else return new PropagateUploadFile(this, item);
         case CSYNC_INSTRUCTION_RENAME:
-            Q_ASSERT(item._dir == SyncFileItem::Up); // only supported for remote
-            return new PropagateRemoteRename(this, item);
+            if (item._dir == SyncFileItem::Up) {
+                return new PropagateRemoteRename(this, item);
+            } else {
+                return new PropagateLocalRename(this, item);
+            }
         case CSYNC_INSTRUCTION_IGNORE:
             return new PropagateIgnoreJob(this, item);
         default:
