@@ -80,6 +80,7 @@ AccountSettings::AccountSettings(QWidget *parent) :
     connect(ui->_buttonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
     connect(ui->_buttonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoAboutCurrentFolder()));
     connect(ui->_buttonAdd,    SIGNAL(clicked()), this, SLOT(slotAddFolder()));
+    connect(ui->_buttonSync,   SIGNAL(clicked()), this, SLOT(slotSyncCurrentFolder()));
     connect(ui->modifyAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
     connect(ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));;
 
@@ -115,10 +116,13 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
     } else {
       ui->_buttonEnable->setText( tr( "Resume" ) );
     }
+
+    bool folderRunning = _model->data( indx, FolderStatusDelegate::SyncRunning).toBool();
+    ui->_buttonSync->setEnabled( folderEnabled && !folderRunning );
+  } else {
+    ui->_buttonSync->setEnabled( false );
   }
 }
-
-
 
 void AccountSettings::slotAddFolder()
 {
@@ -181,6 +185,9 @@ void AccountSettings::slotAddFolder( Folder *folder )
     folderToModelItem( item, folder );
     _model->appendRow( item );
     slotCheckConnection();
+
+    // in order to update the enabled state of the "Sync now" button
+    connect(folder, SIGNAL(syncStateChange()), this, SLOT(buttonsSetEnabled()), Qt::UniqueConnection);
 }
 
 
@@ -199,11 +206,7 @@ void AccountSettings::buttonsSetEnabled()
     }
 
     QModelIndex selected = ui->_folderList->currentIndex();
-    bool isSelected = selected.isValid();
-
-    ui->_buttonEnable->setEnabled(isSelected);
-    ui->_buttonRemove->setEnabled(isSelected);
-    ui->_buttonInfo->setEnabled(isSelected);
+    slotFolderActivated(selected);
 }
 
 void AccountSettings::setGeneralErrors( const QStringList& errors )
@@ -456,6 +459,20 @@ void AccountSettings::slotEnableCurrentFolder()
             slotFolderActivated( selected );
         }
     }
+}
+
+void AccountSettings::slotSyncCurrentFolder()
+{
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if( !selected.isValid() )
+        return;
+    QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
+    FolderMan *folderMan = FolderMan::instance();
+    Folder *f = folderMan->folder( alias );
+    if (!f)
+        return;
+
+    f->evaluateSync(QStringList());
 }
 
 void AccountSettings::slotUpdateFolderState( Folder *folder )
