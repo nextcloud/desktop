@@ -688,22 +688,7 @@ DECLARE_JOB(PropagateLocalRename)
 
 void PropagateLocalRename::start()
 {
-    if (_item._file == _item._renameTarget) {
-        if (!_item._isDirectory) {
-            // The parents has been renamed already so there is nothing more to do.
-            // But we still need to fetch the new ETAG
-            // FIXME   maybe do a recusrsive propfind after having moved the parent.
-            // Note: we also update the mtime because the server do not keep the mtime when moving files
-        }
-    } else if (_item._file == QLatin1String("Shared") ) { // in theory this cant happen.
-        // Check if it is the toplevel Shared folder and do not propagate it.
-        if( QFile::rename(  _propagator->_localDir + _item._renameTarget, _propagator->_localDir + QLatin1String("Shared")) ) {
-            done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
-        } else {
-            done(SyncFileItem::NormalError, tr("This folder must not be renamed. Please name it back to Shared."));
-        }
-        return;
-    } else {
+    if (_item._file != _item._renameTarget) {
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
         QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
     }
@@ -716,7 +701,6 @@ void PropagateLocalRename::start()
     _propagator->_journal->setFileRecord(record);
     emit progress(Progress::EndDownload, _item._file, 0, _item._size);
     done(SyncFileItem::Success);
-
 }
 
 DECLARE_JOB(PropagateRemoteRename)
