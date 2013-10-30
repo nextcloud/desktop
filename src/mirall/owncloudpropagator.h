@@ -107,9 +107,6 @@ class PropagateItemJob : public PropagatorJob {
 protected:
     SyncFileItem _item;
     void done(SyncFileItem::Status status, const QString &errorString = QString()) {
-        if (status == SyncFileItem::FatalError || status == SyncFileItem::NormalError) {
-            _item._instruction = CSYNC_INSTRUCTION_ERROR;
-        }
         _item._errorString = errorString;
         _item._status = status;
         emit completed(_item);

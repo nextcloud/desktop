@@ -136,7 +136,6 @@ void PropagateLocalRemove::start()
         }
     }
     _propagator->_journal->deleteFileRecord(_item._originalFile);
-    _item._instruction = CSYNC_INSTRUCTION_DELETED;
     done(SyncFileItem::Success);
 }
 
@@ -149,7 +148,6 @@ void PropagateLocalMkdir::start()
         done(SyncFileItem::NormalError, tr("could not create directory %1").arg(_propagator->_localDir +  _item._file));
         return;
     }
-    _item._instruction = CSYNC_INSTRUCTION_UPDATED;
     done(SyncFileItem::Success);
 }
 
@@ -164,7 +162,6 @@ void PropagateRemoteRemove::start()
     if (updateErrorFromSession(rc)) {
         return;
     }
-    _item._instruction = CSYNC_INSTRUCTION_DELETED;
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
     done(SyncFileItem::Success);
 }
@@ -183,7 +180,6 @@ void PropagateRemoteMkdir::start()
     if( updateErrorFromSession( rc , 0, 405 ) ) {
         return;
     }
-    _item._instruction = CSYNC_INSTRUCTION_UPDATED;
     done(SyncFileItem::Success);
 }
 
@@ -339,7 +335,6 @@ void PropagateUploadFile::start()
             updateMTimeAndETag(uri.data(), _item._modtime);
         }
 
-        _item._instruction = CSYNC_INSTRUCTION_UPDATED;
         _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
         // Remove from the progress database:
         _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
@@ -623,6 +618,7 @@ void PropagateDownloadFile::start()
     tmpFile.flush();
     QString fn = _propagator->_localDir + _item._file;
 
+
     bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT
             && !fileEquals(fn, tmpFile.fileName()); // compare the files to see if there was an actual conflict.
     //In case of conflict, make a backup of the old file
@@ -679,7 +675,6 @@ void PropagateDownloadFile::start()
     times[0].tv_usec = times[1].tv_usec = 0;
     c_utimes(fn.toUtf8().data(), times);
 
-    _item._instruction = CSYNC_INSTRUCTION_UPDATED;
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
     emit progress(Progress::EndDownload, _item._file, 0, _item._size);
@@ -721,7 +716,6 @@ void PropagateRemoteRename::start()
         updateMTimeAndETag(uri2.data(), _item._modtime);
     }
 
-    _item._instruction = CSYNC_INSTRUCTION_DELETED;
     _propagator->_journal->deleteFileRecord(_item._originalFile);
     SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
     record._path = _item._renameTarget;

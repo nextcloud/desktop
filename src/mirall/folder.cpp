@@ -329,7 +329,8 @@ void Folder::bubbleUpSyncResult()
                     }
 
                     break;
-                case CSYNC_INSTRUCTION_UPDATED:
+                case CSYNC_INSTRUCTION_CONFLICT:
+                case CSYNC_INSTRUCTION_SYNC:
                     updatedItems++;
                     if (firstItemUpdated.isEmpty())
                         firstItemUpdated = item;
