@@ -76,7 +76,7 @@ static void setup_remote(void **state) {
     rc = csync_reconcile(csync);
     assert_int_equal(rc, 0);
 
-    rc = csync_propagate(csync);
+    // rc = csync_propagate(csync);
     assert_int_equal(rc, 0);
 
     *state = csync;
