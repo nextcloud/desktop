@@ -29,27 +29,15 @@ using namespace QKeychain;
 
 namespace Mirall {
 
-CredentialStore *CredentialStore::_instance=0;
-CredentialStore::CredState CredentialStore::_state = NotFetched;
-QString CredentialStore::_passwd   = QString::null;
-QString CredentialStore::_user     = QString::null;
-QString CredentialStore::_url      = QString::null;
-QString CredentialStore::_errorMsg = QString::null;
-#ifdef WITH_QTKEYCHAIN
-CredentialStore::CredentialType CredentialStore::_type = KeyChain;
-#else
-CredentialStore::CredentialType CredentialStore::_type = Settings;
-#endif
-
-CredentialStore::CredentialStore(QObject *parent) :
-    QObject(parent)
+CredentialStore::CredentialStore(QObject *parent)
+    : QObject(parent)
+    , _state()
+    , _passwd()
+    , _user()
+    , _url()
+    , _errorMsg()
+    , _type()
 {
-}
-
-CredentialStore *CredentialStore::instance()
-{
-    if( !CredentialStore::_instance ) CredentialStore::_instance = new CredentialStore;
-    return CredentialStore::_instance;
 }
 
 QString CredentialStore::password() const

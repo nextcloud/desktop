@@ -27,6 +27,8 @@ class QAuthenticator;
 namespace Mirall
 {
 
+class CredentialStore;
+
 class HttpCredentials : public AbstractCredentials
 {
   Q_OBJECT
@@ -53,6 +55,7 @@ private Q_SLOTS:
   void slotReplyFinished();
 
 private:
+  CredentialStore *_store;
   QString _user;
   QString _password;
   bool _ready;

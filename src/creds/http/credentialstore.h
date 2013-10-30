@@ -78,12 +78,6 @@ public:
     void fetchCredentials();
 
     /**
-     * @brief instance - singleton pointer.
-     * @return the singleton pointer to access the object.
-     */
-    static CredentialStore *instance();
-
-    /**
      * @brief setCredentials - sets the user credentials.
      *
      * This function is called from the setup wizard to set the credentials
@@ -119,13 +113,12 @@ private:
     void deleteKeyChainCredential( const QString& );
     QString keyChainKey( const QString& ) const;
 
-    static CredentialStore *_instance;
-    static CredState _state;
-    static QString _passwd;
-    static QString _user;
-    static QString _url;
-    static QString _errorMsg;
-    static CredentialType _type;
+    CredState _state;
+    QString _passwd;
+    QString _user;
+    QString _url;
+    QString _errorMsg;
+    CredentialType _type;
 };
 }
 

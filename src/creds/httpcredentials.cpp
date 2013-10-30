@@ -93,7 +93,11 @@ HttpCredentials::HttpCredentials(const QString& user, const QString& password)
     : _user(user),
       _password(password),
       _ready(true)
-{}
+{
+    _store = new CredentialStore(this);
+    connect(store, SIGNAL(fetchCredentialsFinished(bool)),
+            this, SLOT(slotCredentialsFetched(bool)));
+}
 
 void HttpCredentials::syncContextPreInit (CSYNC* ctx)
 {
@@ -168,27 +172,22 @@ void HttpCredentials::fetch()
         Q_EMIT fetched();
     } else {
         // TODO: merge CredentialStore into HttpCredentials?
-        CredentialStore* store(CredentialStore::instance());
-        connect(store, SIGNAL(fetchCredentialsFinished(bool)),
-                this, SLOT(slotCredentialsFetched(bool)));
-        store->fetchCredentials();
+        _store->fetchCredentials();
     }
 }
 
 void HttpCredentials::persistForUrl(const QString& url)
 {
-    CredentialStore* store(CredentialStore::instance());
-    store->setCredentials(url, _user, _password);
-    store->saveCredentials();
+    _store->setCredentials(url, _user, _password);
+    _store->saveCredentials();
 }
 
 void HttpCredentials::slotCredentialsFetched(bool ok)
 {
     _ready = ok;
     if (_ready) {
-        CredentialStore* store(CredentialStore::instance());
-        _user = store->user();
-        _password = store->password();
+        _user = _store->user();
+        _password = _store->password();
     }
     Q_EMIT fetched();
 }
