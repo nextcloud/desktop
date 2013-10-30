@@ -157,9 +157,10 @@ void PropagateRemoteRemove::start()
 {
     QScopedPointer<char, QScopedPointerPodDeleter> uri(
         ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+    qDebug() << "** DELETE " << uri.data();
     int rc = ne_delete(_propagator->_session, uri.data());
-
-    if (updateErrorFromSession(rc)) {
+    /* Ignore the error 404,  it means it is already deleted */
+    if (updateErrorFromSession(rc, 0, 404)) {
         return;
     }
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
@@ -753,12 +754,18 @@ bool PropagateItemJob::updateErrorFromSession(int neon_code, ne_request* req, in
                 return false;
             }
         }
-
         // FIXME: classify the error
         done (SyncFileItem::NormalError, errorString);
         return true;
     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
-        done(SyncFileItem::NormalError, QString::fromUtf8(ne_get_error(_propagator->_session)));
+        errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
+        if (ignoreHttpCode) {
+            // Check if we don't need to ignore that error.
+            httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+            if (httpStatusCode == ignoreHttpCode)
+                return false;
+        }
+        done(SyncFileItem::NormalError, errorString);
         return true;
     case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
     case NE_AUTH:     /* User authentication failed on server */
