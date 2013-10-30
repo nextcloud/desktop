@@ -77,6 +77,7 @@ protected slots:
     void slotAddFolder();
     void slotAddFolder( Folder* );
     void slotEnableCurrentFolder();
+    void slotSyncCurrentFolderNow();
     void slotRemoveCurrentFolder();
     void slotInfoAboutCurrentFolder();
     void slotResetCurrentFolder();

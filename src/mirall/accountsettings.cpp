@@ -76,6 +76,11 @@ AccountSettings::AccountSettings(QWidget *parent) :
     connect(resetFolderAction, SIGNAL(triggered()), SLOT(slotResetCurrentFolder()));
     addAction(resetFolderAction);
 
+    QAction *syncNowAction = new QAction(this);
+    syncNowAction->setShortcut(QKeySequence(Qt::Key_F6));
+    connect(syncNowAction, SIGNAL(triggered()), SLOT(slotSyncCurrentFolderNow()));
+    addAction(syncNowAction);
+
     connect(ui->_buttonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveCurrentFolder()));
     connect(ui->_buttonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
     connect(ui->_buttonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoAboutCurrentFolder()));
@@ -456,6 +461,20 @@ void AccountSettings::slotEnableCurrentFolder()
             slotFolderActivated( selected );
         }
     }
+}
+
+void AccountSettings::slotSyncCurrentFolderNow()
+{
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if( !selected.isValid() )
+        return;
+    QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
+    FolderMan *folderMan = FolderMan::instance();
+    Folder *f = folderMan->folder( alias );
+    if (!f)
+        return;
+
+    f->evaluateSync(QStringList());
 }
 
 void AccountSettings::slotUpdateFolderState( Folder *folder )
