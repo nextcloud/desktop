@@ -358,7 +358,7 @@ static QByteArray parseEtag(ne_request *req) {
 static QString parseFileId(ne_request *req) {
     QString fileId;
 
-    const char *header = ne_get_response_header(req, "X-OC-FileId");
+    const char *header = ne_get_response_header(req, "OC-FileId");
     if( header ) {
         fileId = QString::fromUtf8(header);
     }
