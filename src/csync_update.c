@@ -256,30 +256,28 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             /* Remote Replica Rename check */
             tmp = csync_statedb_get_stat_by_file_id(ctx->statedb.db, fs->file_id);
             if(tmp ) {                           /* tmp existing at all */
-                if( fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY ) {
-                    if( tmp->type != CSYNC_VIO_FILE_TYPE_DIRECTORY ) {
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "WARN: expected directory but is not!");
-                        st->instruction = CSYNC_INSTRUCTION_NEW;
-                        goto out;
-                    }
-                    st->instruction = CSYNC_INSTRUCTION_RENAME;
-                    // FIXME: csync_rename_record here ?
-
-                    if( c_streq(tmp->md5, fs->md5) ) {    /* FIXME !! md5 still the same */
-
-                    } else {
-                        /* The etag has changed as well => changes within the dir */
-                    }
-                    goto out;
-                }
-                else {
-                    /* file not found in statedb */
+                if ((tmp->type == CSYNC_FTW_TYPE_DIR && fs->type != CSYNC_VIO_FILE_TYPE_DIRECTORY) ||
+                        (tmp->type == CSYNC_FTW_TYPE_FILE && fs->type != CSYNC_VIO_FILE_TYPE_REGULAR)) {
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "WARN: file types different is not!");
                     st->instruction = CSYNC_INSTRUCTION_NEW;
                     goto out;
                 }
+                st->instruction = CSYNC_INSTRUCTION_RENAME;
+                // FIXME: csync_rename_record here ?
+
+                if( c_streq(tmp->md5, fs->md5) ) {    /* FIXME !! md5 still the same */
+
+                } else {
+                    /* The etag has changed as well => changes within the dir */
+                }
+                goto out;
+
+            } else {
+                /* file not found in statedb */
+                st->instruction = CSYNC_INSTRUCTION_NEW;
+                goto out;
             }
         }
-        st->instruction = CSYNC_INSTRUCTION_NEW;
     }
   } else  {
       st->instruction = CSYNC_INSTRUCTION_NEW;
