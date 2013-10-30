@@ -76,7 +76,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 
     node = c_rbtree_find(tree, &cur->phash);
 
-    if (!node && ctx->current == REMOTE_REPLICA) {
+    if (!node) {
         /* Check the renamed path as well. */
         char *renamed_path = csync_rename_adjust_path(ctx, cur->path);
         if (!c_streq(renamed_path, cur->path)) {
@@ -104,34 +104,44 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                 /* use the old name to find the "other" node */
                 tmp = csync_statedb_get_stat_by_inode(ctx->statedb.db, cur->inode);
                 /* Find the opposite node. */
-                if( tmp ) {
-                    /* We need to calculate the phash again because of the phash being stored as int in db. */
-                    if( tmp->path ) {
-                        len = strlen( tmp->path );
-                        h = c_jhash64((uint8_t *) tmp->path, len, 0);
-                        node = c_rbtree_find(tree, &h);
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "PHash of temporary opposite (%s): %" PRIu64 " %s",
-                                  tmp->path , h, node ? "found": "not found" );
-                    }
-                    if(node) {
-                        other = (csync_file_stat_t*)node->data;
-                    }
-                    if(!other) {
-                        cur->instruction = CSYNC_INSTRUCTION_NEW;
-                    } else if (other->instruction == CSYNC_INSTRUCTION_NONE
-                                || cur->type == CSYNC_FTW_TYPE_DIR) {
-                        other->instruction = CSYNC_INSTRUCTION_RENAME;
-                        other->destpath = c_strdup( cur->path );
-                        cur->instruction = CSYNC_INSTRUCTION_NONE;
-                    } else {
-                        cur->instruction = CSYNC_INSTRUCTION_NONE;
-                        other->instruction = CSYNC_INSTRUCTION_SYNC;
-                    }
-
-                    SAFE_FREE(tmp->md5);
-                    SAFE_FREE(tmp);
-                }
+            } else if( ctx->current == REMOTE_REPLICA ) {
+                tmp = csync_statedb_get_stat_by_file_id(ctx->statedb.db, cur->file_id);
+            } else {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unknown replica...");
             }
+            if( tmp ) {
+                /* We need to calculate the phash again because of the phash being stored as int in db. */
+                if( tmp->path ) {
+                    len = strlen( tmp->path );
+                    h = c_jhash64((uint8_t *) tmp->path, len, 0);
+                    node = c_rbtree_find(tree, &h);
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "PHash of temporary opposite (%s): %" PRIu64 " %s",
+                              tmp->path , h, node ? "found": "not found" );
+                }
+                if(node) {
+                    other = (csync_file_stat_t*)node->data;
+                }
+                if(!other) {
+                    cur->instruction = CSYNC_INSTRUCTION_NEW;
+                } else if (other->instruction == CSYNC_INSTRUCTION_NONE
+                           || cur->type == CSYNC_FTW_TYPE_DIR) {
+                    other->instruction = CSYNC_INSTRUCTION_RENAME;
+                    other->destpath = c_strdup( cur->path );
+                    cur->instruction = CSYNC_INSTRUCTION_NONE;
+                } else if (other->instruction == CSYNC_INSTRUCTION_REMOVE) {
+                    other->instruction = CSYNC_INSTRUCTION_RENAME;
+                    other->destpath = c_strdup( cur->path );
+                    csync_vio_set_file_id( other->file_id, cur->file_id );
+                    cur->instruction = CSYNC_INSTRUCTION_NONE;
+                } else {
+                    cur->instruction = CSYNC_INSTRUCTION_NONE;
+                    other->instruction = CSYNC_INSTRUCTION_SYNC;
+                }
+
+                SAFE_FREE(tmp->md5);
+                SAFE_FREE(tmp);
+           }
+
             break;
         default:
             break;
