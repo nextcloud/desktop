@@ -23,67 +23,157 @@
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
 
+struct hbf_transfer_s;
 struct ne_session_s;
 struct ne_decompress_s;
 
 namespace Mirall {
 
-class ProgressDatabase;
+class SyncJournalDb;
+class OwncloudPropagator;
+
+class PropagatorJob : public QObject {
+    Q_OBJECT
+protected:
+    OwncloudPropagator *_propagator;
+public:
+    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator) {}
+public slots:
+    virtual void start() = 0;
+signals:
+    void finished(SyncFileItem::Status);
+    void completed(const SyncFileItem &);
+    void progress(Progress::Kind, const QString &filename, quint64 bytes, quint64 total);
+};
+
+/*
+ * Propagate a directory, and all its sub entries.
+ */
+class PropagateDirectory : public PropagatorJob {
+    Q_OBJECT
+public:
+    // e.g: create the directory
+    QScopedPointer<PropagatorJob>_firstJob;
+
+    // all the sub files or sub directories.
+    //TODO:  in the future, all sub job can be run in parallel
+    QVector<PropagatorJob *> _subJobs;
+
+    SyncFileItem _item;
+
+    int _current; // index of the current running job
+    bool _hasError;  // weather there was an error
+
+
+    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItem &item = SyncFileItem())
+        : PropagatorJob(propagator)
+        , _firstJob(0), _item(item),  _current(-1), _hasError(false) { }
+
+    virtual ~PropagateDirectory() {
+        qDeleteAll(_subJobs);
+    }
+
+    void append(PropagatorJob *subJob) {
+        _subJobs.append(subJob);
+    }
+
+    virtual void start() {
+        _current = -1;
+        _hasError = false;
+        if (!_firstJob) {
+            proceedNext(SyncFileItem::Success);
+        } else {
+            startJob(_firstJob.data());
+        }
+    }
+
+private slots:
+    void startJob(PropagatorJob *next) {
+        connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(proceedNext(SyncFileItem::Status)), Qt::QueuedConnection);
+        connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
+        connect(next, SIGNAL(progress(Progress::Kind,QString,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,QString,quint64,quint64)));
+        next->start();
+    }
+
+    void proceedNext(SyncFileItem::Status status);
+};
+
+
+/*
+ * Abstract class to propagate a single item
+ */
+class PropagateItemJob : public PropagatorJob {
+    Q_OBJECT
+protected:
+    SyncFileItem _item;
+    void done(SyncFileItem::Status status, const QString &errorString = QString()) {
+        _item._errorString = errorString;
+        _item._status = status;
+        emit completed(_item);
+        emit finished(status);
+    }
+
+    void updateMTimeAndETag(const char *uri, time_t);
+    void getFileId( const char *uri );
+
+    /* fetch the error code and string from the session
+       in case of error, calls done with the error and returns true.
+
+       If the HTTP error code is ignoreHTTPError,  the error is ignored
+     */
+    bool updateErrorFromSession(int neon_code = 0, ne_request *req = 0, int ignoreHTTPError = 0);
+
+    /*
+     * to be called by the progress callback and will wait the amount of time needed.
+     */
+    void limitBandwidth(qint64 progress, qint64 limit);
+    QElapsedTimer _lastTime;
+    qint64 _lastProgress;
+
+
+public:
+    PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItem &item)
+        : PropagatorJob(propagator), _item(item), _lastProgress(0) {}
+};
+
+// Dummy job that just mark it as completed and ignored.
+class PropagateIgnoreJob : public PropagateItemJob {
+    Q_OBJECT
+public:
+    PropagateIgnoreJob(OwncloudPropagator* propagator,const SyncFileItem& item)
+        : PropagateItemJob(propagator, item) {}
+    void start() {
+        done(SyncFileItem::FileIgnored);
+    }
+};
+
 
 class OwncloudPropagator : public QObject {
     Q_OBJECT
 
+    PropagateItemJob *createJob(const SyncFileItem& item);
+    QScopedPointer<PropagateDirectory> _rootJob;
+
+public:
     ne_session_s *_session;
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteDir; // path to the root of the remote. ends with '/'
-    ProgressDatabase *_progressDb;
-
-    QString          _errorString;
-    SyncFileItem::Status _status;
-
-    bool check_neon_session();
-
-
-    csync_instructions_e localRemove(const SyncFileItem &);
-    csync_instructions_e localMkdir(const SyncFileItem &);
-    csync_instructions_e remoteRemove(const SyncFileItem &);
-    csync_instructions_e remoteMkdir(const SyncFileItem &);
-    csync_instructions_e downloadFile(const SyncFileItem &, bool isConflict = false);
-    csync_instructions_e uploadFile(const SyncFileItem &);
-    csync_instructions_e remoteRename(const SyncFileItem &);
-
-    void updateMTimeAndETag(const char *uri, time_t);
-
-    /* fetch the error code and string from the session
-     * updates _status, _httpStatusCode and _errorString. and httpStatusCode
-     * Returns true if there was an error.
-     */
-    bool updateErrorFromSession(int neon_code = 0, ne_request *req = 0, int *httpStatusCode = 0);
-
-    QElapsedTimer _lastTime;
-    quint64 _lastProgress;
-    quint64 _chunked_total_size;
-    quint64 _chunked_done;
-    QString _currentFile;
-
-
-    static void notify_status_cb (void *userdata, ne_session_status status,
-                                  const ne_session_status_info *info);
+    SyncJournalDb *_journal;
 
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
-                       ProgressDatabase *progressDb, QAtomicInt *abortRequested)
+                       SyncJournalDb *progressDb, QAtomicInt *abortRequested)
             : _session(session)
             , _localDir(localDir)
             , _remoteDir(remoteDir)
-            , _progressDb(progressDb)
+            , _journal(progressDb)
             , _abortRequested(abortRequested)
     {
         if (!localDir.endsWith(QChar('/'))) _localDir+='/';
         if (!remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
     }
-    void  propagate(const SyncFileItem &);
-    QByteArray _etag;
+
+    void start(const SyncFileItemVector &_syncedItems);
 
     int _downloadLimit;
     int _uploadLimit;
@@ -93,7 +183,7 @@ public:
 signals:
     void completed(const SyncFileItem &);
     void progress(Progress::Kind, const QString &filename, quint64 bytes, quint64 total);
-
+    void finished();
 };
 
 }

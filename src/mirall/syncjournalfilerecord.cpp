@@ -30,7 +30,7 @@ SyncJournalFileRecord::SyncJournalFileRecord()
 }
 
 SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QString &localFileName)
-    : _path(item._file), _type(item._type), _etag(item._etag)
+    : _path(item._file), _type(item._type), _etag(item._etag), _fileId(item._fileId)
 {
     if (item._dir == SyncFileItem::Down) {
         QFileInfo fi(localFileName);

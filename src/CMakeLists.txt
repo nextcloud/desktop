@@ -56,7 +56,6 @@ set(libsync_SRCS
     mirall/mirallconfigfile.cpp
     mirall/csyncthread.cpp
     mirall/owncloudpropagator.cpp
-    mirall/progressdatabase.cpp
     mirall/syncjournalfilerecord.cpp
     mirall/syncjournaldb.cpp
     mirall/fileutils.cpp
@@ -147,6 +146,12 @@ list(APPEND libsync_LINK_TARGETS
     ${CSYNC_LIBRARY}
     ${HTTPBF_LIBRARY}
 )
+
+IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+   list(APPEND libsync_LINK_TARGETS
+      inotify
+   )
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
 
 if(QTKEYCHAIN_FOUND)
     list(APPEND libsync_LINK_TARGETS ${QTKEYCHAIN_LIBRARY})

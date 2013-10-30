@@ -10,7 +10,6 @@
 #include <QtTest>
 
 #include "mirall/owncloudpropagator.h"
-#include "mirall/progressdatabase.h"
 
 using namespace Mirall;
 

@@ -17,10 +17,12 @@
 #include <qcoreapplication.h>
 #include <QStringList>
 #include <QUrl>
+#include <QFile>
 #include <qdebug.h>
 
 #include "csyncthread.h"
 #include <syncjournaldb.h>
+#include "logger.h"
 #include "csync.h"
 
 using namespace Mirall;
@@ -32,12 +34,6 @@ int getauth(const char* prompt, char* buf, size_t len, int echo, int verify, voi
     std::getline(std::cin, s);
     strncpy( buf, s.c_str(), len );
     return 0;
-}
-
-void help() {
-    std::cout << "Usage: owncloudcmd [OPTION...] LOCAL REMOTE\n";
-//                 "     --dry-run              This runs only update detection and reconcilation.\n"
-//                  "    --proxy=<host:port>    Use an http proxy (ownCloud module only)\n"
 }
 
 struct ProxyInfo {
@@ -56,47 +52,77 @@ struct ProxyInfo {
     }
 };
 
-int main(int argc, char **argv) {
-    QCoreApplication app(argc, argv);
+struct CmdOptions {
+    QString source_dir;
+    QString target_url;
+    QString config_directory;
+};
 
+void help()
+{
+    std::cout << "owncloudcmd - command line ownCloud client tool." << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "Call owncloudcmd sourcedir owncloudurl" << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "Options:" << std::endl;
+    std::cout << "  --confdir = configdir: Read config from there." << std::endl;
+    std::cout << "" << std::endl;
+    exit(1);
 
-    const char *source_dir = 0;
-    const char *target_url = 0;
-    const char *config_directory = 0;
+}
 
-    ProxyInfo proxyInfo;
+void parseOptions( const QStringList& app_args, CmdOptions *options )
+{
+    QStringList args(app_args);
 
-    for (int i = 1; i < argc; ++i) {
-        if (argv[i][0] == '-') {
-            //TODO: parse arguments
-            std::cerr << "Argument not impemented " << argv[i] << std::endl;
-        } else if (!source_dir) {
-            source_dir =  argv[i];
-        } else if (!target_url) {
-            target_url =  argv[i];
-        } else if (!config_directory) {
-            config_directory = argv[i];
+    if( args.count() < 3 ) {
+        help();
+    }
+
+    options->target_url = args.takeLast();
+    options->source_dir = args.takeLast();
+    if( !QFile::exists( options->source_dir )) {
+        std::cerr << "Source dir does not exists.";
+        exit(1);
+    }
+
+    QStringListIterator it(args);
+    // skip file name;
+    if (it.hasNext()) it.next();
+
+    while(it.hasNext()) {
+        const QString option = it.next();
+
+        if( option == "--confdir" && !it.peekNext().startsWith("-") ) {
+            options->config_directory = it.next();
         } else {
-            std::cerr << "Too many arguments" << std::endl;
-            return 1;
+            help();
         }
     }
 
-    if (!source_dir || !target_url) {
-        std::cerr << "Too few arguments" << std::endl;
-        return 1;
+    if( options->target_url.isEmpty() || options->source_dir.isEmpty() ) {
+        help();
     }
+}
 
+int main(int argc, char **argv) {
+    QCoreApplication app(argc, argv);
+
+    ProxyInfo proxyInfo;
+    CmdOptions options;
+
+    parseOptions( app.arguments(), &options );
 
     CSYNC *_csync_ctx;
-    if( csync_create( &_csync_ctx, source_dir, target_url) < 0 ) {
+    if( csync_create( &_csync_ctx, options.source_dir.toUtf8(),
+                      options.target_url.toUtf8()) < 0 ) {
         qFatal("Unable to create csync-context!");
         return EXIT_FAILURE;
     }
 
     csync_set_log_level(11);
     csync_enable_conflictcopys(_csync_ctx);
-
+    Logger::instance()->setLogFile("-");
 
     csync_set_auth_callback( _csync_ctx, getauth );
 
@@ -108,15 +134,14 @@ int main(int argc, char **argv) {
 
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
 
-
-    QString sourceDir = QString::fromLocal8Bit(source_dir);
-    SyncJournalDb db(sourceDir);
-    CSyncThread csyncthread(_csync_ctx, sourceDir, QUrl(target_url).path(), &db);
+    SyncJournalDb db(options.source_dir);
+    CSyncThread csyncthread(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), &db);
     QObject::connect(&csyncthread, SIGNAL(finished()), &app, SLOT(quit()));
     csyncthread.startSync();
 
     app.exec();
 
     csync_destroy(_csync_ctx);
+
     return 0;
 }

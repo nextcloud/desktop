@@ -48,7 +48,6 @@ public:
     ~AccountSettings();
 
     void setFolderList( const Folder::Map& );
-    void buttonsSetEnabled();
 
 signals:
     void folderChanged();
@@ -57,6 +56,7 @@ signals:
     void infoFolderAlias( const QString& );
 
 public slots:
+    void buttonsSetEnabled();
     void slotFolderActivated( const QModelIndex& );
     void slotOpenOC();
     void slotUpdateFolderState( Folder* );
@@ -75,6 +75,7 @@ protected slots:
     void slotAddFolder( Folder* );
     void slotEnableCurrentFolder();
     void slotRemoveCurrentFolder();
+    void slotSyncCurrentFolder();
     void slotInfoAboutCurrentFolder();
     void slotResetCurrentFolder();
     void slotFolderWizardAccepted();

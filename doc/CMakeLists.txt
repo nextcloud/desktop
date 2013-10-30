@@ -36,7 +36,7 @@ if(SPHINX_FOUND)
 				     -D latex_logo=${LATEX_LOGO}
 				     ${CMAKE_CURRENT_SOURCE_DIR}
 				     ${SPHINX_PDF_DIR} )
-        add_custom_target(doc-pdf make -C ${SPHINX_PDF_DIR} all-pdf
+        add_custom_target(doc-pdf $(MAKE) -C ${SPHINX_PDF_DIR} all-pdf
 		                  DEPENDS doc-latex )
         add_dependencies(doc doc-pdf)
         if (WITH_DOC)

@@ -110,8 +110,8 @@ void ProtocolWidget::setSyncResult( const SyncResult& result )
          QString tooltip;
          // handle ignored files here.
 
-         if( item._instruction == CSYNC_INSTRUCTION_IGNORE
-                 || item._instruction == CSYNC_INSTRUCTION_CONFLICT ) {
+         if( item._status == SyncFileItem::FileIgnored
+             || item._status == SyncFileItem::Conflict ) {
              QStringList columns;
              QString timeStr = timeString(dt);
              QString longTimeStr = timeString(dt, QLocale::LongFormat);
@@ -119,7 +119,7 @@ void ProtocolWidget::setSyncResult( const SyncResult& result )
              columns << timeStr;
              columns << item._file;
              columns << folder;
-             if( item._instruction == CSYNC_INSTRUCTION_IGNORE) {
+             if( item._status == SyncFileItem::FileIgnored ) {
                  if( item._type == SyncFileItem::SoftLink ) {
                      errMsg = tr("Soft Link ignored");
                      tooltip = tr("Softlinks break the semantics of synchronization.\nPlease do not "
@@ -143,7 +143,7 @@ void ProtocolWidget::setSyncResult( const SyncResult& result )
                                       "syncing in a cross platform environment").arg(obj);
                      }
                  }
-             } else if(  item._instruction == CSYNC_INSTRUCTION_CONFLICT ) {
+             } else if( item._status == SyncFileItem::Conflict ) {
                  errMsg = tr("Conflict file.");
                  tooltip = tr("The file was changed on server and local repository and as a result it\n"
                               "created a so called conflict. The local change is copied to the conflict\n"

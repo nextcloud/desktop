@@ -56,12 +56,6 @@ public:
     }
 
     friend bool operator<(const SyncFileItem& item1, const SyncFileItem& item2) {
-        // Delete at the end:
-        if (item1._instruction == CSYNC_INSTRUCTION_REMOVE && item2._instruction != CSYNC_INSTRUCTION_REMOVE)
-            return false;
-        if (item1._instruction != CSYNC_INSTRUCTION_REMOVE && item2._instruction == CSYNC_INSTRUCTION_REMOVE)
-            return true;
-
         // Sort by destination
         return item1.destination() < item2.destination();
     }
@@ -84,13 +78,14 @@ public:
     // Variables used by the propagator
     QByteArray _originalFile; // as it is in the csync tree
     csync_instructions_e _instruction;
-    time_t _modtime;
-    QByteArray _etag;
-    quint64  _size;
+    time_t               _modtime;
+    QByteArray           _etag;
+    quint64              _size;
 
     // Variables usefull to report to the user
-    Status  _status;
-    QString _errorString; // Contains a string only in case of error
+    Status              _status;
+    QString             _errorString; // Contains a string only in case of error
+    QString             _fileId;
 };
 
 

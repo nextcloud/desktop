@@ -41,6 +41,7 @@ public:
     QDateTime _modtime;
     int       _type;
     QString   _etag;
+    QString   _fileId;
 };
 
 }

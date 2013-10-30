@@ -16,6 +16,7 @@
 
 #include <QObject>
 #include <qmutex.h>
+#include <QDateTime>
 #include <QSqlDatabase>
 
 namespace Mirall {
@@ -28,9 +29,32 @@ public:
     explicit SyncJournalDb(const QString& path, QObject *parent = 0);
     SyncJournalFileRecord getFileRecord( const QString& filename );
     bool setFileRecord( const SyncJournalFileRecord& record );
-    bool deleteFileRecord( const QString& filename );
+    bool deleteFileRecord( const QString& filename, bool recursively = false );
     int getFileRecordCount();
     bool exists();
+    QStringList tableColumns( const QString& table );
+
+    struct DownloadInfo {
+        DownloadInfo() : _errorCount(0), _valid(false) {}
+        QString _tmpfile;
+        QByteArray _etag;
+        int _errorCount;
+        bool _valid;
+    };
+    struct UploadInfo {
+        UploadInfo() : _chunk(0), _transferid(0), _errorCount(0), _valid(false) {}
+        int _chunk;
+        int _transferid;
+        quint64 _size; //currently unused
+        QDateTime _modtime;
+        int _errorCount;
+        bool _valid;
+    };
+
+    DownloadInfo getDownloadInfo(const QString &file);
+    void setDownloadInfo(const QString &file, const DownloadInfo &i);
+    UploadInfo getUploadInfo(const QString &file);
+    void setUploadInfo(const QString &file, const UploadInfo &i);
 
 signals:
 
@@ -38,6 +62,8 @@ public slots:
 
 private:
     qint64 getPHash(const QString& ) const;
+    bool updateDatabaseStructure();
+
     bool checkConnect();
     QSqlDatabase _db;
     QString _dbFile;
