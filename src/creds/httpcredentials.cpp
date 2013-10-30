@@ -19,7 +19,6 @@
 #include <QNetworkReply>
 
 #include "mirall/account.h"
-#include "mirall/mirallconfigfile.h"
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/utility.h"
 #include "creds/credentialscommon.h"
@@ -41,8 +40,8 @@ int getauth(const char *prompt,
 {
     int re = 0;
     QMutex mutex;
-    MirallConfigFile cfg;
-    HttpCredentials* http_credentials = dynamic_cast< HttpCredentials* > (cfg.getCredentials());
+    // ### safe?
+    HttpCredentials* http_credentials = qobject_cast<HttpCredentials*>(AccountManager::instance()->account()->credentials());
 
     if (!http_credentials) {
       qDebug() << "Not a HTTP creds instance!";

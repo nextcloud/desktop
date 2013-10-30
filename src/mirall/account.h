@@ -37,7 +37,7 @@ public:
     static AccountManager *instance();
     ~AccountManager();
 
-    void setAccount(Account *account) { _account = account; }
+    void setAccount(Account *account);
     Account *account() { return _account; }
 
 private:
@@ -80,6 +80,13 @@ public:
      */
     static Account* create(const QUrl &url);
 
+    /**
+     * @brief Checks the Account instance is different from \param other
+     *
+     * @returns true, if credentials or url have changed, false otherwise
+     */
+    bool changed(Account *other, bool ignoreUrlProtocol) const;
+
     /** Holds the accounts credentials */
     AbstractCredentials* credentials() const;
     void setCredentials(AbstractCredentials *cred);
@@ -87,10 +94,6 @@ public:
     /** Server url of the account */
     void setUrl(const QUrl &url);
     QUrl url() const { return _url; }
-
-    /** User name of the account */
-    void setUser(const QString &user);
-    QString user() const { return _user; }
 
     /** Returns webdav entry URL, based on url() */
     QUrl davUrl() const;
@@ -122,7 +125,6 @@ private:
     QNetworkAccessManager *_am;
     QList<QSslCertificate> _caCerts;
     QUrl _url;
-    QString _user;
     AbstractCredentials* _credentials;
     QList<QSslCertificate> _approvedCerts;
     QList<QSslCertificate> _certificateChain;

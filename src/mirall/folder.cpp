@@ -113,7 +113,11 @@ bool Folder::init()
 
         csync_enable_conflictcopys(_csync_ctx);
         setIgnoredFiles();
-        cfgFile.getCredentials()->syncContextPreInit(_csync_ctx);
+        if (Account *account = AccountManager::instance()->account()) {
+            account->credentials()->syncContextPreInit(_csync_ctx);
+        } else {
+            qDebug() << Q_FUNC_INFO << "No default Account object, huh?";
+        }
 
         if( csync_init( _csync_ctx ) < 0 ) {
             qDebug() << "Could not initialize csync!" << csync_get_status(_csync_ctx) << csync_get_status_string(_csync_ctx);

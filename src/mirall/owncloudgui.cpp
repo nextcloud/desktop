@@ -81,10 +81,8 @@ ownCloudGui::ownCloudGui(Application *parent) :
 // This should rather be in application.... or rather in MirallConfigFile?
 bool ownCloudGui::checkConfigExists(bool openSettings)
 {
-    // if no config file is there, start the configuration wizard.
-    MirallConfigFile cfgFile;
-
-    if( cfgFile.exists() && !cfgFile.ownCloudUrl().isEmpty() ) {
+    // if account is set up, start the configuration wizard.
+    if( AccountManager::instance()->account() ) {
         if( openSettings ) {
             this->slotSettings();
         }
@@ -478,10 +476,10 @@ void ownCloudGui::slotToggleLogBrowser()
 
 void ownCloudGui::slotOpenOwnCloud()
 {
-  MirallConfigFile cfgFile;
-
-  QString url = cfgFile.ownCloudUrl();
-  QDesktopServices::openUrl( url );
+    if (Account *account = AccountManager::instance()->account()) {
+        QString url = account->url();
+        QDesktopServices::openUrl( url );
+    }
 }
 
 void ownCloudGui::slotHelp()

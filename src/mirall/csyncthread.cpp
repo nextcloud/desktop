@@ -14,6 +14,7 @@
  */
 
 #include "mirall/csyncthread.h"
+#include "mirall/account.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
 #include "mirall/logger.h"
@@ -356,7 +357,11 @@ void CSyncThread::startSync()
     // any way to get "session_key" module property from csync. Had we
     // have it, then we could keep this code and remove it from
     // AbstractCredentials implementations.
-    cfg.getCredentials()->syncContextPreStart(_csync_ctx);
+    if (Account *account = AccountManager::instance()->account()) {
+        account->credentials()->syncContextPreStart(_csync_ctx);
+    } else {
+        qDebug() << Q_FUNC_INFO << "No default Account object, huh?";
+    }
     // if (_lastAuthCookies.length() > 0) {
     //     // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
     //     // when https://github.com/owncloud/core/pull/4042 is merged.

@@ -79,7 +79,10 @@ void OwncloudSetupWizard::runWizard(QObject* obj, const char* amember, QWidget *
 
 void OwncloudSetupWizard::startWizard()
 {
-    Account *account = AccountManager::instance()->account();
+    // ###
+    MirallConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    Account *account = Account::restore(settings);
     if (!account) {
         account = new Account(new SslDialogErrorHandler);
         account->setCredentials(CredentialsFactory::create("dummy"));
@@ -114,7 +117,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     QString fixedUrl = urlString;
     QUrl url = QUrl::fromUserInput(fixedUrl);
     // fromUserInput defaults to http, not http if no scheme is specified
-    if (!fixedUrl.startsWith("http://") || !fixedUrl.startsWith("https://")) {
+    if (!fixedUrl.startsWith("http://") && !fixedUrl.startsWith("https://")) {
         url.setScheme("https");
     }
     Account *account = _ocWizard->account();
@@ -140,20 +143,20 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantM
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
 {
     _ocWizard->displayError(tr("Failed to connect to %1 at %2:<br/>%3")
-                                .arg(Theme::instance()->appNameGUI())
+                            .arg(Theme::instance()->appNameGUI())
                             .arg(reply->url().toString())
                             .arg(reply->errorString()));
 }
 
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
 {
-  qDebug() << "Connect to url: " << url;
-  _ocWizard->account()->setCredentials(_ocWizard->getCredentials());
-  _ocWizard->setField(QLatin1String("OCUrl"), url );
-  _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2...")
-                                  .arg( Theme::instance()->appNameGUI() ).arg(url) );
+    qDebug() << "Connect to url: " << url;
+    _ocWizard->account()->setCredentials(_ocWizard->getCredentials());
+    _ocWizard->setField(QLatin1String("OCUrl"), url );
+    _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2...")
+                                        .arg( Theme::instance()->appNameGUI() ).arg(url) );
 
-  testOwnCloudConnect();
+    testOwnCloudConnect();
 }
 
 void OwncloudSetupWizard::testOwnCloudConnect()
@@ -181,6 +184,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
     qDebug() << "Setup local sync folder for new oC connection " << localFolder;
     const QDir fi( localFolder );
 
+    bool nextStep = true;
     if( fi.exists() ) {
         // there is an existing local folder. If its non empty, it can only be synced if the
         // ownCloud is newly created.
@@ -191,14 +195,19 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
             Utility::setupFavLink( localFolder );
             // FIXME: Create a local sync folder.
             res += tr("ok");
-            EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), remoteFolder, this);
-            connect(job, SIGNAL(exists(QNetworkReply*)), SLOT(slotAuthCheckReply(QNetworkReply*)));
         } else {
             res += tr("failed.");
             qDebug() << "Failed to create " << fi.path();
             _ocWizard->displayError(tr("Could not create local folder %1").arg(localFolder));
+            nextStep = false;
         }
         _ocWizard->appendToConfigurationLog( res );
+    }
+    if (nextStep) {
+        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), remoteFolder, this);
+        connect(job, SIGNAL(exists(QNetworkReply*)), SLOT(slotAuthCheckReply(QNetworkReply*)));
+    } else {
+        finalizeSetup( false );
     }
 }
 
@@ -241,8 +250,8 @@ void OwncloudSetupWizard::createRemoteFolder()
 void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error )
 {
     qDebug() << "** webdav mkdir request finished " << error;
-//    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
-//               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
+    //    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
+    //               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 
     bool success = true;
 
@@ -259,7 +268,7 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::Network
                                     "are wrong!"
                                     "<br/>Please go back and check your credentials.</p>"));
         _ocWizard->appendToConfigurationLog( tr("<p><font color=\"red\">Remote folder creation failed probably because the provided credentials are wrong.</font>"
-                                            "<br/>Please go back and check your credentials.</p>"));
+                                                "<br/>Please go back and check your credentials.</p>"));
         _remoteFolder.clear();
         success = false;
     } else {
@@ -281,105 +290,107 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
     if( success ) {
         if( !(localFolder.isEmpty() || _remoteFolder.isEmpty() )) {
             _ocWizard->appendToConfigurationLog( tr("A sync connection from %1 to remote directory %2 was set up.")
-                                             .arg(localFolder).arg(_remoteFolder));
+                                                 .arg(localFolder).arg(_remoteFolder));
         }
         _ocWizard->appendToConfigurationLog( QLatin1String(" "));
         _ocWizard->appendToConfigurationLog( QLatin1String("<p><font color=\"green\"><b>")
-                                         + tr("Successfully connected to %1!")
-                                         .arg(Theme::instance()->appNameGUI())
-                                         + QLatin1String("</b></font></p>"));
+                                             + tr("Successfully connected to %1!")
+                                             .arg(Theme::instance()->appNameGUI())
+                                             + QLatin1String("</b></font></p>"));
         _ocWizard->successfulStep();
     } else {
+        // ### this is not quite true, pass in the real problem as optional parameter
         _ocWizard->appendToConfigurationLog(QLatin1String("<p><font color=\"red\">")
-                                        + tr("Connection to %1 could not be established. Please check again.")
-                                        .arg(Theme::instance()->appNameGUI())
-                                        + QLatin1String("</font></p>"));
+                                            + tr("Connection to %1 could not be established. Please check again.")
+                                            .arg(Theme::instance()->appNameGUI())
+                                            + QLatin1String("</font></p>"));
     }
+}
+
+bool OwncloudSetupWizard::ensureStartFromScratch(const QString &localFolder) {
+    // first try to rename (backup) the current local dir.
+    bool renameOk = false;
+    while( !renameOk ) {
+        renameOk = FolderMan::instance()->startFromScratch(localFolder);
+        if( ! renameOk ) {
+            QMessageBox::StandardButton but;
+            but = QMessageBox::question( 0, tr("Folder rename failed"),
+                                         tr("Can't remove and back up the folder because the folder or a file in it is open in another program."
+                                            "Please close the folder or file and hit retry or cancel the setup."), QMessageBox::Retry | QMessageBox::Abort, QMessageBox::Retry);
+            if( but == QMessageBox::Abort ) {
+                break;
+            }
+        }
+    }
+    return renameOk;
+}
+
+void OwncloudSetupWizard::replaceDefaultAccountWith(Account *newAccount)
+{
+    // new Account
+    AccountManager *mgr = AccountManager::instance();
+    if (mgr->account()) {
+        mgr->account()->deleteLater();
+    }
+    mgr->setAccount(newAccount);
+    MirallConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    newAccount->save(settings);
 }
 
 // Method executed when the user ends the wizard, either with 'accept' or 'reject'.
 // accept the custom config to be the main one if Accepted.
 void OwncloudSetupWizard::slotAssistantFinished( int result )
 {
-    MirallConfigFile cfg;
     FolderMan *folderMan = FolderMan::instance();
 
     if( result == QDialog::Rejected ) {
         // the old config remains valid. Remove the temporary one.
-        cfg.cleanupCustomConfig();
+        _ocWizard->account()->deleteLater();
         qDebug() << "Rejected the new config, use the old!";
     } else if( result == QDialog::Accepted ) {
-        AbstractCredentials* credentials(_ocWizard->getCredentials());
 
-        qDebug() << "Config Changes were accepted!";
-
-        // go through all folders and remove the journals if the server changed.
-        MirallConfigFile prevCfg;
-        QUrl prevUrl( prevCfg.ownCloudUrl() );
-        QUrl newUrl( cfg.ownCloudUrl() );
-        AbstractCredentials* oldCredentials(prevCfg.getCredentials());
-
-        bool urlHasChanged = (prevUrl.host() != newUrl.host() ||
-                prevUrl.port() != newUrl.port() ||
-                prevUrl.path() != newUrl.path());
-
-        // if the user changed, its also a changed url.
-        if(credentials->changed(oldCredentials)) {
-            urlHasChanged = true;
-            qDebug() << "The User has changed, same as url change.";
-        }
-
+        Account *newAccount = _ocWizard->account();
+        Account *origAccount = AccountManager::instance()->account();
         const QString localFolder = _ocWizard->localFolder();
-        bool acceptCfg = true;
 
-        if( urlHasChanged ) {
-            // first terminate sync jobs.
-            folderMan->terminateSyncProcess();
+        bool isInitialSetup = (origAccount == 0);
+        bool reinitRequired = newAccount->changed(origAccount, true /* ignoreProtocol, allows http->https */);
+        bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
 
-            bool startFromScratch = _ocWizard->field( "OCSyncFromScratch" ).toBool();
-            if( startFromScratch ) {
-                // first try to rename (backup) the current local dir.
-                bool renameOk = false;
-                while( !renameOk ) {
-                    renameOk = folderMan->startFromScratch(localFolder);
-                    if( ! renameOk ) {
-                        QMessageBox::StandardButton but;
-                        but = QMessageBox::question( 0, tr("Folder rename failed"),
-                                                     tr("Can't remove and back up the folder because the folder or a file in it is open in another program."
-                                                        "Please close the folder or file and hit retry or cancel the setup."), QMessageBox::Retry | QMessageBox::Abort, QMessageBox::Retry);
-                        if( but == QMessageBox::Abort ) {
-                            renameOk = true;
-                            acceptCfg = false;
-                        }
-                    }
+        // This distinguishes three possibilities:
+        // 1. Initial setup, no prior account exists
+        if (isInitialSetup) {
+            folderMan->addFolderDefinition(Theme::instance()->appName(),
+                                           localFolder, _remoteFolder );
+            replaceDefaultAccountWith(newAccount);
+        }
+        // 2. Server URL or user changed, requires reinit of folders
+        else if (reinitRequired) {
+            // 2.1: startFromScratch: (Re)move local data, clean slate sync
+            if (startFromScratch) {
+                if (ensureStartFromScratch(localFolder)) {
+                    folderMan->addFolderDefinition(Theme::instance()->appName(),
+                                                   localFolder, _remoteFolder );
+                    _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+                    replaceDefaultAccountWith(newAccount);
                 }
             }
-        }
-
-        // Now write the resulting folder definition if folder names are set.
-        if( acceptCfg && urlHasChanged ) {
-            folderMan->removeAllFolderDefinitions();
-            folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                             localFolder, _remoteFolder );
-            _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
-        } else {
-            // url is unchanged. Only the password was changed.
-            if( acceptCfg ) {
-                qDebug() << "Only password was changed, no changes to folder configuration.";
-            } else {
-                qDebug() << "User interrupted change of configuration.";
+            // 2.2: Reinit: Remove journal and start a sync
+            else {
+                folderMan->removeAllFolderDefinitions();
+                folderMan->addFolderDefinition(Theme::instance()->appName(),
+                                               localFolder, _remoteFolder );
+                _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+                replaceDefaultAccountWith(newAccount);
             }
         }
-
-        // save the user credentials and afterwards clear the cred store.
-        if( acceptCfg ) {
-            cfg.acceptCustomConfig();
+        // 3. Existing setup, http -> https or password changed
+        else {
+            replaceDefaultAccountWith(newAccount);
+            qDebug() << "Only password was changed, no changes to folder configuration.";
         }
     }
-
-//    // clear the custom config handle
-//    _configHandle.clear();
-//    ownCloudInfo::instance()->setCustomConfigHandle( QString::null );
 
     // notify others.
     emit ownCloudWizardDone( result );

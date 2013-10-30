@@ -86,6 +86,8 @@ private:
     void testOwnCloudConnect();
     void createRemoteFolder();
     void finalizeSetup( bool );
+    bool ensureStartFromScratch(const QString &localFolder);
+    void replaceDefaultAccountWith(Account *newAccount);
 
     Account* _account;
     OwncloudWizard* _ocWizard;

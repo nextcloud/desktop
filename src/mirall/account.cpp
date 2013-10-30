@@ -26,7 +26,6 @@
 namespace Mirall {
 
 static const char urlC[] = "url";
-static const char userC[] = "user";
 static const char authTypeC[] = "authType";
 
 AccountManager *AccountManager::_instance = 0;
@@ -47,6 +46,11 @@ AccountManager *AccountManager::instance()
     return _instance;
 }
 
+void AccountManager::setAccount(Account *account)
+{
+    _account = account;
+}
+
 
 Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     : QObject(parent)
@@ -61,7 +65,6 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
 void Account::save(QSettings &settings)
 {
     settings.beginGroup(Theme::instance()->appName());
-    settings.setValue(QLatin1String(userC), _user);
     settings.setValue(QLatin1String(urlC), _url);
     if (_credentials) {
         settings.setValue(QLatin1String(authTypeC), _credentials->authType());
@@ -87,13 +90,37 @@ Account* Account::restore(QSettings &settings)
         acc->setApprovedCerts(QSslCertificate::fromData(cfg.caCerts()));
         settings.beginGroup(groupName);
         acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
-        acc->setUser(settings.value(QLatin1String(userC)).toString());
-        acc->setCredentials(cfg.getCredentials());
+        acc->setCredentials(CredentialsFactory::create(QLatin1String(urlC)));
 
         return acc;
     } else {
         return 0;
     }
+}
+
+
+static bool isEqualExceptProtocol(const QUrl &url1, const QUrl &url2)
+{
+    return (url1.host() != url2.host() ||
+            url1.port() != url2.port() ||
+            url1.path() != url2.path());
+}
+
+bool Account::changed(Account *other, bool ignoreUrlProtocol) const
+{
+    if (!other) {
+        return false;
+    }
+    bool changes = false;
+    if (ignoreUrlProtocol) {
+        changes = isEqualExceptProtocol(_url, other->_url);
+    } else {
+        changes = (_url == other->_url);
+    }
+    if (!changes) {
+        changes = _credentials->changed(other->_credentials);
+    }
+    return changes;
 }
 
 AbstractCredentials *Account::credentials() const
@@ -174,11 +201,6 @@ void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 void Account::setUrl(const QUrl &url)
 {
     _url = url;
-}
-
-void Account::setUser(const QString &user)
-{
-    _user = user;
 }
 
 QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)

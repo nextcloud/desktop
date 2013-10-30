@@ -28,7 +28,7 @@ class AbstractCredentials;
 class MirallConfigFile
 {
 public:
-    MirallConfigFile( const QString& appendix = QString(), bool useOldConfig = false );
+    MirallConfigFile();
 
     enum Scope { UserScope, SystemScope };
 
@@ -39,18 +39,7 @@ public:
 
     bool exists();
 
-    bool connectionExists( const QString& = QString() );
     QString defaultConnection() const;
-
-    void writeOwncloudConfig( const QString& connection,
-                              const QString& url,
-                              AbstractCredentials* credentials);
-
-    AbstractCredentials* getCredentials() const;
-
-    void removeConnection( const QString& connection = QString() );
-
-    QString ownCloudUrl( const QString& connection = QString() ) const;
 
     // the certs do not depend on a connection.
     QByteArray caCerts();
@@ -75,11 +64,6 @@ public:
 
     /* Force sync interval, in milliseconds */
     quint64 forceSyncInterval(const QString &connection = QString()) const;
-
-    // Custom Config: accept the custom config to become the main one.
-    void acceptCustomConfig();
-    // Custom Config: remove the custom config file.
-    void cleanupCustomConfig();
 
     bool monoIcons() const;
     void setMonoIcons(bool);
@@ -137,8 +121,6 @@ private:
     static bool    _askedUser;
     static QString _oCVersion;
     static QString _confDir;
-    static QMap< QString, SharedCreds > credentialsPerConfig;
-    QString        _customHandle;
 };
 
 }

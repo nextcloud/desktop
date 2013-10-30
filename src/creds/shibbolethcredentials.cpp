@@ -21,7 +21,6 @@
 #include "creds/shibboleth/shibbolethrefresher.h"
 #include "creds/shibboleth/shibbolethconfigfile.h"
 #include "creds/credentialscommon.h"
-#include "mirall/mirallconfigfile.h"
 #include "mirall/account.h"
 
 namespace Mirall
@@ -47,8 +46,8 @@ int shibboleth_redirect_callback(CSYNC* csync_ctx,
 
     QMutex mutex;
     QMutexLocker locker(&mutex);
-    MirallConfigFile cfg;
-    ShibbolethCredentials* creds = dynamic_cast< ShibbolethCredentials* > (cfg.getCredentials());
+    ShibbolethCredentials* creds = qobject_cast<ShibbolethCredentials*>(AccountManager::instance()->account()->credentials());
+
 
     if (!creds) {
       qDebug() << "Not a Shibboleth creds instance!";
