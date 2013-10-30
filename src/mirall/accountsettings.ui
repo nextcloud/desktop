@@ -73,13 +73,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="_buttonSync">
-          <property name="text">
-           <string>Sync Now</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="_buttonRemove">
           <property name="text">
            <string>Remove</string>
