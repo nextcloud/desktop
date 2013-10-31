@@ -304,7 +304,7 @@ bool FolderWizardTargetPage::isComplete() const
         if (dir == curDir) {
             showWarn( tr("This directory is already being synced.") );
             return false;
-        } else if (dir.startsWith(curDir)) {
+        } else if (dir.startsWith(curDir + QLatin1Char('/'))) {
             if (dir.isEmpty()) dir = QLatin1Char('/');
             if (curDir.isEmpty()) curDir = QLatin1Char('/');
             showWarn( tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(curDir).arg(dir) );
