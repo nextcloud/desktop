@@ -1084,6 +1084,16 @@ static int owncloud_commit() {
   ne_sock_exit();
   _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
 
+  SAFE_FREE( dav_session.user );
+  SAFE_FREE( dav_session.pwd );
+  SAFE_FREE( dav_session.session_key);
+  SAFE_FREE( dav_session.error_string );
+
+  SAFE_FREE( dav_session.proxy_type );
+  SAFE_FREE( dav_session.proxy_host );
+  SAFE_FREE( dav_session.proxy_user );
+  SAFE_FREE( dav_session.proxy_pwd  );
+
   return 0;
 }
 
@@ -1205,18 +1215,6 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
 
 void vio_module_shutdown(csync_vio_method_t *method) {
     (void) method;
-
-    owncloud_commit();
-
-    SAFE_FREE( dav_session.user );
-    SAFE_FREE( dav_session.pwd );
-
-    SAFE_FREE( dav_session.proxy_type );
-    SAFE_FREE( dav_session.proxy_host );
-    SAFE_FREE( dav_session.proxy_user );
-    SAFE_FREE( dav_session.proxy_pwd  );
-    SAFE_FREE( dav_session.session_key);
-    SAFE_FREE( dav_session.error_string );
 
     /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
 }
