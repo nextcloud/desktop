@@ -435,6 +435,7 @@ void Folder::slotTerminateSync(bool block)
         _thread->wait();
         _csync->deleteLater();
         delete _thread;
+        _thread = 0;
         slotCSyncFinished();
     }
     setSyncEnabled(false);
