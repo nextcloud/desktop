@@ -707,6 +707,10 @@ int csync_commit(CSYNC *ctx) {
     goto out;
   }
 
+  _csync_clean_ctx(ctx);
+
+  ctx->remote.read_from_db = 0;
+
   /* Create new trees */
   rc = c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
   if (rc < 0) {
