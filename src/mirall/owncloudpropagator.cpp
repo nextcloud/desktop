@@ -881,10 +881,10 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
         _rootJob->append(it);
     }
 
-    _rootJob->start();
     connect(_rootJob.data(), SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
     connect(_rootJob.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,QString,quint64,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
+    _rootJob->start();
 }
 
 void PropagateDirectory::proceedNext(SyncFileItem::Status status)
