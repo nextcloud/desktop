@@ -671,11 +671,10 @@ done:
   SAFE_FREE(filename);
   return rc;
 error:
-  ctx->remote.read_from_db = read_from_db;
-
   if (dh != NULL) {
     csync_vio_closedir(ctx, dh);
   }
+  ctx->remote.read_from_db = read_from_db;
   SAFE_FREE(filename);
   return -1;
 }
