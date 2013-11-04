@@ -65,7 +65,9 @@ int shibboleth_redirect_callback(CSYNC* csync_ctx,
 } // ns
 
 ShibbolethCredentials::ShibbolethCredentials()
-    : _shibCookie(),
+    : AbstractCredentials(),
+      _url(),
+      _shibCookie(),
       _ready(false),
       _browser(0),
       _otherCookies()
@@ -163,14 +165,16 @@ bool ShibbolethCredentials::ready() const
     return _ready;
 }
 
-void ShibbolethCredentials::fetch()
+void ShibbolethCredentials::fetch(Account *account)
 {
     if (_ready) {
         Q_EMIT fetched();
     } else {
         ShibbolethConfigFile cfg;
-
-        _browser = new ShibbolethWebView(QUrl(cfg.ownCloudUrl()), cfg.createCookieJar());
+        if (account) {
+            _url = account->url();
+        }
+        _browser = new ShibbolethWebView(_url, cfg.createCookieJar());
         connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
                 this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
         connect(_browser, SIGNAL(viewHidden()),
@@ -179,7 +183,7 @@ void ShibbolethCredentials::fetch()
     }
 }
 
-void ShibbolethCredentials::persistForUrl(const QString& /*url*/)
+void ShibbolethCredentials::persist(Account* /*account*/)
 {
     ShibbolethConfigFile cfg;
 
@@ -219,7 +223,10 @@ void ShibbolethCredentials::invalidateAndFetch()
     _ready = false;
     connect (this, SIGNAL(fetched()),
              this, SLOT(onFetched()));
-    fetch();
+    // small hack to support the ShibbolethRefresher hack
+    // we already rand fetch() with a valid account object,
+    // and hence know the url on refresh
+    fetch(0);
 }
 
 void ShibbolethCredentials::onFetched()

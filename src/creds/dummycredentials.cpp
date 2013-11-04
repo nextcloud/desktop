@@ -45,12 +45,12 @@ bool DummyCredentials::ready() const
     return true;
 }
 
-void DummyCredentials::fetch()
+void DummyCredentials::fetch(Account*)
 {
     Q_EMIT(fetched());
 }
 
-void DummyCredentials::persistForUrl(const QString&)
+void DummyCredentials::persist(Account*)
 {}
 
 } // ns Mirall

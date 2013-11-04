@@ -19,9 +19,9 @@
 #include <csync.h>
 
 class QNetworkAccessManager;
-
 namespace Mirall
 {
+class Account;
 
 class AbstractCredentials : public QObject
 {
@@ -35,8 +35,9 @@ public:
   virtual QString authType() const = 0;
   virtual QNetworkAccessManager* getQNAM() const = 0;
   virtual bool ready() const = 0;
-  virtual void fetch() = 0;
-  virtual void persistForUrl(const QString& url) = 0;
+  virtual void fetch(Account *account) = 0;
+  virtual void persist(Account *account) = 0;
+
 
 Q_SIGNALS:
   void fetched();

@@ -27,7 +27,6 @@ class ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectionValidator(QObject *parent = 0);
     explicit ConnectionValidator(Account *account, QObject *parent = 0);
 
     enum Status {

@@ -53,8 +53,6 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject* parent) :
        Therefore Qt::QueuedConnection is required */
     connect( _ocWizard, SIGNAL(basicSetupFinished(int)),
              this, SLOT(slotAssistantFinished(int)), Qt::QueuedConnection);
-    connect( _ocWizard, SIGNAL(clearPendingRequests()),
-             this, SLOT(slotClearPendingRequests()));
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -80,14 +78,13 @@ void OwncloudSetupWizard::runWizard(QObject* obj, const char* amember, QWidget *
 void OwncloudSetupWizard::startWizard()
 {
     // ###
-    MirallConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    Account *account = Account::restore(settings);
+    Account *account = Account::restore();
     if (!account) {
         account = new Account(new SslDialogErrorHandler);
         account->setCredentials(CredentialsFactory::create("dummy"));
     }
     _ocWizard->setAccount(account);
+    _ocWizard->setOCUrl(account->url().toString());
 
     _remoteFolder = Theme::instance()->defaultServerFolder();
     // remoteFolder may be empty, which means /
@@ -333,9 +330,7 @@ void OwncloudSetupWizard::replaceDefaultAccountWith(Account *newAccount)
         mgr->account()->deleteLater();
     }
     mgr->setAccount(newAccount);
-    MirallConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    newAccount->save(settings);
+    newAccount->save();
 }
 
 // Method executed when the user ends the wizard, either with 'accept' or 'reject'.

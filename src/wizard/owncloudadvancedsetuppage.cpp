@@ -24,9 +24,11 @@
 #include "wizard/owncloudwizard.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudadvancedsetuppage.h"
+#include "mirall/account.h"
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
 #include "creds/abstractcredentials.h"
+
 namespace Mirall
 {
 
@@ -135,21 +137,21 @@ void OwncloudAdvancedSetupPage::updateStatus()
 bool OwncloudAdvancedSetupPage::dataChanged()
 {
     OwncloudWizard* ocWizard(dynamic_cast< OwncloudWizard* >(wizard()));
+    Account *oldAccount = AccountManager::instance()->account();
 
-    if (!ocWizard) {
+    if (!ocWizard || !oldAccount) {
         return false;
     }
 
-    MirallConfigFile cfgFile;
     const QString url(field("OCUrl").toString());
     AbstractCredentials* newCredentials(ocWizard->getCredentials());
-    AbstractCredentials* oldCredentials(cfgFile.getCredentials());
+    AbstractCredentials* oldCredentials(oldAccount->credentials());
     const bool differentCreds(oldCredentials->changed(newCredentials));
     delete newCredentials;
     const QString newLocalFolder(QDir::toNativeSeparators(_ui.pbSelectLocalFolder->text()));
     const QString oldLocalFolder(QDir::toNativeSeparators(_oldLocalFolder));
 
-    return ((url != cfgFile.ownCloudUrl()) || differentCreds || (oldLocalFolder != newLocalFolder));
+    return ((url != oldAccount->url().toString()) || differentCreds || (oldLocalFolder != newLocalFolder));
 }
 
 void OwncloudAdvancedSetupPage::startSpinner()

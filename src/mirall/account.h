@@ -62,15 +62,17 @@ public:
     static QString davPath() { return "remote.php/webdav/"; }
 
     Account(AbstractSslErrorHandler *sslErrorHandler = 0, QObject *parent = 0);
+    ~Account();
+
     /**
      * Saves the account to a given settings file
      */
-    void save(QSettings &settings);
+    void save();
 
     /**
      * Creates an account object from from a given settings file.
      */
-    static Account* restore(QSettings &settings);
+    static Account* restore();
     /**
      * @brief Creates a minimal account object
      *
@@ -114,14 +116,30 @@ public:
     QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
     void setApprovedCerts(const QList<QSslCertificate> certs);
 
+    // pluggable handler
     void setSslErrorHandler(AbstractSslErrorHandler *handler);
 
+    // static helper function
     static QUrl concatUrlPath(const QUrl &url, const QString &concatPath);
+    static QSettings* settingsWithGroup(const QString &group);
+
+    // to be called by credentials only
+    QVariant credentialSetting(const QString& key) const;
+    void setCredentialSetting(const QString& key, const QVariant &value);
+
+    qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
+    qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
 
 protected slots:
     void slotHandleErrors(QNetworkReply*,QList<QSslError>);
+    void slotCheckQuota();
+    void slotUpdateLastQuota(qint64 total, qint64 used);
+
+signals:
+    void quotaUpdated(qint64 total, qint64 used);
 
 private:
+    QMap<QString, QVariant> _settingsMap;
     QNetworkAccessManager *_am;
     QList<QSslCertificate> _caCerts;
     QUrl _url;
@@ -130,6 +148,8 @@ private:
     QList<QSslCertificate> _certificateChain;
     bool _treatSslErrorsAsFailure;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
+    qint64 _lastQuotaTotalBytes;
+    qint64 _lastQuotaUsedBytes;
 };
 
 }

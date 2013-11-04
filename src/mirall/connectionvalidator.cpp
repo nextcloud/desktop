@@ -22,12 +22,6 @@
 
 namespace Mirall {
 
-ConnectionValidator::ConnectionValidator(QObject *parent) :
-    QObject(parent)
-{
-
-}
-
 ConnectionValidator::ConnectionValidator(Account *account, QObject *parent)
     : QObject(parent),
       _account(account),
@@ -86,7 +80,7 @@ QString ConnectionValidator::statusString( Status stat ) const
 
 void ConnectionValidator::checkConnection()
 {
-    if( AccountManager::instance()->account() ) {
+    if( _account ) {
         CheckServerJob *checkJob = new CheckServerJob(_account, false, this);
         connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
         connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));

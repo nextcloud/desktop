@@ -60,6 +60,7 @@ public:
         KeyChain
     };
 
+    explicit CredentialStore(QObject *parent = 0);
     QString password( ) const;
     QString user( ) const;
 
@@ -109,7 +110,6 @@ protected slots:
     void slotKeyChainWriteFinished( QKeychain::Job* );
 
 private:
-    explicit CredentialStore(QObject *parent = 0);
     void deleteKeyChainCredential( const QString& );
     QString keyChainKey( const QString& ) const;
 

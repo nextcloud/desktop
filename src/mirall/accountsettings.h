@@ -38,6 +38,7 @@ class AccountSettings;
 
 class FolderMan;
 class IgnoreListEditor;
+class Account;
 
 class AccountSettings : public QWidget
 {
@@ -67,6 +68,7 @@ public slots:
 
     void slotUpdateQuota( qint64,qint64 );
     void slotIgnoreFilesEditor();
+    void slotOnlineStateChanged(bool online = true);
 
     void setGeneralErrors( const QStringList& errors );
 
@@ -97,6 +99,7 @@ private:
     QString _kindContext;
     QStringList _generalErrors;
     bool _wasDisabledBefore;
+    Account *_account;
 };
 
 } // namespace Mirall

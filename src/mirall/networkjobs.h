@@ -63,7 +63,7 @@ protected:
 
 private slots:
     virtual void slotFinished() = 0;
-    void slotError();
+    void slotError(QNetworkReply::NetworkError);
 
 private:
     QNetworkReply *_reply;
@@ -101,7 +101,7 @@ private slots:
 };
 
 /**
- * @brief The CheckQuotaJob class
+ * @brief The PropfindJob class
  */
 class PropfindJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -166,6 +166,21 @@ public:
 
 signals:
     void etagRetreived(const QString &etag);
+
+private slots:
+    virtual void slotFinished();
+};
+
+/**
+ * @brief The CheckQuota class
+ */
+class CheckQuotaJob : public AbstractNetworkJob {
+    Q_OBJECT
+public:
+    explicit CheckQuotaJob(Account *account, const QString &path, QObject *parent = 0);
+
+signals:
+    void quotaRetrieved(qint64 totalBytes, qint64 availableBytes);
 
 private slots:
     virtual void slotFinished();

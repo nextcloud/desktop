@@ -38,6 +38,8 @@
 #include <QIcon>
 #include <QVariant>
 
+#include "mirall/account.h"
+
 namespace Mirall {
 
 static const char progressBarStyleC[] =
@@ -53,7 +55,8 @@ static const char progressBarStyleC[] =
 AccountSettings::AccountSettings(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AccountSettings),
-    _wasDisabledBefore(false)
+    _wasDisabledBefore(false),
+    _account(AccountManager::instance()->account())
 {
     ui->setupUi(this);
 
@@ -90,18 +93,13 @@ AccountSettings::AccountSettings(QWidget *parent) :
 
     QColor color = palette().highlight().color();
     ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
-
-// ### TODO: merge with etag job when porting?
-//    ownCloudInfo *ocInfo = ownCloudInfo::instance();
-//    slotUpdateQuota(ocInfo->lastQuotaTotalBytes(), ocInfo->lastQuotaUsedBytes());
-//    connect(ocInfo, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotUpdateQuota(qint64,qint64)));
-
     ui->connectLabel->setWordWrap( true );
+    ui->quotaLabel->setWordWrap( true );
+
+    // ### TODO:
+    slotOnlineStateChanged();
 
     setFolderList(FolderMan::instance()->map());
-
-    // ### TODO
-    //slotCheckConnection();
 }
 
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
@@ -358,24 +356,6 @@ void AccountSettings::showConnectionLabel( const QString& message, const QString
     }
 }
 
-// void AccountSettings::slotCheckConnection()
-// {
-//     if( ownCloudInfo::instance()->isConfigured() ) {
-//         connect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
-//                 this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
-//         connect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-//                 this, SLOT(slotOCInfoFail(QNetworkReply*)));
-// 
-//         showConnectionLabel( tr("Checking %1 connection...").arg(Theme::instance()->appNameGUI()));
-//         qDebug() << "Check status.php from statusdialog.";
-//         ownCloudInfo::instance()->checkInstallation();
-//     } else {
-//         // ownCloud is not yet configured.
-//         showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
-//         ui->_buttonAdd->setEnabled( false);
-//     }
-// }
-
 void AccountSettings::setFolderList( const Folder::Map &folders )
 {
     _model->clear();
@@ -503,56 +483,51 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
     } else {
         // the dialog is not visible.
     }
-<<<<<<< HEAD
-    // ### TODO
-    //slotCheckConnection();
-}
 
 //    showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()),
 //                         tr("Version: %1 (%2)").arg(versionStr).arg(version) );
 //    ui->_ButtonAdd->setEnabled(true);
-=======
-    slotCheckConnection();
+    // ### TODO
+//    slotCheckConnection();
 }
 
-void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr, const QString& version, const QString& )
-{
-#ifdef Q_OS_WIN32
-        // work around a bug in QDesktopServices on Win32, see i-net
-        QString filePath = url;
+//void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr, const QString& version, const QString& )
+//{
+//#ifdef Q_OS_WIN32
+//        // work around a bug in QDesktopServices on Win32, see i-net
+//        QString filePath = url;
 
-        if (filePath.startsWith("\\\\") || filePath.startsWith("//"))
-            _OCUrl.setUrl(QDir::toNativeSeparators(filePath));
-        else
-            _OCUrl = QUrl::fromLocalFile(filePath);
-#else
-    _OCUrl = QUrl::fromLocalFile(url);
-#endif
+//        if (filePath.startsWith("\\\\") || filePath.startsWith("//"))
+//            _OCUrl.setUrl(QDir::toNativeSeparators(filePath));
+//        else
+//            _OCUrl = QUrl::fromLocalFile(filePath);
+//#else
+//    _OCUrl = QUrl::fromLocalFile(url);
+//#endif
 
-    qDebug() << "#-------# oC found on " << url;
-    /* enable the open button */
-    ui->connectLabel->setOpenExternalLinks(true);
-    QUrl safeUrl(url);
-    safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
-    showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()),
-                         tr("Version: %1 (%2)").arg(versionStr).arg(version) );
-    ui->_buttonAdd->setEnabled(true);
+//    qDebug() << "#-------# oC found on " << url;
+//    /* enable the open button */
+//    ui->connectLabel->setOpenExternalLinks(true);
+//    QUrl safeUrl(url);
+//    safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
+//    showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()),
+//                         tr("Version: %1 (%2)").arg(versionStr).arg(version) );
+//    ui->_buttonAdd->setEnabled(true);
 
-    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
-            this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
-    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-            this, SLOT(slotOCInfoFail(QNetworkReply*)));
-}
+//    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
+//            this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
+//    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
+//            this, SLOT(slotOCInfoFail(QNetworkReply*)));
+//}
 
-void AccountSettings::slotOCInfoFail( QNetworkReply *reply)
-{
-    QString errStr = tr("unknown problem.");
-    if( reply ) errStr = reply->errorString();
+//void AccountSettings::slotOCInfoFail( QNetworkReply *reply)
+//{
+//    QString errStr = tr("unknown problem.");
+//    if( reply ) errStr = reply->errorString();
 
-    showConnectionLabel( tr("<p>Failed to connect to %1: <tt>%2</tt></p>").arg(Theme::instance()->appNameGUI()).arg(errStr) );
-    ui->_buttonAdd->setEnabled( false);
->>>>>>> origin/master
-
+//    showConnectionLabel( tr("<p>Failed to connect to %1: <tt>%2</tt></p>").arg(Theme::instance()->appNameGUI()).arg(errStr) );
+//    ui->_buttonAdd->setEnabled( false);
+//}
 
 void AccountSettings::slotOpenOC()
 {
@@ -790,6 +765,27 @@ void AccountSettings::slotIgnoreFilesEditor()
         _ignoreEditor->open();
     } else {
         Utility::raiseDialog(_ignoreEditor);
+    }
+}
+
+void AccountSettings::slotOnlineStateChanged(bool online)
+{
+    if (_account) {
+        connect(_account, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotUpdateQuota(qint64,qint64)), Qt::UniqueConnection);
+        slotUpdateQuota(_account->lastQuotaTotalBytes(), _account->lastQuotaUsedBytes());
+        if (online) {
+            QUrl safeUrl(_account->url());
+            safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
+            showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(_account->url().toString(), safeUrl.toString())
+                                 /*, tr("Version: %1 (%2)").arg(versionStr).arg(version) */ );
+            ui->_buttonAdd->setEnabled(true);
+        } else {
+            showConnectionLabel( tr("Checking %1 connection...").arg(Theme::instance()->appNameGUI()));
+        }
+    } else {
+        // ownCloud is not yet configured.
+        showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
+        ui->_buttonAdd->setEnabled( false);
     }
 }
 

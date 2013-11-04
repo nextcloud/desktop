@@ -60,8 +60,9 @@ void CredentialStore::fetchCredentials()
 
     bool ok = false;
     QString pwd;
-    _user = cfgFile.user();
-    _url  = cfgFile.ownCloudUrl();
+// ###
+//    _url = url;
+//    _user = user;
 
     QString key = keyChainKey(_url);
 

@@ -16,11 +16,13 @@
 
 #include "QProgressIndicator.h"
 
-#include "wizard/owncloudhttpcredspage.h"
-#include "mirall/theme.h"
-#include "wizard/owncloudwizardcommon.h"
 #include "creds/httpcredentials.h"
+#include "mirall/theme.h"
+#include "mirall/account.h"
 #include "mirall/mirallconfigfile.h"
+#include "wizard/owncloudhttpcredspage.h"
+#include "wizard/owncloudwizardcommon.h"
+#include "wizard/owncloudwizard.h"
 
 namespace Mirall
 {
@@ -65,12 +67,11 @@ void OwncloudHttpCredsPage::setupCustomization()
 void OwncloudHttpCredsPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
-    MirallConfigFile cfgFile;
-    HttpCredentials* httpCreds(dynamic_cast< HttpCredentials* >(cfgFile.getCredentials()));
 
+    OwncloudWizard* ocWizard = qobject_cast< OwncloudWizard* >(wizard());
+    HttpCredentials *httpCreds = qobject_cast<HttpCredentials*>(ocWizard->account()->credentials());
     if (httpCreds) {
         const QString user = httpCreds->user();
-
         if (!user.isEmpty()) {
             _ui.leUsername->setText(user);
         }

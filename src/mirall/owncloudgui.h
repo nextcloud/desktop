@@ -39,7 +39,7 @@ public:
     void setupContextMenu();
     void startupConnected(bool connected , const QStringList &fails);
 
-    bool checkConfigExists(bool openSettings);
+    bool checkAccountExists(bool openSettings);
 
 signals:
     void setupProxy();

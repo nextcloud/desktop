@@ -40,8 +40,8 @@ public:
     QString authType() const;
     QNetworkAccessManager* getQNAM() const;
     bool ready() const;
-    void fetch();
-    void persistForUrl(const QString& url);
+    void fetch(Account *account);
+    void persist(Account *account);
 
     QNetworkCookie cookie() const;
 
@@ -58,6 +58,7 @@ Q_SIGNALS:
     void invalidatedAndFetched(const QByteArray& cookieData);
 
 private:
+    QUrl _url;
     QByteArray prepareCookieData() const;
     void disposeBrowser();
 

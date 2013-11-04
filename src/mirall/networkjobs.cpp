@@ -60,8 +60,11 @@ void AbstractNetworkJob::setPath(const QString &path)
     _path = path;
 }
 
-void AbstractNetworkJob::slotError()
+void AbstractNetworkJob::slotError(QNetworkReply::NetworkError error)
 {
+    if (error == QNetworkReply::ContentAccessDenied) {
+        // ### ask for password, retry job, needs refactoring to use start()
+    }
     qDebug() << metaObject()->className() << "Error:" << _reply->errorString();
     emit networkError(_reply);
     deleteLater();
@@ -71,7 +74,7 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
     connect(reply, SIGNAL(finished()), SLOT(slotFinished()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(slotError()));
+            this, SLOT(slotError(QNetworkReply::NetworkError)));
 }
 
 QNetworkReply* AbstractNetworkJob::davRequest(const QByteArray &verb, const QString &relPath,
@@ -140,7 +143,6 @@ RequestEtagJob::RequestEtagJob(Account *account, const QString &path, QObject *p
     if( reply()->error() != QNetworkReply::NoError ) {
         qDebug() << "getting etag: request network error: " << reply()->errorString();
     }
-
 }
 
 void RequestEtagJob::slotFinished()
@@ -312,6 +314,8 @@ void CheckServerJob::slotFinished()
     deleteLater();
 }
 
+/*********************************************************************************************/
+
 PropfindJob::PropfindJob(Account *account, const QString &path,
                          QList<QByteArray> properties,
                          QObject *parent)
@@ -379,6 +383,8 @@ void PropfindJob::slotFinished()
     deleteLater();
 }
 
+/*********************************************************************************************/
+
 EntityExistsJob::EntityExistsJob(Account *account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
@@ -389,6 +395,55 @@ EntityExistsJob::EntityExistsJob(Account *account, const QString &path, QObject 
 void EntityExistsJob::slotFinished()
 {
     emit exists(reply());
+}
+
+/*********************************************************************************************/
+
+CheckQuotaJob::CheckQuotaJob(Account *account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+    QNetworkRequest req;
+    req.setRawHeader("Depth", "0");
+    QByteArray xml("<?xml version=\"1.0\" ?>\n"
+                   "<d:propfind xmlns:d=\"DAV:\">\n"
+                   "  <d:prop>\n"
+                   "    <d:quota-available-bytes/>\n"
+                   "    <d:quota-used-bytes/>\n"
+                   "  </d:prop>\n"
+                   "</d:propfind>\n");
+    QBuffer *buf = new QBuffer;
+    buf->setData(xml);
+    buf->open(QIODevice::ReadOnly);
+    // assumes ownership
+    setReply(davRequest("PROPFIND", path, req, buf));
+    buf->setParent(reply());
+    setupConnections(reply());
+}
+
+void CheckQuotaJob::slotFinished()
+{
+    if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
+        // Parse DAV response
+        QXmlStreamReader reader(reply());
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+        qint64 quotaAvailableBytes = 0;
+        qint64 quotaUsedBytes = 0;
+        while (!reader.atEnd()) {
+            QXmlStreamReader::TokenType type = reader.readNext();
+            if (type == QXmlStreamReader::StartElement &&
+                    reader.namespaceUri() == QLatin1String("DAV:")) {
+                QString name = reader.name().toString();
+                if (name == QLatin1String("quota-available-bytes")) {
+                    quotaAvailableBytes = reader.readElementText().toLongLong();
+                } else if (name == QLatin1String("quota-used-bytes")) {
+                    quotaUsedBytes = reader.readElementText().toLongLong();
+                }
+            }
+        }
+        qint64 total = quotaUsedBytes + quotaAvailableBytes;
+        emit quotaRetrieved(total, quotaUsedBytes);
+    }
+    deleteLater();
 }
 
 } // namespace Mirall

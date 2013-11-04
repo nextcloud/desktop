@@ -114,9 +114,7 @@ Application::Application(int &argc, char **argv) :
 
     connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
 
-    MirallConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    Account *account = Account::restore(settings);
+    Account *account = Account::restore();
     if (account) {
         account->setSslErrorHandler(new SslDialogErrorHandler);
         AccountManager::instance()->setAccount(account);
@@ -137,6 +135,7 @@ Application::Application(int &argc, char **argv) :
 
 //    connect(_networkMgr, SIGNAL(onlineStateChanged(bool)), SLOT(slotCheckConnection()));
 
+    MirallConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect (_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));
 
@@ -167,10 +166,8 @@ void Application::slotCleanup()
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
     Account *account = AccountManager::instance()->account();
-    MirallConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
     if (account) {
-        account->save(settings);
+        account->save();
     }
     _gui->slotShutdown();
     _gui->deleteLater();
@@ -184,14 +181,14 @@ void Application::slotStartUpdateDetector()
 
 void Application::slotCheckConnection()
 {
-    if( _gui->checkConfigExists(false) ) {
-        MirallConfigFile cfg;
-        AbstractCredentials* credentials(cfg.getCredentials());
+    if( _gui->checkAccountExists(false) ) {
+        Account *account = AccountManager::instance()->account();
+        AbstractCredentials* credentials(account->credentials());
 
         if (! credentials->ready()) {
             connect( credentials, SIGNAL(fetched()),
                      this, SLOT(slotCredentialsFetched()));
-            credentials->fetch();
+            credentials->fetch(account);
         } else {
             runValidator();
         }
@@ -203,10 +200,8 @@ void Application::slotCheckConnection()
 
 void Application::slotCredentialsFetched()
 {
-    MirallConfigFile cfg;
-    AbstractCredentials* credentials(cfg.getCredentials());
-
-    disconnect(credentials, SIGNAL(fetched()),
+    Account *account = AccountManager::instance()->account();
+    disconnect(account->credentials(), SIGNAL(fetched()),
                this, SLOT(slotCredentialsFetched()));
     runValidator();
 }

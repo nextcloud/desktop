@@ -17,13 +17,18 @@
 #include <QMutex>
 #include <QDebug>
 #include <QNetworkReply>
+#include <QSettings>
+
+#include <qtkeychain/keychain.h>
 
 #include "mirall/account.h"
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/utility.h"
+#include "mirall/theme.h"
 #include "creds/credentialscommon.h"
-#include "creds/http/credentialstore.h"
 #include "creds/httpcredentials.h"
+
+using namespace QKeychain;
 
 namespace Mirall
 {
@@ -66,6 +71,8 @@ int getauth(const char *prompt,
     return re;
 }
 
+const char userC[] = "user";
+
 } // ns
 
 class HttpCredentialsAccessManager : public MirallAccessManager {
@@ -77,7 +84,7 @@ protected:
         QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
-        return MirallAccessManager::createRequest(op, req, outgoingData);\
+        return MirallAccessManager::createRequest(op, req, outgoingData);
     }
 private:
     const HttpCredentials *_cred;
@@ -94,9 +101,6 @@ HttpCredentials::HttpCredentials(const QString& user, const QString& password)
       _password(password),
       _ready(true)
 {
-    _store = new CredentialStore(this);
-    connect(store, SIGNAL(fetchCredentialsFinished(bool)),
-            this, SLOT(slotCredentialsFetched(bool)));
 }
 
 void HttpCredentials::syncContextPreInit (CSYNC* ctx)
@@ -166,30 +170,60 @@ bool HttpCredentials::ready() const
     return _ready;
 }
 
-void HttpCredentials::fetch()
+void HttpCredentials::fetch(Account *account)
 {
+    _user = account->credentialSetting(QLatin1String(userC)).toString();
     if (_ready) {
         Q_EMIT fetched();
     } else {
-        // TODO: merge CredentialStore into HttpCredentials?
-        _store->fetchCredentials();
+        ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+        job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+        job->setInsecureFallback(true);
+        job->setKey(keychainKey(account->url().toString(), _user));
+        connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
+        job->start();
     }
 }
 
-void HttpCredentials::persistForUrl(const QString& url)
+void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 {
-    _store->setCredentials(url, _user, _password);
-    _store->saveCredentials();
+    ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(job);
+    delete readJob->settings();
+    _password = readJob->textData();
+    QKeychain::Error error = job->error();
+    switch (error) {
+    case NoError:
+        Q_EMIT fetched();
+        break;
+    default:
+        // ### retry with insecure storage
+        qDebug() << "Error while reading password" << job->errorString();
+    }
+
 }
 
-void HttpCredentials::slotCredentialsFetched(bool ok)
+void HttpCredentials::persist(Account *account)
 {
-    _ready = ok;
-    if (_ready) {
-        _user = _store->user();
-        _password = _store->password();
+    QString user = account->credentialSetting(QLatin1String(userC)).toString();
+    account->setCredentialSetting(QLatin1String(userC), _user);
+    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+    job->setInsecureFallback(true);
+    connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
+    job->setKey(keychainKey(account->url().toString(), user));
+    job->setTextData(_password);
+    job->start();
+}
+
+void HttpCredentials::slotWriteJobDone(QKeychain::Job *job)
+{
+    delete job->settings();
+    switch (job->error()) {
+    case NoError:
+        break;
+    default:
+        qDebug() << "Error while writing password" << job->errorString();
     }
-    Q_EMIT fetched();
 }
 
 void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* authenticator)
@@ -202,12 +236,24 @@ void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* a
     reply->close();
 }
 
-void HttpCredentials::slotReplyFinished()
+QString HttpCredentials::keychainKey(const QString &url, const QString &user)
 {
-    QNetworkReply* reply = qobject_cast< QNetworkReply* >(sender());
+    QString u(url);
+    if( u.isEmpty() ) {
+        qDebug() << "Empty url in keyChain, error!";
+        return QString::null;
+    }
+    if( user.isEmpty() ) {
+        qDebug() << "Error: User is emty!";
+        return QString::null;
+    }
 
-    disconnect(reply, SIGNAL(finished()),
-               this, SLOT(slotReplyFinished()));
+    if( !u.endsWith(QChar('/')) ) {
+        u.append(QChar('/'));
+    }
+
+    QString key = user+QLatin1Char(':')+u;
+    return key;
 }
 
 } // ns Mirall

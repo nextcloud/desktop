@@ -14,6 +14,7 @@
 #include "mirall/account.h"
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/networkjobs.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
 
@@ -58,22 +59,32 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
     , _sslErrorHandler(0)
+    , _lastQuotaTotalBytes(0)
+    , _lastQuotaUsedBytes(0)
 {
     setSslErrorHandler(sslErrorHandler);
 }
 
-void Account::save(QSettings &settings)
+Account::~Account()
 {
-    settings.beginGroup(Theme::instance()->appName());
-    settings.setValue(QLatin1String(urlC), _url);
+}
+
+void Account::save()
+{
+    QScopedPointer<QSettings> settings(settingsWithGroup(Theme::instance()->appName()));
+    settings->setValue(QLatin1String(urlC), _url.toString());
     if (_credentials) {
-        settings.setValue(QLatin1String(authTypeC), _credentials->authType());
+        _credentials->persist(this);
+        Q_FOREACH(QString key, _settingsMap.keys()) {
+            settings->setValue(key, _settingsMap.value(key));
+        }
+        settings->setValue(QLatin1String(authTypeC), _credentials->authType());
     }
     // ### TODO port away from ConfigFile
     MirallConfigFile cfg;
     qDebug() << "Saving " << approvedCerts().count() << " unknown certs.";
     QByteArray certs;
-    foreach( const QSslCertificate& cert, approvedCerts() ) {
+    Q_FOREACH( const QSslCertificate& cert, approvedCerts() ) {
         certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
@@ -81,23 +92,22 @@ void Account::save(QSettings &settings)
     }
 }
 
-Account* Account::restore(QSettings &settings)
+Account* Account::restore()
 {
-    QString groupName = Theme::instance()->appName();
-    if (settings.childGroups().contains(groupName)) {
-        MirallConfigFile cfg;
+    QScopedPointer<QSettings> settings(settingsWithGroup(Theme::instance()->appName()));
+    if (!settings->childKeys().isEmpty()) {
         Account *acc = new Account;
+        MirallConfigFile cfg;
         acc->setApprovedCerts(QSslCertificate::fromData(cfg.caCerts()));
-        settings.beginGroup(groupName);
-        acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
-        acc->setCredentials(CredentialsFactory::create(QLatin1String(urlC)));
-
+        acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
+        acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
+        Q_FOREACH(QString key, settings->childKeys()) {
+            acc->_settingsMap.insert(key, settings->value(key));
+        }
         return acc;
-    } else {
-        return 0;
     }
+    return 0;
 }
-
 
 static bool isEqualExceptProtocol(const QUrl &url1, const QUrl &url2)
 {
@@ -215,6 +225,35 @@ QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)
     return tmpUrl;
 }
 
+QSettings *Account::settingsWithGroup(const QString& group)
+{
+    MirallConfigFile cfg;
+    QSettings *settings = new QSettings(cfg.configFile(), QSettings::IniFormat);
+    settings->beginGroup(group);
+    return settings;
+}
+
+QVariant Account::credentialSetting(const QString &key) const
+{
+    if (_credentials) {
+        QString prefix = _credentials->authType();
+        QString value = _settingsMap.value(prefix+"_"+key).toString();
+        if (value.isEmpty()) {
+            value = _settingsMap.value(key).toString();
+        }
+        return value;
+    }
+    return QVariant();
+}
+
+void Account::setCredentialSetting(const QString &key, const QVariant &value)
+{
+    if (_credentials) {
+        QString prefix = _credentials->authType();
+        _settingsMap.insert(prefix+"_"+key, value);
+    }
+}
+
 void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
 {
     qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
@@ -236,6 +275,19 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
         _treatSslErrorsAsFailure = true;
         return;
     }
+}
+
+void Account::slotCheckQuota()
+{
+    CheckQuotaJob *job = new CheckQuotaJob(this, "/", this);
+    connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
+    connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SIGNAL(q(qint64,qint64)));
+}
+
+void Account::slotUpdateLastQuota(qint64 total, qint64 used)
+{
+    _lastQuotaTotalBytes = total;
+    _lastQuotaUsedBytes = used;
 }
 
 } // namespace Mirall

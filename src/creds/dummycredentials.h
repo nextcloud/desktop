@@ -30,8 +30,8 @@ public:
   QString authType() const;
   QNetworkAccessManager* getQNAM() const;
   bool ready() const;
-  void fetch();
-  void persistForUrl(const QString& url);
+  void fetch(Account*);
+  void persist(Account*);
 };
 
 } // ns Mirall

@@ -24,10 +24,12 @@
 class QNetworkReply;
 class QAuthenticator;
 
+namespace QKeychain {
+  class Job;
+}
+
 namespace Mirall
 {
-
-class CredentialStore;
 
 class HttpCredentials : public AbstractCredentials
 {
@@ -43,19 +45,19 @@ public:
   QString authType() const;
   QNetworkAccessManager* getQNAM() const;
   bool ready() const;
-  void fetch();
-  void persistForUrl(const QString& url);
+  void fetch(Account *account);
+  void persist(Account *account);
 
   QString user() const;
   QString password() const;
 
 private Q_SLOTS:
-  void slotCredentialsFetched(bool);
   void slotAuthentication(QNetworkReply*, QAuthenticator*);
-  void slotReplyFinished();
+  void slotReadJobDone(QKeychain::Job*);
+  void slotWriteJobDone(QKeychain::Job*);
 
 private:
-  CredentialStore *_store;
+  static QString keychainKey(const QString &url, const QString &user);
   QString _user;
   QString _password;
   bool _ready;
