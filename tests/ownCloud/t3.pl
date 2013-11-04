@@ -36,7 +36,7 @@ csync();
 # Check if the files from toremote1 are now in t1/remoteToLocal1
 # they should have taken the way via the ownCloud.
 print "Assert the local file copy\n";
-assertLocalDirs( 'toremote1', localDir().'remoteToLocal1' );
+assertLocalDirs( localDir().'remoteToLocal1', 'toremote1' );
 
 # Check if the synced files from ownCloud have the same timestamp as the local ones.
 print "\nNow assert remote 'toremote1' with local " . localDir() . " :\n";
