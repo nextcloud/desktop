@@ -157,9 +157,10 @@ void PropagateRemoteRemove::start()
 {
     QScopedPointer<char, QScopedPointerPodDeleter> uri(
         ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+    qDebug() << "** DELETE " << uri.data();
     int rc = ne_delete(_propagator->_session, uri.data());
-
-    if (updateErrorFromSession(rc)) {
+    /* Ignore the error 404,  it means it is already deleted */
+    if (updateErrorFromSession(rc, 0, 404)) {
         return;
     }
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
@@ -357,7 +358,7 @@ static QByteArray parseEtag(ne_request *req) {
 static QString parseFileId(ne_request *req) {
     QString fileId;
 
-    const char *header = ne_get_response_header(req, "X-OC-FileId");
+    const char *header = ne_get_response_header(req, "OC-FileId");
     if( header ) {
         fileId = QString::fromUtf8(header);
     }
@@ -400,6 +401,8 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
         } else {
             if( !fid.isEmpty() && fid != _item._fileId ) {
                 qDebug() << "WARN: FileID seems to have changed: "<< fid << _item._fileId;
+            } else {
+                qDebug() << "FileID is " << _item._fileId;
             }
         }
     }
@@ -681,6 +684,25 @@ void PropagateDownloadFile::start()
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
 
+DECLARE_JOB(PropagateLocalRename)
+
+void PropagateLocalRename::start()
+{
+    if (_item._file != _item._renameTarget) {
+        qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
+        QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
+    }
+
+    _item._instruction = CSYNC_INSTRUCTION_DELETED;
+    _propagator->_journal->deleteFileRecord(_item._originalFile);
+
+    SyncJournalFileRecord record(_item, _propagator->_remoteDir + _item._file);
+    record._path = _item._renameTarget;
+    _propagator->_journal->setFileRecord(record);
+    emit progress(Progress::EndDownload, _item._file, 0, _item._size);
+    done(SyncFileItem::Success);
+}
+
 DECLARE_JOB(PropagateRemoteRename)
 
 void PropagateRemoteRename::start()
@@ -689,7 +711,7 @@ void PropagateRemoteRename::start()
         if (!_item._isDirectory) {
             // The parents has been renamed already so there is nothing more to do.
             // But we still need to fetch the new ETAG
-            // FIXME   maybe do a recusrsive propfind after having moced the parent.
+            // FIXME   maybe do a recusrsive propfind after having moved the parent.
             // Note: we also update the mtime because the server do not keep the mtime when moving files
             QScopedPointer<char, QScopedPointerPodDeleter> uri2(
                 ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
@@ -746,19 +768,25 @@ bool PropagateItemJob::updateErrorFromSession(int neon_code, ne_request* req, in
             }
         } else {
             errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-            int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+            httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
             if ((httpStatusCode >= 200 && httpStatusCode < 300)
                 || (httpStatusCode != 0 && httpStatusCode == ignoreHttpCode)) {
                 // No error
                 return false;
             }
         }
-
         // FIXME: classify the error
         done (SyncFileItem::NormalError, errorString);
         return true;
     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
-        done(SyncFileItem::NormalError, QString::fromUtf8(ne_get_error(_propagator->_session)));
+        errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
+        if (ignoreHttpCode) {
+            // Check if we don't need to ignore that error.
+            httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+            if (httpStatusCode == ignoreHttpCode)
+                return false;
+        }
+        done(SyncFileItem::NormalError, errorString);
         return true;
     case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
     case NE_AUTH:     /* User authentication failed on server */
@@ -796,8 +824,11 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
             if (item._dir != SyncFileItem::Up) return new PropagateDownloadFile(this, item);
             else return new PropagateUploadFile(this, item);
         case CSYNC_INSTRUCTION_RENAME:
-            Q_ASSERT(item._dir == SyncFileItem::Up); // only supported for remote
-            return new PropagateRemoteRename(this, item);
+            if (item._dir == SyncFileItem::Up) {
+                return new PropagateRemoteRename(this, item);
+            } else {
+                return new PropagateLocalRename(this, item);
+            }
         case CSYNC_INSTRUCTION_IGNORE:
             return new PropagateIgnoreJob(this, item);
         default:
@@ -850,10 +881,10 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
         _rootJob->append(it);
     }
 
-    _rootJob->start();
     connect(_rootJob.data(), SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
     connect(_rootJob.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,QString,quint64,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
+    _rootJob->start();
 }
 
 void PropagateDirectory::proceedNext(SyncFileItem::Status status)

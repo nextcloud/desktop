@@ -80,11 +80,15 @@ AccountSettings::AccountSettings(QWidget *parent) :
     connect(resetFolderAction, SIGNAL(triggered()), SLOT(slotResetCurrentFolder()));
     addAction(resetFolderAction);
 
+    QAction *syncNowAction = new QAction(this);
+    syncNowAction->setShortcut(QKeySequence(Qt::Key_F6));
+    connect(syncNowAction, SIGNAL(triggered()), SLOT(slotSyncCurrentFolderNow()));
+    addAction(syncNowAction);
+
     connect(ui->_buttonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveCurrentFolder()));
     connect(ui->_buttonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
     connect(ui->_buttonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoAboutCurrentFolder()));
     connect(ui->_buttonAdd,    SIGNAL(clicked()), this, SLOT(slotAddFolder()));
-    connect(ui->_buttonSync,   SIGNAL(clicked()), this, SLOT(slotSyncCurrentFolder()));
     connect(ui->modifyAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
     connect(ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));;
 
@@ -118,13 +122,10 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
     } else {
       ui->_buttonEnable->setText( tr( "Resume" ) );
     }
-
-    bool folderRunning = _model->data( indx, FolderStatusDelegate::SyncRunning).toBool();
-    ui->_buttonSync->setEnabled( folderEnabled && !folderRunning );
-  } else {
-    ui->_buttonSync->setEnabled( false );
   }
 }
+
+
 
 void AccountSettings::slotAddFolder()
 {
@@ -209,7 +210,11 @@ void AccountSettings::buttonsSetEnabled()
     }
 
     QModelIndex selected = ui->_folderList->currentIndex();
-    slotFolderActivated(selected);
+    bool isSelected = selected.isValid();
+
+    ui->_buttonEnable->setEnabled(isSelected);
+    ui->_buttonRemove->setEnabled(isSelected);
+    ui->_buttonInfo->setEnabled(isSelected);
 }
 
 void AccountSettings::setGeneralErrors( const QStringList& errors )
@@ -447,7 +452,7 @@ void AccountSettings::slotEnableCurrentFolder()
     }
 }
 
-void AccountSettings::slotSyncCurrentFolder()
+void AccountSettings::slotSyncCurrentFolderNow()
 {
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
     if( !selected.isValid() )

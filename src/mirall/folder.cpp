@@ -456,6 +456,7 @@ void Folder::slotTerminateSync(bool block)
         _thread->wait();
         _csync->deleteLater();
         delete _thread;
+        _thread = 0;
         slotCSyncFinished();
     }
     setSyncEnabled(false);
@@ -505,31 +506,26 @@ void Folder::setIgnoredFiles()
 
 void Folder::setProxy()
 {
-    if( _csync_ctx ) {
-        /* Store proxy */
-        QUrl proxyUrl = remoteUrl();
-        QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(proxyUrl));
-        // We set at least one in Application
-        Q_ASSERT(proxies.count() > 0);
-        QNetworkProxy proxy = proxies.first();
-        if (proxy.type() == QNetworkProxy::NoProxy) {
-            qDebug() << "Passing NO proxy to csync for" << proxyUrl;
-        } else {
-            qDebug() << "Passing" << proxy.hostName() << "of proxy type " << proxy.type()
-                     << " to csync for" << proxyUrl;
-        }
-        int proxyPort = proxy.port();
 
-        csync_set_module_property(_csync_ctx, "proxy_type", (char*) proxyTypeToCStr(proxy.type()) );
-        csync_set_module_property(_csync_ctx, "proxy_host", proxy.hostName().toUtf8().data() );
-        csync_set_module_property(_csync_ctx, "proxy_port", &proxyPort );
-        csync_set_module_property(_csync_ctx, "proxy_user", proxy.user().toUtf8().data()     );
-        csync_set_module_property(_csync_ctx, "proxy_pwd" , proxy.password().toUtf8().data() );
-
-        setProxyDirty(false);
+    /* Store proxy */
+    QUrl proxyUrl(ownCloudInfo::instance()->webdavUrl());
+    QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(proxyUrl));
+    // We set at least one in Application
+    Q_ASSERT(proxies.count() > 0);
+    QNetworkProxy proxy = proxies.first();
+    if (proxy.type() == QNetworkProxy::NoProxy) {
+        qDebug() << "Passing NO proxy to csync for" << proxyUrl;
     } else {
-        qDebug() << "WRN: Unable to set Proxy without csync-ctx!";
+        qDebug() << "Passing" << proxy.hostName() << "of proxy type " << proxy.type()
+                    << " to csync for" << proxyUrl;
     }
+    _proxy_type = proxyTypeToCStr(proxy.type());
+    _proxy_host = proxy.hostName().toUtf8();
+    _proxy_port = proxy.port();
+    _proxy_user = proxy.user().toUtf8();
+    _proxy_pwd  = proxy.password().toUtf8();
+
+    setProxyDirty(false);
 }
 
 void Folder::setProxyDirty(bool value)
@@ -568,7 +564,6 @@ void Folder::startSync(const QStringList &pathList)
     if (!_csync_ctx) {
         // no _csync_ctx yet,  initialize it.
         init();
-        setProxy();
 
         if (!_csync_ctx) {
             qDebug() << Q_FUNC_INFO << "init failed.";
@@ -576,9 +571,15 @@ void Folder::startSync(const QStringList &pathList)
             QMetaObject::invokeMethod(this, "slotCSyncFinished", Qt::QueuedConnection);
             return;
         }
+        setProxy();
     } else if (proxyDirty()) {
         setProxy();
     }
+    csync_set_module_property(_csync_ctx, "proxy_type", const_cast<char*>(_proxy_type) );
+    csync_set_module_property(_csync_ctx, "proxy_host", _proxy_host.data() );
+    csync_set_module_property(_csync_ctx, "proxy_port", &_proxy_port );
+    csync_set_module_property(_csync_ctx, "proxy_user", _proxy_user.data() );
+    csync_set_module_property(_csync_ctx, "proxy_pwd", _proxy_pwd.data() );
 
     if (_thread && _thread->isRunning()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";

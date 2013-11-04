@@ -54,6 +54,7 @@ typedef enum SyncFileStatus_s {
     FILE_STATUS_UPDATED
 } SyncFileStatus;
 
+
 class Folder : public QObject
 {
     Q_OBJECT
@@ -221,6 +222,12 @@ protected:
     SyncJournalDb _journal;
 
     CSYNC *_csync_ctx;
+
+    const char *_proxy_type;
+    QByteArray  _proxy_host;
+    int         _proxy_port;
+    QByteArray  _proxy_user;
+    QByteArray  _proxy_pwd;
 
 };
 

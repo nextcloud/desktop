@@ -42,6 +42,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
     _app(parent)
 {
     _tray = new Systray();
+    _tray->setParent(this);
     _tray->setIcon( Theme::instance()->syncStateIcon( SyncResult::NotYetStarted, true ) );
 
     connect(_tray.data(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
