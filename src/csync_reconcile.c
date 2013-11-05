@@ -127,6 +127,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                            || cur->type == CSYNC_FTW_TYPE_DIR) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
                     other->destpath = c_strdup( cur->path );
+                    csync_vio_set_file_id( other->file_id, cur->file_id );
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                 } else if (other->instruction == CSYNC_INSTRUCTION_REMOVE) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
