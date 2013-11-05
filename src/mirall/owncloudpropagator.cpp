@@ -696,10 +696,15 @@ void PropagateLocalRename::start()
     _item._instruction = CSYNC_INSTRUCTION_DELETED;
     _propagator->_journal->deleteFileRecord(_item._originalFile);
 
-    SyncJournalFileRecord record(_item, _propagator->_remoteDir + _item._file);
+    // store the rename file name in the item.
+    _item._file = _item._renameTarget;
+
+    SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
     record._path = _item._renameTarget;
+
     _propagator->_journal->setFileRecord(record);
     emit progress(Progress::EndDownload, _item._file, 0, _item._size);
+
     done(SyncFileItem::Success);
 }
 
@@ -741,6 +746,7 @@ void PropagateRemoteRename::start()
     _propagator->_journal->deleteFileRecord(_item._originalFile);
     SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
     record._path = _item._renameTarget;
+
     _propagator->_journal->setFileRecord(record);
     done(SyncFileItem::Success);
 }
@@ -902,6 +908,10 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
         startJob(next);
     } else {
         if (!_item.isEmpty() && !_hasError) {
+            if( !_item._renameTarget.isEmpty() ) {
+                _item._file = _item._renameTarget;
+            }
+
             SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
             _propagator->_journal->setFileRecord(record);
         }
