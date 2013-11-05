@@ -22,6 +22,7 @@
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
+#include "csync_rename.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -429,6 +430,8 @@ void CSyncThread::startSync()
 
     ne_session_s *session = 0;
     // that call to set property actually is a get which will return the session
+    // FIXME add a csync_get_module_property to csync
+
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
     Q_ASSERT(session);
 
@@ -454,6 +457,13 @@ void CSyncThread::startSync()
         uploadLimit = 0;
     }
     _propagator->_uploadLimit = uploadLimit;
+
+    // remove the straycats (superflous database entries)
+    int cnt = csync_straycat_count(_csync_ctx);
+    for( int i = 0; i < cnt; i++ ) {
+        _propagator->_journal->deleteFileRecord( QString::fromUtf8( csync_straycat_at(_csync_ctx, i) ) );
+    }
+
 
     slotProgress(Progress::StartSync, QString(), 0, 0);
     _propagator->start(_syncedItems);
