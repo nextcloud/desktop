@@ -24,11 +24,13 @@ createRemoteDir( "remoteToLocal1" );
 createRemoteDir( "remoteToLocal1/rtl1" );
 createRemoteDir( "remoteToLocal1/rtl1/rtl11" );
 createRemoteDir( "remoteToLocal1/rtl2" );
+createRemoteDir( "remoteToLocal1/rtl4" );
 
 glob_put( 'toremote1/*', "remoteToLocal1/" );
 glob_put( 'toremote1/rtl1/*', "remoteToLocal1/rtl1/" );
 glob_put( 'toremote1/rtl1/rtl11/*',  "remoteToLocal1/rtl1/rtl11/" );
 glob_put( 'toremote1/rtl2/*', "remoteToLocal1/rtl2/" );
+glob_put( 'toremote1/rtl4/*', "remoteToLocal1/rtl4/" );
 
 # call csync, sync local t1 to remote t1
 csync();
