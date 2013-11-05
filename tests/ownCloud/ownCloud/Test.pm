@@ -30,6 +30,10 @@ use File::Glob ':glob';
 use Carp::Assert;
 use Digest::MD5;
 use Unicode::Normalize;
+use LWP::UserAgent;
+use HTTP::Request::Common;
+use File::Basename;
+
 use Encode qw(from_to);
 use utf8;
 if ($^O eq "darwin") {
@@ -41,16 +45,23 @@ use vars qw( @ISA @EXPORT @EXPORT_OK $d %config);
 our $owncloud   = "http://localhost/oc/remote.php/webdav/";
 our $user       = "joe";
 our $passwd     = 'XXXXX'; # Mind to be secure.
-our $ld_libpath = "/home/kf/owncloud.com/buildcsync/modules";
-our $csync      = "/home/kf/owncloud.com/buildcsync/client/ocsync";
+our $ld_libpath = "/home/joe/owncloud.com/buildcsync/modules";
+our $csync      = "/home/joe/owncloud.com/buildcsync/client/ocsync";
 our $remoteDir;
-our $localDir   = "turbo";
+our $localDir;
 
 
 @ISA        = qw(Exporter);
-@EXPORT     = qw( initTesting createRemoteDir createLocalDir cleanup csync assertLocalDirs assertLocalAndRemoteDir 
-                  glob_put put_to_dir localDir remoteDir localCleanup createLocalFile remoteCleanup);
+@EXPORT     = qw( initTesting createRemoteDir createLocalDir cleanup csync 
+                  assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir 
+                  putToDirLWP localDir remoteDir localCleanup createLocalFile 
+                  remoteCleanup server initLocalDir initRemoteDir moveRemoteFile);
 
+sub server
+{
+  return $owncloud;
+}
+                  
 sub fromFileName($)
 {
   my ($file) = @_;
@@ -63,18 +74,20 @@ sub fromFileName($)
 }
 
 
-sub initTesting()
+sub initTesting(;$)
 {
+  my ($prefix) = @_;
+  
   if( -r "./t1.cfg" ) {
     my %config = do 't1.cfg';
     warn "Could not parse t1.cfg: $!\n" unless %config;
     warn "Could not do t1.cfg: $@\n" if $@;
 
-    $user   = $config{user} if( $config{user} );
-    $passwd = $config{passwd} if( $config{passwd} );
-    $owncloud = $config{url}  if( $config{url} );
+    $user       = $config{user} if( $config{user} );
+    $passwd     = $config{passwd} if( $config{passwd} );
+    $owncloud   = $config{url}  if( $config{url} );
     $ld_libpath = $config{ld_libpath} if( $config{ld_libpath} );
-    $csync   = $config{csync} if( $config{csync} );
+    $csync      = $config{csync} if( $config{csync} );
     print "Read t1.cfg: $config{url}\n";
   }
 
@@ -88,21 +101,45 @@ sub initTesting()
 		  -user=> $user,
 		  -pass=> $passwd );
   # $d->DebugLevel(3);
-
-  $remoteDir = sprintf( "t1-%#.3o/", rand(1000) );
-  $localDir .= "/" unless( $localDir =~ /\/$/ );
+  $prefix = "t1" unless( defined $prefix );
   
-  print "Working in remote dir $remoteDir\n";
-  createLocalDir();
-  createRemoteDir( $remoteDir );
-  $owncloud .= $remoteDir;
-  }
+  my $dirId = sprintf("%#.3o", rand(1000));
+  my $dir = sprintf( "%s-%s/", $prefix, $dirId );
+  
+  $localDir = $dir;
+  $localDir .= "/" unless( $localDir =~ /\/$/ );
+  $remoteDir = $dir;
+  
+  initRemoteDir();
+  initLocalDir();
+  printf( "Test directory name is %s\n", $dir );
+}
 
-sub createRemoteDir($)
+# Call this first to create the unique test dir stored in
+# the global var $remoteDir;
+sub initRemoteDir
+{
+  $d->open( $owncloud );
+  $owncloud .= $remoteDir;
+  
+  my $re = $d->mkcol( $owncloud );
+  if( $re == 0 ) {
+    print "Failed to create test dir $owncloud\n";
+    exit 1;
+  }
+  # $owncloud .= $remoteDir;
+}
+
+sub initLocalDir
+{
+  mkdir ($localDir, 0777 );
+}
+
+sub createRemoteDir(;$)
 {
     my ($dir) = @_;
 
-    my $url = $owncloud . $dir ;
+    my $url = $owncloud . $dir;
 
     $d->open( $owncloud );
     print $d->message . "\n";
@@ -172,7 +209,8 @@ sub csync(  )
     $url = "owncloud://$user:$passwd@". $url;
     print "CSync URL: $url\n";
 
-    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $localDir $url";
+    my $args = ""; # "--exclude-file=exclude.cfg -c";
+    my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $args $localDir $url";
     print "Starting: $cmd\n";
 
     system( $cmd ) == 0 or die("CSync died!\n");
@@ -233,23 +271,21 @@ sub assertFile($$)
   my $remoteSize = $res->get_property( "getcontentlength" );
   if( $remoteSize ) { # directories do not have a contentlength
     print "Local versus Remote size: $localSize <-> $remoteSize\n";
-    assert( $localSize == $remoteSize, "File sizes differ!\n" );
+    assert( $localSize == $remoteSize, "File sizes differ" );
   }
 }
 
 sub registerSeen($$)
 {
   my ($seenRef, $file) = @_;
-
-  $file =~ s/t1-\d+\//t1\//;
   $seenRef->{$file} = 1;
 }
 
 sub traverse( $$ )
 {
     my ($remote, $acceptConflicts) = @_;
-    printf("===============> $remote\n");
     $remote .= '/' unless $remote =~ /\/$/;
+    printf("===============> $remote\n");
     
     my $url = $owncloud . $remote;
     my %seen;
@@ -271,7 +307,7 @@ sub traverse( $$ )
 		    print "Checking file: $remote$filename\n";
 		    my $localFile = $localDir . $remote . $filename;
 		    registerSeen( \%seen, $localFile );
-		    $localFile =~ s/t1-\d+\//t1\//;
+		    # $localFile =~ s/t1-\d+\//t1\//;
 
 		    assertFile( $localFile, $res );
 		}
@@ -282,9 +318,9 @@ sub traverse( $$ )
     }
 
     # Check the directory contents
-    my $localpath = localDir().$remote;
-    $localpath =~ s/t1-\d+\//t1\//;
-
+    my $localpath = localDir();
+    $localpath .= $remote if( $remote ne "/" );
+  print "#### localpath = " . $localpath . "\n";
     opendir(my $dh, $localpath ) || die;
     # print Dumper( %seen );
     while( readdir $dh ) {
@@ -304,7 +340,7 @@ sub traverse( $$ )
 
 	$isHere = 1 if( $acceptConflicts && !$isHere && $f =~ /_conflict/ );
 	$isHere = 1 if( $f =~ /\.csync/ );
-	assert( $isHere, "Filename only local, but not remote: $f" );
+	assert( $isHere, "Filename local, but not remote: $f" );
     }
 
     # Check if there was something remote that we havent locally.
@@ -327,7 +363,7 @@ sub glob_put( $$ )
 {
     my( $globber, $target ) = @_;
 
-    $target = $owncloud . $target;
+    # $target = $owncloud . $target;
     
     $d->open( $target );
 
@@ -340,11 +376,14 @@ sub glob_put( $$ )
 	    if( -d $lfile ) {
 	      $d->mkcol( $puturl );
 	    } else {
+	    $lfile = $llfile;
+	    $puturl = $target;
 	      print "   *** Putting $lfile to $puturl\n";
-
-	      if( ! $d->put( -local=>$lfile, -url=> $puturl ) ) {
-		print "   ### FAILED to put: ". $d->message . '\n';
-	      }
+	      putToDirLWP( $lfile, $puturl );
+	      
+	      # if( ! $d->put( -local=>$lfile, -url=> $puturl ) ) {
+	      #print "   ### FAILED to put: ". $d->message . '\n';
+	      # s}
 	    }
 	}
 	  
@@ -367,13 +406,47 @@ sub put_to_dir( $$ )
     }
 }
 
+# The HTTP DAV module often does a PROPFIND before it really PUTs. That 
+# is not neccessary if we know that the directory is really there.
+# Use this function in this case:
+sub putToDirLWP($$)
+{
+    my ($file, $dir) = @_;
+
+    $dir .="/" unless $dir =~ /\/$/;
+
+    my $filename = $file;
+    my $basename = basename $filename;
+
+    $dir =~ s/^\.\///;
+    my $puturl = $owncloud . $dir. $basename;
+    # print "putToDir LWP puts $filename to $puturl\n";
+    die("Could not open $filename: $!") unless( open FILE, "$filename" );
+    binmode FILE;
+    my $string = <FILE>;
+    close FILE;
+    
+    my $ua  = LWP::UserAgent->new();
+    $ua->agent( "ownCloudTest_$localDir");
+    my $req = PUT $puturl, Content_Type => 'application/octet-stream',
+		  Content => $string;
+    $req->authorization_basic($user, $passwd);
+    my $response = $ua->request($req);
+    
+    if ($response->is_success()) {
+      # print "OK: ", $response->content;
+    } else {
+      die( "HTTP PUT failed: " . $response->as_string );
+    }
+}
+
 sub createLocalFile( $$ ) 
 {
   my ($fname, $size) = @_;
   $size = 1024 unless( $size );
   
   my $md5 = Digest::MD5->new;
-   
+
   open(FILE, ">", $localDir . $fname) or die "Can't open $fname for writing ($!)";
   
   my $minimum = 32;
@@ -393,5 +466,15 @@ sub createLocalFile( $$ )
   return $md5->hexdigest; 
 }
 
-#
+sub moveRemoteFile($$)
+{
+  my ($from, $to) = @_;
+    
+  my $fromUrl = $owncloud . $from;
+  my $toUrl = $owncloud . $to;
+  
+  $d->move($fromUrl, $toUrl);
+  
+}
 
+#
