@@ -193,6 +193,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
     QKeychain::Error error = job->error();
     switch (error) {
     case NoError:
+        _ready = true;
         Q_EMIT fetched();
         break;
     default:
