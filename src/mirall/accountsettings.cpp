@@ -776,8 +776,8 @@ void AccountSettings::slotIgnoreFilesEditor()
 void AccountSettings::slotOnlineStateChanged(bool online)
 {
     if (_account) {
-        connect(_account, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotUpdateQuota(qint64,qint64)), Qt::UniqueConnection);
-        slotUpdateQuota(_account->lastQuotaTotalBytes(), _account->lastQuotaUsedBytes());
+//        connect(_account, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotUpdateQuota(qint64,qint64)), Qt::UniqueConnection);
+//        slotUpdateQuota(_account->lastQuotaTotalBytes(), _account->lastQuotaUsedBytes());
         if (online) {
             QUrl safeUrl(_account->url());
             safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI

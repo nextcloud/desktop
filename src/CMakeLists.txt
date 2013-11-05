@@ -69,6 +69,7 @@ set(libsync_SRCS
     mirall/mirallaccessmanager.cpp
     mirall/networkjobs.cpp
     mirall/account.cpp
+    mirall/quotainfo.cpp
     creds/dummycredentials.cpp
     creds/httpcredentials.cpp
     creds/credentialsfactory.cpp
@@ -100,6 +101,7 @@ set(libsync_HEADERS
     mirall/mirallaccessmanager.h
     mirall/networkjobs.h
     mirall/account.h
+    mirall/quotainfo.h
     creds/abstractcredentials.h
     creds/dummycredentials.h
     creds/httpcredentials.h

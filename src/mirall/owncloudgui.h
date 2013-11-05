@@ -17,6 +17,7 @@
 #include "mirall/systray.h"
 #include "mirall/connectionvalidator.h"
 #include "mirall/progressdispatcher.h"
+#include "mirall/quotainfo.h"
 
 #include <QObject>
 #include <QPointer>
@@ -40,6 +41,8 @@ public:
     void startupConnected(bool connected , const QStringList &fails);
 
     bool checkAccountExists(bool openSettings);
+
+    QuotaInfo *quotaInfo() const;
 
 signals:
     void setupProxy();
@@ -85,6 +88,8 @@ private:
     QAction *_actionRecent;
     QAction *_actionHelp;
     QAction *_actionQuit;
+
+    QuotaInfo *_quotaInfo;
 
     QSignalMapper *_folderOpenActionMapper;
     QSignalMapper *_recentItemsMapper;

@@ -211,12 +211,12 @@ QUrl Folder::remoteUrl() const
     Account *account = AccountManager::instance()->account();
     QUrl url = account->davUrl();
     QString path = url.path();
-    if (path.endsWith('/')) {
+    if (!path.endsWith('/')) {
         path.append('/');
     }
     path.append(_remotePath);
     url.setPath(path);
-
+    qDebug() << url;
     return url;
 }
 
@@ -269,7 +269,7 @@ void Folder::evaluateSync(const QStringList &/*pathList*/)
 
 void Folder::slotPollTimerTimeout()
 {
-    qDebug() << "* Polling" << alias() << "for changes. (time since next sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
+    qDebug() << "* Polling" << alias() << "for changes. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
 
     if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval() ||
             _syncResult.status() != SyncResult::Success ) {
@@ -601,7 +601,7 @@ void Folder::startSync(const QStringList &pathList)
     qDebug() << "*** Start syncing";
     _thread = new QThread(this);
     setIgnoredFiles();
-    _csync = new CSyncThread( _csync_ctx, path(), remoteUrl().toString(), &_journal);
+    _csync = new CSyncThread( _csync_ctx, path(), remoteUrl().path(), &_journal);
     _csync->moveToThread(_thread);
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
@@ -676,8 +676,6 @@ void Folder::slotCSyncFinished()
         _thread->quit();
     }
     emit syncStateChange();
-//  ### TODO: Where to rig up the quotas
-//    ownCloudInfo::instance()->getQuotaRequest("/");
     emit syncFinished( _syncResult );
 }
 

@@ -32,13 +32,18 @@ namespace Mirall {
 class AbstractCredentials;
 class Account;
 
-class AccountManager {
+class AccountManager : public QObject {
+    Q_OBJECT
 public:
     static AccountManager *instance();
-    ~AccountManager();
+    ~AccountManager() {}
 
     void setAccount(Account *account);
     Account *account() { return _account; }
+
+Q_SIGNALS:
+    void accountChanged(Account *newAccount, Account *oldAccount);
+    void accountAboutToChange(Account *newAccount, Account *oldAccount);
 
 private:
     AccountManager() : _account(0) {}
@@ -127,16 +132,8 @@ public:
     QVariant credentialSetting(const QString& key) const;
     void setCredentialSetting(const QString& key, const QVariant &value);
 
-    qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
-    qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
-
-protected slots:
+protected Q_SLOTS:
     void slotHandleErrors(QNetworkReply*,QList<QSslError>);
-    void slotCheckQuota();
-    void slotUpdateLastQuota(qint64 total, qint64 used);
-
-signals:
-    void quotaUpdated(qint64 total, qint64 used);
 
 private:
     QMap<QString, QVariant> _settingsMap;
@@ -148,8 +145,6 @@ private:
     QList<QSslCertificate> _certificateChain;
     bool _treatSslErrorsAsFailure;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
-    qint64 _lastQuotaTotalBytes;
-    qint64 _lastQuotaUsedBytes;
 };
 
 }

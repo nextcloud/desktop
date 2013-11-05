@@ -14,7 +14,6 @@
 #include "mirall/account.h"
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
-#include "mirall/networkjobs.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
 
@@ -49,7 +48,9 @@ AccountManager *AccountManager::instance()
 
 void AccountManager::setAccount(Account *account)
 {
-    _account = account;
+    emit accountAboutToChange(account, _account);
+    std::swap(_account, account);
+    emit accountChanged(_account, account);
 }
 
 
@@ -59,8 +60,6 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
     , _sslErrorHandler(0)
-    , _lastQuotaTotalBytes(0)
-    , _lastQuotaUsedBytes(0)
 {
     setSslErrorHandler(sslErrorHandler);
 }
@@ -217,7 +216,11 @@ QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)
 {
     QUrl tmpUrl = url;
     QString path = tmpUrl.path();
-    if (!path.endsWith('/') || !concatPath.startsWith('/')) {
+    // avoid '//'
+    if (path.endsWith('/') && concatPath.startsWith('/')) {
+        path.chop(1);
+    } // avoid missing '/'
+      else if (!path.endsWith('/') && !concatPath.startsWith('/')) {
         path += QLatin1Char('/');
     }
     path += concatPath;
@@ -275,19 +278,6 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
         _treatSslErrorsAsFailure = true;
         return;
     }
-}
-
-void Account::slotCheckQuota()
-{
-    CheckQuotaJob *job = new CheckQuotaJob(this, "/", this);
-    connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
-    connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SIGNAL(q(qint64,qint64)));
-}
-
-void Account::slotUpdateLastQuota(qint64 total, qint64 used)
-{
-    _lastQuotaTotalBytes = total;
-    _lastQuotaUsedBytes = used;
 }
 
 } // namespace Mirall

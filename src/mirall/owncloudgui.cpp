@@ -37,6 +37,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
     _logBrowser(0),
     _contextMenu(0),
     _recentActionsMenu(0),
+    _quotaInfo(0),
     _folderOpenActionMapper(new QSignalMapper(this)),
     _recentItemsMapper(new QSignalMapper(this)),
     _app(parent)
@@ -76,7 +77,6 @@ ownCloudGui::ownCloudGui(Application *parent) :
              SLOT(slotShowOptionalTrayMessage(QString,QString)));
     connect( Logger::instance(), SIGNAL(guiMessage(QString,QString)),
              SLOT(slotShowGuiMessage(QString,QString)));
-
 }
 
 // This should rather be in application.... or rather in MirallConfigFile?
@@ -93,6 +93,11 @@ bool ownCloudGui::checkAccountExists(bool openSettings)
         OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
         return false;
     }
+}
+
+QuotaInfo *ownCloudGui::quotaInfo() const
+{
+    return _quotaInfo;
 }
 
 void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
@@ -326,9 +331,8 @@ void ownCloudGui::setupActions()
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), _app, SLOT(quit()));
 
-//    ### TODO
-//    connect( ownCloudInfo::instance(), SIGNAL(quotaUpdated(qint64,qint64)),
-//             SLOT(slotRefreshQuotaDisplay(qint64, qint64)));
+    _quotaInfo = new QuotaInfo(this);
+    connect(_quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
 }
 
 void ownCloudGui::slotRefreshQuotaDisplay( qint64 total, qint64 used )
