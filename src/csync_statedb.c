@@ -517,6 +517,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(sqlite3 *db,
   st->type = atoi(result->vector[8]);
   if( result->vector[9] )
     st->md5 = c_strdup(result->vector[9]);
+  csync_vio_set_file_id( st->file_id, result->vector[10]);
 
   c_strlist_destroy(result);
 
