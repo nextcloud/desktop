@@ -231,7 +231,7 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
     QMutexLocker locker(&_mutex);
 
     if( checkConnect() ) {
-        if (recursively) {
+        if (!recursively) {
             qlonglong phash = getPHash(filename);
             QSqlQuery query( "DELETE FROM metadata WHERE phash=?", _db );
             query.bindValue( 0, QString::number(phash) );
