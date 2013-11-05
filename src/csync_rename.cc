@@ -51,6 +51,7 @@ struct csync_rename_s {
         }
     };
     std::vector<renameop> todo;
+    std::vector<std::string> straycats;
 };
 
 static int _csync_rename_record(void *obj, void *data) {
@@ -91,4 +92,26 @@ char* csync_rename_adjust_path(CSYNC* ctx, const char* path)
     return c_strdup(path);
 }
 
+void csync_add_journal_straycat(CSYNC *ctx, const char *filename)
+{
+    csync_rename_s* d = csync_rename_s::get(ctx);
+    if(d)
+        d->straycats.push_back( std::string(filename));
+}
+
+int csync_straycat_count(CSYNC *ctx)
+{
+    csync_rename_s* d = csync_rename_s::get(ctx);
+    if(d)
+        return d->straycats.size();
+    return 0;
+}
+
+const char *csync_straycat_at(CSYNC *ctx, int pos )
+{
+    csync_rename_s* d = csync_rename_s::get(ctx);
+    if(d)
+        return d->straycats.at(pos).c_str();
+    return NULL;
+}
 };
