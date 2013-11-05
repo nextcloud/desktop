@@ -76,7 +76,7 @@ public:
     bool _isDirectory;
 
     // Variables used by the propagator
-    QByteArray _originalFile; // as it is in the csync tree
+    QString              _originalFile; // as it is in the csync tree
     csync_instructions_e _instruction;
     time_t               _modtime;
     QByteArray           _etag;
