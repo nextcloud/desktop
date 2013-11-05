@@ -99,28 +99,39 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             break;
         case CSYNC_INSTRUCTION_RENAME:
-            /* rename support only on the local replica because of inode needed. */
             if(ctx->current == LOCAL_REPLICA ) {
                 /* use the old name to find the "other" node */
                 tmp = csync_statedb_get_stat_by_inode(ctx->statedb.db, cur->inode);
-                /* Find the opposite node. */
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Finding opposite temp through inode %" PRIu64 ": %s",
+                          cur->inode, tmp ? "true":"false");
             } else if( ctx->current == REMOTE_REPLICA ) {
                 tmp = csync_statedb_get_stat_by_file_id(ctx->statedb.db, cur->file_id);
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Finding opposite temp through file ID %s: %s",
+                          cur->file_id, tmp ? "true":"false");
             } else {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unknown replica...");
             }
+
             if( tmp ) {
-                /* We need to calculate the phash again because of the phash being stored as int in db. */
                 if( tmp->path ) {
+                    /* Find the temporar file in the other tree. */
                     len = strlen( tmp->path );
                     h = c_jhash64((uint8_t *) tmp->path, len, 0);
                     node = c_rbtree_find(tree, &h);
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "PHash of temporary opposite (%s): %" PRIu64 " %s",
                               tmp->path , h, node ? "found": "not found" );
+                    if (!node) {
+                        /* the renamed file could not be found in the opposite tree. That is because it
+                         * is not longer existing there, maybe because it was renamed or deleted.
+                         */
+                        csync_add_journal_straycat(ctx, tmp->path);
+                    }
                 }
+
                 if(node) {
                     other = (csync_file_stat_t*)node->data;
                 }
+
                 if(!other) {
                     cur->instruction = CSYNC_INSTRUCTION_NEW;
                 } else if (other->instruction == CSYNC_INSTRUCTION_NONE
