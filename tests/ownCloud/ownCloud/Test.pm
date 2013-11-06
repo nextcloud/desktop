@@ -447,7 +447,7 @@ sub createLocalFile( $$ )
   
   my $md5 = Digest::MD5->new;
 
-  open(FILE, ">", $localDir . $fname) or die "Can't open $fname for writing ($!)";
+  open(FILE, ">", $fname) or die "Can't open $fname for writing ($!)";
   
   my $minimum = 32;
   my $range = 96;

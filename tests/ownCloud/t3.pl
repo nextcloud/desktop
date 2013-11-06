@@ -44,7 +44,7 @@ assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 
 # Make a new directory, moves a sub directory into.  Remove the parent directory.
 # create a new file on the server in the directory that will be renamed
-my $newfile_md5 = createLocalFile("remoteToLocal1/rtl1/rtl11/newfile.dat", 123);
+my $newfile_md5 = createLocalFile(localDir()."remoteToLocal1/rtl1/rtl11/newfile.dat", 123);
 unlink( localDir() . 'remoteToLocal1/rtl1/rtl11/test.txt' );
 mkdir( localDir() . 'newdir' );
 move( localDir() . 'remoteToLocal1/rtl1/', localDir() . 'newdir/' );
