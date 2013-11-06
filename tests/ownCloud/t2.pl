@@ -71,7 +71,7 @@ assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 $inode = getInode('remoteToLocal1/rtl1/kernel.txt');
 assert( $inode == $inode2, "Inode has changed 2!");
 
-# move a directory
+# move an existing directory
 $inode = getInode('remoteToLocal1/rtl1');
 moveRemoteFile( 'remoteToLocal1/rtl1', 'remoteToLocal1/movedRtl1');
 
@@ -102,6 +102,22 @@ moveRemoteFile( 'remoteToLocal1/moved2Rtl1/tripofile.txt', 'remoteToLocal1/moved
 
 csync();
 assertLocalAndRemoteDir( 'remoteToLocal1', 0);
+
+# Change a file remotely and than move the directory
+
+my $md5 = createLocalFile( '/tmp/sofiafile.txt', 43 );
+put_to_dir( '/tmp/sofiafile.txt', 'remoteToLocal1/moved2Rtl1' );
+
+moveRemoteFile( 'remoteToLocal1/moved2Rtl1', 'remoteToLocal1/newDir');
+
+# Now in remoteToLocal1/newDir/sofiafile.txt we should have content...
+csync();
+assertLocalAndRemoteDir( 'remoteToLocal1', 0);
+
+my $newMd5 = md5OfFile( localDir().'remoteToLocal1/newDir/sofiafile.txt' );
+print "MD5 compare $md5 <-> $newMd5\n";
+assert( $md5 eq $newMd5 );
+
 
 cleanup();
 
