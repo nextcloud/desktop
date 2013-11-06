@@ -29,11 +29,6 @@ extern "C" {
 char *csync_rename_adjust_path(CSYNC *ctx, const char *path);
 void csync_rename_destroy(CSYNC *ctx);
 void csync_rename_record(CSYNC *ctx, const char *from, const char *to);
-void csync_add_journal_straycat(CSYNC *ctx, const char* filename);
-
-int csync_straycat_count(CSYNC *ctx);
-const char *csync_straycat_at(CSYNC *ctx, int pos );
-
 
 #ifdef __cplusplus
 }
