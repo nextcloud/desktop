@@ -54,7 +54,7 @@ our $localDir;
 @ISA        = qw(Exporter);
 @EXPORT     = qw( initTesting createRemoteDir createLocalDir cleanup csync 
                   assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir 
-                  putToDirLWP localDir remoteDir localCleanup createLocalFile 
+                  putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
                   remoteCleanup server initLocalDir initRemoteDir moveRemoteFile);
 
 sub server
@@ -464,6 +464,20 @@ sub createLocalFile( $$ )
   }
   close FILE;
   return $md5->hexdigest; 
+}
+
+sub md5OfFile( $ ) 
+{
+  my ($file) = @_;
+  
+  open FILE, "$file";
+
+  my $ctx = Digest::MD5->new;
+  $ctx->addfile (*FILE);
+  my $hash = $ctx->hexdigest;
+  close (FILE);
+  
+  return $hash;
 }
 
 sub moveRemoteFile($$)
