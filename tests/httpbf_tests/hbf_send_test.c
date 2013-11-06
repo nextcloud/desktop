@@ -142,7 +142,9 @@ static void test_hbf_splitlist_odd( void **state ){
 
     hbf_state = hbf_splitlist(list, fd);
     assert_non_null(list);
+#ifndef NDEBUG
     assert_int_equal(list->calc_size, list->stat_size);
+#endif
     assert_int_not_equal(list->block_cnt, 0);
     assert_true( hbf_state == HBF_SUCCESS);
 
@@ -189,8 +191,9 @@ static void test_hbf_splitlist_zero( void **state ){
     hbf_state = hbf_splitlist(list, fd);
     assert_non_null(list);
     assert_int_equal(list->stat_size, 0);
+#ifndef NDEBUG
     assert_int_equal(list->calc_size, list->stat_size);
-
+#endif
     assert_int_equal(list->block_cnt, 1);
 
     assert_true( hbf_state == HBF_SUCCESS);
