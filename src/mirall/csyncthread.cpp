@@ -22,7 +22,6 @@
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
-#include "csync_rename.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -457,13 +456,6 @@ void CSyncThread::startSync()
         uploadLimit = 0;
     }
     _propagator->_uploadLimit = uploadLimit;
-
-    // remove the straycats (superflous database entries)
-    int cnt = csync_straycat_count(_csync_ctx);
-    for( int i = 0; i < cnt; i++ ) {
-        _propagator->_journal->deleteFileRecord( QString::fromUtf8( csync_straycat_at(_csync_ctx, i) ) );
-    }
-
 
     slotProgress(Progress::StartSync, QString(), 0, 0);
     _propagator->start(_syncedItems);
