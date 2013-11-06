@@ -10,13 +10,15 @@ In order to build csync, you need to install several components:
 - [CMake](http://www.cmake.org) >= 2.6.0.
 - [check](http://check.sourceforge.net) >= 0.9.5
 - [sqlite3](http://www.sqlite.org) >= 3.4
+- [libneon](http://www.webdav.org/neon/) >= 0.29.0
 
-- [libiniparser](http://ndevilla.free.fr/iniparser/) >= 2.10
+optional:
 - [libsmbclient](http://www.samba.org) >= 3.5
 - [libssh](http://www.libssh.org) >= 0.5
 
 sqlite3 is a runtime requirement. libsmbclient is needed for
-the smb plugin, libssh for the sftp plugin.
+the smb plugin, libssh for the sftp plugin. libneon is required for the 
+ownCloud plugin.
 
 Note that these version numbers are version we know works correctly. If you
 build and run csync successfully with an older version, please let us know.
