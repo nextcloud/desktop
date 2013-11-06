@@ -123,8 +123,9 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     if (!node) {
                         /* the renamed file could not be found in the opposite tree. That is because it
                          * is not longer existing there, maybe because it was renamed or deleted.
+                         * The journal is cleaned up later after propagation.
                          */
-                        csync_add_journal_straycat(ctx, tmp->path);
+
                     }
                 }
 
