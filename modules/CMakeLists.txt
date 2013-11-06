@@ -38,6 +38,9 @@ if (NEON_FOUND)
         )
 endif (NEON_FOUND)
 
+macro_add_plugin(ocsync_dummy csync_dummy.c)
+target_link_libraries(ocsync_dummy ${CSYNC_LIBRARY})
+
 # create test file as bad plugin for the vio testcase
 file(WRITE
   ${CMAKE_CURRENT_BINARY_DIR}/ocsync_bad.so
