@@ -55,10 +55,10 @@ static void setup_remote(void **state) {
     rc = system("mkdir -p /tmp/check_csync2");
     assert_int_equal(rc, 0);
 
-    rc = system("echo \"This is test data\" > /tmp/check_csync1/testfile1.txt");
+    rc = system("echo \"This is test data\" > /tmp/check_csync2/testfile1.txt");
     assert_int_equal(rc, 0);
 
-    rc = system("echo \"This is also test data\" > /tmp/check_csync1/testfile2.txt");
+    rc = system("echo \"This is also test data\" > /tmp/check_csync2/testfile2.txt");
     assert_int_equal(rc, 0);
 
     rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
@@ -68,15 +68,6 @@ static void setup_remote(void **state) {
     assert_int_equal(rc, 0);
 
     rc = csync_init(csync);
-    assert_int_equal(rc, 0);
-
-    rc = csync_update(csync);
-    assert_int_equal(rc, 0);
-
-    rc = csync_reconcile(csync);
-    assert_int_equal(rc, 0);
-
-    // rc = csync_propagate(csync);
     assert_int_equal(rc, 0);
 
     *state = csync;
