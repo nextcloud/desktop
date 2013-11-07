@@ -24,14 +24,15 @@ namespace Mirall
 {
 
 class ShibbolethCookieJar;
+class Account;
 
 class ShibbolethWebView : public QWebView
 {
   Q_OBJECT
 
 public:
-  ShibbolethWebView(const QUrl& url, QWidget* parent = 0);
-  ShibbolethWebView(const QUrl& url, ShibbolethCookieJar* jar, QWidget* parent = 0);
+  ShibbolethWebView(Account *account, QWidget* parent = 0);
+  ShibbolethWebView(Account *account, ShibbolethCookieJar* jar, QWidget* parent = 0);
   ~ShibbolethWebView();
 
 protected:
@@ -45,10 +46,10 @@ Q_SIGNALS:
 private Q_SLOTS:
   void onNewCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
   void slotLoadStarted();
-  void slotLoadFinished();
+  void slotLoadFinished(bool success = true);
 
 private:
-  void setup(const QUrl& url, ShibbolethCookieJar* jar);
+  void setup(Account *account, ShibbolethCookieJar* jar);
 };
 
 } // ns Mirall

@@ -16,6 +16,7 @@
 #include "wizard/owncloudshibbolethcredspage.h"
 #include "mirall/theme.h"
 #include "wizard/owncloudwizardcommon.h"
+#include "wizard/owncloudwizard.h"
 #include "creds/shibbolethcredentials.h"
 #include "creds/shibboleth/shibbolethwebview.h"
 
@@ -35,7 +36,8 @@ void OwncloudShibbolethCredsPage::setupBrowser()
     if (_browser) {
         return;
     }
-    _browser = new ShibbolethWebView(QUrl(field("OCUrl").toString().simplified()));
+    OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard*>(wizard());
+    _browser = new ShibbolethWebView(ocWizard->account());
     connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
             this, SLOT(slotShibbolethCookieReceived(QNetworkCookie)));
     connect(_browser, SIGNAL(viewHidden()),

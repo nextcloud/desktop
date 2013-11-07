@@ -174,7 +174,7 @@ void ShibbolethCredentials::fetch(Account *account)
         if (account) {
             _url = account->url();
         }
-        _browser = new ShibbolethWebView(_url, cfg.createCookieJar());
+        _browser = new ShibbolethWebView(account, cfg.createCookieJar());
         connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
                 this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
         connect(_browser, SIGNAL(viewHidden()),

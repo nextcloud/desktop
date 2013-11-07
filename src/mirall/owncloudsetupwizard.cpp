@@ -408,6 +408,7 @@ DetermineAuthTypeJob::DetermineAuthTypeJob(Account *account, QObject *parent)
 void DetermineAuthTypeJob::slotFinished()
 {
     QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    qDebug() << redirection.toString();
     if (_redirects >= maxRedirects()) {
         redirection.clear();
     }

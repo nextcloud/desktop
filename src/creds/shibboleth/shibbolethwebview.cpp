@@ -16,17 +16,25 @@
 #include <QNetworkCookie>
 #include <QWebFrame>
 #include <QWebPage>
+#include <QMessageBox>
 
 #include "creds/shibboleth/shibbolethcookiejar.h"
 #include "creds/shibboleth/shibbolethwebview.h"
+#include "mirall/account.h"
 #include "mirall/mirallaccessmanager.h"
+#include "mirall/theme.h"
 
 namespace Mirall
 {
 
-void ShibbolethWebView::setup(const QUrl& url, ShibbolethCookieJar* jar)
+void ShibbolethWebView::setup(Account *account, ShibbolethCookieJar* jar)
 {
     MirallAccessManager* nm = new MirallAccessManager(this);
+    // we need our own QNAM, but the we offload the SSL error handling to
+    // the account object, which already can do this
+    connect(nm, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
+            account, SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
+
     QWebPage* page = new QWebPage(this);
 
     jar->setParent(this);
@@ -35,18 +43,19 @@ void ShibbolethWebView::setup(const QUrl& url, ShibbolethCookieJar* jar)
     connect(page, SIGNAL(loadStarted()),
             this, SLOT(slotLoadStarted()));
     connect(page, SIGNAL(loadFinished(bool)),
-            this, SLOT(slotLoadFinished()));
+            this, SLOT(slotLoadFinished(bool)));
 
     nm->setCookieJar(jar);
     page->setNetworkAccessManager(nm);
-    page->mainFrame ()->load (url);
-    this->setPage (page);
+    page->mainFrame()->load(account->url());
+    this->setPage(page);
+    setWindowTitle(tr("%1 - Authenticate").arg(Theme::instance()->appNameGUI()));
 }
 
-ShibbolethWebView::ShibbolethWebView(const QUrl& url, QWidget* parent)
+ShibbolethWebView::ShibbolethWebView(Account* account, QWidget* parent)
   : QWebView(parent)
 {
-    setup(url, new ShibbolethCookieJar(this));
+    setup(account, new ShibbolethCookieJar(this));
 }
 
 ShibbolethWebView::~ShibbolethWebView()
@@ -54,10 +63,10 @@ ShibbolethWebView::~ShibbolethWebView()
     slotLoadFinished();
 }
 
-ShibbolethWebView::ShibbolethWebView(const QUrl& url, ShibbolethCookieJar* jar, QWidget* parent)
+ShibbolethWebView::ShibbolethWebView(Account* account, ShibbolethCookieJar* jar, QWidget* parent)
   : QWebView(parent)
 {
-    setup(url, jar);
+    setup(account, jar);
 }
 
 void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& url)
@@ -96,9 +105,20 @@ void ShibbolethWebView::slotLoadStarted()
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 }
 
-void ShibbolethWebView::slotLoadFinished()
+void ShibbolethWebView::slotLoadFinished(bool success)
 {
     QApplication::restoreOverrideCursor();
+
+    if (!title().isNull()) {
+        setWindowTitle(tr("%1 - %2").arg(Theme::instance()->appNameGUI(), title()));
+    }
+
+    if (!success) {
+        QMessageBox::critical(this, tr("Error loading IdP login page"),
+                              tr("Could not load Shibboleth login page to log you in.\n"
+                                 "Please ensure that your network connection is working."));
+
+    }
 }
 
 } // ns Mirall
