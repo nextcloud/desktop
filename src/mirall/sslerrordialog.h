@@ -42,7 +42,7 @@ class SslErrorDialog : public QDialog
 public:
     explicit SslErrorDialog(Account *account, QWidget *parent = 0);
     ~SslErrorDialog();
-    bool checkFailingCertsValid( const QList<QSslError> &errors );
+    bool checkFailingCertsKnown( const QList<QSslError> &errors );
     bool trustConnection();
     QList<QSslCertificate> unknownCerts() const { return _unknownCerts; }
 

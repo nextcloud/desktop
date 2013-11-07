@@ -120,6 +120,7 @@ public:
     /** The certificates of the account */
     QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
     void setApprovedCerts(const QList<QSslCertificate> certs);
+    void addApprovedCerts(const QList<QSslCertificate> certs);
 
     // pluggable handler
     void setSslErrorHandler(AbstractSslErrorHandler *handler);
@@ -138,7 +139,6 @@ protected Q_SLOTS:
 private:
     QMap<QString, QVariant> _settingsMap;
     QNetworkAccessManager *_am;
-    QList<QSslCertificate> _caCerts;
     QUrl _url;
     AbstractCredentials* _credentials;
     QList<QSslCertificate> _approvedCerts;

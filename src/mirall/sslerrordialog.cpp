@@ -36,16 +36,22 @@ namespace Utility {
 
 bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, Account *account)
 {
+    if (!certs) {
+        qDebug() << "Certs parameter required but is NULL!";
+        return false;
+    }
+
     SslErrorDialog dlg(account);
-    if (dlg.checkFailingCertsValid(errors)) {
+    // whether the failing certs have previously been accepted
+    if (dlg.checkFailingCertsKnown(errors)) {
+        *certs = dlg.unknownCerts();
         return true;
     }
+    // whether the user accepted the certs
     if (dlg.exec() == QDialog::Accepted) {
         if (dlg.trustConnection()) {
-            if (certs) {
-                *certs = dlg.unknownCerts();
-                return true;
-            }
+            *certs = dlg.unknownCerts();
+            return true;
         }
     }
     return false;
@@ -92,7 +98,7 @@ QString SslErrorDialog::styleSheet() const
 }
 #define QL(x) QLatin1String(x)
 
-bool SslErrorDialog::checkFailingCertsValid( const QList<QSslError> &errors )
+bool SslErrorDialog::checkFailingCertsKnown( const QList<QSslError> &errors )
 {
     // check if unknown certs caused errors.
     _unknownCerts.clear();
@@ -102,12 +108,14 @@ bool SslErrorDialog::checkFailingCertsValid( const QList<QSslError> &errors )
     QList<QSslCertificate> trustedCerts = _account->approvedCerts();
 
     for (int i = 0; i < errors.count(); ++i) {
-        if (trustedCerts.contains(errors.at(i).certificate()) ||
-            _unknownCerts.contains(errors.at(i).certificate() ))
+        QSslError error = errors.at(i);
+        if (trustedCerts.contains(error.certificate()) ||
+            _unknownCerts.contains(error.certificate() )) {
             continue;
-        errorStrings += errors.at(i).errorString();
-        if (!errors.at(i).certificate().isNull()) {
-            _unknownCerts.append(errors.at(i).certificate());
+        }
+        errorStrings += error.errorString();
+        if (!error.certificate().isNull()) {
+            _unknownCerts.append(error.certificate());
         }
     }
 
