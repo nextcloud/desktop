@@ -49,13 +49,15 @@ our $ld_libpath = "/home/joe/owncloud.com/buildcsync/modules";
 our $csync      = "/home/joe/owncloud.com/buildcsync/client/ocsync";
 our $remoteDir;
 our $localDir;
+our $infoCnt = 1;
 
 
 @ISA        = qw(Exporter);
-@EXPORT     = qw( initTesting createRemoteDir createLocalDir cleanup csync 
+@EXPORT     = qw( initTesting createRemoteDir createLocalDir cleanup csync
                   assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir 
                   putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
-                  remoteCleanup server initLocalDir initRemoteDir moveRemoteFile);
+                  remoteCleanup server initLocalDir initRemoteDir moveRemoteFile
+                  printInfo);
 
 sub server
 {
@@ -167,9 +169,9 @@ sub cleanup()
 {
   # ==================================================================
 
-  print "\n###########################################\n";
-  print "    all cool - tests succeeded in $remoteDir.\n";
-  print "###########################################\n";
+  print "\n################################################\n";
+  printf( "    all cool - %d tests succeeded in %s.\n", $infoCnt-1, $remoteDir);
+  print "#################################################\n";
 
   print "\nInterrupt before cleanup in 4 seconds...\n";
   sleep(4);
@@ -489,6 +491,20 @@ sub moveRemoteFile($$)
   
   $d->move($fromUrl, $toUrl);
   
+}
+
+sub printInfo($)
+{
+  my ($info) = @_;
+  my $tt = 6+length( $info );
+  
+  print "#" x $tt;
+  printf( "\n# %2d. %s", $infoCnt, $info );
+  print "\n" unless $info =~ /\n$/;
+  print "#" x $tt;
+  print "\n";
+  
+  $infoCnt++;
 }
 
 #
