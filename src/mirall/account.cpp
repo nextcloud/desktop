@@ -23,6 +23,8 @@
 #include <QNetworkAccessManager>
 #include <QSslSocket>
 
+#include <QDebug>
+
 namespace Mirall {
 
 static const char urlC[] = "url";
@@ -35,12 +37,12 @@ AccountManager *AccountManager::instance()
     static QMutex mutex;
     if (!_instance)
     {
-      mutex.lock();
+        mutex.lock();
 
-      if (!_instance) {
-        _instance = new AccountManager;
-      }
-      mutex.unlock();
+        if (!_instance) {
+            _instance = new AccountManager;
+        }
+        mutex.unlock();
     }
 
     return _instance;
@@ -59,9 +61,8 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     , _am(0)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
-    , _sslErrorHandler(0)
+    , _sslErrorHandler(sslErrorHandler)
 {
-    setSslErrorHandler(sslErrorHandler);
 }
 
 Account::~Account()
@@ -142,7 +143,7 @@ void Account::setCredentials(AbstractCredentials *cred)
     _credentials = cred;
     // set active credential manager
     if (_am) {
-       _am->deleteLater();
+        _am->deleteLater();
     }
     _am = _credentials->getQNAM();
     connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
@@ -220,7 +221,7 @@ QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)
     if (path.endsWith('/') && concatPath.startsWith('/')) {
         path.chop(1);
     } // avoid missing '/'
-      else if (!path.endsWith('/') && !concatPath.startsWith('/')) {
+    else if (!path.endsWith('/') && !concatPath.startsWith('/')) {
         path += QLatin1Char('/');
     }
     path += concatPath;
