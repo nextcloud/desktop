@@ -265,17 +265,6 @@ bool CheckServerJob::installed(const QVariantMap &info)
 
 void CheckServerJob::slotFinished()
 {
-    // ### this should no longer be needed
-    if( reply()->error() == QNetworkReply::NoError && reply()->size() == 0 ) {
-        // This seems to be a bit strange behaviour of QNetworkAccessManager.
-        // It calls the finished slot multiple times but only the first read wins.
-        // That happend when the code connected the finished signal of the manager.
-        // It did not happen when the code connected to the reply finish signal.
-        qDebug() << "WRN: NetworkReply with not content but also no error! " << reply();
-        deleteLater();
-        return;
-    }
-
     account()->setCertificateChain(reply()->sslConfiguration().peerCertificateChain());
 
     // ### the qDebugs here should be exported via displayErrors() so they
