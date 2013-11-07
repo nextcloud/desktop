@@ -132,7 +132,7 @@ Next, create build directories::
   mkdir mirall-build
 
 This guide assumes that all directories are residing next to each other.
-Next, make sure to check out the branch called 'ocsync' newly checked out
+Next, make sure to check out the branch called 'ocsync' in the newly checked out
 `ocsync` directory::
 
   cd ocsync
