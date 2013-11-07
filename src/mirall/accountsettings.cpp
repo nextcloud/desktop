@@ -754,7 +754,9 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
         ui->quotaProgressBar->setValue(qVal);
         QString usedStr = Utility::octetsToString(used);
         QString totalStr = Utility::octetsToString(total);
-        ui->quotaLabel->setText(tr("%1 of %2 in use.").arg(usedStr, totalStr));
+        double percent = used/(double)total*100;
+        QString percentStr = Utility::compactFormatDouble(percent, 1);
+        ui->quotaLabel->setText(tr("%1 of %2 (%3%) in use.").arg(usedStr, totalStr, percentStr));
     } else {
         ui->quotaProgressBar->setVisible(false);
         ui->quotaInfoLabel->setVisible(false);
