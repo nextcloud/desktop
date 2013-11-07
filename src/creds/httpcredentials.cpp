@@ -205,13 +205,12 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 
 void HttpCredentials::persist(Account *account)
 {
-    QString user = account->credentialSetting(QLatin1String(userC)).toString();
     account->setCredentialSetting(QLatin1String(userC), _user);
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
     job->setInsecureFallback(true);
     connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
-    job->setKey(keychainKey(account->url().toString(), user));
+    job->setKey(keychainKey(account->url().toString(), _user));
     job->setTextData(_password);
     job->start();
 }
