@@ -100,8 +100,8 @@ AccountSettings::AccountSettings(QWidget *parent) :
     ui->connectLabel->setWordWrap( true );
     ui->quotaLabel->setWordWrap( true );
 
-    // ### TODO:
-    slotOnlineStateChanged();
+    connect(_account, SIGNAL(onlineStateChanged(bool)), SLOT(slotOnlineStateChanged(bool)));
+    slotOnlineStateChanged(_account->isOnline());
 
     setFolderList(FolderMan::instance()->map());
 }
@@ -776,16 +776,17 @@ void AccountSettings::slotIgnoreFilesEditor()
 void AccountSettings::slotOnlineStateChanged(bool online)
 {
     if (_account) {
-//        connect(_account, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotUpdateQuota(qint64,qint64)), Qt::UniqueConnection);
-//        slotUpdateQuota(_account->lastQuotaTotalBytes(), _account->lastQuotaUsedBytes());
+        QUrl safeUrl(_account->url());
+        safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
+        ui->_buttonAdd->setEnabled(online);
         if (online) {
-            QUrl safeUrl(_account->url());
-            safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
             showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(_account->url().toString(), safeUrl.toString())
                                  /*, tr("Version: %1 (%2)").arg(versionStr).arg(version) */ );
-            ui->_buttonAdd->setEnabled(true);
         } else {
-            showConnectionLabel( tr("Checking %1 connection...").arg(Theme::instance()->appNameGUI()));
+            showConnectionLabel( tr("No connection to %1 at <a href=\"%1\">%2</a>.")
+                                 .arg(Theme::instance()->appNameGUI(),
+                                      _account->url().toString(),
+                                      safeUrl.toString()) );
         }
     } else {
         // ownCloud is not yet configured.

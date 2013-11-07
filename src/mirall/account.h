@@ -133,18 +133,24 @@ public:
     QVariant credentialSetting(const QString& key) const;
     void setCredentialSetting(const QString& key, const QVariant &value);
 
+    bool isOnline() const;
+    void setOnline(bool online);
+signals:
+    void onlineStateChanged(bool online);
+
 protected Q_SLOTS:
     void slotHandleErrors(QNetworkReply*,QList<QSslError>);
 
 private:
     QMap<QString, QVariant> _settingsMap;
-    QNetworkAccessManager *_am;
     QUrl _url;
-    AbstractCredentials* _credentials;
     QList<QSslCertificate> _approvedCerts;
     QList<QSslCertificate> _certificateChain;
-    bool _treatSslErrorsAsFailure;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
+    QNetworkAccessManager *_am;
+    AbstractCredentials* _credentials;
+    bool _treatSslErrorsAsFailure;
+    bool _isOnline;
 };
 
 }

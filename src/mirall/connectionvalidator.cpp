@@ -112,6 +112,8 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
 // status.php could not be loaded.
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
+    _account->setOnline(false);
+
     // ### TODO
     _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
     _errors.append( reply->errorString() );
@@ -139,6 +141,7 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         qDebug() << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
+        _account->setOnline(false);
     } else if( reply->error() != QNetworkReply::NoError ) {
         _errors << reply->errorString();
     }
@@ -148,6 +151,7 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 
 void ConnectionValidator::slotAuthSuccess()
 {
+    _account->setOnline(true);
     emit connectionResult(Connected);
 }
 

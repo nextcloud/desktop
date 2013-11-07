@@ -58,10 +58,11 @@ void AccountManager::setAccount(Account *account)
 
 Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     : QObject(parent)
+    , _sslErrorHandler(sslErrorHandler)
     , _am(0)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
-    , _sslErrorHandler(sslErrorHandler)
+    , _isOnline(false)
 {
 }
 
@@ -261,6 +262,19 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
         QString prefix = _credentials->authType();
         _settingsMap.insert(prefix+"_"+key, value);
     }
+}
+
+bool Account::isOnline() const
+{
+    return _isOnline;
+}
+
+void Account::setOnline(bool online)
+{
+    if (_isOnline != online) {
+        emit onlineStateChanged(online);
+    }
+    _isOnline = online;
 }
 
 void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
