@@ -84,6 +84,7 @@ void OwncloudSetupWizard::startWizard()
         account = new Account;
         account->setCredentials(CredentialsFactory::create("dummy"));
     } else {
+        account->credentials()->fetch(account);
         _ocWizard->setConfigExists(true);
     }
     account->setSslErrorHandler(new SslDialogErrorHandler);
