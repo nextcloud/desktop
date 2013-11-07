@@ -627,14 +627,15 @@ void PropagateDownloadFile::start()
     //In case of conflict, make a backup of the old file
     if (isConflict) {
         QFile f(fn);
+        QString conflictFileName(fn);
         // Add _conflict-XXXX  before the extention.
-        int dotLocation = fn.lastIndexOf('.');
+        int dotLocation = conflictFileName.lastIndexOf('.');
         // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-        if (dotLocation <= fn.lastIndexOf('/') + 1) {
-            dotLocation = fn.size();
+        if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
+            dotLocation = conflictFileName.size();
         }
-        fn.insert(dotLocation, "_conflict-" + QDateTime::fromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss"));
-        if (!f.rename(fn)) {
+        conflictFileName.insert(dotLocation, "_conflict-" + QDateTime::fromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss"));
+        if (!f.rename(conflictFileName)) {
             //If the rename fails, don't replace it.
             done(SyncFileItem::NormalError, f.errorString());
             return;
@@ -647,6 +648,7 @@ void PropagateDownloadFile::start()
     bool success;
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     success = tmpFile.fileEngine()->rename(fn);
+    // qDebug() << "Renaming " << tmpFile.fileName() << " to " << fn;
 #else
     // We want a rename that also overwite.  QFile::rename does not overwite.
     // Qt 5.1 has QSaveFile::renameOverwrite we cold use.
@@ -656,6 +658,7 @@ void PropagateDownloadFile::start()
 #endif
     // unixoids
     if (!success) {
+        qDebug() << "FAIL: renaming temp file to final failed: " << tmpFile.errorString();
         done(SyncFileItem::NormalError, tmpFile.errorString());
         return;
     }
