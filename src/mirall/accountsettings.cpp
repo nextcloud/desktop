@@ -100,10 +100,14 @@ AccountSettings::AccountSettings(QWidget *parent) :
     ui->connectLabel->setWordWrap( true );
     ui->quotaLabel->setWordWrap( true );
 
-    connect(_account, SIGNAL(onlineStateChanged(bool)), SLOT(slotOnlineStateChanged(bool)));
-    slotOnlineStateChanged(_account->isOnline());
+    if (_account) {
+        connect(_account, SIGNAL(onlineStateChanged(bool)), SLOT(slotOnlineStateChanged(bool)));
+        slotOnlineStateChanged(_account->isOnline());
+    }
 
     setFolderList(FolderMan::instance()->map());
+    ui->_buttonAdd->setEnabled(false);
+    ui->connectLabel->setText(tr("No account configured."));
 }
 
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
