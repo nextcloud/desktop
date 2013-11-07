@@ -268,15 +268,19 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
     }
 
     QList<QSslCertificate> approvedCerts;
-    if (!_sslErrorHandler.isNull() && _sslErrorHandler->handleErrors(errors, &approvedCerts, this)) {
-        QSslSocket::addDefaultCaCertificates(approvedCerts);
-        setApprovedCerts(approvedCerts);
-        // all ssl certs are known and accepted. We can ignore the problems right away.
-        qDebug() << "Certs are already known and trusted, Warnings are not valid.";
-        reply->ignoreSslErrors();
+    if (_sslErrorHandler.isNull() ) {
+        qDebug() << Q_FUNC_INFO << "called without valid SSL error handler for account" << url();
     } else {
-        _treatSslErrorsAsFailure = true;
-        return;
+        if (_sslErrorHandler->handleErrors(errors, &approvedCerts, this)) {
+            QSslSocket::addDefaultCaCertificates(approvedCerts);
+            setApprovedCerts(approvedCerts);
+            // all ssl certs are known and accepted. We can ignore the problems right away.
+            qDebug() << "Certs are already known and trusted, Warnings are not valid.";
+            reply->ignoreSslErrors();
+        } else {
+            _treatSslErrorsAsFailure = true;
+            return;
+        }
     }
 }
 

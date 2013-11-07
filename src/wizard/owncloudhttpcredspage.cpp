@@ -69,7 +69,8 @@ void OwncloudHttpCredsPage::initializePage()
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
     OwncloudWizard* ocWizard = qobject_cast< OwncloudWizard* >(wizard());
-    HttpCredentials *httpCreds = qobject_cast<HttpCredentials*>(ocWizard->account()->credentials());
+    AbstractCredentials *cred = ocWizard->account()->credentials();
+    HttpCredentials *httpCreds = qobject_cast<HttpCredentials*>(cred);
     if (httpCreds) {
         const QString user = httpCreds->user();
         if (!user.isEmpty()) {

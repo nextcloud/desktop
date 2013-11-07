@@ -80,9 +80,13 @@ void OwncloudSetupWizard::startWizard()
     // ###
     Account *account = Account::restore();
     if (!account) {
-        account = new Account(new SslDialogErrorHandler);
+        _ocWizard->setConfigExists(false);
+        account = new Account;
         account->setCredentials(CredentialsFactory::create("dummy"));
+    } else {
+        _ocWizard->setConfigExists(true);
     }
+    account->setSslErrorHandler(new SslDialogErrorHandler);
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
 
