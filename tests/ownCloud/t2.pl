@@ -40,6 +40,7 @@ glob_put( 'testfiles/*',  "remoteToLocal1/rtl1/rtl11/" );
 glob_put( 'toremote1/rtl2/*', "remoteToLocal1/rtl2/" );
 
 # call csync, sync local t1 to remote t1
+printInfo("Initial sync, sync stuff down.");
 csync();
 
 # Check if the files from toremote1 are now in t1/remoteToLocal1
@@ -54,6 +55,7 @@ assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 # Do some remote moves:
 
 # First a simple file move.
+printInfo("Simply move a file to another name.");
 my $inode = getInode('remoteToLocal1/kernelcrash.txt');
 moveRemoteFile( 'remoteToLocal1/kernelcrash.txt', 'remoteToLocal1/kernel.txt');
 
@@ -62,6 +64,7 @@ assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 my $inode2 = getInode( 'remoteToLocal1/kernel.txt');
 assert( $inode == $inode2, "Inode has changed!");
 
+printInfo("Move a file into a sub directory.");
 # now move the file into a sub directory
 $inode = getInode('remoteToLocal1/kernel.txt');
 moveRemoteFile( 'remoteToLocal1/kernel.txt', 'remoteToLocal1/rtl1/');
@@ -71,6 +74,7 @@ assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 $inode = getInode('remoteToLocal1/rtl1/kernel.txt');
 assert( $inode == $inode2, "Inode has changed 2!");
 
+printInfo("Move an existing directory.");
 # move an existing directory
 $inode = getInode('remoteToLocal1/rtl1');
 moveRemoteFile( 'remoteToLocal1/rtl1', 'remoteToLocal1/movedRtl1');
@@ -80,12 +84,15 @@ assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 $inode = getInode('remoteToLocal1/movedRtl1');
 assert( $inode == $inode2, "Inode has changed 3!");
 
+printInfo( "Move a file in a directory and than move the dir." );
 # move a file in a directory and than move the directory
 moveRemoteFile('remoteToLocal1/movedRtl1/rtl11/zerofile.txt', 'remoteToLocal1/movedRtl1/rtl11/centofile.txt');
 moveRemoteFile( 'remoteToLocal1/movedRtl1', 'remoteToLocal1/againRtl1');
 
 csync();
 assertLocalAndRemoteDir( 'remoteToLocal1', 0);
+
+printInfo("Move a directory and than move a file within it.");
 
 # move a directory and than move a file within the directory
 moveRemoteFile( 'remoteToLocal1/againRtl1', 'remoteToLocal1/moved2Rtl1');
@@ -94,8 +101,8 @@ moveRemoteFile('remoteToLocal1/moved2Rtl1/rtl11/centofile.txt', 'remoteToLocal1/
 csync();
 assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 
-# Rename a file locally and the same file remotely to another name. The server
-# name should win.
+printInfo("Rename file loally and remotely to a different name.");
+# Rename a file locally and the same file remotely to another name. 
 move( localDir() . 'remoteToLocal1/moved2Rtl1/tripofile.txt', localDir() . 'remoteToLocal1/moved2Rtl1/meckafile.txt' );
 
 moveRemoteFile( 'remoteToLocal1/moved2Rtl1/tripofile.txt', 'remoteToLocal1/moved2Rtl1/sofiafile.txt' );
@@ -104,6 +111,7 @@ csync();
 assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 
 # Change a file remotely and than move the directory
+printInfo( "Move a directory remotely with a changed file in it.");
 
 my $md5 = createLocalFile( '/tmp/sofiafile.txt', 43 );
 put_to_dir( '/tmp/sofiafile.txt', 'remoteToLocal1/moved2Rtl1' );
@@ -117,6 +125,31 @@ assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 my $newMd5 = md5OfFile( localDir().'remoteToLocal1/newDir/sofiafile.txt' );
 print "MD5 compare $md5 <-> $newMd5\n";
 assert( $md5 eq $newMd5 );
+
+# Move a file remotely and create one with the same name on the 
+# local repo.
+printInfo("Move remotely and create a local file with same name");
+
+moveRemoteFile('remoteToLocal1/rtl2/kb1.jpg', 'remoteToLocal1/rtl2/kb1moved.jpg');
+move( localDir().'remoteToLocal1/rtl2/kb1.jpg', localDir().'remoteToLocal1/rtl2/kb1_local_gone.jpg'); 
+
+csync();
+assertLocalAndRemoteDir( 'remoteToLocal1', 0);
+
+## make new directory remote 
+printInfo("Create a remote dir, put in a file and move it, but have a similar one locally.");
+
+createRemoteDir('remoteToLocal1/rtl2/newRemoteDir');
+
+my $firstMd5 = createLocalFile( '/tmp/donat12.txt', 4096 );
+put_to_dir( '/tmp/donat12.txt', 'remoteToLocal1/rtl2/newRemoteDir/' );
+moveRemoteFile('remoteToLocal1/rtl2/newRemoteDir/donat12.txt', 
+               'remoteToLocal1/rtl2/newRemoteDir/donat.txt'); 
+mkdir( localDir().'remoteToLocal1/rtl2/newRemoteDir' );
+createLocalFile( localDir(). 'remoteToLocal1/rtl2/newRemoteDir/donat.txt', 8021 );
+
+csync();
+assertLocalAndRemoteDir( 'remoteToLocal1', 1);
 
 
 cleanup();
