@@ -180,7 +180,7 @@ private slots:
     void slotThreadTreeWalkResult(const SyncFileItemVector& );
     void slotCatchWatcherError( const QString& );
 
-protected:
+private:
     bool init();
 
     void setSyncState(SyncResult::Status state);
@@ -192,6 +192,8 @@ protected:
     void bubbleUpSyncResult();
 
     void checkLocalPath();
+
+    void createGuiLog( const QString& filename, const QString& verb, int count );
 
     QString   _path;
     QString   _secondPath;

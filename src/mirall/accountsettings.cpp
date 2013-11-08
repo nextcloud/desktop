@@ -654,6 +654,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     case Progress::StartDownload:
     case Progress::StartUpload:
     case Progress::StartDelete:
+    case Progress::StartRename:
         syncFileProgressString = tr("Start");
         if( _hideProgressTimers.contains(item) ) {
             // The timer is still running.
@@ -668,6 +669,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     case Progress::EndDownload:
     case Progress::EndUpload:
     case Progress::EndDelete:
+    case Progress::EndRename:
         break;
     case Progress::EndSync:
         syncFileProgressString = tr("Completely");
