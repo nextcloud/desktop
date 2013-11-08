@@ -133,6 +133,7 @@ void PropagateLocalRemove::start()
         QFile file(filename);
         if (file.exists() && !file.remove()) {
             done(SyncFileItem::NormalError, file.errorString());
+            return;
         }
     }
     _propagator->_journal->deleteFileRecord(_item._originalFile);
