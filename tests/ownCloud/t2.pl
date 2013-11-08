@@ -126,6 +126,16 @@ my $newMd5 = md5OfFile( localDir().'remoteToLocal1/newDir/sofiafile.txt' );
 print "MD5 compare $md5 <-> $newMd5\n";
 assert( $md5 eq $newMd5 );
 
+# Move a directory on remote but remove the dir locally
+printInfo("Move a directory remotely, but remove the local one");
+moveRemoteFile( 'remoteToLocal1/newDir', 'remoteToLocal1/newDir2');
+
+system( "rm -rf " . localDir() . 'remoteToLocal1/newDir');
+# move a file but create a file with the same name locally.
+moveRemoteFile( 'remoteToLocal1/newDir2/sofiafile.txt', 'remoteToLocal1/constantinopel.txt' );
+csync();
+assertLocalAndRemoteDir( 'remoteToLocal1', 0);
+
 # Move a file remotely and create one with the same name on the 
 # local repo.
 printInfo("Move remotely and create a local file with same name");
@@ -150,7 +160,6 @@ createLocalFile( localDir(). 'remoteToLocal1/rtl2/newRemoteDir/donat.txt', 8021 
 
 csync();
 assertLocalAndRemoteDir( 'remoteToLocal1', 1);
-
 
 cleanup();
 
