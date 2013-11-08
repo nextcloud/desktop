@@ -28,9 +28,6 @@ QNetworkReply* MirallAccessManager::createRequest(QNetworkAccessManager::Operati
 {
     QNetworkRequest newRequest(request);
     newRequest.setRawHeader(QByteArray("User-Agent"), Utility::userAgentString());
-    if (outgoingData) {
-        newRequest.setHeader( QNetworkRequest::ContentLengthHeader, outgoingData->size());
-    }
     QByteArray verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
     // For PROPFIND (assumed to be a WebDAV op), set xml/utf8 as content type/encoding
     // This needs extension
