@@ -263,7 +263,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                     goto out;
                 }
                 st->instruction = CSYNC_INSTRUCTION_RENAME;
-                // FIXME: csync_rename_record here ?
+                if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
+                    csync_rename_record(ctx, tmp->path, path);
+                }
 
                 if( c_streq(tmp->md5, fs->md5) ) {    /* FIXME !! md5 still the same */
 
