@@ -75,13 +75,14 @@ protected slots:
 
     void showWarn( const QString& = QString() ) const;
     void slotAddRemoteFolder();
-    void slotCreateRemoteFolder(QString);
-    void slotCreateRemoteFolderFinished();
+    void slotCreateRemoteFolder(const QString&);
+    void slotCreateRemoteFolderFinished(QNetworkReply::NetworkError error);
     void slotHandleNetworkError(QNetworkReply*);
-    void slotUpdateDirectories(QStringList);
+    void slotUpdateDirectories(const QStringList&);
     void slotRefreshFolders();
     void slotItemExpanded(QTreeWidgetItem*);
 private:
+    void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     Ui_FolderWizardTargetPage _ui;
     ownCloudInfo *_ownCloudDirCheck;
     bool _dirChecked;

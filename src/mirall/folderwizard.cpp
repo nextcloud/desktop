@@ -199,21 +199,24 @@ void FolderWizardTargetPage::slotAddRemoteFolder()
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void FolderWizardTargetPage::slotCreateRemoteFolder(QString folder)
+void FolderWizardTargetPage::slotCreateRemoteFolder(const QString &folder)
 {
     if( folder.isEmpty() ) return;
 
     MkColJob *job = new MkColJob(AccountManager::instance()->account(), folder, this);
     /* check the owncloud configuration file and query the ownCloud */
-    connect(job, SIGNAL(finished()), SLOT(slotCreateRemoteFolderFinished()));
+    connect(job, SIGNAL(finished(QNetworkReply::NetworkError)),
+                 SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
     connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotHandleNetworkError(QNetworkReply*)));
 }
 
-void FolderWizardTargetPage::slotCreateRemoteFolderFinished()
+void FolderWizardTargetPage::slotCreateRemoteFolderFinished(QNetworkReply::NetworkError error)
 {
-    qDebug() << "** webdav mkdir request finished";
-    showWarn(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
-    slotRefreshFolders();
+    if (error == QNetworkReply::NoError) {
+        qDebug() << "** webdav mkdir request finished";
+        showWarn(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
+        slotRefreshFolders();
+    }
 }
 
 void FolderWizardTargetPage::slotHandleNetworkError(QNetworkReply *reply)
@@ -234,11 +237,11 @@ static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& t
     return 0;
 }
 
-static void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
+void FolderWizardTargetPage::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
 {
     QFileIconProvider prov;
     QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
-    if (pathTrail.size() == 0) {
+    if (pathTrail.size() == 0) {        
         if (path.endsWith('/')) {
             path.chop(1);
         }
@@ -259,7 +262,7 @@ static void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QStr
     }
 }
 
-void FolderWizardTargetPage::slotUpdateDirectories(QStringList list)
+void FolderWizardTargetPage::slotUpdateDirectories(const QStringList &list)
 {
     QString webdavFolder = QUrl(AccountManager::instance()->account()->davUrl()).path();
 
@@ -283,7 +286,7 @@ void FolderWizardTargetPage::slotUpdateDirectories(QStringList list)
 void FolderWizardTargetPage::slotRefreshFolders()
 {
     LsColJob *job = new LsColJob(AccountManager::instance()->account(), "/", this);
-    connect(job, SIGNAL(directoryListingUpdated(QStringList)),
+    connect(job, SIGNAL(directoryListing(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     _ui.folderTreeWidget->clear();
 }
@@ -292,7 +295,7 @@ void FolderWizardTargetPage::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
     LsColJob *job = new LsColJob(AccountManager::instance()->account(), dir, this);
-    connect(job, SIGNAL(directoryListingUpdated(QStringList)),
+    connect(job, SIGNAL(directoryListing(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
 }
 
