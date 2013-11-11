@@ -73,7 +73,6 @@ set(libsync_SRCS
     creds/dummycredentials.cpp
     creds/httpcredentials.cpp
     creds/credentialsfactory.cpp
-    creds/http/credentialstore.cpp
     creds/http/httpconfigfile.cpp
     creds/shibbolethcredentials.cpp
     creds/shibboleth/shibbolethaccessmanager.cpp
@@ -106,7 +105,6 @@ set(libsync_HEADERS
     creds/dummycredentials.h
     creds/httpcredentials.h
     creds/credentialsfactory.h
-    creds/http/credentialstore.h
     creds/http/httpconfigfile.h
     creds/shibbolethcredentials.h
     creds/shibboleth/shibbolethaccessmanager.h
