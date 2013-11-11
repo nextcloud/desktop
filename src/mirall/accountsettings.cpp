@@ -26,6 +26,7 @@
 #include "mirall/ignorelisteditor.h"
 #include "mirall/account.h"
 #include "mirall/networkjobs.h"
+#include "creds/abstractcredentials.h"
 
 #include <math.h>
 
@@ -776,8 +777,17 @@ void AccountSettings::slotOnlineStateChanged(bool online)
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
         ui->_buttonAdd->setEnabled(online);
         if (online) {
-            showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(_account->url().toString(), safeUrl.toString())
+            QString user;
+            if (AbstractCredentials *cred = _account->credentials()) {
+               user = cred->user();
+            }
+            if (user.isEmpty()) {
+                showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(_account->url().toString(), safeUrl.toString())
                                  /*, tr("Version: %1 (%2)").arg(versionStr).arg(version) */ );
+            } else {
+                showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a> as <i>%3</i>.").arg(_account->url().toString(), safeUrl.toString(), user)
+                                 /*, tr("Version: %1 (%2)").arg(versionStr).arg(version) */ );
+            }
         } else {
             showConnectionLabel( tr("No connection to %1 at <a href=\"%1\">%2</a>.")
                                  .arg(Theme::instance()->appNameGUI(),
