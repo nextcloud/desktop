@@ -61,7 +61,6 @@ public slots:
 protected:
     void parseOptions(const QStringList& );
     void setupTranslations();
-    void setupContextMenu();
     void setupLogging();
     void enterNextLogFile();
     bool checkConfigExists(bool openSettings);
