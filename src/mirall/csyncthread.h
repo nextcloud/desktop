@@ -100,7 +100,7 @@ private:
     QScopedPointer <OwncloudPropagator> _propagator;
     QElapsedTimer _syncTime;
     QString _lastDeleted; // if the last item was a path and it has been deleted
-
+    QHash <QString, QString> _seenFiles;
 
 
     // maps the origin and the target of the folders that have been renamed
