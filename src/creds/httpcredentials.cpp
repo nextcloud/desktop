@@ -197,7 +197,6 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
         Q_EMIT fetched();
         break;
     default:
-        // ### retry with insecure storage
         qDebug() << "Error while reading password" << job->errorString();
     }
 

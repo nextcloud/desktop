@@ -192,9 +192,6 @@ void AccountSettings::slotAddFolder( Folder *folder )
     QStandardItem *item = new QStandardItem();
     folderToModelItem( item, folder );
     _model->appendRow( item );
-    // ### TODO
-    //slotCheckConnection();
-
     // in order to update the enabled state of the "Sync now" button
     connect(folder, SIGNAL(syncStateChange()), this, SLOT(buttonsSetEnabled()), Qt::UniqueConnection);
 }
@@ -315,8 +312,6 @@ void AccountSettings::slotRemoveCurrentFolder()
             _model->removeRow(row);
 
             emit folderChanged();
-            // ### TODO
-            //slotCheckConnection();
         }
     }
 }
@@ -493,12 +488,6 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
     } else {
         // the dialog is not visible.
     }
-
-//    showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()),
-//                         tr("Version: %1 (%2)").arg(versionStr).arg(version) );
-//    ui->_ButtonAdd->setEnabled(true);
-    // ### TODO
-//    slotCheckConnection();
 }
 
 //void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr, const QString& version, const QString& )
