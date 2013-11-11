@@ -97,17 +97,18 @@ AccountSettings::AccountSettings(QWidget *parent) :
 
     QColor color = palette().highlight().color();
     ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
-    ui->connectLabel->setWordWrap( true );
-    ui->quotaLabel->setWordWrap( true );
+    ui->connectLabel->setWordWrap(true);
+    ui->connectLabel->setOpenExternalLinks(true);
+    ui->quotaLabel->setWordWrap(true);
 
+    ui->connectLabel->setText(tr("No account configured."));
+    ui->_buttonAdd->setEnabled(false);
     if (_account) {
         connect(_account, SIGNAL(onlineStateChanged(bool)), SLOT(slotOnlineStateChanged(bool)));
         slotOnlineStateChanged(_account->isOnline());
     }
 
     setFolderList(FolderMan::instance()->map());
-    ui->_buttonAdd->setEnabled(false);
-    ui->connectLabel->setText(tr("No account configured."));
 }
 
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
