@@ -373,6 +373,7 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
     ops[1].name = NULL;
 
     int rc = ne_proppatch( _propagator->_session, uri, ops );
+    Q_UNUSED(rc);
     /* FIXME: error handling
     bool error = updateErrorFromSession( rc );
     if( error ) {

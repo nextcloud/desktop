@@ -26,11 +26,13 @@
 namespace Mirall {
 
 SyncJournalFileRecord::SyncJournalFileRecord()
+    :_uid(0), _gid(0), _mode(0)
 {
 }
 
 SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QString &localFileName)
-    : _path(item._file), _type(item._type), _etag(item._etag), _fileId(item._fileId)
+    : _path(item._file), _type(item._type), _etag(item._etag), _fileId(item._fileId),
+      _uid(0), _gid(0), _mode(0)
 {
     if (item._dir == SyncFileItem::Down) {
         QFileInfo fi(localFileName);

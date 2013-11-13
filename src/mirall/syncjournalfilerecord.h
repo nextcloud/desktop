@@ -34,14 +34,14 @@ public:
     // query("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM metadata WHERE phash=:phash");
 
     QString   _path;
-    int       _inode;
-    int       _uid;
-    int       _gid;
-    int       _mode;
+    quint64   _inode;
     QDateTime _modtime;
     int       _type;
     QString   _etag;
     QString   _fileId;
+    int       _uid;
+    int       _gid;
+    int       _mode;
 };
 
 }
