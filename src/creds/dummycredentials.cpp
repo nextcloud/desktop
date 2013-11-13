@@ -35,6 +35,11 @@ QString DummyCredentials::authType() const
     return QString::fromLatin1("dummy");
 }
 
+QString DummyCredentials::user() const
+{
+    return QString();
+}
+
 QNetworkAccessManager* DummyCredentials::getQNAM() const
 {
     return new MirallAccessManager;

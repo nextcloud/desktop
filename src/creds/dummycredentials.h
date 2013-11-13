@@ -28,6 +28,7 @@ public:
   void syncContextPreStart(CSYNC* ctx);
   bool changed(AbstractCredentials* credentials) const;
   QString authType() const;
+  QString user() const;
   QNetworkAccessManager* getQNAM() const;
   bool ready() const;
   void fetch(Account*);

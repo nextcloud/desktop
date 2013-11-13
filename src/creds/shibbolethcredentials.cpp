@@ -146,6 +146,14 @@ QString ShibbolethCredentials::authType() const
     return QString::fromLatin1("shibboleth");
 }
 
+QString ShibbolethCredentials::user() const
+{
+    // ### TODO: If we had a way to extract the currently authenticated user
+    // somehow, we could return its id token (email) here (stored in REMOTE_USER)
+    // The server doesn't return it by default
+    return QString();
+}
+
 QNetworkCookie ShibbolethCredentials::cookie() const
 {
     return _shibCookie;

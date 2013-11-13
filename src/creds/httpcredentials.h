@@ -47,7 +47,6 @@ public:
   bool ready() const;
   void fetch(Account *account);
   void persist(Account *account);
-
   QString user() const;
   QString password() const;
 
