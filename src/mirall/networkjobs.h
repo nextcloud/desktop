@@ -152,7 +152,7 @@ private slots:
 
 private:
     bool _followRedirects;
-    bool _redirectCount;
+    int _redirectCount;
 };
 
 
