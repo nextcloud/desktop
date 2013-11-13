@@ -18,6 +18,7 @@
 #include <qmutex.h>
 #include <QDateTime>
 #include <QSqlDatabase>
+#include <QHash>
 
 namespace Mirall {
 class SyncJournalFileRecord;
@@ -55,6 +56,7 @@ public:
     void setDownloadInfo(const QString &file, const DownloadInfo &i);
     UploadInfo getUploadInfo(const QString &file);
     void setUploadInfo(const QString &file, const UploadInfo &i);
+    bool postSyncCleanup( const QHash<QString, QString>& items );
 
 signals:
 

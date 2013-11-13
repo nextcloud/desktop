@@ -413,7 +413,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
 
     // If there was a change in the file list, redo the progress menu.
     if( progress.kind == Progress::EndDownload || progress.kind == Progress::EndUpload ||
-            progress.kind == Progress::EndDelete ) {
+            progress.kind == Progress::EndDelete || progress.kind == Progress::EndRename ) {
         slotRebuildRecentMenus();
     }
 

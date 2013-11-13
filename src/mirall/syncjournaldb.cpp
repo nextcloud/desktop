@@ -231,7 +231,7 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
     QMutexLocker locker(&_mutex);
 
     if( checkConnect() ) {
-        if (recursively) {
+        if (!recursively) {
             qlonglong phash = getPHash(filename);
             QSqlQuery query( "DELETE FROM metadata WHERE phash=?", _db );
             query.bindValue( 0, QString::number(phash) );
@@ -301,6 +301,44 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
         }
     }
     return rec;
+}
+
+bool SyncJournalDb::postSyncCleanup(const QHash<QString, QString> &items )
+{
+    QMutexLocker locker(&_mutex);
+
+    if( !checkConnect() )
+        return false;
+
+    QSqlQuery query("SELECT phash, path FROM metadata order by path" ,  _db);
+
+    if (!query.exec()) {
+        QString err = query.lastError().text();
+        qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;;
+        return false;
+    }
+
+    QStringList superfluousItems;
+
+    while(query.next()) {
+        const QString file = query.value(1).toString();
+        bool contained = items.contains(file);
+        if( !contained ) {
+            superfluousItems.append(query.value(0).toString());
+        }
+    }
+
+    if( superfluousItems.count() )  {
+        QString sql = "DELETE FROM metadata WHERE phash in ("+ superfluousItems.join(",")+")";
+        qDebug() << "Sync Journal cleanup: " << sql;
+        QSqlQuery delQuery(sql);
+        if( !delQuery.exec() ) {
+            QString err = delQuery.lastError().text();
+            qDebug() << "Error removing superfluous journal entries: " << delQuery.lastQuery() << ", Error:" << err;;
+            return false;
+        }
+    }
+    return true;
 }
 
 int SyncJournalDb::getFileRecordCount()

@@ -133,6 +133,7 @@ void PropagateLocalRemove::start()
         QFile file(filename);
         if (file.exists() && !file.remove()) {
             done(SyncFileItem::NormalError, file.errorString());
+            return;
         }
     }
     _propagator->_journal->deleteFileRecord(_item._originalFile);
@@ -627,14 +628,15 @@ void PropagateDownloadFile::start()
     //In case of conflict, make a backup of the old file
     if (isConflict) {
         QFile f(fn);
+        QString conflictFileName(fn);
         // Add _conflict-XXXX  before the extention.
-        int dotLocation = fn.lastIndexOf('.');
+        int dotLocation = conflictFileName.lastIndexOf('.');
         // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-        if (dotLocation <= fn.lastIndexOf('/') + 1) {
-            dotLocation = fn.size();
+        if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
+            dotLocation = conflictFileName.size();
         }
-        fn.insert(dotLocation, "_conflict-" + QDateTime::fromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss"));
-        if (!f.rename(fn)) {
+        conflictFileName.insert(dotLocation, "_conflict-" + QDateTime::fromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss"));
+        if (!f.rename(conflictFileName)) {
             //If the rename fails, don't replace it.
             done(SyncFileItem::NormalError, f.errorString());
             return;
@@ -647,6 +649,7 @@ void PropagateDownloadFile::start()
     bool success;
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     success = tmpFile.fileEngine()->rename(fn);
+    // qDebug() << "Renaming " << tmpFile.fileName() << " to " << fn;
 #else
     // We want a rename that also overwite.  QFile::rename does not overwite.
     // Qt 5.1 has QSaveFile::renameOverwrite we cold use.
@@ -656,6 +659,7 @@ void PropagateDownloadFile::start()
 #endif
     // unixoids
     if (!success) {
+        qDebug() << "FAIL: renaming temp file to final failed: " << tmpFile.errorString();
         done(SyncFileItem::NormalError, tmpFile.errorString());
         return;
     }
@@ -688,6 +692,7 @@ DECLARE_JOB(PropagateLocalRename)
 
 void PropagateLocalRename::start()
 {
+    emit progress(Progress::StartRename, _item._file, 0, _item._size);
     if (_item._file != _item._renameTarget) {
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
         QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
@@ -696,10 +701,15 @@ void PropagateLocalRename::start()
     _item._instruction = CSYNC_INSTRUCTION_DELETED;
     _propagator->_journal->deleteFileRecord(_item._originalFile);
 
-    SyncJournalFileRecord record(_item, _propagator->_remoteDir + _item._file);
+    // store the rename file name in the item.
+    _item._file = _item._renameTarget;
+
+    SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
     record._path = _item._renameTarget;
+
     _propagator->_journal->setFileRecord(record);
-    emit progress(Progress::EndDownload, _item._file, 0, _item._size);
+    emit progress(Progress::EndRename, _item._file, 0, _item._size);
+
     done(SyncFileItem::Success);
 }
 
@@ -726,6 +736,7 @@ void PropagateRemoteRename::start()
         }
         return;
     } else {
+        emit progress(Progress::StartRename, _item._file, 0, _item._size);
 
         QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
         QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
@@ -736,11 +747,14 @@ void PropagateRemoteRename::start()
         }
 
         updateMTimeAndETag(uri2.data(), _item._modtime);
+        emit progress(Progress::EndRename, _item._file, 0, _item._size);
+
     }
 
     _propagator->_journal->deleteFileRecord(_item._originalFile);
     SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
     record._path = _item._renameTarget;
+
     _propagator->_journal->setFileRecord(record);
     done(SyncFileItem::Success);
 }
@@ -902,6 +916,10 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
         startJob(next);
     } else {
         if (!_item.isEmpty() && !_hasError) {
+            if( !_item._renameTarget.isEmpty() ) {
+                _item._file = _item._renameTarget;
+            }
+
             SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
             _propagator->_journal->setFileRecord(record);
         }

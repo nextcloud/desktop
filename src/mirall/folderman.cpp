@@ -19,6 +19,8 @@
 #include "mirall/inotify.h"
 #include "mirall/theme.h"
 
+#include <neon/ne_socket.h>
+
 #ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
 #endif
@@ -52,8 +54,10 @@ FolderMan::FolderMan(QObject *parent) :
 
 FolderMan *FolderMan::instance()
 {
-    if(!_instance)
+    if(!_instance) {
         _instance = new FolderMan;
+        ne_sock_init();
+    }
 
     return _instance;
 }
@@ -61,6 +65,7 @@ FolderMan *FolderMan::instance()
 FolderMan::~FolderMan()
 {
     qDeleteAll(_folderMap);
+    ne_sock_exit();
 }
 
 Mirall::Folder::Map FolderMan::map()

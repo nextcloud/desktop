@@ -316,11 +316,12 @@ void Folder::bubbleUpSyncResult()
     int removedItems = 0;
     int updatedItems = 0;
     int ignoredItems = 0;
+    int renamedItems = 0;
 
     SyncFileItem firstItemNew;
     SyncFileItem firstItemDeleted;
     SyncFileItem firstItemUpdated;
-
+    SyncFileItem firstItemRenamed;
     Logger *logger = Logger::instance();
 
     foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
@@ -360,6 +361,12 @@ void Folder::bubbleUpSyncResult()
                 case CSYNC_INSTRUCTION_ERROR:
                     qDebug() << "Got Instruction ERROR. " << _syncResult.errorString();
                     break;
+                case CSYNC_INSTRUCTION_RENAME:
+                    if (firstItemRenamed.isEmpty()) {
+                        firstItemRenamed = item;
+                    }
+                    renamedItems++;
+                    break;
                 default:
                     // nothing.
                     break;
@@ -374,30 +381,27 @@ void Folder::bubbleUpSyncResult()
 
     _syncResult.setWarnCount(ignoredItems);
 
+
+    createGuiLog( firstItemNew._file,     tr("downloaded"), newItems );
+    createGuiLog( firstItemDeleted._file, tr("removed"), removedItems );
+    createGuiLog( firstItemUpdated._file, tr("updated"), updatedItems );
+    createGuiLog( firstItemRenamed._file, tr("renamed"), renamedItems );
+
     qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
-    if (newItems > 0) {
-        QString file = QDir::toNativeSeparators(firstItemNew._file);
-        if (newItems == 1)
-            logger->postOptionalGuiLog(tr("New file available"), tr("'%1' has been synced to this machine.").arg(file));
-        else
-            logger->postOptionalGuiLog(tr("New files available"), tr("'%1' and %n other file(s) have been synced to this machine.",
-                                                             "", newItems-1).arg(file));
-    }
-    if (removedItems > 0) {
-        QString file = QDir::toNativeSeparators(firstItemDeleted._file);
-        if (removedItems == 1)
-            logger->postOptionalGuiLog(tr("File removed"), tr("'%1' has been removed.").arg(file));
-        else
-            logger->postOptionalGuiLog(tr("Files removed"), tr("'%1' and %n other file(s) have been removed.",
-                                                        "", removedItems-1).arg(file));
-    }
-    if (updatedItems > 0) {
-        QString file = QDir::toNativeSeparators(firstItemUpdated._file);
-        if (updatedItems == 1)
-            logger->postOptionalGuiLog(tr("File updated"), tr("'%1' has been updated.").arg(file));
-        else
-            logger->postOptionalGuiLog(tr("Files updated"), tr("'%1' and %n other file(s) have been updated.",
-                                                       "", updatedItems-1).arg(file));
+}
+
+void Folder::createGuiLog( const QString& filename, const QString& verb, int count )
+{
+    if(count > 0) {
+        Logger *logger = Logger::instance();
+
+        QString file = QDir::toNativeSeparators(filename);
+        if (count == 1) {
+            logger->postOptionalGuiLog(tr("File %1").arg(verb), tr("'%1' has been %2.").arg(file).arg(verb));
+        } else {
+            logger->postOptionalGuiLog(tr("Files %1").arg(verb),
+                                       tr("'%1' and %2 other files have been %3.").arg(file).arg(count-1).arg(verb));
+        }
     }
 }
 

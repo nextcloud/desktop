@@ -42,6 +42,8 @@ namespace Progress
         EndSync,
         StartDelete,
         EndDelete,
+        StartRename,
+        EndRename,
         Error
     };
 

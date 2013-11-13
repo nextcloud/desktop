@@ -58,6 +58,12 @@ QString Progress::asResultString( Kind kind )
     case EndDelete:
         re = QCoreApplication::translate( "progress", "deleted");
         break;
+    case StartRename:
+        re = QCoreApplication::translate( "progress", "Move");
+        break;
+    case EndRename:
+        re = QCoreApplication::translate( "progress", "Move");
+        break;
     default:
         Q_ASSERT(false);
     }
@@ -105,6 +111,12 @@ QString Progress::asActionString( Kind kind )
         break;
     case EndDelete:
         re = QCoreApplication::translate( "progress", "deleted");
+        break;
+    case StartRename:
+        re = QCoreApplication::translate( "progress", "move");
+        break;
+    case EndRename:
+        re = QCoreApplication::translate( "progress", "moved");
         break;
     default:
         Q_ASSERT(false);
@@ -185,7 +197,8 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::
         }
         if( newProgress.kind == Progress::EndDownload ||
                 newProgress.kind == Progress::EndUpload ||
-                newProgress.kind == Progress::EndDelete ) {
+                newProgress.kind == Progress::EndDelete ||
+                newProgress.kind == Progress::EndRename ) {
             _recentChanges.prepend(newProgress);
             if( _recentChanges.size() > _QueueSize ) {
                 _recentChanges.removeLast();

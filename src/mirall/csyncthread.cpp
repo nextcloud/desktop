@@ -199,10 +199,12 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     if( ! file ) return -1;
     SyncFileItem item;
     item._file = QString::fromUtf8( file->path );
-    item._originalFile = file->path;
+    item._originalFile = item._file;
     item._instruction = file->instruction;
     item._dir = SyncFileItem::None;
     item._fileId = QString::fromUtf8(file->file_id);
+
+    _seenFiles[item._file] = QString();
 
     if(file->error_string) {
         item._errorString = QString::fromUtf8(file->error_string);
@@ -404,6 +406,8 @@ void CSyncThread::startSync()
 
     _hasFiles = false;
     bool walkOk = true;
+    _seenFiles.clear();
+
     if( csync_walk_local_tree(_csync_ctx, &treewalkLocal, 0) < 0 ) {
         qDebug() << "Error in local treewalk.";
         walkOk = false;
@@ -433,6 +437,8 @@ void CSyncThread::startSync()
 
     ne_session_s *session = 0;
     // that call to set property actually is a get which will return the session
+    // FIXME add a csync_get_module_property to csync
+
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
     Q_ASSERT(session);
 
@@ -483,6 +489,9 @@ void CSyncThread::transferCompleted(const SyncFileItem &item)
 void CSyncThread::slotFinished()
 {
     // emit the treewalk results.
+    if( ! _journal->postSyncCleanup( _seenFiles ) ) {
+        qDebug() << "Cleaning of synced ";
+    }
     emit treeWalkResult(_syncedItems);
 
     csync_commit(_csync_ctx);
@@ -494,6 +503,7 @@ void CSyncThread::slotFinished()
     _syncMutex.unlock();
     thread()->quit();
 }
+
 
 void CSyncThread::slotProgress(Progress::Kind kind, const QString &file, quint64 curr, quint64 total)
 {
