@@ -203,7 +203,6 @@ Function CreateSMShortcuts
 StrCpy ${SMSUBDIR} $9 ;stupid sync
 CreateDirectory "$SMPrograms\${SMSUBDIR}"
 CreateShortcut "$SMPrograms\${SMSUBDIR}\${APPNAME}.lnk" "$Windir\Notepad.exe"
-CreateShortcut "$SMPrograms\${SMSUBDIR}\Uninstall ${APPNAME}.lnk" "$InstDir\${UNINSTALLER_NAME}"
 FunctionEnd
 Function CreateDeskShortcuts
 CreateShortcut "$Desktop\${APPNAME}.lnk" "$Windir\Notepad.exe"
@@ -232,7 +231,6 @@ SectionEnd
 Section Uninstall
 Delete "$InstDir\${UNINSTALLER_NAME}"
 Delete "$SMPrograms\${SMSUBDIR}\${APPNAME}.lnk"
-Delete "$SMPrograms\${SMSUBDIR}\Uninstall ${APPNAME}.lnk"
 RMDir "$SMPrograms\${SMSUBDIR}"
 Delete "$Desktop\${APPNAME}.lnk"
 
