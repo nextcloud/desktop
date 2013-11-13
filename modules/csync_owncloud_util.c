@@ -309,9 +309,9 @@ csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
     if( res->md5 ) {
-        lfs->md5   = c_strdup(res->md5);
+        lfs->etag   = c_strdup(res->md5);
     }
-    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
     csync_vio_file_stat_set_file_id(lfs, res->file_id);
 
     return lfs;

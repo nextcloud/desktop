@@ -80,7 +80,7 @@ static void clean_caches() {
     propfind_cache = NULL;
 
     SAFE_FREE(_stat_cache.name);
-    SAFE_FREE(_stat_cache.md5 );
+    SAFE_FREE(_stat_cache.etag );
     memset( _stat_cache.file_id, 0, FILE_ID_BUF_SIZE+1 );
 
     SAFE_FREE(_id_cache.uri);
@@ -766,7 +766,7 @@ static struct listdir_context *fetch_resource_list_attempts(const char *uri, int
 static void fill_stat_cache( csync_vio_file_stat_t *lfs ) {
 
     if( _stat_cache.name ) SAFE_FREE(_stat_cache.name);
-    if( _stat_cache.md5  ) SAFE_FREE(_stat_cache.md5 );
+    if( _stat_cache.etag  ) SAFE_FREE(_stat_cache.etag );
 
     if( !lfs) return;
 
@@ -777,8 +777,8 @@ static void fill_stat_cache( csync_vio_file_stat_t *lfs ) {
     _stat_cache.size   = lfs->size;
     csync_vio_file_stat_set_file_id(&_stat_cache, lfs->file_id);
 
-    if( lfs->md5 ) {
-        _stat_cache.md5    = c_strdup(lfs->md5);
+    if( lfs->etag ) {
+        _stat_cache.etag    = c_strdup(lfs->etag);
     }
 }
 
@@ -819,10 +819,10 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->mtime   = _stat_cache.mtime;
         buf->size    = _stat_cache.size;
         buf->mode    = _stat_perms( _stat_cache.type );
-        buf->md5     = NULL;
-        if( _stat_cache.md5 ) {
-            buf->md5    = c_strdup( _stat_cache.md5 );
-            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+        buf->etag     = NULL;
+        if( _stat_cache.etag ) {
+            buf->etag    = c_strdup( _stat_cache.etag );
+            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
         }
         csync_vio_file_stat_set_file_id( buf, _stat_cache.file_id );
         return 0;
@@ -867,16 +867,16 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
             buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
             buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
             buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
-            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
 
             buf->fields = lfs->fields;
             buf->type   = lfs->type;
             buf->mtime  = lfs->mtime;
             buf->size   = lfs->size;
             buf->mode   = _stat_perms( lfs->type );
-            buf->md5    = NULL;
-            if( lfs->md5 ) {
-                buf->md5    = c_strdup( lfs->md5 );
+            buf->etag    = NULL;
+            if( lfs->etag ) {
+                buf->etag    = c_strdup( lfs->etag );
             }
             csync_vio_file_stat_set_file_id( buf, lfs->file_id );
 
@@ -948,7 +948,7 @@ static const char* owncloud_get_etag( const char *path )
             return NULL;
         }
         if( owncloud_stat( path, fs ) == 0 ) {
-            header = fs->md5;
+            header = fs->etag;
         }
     }
 

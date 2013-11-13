@@ -73,7 +73,7 @@ enum csync_vio_file_stat_fields_e {
   CSYNC_VIO_FILE_STAT_FIELDS_ACL = 1 << 14,
   CSYNC_VIO_FILE_STAT_FIELDS_UID = 1 << 15,
   CSYNC_VIO_FILE_STAT_FIELDS_GID = 1 << 16,
-  CSYNC_VIO_FILE_STAT_FIELDS_MD5 = 1 << 17,
+  CSYNC_VIO_FILE_STAT_FIELDS_ETAG = 1 << 17,
   CSYNC_VIO_FILE_STAT_FIELDS_FILE_ID = 1 << 18
 };
 
@@ -86,7 +86,7 @@ struct csync_vio_file_stat_s {
 
   void *acl;
   char *name;
-  char *md5;
+  char *etag;
   char file_id[FILE_ID_BUF_SIZE+1];
 
   uid_t uid;

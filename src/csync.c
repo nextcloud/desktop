@@ -552,16 +552,16 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.type         = cur->type;
       trav.instruction  = cur->instruction;
       trav.rename_path  = cur->destpath;
-      trav.md5          = cur->md5;
+      trav.etag         = cur->etag;
       trav.file_id      = cur->file_id;
 
       trav.error_string = cur->error_string;
 
       rc = (*visitor)(&trav, twctx->userdata);
       cur->instruction = trav.instruction;
-      if (trav.md5 != cur->md5) {
-          SAFE_FREE(cur->md5);
-          cur->md5 = c_strdup(trav.md5);
+      if (trav.etag != cur->etag) {
+          SAFE_FREE(cur->etag);
+          cur->etag = c_strdup(trav.etag);
       }
       return rc;
     }
@@ -1030,7 +1030,7 @@ int  csync_abort_requested(CSYNC *ctx)
 void csync_file_stat_free(csync_file_stat_t *st)
 {
   if (st) {
-    SAFE_FREE(st->md5);
+    SAFE_FREE(st->etag);
     SAFE_FREE(st->error_string);
     SAFE_FREE(st->destpath);
     SAFE_FREE(st);

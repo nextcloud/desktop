@@ -28,7 +28,7 @@ csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
   if (file_stat == NULL) {
     return NULL;
   }
-  file_stat->md5 = NULL;
+  file_stat->etag = NULL;
   memset(file_stat->file_id, 0, FILE_ID_BUF_SIZE+1);
   return file_stat;
 }
@@ -45,8 +45,8 @@ void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {
   if (file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_CHECKSUM) {
     SAFE_FREE(file_stat->u.checksum);
   }
-  if (file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_MD5) {
-    SAFE_FREE(file_stat->md5);
+  if (file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_ETAG) {
+    SAFE_FREE(file_stat->etag);
   }
   SAFE_FREE(file_stat->name);
   SAFE_FREE(file_stat);

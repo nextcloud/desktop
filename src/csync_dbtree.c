@@ -68,7 +68,7 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
        "mode INTEGER,"
        "modtime INTEGER(8),"
        "type INTEGER,"
-       "md5 VARCHAR(32),"
+       "md5 VARCHAR(32),"  // That's the etag
      */
 
     int col_count = 9;
@@ -126,7 +126,7 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
         if( cnt < tpath_len ) continue;
 
         if (!list->vector[base+8][0])
-            continue; /* If md5 is empty, the file was removed on the server */
+            continue; /* If etag is empty, the file was removed on the server */
 
         fs = csync_vio_file_stat_new();
         fs->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
@@ -178,8 +178,8 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
         fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
 
         column = list->vector[base+8]; /* type     */
-        fs->md5 = c_strdup(column);
-        fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+        fs->etag = c_strdup(column);
+        fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
 
         /* store into result list. */
         listing->list = c_list_append( listing->list, fs );

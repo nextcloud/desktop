@@ -193,7 +193,7 @@ struct csync_tree_walk_file_s {
     enum csync_instructions_e instruction;
 
     const char *rename_path;
-    const char *md5;
+    const char *etag;
     const char *error_string;
     const char *file_id;
 

@@ -159,7 +159,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   /* Set instruction by default to none */
   st->instruction = CSYNC_INSTRUCTION_NONE;
-  st->md5 = NULL;
+  st->etag = NULL;
   st->child_modified = 0;
 
   /* check hardlink count */
@@ -207,13 +207,13 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64 ", md5: %s <-> %s, inode: %" PRId64 " <-> %" PRId64,
-                  ((int64_t) fs->mtime), ((int64_t) tmp->modtime), fs->md5, tmp->md5, (uint64_t) fs->inode, (uint64_t) tmp->inode);
-        if( !fs->md5) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64 ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64,
+                  ((int64_t) fs->mtime), ((int64_t) tmp->modtime), fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode);
+        if( !fs->etag) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
-        if((ctx->current == REMOTE_REPLICA && !c_streq(fs->md5, tmp->md5 ))
+        if((ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag ))
             || (ctx->current == LOCAL_REPLICA && (fs->mtime != tmp->modtime
 #if 0
                                                   || fs->inode != tmp->inode
@@ -266,7 +266,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
                     csync_rename_record(ctx, tmp->path, path);
                 } else {
-                    if( !c_streq(tmp->md5, fs->md5) ) {
+                    if( !c_streq(tmp->etag, fs->etag) ) {
                         /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ETags are different!"); */
                         /* File with different etag, don't do a rename, but download the file again */
                         st->instruction = CSYNC_INSTRUCTION_NEW;
@@ -310,9 +310,9 @@ out:
   st->gid   = fs->gid;
   st->nlink = fs->nlink;
   st->type  = type;
-  st->md5   = NULL;
-  if( fs->md5 ) {
-      st->md5  = c_strdup(fs->md5);
+  st->etag   = NULL;
+  if( fs->etag ) {
+      st->etag  = c_strdup(fs->etag);
   }
   csync_vio_set_file_id(st->file_id, fs->file_id);
 
@@ -410,8 +410,8 @@ static int _check_read_from_db(CSYNC *ctx, const char *uri) {
     int len;
     uint64_t h;
     csync_vio_file_stat_t *fs = NULL;
-    const char *md5_local  = NULL;
-    const char *md5_remote = NULL;
+    const char *etag_local  = NULL;
+    const char *etag_remote = NULL;
     const char *mpath;
     int rc = 0; /* FIXME: Error handling! */
     csync_file_stat_t* tmp = NULL;
@@ -433,20 +433,20 @@ static int _check_read_from_db(CSYNC *ctx, const char *uri) {
         len = strlen( mpath );
         h = c_jhash64((uint8_t *) mpath, len, 0);
 
-        /* search that folder in the db and check that the hash is the md5 (etag) is still the same */
+        /* search that folder in the db and check that the hash is the etag (etag) is still the same */
         if( csync_get_statedb_exists(ctx) ) {
           tmp = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
           if (tmp) {
-            md5_local = tmp->md5;
-            md5_remote = csync_vio_get_etag(ctx, uri);
+            etag_local = tmp->etag;
+            etag_remote = csync_vio_get_etag(ctx, uri);
 
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Compare directory ids for %s: %s -> %s", mpath, md5_local, md5_remote );
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Compare directory ids for %s: %s -> %s", mpath, etag_local, etag_remote );
 
-            if( c_streq(md5_local, md5_remote) ) {
+            if( c_streq(etag_local, etag_remote) ) {
               ctx->remote.read_from_db = 1;
             }
-            SAFE_FREE(md5_remote);
-            SAFE_FREE(md5_local);
+            SAFE_FREE(etag_remote);
+            SAFE_FREE(etag_local);
             SAFE_FREE(tmp);
           }
         }
@@ -478,7 +478,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     goto error;
   }
 
-  /* If remote, compare the id with the local id. If equal, read all contents from
+  /* If remote, compare the etag with the local etag. If equal, read all contents from
    * the database. */
   read_from_db = ctx->remote.read_from_db;
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "  => Starting to ftw %s, read_from_db-Flag for: %d",
@@ -603,19 +603,19 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     if( ctx->current == LOCAL_REPLICA ) {
-        char *md5 = NULL;
+        char *etag = NULL;
         int len = strlen( path );
         uint64_t h = c_jhash64((uint8_t *) path, len, 0);
-        md5 = csync_statedb_get_uniqId( ctx, h, fs );
-        if( md5 ) {
-            SAFE_FREE(fs->md5);
-            fs->md5 = md5;
-            fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MD5;
+        etag = csync_statedb_get_uniqId( ctx, h, fs );
+        if( etag ) {
+            SAFE_FREE(fs->etag);
+            fs->etag = etag;
+            fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
         }
-        if( c_streq(md5, "")) {
+        if( c_streq(etag, "")) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database is EMPTY: %s", path);
         } else {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database: %s -> %s", path, fs->md5 ? fs->md5 : "<NULL>" );
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database: %s -> %s", path, fs->etag ? fs->etag : "<NULL>" );
         }
     }
 
@@ -631,7 +631,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     if( ! do_read_from_db ) {
         csync_vio_file_stat_destroy(fs);
     } else {
-        SAFE_FREE(fs->md5);
+        SAFE_FREE(fs->etag);
     }
 
     if (rc < 0) {
@@ -655,7 +655,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       if (ctx->current_fs && !ctx->current_fs->child_modified
           && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
         ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
-        ctx->current_fs->should_update_md5 = true;
+        ctx->current_fs->should_update_etag = true;
       }
     }
     ctx->current_fs = previous_fs;

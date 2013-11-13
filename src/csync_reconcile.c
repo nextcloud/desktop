@@ -154,7 +154,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     other->instruction = CSYNC_INSTRUCTION_SYNC;
                 }
 
-                SAFE_FREE(tmp->md5);
+                SAFE_FREE(tmp->etag);
                 SAFE_FREE(tmp);
            }
 
@@ -195,7 +195,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     cur->instruction = CSYNC_INSTRUCTION_UPDATED; /* update the DB */
                     other->instruction = CSYNC_INSTRUCTION_NONE;
 
-                    if( !cur->md5 && other->md5 ) cur->md5 = c_strdup(other->md5);
+                    if( !cur->etag && other->etag ) cur->etag = c_strdup(other->etag);
                 } else if(ctx->current == REMOTE_REPLICA) {
                     if(ctx->options.with_conflict_copys) {
                         cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
