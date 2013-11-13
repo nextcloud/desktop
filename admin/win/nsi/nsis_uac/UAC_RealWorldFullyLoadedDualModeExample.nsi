@@ -5,7 +5,6 @@ This sample uses the registry plugin, so you need to download that if you don't 
 
 !define APPNAME "UAC_RealWorldFullyLoadedDualMode"
 !define ELEVATIONTITLE "${APPNAME}: Elevate" ;displayed during elevation on our custom page
-!define SMSUBDIR $StartMenuFolder ;"${APPNAME}"
 !define UNINSTALLER_NAME "Uninstall ${APPNAME}.exe"
 !define UNINSTALLER_REGSECTION "${APPNAME}"
 !define RegPath.MSUninstall "Software\Microsoft\Windows\CurrentVersion\Uninstall"
@@ -200,10 +199,7 @@ UAC::Exec "" "Notepad.exe" "$Windir\Win.INI" "$InstDir"
 FunctionEnd
 
 Function CreateSMShortcuts
-StrCpy ${SMSUBDIR} $9 ;stupid sync
-CreateDirectory "$SMPrograms\${SMSUBDIR}"
-CreateShortcut "$SMPrograms\${SMSUBDIR}\${APPNAME}.lnk" "$Windir\Notepad.exe"
-CreateShortcut "$SMPrograms\${SMSUBDIR}\Uninstall ${APPNAME}.lnk" "$InstDir\${UNINSTALLER_NAME}"
+CreateShortcut "$SMPrograms\${APPNAME}.lnk" "$Windir\Notepad.exe"
 FunctionEnd
 Function CreateDeskShortcuts
 CreateShortcut "$Desktop\${APPNAME}.lnk" "$Windir\Notepad.exe"
@@ -222,7 +218,6 @@ ${registry::Unload}
 SectionEnd
 
 Section "Startmenu Shortcuts"
-StrCpy $9 ${SMSUBDIR} ;this is stupid as hell, we need correct ${SMSUBDIR} in the outer process, this is the only way (plugins cannot enum "custom" var's AFAIK)
 ${UAC.CallFunctionAsUser} CreateSMShortcuts
 SectionEnd
 Section "Desktop Shortcut"
@@ -231,9 +226,7 @@ SectionEnd
 
 Section Uninstall
 Delete "$InstDir\${UNINSTALLER_NAME}"
-Delete "$SMPrograms\${SMSUBDIR}\${APPNAME}.lnk"
-Delete "$SMPrograms\${SMSUBDIR}\Uninstall ${APPNAME}.lnk"
-RMDir "$SMPrograms\${SMSUBDIR}"
+Delete "$SMPrograms\${APPNAME}.lnk"
 Delete "$Desktop\${APPNAME}.lnk"
 
 RMDir "$InstDir"
