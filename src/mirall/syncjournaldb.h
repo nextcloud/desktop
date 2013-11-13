@@ -19,6 +19,7 @@
 #include <QDateTime>
 #include <QSqlDatabase>
 #include <QHash>
+#include <QSqlQuery>
 
 namespace Mirall {
 class SyncJournalFileRecord;
@@ -70,6 +71,14 @@ private:
     QSqlDatabase _db;
     QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
+    QScopedPointer<QSqlQuery> _getFileRecordQuery;
+    QScopedPointer<QSqlQuery> _setFileRecordQuery;
+    QScopedPointer<QSqlQuery> _getDownloadInfoQuery;
+    QScopedPointer<QSqlQuery> _setDownloadInfoQuery;
+    QScopedPointer<QSqlQuery> _deleteDownloadInfoQuery;
+    QScopedPointer<QSqlQuery> _getUploadInfoQuery;
+    QScopedPointer<QSqlQuery> _setUploadInfoQuery;
+    QScopedPointer<QSqlQuery> _deleteUploadInfoQuery;
 
 };
 
