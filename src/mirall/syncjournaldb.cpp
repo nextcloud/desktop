@@ -87,7 +87,7 @@ bool SyncJournalDb::checkConnect()
                           "mode INTEGER,"
                           "modtime INTEGER(8),"
                           "type INTEGER,"
-                          "md5 VARCHAR(32),"
+                          "md5 VARCHAR(32)," /* This is the etag.  Called md5 for compatibility */
                           "PRIMARY KEY(phash)"
                           ");" , _db);
 
