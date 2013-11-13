@@ -21,6 +21,9 @@ set(HTTPBF_LINK_LIBRARIES
 set(httpbf_SRCS
   src/httpbf.c
 )
+set(httpbf_HEADERS
+  src/httpbf.h
+)
 
 include_directories(
   ${HTTPBF_PUBLIC_INCLUDE_DIRS}
@@ -43,3 +46,11 @@ INSTALL(
     RUNTIME DESTINATION
     ${BIN_INSTALL_DIR}
 )
+
+INSTALL(
+    FILES
+    ${httpbf_HEADERS}
+    DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
