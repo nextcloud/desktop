@@ -229,7 +229,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
         return folder;
     }
 
-    QSettings settings( cfgFile.filePath(), QSettings::IniFormat);
+    QSettings settings( _folderConfigPath + QLatin1Char('/') + escapedAlias, QSettings::IniFormat);
     qDebug() << "    -> file path: " << settings.fileName();
 
     // Check if the filename is equal to the group setting. If not, use the group
@@ -244,7 +244,8 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
 
     QString path = settings.value(QLatin1String("localPath")).toString();
     QString backend = settings.value(QLatin1String("backend")).toString();
-    QString targetPath = settings.value( QLatin1String("targetPath") ).toString();
+    QString targetPath = settings.value( QLatin1String("targetPath")).toString();
+    bool paused = settings.value( QLatin1String("paused"), false).toBool();
     // QString connection = settings.value( QLatin1String("connection") ).toString();
     QString alias = unescapeAlias( escapedAlias );
 
@@ -262,6 +263,9 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     folder->setConfigFile(file);
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[alias] = folder;
+    if (paused) {
+        _disabledFolders.insert(folder);
+    }
 
     /* Use a signal mapper to connect the signals to the alias */
     connect(folder, SIGNAL(scheduleToSync(const QString&)), SLOT(slotScheduleSync(const QString&)));
@@ -284,6 +288,16 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
     if( f ) {
         f->setSyncEnabled(enable);
         f->evaluateSync(QStringList());
+
+        QSettings settings(_folderConfigPath + QLatin1Char('/') + f->configFile(), QSettings::IniFormat);
+        settings.beginGroup(escapeAlias(f->alias()));
+        if (enable) {
+            settings.remove("paused");
+            _disabledFolders.remove(f);
+        } else {
+            settings.setValue("paused", true);
+            _disabledFolders.insert(f);
+        }
     }
 }
 
@@ -366,6 +380,9 @@ void FolderMan::setSyncEnabled( bool enabled )
     _syncEnabled = enabled;
 
     foreach( Folder *f, _folderMap.values() ) {
+        if (_disabledFolders.contains(f)) {
+            enabled = false;
+        }
         f->setSyncEnabled(enabled);
     }
 }

@@ -135,6 +135,7 @@ private:
 
     void removeFolder( const QString& );
 
+    QSet<Folder*>  _disabledFolders;
     Folder::Map    _folderMap;
     QString        _folderConfigPath;
     QSignalMapper *_folderChangeSignalMapper;
