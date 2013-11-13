@@ -369,6 +369,7 @@ FolderWizard::FolderWizard( QWidget *parent )
     _folderWizardSourcePage(new FolderWizardSourcePage),
     _folderWizardTargetPage(0)
 {
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(Page_Source, _folderWizardSourcePage );
     if (!Theme::instance()->singleSyncFolder()) {
         _folderWizardTargetPage = new FolderWizardTargetPage();

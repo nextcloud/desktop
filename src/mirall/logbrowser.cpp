@@ -54,6 +54,7 @@ LogBrowser::LogBrowser(QWidget *parent) :
     QDialog(parent),
     _logWidget( new LogWidget(parent) )
 {
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setObjectName("LogBrowser"); // for save/restoreGeometry()
     setWindowTitle(tr("Log Output"));
     setMinimumWidth(600);

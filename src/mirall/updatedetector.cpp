@@ -131,6 +131,7 @@ void UpdateDetector::showDialog()
     hlayout->addWidget(lbl);
 
     QDialogButtonBox *bb = new QDialogButtonBox;
+    bb->setWindowFlags(bb->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     QPushButton *skip = bb->addButton(tr("Skip update"), QDialogButtonBox::ResetRole);
     QPushButton *reject = bb->addButton(tr("Skip this time"), QDialogButtonBox::AcceptRole);
     QPushButton  *getupdate = bb->addButton(tr("Get update"), QDialogButtonBox::AcceptRole);

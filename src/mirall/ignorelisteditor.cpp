@@ -29,6 +29,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::IgnoreListEditor)
 {
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
 
     ui->descriptionLabel->setText(tr("Files or directories matching a pattern will not be synchronized.\n\n"

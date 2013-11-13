@@ -44,6 +44,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     QDialog(parent),
     _ui(new Ui::SettingsDialog)
 {
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi(this);
     setObjectName("Settings"); // required as group for saveGeometry call
 

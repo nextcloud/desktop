@@ -60,6 +60,7 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, QList<QSslCert
 SslErrorDialog::SslErrorDialog(Account *account, QWidget *parent) :
     QDialog(parent), _allTrusted(false), _ui(new Ui::SslErrorDialog), _account(account)
 {
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi( this );
     setWindowTitle( tr("SSL Connection") );
     QPushButton *okButton =
