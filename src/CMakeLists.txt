@@ -52,7 +52,6 @@ set(libsync_SRCS
     mirall/folder.cpp
     mirall/folderwatcher.cpp
     mirall/syncresult.cpp
-    mirall/networklocation.cpp
     mirall/mirallconfigfile.cpp
     mirall/csyncthread.cpp
     mirall/owncloudpropagator.cpp
@@ -61,7 +60,6 @@ set(libsync_SRCS
     mirall/fileutils.cpp
     mirall/theme.cpp
     mirall/owncloudtheme.cpp
-#    mirall/owncloudinfo.cpp
     mirall/logger.cpp
     mirall/utility.cpp
     mirall/connectionvalidator.cpp
@@ -93,7 +91,6 @@ set(libsync_HEADERS
     mirall/syncjournaldb.h
     mirall/theme.h
     mirall/owncloudtheme.h
-#    mirall/owncloudinfo.h
     mirall/logger.h
     mirall/connectionvalidator.h
     mirall/progressdispatcher.h

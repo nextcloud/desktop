@@ -21,10 +21,7 @@
 #include "mirall/application.h"
 #include "mirall/folder.h"
 #include "mirall/folderman.h"
-#include "mirall/folderwatcher.h"
-#include "mirall/networklocation.h"
 #include "mirall/folder.h"
-#include "mirall/owncloudsetupwizard.h"
 #include "mirall/sslerrordialog.h"
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
@@ -41,10 +38,6 @@
 #include <windows.h>
 #endif
 
-#include <QHash>
-#include <QHashIterator>
-#include <QUrl>
-#include <QDesktopServices>
 #include <QTranslator>
 #include <QNetworkProxy>
 #include <QNetworkProxyFactory>
@@ -87,8 +80,6 @@ QString applicationTrPath()
 Application::Application(int &argc, char **argv) :
     SharedTools::QtSingleApplication(argc, argv),
     _gui(0),
-    // _networkMgr(new QNetworkConfigurationManager(this)), <- Not used yet.
-    _sslErrorDialog(0),
     _theme(Theme::instance()),
     _helpOnly(false),
     _startupNetworkError(false),
@@ -126,14 +117,6 @@ Application::Application(int &argc, char **argv) :
 
     qRegisterMetaType<Progress::Kind>("Progress::Kind");
     qRegisterMetaType<Progress::Info>("Progress::Info");
-#if 0
-    qDebug() << "* Network is" << (_networkMgr->isOnline() ? "online" : "offline");
-    foreach (const QNetworkConfiguration& netCfg, _networkMgr->allConfigurations(QNetworkConfiguration::Active)) {
-        //qDebug() << "Network:" << netCfg.identifier();
-    }
-#endif
-
-//    connect(_networkMgr, SIGNAL(onlineStateChanged(bool)), SLOT(slotCheckConnection()));
 
     MirallConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
@@ -150,8 +133,6 @@ Application::Application(int &argc, char **argv) :
     }
 
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
-
-    qDebug() << "Network Location: " << NetworkLocation::currentLocation().encoded();
 
     _socketApi = new SocketApi(this, cfg.configPathWithAppName().append(QLatin1String("socket")));
 }

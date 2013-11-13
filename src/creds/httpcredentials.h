@@ -1,5 +1,4 @@
 /*
- * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
  * Copyright (C) by Klaas Freitag <freitag@kde.org>
  * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
  *

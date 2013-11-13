@@ -16,8 +16,6 @@
 #define APPLICATION_H
 
 #include <QApplication>
-#include <QNetworkReply>
-#include <QSslError>
 #include <QPointer>
 #include <QQueue>
 
@@ -29,19 +27,12 @@
 #include "mirall/connectionvalidator.h"
 #include "mirall/progressdispatcher.h"
 
-class QAction;
-class QMenu;
 class QSystemTrayIcon;
-class QNetworkConfigurationManager;
-class QSignalMapper;
-class QNetworkReply;
 
 namespace Mirall {
 class Theme;
 class Folder;
-class FolderWatcher;
 class SslErrorDialog;
-class SettingsDialog;
 class SocketApi;
 
 class Application : public SharedTools::QtSingleApplication
@@ -89,9 +80,7 @@ private:
 
     QPointer<ownCloudGui> _gui;
     QPointer<SocketApi> _socketApi;
-    // QNetworkConfigurationManager *_networkMgr;
 
-    SslErrorDialog      *_sslErrorDialog;
     ConnectionValidator *_conValidator;
 
     Theme *_theme;
