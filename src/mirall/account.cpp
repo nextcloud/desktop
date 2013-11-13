@@ -22,7 +22,6 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QSslSocket>
-#include <QNetworkCookieJar>
 
 #include <QDebug>
 
@@ -84,10 +83,10 @@ void Account::save()
     }
     // ### TODO port away from ConfigFile
     MirallConfigFile cfg;
-    qDebug() << "Saving " << approvedErrors().count() << " unknown errors.";
+    qDebug() << "Saving " << approvedCerts().count() << " unknown certs.";
     QByteArray certs;
-    Q_FOREACH( const QSslError& error, approvedErrors() ) {
-        certs += error.certificate().toPem() + '\n';
+    Q_FOREACH( const QSslCertificate& cert, approvedCerts() ) {
+        certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
         cfg.setCaCerts( certs );
@@ -100,11 +99,7 @@ Account* Account::restore()
     if (!settings->childKeys().isEmpty()) {
         Account *acc = new Account;
         MirallConfigFile cfg;
-        Q_FOREACH(QSslCertificate cert, QSslCertificate::fromData(cfg.caCerts())) {
-            // ### TODO: We actually want to handle arbitrary errors, but would need to store
-            // errors along with their certs (or vice versa) in the configuration file
-            acc->addApprovedError(QSslError(QSslError::SelfSignedCertificate, cert));
-        }
+        acc->setApprovedCerts(QSslCertificate::fromData(cfg.caCerts()));
         acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
         acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
         Q_FOREACH(QString key, settings->childKeys()) {
@@ -204,19 +199,14 @@ void Account::setCertificateChain(const QList<QSslCertificate> &certs)
     _certificateChain = certs;
 }
 
-void Account::setApprovedErrors(const QList<QSslError> &errors)
+void Account::setApprovedCerts(const QList<QSslCertificate> certs)
 {
-    _approvedErrors = errors;
+    _approvedCerts = certs;
 }
 
-void Account::addApprovedErrors(const QList<QSslError> &errors)
+void Account::addApprovedCerts(const QList<QSslCertificate> certs)
 {
-    _approvedErrors += errors;
-}
-
-void Account::addApprovedError(const QSslError &error)
-{
-    _approvedErrors += error;
+    _approvedCerts += certs;
 }
 
 void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
@@ -297,11 +287,13 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
         return;
     }
 
+    QList<QSslCertificate> approvedCerts;
     if (_sslErrorHandler.isNull() ) {
         qDebug() << Q_FUNC_INFO << "called without valid SSL error handler for account" << url();
     } else {
-        if (_sslErrorHandler->handleErrors(errors, this)) {
-            addApprovedErrors(errors);
+        if (_sslErrorHandler->handleErrors(errors, &approvedCerts, this)) {
+            QSslSocket::addDefaultCaCertificates(approvedCerts);
+            addApprovedCerts(approvedCerts);
             // all ssl certs are known and accepted. We can ignore the problems right away.
             qDebug() << "Certs are already known and trusted, Warnings are not valid.";
             reply->ignoreSslErrors();
