@@ -265,14 +265,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 st->instruction = CSYNC_INSTRUCTION_RENAME;
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
                     csync_rename_record(ctx, tmp->path, path);
-                }
-
-                if( c_streq(tmp->md5, fs->md5) ) {    /* Check if the etags have changed or not */
-                    /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ETags are equal!"); */
                 } else {
-                    /* The etag has changed as well => changes within the dir */
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ETags are different!");
-                    st->instruction = CSYNC_INSTRUCTION_EVAL;
+                    if( !c_streq(tmp->md5, fs->md5) ) {
+                        /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ETags are different!"); */
+                        /* File with different etag, don't do a rename, but download the file again */
+                        st->instruction = CSYNC_INSTRUCTION_NEW;
+                    }
                 }
                 goto out;
 
