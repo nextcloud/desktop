@@ -63,7 +63,7 @@ void csync_vio_file_stat_set_file_id( csync_vio_file_stat_t *dst, const char* sr
 
 void csync_vio_set_file_id( char* dst, const char *src ) {
     if( src && dst ) {
-        if( strlen(src) > FILE_ID_BUF_SIZE ) {
+        if( strlen(src) > FILE_ID_BUF_SIZE || c_streq(src,"") ) {
             strcpy(dst, INVALID_FILE_ID);
         } else {
             strcpy(dst, src);
