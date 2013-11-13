@@ -22,6 +22,7 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QSslSocket>
+#include <QNetworkCookieJar>
 
 #include <QDebug>
 
