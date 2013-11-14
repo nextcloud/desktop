@@ -40,6 +40,8 @@ if ($^O eq "darwin") {
   eval "require Encode::UTF8Mac";
 }
 
+use open ':encoding(utf8)';
+
 use vars qw( @ISA @EXPORT @EXPORT_OK $d %config);
 
 our $owncloud   = "http://localhost/oc/remote.php/webdav/";
@@ -232,7 +234,7 @@ sub assertLocalDirs( $$ )
         next if( -d "$dir1/$_"); # don't compare directory sizes.
 	my $s1 = -s "$dir1/$_";
 	my $s2 = -s "$dir2/$_";
-	assert( $s1 == $s2 );
+	assert( $s1 == $s2, "$dir1/$_ <-> $dir2/$_" );
     }
     closedir $dh;
 }
@@ -381,7 +383,8 @@ sub glob_put( $$ )
 	    $lfile = $llfile;
 	    $puturl = $target;
 	      print "   *** Putting $lfile to $puturl\n";
-	      putToDirLWP( $lfile, $puturl );
+	      # putToDirLWP( $lfile, $puturl );
+	      put_to_dir($lfile, $puturl);
 	      
 	      # if( ! $d->put( -local=>$lfile, -url=> $puturl ) ) {
 	      #print "   ### FAILED to put: ". $d->message . '\n';
@@ -424,10 +427,10 @@ sub putToDirLWP($$)
     my $puturl = $owncloud . $dir. $basename;
     # print "putToDir LWP puts $filename to $puturl\n";
     die("Could not open $filename: $!") unless( open FILE, "$filename" );
-    binmode FILE;
+    binmode FILE,  ":utf8";;
     my $string = <FILE>;
     close FILE;
-    
+
     my $ua  = LWP::UserAgent->new();
     $ua->agent( "ownCloudTest_$localDir");
     my $req = PUT $puturl, Content_Type => 'application/octet-stream',
