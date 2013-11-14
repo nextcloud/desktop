@@ -36,6 +36,10 @@ class PropagatorJob : public QObject {
     Q_OBJECT
 protected:
     OwncloudPropagator *_propagator;
+    QString getFileId( const char* url );
+    QString getFileIdPropget(const char *uri);
+
+    SyncFileItem _item;
 public:
     explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator) {}
 public slots:

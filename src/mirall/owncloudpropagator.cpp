@@ -119,6 +119,11 @@ static bool removeRecursively(const QString &path)
     return success;
 }
 
+static bool isValidFileId( const QString& fid )
+{
+    return ( !fid.isEmpty() && fid != QLatin1String("-invalid_fileid-") );
+}
+
 DECLARE_JOB(PropagateLocalRemove)
 
 void PropagateLocalRemove::start()
@@ -297,18 +302,18 @@ void PropagateUploadFile::start()
 
         // the file id should only be empty for new files up- or downloaded
         QString fid = QString::fromUtf8( hbf_transfer_file_id( trans.data() ));
-        if( _item._fileId.isEmpty() ) {
-            if( fid.isEmpty() ) {
-                const char *plain_uri = uri.data();
-                getFileId(plain_uri);
-            } else {
-                _item._fileId = fid;
-            }
-        } else {
+        if( isValidFileId(_item._fileId ) ) {
             if( _item._fileId != fid ) {
                 qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
             } else {
                 qDebug() << "FileID remains" << _item._fileId;
+            }
+        } else {
+            if( fid.isEmpty() ) {
+                const char *plain_uri = uri.data();
+                _item._fileId = getFileId(plain_uri);
+            } else {
+                _item._fileId = fid;
             }
         }
 
@@ -379,6 +384,8 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
     ops[1].name = NULL;
 
     int rc = ne_proppatch( _propagator->_session, uri, ops );
+    Q_UNUSED(rc);
+
     /* FIXME: error handling
     bool error = updateErrorFromSession( rc );
     if( error ) {
@@ -409,9 +416,54 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
     }
 }
 
-void PropagateItemJob::getFileId(const char* uri)
+static void propget_result(void *userdata, const ne_uri *uri,
+                           const ne_prop_result_set *results)
 {
-    if( ! uri ) return;
+    ne_propname ops[2];
+    ops[0].nspace = "http://owncloud.org/ns";
+    ops[0].name   = "id";
+    ops[1].nspace = NULL;
+    ops[1].name   = NULL;
+
+    (void) uri;
+
+    char *file_id = (char*) userdata;
+    const char *fid = ne_propset_value(results, ops);
+
+    if( fid ) {
+        qMemCopy(file_id, fid, 64);
+        file_id[strlen(fid)] = '\0';
+    }
+}
+
+QString PropagatorJob::getFileIdPropget(const char *uri)
+{
+    char file_id[65];
+    ne_propname ops[2];
+    ops[0].nspace = "http://owncloud.org/ns";
+    ops[0].name   = "id";
+    ops[1].nspace = NULL;
+    ops[1].name   = NULL;
+    int rc;
+    memset(file_id, 0, 65);
+
+    rc = ne_simple_propfind( _propagator->_session, uri, NE_DEPTH_ZERO, ops, propget_result, file_id);
+
+    QString re;
+    if( rc != NE_OK ) {
+        qDebug() << "FileID Propget failed.";
+    } else {
+        if( file_id != NULL) {
+            re = QString::fromUtf8(file_id);
+        }
+    }
+    return re;
+}
+
+QString PropagatorJob::getFileId(const char* uri)
+{
+    if( ! uri ) return QString();
+    QString fid;
 
     QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_propagator->_session, "HEAD", uri));
     qDebug() << "Querying the fileID from " << uri;
@@ -420,8 +472,9 @@ void PropagateItemJob::getFileId(const char* uri)
         // error happend
         qDebug() << "Could not issue HEAD request for FileID.";
     } else {
-        _item._fileId = parseFileId( req.data() );
+        fid = parseFileId( req.data() );
     }
+    return fid;
 }
 
 void PropagateItemJob::limitBandwidth(qint64 progress, qint64 bandwidth_limit)
@@ -918,6 +971,19 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
         if (!_item.isEmpty() && !_hasError) {
             if( !_item._renameTarget.isEmpty() ) {
                 _item._file = _item._renameTarget;
+            }
+
+            // FIXME: Do we really need this here? It updates the file id of directories
+            // in case it is not valid, due to fact that the journal might not have a
+            // correct file_id.
+            // FIXME: Can that be combined with retrieval of the etag?
+
+            if( !isValidFileId(_item._fileId)) {
+                QScopedPointer<char, QScopedPointerPodDeleter> uri(
+                    ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+                const char *plain_uri = uri.data();
+                _item._fileId = getFileIdPropget(plain_uri);
+                qDebug() << "XX Retrieved directory file id" << _item._fileId;
             }
 
             SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
