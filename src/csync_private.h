@@ -127,7 +127,6 @@ struct csync_s {
   } remote;
 
   struct {
-    void *handle;
     csync_vio_method_t *method;
     csync_vio_method_finish_fn finish_fn;
     csync_vio_capabilities_t capabilities;

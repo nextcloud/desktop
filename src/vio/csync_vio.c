@@ -56,112 +56,17 @@
 
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
 
-#if defined(_WIN32) || defined(__APPLE__) || defined(WITH_UNIT_TESTING)
-  csync_stat_t sb;
-#endif
-#if defined(_WIN32) || defined(WITH_UNIT_TESTING)
-  mbchar_t *mpath = NULL;
-#endif
-  char *path = NULL;
-  char *err = NULL;
   csync_vio_method_t *m = NULL;
   csync_vio_method_init_fn init_fn;
 
-#ifdef _WIN32
-  mbchar_t tbuf[MAX_PATH];
-  mbchar_t *pathBuf = NULL;
-  char *buf = NULL;
-  char *last_bslash = NULL;
-#endif
-
-#ifdef WITH_UNIT_TESTING
-    if (asprintf(&path, "%s/modules/ocsync_%s.%s", BINARYDIR, module, MODULE_EXTENSION) < 0) {
-        return -1;
-    }
-
-    mpath = c_utf8_to_locale(path);
-    if (_tstat(mpath, &sb) < 0) {
-        SAFE_FREE(path);
-    }
-    c_free_locale_string(mpath);
-#endif
-
-  if (path == NULL) {
-      if (asprintf(&path, "%s/ocsync_%s.%s", PLUGINDIR, module, MODULE_EXTENSION) < 0) {
-          return -1;
-      }
-  }
-
-#ifdef _WIN32
-  mpath = c_utf8_to_locale(path);
-  if (_tstat(mpath, &sb) < 0) {
-      SAFE_FREE(path);
-      /* Change the current working directory to read the module from a relative path. */
-      if( GetModuleFileNameW(NULL, tbuf, MAX_PATH) > 0 ) {
-          buf = c_utf8_from_locale(tbuf);
-          /* cut the trailing filename off */
-          if ((last_bslash = strrchr(buf, '\\')) != NULL) {
-              *last_bslash='\0';
-              pathBuf = c_utf8_to_locale(buf);
-
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Win32: changing current working dir to %s", buf);
-              _wchdir(pathBuf);
-              c_free_locale_string(pathBuf);
-          }
-          c_free_locale_string(buf);
-
-          if (asprintf(&path, "modules/ocsync_%s.%s", module, MODULE_EXTENSION) < 0) {
-              return -1;
-          }
-      }
-  }
-  c_free_locale_string(mpath);
-#endif
-
-#ifdef __APPLE__
-  if (lstat(path, &sb) < 0) {
-    char path_tmp[1024];
-    char* path2 = NULL;
-    uint32_t size = sizeof(path_tmp);
-    SAFE_FREE(path);
-
-    if (_NSGetExecutablePath(path_tmp, &size) == 0)
-        printf("executable path is %s\n", path_tmp);
-
-    path2 = c_dirname(path_tmp);
-
-    if (asprintf(&path, "%s/../PlugIns/ocsync_%s.%s", path2, module, MODULE_EXTENSION) < 0) {
-      return -1;
-    }
-  }
-#endif
-
-  ctx->module.handle = dlopen(path, RTLD_LAZY);
-  SAFE_FREE(path);
-  if ((err = dlerror()) != NULL) {
-    (void) err;
-    /* Disable this log message as that tremendously confuses users. See log in csync.c */
-    /* CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading %s plugin failed - %s",
-     *        module, err); */
-    return -1;
-  }
-
-  *(void **) (&init_fn) = dlsym(ctx->module.handle, "vio_module_init");
-  if ((err = dlerror()) != NULL) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading function failed - %s", err);
-    return -1;
-  }
-
-  *(void **)  (&ctx->module.finish_fn) = dlsym(ctx->module.handle,
-                                               "vio_module_shutdown");
-  if ((err = dlerror()) != NULL) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "loading function failed - %s", err);
-    return -1;
-  }
+  /* The owncloud module used to be dynamically loaded, but now it's just statically linked */
+  extern csync_vio_method_t *vio_module_init(const char *method_name, const char *config_args, csync_auth_callback cb, void *userdata);
+  extern void vio_module_shutdown(csync_vio_method_t *);
+  init_fn = vio_module_init;
+  ctx->module.finish_fn = vio_module_shutdown;
 
   /* get the method struct */
-  m = (*init_fn)(module, args, csync_get_auth_callback(ctx),
-      csync_get_userdata(ctx));
+  m = init_fn(module, args, csync_get_auth_callback(ctx), csync_get_userdata(ctx));
   if (m == NULL) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s returned a NULL method", module);
     return -1;
@@ -227,19 +132,13 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
 }
 
 void csync_vio_shutdown(CSYNC *ctx) {
-  if (ctx->module.handle != NULL) {
     /* shutdown the plugin */
     if (ctx->module.finish_fn != NULL) {
       (*ctx->module.finish_fn)(ctx->module.method);
     }
 
-    /* close the plugin */
-    dlclose(ctx->module.handle);
-    ctx->module.handle = NULL;
-
     ctx->module.method = NULL;
     ctx->module.finish_fn = NULL;
-  }
 }
 
 csync_vio_handle_t *csync_vio_open(CSYNC *ctx, const char *uri, int flags, mode_t mode) {

@@ -12,6 +12,8 @@ else (CSYNC_STATIC_COMPILE_DIR)
     find_package(SQLite3 3.3.9 REQUIRED)
 endif()
 
+find_package(Neon 0.29.0 REQUIRED)
+
 
 set(CSYNC_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_BINARY_DIR}
@@ -23,6 +25,7 @@ set(CSYNC_PUBLIC_INCLUDE_DIRS
 set(CSYNC_PRIVATE_INCLUDE_DIRS
   ${SQLITE3_INCLUDE_DIRS}
   ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
+  ${HTTPBF_PUBLIC_INCLUDE_DIRS}
   ${CMAKE_BINARY_DIR}
 )
 
@@ -36,6 +39,8 @@ set(CSYNC_LINK_LIBRARIES
   ${CSTDLIB_LIBRARY}
   ${CSYNC_REQUIRED_LIBRARIES}
   ${SQLITE3_LIBRARIES}
+  ${NEON_LIBRARIES}
+  ${HTTPBF_LIBRARY}
 )
 
 if(HAVE_ICONV AND WITH_ICONV)
@@ -71,6 +76,10 @@ set(csync_SRCS
   vio/csync_vio_handle.c
   vio/csync_vio_file_stat.c
   vio/csync_vio_local.c
+
+  csync_owncloud.c
+  csync_owncloud_recursive_propfind.c
+  csync_owncloud_util.c
 )
 
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)

@@ -79,38 +79,6 @@ static void teardown(void **state) {
     *state = NULL;
 }
 
-static void check_csync_vio_load(void **state)
-{
-    CSYNC *csync = *state;
-    int rc;
-
-    rc = csync_vio_init(csync, "owncloud", NULL);
-    assert_int_equal(rc, 0);
-
-    csync_vio_shutdown(csync);
-}
-
-static void check_csync_vio_load_wrong_proto(void **state)
-{
-    CSYNC *csync = *state;
-    int rc;
-
-    rc = csync_vio_init(csync, "wrong", NULL);
-    assert_int_equal(rc, -1);
-
-    csync_vio_shutdown(csync);
-}
-
-static void check_csync_vio_load_bad_plugin(void **state)
-{
-    CSYNC *csync = *state;
-    int rc;
-
-    rc = csync_vio_init(csync, "bad", NULL);
-    assert_int_equal(rc, -1);
-
-    csync_vio_shutdown(csync);
-}
 
 /*
  * Test directory function
@@ -549,9 +517,6 @@ static void check_csync_vio_utimes(void **state)
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_vio_load, setup, teardown),
-        unit_test_setup_teardown(check_csync_vio_load_wrong_proto, setup, teardown),
-        unit_test_setup_teardown(check_csync_vio_load_bad_plugin, setup, teardown),
 
         unit_test_setup_teardown(check_csync_vio_mkdir, setup, teardown),
         unit_test_setup_teardown(check_csync_vio_mkdirs, setup, teardown),
