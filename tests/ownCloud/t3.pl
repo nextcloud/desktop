@@ -19,7 +19,7 @@ print "Hello, this is t3, a tester for renaming directories\n";
 
 initTesting();
 
-print "Copy some files to the remote location\n";
+printInfo( "Copy some files to the remote location\n" );
 createRemoteDir( "remoteToLocal1" );
 createRemoteDir( "remoteToLocal1/rtl1" );
 createRemoteDir( "remoteToLocal1/rtl1/rtl11" );
@@ -35,15 +35,16 @@ csync();
 
 # Check if the files from toremote1 are now in t1/remoteToLocal1
 # they should have taken the way via the ownCloud.
-print "Assert the local file copy\n";
+printInfo( "Assert the local file copy\n" );
 assertLocalDirs( localDir().'remoteToLocal1', 'toremote1' );
 
 # Check if the synced files from ownCloud have the same timestamp as the local ones.
-print "\nNow assert remote 'toremote1' with local " . localDir() . " :\n";
+printInfo( "Now assert remote 'toremote1' with local " . localDir() );
 assertLocalAndRemoteDir( 'remoteToLocal1', 0);
 
 # Make a new directory, moves a sub directory into.  Remove the parent directory.
 # create a new file on the server in the directory that will be renamed
+printInfo( "Create a new directory and move subdirs into." );
 my $newfile_md5 = createLocalFile(localDir()."remoteToLocal1/rtl1/rtl11/newfile.dat", 123);
 unlink( localDir() . 'remoteToLocal1/rtl1/rtl11/test.txt' );
 mkdir( localDir() . 'newdir' );
@@ -52,13 +53,17 @@ system( "rm -rf " . localDir() . 'remoteToLocal1' );
 system( "echo \"my file\" >> /tmp/myfile.txt" );
 put_to_dir( '/tmp/myfile.txt', 'remoteToLocal1/rtl1/rtl11' );
 
-
 csync();
 assertLocalAndRemoteDir( 'newdir', 0);
+
+assert( -e 'newdir/rtl1/newfile.dat' );
+assert( -e 'newdir/rtl1/myfile.txt' );
+assert( ! -e 'newdir/rtl11/test.txt' );
 
 #TODO: test that newfile.dat and myfile.txt exists in newdir/rtl1
 #      and test that there is no newdir/rtl11/test.txt
 
+printInfo("Move file and create another one with the same name.");
 move( localDir() . 'newdir/myfile.txt', localDir() . 'newdir/oldfile.txt' );
 system( "echo \"super new\" >> " . localDir() . 'newdir/myfile.txt' );
 
@@ -76,8 +81,6 @@ assertLocalAndRemoteDir( 'newdir', 0);
 #
 # csync();
 # assertLocalAndRemoteDir( '', 0);
-
-
 
 cleanup();
 
