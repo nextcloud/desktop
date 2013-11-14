@@ -39,7 +39,6 @@
 !define IMAGEFORMATS_DLL_PATH "${MING_LIB}/qt4/plugins/imageformats"
 
 !define CSYNC_LIBRARY_DIR "@CSYNC_LIBRARY_DIR@"
-!define CSYNC_PLUGIN_DIR "@CSYNC_PLUGIN_DIR@"
 !define CSYNC_CONFIG_DIR "@CSYNC_CONFIG_DIR@"
 
 !define NSI_PATH "${source_path}/admin/win/nsi"
