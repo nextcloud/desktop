@@ -269,6 +269,9 @@ void ownCloudGui::setupContextMenu()
     _contextMenu->addSeparator();
 
     _contextMenu->addAction(_actionQuit);
+
+    // Populate once at start
+    slotRebuildRecentMenus();
 }
 
 
