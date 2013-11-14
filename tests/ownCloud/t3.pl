@@ -59,9 +59,7 @@ assertLocalAndRemoteDir( 'newdir', 0);
 assert( -e localDir().'newdir/rtl1/rtl11/newfile.dat' );
 assert( -e localDir().'newdir/rtl1/rtl11/myfile.txt' );
 assert( ! -e localDir().'newdir/rtl11/test.txt' );
-
-#TODO: test that newfile.dat and myfile.txt exists in newdir/rtl1
-#      and test that there is no newdir/rtl11/test.txt
+assert( ! -e localDir().'remoteToLocal1' );
 
 printInfo("Move file and create another one with the same name.");
 move( localDir() . 'newdir/myfile.txt', localDir() . 'newdir/oldfile.txt' );
