@@ -50,6 +50,7 @@ void QuotaInfo::slotCheckQuota()
     if (!_account.isNull() && _account->credentials() && _account->credentials()->ready()) {
         CheckQuotaJob *job = new CheckQuotaJob(_account, "/", this);
         connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
+        job->start();
         _refreshTimer->start(defaultIntervalT);
     } else {
         _lastQuotaTotalBytes = 0;

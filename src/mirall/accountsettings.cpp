@@ -25,7 +25,6 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/ignorelisteditor.h"
 #include "mirall/account.h"
-#include "mirall/networkjobs.h"
 #include "creds/abstractcredentials.h"
 
 #include <math.h>

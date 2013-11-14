@@ -137,8 +137,12 @@ AbstractNetworkJob::~AbstractNetworkJob() {
 RequestEtagJob::RequestEtagJob(Account *account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
+}
+
+void RequestEtagJob::start()
+{
     QNetworkRequest req;
-    if (path.isEmpty() || path == QLatin1String("/")) {
+    if (path().isEmpty() || path() == QLatin1String("/")) {
         /* For the root directory, we need to query the etags of all the sub directories
          * because, at the time I am writing this comment (Owncloud 5.0.9), the etag of the
          * root directory is not updated when the sub directories changes */
@@ -152,11 +156,11 @@ RequestEtagJob::RequestEtagJob(Account *account, const QString &path, QObject *p
                    "    <d:getetag/>\n"
                    "  </d:prop>\n"
                    "</d:propfind>\n");
-    QBuffer *buf = new QBuffer;
+    QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     // assumes ownership
-    setReply(davRequest("PROPFIND", path, req, buf));
+    setReply(davRequest("PROPFIND", path(), req, buf));
     buf->setParent(reply());
     setupConnections(reply());
 
@@ -192,10 +196,14 @@ void RequestEtagJob::slotFinished()
 MkColJob::MkColJob(Account *account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
-     // assumes ownership
-    QNetworkReply *reply = davRequest("MKCOL", path);
-    setReply(reply);
-    setupConnections(reply);
+}
+
+void MkColJob::start()
+{
+    // assumes ownership
+   QNetworkReply *reply = davRequest("MKCOL", path());
+   setReply(reply);
+   setupConnections(reply);
 }
 
 void MkColJob::slotFinished()
@@ -209,6 +217,10 @@ void MkColJob::slotFinished()
 LsColJob::LsColJob(Account *account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
+}
+
+void LsColJob::start()
+{
     QNetworkRequest req;
     req.setRawHeader("Depth", "1");
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
@@ -217,10 +229,10 @@ LsColJob::LsColJob(Account *account, const QString &path, QObject *parent)
                    "    <d:resourcetype/>\n"
                    "  </d:prop>\n"
                    "</d:propfind>\n");
-    QBuffer *buf = new QBuffer;
+    QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
-    QNetworkReply *reply = davRequest("PROPFIND", path, req, buf);
+    QNetworkReply *reply = davRequest("PROPFIND", path(), req, buf);
     buf->setParent(reply);
     setReply(reply);
     setupConnections(reply);
@@ -263,7 +275,10 @@ CheckServerJob::CheckServerJob(Account *account, bool followRedirect, QObject *p
     , _followRedirects(followRedirect)
     , _redirectCount(0)
 {
-    // ### perform update of certificate chain
+}
+
+void CheckServerJob::start()
+{
     setReply(getRequest(path()));
     setupConnections(reply());
 }
@@ -333,11 +348,16 @@ void CheckServerJob::slotFinished()
 
 /*********************************************************************************************/
 
-PropfindJob::PropfindJob(Account *account, const QString &path,
-                         QList<QByteArray> properties,
-                         QObject *parent)
+PropfindJob::PropfindJob(Account *account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
+
+}
+
+void PropfindJob::start()
+{
+    QList<QByteArray> properties = _properties;
+
     if (properties.isEmpty()) {
         properties << "allprop";
     }
@@ -354,12 +374,22 @@ PropfindJob::PropfindJob(Account *account, const QString &path,
                      "  </d:prop>\n"
                      "</d:propfind>\n";
 
-    QBuffer *buf = new QBuffer;
+    QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
-    setReply(davRequest("PROPFIND", path, req, buf));
+    setReply(davRequest("PROPFIND", path(), req, buf));
     buf->setParent(reply());
     setupConnections(reply());
+}
+
+void PropfindJob::setProperties(QList<QByteArray> properties)
+{
+    _properties = properties;
+}
+
+QList<QByteArray> PropfindJob::properties() const
+{
+    return _properties;
 }
 
 void PropfindJob::slotFinished()
@@ -405,7 +435,11 @@ void PropfindJob::slotFinished()
 EntityExistsJob::EntityExistsJob(Account *account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
-    setReply(headRequest(path));
+}
+
+void EntityExistsJob::start()
+{
+    setReply(headRequest(path()));
     setupConnections(reply());
 }
 
@@ -419,6 +453,10 @@ void EntityExistsJob::slotFinished()
 CheckQuotaJob::CheckQuotaJob(Account *account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
+}
+
+void CheckQuotaJob::start()
+{
     QNetworkRequest req;
     req.setRawHeader("Depth", "0");
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
@@ -428,11 +466,11 @@ CheckQuotaJob::CheckQuotaJob(Account *account, const QString &path, QObject *par
                    "    <d:quota-used-bytes/>\n"
                    "  </d:prop>\n"
                    "</d:propfind>\n");
-    QBuffer *buf = new QBuffer;
+    QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     // assumes ownership
-    setReply(davRequest("PROPFIND", path, req, buf));
+    setReply(davRequest("PROPFIND", path(), req, buf));
     buf->setParent(reply());
     setupConnections(reply());
 }

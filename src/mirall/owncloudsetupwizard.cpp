@@ -127,9 +127,9 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     CheckServerJob *job = new CheckServerJob(_ocWizard->account(), false, this);
     connect(job, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotOwnCloudFoundAuth(QUrl,QVariantMap)));
     connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
-
     connect(job, SIGNAL(timeout(const QUrl&)), SLOT(slotNoOwnCloudFoundAuthTimeout(const QUrl&)));
     job->setTimeout(10*1000);
+    job->start();
 }
 
 void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantMap &info)
@@ -151,6 +151,7 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantM
     DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_ocWizard->account(), this);
     connect(job, SIGNAL(authType(WizardCommon::AuthType)),
             _ocWizard, SLOT(setAuthType(WizardCommon::AuthType)));
+    job->start();
 }
 
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
@@ -184,6 +185,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 {
     ValidateDavAuthJob *job = new ValidateDavAuthJob(_ocWizard->account(), this);
     connect(job, SIGNAL(authResult(QNetworkReply*)), SLOT(slotConnectionCheck(QNetworkReply*)));
+    job->start();
 }
 
 void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
@@ -227,6 +229,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
     if (nextStep) {
         EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), remoteFolder, this);
         connect(job, SIGNAL(exists(QNetworkReply*)), SLOT(slotAuthCheckReply(QNetworkReply*)));
+        job->start();
     } else {
         finalizeSetup( false );
     }
@@ -266,6 +269,7 @@ void OwncloudSetupWizard::createRemoteFolder()
 
     MkColJob *job = new MkColJob(_ocWizard->account(), _remoteFolder, this);
     connect(job, SIGNAL(finished(QNetworkReply::NetworkError)), SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
+    job->start();
 }
 
 void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error )
@@ -419,6 +423,10 @@ DetermineAuthTypeJob::DetermineAuthTypeJob(Account *account, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
     , _redirects(0)
 {
+}
+
+void DetermineAuthTypeJob::start()
+{
     QNetworkReply *reply = getRequest(Account::davPath());
     setReply(reply);
     setupConnections(reply);
@@ -455,6 +463,10 @@ void DetermineAuthTypeJob::slotFinished()
 
 ValidateDavAuthJob::ValidateDavAuthJob(Account *account, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
+{
+}
+
+void ValidateDavAuthJob::start()
 {
     QNetworkReply *reply = getRequest(Account::davPath());
     setReply(reply);

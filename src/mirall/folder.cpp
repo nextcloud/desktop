@@ -280,6 +280,7 @@ void Folder::slotPollTimerTimeout()
         // check if the etag is different
         QObject::connect(job, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
         QObject::connect(job, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotNetworkUnavailable()));
+        job->start();
     }
 }
 

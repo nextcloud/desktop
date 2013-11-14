@@ -37,6 +37,8 @@ public:
     explicit AbstractNetworkJob(Account *account, const QString &path, QObject* parent = 0);
     virtual ~AbstractNetworkJob();
 
+    virtual void start() = 0;
+
     void setAccount(Account *account);
     Account* account() const { return _account; }
     void setPath(const QString &path);
@@ -84,6 +86,8 @@ class EntityExistsJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit EntityExistsJob(Account *account, const QString &path, QObject* parent = 0);
+    void start();
+
 signals:
     void exists(QNetworkReply*);
 
@@ -98,6 +102,7 @@ class LsColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit LsColJob(Account *account, const QString &path, QObject *parent = 0);
+    void start();
 
 signals:
     void directoryListing(const QStringList &items);
@@ -112,15 +117,19 @@ private slots:
 class PropfindJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit PropfindJob(Account *account, const QString &path,
-                         QList<QByteArray> properties,
-                         QObject *parent = 0);
+    explicit PropfindJob(Account *account, const QString &path, QObject *parent = 0);
+    void start();
+    void setProperties(QList<QByteArray> properties);
+    QList<QByteArray> properties() const;
 
 signals:
     void result(const QVariantMap &values);
 
 private slots:
     virtual void slotFinished();
+
+private:
+    QList<QByteArray> _properties;
 };
 
 /**
@@ -130,6 +139,7 @@ class MkColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit MkColJob(Account *account, const QString &path, QObject *parent = 0);
+    void start();
 
 signals:
     void finished(QNetworkReply::NetworkError);
@@ -145,6 +155,7 @@ class CheckServerJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit CheckServerJob(Account *account, bool followRedirect = false, QObject *parent = 0);
+    void start();
 
     static QString version(const QVariantMap &info);
     static QString versionString(const QVariantMap &info);
@@ -171,6 +182,7 @@ class RequestEtagJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit RequestEtagJob(Account *account, const QString &path, QObject *parent = 0);
+    void start();
 
 signals:
     void etagRetreived(const QString &etag);
@@ -186,6 +198,7 @@ class CheckQuotaJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit CheckQuotaJob(Account *account, const QString &path, QObject *parent = 0);
+    void start();
 
 signals:
     void quotaRetrieved(qint64 totalBytes, qint64 availableBytes);

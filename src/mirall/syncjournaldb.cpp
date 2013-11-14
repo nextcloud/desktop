@@ -186,7 +186,6 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
 {
     QMutexLocker locker(&_mutex);
     qlonglong phash = getPHash(record._path);
-
     if( checkConnect() ) {
 
         QSqlQuery writeQuery( "INSERT OR REPLACE INTO metadata "

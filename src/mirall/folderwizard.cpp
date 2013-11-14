@@ -208,6 +208,7 @@ void FolderWizardTargetPage::slotCreateRemoteFolder(const QString &folder)
     connect(job, SIGNAL(finished(QNetworkReply::NetworkError)),
                  SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
     connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotHandleNetworkError(QNetworkReply*)));
+    job->start();
 }
 
 void FolderWizardTargetPage::slotCreateRemoteFolderFinished(QNetworkReply::NetworkError error)
@@ -288,6 +289,7 @@ void FolderWizardTargetPage::slotRefreshFolders()
     LsColJob *job = new LsColJob(AccountManager::instance()->account(), "/", this);
     connect(job, SIGNAL(directoryListing(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
+    job->start();
     _ui.folderTreeWidget->clear();
 }
 
@@ -297,6 +299,7 @@ void FolderWizardTargetPage::slotItemExpanded(QTreeWidgetItem *item)
     LsColJob *job = new LsColJob(AccountManager::instance()->account(), dir, this);
     connect(job, SIGNAL(directoryListing(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
+    job->start();
 }
 
 FolderWizardTargetPage::~FolderWizardTargetPage()

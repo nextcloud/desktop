@@ -35,6 +35,7 @@ class ValidateDavAuthJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     ValidateDavAuthJob(Account* account, QObject *parent = 0);
+    void start();
 signals:
     void authResult(QNetworkReply*);
 private slots:
@@ -45,6 +46,7 @@ class DetermineAuthTypeJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit DetermineAuthTypeJob(Account *account, QObject *parent = 0);
+    void start();
 signals:
     void authType(WizardCommon::AuthType);
 private slots:

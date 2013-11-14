@@ -84,6 +84,7 @@ void ConnectionValidator::checkConnection()
         CheckServerJob *checkJob = new CheckServerJob(_account, false, this);
         connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
         connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
+        checkJob->start();
     } else {
         _errors << tr("No ownCloud account configured");
         emit connectionResult( NotConfigured );
@@ -126,9 +127,11 @@ void ConnectionValidator::slotCheckAuthentication()
 {
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
-    PropfindJob *propFind = new PropfindJob(_account, "/", QList<QByteArray>() << "getlastmodified", this);
+    PropfindJob *propFind = new PropfindJob(_account, "/", this);
+    propFind->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(propFind, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
     connect(propFind, SIGNAL(networkError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));
+    propFind->start();
     qDebug() << "# checking for authentication settings.";
 }
 
