@@ -16,6 +16,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QUrl>
+#include <QPushButton>
 
 #include "QProgressIndicator.h"
 
@@ -118,6 +119,11 @@ void OwncloudSetupPage::initializePage()
 
     _authTypeKnown = false;
     _checking  = false;
+
+    QAbstractButton *nextButton = wizard()->button(QWizard::NextButton);
+    QPushButton *pushButton = qobject_cast<QPushButton*>(nextButton);
+    if (pushButton)
+        pushButton->setDefault(true);
 
     // URL entry is disabled when url is overriden by theme. In that
     // case we just check the server type and switch to second page
