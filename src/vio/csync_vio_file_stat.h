@@ -33,7 +33,6 @@
 #include <stdint.h>
 
 #define FILE_ID_BUF_SIZE 21
-#define INVALID_FILE_ID "-invalid_fileid-"
 
 typedef struct csync_vio_file_stat_s csync_vio_file_stat_t;
 

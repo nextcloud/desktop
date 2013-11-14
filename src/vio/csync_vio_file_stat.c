@@ -55,7 +55,7 @@ void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {
 void csync_vio_file_stat_set_file_id( csync_vio_file_stat_t *dst, const char* src ) {
 
     csync_vio_set_file_id( dst->file_id, src );
-    if( c_streq( dst->file_id, INVALID_FILE_ID )) {
+    if( c_streq( dst->file_id, "" )) {
         return;
     }
     dst->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FILE_ID;
@@ -63,8 +63,8 @@ void csync_vio_file_stat_set_file_id( csync_vio_file_stat_t *dst, const char* sr
 
 void csync_vio_set_file_id( char* dst, const char *src ) {
     if( src && dst ) {
-        if( strlen(src) > FILE_ID_BUF_SIZE || c_streq(src,"") ) {
-            strcpy(dst, INVALID_FILE_ID);
+        if( strlen(src) > FILE_ID_BUF_SIZE ) {
+            strcpy(dst, "");
         } else {
             strcpy(dst, src);
         }

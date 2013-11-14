@@ -139,7 +139,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                            || cur->type == CSYNC_FTW_TYPE_DIR) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
                     other->destpath = c_strdup( cur->path );
-                    if( !c_streq(cur->file_id, INVALID_FILE_ID) ) {
+                    if( !c_streq(cur->file_id, "") ) {
                         csync_vio_set_file_id( other->file_id, cur->file_id );
                     }
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
@@ -147,7 +147,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
                     other->destpath = c_strdup( cur->path );
 
-                    if( !c_streq(cur->file_id, INVALID_FILE_ID) ) {
+                    if( !c_streq(cur->file_id, "") ) {
                         csync_vio_set_file_id( other->file_id, cur->file_id );
                     }
 
