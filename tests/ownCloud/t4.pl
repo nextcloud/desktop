@@ -20,7 +20,7 @@ print "Hello, this is t4, a tester for A) files that cannot be stated and B) exc
 
 initTesting();
 
-print "Copy some files to the remote location\n";
+printInfo( "Copy some files to the remote location" );
 mkdir( localDir() . 'test_stat' );
 system( "echo foobar > " . localDir() . 'test_stat/file.txt' );
 
@@ -33,9 +33,12 @@ print "Assert the local file copy\n";
 assertLocalAndRemoteDir( '', 0 );
 
 
+printInfo( "Make a file not statable" );
+
+
 system( "echo foobar2 >> " . localDir() . 'test_stat/file.txt' );
-#make the dile not statable by changing the directory right
-system( "chmod 600 " . localDir() . 'test_stat' );
+#make the file not statable by changing the directory right
+system( "chmod 400 " . localDir() . 'test_stat' );
 
 
 csync();
@@ -43,7 +46,18 @@ csync();
 # TODO: some check here.
 
 
-print("Restore the original rights");
+
+printInfo("Add a file in a read only directory");
+
+system( "echo \"Hello World\" >> /tmp/kernelcrash.txt" );
+put_to_dir( '/tmp/kernelcrash.txt', 'test_stat' );
+
+csync();
+
+assert( ! -e localDir().'test_stat/kernelcrash' );
+
+
+printInfo("Restore the original rights");
 
 system( "chmod 700 " . localDir() . 'test_stat' );
 system( "echo foobar3 >> " . localDir() . 'test_stat/file.txt' );
@@ -55,8 +69,16 @@ print "Check if everything is still the same\n";
 assertLocalAndRemoteDir( '', 0 );
 
 # TODO: Check that the file content is fine on the server and that there was no conflict
+assert( -e localDir().'test_stat/file.txt' );
+assert( -e localDir().'test_stat/kernelcrash.txt' );
 
-print("Added a file that is on the ignore list\n");
+my $localMD5 = md5OfFile( localDir().'test_stat/kernelcrash.txt' );
+my $realMD5 = md5OfFile( '/tmp/kernelcrash.txt' );
+print "MD5 compare $localMD5 <-> $realMD5\n";
+assert( $localMD5 eq $realMD5 );
+
+
+printInfo("Added a file that is on the ignore list");
 # (*.directory is in the ignored list that needs cleanup)
 # (it is names with _conflict) because i want the conflicft detection of assertLocalAndRemoteDir to work
 system( "echo dir >> " . localDir() . 'test_stat/file_conflict.directory' );
@@ -65,10 +87,12 @@ csync();
 assertLocalAndRemoteDir( '', 1 );
 # TODO: check that the file_conflict.directory is indeed NOT on the server
 
-print("Remove a directory containing a local file\n");
+printInfo("Remove a directory containing a local file\n");
 remoteCleanup('test_stat');
 csync();
 assertLocalAndRemoteDir( '', 0 );
+
+
 
 
 

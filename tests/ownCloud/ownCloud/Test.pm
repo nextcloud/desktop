@@ -288,7 +288,7 @@ sub registerSeen($$)
 sub traverse( $$ )
 {
     my ($remote, $acceptConflicts) = @_;
-    $remote .= '/' unless $remote =~ /\/$/;
+    $remote .= '/' unless $remote =~ /(^|\/$)/;
     printf("===============> $remote\n");
     
     my $url = $owncloud . $remote;
