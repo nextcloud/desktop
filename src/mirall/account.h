@@ -151,6 +151,7 @@ private:
     AbstractCredentials* _credentials;
     bool _treatSslErrorsAsFailure;
     bool _isOnline;
+    static QString _configFileName;
 };
 
 }

@@ -30,6 +30,8 @@ namespace Mirall {
 
 static const char urlC[] = "url";
 static const char authTypeC[] = "authType";
+static const char userC[] = "user";
+static const char httpUserC[] = "http_user";
 
 AccountManager *AccountManager::_instance = 0;
 
@@ -81,8 +83,14 @@ void Account::save()
             settings->setValue(key, _settingsMap.value(key));
         }
         settings->setValue(QLatin1String(authTypeC), _credentials->authType());
+
+        // HACK: Save http_user also as user
+        if (_settingsMap.contains(httpUserC))
+            settings->setValue(userC, _settingsMap.value(httpUserC));
     }
-    // ### TODO port away from ConfigFile
+    settings->sync();
+
+    // ### TODO port away from MirallConfigFile
     MirallConfigFile cfg;
     qDebug() << "Saving " << approvedCerts().count() << " unknown certs.";
     QByteArray certs;
@@ -103,7 +111,13 @@ Account* Account::restore()
         acc->setApprovedCerts(QSslCertificate::fromData(cfg.caCerts()));
         acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
         acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
+
+        // We want to only restore settings for that auth type and the user value
+        acc->_settingsMap.insert(QLatin1String(userC), settings->value(userC));
+        QString authTypePrefix = settings->value(authTypeC).toString() + "_";
         Q_FOREACH(QString key, settings->childKeys()) {
+            if (!key.startsWith(authTypePrefix))
+                continue;
             acc->_settingsMap.insert(key, settings->value(key));
         }
         return acc;
@@ -236,10 +250,16 @@ QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)
     return tmpUrl;
 }
 
+QString Account::_configFileName;
+
 QSettings *Account::settingsWithGroup(const QString& group)
 {
-    MirallConfigFile cfg;
-    QSettings *settings = new QSettings(cfg.configFile(), QSettings::IniFormat);
+    if (_configFileName.isEmpty()) {
+        // cache file name
+        MirallConfigFile cfg;
+        _configFileName = cfg.configFile();
+    }
+    QSettings *settings = new QSettings(_configFileName, QSettings::IniFormat);
     settings->beginGroup(group);
     return settings;
 }

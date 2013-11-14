@@ -68,11 +68,13 @@ MirallConfigFile::MirallConfigFile()
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
     const QString config = configFile();
-    qDebug() << "Loading config: " << config;
+
 
     QSettings settings(config, QSettings::IniFormat);
     settings.setIniCodec("UTF-8");
     settings.beginGroup( defaultConnection() );
+
+    qDebug() << "Loading config: " << config << " (URL is " << settings.value("url").toString() << ")";
 }
 
 void MirallConfigFile::setConfDir(const QString &value)
