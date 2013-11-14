@@ -22,6 +22,7 @@
 #include <QXmlStreamReader>
 #include <QStringList>
 #include <QStack>
+#include <QTimer>
 
 #include <QDebug>
 
@@ -48,6 +49,15 @@ void AbstractNetworkJob::setReply(QNetworkReply *reply)
         _reply->deleteLater();
     }
     _reply = reply;
+}
+
+void AbstractNetworkJob::setTimeout(qint64 msec)
+{
+    qDebug() << Q_FUNC_INFO << msec;
+    QTimer *timer = new QTimer(this);
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
+    timer->start(msec);
 }
 
 void AbstractNetworkJob::setAccount(Account *account)
@@ -246,6 +256,13 @@ CheckServerJob::CheckServerJob(Account *account, bool followRedirect, QObject *p
     // ### perform update of certificate chain
     setReply(getRequest(path()));
     setupConnections(reply());
+}
+
+void CheckServerJob::slotTimeout()
+{
+    qDebug() << "TIMEOUT" << Q_FUNC_INFO;
+    if (reply()->isRunning())
+        emit timeout(reply()->url());
 }
 
 QString CheckServerJob::version(const QVariantMap &info)

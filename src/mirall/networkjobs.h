@@ -44,6 +44,8 @@ public:
     void setReply(QNetworkReply *reply);
     QNetworkReply* reply() const { return _reply; }
 
+    void setTimeout(qint64 msec);
+
 signals:
     void networkError(QNetworkReply *reply);
 protected:
@@ -64,6 +66,7 @@ protected:
 private slots:
     virtual void slotFinished() = 0;
     void slotError(QNetworkReply::NetworkError);
+    virtual void slotTimeout() {}
 
 private:
     QNetworkReply *_reply;
@@ -146,9 +149,11 @@ public:
 
 signals:
     void instanceFound(const QUrl&url, const QVariantMap &info);
+    void timeout(const QUrl&url);
 
 private slots:
     virtual void slotFinished();
+    virtual void slotTimeout();
 
 private:
     bool _followRedirects;

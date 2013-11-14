@@ -69,6 +69,7 @@ private slots:
     void slotDetermineAuthType(const QString&);
     void slotOwnCloudFoundAuth(const QUrl&, const QVariantMap&);
     void slotNoOwnCloudFoundAuth(QNetworkReply *reply);
+    void slotNoOwnCloudFoundAuthTimeout(const QUrl&url);
 
     void slotConnectToOCUrl(const QString&);
     void slotConnectionCheck(QNetworkReply*);

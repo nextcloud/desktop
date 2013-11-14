@@ -127,6 +127,9 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     CheckServerJob *job = new CheckServerJob(_ocWizard->account(), false, this);
     connect(job, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotOwnCloudFoundAuth(QUrl,QVariantMap)));
     connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
+
+    connect(job, SIGNAL(timeout(const QUrl&)), SLOT(slotNoOwnCloudFoundAuthTimeout(const QUrl&)));
+    job->setTimeout(10*1000);
 }
 
 void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantMap &info)
@@ -148,6 +151,14 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
                             .arg(Theme::instance()->appNameGUI())
                             .arg(reply->url().toString())
                             .arg(reply->errorString()));
+}
+
+void OwncloudSetupWizard::slotNoOwnCloudFoundAuthTimeout(const QUrl&url)
+{
+    _ocWizard->displayError(tr("Failed to connect to %1 at %2:<br/>%3")
+                            .arg(Theme::instance()->appNameGUI())
+                            .arg(url.toString())
+                            .arg("Timeout"));
 }
 
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
