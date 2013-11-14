@@ -368,7 +368,6 @@ SectionGroup "Shortcuts"
       ;CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\LICENSE.lnk" "$INSTDIR\LICENSE.txt"
       CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\${APPLICATION_NAME}.lnk" "$INSTDIR\${APPLICATION_EXECUTABLE}"
       ;CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\Release notes.lnk" "$INSTDIR\NOTES.txt"
-      CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe"
       SetShellVarContext current
    ${MementoSectionEnd}
 !endif
