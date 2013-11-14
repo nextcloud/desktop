@@ -63,15 +63,13 @@ public:
     //TODO:  in the future, all sub job can be run in parallel
     QVector<PropagatorJob *> _subJobs;
 
-    SyncFileItem _item;
-
     int _current; // index of the current running job
     bool _hasError;  // weather there was an error
 
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItem &item = SyncFileItem())
         : PropagatorJob(propagator)
-        , _firstJob(0), _item(item),  _current(-1), _hasError(false) { }
+        , _firstJob(0), _current(-1), _hasError(false) { _item = item; }
 
     virtual ~PropagateDirectory() {
         qDeleteAll(_subJobs);
@@ -109,7 +107,6 @@ private slots:
 class PropagateItemJob : public PropagatorJob {
     Q_OBJECT
 protected:
-    SyncFileItem _item;
     void done(SyncFileItem::Status status, const QString &errorString = QString()) {
         _item._errorString = errorString;
         _item._status = status;
@@ -118,7 +115,6 @@ protected:
     }
 
     void updateMTimeAndETag(const char *uri, time_t);
-    void getFileId( const char *uri );
 
     /* fetch the error code and string from the session
        in case of error, calls done with the error and returns true.
@@ -137,7 +133,7 @@ protected:
 
 public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItem &item)
-        : PropagatorJob(propagator), _item(item), _lastProgress(0) {}
+        : PropagatorJob(propagator), _lastProgress(0) { _item = item; }
 };
 
 // Dummy job that just mark it as completed and ignored.
