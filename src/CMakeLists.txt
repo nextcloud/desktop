@@ -387,15 +387,16 @@ if(KRAZY2_EXECUTABLE)
 )
 endif()
 
+set(owncloudcmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 set(OWNCLOUDCMD_SRC owncloudcmd/owncloudcmd.cpp)
-add_executable(owncloudcmd ${OWNCLOUDCMD_SRC})
-qt5_use_modules(owncloudcmd Network Sql)
-set_target_properties( owncloudcmd PROPERTIES
+add_executable(${owncloudcmd_NAME}  ${OWNCLOUDCMD_SRC})
+qt5_use_modules(${owncloudcmd_NAME} Network Sql)
+set_target_properties(${owncloudcmd_NAME} PROPERTIES
 	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
-target_link_libraries(owncloudcmd owncloudsync)
-target_link_libraries(owncloudcmd ${CSYNC_LIBRARY})
+target_link_libraries(${owncloudcmd_NAME} ${synclib_NAME})
+target_link_libraries(${owncloudcmd_NAME} ${CSYNC_LIBRARY})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mirall)
-install(TARGETS owncloudcmd
+install(TARGETS ${owncloudcmd_NAME}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
