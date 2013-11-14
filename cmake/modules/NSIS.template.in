@@ -357,17 +357,13 @@ SectionEnd
 SectionGroup "Shortcuts"
 
 !ifdef OPTION_SECTION_SC_START_MENU
-   ${MementoSection} "Start Menu Program Group" SEC_START_MENU
+   ${MementoSection} "Start Menu Program Shortcut" SEC_START_MENU
       SectionIn 1 2 3
       SetDetailsPrint textonly
-      DetailPrint "Adding shortcuts for the ${APPLICATION_NAME} program group to the Start Menu."
+      DetailPrint "Adding shortcut for ${APPLICATION_NAME} to the Start Menu."
       SetDetailsPrint listonly
       SetShellVarContext all
-      RMDir /r "$SMPROGRAMS\${APPLICATION_NAME}"
-      CreateDirectory "$SMPROGRAMS\${APPLICATION_NAME}"
-      ;CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\LICENSE.lnk" "$INSTDIR\LICENSE.txt"
-      CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\${APPLICATION_NAME}.lnk" "$INSTDIR\${APPLICATION_EXECUTABLE}"
-      ;CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}\Release notes.lnk" "$INSTDIR\NOTES.txt"
+      CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}.lnk" "$INSTDIR\${APPLICATION_EXECUTABLE}"
       SetShellVarContext current
    ${MementoSectionEnd}
 !endif
@@ -400,7 +396,7 @@ ${MementoSectionDone}
 ;--------------------------------
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_APPLICATION} "${APPLICATION_NAME} essentials."
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_START_MENU} "${APPLICATION_NAME} program group."
+!insertmacro MUI_DESCRIPTION_TEXT ${SEC_START_MENU} "${APPLICATION_NAME} shortcut."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DESKTOP} "Desktop shortcut for ${APPLICATION_NAME}."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_QUICK_LAUNCH} "Quick Launch shortcut for ${APPLICATION_NAME}."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
@@ -508,7 +504,7 @@ Section Uninstall
    ;Start menu shortcuts.
    !ifdef OPTION_SECTION_SC_START_MENU
       SetShellVarContext all
-      RMDir /r "$SMPROGRAMS\${APPLICATION_NAME}"
+      Delete "$SMPROGRAMS\${APPLICATION_NAME}.lnk"
       SetShellVarContext current
    !endif
 
