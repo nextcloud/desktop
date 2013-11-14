@@ -337,13 +337,6 @@ else()
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
     qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql  ${ADDITIONAL_APP_MODULES})
 
-    #FIXME: hardcoded path
-    if ( EXISTS ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so )
-        install(FILES ${CSYNC_BINARY_DIR}/modules/ocsync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns)
-    else()
-        install(FILES /usr/local/lib/ocsync-0/ocsync_owncloud.so DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns)
-    endif()
-
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${mirall_I18N} DESTINATION ${QM_DIR})
     file(GLOB qt_I18N ${QT_TRANSLATIONS_DIR}/qt_??.qm ${QT_TRANSLATIONS_DIR}/qt_??_??.qm)
@@ -372,9 +365,7 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
 # currently it needs to be done because the code right above needs to be executed no matter
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    install_qt4_executable(${OWNCLOUD_OSX_BUNDLE} "qsqlite"
-     "${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns/ocsync_owncloud.so"
-      ${dirs})
+    install_qt4_executable(${OWNCLOUD_OSX_BUNDLE} "qsqlite" "" ${dirs})
 endif()
 
 find_program(KRAZY2_EXECUTABLE krazy2)
