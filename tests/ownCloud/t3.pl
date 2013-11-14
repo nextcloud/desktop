@@ -48,7 +48,7 @@ printInfo( "Create a new directory and move subdirs into." );
 my $newfile_md5 = createLocalFile(localDir()."remoteToLocal1/rtl1/rtl11/newfile.dat", 123);
 unlink( localDir() . 'remoteToLocal1/rtl1/rtl11/test.txt' );
 mkdir( localDir() . 'newdir' );
-move( localDir() . 'remoteToLocal1/rtl1/', localDir() . 'newdir/' );
+move( localDir() . 'remoteToLocal1/rtl1', localDir() . 'newdir/rtl1' );
 system( "rm -rf " . localDir() . 'remoteToLocal1' );
 system( "echo \"my file\" >> /tmp/myfile.txt" );
 put_to_dir( '/tmp/myfile.txt', 'remoteToLocal1/rtl1/rtl11' );
@@ -56,9 +56,9 @@ put_to_dir( '/tmp/myfile.txt', 'remoteToLocal1/rtl1/rtl11' );
 csync();
 assertLocalAndRemoteDir( 'newdir', 0);
 
-assert( -e 'newdir/rtl1/newfile.dat' );
-assert( -e 'newdir/rtl1/myfile.txt' );
-assert( ! -e 'newdir/rtl11/test.txt' );
+assert( -e localDir().'newdir/rtl1/rtl11/newfile.dat' );
+assert( -e localDir().'newdir/rtl1/rtl11/myfile.txt' );
+assert( ! -e localDir().'newdir/rtl11/test.txt' );
 
 #TODO: test that newfile.dat and myfile.txt exists in newdir/rtl1
 #      and test that there is no newdir/rtl11/test.txt
