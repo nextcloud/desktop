@@ -134,12 +134,19 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
 
 void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantMap &info)
 {
-    qDebug() << Q_FUNC_INFO << url << CheckServerJob::versionString(info) << CheckServerJob::version(info);
     _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
                                         .arg(url.toString())
                                         .arg(Theme::instance()->appNameGUI())
                                         .arg(CheckServerJob::versionString(info))
                                         .arg(CheckServerJob::version(info)));
+
+    if (url.path().endsWith("/status.php")) {
+        // We might be redirected, update the account
+        QUrl redirectedUrl = url;
+        redirectedUrl.setPath(url.path().left(url.path().length() - 11));
+        _ocWizard->account()->setUrl(redirectedUrl);
+        qDebug() << Q_FUNC_INFO << " was redirected to" << redirectedUrl.toString();
+    }
 
     DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_ocWizard->account(), this);
     connect(job, SIGNAL(authType(WizardCommon::AuthType)),
