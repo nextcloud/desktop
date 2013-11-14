@@ -154,8 +154,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
     return -1;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "==> file: %s - hash %llu, mtime: %llu",
-      path, (unsigned long long ) h, (unsigned long long) fs->mtime);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "==> file: %s - hash %llu, mtime: %llu, fileId: %s",
+      path, (unsigned long long ) h, (unsigned long long) fs->mtime, fs->file_id);
 
   /* Set instruction by default to none */
   st->instruction = CSYNC_INSTRUCTION_NONE;

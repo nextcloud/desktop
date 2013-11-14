@@ -534,7 +534,7 @@ char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_
 
     if( ! csync_get_statedb_exists(ctx)) return ret;
 
-    stmt = sqlite3_mprintf("SELECT md5 FROM metadata WHERE phash='%lld'", jHash);
+    stmt = sqlite3_mprintf("SELECT md5, fileid FROM metadata WHERE phash='%lld'", jHash);
 
     result = csync_statedb_query(ctx->statedb.db, stmt);
     sqlite3_free(stmt);
@@ -542,9 +542,10 @@ char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_
       return NULL;
     }
 
-    if (result->count == 1) {
+    if (result->count == 2) {
         /* phash, pathlen, path, inode, uid, gid, mode, modtime */
         ret = c_strdup( result->vector[0] );
+        csync_vio_file_stat_set_file_id(buf, result->vector[1]);
     }
 
     c_strlist_destroy(result);
