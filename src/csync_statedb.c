@@ -583,6 +583,7 @@ c_strlist_t *csync_statedb_query(sqlite3 *db,
   size_t column_count = 0;
   sqlite3_stmt *stmt;
   const char *tail = NULL;
+  const char *field = NULL;
   c_strlist_t *result = NULL;
   int row = 0;
 
@@ -652,8 +653,11 @@ c_strlist_t *csync_statedb_query(sqlite3 *db,
 
         /* iterate over columns */
         for (i = 0; i < column_count; i++) {
-          // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "sqlite3_column_text: %s", (char *) sqlite3_column_text(stmt, i));
-          if (c_strlist_add(result, (char *) sqlite3_column_text(stmt, i)) < 0) {
+          field = (const char *) sqlite3_column_text(stmt, i);
+          if (!field)
+              field = "";
+          // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "sqlite3_column_text: %s", field);
+          if (c_strlist_add(result, field) < 0) {
             c_strlist_destroy(result);
             return NULL;
           }
