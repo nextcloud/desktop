@@ -98,7 +98,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         case CSYNC_INSTRUCTION_NONE:
             cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             break;
-        case CSYNC_INSTRUCTION_RENAME:
+        case CSYNC_INSTRUCTION_EVAL_RENAME:
             if(ctx->current == LOCAL_REPLICA ) {
                 /* use the old name to find the "other" node */
                 tmp = csync_statedb_get_stat_by_inode(ctx->statedb.db, cur->inode);
@@ -176,9 +176,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         other = (csync_file_stat_t *) node->data;
 
         switch (cur->instruction) {
-        case CSYNC_INSTRUCTION_RENAME:
-            if(ctx->current != LOCAL_REPLICA )
-                break;
+        case CSYNC_INSTRUCTION_EVAL_RENAME:
             /* If the file already exist on the other side, we have a conflict.
                Abort the rename and consider it is a new file. */
             cur->instruction = CSYNC_INSTRUCTION_NEW;

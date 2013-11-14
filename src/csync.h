@@ -115,15 +115,17 @@ typedef enum csync_status_codes_e CSYNC_STATUS;
 #define CSYNC_STATUS_IS_ERR(x) (unlikely((x) >= CSYNC_STATUS_ERROR))
 #define CSYNC_STATUS_IS_EQUAL(x, y) ((x) == (y))
 
+
 enum csync_instructions_e {
-  CSYNC_INSTRUCTION_NONE       = 0x00000000,
-  CSYNC_INSTRUCTION_EVAL       = 0x00000001,
-  CSYNC_INSTRUCTION_REMOVE     = 0x00000002,
-  CSYNC_INSTRUCTION_RENAME     = 0x00000004,
-  CSYNC_INSTRUCTION_NEW        = 0x00000008,
-  CSYNC_INSTRUCTION_CONFLICT   = 0x00000010,
-  CSYNC_INSTRUCTION_IGNORE     = 0x00000020,
-  CSYNC_INSTRUCTION_SYNC       = 0x00000040,
+  CSYNC_INSTRUCTION_NONE       = 0x00000000,  /* Nothing to do (UPDATE|RECONCILE) */
+  CSYNC_INSTRUCTION_EVAL       = 0x00000001,  /* There was changed compared to the DB (UPDATE) */
+  CSYNC_INSTRUCTION_REMOVE     = 0x00000002,  /* The file need to be removed (RECONCILE) */
+  CSYNC_INSTRUCTION_RENAME     = 0x00000004,  /* The file need to be renamed (RECONCILE) */
+  CSYNC_INSTRUCTION_EVAL_RENAME= 0x00000800,  /* The file is new, it is the destination of a rename (UPDATE) */
+  CSYNC_INSTRUCTION_NEW        = 0x00000008,  /* The file is new compared to the db (UPDATE) */
+  CSYNC_INSTRUCTION_CONFLICT   = 0x00000010,  /* The file need to be downloaded because it is a conflict (RECONCILE) */
+  CSYNC_INSTRUCTION_IGNORE     = 0x00000020,  /* The file is ignored (UPDATE|RECONCILE) */
+  CSYNC_INSTRUCTION_SYNC       = 0x00000040,  /* The file need to be pushed to the other remote (RECONCILE) */
   CSYNC_INSTRUCTION_STAT_ERROR = 0x00000080,
   CSYNC_INSTRUCTION_ERROR      = 0x00000100,
   /* instructions for the propagator */

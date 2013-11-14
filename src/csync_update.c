@@ -249,7 +249,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                                                    fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)) {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %" PRId64 " <-> %" PRId64, (uint64_t) tmp->inode, (uint64_t) fs->inode);
                 /* inode found so the file has been renamed */
-                st->instruction = CSYNC_INSTRUCTION_RENAME;
+                st->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
                     csync_rename_record(ctx, tmp->path, path);
                 }
@@ -269,7 +269,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                     st->instruction = CSYNC_INSTRUCTION_NEW;
                     goto out;
                 }
-                st->instruction = CSYNC_INSTRUCTION_RENAME;
+                st->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
                     csync_rename_record(ctx, tmp->path, path);
                 } else {
