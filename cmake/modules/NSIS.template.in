@@ -300,11 +300,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
         SetOutPath "$INSTDIR\sqldrivers"
         File "${SQLITE_DLL_PATH}\qsqlite4.dll"
 
-        SetOutPath "$INSTDIR\modules"
-        ; FIXME: fix installation dir of module, currently needs manual copying to
-        ; /usr/i686-w64-mingw32/sys-root/mingw/bin/csync_modules/
-
-        File "${CSYNC_PLUGIN_DIR}/ocsync_owncloud.dll"
         SetOutPath "$INSTDIR"
    !endif
 
