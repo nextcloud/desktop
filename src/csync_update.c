@@ -233,6 +233,13 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
+        if (type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
+                && c_streq(fs->file_id, tmp->file_id)) {
+            /* If both etag and file id are equal for a directory, read all contents from
+             * the database. */
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", path);
+            ctx->remote.read_from_db = true;
+        }
         st->instruction = CSYNC_INSTRUCTION_NONE;
     } else {
         /* check if it's a file and has been renamed */
@@ -400,62 +407,6 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   return rc;
 }
 
-/* check if the dirent entries for the directory can be read from db
- * instead really calling readdir which is costly over net.
- * For that, a single HEAD request is done on the directory to get its
- * id. If the ID has not changed remotely, this subtree hasn't changed
- * and can be read from db.
- */
-static int _check_read_from_db(CSYNC *ctx, const char *uri) {
-    int len;
-    uint64_t h;
-    csync_vio_file_stat_t *fs = NULL;
-    const char *etag_local  = NULL;
-    const char *etag_remote = NULL;
-    const char *mpath;
-    int rc = 0; /* FIXME: Error handling! */
-    csync_file_stat_t* tmp = NULL;
-
-    if( !c_streq( ctx->remote.uri, uri )) {
-        /* FIXME: The top uri can not be checked because there is no db entry for it */
-        if( strlen(uri) < strlen(ctx->remote.uri)+1 ) {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "check_read_from_db: uri is not a remote uri.");
-            /* FIXME: errno? */
-            return -1;
-        }
-        mpath = uri + strlen(ctx->remote.uri) + 1;
-        fs = csync_vio_file_stat_new();
-        if(fs == NULL) {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "check_read_from_db: memory fault.");
-            errno = ENOMEM;
-            return -1;
-        }
-        len = strlen( mpath );
-        h = c_jhash64((uint8_t *) mpath, len, 0);
-
-        /* search that folder in the db and check that the hash is the etag (etag) is still the same */
-        if( csync_get_statedb_exists(ctx) ) {
-          tmp = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
-          if (tmp) {
-            etag_local = tmp->etag;
-            etag_remote = csync_vio_get_etag(ctx, uri);
-
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Compare directory ids for %s: %s -> %s", mpath, etag_local, etag_remote );
-
-            if( c_streq(etag_local, etag_remote) ) {
-              ctx->remote.read_from_db = 1;
-            }
-            SAFE_FREE(etag_remote);
-            SAFE_FREE(etag_local);
-            SAFE_FREE(tmp);
-          }
-        }
-
-        csync_vio_file_stat_destroy(fs);
-    }
-    return rc;
-}
-
 /* File tree walker */
 int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     unsigned int depth) {
@@ -478,18 +429,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     goto error;
   }
 
-  /* If remote, compare the etag with the local etag. If equal, read all contents from
-   * the database. */
   read_from_db = ctx->remote.read_from_db;
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "  => Starting to ftw %s, read_from_db-Flag for: %d",
-          uri, read_from_db );
-  if( ctx->current == REMOTE_REPLICA && !do_read_from_db ) {
-      _check_read_from_db(ctx, uri);
-      do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for read from db for %s: %d",
-                uri, ctx->remote.read_from_db );
-
-  }
 
   if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
     /* permission denied */
@@ -623,6 +563,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     /* Call walker function for each file */
     rc = fn(ctx, filename, fs, flag);
+    /* this function may update ctx->current and ctx->read_from_db */
 
     if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
         previous_fs->child_modified = ctx->current_fs->child_modified;
@@ -659,6 +600,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       }
     }
     ctx->current_fs = previous_fs;
+    ctx->remote.read_from_db = read_from_db;
     SAFE_FREE(filename);
     csync_vio_file_stat_destroy(dirent);
     dirent = NULL;
