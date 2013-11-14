@@ -134,6 +134,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
 
 void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantMap &info)
 {
+    qDebug() << Q_FUNC_INFO << url << CheckServerJob::versionString(info) << CheckServerJob::version(info);
     _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
                                         .arg(url.toString())
                                         .arg(Theme::instance()->appNameGUI())

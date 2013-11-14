@@ -40,6 +40,7 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
     , _reply(0)
     , _account(account)
     , _path(path)
+    , _timer(0)
 {
 }
 
@@ -54,10 +55,19 @@ void AbstractNetworkJob::setReply(QNetworkReply *reply)
 void AbstractNetworkJob::setTimeout(qint64 msec)
 {
     qDebug() << Q_FUNC_INFO << msec;
-    QTimer *timer = new QTimer(this);
-    timer->setSingleShot(true);
-    connect(timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
-    timer->start(msec);
+    if (_timer)
+        _timer->deleteLater();
+    _timer = new QTimer(this);
+    _timer->setSingleShot(true);
+    connect(_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
+    _timer->start(msec);
+}
+
+void AbstractNetworkJob::resetTimeout()
+{
+    qint64 interval = _timer->interval();
+    _timer->stop();
+    _timer->start(interval);
 }
 
 void AbstractNetworkJob::setAccount(Account *account)
@@ -296,6 +306,7 @@ void CheckServerJob::slotFinished()
         } else if (requestedUrl == redirectUrl || _redirectCount >= maxRedirects()) {
                 qDebug() << Q_FUNC_INFO << "Redirect loop detected!";
         } else {
+            resetTimeout();
             setReply(getRequest(redirectUrl));
             setupConnections(reply());
             return;

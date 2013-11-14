@@ -21,6 +21,7 @@
 #include <QNetworkReply>
 
 class QUrl;
+class QTimer;
 
 namespace Mirall {
 
@@ -45,6 +46,7 @@ public:
     QNetworkReply* reply() const { return _reply; }
 
     void setTimeout(qint64 msec);
+    void resetTimeout();
 
 signals:
     void networkError(QNetworkReply *reply);
@@ -72,6 +74,7 @@ private:
     QNetworkReply *_reply;
     Account *_account;
     QString _path;
+    QTimer *_timer;
 };
 
 /**
