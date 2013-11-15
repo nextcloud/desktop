@@ -556,6 +556,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.file_id      = cur->file_id;
 
       trav.error_string = cur->error_string;
+      trav.should_update_etag = cur->should_update_etag;
 
       rc = (*visitor)(&trav, twctx->userdata);
       cur->instruction = trav.instruction;

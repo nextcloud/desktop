@@ -599,6 +599,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         ctx->current_fs->should_update_etag = true;
       }
     }
+
+    if (ctx->current_fs && (ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL ||
+        ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW)) {
+        ctx->current_fs->should_update_etag = true;
+    }
+
     ctx->current_fs = previous_fs;
     ctx->remote.read_from_db = read_from_db;
     SAFE_FREE(filename);
