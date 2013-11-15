@@ -28,6 +28,7 @@
 #include <QStandardItemModel>
 #include <QPushButton>
 #include <QDebug>
+#include <QSettings>
 
 namespace Mirall {
 
