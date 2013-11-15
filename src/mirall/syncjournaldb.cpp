@@ -126,41 +126,41 @@ bool SyncJournalDb::checkConnect()
         return false;
     }
 
-    _getFileRecordQuery.reset(new QSqlQuery(_db));
-    _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid FROM "
-                                "metadata WHERE phash=:ph" );
-
-    _setFileRecordQuery.reset(new QSqlQuery(_db) );
-    _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
-                                "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid) "
-                                "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ?, ? )" );
-
-    _getDownloadInfoQuery.reset(new QSqlQuery(_db) );
-    _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
-                                    "downloadinfo WHERE path=:pa" );
-
-    _setDownloadInfoQuery.reset(new QSqlQuery(_db) );
-    _setDownloadInfoQuery->prepare( "INSERT OR REPLACE INTO downloadinfo "
-                                    "(path, tmpfile, etag, errorcount) "
-                                    "VALUES ( ? , ?, ? , ? )" );
-
-    _deleteDownloadInfoQuery.reset(new QSqlQuery(_db) );
-    _deleteDownloadInfoQuery->prepare( "DELETE FROM downloadinfo WHERE path=?" );
-
-    _getUploadInfoQuery.reset(new QSqlQuery(_db));
-    _getUploadInfoQuery->prepare( "SELECT chunk, transferid, errorcount, size, modtime FROM "
-                                  "uploadinfo WHERE path=:pa" );
-
-    _setUploadInfoQuery.reset(new QSqlQuery(_db));
-    _setUploadInfoQuery->prepare( "INSERT OR REPLACE INTO uploadinfo "
-                                  "(path, chunk, transferid, errorcount, size, modtime) "
-                                  "VALUES ( ? , ?, ? , ? ,  ? , ? )");
-
-    _deleteUploadInfoQuery.reset(new QSqlQuery(_db));
-    _deleteUploadInfoQuery->prepare("DELETE FROM uploadinfo WHERE path=?" );
-
     bool rc = updateDatabaseStructure();
+    if( rc ) {
+        _getFileRecordQuery.reset(new QSqlQuery(_db));
+        _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid FROM "
+                                     "metadata WHERE phash=:ph" );
 
+        _setFileRecordQuery.reset(new QSqlQuery(_db) );
+        _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
+                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid) "
+                                     "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ?, ? )" );
+
+        _getDownloadInfoQuery.reset(new QSqlQuery(_db) );
+        _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
+                                        "downloadinfo WHERE path=:pa" );
+
+        _setDownloadInfoQuery.reset(new QSqlQuery(_db) );
+        _setDownloadInfoQuery->prepare( "INSERT OR REPLACE INTO downloadinfo "
+                                        "(path, tmpfile, etag, errorcount) "
+                                        "VALUES ( ? , ?, ? , ? )" );
+
+        _deleteDownloadInfoQuery.reset(new QSqlQuery(_db) );
+        _deleteDownloadInfoQuery->prepare( "DELETE FROM downloadinfo WHERE path=?" );
+
+        _getUploadInfoQuery.reset(new QSqlQuery(_db));
+        _getUploadInfoQuery->prepare( "SELECT chunk, transferid, errorcount, size, modtime FROM "
+                                      "uploadinfo WHERE path=:pa" );
+
+        _setUploadInfoQuery.reset(new QSqlQuery(_db));
+        _setUploadInfoQuery->prepare( "INSERT OR REPLACE INTO uploadinfo "
+                                      "(path, chunk, transferid, errorcount, size, modtime) "
+                                      "VALUES ( ? , ?, ? , ? ,  ? , ? )");
+
+        _deleteUploadInfoQuery.reset(new QSqlQuery(_db));
+        _deleteUploadInfoQuery->prepare("DELETE FROM uploadinfo WHERE path=?" );
+    }
     return rc;
 }
 
