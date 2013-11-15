@@ -155,52 +155,7 @@ static void check_csync_statedb_insert_statement(void **state)
     assert_int_equal(rc, 0);
 }
 
-static void check_csync_statedb_is_empty(void **state)
-{
-    CSYNC *csync = *state;
-    c_strlist_t *result;
-    int rc = 0;
 
-    /* we have an empty db */
-    assert_true(_csync_statedb_is_empty(csync->statedb.db));
-
-    /* add a table and an entry */
-    result = csync_statedb_query(csync->statedb.db, "CREATE TABLE metadata(phash INTEGER, text VARCHAR(10));");
-    c_strlist_destroy(result);
-    // rc = csync_statedb_insert(csync->statedb.db, "INSERT INTO metadata (phash, text) VALUES (42, 'hello');");
-    assert_true(rc > 0);
-
-    assert_false(_csync_statedb_is_empty(csync->statedb.db));
-}
-
-static void check_csync_statedb_create_tables(void **state)
-{
-    // CSYNC *csync = *state;
-    char *stmt = NULL;
-    int rc = 0;
-    (void) state;
-
-    // rc = csync_statedb_create_tables(csync->statedb.db);
-    assert_int_equal(rc, 0);
-
-    stmt = sqlite3_mprintf("INSERT INTO metadata_temp"
-           "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5) VALUES"
-                           "(%lu, %d, '%q', %d, %d, %d, %d, %ld, %d, '%q');",
-           (unsigned long)42,
-           42,
-           "It's a rainy day",
-           42,
-           42,
-           42,
-           42,
-           (long)42,
-            2, "xsyxcmfkdsjaf");
-
-    // rc = csync_statedb_insert(csync->statedb.db, stmt);
-    assert_true(rc > 0);
-
-    sqlite3_free(stmt);
-}
 
 static void check_csync_statedb_drop_tables(void **state)
 {
@@ -257,19 +212,6 @@ static void check_csync_statedb_write(void **state)
     assert_int_equal(rc, 0);
 }
 
-static void check_csync_statedb_get_stat_by_hash(void **state)
-{
-    CSYNC *csync = *state;
-    csync_file_stat_t *tmp;
-
-    tmp = csync_statedb_get_stat_by_hash(csync->statedb.db, (uint64_t) 42);
-    assert_non_null(tmp);
-
-    assert_int_equal(tmp->phash, 42);
-    assert_int_equal(tmp->inode, 23);
-
-    free(tmp);
-}
 
 static void check_csync_statedb_get_stat_by_hash_not_found(void **state)
 {
@@ -318,7 +260,7 @@ int torture_run_tests(void)
         unit_test_setup_teardown(check_csync_statedb_write, setup, teardown),
      /*   unit_test_setup_teardown(check_csync_statedb_get_stat_by_hash, setup_db, teardown), */
         unit_test_setup_teardown(check_csync_statedb_get_stat_by_hash_not_found, setup_db, teardown),
-      /*  unit_test_setup_teardown(check_csync_statedb_get_stat_by_inode, setup_db, teardown), */
+      /* unit_test_setup_teardown(check_csync_statedb_get_stat_by_inode, setup_db, teardown), */
         unit_test_setup_teardown(check_csync_statedb_get_stat_by_inode_not_found, setup_db, teardown),
     };
 
