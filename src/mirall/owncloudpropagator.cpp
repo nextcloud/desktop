@@ -720,6 +720,7 @@ void PropagateRemoteRename::start()
 
         QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
         QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
+        qDebug() << "MOVE on Server: " << uri1.data() << "->" << uri2.data();
 
         int rc = ne_move(_propagator->_session, 1, uri1.data(), uri2.data());
         if (updateErrorFromSession(rc)) {
