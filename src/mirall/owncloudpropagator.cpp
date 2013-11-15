@@ -297,19 +297,13 @@ void PropagateUploadFile::start()
 
         // the file id should only be empty for new files up- or downloaded
         QString fid = QString::fromUtf8( hbf_transfer_file_id( trans.data() ));
-        if( _item._fileId.isEmpty() ) {
-            if( fid.isEmpty() ) {
-                const char *plain_uri = uri.data();
-                getFileId(plain_uri);
-            } else {
-                _item._fileId = fid;
-            }
-        } else {
-            if( _item._fileId != fid ) {
+        if( !fid.isEmpty() ) {
+            if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
                 qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
             } else {
-                qDebug() << "FileID remains" << _item._fileId;
+                qDebug() << "FileID is" << fid;
             }
+            _item._fileId = fid;
         }
 
         /* Handle errors. */
@@ -406,21 +400,6 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
                 qDebug() << "FileID is " << _item._fileId;
             }
         }
-    }
-}
-
-void PropagateItemJob::getFileId(const char* uri)
-{
-    if( ! uri ) return;
-
-    QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_propagator->_session, "HEAD", uri));
-    qDebug() << "Querying the fileID from " << uri;
-    int neon_stat = ne_request_dispatch(req.data());
-    if( neon_stat != NE_OK ) {
-        // error happend
-        qDebug() << "Could not issue HEAD request for FileID.";
-    } else {
-        _item._fileId = parseFileId( req.data() );
     }
 }
 

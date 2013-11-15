@@ -114,7 +114,6 @@ protected:
     }
 
     void updateMTimeAndETag(const char *uri, time_t);
-    void getFileId( const char *uri );
 
     /* fetch the error code and string from the session
        in case of error, calls done with the error and returns true.
