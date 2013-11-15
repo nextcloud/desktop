@@ -59,7 +59,7 @@ our $infoCnt = 1;
                   assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir 
                   putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
                   remoteCleanup server initLocalDir initRemoteDir moveRemoteFile
-                  printInfo);
+                  printInfo remoteFileId);
 
 sub server
 {
@@ -508,6 +508,33 @@ sub printInfo($)
   print "\n";
   
   $infoCnt++;
+}
+
+sub remoteFileId($$)
+{
+  my ($fromDir, $file) = @_;
+  my $fromUrl = $owncloud . $fromDir;
+  my $id;
+
+  if( my $r = $d->propfind( -url => $fromUrl, -depth => 1 ) ) {
+    if ( $r->is_collection ) {
+      # print "Collection\n";
+
+      foreach my $res ( $r->get_resourcelist->get_resources() ) {
+	my $filename = $res->get_property("rel_uri");
+	# print "OOOOOOOOOOOOOO $filename " . $res->get_property('id') . "\n";
+	if( $file eq $filename || $filename eq $file . "/" ) {
+	  $id = $res->get_property('id') || "";
+	}
+      }
+    } else {
+      # print "OOOOOOOOOOOOOOOOOOO " . $r->get_property("rel_uri");
+      $id = $r->get_property('id') || "";
+    }
+  }
+  print "## ID of $file: $id\n";
+  assert( $id ne "" );
+  return $id;
 }
 
 #
