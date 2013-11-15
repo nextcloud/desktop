@@ -214,6 +214,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._modtime = file->modtime;
     item._etag = file->etag;
     item._size = file->size;
+    item._should_update_etag = file->should_update_etag;
 
     SyncFileItem::Direction dir;
 

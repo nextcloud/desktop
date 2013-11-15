@@ -900,8 +900,10 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
                 _item._file = _item._renameTarget;
             }
 
-            SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
-            _propagator->_journal->setFileRecord(record);
+            if (_item._should_update_etag) {
+                SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
+                _propagator->_journal->setFileRecord(record);
+            }
         }
         emit finished(_hasError ? SyncFileItem::NormalError : SyncFileItem::Success);
     }

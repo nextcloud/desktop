@@ -81,6 +81,7 @@ public:
     time_t               _modtime;
     QByteArray           _etag;
     quint64              _size;
+    bool                 _should_update_etag;
 
     // Variables usefull to report to the user
     Status              _status;
