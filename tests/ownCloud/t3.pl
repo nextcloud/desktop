@@ -53,7 +53,18 @@ system( "rm -rf " . localDir() . 'remoteToLocal1' );
 system( "echo \"my file\" >> /tmp/myfile.txt" );
 put_to_dir( '/tmp/myfile.txt', 'remoteToLocal1/rtl1/rtl11' );
 
+my $fileid = remoteFileId( 'remoteToLocal1/rtl1/', 'rtl11' );
+my $fid2 =   remoteFileId( 'remoteToLocal1/rtl1/', 'La ced' );
+assert($fileid ne $fid2, "File IDs are equal" );
+
 csync();
+my $newFileId = remoteFileId( 'newdir/rtl1/', 'rtl11' );
+my $newfid2   = remoteFileId( 'newdir/rtl1/', 'La ced' );
+assert( $newFileId ne $newfid2, "File IDs are equal" );
+
+assert( $fileid eq $newFileId, "file ID mixup: 'newdir/rtl1/rtl11" );
+assert( $fid2 eq $newfid2, "file ID mixup: 'newdir/La ced" );
+
 assertLocalAndRemoteDir( 'newdir', 0);
 
 assert( -e localDir().'newdir/rtl1/rtl11/newfile.dat' );
