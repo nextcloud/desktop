@@ -410,6 +410,8 @@ static Hbf_State _hbf_transfer_no_chunk(ne_session *session, hbf_transfer_t *tra
     if (!req)
         return HBF_MEMORY_FAIL;
 
+    ne_add_request_header( req, "Content-Type", "application/octet-stream");
+
     ne_set_request_body_fd(req, transfer->fd, 0, transfer->stat_size);
     DEBUG_HBF("HBF: chunking not supported for %s", transfer->url);
     res = ne_request_dispatch(req);
@@ -501,6 +503,8 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
                 if( transfer->block_cnt > 1 ) {
                   ne_add_request_header(req, "OC-Chunked", "1");
                 }
+                ne_add_request_header( req, "Content-Type", "application/octet-stream");
+
                 state = _hbf_dav_request(transfer,  req, transfer->fd, block );
 
                 if( state != HBF_TRANSFER_SUCCESS && state != HBF_SUCCESS) {
