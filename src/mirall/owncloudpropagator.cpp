@@ -882,6 +882,17 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
     _rootJob->start();
 }
 
+void PropagateDirectory::start()
+{
+    _current = -1;
+    _hasError = false;
+    if (!_firstJob) {
+        proceedNext(SyncFileItem::Success);
+    } else {
+        startJob(_firstJob.data());
+    }
+}
+
 void PropagateDirectory::proceedNext(SyncFileItem::Status status)
 {
     if (status == SyncFileItem::FatalError) {

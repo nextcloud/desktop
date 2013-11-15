@@ -77,15 +77,8 @@ public:
         _subJobs.append(subJob);
     }
 
-    virtual void start() {
-        _current = -1;
-        _hasError = false;
-        if (!_firstJob) {
-            proceedNext(SyncFileItem::Success);
-        } else {
-            startJob(_firstJob.data());
-        }
-    }
+    virtual void start();
+
 
 private slots:
     void startJob(PropagatorJob *next) {
