@@ -126,6 +126,12 @@ bool SyncJournalDb::checkConnect()
         return false;
     }
 
+    QSqlQuery pragma1("PRAGMA synchronous = NORMAL;", _db);
+    if (!pragma1.exec()) {
+        qWarning() << "Error creating table downloadinfo : " << pragma1.lastError().text();
+        return false;
+    }
+
     bool rc = updateDatabaseStructure();
     if( rc ) {
         _getFileRecordQuery.reset(new QSqlQuery(_db));
