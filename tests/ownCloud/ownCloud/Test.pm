@@ -533,7 +533,6 @@ sub remoteFileId($$)
     }
   }
   print "## ID of $file: $id\n";
-  assert( $id ne "" );
   return $id;
 }
 
