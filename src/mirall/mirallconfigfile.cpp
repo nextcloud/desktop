@@ -71,7 +71,6 @@ MirallConfigFile::MirallConfigFile()
 
 
     QSettings settings(config, QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     settings.beginGroup( defaultConnection() );
 
     qDebug() << "Loading config: " << config << " (URL is " << settings.value("url").toString() << ")";
@@ -99,14 +98,12 @@ void MirallConfigFile::setConfDir(const QString &value)
 bool MirallConfigFile::optionalDesktopNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     return settings.value(QLatin1String(optionalDesktopNoficationsC), true).toBool();
 }
 
 void MirallConfigFile::setOptionalDesktopNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     settings.setValue(QLatin1String(optionalDesktopNoficationsC), show);
     settings.sync();
 }
@@ -114,14 +111,12 @@ void MirallConfigFile::setOptionalDesktopNotifications(bool show)
 QString MirallConfigFile::seenVersion() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     return settings.value(QLatin1String(seenVersionC)).toString();
 }
 
 void MirallConfigFile::setSeenVersion(const QString &version)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     settings.setValue(QLatin1String(seenVersionC), version);
     settings.sync();
 }
@@ -130,7 +125,6 @@ void MirallConfigFile::saveGeometry(QWidget *w)
 {
     Q_ASSERT(!w->objectName().isNull());
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     settings.beginGroup(w->objectName());
     settings.setValue(QLatin1String(geometryC), w->saveGeometry());
     settings.sync();
@@ -222,7 +216,6 @@ void MirallConfigFile::storeData(const QString& group, const QString& key, const
 {
     const QString con(group.isEmpty() ? defaultConnection() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
 
     settings.beginGroup(con);
     settings.setValue(key, value);
@@ -233,7 +226,6 @@ QVariant MirallConfigFile::retrieveData(const QString& group, const QString& key
 {
     const QString con(group.isEmpty() ? defaultConnection() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
 
     settings.beginGroup(con);
     return settings.value(key);
@@ -243,7 +235,6 @@ void MirallConfigFile::removeData(const QString& group, const QString& key)
 {
     const QString con(group.isEmpty() ? defaultConnection() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
 
     settings.beginGroup(con);
     settings.remove(key);
@@ -253,7 +244,6 @@ bool MirallConfigFile::dataExists(const QString& group, const QString& key) cons
 {
     const QString con(group.isEmpty() ? defaultConnection() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
 
     settings.beginGroup(con);
     return settings.contains(key);
@@ -262,16 +252,13 @@ bool MirallConfigFile::dataExists(const QString& group, const QString& key) cons
 QByteArray MirallConfigFile::caCerts( )
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     return settings.value( QLatin1String(caCertsKeyC) ).toByteArray();
 }
 
 void MirallConfigFile::setCaCerts( const QByteArray & certs )
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
 
-    settings.setIniCodec( "UTF-8" );
     settings.setValue( QLatin1String(caCertsKeyC), certs );
     settings.sync();
 }
@@ -282,7 +269,6 @@ int MirallConfigFile::remotePollInterval( const QString& connection ) const
   if( connection.isEmpty() ) con = defaultConnection();
 
   QSettings settings(configFile(), QSettings::IniFormat);
-  settings.setIniCodec("UTF-8");
   settings.beginGroup( con );
 
   int remoteInterval = settings.value( QLatin1String(remotePollIntervalC), DEFAULT_REMOTE_POLL_INTERVAL ).toInt();
@@ -303,7 +289,6 @@ void MirallConfigFile::setRemotePollInterval(int interval, const QString &connec
         return;
     }
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     settings.beginGroup( con );
     settings.setValue(QLatin1String(remotePollIntervalC), interval );
     settings.sync();
@@ -316,7 +301,6 @@ quint64 MirallConfigFile::forceSyncInterval(const QString& connection) const
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     settings.beginGroup( con );
 
     quint64 interval = settings.value( QLatin1String(forceSyncIntervalC), 10 * pollInterval ).toULongLong();
@@ -345,7 +329,6 @@ bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) cons
     if( connection.isEmpty() ) con = defaultConnection();
 
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     settings.beginGroup( con );
 
     bool skipIt = settings.value( QLatin1String(skipUpdateCheckC), false ).toBool();
@@ -359,7 +342,6 @@ void MirallConfigFile::setOwnCloudSkipUpdateCheck( bool skip, const QString& con
     if( connection.isEmpty() ) con = defaultConnection();
 
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     settings.beginGroup( con );
 
     settings.setValue( QLatin1String(skipUpdateCheckC), QVariant(skip) );
@@ -370,14 +352,12 @@ void MirallConfigFile::setOwnCloudSkipUpdateCheck( bool skip, const QString& con
 int MirallConfigFile::maxLogLines() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     return settings.value( QLatin1String(maxLogLinesC), DEFAULT_MAX_LOG_LINES ).toInt();
 }
 
 void MirallConfigFile::setMaxLogLines( int lines )
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     settings.setValue(QLatin1String(maxLogLinesC), lines);
     settings.sync();
 }
@@ -389,7 +369,6 @@ void MirallConfigFile::setProxyType(int proxyType,
                   const QString& pass)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
 
     settings.setValue(QLatin1String(proxyTypeC), proxyType);
 
@@ -408,7 +387,6 @@ QVariant MirallConfigFile::getValue(const QString& param, const QString& group,
                                     const QVariant& defaultValue) const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     if (!group.isEmpty())
         settings.beginGroup(group);
 
@@ -418,7 +396,6 @@ QVariant MirallConfigFile::getValue(const QString& param, const QString& group,
 void MirallConfigFile::setValue(const QString& key, const QVariant &value)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
 
     settings.setValue(key, value);
 }
@@ -497,14 +474,12 @@ void MirallConfigFile::setDownloadLimit(int kbytes)
 bool MirallConfigFile::monoIcons() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     return settings.value(QLatin1String(monoIconsC), false).toBool();
 }
 
 void MirallConfigFile::setMonoIcons(bool useMonoIcons)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setIniCodec("UTF-8");
     settings.setValue(QLatin1String(monoIconsC), useMonoIcons);
 }
 
