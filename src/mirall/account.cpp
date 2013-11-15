@@ -260,6 +260,7 @@ QSettings *Account::settingsWithGroup(const QString& group)
         _configFileName = cfg.configFile();
     }
     QSettings *settings = new QSettings(_configFileName, QSettings::IniFormat);
+    settings->setIniCodec("UTF-8");
     settings->beginGroup(group);
     return settings;
 }

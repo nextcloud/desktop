@@ -28,7 +28,6 @@
 #include <QMessageBox>
 #include <QCoreApplication>
 #include <QDebug>
-#include <QSettings>
 #include <QAction>
 
 #include "mirall/mirallconfigfile.h"
