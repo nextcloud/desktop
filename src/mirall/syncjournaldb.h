@@ -59,6 +59,7 @@ public:
     void setUploadInfo(const QString &file, const UploadInfo &i);
     bool postSyncCleanup( const QHash<QString, QString>& items );
 
+    void close();
 signals:
 
 public slots:

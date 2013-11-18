@@ -345,17 +345,35 @@ void CSyncThread::startSync()
     // maybe move this somewhere else where it can influence a running sync?
     MirallConfigFile cfg;
 
-    int fileRecordCount = 0;
     if (!_journal->exists()) {
         qDebug() << "=====sync looks new (no DB exists), activating recursive PROPFIND if csync supports it";
         bool no_recursive_propfind = false;
         csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
-    } else if ((fileRecordCount = _journal->getFileRecordCount()) < 50) {
-        qDebug() << "=====sync DB has only" << fileRecordCount << "items, enable recursive PROPFIND if csync supports it";
-        bool no_recursive_propfind = false;
-        csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
     } else {
-        qDebug() << "=====sync with existing DB";
+        // retrieve the file count from the db and close it afterwards because
+        // csync_update also opens the database.
+        int fileRecordCount = 0;
+        fileRecordCount = _journal->getFileRecordCount();
+        _journal->close();
+
+        if( fileRecordCount == -1 ) {
+            qDebug() << "No way to create a sync journal!";
+            emit csyncError(tr("Unable to initialize a sync journal."));
+
+            csync_commit(_csync_ctx);
+            emit finished();
+            _syncMutex.unlock();
+            thread()->quit();
+
+            return;
+            // database creation error!
+        } else if ( fileRecordCount < 50 ) {
+            qDebug() << "=====sync DB has only" << fileRecordCount << "items, enable recursive PROPFIND if csync supports it";
+            bool no_recursive_propfind = false;
+            csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
+        } else {
+            qDebug() << "=====sync with existing DB";
+        }
     }
 
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
