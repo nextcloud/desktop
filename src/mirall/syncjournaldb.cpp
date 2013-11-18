@@ -78,40 +78,56 @@ bool SyncJournalDb::checkConnect()
         }
     }
 
-
-    QSqlQuery createQuery1("CREATE TABLE IF NOT EXISTS metadata("
-                          "phash INTEGER(8),"
-                          "pathlen INTEGER,"
-                          "path VARCHAR(4096),"
-                          "inode INTEGER,"
-                          "uid INTEGER,"
-                          "gid INTEGER,"
-                          "mode INTEGER,"
-                          "modtime INTEGER(8),"
-                          "type INTEGER,"
-                          "md5 VARCHAR(32)," /* This is the etag.  Called md5 for compatibility */
-                          "PRIMARY KEY(phash)"
-                          ");" , _db);
-
-    if (!createQuery1.exec()) {
-        qWarning() << "Error creating table metadata : " << createQuery1.lastError().text();
+    QSqlQuery pragma1(_db);
+    pragma1.prepare("PRAGMA synchronous = 1;");
+    if (!pragma1.exec()) {
+        qWarning() << "Error setting pragma: " << pragma1.lastError().text();
+        return false;
+    }
+    pragma1.prepare("PRAGMA case_sensitive_like = ON;");
+    if (!pragma1.exec()) {
+        qWarning() << "Error setting pragma: " << pragma1.lastError().text();
         return false;
     }
 
-    QSqlQuery createQuery2("CREATE TABLE IF NOT EXISTS downloadinfo("
-                           "path VARCHAR(4096),"
-                           "tmpfile VARCHAR(4096),"
-                           "etag VARCHAR(32),"
-                           "errorcount INTEGER,"
-                           "PRIMARY KEY(path)"
-                           ");" , _db);
+    /* Because insert are so slow, e do everything in a transaction, and one need to call commit */
+    _db.transaction();
 
-    if (!createQuery2.exec()) {
-        qWarning() << "Error creating table downloadinfo : " << createQuery2.lastError().text();
+
+    QSqlQuery createQuery(_db);
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS metadata("
+                         "phash INTEGER(8),"
+                         "pathlen INTEGER,"
+                         "path VARCHAR(4096),"
+                         "inode INTEGER,"
+                         "uid INTEGER,"
+                         "gid INTEGER,"
+                         "mode INTEGER,"
+                         "modtime INTEGER(8),"
+                         "type INTEGER,"
+                         "md5 VARCHAR(32)," /* This is the etag.  Called md5 for compatibility */
+                         "PRIMARY KEY(phash)"
+                         ");");
+
+    if (!createQuery.exec()) {
+        qWarning() << "Error creating table metadata : " << createQuery.lastError().text();
         return false;
     }
 
-    QSqlQuery createQuery3("CREATE TABLE IF NOT EXISTS uploadinfo("
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS downloadinfo("
+                         "path VARCHAR(4096),"
+                         "tmpfile VARCHAR(4096),"
+                         "etag VARCHAR(32),"
+                         "errorcount INTEGER,"
+                         "PRIMARY KEY(path)"
+                         ");");
+
+    if (!createQuery.exec()) {
+        qWarning() << "Error creating table downloadinfo : " << createQuery.lastError().text();
+        return false;
+    }
+
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS uploadinfo("
                            "path VARCHAR(4096),"
                            "chunk INTEGER,"
                            "transferid INTEGER,"
@@ -119,16 +135,10 @@ bool SyncJournalDb::checkConnect()
                            "size INTEGER(8),"
                            "modtime INTEGER(8),"
                            "PRIMARY KEY(path)"
-                           ");", _db );
+                           ");");
 
-    if (!createQuery3.exec()) {
-        qWarning() << "Error creating table downloadinfo : " << createQuery3.lastError().text();
-        return false;
-    }
-
-    QSqlQuery pragma1("PRAGMA synchronous = NORMAL;", _db);
-    if (!pragma1.exec()) {
-        qWarning() << "Error creating table downloadinfo : " << pragma1.lastError().text();
+    if (!createQuery.exec()) {
+        qWarning() << "Error creating table downloadinfo : " << createQuery.lastError().text();
         return false;
     }
 
@@ -404,8 +414,10 @@ bool SyncJournalDb::postSyncCleanup(const QHash<QString, QString> &items )
 
 int SyncJournalDb::getFileRecordCount()
 {
+    QMutexLocker locker(&_mutex);
+
     if( !checkConnect() )
-        return 0;
+        return -1;
 
     QSqlQuery query("SELECT COUNT(*) FROM metadata" ,  _db);
 
