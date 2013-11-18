@@ -94,12 +94,6 @@ Application::Application(int &argc, char **argv) :
     //no need to waste time;
     if ( _helpOnly ) return;
 
-    _gui = new ownCloudGui(this);
-    if( _showLogWindow ) {
-        _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
-    }
-    connect( _gui, SIGNAL(setupProxy()), SLOT(slotSetupProxy()));
-
     setupLogging();
     setupTranslations();
 
@@ -124,6 +118,12 @@ Application::Application(int &argc, char **argv) :
 
     FolderMan::instance()->setupFolders();
     slotSetupProxy(); // folders have to be defined first.
+
+    _gui = new ownCloudGui(this);
+    if( _showLogWindow ) {
+        _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
+    }
+    connect( _gui, SIGNAL(setupProxy()), SLOT(slotSetupProxy()));
 
     // startup procedure.
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
