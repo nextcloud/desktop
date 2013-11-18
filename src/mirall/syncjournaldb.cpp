@@ -547,5 +547,19 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
     }
 }
 
+void SyncJournalDb::commit()
+{
+    QMutexLocker locker(&_mutex);
+    if (!_db.commit()) {
+        qDebug() << "ERROR commiting to the database: " << _db.lastError().text();
+    }
+    _db.transaction();
+}
+
+SyncJournalDb::~SyncJournalDb()
+{
+    _db.commit();
+}
+
 
 } // namespace Mirall

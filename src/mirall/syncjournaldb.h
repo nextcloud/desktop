@@ -29,6 +29,7 @@ class SyncJournalDb : public QObject
     Q_OBJECT
 public:
     explicit SyncJournalDb(const QString& path, QObject *parent = 0);
+    virtual ~SyncJournalDb();
     SyncJournalFileRecord getFileRecord( const QString& filename );
     bool setFileRecord( const SyncJournalFileRecord& record );
     bool deleteFileRecord( const QString& filename, bool recursively = false );
@@ -58,6 +59,11 @@ public:
     UploadInfo getUploadInfo(const QString &file);
     void setUploadInfo(const QString &file, const UploadInfo &i);
     bool postSyncCleanup( const QHash<QString, QString>& items );
+
+    /* Because sqlite transactions is really slow, we encapsulate everything in big transactions
+     * Commit will actually commit the transaction and create a new one.
+     */
+    void commit();
 
     void close();
 signals:
