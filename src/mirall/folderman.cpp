@@ -73,18 +73,6 @@ Mirall::Folder::Map FolderMan::map()
     return _folderMap;
 }
 
-
-int FolderMan::setupFolders()
-{
-    // setup a handler to look for configuration changes
-    return setupKnownFolders();
-}
-
-void FolderMan::slotReparseConfiguration()
-{
-    setupKnownFolders();
-}
-
 int FolderMan::unloadAllFolders()
 {
     int cnt = 0;
@@ -99,7 +87,7 @@ int FolderMan::unloadAllFolders()
     return cnt;
 }
 
-int FolderMan::setupKnownFolders()
+int FolderMan::setupFolders()
 {
   qDebug() << "* Setup folders from " << _folderConfigPath;
 

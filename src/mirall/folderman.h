@@ -99,8 +99,6 @@ public slots:
     void slotFolderSyncStarted();
     void slotFolderSyncFinished( const SyncResult& );
 
-    void slotReparseConfiguration();
-
     void terminateSyncProcess( const QString& alias = QString::null );
 
     /* delete all folder objects */
@@ -124,7 +122,6 @@ private slots:
 private:
     // finds all folder configuration files
     // and create the folders
-    int setupKnownFolders();
     void terminateCurrentSync();
     QString getBackupName( const QString& ) const;
 
