@@ -176,6 +176,14 @@ bool SyncJournalDb::checkConnect()
 
         _deleteUploadInfoQuery.reset(new QSqlQuery(_db));
         _deleteUploadInfoQuery->prepare("DELETE FROM uploadinfo WHERE path=?" );
+
+
+        _deleteFileRecordPhash.reset(new QSqlQuery(_db));
+        _deleteFileRecordPhash->prepare("DELETE FROM metadata WHERE phash=?");
+
+        _deleteFileRecordRecursively.reset(new QSqlQuery(_db));
+        _deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')");
+
     }
     return rc;
 }
@@ -192,7 +200,8 @@ void SyncJournalDb::close()
     _getUploadInfoQuery.reset(0);
     _setUploadInfoQuery.reset(0);
     _deleteUploadInfoQuery.reset(0);
-
+    _deleteFileRecordPhash.reset(0);
+    _deleteFileRecordRecursively.reset(0);
     _db.close();
 }
 
@@ -203,10 +212,12 @@ bool SyncJournalDb::updateDatabaseStructure()
 
     // check if the file_id column is there and create it if not
     if( columns.indexOf(QLatin1String("fileid")) == -1 ) {
-        QSqlQuery addFileIdColQuery("ALTER TABLE metadata ADD COLUMN fileid VARCHAR(128);", _db);
-        addFileIdColQuery.exec();
-        QSqlQuery indx("CREATE INDEX metadata_file_id ON metadata(fileid);", _db);
-        indx.exec();
+        QSqlQuery query(_db);
+        query.prepare("ALTER TABLE metadata ADD COLUMN fileid VARCHAR(128);");
+        query.exec();
+
+        query.prepare("CREATE INDEX metadata_file_id ON metadata(fileid);");
+        query.exec();
     }
     return true;
 }
@@ -217,7 +228,8 @@ QStringList SyncJournalDb::tableColumns( const QString& table )
     if( !table.isEmpty() ) {
 
         QString q = QString("PRAGMA table_info(%1);").arg(table);
-        QSqlQuery query(q, _db);
+        QSqlQuery query(_db);
+        query.prepare(q);
 
         if(!query.exec()) {
             QString err = query.lastError().text();
@@ -304,26 +316,28 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
     if( checkConnect() ) {
         if (!recursively) {
             qlonglong phash = getPHash(filename);
-            QSqlQuery query( "DELETE FROM metadata WHERE phash=?", _db );
-            query.bindValue( 0, QString::number(phash) );
+            _deleteFileRecordPhash->bindValue( 0, QString::number(phash) );
 
-            if( !query.exec() ) {
-                qWarning() << "Exec error of SQL statement: " << query.lastQuery() <<  " : " << query.lastError().text();
+            if( _deleteFileRecordPhash->exec() ) {
+                qWarning() << "Exec error of SQL statement: "
+                           << _deleteFileRecordPhash->lastQuery()
+                           <<  " : " << _deleteFileRecordPhash->lastError().text();
                 return false;
             }
-            qDebug() <<  query.executedQuery() << phash << filename;
-            return true;
+            qDebug() <<  _deleteFileRecordPhash->executedQuery() << phash << filename;
+            _deleteFileRecordPhash->finish();
         } else {
-            QSqlQuery query( "DELETE FROM metadata WHERE path LIKE(?||'/%')", _db );
-            query.bindValue( 0, filename );
-
-            if( !query.exec() ) {
-                qWarning() << "Exec error of SQL statement: " << query.lastQuery() <<  " : " << query.lastError().text();
+            _deleteFileRecordRecursively->bindValue(0, filename);
+            if( !_deleteFileRecordRecursively->exec() ) {
+                qWarning() << "Exec error of SQL statement: "
+                           << _deleteFileRecordRecursively->lastQuery()
+                           <<  " : " << _deleteFileRecordRecursively->lastError().text();
                 return false;
             }
-            qDebug() <<  query.executedQuery()  << filename;
-            return true;
+            qDebug() <<  _deleteFileRecordRecursively->executedQuery()  << filename;
+            _deleteFileRecordRecursively->finish();
         }
+        return true;
     } else {
         qDebug() << "Failed to connect database.";
         return false; // checkConnect failed.
@@ -381,7 +395,8 @@ bool SyncJournalDb::postSyncCleanup(const QHash<QString, QString> &items )
     if( !checkConnect() )
         return false;
 
-    QSqlQuery query("SELECT phash, path FROM metadata order by path" ,  _db);
+    QSqlQuery query(_db);
+    query.prepare("SELECT phash, path FROM metadata order by path");
 
     if (!query.exec()) {
         QString err = query.lastError().text();
@@ -402,7 +417,8 @@ bool SyncJournalDb::postSyncCleanup(const QHash<QString, QString> &items )
     if( superfluousItems.count() )  {
         QString sql = "DELETE FROM metadata WHERE phash in ("+ superfluousItems.join(",")+")";
         qDebug() << "Sync Journal cleanup: " << sql;
-        QSqlQuery delQuery(sql);
+        QSqlQuery delQuery(_db);
+        delQuery.prepare(sql);
         if( !delQuery.exec() ) {
             QString err = delQuery.lastError().text();
             qDebug() << "Error removing superfluous journal entries: " << delQuery.lastQuery() << ", Error:" << err;;
@@ -419,7 +435,8 @@ int SyncJournalDb::getFileRecordCount()
     if( !checkConnect() )
         return -1;
 
-    QSqlQuery query("SELECT COUNT(*) FROM metadata" ,  _db);
+    QSqlQuery query(_db);
+    query.prepare("SELECT COUNT(*) FROM metadata");
 
     if (!query.exec()) {
         QString err = query.lastError().text();

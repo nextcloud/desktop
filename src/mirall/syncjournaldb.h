@@ -86,6 +86,8 @@ private:
     QScopedPointer<QSqlQuery> _getUploadInfoQuery;
     QScopedPointer<QSqlQuery> _setUploadInfoQuery;
     QScopedPointer<QSqlQuery> _deleteUploadInfoQuery;
+    QScopedPointer<QSqlQuery> _deleteFileRecordPhash;
+    QScopedPointer<QSqlQuery> _deleteFileRecordRecursively;
 
 };
 
