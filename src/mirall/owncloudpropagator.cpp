@@ -443,6 +443,7 @@ public:
 private:
     QIODevice *_file;
     QScopedPointer<ne_decompress, ScopedPointerHelpers> _decompress;
+    QString errorString;
 
     static int content_reader(void *userdata, const char *buf, size_t len)
     {
@@ -464,6 +465,16 @@ private:
         return NE_ERROR;
     }
 
+    static int do_not_accept (void *userdata, ne_request *req, const ne_status *st)
+    {
+        return 0; // ignore this response
+    }
+
+    static int do_not_download_content_reader(void *userdata, const char *buf, size_t len)
+    {
+        return NE_ERROR;
+    }
+
     /*
     * This hook is called after the response is here from the server, but before
     * the response body is parsed. It decides if the response is compressed and
@@ -478,6 +489,17 @@ private:
 
         if( !that ) {
             qDebug("Error: install_content_reader called without valid write context!");
+            return;
+        }
+
+        const char *etag = ne_get_response_header( req, "ETag" );
+        if (!etag) {
+            qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid";
+            that->errorString = QLatin1String("No E-Tag received from server, check Proxy/Gateway");
+            ne_set_error(that->_propagator->_session, "No E-Tag received from server, check Proxy/Gateway");
+            ne_add_response_body_reader( req, do_not_accept,
+                                        do_not_download_content_reader,
+                                        (void*) that );
             return;
         }
 
@@ -589,6 +611,19 @@ void PropagateDownloadFile::start()
             continue;
         }
 
+        // This one is set by install_content_reader if e.g. there is no E-Tag
+        if (!errorString.isEmpty()) {
+            if (tmpFile.size() == 0) {
+                // don't keep the temporary file if it is empty.
+                tmpFile.close();
+                tmpFile.remove();
+                _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+            }
+            done(SyncFileItem::SoftError, errorString);
+            return;
+        }
+
+        // This one is set by neon
         if( updateErrorFromSession(neon_stat, req.data() ) ) {
             qDebug("Error GET: Neon: %d", neon_stat);
             if (tmpFile.size() == 0) {
