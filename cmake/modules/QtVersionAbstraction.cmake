@@ -57,6 +57,9 @@ if( NOT BUILD_WITH_QT4 )
             qt5_wrap_cpp(${ARGN})
         endmacro()
 
+        macro(install_qt_executable)
+            install_qt5_executable(${ARGN})
+        endmacro()
 
         macro(setup_qt)
         endmacro()
@@ -103,6 +106,10 @@ if( NOT Qt5Core_DIR )
 
     macro(qt_wrap_cpp)
         qt4_wrap_cpp(${ARGN})
+    endmacro()
+
+    macro(install_qt_executable)
+        install_qt4_executable(${ARGN})
     endmacro()
 
     macro(setup_qt)
