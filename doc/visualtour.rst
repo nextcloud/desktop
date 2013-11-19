@@ -25,7 +25,7 @@ Here is an explanation of the individual items in the menu:
 * Operation indicator: Shows the status of the current sync process, or
   ``Up to date`` if server and client are in sync.
 * **Recent Changes**: shows the last six files modified by sync operations,
-  and provides access to the Sync Protocol, which lists all changes
+  and provides access to the Sync status, which lists all changes
   since the last restart of ownCloud Client.
 * ``Settings...``: provides access to the settings menu.
 * ``Help``: Opens a browser to display this help.
@@ -120,12 +120,12 @@ certain DSL lines with very limited upstream capacity.
 ownCloud Client will pick up changes immediately, but ongoing operations
 will finish using the old settings.
 
-The Sync Protocol
-~~~~~~~~~~~~~~~~~
+The Sync Status Display
+~~~~~~~~~~~~~~~~~~~~~~~
 
-.. index:: sync protocol
+.. index:: sync status
 
-The ``Sync Protocol`` window, which can be invoked from either from the main
+The ``Sync Status`` window, which can be invoked from either from the main
 menu (``Recent Changes`` -> ``Details...``) or the ``Account Settings``
 (``Info`` button), will provide you with an in-depth summary of the recent
 sync activity. It will also show files that have not been synched (ignored

@@ -237,7 +237,7 @@ void ProtocolWidget::copyToClipboard()
     }
 
     QApplication::clipboard()->setText(text);
-    emit guiLog(tr("Copied to clipboard"), tr("The sync protocol has been copied to the clipboard."));
+    emit guiLog(tr("Copied to clipboard"), tr("The sync status has been copied to the clipboard."));
 }
 
 void ProtocolWidget::cleanErrors( const QString& folder ) // FIXME: Use the folder to detect which errors can be deleted.

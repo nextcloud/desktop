@@ -24,7 +24,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Detailed Sync Protocol</string>
+        <string>Detailed Sync Status</string>
        </property>
       </widget>
      </item>
