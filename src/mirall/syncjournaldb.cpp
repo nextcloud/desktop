@@ -24,6 +24,7 @@
 #include "syncjournalfilerecord.h"
 
 #define QSQLITE "QSQLITE"
+#define SYNCJOURNALDB_CONNECTION_NAME "SyncJournalDbConnection"
 
 namespace Mirall {
 
@@ -67,7 +68,11 @@ bool SyncJournalDb::checkConnect()
         }
     }
 
-    _db = QSqlDatabase::addDatabase( QSQLITE );
+    // Add the connection
+    if (!QSqlDatabase::connectionNames().contains(SYNCJOURNALDB_CONNECTION_NAME))
+        _db = QSqlDatabase::addDatabase( QSQLITE, SYNCJOURNALDB_CONNECTION_NAME );
+
+    // Open the file
     _db.setDatabaseName(_dbFile);
 
     if (!_db.isOpen()) {
