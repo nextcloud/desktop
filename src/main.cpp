@@ -36,9 +36,9 @@ int main(int argc, char **argv)
 
     Mirall::Application app(argc, argv);
     app.initialize();
-
+#ifndef Q_OS_WIN32
     signal(SIGPIPE, SIG_IGN);
-
+#endif
     if( app.giveHelp() ) {
         app.showHelp();
         return 0;

@@ -508,11 +508,18 @@ private:
 
     static int do_not_accept (void *userdata, ne_request *req, const ne_status *st)
     {
+        Q_UNUSED(userdata);
+        Q_UNUSED(req);
+        Q_UNUSED(st);
+
         return 0; // ignore this response
     }
 
     static int do_not_download_content_reader(void *userdata, const char *buf, size_t len)
     {
+        Q_UNUSED(userdata);
+        Q_UNUSED(buf);
+        Q_UNUSED(len);
         return NE_ERROR;
     }
 
