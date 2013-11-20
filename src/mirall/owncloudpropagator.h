@@ -98,13 +98,7 @@ private slots:
 class PropagateItemJob : public PropagatorJob {
     Q_OBJECT
 protected:
-    SyncFileItem _item;
-    void done(SyncFileItem::Status status, const QString &errorString = QString()) {
-        _item._errorString = errorString;
-        _item._status = status;
-        emit completed(_item);
-        emit finished(status);
-    }
+    void done(SyncFileItem::Status status, const QString &errorString = QString());
 
     void updateMTimeAndETag(const char *uri, time_t);
 
@@ -119,10 +113,11 @@ protected:
      * to be called by the progress callback and will wait the amount of time needed.
      */
     void limitBandwidth(qint64 progress, qint64 limit);
-    QElapsedTimer _lastTime;
-    qint64 _lastProgress;
 
+    QElapsedTimer _lastTime;
+    qint64        _lastProgress;
     int           _httpStatusCode;
+    SyncFileItem  _item;
 
 public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItem &item)

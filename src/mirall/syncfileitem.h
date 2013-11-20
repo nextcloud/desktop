@@ -49,7 +49,7 @@ public:
         FileIgnored ///< The file is in the ignored list
     };
 
-    SyncFileItem() : _status(NoStatus) {}
+    SyncFileItem() : _should_update_etag(false), _blacklistedInDb(false), _status(NoStatus), _httpErrorCode(0) {}
 
     friend bool operator==(const SyncFileItem& item1, const SyncFileItem& item2) {
         return item1._file == item2._file;
@@ -82,13 +82,13 @@ public:
     QByteArray           _etag;
     quint64              _size;
     bool                 _should_update_etag;
+    QString             _fileId;
     bool                _blacklistedInDb;
 
     // Variables usefull to report to the user
     Status              _status;
     QString             _errorString; // Contains a string only in case of error
     int                 _httpErrorCode;
-    QString             _fileId;
 };
 
 
