@@ -86,6 +86,7 @@ public:
     // Variables usefull to report to the user
     Status              _status;
     QString             _errorString; // Contains a string only in case of error
+    int                 _httpErrorCode;
     QString             _fileId;
 };
 

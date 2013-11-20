@@ -122,10 +122,11 @@ protected:
     QElapsedTimer _lastTime;
     qint64 _lastProgress;
 
+    int           _httpStatusCode;
 
 public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItem &item)
-        : PropagatorJob(propagator), _item(item), _lastProgress(0) {}
+        : PropagatorJob(propagator), _lastProgress(0), _httpStatusCode(0), _item(item) {}
 };
 
 // Dummy job that just mark it as completed and ignored.

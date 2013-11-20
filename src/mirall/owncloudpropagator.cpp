@@ -229,8 +229,8 @@ private:
 
         if (status == ne_status_sending && info->sr.total > 0) {
             emit that->progress(Progress::Context, that->_item._file ,
-                                     that->_chunked_done + info->sr.progress,
-                                     that->_chunked_total_size ? that->_chunked_total_size : info->sr.total );
+                                that->_chunked_done + info->sr.progress,
+                                that->_chunked_total_size ? that->_chunked_total_size : info->sr.total );
 
             that->limitBandwidth(that->_chunked_done + info->sr.progress,  that->_propagator->_uploadLimit);
         }
@@ -321,7 +321,7 @@ void PropagateUploadFile::start()
               }
             }
             // FIXME: find out the error class.
-            //_httpStatusCode = hbf_fail_http_code(trans.data());
+            _item._httpErrorCode = hbf_fail_http_code(trans.data());
             done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
             return;
         }
@@ -391,7 +391,9 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
     const ne_status *status = ne_get_status(req.data());
     if( neon_stat != NE_OK || status->klass != 2 ) {
         // error happend
+        _item._httpErrorCode = status->code;
         qDebug() << "Could not issue HEAD request for ETag." << ne_get_error(_propagator->_session);
+        _item._errorString = ne_get_error( _propagator->_session );
     } else {
         _item._etag = parseEtag(req.data());
         QString fid = parseFileId(req.data());
@@ -797,6 +799,7 @@ bool PropagateItemJob::updateErrorFromSession(int neon_code, ne_request* req, in
     case NE_OK:     /* Success, but still the possiblity of problems */
         if( req ) {
             const ne_status *status = ne_get_status(req);
+
             if (status) {
                 if ( status->klass == 2 || status->code == ignoreHttpCode) {
                     // Everything is ok, no error.
@@ -804,10 +807,12 @@ bool PropagateItemJob::updateErrorFromSession(int neon_code, ne_request* req, in
                 }
                 errorString = QString::fromUtf8( status->reason_phrase );
                 httpStatusCode = status->code;
+                _item._httpErrorCode = httpStatusCode;
             }
         } else {
             errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
             httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+            _item._httpErrorCode = httpStatusCode;
             if ((httpStatusCode >= 200 && httpStatusCode < 300)
                 || (httpStatusCode != 0 && httpStatusCode == ignoreHttpCode)) {
                 // No error
@@ -819,12 +824,12 @@ bool PropagateItemJob::updateErrorFromSession(int neon_code, ne_request* req, in
         return true;
     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
         errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-        if (ignoreHttpCode) {
-            // Check if we don't need to ignore that error.
-            httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-            if (httpStatusCode == ignoreHttpCode)
-                return false;
-        }
+        // Check if we don't need to ignore that error.
+        httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+        _item._httpErrorCode = httpStatusCode;
+        if (httpStatusCode == ignoreHttpCode)
+            return false;
+
         done(SyncFileItem::NormalError, errorString);
         return true;
     case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
