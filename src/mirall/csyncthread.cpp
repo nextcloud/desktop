@@ -227,7 +227,6 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
-    case CSYNC_INSTRUCTION_IGNORE:
         break;
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_SYNC:
