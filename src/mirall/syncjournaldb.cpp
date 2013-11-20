@@ -23,7 +23,7 @@
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 
-#define QSQLITE "QSQLITE"
+#define QSQLITE "QSQLITE3"
 #define SYNCJOURNALDB_CONNECTION_NAME "SyncJournalDbConnection"
 
 namespace Mirall {
@@ -69,8 +69,9 @@ bool SyncJournalDb::checkConnect()
     }
 
     // Add the connection
-    if (!QSqlDatabase::connectionNames().contains(SYNCJOURNALDB_CONNECTION_NAME))
+    if (!QSqlDatabase::connectionNames().contains(SYNCJOURNALDB_CONNECTION_NAME)) {
         _db = QSqlDatabase::addDatabase( QSQLITE, SYNCJOURNALDB_CONNECTION_NAME );
+    }
 
     // Open the file
     _db.setDatabaseName(_dbFile);
@@ -226,6 +227,9 @@ void SyncJournalDb::close()
     _deleteFileRecordPhash.reset(0);
     _deleteFileRecordRecursively.reset(0);
     _blacklistQuery.reset(0);
+
+    _db.removeDatabase(SYNCJOURNALDB_CONNECTION_NAME);
+    _db.setDatabaseName(QString());
     _db.close();
 }
 
@@ -418,8 +422,9 @@ bool SyncJournalDb::postSyncCleanup(const QHash<QString, QString> &items )
 {
     QMutexLocker locker(&_mutex);
 
-    if( !checkConnect() )
+    if( !checkConnect() ) {
         return false;
+    }
 
     QSqlQuery query(_db);
     query.prepare("SELECT phash, path FROM metadata order by path");
@@ -458,8 +463,9 @@ int SyncJournalDb::getFileRecordCount()
 {
     QMutexLocker locker(&_mutex);
 
-    if( !checkConnect() )
+    if( !checkConnect() ) {
         return -1;
+    }
 
     QSqlQuery query(_db);
     query.prepare("SELECT COUNT(*) FROM metadata");
@@ -509,8 +515,9 @@ void SyncJournalDb::setDownloadInfo(const QString& file, const SyncJournalDb::Do
 {
     QMutexLocker locker(&_mutex);
 
-    if( !checkConnect() )
+    if( !checkConnect() ) {
         return;
+    }
 
     if (i._valid) {
         _setDownloadInfoQuery->bindValue(0, file);
@@ -572,8 +579,9 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
 {
     QMutexLocker locker(&_mutex);
 
-    if( !checkConnect() )
+    if( !checkConnect() ) {
         return;
+    }
 
     if (i._valid) {
         _setUploadInfoQuery->bindValue(0, file);
@@ -635,13 +643,14 @@ SyncJournalBlacklistRecord SyncJournalDb::blacklistEntry( const QString& file )
 void SyncJournalDb::wipeBlacklistEntry( const QString& file )
 {
     QMutexLocker locker(&_mutex);
+    if( checkConnect() ) {
+        QSqlQuery query;
 
-    QSqlQuery query;
-
-    query.prepare("DELETE FROM blacklist WHERE path=:path");
-    query.bindValue(":path", file);
-    if( ! query.exec() ) {
-        qDebug() << "Deletion of blacklist item failed.";
+        query.prepare("DELETE FROM blacklist WHERE path=:path");
+        query.bindValue(":path", file);
+        if( ! query.exec() ) {
+            qDebug() << "Deletion of blacklist item failed.";
+        }
     }
 }
 
@@ -650,11 +659,15 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
     QMutexLocker locker(&_mutex);
     QSqlQuery query;
 
+    if( !checkConnect() ) {
+        return;
+    }
+
     query.prepare("SELECT retrycount FROM blacklist WHERE path=:path");
     query.bindValue(":path", item._file);
 
     if( !query.exec() ) {
-        qDebug() << "SQL exec blacklistitem failed.";
+        qDebug() << "SQL exec blacklistitem failed:" << query.lastError().text();
         return;
     }
 
