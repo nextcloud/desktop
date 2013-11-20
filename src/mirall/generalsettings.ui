@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="generalGroupBox">
      <property name="title">
-      <string>General</string>
+      <string>General Setttings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -77,7 +77,4 @@
  </widget>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="proxyButtonGroup"/>
- </buttongroups>
 </ui>
