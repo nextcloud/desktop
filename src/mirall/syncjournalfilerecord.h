@@ -44,6 +44,23 @@ public:
     int       _mode;
 };
 
+class SyncJournalBlacklistRecord
+{
+public:
+    SyncJournalBlacklistRecord() : _retryCount(0), _lastTryModtime(0) { }
+
+    SyncJournalBlacklistRecord(const SyncFileItem&, int retries);
+
+    // query("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM metadata WHERE phash=:phash");
+    int        _retryCount;
+    QString    _errorString;
+    time_t     _lastTryModtime;
+    QByteArray _lastTryEtag;
+    QString    _file;
+
+    bool isValid() { return(_lastTryEtag.length() > 0 || _lastTryModtime > 0); }
+};
+
 }
 
 #endif // SYNCJOURNALFILERECORD_H

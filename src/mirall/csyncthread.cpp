@@ -184,6 +184,53 @@ QString CSyncThread::csyncErrorToString(CSYNC_STATUS err)
 
 }
 
+bool CSyncThread::checkBlacklisting( SyncFileItem *item )
+{
+    bool re = false;
+
+    if( !_journal ) {
+        qWarning() << "Journal is undefined!";
+        return false;
+    }
+
+    SyncJournalBlacklistRecord entry = _journal->blacklistEntry(item->_file);
+    item->_blacklistedInDb = false;
+
+    // if there is a valid entry in the blacklist table and the retry count is
+    // already null or smaller than 0, the file is blacklisted.
+    if( entry.isValid() ) {
+        if( entry._retryCount <= 0 ) {
+            re = true;
+            item->_blacklistedInDb = true;
+        }
+
+        // if the retryCount is 0, but the etag has changed, it is tried again
+        // note that if the retryCount is -1 we never try again.
+        if( entry._retryCount == 0 ) {
+            if( item->_etag.isEmpty() || entry._lastTryEtag.isEmpty() ) {
+                // compare the mtimes.
+                if(entry._lastTryModtime != item->_modtime) {
+                    re = false;
+                    qDebug() << item->_file << " is blacklisted, but has changed mtime!";
+
+                }
+            } else {
+                if( entry._lastTryEtag != item->_etag) {
+                    re = false;
+                    qDebug() << item->_file << " is blacklisted, but has changed etag!";
+                }
+            }
+        }
+        if( re ) {
+            qDebug() << "Item is on blacklist: " << entry._file << "retries:" << entry._retryCount;
+            item->_blacklistedInDb = true;
+            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+        }
+    }
+
+    return re;
+}
+
 int CSyncThread::treewalkLocal( TREE_WALK_FILE* file, void *data )
 {
     return static_cast<CSyncThread*>(data)->treewalkFile( file, false );
@@ -204,6 +251,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._dir = SyncFileItem::None;
     item._fileId = QString::fromUtf8(file->file_id);
 
+    // record the seen files to be able to clean the journal later
     _seenFiles[item._file] = QString();
 
     if(file->error_string) {
@@ -219,6 +267,10 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     SyncFileItem::Direction dir;
 
     int re = 0;
+
+    // check for blacklisting of this item.
+    // if the item is on blacklist, the instruction was set to IGNORE
+    checkBlacklisting( &item );
 
     if (file->instruction != CSYNC_INSTRUCTION_IGNORE
         && file->instruction != CSYNC_INSTRUCTION_REMOVE) {

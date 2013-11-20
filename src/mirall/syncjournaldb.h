@@ -23,6 +23,7 @@
 
 namespace Mirall {
 class SyncJournalFileRecord;
+class SyncJournalBlacklistRecord;
 
 class SyncJournalDb : public QObject
 {
@@ -36,6 +37,8 @@ public:
     int getFileRecordCount();
     bool exists();
     QStringList tableColumns( const QString& table );
+    void updateBlacklistEntry( const SyncJournalBlacklistRecord& item );
+    void wipeBlacklistEntry(const QString& file);
 
     struct DownloadInfo {
         DownloadInfo() : _errorCount(0), _valid(false) {}
@@ -58,6 +61,8 @@ public:
     void setDownloadInfo(const QString &file, const DownloadInfo &i);
     UploadInfo getUploadInfo(const QString &file);
     void setUploadInfo(const QString &file, const UploadInfo &i);
+    SyncJournalBlacklistRecord blacklistEntry( const QString& );
+
     bool postSyncCleanup( const QHash<QString, QString>& items );
 
     /* Because sqlite transactions is really slow, we encapsulate everything in big transactions
@@ -88,7 +93,7 @@ private:
     QScopedPointer<QSqlQuery> _deleteUploadInfoQuery;
     QScopedPointer<QSqlQuery> _deleteFileRecordPhash;
     QScopedPointer<QSqlQuery> _deleteFileRecordRecursively;
-
+    QScopedPointer<QSqlQuery> _blacklistQuery;
 };
 
 }  // namespace Mirall

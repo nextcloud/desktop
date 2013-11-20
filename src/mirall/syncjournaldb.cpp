@@ -147,6 +147,21 @@ bool SyncJournalDb::checkConnect()
         return false;
     }
 
+    // create the blacklist table.
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS blacklist ("
+                        "path VARCHAR(4096),"
+                        "lastTryEtag VARCHAR[32],"
+                        "lastTryModtime INTEGER[8],"
+                        "retrycount INTEGER default 0,"
+                        "errorstring VARCHAR[4096],"
+                        "PRIMARY KEY(path)"
+                        ");");
+
+    if (!createQuery.exec()) {
+        qWarning() << "Error creating table blacklist: " << createQuery.lastError().text();
+        return false;
+    }
+
     bool rc = updateDatabaseStructure();
     if( rc ) {
         _getFileRecordQuery.reset(new QSqlQuery(_db));
@@ -189,6 +204,9 @@ bool SyncJournalDb::checkConnect()
         _deleteFileRecordRecursively.reset(new QSqlQuery(_db));
         _deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')");
 
+        _blacklistQuery.reset(new QSqlQuery(_db));
+        _blacklistQuery->prepare("SELECT lastTryEtag, lastTryModtime, retrycount, errorstring "
+                                 "FROM blacklist WHERE path=:path");
     }
     return rc;
 }
@@ -207,6 +225,7 @@ void SyncJournalDb::close()
     _deleteUploadInfoQuery.reset(0);
     _deleteFileRecordPhash.reset(0);
     _deleteFileRecordRecursively.reset(0);
+    _blacklistQuery.reset(0);
     _db.close();
 }
 
@@ -214,17 +233,19 @@ void SyncJournalDb::close()
 bool SyncJournalDb::updateDatabaseStructure()
 {
     QStringList columns = tableColumns("metadata");
+    bool re = true;
 
     // check if the file_id column is there and create it if not
     if( columns.indexOf(QLatin1String("fileid")) == -1 ) {
         QSqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN fileid VARCHAR(128);");
-        query.exec();
+        re = query.exec();
 
         query.prepare("CREATE INDEX metadata_file_id ON metadata(fileid);");
-        query.exec();
+        re = re && query.exec();
     }
-    return true;
+
+    return re;
 }
 
 QStringList SyncJournalDb::tableColumns( const QString& table )
@@ -578,6 +599,91 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
         }
         qDebug() <<  _deleteUploadInfoQuery->executedQuery() << file;
         _deleteUploadInfoQuery->finish();
+    }
+}
+
+SyncJournalBlacklistRecord SyncJournalDb::blacklistEntry( const QString& file )
+{
+    QMutexLocker locker(&_mutex);
+    SyncJournalBlacklistRecord entry;
+
+    if( file.isEmpty() ) return entry;
+
+    // SELECT lastTryEtag, lastTryModtime, retrycount, errorstring
+
+    if( checkConnect() ) {
+        _blacklistQuery->bindValue( ":path", file );
+        if( _blacklistQuery->exec() ){
+            if( _blacklistQuery->next() ) {
+                bool ok;
+                entry._lastTryEtag    = _blacklistQuery->value(0).toByteArray();
+                entry._lastTryModtime = _blacklistQuery->value(1).toLongLong(&ok);
+                entry._retryCount     = _blacklistQuery->value(2).toInt();
+                entry._errorString    = _blacklistQuery->value(3).toString();
+                entry._file           = file;
+            }
+        } else {
+            qWarning() << "Exec error blacklist: " << _blacklistQuery->lastQuery() <<  " : "
+                       << _blacklistQuery->lastError().text();
+        }
+        _blacklistQuery->finish();
+    }
+
+    return entry;
+}
+
+void SyncJournalDb::wipeBlacklistEntry( const QString& file )
+{
+    QMutexLocker locker(&_mutex);
+
+    QSqlQuery query;
+
+    query.prepare("DELETE FROM blacklist WHERE path=:path");
+    query.bindValue(":path", file);
+    if( ! query.exec() ) {
+        qDebug() << "Deletion of blacklist item failed.";
+    }
+}
+
+void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item )
+{
+    QMutexLocker locker(&_mutex);
+    QSqlQuery query;
+
+    query.prepare("SELECT retrycount FROM blacklist WHERE path=:path");
+    query.bindValue(":path", item._file);
+
+    if( !query.exec() ) {
+        qDebug() << "SQL exec blacklistitem failed.";
+        return;
+    }
+
+    QSqlQuery iQuery;
+    if( query.next() ) {
+        int retries = query.value(0).toInt();
+        retries--;
+        if( retries < 0 ) retries = 0;
+
+        iQuery.prepare( "UPDATE blacklist SET lastTryEtag = :etag, lastTryModtime = :modtime, "
+                        "retrycount = :retries, errorstring = :errStr WHERE path=:path");
+        iQuery.bindValue(":etag", item._lastTryEtag);
+        iQuery.bindValue(":modtime", QString::number(item._lastTryModtime));
+        iQuery.bindValue(":retries", retries);
+        iQuery.bindValue(":errStr", item._errorString);
+        iQuery.bindValue(":path", item._file);
+    } else {
+        // there is no entry yet.
+        iQuery.prepare("INSERT INTO blacklist (path, lastTryEtag, lastTryModtime, retrycount, errorstring) "
+                         "VALUES (:path, :lastEtag, :lastMTime, :retrycount, :errorstring);");
+
+        iQuery.bindValue(":path", item._file );
+        iQuery.bindValue(":lastEtag", item._lastTryEtag);
+        iQuery.bindValue(":lastMTime", QString::number(item._lastTryModtime));
+        iQuery.bindValue(":retrycount", item._retryCount);
+        iQuery.bindValue(":errorstring", item._errorString);
+    }
+    if( !iQuery.exec() ) {
+        qDebug() << "SQL exec blacklistitem insert/update failed: "<< iQuery.lastError().text();
     }
 }
 

@@ -83,4 +83,11 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
 
 }
 
+SyncJournalBlacklistRecord::SyncJournalBlacklistRecord(const SyncFileItem& item, int retries)
+    :_retryCount(retries), _errorString(item._errorString), _lastTryModtime(item._modtime)
+    , _lastTryEtag(item._etag), _file(item._file)
+{
+
+}
+
 }

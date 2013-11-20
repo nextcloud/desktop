@@ -87,6 +87,7 @@ private:
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);
     int treewalkFile( TREE_WALK_FILE*, bool );
+    bool checkBlacklisting( SyncFileItem *item );
 
     static QMutex _mutex;
     static QMutex _syncMutex;

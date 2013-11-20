@@ -62,9 +62,48 @@ class NAME : public PropagateItemJob { \
   /*  Q_OBJECT */ \
 public: \
     NAME(OwncloudPropagator* propagator,const SyncFileItem& item) \
-        : PropagateItemJob(propagator, item) {} \
+    : PropagateItemJob(propagator, item) {} \
     void start(); \
 };
+
+void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
+{
+    _item._errorString = errorString;
+    _item._status = status;
+
+    // Blacklisting
+    int retries = 0;
+
+    if( _item._httpErrorCode == 403 || _item._httpErrorCode == 413 || _item._httpErrorCode == 415 ) {
+        qDebug() << "Fatal Error condition, disallow retry!";
+        retries = -1;
+    } else {
+        retries = 3; // FIXME: good number of allowed retries?
+    }
+    SyncJournalBlacklistRecord record(_item, retries);;
+
+    switch( status ) {
+    case SyncFileItem::FatalError:
+    case SyncFileItem::NormalError:
+    case SyncFileItem::SoftError:
+        _propagator->_journal->updateBlacklistEntry( record );
+        break;
+    case SyncFileItem::Success:
+        if( _item._blacklistedInDb ) {
+            // wipe blacklist entry.
+            _propagator->_journal->wipeBlacklistEntry(_item._file);
+        }
+        break;
+    case SyncFileItem::Conflict:
+    case SyncFileItem::FileIgnored:
+    case SyncFileItem::NoStatus:
+        // nothing
+        break;
+    }
+
+    emit completed(_item);
+    emit finished(status);
+}
 
 // compare two files with given filename and return true if they have the same content
 static bool fileEquals(const QString &fn1, const QString &fn2) {
