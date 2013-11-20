@@ -11,6 +11,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+#include <signal.h>
 
 #include "mirall/application.h"
 #include "mirall/theme.h"
@@ -35,6 +36,8 @@ int main(int argc, char **argv)
 
     Mirall::Application app(argc, argv);
     app.initialize();
+
+    signal(SIGPIPE, SIG_IGN);
 
     if( app.giveHelp() ) {
         app.showHelp();
