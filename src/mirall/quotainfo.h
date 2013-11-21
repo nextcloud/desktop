@@ -34,6 +34,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void slotAccountChanged(Account *newAccount, Account *oldAccount);
+    void slotOnlineStateChanged(bool online);
 
 Q_SIGNALS:
     void quotaUpdated(qint64 total, qint64 used);
