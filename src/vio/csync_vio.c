@@ -24,7 +24,6 @@
 
 #include <errno.h>
 #include <stdio.h>
-#include <dlfcn.h> /* dlopen(), dlclose(), dlsym() ... */
 
 #include "csync_private.h"
 #include "csync_dbtree.h"
