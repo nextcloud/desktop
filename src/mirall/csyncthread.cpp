@@ -562,7 +562,7 @@ void CSyncThread::slotFinished()
     if( ! _journal->postSyncCleanup( _seenFiles ) ) {
         qDebug() << "Cleaning of synced ";
     }
-    _journal->commit();
+    _journal->commit("All Finished.", false);
     emit treeWalkResult(_syncedItems);
 
     csync_commit(_csync_ctx);

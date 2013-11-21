@@ -68,9 +68,13 @@ public:
     /* Because sqlite transactions is really slow, we encapsulate everything in big transactions
      * Commit will actually commit the transaction and create a new one.
      */
-    void commit();
+    void commit(const QString &context, bool startTrans = true);
 
     void close();
+
+    void startTransaction();
+    void commitTransaction();
+
 signals:
 
 public slots:
@@ -78,11 +82,13 @@ public slots:
 private:
     qint64 getPHash(const QString& ) const;
     bool updateDatabaseStructure();
+    bool sqlFail(const QString& log, const QSqlQuery &query );
 
     bool checkConnect();
     QSqlDatabase _db;
     QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
+    int _transaction;
     QScopedPointer<QSqlQuery> _getFileRecordQuery;
     QScopedPointer<QSqlQuery> _setFileRecordQuery;
     QScopedPointer<QSqlQuery> _getDownloadInfoQuery;

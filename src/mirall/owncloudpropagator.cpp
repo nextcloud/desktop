@@ -176,7 +176,7 @@ void PropagateLocalRemove::start()
         }
     }
     _propagator->_journal->deleteFileRecord(_item._originalFile);
-    _propagator->_journal->commit();
+    _propagator->_journal->commit("Local remove");
     done(SyncFileItem::Success);
 }
 
@@ -205,7 +205,7 @@ void PropagateRemoteRemove::start()
         return;
     }
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
-    _propagator->_journal->commit();
+    _propagator->_journal->commit("Remote Remove");
     done(SyncFileItem::Success);
 }
 
@@ -257,7 +257,7 @@ private:
             pi._transferid = trans->transfer_id;
             pi._modtime =  QDateTime::fromTime_t(trans->modtime);
             that->_propagator->_journal->setUploadInfo(that->_item._file, pi);
-            that->_propagator->_journal->commit();
+            that->_propagator->_journal->commit("Upload info");
         }
     }
 
@@ -376,7 +376,7 @@ void PropagateUploadFile::start()
         _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
         // Remove from the progress database:
         _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
-        _propagator->_journal->commit();
+        _propagator->_journal->commit("upload file start");
         emit progress(Progress::EndUpload, _item._file, 0, _item._size);
         done(SyncFileItem::Success);
         return;
@@ -618,7 +618,7 @@ void PropagateDownloadFile::start()
         pi._tmpfile = tmpFileName;
         pi._valid = true;
         _propagator->_journal->setDownloadInfo(_item._file, pi);
-        _propagator->_journal->commit();
+        _propagator->_journal->commit("download file start");
     }
 
     /* actually do the request */
@@ -752,7 +752,7 @@ void PropagateDownloadFile::start()
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
-    _propagator->_journal->commit();
+    _propagator->_journal->commit("download file start2");
     emit progress(Progress::EndDownload, _item._file, 0, _item._size);
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
@@ -777,7 +777,7 @@ void PropagateLocalRename::start()
     record._path = _item._renameTarget;
 
     _propagator->_journal->setFileRecord(record);
-    _propagator->_journal->commit();
+    _propagator->_journal->commit("localRename");
 
     emit progress(Progress::EndRename, _item._file, 0, _item._size);
 
@@ -828,7 +828,7 @@ void PropagateRemoteRename::start()
     record._path = _item._renameTarget;
 
     _propagator->_journal->setFileRecord(record);
-    _propagator->_journal->commit();
+    _propagator->_journal->commit("Remote Rename");
     done(SyncFileItem::Success);
 }
 
@@ -974,6 +974,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
     connect(_rootJob.data(), SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
     connect(_rootJob.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,QString,quint64,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
+
     _rootJob->start();
 }
 
