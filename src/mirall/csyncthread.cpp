@@ -580,11 +580,23 @@ void CSyncThread::slotProgress(Progress::Kind kind, const QString &file, quint64
 {
     Progress::Info pInfo = _progressInfo;
 
+    if( kind == Progress::StartSync ) {
+        QMutexLocker lock(&_mutex);
+        _currentFileNo = 0;
+    }
+    if( kind == Progress::StartDelete ||
+            kind == Progress::StartDownload ||
+            kind == Progress::StartRename ||
+            kind == Progress::StartUpload ) {
+        QMutexLocker lock(&_mutex);
+        _currentFileNo += 1;
+    }
+
     pInfo.kind                  = kind;
     pInfo.current_file          = file;
     pInfo.file_size             = total;
     pInfo.current_file_bytes    = curr;
-
+    pInfo.current_file_no       = _currentFileNo;
     pInfo.overall_current_bytes += curr;
     pInfo.timestamp = QDateTime::currentDateTime();
 

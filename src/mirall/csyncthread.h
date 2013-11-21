@@ -112,6 +112,7 @@ private:
     Progress::Info _progressInfo;
     int _downloadLimit;
     int _uploadLimit;
+    int _currentFileNo;
 
     QAtomicInt _abortRequested;
 
