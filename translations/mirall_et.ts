@@ -1390,7 +1390,7 @@ konflikt-failiks ning serveris asuv fail on saadaval algse nimega.</translation>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Staatus</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
@@ -1930,7 +1930,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="168"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Kausta %1 ei saa eemaldada</translation>
     </message>
 </context>
 <context>
@@ -1938,12 +1938,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="804"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Kausta ei tohi ümber nimetada. Kausta algne nimi taastati.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="806"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Kausta nime ei tohi muuta. Palun pane selle nimeks tagasi Shared.</translation>
     </message>
 </context>
 <context>

@@ -1392,7 +1392,7 @@ op de server staat beschikbaar blijft met de originele naam.</translation>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Status</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
@@ -1932,7 +1932,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="168"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Kon map %1 niet verwijderen</translation>
     </message>
 </context>
 <context>
@@ -1940,12 +1940,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="804"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Deze map mag niet worden hernoemd. De naam van de map is teruggezet naar de originele naam.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="806"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Deze map mag niet worden hernoemd. Verander de naam terug in Gedeeld.</translation>
     </message>
 </context>
 <context>

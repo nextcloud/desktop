@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="46"/>
         <source>Accounts to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Conta para Sincronizar</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="98"/>
@@ -161,7 +161,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="104"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma conta configurada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="428"/>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="755"/>
         <source>%1 of %2 (%3%) in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2 (%3%) em uso.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="786"/>
@@ -211,12 +211,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="789"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Conectado a &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; como &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="793"/>
         <source>No connection to %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma conexão para %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="759"/>
@@ -355,7 +355,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="412"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibilitado de iniciar a sincronização.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="89"/>
         <source>No ownCloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma conta ownCloud configurada</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="104"/>
@@ -447,37 +447,37 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="386"/>
         <source>downloaded</source>
-        <translation type="unfinished"/>
+        <translation>baixado</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="387"/>
         <source>removed</source>
-        <translation type="unfinished"/>
+        <translation>removido</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="388"/>
         <source>updated</source>
-        <translation type="unfinished"/>
+        <translation>atualizado</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="389"/>
         <source>renamed</source>
-        <translation type="unfinished"/>
+        <translation>renomeado</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="401"/>
         <source>&apos;%1&apos; has been %2.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; foi %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="403"/>
         <source>Files %1</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="404"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; e %2 outros arquivos foram %3.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="446"/>
@@ -720,7 +720,7 @@ documentação por possíveis correções.</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Setttings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações Gerais</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -1120,12 +1120,12 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="159"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="167"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao conectar a %1 em %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="249"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma pasta remota foi especificada!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
@@ -1231,7 +1231,7 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="27"/>
         <source>Detailed Sync Status</source>
-        <translation type="unfinished"/>
+        <translation>Detalhe do Status de Sincronização</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="57"/>
@@ -1361,7 +1361,7 @@ enquanto o arquivo do lado do servidor está disponível sob o nome original</tr
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>O estado de sincronização foi copiado para o  clipboard.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
@@ -1389,7 +1389,7 @@ enquanto o arquivo do lado do servidor está disponível sob o nome original</tr
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Status</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
@@ -1412,23 +1412,24 @@ enquanto o arquivo do lado do servidor está disponível sob o nome original</tr
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="52"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Autenticar</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="113"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="117"/>
         <source>Error loading IdP login page</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao carregar página de login IdP</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
         <source>Could not load Shibboleth login page to log you in.
 Please ensure that your network connection is working.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível carregar a página de login Shibboleth para conectá-lo
+Certifique-se que sua conexão de rede está funcionando.</translation>
     </message>
 </context>
 <context>
@@ -1921,7 +1922,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="189"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível criar diretório %1</translation>
     </message>
 </context>
 <context>
@@ -1929,7 +1930,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="168"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>O diretório %1 não pode ser removido</translation>
     </message>
 </context>
 <context>
@@ -1937,12 +1938,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="804"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Esta pasta não pode ser renomeada. Ele será renomeado de volta ao seu nome original.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="806"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Esta pasta não pode ser renomeada. Por favor, nomeie-a de volta para Compartilhada.</translation>
     </message>
 </context>
 <context>
@@ -2058,7 +2059,7 @@ Please ensure that your network connection is working.</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
         <source>Move</source>
-        <translation type="unfinished"/>
+        <translation>Mover</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
@@ -2097,12 +2098,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="116"/>
         <source>move</source>
-        <translation type="unfinished"/>
+        <translation>mover</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="119"/>
         <source>moved</source>
-        <translation type="unfinished"/>
+        <translation>movido</translation>
     </message>
 </context>
 <context>

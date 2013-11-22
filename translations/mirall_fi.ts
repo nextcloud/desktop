@@ -1376,7 +1376,7 @@ name</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Tila</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>

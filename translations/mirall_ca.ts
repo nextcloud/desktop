@@ -1391,7 +1391,7 @@ original</translation>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Estat</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
@@ -1931,7 +1931,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="168"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut esborrar la carpeta %1</translation>
     </message>
 </context>
 <context>
@@ -1939,12 +1939,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="804"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha de canviar el nom d&apos;aquesta carpeta. Es reanomena de nou amb el seu nom original.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="806"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Aquesta carpeta no es pot reanomenar. Reanomeneu-la de nou Shared.</translation>
     </message>
 </context>
 <context>

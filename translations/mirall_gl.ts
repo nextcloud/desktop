@@ -1391,7 +1391,7 @@ o nome orixinal</translation>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Estado</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
@@ -1931,7 +1931,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="168"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel retirar o directorio %1</translation>
     </message>
 </context>
 <context>
@@ -1939,12 +1939,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="804"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel renomear este cartafol. Non se lle cambiou o nome, mantense o orixinal.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="806"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel renomear este cartafol. Devólvalle o nome ao compartido.</translation>
     </message>
 </context>
 <context>
