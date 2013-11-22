@@ -23,7 +23,7 @@
 #include <QStringList>
 #include <QStack>
 #include <QTimer>
-
+#include <QMutex>
 #include <QDebug>
 
 #include "json.h"
@@ -32,11 +32,13 @@
 #include "mirall/account.h"
 
 #include "creds/credentialsfactory.h"
+#include "creds/abstractcredentials.h"
 
 namespace Mirall {
 
 AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QObject *parent)
     : QObject(parent)
+    , _ignoreCredentialFailure(false)
     , _reply(0)
     , _account(account)
     , _path(path)
@@ -70,6 +72,11 @@ void AbstractNetworkJob::resetTimeout()
     _timer->start(interval);
 }
 
+void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
+{
+    _ignoreCredentialFailure = ignore;
+}
+
 void AbstractNetworkJob::setAccount(Account *account)
 {
     _account = account;
@@ -80,14 +87,10 @@ void AbstractNetworkJob::setPath(const QString &path)
     _path = path;
 }
 
-void AbstractNetworkJob::slotError(QNetworkReply::NetworkError error)
+void AbstractNetworkJob::slotError(QNetworkReply::NetworkError)
 {
-    if (error == QNetworkReply::ContentAccessDenied) {
-        // ### ask for password, retry job, needs refactoring to use start()
-    }
     qDebug() << metaObject()->className() << "Error:" << _reply->errorString();
     emit networkError(_reply);
-    deleteLater();
 }
 
 void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
@@ -128,8 +131,35 @@ QNetworkReply *AbstractNetworkJob::headRequest(const QUrl &url)
     return _account->headRequest(url);
 }
 
+void AbstractNetworkJob::slotFinished()
+{
+    static QMutex mutex;
+    AbstractCredentials *creds = _account->credentials();
+    qDebug() << creds->stillValid(_reply) << _ignoreCredentialFailure << _reply->errorString();
+    if (creds->stillValid(_reply) || _ignoreCredentialFailure) {
+        finished();
+    } else {
+        // If other jobs that still were created from before
+        // the account was put offline by the code below,
+        // we do want them to fail silently while we
+        // query the user
+        if (mutex.tryLock()) {
+            Account *a = account();
+            a->setOnline(false);
+            a->setOnline(creds->fetchFromUser(a));
+            mutex.unlock();
+        }
+    }
+    deleteLater();
+}
+
 AbstractNetworkJob::~AbstractNetworkJob() {
     _reply->deleteLater();
+}
+
+void AbstractNetworkJob::start()
+{
+    qDebug() << "!!!" << metaObject()->className() << "created for" << account()->url() << "querying" << path();
 }
 
 /*********************************************************************************************/
@@ -167,9 +197,10 @@ void RequestEtagJob::start()
     if( reply()->error() != QNetworkReply::NoError ) {
         qDebug() << "getting etag: request network error: " << reply()->errorString();
     }
+    AbstractNetworkJob::start();
 }
 
-void RequestEtagJob::slotFinished()
+void RequestEtagJob::finished()
 {
     if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
         // Parse DAV response
@@ -188,7 +219,6 @@ void RequestEtagJob::slotFinished()
         }
         emit etagRetreived(etag);
     }
-    deleteLater();
 }
 
 /*********************************************************************************************/
@@ -204,12 +234,12 @@ void MkColJob::start()
    QNetworkReply *reply = davRequest("MKCOL", path());
    setReply(reply);
    setupConnections(reply);
+   AbstractNetworkJob::start();
 }
 
-void MkColJob::slotFinished()
+void MkColJob::finished()
 {
     emit finished(reply()->error());
-    deleteLater();
 }
 
 /*********************************************************************************************/
@@ -236,9 +266,10 @@ void LsColJob::start()
     buf->setParent(reply);
     setReply(reply);
     setupConnections(reply);
+    AbstractNetworkJob::start();
 }
 
-void LsColJob::slotFinished()
+void LsColJob::finished()
 {
     if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
         // Parse DAV response
@@ -264,8 +295,6 @@ void LsColJob::slotFinished()
         }
         emit directoryListing(folders);
     }
-
-    deleteLater();
 }
 
 /*********************************************************************************************/
@@ -281,6 +310,7 @@ void CheckServerJob::start()
 {
     setReply(getRequest(path()));
     setupConnections(reply());
+    AbstractNetworkJob::start();
 }
 
 void CheckServerJob::slotTimeout()
@@ -305,7 +335,7 @@ bool CheckServerJob::installed(const QVariantMap &info)
     return info.value(QLatin1String("installed")).toBool();
 }
 
-void CheckServerJob::slotFinished()
+void CheckServerJob::finished()
 {
     account()->setCertificateChain(reply()->sslConfiguration().peerCertificateChain());
 
@@ -343,7 +373,6 @@ void CheckServerJob::slotFinished()
     } else {
         qDebug() << "No proper answer on " << requestedUrl;
     }
-    deleteLater();
 }
 
 /*********************************************************************************************/
@@ -380,6 +409,7 @@ void PropfindJob::start()
     setReply(davRequest("PROPFIND", path(), req, buf));
     buf->setParent(reply());
     setupConnections(reply());
+    AbstractNetworkJob::start();
 }
 
 void PropfindJob::setProperties(QList<QByteArray> properties)
@@ -392,7 +422,7 @@ QList<QByteArray> PropfindJob::properties() const
     return _properties;
 }
 
-void PropfindJob::slotFinished()
+void PropfindJob::finished()
 {
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -426,8 +456,6 @@ void PropfindJob::slotFinished()
     } else {
         qDebug() << "Quota request *not* successful, http result code is " << http_result_code;
     }
-
-    deleteLater();
 }
 
 /*********************************************************************************************/
@@ -441,9 +469,10 @@ void EntityExistsJob::start()
 {
     setReply(headRequest(path()));
     setupConnections(reply());
+    AbstractNetworkJob::start();
 }
 
-void EntityExistsJob::slotFinished()
+void EntityExistsJob::finished()
 {
     emit exists(reply());
 }
@@ -473,9 +502,10 @@ void CheckQuotaJob::start()
     setReply(davRequest("PROPFIND", path(), req, buf));
     buf->setParent(reply());
     setupConnections(reply());
+    AbstractNetworkJob::start();
 }
 
-void CheckQuotaJob::slotFinished()
+void CheckQuotaJob::finished()
 {
     if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
         // Parse DAV response
@@ -498,7 +528,6 @@ void CheckQuotaJob::slotFinished()
         qint64 total = quotaUsedBytes + quotaAvailableBytes;
         emit quotaRetrieved(total, quotaUsedBytes);
     }
-    deleteLater();
 }
 
 } // namespace Mirall

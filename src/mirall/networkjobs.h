@@ -37,7 +37,7 @@ public:
     explicit AbstractNetworkJob(Account *account, const QString &path, QObject* parent = 0);
     virtual ~AbstractNetworkJob();
 
-    virtual void start() = 0;
+    virtual void start();
 
     void setAccount(Account *account);
     Account* account() const { return _account; }
@@ -49,6 +49,9 @@ public:
 
     void setTimeout(qint64 msec);
     void resetTimeout();
+
+    void setIgnoreCredentialFailure(bool ignore);
+    bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
 
 signals:
     void networkError(QNetworkReply *reply);
@@ -66,13 +69,15 @@ protected:
     QNetworkReply* headRequest(const QUrl &url);
 
     int maxRedirects() const { return 10; }
+    virtual void finished() = 0;
 
 private slots:
-    virtual void slotFinished() = 0;
+    void slotFinished();
     void slotError(QNetworkReply::NetworkError);
     virtual void slotTimeout() {}
 
 private:
+    bool _ignoreCredentialFailure;
     QNetworkReply *_reply;
     Account *_account;
     QString _path;
@@ -92,7 +97,7 @@ signals:
     void exists(QNetworkReply*);
 
 private slots:
-    virtual void slotFinished();
+    virtual void finished();
 };
 
 /**
@@ -108,7 +113,7 @@ signals:
     void directoryListing(const QStringList &items);
 
 private slots:
-    virtual void slotFinished();
+    virtual void finished();
 };
 
 /**
@@ -126,7 +131,7 @@ signals:
     void result(const QVariantMap &values);
 
 private slots:
-    virtual void slotFinished();
+    virtual void finished();
 
 private:
     QList<QByteArray> _properties;
@@ -145,11 +150,11 @@ signals:
     void finished(QNetworkReply::NetworkError);
 
 private slots:
-    virtual void slotFinished();
+    virtual void finished();
 };
 
 /**
- * @brief The CheckOwncloudJob class
+ * @brief The CheckServerJob class
  */
 class CheckServerJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -166,7 +171,7 @@ signals:
     void timeout(const QUrl&url);
 
 private slots:
-    virtual void slotFinished();
+    virtual void finished();
     virtual void slotTimeout();
 
 private:
@@ -188,7 +193,7 @@ signals:
     void etagRetreived(const QString &etag);
 
 private slots:
-    virtual void slotFinished();
+    virtual void finished();
 };
 
 /**
@@ -204,7 +209,7 @@ signals:
     void quotaRetrieved(qint64 totalBytes, qint64 availableBytes);
 
 private slots:
-    virtual void slotFinished();
+    virtual void finished();
 };
 
 } // namespace Mirall

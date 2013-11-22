@@ -23,6 +23,7 @@ class QByteArray;
 namespace Mirall
 {
 
+class Account;
 class ShibbolethCredentials;
 
 class ShibbolethRefresher : public QObject
@@ -30,7 +31,7 @@ class ShibbolethRefresher : public QObject
     Q_OBJECT
 
 public:
-    ShibbolethRefresher(ShibbolethCredentials* creds, CSYNC* csync_ctx, QObject* parent = 0);
+    ShibbolethRefresher(Account *account, ShibbolethCredentials* creds, CSYNC* csync_ctx, QObject* parent = 0);
 
     void refresh();
 
@@ -38,6 +39,7 @@ private Q_SLOTS:
     void onInvalidatedAndFetched(const QByteArray& cookieData);
 
 private:
+    Account* _account;
     ShibbolethCredentials* _creds;
     CSYNC* _csync_ctx;
 };

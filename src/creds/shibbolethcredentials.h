@@ -42,12 +42,14 @@ public:
     QNetworkAccessManager* getQNAM() const;
     bool ready() const;
     void fetch(Account *account);
+    bool stillValid(QNetworkReply *reply);
+    virtual bool fetchFromUser(Account *account);
     void persist(Account *account);
 
     QNetworkCookie cookie() const;
 
 public Q_SLOTS:
-    void invalidateAndFetch();
+    void invalidateAndFetch(Account *account);
 
 private Q_SLOTS:
     void onShibbolethCookieReceived(const QNetworkCookie& cookie);

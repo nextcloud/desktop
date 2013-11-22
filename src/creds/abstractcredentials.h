@@ -19,6 +19,7 @@
 #include <csync.h>
 
 class QNetworkAccessManager;
+class QNetworkReply;
 namespace Mirall
 {
 class Account;
@@ -37,6 +38,8 @@ public:
   virtual QNetworkAccessManager* getQNAM() const = 0;
   virtual bool ready() const = 0;
   virtual void fetch(Account *account) = 0;
+  virtual bool stillValid(QNetworkReply *reply) = 0;
+  virtual bool fetchFromUser(Account *account) = 0;
   virtual void persist(Account *account) = 0;
 
 

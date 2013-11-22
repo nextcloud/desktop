@@ -430,9 +430,10 @@ void DetermineAuthTypeJob::start()
     QNetworkReply *reply = getRequest(Account::davPath());
     setReply(reply);
     setupConnections(reply);
+    AbstractNetworkJob::start();
 }
 
-void DetermineAuthTypeJob::slotFinished()
+void DetermineAuthTypeJob::finished()
 {
     QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     qDebug() << redirection.toString();
@@ -458,7 +459,6 @@ void DetermineAuthTypeJob::slotFinished()
             emit authType(WizardCommon::HttpCreds);
         }
     }
-    deleteLater();
 }
 
 ValidateDavAuthJob::ValidateDavAuthJob(Account *account, QObject *parent)
@@ -471,12 +471,12 @@ void ValidateDavAuthJob::start()
     QNetworkReply *reply = getRequest(Account::davPath());
     setReply(reply);
     setupConnections(reply);
+    AbstractNetworkJob::start();
 }
 
-void ValidateDavAuthJob::slotFinished()
+void ValidateDavAuthJob::finished()
 {
     emit authResult(reply());
-    deleteLater();
 }
 
 } // ns Mirall

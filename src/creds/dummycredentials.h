@@ -31,6 +31,8 @@ public:
   QString user() const;
   QNetworkAccessManager* getQNAM() const;
   bool ready() const;
+  bool stillValid(QNetworkReply *reply);
+  bool fetchFromUser(Account *account);
   void fetch(Account*);
   void persist(Account*);
 };

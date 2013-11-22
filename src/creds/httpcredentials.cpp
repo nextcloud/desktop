@@ -17,6 +17,7 @@
 #include <QDebug>
 #include <QNetworkReply>
 #include <QSettings>
+#include <QInputDialog>
 
 #include <qtkeychain/keychain.h>
 
@@ -83,6 +84,7 @@ protected:
         QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
+        qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
         return MirallAccessManager::createRequest(op, req, outgoingData);
     }
 private:
@@ -183,6 +185,22 @@ void HttpCredentials::fetch(Account *account)
         job->start();
     }
 }
+bool HttpCredentials::stillValid(QNetworkReply *reply)
+{
+    return (reply->error() != QNetworkReply::AuthenticationRequiredError);
+}
+
+bool HttpCredentials::fetchFromUser(Account *account)
+{
+    bool ok = false;
+    QString password = queryPassword(&ok);
+    if (ok) {
+        _password = password;
+        _ready = true;
+        persist(account);
+    }
+    return ok;
+}
 
 void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 {
@@ -196,9 +214,30 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
         Q_EMIT fetched();
         break;
     default:
+        if (!_user.isEmpty()) {
+            bool ok;
+            QString pwd = queryPassword(&ok);
+            if (ok) {
+                _password = pwd;
+                _ready = true;
+                Q_EMIT fetched();
+                break;
+            }
+        }
         qDebug() << "Error while reading password" << job->errorString();
     }
+}
 
+QString HttpCredentials::queryPassword(bool *ok)
+{
+    if (ok) {
+        return QInputDialog::getText(0, tr("Enter Password"),
+                                     tr("Please enter %1 password for user '%2':")
+                                     .arg(Theme::instance()->appNameGUI(), _user),
+                                     QLineEdit::Password, QString(), ok);
+    } else {
+        return QString();
+    }
 }
 
 void HttpCredentials::persist(Account *account)

@@ -46,7 +46,8 @@ int shibboleth_redirect_callback(CSYNC* csync_ctx,
 
     QMutex mutex;
     QMutexLocker locker(&mutex);
-    ShibbolethCredentials* creds = qobject_cast<ShibbolethCredentials*>(AccountManager::instance()->account()->credentials());
+    Account *account = AccountManager::instance()->account();
+    ShibbolethCredentials* creds = qobject_cast<ShibbolethCredentials*>(account->credentials());
 
 
     if (!creds) {
@@ -54,7 +55,7 @@ int shibboleth_redirect_callback(CSYNC* csync_ctx,
       return 1;
     }
 
-    ShibbolethRefresher refresher(creds, csync_ctx);
+    ShibbolethRefresher refresher(account, creds, csync_ctx);
 
     // blocks
     refresher.refresh();
@@ -191,6 +192,18 @@ void ShibbolethCredentials::fetch(Account *account)
     }
 }
 
+bool ShibbolethCredentials::stillValid(QNetworkReply *reply)
+{
+    Q_UNUSED(reply)
+    return true;
+}
+
+bool ShibbolethCredentials::fetchFromUser(Account *account)
+{
+    Q_UNUSED(account)
+    return false;
+}
+
 void ShibbolethCredentials::persist(Account* /*account*/)
 {
     ShibbolethConfigFile cfg;
@@ -226,7 +239,7 @@ void ShibbolethCredentials::slotBrowserHidden()
     Q_EMIT fetched();
 }
 
-void ShibbolethCredentials::invalidateAndFetch()
+void ShibbolethCredentials::invalidateAndFetch(Account* account)
 {
     _ready = false;
     connect (this, SIGNAL(fetched()),
@@ -234,7 +247,7 @@ void ShibbolethCredentials::invalidateAndFetch()
     // small hack to support the ShibbolethRefresher hack
     // we already rand fetch() with a valid account object,
     // and hence know the url on refresh
-    fetch(0);
+    fetch(account);
 }
 
 void ShibbolethCredentials::onFetched()

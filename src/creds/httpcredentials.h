@@ -45,9 +45,12 @@ public:
   QNetworkAccessManager* getQNAM() const;
   bool ready() const;
   void fetch(Account *account);
+  bool stillValid(QNetworkReply *reply);
+  bool fetchFromUser(Account *account);
   void persist(Account *account);
   QString user() const;
   QString password() const;
+  QString queryPassword(bool *ok);
 
 private Q_SLOTS:
   void slotAuthentication(QNetworkReply*, QAuthenticator*);
