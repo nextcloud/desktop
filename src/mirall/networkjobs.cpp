@@ -135,7 +135,6 @@ void AbstractNetworkJob::slotFinished()
 {
     static QMutex mutex;
     AbstractCredentials *creds = _account->credentials();
-    qDebug() << creds->stillValid(_reply) << _ignoreCredentialFailure << _reply->errorString();
     if (creds->stillValid(_reply) || _ignoreCredentialFailure) {
         finished();
     } else {
@@ -145,8 +144,9 @@ void AbstractNetworkJob::slotFinished()
         // query the user
         if (mutex.tryLock()) {
             Account *a = account();
-            a->setOnline(false);
-            a->setOnline(creds->fetchFromUser(a));
+            //a->setOnline(false);
+            bool fetched = creds->fetchFromUser(a);
+            a->setOnline(fetched);
             mutex.unlock();
         }
     }

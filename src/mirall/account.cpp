@@ -293,9 +293,9 @@ bool Account::isOnline() const
 void Account::setOnline(bool online)
 {
     if (_isOnline != online) {
+        _isOnline = online;
         emit onlineStateChanged(online);
     }
-    _isOnline = online;
 }
 
 void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)

@@ -124,6 +124,11 @@ Application::Application(int &argc, char **argv) :
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
     connect( _gui, SIGNAL(setupProxy()), SLOT(slotSetupProxy()));
+    if (account) {
+        connect(account, SIGNAL(onlineStateChanged(bool)), _gui, SLOT(slotOnlineStateChanged()));
+    }
+    connect(AccountManager::instance(), SIGNAL(accountChanged(Account*,Account*)),
+            this, SLOT(slotAccountChanged(Account*,Account*)));
 
     // startup procedure.
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
@@ -135,12 +140,47 @@ Application::Application(int &argc, char **argv) :
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
 
     _socketApi = new SocketApi(this, cfg.configPathWithAppName().append(QLatin1String("socket")));
+
 }
 
 Application::~Application()
 {
     // qDebug() << "* Mirall shutdown";
 }
+
+void Application::slotLogin()
+{
+    Account *a = AccountManager::instance()->account();
+    if (a) {
+        FolderMan::instance()->setupFolders();
+        slotCheckConnection();
+    }
+}
+
+void Application::slotLogout()
+{
+    Account *a = AccountManager::instance()->account();
+    if (a) {
+        // invalidate & forget token/password
+        a->credentials()->invalidateToken(a);
+        // terminate all syncs and unload folders
+        FolderMan *folderMan = FolderMan::instance();
+        folderMan->setSyncEnabled(false);
+        folderMan->terminateSyncProcess();
+        folderMan->unloadAllFolders();
+        // go offline
+        a->setOnline(false);
+        // show result
+        _gui->slotComputeOverallSyncStatus();
+    }
+}
+
+void Application::slotAccountChanged(Account *newAccount, Account *oldAccount)
+{
+    disconnect(oldAccount, SIGNAL(onlineStateChanged(bool)), _gui, SLOT(slotOnlineStateChanged()));
+    connect(newAccount, SIGNAL(onlineStateChanged(bool)), _gui, SLOT(slotOnlineStateChanged()));
+}
+
 
 void Application::slotCleanup()
 {

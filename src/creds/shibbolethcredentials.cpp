@@ -211,6 +211,14 @@ void ShibbolethCredentials::persist(Account* /*account*/)
     cfg.storeCookies(_otherCookies);
 }
 
+void ShibbolethCredentials::invalidateToken(Account *account)
+{
+    Q_UNUSED(account)
+    _shibCookie.setValue("");
+    // ### access to ctx missing, but might not be required at all
+    //csync_set_module_property(ctx, "session_key", "");
+}
+
 void ShibbolethCredentials::disposeBrowser()
 {
     disconnect(_browser, SIGNAL(viewHidden()),

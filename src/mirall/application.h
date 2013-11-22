@@ -73,7 +73,11 @@ protected slots:
     void slotSetupProxy();
     void slotUseMonoIconsChanged( bool );
     void slotCredentialsFetched();
+    void slotLogin();
+    void slotLogout();
     void slotCleanup();
+    void slotAccountChanged(Account *newAccount, Account *oldAccount);
+
 private:
     void setHelp();
     void runValidator();

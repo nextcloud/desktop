@@ -35,6 +35,7 @@ public:
     bool fetchFromUser(Account *account);
     void fetch(Account*);
     void persist(Account*);
+    void invalidateToken(Account *) {}
 };
 
 } // ns Mirall

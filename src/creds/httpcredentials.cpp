@@ -187,7 +187,9 @@ void HttpCredentials::fetch(Account *account)
 }
 bool HttpCredentials::stillValid(QNetworkReply *reply)
 {
-    return (reply->error() != QNetworkReply::AuthenticationRequiredError);
+    return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
+            // returned if user or password is incorrect
+            && (reply->error() != QNetworkReply::OperationCanceledError));
 }
 
 bool HttpCredentials::fetchFromUser(Account *account)
@@ -230,14 +232,26 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 
 QString HttpCredentials::queryPassword(bool *ok)
 {
+    qDebug() << AccountManager::instance()->account()->isOnline();
     if (ok) {
-        return QInputDialog::getText(0, tr("Enter Password"),
+        QString str = QInputDialog::getText(0, tr("Enter Password"),
                                      tr("Please enter %1 password for user '%2':")
                                      .arg(Theme::instance()->appNameGUI(), _user),
                                      QLineEdit::Password, QString(), ok);
+        qDebug() << AccountManager::instance()->account()->isOnline();
+        return str;
     } else {
         return QString();
     }
+}
+
+void HttpCredentials::invalidateToken(Account *account)
+{
+    _password = QString();
+    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    job->setKey(keychainKey(account->url().toString(), _user));
+    job->start();
+    _ready = false;
 }
 
 void HttpCredentials::persist(Account *account)

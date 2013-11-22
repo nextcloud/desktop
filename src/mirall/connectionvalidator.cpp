@@ -142,7 +142,8 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
     Status stat = StatusNotFound;
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
-            reply->error() == QNetworkReply::OperationCanceledError ) { // returned if the user is wrong.
+            reply->error() == QNetworkReply::OperationCanceledError ) { // returned if the user/pwd is wrong.
+        qDebug() <<  reply->error() << reply->errorString();
         qDebug() << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
