@@ -17,6 +17,7 @@
 #include "creds/abstractcredentials.h"
 
 #include <QTimer>
+#include <QDebug>
 
 namespace Mirall {
 
@@ -28,6 +29,7 @@ static const int initialTimeT = 1*1000;
 
 QuotaInfo::QuotaInfo(QObject *parent)
     : QObject(parent)
+    , _account(AccountManager::instance()->account())
     , _lastQuotaTotalBytes(0)
     , _lastQuotaUsedBytes(0)
     , _refreshTimer(new QTimer(this))
@@ -49,7 +51,7 @@ void QuotaInfo::slotAccountChanged(Account *newAccount, Account *oldAccount)
 void QuotaInfo::slotOnlineStateChanged(bool online)
 {
     if (online) {
-        _refreshTimer->start();
+        slotCheckQuota();
     } else {
         _refreshTimer->stop();
     }
