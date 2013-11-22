@@ -84,7 +84,7 @@ protected:
         QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
-        qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
+        //qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
         return MirallAccessManager::createRequest(op, req, outgoingData);
     }
 private:
