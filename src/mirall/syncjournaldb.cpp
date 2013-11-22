@@ -684,7 +684,7 @@ void SyncJournalDb::wipeBlacklistEntry( const QString& file )
 {
     QMutexLocker locker(&_mutex);
     if( checkConnect() ) {
-        QSqlQuery query;
+        QSqlQuery query(_db);
 
         query.prepare("DELETE FROM blacklist WHERE path=:path");
         query.bindValue(":path", file);
@@ -697,7 +697,7 @@ void SyncJournalDb::wipeBlacklistEntry( const QString& file )
 void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item )
 {
     QMutexLocker locker(&_mutex);
-    QSqlQuery query;
+    QSqlQuery query(_db);
 
     if( !checkConnect() ) {
         return;
@@ -711,7 +711,7 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
         return;
     }
 
-    QSqlQuery iQuery;
+    QSqlQuery iQuery(_db);
     if( query.next() ) {
         int retries = query.value(0).toInt();
         retries--;
