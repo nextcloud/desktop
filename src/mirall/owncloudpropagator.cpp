@@ -299,6 +299,8 @@ void PropagateUploadFile::start()
      * If the file has changed, retry.
      */
     qDebug() << "** PUT request to" << uri.data();
+    const SyncJournalDb::UploadInfo progressInfo = _propagator->_journal->getUploadInfo(_item._file);
+
     do {
         Hbf_State state = HBF_SUCCESS;
         QScopedPointer<hbf_transfer_t, ScopedPointerHelpers> trans(hbf_init_transfer(uri.data()));
@@ -309,7 +311,6 @@ void PropagateUploadFile::start()
         Q_ASSERT(trans);
         state = hbf_splitlist(trans.data(), file.handle());
 
-        const SyncJournalDb::UploadInfo progressInfo = _propagator->_journal->getUploadInfo(_item._file);
         if (progressInfo._valid) {
             if (progressInfo._modtime.toTime_t() == _item._modtime) {
                 trans->start_id = progressInfo._chunk;
@@ -342,8 +343,6 @@ void PropagateUploadFile::start()
         if( !fid.isEmpty() ) {
             if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
                 qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
-            } else {
-                qDebug() << "FileID is" << fid;
             }
             _item._fileId = fid;
         }
@@ -353,15 +352,35 @@ void PropagateUploadFile::start()
 
             /* If the source file changed during submission, lets try again */
             if( state == HBF_SOURCE_FILE_CHANGE ) {
-              if( attempts++ < 30 ) { /* FIXME: How often do we want to try? */
+              if( attempts++ < 20 ) { /* FIXME: How often do we want to try? */
                 qDebug("SOURCE file has changed during upload, retry #%d in two seconds!", attempts);
                 sleep(2);
                 continue;
               }
+              // Still the file change error, but we tried a couple of times.
+              // Ignore this file for now.
+              // Lets remove the file from the server (at least if it is new) as it is different
+              // from our file here.
+              if( _item._instruction == CSYNC_INSTRUCTION_NEW ) {
+                  QScopedPointer<char, QScopedPointerPodDeleter> uri(
+                              ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+
+                  int rc = ne_delete(_propagator->_session, uri.data());
+                  qDebug() << "Remove the invalid file from server:" << rc;
+              }
+
+              const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
+              done( SyncFileItem::SoftError, errMsg );
+              emit progress(Progress::Error, _item._file, 0,
+                            (quint64) errMsg.constData() );
+
+              return;
             }
             // FIXME: find out the error class.
             _item._httpErrorCode = hbf_fail_http_code(trans.data());
             done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
+            emit progress(Progress::EndUpload, _item._file, 0, _item._size);
+
             return;
         }
 

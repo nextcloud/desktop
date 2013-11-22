@@ -601,7 +601,7 @@ void CSyncThread::slotProgress(Progress::Kind kind, const QString &file, quint64
     pInfo.timestamp = QDateTime::currentDateTime();
 
     // Connect to something in folder!
-    transmissionProgress( pInfo );
+    emit transmissionProgress( pInfo );
 }
 
 /* Given a path on the remote, give the path as it is when the rename is done */
