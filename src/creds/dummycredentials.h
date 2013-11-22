@@ -21,20 +21,20 @@ namespace Mirall
 
 class DummyCredentials : public AbstractCredentials
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  void syncContextPreInit(CSYNC* ctx);
-  void syncContextPreStart(CSYNC* ctx);
-  bool changed(AbstractCredentials* credentials) const;
-  QString authType() const;
-  QString user() const;
-  QNetworkAccessManager* getQNAM() const;
-  bool ready() const;
-  bool stillValid(QNetworkReply *reply);
-  bool fetchFromUser(Account *account);
-  void fetch(Account*);
-  void persist(Account*);
+    void syncContextPreInit(CSYNC* ctx);
+    void syncContextPreStart(CSYNC* ctx);
+    bool changed(AbstractCredentials* credentials) const;
+    QString authType() const;
+    QString user() const;
+    QNetworkAccessManager* getQNAM() const;
+    bool ready() const;
+    bool stillValid(QNetworkReply *reply);
+    bool fetchFromUser(Account *account);
+    void fetch(Account*);
+    void persist(Account*);
 };
 
 } // ns Mirall

@@ -26,25 +26,27 @@ class Account;
 
 class AbstractCredentials : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  // No need for virtual destructor - QObject already has one.
-  virtual void syncContextPreInit(CSYNC* ctx) = 0;
-  virtual void syncContextPreStart(CSYNC* ctx) = 0;
-  virtual bool changed(AbstractCredentials* credentials) const = 0;
-  virtual QString authType() const = 0;
-  virtual QString user() const = 0;
-  virtual QNetworkAccessManager* getQNAM() const = 0;
-  virtual bool ready() const = 0;
-  virtual void fetch(Account *account) = 0;
-  virtual bool stillValid(QNetworkReply *reply) = 0;
-  virtual bool fetchFromUser(Account *account) = 0;
-  virtual void persist(Account *account) = 0;
+    // No need for virtual destructor - QObject already has one.
+    virtual void syncContextPreInit(CSYNC* ctx) = 0;
+    virtual void syncContextPreStart(CSYNC* ctx) = 0;
+    virtual bool changed(AbstractCredentials* credentials) const = 0;
+    virtual QString authType() const = 0;
+    virtual QString user() const = 0;
+    virtual QNetworkAccessManager* getQNAM() const = 0;
+    virtual bool ready() const = 0;
+    virtual void fetch(Account *account) = 0;
+    virtual bool stillValid(QNetworkReply *reply) = 0;
+    virtual bool fetchFromUser(Account *account) = 0;
+    virtual void persist(Account *account) = 0;
+    /** Invalidates auth token, or password for basic auth */
+    virtual void invalidateToken(Account *account) = 0;
 
 
 Q_SIGNALS:
-  void fetched();
+    void fetched();
 };
 
 } // ns Mirall

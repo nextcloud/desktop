@@ -24,7 +24,7 @@ class QNetworkReply;
 class QAuthenticator;
 
 namespace QKeychain {
-  class Job;
+class Job;
 }
 
 namespace Mirall
@@ -32,36 +32,36 @@ namespace Mirall
 
 class HttpCredentials : public AbstractCredentials
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  HttpCredentials();
-  HttpCredentials(const QString& user, const QString& password);
+    HttpCredentials();
+    HttpCredentials(const QString& user, const QString& password);
 
-  void syncContextPreInit(CSYNC* ctx);
-  void syncContextPreStart(CSYNC* ctx);
-  bool changed(AbstractCredentials* credentials) const;
-  QString authType() const;
-  QNetworkAccessManager* getQNAM() const;
-  bool ready() const;
-  void fetch(Account *account);
-  bool stillValid(QNetworkReply *reply);
-  bool fetchFromUser(Account *account);
-  void persist(Account *account);
-  QString user() const;
-  QString password() const;
-  QString queryPassword(bool *ok);
+    void syncContextPreInit(CSYNC* ctx);
+    void syncContextPreStart(CSYNC* ctx);
+    bool changed(AbstractCredentials* credentials) const;
+    QString authType() const;
+    QNetworkAccessManager* getQNAM() const;
+    bool ready() const;
+    void fetch(Account *account);
+    bool stillValid(QNetworkReply *reply);
+    bool fetchFromUser(Account *account);
+    void persist(Account *account);
+    QString user() const;
+    QString password() const;
+    QString queryPassword(bool *ok);
 
 private Q_SLOTS:
-  void slotAuthentication(QNetworkReply*, QAuthenticator*);
-  void slotReadJobDone(QKeychain::Job*);
-  void slotWriteJobDone(QKeychain::Job*);
+    void slotAuthentication(QNetworkReply*, QAuthenticator*);
+    void slotReadJobDone(QKeychain::Job*);
+    void slotWriteJobDone(QKeychain::Job*);
 
 private:
-  static QString keychainKey(const QString &url, const QString &user);
-  QString _user;
-  QString _password;
-  bool _ready;
+    static QString keychainKey(const QString &url, const QString &user);
+    QString _user;
+    QString _password;
+    bool _ready;
 };
 
 } // ns Mirall
