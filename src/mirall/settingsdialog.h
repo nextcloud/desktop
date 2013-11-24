@@ -28,6 +28,7 @@ namespace Ui {
 class SettingsDialog;
 }
 class AccountSettings;
+class ProtocolWidget;
 class Application;
 class FolderMan;
 class ownCloudGui;
@@ -46,6 +47,7 @@ public:
 public slots:
     void slotSyncStateChange(const QString& alias);
     void slotShowProtocol();
+    void slotRefreshResultList();
 
 protected:
     void reject();
@@ -55,6 +57,7 @@ private:
     Ui::SettingsDialog *_ui;
     AccountSettings *_accountSettings;
     QListWidgetItem *_accountItem;
+    ProtocolWidget  *_protocolWidget;
 
     int _protocolIdx;
 };

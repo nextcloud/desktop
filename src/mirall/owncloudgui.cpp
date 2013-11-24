@@ -451,6 +451,7 @@ void ownCloudGui::slotSettings()
 
     _settingsDialog->setGeneralErrors( _startupFails );
     Utility::raiseDialog(_settingsDialog.data());
+    _settingsDialog->slotRefreshResultList();
 }
 
 // open sync protocol widget
