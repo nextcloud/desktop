@@ -520,7 +520,7 @@ int csync_set_local_only( CSYNC *ctx, bool local_only );
 bool csync_get_local_only( CSYNC *ctx );
 
 /* Used for special modes or debugging */
-int csync_get_status(CSYNC *ctx);
+CSYNC_STATUS csync_get_status(CSYNC *ctx);
 
 /* Used for special modes or debugging */
 int csync_set_status(CSYNC *ctx, int status);

@@ -936,12 +936,12 @@ int csync_set_status(CSYNC *ctx, int status) {
   return 0;
 }
 
-int csync_get_status(CSYNC *ctx) {
+CSYNC_STATUS csync_get_status(CSYNC *ctx) {
   if (ctx == NULL) {
     return -1;
   }
 
-  return ctx->status;
+  return ctx->status_code;
 }
 
 int csync_enable_conflictcopys(CSYNC* ctx){
