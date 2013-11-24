@@ -576,7 +576,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     if (rc < 0) {
-      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
+      if (CSYNC_STATUS_IS_OK(ctx->status_code)) {
           ctx->status_code = CSYNC_STATUS_UPDATE_ERROR;
       }
 
