@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="46"/>
         <source>Accounts to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseeritavad kontod</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="98"/>
@@ -161,7 +161,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="104"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>Ühtegi kontot pole seadistatud</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="428"/>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="755"/>
         <source>%1 of %2 (%3%) in use.</source>
-        <translation type="unfinished"/>
+        <translation>Kasutusel %1 / %2 (%3%)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="786"/>
@@ -211,12 +211,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="789"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ühendatud &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; kui &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="793"/>
         <source>No connection to %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ühendus puudub %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="759"/>
@@ -355,7 +355,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="412"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Ei suuda lähtestada sünkroniseeringu zurnaali.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="89"/>
         <source>No ownCloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Ühtegi ownCloud kontot pole seadistatud</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="104"/>
@@ -447,37 +447,37 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="386"/>
         <source>downloaded</source>
-        <translation type="unfinished"/>
+        <translation>allalaaditud</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="387"/>
         <source>removed</source>
-        <translation type="unfinished"/>
+        <translation>eemaldatud</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="388"/>
         <source>updated</source>
-        <translation type="unfinished"/>
+        <translation>uuendatud</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="389"/>
         <source>renamed</source>
-        <translation type="unfinished"/>
+        <translation>ümber nimetatud</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="401"/>
         <source>&apos;%1&apos; has been %2.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; on olnud %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="403"/>
         <source>Files %1</source>
-        <translation type="unfinished"/>
+        <translation>Failid %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="404"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; ja %2 teist faili on olnud %3.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="446"/>
@@ -720,7 +720,7 @@ dokumentatsioonist võimalikke lahendusi.</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Setttings</source>
-        <translation type="unfinished"/>
+        <translation>Üldised seaded</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -1121,12 +1121,12 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="159"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="167"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>Ühendumine ebaõnnestus %1 %2-st:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="249"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Ühtegi võrgukataloogi pole määratletud!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
@@ -1223,6 +1223,14 @@ Checked items will also be deleted if they prevent a directory from being remove
     </message>
 </context>
 <context>
+    <name>Mirall::PropagateUploadFile</name>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="372"/>
+        <source>Local file changed during sync, syncing once it arrived completely</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::ProtocolWidget</name>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
@@ -1232,7 +1240,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="27"/>
         <source>Detailed Sync Status</source>
-        <translation type="unfinished"/>
+        <translation>Täpsem sünkroniseeringu staatus</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="57"/>
@@ -1362,7 +1370,7 @@ konflikt-failiks ning serveris asuv fail on saadaval algse nimega.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseeringu staatus on kopeeritud lõikepuhvrisse.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
@@ -1413,23 +1421,24 @@ konflikt-failiks ning serveris asuv fail on saadaval algse nimega.</translation>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="52"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - autentimine</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="113"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="117"/>
         <source>Error loading IdP login page</source>
-        <translation type="unfinished"/>
+        <translation>Viga IdP sisselogimislehe laadimisel</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
         <source>Could not load Shibboleth login page to log you in.
 Please ensure that your network connection is working.</source>
-        <translation type="unfinished"/>
+        <translation>Ei suuda laadida Shibboleth sisselogimislehte.
+Palun veendu, et võrguühendus toimib.</translation>
     </message>
 </context>
 <context>
@@ -1922,7 +1931,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="189"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>ei suuda luua kataloogi %1</translation>
     </message>
 </context>
 <context>
@@ -1936,12 +1945,12 @@ Please ensure that your network connection is working.</source>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="804"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="823"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Kausta ei tohi ümber nimetada. Kausta algne nimi taastati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="806"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="825"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Kausta nime ei tohi muuta. Palun pane selle nimeks tagasi Shared.</translation>
     </message>
@@ -2059,7 +2068,7 @@ Please ensure that your network connection is working.</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
         <source>Move</source>
-        <translation type="unfinished"/>
+        <translation>Tõsta ümber</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
@@ -2098,12 +2107,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="116"/>
         <source>move</source>
-        <translation type="unfinished"/>
+        <translation>tõsta ümber</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="119"/>
         <source>moved</source>
-        <translation type="unfinished"/>
+        <translation>ümber tõstetud</translation>
     </message>
 </context>
 <context>

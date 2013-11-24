@@ -1222,6 +1222,14 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
     </message>
 </context>
 <context>
+    <name>Mirall::PropagateUploadFile</name>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="372"/>
+        <source>Local file changed during sync, syncing once it arrived completely</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::ProtocolWidget</name>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
@@ -1936,12 +1944,12 @@ Certifique-se que sua conexão de rede está funcionando.</translation>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="804"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="823"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Esta pasta não pode ser renomeada. Ele será renomeado de volta ao seu nome original.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="806"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="825"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Esta pasta não pode ser renomeada. Por favor, nomeie-a de volta para Compartilhada.</translation>
     </message>

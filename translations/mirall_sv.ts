@@ -1222,6 +1222,14 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
     </message>
 </context>
 <context>
+    <name>Mirall::PropagateUploadFile</name>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="372"/>
+        <source>Local file changed during sync, syncing once it arrived completely</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::ProtocolWidget</name>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
@@ -1935,12 +1943,12 @@ Please ensure that your network connection is working.</source>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="804"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="823"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Denna katalog får inte byta namn. Den kommer att döpas om till sitt original namn.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="806"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="825"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Denna katalog får ej döpas om. Snälla döp den till Delad</translation>
     </message>

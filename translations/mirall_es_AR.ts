@@ -1221,6 +1221,14 @@ Los elementos marcados también se borrarán si impiden la eliminación de algú
     </message>
 </context>
 <context>
+    <name>Mirall::PropagateUploadFile</name>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="372"/>
+        <source>Local file changed during sync, syncing once it arrived completely</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::ProtocolWidget</name>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
@@ -1928,12 +1936,12 @@ Please ensure that your network connection is working.</source>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="804"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="823"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="806"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="825"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation type="unfinished"/>
     </message>
