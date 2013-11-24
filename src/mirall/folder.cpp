@@ -452,8 +452,10 @@ void Folder::slotTerminateSync(bool block)
 
     if( _thread && _csync ) {
         _csync->abort();
-        _errors.append( tr("The CSync thread terminated.") );
-        _csyncError = true;
+
+        // Do not display an error message, user knows his own actions.
+        // _errors.append( tr("The CSync thread terminated.") );
+        // _csyncError = true;
         if (!block) {
             setSyncState(SyncResult::SyncAbortRequested);
             return;
@@ -657,7 +659,7 @@ void Folder::slotCsyncUnavailable()
 
 void Folder::slotCSyncFinished()
 {
-    qDebug() << "-> CSync Finished slot with error " << _csyncError;
+    qDebug() << "-> CSync Finished slot with error " << _csyncError << "warn count" << _syncResult.warnCount();
     _watcher->setEventsEnabledDelayed(2000);
     _pollTimer.start();
     _timeSinceLastSync.restart();

@@ -372,15 +372,20 @@ void PropagateUploadFile::start()
               const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
               done( SyncFileItem::SoftError, errMsg );
               emit progress(Progress::Error, _item._file, 0,
-                            (quint64) errMsg.constData() );
+                            (quint64) "Local file changed during sync, syncing once it arrived completely"); // FIXME: Use errMsg
 
               return;
+            } else if( state == HBF_USER_ABORTED ) {
+                const QString errMsg = tr("Sync was aborted by user.");
+                done( SyncFileItem::SoftError, errMsg);
+                emit progress(Progress::Error, _item._file, 0,
+                              (quint64) "User terminated sync process!" ); // FIXME: Use errMsg
+            } else {
+                // FIXME: find out the error class.
+                _item._httpErrorCode = hbf_fail_http_code(trans.data());
+                done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
+                emit progress(Progress::EndUpload, _item._file, 0, _item._size);
             }
-            // FIXME: find out the error class.
-            _item._httpErrorCode = hbf_fail_http_code(trans.data());
-            done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
-            emit progress(Progress::EndUpload, _item._file, 0, _item._size);
-
             return;
         }
 

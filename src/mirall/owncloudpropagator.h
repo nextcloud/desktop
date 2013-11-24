@@ -172,6 +172,7 @@ signals:
     void completed(const SyncFileItem &);
     void progress(Progress::Kind, const QString &filename, quint64 bytes, quint64 total);
     void finished();
+
 };
 
 }
