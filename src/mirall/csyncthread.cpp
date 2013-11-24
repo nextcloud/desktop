@@ -349,7 +349,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
 }
 
 void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
-    CSYNC_STATUS err = CSYNC_STATUS(csync_get_status( ctx ));
+    CSYNC_STATUS err = csync_get_status( ctx );
     const char *errMsg = csync_get_status_string( ctx );
     QString errStr = csyncErrorToString(err);
     if( errMsg ) {
@@ -357,7 +357,9 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     }
     qDebug() << " #### ERROR during "<< state << ": " << errStr;
 
-    if( CSYNC_STATUS_IS_EQUAL( err, CSYNC_STATUS_SERVICE_UNAVAILABLE ) ||
+    if( CSYNC_STATUS_IS_EQUAL( err, CSYNC_STATUS_ABORTED) ) {
+        qDebug() << "Update phase was aborted by user!";
+    } else if( CSYNC_STATUS_IS_EQUAL( err, CSYNC_STATUS_SERVICE_UNAVAILABLE ) ||
             CSYNC_STATUS_IS_EQUAL( err, CSYNC_STATUS_CONNECT_ERROR )) {
         emit csyncUnavailable();
     } else {
@@ -549,6 +551,9 @@ void CSyncThread::transferCompleted(const SyncFileItem &item)
         _syncedItems[idx]._instruction = item._instruction;
         _syncedItems[idx]._errorString = item._errorString;
         _syncedItems[idx]._status = item._status;
+
+    } else {
+        qWarning() << Q_FUNC_INFO << "Could not find index in synced items!";
     }
 
     if (item._status == SyncFileItem::FatalError) {
