@@ -131,6 +131,8 @@ void hbf_set_log_callback( hbf_transfer_t *transfer, hbf_log_callback cb);
  */
 int hbf_fail_http_code( hbf_transfer_t *transfer );
 
+Hbf_State hbf_validate_source_file( hbf_transfer_t *transfer );
+
 #ifdef __cplusplus
 }
 #endif

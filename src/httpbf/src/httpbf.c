@@ -361,7 +361,7 @@ static int _hbf_dav_request(hbf_transfer_t *transfer, ne_request *req, int fd, h
     return state;
 }
 
-static Hbf_State validate_source_file( hbf_transfer_t *transfer ) {
+Hbf_State hbf_validate_source_file( hbf_transfer_t *transfer ) {
   Hbf_State state = HBF_SUCCESS;
   hbf_stat_t sb;
 
@@ -476,7 +476,7 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
         if( state == HBF_TRANSFER_SUCCESS ) {
           if( transfer->block_cnt > 1 && cnt > 0 ) {
             /* The block count is > 1, check size and mtime before transmitting. */
-            state = validate_source_file(transfer);
+            state = hbf_validate_source_file(transfer);
             if( state == HBF_SOURCE_FILE_CHANGE ) {
               /* The source file has changed meanwhile */
             }
@@ -541,9 +541,7 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
     }
 
     /* do the source file validation finally (again). */
-    if( state == HBF_SUCCESS ) {
-        state = validate_source_file(transfer);
-    } else if( state == HBF_TRANSFER_SUCCESS ) {
+    if( state == HBF_TRANSFER_SUCCESS ) {
         /* This means that no etag was returned on one of the chunks to indicate
          * that the upload was finished. */
         state = HBF_TRANSFER_NOT_ACKED;
