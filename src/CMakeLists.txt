@@ -343,7 +343,6 @@ else()
     install(FILES ${qt_I18N} DESTINATION ${QM_DIR})
     file(GLOB qtkeychain_I18N ${QT_TRANSLATIONS_DIR}/qtkeychain*.qm)
     install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
-    list(APPEND dirs "/usr/local/lib")
 endif()
 
 
@@ -365,7 +364,7 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
 # currently it needs to be done because the code right above needs to be executed no matter
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    install_qt_executable(${OWNCLOUD_OSX_BUNDLE} "qsqlite" "" ${dirs})
+    install_qt_executable(${OWNCLOUD_OSX_BUNDLE} "qsqlite")
 endif()
 
 find_program(KRAZY2_EXECUTABLE krazy2)
