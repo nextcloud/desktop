@@ -439,14 +439,15 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     } else if(errno == EIO ) {
       /* Proxy problems (ownCloud) */
       ctx->status_code = CSYNC_STATUS_PROXY_ERROR;
-      goto error;
+    } else if(errno == ENOENT) {
+        asprintf( &ctx->error_string, "%s", uri);
     } else {
       C_STRERROR(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
           "opendir failed for %s - %s (errno %d)",
           uri, errbuf, errno);
-      goto error;
     }
+    goto error;
   }
 
   while ((dirent = csync_vio_readdir(ctx, dh))) {
