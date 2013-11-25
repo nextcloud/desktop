@@ -158,7 +158,7 @@ QString CSyncThread::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("CSync failed due to not handled permission deniend.");
         break;
     case CSYNC_STATUS_NOT_FOUND:
-        errStr = tr("CSync failed to find a specific file.");
+        errStr = tr("CSync failed to access "); // filename gets added.
         break;
     case CSYNC_STATUS_FILE_EXISTS:
         errStr = tr("CSync tried to create a directory that already exists.");
@@ -357,8 +357,16 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     const char *errMsg = csync_get_status_string( ctx );
     QString errStr = csyncErrorToString(err);
     if( errMsg ) {
+        if( !errStr.endsWith(" ")) {
+            errStr.append(" ");
+        }
         errStr += QString::fromUtf8(errMsg);
     }
+
+    // if there is csyncs url modifier in the error message, replace it.
+    if( errStr.contains("ownclouds://") ) errStr.replace("ownclouds://", "https://");
+    if( errStr.contains("owncloud://") ) errStr.replace("owncloud://", "http://");
+
     qDebug() << " #### ERROR during "<< state << ": " << errStr;
 
     if( CSYNC_STATUS_IS_EQUAL( err, CSYNC_STATUS_ABORTED) ) {
