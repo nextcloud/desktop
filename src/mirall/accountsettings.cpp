@@ -168,7 +168,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folderMan->slotScheduleAllFolders();
         emit folderChanged();
     }
-    buttonsSetEnabled();
+    slotButtonsSetEnabled();
 }
 
 void AccountSettings::slotFolderWizardRejected()
@@ -193,12 +193,12 @@ void AccountSettings::slotAddFolder( Folder *folder )
     folderToModelItem( item, folder );
     _model->appendRow( item );
     // in order to update the enabled state of the "Sync now" button
-    connect(folder, SIGNAL(syncStateChange()), this, SLOT(buttonsSetEnabled()), Qt::UniqueConnection);
+    connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotButtonsSetEnabled()), Qt::UniqueConnection);
 }
 
 
 
-void AccountSettings::buttonsSetEnabled()
+void AccountSettings::slotButtonsSetEnabled()
 {
     bool haveFolders = ui->_folderList->model()->rowCount() > 0;
 
@@ -379,7 +379,7 @@ void AccountSettings::setFolderList( const Folder::Map &folders )
     if (idx.isValid()) {
         ui->_folderList->setCurrentIndex(idx);
     }
-    buttonsSetEnabled();
+    slotButtonsSetEnabled();
 
 }
 
