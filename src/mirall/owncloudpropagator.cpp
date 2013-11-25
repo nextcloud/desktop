@@ -393,6 +393,10 @@ void PropagateUploadFile::start()
 
         if( trans->modtime_accepted ) {
             _item._etag =  QByteArray(hbf_transfer_etag( trans.data() ));
+            if (_item._etag.endsWith("-gzip")) {
+                // https://github.com/owncloud/mirall/issues/1195
+                _item._etag.chop(5);
+            }
         } else {
             updateMTimeAndETag(uri.data(), _item._modtime);
         }
