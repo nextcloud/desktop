@@ -82,6 +82,7 @@ void ConnectionValidator::checkConnection()
 {
     if( _account ) {
         CheckServerJob *checkJob = new CheckServerJob(_account, false, this);
+        checkJob->setIgnoreCredentialFailure(true);
         connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
         connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
         checkJob->start();
@@ -113,7 +114,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
 // status.php could not be loaded.
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
-    _account->setOnline(false);
+    _account->setState(false);
 
     // ### TODO
     _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
@@ -127,11 +128,12 @@ void ConnectionValidator::slotCheckAuthentication()
 {
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
-    PropfindJob *propFind = new PropfindJob(_account, "/", this);
-    propFind->setProperties(QList<QByteArray>() << "getlastmodified");
-    connect(propFind, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
-    connect(propFind, SIGNAL(networkError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));
-    propFind->start();
+    PropfindJob *job = new PropfindJob(_account, "/", this);
+    job->setIgnoreCredentialFailure(true);
+    job->setProperties(QList<QByteArray>() << "getlastmodified");
+    connect(job, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
+    connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));
+    job->start();
     qDebug() << "# checking for authentication settings.";
 }
 
@@ -140,11 +142,19 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
     Status stat = StatusNotFound;
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
-            reply->error() == QNetworkReply::OperationCanceledError ) { // returned if the user is wrong.
+            reply->error() == QNetworkReply::OperationCanceledError ) { // returned if the user/pwd is wrong.
+        qDebug() <<  reply->error() << reply->errorString();
         qDebug() << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
-        _account->setOnline(false);
+        switch (_account->state()) {
+        case Account::SignedOut:
+            _account->setState(Account::SignedOut);
+            break;
+        default:
+            _account->setState(Account::Disconnected);
+        }
+
     } else if( reply->error() != QNetworkReply::NoError ) {
         _errors << reply->errorString();
     }
@@ -154,7 +164,7 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 
 void ConnectionValidator::slotAuthSuccess()
 {
-    _account->setOnline(true);
+    _account->setState(Account::Connected);
     emit connectionResult(Connected);
 }
 

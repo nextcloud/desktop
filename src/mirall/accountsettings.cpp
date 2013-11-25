@@ -104,8 +104,8 @@ AccountSettings::AccountSettings(QWidget *parent) :
     ui->connectLabel->setText(tr("No account configured."));
     ui->_buttonAdd->setEnabled(false);
     if (_account) {
-        connect(_account, SIGNAL(onlineStateChanged(bool)), SLOT(slotOnlineStateChanged(bool)));
-        slotOnlineStateChanged(_account->isOnline());
+        connect(_account, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
+        slotAccountStateChanged(_account->state());
     }
 
     setFolderList(FolderMan::instance()->map());
@@ -115,7 +115,16 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
 {
   bool state = indx.isValid();
 
-  ui->_buttonRemove->setEnabled( state );
+  bool haveFolders = ui->_folderList->model()->rowCount() > 0;
+
+  ui->_buttonRemove->setEnabled(state);
+  if( Theme::instance()->singleSyncFolder() ) {
+      // only one folder synced folder allowed.
+      ui->_buttonAdd->setVisible(!haveFolders);
+  } else {
+      ui->_buttonAdd->setVisible(true);
+      ui->_buttonAdd->setEnabled( state );
+  }
   ui->_buttonEnable->setEnabled( state );
   ui->_buttonInfo->setEnabled( state );
 
@@ -168,7 +177,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folderMan->slotScheduleAllFolders();
         emit folderChanged();
     }
-    buttonsSetEnabled();
+    slotButtonsSetEnabled();
 }
 
 void AccountSettings::slotFolderWizardRejected()
@@ -193,30 +202,18 @@ void AccountSettings::slotAddFolder( Folder *folder )
     folderToModelItem( item, folder );
     _model->appendRow( item );
     // in order to update the enabled state of the "Sync now" button
-    connect(folder, SIGNAL(syncStateChange()), this, SLOT(buttonsSetEnabled()), Qt::UniqueConnection);
+    connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotButtonsSetEnabled()), Qt::UniqueConnection);
 }
 
 
 
-void AccountSettings::buttonsSetEnabled()
+void AccountSettings::slotButtonsSetEnabled()
 {
-    bool haveFolders = ui->_folderList->model()->rowCount() > 0;
-
-    ui->_buttonRemove->setEnabled(false);
-    if( Theme::instance()->singleSyncFolder() ) {
-        // only one folder synced folder allowed.
-        ui->_buttonAdd->setVisible(!haveFolders);
-    } else {
-        ui->_buttonAdd->setVisible(true);
-        ui->_buttonAdd->setEnabled(true);
-    }
-
     QModelIndex selected = ui->_folderList->currentIndex();
     bool isSelected = selected.isValid();
-
-    ui->_buttonEnable->setEnabled(isSelected);
-    ui->_buttonRemove->setEnabled(isSelected);
-    ui->_buttonInfo->setEnabled(isSelected);
+    if (isSelected) {
+        slotFolderActivated(selected);
+    }
 }
 
 void AccountSettings::setGeneralErrors( const QStringList& errors )
@@ -248,7 +245,11 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
             }  // we keep the previous icon for the SyncPrepare state.
         } else {
             // kepp the previous icon for the prepare phase.
-            item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
+            if( status == SyncResult::Problem) {
+                item->setData( theme->syncStateIcon( SyncResult::Success), FolderStatusDelegate::FolderStatusIconRole );
+            } else {
+                item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
+            }
         }
     } else {
         item->setData( theme->folderDisabledIcon( ), FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
@@ -379,7 +380,7 @@ void AccountSettings::setFolderList( const Folder::Map &folders )
     if (idx.isValid()) {
         ui->_folderList->setCurrentIndex(idx);
     }
-    buttonsSetEnabled();
+    slotButtonsSetEnabled();
 
 }
 
@@ -672,7 +673,9 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     case Progress::Download:
     case Progress::Upload:
     case Progress::Inactive:
-    case Progress::Error:
+    case Progress::SoftError:
+    case Progress::NormalError:
+    case Progress::FatalError:
         break;
     }
 
@@ -771,13 +774,13 @@ void AccountSettings::slotIgnoreFilesEditor()
     }
 }
 
-void AccountSettings::slotOnlineStateChanged(bool online)
+void AccountSettings::slotAccountStateChanged(int state)
 {
     if (_account) {
         QUrl safeUrl(_account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
-        ui->_buttonAdd->setEnabled(online);
-        if (online) {
+        ui->_buttonAdd->setEnabled(state == Account::Connected);
+        if (state == Account::Connected) {
             QString user;
             if (AbstractCredentials *cred = _account->credentials()) {
                user = cred->user();

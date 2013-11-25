@@ -44,7 +44,9 @@ namespace Progress
         EndDelete,
         StartRename,
         EndRename,
-        Error
+        SoftError,
+        NormalError,
+        FatalError
     };
 
     struct Info {
@@ -67,15 +69,20 @@ namespace Progress
     };
 
     struct SyncProblem {
+        Kind    kind;
         QString folder;
         QString current_file;
         QString error_message;
         int     error_code;
         QDateTime  timestamp;
+
+        SyncProblem() : kind(Invalid), error_code(0) {}
     };
 
     QString asActionString( Kind );
     QString asResultString( Kind );
+
+    bool isErrorKind( Kind );
 }
 
 /**
@@ -100,6 +107,7 @@ public:
     QList<Progress::SyncProblem> recentProblems(int count);
 
     Progress::Kind currentFolderContext( const QString& folder );
+
 signals:
     /**
       @brief Signals the progress of data transmission.
@@ -113,7 +121,8 @@ signals:
     void progressSyncProblem( const QString& folder, const Progress::SyncProblem& problem );
 
 protected:
-    void setProgressInfo(const QString &folder, const Progress::Info& progress);
+    void setProgressInfo(const QString& folder, const Progress::Info& progress);
+    void setProgressProblem( const QString& folder, const Progress::SyncProblem& problem);
 
 private:
     ProgressDispatcher(QObject* parent = 0);

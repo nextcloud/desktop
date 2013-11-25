@@ -36,7 +36,6 @@ public:
     bool deleteFileRecord( const QString& filename, bool recursively = false );
     int getFileRecordCount();
     bool exists();
-    QStringList tableColumns( const QString& table );
     void updateBlacklistEntry( const SyncJournalBlacklistRecord& item );
     void wipeBlacklistEntry(const QString& file);
 
@@ -68,9 +67,11 @@ public:
     /* Because sqlite transactions is really slow, we encapsulate everything in big transactions
      * Commit will actually commit the transaction and create a new one.
      */
-    void commit();
+    void commit(const QString &context, bool startTrans = true);
 
     void close();
+
+
 signals:
 
 public slots:
@@ -78,11 +79,17 @@ public slots:
 private:
     qint64 getPHash(const QString& ) const;
     bool updateDatabaseStructure();
+    bool sqlFail(const QString& log, const QSqlQuery &query );
+    void commitInternal(const QString &context, bool startTrans = true);
+    void startTransaction();
+    void commitTransaction();
+    QStringList tableColumns( const QString& table );
 
     bool checkConnect();
     QSqlDatabase _db;
     QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
+    int _transaction;
     QScopedPointer<QSqlQuery> _getFileRecordQuery;
     QScopedPointer<QSqlQuery> _setFileRecordQuery;
     QScopedPointer<QSqlQuery> _getDownloadInfoQuery;

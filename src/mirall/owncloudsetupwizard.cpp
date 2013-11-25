@@ -125,6 +125,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     Account *account = _ocWizard->account();
     account->setUrl(url);
     CheckServerJob *job = new CheckServerJob(_ocWizard->account(), false, this);
+    job->setIgnoreCredentialFailure(true);
     connect(job, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotOwnCloudFoundAuth(QUrl,QVariantMap)));
     connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
     connect(job, SIGNAL(timeout(const QUrl&)), SLOT(slotNoOwnCloudFoundAuthTimeout(const QUrl&)));
@@ -149,6 +150,7 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantM
     }
 
     DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_ocWizard->account(), this);
+    job->setIgnoreCredentialFailure(true);
     connect(job, SIGNAL(authType(WizardCommon::AuthType)),
             _ocWizard, SLOT(setAuthType(WizardCommon::AuthType)));
     job->start();
@@ -184,6 +186,7 @@ void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
 void OwncloudSetupWizard::testOwnCloudConnect()
 {
     ValidateDavAuthJob *job = new ValidateDavAuthJob(_ocWizard->account(), this);
+    job->setIgnoreCredentialFailure(true);
     connect(job, SIGNAL(authResult(QNetworkReply*)), SLOT(slotConnectionCheck(QNetworkReply*)));
     job->start();
 }
@@ -430,9 +433,10 @@ void DetermineAuthTypeJob::start()
     QNetworkReply *reply = getRequest(Account::davPath());
     setReply(reply);
     setupConnections(reply);
+    AbstractNetworkJob::start();
 }
 
-void DetermineAuthTypeJob::slotFinished()
+void DetermineAuthTypeJob::finished()
 {
     QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     qDebug() << redirection.toString();
@@ -458,7 +462,6 @@ void DetermineAuthTypeJob::slotFinished()
             emit authType(WizardCommon::HttpCreds);
         }
     }
-    deleteLater();
 }
 
 ValidateDavAuthJob::ValidateDavAuthJob(Account *account, QObject *parent)
@@ -471,12 +474,12 @@ void ValidateDavAuthJob::start()
     QNetworkReply *reply = getRequest(Account::davPath());
     setReply(reply);
     setupConnections(reply);
+    AbstractNetworkJob::start();
 }
 
-void ValidateDavAuthJob::slotFinished()
+void ValidateDavAuthJob::finished()
 {
     emit authResult(reply());
-    deleteLater();
 }
 
 } // ns Mirall

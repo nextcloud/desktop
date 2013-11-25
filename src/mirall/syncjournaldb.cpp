@@ -24,12 +24,11 @@
 #include "syncjournalfilerecord.h"
 
 #define QSQLITE "QSQLITE"
-#define SYNCJOURNALDB_CONNECTION_NAME "SyncJournalDbConnection"
 
 namespace Mirall {
 
 SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
-    QObject(parent)
+    QObject(parent), _transaction(0)
 {
 
     _dbFile = path;
@@ -45,6 +44,42 @@ bool SyncJournalDb::exists()
 {
     QMutexLocker locker(&_mutex);
     return (!_dbFile.isEmpty() && QFile::exists(_dbFile));
+}
+
+void SyncJournalDb::startTransaction()
+{
+    if( _transaction == 0 ) {
+        if( !_db.transaction() ) {
+            qDebug() << "ERROR commiting to the database: " << _db.lastError().text();
+            return;
+        }
+        _transaction = 1;
+        // qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Transaction start!";
+    } else {
+        qDebug() << "Database Transaction is running, do not starting another one!";
+    }
+}
+
+void SyncJournalDb::commitTransaction()
+{
+    if( _transaction == 1 ) {
+        if( ! _db.commit() ) {
+            qDebug() << "ERROR commiting to the database: " << _db.lastError().text();
+            return;
+        }
+        _transaction = 0;
+        // qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Transaction END!";
+    } else {
+        qDebug() << "No database Transaction to commit";
+    }
+}
+
+bool SyncJournalDb::sqlFail( const QString& log, const QSqlQuery& query )
+{
+    commitTransaction();
+    qWarning() << "Error" << log << query.lastError().text();
+
+    return false;
 }
 
 bool SyncJournalDb::checkConnect()
@@ -69,8 +104,7 @@ bool SyncJournalDb::checkConnect()
     }
 
     // Add the connection
-    if (!QSqlDatabase::connectionNames().contains(SYNCJOURNALDB_CONNECTION_NAME))
-        _db = QSqlDatabase::addDatabase( QSQLITE, SYNCJOURNALDB_CONNECTION_NAME );
+    _db = QSqlDatabase::addDatabase( QSQLITE,  _dbFile);
 
     // Open the file
     _db.setDatabaseName(_dbFile);
@@ -86,18 +120,15 @@ bool SyncJournalDb::checkConnect()
     QSqlQuery pragma1(_db);
     pragma1.prepare("PRAGMA synchronous = 1;");
     if (!pragma1.exec()) {
-        qWarning() << "Error setting pragma: " << pragma1.lastError().text();
-        return false;
+        return sqlFail("Set PRAGMA synchronous", pragma1);
     }
     pragma1.prepare("PRAGMA case_sensitive_like = ON;");
     if (!pragma1.exec()) {
-        qWarning() << "Error setting pragma: " << pragma1.lastError().text();
-        return false;
+        return sqlFail("Set PRAGMA case_sensitivity", pragma1);
     }
 
     /* Because insert are so slow, e do everything in a transaction, and one need to call commit */
-    _db.transaction();
-
+    startTransaction();
 
     QSqlQuery createQuery(_db);
     createQuery.prepare("CREATE TABLE IF NOT EXISTS metadata("
@@ -115,8 +146,7 @@ bool SyncJournalDb::checkConnect()
                          ");");
 
     if (!createQuery.exec()) {
-        qWarning() << "Error creating table metadata : " << createQuery.lastError().text();
-        return false;
+        return sqlFail("Create table metadata", createQuery);
     }
 
     createQuery.prepare("CREATE TABLE IF NOT EXISTS downloadinfo("
@@ -128,8 +158,7 @@ bool SyncJournalDb::checkConnect()
                          ");");
 
     if (!createQuery.exec()) {
-        qWarning() << "Error creating table downloadinfo : " << createQuery.lastError().text();
-        return false;
+        return sqlFail("Create table downloadinfo", createQuery);
     }
 
     createQuery.prepare("CREATE TABLE IF NOT EXISTS uploadinfo("
@@ -143,8 +172,7 @@ bool SyncJournalDb::checkConnect()
                            ");");
 
     if (!createQuery.exec()) {
-        qWarning() << "Error creating table downloadinfo : " << createQuery.lastError().text();
-        return false;
+        return sqlFail("Create table uploadinfo", createQuery);
     }
 
     // create the blacklist table.
@@ -152,15 +180,16 @@ bool SyncJournalDb::checkConnect()
                         "path VARCHAR(4096),"
                         "lastTryEtag VARCHAR[32],"
                         "lastTryModtime INTEGER[8],"
-                        "retrycount INTEGER default 0,"
+                        "retrycount INTEGER,"
                         "errorstring VARCHAR[4096],"
                         "PRIMARY KEY(path)"
                         ");");
 
     if (!createQuery.exec()) {
-        qWarning() << "Error creating table blacklist: " << createQuery.lastError().text();
-        return false;
+        return sqlFail("Create table blacklist", createQuery);
     }
+
+    commitInternal("checkConnect");
 
     bool rc = updateDatabaseStructure();
     if( rc ) {
@@ -215,6 +244,8 @@ void SyncJournalDb::close()
 {
     QMutexLocker locker(&_mutex);
 
+    commitTransaction();
+
     _getFileRecordQuery.reset(0);
     _setFileRecordQuery.reset(0);
     _getDownloadInfoQuery.reset(0);
@@ -226,7 +257,10 @@ void SyncJournalDb::close()
     _deleteFileRecordPhash.reset(0);
     _deleteFileRecordRecursively.reset(0);
     _blacklistQuery.reset(0);
+
     _db.close();
+    _db = QSqlDatabase(); // avoid the warning QSqlDatabasePrivate::removeDatabase: connection [...] still in use
+    QSqlDatabase::removeDatabase(_dbFile);
 }
 
 
@@ -236,13 +270,19 @@ bool SyncJournalDb::updateDatabaseStructure()
     bool re = true;
 
     // check if the file_id column is there and create it if not
+    if( !checkConnect() ) {
+        return false;
+    }
     if( columns.indexOf(QLatin1String("fileid")) == -1 ) {
+
         QSqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN fileid VARCHAR(128);");
         re = query.exec();
 
         query.prepare("CREATE INDEX metadata_file_id ON metadata(fileid);");
         re = re && query.exec();
+
+        commitInternal("update database structure");
     }
 
     return re;
@@ -253,20 +293,21 @@ QStringList SyncJournalDb::tableColumns( const QString& table )
     QStringList columns;
     if( !table.isEmpty() ) {
 
-        QString q = QString("PRAGMA table_info(%1);").arg(table);
-        QSqlQuery query(_db);
-        query.prepare(q);
+        if( checkConnect() ) {
+            QString q = QString("PRAGMA table_info(%1);").arg(table);
+            QSqlQuery query(_db);
+            query.prepare(q);
 
-        if(!query.exec()) {
-            QString err = query.lastError().text();
-            qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;;
-            return columns;
-        }
+            if(!query.exec()) {
+                QString err = query.lastError().text();
+                qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;;
+                return columns;
+            }
 
-        while( query.next() ) {
-            columns.append( query.value(1).toString() );
+            while( query.next() ) {
+                columns.append( query.value(1).toString() );
+            }
         }
-        query.finish();
     }
     qDebug() << "Columns in the current journal: " << columns;
 
@@ -418,8 +459,9 @@ bool SyncJournalDb::postSyncCleanup(const QHash<QString, QString> &items )
 {
     QMutexLocker locker(&_mutex);
 
-    if( !checkConnect() )
+    if( !checkConnect() ) {
         return false;
+    }
 
     QSqlQuery query(_db);
     query.prepare("SELECT phash, path FROM metadata order by path");
@@ -458,8 +500,9 @@ int SyncJournalDb::getFileRecordCount()
 {
     QMutexLocker locker(&_mutex);
 
-    if( !checkConnect() )
+    if( !checkConnect() ) {
         return -1;
+    }
 
     QSqlQuery query(_db);
     query.prepare("SELECT COUNT(*) FROM metadata");
@@ -509,8 +552,9 @@ void SyncJournalDb::setDownloadInfo(const QString& file, const SyncJournalDb::Do
 {
     QMutexLocker locker(&_mutex);
 
-    if( !checkConnect() )
+    if( !checkConnect() ) {
         return;
+    }
 
     if (i._valid) {
         _setDownloadInfoQuery->bindValue(0, file);
@@ -572,8 +616,9 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
 {
     QMutexLocker locker(&_mutex);
 
-    if( !checkConnect() )
+    if( !checkConnect() ) {
         return;
+    }
 
     if (i._valid) {
         _setUploadInfoQuery->bindValue(0, file);
@@ -635,30 +680,35 @@ SyncJournalBlacklistRecord SyncJournalDb::blacklistEntry( const QString& file )
 void SyncJournalDb::wipeBlacklistEntry( const QString& file )
 {
     QMutexLocker locker(&_mutex);
+    if( checkConnect() ) {
+        QSqlQuery query(_db);
 
-    QSqlQuery query;
-
-    query.prepare("DELETE FROM blacklist WHERE path=:path");
-    query.bindValue(":path", file);
-    if( ! query.exec() ) {
-        qDebug() << "Deletion of blacklist item failed.";
+        query.prepare("DELETE FROM blacklist WHERE path=:path");
+        query.bindValue(":path", file);
+        if( ! query.exec() ) {
+            qDebug() << "Deletion of blacklist item failed.";
+        }
     }
 }
 
 void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item )
 {
     QMutexLocker locker(&_mutex);
-    QSqlQuery query;
+    QSqlQuery query(_db);
+
+    if( !checkConnect() ) {
+        return;
+    }
 
     query.prepare("SELECT retrycount FROM blacklist WHERE path=:path");
     query.bindValue(":path", item._file);
 
     if( !query.exec() ) {
-        qDebug() << "SQL exec blacklistitem failed.";
+        qDebug() << "SQL exec blacklistitem failed:" << query.lastError().text();
         return;
     }
 
-    QSqlQuery iQuery;
+    QSqlQuery iQuery(_db);
     if( query.next() ) {
         int retries = query.value(0).toInt();
         retries--;
@@ -685,20 +735,29 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
     if( !iQuery.exec() ) {
         qDebug() << "SQL exec blacklistitem insert/update failed: "<< iQuery.lastError().text();
     }
+
 }
 
-void SyncJournalDb::commit()
+void SyncJournalDb::commit(const QString& context, bool startTrans)
 {
-    QMutexLocker locker(&_mutex);
-    if (!_db.commit()) {
-        qDebug() << "ERROR commiting to the database: " << _db.lastError().text();
+    QMutexLocker lock(&_mutex);
+    commitInternal(context, startTrans);
+}
+
+
+void SyncJournalDb::commitInternal(const QString& context, bool startTrans )
+{
+    qDebug() << "Transaction Start " << context;
+    commitTransaction();
+
+    if( startTrans ) {
+        startTransaction();
     }
-    _db.transaction();
 }
 
 SyncJournalDb::~SyncJournalDb()
 {
-    _db.commit();
+    close();
 }
 
 

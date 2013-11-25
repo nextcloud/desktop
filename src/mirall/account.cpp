@@ -40,12 +40,10 @@ AccountManager *AccountManager::instance()
     static QMutex mutex;
     if (!_instance)
     {
-        mutex.lock();
-
+        QMutexLocker lock(&mutex);
         if (!_instance) {
             _instance = new AccountManager;
         }
-        mutex.unlock();
     }
 
     return _instance;
@@ -65,7 +63,7 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     , _am(0)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
-    , _isOnline(false)
+    , _state(Account::Disconnected)
 {
 }
 
@@ -285,17 +283,17 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
     }
 }
 
-bool Account::isOnline() const
+int Account::state() const
 {
-    return _isOnline;
+    return _state;
 }
 
-void Account::setOnline(bool online)
+void Account::setState(int state)
 {
-    if (_isOnline != online) {
-        emit onlineStateChanged(online);
+    if (_state != state) {
+        _state = state;
+        emit stateChanged(state);
     }
-    _isOnline = online;
 }
 
 void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)

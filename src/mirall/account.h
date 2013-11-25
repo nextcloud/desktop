@@ -64,6 +64,11 @@ public:
 class Account : public QObject {
     Q_OBJECT
 public:
+    enum State { Connected = 0, /// account is online
+                 Disconnected = 1, /// no network connection
+                 SignedOut = 2 /// Disconnected + credential token has been discarded
+               };
+
     static QString davPath() { return "remote.php/webdav/"; }
 
     Account(AbstractSslErrorHandler *sslErrorHandler = 0, QObject *parent = 0);
@@ -133,10 +138,10 @@ public:
     QVariant credentialSetting(const QString& key) const;
     void setCredentialSetting(const QString& key, const QVariant &value);
 
-    bool isOnline() const;
-    void setOnline(bool online);
+    int state() const;
+    void setState(int state);
 signals:
-    void onlineStateChanged(bool online);
+    void stateChanged(int state);
 
 protected Q_SLOTS:
     void slotHandleErrors(QNetworkReply*,QList<QSslError>);
@@ -150,7 +155,7 @@ private:
     QNetworkAccessManager *_am;
     AbstractCredentials* _credentials;
     bool _treatSslErrorsAsFailure;
-    bool _isOnline;
+    int _state;
     static QString _configFileName;
 };
 

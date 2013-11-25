@@ -17,6 +17,7 @@
 #include "creds/abstractcredentials.h"
 
 #include <QTimer>
+#include <QDebug>
 
 namespace Mirall {
 
@@ -28,6 +29,7 @@ static const int initialTimeT = 1*1000;
 
 QuotaInfo::QuotaInfo(QObject *parent)
     : QObject(parent)
+    , _account(AccountManager::instance()->account())
     , _lastQuotaTotalBytes(0)
     , _lastQuotaUsedBytes(0)
     , _refreshTimer(new QTimer(this))
@@ -41,8 +43,18 @@ QuotaInfo::QuotaInfo(QObject *parent)
 
 void QuotaInfo::slotAccountChanged(Account *newAccount, Account *oldAccount)
 {
-    Q_UNUSED(oldAccount);
     _account = newAccount;
+    disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
+    connect(newAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
+}
+
+void QuotaInfo::slotAccountStateChanged(int state)
+{
+    if (state == Account::Connected) {
+        slotCheckQuota();
+    } else {
+        _refreshTimer->stop();
+    }
 }
 
 void QuotaInfo::slotCheckQuota()

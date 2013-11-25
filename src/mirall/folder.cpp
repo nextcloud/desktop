@@ -299,7 +299,7 @@ void Folder::etagRetreived(const QString& etag)
 
 void Folder::slotNetworkUnavailable()
 {
-    AccountManager::instance()->account()->setOnline(false);
+    AccountManager::instance()->account()->setState(Account::Disconnected);
     _syncResult.setStatus(SyncResult::Unavailable);
     emit syncStateChange();
 }
@@ -452,8 +452,10 @@ void Folder::slotTerminateSync(bool block)
 
     if( _thread && _csync ) {
         _csync->abort();
-        _errors.append( tr("The CSync thread terminated.") );
-        _csyncError = true;
+
+        // Do not display an error message, user knows his own actions.
+        // _errors.append( tr("The CSync thread terminated.") );
+        // _csyncError = true;
         if (!block) {
             setSyncState(SyncResult::SyncAbortRequested);
             return;
@@ -625,6 +627,7 @@ void Folder::startSync(const QStringList &pathList)
     connect(_csync, SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
     connect(_csync, SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
+    connect(_csync, SIGNAL(transmissionProblem(Progress::SyncProblem)), this, SLOT(slotTransmissionProblem(Progress::SyncProblem)));
 
     _thread->start();
     _thread->setPriority(QThread::LowPriority);
@@ -657,7 +660,7 @@ void Folder::slotCsyncUnavailable()
 
 void Folder::slotCSyncFinished()
 {
-    qDebug() << "-> CSync Finished slot with error " << _csyncError;
+    qDebug() << "-> CSync Finished slot with error " << _csyncError << "warn count" << _syncResult.warnCount();
     _watcher->setEventsEnabledDelayed(2000);
     _pollTimer.start();
     _timeSinceLastSync.restart();
@@ -685,6 +688,32 @@ void Folder::slotCSyncFinished()
     emit syncFinished( _syncResult );
 }
 
+// the problem comes without a folder and the valid path set. Add that here
+// and hand the result over to the progress dispatcher.
+void Folder::slotTransmissionProblem( const Progress::SyncProblem& problem )
+{
+    Progress::SyncProblem newProb = problem;
+    newProb.folder = alias();
+
+    if(newProb.current_file.startsWith(QLatin1String("ownclouds://")) ||
+            newProb.current_file.startsWith(QLatin1String("owncloud://")) ) {
+        // rip off the whole ownCloud URL.
+        newProb.current_file.remove(Utility::toCSyncScheme(remoteUrl().toString()));
+    }
+    QString localPath = path();
+    if( newProb.current_file.startsWith(localPath) ) {
+        // remove the local dir.
+        newProb.current_file = newProb.current_file.right( newProb.current_file.length() - localPath.length());
+    }
+
+    // Count all error conditions.
+    _syncResult.setWarnCount( _syncResult.warnCount()+1 );
+
+    ProgressDispatcher::instance()->setProgressProblem(alias(), newProb);
+}
+
+// the progress comes without a folder and the valid path set. Add that here
+// and hand the result over to the progress dispatcher.
 void Folder::slotTransmissionProgress(const Progress::Info& progress)
 {
     Progress::Info newInfo = progress;
@@ -704,9 +733,6 @@ void Folder::slotTransmissionProgress(const Progress::Info& progress)
     // remember problems happening to set the correct Sync status in slot slotCSyncFinished.
     if( newInfo.kind == Progress::StartSync ) {
         _syncResult.setWarnCount(0);
-    }
-    if( newInfo.kind == Progress::Error ) {
-        _syncResult.setWarnCount( _syncResult.warnCount()+1 );
     }
 
     ProgressDispatcher::instance()->setProgressInfo(alias(), newInfo);

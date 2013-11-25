@@ -57,8 +57,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     QListWidgetItem *protocol= new QListWidgetItem(protocolIcon, tr("Status"), _ui->labelWidget);
     protocol->setSizeHint(QSize(0, 32));
     _ui->labelWidget->addItem(protocol);
-    ProtocolWidget *protocolWidget = new ProtocolWidget;
-    _protocolIdx = _ui->stack->addWidget(protocolWidget);
+    _protocolWidget = new ProtocolWidget;
+    _protocolIdx = _ui->stack->addWidget(_protocolWidget);
 
     QIcon generalIcon(QLatin1String(":/mirall/resources/settings.png"));
     QListWidgetItem *general = new QListWidgetItem(generalIcon, tr("General"), _ui->labelWidget);
@@ -179,4 +179,9 @@ void SettingsDialog::accept() {
     QDialog::accept();
 }
 
+void SettingsDialog::slotRefreshResultList() {
+    if( _protocolWidget ) {
+        _protocolWidget->setupList();
+    }
+}
 } // namespace Mirall

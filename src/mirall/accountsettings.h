@@ -49,7 +49,6 @@ public:
     ~AccountSettings();
 
     void setFolderList( const Folder::Map& );
-    void buttonsSetEnabled();
 
 signals:
     void folderChanged();
@@ -65,10 +64,11 @@ public slots:
     void slotFolderOpenAction( const QString& );
     void slotSetProgress(const QString&, const Progress::Info& progress);
     void slotProgressProblem(const QString& folder, const Progress::SyncProblem& problem);
+    void slotButtonsSetEnabled();
 
     void slotUpdateQuota( qint64,qint64 );
     void slotIgnoreFilesEditor();
-    void slotOnlineStateChanged(bool online = true);
+    void slotAccountStateChanged(int state);
 
     void setGeneralErrors( const QStringList& errors );
 

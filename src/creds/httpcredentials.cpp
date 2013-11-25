@@ -17,6 +17,7 @@
 #include <QDebug>
 #include <QNetworkReply>
 #include <QSettings>
+#include <QInputDialog>
 
 #include <qtkeychain/keychain.h>
 
@@ -28,6 +29,8 @@
 #include "creds/httpcredentials.h"
 
 using namespace QKeychain;
+
+Q_DECLARE_METATYPE(Mirall::Account*)
 
 namespace Mirall
 {
@@ -83,6 +86,7 @@ protected:
         QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
+        //qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
         return MirallAccessManager::createRequest(op, req, outgoingData);
     }
 private:
@@ -180,8 +184,27 @@ void HttpCredentials::fetch(Account *account)
         job->setInsecureFallback(true);
         job->setKey(keychainKey(account->url().toString(), _user));
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
+        job->setProperty("account", QVariant::fromValue(account));
         job->start();
     }
+}
+bool HttpCredentials::stillValid(QNetworkReply *reply)
+{
+    return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
+            // returned if user or password is incorrect
+            && (reply->error() != QNetworkReply::OperationCanceledError));
+}
+
+bool HttpCredentials::fetchFromUser(Account *account)
+{
+    bool ok = false;
+    QString password = queryPassword(&ok);
+    if (ok) {
+        _password = password;
+        _ready = true;
+        persist(account);
+    }
+    return ok;
 }
 
 void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
@@ -196,9 +219,43 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
         Q_EMIT fetched();
         break;
     default:
+        if (!_user.isEmpty()) {
+            bool ok;
+            QString pwd = queryPassword(&ok);
+            if (ok) {
+                _password = pwd;
+                _ready = true;
+                persist(qvariant_cast<Account*>(readJob->property("account")));
+                Q_EMIT fetched();
+                break;
+            }
+        }
         qDebug() << "Error while reading password" << job->errorString();
     }
+}
 
+QString HttpCredentials::queryPassword(bool *ok)
+{
+    qDebug() << AccountManager::instance()->account()->state();
+    if (ok) {
+        QString str = QInputDialog::getText(0, tr("Enter Password"),
+                                     tr("Please enter %1 password for user '%2':")
+                                     .arg(Theme::instance()->appNameGUI(), _user),
+                                     QLineEdit::Password, QString(), ok);
+        qDebug() << AccountManager::instance()->account()->state();
+        return str;
+    } else {
+        return QString();
+    }
+}
+
+void HttpCredentials::invalidateToken(Account *account)
+{
+    _password = QString();
+    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    job->setKey(keychainKey(account->url().toString(), _user));
+    job->start();
+    _ready = false;
 }
 
 void HttpCredentials::persist(Account *account)

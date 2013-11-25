@@ -23,6 +23,7 @@
 #include "mirall/logger.h"
 #include "mirall/logbrowser.h"
 #include "mirall/account.h"
+#include "creds/abstractcredentials.h"
 
 #include <QDesktopServices>
 #include <QMessageBox>
@@ -140,6 +141,11 @@ void ownCloudGui::slotOpenPath(const QString &path)
     Utility::showInFileManager(path);
 }
 
+void ownCloudGui::slotAccountStateChanged()
+{
+    setupContextMenu();
+}
+
 void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
 {
     FolderMan *folderMan = FolderMan::instance();
@@ -161,6 +167,13 @@ void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
 
 void ownCloudGui::slotComputeOverallSyncStatus()
 {
+    if (Account *a = AccountManager::instance()->account()) {
+        if (a->state() == Account::SignedOut) {
+            _tray->setIcon(Theme::instance()->syncStateIcon( SyncResult::Unavailable, true));
+            _tray->setToolTip(tr("Please sign in"));
+            return;
+        }
+    }
     // display the info of the least successful sync (eg. not just display the result of the latest sync
     QString trayMessage;
     FolderMan *folderMan = FolderMan::instance();
@@ -208,17 +221,23 @@ void ownCloudGui::setupContextMenu()
 {
     FolderMan *folderMan = FolderMan::instance();
 
-    bool isConfigured = (AccountManager::instance()->account() != 0);
-    _actionOpenoC->setEnabled(isConfigured);
+    Account *a = AccountManager::instance()->account();
 
-    if( _contextMenu ) {
+    bool isConfigured = (a != 0);
+    _actionOpenoC->setEnabled(isConfigured);
+    bool isConnected = false;
+    if (isConfigured) {
+        isConnected = (a->state() == Account::Connected);
+    }
+
+    if ( _contextMenu ) {
         _contextMenu->clear();
         _recentActionsMenu->clear();
         _recentActionsMenu->addAction(tr("None."));
         _recentActionsMenu->addAction(_actionRecent);
     } else {
-        _contextMenu = new QMenu();
-        _recentActionsMenu = _contextMenu->addMenu(tr("Recent Changes"));
+        _contextMenu = new QMenu(_contextMenu);
+        _recentActionsMenu = new QMenu(tr("Recent Changes"));
         // this must be called only once after creating the context menu, or
         // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
         _tray->setContextMenu(_contextMenu);
@@ -255,19 +274,25 @@ void ownCloudGui::setupContextMenu()
             _contextMenu->addAction(action);
         }
     }
+    _contextMenu->addSeparator();
 
-    _contextMenu->addSeparator();
-    _contextMenu->addAction(_actionQuota);
-    _contextMenu->addSeparator();
-    _contextMenu->addAction(_actionStatus);
-    _contextMenu->addMenu(_recentActionsMenu);
-    _contextMenu->addSeparator();
+    if (isConfigured && isConnected) {
+        _contextMenu->addAction(_actionQuota);
+        _contextMenu->addSeparator();
+        _contextMenu->addAction(_actionStatus);
+        _contextMenu->addMenu(_recentActionsMenu);
+        _contextMenu->addSeparator();
+    }
     _contextMenu->addAction(_actionSettings);
     if (!Theme::instance()->helpUrl().isEmpty()) {
         _contextMenu->addAction(_actionHelp);
     }
     _contextMenu->addSeparator();
-
+    if (isConfigured && isConnected) {
+        _contextMenu->addAction(_actionLogout);
+    } else {
+        _contextMenu->addAction(_actionLogin);
+    }
     _contextMenu->addAction(_actionQuit);
 
     // Populate once at start
@@ -333,6 +358,11 @@ void ownCloudGui::setupActions()
     QObject::connect(_actionHelp, SIGNAL(triggered(bool)), SLOT(slotHelp()));
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), _app, SLOT(quit()));
+
+    _actionLogin = new QAction(tr("Sign in..."), this);
+    connect(_actionLogin, SIGNAL(triggered()), _app, SLOT(slotLogin()));
+    _actionLogout = new QAction(tr("Sign out"), this);
+    connect(_actionLogout, SIGNAL(triggered()), _app, SLOT(slotLogout()));
 
     _quotaInfo = new QuotaInfo(this);
     connect(_quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
@@ -451,6 +481,7 @@ void ownCloudGui::slotSettings()
 
     _settingsDialog->setGeneralErrors( _startupFails );
     Utility::raiseDialog(_settingsDialog.data());
+    _settingsDialog->slotRefreshResultList();
 }
 
 // open sync protocol widget

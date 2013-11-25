@@ -13,6 +13,7 @@
  */
 
 #include "systray.h"
+#include "mirall/theme.h"
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
@@ -41,6 +42,11 @@ void Systray::showMessage(const QString & title, const QString & message, Messag
     {
         QSystemTrayIcon::showMessage(title, message, icon, millisecondsTimeoutHint);
     }
+}
+
+void Systray::setToolTip(const QString &tip)
+{
+    QSystemTrayIcon::setToolTip(tr("%1: %2").arg(Theme::instance()->appNameGUI(), tip));
 }
 
 } // namespace Mirall

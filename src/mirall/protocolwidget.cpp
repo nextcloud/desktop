@@ -111,7 +111,8 @@ void ProtocolWidget::setSyncResult( const SyncResult& result )
          // handle ignored files here.
 
          if( item._status == SyncFileItem::FileIgnored
-             || item._status == SyncFileItem::Conflict ) {
+             || item._status == SyncFileItem::Conflict
+             || item._status == SyncFileItem::SoftError ) {
              QStringList columns;
              QString timeStr = timeString(dt);
              QString longTimeStr = timeString(dt, QLocale::LongFormat);
@@ -120,7 +121,10 @@ void ProtocolWidget::setSyncResult( const SyncResult& result )
              columns << item._file;
              columns << folder;
              if( item._status == SyncFileItem::FileIgnored ) {
-                 if( item._type == SyncFileItem::SoftLink ) {
+                 if( item._blacklistedInDb ) {
+                     errMsg = tr("Blacklisted");
+                     tooltip = tr("The file is blacklisted because of previous error conditions.");
+                 }else if( item._type == SyncFileItem::SoftLink ) {
                      errMsg = tr("Soft Link ignored");
                      tooltip = tr("Softlinks break the semantics of synchronization.\nPlease do not "
                                   "use them in synced directories");
@@ -149,6 +153,8 @@ void ProtocolWidget::setSyncResult( const SyncResult& result )
                               "created a so called conflict. The local change is copied to the conflict\n"
                               "file while the file from the server side is available under the original\n"
                               "name");
+             } else if( item._status == SyncFileItem::SoftError ) {
+                 errMsg = item._errorString;
              } else {
                  Q_ASSERT(!"unhandled instruction.");
              }
@@ -180,7 +186,6 @@ void ProtocolWidget::setupList()
           lastResult = f->syncResult();
           haveSyncResult = true;
       }
-
 
       if( haveSyncResult ) {
           setSyncResult(lastResult);
@@ -285,7 +290,7 @@ void ProtocolWidget::slotProgressProblem( const QString& folder, const Progress:
   columns << timeStr;
   columns << problem.current_file;
   columns << folder;
-  QString errMsg = tr("Problem: %1").arg(problem.error_message);
+  QString errMsg = problem.error_message;
 #if 0
   if( problem.error_code == 507 ) {
       errMsg = tr("No more storage space available on server.");
@@ -297,7 +302,11 @@ void ProtocolWidget::slotProgressProblem( const QString& folder, const Progress:
   item->setData(0, ErrorIndicatorRole, QVariant(true) );
   // Maybe we should not set the error icon for all problems but distinguish
   // by error_code. A quota problem is considered an error, others might not??
-  item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
+  if( problem.kind == Progress::SoftError ) {
+      item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
+  } else {
+      item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
+  }
   item->setToolTip(0, longTimeStr);
   _ui->_treeWidget->insertTopLevelItem(0, item);
   Q_UNUSED(item);

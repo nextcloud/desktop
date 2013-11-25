@@ -176,7 +176,7 @@ void PropagateLocalRemove::start()
         }
     }
     _propagator->_journal->deleteFileRecord(_item._originalFile);
-    _propagator->_journal->commit();
+    _propagator->_journal->commit("Local remove");
     done(SyncFileItem::Success);
 }
 
@@ -205,7 +205,7 @@ void PropagateRemoteRemove::start()
         return;
     }
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
-    _propagator->_journal->commit();
+    _propagator->_journal->commit("Remote Remove");
     done(SyncFileItem::Success);
 }
 
@@ -257,7 +257,7 @@ private:
             pi._transferid = trans->transfer_id;
             pi._modtime =  QDateTime::fromTime_t(trans->modtime);
             that->_propagator->_journal->setUploadInfo(that->_item._file, pi);
-            that->_propagator->_journal->commit();
+            that->_propagator->_journal->commit("Upload info");
         }
     }
 
@@ -267,7 +267,7 @@ private:
         PropagateUploadFile* that = reinterpret_cast<PropagateUploadFile*>(userdata);
 
         if (status == ne_status_sending && info->sr.total > 0) {
-            emit that->progress(Progress::Context, that->_item._file ,
+            emit that->progress(Progress::Context, that->_item,
                                 that->_chunked_done + info->sr.progress,
                                 that->_chunked_total_size ? that->_chunked_total_size : info->sr.total );
 
@@ -281,7 +281,7 @@ private:
 
 void PropagateUploadFile::start()
 {
-    emit progress(Progress::StartUpload, _item._file, 0, _item._size);
+    emit progress(Progress::StartUpload, _item, 0, _item._size);
 
     QFile file(_propagator->_localDir + _item._file);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -299,6 +299,8 @@ void PropagateUploadFile::start()
      * If the file has changed, retry.
      */
     qDebug() << "** PUT request to" << uri.data();
+    const SyncJournalDb::UploadInfo progressInfo = _propagator->_journal->getUploadInfo(_item._file);
+
     do {
         Hbf_State state = HBF_SUCCESS;
         QScopedPointer<hbf_transfer_t, ScopedPointerHelpers> trans(hbf_init_transfer(uri.data()));
@@ -309,7 +311,6 @@ void PropagateUploadFile::start()
         Q_ASSERT(trans);
         state = hbf_splitlist(trans.data(), file.handle());
 
-        const SyncJournalDb::UploadInfo progressInfo = _propagator->_journal->getUploadInfo(_item._file);
         if (progressInfo._valid) {
             if (progressInfo._modtime.toTime_t() == _item._modtime) {
                 trans->start_id = progressInfo._chunk;
@@ -342,8 +343,6 @@ void PropagateUploadFile::start()
         if( !fid.isEmpty() ) {
             if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
                 qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
-            } else {
-                qDebug() << "FileID is" << fid;
             }
             _item._fileId = fid;
         }
@@ -353,15 +352,29 @@ void PropagateUploadFile::start()
 
             /* If the source file changed during submission, lets try again */
             if( state == HBF_SOURCE_FILE_CHANGE ) {
-              if( attempts++ < 30 ) { /* FIXME: How often do we want to try? */
-                qDebug("SOURCE file has changed during upload, retry #%d in two seconds!", attempts);
-                sleep(2);
-                continue;
-              }
+                if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
+                    qDebug("SOURCE file has changed during upload, retry #%d in %d seconds!", attempts, 2*attempts);
+                    sleep(2*attempts);
+                    continue;
+                }
+
+                const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
+                done( SyncFileItem::SoftError, errMsg );
+                _item._errorString = errMsg;
+                emit progressProblem( Progress::SoftError, _item );
+                return;
+            } else if( state == HBF_USER_ABORTED ) {
+                const QString errMsg = tr("Sync was aborted by user.");
+                done( SyncFileItem::SoftError, errMsg);
+                _item._errorString = errMsg;
+                emit progressProblem( Progress::SoftError, _item );
+            } else {
+                // Other HBF error conditions.
+                // FIXME: find out the error class.
+                _item._httpErrorCode = hbf_fail_http_code(trans.data());
+                done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
+                emit progressProblem(Progress::NormalError, _item);
             }
-            // FIXME: find out the error class.
-            _item._httpErrorCode = hbf_fail_http_code(trans.data());
-            done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
             return;
         }
 
@@ -369,6 +382,10 @@ void PropagateUploadFile::start()
 
         if( trans->modtime_accepted ) {
             _item._etag =  QByteArray(hbf_transfer_etag( trans.data() ));
+            if (_item._etag.endsWith("-gzip")) {
+                // https://github.com/owncloud/mirall/issues/1195
+                _item._etag.chop(5);
+            }
         } else {
             updateMTimeAndETag(uri.data(), _item._modtime);
         }
@@ -376,8 +393,43 @@ void PropagateUploadFile::start()
         _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
         // Remove from the progress database:
         _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
-        _propagator->_journal->commit();
-        emit progress(Progress::EndUpload, _item._file, 0, _item._size);
+        _propagator->_journal->commit("upload file start");
+
+        if (hbf_validate_source_file(trans.data()) == HBF_SOURCE_FILE_CHANGE) {
+            /* Did the source file changed since the upload ?
+               This is different from the previous check because the previous check happens between
+               chunks while this one happens when the whole file has been uploaded.
+
+               The new etag is already stored in the database in the previous lines so in case of
+               crash, we won't have a conflict but we will properly do a new upload
+             */
+
+            if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
+                qDebug("SOURCE file has changed after upload, retry #%d in %d seconds!", attempts, 2*attempts);
+                sleep(2*attempts);
+                continue;
+            }
+
+            // Still the file change error, but we tried a couple of times.
+            // Ignore this file for now.
+            // Lets remove the file from the server (at least if it is new) as it is different
+            // from our file here.
+            if( _item._instruction == CSYNC_INSTRUCTION_NEW ) {
+                QScopedPointer<char, QScopedPointerPodDeleter> uri(
+                    ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+
+                int rc = ne_delete(_propagator->_session, uri.data());
+                qDebug() << "Remove the invalid file from server:" << rc;
+            }
+
+            const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
+            done( SyncFileItem::SoftError, errMsg );
+            return;
+        }
+
+
+
+        emit progress(Progress::EndUpload, _item, 0, _item._size);
         done(SyncFileItem::Success);
         return;
 
@@ -386,11 +438,17 @@ void PropagateUploadFile::start()
 
 static QByteArray parseEtag(ne_request *req) {
     const char *header = ne_get_response_header(req, "etag");
+    QByteArray arr;
     if(header && header [0] == '"' && header[ strlen(header)-1] == '"') {
-        return QByteArray(header + 1, strlen(header)-2);
+        arr = QByteArray(header + 1, strlen(header)-2);
     } else {
-        return header;
+        arr = header;
     }
+    if (arr.endsWith("-gzip")) {
+        // https://github.com/owncloud/mirall/issues/1195
+        arr.chop(5);
+    }
+    return arr;
 }
 
 static QString parseFileId(ne_request *req) {
@@ -482,9 +540,10 @@ public:
     void start();
 
 private:
-    QIODevice *_file;
+    QFile *_file;
     QScopedPointer<ne_decompress, ScopedPointerHelpers> _decompress;
     QString errorString;
+    QByteArray _expectedEtagForResume;
 
     static int content_reader(void *userdata, const char *buf, size_t len)
     {
@@ -498,8 +557,9 @@ private:
 
         if(buf) {
             written = that->_file->write(buf, len);
-            if( len != written ) {
+            if( len != written || that->_file->error() != QFile::NoError) {
                 qDebug() << "WRN: content_reader wrote wrong num of bytes:" << len << "," << written;
+                return NE_ERROR;
             }
             return NE_OK;
         }
@@ -540,16 +600,27 @@ private:
             return;
         }
 
-        const char *etag = ne_get_response_header( req, "ETag" );
-        if (!etag) {
-            qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid";
+        QByteArray etag = parseEtag(req);
+        if (etag.isEmpty()) {
+            qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
             that->errorString = QLatin1String("No E-Tag received from server, check Proxy/Gateway");
             ne_set_error(that->_propagator->_session, "No E-Tag received from server, check Proxy/Gateway");
             ne_add_response_body_reader( req, do_not_accept,
                                         do_not_download_content_reader,
                                         (void*) that );
             return;
+        } else if (!that->_expectedEtagForResume.isEmpty() && that->_expectedEtagForResume != etag) {
+            qDebug() << Q_FUNC_INFO <<  "We received a different E-Tag for resuming!"
+                     << QString::fromLatin1(that->_expectedEtagForResume.data()) << "vs"
+                     << QString::fromLatin1(etag.data());
+            that->errorString = QLatin1String("We received a different E-Tag for resuming. Retrying next time.");
+            ne_set_error(that->_propagator->_session, "We received a different E-Tag for resuming. Retrying next time.");
+            ne_add_response_body_reader( req, do_not_accept,
+                                        do_not_download_content_reader,
+                                        (void*) that );
+            return;
         }
+
 
         const char *enc = ne_get_response_header( req, "Content-Encoding" );
         qDebug("Content encoding ist <%s> with status %d", enc ? enc : "empty",
@@ -571,7 +642,7 @@ private:
     {
         PropagateDownloadFile* that = reinterpret_cast<PropagateDownloadFile*>(userdata);
         if (status == ne_status_recving && info->sr.total > 0) {
-            emit that->progress(Progress::Context, that->_item._file, info->sr.progress, info->sr.total );
+            emit that->progress(Progress::Context, that->_item, info->sr.progress, info->sr.total );
             that->limitBandwidth(info->sr.progress,  that->_propagator->_downloadLimit);
         }
     }
@@ -579,7 +650,7 @@ private:
 
 void PropagateDownloadFile::start()
 {
-    emit progress(Progress::StartDownload, _item._file, 0, _item._size);
+    emit progress(Progress::StartDownload, _item, 0, _item._size);
 
     QString tmpFileName;
     const SyncJournalDb::DownloadInfo progressInfo = _propagator->_journal->getDownloadInfo(_item._file);
@@ -590,6 +661,7 @@ void PropagateDownloadFile::start()
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
+            _expectedEtagForResume = progressInfo._etag;
         }
 
     }
@@ -605,7 +677,7 @@ void PropagateDownloadFile::start()
 
     QFile tmpFile(_propagator->_localDir + tmpFileName);
     _file = &tmpFile;
-    if (!tmpFile.open(QIODevice::Append)) {
+    if (!tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
         done(SyncFileItem::NormalError, tmpFile.errorString());
         return;
     }
@@ -618,7 +690,7 @@ void PropagateDownloadFile::start()
         pi._tmpfile = tmpFileName;
         pi._valid = true;
         _propagator->_journal->setDownloadInfo(_item._file, pi);
-        _propagator->_journal->commit();
+        _propagator->_journal->commit("download file start");
     }
 
     /* actually do the request */
@@ -752,8 +824,8 @@ void PropagateDownloadFile::start()
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
-    _propagator->_journal->commit();
-    emit progress(Progress::EndDownload, _item._file, 0, _item._size);
+    _propagator->_journal->commit("download file start2");
+    emit progress(Progress::EndDownload, _item, 0, _item._size);
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
 
@@ -761,7 +833,7 @@ DECLARE_JOB(PropagateLocalRename)
 
 void PropagateLocalRename::start()
 {
-    emit progress(Progress::StartRename, _item._file, 0, _item._size);
+    emit progress(Progress::StartRename, _item, 0, _item._size);
     if (_item._file != _item._renameTarget) {
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
         QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
@@ -777,9 +849,9 @@ void PropagateLocalRename::start()
     record._path = _item._renameTarget;
 
     _propagator->_journal->setFileRecord(record);
-    _propagator->_journal->commit();
+    _propagator->_journal->commit("localRename");
 
-    emit progress(Progress::EndRename, _item._file, 0, _item._size);
+    emit progress(Progress::EndRename, _item, 0, _item._size);
 
     done(SyncFileItem::Success);
 }
@@ -807,7 +879,7 @@ void PropagateRemoteRename::start()
         }
         return;
     } else {
-        emit progress(Progress::StartRename, _item._file, 0, _item._size);
+        emit progress(Progress::StartRename, _item, 0, _item._size);
 
         QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
         QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
@@ -819,7 +891,7 @@ void PropagateRemoteRename::start()
         }
 
         updateMTimeAndETag(uri2.data(), _item._modtime);
-        emit progress(Progress::EndRename, _item._file, 0, _item._size);
+        emit progress(Progress::EndRename, _item, 0, _item._size);
 
     }
 
@@ -828,7 +900,7 @@ void PropagateRemoteRename::start()
     record._path = _item._renameTarget;
 
     _propagator->_journal->setFileRecord(record);
-    _propagator->_journal->commit();
+    _propagator->_journal->commit("Remote Rename");
     done(SyncFileItem::Success);
 }
 
@@ -873,7 +945,8 @@ bool PropagateItemJob::updateErrorFromSession(int neon_code, ne_request* req, in
         // Check if we don't need to ignore that error.
         httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
         _item._httpErrorCode = httpStatusCode;
-        if (httpStatusCode == ignoreHttpCode)
+        qDebug() << Q_FUNC_INFO << "NE_ERROR" << errorString << httpStatusCode << ignoreHttpCode;
+        if (ignoreHttpCode && httpStatusCode == ignoreHttpCode)
             return false;
 
         done(SyncFileItem::NormalError, errorString);
@@ -972,8 +1045,10 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
     }
 
     connect(_rootJob.data(), SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
-    connect(_rootJob.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,QString,quint64,quint64)));
+    connect(_rootJob.data(), SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)), this,
+            SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
+
     _rootJob->start();
 }
 

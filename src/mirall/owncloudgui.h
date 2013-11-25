@@ -67,6 +67,7 @@ public slots:
     void slotOpenOwnCloud();
     void slotHelp();
     void slotOpenPath(const QString& path);
+    void slotAccountStateChanged();
 
 private slots:
     void slotDisplayIdle();
@@ -80,6 +81,9 @@ private:
        // tray's menu
     QMenu *_contextMenu;
     QMenu *_recentActionsMenu;
+
+    QAction *_actionLogin;
+    QAction *_actionLogout;
 
     QAction *_actionOpenoC;
     QAction *_actionSettings;

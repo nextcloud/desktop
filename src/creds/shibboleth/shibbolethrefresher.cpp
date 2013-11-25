@@ -13,14 +13,16 @@
 
 #include <QEventLoop>
 
+#include "mirall/account.h"
 #include "creds/shibboleth/shibbolethrefresher.h"
 #include "creds/shibbolethcredentials.h"
 
 namespace Mirall
 {
 
-ShibbolethRefresher::ShibbolethRefresher(ShibbolethCredentials* creds, CSYNC* csync_ctx, QObject* parent)
+ShibbolethRefresher::ShibbolethRefresher(Account *account, ShibbolethCredentials* creds, CSYNC* csync_ctx, QObject* parent)
     : QObject(parent),
+      _account(account),
       _creds(creds),
       _csync_ctx(csync_ctx)
 {}
@@ -33,7 +35,8 @@ void ShibbolethRefresher::refresh()
             this, SLOT(onInvalidatedAndFetched(QByteArray)));
     connect(_creds, SIGNAL(invalidatedAndFetched(QByteArray)),
             &loop, SLOT(quit()));
-    QMetaObject::invokeMethod(_creds, "invalidateAndFetch", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(_creds, "invalidateAndFetch",Qt::QueuedConnection,
+                              Q_ARG(Account*, _account));
     loop.exec();
     disconnect(_creds, SIGNAL(invalidatedAndFetched(QByteArray)),
                &loop, SLOT(quit()));

@@ -50,6 +50,18 @@ bool DummyCredentials::ready() const
     return true;
 }
 
+bool DummyCredentials::stillValid(QNetworkReply *reply)
+{
+    Q_UNUSED(reply)
+    return true;
+}
+
+bool DummyCredentials::fetchFromUser(Account *account)
+{
+    Q_UNUSED(account)
+    return false;
+}
+
 void DummyCredentials::fetch(Account*)
 {
     Q_EMIT(fetched());
