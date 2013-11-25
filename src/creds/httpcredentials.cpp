@@ -30,6 +30,8 @@
 
 using namespace QKeychain;
 
+Q_DECLARE_METATYPE(Mirall::Account*)
+
 namespace Mirall
 {
 
@@ -182,6 +184,7 @@ void HttpCredentials::fetch(Account *account)
         job->setInsecureFallback(true);
         job->setKey(keychainKey(account->url().toString(), _user));
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
+        job->setProperty("account", QVariant::fromValue(account));
         job->start();
     }
 }
@@ -222,6 +225,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
             if (ok) {
                 _password = pwd;
                 _ready = true;
+                persist(qvariant_cast<Account*>(readJob->property("account")));
                 Q_EMIT fetched();
                 break;
             }
@@ -232,13 +236,13 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 
 QString HttpCredentials::queryPassword(bool *ok)
 {
-    qDebug() << AccountManager::instance()->account()->isOnline();
+    qDebug() << AccountManager::instance()->account()->state();
     if (ok) {
         QString str = QInputDialog::getText(0, tr("Enter Password"),
                                      tr("Please enter %1 password for user '%2':")
                                      .arg(Theme::instance()->appNameGUI(), _user),
                                      QLineEdit::Password, QString(), ok);
-        qDebug() << AccountManager::instance()->account()->isOnline();
+        qDebug() << AccountManager::instance()->account()->state();
         return str;
     } else {
         return QString();

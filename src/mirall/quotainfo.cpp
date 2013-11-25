@@ -44,13 +44,13 @@ QuotaInfo::QuotaInfo(QObject *parent)
 void QuotaInfo::slotAccountChanged(Account *newAccount, Account *oldAccount)
 {
     _account = newAccount;
-    disconnect(oldAccount, SIGNAL(onlineStateChanged(bool)), this, SLOT(slotOnlineStateChanged(bool)));
-    connect(newAccount, SIGNAL(onlineStateChanged(bool)), this, SLOT(slotOnlineStateChanged(bool)));
+    disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
+    connect(newAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
 }
 
-void QuotaInfo::slotOnlineStateChanged(bool online)
+void QuotaInfo::slotAccountStateChanged(int state)
 {
-    if (online) {
+    if (state == Account::Connected) {
         slotCheckQuota();
     } else {
         _refreshTimer->stop();

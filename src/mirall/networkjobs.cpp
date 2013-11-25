@@ -144,9 +144,10 @@ void AbstractNetworkJob::slotFinished()
         // query the user
         if (mutex.tryLock()) {
             Account *a = account();
-            //a->setOnline(false);
             bool fetched = creds->fetchFromUser(a);
-            a->setOnline(fetched);
+            if (fetched) {
+                a->setState(Account::Connected);
+            }
             mutex.unlock();
         }
     }

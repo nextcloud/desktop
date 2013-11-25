@@ -104,8 +104,8 @@ AccountSettings::AccountSettings(QWidget *parent) :
     ui->connectLabel->setText(tr("No account configured."));
     ui->_buttonAdd->setEnabled(false);
     if (_account) {
-        connect(_account, SIGNAL(onlineStateChanged(bool)), SLOT(slotOnlineStateChanged(bool)));
-        slotOnlineStateChanged(_account->isOnline());
+        connect(_account, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
+        slotAccountStateChanged(_account->state());
     }
 
     setFolderList(FolderMan::instance()->map());
@@ -771,13 +771,13 @@ void AccountSettings::slotIgnoreFilesEditor()
     }
 }
 
-void AccountSettings::slotOnlineStateChanged(bool online)
+void AccountSettings::slotAccountStateChanged(int state)
 {
     if (_account) {
         QUrl safeUrl(_account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
-        ui->_buttonAdd->setEnabled(online);
-        if (online) {
+        ui->_buttonAdd->setEnabled(state == Account::Connected);
+        if (state == Account::Connected) {
             QString user;
             if (AbstractCredentials *cred = _account->credentials()) {
                user = cred->user();

@@ -141,7 +141,7 @@ void ownCloudGui::slotOpenPath(const QString &path)
     Utility::showInFileManager(path);
 }
 
-void ownCloudGui::slotOnlineStateChanged()
+void ownCloudGui::slotAccountStateChanged()
 {
     setupContextMenu();
 }
@@ -168,7 +168,7 @@ void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
 void ownCloudGui::slotComputeOverallSyncStatus()
 {
     if (Account *a = AccountManager::instance()->account()) {
-        if (!a->isOnline()) {
+        if (a->state() == Account::SignedOut) {
             _tray->setIcon(Theme::instance()->syncStateIcon( SyncResult::Unavailable, true));
             _tray->setToolTip(tr("Please sign in"));
             return;
@@ -225,9 +225,9 @@ void ownCloudGui::setupContextMenu()
 
     bool isConfigured = (a != 0);
     _actionOpenoC->setEnabled(isConfigured);
-    bool isOnline = false;
+    bool isConnected = false;
     if (isConfigured) {
-        isOnline = a->isOnline();
+        isConnected = (a->state() == Account::Connected);
     }
 
     if ( _contextMenu ) {
@@ -276,7 +276,7 @@ void ownCloudGui::setupContextMenu()
     }
     _contextMenu->addSeparator();
 
-    if (isConfigured && isOnline) {
+    if (isConfigured && isConnected) {
         _contextMenu->addAction(_actionQuota);
         _contextMenu->addSeparator();
         _contextMenu->addAction(_actionStatus);
@@ -288,7 +288,7 @@ void ownCloudGui::setupContextMenu()
         _contextMenu->addAction(_actionHelp);
     }
     _contextMenu->addSeparator();
-    if (isConfigured && isOnline) {
+    if (isConfigured && isConnected) {
         _contextMenu->addAction(_actionLogout);
     } else {
         _contextMenu->addAction(_actionLogin);

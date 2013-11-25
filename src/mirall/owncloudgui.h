@@ -67,7 +67,7 @@ public slots:
     void slotOpenOwnCloud();
     void slotHelp();
     void slotOpenPath(const QString& path);
-    void slotOnlineStateChanged();
+    void slotAccountStateChanged();
 
 private slots:
     void slotDisplayIdle();

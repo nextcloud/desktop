@@ -125,7 +125,7 @@ Application::Application(int &argc, char **argv) :
     }
     connect( _gui, SIGNAL(setupProxy()), SLOT(slotSetupProxy()));
     if (account) {
-        connect(account, SIGNAL(onlineStateChanged(bool)), _gui, SLOT(slotOnlineStateChanged()));
+        connect(account, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
     }
     connect(AccountManager::instance(), SIGNAL(accountChanged(Account*,Account*)),
             this, SLOT(slotAccountChanged(Account*,Account*)));
@@ -168,8 +168,7 @@ void Application::slotLogout()
         folderMan->setSyncEnabled(false);
         folderMan->terminateSyncProcess();
         folderMan->unloadAllFolders();
-        // go offline
-        a->setOnline(false);
+        a->setState(Account::SignedOut);
         // show result
         _gui->slotComputeOverallSyncStatus();
     }
@@ -177,8 +176,8 @@ void Application::slotLogout()
 
 void Application::slotAccountChanged(Account *newAccount, Account *oldAccount)
 {
-    disconnect(oldAccount, SIGNAL(onlineStateChanged(bool)), _gui, SLOT(slotOnlineStateChanged()));
-    connect(newAccount, SIGNAL(onlineStateChanged(bool)), _gui, SLOT(slotOnlineStateChanged()));
+    disconnect(oldAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotOnlineStateChanged()));
+    connect(newAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotOnlineStateChanged()));
 }
 
 

@@ -68,7 +68,7 @@ public slots:
 
     void slotUpdateQuota( qint64,qint64 );
     void slotIgnoreFilesEditor();
-    void slotOnlineStateChanged(bool online = true);
+    void slotAccountStateChanged(int state);
 
     void setGeneralErrors( const QStringList& errors );
 
