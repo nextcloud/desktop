@@ -24,7 +24,6 @@
 #include "syncjournalfilerecord.h"
 
 #define QSQLITE "QSQLITE"
-#define SYNCJOURNALDB_CONNECTION_NAME "SyncJournalDbConnection"
 
 namespace Mirall {
 
@@ -105,9 +104,7 @@ bool SyncJournalDb::checkConnect()
     }
 
     // Add the connection
-    if (!QSqlDatabase::connectionNames().contains(SYNCJOURNALDB_CONNECTION_NAME)) {
-        _db = QSqlDatabase::addDatabase( QSQLITE, SYNCJOURNALDB_CONNECTION_NAME );
-    }
+    _db = QSqlDatabase::addDatabase( QSQLITE,  _dbFile);
 
     // Open the file
     _db.setDatabaseName(_dbFile);
@@ -261,9 +258,9 @@ void SyncJournalDb::close()
     _deleteFileRecordRecursively.reset(0);
     _blacklistQuery.reset(0);
 
-    _db.removeDatabase(SYNCJOURNALDB_CONNECTION_NAME);
-    _db.setDatabaseName(QString());
     _db.close();
+    _db = QSqlDatabase(); // avoid the warning QSqlDatabasePrivate::removeDatabase: connection [...] still in use
+    QSqlDatabase::removeDatabase(_dbFile);
 }
 
 
@@ -752,7 +749,7 @@ void SyncJournalDb::commit(const QString& context, bool startTrans )
 
 SyncJournalDb::~SyncJournalDb()
 {
-    commitTransaction();
+    close();
 }
 
 
