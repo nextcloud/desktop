@@ -392,7 +392,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(sqlite3 *db,
       }
 
       if(column_count > 9 && sqlite3_column_text(_by_hash_stmt, 9)) {
-        st->etag = c_strdup( (char*) sqlite3_column_text(_by_hash_stmt, 9) );
+        st->etag = csync_normalize_etag(c_strdup( (char*) sqlite3_column_text(_by_hash_stmt, 9) ));
       }
     }
   } else {
@@ -461,7 +461,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id( sqlite3 *db,
    st->modtime  = strtoul(result->vector[7], NULL, 10);
    st->type     = atoi(result->vector[8]);
    if( result->vector[9] )
-     st->etag    = c_strdup(result->vector[9]);
+     st->etag = csync_normalize_etag(c_strdup(result->vector[9]));
 
    csync_vio_set_file_id(st->file_id, file_id);
 
@@ -516,7 +516,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(sqlite3 *db,
   st->modtime = strtoul(result->vector[7], NULL, 10);
   st->type = atoi(result->vector[8]);
   if( result->vector[9] )
-    st->etag = c_strdup(result->vector[9]);
+    st->etag = csync_normalize_etag(c_strdup(result->vector[9]));
   csync_vio_set_file_id( st->file_id, result->vector[10]);
 
   c_strlist_destroy(result);

@@ -64,4 +64,6 @@ typedef struct {
 } csync_overall_progress_t;
 
 
+char *csync_normalize_etag(char *);
+
 #endif /* _CSYNC_MISC_H */

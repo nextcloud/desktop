@@ -45,6 +45,7 @@
 #include "c_lib.h"
 #include "csync_misc.h"
 #include "csync_macros.h"
+#include "csync_log.h"
 
 #ifdef _WIN32
 char *csync_get_user_home_dir(void) {
@@ -259,3 +260,18 @@ CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
 
   return status;
 }
+
+/* Remove "-gzip" at the end (cf. https://github.com/owncloud/mirall/issues/1195)
+ * (work in place)
+ */
+char *csync_normalize_etag(char *etag)
+{
+    if (!etag) return etag;
+    int len = strlen(etag);
+    if (len > 5 && c_streq(etag + len - 5, "-gzip")) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Removing -gzip from etag: %s", etag);
+        etag[len-5] = '\0';
+    }
+    return etag;
+}
+
