@@ -40,12 +40,10 @@ AccountManager *AccountManager::instance()
     static QMutex mutex;
     if (!_instance)
     {
-        mutex.lock();
-
+        QMutexLocker lock(&mutex);
         if (!_instance) {
             _instance = new AccountManager;
         }
-        mutex.unlock();
     }
 
     return _instance;
