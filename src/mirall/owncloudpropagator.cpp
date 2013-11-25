@@ -903,7 +903,8 @@ bool PropagateItemJob::updateErrorFromSession(int neon_code, ne_request* req, in
         // Check if we don't need to ignore that error.
         httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
         _item._httpErrorCode = httpStatusCode;
-        if (httpStatusCode == ignoreHttpCode)
+        qDebug() << Q_FUNC_INFO << "NE_ERROR" << errorString << httpStatusCode << ignoreHttpCode;
+        if (ignoreHttpCode && httpStatusCode == ignoreHttpCode)
             return false;
 
         done(SyncFileItem::NormalError, errorString);
