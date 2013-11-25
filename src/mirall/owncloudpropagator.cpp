@@ -519,6 +519,7 @@ private:
     QIODevice *_file;
     QScopedPointer<ne_decompress, ScopedPointerHelpers> _decompress;
     QString errorString;
+    QByteArray _expectedEtagForResume;
 
     static int content_reader(void *userdata, const char *buf, size_t len)
     {
@@ -574,16 +575,27 @@ private:
             return;
         }
 
-        const char *etag = ne_get_response_header( req, "ETag" );
-        if (!etag) {
-            qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid";
+        QByteArray etag = parseEtag(req);
+        if (etag.isEmpty()) {
+            qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
             that->errorString = QLatin1String("No E-Tag received from server, check Proxy/Gateway");
             ne_set_error(that->_propagator->_session, "No E-Tag received from server, check Proxy/Gateway");
             ne_add_response_body_reader( req, do_not_accept,
                                         do_not_download_content_reader,
                                         (void*) that );
             return;
+        } else if (!that->_expectedEtagForResume.isEmpty() && that->_expectedEtagForResume != etag) {
+            qDebug() << Q_FUNC_INFO <<  "We received a different E-Tag for resuming!"
+                     << QString::fromLatin1(that->_expectedEtagForResume.data()) << "vs"
+                     << QString::fromLatin1(etag.data());
+            that->errorString = QLatin1String("We received a different E-Tag for resuming. Retrying next time.");
+            ne_set_error(that->_propagator->_session, "We received a different E-Tag for resuming. Retrying next time.");
+            ne_add_response_body_reader( req, do_not_accept,
+                                        do_not_download_content_reader,
+                                        (void*) that );
+            return;
         }
+
 
         const char *enc = ne_get_response_header( req, "Content-Encoding" );
         qDebug("Content encoding ist <%s> with status %d", enc ? enc : "empty",
@@ -624,6 +636,7 @@ void PropagateDownloadFile::start()
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
+            _expectedEtagForResume = progressInfo._etag;
         }
 
     }
