@@ -410,11 +410,17 @@ void PropagateUploadFile::start()
 
 static QByteArray parseEtag(ne_request *req) {
     const char *header = ne_get_response_header(req, "etag");
+    QByteArray arr;
     if(header && header [0] == '"' && header[ strlen(header)-1] == '"') {
-        return QByteArray(header + 1, strlen(header)-2);
+        arr = QByteArray(header + 1, strlen(header)-2);
     } else {
-        return header;
+        arr = header;
     }
+    if (arr.endsWith("-gzip")) {
+        // https://github.com/owncloud/mirall/issues/1195
+        arr.chop(5);
+    }
+    return arr;
 }
 
 static QString parseFileId(ne_request *req) {
