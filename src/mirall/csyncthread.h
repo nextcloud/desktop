@@ -68,6 +68,8 @@ signals:
     void treeWalkResult(const SyncFileItemVector&);
 
     void transmissionProgress( const Progress::Info& progress );
+    void transmissionProblem( const Progress::SyncProblem& problem );
+
     void csyncStateDbFile( const QString& );
     void wipeDb();
 
@@ -79,7 +81,8 @@ signals:
 private slots:
     void transferCompleted(const SyncFileItem& item);
     void slotFinished();
-    void slotProgress(Progress::Kind kind, const QString& file, quint64, quint64);
+    void slotProgress(Progress::Kind kind, const SyncFileItem &item, quint64, quint64);
+    void slotProgressProblem(Progress::Kind kind, const SyncFileItem& item);
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);

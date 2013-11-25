@@ -43,7 +43,8 @@ public slots:
 signals:
     void finished(SyncFileItem::Status);
     void completed(const SyncFileItem &);
-    void progress(Progress::Kind, const QString &filename, quint64 bytes, quint64 total);
+    void progress(Progress::Kind, const SyncFileItem& item, quint64 bytes, quint64 total);
+    void progressProblem( Progress::Kind, const SyncFileItem& );
 };
 
 /*
@@ -84,7 +85,7 @@ private slots:
     void startJob(PropagatorJob *next) {
         connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(proceedNext(SyncFileItem::Status)), Qt::QueuedConnection);
         connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
-        connect(next, SIGNAL(progress(Progress::Kind,QString,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,QString,quint64,quint64)));
+        connect(next, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
         next->start();
     }
 
@@ -170,7 +171,8 @@ public:
 
 signals:
     void completed(const SyncFileItem &);
-    void progress(Progress::Kind, const QString &filename, quint64 bytes, quint64 total);
+    void progress(Progress::Kind kind, const SyncFileItem&, quint64 bytes, quint64 total);
+    void progressProblem( Progress::Kind, const SyncFileItem& );
     void finished();
 
 };

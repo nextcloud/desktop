@@ -267,7 +267,7 @@ private:
         PropagateUploadFile* that = reinterpret_cast<PropagateUploadFile*>(userdata);
 
         if (status == ne_status_sending && info->sr.total > 0) {
-            emit that->progress(Progress::Context, that->_item._file ,
+            emit that->progress(Progress::Context, that->_item,
                                 that->_chunked_done + info->sr.progress,
                                 that->_chunked_total_size ? that->_chunked_total_size : info->sr.total );
 
@@ -281,7 +281,7 @@ private:
 
 void PropagateUploadFile::start()
 {
-    emit progress(Progress::StartUpload, _item._file, 0, _item._size);
+    emit progress(Progress::StartUpload, _item, 0, _item._size);
 
     QFile file(_propagator->_localDir + _item._file);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -352,39 +352,39 @@ void PropagateUploadFile::start()
 
             /* If the source file changed during submission, lets try again */
             if( state == HBF_SOURCE_FILE_CHANGE ) {
-              if( attempts++ < 20 ) { /* FIXME: How often do we want to try? */
-                qDebug("SOURCE file has changed during upload, retry #%d in two seconds!", attempts);
-                sleep(2);
-                continue;
-              }
-              // Still the file change error, but we tried a couple of times.
-              // Ignore this file for now.
-              // Lets remove the file from the server (at least if it is new) as it is different
-              // from our file here.
-              if( _item._instruction == CSYNC_INSTRUCTION_NEW ) {
-                  QScopedPointer<char, QScopedPointerPodDeleter> uri(
-                              ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+                if( attempts++ < 20 ) { /* FIXME: How often do we want to try? */
+                    qDebug("SOURCE file has changed during upload, retry #%d in two seconds!", attempts);
+                    sleep(2);
+                    continue;
+                }
+                // Still the file change error, but we tried a couple of times.
+                // Ignore this file for now.
+                // Lets remove the file from the server (at least if it is new) as it is different
+                // from our file here.
+                if( _item._instruction == CSYNC_INSTRUCTION_NEW ) {
+                    QScopedPointer<char, QScopedPointerPodDeleter> uri(
+                                ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
 
-                  int rc = ne_delete(_propagator->_session, uri.data());
-                  qDebug() << "Remove the invalid file from server:" << rc;
-              }
+                    int rc = ne_delete(_propagator->_session, uri.data());
+                    qDebug() << "Remove the invalid file from server:" << rc;
+                }
 
-              const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
-              done( SyncFileItem::SoftError, errMsg );
-              emit progress(Progress::Error, _item._file, 0,
-                            (quint64) "Local file changed during sync, syncing once it arrived completely"); // FIXME: Use errMsg
-
-              return;
+                const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
+                done( SyncFileItem::SoftError, errMsg );
+                _item._errorString = errMsg;
+                emit progressProblem( Progress::SoftError, _item );
+                return;
             } else if( state == HBF_USER_ABORTED ) {
                 const QString errMsg = tr("Sync was aborted by user.");
                 done( SyncFileItem::SoftError, errMsg);
-                emit progress(Progress::Error, _item._file, 0,
-                              (quint64) "User terminated sync process!" ); // FIXME: Use errMsg
+                _item._errorString = errMsg;
+                emit progressProblem( Progress::SoftError, _item );
             } else {
+                // Other HBF error conditions.
                 // FIXME: find out the error class.
                 _item._httpErrorCode = hbf_fail_http_code(trans.data());
                 done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
-                emit progress(Progress::EndUpload, _item._file, 0, _item._size);
+                emit progressProblem(Progress::NormalError, _item);
             }
             return;
         }
@@ -401,7 +401,7 @@ void PropagateUploadFile::start()
         // Remove from the progress database:
         _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
         _propagator->_journal->commit("upload file start");
-        emit progress(Progress::EndUpload, _item._file, 0, _item._size);
+        emit progress(Progress::EndUpload, _item, 0, _item._size);
         done(SyncFileItem::Success);
         return;
 
@@ -595,7 +595,7 @@ private:
     {
         PropagateDownloadFile* that = reinterpret_cast<PropagateDownloadFile*>(userdata);
         if (status == ne_status_recving && info->sr.total > 0) {
-            emit that->progress(Progress::Context, that->_item._file, info->sr.progress, info->sr.total );
+            emit that->progress(Progress::Context, that->_item, info->sr.progress, info->sr.total );
             that->limitBandwidth(info->sr.progress,  that->_propagator->_downloadLimit);
         }
     }
@@ -603,7 +603,7 @@ private:
 
 void PropagateDownloadFile::start()
 {
-    emit progress(Progress::StartDownload, _item._file, 0, _item._size);
+    emit progress(Progress::StartDownload, _item, 0, _item._size);
 
     QString tmpFileName;
     const SyncJournalDb::DownloadInfo progressInfo = _propagator->_journal->getDownloadInfo(_item._file);
@@ -777,7 +777,7 @@ void PropagateDownloadFile::start()
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
     _propagator->_journal->commit("download file start2");
-    emit progress(Progress::EndDownload, _item._file, 0, _item._size);
+    emit progress(Progress::EndDownload, _item, 0, _item._size);
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
 
@@ -785,7 +785,7 @@ DECLARE_JOB(PropagateLocalRename)
 
 void PropagateLocalRename::start()
 {
-    emit progress(Progress::StartRename, _item._file, 0, _item._size);
+    emit progress(Progress::StartRename, _item, 0, _item._size);
     if (_item._file != _item._renameTarget) {
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
         QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
@@ -803,7 +803,7 @@ void PropagateLocalRename::start()
     _propagator->_journal->setFileRecord(record);
     _propagator->_journal->commit("localRename");
 
-    emit progress(Progress::EndRename, _item._file, 0, _item._size);
+    emit progress(Progress::EndRename, _item, 0, _item._size);
 
     done(SyncFileItem::Success);
 }
@@ -831,7 +831,7 @@ void PropagateRemoteRename::start()
         }
         return;
     } else {
-        emit progress(Progress::StartRename, _item._file, 0, _item._size);
+        emit progress(Progress::StartRename, _item, 0, _item._size);
 
         QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
         QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
@@ -843,7 +843,7 @@ void PropagateRemoteRename::start()
         }
 
         updateMTimeAndETag(uri2.data(), _item._modtime);
-        emit progress(Progress::EndRename, _item._file, 0, _item._size);
+        emit progress(Progress::EndRename, _item, 0, _item._size);
 
     }
 
@@ -996,7 +996,8 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
     }
 
     connect(_rootJob.data(), SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
-    connect(_rootJob.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,QString,quint64,quint64)));
+    connect(_rootJob.data(), SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)), this,
+            SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
 
     _rootJob->start();

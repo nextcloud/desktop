@@ -168,59 +168,57 @@ QList<Progress::SyncProblem> ProgressDispatcher::recentProblems(int count)
     return _recentProblems;
 }
 
+void ProgressDispatcher::setProgressProblem(const QString& folder, const Progress::SyncProblem &problem)
+{
+    Q_ASSERT( Progress::isErrorKind(problem.kind));
+
+    _recentProblems.prepend( problem );
+    if( _recentProblems.size() > _QueueSize ) {
+        _recentProblems.removeLast();
+    }
+    emit progressSyncProblem( folder, problem );
+}
+
 void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::Info& progress)
 {
     if( folder.isEmpty() ) {
         return;
     }
-    Progress::Info newProgress = progress;
+    Progress::Info newProgress(progress);
 
-    if( newProgress.kind == Progress::Error ) {
-        Progress::SyncProblem err;
-        err.folder        = folder;
-        err.current_file  = newProgress.current_file;
-        // its really
-        err.error_message = QString::fromLocal8Bit( (const char*)newProgress.file_size );
-        err.error_code    = newProgress.current_file_bytes;
-        err.timestamp     = QDateTime::currentDateTime();
+    Q_ASSERT( !Progress::isErrorKind(progress.kind));
 
-        _recentProblems.prepend( err );
-        if( _recentProblems.size() > _QueueSize ) {
-            _recentProblems.removeLast();
-        }
-        emit progressSyncProblem( folder, err );
-    } else {
-        if( newProgress.kind == Progress::StartSync ) {
-            _recentProblems.clear();
-            _timer.start();
-        }
-        if( newProgress.kind == Progress::EndSync ) {
-            newProgress.overall_current_bytes = newProgress.overall_transmission_size;
-            newProgress.current_file_no = newProgress.overall_file_count;
-            _currentAction.remove(newProgress.folder);
-            qint64 msecs = _timer.elapsed();
-
-            qDebug()<< "[PROGRESS] progressed " << newProgress.overall_transmission_size
-                    << " bytes in " << newProgress.overall_file_count << " files"
-                    << " in msec " << msecs;
-        }
-        if( newProgress.kind == Progress::EndDownload ||
-                newProgress.kind == Progress::EndUpload ||
-                newProgress.kind == Progress::EndDelete ||
-                newProgress.kind == Progress::EndRename ) {
-            _recentChanges.prepend(newProgress);
-            if( _recentChanges.size() > _QueueSize ) {
-                _recentChanges.removeLast();
-            }
-        }
-        // store the last real action to help clients that start during
-        // the Context-phase of an upload or download.
-        if( newProgress.kind != Progress::Context ) {
-            _currentAction[folder] = newProgress.kind;
-        }
-
-        emit progressInfo( folder, newProgress );
+    if( newProgress.kind == Progress::StartSync ) {
+        _recentProblems.clear();
+        _timer.start();
     }
+    if( newProgress.kind == Progress::EndSync ) {
+        newProgress.overall_current_bytes = newProgress.overall_transmission_size;
+        newProgress.current_file_no = newProgress.overall_file_count;
+        _currentAction.remove(newProgress.folder);
+        qint64 msecs = _timer.elapsed();
+
+        qDebug()<< "[PROGRESS] progressed " << newProgress.overall_transmission_size
+                << " bytes in " << newProgress.overall_file_count << " files"
+                << " in msec " << msecs;
+    }
+    if( newProgress.kind == Progress::EndDownload ||
+            newProgress.kind == Progress::EndUpload ||
+            newProgress.kind == Progress::EndDelete ||
+            newProgress.kind == Progress::EndRename ) {
+        _recentChanges.prepend(newProgress);
+        if( _recentChanges.size() > _QueueSize ) {
+            _recentChanges.removeLast();
+        }
+    }
+    // store the last real action to help clients that start during
+    // the Context-phase of an upload or download.
+    if( newProgress.kind != Progress::Context ) {
+        _currentAction[folder] = newProgress.kind;
+    }
+
+    emit progressInfo( folder, newProgress );
+
 }
 
 Progress::Kind ProgressDispatcher::currentFolderContext( const QString& folder )

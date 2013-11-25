@@ -225,6 +225,8 @@ bool CSyncThread::checkBlacklisting( SyncFileItem *item )
             qDebug() << "Item is on blacklist: " << entry._file << "retries:" << entry._retryCount;
             item->_blacklistedInDb = true;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            item->_errorString = tr("The item is not synced because it is on the blacklist.");
+            slotProgressProblem( Progress::SoftError, *item );
         }
     }
 
@@ -316,6 +318,8 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_CONFLICT:
     case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
+        //
+        slotProgressProblem(Progress::SoftError, item );
         dir = SyncFileItem::None;
         break;
     case CSYNC_INSTRUCTION_EVAL:
@@ -474,6 +478,8 @@ void CSyncThread::startSync()
         return;
     }
 
+    slotProgress(Progress::StartSync, SyncFileItem(), 0, 0);
+
     _progressInfo = Progress::Info();
 
     _hasFiles = false;
@@ -518,8 +524,8 @@ void CSyncThread::startSync()
                                               _journal, &_abortRequested));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
             this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
-    connect(_propagator.data(), SIGNAL(progress(Progress::Kind,QString,quint64,quint64)),
-            this, SLOT(slotProgress(Progress::Kind,QString,quint64,quint64)));
+    connect(_propagator.data(), SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)),
+            this, SLOT(slotProgress(Progress::Kind,SyncFileItem,quint64,quint64)));
     connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()));
 
     int downloadLimit = 0;
@@ -537,7 +543,6 @@ void CSyncThread::startSync()
     }
     _propagator->_uploadLimit = uploadLimit;
 
-    slotProgress(Progress::StartSync, QString(), 0, 0);
     _propagator->start(_syncedItems);
 }
 
@@ -573,18 +578,29 @@ void CSyncThread::slotFinished()
     csync_commit(_csync_ctx);
 
     qDebug() << "CSync run took " << _syncTime.elapsed() << " Milliseconds";
-    slotProgress(Progress::EndSync,QString(), 0 , 0);
+    slotProgress(Progress::EndSync,SyncFileItem(), 0 , 0);
     emit finished();
     _propagator.reset(0);
     _syncMutex.unlock();
     thread()->quit();
 }
 
-
-void CSyncThread::slotProgress(Progress::Kind kind, const QString &file, quint64 curr, quint64 total)
+void CSyncThread::slotProgressProblem(Progress::Kind kind, const SyncFileItem& item)
 {
-    Progress::Info pInfo = _progressInfo;
+    Progress::SyncProblem problem;
 
+    problem.kind = kind;
+    problem.current_file = item._file;
+    problem.error_message = item._errorString;
+    problem.error_code = item._httpErrorCode;
+    problem.timestamp =  QDateTime::currentDateTime();
+
+    // connected to something in folder.
+    emit transmissionProblem( problem );
+}
+
+void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, quint64 curr, quint64 total)
+{
     if( kind == Progress::StartSync ) {
         QMutexLocker lock(&_mutex);
         _currentFileNo = 0;
@@ -597,8 +613,10 @@ void CSyncThread::slotProgress(Progress::Kind kind, const QString &file, quint64
         _currentFileNo += 1;
     }
 
+    Progress::Info pInfo = _progressInfo;
+
     pInfo.kind                  = kind;
-    pInfo.current_file          = file;
+    pInfo.current_file          = item._file;
     pInfo.file_size             = total;
     pInfo.current_file_bytes    = curr;
     pInfo.current_file_no       = _currentFileNo;
