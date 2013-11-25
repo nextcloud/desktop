@@ -290,7 +290,7 @@ void ProtocolWidget::slotProgressProblem( const QString& folder, const Progress:
   columns << timeStr;
   columns << problem.current_file;
   columns << folder;
-  QString errMsg = tr("Problem: %1").arg(problem.error_message);
+  QString errMsg = problem.error_message;
 #if 0
   if( problem.error_code == 507 ) {
       errMsg = tr("No more storage space available on server.");
@@ -302,7 +302,11 @@ void ProtocolWidget::slotProgressProblem( const QString& folder, const Progress:
   item->setData(0, ErrorIndicatorRole, QVariant(true) );
   // Maybe we should not set the error icon for all problems but distinguish
   // by error_code. A quota problem is considered an error, others might not??
-  item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
+  if( problem.kind == Progress::SoftError ) {
+      item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
+  } else {
+      item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
+  }
   item->setToolTip(0, longTimeStr);
   _ui->_treeWidget->insertTopLevelItem(0, item);
   Q_UNUSED(item);
