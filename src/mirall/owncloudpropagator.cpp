@@ -540,7 +540,7 @@ public:
     void start();
 
 private:
-    QIODevice *_file;
+    QFile *_file;
     QScopedPointer<ne_decompress, ScopedPointerHelpers> _decompress;
     QString errorString;
     QByteArray _expectedEtagForResume;
@@ -557,8 +557,9 @@ private:
 
         if(buf) {
             written = that->_file->write(buf, len);
-            if( len != written ) {
+            if( len != written || that->_file->error() != QFile::NoError) {
                 qDebug() << "WRN: content_reader wrote wrong num of bytes:" << len << "," << written;
+                return NE_ERROR;
             }
             return NE_OK;
         }
