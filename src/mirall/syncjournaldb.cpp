@@ -189,7 +189,7 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table blacklist", createQuery);
     }
 
-    commit("checkConnect");
+    commitInternal("checkConnect");
 
     bool rc = updateDatabaseStructure();
     if( rc ) {
@@ -282,7 +282,7 @@ bool SyncJournalDb::updateDatabaseStructure()
         query.prepare("CREATE INDEX metadata_file_id ON metadata(fileid);");
         re = re && query.exec();
 
-        commit("update database structure");
+        commitInternal("update database structure");
     }
 
     return re;
@@ -735,9 +735,17 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
     if( !iQuery.exec() ) {
         qDebug() << "SQL exec blacklistitem insert/update failed: "<< iQuery.lastError().text();
     }
+
 }
 
-void SyncJournalDb::commit(const QString& context, bool startTrans )
+void SyncJournalDb::commit(const QString& context, bool startTrans)
+{
+    QMutexLocker lock(&_mutex);
+    commitInternal(context, startTrans);
+}
+
+
+void SyncJournalDb::commitInternal(const QString& context, bool startTrans )
 {
     qDebug() << "Transaction Start " << context;
     commitTransaction();

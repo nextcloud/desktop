@@ -36,7 +36,6 @@ public:
     bool deleteFileRecord( const QString& filename, bool recursively = false );
     int getFileRecordCount();
     bool exists();
-    QStringList tableColumns( const QString& table );
     void updateBlacklistEntry( const SyncJournalBlacklistRecord& item );
     void wipeBlacklistEntry(const QString& file);
 
@@ -72,8 +71,6 @@ public:
 
     void close();
 
-    void startTransaction();
-    void commitTransaction();
 
 signals:
 
@@ -83,6 +80,10 @@ private:
     qint64 getPHash(const QString& ) const;
     bool updateDatabaseStructure();
     bool sqlFail(const QString& log, const QSqlQuery &query );
+    void commitInternal(const QString &context, bool startTrans = true);
+    void startTransaction();
+    void commitTransaction();
+    QStringList tableColumns( const QString& table );
 
     bool checkConnect();
     QSqlDatabase _db;
