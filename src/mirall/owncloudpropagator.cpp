@@ -677,7 +677,7 @@ void PropagateDownloadFile::start()
 
     QFile tmpFile(_propagator->_localDir + tmpFileName);
     _file = &tmpFile;
-    if (!tmpFile.open(QIODevice::Append)) {
+    if (!tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
         done(SyncFileItem::NormalError, tmpFile.errorString());
         return;
     }
