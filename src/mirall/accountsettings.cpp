@@ -115,7 +115,16 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
 {
   bool state = indx.isValid();
 
-  ui->_buttonRemove->setEnabled( state );
+  bool haveFolders = ui->_folderList->model()->rowCount() > 0;
+
+  ui->_buttonRemove->setEnabled(state);
+  if( Theme::instance()->singleSyncFolder() ) {
+      // only one folder synced folder allowed.
+      ui->_buttonAdd->setVisible(!haveFolders);
+  } else {
+      ui->_buttonAdd->setVisible(true);
+      ui->_buttonAdd->setEnabled( state );
+  }
   ui->_buttonEnable->setEnabled( state );
   ui->_buttonInfo->setEnabled( state );
 
@@ -200,23 +209,11 @@ void AccountSettings::slotAddFolder( Folder *folder )
 
 void AccountSettings::slotButtonsSetEnabled()
 {
-    bool haveFolders = ui->_folderList->model()->rowCount() > 0;
-
-    ui->_buttonRemove->setEnabled(false);
-    if( Theme::instance()->singleSyncFolder() ) {
-        // only one folder synced folder allowed.
-        ui->_buttonAdd->setVisible(!haveFolders);
-    } else {
-        ui->_buttonAdd->setVisible(true);
-        ui->_buttonAdd->setEnabled(true);
-    }
-
     QModelIndex selected = ui->_folderList->currentIndex();
     bool isSelected = selected.isValid();
-
-    ui->_buttonEnable->setEnabled(isSelected);
-    ui->_buttonRemove->setEnabled(isSelected);
-    ui->_buttonInfo->setEnabled(isSelected);
+    if (isSelected) {
+        slotFolderActivated(selected);
+    }
 }
 
 void AccountSettings::setGeneralErrors( const QStringList& errors )
