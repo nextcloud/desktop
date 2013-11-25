@@ -266,8 +266,10 @@ CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
  */
 char *csync_normalize_etag(char *etag)
 {
+    int len = 0;
     if (!etag) return etag;
-    int len = strlen(etag);
+
+    len = strlen(etag);
     if (len > 5 && c_streq(etag + len - 5, "-gzip")) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Removing -gzip from etag: %s", etag);
         etag[len-5] = '\0';
