@@ -352,21 +352,10 @@ void PropagateUploadFile::start()
 
             /* If the source file changed during submission, lets try again */
             if( state == HBF_SOURCE_FILE_CHANGE ) {
-                if( attempts++ < 20 ) { /* FIXME: How often do we want to try? */
-                    qDebug("SOURCE file has changed during upload, retry #%d in two seconds!", attempts);
-                    sleep(2);
+                if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
+                    qDebug("SOURCE file has changed during upload, retry #%d in %d seconds!", attempts, 2*attempts);
+                    sleep(2*attempts);
                     continue;
-                }
-                // Still the file change error, but we tried a couple of times.
-                // Ignore this file for now.
-                // Lets remove the file from the server (at least if it is new) as it is different
-                // from our file here.
-                if( _item._instruction == CSYNC_INSTRUCTION_NEW ) {
-                    QScopedPointer<char, QScopedPointerPodDeleter> uri(
-                                ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-
-                    int rc = ne_delete(_propagator->_session, uri.data());
-                    qDebug() << "Remove the invalid file from server:" << rc;
                 }
 
                 const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
@@ -405,6 +394,41 @@ void PropagateUploadFile::start()
         // Remove from the progress database:
         _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
         _propagator->_journal->commit("upload file start");
+
+        if (hbf_validate_source_file(trans.data()) == HBF_SOURCE_FILE_CHANGE) {
+            /* Did the source file changed since the upload ?
+               This is different from the previous check because the previous check happens between
+               chunks while this one happens when the whole file has been uploaded.
+
+               The new etag is already stored in the database in the previous lines so in case of
+               crash, we won't have a conflict but we will properly do a new upload
+             */
+
+            if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
+                qDebug("SOURCE file has changed after upload, retry #%d in %d seconds!", attempts, 2*attempts);
+                sleep(2*attempts);
+                continue;
+            }
+
+            // Still the file change error, but we tried a couple of times.
+            // Ignore this file for now.
+            // Lets remove the file from the server (at least if it is new) as it is different
+            // from our file here.
+            if( _item._instruction == CSYNC_INSTRUCTION_NEW ) {
+                QScopedPointer<char, QScopedPointerPodDeleter> uri(
+                    ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+
+                int rc = ne_delete(_propagator->_session, uri.data());
+                qDebug() << "Remove the invalid file from server:" << rc;
+            }
+
+            const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
+            done( SyncFileItem::SoftError, errMsg );
+            return;
+        }
+
+
+
         emit progress(Progress::EndUpload, _item, 0, _item._size);
         done(SyncFileItem::Success);
         return;
