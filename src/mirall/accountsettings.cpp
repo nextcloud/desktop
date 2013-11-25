@@ -248,7 +248,11 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
             }  // we keep the previous icon for the SyncPrepare state.
         } else {
             // kepp the previous icon for the prepare phase.
-            item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
+            if( status == SyncResult::Problem) {
+                item->setData( theme->syncStateIcon( SyncResult::Success), FolderStatusDelegate::FolderStatusIconRole );
+            } else {
+                item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
+            }
         }
     } else {
         item->setData( theme->folderDisabledIcon( ), FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
