@@ -44,7 +44,9 @@ namespace Progress
         EndDelete,
         StartRename,
         EndRename,
-        Error
+        SoftError,
+        NormalError,
+        FatalError
     };
 
     struct Info {

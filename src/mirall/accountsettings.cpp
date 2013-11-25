@@ -672,7 +672,9 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     case Progress::Download:
     case Progress::Upload:
     case Progress::Inactive:
-    case Progress::Error:
+    case Progress::SoftError:
+    case Progress::NormalError:
+    case Progress::FatalError:
         break;
     }
 

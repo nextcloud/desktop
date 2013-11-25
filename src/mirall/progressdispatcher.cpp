@@ -124,6 +124,15 @@ QString Progress::asActionString( Kind kind )
     return re;
 }
 
+bool Progress::isErrorKind( Kind kind )
+{
+    bool re = false;
+    if( kind == SoftError || kind == NormalError || kind == FatalError ) {
+        re = true;
+    }
+    return re;
+}
+
 ProgressDispatcher* ProgressDispatcher::instance() {
     if (!_instance) {
         _instance = new ProgressDispatcher();
