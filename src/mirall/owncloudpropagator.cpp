@@ -83,9 +83,11 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     SyncJournalBlacklistRecord record(_item, retries);;
 
     switch( status ) {
+    case SyncFileItem::SoftError:
+        // do not blacklist in case of soft error.
+        break;
     case SyncFileItem::FatalError:
     case SyncFileItem::NormalError:
-    case SyncFileItem::SoftError:
         _propagator->_journal->updateBlacklistEntry( record );
         break;
     case SyncFileItem::Success:
