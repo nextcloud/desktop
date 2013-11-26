@@ -59,7 +59,7 @@ public slots:
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
     void slotShowSyncProtocol();
-    void slotSettings();
+    void slotShowSettings();
     void slotShutdown();
     void slotSyncStateChange( const QString& alias );
     void slotTrayClicked( QSystemTrayIcon::ActivationReason reason );

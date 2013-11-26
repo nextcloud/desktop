@@ -86,7 +86,12 @@ bool ownCloudGui::checkAccountExists(bool openSettings)
     // if account is set up, start the configuration wizard.
     if( AccountManager::instance()->account() ) {
         if( openSettings ) {
-            this->slotSettings();
+            if (_settingsDialog.isNull()) {
+                slotShowSettings();
+            } else {
+                _settingsDialog->close();
+            }
+
         }
         return true;
     } else {
@@ -353,7 +358,7 @@ void ownCloudGui::setupActions()
     _actionRecent->setEnabled( true );
 
     QObject::connect(_actionRecent, SIGNAL(triggered(bool)), SLOT(slotShowSyncProtocol()));
-    QObject::connect(_actionSettings, SIGNAL(triggered(bool)), SLOT(slotSettings()));
+    QObject::connect(_actionSettings, SIGNAL(triggered(bool)), SLOT(slotShowSettings()));
     _actionHelp = new QAction(tr("Help"), this);
     QObject::connect(_actionHelp, SIGNAL(triggered(bool)), SLOT(slotHelp()));
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
@@ -471,7 +476,7 @@ void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &messag
     msgBox->open();
 }
 
-void ownCloudGui::slotSettings()
+void ownCloudGui::slotShowSettings()
 {
     if (_settingsDialog.isNull()) {
         _settingsDialog = new SettingsDialog(this);
@@ -487,7 +492,7 @@ void ownCloudGui::slotSettings()
 // open sync protocol widget
 void ownCloudGui::slotShowSyncProtocol()
 {
-    slotSettings();  // FIXME: Show the protocol tab.
+    slotShowSettings();  // FIXME: Show the protocol tab.
     _settingsDialog->slotShowProtocol();
 }
 
