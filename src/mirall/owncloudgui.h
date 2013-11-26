@@ -58,7 +58,6 @@ public slots:
     void slotUpdateProgress(const QString &folder, const Progress::Info& progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
-    void slotShowSyncProtocol();
     void slotShowSettings();
     void slotShutdown();
     void slotSyncStateChange( const QString& alias );

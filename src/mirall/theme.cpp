@@ -60,7 +60,7 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
         resultStr = QCoreApplication::translate("theme", "Sync Success, problems with individual files.");
         break;
     case SyncResult::Error:
-        resultStr = QCoreApplication::translate("theme", "Sync Error - Click info button for details.");
+        resultStr = QCoreApplication::translate("theme", "Sync Error");
         break;
     case SyncResult::SetupError:
         resultStr = QCoreApplication::translate("theme", "Setup Error" );

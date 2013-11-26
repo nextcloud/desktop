@@ -488,13 +488,6 @@ void ownCloudGui::slotShowSettings()
     _settingsDialog->slotRefreshResultList();
 }
 
-// open sync protocol widget
-void ownCloudGui::slotShowSyncProtocol()
-{
-    slotShowSettings();  // FIXME: Show the protocol tab.
-    _settingsDialog->slotShowProtocol();
-}
-
 void ownCloudGui::slotShutdown()
 {
     // those do delete on close

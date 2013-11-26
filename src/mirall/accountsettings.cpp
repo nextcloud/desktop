@@ -72,7 +72,6 @@ AccountSettings::AccountSettings(QWidget *parent) :
 
     ui->_buttonRemove->setEnabled(false);
     ui->_buttonEnable->setEnabled(false);
-    ui->_buttonInfo->setEnabled(false);
     ui->_buttonAdd->setEnabled(true);
 
     QAction *resetFolderAction = new QAction(this);
@@ -87,7 +86,6 @@ AccountSettings::AccountSettings(QWidget *parent) :
 
     connect(ui->_buttonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveCurrentFolder()));
     connect(ui->_buttonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
-    connect(ui->_buttonInfo,   SIGNAL(clicked()), this, SLOT(slotInfoAboutCurrentFolder()));
     connect(ui->_buttonAdd,    SIGNAL(clicked()), this, SLOT(slotAddFolder()));
     connect(ui->modifyAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
     connect(ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));;
@@ -126,7 +124,6 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
       ui->_buttonAdd->setEnabled( state );
   }
   ui->_buttonEnable->setEnabled( state );
-  ui->_buttonInfo->setEnabled( state );
 
   if ( state ) {
     bool folderEnabled = _model->data( indx, FolderStatusDelegate::FolderSyncEnabled).toBool();
@@ -803,11 +800,6 @@ void AccountSettings::slotAccountStateChanged(int state)
         showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
         ui->_buttonAdd->setEnabled( false);
     }
-}
-
-void AccountSettings::slotInfoAboutCurrentFolder()
-{
-    emit(openProtocol());
 }
 
 AccountSettings::~AccountSettings()

@@ -86,7 +86,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              gui, SLOT(slotFolderOpenAction(QString)));
-    connect( _accountSettings, SIGNAL(openProtocol()), SLOT(slotShowProtocol()));
 
     connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
              _accountSettings, SLOT(slotSetProgress(QString, Progress::Info)) );
@@ -151,12 +150,6 @@ void SettingsDialog::slotSyncStateChange(const QString& alias)
     if( folder ) {
         _accountSettings->slotUpdateFolderState(folder);
     }
-}
-
-void SettingsDialog::slotShowProtocol()
-{
-    qDebug() << "Show protocol window!";
-    _ui->labelWidget->setCurrentRow(_protocolIdx);
 }
 
 void SettingsDialog::setGeneralErrors(const QStringList &errors)

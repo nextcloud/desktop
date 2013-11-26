@@ -78,7 +78,6 @@ protected slots:
     void slotEnableCurrentFolder();
     void slotSyncCurrentFolderNow();
     void slotRemoveCurrentFolder();
-    void slotInfoAboutCurrentFolder();
     void slotResetCurrentFolder();
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();

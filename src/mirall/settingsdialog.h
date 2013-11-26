@@ -46,7 +46,6 @@ public:
 
 public slots:
     void slotSyncStateChange(const QString& alias);
-    void slotShowProtocol();
     void slotRefreshResultList();
 
 protected:
