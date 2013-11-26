@@ -38,13 +38,12 @@ public:
     ~ProtocolWidget();
 
     void setupList();
-    // void setSyncResult( const SyncResult& result );
 
 signals:
 
 public slots:
     void slotProgressInfo( const QString& folder, const Progress::Info& progress );
-    void slotProgressProblem( const QString& folder, const Progress::SyncProblem& problem );
+    void slotProgressProblem(const QString& folder, const Progress::SyncProblem& problem );
     void slotOpenFile( QTreeWidgetItem* item, int );
 
 protected slots:
@@ -56,6 +55,9 @@ signals:
 private:
     void setSyncResultStatus(const SyncResult& result );
     void cleanErrors( const QString& folder );
+    QTreeWidgetItem* createProgressTreewidgetItem(const Progress::Info& progress );
+    QTreeWidgetItem* createProblemTreewidgetItem( const Progress::SyncProblem& problem);
+
     QString timeString(QDateTime dt, QLocale::FormatType format = QLocale::NarrowFormat) const;
 
     const int ErrorIndicatorRole;

@@ -44,7 +44,6 @@ signals:
     void finished(SyncFileItem::Status);
     void completed(const SyncFileItem &);
     void progress(Progress::Kind, const SyncFileItem& item, quint64 bytes, quint64 total);
-    void progressProblem( Progress::Kind, const SyncFileItem& );
 };
 
 /*
@@ -172,7 +171,6 @@ public:
 signals:
     void completed(const SyncFileItem &);
     void progress(Progress::Kind kind, const SyncFileItem&, quint64 bytes, quint64 total);
-    void progressProblem( Progress::Kind, const SyncFileItem& );
     void finished();
 
 };

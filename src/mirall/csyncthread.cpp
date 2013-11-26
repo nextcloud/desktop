@@ -226,7 +226,7 @@ bool CSyncThread::checkBlacklisting( SyncFileItem *item )
             item->_blacklistedInDb = true;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("The item is not synced because it is on the blacklist.");
-            slotProgressProblem( Progress::SoftError, *item );
+            slotProgress( Progress::SoftError, *item );
         }
     }
 
@@ -319,7 +319,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
         //
-        slotProgressProblem(Progress::SoftError, item );
+        slotProgress(Progress::SoftError, item, 0, 0);
         dir = SyncFileItem::None;
         break;
     case CSYNC_INSTRUCTION_EVAL:
@@ -593,7 +593,7 @@ void CSyncThread::slotFinished()
     thread()->quit();
 }
 
-void CSyncThread::slotProgressProblem(Progress::Kind kind, const SyncFileItem& item)
+void CSyncThread::progressProblem(Progress::Kind kind, const SyncFileItem& item)
 {
     Progress::SyncProblem problem;
 
@@ -609,6 +609,11 @@ void CSyncThread::slotProgressProblem(Progress::Kind kind, const SyncFileItem& i
 
 void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, quint64 curr, quint64 total)
 {
+    if( Progress::isErrorKind(kind) ) {
+        progressProblem(kind, item);
+        return;
+    }
+
     if( kind == Progress::StartSync ) {
         QMutexLocker lock(&_mutex);
         _currentFileNo = 0;

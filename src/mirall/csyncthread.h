@@ -81,11 +81,11 @@ signals:
 private slots:
     void transferCompleted(const SyncFileItem& item);
     void slotFinished();
-    void slotProgress(Progress::Kind kind, const SyncFileItem &item, quint64, quint64);
-    void slotProgressProblem(Progress::Kind kind, const SyncFileItem& item);
+    void slotProgress(Progress::Kind kind, const SyncFileItem &item, quint64 curr = 0, quint64 total = 0);
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
+    void progressProblem(Progress::Kind kind, const SyncFileItem& item);
 
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);

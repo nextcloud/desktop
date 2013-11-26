@@ -61,154 +61,34 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 
     QPushButton *copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     connect(copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
-
- }
-
-#if 0
-void ProtocolWidget::setSyncResultStatus(const SyncResult& result )
-{
-     if( result.errorStrings().count() ) {
-        _ui->_errorLabel->setVisible(true);
-        _ui->_errorLabel->setTextFormat(Qt::RichText);
-
-        QString errStr;
-        QStringList errors = result.errorStrings();
-        int cnt = errors.size();
-        bool appendDots = false;
-        if( cnt > 3 ) {
-            cnt = 3;
-            appendDots = true;
-        }
-
-        for( int i = 0; i < cnt; i++) {
-            errStr.append(QString("%1<br/>").arg(errors.at(i)));
-        }
-        if( appendDots ) {
-            errStr.append(QString("..."));
-        }
-        _ui->_errorLabel->setText(errStr);
-    } else {
-        _ui->_errorLabel->setText(QString::null);
-        _ui->_errorLabel->setVisible(false);
-    }
-
 }
 
-
-void ProtocolWidget::setSyncResult( const SyncResult& result )
-{
-    setSyncResultStatus(result);
-
-    const QString& folder = result.folder();
-    qDebug() << "Setting sync result for folder " << folder;
-
-    SyncFileItemVector::const_iterator i;
-    const SyncFileItemVector& items = result.syncFileItemVector();
-    QDateTime dt = QDateTime::currentDateTime();
-
-    for (i = items.begin(); i != items.end(); ++i) {
-         const SyncFileItem& item = *i;
-         QString errMsg;
-         QString tooltip;
-         // handle ignored files here.
-
-         if( item._status == SyncFileItem::FileIgnored
-             || item._status == SyncFileItem::Conflict
-             || item._status == SyncFileItem::SoftError ) {
-             QStringList columns;
-             QString timeStr = timeString(dt);
-             QString longTimeStr = timeString(dt, QLocale::LongFormat);
-
-             columns << timeStr;
-             columns << item._file;
-             columns << folder;
-             if( item._status == SyncFileItem::FileIgnored ) {
-                 if( item._blacklistedInDb ) {
-                     errMsg = tr("Blacklisted");
-                     tooltip = tr("The file is blacklisted because of previous error conditions.");
-                 }else if( item._type == SyncFileItem::SoftLink ) {
-                     errMsg = tr("Soft Link ignored");
-                     tooltip = tr("Softlinks break the semantics of synchronization.\nPlease do not "
-                                  "use them in synced directories");
-                 } else {
-                     QString obj = tr("file");
-                     if( item._type == SyncFileItem::Directory ) {
-                         obj = tr("directory");
-                     }
-                     tooltip = tr("The %1 was ignored because it is listed in the clients ignore list\n"
-                                  "or the %1 name contains characters that are not syncable\nin a cross platform "
-                                  "environment").arg(obj);
-                     errMsg = tr("Item ignored");
-                     if( item._errorString == QLatin1String("File listed on ignore list.") ) {
-                         errMsg = tr("%1 on ignore list").arg(obj);
-                         tooltip = tr("The %1 was skipped because it is listed on the clients\n"
-                                      "list of names to ignore").arg(obj);
-                     } else if( item._errorString == QLatin1String("File contains invalid characters.") ) {
-                         errMsg = tr("Invalid characters");
-                         tooltip = tr("The %1 name contains one or more invalid characters which break\n"
-                                      "syncing in a cross platform environment").arg(obj);
-                     }
-                 }
-             } else if( item._status == SyncFileItem::Conflict ) {
-                 errMsg = tr("Conflict file.");
-                 tooltip = tr("The file was changed on server and local repository and as a result it\n"
-                              "created a so called conflict. The local change is copied to the conflict\n"
-                              "file while the file from the server side is available under the original\n"
-                              "name");
-             } else if( item._status == SyncFileItem::SoftError ) {
-                 errMsg = item._errorString;
-             } else {
-                 Q_ASSERT(!"unhandled instruction.");
-             }
-             columns << errMsg;
-
-             QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
-             twitem->setData(0, ErrorIndicatorRole, QVariant(true) );
-             twitem->setToolTip(0, longTimeStr);
-             twitem->setToolTip(3, tooltip);
-             twitem->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
-
-             _ui->_treeWidget->insertTopLevelItem(0, twitem);
-
-         }
-    }
-}
-#endif
 void ProtocolWidget::setupList()
 {
-  // get the folders to set up the top level list.
-//  Folder::Map map = FolderMan::instance()->map();
-//  SyncResult lastResult;
-//  QDateTime dt;
-
-//  bool haveSyncResult = false;
-
-//  foreach( Folder *f, map.values() ) {
-//      if( f->syncResult().syncTime() > dt ) {
-//          dt = f->syncResult().syncTime();
-//          lastResult = f->syncResult();
-//          haveSyncResult = true;
-//      }
-
-//      if( haveSyncResult ) {
-//          setSyncResult(lastResult);
-//      }
-//  }
-
   QList<Progress::Info> progressList = ProgressDispatcher::instance()->recentChangedItems(0); // All.
+  QList<QTreeWidgetItem*> items;
+  QTreeWidgetItem *item;
 
-  QHash <QString, int> folderHash;
-
-  foreach( Progress::Info info, progressList ) {
-    slotProgressInfo( info.folder, info );
-    folderHash[info.folder] = 1;
-  }
+  _ui->_treeWidget->clear();
 
   QList<Progress::SyncProblem> problemList = ProgressDispatcher::instance()->recentProblems(0);
+  items.clear();
   foreach( Progress::SyncProblem prob, problemList ) {
-    slotProgressProblem(prob.folder, prob);
-    folderHash[prob.folder] = 1;
+      item = createProblemTreewidgetItem(prob);
+      if (item) {
+          items.append(item);
+      }
   }
+  _ui->_treeWidget->addTopLevelItems(items);
+
+  foreach( Progress::Info info, progressList ) {
+      item = createProgressTreewidgetItem(info);
+      if(item) {
+          items.append(item);
+      }
+  }
+  _ui->_treeWidget->addTopLevelItems(items);
+
 }
 
 ProtocolWidget::~ProtocolWidget()
@@ -284,34 +164,43 @@ QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) con
     return timeStr;
 }
 
-void ProtocolWidget::slotProgressProblem( const QString& folder, const Progress::SyncProblem& problem )
+QTreeWidgetItem *ProtocolWidget::createProblemTreewidgetItem( const Progress::SyncProblem& problem)
 {
-  QStringList columns;
-  QString timeStr = timeString(problem.timestamp);
-  QString longTimeStr = timeString(problem.timestamp, QLocale::LongFormat);
+    QStringList columns;
+    QString timeStr = timeString(problem.timestamp);
+    QString longTimeStr = timeString(problem.timestamp, QLocale::LongFormat);
 
-  columns << timeStr;
-  columns << problem.current_file;
-  columns << folder;
-  QString errMsg = problem.error_message;
-#if 0
-  if( problem.error_code == 507 ) {
-      errMsg = tr("No more storage space available on server.");
-  }
-#endif
-  columns << errMsg;
+    columns << timeStr;
+    columns << problem.current_file;
+    columns << problem.folder;
+    QString errMsg = problem.error_message;
+  #if 0
+    if( problem.error_code == 507 ) {
+        errMsg = tr("No more storage space available on server.");
+    }
+  #endif
+    columns << errMsg;
 
-  QTreeWidgetItem *item = new QTreeWidgetItem(columns);
-  item->setData(0, ErrorIndicatorRole, QVariant(true) );
-  // Maybe we should not set the error icon for all problems but distinguish
-  // by error_code. A quota problem is considered an error, others might not??
-  if( problem.kind == Progress::SoftError ) {
-      item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
-  } else {
-      item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
-  }
-  item->setToolTip(0, longTimeStr);
-  _ui->_treeWidget->insertTopLevelItem(0, item);
+    QTreeWidgetItem *item = new QTreeWidgetItem(columns);
+    item->setData(0, ErrorIndicatorRole, QVariant(true) );
+    // Maybe we should not set the error icon for all problems but distinguish
+    // by error_code. A quota problem is considered an error, others might not??
+    if( problem.kind == Progress::SoftError ) {
+        item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
+    } else {
+        item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
+    }
+    item->setToolTip(0, longTimeStr);
+    item->setToolTip(3, errMsg );
+
+    return item;
+}
+
+void ProtocolWidget::slotProgressProblem( const QString& folder, const Progress::SyncProblem& problem)
+{
+    Q_UNUSED(folder);
+    QTreeWidgetItem *item = createProblemTreewidgetItem(problem);
+    _ui->_treeWidget->insertTopLevelItem(0, item);
 }
 
 void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
@@ -326,6 +215,25 @@ void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
             Utility::showInFileManager(fullPath);
         }
     }
+}
+
+QTreeWidgetItem* ProtocolWidget::createProgressTreewidgetItem( const Progress::Info& progress )
+{
+    QStringList columns;
+    QString timeStr = timeString(progress.timestamp);
+    QString longTimeStr = timeString(progress.timestamp, QLocale::LongFormat);
+
+    columns << timeStr;
+    columns << progress.current_file;
+    columns << progress.folder;
+    columns << Progress::asResultString(progress.kind);
+    columns << Utility::octetsToString( progress.file_size );
+
+    QTreeWidgetItem *item = new QTreeWidgetItem(columns);
+    item->setToolTip(0, longTimeStr);
+
+    return item;
+
 }
 
 void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::Info& progress )
@@ -343,20 +251,10 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::In
         return;
     }
 
-    QStringList columns;
-    QString timeStr = timeString(progress.timestamp);
-    QString longTimeStr = timeString(progress.timestamp, QLocale::LongFormat);
-
-    columns << timeStr;
-    columns << progress.current_file;
-    columns << progress.folder;
-    columns << Progress::asResultString(progress.kind);
-    columns << Utility::octetsToString( progress.file_size );
-
-    QTreeWidgetItem *item = new QTreeWidgetItem(columns);
-    item->setToolTip(0, longTimeStr);
-    _ui->_treeWidget->insertTopLevelItem(0, item);
-    Q_UNUSED(item);
+    QTreeWidgetItem *item = createProgressTreewidgetItem(progress);
+    if(item) {
+        _ui->_treeWidget->insertTopLevelItem(0, item);
+    }
 }
 
 

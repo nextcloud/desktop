@@ -85,10 +85,14 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     switch( status ) {
     case SyncFileItem::SoftError:
         // do not blacklist in case of soft error.
+        emit progress( Progress::SoftError, _item, 0, 0 );
         break;
     case SyncFileItem::FatalError:
     case SyncFileItem::NormalError:
         _propagator->_journal->updateBlacklistEntry( record );
+        if( status == SyncFileItem::NormalError ) {
+            emit progress( Progress::NormalError, _item, 0, 0 );
+        }
         break;
     case SyncFileItem::Success:
         if( _item._blacklistedInDb ) {
@@ -378,19 +382,16 @@ void PropagateUploadFile::start()
                 const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
                 done( SyncFileItem::SoftError, errMsg );
                 _item._errorString = errMsg;
-                emit progressProblem( Progress::SoftError, _item );
                 return;
             } else if( state == HBF_USER_ABORTED ) {
                 const QString errMsg = tr("Sync was aborted by user.");
-                done( SyncFileItem::SoftError, errMsg);
                 _item._errorString = errMsg;
-                emit progressProblem( Progress::SoftError, _item );
+                done( SyncFileItem::SoftError, errMsg );
             } else {
                 // Other HBF error conditions.
                 // FIXME: find out the error class.
                 _item._httpErrorCode = hbf_fail_http_code(trans.data());
                 done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
-                emit progressProblem(Progress::NormalError, _item);
             }
             return;
         }

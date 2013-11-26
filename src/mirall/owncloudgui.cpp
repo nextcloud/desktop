@@ -314,8 +314,9 @@ void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
 void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QString &msg)
 {
     MirallConfigFile cfg;
-    if (cfg.optionalDesktopNotifications())
+    if (cfg.optionalDesktopNotifications()) {
         slotShowTrayMessage(title, msg);
+    }
 }
 
 
