@@ -64,6 +64,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 
  }
 
+#if 0
 void ProtocolWidget::setSyncResultStatus(const SyncResult& result )
 {
      if( result.errorStrings().count() ) {
@@ -92,6 +93,7 @@ void ProtocolWidget::setSyncResultStatus(const SyncResult& result )
     }
 
 }
+
 
 void ProtocolWidget::setSyncResult( const SyncResult& result )
 {
@@ -171,26 +173,27 @@ void ProtocolWidget::setSyncResult( const SyncResult& result )
          }
     }
 }
-
+#endif
 void ProtocolWidget::setupList()
 {
   // get the folders to set up the top level list.
-  Folder::Map map = FolderMan::instance()->map();
-  SyncResult lastResult;
-  QDateTime dt;
-  bool haveSyncResult = false;
+//  Folder::Map map = FolderMan::instance()->map();
+//  SyncResult lastResult;
+//  QDateTime dt;
 
-  foreach( Folder *f, map.values() ) {
-      if( f->syncResult().syncTime() > dt ) {
-          dt = f->syncResult().syncTime();
-          lastResult = f->syncResult();
-          haveSyncResult = true;
-      }
+//  bool haveSyncResult = false;
 
-      if( haveSyncResult ) {
-          setSyncResult(lastResult);
-      }
-  }
+//  foreach( Folder *f, map.values() ) {
+//      if( f->syncResult().syncTime() > dt ) {
+//          dt = f->syncResult().syncTime();
+//          lastResult = f->syncResult();
+//          haveSyncResult = true;
+//      }
+
+//      if( haveSyncResult ) {
+//          setSyncResult(lastResult);
+//      }
+//  }
 
   QList<Progress::Info> progressList = ProgressDispatcher::instance()->recentChangedItems(0); // All.
 
@@ -309,7 +312,6 @@ void ProtocolWidget::slotProgressProblem( const QString& folder, const Progress:
   }
   item->setToolTip(0, longTimeStr);
   _ui->_treeWidget->insertTopLevelItem(0, item);
-  Q_UNUSED(item);
 }
 
 void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )

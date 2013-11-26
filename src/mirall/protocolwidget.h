@@ -38,7 +38,7 @@ public:
     ~ProtocolWidget();
 
     void setupList();
-    void setSyncResult( const SyncResult& result );
+    // void setSyncResult( const SyncResult& result );
 
 signals:
 
