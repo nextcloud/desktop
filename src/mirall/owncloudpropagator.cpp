@@ -226,6 +226,17 @@ void PropagateRemoteMkdir::start()
     done(SyncFileItem::Success);
 }
 
+static QByteArray parseEtag(const char *header) {
+    if (!header)
+        return QByteArray();
+    QByteArray arr = header;
+    arr.replace("-gzip", ""); // https://github.com/owncloud/mirall/issues/1195
+    if(arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
+        arr = arr.mid(1, arr.length() - 2);
+    }
+    return arr;
+}
+
 class PropagateUploadFile: public PropagateItemJob {
 public:
     explicit PropagateUploadFile(OwncloudPropagator* propagator,const SyncFileItem& item)
@@ -381,11 +392,7 @@ void PropagateUploadFile::start()
         ne_set_notifier(_propagator->_session, 0, 0);
 
         if( trans->modtime_accepted ) {
-            _item._etag =  QByteArray(hbf_transfer_etag( trans.data() ));
-            if (_item._etag.endsWith("-gzip")) {
-                // https://github.com/owncloud/mirall/issues/1195
-                _item._etag.chop(5);
-            }
+            _item._etag = parseEtag(hbf_transfer_etag( trans.data() ));
         } else {
             updateMTimeAndETag(uri.data(), _item._modtime);
         }
@@ -436,20 +443,6 @@ void PropagateUploadFile::start()
     } while( true );
 }
 
-static QByteArray parseEtag(ne_request *req) {
-    const char *header = ne_get_response_header(req, "etag");
-    QByteArray arr;
-    if(header && header [0] == '"' && header[ strlen(header)-1] == '"') {
-        arr = QByteArray(header + 1, strlen(header)-2);
-    } else {
-        arr = header;
-    }
-    if (arr.endsWith("-gzip")) {
-        // https://github.com/owncloud/mirall/issues/1195
-        arr.chop(5);
-    }
-    return arr;
-}
 
 static QString parseFileId(ne_request *req) {
     QString fileId;
@@ -492,7 +485,7 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
         qDebug() << "Could not issue HEAD request for ETag." << ne_get_error(_propagator->_session);
         _item._errorString = ne_get_error( _propagator->_session );
     } else {
-        _item._etag = parseEtag(req.data());
+        _item._etag = parseEtag(ne_get_response_header(req.data(), "etag"));
         QString fid = parseFileId(req.data());
         if( _item._fileId.isEmpty() ) {
             _item._fileId = fid;
@@ -600,7 +593,7 @@ private:
             return;
         }
 
-        QByteArray etag = parseEtag(req);
+        QByteArray etag = parseEtag(ne_get_response_header(req, "etag"));;
         if (etag.isEmpty()) {
             qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
             that->errorString = QLatin1String("No E-Tag received from server, check Proxy/Gateway");
@@ -754,7 +747,7 @@ void PropagateDownloadFile::start()
             }
             return;
         }
-        _item._etag = parseEtag(req.data());
+        _item._etag = parseEtag(ne_get_response_header(req.data(), "etag"));
         break;
     } while (1);
 
