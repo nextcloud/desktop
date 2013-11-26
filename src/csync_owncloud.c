@@ -954,16 +954,7 @@ static const char* owncloud_get_etag( const char *path )
 
     /* In case the result is surrounded by "" cut them away. */
     if( header ) {
-        if( header [0] == '"' && header[ strlen(header)-1] == '"') {
-            int len = strlen( header )-2;
-            buf = c_malloc( len+1 );
-            strncpy( buf, header+1, len );
-            buf[len] = '\0';
-            cbuf = buf;
-            /* do not free header here, as it belongs to the request */
-        } else {
-            cbuf = c_strdup(header);
-        }
+        cbuf = csync_normalize_etag(header);
     }
 
     /* fix server problem: If we end up with an empty string, set something strange... */
@@ -977,7 +968,7 @@ static const char* owncloud_get_etag( const char *path )
     if( req ) ne_request_destroy(req);
     SAFE_FREE(uri);
 
-    csync_normalize_etag(cbuf);
+
     return cbuf;
 }
 

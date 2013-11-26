@@ -45,6 +45,7 @@ add_cmocka_test(check_csync_exclude csync_tests/check_csync_exclude.c ${TEST_TAR
 add_cmocka_test(check_csync_statedb_load csync_tests/check_csync_statedb_load.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_time csync_tests/check_csync_time.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_util csync_tests/check_csync_util.c ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_misc csync_tests/check_csync_misc.c ${TEST_TARGET_LIBRARIES})
 
 # csync tests which require init
 add_cmocka_test(check_csync_init csync_tests/check_csync_init.c ${TEST_TARGET_LIBRARIES})
