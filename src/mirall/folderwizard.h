@@ -28,10 +28,15 @@ namespace Mirall {
 
 class ownCloudInfo;
 
+class FormatWarningsWizardPage : public QWizardPage {
+protected:
+    QString formatWarnings(const QStringList &warnings) const;
+};
+
 /**
  * page to ask for the local source folder
  */
-class FolderWizardSourcePage : public QWizardPage
+class FolderWizardSourcePage : public FormatWarningsWizardPage
 {
     Q_OBJECT
 public:
@@ -57,7 +62,7 @@ private:
  * page to ask for the target folder
  */
 
-class FolderWizardTargetPage : public QWizardPage
+class FolderWizardTargetPage : public FormatWarningsWizardPage
 {
     Q_OBJECT
 public:

@@ -36,8 +36,24 @@
 namespace Mirall
 {
 
+QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) const
+{
+    QString ret;
+    if (warnings.count() == 1) {
+        ret = tr("<b>Warning:</b> ") + warnings.first();
+    } else if (warnings.count() > 1) {
+        ret = tr("<b>Warning:</b> ") + "<ul>";
+        Q_FOREACH(QString warning, warnings) {
+            ret += QString::fromLatin1("<li>%1</li>").arg(warning);
+        }
+        ret += "</ul>";
+    }
+
+    return ret;
+}
+
 FolderWizardSourcePage::FolderWizardSourcePage()
-    : QWizardPage()
+    : FormatWarningsWizardPage()
 {
     _ui.setupUi(this);
     registerField(QLatin1String("sourceFolder*"), _ui.localFolderLineEdit);
@@ -45,7 +61,7 @@ FolderWizardSourcePage::FolderWizardSourcePage()
     _ui.localFolderLineEdit->setText( QDir::toNativeSeparators( defaultPath ) );
     registerField(QLatin1String("alias*"), _ui.aliasLineEdit);
     _ui.aliasLineEdit->setText( Theme::instance()->appNameGUI() );
-
+    _ui.warnLabel->setTextFormat(Qt::RichText);
     _ui.warnLabel->hide();
 }
 
@@ -69,16 +85,16 @@ bool FolderWizardSourcePage::isComplete() const
   QFileInfo selFile( QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()) );
   QString   userInput = selFile.canonicalFilePath();
 
-  QString warnString;
+  QStringList warnStrings;
 
   bool isOk = selFile.isDir();
   if( !isOk ) {
-    warnString = tr("No local folder selected!");
+    warnStrings.append(tr("No valid local folder selected!"));
   }
 
   if (isOk && !selFile.isWritable()) {
       isOk = false;
-      warnString += tr("You have no permission to write to the selected folder!");
+      warnStrings.append(tr("You have no permission to write to the selected folder!"));
   }
 
   // check if the local directory isn't used yet in another ownCloud sync
@@ -99,21 +115,40 @@ bool FolderWizardSourcePage::isComplete() const
       if( ! folderDir.endsWith(QLatin1Char('/')) ) folderDir.append(QLatin1Char('/'));
 
       qDebug() << "Checking local path: " << folderDir << " <-> " << userInput;
-      if( QFileInfo( f->path() ) == userInput ) {
+      if( QDir::cleanPath(f->path())  == QDir::cleanPath(userInput)  &&
+              QDir::cleanPath(QDir(f->path()).canonicalPath()) == QDir(userInput).canonicalPath() ) {
         isOk = false;
-        warnString.append( tr("The local path %1 is already an upload folder.<br/>Please pick another one!")
+        warnStrings.append( tr("The local path %1 is already an upload folder. Please pick another one!")
                            .arg(QDir::toNativeSeparators(userInput)) );
       }
-      if( isOk && folderDir.startsWith( userInput )) {
+      if( isOk && QDir::cleanPath(folderDir).startsWith(QDir::cleanPath(userInput)+'/') ) {
         qDebug() << "A already configured folder is child of the current selected";
-        warnString.append( tr("An already configured folder is contained in the current entry."));
+        warnStrings.append( tr("An already configured folder is contained in the current entry."));
         isOk = false;
       }
-      if( isOk && userInput.startsWith( folderDir ) ) {
+
+      QString absCleanUserFolder = QDir::cleanPath(QDir(userInput).canonicalPath())+'/';
+      if( isOk && QDir::cleanPath(folderDir).startsWith(absCleanUserFolder) ) {
+          qDebug() << "A already configured folder is child of the current selected";
+          warnStrings.append( tr("The selected folder is a symbolic link. An already configured"
+                                "folder is contained in the folder this link is pointing to."));
+          isOk = false;
+      }
+
+      if( isOk && QDir::cleanPath(QString(userInput+'/')).startsWith( QDir::cleanPath(folderDir)) ) {
         qDebug() << "An already configured folder is parent of the current selected";
-        warnString.append( tr("An already configured folder contains the currently entered directory."));
+        warnStrings.append( tr("An already configured folder contains the currently entered folder."));
         isOk = false;
       }
+      if( isOk && absCleanUserFolder.startsWith( QDir::cleanPath(folderDir)) ) {
+          qDebug() << "The selected folder is a symbolic link. An already configured folder is\n"
+                      "the parent of the current selected contains the folder this link is pointing to.";
+          warnStrings.append( tr("The selected folder is a symbolic link. An already configured folder "
+                                "is the parent of the current selected contains the folder this link is "
+                                "pointing to."));
+          isOk = false;
+      }
+
       i++;
     }
   }
@@ -121,7 +156,7 @@ bool FolderWizardSourcePage::isComplete() const
   // check if the alias is unique.
   QString alias = _ui.aliasLineEdit->text();
   if( alias.isEmpty() ) {
-    warnString.append( tr("The alias can not be empty. Please provide a descriptive alias word.") );
+    warnStrings.append( tr("The alias can not be empty. Please provide a descriptive alias word.") );
     isOk = false;
   }
 
@@ -132,7 +167,7 @@ bool FolderWizardSourcePage::isComplete() const
     qDebug() << "Checking local alias: " << f->alias();
     if( f ) {
       if( f->alias() == alias ) {
-        warnString.append( tr("<br/>The alias <i>%1</i> is already in use. Please pick another alias.").arg(alias) );
+        warnStrings.append( tr("The alias <i>%1</i> is already in use. Please pick another alias.").arg(alias) );
         isOk = false;
         goon = false;
       }
@@ -140,12 +175,14 @@ bool FolderWizardSourcePage::isComplete() const
     i++;
   }
 
+  _ui.warnLabel->setWordWrap(true);
   if( isOk ) {
     _ui.warnLabel->hide();
     _ui.warnLabel->setText( QString::null );
   } else {
     _ui.warnLabel->show();
-    _ui.warnLabel->setText( warnString );
+    QString warnings = formatWarnings(warnStrings);
+    _ui.warnLabel->setText( warnings );
   }
   return isOk;
 }
@@ -168,7 +205,8 @@ void FolderWizardSourcePage::on_localFolderLineEdit_textChanged()
 
 // =================================================================================
 FolderWizardTargetPage::FolderWizardTargetPage()
-: _warnWasVisible(false)
+    : FormatWarningsWizardPage()
+    ,_warnWasVisible(false)
 {
     _ui.setupUi(this);
     _ui.warnFrame->hide();
@@ -223,7 +261,7 @@ void FolderWizardTargetPage::slotCreateRemoteFolderFinished(QNetworkReply::Netwo
 void FolderWizardTargetPage::slotHandleNetworkError(QNetworkReply *reply)
 {
     qDebug() << "** webdav mkdir request failed:" << reply->error();
-    showWarn(tr("Failed to create the folder on %1.<br/>Please check manually.")
+    showWarn(tr("Failed to create the folder on %1. Please check manually.")
              .arg(Theme::instance()->appNameGUI()));
 }
 
@@ -311,7 +349,11 @@ bool FolderWizardTargetPage::isComplete() const
     if (!_ui.folderTreeWidget->currentItem())
         return false;
 
+    QStringList warnStrings;
     QString dir = _ui.folderTreeWidget->currentItem()->data(0, Qt::UserRole).toString();
+    if (!dir.startsWith(QLatin1Char('/'))) {
+        dir.prepend(QLatin1Char('/'));
+    }
     wizard()->setProperty("targetPath", dir);
 
     Folder::Map map = _folderMap;
@@ -319,24 +361,24 @@ bool FolderWizardTargetPage::isComplete() const
     for(i = map.constBegin();i != map.constEnd(); i++ ) {
         Folder *f = static_cast<Folder*>(i.value());
         QString curDir = f->remotePath();
-        if (dir == curDir) {
-            showWarn( tr("This directory is already being synced.") );
-            return false;
+        if (!curDir.startsWith(QLatin1Char('/'))) {
+            curDir.prepend(QLatin1Char('/'));
+        }
+        if (QDir::cleanPath(dir) == QDir::cleanPath(curDir)) {
+            warnStrings.append(tr("This folder is already being synced."));
         } else if (dir.startsWith(curDir + QLatin1Char('/'))) {
-            if (dir.isEmpty()) dir = QLatin1Char('/');
-            if (curDir.isEmpty()) curDir = QLatin1Char('/');
-            showWarn( tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(curDir).arg(dir) );
-            return false;
+            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(curDir).arg(dir));
+        }
+
+        if (curDir == QLatin1String("/")) {
+            warnStrings.append(tr("You are already syncing all your files. Syncing another folder is <b>not</b> supported. "
+                                  "If you want to sync multiple folders, please remove the currently configured "
+                                  "root folder sync."));
         }
     }
 
-    if( dir == QLatin1String("/") ) {
-        showWarn( tr("If you sync the root folder, you can <b>not</b> configure another sync directory."));
-        return true;
-    } else {
-        showWarn();
-        return true;
-    }
+    showWarn(formatWarnings(warnStrings));
+    return warnStrings.isEmpty();
 }
 
 void FolderWizardTargetPage::cleanupPage()
