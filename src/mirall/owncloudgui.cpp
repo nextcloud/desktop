@@ -162,8 +162,6 @@ void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
         _tray->show();
     } else {
         int cnt = folderMan->map().size();
-        slotShowOptionalTrayMessage(tr("%1 Sync Started").arg(Theme::instance()->appNameGUI()),
-                                    tr("Sync started for %n configured sync folder(s).","", cnt));
     }
 
     _startupFails = fails; // store that for the settings dialog once it appears.
