@@ -89,10 +89,23 @@ void OwncloudSetupPage::setupCustomization()
 }
 
 // slot hit from textChanged of the url entry field.
-void OwncloudSetupPage::slotUrlChanged(const QString& /*ocUrl*/)
+void OwncloudSetupPage::slotUrlChanged(const QString& url)
 {
+
+    QString newUrl = url;
+    if (url.endsWith("index.php")) {
+        newUrl.chop(9);
+    }
+    if (url.endsWith("remote.php/webdav")) {
+        newUrl.chop(17);
+    }
+    if (url.endsWith("remote.php/webdav/")) {
+        newUrl.chop(18);
+    }
+    if (newUrl != url) {
+        _ui.leUrl->setText(newUrl);
+    }
 #if 0
-    QString url = ocUrl;
     bool visible = false;
 
     if (url.startsWith(QLatin1String("https://"))) {
