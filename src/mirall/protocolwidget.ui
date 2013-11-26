@@ -7,78 +7,64 @@
     <x>0</x>
     <y>0</y>
     <width>612</width>
-    <height>543</height>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Detailed Sync Status</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTreeWidget" name="_treeWidget">
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <property name="rootIsDecorated">
-        <bool>true</bool>
-       </property>
-       <property name="uniformRowHeights">
-        <bool>true</bool>
-       </property>
-       <property name="columnCount">
-        <number>4</number>
-       </property>
-       <column>
-        <property name="text">
-         <string notr="true">1</string>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Detailed Sync Status</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QTreeWidget" name="_treeWidget">
+        <property name="alternatingRowColors">
+         <bool>true</bool>
         </property>
-       </column>
-       <column>
-        <property name="text">
-         <string notr="true">2</string>
+        <property name="rootIsDecorated">
+         <bool>true</bool>
         </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>3</string>
+        <property name="uniformRowHeights">
+         <bool>true</bool>
         </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>4</string>
+        <property name="columnCount">
+         <number>4</number>
         </property>
-       </column>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="_errorLabel">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDialogButtonBox" name="_dialogButtonBox">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::NoButton</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
+        <column>
+         <property name="text">
+          <string notr="true">1</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">2</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>3</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>4</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QDialogButtonBox" name="_dialogButtonBox">
+        <property name="standardButtons">
+         <set>QDialogButtonBox::NoButton</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

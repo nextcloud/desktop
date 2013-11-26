@@ -35,8 +35,6 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 {
     _ui->setupUi(this);
 
-    _ui->_errorLabel->setVisible(false);
-
     connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString,Progress::Info)),
             this, SLOT(slotProgressInfo(QString,Progress::Info)));
     connect(ProgressDispatcher::instance(), SIGNAL(progressSyncProblem(const QString&,const Progress::SyncProblem&)),
