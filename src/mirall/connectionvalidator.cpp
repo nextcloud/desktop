@@ -114,7 +114,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
 // status.php could not be loaded.
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
-    _account->setState(false);
+    _account->setState(Account::Disconnected);
 
     // ### TODO
     _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
