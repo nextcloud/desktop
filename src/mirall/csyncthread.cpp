@@ -285,6 +285,8 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_CONFLICT:
+    case CSYNC_INSTRUCTION_RENAME:
+    case CSYNC_INSTRUCTION_REMOVE:
         _progressInfo.overall_file_count++;
         _progressInfo.overall_transmission_size += file->size;
         //fall trough
@@ -314,7 +316,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
         break;
     case CSYNC_INSTRUCTION_REMOVE:
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
-        break;
+                break;
     case CSYNC_INSTRUCTION_CONFLICT:
     case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
@@ -617,6 +619,7 @@ void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, qu
     if( kind == Progress::StartSync ) {
         QMutexLocker lock(&_mutex);
         _currentFileNo = 0;
+        _lastOverallBytes = 0;
     }
     if( kind == Progress::StartDelete ||
             kind == Progress::StartDownload ||
@@ -626,16 +629,23 @@ void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, qu
         _currentFileNo += 1;
     }
 
-    Progress::Info pInfo = _progressInfo;
+    if( kind == Progress::EndUpload ||
+            kind == Progress::EndDownload ||
+            kind == Progress::EndRename ||
+            kind == Progress::EndDelete ) {
+        QMutexLocker lock(&_mutex);
+        _lastOverallBytes += total;
+        curr = 0;
+    }
 
+    Progress::Info pInfo(_progressInfo);
     pInfo.kind                  = kind;
     pInfo.current_file          = item._file;
     pInfo.file_size             = total;
     pInfo.current_file_bytes    = curr;
     pInfo.current_file_no       = _currentFileNo;
-    pInfo.overall_current_bytes += curr;
-    pInfo.timestamp = QDateTime::currentDateTime();
-
+    pInfo.timestamp             = QDateTime::currentDateTime();
+    pInfo.overall_current_bytes = _lastOverallBytes + curr;
     // Connect to something in folder!
     emit transmissionProgress( pInfo );
 }

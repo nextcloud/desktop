@@ -602,7 +602,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
         qDebug() << "================================> INVALID Progress for folder " << folder;
         return;
     }
-    if( (progress.kind == Progress::StartSync || progress.kind == Progress::EndSync)
+    if( (progress.kind == Progress::StartSync)
             && progress.overall_file_count == 0 ) {
         // do not show progress if nothing is transmitted.
         return;

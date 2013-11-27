@@ -245,7 +245,8 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::In
     }
 
     // Ingore other events than finishing an individual up- or download.
-    if( !(progress.kind == Progress::EndDownload || progress.kind == Progress::EndUpload || progress.kind == Progress::EndDelete)) {
+    if( !(progress.kind == Progress::EndDownload || progress.kind == Progress::EndUpload
+          || progress.kind == Progress::EndDelete || progress.kind == Progress::EndRename)) {
         return;
     }
 

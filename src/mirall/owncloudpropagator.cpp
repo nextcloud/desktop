@@ -59,7 +59,7 @@ struct ScopedPointerHelpers {
 
 #define DECLARE_JOB(NAME) \
 class NAME : public PropagateItemJob { \
-  /*  Q_OBJECT */ \
+  /* Q_OBJECT */ \
 public: \
     NAME(OwncloudPropagator* propagator,const SyncFileItem& item) \
     : PropagateItemJob(propagator, item) {} \
@@ -185,7 +185,7 @@ void PropagateLocalRemove::start()
     _propagator->_journal->deleteFileRecord(_item._originalFile);
     _propagator->_journal->commit("Local remove");
     done(SyncFileItem::Success);
-    emit progress(Progress::EndDelete, _item, 0, _item._size);
+    emit progress(Progress::EndDelete, _item, _item._size, _item._size);
 }
 
 DECLARE_JOB(PropagateLocalMkdir)
@@ -216,7 +216,7 @@ void PropagateRemoteRemove::start()
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
     _propagator->_journal->commit("Remote Remove");
     done(SyncFileItem::Success);
-    emit progress(Progress::EndDelete, _item, 0, _item._size);
+    emit progress(Progress::EndDelete, _item, _item._size, _item._size);
 }
 
 DECLARE_JOB(PropagateRemoteMkdir)
@@ -443,7 +443,7 @@ void PropagateUploadFile::start()
 
 
 
-        emit progress(Progress::EndUpload, _item, 0, _item._size);
+        emit progress(Progress::EndUpload, _item, _item._size, _item._size);
         done(SyncFileItem::Success);
         return;
 
@@ -825,7 +825,7 @@ void PropagateDownloadFile::start()
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
     _propagator->_journal->commit("download file start2");
-    emit progress(Progress::EndDownload, _item, 0, _item._size);
+    emit progress(Progress::EndDownload, _item, _item._size, _item._size);
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
 
@@ -851,7 +851,7 @@ void PropagateLocalRename::start()
     _propagator->_journal->setFileRecord(record);
     _propagator->_journal->commit("localRename");
 
-    emit progress(Progress::EndRename, _item, 0, _item._size);
+    emit progress(Progress::EndRename, _item, _item._size, _item._size);
 
     done(SyncFileItem::Success);
 }
@@ -860,9 +860,6 @@ DECLARE_JOB(PropagateRemoteRename)
 
 void PropagateRemoteRename::start()
 {
-
-    emit progress(Progress::StartRename, _item, 0, _item._size);
-
     if (_item._file == _item._renameTarget) {
         if (!_item._isDirectory) {
             // The parents has been renamed already so there is nothing more to do.
@@ -894,7 +891,7 @@ void PropagateRemoteRename::start()
         }
 
         updateMTimeAndETag(uri2.data(), _item._modtime);
-        emit progress(Progress::EndRename, _item, 0, _item._size);
+        emit progress(Progress::EndRename, _item, _item._size, _item._size);
 
     }
 
@@ -905,8 +902,6 @@ void PropagateRemoteRename::start()
     _propagator->_journal->setFileRecord(record);
     _propagator->_journal->commit("Remote Rename");
     done(SyncFileItem::Success);
-    emit progress(Progress::EndRename, _item, 0, _item._size);
-
 }
 
 bool PropagateItemJob::updateErrorFromSession(int neon_code, ne_request* req, int ignoreHttpCode)

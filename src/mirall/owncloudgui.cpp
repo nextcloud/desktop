@@ -160,8 +160,6 @@ void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
         folderMan->setSyncEnabled(true);
         _tray->setIcon( Theme::instance()->syncStateIcon( SyncResult::NotYetStarted, true ) );
         _tray->show();
-    } else {
-        int cnt = folderMan->map().size();
     }
 
     _startupFails = fails; // store that for the settings dialog once it appears.
