@@ -364,7 +364,9 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
 # currently it needs to be done because the code right above needs to be executed no matter
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    install_qt_executable(${OWNCLOUD_OSX_BUNDLE} "qsqlite")
+    install_qt4_executable(${OWNCLOUD_OSX_BUNDLE})
+    install_qt4_plugin(qsqlite ${OWNCLOUD_OSX_BUNDLE} 0 "")
+    install_qt4_plugin(qtaccessiblewidgets ${OWNCLOUD_OSX_BUNDLE} 0 "")
 endif()
 
 find_program(KRAZY2_EXECUTABLE krazy2)
