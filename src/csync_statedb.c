@@ -394,6 +394,9 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(sqlite3 *db,
       if(column_count > 9 && sqlite3_column_text(_by_hash_stmt, 9)) {
         st->etag = csync_normalize_etag( (char*) sqlite3_column_text(_by_hash_stmt, 9) );
       }
+      if(column_count > 10 && sqlite3_column_text(_by_hash_stmt,10)) {
+          csync_vio_set_file_id(st->file_id, (char*) sqlite3_column_text(_by_hash_stmt, 10));
+      }
     }
   } else {
     /* SQLITE_DONE says there is no further row. That's not an error. */
@@ -557,7 +560,7 @@ c_strlist_t *csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     c_strlist_t *list = NULL;
     char *stmt = NULL;
 
-    stmt = sqlite3_mprintf("SELECT phash, path, inode, uid, gid, mode, modtime, type, md5 "
+    stmt = sqlite3_mprintf("SELECT phash, path, inode, uid, gid, mode, modtime, type, md5, fileid "
                            "FROM metadata WHERE path LIKE('%q/%%')", path);
     if (stmt == NULL) {
       return NULL;
