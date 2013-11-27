@@ -85,7 +85,8 @@ Application::Application(int &argc, char **argv) :
     _startupNetworkError(false),
     _showLogWindow(false),
     _logExpire(0),
-    _logFlush(false)
+    _logFlush(false),
+    _userTriggeredConnect(false)
 {
     setApplicationName( _theme->appNameGUI() );
     setWindowIcon( _theme->applicationIcon() );
@@ -154,6 +155,7 @@ void Application::slotLogin()
     Account *a = AccountManager::instance()->account();
     if (a) {
         FolderMan::instance()->setupFolders();
+        _userTriggeredConnect = true;
         slotCheckConnection();
     }
 }
@@ -246,12 +248,25 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         folderMan->setSyncEnabled(true);
         // queue up the sync for all folders.
         folderMan->slotScheduleAllFolders();
+        if(!_connectionMsgBox.isNull()) {
+            _connectionMsgBox->close();
+        }
+
     } else {
         // if we have problems here, it's unlikely that syncing will work.
         FolderMan::instance()->setSyncEnabled(false);
 
         startupFails = _conValidator->errors();
         _startupNetworkError = _conValidator->networkError();
+        if (_userTriggeredConnect) {
+            if(_connectionMsgBox.isNull()) {
+                _connectionMsgBox = new QMessageBox(QMessageBox::Warning, tr("Connection failed"),
+                                      _conValidator->errors().join(". ").append('.'), QMessageBox::Ok, 0);
+                _connectionMsgBox->setAttribute(Qt::WA_DeleteOnClose);
+                _connectionMsgBox->open();
+                _userTriggeredConnect = false;
+            }
+        }
         QTimer::singleShot(30*1000, this, SLOT(slotCheckConnection()));
     }
     _gui->startupConnected( (status == ConnectionValidator::Connected), startupFails);

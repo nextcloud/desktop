@@ -27,6 +27,7 @@
 #include "mirall/connectionvalidator.h"
 #include "mirall/progressdispatcher.h"
 
+class QMessageBox;
 class QSystemTrayIcon;
 
 namespace Mirall {
@@ -98,6 +99,8 @@ private:
     QString _logDir;
     int     _logExpire;
     bool    _logFlush;
+    bool    _userTriggeredConnect;
+    QPointer<QMessageBox> _connectionMsgBox;
 
     friend class ownCloudGui; // for _startupNetworkError
 };
