@@ -381,11 +381,8 @@ void PropagateUploadFile::start()
 
                 const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
                 done( SyncFileItem::SoftError, errMsg );
-                _item._errorString = errMsg;
-                return;
             } else if( state == HBF_USER_ABORTED ) {
                 const QString errMsg = tr("Sync was aborted by user.");
-                _item._errorString = errMsg;
                 done( SyncFileItem::SoftError, errMsg );
             } else {
                 // Other HBF error conditions.
