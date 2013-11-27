@@ -914,7 +914,6 @@ static const char* owncloud_get_etag( const char *path )
     ne_request *req    = NULL;
     const char *header = NULL;
     char *uri          = _cleanPath(path);
-    char *buf          = NULL;
     char *cbuf   = NULL;
     csync_vio_file_stat_t *fs = NULL;
     bool doHeadRequest = false;
