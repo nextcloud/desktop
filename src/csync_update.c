@@ -242,10 +242,22 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         }
         st->instruction = CSYNC_INSTRUCTION_NONE;
     } else {
+        enum csync_vio_file_type_e tmp_vio_type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
+
         /* check if it's a file and has been renamed */
         if (ctx->current == LOCAL_REPLICA) {
             tmp = csync_statedb_get_stat_by_inode(ctx->statedb.db, fs->inode);
-            if (tmp && tmp->inode == fs->inode && tmp->type == fs->type
+
+            /* translate the file type between the two stat types csync has. */
+            if( tmp && tmp->type == 0 ) {
+                tmp_vio_type = CSYNC_VIO_FILE_TYPE_REGULAR;
+            } else if( tmp && tmp->type == 2 ) {
+                tmp_vio_type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+            } else {
+                tmp_vio_type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
+            }
+
+            if (tmp && tmp->inode == fs->inode && tmp_vio_type == fs->type
                     && (tmp->modtime == fs->mtime || fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)) {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %" PRId64 " <-> %" PRId64, (uint64_t) tmp->inode, (uint64_t) fs->inode);
                 /* inode found so the file has been renamed */
