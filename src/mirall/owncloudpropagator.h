@@ -62,12 +62,12 @@ public:
     SyncFileItem _item;
 
     int _current; // index of the current running job
-    bool _hasError;  // weather there was an error
+    SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
 
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItem &item = SyncFileItem())
         : PropagatorJob(propagator)
-        , _firstJob(0), _item(item),  _current(-1), _hasError(false) { }
+        , _firstJob(0), _item(item),  _current(-1), _hasError(SyncFileItem::NoStatus) { }
 
     virtual ~PropagateDirectory() {
         qDeleteAll(_subJobs);

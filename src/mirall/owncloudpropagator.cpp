@@ -1052,7 +1052,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
 void PropagateDirectory::start()
 {
     _current = -1;
-    _hasError = false;
+    _hasError = SyncFileItem::NoStatus;
     if (!_firstJob) {
         proceedNext(SyncFileItem::Success);
     } else {
@@ -1065,8 +1065,8 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
     if (status == SyncFileItem::FatalError) {
         emit finished(status);
         return;
-    } else if (status == SyncFileItem::NormalError) {
-        _hasError = true;
+    } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
+        _hasError = status;
     }
 
     _current ++;
@@ -1074,7 +1074,7 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
         PropagatorJob *next = _subJobs.at(_current);
         startJob(next);
     } else {
-        if (!_item.isEmpty() && !_hasError) {
+        if (!_item.isEmpty() && _hasError == SyncFileItem::NoStatus) {
             if( !_item._renameTarget.isEmpty() ) {
                 _item._file = _item._renameTarget;
             }
@@ -1084,7 +1084,7 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
                 _propagator->_journal->setFileRecord(record);
             }
         }
-        emit finished(_hasError ? SyncFileItem::NormalError : SyncFileItem::Success);
+        emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
     }
 }
 
