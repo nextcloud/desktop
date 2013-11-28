@@ -53,7 +53,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     _accountSettings = new AccountSettings(this);
     addAccount(tr("Account"), _accountSettings);
 
-    QIcon protocolIcon(QLatin1String(":/mirall/resources/settings.png"));
+    QIcon protocolIcon(QLatin1String(":/mirall/resources/activity.png"));
     QListWidgetItem *protocol= new QListWidgetItem(protocolIcon, tr("Activity"), _ui->labelWidget);
     protocol->setSizeHint(QSize(0, 32));
     _ui->labelWidget->addItem(protocol);
