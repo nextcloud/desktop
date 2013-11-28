@@ -29,12 +29,16 @@ int propfind_recursive_cache_folder_count = 0;
 
 static struct resource* resource_dup(struct resource* o) {
     struct resource *r = c_malloc (sizeof( struct resource ));
+    ZERO_STRUCTP(r);
+
     r->uri = c_strdup(o->uri);
     r->name = c_strdup(o->name);
     r->type = o->type;
     r->size = o->size;
     r->modtime = o->modtime;
-    r->md5 = c_strdup(o->md5);
+    if( o->md5 ) {
+        r->md5 = c_strdup(o->md5);
+    }
     r->next = o->next;
     csync_vio_set_file_id(r->file_id, o->file_id);
 
@@ -88,6 +92,7 @@ struct listdir_context *get_listdir_context_from_recursive_cache(const char *cur
 
     /* Out of the element, create a listdir_context.. if we could be sure that it is immutable, we could ref instead.. need to investigate */
     fetchCtx = c_malloc( sizeof( struct listdir_context ));
+    ZERO_STRUCTP(fetchCtx);
     fetchCtx->list = NULL;
     fetchCtx->target = c_strdup(curi);
     fetchCtx->currResource = NULL;
@@ -148,6 +153,8 @@ static void propfind_results_recursive(void *userdata,
 
     /* Fill the resource structure with the data about the file */
     newres = c_malloc(sizeof(struct resource));
+    ZERO_STRUCTP(newres);
+
     newres->uri =  path; /* no need to strdup because ne_path_unescape already allocates */
     newres->name = c_basename( path );
 

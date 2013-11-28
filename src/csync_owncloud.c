@@ -594,6 +594,7 @@ static void results(void *userdata,
 
     /* Fill the resource structure with the data about the file */
     newres = c_malloc(sizeof(struct resource));
+    ZERO_STRUCTP(newres);
     newres->uri =  path; /* no need to strdup because ne_path_unescape already allocates */
     newres->name = c_basename( path );
 
