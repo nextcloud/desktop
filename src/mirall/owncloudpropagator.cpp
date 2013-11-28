@@ -1070,7 +1070,7 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
     }
 
     _current ++;
-    if (_current < _subJobs.size()) {
+    if (_current < _subJobs.size() && !_propagator->_abortRequested->fetchAndAddRelaxed(0)) {
         PropagatorJob *next = _subJobs.at(_current);
         startJob(next);
     } else {
