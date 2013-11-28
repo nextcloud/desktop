@@ -386,7 +386,17 @@ void Folder::bubbleUpSyncResult()
     createGuiLog( firstItemNew._file,     tr("downloaded"), newItems );
     createGuiLog( firstItemDeleted._file, tr("removed"), removedItems );
     createGuiLog( firstItemUpdated._file, tr("updated"), updatedItems );
-    createGuiLog( firstItemRenamed._file, tr("renamed"), renamedItems );
+
+    if( !firstItemRenamed.isEmpty() ) {
+        QString renameVerb = tr("renamed");
+        // if the path changes it's rather a move
+        QDir renTarget = QFileInfo(firstItemRenamed._renameTarget).dir();
+        QDir renSource = QFileInfo(firstItemRenamed._file).dir();
+        if(renTarget != renSource) {
+            renameVerb = tr("moved");
+        }
+        createGuiLog( firstItemRenamed._file, tr("%1 to %2").arg(renameVerb).arg(firstItemRenamed._renameTarget), renamedItems );
+    }
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
 }

@@ -231,7 +231,6 @@ QTreeWidgetItem* ProtocolWidget::createProgressTreewidgetItem( const Progress::I
     item->setToolTip(0, longTimeStr);
 
     return item;
-
 }
 
 void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::Info& progress )
