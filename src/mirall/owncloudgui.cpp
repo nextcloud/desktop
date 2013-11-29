@@ -486,6 +486,13 @@ void ownCloudGui::slotShowSettings()
     _settingsDialog->slotRefreshResultList();
 }
 
+void ownCloudGui::slotShowSyncProtocol()
+{
+    slotShowSettings();
+    _settingsDialog->showActivityPage();
+}
+
+
 void ownCloudGui::slotShutdown()
 {
     // those do delete on close

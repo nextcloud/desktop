@@ -177,4 +177,11 @@ void SettingsDialog::slotRefreshResultList() {
         _protocolWidget->setupList();
     }
 }
+
+void SettingsDialog::showActivityPage()
+{
+    _ui->labelWidget->setCurrentRow(_protocolIdx);
+}
+
+
 } // namespace Mirall
