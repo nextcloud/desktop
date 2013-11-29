@@ -65,6 +65,7 @@ public slots:
     void slotTrayClicked( QSystemTrayIcon::ActivationReason reason );
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();
+    void slotOpenSettingsDialog( bool openSettings );
     void slotHelp();
     void slotOpenPath(const QString& path);
     void slotAccountStateChanged();

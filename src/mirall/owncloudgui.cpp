@@ -81,7 +81,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
 }
 
 // This should rather be in application.... or rather in MirallConfigFile?
-bool ownCloudGui::checkAccountExists(bool openSettings)
+void ownCloudGui::slotOpenSettingsDialog( bool openSettings )
 {
     // if account is set up, start the configuration wizard.
     if( AccountManager::instance()->account() ) {
@@ -91,13 +91,10 @@ bool ownCloudGui::checkAccountExists(bool openSettings)
             } else {
                 _settingsDialog->close();
             }
-
         }
-        return true;
     } else {
         qDebug() << "No configured folders yet, starting setup wizard";
         OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
-        return false;
     }
 }
 
@@ -112,7 +109,7 @@ void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
     // Linux, not on Mac. They want a menu entry.
 #if !defined Q_OS_MAC
     if( reason == QSystemTrayIcon::Trigger ) {
-        checkAccountExists(true); // start settings if config is existing.
+        slotOpenSettingsDialog(true); // start settings if config is existing.
     }
 #endif
 }

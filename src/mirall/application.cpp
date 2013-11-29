@@ -204,8 +204,9 @@ void Application::slotStartUpdateDetector()
 
 void Application::slotCheckConnection()
 {
-    if( _gui->checkAccountExists(false) ) {
-        Account *account = AccountManager::instance()->account();
+    Account *account = AccountManager::instance()->account();
+
+    if( account ) {
         AbstractCredentials* credentials(account->credentials());
 
         if (! credentials->ready()) {
@@ -216,8 +217,8 @@ void Application::slotCheckConnection()
             runValidator();
         }
     } else {
-        // the call to checkConfigExists opens the setup wizard
-        // if the config does not exist. Nothing to do here.
+        // let gui open the setup wizard
+        _gui->slotOpenSettingsDialog( true );
     }
 }
 
