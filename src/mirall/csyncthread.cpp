@@ -199,31 +199,41 @@ bool CSyncThread::checkBlacklisting( SyncFileItem *item )
     // if there is a valid entry in the blacklist table and the retry count is
     // already null or smaller than 0, the file is blacklisted.
     if( entry.isValid() ) {
+        item->_blacklistedInDb = true;
+
         if( entry._retryCount <= 0 ) {
             re = true;
-            item->_blacklistedInDb = true;
         }
 
-        // if the retryCount is 0, but the etag has changed, it is tried again
+        // if the retryCount is 0, but the etag for downloads or the mtime for uploads
+        // has changed, it is tried again
         // note that if the retryCount is -1 we never try again.
         if( entry._retryCount == 0 ) {
-            if( item->_etag.isEmpty() || entry._lastTryEtag.isEmpty() ) {
-                // compare the mtimes.
-                if(entry._lastTryModtime != item->_modtime) {
+            if( item->_dir == SyncFileItem::Up ) { // check the modtime
+                if(item->_modtime == 0 || entry._lastTryModtime == 0) {
                     re = false;
-                    qDebug() << item->_file << " is blacklisted, but has changed mtime!";
-
+                } else {
+                    if( item->_modtime != entry._lastTryModtime ) {
+                        re = false;
+                        qDebug() << item->_file << " is blacklisted, but has changed mtime!";
+                    }
                 }
             } else {
-                if( entry._lastTryEtag != item->_etag) {
-                    re = false;
-                    qDebug() << item->_file << " is blacklisted, but has changed etag!";
+                // download, check the etag.
+                if( item->_etag.isEmpty() || entry._lastTryEtag.isEmpty() ) {
+                    qDebug() << item->_file << "one ETag is empty, no blacklisting";
+                    return false;
+                } else {
+                    if( item->_etag != entry._lastTryEtag ) {
+                        re = false;
+                        qDebug() << item->_file << " is blacklisted, but has changed etag!";
+                    }
                 }
             }
         }
+
         if( re ) {
             qDebug() << "Item is on blacklist: " << entry._file << "retries:" << entry._retryCount;
-            item->_blacklistedInDb = true;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("The item is not synced because it is on the blacklist.");
             slotProgress( Progress::SoftError, *item );
@@ -269,15 +279,6 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     SyncFileItem::Direction dir;
 
     int re = 0;
-
-    // check for blacklisting of this item.
-    // if the item is on blacklist, the instruction was set to IGNORE
-    checkBlacklisting( &item );
-
-    if (file->instruction != CSYNC_INSTRUCTION_IGNORE
-        && file->instruction != CSYNC_INSTRUCTION_REMOVE) {
-      _hasFiles = true;
-    }
 
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
@@ -349,6 +350,14 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
 
     item._dir = dir;
+    // check for blacklisting of this item.
+    // if the item is on blacklist, the instruction was set to IGNORE
+    checkBlacklisting( &item );
+
+    if (file->instruction != CSYNC_INSTRUCTION_IGNORE
+        && file->instruction != CSYNC_INSTRUCTION_REMOVE) {
+      _hasFiles = true;
+    }
     _syncedItems.append(item);
 
     return re;
