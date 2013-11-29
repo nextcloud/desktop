@@ -368,10 +368,7 @@ void FolderMan::setSyncEnabled( bool enabled )
     _syncEnabled = enabled;
 
     foreach( Folder *f, _folderMap.values() ) {
-        if (_disabledFolders.contains(f)) {
-            enabled = false;
-        }
-        f->setSyncEnabled(enabled);
+        f->setSyncEnabled(enabled && !_disabledFolders.contains(f));
     }
 }
 
