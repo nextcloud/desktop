@@ -321,8 +321,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 
    File "${CSYNC_LIBRARY_DIR}\libocsync.dll"
    File "${MING_BIN}\libsqlite3-0.dll"
-   File "${MING_BIN}\libiniparser.dll"
-   File "${MING_BIN}\libdl.dll"
    File "${MING_BIN}\libpng15-15.dll"
 
    ; ownCloud plugin
