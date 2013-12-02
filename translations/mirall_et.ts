@@ -224,7 +224,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="264"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Ühendus ebaõnnestus</translation>
     </message>
 </context>
 <context>
@@ -378,7 +378,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>CSyncile ligipääs ebaõnnestus</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="176"/>
@@ -475,12 +475,12 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="396"/>
         <source>moved</source>
-        <translation type="unfinished"/>
+        <translation>ümber tõstetud</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="398"/>
         <source>%1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 kuni %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="411"/>
@@ -781,7 +781,7 @@ dokumentatsioonist võimalikke lahendusi.</translation>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="241"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta parool</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="242"/>
@@ -1291,7 +1291,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimise tegevus</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
@@ -1364,7 +1364,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Toimingud</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
@@ -1491,7 +1491,7 @@ Palun veendu, et võrguühendus toimib.</translation>
     <message>
         <location filename="../src/mirall/systray.cpp" line="49"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -1527,7 +1527,7 @@ Palun veendu, et võrguühendus toimib.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Palun logi sisse</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="203"/>
@@ -1602,12 +1602,12 @@ Palun veendu, et võrguühendus toimib.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
         <source>Sign in...</source>
-        <translation type="unfinished"/>
+        <translation>Logi sisse...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>Logi välja</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="373"/>
@@ -2124,7 +2124,7 @@ Palun veendu, et võrguühendus toimib.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimise viga</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>

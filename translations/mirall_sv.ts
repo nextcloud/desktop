@@ -1363,7 +1363,7 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivitet</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>

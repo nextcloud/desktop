@@ -224,7 +224,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="264"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Spojení selhalo</translation>
     </message>
 </context>
 <context>
@@ -378,7 +378,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>CSync se nezdařil přístup</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="176"/>
@@ -475,12 +475,12 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="396"/>
         <source>moved</source>
-        <translation type="unfinished"/>
+        <translation>přesunuto</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="398"/>
         <source>%1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 do %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="411"/>
@@ -667,7 +667,7 @@ dokumentací pro možnost opravy.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Zvolená složka je symbolický odkaz. Cílová složka tohoto odkazu již obsahuje nastavenou složku. </translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="170"/>
@@ -1291,7 +1291,7 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivita synchronizace</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
@@ -1364,7 +1364,7 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivita</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
@@ -2124,7 +2124,7 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba synchronizace</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
