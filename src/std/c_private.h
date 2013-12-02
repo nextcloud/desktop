@@ -119,7 +119,7 @@ typedef char           mbchar_t;
 #define _ttelldir      telldir
 #define _tseekdir      seekdir
 #define _tcreat        creat
-#define _tstat         stat
+#define _tstat         lstat
 #define _tfstat        fstat
 #define _tunlink       unlink
 #define _tmkdir(X,Y)   mkdir(X,Y)
