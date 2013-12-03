@@ -706,6 +706,7 @@ int csync_commit(CSYNC *ctx) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: closing of statedb failed.");
     rc = -1;
   }
+  ctx->statedb.db = NULL;
 
   rc = csync_vio_commit(ctx);
   if (rc < 0) {
@@ -761,6 +762,7 @@ int csync_destroy(CSYNC *ctx) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: closing of statedb failed.");
     rc = -1;
   }
+  ctx->statedb.db = NULL;
 
   csync_vio_shutdown(ctx);
 
