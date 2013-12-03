@@ -48,7 +48,7 @@ void UpdateDetector::versionCheck( Theme *theme )
 #ifdef Q_OS_LINUX
     platform = QLatin1String("linux");
 #endif
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     platform = QLatin1String( "win32" );
 #endif
 #ifdef Q_OS_MAC

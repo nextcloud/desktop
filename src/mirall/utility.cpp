@@ -104,7 +104,7 @@ QString Utility::octetsToString( qint64 octets )
 // Qtified version of get_platforms() in csync_owncloud.c
 QString Utility::platform()
 {
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN)
     return QLatin1String("Windows");
 #elif defined(Q_OS_MAC)
     return QLatin1String("Macintosh");

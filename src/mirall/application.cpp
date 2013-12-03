@@ -69,7 +69,7 @@ QString applicationTrPath()
 #ifdef Q_OS_MAC
     return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.
 #endif
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
    return QApplication::applicationDirPath();
 #endif
 }

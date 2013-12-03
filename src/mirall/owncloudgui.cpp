@@ -326,7 +326,7 @@ void ownCloudGui::slotFolderOpenAction( const QString& alias )
         QUrl url(f->path(), QUrl::TolerantMode);
         url.setScheme( QLatin1String("file") );
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
         // work around a bug in QDesktopServices on Win32, see i-net
         QString filePath = f->path();
 

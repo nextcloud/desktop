@@ -390,7 +390,7 @@ void AccountSettings::slotFolderOpenAction( const QString& alias )
         QUrl url(f->path(), QUrl::TolerantMode);
         url.setScheme( QLatin1String("file") );
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
         // work around a bug in QDesktopServices on Win32, see i-net
         QString filePath = f->path();
 
@@ -490,7 +490,7 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
 
 //void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr, const QString& version, const QString& )
 //{
-//#ifdef Q_OS_WIN32
+//#ifdef Q_OS_WIN
 //        // work around a bug in QDesktopServices on Win32, see i-net
 //        QString filePath = url;
 
