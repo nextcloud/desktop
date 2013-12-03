@@ -58,6 +58,8 @@ signals:
 private:
     void setSyncResultStatus(const SyncResult& result );
     void cleanErrorItems( const QString& folder );
+    void computeResyncButtonEnabled();
+
     QTreeWidgetItem* createProgressTreewidgetItem(const Progress::Info& progress );
     QTreeWidgetItem* createProblemTreewidgetItem( const Progress::SyncProblem& problem);
     QList<QTreeWidgetItem*> errorItems(const QString &folder);

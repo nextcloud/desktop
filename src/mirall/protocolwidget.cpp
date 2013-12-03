@@ -171,7 +171,6 @@ void ProtocolWidget::cleanErrorItems( const QString& folder ) // FIXME: Use the 
     if( wipeList.count() > 0 ) {
         qDeleteAll(wipeList.begin(), wipeList.end());
     }
-    _clearBlacklistBtn->setEnabled(false);
 }
 
 QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) const
@@ -217,7 +216,6 @@ QTreeWidgetItem *ProtocolWidget::createProblemTreewidgetItem( const Progress::Sy
         item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
     } else {
         item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
-       _clearBlacklistBtn->setEnabled(true);
     }
     item->setToolTip(0, longTimeStr);
     item->setToolTip(3, errMsg );
@@ -264,14 +262,28 @@ QTreeWidgetItem* ProtocolWidget::createProgressTreewidgetItem( const Progress::I
     return item;
 }
 
+void ProtocolWidget::computeResyncButtonEnabled()
+{
+    FolderMan *folderMan = FolderMan::instance();
+    Folder::Map folders = folderMan->map();
+
+    int cnt = 0;
+    foreach( Folder *f, folders ) {
+        cnt += f->blackListEntryCount();
+    }
+    _clearBlacklistBtn->setEnabled(cnt > 0);
+
+}
+
 void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::Info& progress )
 {
     if( progress.kind == Progress::StartSync ) {
       cleanErrorItems( folder );
+      _clearBlacklistBtn->setEnabled(false);
     }
 
     if( progress.kind == Progress::EndSync ) {
-      // decorateFolderItem( folder );
+        computeResyncButtonEnabled();
     }
 
     // Ingore other events than finishing an individual up- or download.
