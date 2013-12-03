@@ -49,12 +49,9 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
     HANDLE h = CreateFileW( (wchar_t*)localFileName.utf16(), 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                      FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
     if( h == INVALID_HANDLE_VALUE ) {
-        _inode = qrand();
+        _inode = 0;
         qWarning() << "Failed to query the 'inode' because CreateFileW failed for file " << localFileName;
     } else {
-        FILETIME ftCreate, ftAccess, ftWrite;
-        //     SYSTEMTIME stUTC;
-
         BY_HANDLE_FILE_INFORMATION fileInfo;
 
         if( GetFileInformationByHandle( h, &fileInfo ) ) {
@@ -68,14 +65,15 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
             _inode = FileIndex.QuadPart;
         } else {
             qWarning() << "Failed to query the 'inode' for file " << localFileName;
-            _inode = qrand();
+            _inode = 0;
         }
+        CloseHandle(h);
     }
 #else
     struct stat sb;
     if( stat(QFile::encodeName(localFileName).constData(), &sb) < 0) {
         qWarning() << "Failed to query the 'inode' for file " << localFileName;
-        _inode = qrand();
+        _inode = 0;
     } else {
         _inode = sb.st_ino;
     }
