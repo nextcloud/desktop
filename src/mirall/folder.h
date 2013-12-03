@@ -167,6 +167,8 @@ public slots:
       void setProxyDirty(bool value);
       bool proxyDirty();
 
+      int slotWipeBlacklist();
+
 private slots:
     void slotCSyncStarted();
     void slotCSyncError(const QString& );

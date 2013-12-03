@@ -416,6 +416,11 @@ void Folder::createGuiLog( const QString& filename, const QString& verb, int cou
     }
 }
 
+int Folder::slotWipeBlacklist()
+{
+    return _journal.wipeBlacklist();
+}
+
 void Folder::slotLocalPathChanged( const QString& dir )
 {
     QDir notifiedDir(dir);
