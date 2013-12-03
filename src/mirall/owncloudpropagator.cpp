@@ -703,11 +703,15 @@ void PropagateDownloadFile::start()
         ne_add_request_header( req.data(), "Accept-Encoding", "gzip" );
 
         if (tmpFile.size() > 0) {
-            char brange[64];
-            ne_snprintf(brange, sizeof brange, "bytes=%lld-", (long long) tmpFile.size());
-            ne_add_request_header(req.data(), "Range", brange);
+            quint64 done = tmpFile.size();
+            if (done == _item._size) {
+                qDebug() << "File is already complete, no need to download";
+                break;
+            }
+            QByteArray rangeRequest = "bytes=" + QByteArray::number(done) +'-';
+            ne_add_request_header(req.data(), "Range", rangeRequest.constData());
             ne_add_request_header(req.data(), "Accept-Ranges", "bytes");
-            qDebug("Retry with range %s", brange);
+            qDebug() << "Retry with range " << rangeRequest;
         }
 
         /* hook called before the content is parsed to set the correct reader,
