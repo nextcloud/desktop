@@ -786,7 +786,7 @@ void PropagateDownloadFile::start()
 
     csync_win32_set_file_hidden(tmpFileName.toUtf8().constData(), false);
 
-#ifndef QT_OS_WIN
+#ifndef Q_OS_WIN
     bool success;
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     success = tmpFile.fileEngine()->rename(fn);
@@ -804,7 +804,7 @@ void PropagateDownloadFile::start()
         done(SyncFileItem::NormalError, tmpFile.errorString());
         return;
     }
-#else //QT_OS_WIN
+#else //Q_OS_WIN
     if (::MoveFileEx((wchar_t*)tmpFile.fileName().utf16(),
                             (wchar_t*)QString(_localDir + item._file).utf16(),
                         MOVEFILE_REPLACE_EXISTING) != 0) {
