@@ -62,7 +62,7 @@ QString SyncResult::statusString() const
         re = QLatin1String("SyncPrepare");
         break;
     case Problem:
-        re = QLatin1String("Success, but with problems");
+        re = QLatin1String("Success, some files were ignored.");
         break;
     case Unavailable:
         re = QLatin1String("Not availabe");
