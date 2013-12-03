@@ -338,7 +338,7 @@ void PropagateUploadFile::start()
         state = hbf_splitlist(trans.data(), file.handle());
 
         if (progressInfo._valid) {
-            if (progressInfo._modtime.toTime_t() == _item._modtime) {
+            if (progressInfo._modtime.toTime_t() == (uint)_item._modtime) {
                 trans->start_id = progressInfo._chunk;
                 trans->transfer_id = progressInfo._transferid;
             }
