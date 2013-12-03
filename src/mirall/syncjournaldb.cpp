@@ -677,6 +677,22 @@ SyncJournalBlacklistRecord SyncJournalDb::blacklistEntry( const QString& file )
     return entry;
 }
 
+int SyncJournalDb::wipeBlacklist()
+{
+    QMutexLocker locker(&_mutex);
+    if( checkConnect() ) {
+        QSqlQuery query(_db);
+
+        query.prepare("DELETE FROM blacklist WHERE retrycount >= 0");
+
+        if( ! query.exec() ) {
+            sqlFail("Deletion of whole blacklist failed", query);
+        }
+        return query.numRowsAffected();
+    }
+    return -1;
+}
+
 void SyncJournalDb::wipeBlacklistEntry( const QString& file )
 {
     QMutexLocker locker(&_mutex);
@@ -686,7 +702,7 @@ void SyncJournalDb::wipeBlacklistEntry( const QString& file )
         query.prepare("DELETE FROM blacklist WHERE path=:path");
         query.bindValue(":path", file);
         if( ! query.exec() ) {
-            qDebug() << "Deletion of blacklist item failed.";
+            sqlFail("Deletion of blacklist item failed.", query);
         }
     }
 }

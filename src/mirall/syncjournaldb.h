@@ -38,6 +38,7 @@ public:
     bool exists();
     void updateBlacklistEntry( const SyncJournalBlacklistRecord& item );
     void wipeBlacklistEntry(const QString& file);
+    int wipeBlacklist();
 
     struct DownloadInfo {
         DownloadInfo() : _errorCount(0), _valid(false) {}
