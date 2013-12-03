@@ -235,7 +235,7 @@ bool CSyncThread::checkBlacklisting( SyncFileItem *item )
         if( re ) {
             qDebug() << "Item is on blacklist: " << entry._file << "retries:" << entry._retryCount;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            item->_errorString = tr("The item is not synced because it is on the blacklist.");
+            item->_errorString = tr("The item is not synced because of previous errors.");
             slotProgress( Progress::SoftError, *item );
         }
     }
