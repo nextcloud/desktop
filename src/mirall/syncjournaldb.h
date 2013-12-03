@@ -36,9 +36,11 @@ public:
     bool deleteFileRecord( const QString& filename, bool recursively = false );
     int getFileRecordCount();
     bool exists();
+
     void updateBlacklistEntry( const SyncJournalBlacklistRecord& item );
     void wipeBlacklistEntry(const QString& file);
     int wipeBlacklist();
+    int blackListEntryCount();
 
     struct DownloadInfo {
         DownloadInfo() : _errorCount(0), _valid(false) {}

@@ -416,6 +416,11 @@ void Folder::createGuiLog( const QString& filename, const QString& verb, int cou
     }
 }
 
+int Folder::blackListEntryCount()
+{
+    return _journal.blackListEntryCount();
+}
+
 int Folder::slotWipeBlacklist()
 {
     return _journal.wipeBlacklist();

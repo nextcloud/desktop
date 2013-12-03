@@ -168,6 +168,7 @@ public slots:
       bool proxyDirty();
 
       int slotWipeBlacklist();
+      int blackListEntryCount();
 
 private slots:
     void slotCSyncStarted();
