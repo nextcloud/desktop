@@ -41,6 +41,11 @@
 
 #include <time.h>
 
+#ifdef Q_OS_WIN
+#include <windef.h>
+#include <winbase.h>
+#endif
+
 // We use some internals of csync:
 extern "C" int c_utimes(const char *, const struct timeval *);
 extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
@@ -805,9 +810,11 @@ void PropagateDownloadFile::start()
         return;
     }
 #else //Q_OS_WIN
-    if (::MoveFileEx((wchar_t*)tmpFile.fileName().utf16(),
-                            (wchar_t*)QString(_localDir + item._file).utf16(),
-                        MOVEFILE_REPLACE_EXISTING) != 0) {
+    BOOL ok;
+    ok = MoveFileEx((wchar_t*)tmpFile.fileName().utf16(),
+                    (wchar_t*)QString(_propagator->_localDir + _item._file).utf16(),
+                    MOVEFILE_REPLACE_EXISTING+MOVEFILE_COPY_ALLOWED+MOVEFILE_WRITE_THROUGH);
+    if (!ok) {
         wchar_t *string = 0;
         FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
                       NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
