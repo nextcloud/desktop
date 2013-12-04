@@ -59,7 +59,6 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
 
     _clearBlacklistBtn = _ui->_dialogButtonBox->addButton(tr("Retry Sync"), QDialogButtonBox::ActionRole);
-    _clearBlacklistBtn->setToolTip( tr("Some files are ignored because of previous errors.\n Try to sync these again.") );
     _clearBlacklistBtn->setEnabled(false);
     connect(_clearBlacklistBtn, SIGNAL(clicked()), SLOT(slotClearBlacklist()));
 
@@ -94,6 +93,8 @@ void ProtocolWidget::setupList()
       }
   }
   _ui->_treeWidget->addTopLevelItems(items);
+
+  computeResyncButtonEnabled();
 
 }
 
@@ -271,7 +272,14 @@ void ProtocolWidget::computeResyncButtonEnabled()
     foreach( Folder *f, folders ) {
         cnt += f->blackListEntryCount();
     }
+
+    QString t = tr("Currently no files are ignored because of previous errors.");
+    if(cnt > 0) {
+        t = tr("%1 files are ignored because of previous errors.\n Try to sync these again.").arg(cnt);
+    }
+
     _clearBlacklistBtn->setEnabled(cnt > 0);
+    _clearBlacklistBtn->setToolTip(t);
 
 }
 
