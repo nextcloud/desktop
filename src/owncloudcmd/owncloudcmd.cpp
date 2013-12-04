@@ -62,7 +62,7 @@ void help()
 {
     std::cout << "owncloudcmd - command line ownCloud client tool." << std::endl;
     std::cout << "" << std::endl;
-    std::cout << "Call owncloudcmd sourcedir owncloudurl" << std::endl;
+    std::cout << "Usage: owncloudcmd <sourcedir> <owncloudurl>" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "  --confdir = configdir: Read config from there." << std::endl;

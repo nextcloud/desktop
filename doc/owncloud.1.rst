@@ -1,6 +1,7 @@
+:orphan:
+
 owncloud(1)
 -----------
-
 
 SYNOPSIS
 ========
@@ -28,10 +29,10 @@ Config File
 BUGS
 ====
 
-Please report bugs at https://github.com/owncloud/core/issues.
+Please report bugs at https://github.com/owncloud/mirall/issues.
 
 
 SEE ALSO
 ========
- `csync(1)`
+:manpage:`owncloudcmd(1)`
 
