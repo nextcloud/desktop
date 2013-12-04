@@ -266,8 +266,21 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     // record the seen files to be able to clean the journal later
     _seenFiles[item._file] = QString();
 
-    if(file->error_string) {
-        item._errorString = QString::fromUtf8(file->error_string);
+    switch(file->error_status) {
+    case CSYNC_STATUS_OK:
+        break;
+    case CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK:
+        item._errorString = tr("Symbolic links are not supported in syncing.");
+        break;
+    case CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST:
+        item._errorString = tr("File is listed on the ignore list.");
+        break;
+    case CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS:
+        item._errorString = tr("File contains invalid characters that can not be synced cross platform.");
+        break;
+    default:
+        Q_ASSERT("Non handled error-status");
+        /* No error string */
     }
 
     item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
