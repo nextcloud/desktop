@@ -193,6 +193,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     goto out;
   }
   if (excluded > CSYNC_NOT_EXCLUDED || type == CSYNC_FTW_TYPE_SLINK) {
+      st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK; /* Symbolic links are ignored. */
     st->instruction = CSYNC_INSTRUCTION_IGNORE;
     goto out;
   }
@@ -309,9 +310,9 @@ out:
   /* Set the ignored error string. */
   if (st->instruction == CSYNC_INSTRUCTION_IGNORE) {
     if (excluded == CSYNC_FILE_EXCLUDE_LIST) {
-      st->error_string = c_strdup("File listed on ignore list.");
+      st->error_status = CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST; /* File listed on ignore list. */
     } else if (excluded == CSYNC_FILE_EXCLUDE_INVALID_CHAR) {
-      st->error_string = c_strdup("File contains invalid characters.");
+      st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS;  /* File contains invalid characters. */
     }
   }
   if (st->instruction != CSYNC_INSTRUCTION_NONE && st->instruction != CSYNC_INSTRUCTION_IGNORE

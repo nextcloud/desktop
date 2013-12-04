@@ -555,7 +555,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.etag         = cur->etag;
       trav.file_id      = cur->file_id;
 
-      trav.error_string = cur->error_string;
+      trav.error_status = cur->error_status;
       trav.should_update_etag = cur->should_update_etag;
 
       rc = (*visitor)(&trav, twctx->userdata);
@@ -1034,7 +1034,6 @@ void csync_file_stat_free(csync_file_stat_t *st)
 {
   if (st) {
     SAFE_FREE(st->etag);
-    SAFE_FREE(st->error_string);
     SAFE_FREE(st->destpath);
     SAFE_FREE(st);
   }

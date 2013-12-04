@@ -99,7 +99,11 @@ enum csync_status_codes_e {
   CSYNC_STATUS_OPENDIR_ERROR,
   CSYNC_STATUS_READDIR_ERROR,
   CSYNC_STATUS_OPEN_ERROR,
-  CSYNC_STATUS_ABORTED
+  CSYNC_STATUS_ABORTED,
+    /* Codes for file individual status: */
+    CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK,
+    CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST,
+    CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS
 };
 
 typedef enum csync_status_codes_e CSYNC_STATUS;
@@ -199,9 +203,8 @@ struct csync_tree_walk_file_s {
 
     const char *rename_path;
     const char *etag;
-    const char *error_string;
     const char *file_id;
-
+    CSYNC_STATUS error_status;
 };
 typedef struct csync_tree_walk_file_s TREE_WALK_FILE;
 
