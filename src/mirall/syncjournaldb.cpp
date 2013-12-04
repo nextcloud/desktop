@@ -385,7 +385,7 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
             qlonglong phash = getPHash(filename);
             _deleteFileRecordPhash->bindValue( 0, QString::number(phash) );
 
-            if( _deleteFileRecordPhash->exec() ) {
+            if( !_deleteFileRecordPhash->exec() ) {
                 qWarning() << "Exec error of SQL statement: "
                            << _deleteFileRecordPhash->lastQuery()
                            <<  " : " << _deleteFileRecordPhash->lastError().text();
