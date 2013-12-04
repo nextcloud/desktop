@@ -39,7 +39,7 @@ public:
     explicit ProtocolWidget(QWidget *parent = 0);
     ~ProtocolWidget();
 
-    void setupList();
+    void initializeList();
 
 signals:
 

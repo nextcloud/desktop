@@ -68,7 +68,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 
 }
 
-void ProtocolWidget::setupList()
+void ProtocolWidget::initializeList()
 {
   QList<Progress::Info> progressList = ProgressDispatcher::instance()->recentChangedItems(0); // All.
   QList<QTreeWidgetItem*> items;

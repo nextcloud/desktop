@@ -174,7 +174,7 @@ void SettingsDialog::accept() {
 
 void SettingsDialog::slotRefreshResultList() {
     if( _protocolWidget ) {
-        _protocolWidget->setupList();
+        _protocolWidget->initializeList();
     }
 }
 
