@@ -729,6 +729,8 @@ void PropagateDownloadFile::start()
 
         int neon_stat = ne_request_dispatch(req.data());
 
+        _decompress.reset(); // Destroy the decompress after the request has been dispatched.
+
         /* delete the hook again, otherwise they get chained as they are with the session */
         ne_unhook_post_headers( _propagator->_session, install_content_reader, this );
         ne_set_notifier(_propagator->_session, 0, 0);
