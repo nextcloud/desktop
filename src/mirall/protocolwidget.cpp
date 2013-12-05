@@ -55,6 +55,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     _ui->_treeWidget->setColumnWidth(1, 180);
     _ui->_treeWidget->setColumnCount(5);
     _ui->_treeWidget->setRootIsDecorated(false);
+    _ui->_treeWidget->setTextElideMode(Qt::ElideMiddle);
 
     connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
 
@@ -219,6 +220,7 @@ QTreeWidgetItem *ProtocolWidget::createProblemTreewidgetItem( const Progress::Sy
         item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
     }
     item->setToolTip(0, longTimeStr);
+    item->setToolTip(1, problem.current_file);
     item->setToolTip(3, errMsg );
 
     return item;
