@@ -498,6 +498,8 @@ void Folder::wipe()
 {
     QString stateDbFile = path()+QLatin1String(".csync_journal.db");
 
+    _journal.close(); // close the sync journal
+
     QFile file(stateDbFile);
     if( file.exists() ) {
         if( !file.remove()) {
