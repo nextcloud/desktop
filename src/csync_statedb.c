@@ -476,7 +476,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id( sqlite3 *db,
 
 /* caller must free the memory */
 csync_file_stat_t *csync_statedb_get_stat_by_inode(sqlite3 *db,
-                                                   ino_t inode) {
+                                                   uint64_t inode) {
   csync_file_stat_t *st = NULL;
   c_strlist_t *result = NULL;
   char *stmt = NULL;

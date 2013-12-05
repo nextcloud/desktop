@@ -58,7 +58,7 @@ int csync_statedb_close(const char *statedb, sqlite3 *db, int jwritten);
 
 csync_file_stat_t *csync_statedb_get_stat_by_hash(sqlite3 *db, uint64_t phash);
 
-csync_file_stat_t *csync_statedb_get_stat_by_inode(sqlite3 *db, ino_t inode);
+csync_file_stat_t *csync_statedb_get_stat_by_inode(sqlite3 *db, uint64_t inode);
 
 csync_file_stat_t *csync_statedb_get_stat_by_file_id( sqlite3 *db,
                                                      const char *file_id );
