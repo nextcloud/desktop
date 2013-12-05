@@ -141,9 +141,9 @@ bool Account::changed(Account *other, bool ignoreUrlProtocol) const
     } else {
         changes = (_url == other->_url);
     }
-    if (!changes) {
-        changes = _credentials->changed(other->_credentials);
-    }
+
+    changes |= _credentials->changed(other->_credentials);
+
     return changes;
 }
 

@@ -136,7 +136,7 @@ bool HttpCredentials::changed(AbstractCredentials* credentials) const
 {
     HttpCredentials* other(dynamic_cast< HttpCredentials* >(credentials));
 
-    if (!other || other->user() != this->user()) {
+    if (!other || (other->user() != this->user())) {
         return true;
     }
 
