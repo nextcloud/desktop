@@ -53,6 +53,7 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject* parent) :
        Therefore Qt::QueuedConnection is required */
     connect( _ocWizard, SIGNAL(basicSetupFinished(int)),
              this, SLOT(slotAssistantFinished(int)), Qt::QueuedConnection);
+    connect( _ocWizard, SIGNAL(finished(int)), SLOT(deleteLater()));
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -70,7 +71,6 @@ void OwncloudSetupWizard::runWizard(QObject* obj, const char* amember, QWidget *
 
     wiz = new OwncloudSetupWizard(parent);
     connect( wiz, SIGNAL(ownCloudWizardDone(int)), obj, amember);
-    connect( wiz, SIGNAL(slotAssistantFinished(int)), wiz, SLOT(deleteLater()));
     FolderMan::instance()->setSyncEnabled(false);
     wiz->startWizard();
 }
@@ -376,8 +376,7 @@ void OwncloudSetupWizard::replaceDefaultAccountWith(Account *newAccount)
     newAccount->save();
 }
 
-// Method executed when the user ends the wizard, either with 'accept' or 'reject'.
-// accept the custom config to be the main one if Accepted.
+// Method executed when the user ends has finished the basic setup.
 void OwncloudSetupWizard::slotAssistantFinished( int result )
 {
     FolderMan *folderMan = FolderMan::instance();
