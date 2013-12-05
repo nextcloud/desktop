@@ -79,17 +79,32 @@ system( "echo \"super new\" >> " . localDir() . 'newdir/myfile.txt' );
 #Add some files for the next test.
 system( "echo \"un\" > " . localDir() . '1.txt' );
 system( "echo \"deux\" > " . localDir() . '2.txt' );
+mkdir( localDir() . 'newdir2' );
 
 csync();
 assertLocalAndRemoteDir( 'newdir', 0);
+
+
+printInfo("Rename a directory that was just changed");
+# newdir was changed so it's etag is not yet saved in the database,  but still it needs to be moved.
+my $newdirId = remoteFileId( localDir(), 'newdir' );
+my $newdir2Id = remoteFileId( localDir(), 'newdir2' );
+move(localDir() . 'newdir' , localDir() . 'newdir3');
+move(localDir() . 'newdir2' , localDir() . 'newdir4');
+
 
 # FIXME:  this test is currently failing
 #  see csync_update.c in _csyn_detect_update, the commen near the commented fs->inode != tmp->inode
 # unlink( localDir() . '1.txt' );
 # move( localDir() . '2.txt', localDir() . '1.txt' );
-#
-# csync();
-# assertLocalAndRemoteDir( '', 0);
+
+csync();
+assertLocalAndRemoteDir( '', 0);
+my $newdir3Id = remoteFileId( localDir(), 'newdir3' );
+my $newdir4Id = remoteFileId( localDir(), 'newdir4' );
+assert( $newdirId eq $newdir3Id, "newdir was not MOVE'd to newdir3?" );
+assert( $newdir2Id eq $newdir4Id, "newdir2 was not MOVE'd to newdir4?" );
+
 
 cleanup();
 
