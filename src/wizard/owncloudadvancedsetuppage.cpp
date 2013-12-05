@@ -131,6 +131,7 @@ void OwncloudAdvancedSetupPage::updateStatus()
 
     _ui.syncModeLabel->setText(t);
     _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
+    wizard()->resize(wizard()->sizeHint());
 }
 
 bool OwncloudAdvancedSetupPage::dataChanged()

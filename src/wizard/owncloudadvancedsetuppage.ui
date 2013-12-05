@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>484</width>
-    <height>342</height>
+    <height>336</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -57,12 +57,6 @@
    </item>
    <item>
     <layout class="QFormLayout" name="advancedBox">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMinimumSize</enum>
-     </property>
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="sizePolicy">
@@ -223,22 +217,6 @@
       <string>TextLabel</string>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <widget class="QLabel" name="syncModeLabel">
