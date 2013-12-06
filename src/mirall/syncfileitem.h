@@ -31,10 +31,10 @@ public:
       Down };
 
     enum Type {
-      UnknownType,
-      File = CSYNC_FTW_TYPE_FILE,
+      UnknownType = 0,
+      File      = CSYNC_FTW_TYPE_FILE,
       Directory = CSYNC_FTW_TYPE_DIR,
-      SoftLink = CSYNC_FTW_TYPE_SLINK
+      SoftLink  = CSYNC_FTW_TYPE_SLINK
     };
 
     enum Status {
@@ -49,7 +49,8 @@ public:
         FileIgnored ///< The file is in the ignored list
     };
 
-    SyncFileItem() : _should_update_etag(false), _blacklistedInDb(false), _status(NoStatus), _httpErrorCode(0) {}
+    SyncFileItem() : _type(UnknownType), _should_update_etag(false), _blacklistedInDb(false),
+        _status(NoStatus), _httpErrorCode(0) {}
 
     friend bool operator==(const SyncFileItem& item1, const SyncFileItem& item2) {
         return item1._file == item2._file;

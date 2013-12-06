@@ -288,6 +288,19 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._etag = file->etag;
     item._size = file->size;
     item._should_update_etag = file->should_update_etag;
+    switch( file->type ) {
+    case CSYNC_FTW_TYPE_DIR:
+        item._type = SyncFileItem::Directory;
+        break;
+    case CSYNC_FTW_TYPE_FILE:
+        item._type = SyncFileItem::File;
+        break;
+    case CSYNC_FTW_TYPE_SLINK:
+        item._type = SyncFileItem::SoftLink;
+        break;
+    default:
+        item._type = SyncFileItem::UnknownType;
+    }
 
     SyncFileItem::Direction dir;
 
@@ -346,20 +359,6 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     default:
         dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
-    }
-
-    switch( file->type ) {
-    case CSYNC_FTW_TYPE_DIR:
-        item._type = SyncFileItem::Directory;
-        break;
-    case CSYNC_FTW_TYPE_FILE:
-        item._type = SyncFileItem::File;
-        break;
-    case CSYNC_FTW_TYPE_SLINK:
-        item._type = SyncFileItem::SoftLink;
-        break;
-    default:
-        item._type = SyncFileItem::UnknownType;
     }
 
     item._dir = dir;

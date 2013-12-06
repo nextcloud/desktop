@@ -26,7 +26,7 @@
 namespace Mirall {
 
 SyncJournalFileRecord::SyncJournalFileRecord()
-    :_uid(0), _gid(0), _mode(0)
+    :_inode(0), _type(0), _uid(0), _gid(0), _mode(0)
 {
 }
 
