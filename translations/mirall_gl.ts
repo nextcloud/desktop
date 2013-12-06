@@ -353,22 +353,22 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="238"/>
         <source>The item is not synced because of previous errors.</source>
-        <translation type="unfinished"/>
+        <translation>O elemento non foi sincronizado por mor dos  erros anteriores.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="273"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>As ligazóns simbolicas non son admitidas nas sincronizacións</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="276"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro está na lista de ignorados.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="279"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro conten caracteres incorrectos que non poden sincronizarse entre distintas plataformas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="450"/>
@@ -518,14 +518,14 @@
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="764"/>
+        <location filename="../src/mirall/folder.cpp" line="766"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Esta sincronización retirará todos os ficheiros do cartafol local de  sincronización «%1».
 Se vostede, ou o administrador, restabeleceu a súa conta no servidor, escolla «Manter os ficheiros». Se quere que os seus datos sexan eliminados, escolla «Retirar todos os ficheiros».</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="767"/>
+        <location filename="../src/mirall/folder.cpp" line="769"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +534,17 @@ Isto podería ser debido a que o cartafol foi reconfigurado en silencio, ou a qu
 Confirma que quere realizar esta operación?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="771"/>
+        <location filename="../src/mirall/folder.cpp" line="773"/>
         <source>Remove All Files?</source>
         <translation>Retirar todos os ficheiros?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="773"/>
+        <location filename="../src/mirall/folder.cpp" line="775"/>
         <source>Remove all files</source>
         <translation>Retirar todos os ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="774"/>
+        <location filename="../src/mirall/folder.cpp" line="776"/>
         <source>Keep files</source>
         <translation>Manter os ficheiros</translation>
     </message>
@@ -1063,12 +1063,12 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Aviso:&lt;/strong&gt; O directorio local non está baleiro. Escolla unha resolución!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="234"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="235"/>
         <source>Local Sync Folder</source>
         <translation>Sincronización do cartafol local</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="247"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="248"/>
         <source>Update advanced setup</source>
         <translation>Actualizar a configuración avanzada</translation>
     </message>
@@ -1132,8 +1132,8 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
         <translation>Non é posíbel retirar ou facer copias de seguranza do cartafol ou dun ficheiro que estea aberto noutro programa. Peche o cartafol ou o ficheiro e prema en tentar de novo ou cancele o proceso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="413"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="422"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;O cartafol local de sincronización %1 creouse correctamente!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1344,45 +1344,46 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
         <translation>Tamaño</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="61"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="62"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>Volver tentar a sincronización</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="65"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="66"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="66"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="67"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Copiar a lista da actividade no portapapeis.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="135"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="136"/>
         <source>Copied to clipboard</source>
         <translation>Copiado no portapapeis.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="135"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="136"/>
         <source>The sync status has been copied to the clipboard.</source>
         <translation>O estado de sincronización foi copiado no portapapeis.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="207"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="208"/>
         <source>No more storage space available on server.</source>
         <translation>Non hai máis espazo de almacenamento dispoñíbel no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="276"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="278"/>
         <source>Currently no files are ignored because of previous errors.</source>
-        <translation type="unfinished"/>
+        <translation>Actualmente non hai ficheiros ignorados por mor de erros anteriores.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="278"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="280"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ficheiros foron ignorados por mor de erros anteriores.
+Tente sincronizalos de novo.</translation>
     </message>
 </context>
 <context>
@@ -1685,48 +1686,48 @@ Asegúrese de que a súa conexión de rede está a funcionar.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="223"/>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="262"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="217"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="240"/>
         <source>TextLabel</source>
         <translation>Etiqueta de texto</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="75"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="69"/>
         <source>&amp;Local Folder</source>
         <translation>Cartafol &amp;local</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="91"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="85"/>
         <source>pbSelectLocalFolder</source>
         <translation>pbSeleccionarCartafolLocal</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="113"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="107"/>
         <source>&amp;Keep local data</source>
         <translation>&amp;Conservar os datos locais</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="145"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="139"/>
         <source>&lt;small&gt;Syncs your existing data to new location.&lt;/small&gt;</source>
         <translation>&lt;small&gt;Sincroniza os datos existentes na nova localización.&lt;/small&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="164"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="158"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se se marca esta caixiña, o contido existente no directorio local borrarase para iniciar unha sincronización limpa desde o servidor.&lt;/p&gt;&lt;p&gt;Non seleccione esta opción se o contido local debe enviarse ao directorio dos servidores.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="167"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
         <source>&amp;Start a clean sync</source>
         <translation>&amp;Iniciar unha sincronización limpa</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="199"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="193"/>
         <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
         <translation>&lt;small&gt;Borra o contido do cartafol local antes de sincronizar cos novos axustes..&lt;/small&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="246"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>Status message</source>
         <translation>Mensaxe de estado</translation>
     </message>
@@ -1896,12 +1897,12 @@ Asegúrese de que a súa conexión de rede está a funcionar.</translation>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="884"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="886"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Non é posíbel renomear este cartafol. Non se lle cambiou o nome, mantense o orixinal.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="886"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="888"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Non é posíbel renomear este cartafol. Devólvalle o nome ao compartido.</translation>
     </message>
@@ -2091,7 +2092,7 @@ Asegúrese de que a súa conexión de rede está a funcionar.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>A sincronización foi correcta, algúns ficheiros foron ignorados.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>

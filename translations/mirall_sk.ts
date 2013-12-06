@@ -518,14 +518,14 @@
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="764"/>
+        <location filename="../src/mirall/folder.cpp" line="766"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Táto synchronizácia odstráni všetky súbory v lokálnom synchronizačnom priečinku &apos;%1&apos;.
 Pokiaľ vy alebo váš správca zresetoval váš účet na serveri, vyberte možnosť &quot;Ponechať súbory&quot;. Pokiaľ chcete odstrániť vaše dáta, vyberte možnosť &quot;Odstrániť všetky súbory&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="767"/>
+        <location filename="../src/mirall/folder.cpp" line="769"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +534,17 @@ Toto môže byť kvôli tichej rekonfigurácii priečinka, prípadne boli všetk
 Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="771"/>
+        <location filename="../src/mirall/folder.cpp" line="773"/>
         <source>Remove All Files?</source>
         <translation>Odstrániť všetky súbory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="773"/>
+        <location filename="../src/mirall/folder.cpp" line="775"/>
         <source>Remove all files</source>
         <translation>Odstrániť všetky súbory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="774"/>
+        <location filename="../src/mirall/folder.cpp" line="776"/>
         <source>Keep files</source>
         <translation>Ponechať súbory</translation>
     </message>
@@ -1063,12 +1063,12 @@ Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri ods
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Varovanie:&lt;/strong&gt; Lokálny priečinok nie je prázdny. Vyberte riešenie!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="234"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="235"/>
         <source>Local Sync Folder</source>
         <translation>Lokálny synchronizačný priečinok</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="247"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="248"/>
         <source>Update advanced setup</source>
         <translation>Aktualizovať pokročilé nastavenie</translation>
     </message>
@@ -1132,8 +1132,8 @@ Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri ods
         <translation>Nemožno odstrániť a zálohovať priečinok, pretože priečinok alebo súbor v ňom je využívaný iným programom. Prosím zatvorte priečinok alebo súbor a proces opakujte alebo zrušte inštaláciu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="413"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="422"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokálny synchronizačný priečinok %1 bol úspešne vytvorený!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1344,42 +1344,42 @@ Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri ods
         <translation>Veľkosť</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="61"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="62"/>
         <source>Retry Sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="65"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="66"/>
         <source>Copy</source>
         <translation>Kopírovať</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="66"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="67"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="135"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="136"/>
         <source>Copied to clipboard</source>
         <translation>Skopírované do &quot;clipboard&quot;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="135"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="136"/>
         <source>The sync status has been copied to the clipboard.</source>
         <translation>Stav synchronizácie bol nakopírovaný do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="207"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="208"/>
         <source>No more storage space available on server.</source>
         <translation>Nedostatok diskovej kapacity na serveri.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="276"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="278"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="278"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="280"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation type="unfinished"/>
@@ -1685,48 +1685,48 @@ Skontrolujte prosím, či máte pracuje pripojenie k sieti.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="223"/>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="262"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="217"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="240"/>
         <source>TextLabel</source>
         <translation>Štítok</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="75"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="69"/>
         <source>&amp;Local Folder</source>
         <translation>&amp;Lokálny priečinok</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="91"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="85"/>
         <source>pbSelectLocalFolder</source>
         <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="113"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="107"/>
         <source>&amp;Keep local data</source>
         <translation>&amp;Nechať lokálne dáta</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="145"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="139"/>
         <source>&lt;small&gt;Syncs your existing data to new location.&lt;/small&gt;</source>
         <translation>&lt;small&gt;Zosynchronizuje vaše existujúce dáta do nového umiestnenia.&lt;/small&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="164"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="158"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pokiaľ je toto pole zaškrtnuté, existujúci obsah lokálneho priečinka bude vymazaný pre začatie čistej synchronizácie zo servera.&lt;/p&gt;&lt;p&gt;Nezaškrtnite pokiaľ má byť lokálny obsah nahraný do serverového priečinka.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="167"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
         <source>&amp;Start a clean sync</source>
         <translation>&amp;Začať čistú synchronizáciu</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="199"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="193"/>
         <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
         <translation>&lt;small&gt;Vymaže obsah lokálneho priečinka pred synchronizovaním pomocou nových nastavení.&lt;/small&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="246"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>Status message</source>
         <translation>Stavová správa</translation>
     </message>
@@ -1896,12 +1896,12 @@ Skontrolujte prosím, či máte pracuje pripojenie k sieti.</translation>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="884"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="886"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Tento priečinok nemôže byť premenovaný. Prosím, vráťte mu pôvodné meno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="886"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="888"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Tento priečinok nemôže byť premenovaný. Prosím, vráťte mu meno Shared.</translation>
     </message>
