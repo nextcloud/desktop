@@ -187,7 +187,7 @@ void PropagateLocalRemove::start()
         }
     }
     emit progress(Progress::StartDelete, _item, 0, _item._size);
-    _propagator->_journal->deleteFileRecord(_item._originalFile);
+    _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
     _propagator->_journal->commit("Local remove");
     done(SyncFileItem::Success);
     emit progress(Progress::EndDelete, _item, _item._size, _item._size);
