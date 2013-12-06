@@ -843,10 +843,13 @@ DECLARE_JOB(PropagateLocalRename)
 
 void PropagateLocalRename::start()
 {
-    emit progress(Progress::StartRename, _item, 0, _item._size);
+    // if the file is a file underneath a moved dir, the _item.file is equal
+    // to _item.renameTarget and the file is not moved as a result.
     if (_item._file != _item._renameTarget) {
+        emit progress(Progress::StartRename, _item, 0, _item._size);
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
         QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
+        emit progress(Progress::EndRename, _item, _item._size, _item._size);
     }
 
     _item._instruction = CSYNC_INSTRUCTION_DELETED;
@@ -861,7 +864,6 @@ void PropagateLocalRename::start()
     _propagator->_journal->setFileRecord(record);
     _propagator->_journal->commit("localRename");
 
-    emit progress(Progress::EndRename, _item, _item._size, _item._size);
 
     done(SyncFileItem::Success);
 }
