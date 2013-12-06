@@ -193,8 +193,10 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     goto out;
   }
   if (excluded > CSYNC_NOT_EXCLUDED || type == CSYNC_FTW_TYPE_SLINK) {
-      st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK; /* Symbolic links are ignored. */
-    st->instruction = CSYNC_INSTRUCTION_IGNORE;
+      if( type == CSYNC_FTW_TYPE_SLINK ) {
+          st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK; /* Symbolic links are ignored. */
+      }
+      st->instruction = CSYNC_INSTRUCTION_IGNORE;
     goto out;
   }
 
