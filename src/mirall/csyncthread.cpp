@@ -332,6 +332,8 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
             dir = SyncFileItem::None;
         } else {
             // No need to do anything.
+            _hasFiles = true;
+
             return re;
         }
         break;
