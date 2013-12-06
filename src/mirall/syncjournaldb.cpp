@@ -381,19 +381,21 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
     QMutexLocker locker(&_mutex);
 
     if( checkConnect() ) {
-        if (!recursively) {
-            qlonglong phash = getPHash(filename);
-            _deleteFileRecordPhash->bindValue( 0, QString::number(phash) );
+        // if (!recursively) {
+        // always delete the actual file.
 
-            if( !_deleteFileRecordPhash->exec() ) {
-                qWarning() << "Exec error of SQL statement: "
-                           << _deleteFileRecordPhash->lastQuery()
-                           <<  " : " << _deleteFileRecordPhash->lastError().text();
-                return false;
-            }
-            qDebug() <<  _deleteFileRecordPhash->executedQuery() << phash << filename;
-            _deleteFileRecordPhash->finish();
-        } else {
+        qlonglong phash = getPHash(filename);
+        _deleteFileRecordPhash->bindValue( 0, QString::number(phash) );
+
+        if( !_deleteFileRecordPhash->exec() ) {
+            qWarning() << "Exec error of SQL statement: "
+                       << _deleteFileRecordPhash->lastQuery()
+                       <<  " : " << _deleteFileRecordPhash->lastError().text();
+            return false;
+        }
+        qDebug() <<  _deleteFileRecordPhash->executedQuery() << phash << filename;
+        _deleteFileRecordPhash->finish();
+        if( recursively) {
             _deleteFileRecordRecursively->bindValue(0, filename);
             if( !_deleteFileRecordRecursively->exec() ) {
                 qWarning() << "Exec error of SQL statement: "
