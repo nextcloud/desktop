@@ -250,18 +250,19 @@ void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
 QTreeWidgetItem* ProtocolWidget::createProgressTreewidgetItem( const Progress::Info& progress )
 {
     QStringList columns;
-    QString timeStr = timeString(progress.timestamp);
-    QString longTimeStr = timeString(progress.timestamp, QLocale::LongFormat);
+    const QString timeStr = timeString(progress.timestamp);
+    const QString longTimeStr = timeString(progress.timestamp, QLocale::LongFormat);
+    const QString actionStr = Progress::asResultString(progress);
 
     columns << timeStr;
     columns << progress.current_file;
     columns << progress.folder;
-    columns << Progress::asResultString(progress);
+    columns << actionStr;
     columns << Utility::octetsToString( progress.file_size );
 
     QTreeWidgetItem *item = new QTreeWidgetItem(columns);
     item->setToolTip(0, longTimeStr);
-
+    item->setToolTip(3, actionStr);
     return item;
 }
 
