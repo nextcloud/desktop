@@ -404,7 +404,7 @@ void ownCloudGui::slotRebuildRecentMenus()
 
         while(i.hasNext()) {
             Progress::Info info = i.next();
-            QString kindStr = Progress::asResultString(info.kind);
+            QString kindStr = Progress::asResultString(info);
             QString timeStr = info.timestamp.toString("hh:mm");
 
             QString actionText = tr("%1 (%2, %3)").arg(info.current_file).arg(kindStr).arg(timeStr);

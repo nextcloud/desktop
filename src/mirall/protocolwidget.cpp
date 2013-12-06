@@ -256,7 +256,7 @@ QTreeWidgetItem* ProtocolWidget::createProgressTreewidgetItem( const Progress::I
     columns << timeStr;
     columns << progress.current_file;
     columns << progress.folder;
-    columns << Progress::asResultString(progress.kind);
+    columns << Progress::asResultString(progress);
     columns << Utility::octetsToString( progress.file_size );
 
     QTreeWidgetItem *item = new QTreeWidgetItem(columns);

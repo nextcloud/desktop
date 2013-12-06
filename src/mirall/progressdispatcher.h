@@ -53,6 +53,8 @@ namespace Progress
         Kind    kind;
         QString folder;
         QString current_file;
+        QString rename_target;
+
         qint64  file_size;
         qint64  current_file_bytes;
 
@@ -80,7 +82,7 @@ namespace Progress
     };
 
     QString asActionString( Kind );
-    QString asResultString( Kind );
+    QString asResultString(  const Progress::Info& progress );
 
     bool isErrorKind( Kind );
 }

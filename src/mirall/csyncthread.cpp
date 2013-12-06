@@ -662,6 +662,7 @@ void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, qu
     Progress::Info pInfo(_progressInfo);
     pInfo.kind                  = kind;
     pInfo.current_file          = item._file;
+    pInfo.rename_target         = item._renameTarget;
     pInfo.file_size             = total;
     pInfo.current_file_bytes    = curr;
     pInfo.current_file_no       = _currentFileNo;

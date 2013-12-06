@@ -21,11 +21,11 @@
 namespace Mirall {
 
 ProgressDispatcher* ProgressDispatcher::_instance = 0;
-QString Progress::asResultString( Kind kind )
+QString Progress::asResultString( const Progress::Info& progress)
 {
     QString re;
 
-    switch(kind) {
+    switch(progress.kind) {
     case Download:
     case EndDownload:
         re = QCoreApplication::translate( "progress", "Download");
@@ -59,10 +59,10 @@ QString Progress::asResultString( Kind kind )
         re = QCoreApplication::translate( "progress", "deleted");
         break;
     case StartRename:
-        re = QCoreApplication::translate( "progress", "Move");
+        re = QCoreApplication::translate( "progress", "Moved to %1").arg(progress.rename_target);
         break;
     case EndRename:
-        re = QCoreApplication::translate( "progress", "Move");
+        re = QCoreApplication::translate( "progress", "Moved to %1").arg(progress.rename_target);
         break;
     default:
         Q_ASSERT(false);
