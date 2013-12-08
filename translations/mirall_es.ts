@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Seleccionar...</translation>
+        <translation>&amp;Seleccionar</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="55"/>
@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="107"/>
         <source>TextLabel</source>
-        <translation>Etiqueta de texto</translation>
+        <translation>EtiquetaDeTexto</translation>
     </message>
 </context>
 <context>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="793"/>
         <source>No connection to %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Sin conexión a %1 en &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="759"/>
@@ -371,7 +371,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="450"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="451"/>
         <source>Unable to initialize a sync journal.</source>
         <translation type="unfinished"/>
     </message>
@@ -1346,7 +1346,7 @@ Los elementos marcados también se eliminarán si impiden la eliminación de alg
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="62"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>Reintentar Sincronizar</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="66"/>
@@ -1356,7 +1356,7 @@ Los elementos marcados también se eliminarán si impiden la eliminación de alg
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="67"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Copie la lista de actividades al portapapeles</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="136"/>
@@ -1374,15 +1374,16 @@ Los elementos marcados también se eliminarán si impiden la eliminación de alg
         <translation>No hay más espacio disponible en el servidor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="278"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="279"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="280"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="281"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>1% de los archivos fueron ignorados debido a errores previos.
+Intente sincronizar los archivos nuevamente.</translation>
     </message>
 </context>
 <context>
@@ -1895,12 +1896,12 @@ Please ensure that your network connection is working.</source>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="886"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="888"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Esta carpeta no debe ser renombrada. Ha sido renombrada a su nombre original</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="888"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="890"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Esta carpeta no debe ser renombrada. Favor de renombrar a Compartida.</translation>
     </message>
@@ -2017,8 +2018,8 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
-        <source>Move</source>
-        <translation>Mover</translation>
+        <source>Moved to %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
@@ -2090,7 +2091,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronización exitosa, algunos archivos fueron ignorados.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>

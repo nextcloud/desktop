@@ -371,7 +371,7 @@
         <translation>Arquivos que contém caracteres inválidos não podem ser sincronizados através de plataformas. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="450"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="451"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Impossibilitado de iniciar a sincronização.</translation>
     </message>
@@ -1373,12 +1373,12 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
         <translation>Não existe mais espaço disponível para armazenamento no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="278"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="279"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Correntemente nenhum arquivo será ignorado por causa de erros prévios.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="280"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="281"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 arquivos são ignorados por causa de erros prévios.
@@ -1896,12 +1896,12 @@ Certifique-se que sua conexão de rede está funcionando.</translation>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="886"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="888"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Esta pasta não pode ser renomeada. Ele será renomeado de volta ao seu nome original.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="888"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="890"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Esta pasta não pode ser renomeada. Por favor, nomeie-a de volta para Compartilhada.</translation>
     </message>
@@ -2018,8 +2018,8 @@ Certifique-se que sua conexão de rede está funcionando.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
-        <source>Move</source>
-        <translation>Mover</translation>
+        <source>Moved to %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
