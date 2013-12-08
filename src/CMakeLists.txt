@@ -130,6 +130,40 @@ ENDIF()
 
 qt_wrap_cpp(syncMoc ${libsync_HEADERS})
 
+# These headers are installed for libowncloudsync to be used by 3rd party apps
+set(owncloudsync_HEADERS
+    mirall/account.h
+    mirall/csyncthread.h
+    mirall/folder.h
+    mirall/folderman.h
+    mirall/folderwatcher.h
+    mirall/mirallconfigfile.h
+    mirall/networkjobs.h
+    mirall/progressdispatcher.h
+    mirall/syncfileitem.h
+    mirall/syncjournaldb.h
+    mirall/syncresult.h
+)
+
+INSTALL(
+  FILES
+    ${owncloudsync_HEADERS}
+  DESTINATION
+    ${INCLUDE_INSTALL_DIR}/owncloudsync/mirall
+)
+
+set(creds_HEADERS
+    creds/abstractcredentials.h
+    creds/httpcredentials.h
+)
+
+INSTALL(
+  FILES
+    ${creds_HEADERS}
+  DESTINATION
+    ${INCLUDE_INSTALL_DIR}/owncloudsync/creds
+)
+
 
 IF( DEFINED CSYNC_BUILD_PATH )
 SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbf.a)
