@@ -18,9 +18,6 @@
 #define MIRALL_STRINGIFY(s) MIRALL_TOSTRING(s)
 #define MIRALL_TOSTRING(s) #s
 
-/* MIRALL version macros */
-#define MIRALL_VERSION_INT_(a, b, c, d) ((a) << 24 | (b) << 16 | (c << 8) | (d))
-
 /* MIRALL version */
 #define MIRALL_VERSION_MAJOR @MIRALL_VERSION_MAJOR@
 #define MIRALL_VERSION_MINOR @MIRALL_VERSION_MINOR@
@@ -32,9 +29,5 @@
 
 #define MIRALL_VERSION_STRING "@MIRALL_VERSION_STRING@"
 
-#define MIRALL_VERSION_INT MIRALL_VERSION_INT_(MIRALL_VERSION_MAJOR, \
-                                           MIRALL_VERSION_MINOR, \
-                                           MIRALL_VERSION_PATCH, \
-                                           MIRALL_VERSION_BUILD)
 
 #endif // VERSION_H
