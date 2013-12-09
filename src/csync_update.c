@@ -601,7 +601,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto done;
     }
 
-    if (flag == CSYNC_FTW_FLAG_DIR && depth) {
+    if (flag == CSYNC_FTW_FLAG_DIR && depth
+        && (!ctx->current_fs || ctx->current_fs->instruction != CSYNC_INSTRUCTION_IGNORE)) {
       rc = csync_ftw(ctx, filename, fn, depth - 1);
       if (rc < 0) {
         ctx->current_fs = previous_fs;
