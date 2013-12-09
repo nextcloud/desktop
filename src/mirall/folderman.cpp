@@ -84,6 +84,7 @@ int FolderMan::unloadAllFolders()
         delete _folderMap.take( i.key() );
         cnt++;
     }
+    _currentSyncFolder.clear();
     return cnt;
 }
 
@@ -347,7 +348,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
 
     qDebug() << "Schedule folder " << alias << " to sync!";
     if( _currentSyncFolder == alias ) {
-        // the current folder is currently syncing.
+        qDebug() << " the current folder is currently syncing.";
         return;
     }
 
