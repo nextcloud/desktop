@@ -305,11 +305,11 @@ void Utility::showInFileManager(const QString &localPath)
 {
     if (isWindows()) {
         const QString explorer = "explorer.exe"; // FIXME: we trust it's in PATH
-        QStringList param;
+        QString param;
         if (!QFileInfo(localPath).isDir())
             param += QLatin1String("/select,");
         param += QDir::toNativeSeparators(localPath);
-        QProcess::startDetached(explorer, param);
+        QProcess::startDetached(explorer, QStringList(param));
     } else if (isMac()) {
         QStringList scriptArgs;
         scriptArgs << QLatin1String("-e")
