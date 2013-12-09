@@ -170,6 +170,11 @@ public:
      */
     bool systrayUseMonoIcons() const;
 
+    /**
+     * @brief Where to check for new Updates.
+     */
+    virtual QString updateCheckUrl() const;
+
 protected:
     QIcon themeIcon(const QString& name, bool sysTray = false) const;
     Theme() {}

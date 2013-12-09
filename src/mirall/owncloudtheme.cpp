@@ -60,7 +60,7 @@ QString ownCloudTheme::about() const
                "Based on Mirall by Duncan Mac-Vicar P.</small></p>"
                "%7"
                )
-            .arg(MIRALL_STRINGIFY(MIRALL_VERSION))
+            .arg(MIRALL_VERSION_STRING)
             .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
             .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN))
             .arg(devString);

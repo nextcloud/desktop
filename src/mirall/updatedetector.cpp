@@ -41,8 +41,7 @@ void UpdateDetector::versionCheck( Theme *theme )
 {
     connect(_accessManager, SIGNAL(finished(QNetworkReply*)), this,
             SLOT(slotVersionInfoArrived(QNetworkReply*)) );
-    QUrl url(QLatin1String("https://download.owncloud.com/clientupdater.php"));
-    QString ver = QString::fromLatin1("%1.%2.%3").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
+    QUrl url(Theme::instance()->updateCheckUrl());
 
     QString platform = QLatin1String("stranger");
 #ifdef Q_OS_LINUX
@@ -60,7 +59,8 @@ void UpdateDetector::versionCheck( Theme *theme )
     if( !sysInfo.isEmpty() ) {
         url.addQueryItem(QLatin1String("client"), sysInfo );
     }
-    url.addQueryItem( QLatin1String("version"), ver );
+    url.addQueryItem( QLatin1String("version"),
+                      QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION_FULL)) );
     url.addQueryItem( QLatin1String("platform"), platform );
     url.addQueryItem( QLatin1String("oem"), theme->appName() );
 
@@ -99,9 +99,6 @@ QString UpdateDetector::getSystemInfo()
 
 void UpdateDetector::showDialog()
 {
-    // if the version tag is set, there is a newer version.
-    QString ver = QString::fromLatin1("%1.%2.%3")
-            .arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR).arg(MIRALL_VERSION_MICRO);
     QDialog *msgBox = new QDialog;
 
     QIcon info = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation, 0, 0);
@@ -121,7 +118,8 @@ void UpdateDetector::showDialog()
     QLabel *lbl = new QLabel;
     QString txt = tr("<p>A new version of the %1 Client is available.</p>"
                      "<p><b>%2</b> is available for download. The installed version is %3.<p>")
-            .arg(Theme::instance()->appNameGUI()).arg(ocClient.versionstring()).arg(ver);
+            .arg(Theme::instance()->appNameGUI()).arg(ocClient.versionstring())
+            .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION_FULL)));
 
     lbl->setText(txt);
     lbl->setTextFormat(Qt::RichText);

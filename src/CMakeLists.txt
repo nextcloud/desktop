@@ -199,8 +199,8 @@ add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
 qt5_use_modules(${synclib_NAME} Widgets Network Xml WebKitWidgets Sql)
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
-	VERSION ${VERSION}
-	SOVERSION ${SOVERSION}
+	VERSION ${MIRALL_VERSION}
+	SOVERSION ${MIRALL_SOVERSION}
 )
 
 target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )

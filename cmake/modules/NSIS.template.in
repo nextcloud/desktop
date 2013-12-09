@@ -49,7 +49,8 @@
 
 !define VER_MAJOR "@CPACK_PACKAGE_VERSION_MAJOR@"
 !define VER_MINOR "@CPACK_PACKAGE_VERSION_MINOR@"
-!define VER_BUILD "@CPACK_PACKAGE_VERSION_PATCH@"
+!define VER_PATCH "@CPACK_PACKAGE_VERSION_PATCH@"
+!define VER_BUILD "@CPACK_PACKAGE_VERSION_BUILD@"
 !define VERSION "@CPACK_PACKAGE_VERSION@"
 
 ;-----------------------------------------------------------------------------
@@ -205,7 +206,10 @@ Function PageReinstall
    IntCmp $R0 ${VER_MAJOR} minor_check new_version older_version
    minor_check:
       ReadRegDWORD $R0 HKLM "Software\${APPLICATION_NAME}" "VersionMinor"
-      IntCmp $R0 ${VER_MINOR} build_check new_version older_version
+      IntCmp $R0 ${VER_MINOR} rev_check new_version older_version
+   rev_check:
+      ReadRegDWORD $R0 HKLM "Software\${APPLICATION_NAME}" "VersionRevision"
+      IntCmp $R0 ${VER_PATCH} build_check new_version older_version
    build_check:
       ReadRegDWORD $R0 HKLM "Software\${APPLICATION_NAME}" "VersionBuild"
       IntCmp $R0 ${VER_BUILD} same_version new_version older_version
@@ -410,7 +414,7 @@ Section -post
    WriteRegStr HKLM "Software\${APPLICATION_NAME}" "" $INSTDIR
    WriteRegDWORD HKLM "Software\${APPLICATION_NAME}" "VersionMajor" "${VER_MAJOR}"
    WriteRegDWORD HKLM "Software\${APPLICATION_NAME}" "VersionMinor" "${VER_MINOR}"
-   WriteRegDWORD HKLM "Software\${APPLICATION_NAME}" "VersionRevision" "${REVISION}"
+   WriteRegDWORD HKLM "Software\${APPLICATION_NAME}" "VersionRevision" "${VER_PATCH}"
    WriteRegDWORD HKLM "Software\${APPLICATION_NAME}" "VersionBuild" "${VER_BUILD}"
 
    ;Add or Remove Programs entry.
