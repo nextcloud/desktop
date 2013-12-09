@@ -179,8 +179,8 @@ void Application::slotLogout()
 
 void Application::slotAccountChanged(Account *newAccount, Account *oldAccount)
 {
-    disconnect(oldAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotOnlineStateChanged()));
-    connect(newAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotOnlineStateChanged()));
+    disconnect(oldAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
+    connect(newAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
 }
 
 
