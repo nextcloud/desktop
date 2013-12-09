@@ -145,25 +145,21 @@ set(owncloudsync_HEADERS
     mirall/syncresult.h
 )
 
-INSTALL(
-  FILES
-    ${owncloudsync_HEADERS}
-  DESTINATION
-    ${INCLUDE_INSTALL_DIR}/owncloudsync/mirall
-)
-
 set(creds_HEADERS
     creds/abstractcredentials.h
     creds/httpcredentials.h
 )
 
-INSTALL(
-  FILES
-    ${creds_HEADERS}
-  DESTINATION
-    ${INCLUDE_INSTALL_DIR}/owncloudsync/creds
-)
-
+IF (NOT APPLE)
+    INSTALL(
+        FILES ${owncloudsync_HEADERS}
+        DESTINATION ${INCLUDE_INSTALL_DIR}/owncloudsync/mirall
+    )
+    INSTALL(
+        FILES ${creds_HEADERS}
+        DESTINATION ${INCLUDE_INSTALL_DIR}/owncloudsync/creds
+    )
+ENDIF(NOT APPLE)
 
 IF( DEFINED CSYNC_BUILD_PATH )
 SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbf.a)
