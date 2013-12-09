@@ -353,12 +353,12 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="238"/>
         <source>The item is not synced because of previous errors.</source>
-        <translation>Questo oggetto non è stato sincronizzato a causa di errori precedenti.</translation>
+        <translation>Questo elemento non è stato sincronizzato a causa di errori precedenti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="273"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>I link simbolici non sono supportati dalla sincronizzazione.</translation>
+        <translation>I collegamenti simbolici non sono supportati dalla sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="276"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="451"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation>Impossibile inizializzare registro di sincronizzazione.</translation>
+        <translation>Impossibile inizializzare il registro di sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
@@ -687,7 +687,7 @@ documentazione per trovare possibili soluzioni.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="170"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>L&apos;alias &lt;i&gt;%1&lt;/i&gt; è già in uso. Indica un altro alias.</translation>
+        <translation>L&apos;alias &lt;i&gt;%1&lt;/i&gt; è già in uso. Scegli un altro alias.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="126"/>
@@ -725,7 +725,7 @@ documentazione per trovare possibili soluzioni.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="264"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Non è stato possibile creare la directory su %1. Controlla manualmente.</translation>
+        <translation>Non è stato possibile creare la cartella su %1. Controlla manualmente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="368"/>
@@ -735,7 +735,7 @@ documentazione per trovare possibili soluzioni.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="374"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation>Stai già sincronizzando tutti i tuoi file. La sincronizzazione di un altra cartella &lt;b&gt;non&lt;/b&gt; è supportata. Se vuoi sincronizzare più cartelle, per favore rimuovi la configurazione della cartella principale di sincronizzazione.</translation>
+        <translation>Stai già sincronizzando tutti i tuoi file. La sincronizzazione di un altra cartella &lt;b&gt;non&lt;/b&gt; è supportata. Se vuoi sincronizzare più cartelle, rimuovi la configurazione della cartella principale di sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="313"/>
@@ -754,7 +754,7 @@ documentazione per trovare possibili soluzioni.</translation>
         <location filename="../src/mirall/folderwizard.cpp" line="43"/>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; </source>
-        <translation>&lt;b&gt;Attenzione:&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Avviso:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1288,7 +1288,7 @@ Gli elementi marcati saranno inoltre eliminati se impediscono la rimozione di un
         <location filename="../src/mirall/owncloudpropagator.cpp" line="387"/>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="441"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation>Un file locale è cambiato durante la sincronizzazione, riprovare più avanti.</translation>
+        <translation>Un file locale è cambiato durante la sincronizzazione, riprova più tardi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="390"/>
@@ -1306,7 +1306,7 @@ Gli elementi marcati saranno inoltre eliminati se impediscono la rimozione di un
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation>Sincronizza Attività</translation>
+        <translation>Sincronizza attività</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
@@ -1346,7 +1346,7 @@ Gli elementi marcati saranno inoltre eliminati se impediscono la rimozione di un
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="62"/>
         <source>Retry Sync</source>
-        <translation>Riprova Sincronizzazione</translation>
+        <translation>Riprova sincronizzazione</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="66"/>
@@ -1356,7 +1356,7 @@ Gli elementi marcati saranno inoltre eliminati se impediscono la rimozione di un
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="67"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation>Copia la lista attività negli appunti.</translation>
+        <translation>Copia l&apos;elenco delle attività negli appunti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="136"/>
@@ -1434,7 +1434,7 @@ Prova a sincronizzare nuovamente.</translation>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="117"/>
         <source>Error loading IdP login page</source>
-        <translation>Errore durante il caricamento della pagina di login IdP</translation>
+        <translation>Errore durante il caricamento della pagina di accessoIdP</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
@@ -1564,7 +1564,7 @@ Assicurati che la tua connessione sia funzionante.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
         <source>Please sign in</source>
-        <translation>Per favore accedi</translation>
+        <translation>Accedi</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="203"/>
@@ -2020,7 +2020,7 @@ Assicurati che la tua connessione sia funzionante.</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Spostato in %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>

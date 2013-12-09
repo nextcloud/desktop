@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="451"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo inicializar un registro (journal) de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="149"/>
@@ -559,7 +559,7 @@ Está seguro de que desea realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="126"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Una antigua jornada sincronizada &apos;%1&apos; se ha encontrado, pero no se ha podido eliminar. Por favor asegúrese que ninguna aplicación la está utilizando.</translation>
+        <translation>Un antiguo registro (journal) de sincronización &apos;%1&apos; se ha encontrado, pero no se ha podido eliminar. Por favor asegúrese que ninguna aplicación la está utilizando.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="602"/>

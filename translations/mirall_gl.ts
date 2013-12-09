@@ -2020,7 +2020,7 @@ Asegúrese de que a súa conexión de rede está a funcionar.</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Movido a %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
