@@ -416,6 +416,11 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
      }
      CloseHandle(h);
   }
+
+  /* check if it is a symlink on win32 */
+  if (c_islink(uri)) {
+      buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+  }
 #else /* non windows platforms: */
 
   /* Both values are only initialized to zero as they are not used in csync */

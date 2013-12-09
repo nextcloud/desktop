@@ -37,6 +37,37 @@
 
 #include "c_private.h"
 
+#ifdef _WIN32
+/* check if path is a symlink */
+int c_islink(const char *path) {
+    int re = 0;
+
+    mbchar_t *wpath = 0;
+    DWORD    dwAttrs;
+    WIN32_FIND_DATAW FindFileData;
+    HANDLE hFind;
+
+    wpath = c_utf8_to_locale(path);
+
+    dwAttrs = GetFileAttributesW(wpath);
+    if (dwAttrs != INVALID_FILE_ATTRIBUTES) {
+
+        if ((dwAttrs & FILE_ATTRIBUTE_REPARSE_POINT)) {
+            hFind = FindFirstFileW(wpath, &FindFileData );
+            if (hFind !=  INVALID_HANDLE_VALUE) {
+                if( (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) &&
+                    (FindFileData.dwReserved0 & IO_REPARSE_TAG_SYMLINK) ) {
+                        re = 1;
+                }
+            }
+            FindClose(hFind);
+        }
+    }
+    c_free_locale_string(wpath);
+    return re;
+}
+#endif
+
 /* check if path is a file */
 int c_isfile(const char *path) {
   csync_stat_t sb;

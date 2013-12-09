@@ -40,12 +40,24 @@
 #define BUFFER_SIZE (16 * 1024)
 #endif
 
+#ifdef _WIN32
+/**
+ * @brief Check if a path is a link.
+ *
+ * @param path  The path to check.
+ *
+ * @return 1 if the path is a symbolic link, 0 if the path doesn't
+ *         exist or is something else.
+ */
+int c_islink(const char *path);
+#endif
+
 /**
  * @brief Check if a path is a regular file or a link.
  *
  * @param path  The path to check.
  *
- * @return 1 if the path is a file, 0 if the path doesn't exist, is a
+ * @return 1 if the path is a file, 0 if the path doesn't exist, is
  *         something else or can't be accessed.
  */
 int c_isfile(const char *path);
