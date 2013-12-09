@@ -111,7 +111,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !ifdef OPTION_FINISHPAGE_RELEASE_NOTES
    !define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
    !define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\NOTES.txt"
-   !define MUI_FINISHPAGE_SHOWREADME_TEXT "Show release notes"
+   !define MUI_FINISHPAGE_SHOWREADME_TEXT $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING
 !endif
 !ifdef OPTION_FINISHPAGE_LAUNCHER
    !define MUI_FINISHPAGE_NOAUTOCLOSE
@@ -142,6 +142,9 @@ UninstPage custom un.UnPageUserAppData un.UnPageUserAppDataLeave
 ;-----------------------------------------------------------------------------
 !insertmacro MUI_LANGUAGE "English"
 
+!include ${source_path}/admin/win/nsi/l10n/languages.nsh
+!include ${source_path}/admin/win/nsi/l10n/declarations.nsh
+
 ##############################################################################
 #                                                                            #
 #   FINISH PAGE LAUNCHER FUNCTIONS                                           #
@@ -169,14 +172,14 @@ FunctionEnd
 
 !macro ConfirmEndProcess processName
    MessageBox MB_YESNO|MB_ICONEXCLAMATION \
-     "Found ${processName} process(s) which need to be stopped.$\nDo you want the installer to stop these for you?" \
+     $ConfirmEndProcess_MESSAGEBOX_TEXT \
      IDYES process_${processName}_kill IDNO process_${processName}_ended
    process_${processName}_kill:
-      DetailPrint "Killing ${processName} processes."
+      DetailPrint $ConfirmEndProcess_KILLING_PROCESSES_TEXT
       Processes::KillProcess ${processName}
       Sleep 1500
       StrCmp $R0 "1" process_${processName}_ended
-      DetailPrint "Process to kill not found!"
+      DetailPrint $ConfirmEndProcess_KILL_NOT_FOUND_TEXT
    process_${processName}_ended:
 !macroend
 
@@ -215,26 +218,26 @@ Function PageReinstall
       IntCmp $R0 ${VER_BUILD} same_version new_version older_version
 
    new_version:
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 1" "Text" "An older version of ${APPLICATION_NAME} is installed on your system. It is recommended that you uninstall the current version before installing. Select the operation you want to perform and click Next to continue."
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 2" "Text" "Uninstall before installing"
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 3" "Text" "Do not uninstall"
-      !insertmacro MUI_HEADER_TEXT "Already Installed" "Choose how you want to install ${APPLICATION_NAME}."
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 1" "Text" $PageReinstall_NEW_Field_1
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 2" "Text" $PageReinstall_NEW_Field_2
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 3" "Text" $PageReinstall_NEW_Field_3
+      !insertmacro MUI_HEADER_TEXT $PageReinstall_NEW_MUI_HEADER_TEXT_TITLE $PageReinstall_NEW_MUI_HEADER_TEXT_SUBTITLE
       StrCpy $R0 "1"
       Goto reinst_start
 
    older_version:
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 1" "Text" "A newer version of ${APPLICATION_NAME} is already installed! It is not recommended that you install an older version. If you really want to install this older version, it is better to uninstall the current version first. Select the operation you want to perform and click Next to continue."
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 2" "Text" "Uninstall before installing"
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 3" "Text" "Do not uninstall"
-      !insertmacro MUI_HEADER_TEXT "Already Installed" "Choose how you want to install ${APPLICATION_NAME}."
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 1" "Text" $PageReinstall_OLD_Field_1
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 2" "Text" $PageReinstall_NEW_Field_2
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 3" "Text" $PageReinstall_NEW_Field_3
+      !insertmacro MUI_HEADER_TEXT $PageReinstall_NEW_MUI_HEADER_TEXT_TITLE $PageReinstall_NEW_MUI_HEADER_TEXT_SUBTITLE
       StrCpy $R0 "1"
       Goto reinst_start
 
    same_version:
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 1" "Text" "${APPLICATION_NAME} ${VERSION} is already installed.\r\nSelect the operation you want to perform and click Next to continue."
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 2" "Text" "Add/Reinstall components"
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 3" "Text" "Uninstall ${APPLICATION_NAME}"
-      !insertmacro MUI_HEADER_TEXT "Already Installed" "Choose the maintenance option to perform."
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 1" "Text" $PageReinstall_SAME_Field_1
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 2" "Text" $PageReinstall_SAME_Field_2
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 3" "Text" $PageReinstall_SAME_Field_3
+      !insertmacro MUI_HEADER_TEXT $PageReinstall_NEW_MUI_HEADER_TEXT_TITLE $PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE
       StrCpy $R0 "2"
 
    reinst_start:
@@ -274,7 +277,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    SetDetailsPrint listonly
 
    SetDetailsPrint textonly
-   DetailPrint "Installing ${APPLICATION_NAME} essentials."
+   DetailPrint $SEC_APPLICATION_DETAILS
    SetDetailsPrint listonly
    SetOutPath "$INSTDIR"
 
@@ -353,10 +356,10 @@ SectionEnd
 SectionGroup "Shortcuts"
 
 !ifdef OPTION_SECTION_SC_START_MENU
-   ${MementoSection} "Start Menu Program Shortcut" SEC_START_MENU
+   ${MementoSection} $OPTION_SECTION_SC_START_MENU_SECTION SEC_START_MENU
       SectionIn 1 2 3
       SetDetailsPrint textonly
-      DetailPrint "Adding shortcut for ${APPLICATION_NAME} to the Start Menu."
+      DetailPrint $OPTION_SECTION_SC_START_MENU_DetailPrint
       SetDetailsPrint listonly
       SetShellVarContext all
       CreateShortCut "$SMPROGRAMS\${APPLICATION_NAME}.lnk" "$INSTDIR\${APPLICATION_EXECUTABLE}"
@@ -365,20 +368,20 @@ SectionGroup "Shortcuts"
 !endif
 
 !ifdef OPTION_SECTION_SC_DESKTOP
-   ${MementoSection} "Desktop Shortcut" SEC_DESKTOP
+   ${MementoSection} $OPTION_SECTION_SC_DESKTOP_SECTION SEC_DESKTOP
       SectionIn 1 2
       SetDetailsPrint textonly
-      DetailPrint "Creating Desktop Shortcuts"
+      DetailPrint $OPTION_SECTION_SC_DESKTOP_DetailPrint
       SetDetailsPrint listonly
       CreateShortCut "$DESKTOP\${APPLICATION_NAME}.lnk" "$INSTDIR\${APPLICATION_EXECUTABLE}"
    ${MementoSectionEnd}
 !endif
 
 !ifdef OPTION_SECTION_SC_QUICK_LAUNCH
-   ${MementoSection} "Quick Launch Shortcut" SEC_QUICK_LAUNCH
+   ${MementoSection} $OPTION_SECTION_SC_QUICK_LAUNCH_SECTION SEC_QUICK_LAUNCH
       SectionIn 1 2
       SetDetailsPrint textonly
-      DetailPrint "Creating Quick Launch Shortcut"
+      DetailPrint $OPTION_SECTION_SC_QUICK_LAUNCH_DetailPrint
       SetDetailsPrint listonly
       CreateShortCut "$QUICKLAUNCH\${APPLICATION_NAME}.lnk" "$INSTDIR\${APPLICATION_EXECUTABLE}"
    ${MementoSectionEnd}
@@ -391,23 +394,24 @@ ${MementoSectionDone}
 ; Installer section descriptions
 ;--------------------------------
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_APPLICATION} "${APPLICATION_NAME} essentials."
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_START_MENU} "${APPLICATION_NAME} shortcut."
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_DESKTOP} "Desktop shortcut for ${APPLICATION_NAME}."
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_QUICK_LAUNCH} "Quick Launch shortcut for ${APPLICATION_NAME}."
+!insertmacro MUI_DESCRIPTION_TEXT ${SEC_APPLICATION} $OPTION_SECTION_SC_APPLICATION_Desc
+!insertmacro MUI_DESCRIPTION_TEXT ${SEC_START_MENU} $OPTION_SECTION_SC_START_MENU_Desc
+!insertmacro MUI_DESCRIPTION_TEXT ${SEC_DESKTOP} $OPTION_SECTION_SC_DESKTOP_Desc
+!insertmacro MUI_DESCRIPTION_TEXT ${SEC_QUICK_LAUNCH} $OPTION_SECTION_SC_QUICK_LAUNCH_Desc
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
+
 
 Section -post
 
    ;Uninstaller file.
    SetDetailsPrint textonly
-   DetailPrint "Writing Uninstaller"
+   DetailPrint $UNINSTALLER_FILE_Detail
    SetDetailsPrint listonly
    WriteUninstaller $INSTDIR\uninstall.exe
 
    ;Registry keys required for installer version handling and uninstaller.
    SetDetailsPrint textonly
-   DetailPrint "Writing Installer Registry Keys"
+   DetailPrint $UNINSTALLER_REGISTRY_Detail
    SetDetailsPrint listonly
 
    ;Version numbers used to detect existing installation version for comparisson.
@@ -433,7 +437,7 @@ Section -post
 
 
    SetDetailsPrint textonly
-   DetailPrint "Finished."
+   DetailPrint $UNINSTALLER_FINISHED_Detail
 SectionEnd
 
 ##############################################################################
@@ -448,7 +452,7 @@ Var UnPageUserAppDataCheckbox_State
 Var UnPageUserAppDataEditBox
 
 Function un.UnPageUserAppData
-   !insertmacro MUI_HEADER_TEXT "Uninstall ${APPLICATION_NAME}" "Remove ${APPLICATION_NAME}'s data folder from your computer."
+   !insertmacro MUI_HEADER_TEXT $UNINSTALLER_APPDATA_TITLE $UNINSTALLER_APPDATA_SUBTITLE
    nsDialogs::Create /NOUNLOAD 1018
    Pop $UnPageUserAppDataDialog
 
@@ -456,17 +460,17 @@ Function un.UnPageUserAppData
       Abort
    ${EndIf}
 
-   ${NSD_CreateLabel} 0 0 100% 12u "Do you want to delete ${APPLICATION_NAME}'s data folder?"
+   ${NSD_CreateLabel} 0 0 100% 12u $UNINSTALLER_APPDATA_LABEL_1
    Pop $0
 
    ${NSD_CreateText} 0 13u 100% 12u "$LOCALAPPDATA\${APPLICATION_NAME}"
    Pop $UnPageUserAppDataEditBox
    SendMessage $UnPageUserAppDataEditBox ${EM_SETREADONLY} 1 0
 
-   ${NSD_CreateLabel} 0 46u 100% 24u "Leave unchecked to keep the data folder for later use or check to delete the data folder."
+   ${NSD_CreateLabel} 0 46u 100% 24u $UNINSTALLER_APPDATA_LABEL_2
    Pop $0
 
-   ${NSD_CreateCheckbox} 0 71u 100% 8u "Yes, delete this data folder."
+   ${NSD_CreateCheckbox} 0 71u 100% 8u $UNINSTALLER_APPDATA_CHECKBOX
    Pop $UnPageUserAppDataCheckbox
 
    nsDialogs::Show
@@ -482,8 +486,8 @@ FunctionEnd
 
 Section Uninstall
    IfFileExists "$INSTDIR\${APPLICATION_EXECUTABLE}" owncloud_installed
-      MessageBox MB_YESNO "It does not appear that ${APPLICATION_NAME} is installed in the directory '$INSTDIR'.$\r$\nContinue anyway (not recommended)?" IDYES owncloud_installed
-      Abort "Uninstall aborted by user"
+      MessageBox MB_YESNO $UNINSTALL_MESSAGEBOX IDYES owncloud_installed
+      Abort $UNINSTALL_ABORT
    owncloud_installed:
 
    ;Delete registry keys.
@@ -525,7 +529,7 @@ Section Uninstall
    ${EndIf}
 
    SetDetailsPrint textonly
-   DetailPrint "Finshed."
+   DetailPrint $UNINSTALLER_FINISHED_Detail
 SectionEnd
 
 ##############################################################################
@@ -537,9 +541,65 @@ SectionEnd
 Function .onInit
    !insertmacro INSTALLOPTIONS_EXTRACT "NSIS.InstallOptions.ini"
 
+   !insertmacro MUI_LANGDLL_DISPLAY
+
+   # load the selected language file
+  StrCmp $LANGUAGE ${LANG_GERMAN} German 0
+  StrCmp $LANGUAGE ${LANG_DUTCH} Dutch 0
+  StrCmp $LANGUAGE ${LANG_FINNISH} Finnish 0
+  StrCmp $LANGUAGE ${LANG_JAPANESE} Japanese 0
+  StrCmp $LANGUAGE ${LANG_SLOVENIAN} Slovenian 0
+  StrCmp $LANGUAGE ${LANG_SPANISH} Spanish 0
+  StrCmp $LANGUAGE ${LANG_ITALIAN} Italian 0
+  StrCmp $LANGUAGE ${LANG_ESTONIAN} Estonian 0
+  StrCmp $LANGUAGE ${LANG_GREEK} Greek 0
+  StrCmp $LANGUAGE ${LANG_GREEK} Basque 0
+  StrCmp $LANGUAGE ${LANG_GREEK} Galician 0
+  StrCmp $LANGUAGE ${LANG_GREEK} Slovak 0
+  StrCmp $LANGUAGE ${LANG_PORTUGUESEBR} Brazilian EndLanguageCmp
+  German:
+  !include "${source_path}/admin/win/nsi/l10n\German.nsh"
+  Goto EndLanguageCmp
+  Dutch:
+  !include "${source_path}/admin/win/nsi/l10n\Dutch.nsh"
+  Goto EndLanguageCmp
+  Finnish:
+  !include "${source_path}/admin/win/nsi/l10n\Finnish.nsh"
+  Goto EndLanguageCmp
+  Japanese:
+  !include "${source_path}/admin/win/nsi/l10n\Japanese.nsh"
+  Goto EndLanguageCmp
+  Slovenian:
+  !include "${source_path}/admin/win/nsi/l10n\Slovenian.nsh"
+  Goto EndLanguageCmp
+  Spanish:
+  !include "${source_path}/admin/win/nsi/l10n\Spanish.nsh"
+  Goto EndLanguageCmp
+  Italian:
+  !include "${source_path}/admin/win/nsi/l10n\Italian.nsh"
+  Goto EndLanguageCmp
+  Estonian:
+  !include "${source_path}/admin/win/nsi/l10n\Estonian.nsh"
+  Goto EndLanguageCmp
+  Greek:
+  !include "${source_path}/admin/win/nsi/l10n\Greek.nsh"
+  Goto EndLanguageCmp
+  Basque:
+  !include "${source_path}/admin/win/nsi/l10n\Basque.nsh"
+  Goto EndLanguageCmp
+  Galician:
+  !include "${source_path}/admin/win/nsi/l10n\Galician.nsh"
+  Goto EndLanguageCmp
+  Slovak:
+  !include "${source_path}/admin/win/nsi/l10n\Slovak.nsh"
+  Goto EndLanguageCmp
+  Brazilian:
+  !include "${source_path}/admin/win/nsi/l10n\PortugueseBR.nsh"
+  EndLanguageCmp:
+
    ;Remove Quick Launch option from Windows 7, as no longer applicable - usually.
    ${IfNot} ${AtMostWinVista}
-      SectionSetText ${SEC_QUICK_LAUNCH} "Quick Launch Shortcut (N/A)"
+      SectionSetText ${SEC_QUICK_LAUNCH} $INIT_NO_QUICK_LAUNCH
       SectionSetFlags ${SEC_QUICK_LAUNCH} ${SF_RO}
       SectionSetInstTypes ${SEC_QUICK_LAUNCH} 0
    ${EndIf}
@@ -554,7 +614,7 @@ Function .onInit
       Quit
 
    UAC_Err:
-      MessageBox MB_ICONSTOP "Unable to elevate, error $0"
+      MessageBox MB_ICONSTOP "$UAC_ERROR_ELEVATE $0"
       Abort
 
    UAC_ElevationAborted:
@@ -563,14 +623,14 @@ Function .onInit
    UAC_Success:
       StrCmp 1 $3 +4 ;Admin?
       StrCmp 3 $1 0 UAC_ElevationAborted ;Try again?
-      MessageBox MB_ICONSTOP "This installer requires admin access, try again"
+      MessageBox MB_ICONSTOP $UAC_INSTALLER_REQUIRE_ADMIN
       goto UAC_Elevate
 
    ;Prevent multiple instances.
    System::Call 'kernel32::CreateMutexA(i 0, i 0, t "owncloudInstaller") i .r1 ?e'
    Pop $R0
    StrCmp $R0 0 +3
-      MessageBox MB_OK|MB_ICONEXCLAMATION "The installer is already running."
+      MessageBox MB_OK|MB_ICONEXCLAMATION $INIT_INSTALLER_RUNNING
       Abort
 
    ;Use available InstallLocation when possible. This is useful in the uninstaller
@@ -608,7 +668,7 @@ Function un.onInit
       Quit
 
    UAC_Err:
-      MessageBox MB_ICONSTOP "Unable to elevate, error $0"
+      MessageBox MB_ICONSTOP "$UAC_ERROR_ELEVATE $0"
       Abort
 
    UAC_ElevationAborted:
@@ -617,14 +677,14 @@ Function un.onInit
    UAC_Success:
       StrCmp 1 $3 +4 ;Admin?
       StrCmp 3 $1 0 UAC_ElevationAborted ;Try again?
-      MessageBox MB_ICONSTOP "This uninstaller requires admin access, try again"
+      MessageBox MB_ICONSTOP $UAC_UNINSTALLER_REQUIRE_ADMIN
       goto UAC_Elevate
 
    ;Prevent multiple instances.
    System::Call 'kernel32::CreateMutexA(i 0, i 0, t "owncloudUninstaller") i .r1 ?e'
    Pop $R0
    StrCmp $R0 0 +3
-      MessageBox MB_OK|MB_ICONEXCLAMATION "This uninstaller is already running."
+      MessageBox MB_OK|MB_ICONEXCLAMATION $INIT_UNINSTALLER_RUNNING
       Abort
 
    ;Shutdown ${APPLICATION_NAME} in order to remove locked files.

@@ -1,0 +1,191 @@
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-09 06:40\n"
+"PO-Revision-Date: 2013-12-03 23:13+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. MUI_FINISHPAGE_SHOWREADME_TEXT_STRING
+msgid "Show release notes"
+msgstr "Show release notes"
+
+#. ConfirmEndProcess_MESSAGEBOX_TEXT
+msgid ""
+"Found ${processName} process(s) which need to be stopped.$\n"
+"Do you want the installer to stop these for you?"
+msgstr "Found ${processName} process(s) which need to be stopped.$\nDo you want the installer to stop these for you?"
+
+#. ConfirmEndProcess_KILLING_PROCESSES_TEXT
+msgid "Killing ${processName} processes."
+msgstr "Killing ${processName} processes."
+
+#. ConfirmEndProcess_KILL_NOT_FOUND_TEXT
+msgid "Process to kill not found!"
+msgstr "Process to kill not found!"
+
+#. PageReinstall_NEW_Field_1
+msgid ""
+"An older version of ${APPLICATION_NAME} is installed on your system. It is "
+"recommended that you uninstall the current version before installing. Select"
+" the operation you want to perform and click Next to continue."
+msgstr "An older version of ${APPLICATION_NAME} is installed on your system. It is recommended that you uninstall the current version before installing. Select the operation you want to perform and click Next to continue."
+
+#. PageReinstall_NEW_Field_2
+msgid "Uninstall before installing"
+msgstr "Uninstall before installing"
+
+#. PageReinstall_NEW_Field_3
+msgid "Do not uninstall"
+msgstr "Do not uninstall"
+
+#. PageReinstall_NEW_MUI_HEADER_TEXT_TITLE
+msgid "Already Installed"
+msgstr "Already Installed"
+
+#. PageReinstall_NEW_MUI_HEADER_TEXT_SUBTITLE
+msgid "Choose how you want to install ${APPLICATION_NAME}."
+msgstr "Choose how you want to install ${APPLICATION_NAME}."
+
+#. PageReinstall_OLD_Field_1
+msgid ""
+"A newer version of ${APPLICATION_NAME} is already installed! It is not "
+"recommended that you install an older version. If you really want to install"
+" this older version, it is better to uninstall the current version first. "
+"Select the operation you want to perform and click Next to continue."
+msgstr "A newer version of ${APPLICATION_NAME} is already installed! It is not recommended that you install an older version. If you really want to install this older version, it is better to uninstall the current version first. Select the operation you want to perform and click Next to continue."
+
+#. PageReinstall_SAME_Field_1
+msgid ""
+"${APPLICATION_NAME} ${VERSION} is already installed.\r\n"
+"Select the operation you want to perform and click Next to continue."
+msgstr "${APPLICATION_NAME} ${VERSION} is already installed.\r\nSelect the operation you want to perform and click Next to continue."
+
+#. PageReinstall_SAME_Field_2
+msgid "Add/Reinstall components"
+msgstr "Add/Reinstall components"
+
+#. PageReinstall_SAME_Field_3 UNINSTALLER_APPDATA_TITLE
+msgid "Uninstall ${APPLICATION_NAME}"
+msgstr "Uninstall ${APPLICATION_NAME}"
+
+#. PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE
+msgid "Choose the maintenance option to perform."
+msgstr "Choose the maintenance option to perform."
+
+#. SEC_APPLICATION_DETAILS
+msgid "Installing ${APPLICATION_NAME} essentials."
+msgstr "Installing ${APPLICATION_NAME} essentials."
+
+#. OPTION_SECTION_SC_START_MENU_SECTION
+msgid "Start Menu Program Shortcut"
+msgstr "Start Menu Program Shortcut"
+
+#. OPTION_SECTION_SC_START_MENU_DetailPrint
+msgid "Adding shortcut for ${APPLICATION_NAME} to the Start Menu."
+msgstr "Adding shortcut for ${APPLICATION_NAME} to the Start Menu."
+
+#. OPTION_SECTION_SC_DESKTOP_SECTION
+msgid "Desktop Shortcut"
+msgstr "Desktop Shortcut"
+
+#. OPTION_SECTION_SC_DESKTOP_DetailPrint
+msgid "Creating Desktop Shortcuts"
+msgstr "Creating Desktop Shortcuts"
+
+#. OPTION_SECTION_SC_QUICK_LAUNCH_SECTION
+msgid "Quick Launch Shortcut"
+msgstr "Quick Launch Shortcut"
+
+#. OPTION_SECTION_SC_QUICK_LAUNCH_DetailPrint
+msgid "Creating Quick Launch Shortcut"
+msgstr "Creating Quick Launch Shortcut"
+
+#. OPTION_SECTION_SC_APPLICATION_Desc
+msgid "${APPLICATION_NAME} essentials."
+msgstr "${APPLICATION_NAME} essentials."
+
+#. OPTION_SECTION_SC_START_MENU_Desc
+msgid "${APPLICATION_NAME} shortcut."
+msgstr "${APPLICATION_NAME} shortcut."
+
+#. OPTION_SECTION_SC_DESKTOP_Desc
+msgid "Desktop shortcut for ${APPLICATION_NAME}."
+msgstr "Desktop shortcut for ${APPLICATION_NAME}."
+
+#. OPTION_SECTION_SC_QUICK_LAUNCH_Desc
+msgid "Quick Launch shortcut for ${APPLICATION_NAME}."
+msgstr "Quick Launch shortcut for ${APPLICATION_NAME}."
+
+#. UNINSTALLER_APPDATA_SUBTITLE
+msgid "Remove ${APPLICATION_NAME}'s data folder from your computer."
+msgstr "Remove ${APPLICATION_NAME}'s data folder from your computer."
+
+#. UNINSTALLER_APPDATA_LABEL_1
+msgid "Do you want to delete ${APPLICATION_NAME}'s data folder?"
+msgstr "Do you want to delete ${APPLICATION_NAME}'s data folder?"
+
+#. UNINSTALLER_APPDATA_LABEL_2
+msgid ""
+"Leave unchecked to keep the data folder for later use or check to delete the"
+" data folder."
+msgstr "Leave unchecked to keep the data folder for later use or check to delete the data folder."
+
+#. UNINSTALLER_APPDATA_CHECKBOX
+msgid "Yes, delete this data folder."
+msgstr "Yes, delete this data folder."
+
+#. UNINSTALLER_FILE_Detail
+msgid "Writing Uninstaller"
+msgstr "Writing Uninstaller"
+
+#. UNINSTALLER_REGISTRY_Detail
+msgid "Writing Installer Registry Keys"
+msgstr "Writing Installer Registry Keys"
+
+#. UNINSTALLER_FINISHED_Detail
+msgid "Finished"
+msgstr "Finished"
+
+#. UNINSTALL_MESSAGEBOX
+msgid ""
+"It does not appear that ${APPLICATION_NAME} is installed in the directory '$INSTDIR'.$\r"
+"$\n"
+"Continue anyway (not recommended)?"
+msgstr "It does not appear that ${APPLICATION_NAME} is installed in the directory '$INSTDIR'.$\r$\nContinue anyway (not recommended)?"
+
+#. UNINSTALL_ABORT
+msgid "Uninstall aborted by user"
+msgstr "Uninstall aborted by user"
+
+#. INIT_NO_QUICK_LAUNCH
+msgid "Quick Launch Shortcut (N/A)"
+msgstr "Quick Launch Shortcut (N/A)"
+
+#. UAC_ERROR_ELEVATE
+msgid "Unable to elevate, error:"
+msgstr "Unable to elevate, error:"
+
+#. UAC_INSTALLER_REQUIRE_ADMIN
+msgid "This installer requires admin access, try again"
+msgstr "This installer requires admin access, try again"
+
+#. INIT_INSTALLER_RUNNING
+msgid "The installer is already running."
+msgstr "The installer is already running."
+
+#. UAC_UNINSTALLER_REQUIRE_ADMIN
+msgid "This uninstaller requires admin access, try again"
+msgstr "This uninstaller requires admin access, try again"
+
+#. INIT_UNINSTALLER_RUNNING
+msgid "The uninstaller is already running."
+msgstr "The uninstaller is already running."

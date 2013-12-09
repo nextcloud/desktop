@@ -1,0 +1,47 @@
+[main]
+host = https://www.transifex.net
+
+[owncloud.mirall-wininstaller]
+host = https://www.transifex.net
+source_file = pofiles/messages.pot
+source_lang = en
+type = PO
+minimum_perc = 5
+
+# simple one-to-one language mappings
+trans.ca = pofiles/ca.po
+trans.el = pofiles/el.po  
+trans.es = pofiles/es.po  
+trans.es_AR = pofiles/es_AR.po  
+trans.eu = pofiles/eu.po  
+trans.fa = pofiles/fa.po 
+trans.fr = pofiles/fr.po 
+trans.gl = pofiles/gl.po  
+trans.it = pofiles/it.po  
+trans.nl = pofiles/nl.po    
+trans.pl = pofiles/pl.po     
+trans.pt_BR = pofiles/pt_BR.po  
+trans.ru = pofiles/ru.po    
+trans.sl = pofiles/sl.po
+trans.sv = pofiles/sv.po
+trans.uk = pofiles/uk.po     
+trans.zh_TW = pofiles/zh_TW.po  
+trans.zh_CN = pofiles/zh_CN.po  
+
+# special handling below
+
+# de_DE holds the formal translation which we want as default
+trans.de_DE = pofiles/de.po
+
+# choose one of the given translations on transifex as default
+trans.pt_PT = pofiles/pt.po  
+
+# choose a special language as more generic default
+trans.cs_CZ = pofiles/cs.po 
+trans.et_EE = pofiles/et.po 
+trans.fi_FI = pofiles/fi.po  
+trans.ja_JP = pofiles/ja.po  
+trans.hu_HU = pofiles/hu.po  
+trans.sk_SK = pofiles/sk.po  
+trans.th_TH = pofiles/th.po  
+
