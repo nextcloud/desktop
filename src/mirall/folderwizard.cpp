@@ -433,7 +433,9 @@ FolderWizard::~FolderWizard()
 void FolderWizard::setFolderMap( const Folder::Map& fm)
 {
     _folderWizardSourcePage->setFolderMap( fm );
-    _folderWizardTargetPage->setFolderMap( fm );
+    if (!Theme::instance()->singleSyncFolder()) {
+       _folderWizardTargetPage->setFolderMap( fm );
+    }
 }
 
 } // end namespace
