@@ -309,6 +309,9 @@ void AccountSettings::slotRemoveCurrentFolder()
             folderMan->slotRemoveFolder( alias );
             _model->removeRow(row);
 
+            // single folder fix to show add-button and hide remove-button
+            buttonsSetEnabled();
+
             emit folderChanged();
         }
     }
