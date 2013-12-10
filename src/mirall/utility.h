@@ -25,6 +25,7 @@ namespace Mirall {
 namespace Utility
 {
     void sleep(int sec);
+    void usleep(int usec);
     QString formatFingerprint( const QByteArray& );
     void setupFavLink( const QString &folder );
     QString octetsToString( qint64 octets );

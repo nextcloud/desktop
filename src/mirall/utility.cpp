@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QProcess>
+#include <QThread>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QDesktopServices>
@@ -234,13 +235,23 @@ QString Utility::dataLocation()
 #endif
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+// In Qt 4,  QThread::sleep functions are protected.
+// This is a hack to make them visible in this namespace.
+struct QThread : ::QThread {
+    using ::QThread::sleep;
+    using ::QThread::usleep;
+};
+#endif
+
 void Utility::sleep(int sec)
 {
-#ifdef Q_OS_WIN
-    ::Sleep(sec*1000);
-#else
-    ::sleep(sec);
-#endif
+    QThread::sleep(sec);
+}
+
+void Utility::usleep(int usec)
+{
+    QThread::usleep(usec);
 }
 
 // ### helper functions for showInFileManager() ###

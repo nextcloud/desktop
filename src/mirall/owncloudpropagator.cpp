@@ -16,6 +16,7 @@
 #include "owncloudpropagator.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
+#include "utility.h"
 #include <httpbf.h>
 #include <qfile.h>
 #include <qdir.h>
@@ -38,8 +39,6 @@
 #include <neon/ne_dates.h>
 #include <neon/ne_compress.h>
 #include <neon/ne_redirect.h>
-
-#include <time.h>
 
 #ifdef Q_OS_WIN
 #include <windef.h>
@@ -517,7 +516,8 @@ void PropagateItemJob::limitBandwidth(qint64 progress, qint64 bandwidth_limit)
         if (len > 0 && diff > 0 && (1000000 * len / diff) > bandwidth_limit) {
             int64_t wait_time = (1000000 * len / bandwidth_limit) - diff;
             if (wait_time > 0) {
-                usleep(wait_time);
+                //qDebug() << "Limiting bandwidth to " << bandwidth_limit << "KB/s by waiting " << wait_time << " µs; ";
+                Mirall::Utility::usleep(wait_time);
             }
         }
         _lastProgress = progress;
@@ -528,7 +528,8 @@ void PropagateItemJob::limitBandwidth(qint64 progress, qint64 bandwidth_limit)
             // -bandwidth_limit is the % of bandwidth
             int64_t wait_time = -diff * (1 + 100.0 / bandwidth_limit);
             if (wait_time > 0) {
-                usleep(wait_time);
+                Mirall::Utility::usleep(wait_time);
+
             }
         }
         _lastTime.start();
