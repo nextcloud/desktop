@@ -189,3 +189,8 @@ msgstr "This uninstaller requires admin access, try again"
 #. INIT_UNINSTALLER_RUNNING
 msgid "The uninstaller is already running."
 msgstr "The uninstaller is already running."
+
+#. SectionGroup_Shortcuts
+msgid "Shortcuts"
+msgstr "Shortcuts"
+

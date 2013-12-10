@@ -353,7 +353,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 
 SectionEnd
 
-SectionGroup "Shortcuts"
+SectionGroup $SectionGroup_Shortcuts
 
 !ifdef OPTION_SECTION_SC_START_MENU
    ${MementoSection} $OPTION_SECTION_SC_START_MENU_SECTION SEC_START_MENU

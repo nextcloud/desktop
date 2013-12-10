@@ -28,6 +28,7 @@ python $SCRIPTDIR/build_locale_nsi.py -o $L10NDIR -p $PODIR -l "English"
 # 1258 — Vietnamese
 
 # convert file to proper content
+cd $L10NDIR
 iconv -t CP1252 -o German.nsh German.nsh
 iconv -t CP1252 -o Basque.nsh Basque.nsh
 iconv -t CP1252 -o English.nsh English.nsh

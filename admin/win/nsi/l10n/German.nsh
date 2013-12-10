@@ -40,3 +40,4 @@ StrCpy $UAC_INSTALLER_REQUIRE_ADMIN "Dieses Installationsprogramm erfordert Admi
 StrCpy $INIT_INSTALLER_RUNNING "Das Installationsprogramm wird bereits ausgeführt."
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Das Deinstallationsprogramm erfordert Administrator-Rechte. Bitte erneut versuchen."
 StrCpy $INIT_UNINSTALLER_RUNNING "Das Deinstallationsprogramm wird bereits ausgeführt."
+StrCpy $SectionGroup_Shortcuts "Shortcuts"

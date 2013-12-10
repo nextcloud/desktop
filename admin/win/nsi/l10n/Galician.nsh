@@ -40,3 +40,4 @@ StrCpy $UAC_INSTALLER_REQUIRE_ADMIN "Este instalador require acceso de administr
 StrCpy $INIT_INSTALLER_RUNNING "O instalador xa está en execución."
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Este desinstalador require acceso de administrador, tenteo de novo"
 StrCpy $INIT_UNINSTALLER_RUNNING "O desinstalador xa está en execución."
+StrCpy $SectionGroup_Shortcuts "Shortcuts"

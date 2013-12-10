@@ -40,3 +40,4 @@ StrCpy $UNINSTALLER_APPDATA_SUBTITLE "Remove ${APPLICATION_NAME}'s data folder f
 StrCpy $UNINSTALLER_APPDATA_LABEL_2 "Leave unchecked to keep the data folder for later use or check to delete the data folder."
 StrCpy $UNINSTALL_MESSAGEBOX "It does not appear that ${APPLICATION_NAME} is installed in the directory '$INSTDIR'.$\r$\nContinue anyway (not recommended)?"
 StrCpy $UAC_ERROR_ELEVATE "Unable to elevate, error:"
+StrCpy $SectionGroup_Shortcuts "Shortcuts"

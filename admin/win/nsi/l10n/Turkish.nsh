@@ -40,3 +40,4 @@ StrCpy $UAC_INSTALLER_REQUIRE_ADMIN "Bu yükleyici yönetici eriþimi gerektiriyor,
 StrCpy $INIT_INSTALLER_RUNNING "Yükleyici zaten çalýþýyor."
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Bu kaldýrýcý yönetici eriþimi gerektiriyor, yeniden deneyin"
 StrCpy $INIT_UNINSTALLER_RUNNING "Kaldýrýcý zaten çalýþýyor."
+StrCpy $SectionGroup_Shortcuts "Shortcuts"

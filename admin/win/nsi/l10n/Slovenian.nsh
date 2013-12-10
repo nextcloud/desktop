@@ -40,3 +40,4 @@ StrCpy $UAC_INSTALLER_REQUIRE_ADMIN "This installer requires admin access, try a
 StrCpy $INIT_INSTALLER_RUNNING "The installer is already running."
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "This uninstaller requires admin access, try again"
 StrCpy $INIT_UNINSTALLER_RUNNING "The uninstaller is already running."
+StrCpy $SectionGroup_Shortcuts "Shortcuts"
