@@ -136,6 +136,7 @@ void FolderWatcherPrivate::slotINotifyEvent(int mask, int /*cookie*/, const QStr
 
      if( path.endsWith(".csync_journal.db.ctmp") ||
             path.endsWith(".csync_journal.db.ctmp-journal") ||
+	    path.endsWith(".csync_journal.db-journal") ||
             path.endsWith(".csync_journal.db")) {
         qDebug() << " ** Inotify ignored for " <<path;
         return;
