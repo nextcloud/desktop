@@ -541,7 +541,8 @@ SectionEnd
 Function .onInit
    !insertmacro INSTALLOPTIONS_EXTRACT "NSIS.InstallOptions.ini"
 
-   !insertmacro MUI_LANGDLL_DISPLAY
+   ; uncomment this line if you want to see the language selection
+   ;!insertmacro MUI_LANGDLL_DISPLAY
 
    # load the selected language file
   StrCmp $LANGUAGE ${LANG_GERMAN} German 0
