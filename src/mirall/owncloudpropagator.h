@@ -15,6 +15,8 @@
 #ifndef OWNCLOUDPROPAGATOR_H
 #define OWNCLOUDPROPAGATOR_H
 
+#define NE_LFS // never remove this. otherwise NEON will behave badly.
+
 #include <neon/ne_request.h>
 #include <QHash>
 #include <QObject>
