@@ -556,6 +556,7 @@ Function .onInit
   StrCmp $LANGUAGE ${LANG_GREEK} Basque 0
   StrCmp $LANGUAGE ${LANG_GREEK} Galician 0
   StrCmp $LANGUAGE ${LANG_GREEK} Slovak 0
+  StrCmp $LANGUAGE ${LANG_GREEK} Turkish 0
   StrCmp $LANGUAGE ${LANG_PORTUGUESEBR} Brazilian EndLanguageCmp
   German:
   !include "${source_path}/admin/win/nsi/l10n\German.nsh"
@@ -592,6 +593,9 @@ Function .onInit
   Goto EndLanguageCmp
   Slovak:
   !include "${source_path}/admin/win/nsi/l10n\Slovak.nsh"
+  Goto EndLanguageCmp
+  Turkish:
+  !include "${source_path}/admin/win/nsi/l10n\Turkish.nsh"
   Goto EndLanguageCmp
   Brazilian:
   !include "${source_path}/admin/win/nsi/l10n\PortugueseBR.nsh"

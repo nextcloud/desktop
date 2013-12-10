@@ -24,6 +24,7 @@ trans.pt_BR = pofiles/pt_BR.po
 trans.ru = pofiles/ru.po    
 trans.sl = pofiles/sl.po
 trans.sv = pofiles/sv.po
+trans.tr = pofiles/tr.po
 trans.uk = pofiles/uk.po     
 trans.zh_TW = pofiles/zh_TW.po  
 trans.zh_CN = pofiles/zh_CN.po  
