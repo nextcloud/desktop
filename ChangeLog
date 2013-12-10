@@ -1,5 +1,40 @@
 ChangeLog
 ==========
+version 0.91.3  (released 2013-12-, ownCloud Client 1.5.0 ) 
+
+version 0.91.2 (released 2013-12-10, ownCloud Client 1.5.0beta3)
+ * have translatable error message for indiv. file errors.
+ * Use uint64_t for inode on win32 to fix a type glitch.
+ * Add test that directrories are properly moved.
+ * Handle symlinks correctly.
+ * Do not longer recurse into ignored directories in update 
+   phase.
+ * Added proper symlink detection for win32 platform.
+
+version 0.91.1 (released 2013-12-03, ownCloud Client 1.5.0beta2)
+ * Close database correctly to fix a potential crash (mirall#1229)
+ * Handle invalid inodes correctly.
+ * Use lstat rather than stat to detect symlinks correctly. 
+   (core#6146)
+
+version 0.91.0 (released 2013-11-28, ownCloud Client 1.5.0beta1)
+ * fix ascii to int conversion for large numbers.
+ * add support for file ids, needed to detect server side moves.
+ * removed unused code, ie. database writing code that went to 
+   mirall.
+ * add functions to query the database by fileid.
+ * add functions to read fileids from PUT replies.
+ * add server side move detection.
+ * enhanced test scripts
+ * Remove ne_sock_init and ne_sock_exit from owncloud module 
+   (mirall#1115)
+ * Renamed 'md5' to 'etag' in code identifiers to avoid confusion.
+ * add new state EVAL_RENAME 
+ * link the owncloud module directly rather than dl-loading it.
+ * add a content type header 'application/octet-stream' to PUTs.
+ * remove -gzip from etag header if its there. (mirall#1195)
+ * Many minor fixes, refactorings and improvements.
+
 version 0.90.4  (released 2013-10-18, ownCloud Client 1.4.2)
 
   * Count renamed and deleted files for progress information.
