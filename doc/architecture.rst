@@ -137,12 +137,31 @@ the timestamp of the conflict detection.
 Ignored Files
 -------------
 
-ownCloud Client will refuse to sync the following files:
+ownCloud Client supports that certain files are excluded or ignored from
+the synchronization. There are a couple of system wide file patterns which 
+come with the client. Custom patterns can be added by the user.
+
+ownCloud Client will ignore the following files:
 
 * Files matched by one of the pattern in :ref:`ignoredFilesEditor-label`
 * Files containing characters that do not work on certain file systems.
   Currently, these characters are: `\, :, ?, *, ", >, <, |`
-* Files starting in ``.csync_journal.db`` (reserved for journalling)
+* Files starting in ``.csync_journal.db*`` (reserved for journalling)
+
+If a pattern is checkmarked in the `ignoredFilesEditor-label` (or if a line in
+the exclude file starts with the character `]` directly followed
+by the file pattern), files matching this pattern are considered fleeting
+meta data. These files are ingored and *removed* by the client if found 
+in the sync folder. This is suitable for meta files created by some 
+applications that have no sustainable meaning.
+
+If a pattern is ending with character `/` it means that only directories are
+matched. The pattern is only applied for directory components of the checked
+filename.
+
+The file pattern match is done with the unix function fnmatch which implements
+shell wildcard patterns. Note that this is not full regular expression support 
+but similar to what can be done on the command line to match files.
 
 The Sync Journal
 ----------------
