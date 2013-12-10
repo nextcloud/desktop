@@ -310,7 +310,7 @@ void AccountSettings::slotRemoveCurrentFolder()
             _model->removeRow(row);
 
             // single folder fix to show add-button and hide remove-button
-            buttonsSetEnabled();
+            slotButtonsSetEnabled();
 
             emit folderChanged();
         }
