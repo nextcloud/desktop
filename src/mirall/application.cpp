@@ -95,6 +95,10 @@ Application::Application(int &argc, char **argv) :
     //no need to waste time;
     if ( _helpOnly ) return;
 
+    initialize();
+    if (isRunning())
+        return;
+
     setupLogging();
     setupTranslations();
 

@@ -35,7 +35,6 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(mirall);
 
     Mirall::Application app(argc, argv);
-    app.initialize();
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
 #endif
