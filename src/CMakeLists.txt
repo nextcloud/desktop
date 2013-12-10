@@ -188,6 +188,11 @@ endif()
 if(NEON_FOUND)
     list(APPEND libsync_LINK_TARGETS ${NEON_LIBRARIES})
     include_directories(${NEON_INCLUDE_DIRS})
+
+    if(NEON_WITH_LFS)
+        add_definitions(-DNE_LFS)
+    endif()
+
 endif()
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
