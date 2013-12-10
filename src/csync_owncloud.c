@@ -727,8 +727,12 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
 
     if( ret != NE_OK ) {
         const char *err = NULL;
+        set_errno_from_neon_errcode(ret);
 
         err = ne_get_error( dav_session.ctx );
+        if(err) {
+            set_error_message(err);
+        }
         DEBUG_WEBDAV("WRN: propfind named failed with %d, request error: %s", ret, err ? err : "<nil>");
     }
 
