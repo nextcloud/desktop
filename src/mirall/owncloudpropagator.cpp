@@ -605,14 +605,25 @@ private:
             return;
         }
 
-        QByteArray etag = parseEtag(ne_get_response_header(req, "etag"));;
+        if( ne_get_status(req)->klass != 2 ) {
+            qDebug() << "Request class != 2, aborting.";
+            ne_add_response_body_reader( req, do_not_accept,
+                                         do_not_download_content_reader,
+                                         (void*) that );
+            return;
+        }
+
+        QByteArray etag = parseEtag(ne_get_response_header(req, "etag"));
+        if(etag.isEmpty())
+            etag = parseEtag(ne_get_response_header(req, "ETag"));
+
         if (etag.isEmpty()) {
             qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
             that->errorString = QLatin1String("No E-Tag received from server, check Proxy/Gateway");
             ne_set_error(that->_propagator->_session, "No E-Tag received from server, check Proxy/Gateway");
             ne_add_response_body_reader( req, do_not_accept,
-                                        do_not_download_content_reader,
-                                        (void*) that );
+                                         do_not_download_content_reader,
+                                         (void*) that );
             return;
         } else if (!that->_expectedEtagForResume.isEmpty() && that->_expectedEtagForResume != etag) {
             qDebug() << Q_FUNC_INFO <<  "We received a different E-Tag for resuming!"
@@ -621,8 +632,8 @@ private:
             that->errorString = QLatin1String("We received a different E-Tag for resuming. Retrying next time.");
             ne_set_error(that->_propagator->_session, "We received a different E-Tag for resuming. Retrying next time.");
             ne_add_response_body_reader( req, do_not_accept,
-                                        do_not_download_content_reader,
-                                        (void*) that );
+                                         do_not_download_content_reader,
+                                         (void*) that );
             return;
         }
 
