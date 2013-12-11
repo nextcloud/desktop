@@ -15,4 +15,6 @@
 
 #cmakedefine SYSCONFDIR "@SYSCONFDIR@"
 #cmakedefine DATADIR "@DATADIR@"
+#cmakedefine NEON_WITH_LFS "@NEON_WITH_LFS@"
+
 #endif
