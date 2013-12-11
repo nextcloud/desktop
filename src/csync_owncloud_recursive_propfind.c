@@ -185,13 +185,7 @@ static void propfind_results_recursive(void *userdata,
     }
 
     if( md5sum ) {
-        int len = strlen(md5sum)-2;
-        if( len > 0 ) {
-            /* Skip the " around the string coming back from the ne_propset_value call */
-            newres->md5 = c_malloc(len+1);
-            strncpy( newres->md5, md5sum+1, len );
-            newres->md5[len] = '\0';
-        }
+        newres->md5 = csync_normalize_etag(md5sum);
     }
 
     csync_vio_set_file_id(newres->file_id, file_id);

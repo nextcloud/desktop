@@ -550,8 +550,7 @@ char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_
     }
 
     if (result->count == 2) {
-        /* phash, pathlen, path, inode, uid, gid, mode, modtime */
-        ret = c_strdup( result->vector[0] );
+        ret = csync_normalize_etag( result->vector[0] );
         csync_vio_file_stat_set_file_id(buf, result->vector[1]);
     }
 
