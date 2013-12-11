@@ -36,6 +36,8 @@
 #include <wchar.h>
 #endif
 
+#include <errno.h>
+
 #ifdef _WIN32
 #define EDQUOT 0
 #define ENODATA 0
@@ -55,7 +57,14 @@
 #define nlink_t int
 #define getuid() 0
 #define geteuid() 0
+#else
+#include <fcntl.h>
 #endif
+
+#ifndef ENODATA
+#define ENODATA EPIPE
+#endif
+
 
 #ifdef _WIN32
 typedef struct stat64 csync_stat_t;
