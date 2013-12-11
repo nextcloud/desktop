@@ -31,7 +31,7 @@ Logger* Logger::_instance=0;
 
 Logger::Logger( QObject* parent)
 : QObject(parent),
-  _showTime(true)
+  _showTime(true), _doLogging(false), _doFileFlush(false), _logExpire(0)
 {
 }
 
