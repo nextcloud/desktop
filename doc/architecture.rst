@@ -159,9 +159,26 @@ If a pattern is ending with character `/` it means that only directories are
 matched. The pattern is only applied for directory components of the checked
 filename.
 
-The file pattern match is done with the unix function fnmatch which implements
-shell wildcard patterns. Note that this is not full regular expression support 
-but similar to what can be done on the command line to match files.
+To match file names against the exclude patterns, the unix standard C
+library function fnmatch is used. It checks the filename against the pattern
+using standard shell wildcard pattern matching. Check `The opengroup website
+<http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>`
+for the gory details.
+
+The path that is checked is the relative path unter the sync root directory.
+
+Examples:
+^^^^^^^^^
++-----------+------------------------------+
+| Pattern   | Matches                      |
++===========+==============================+
+| ``~$*``   | ``~$foo``, ``~$example.doc`` |
++-----------+------------------------------+
+| ``fl?p``  | ``flip``, ``flap``           |
++-----------+------------------------------+
+| ``moo/``  | ``map/moo/``, ``moo/``       |
++-----------+------------------------------+
+
 
 The Sync Journal
 ----------------

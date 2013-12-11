@@ -144,19 +144,26 @@ The Ignored Files Editor
 
 .. index:: ignored files, exclude files, pattern
 
-The ignored files editor allows adding patterns for files or directories
-that should be excluded from the sync process. Next to normal characters,
+ownCloud Client has the ability to exclude files from the sync process.
+The ignored files editor allows editing of custom patterns for files or 
+directories that should be excluded from the sync process. 
+
+There is a system wide list of default ignore patterns. These global defaults 
+cannot be directly modified within the editor. Hovering with the mouse will 
+reveal the location of the global exclude definition file.
+
+.. image:: images/ignored_files_editor.png
+   :scale: 50%
+
+Each line contains an ignore pattern string. Next to normal characters,
 wildcards can be used to match an arbitrary number of characters, designated
 by an asterisk (``*``) or a single character, designated by a question mark
-(``?``).
+(``?``). If a pattern ends with a slash character (``/``) the pattern is only
+applied to directory components of the path to check.
 
-Global defaults cannot be directly modified within the editor. Hovering
-with the mouse will reveal the location of the global exclude definition
-file.
-
-In addition to this list, ownCloud Client always excludes files with
-characters that cannot be synched down to other file systems,
-see :ref:`ignored-files-label`.
+If the checkbox is checked for a pattern in the editor it means that files
+which are matched by this pattern are fleeting metadata which the client will
+*remove*.
 
 .. note:: Modifying the global exclude definition file might render the
    client unusable or cause undesired behavior.
@@ -164,26 +171,11 @@ see :ref:`ignored-files-label`.
 .. note:: Custom entries are currently not validated for syntactical
    correctness by the editor, but might fail to load correctly.
 
-.. image:: images/ignored_files_editor.png
-   :scale: 50%
+In addition to this list, ownCloud Client always excludes files with
+characters that cannot be synced to other file systems. 
 
-Pattern Matching
-^^^^^^^^^^^^^^^^
+With version 1.5.0 it also ignores files that caused individual errors 
+while syncing for a three times. These are listed in the activity view.
+There also is a button to retry the sync for another three times.
 
-To match file names against the exclude patterns, the unix standard C
-library function fnmatch is used. It checks the filename against the pattern
-using standard shell wildcard pattern matching. Check `The opengroup website
-<http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>`
-for the gory details.
-
-The path that is checked is the relative path unter the sync root directory.
-
-Examples:
-^^^^^^^^^
-+-----------+------------------------------+
-| Pattern   | Matches                      |
-+===========+==============================+
-| ``~$*``   | ``~$foo``, ``~$example.doc`` |
-+-----------+------------------------------+
-| ``fl?p``  | ``flip``, ``flap``           |
-+-----------+------------------------------+
+For more detailed information see :ref:`ignored-files-label`.
