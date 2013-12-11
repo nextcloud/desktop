@@ -64,7 +64,7 @@ IF ( NEON_CONFIG_EXECUTABLE )
 
 	IF (LFS EQUAL 0)
 		MESSAGE(STATUS "libneon has been compiled with LFS support")
-		SET(NEON_WITH_LFS 1 PARENT_SCOPE)
+		SET(NEON_WITH_LFS 1)
 	ELSE (LFS EQUAL 0)
 		MESSAGE(STATUS "libneon has not been compiled with LFS support, rely on OS")
 	ENDIF (LFS EQUAL 0)
