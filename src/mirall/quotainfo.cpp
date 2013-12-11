@@ -63,7 +63,6 @@ void QuotaInfo::slotCheckQuota()
         CheckQuotaJob *job = new CheckQuotaJob(_account, "/", this);
         connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
         job->start();
-        _refreshTimer->start(defaultIntervalT);
     } else {
         _lastQuotaTotalBytes = 0;
         _lastQuotaUsedBytes = 0;
@@ -76,6 +75,7 @@ void QuotaInfo::slotUpdateLastQuota(qint64 total, qint64 used)
     _lastQuotaTotalBytes = total;
     _lastQuotaUsedBytes = used;
     emit quotaUpdated(total, used);
+    _refreshTimer->start(defaultIntervalT);
 }
 
 }
