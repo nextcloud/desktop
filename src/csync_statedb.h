@@ -2,7 +2,7 @@
  * libcsync -- a library to sync a directory with another
  *
  * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
- * Copyright (c) 2012-2013 by Klaas Freitag <freitag@owncloud.com>wie
+ * Copyright (c) 2012-2013 by Klaas Freitag <freitag@owncloud.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
