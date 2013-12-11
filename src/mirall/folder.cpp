@@ -272,8 +272,8 @@ void Folder::slotPollTimerTimeout()
     qDebug() << "* Polling" << alias() << "for changes. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
 
     if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval() ||
-            _syncResult.status() != SyncResult::Success ) {
-        qDebug() << "** Force Sync now";
+            !(_syncResult.status() == SyncResult::Success ||_syncResult.status() == SyncResult::Problem)) {
+        qDebug() << "** Force Sync now, state is " << _syncResult.statusString();
         evaluateSync(QStringList());
     } else {
         RequestEtagJob* job = new RequestEtagJob(AccountManager::instance()->account(), remotePath(), this);
