@@ -613,6 +613,14 @@ private:
             return;
         }
 
+        QByteArray reason_phrase = ne_get_status(req)->reason_phrase;
+        if(reason_phrase == QByteArray("Connection established")) {
+            ne_add_response_body_reader( req, ne_accept_2xx,
+                                        content_reader,
+                                        (void*) that );
+            return;
+        }
+
         QByteArray etag = parseEtag(ne_get_response_header(req, "etag"));
         if(etag.isEmpty())
             etag = parseEtag(ne_get_response_header(req, "ETag"));
