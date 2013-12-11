@@ -744,12 +744,10 @@ void PropagateDownloadFile::start()
 
         // This one is set by install_content_reader if e.g. there is no E-Tag
         if (!errorString.isEmpty()) {
-            if (tmpFile.size() == 0) {
-                // don't keep the temporary file if it is empty.
-                tmpFile.close();
-                tmpFile.remove();
-                _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
-            }
+            // don't keep the temporary file as the file downloaded so far is invalid
+            tmpFile.close();
+            tmpFile.remove();
+            _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
             done(SyncFileItem::SoftError, errorString);
             return;
         }
