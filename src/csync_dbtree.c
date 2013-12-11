@@ -178,7 +178,7 @@ csync_vio_method_handle_t *csync_dbtree_opendir(CSYNC *ctx, const char *name)
         fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
 
         column = list->vector[base+8]; /* etag */
-        fs->etag = csync_normalize_etag(column);
+        fs->etag = c_strdup(column);
         fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
 
         column = list->vector[base+9]; /* file id */
