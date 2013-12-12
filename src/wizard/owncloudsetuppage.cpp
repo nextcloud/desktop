@@ -136,7 +136,8 @@ void OwncloudSetupPage::initializePage()
     if (Theme::instance()->overrideServerUrl().isEmpty()) {
         _ui.leUrl->setFocus();
     } else {
-        setEnabled(false);
+        setVisible(false);
+        setCommitPage(true);
         validatePage();
     }
 }
