@@ -1,7 +1,7 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Release-Informationen anzeigen"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "${processName} Prozess(e) müssen gestoppt werden.$\nWollen Sie diese nun stoppen?"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Beende  ${processName} Prozesse."
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "${APPLICATION_EXECUTABLE} Prozess(e) müssen gestoppt werden.$\nWollen Sie diese nun stoppen?"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Beende  ${APPLICATION_EXECUTABLE} Prozesse."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Prozess zum Beenden nicht gefunden!"
 StrCpy $PageReinstall_NEW_Field_1 "Eine ältere Version von  ${APPLICATION_NAME} ist auf Ihrem System installiert. Es wird empfohlen, diese Version zunächst zu entfernen. Wählen Sie unter folgenden Vorgehenweisen und wählen Sie $\"Weiter$\"."
 StrCpy $PageReinstall_NEW_Field_2 "Vor der Installation entfernen"

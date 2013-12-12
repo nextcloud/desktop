@@ -1,7 +1,7 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Mostrar notas de lançamento"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Encontrados ${processName} processo(s) que precisam ser interrompidos. $ \n Você quer que o instalador pare estes para você?"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Eliminar ${processName} processos."
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Encontrados ${APPLICATION_EXECUTABLE} processo(s) que precisam ser interrompidos. $ \n Você quer que o instalador pare estes para você?"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Eliminar ${APPLICATION_EXECUTABLE} processos."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Processo para eliminar não encontrado!"
 StrCpy $PageReinstall_NEW_Field_1 "Uma versão mais antiga de ${APPLICATION_NAME} está instalado em seu sistema. É recomendado que você desinstale a versão atual antes de instalar. Selecione a operação que deseja executar e clique em Avançar para continuar."
 StrCpy $PageReinstall_NEW_Field_2 "Desinstalar antes de instalar"

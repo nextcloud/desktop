@@ -1,7 +1,7 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Amosar as notas de publicación"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Atopouse o proceso ${processName} que ten que ser detido.$\nQuere que sexa o instalador quen o deteña?"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Matando os procesos ${processName}."
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Atopouse o proceso ${APPLICATION_EXECUTABLE} que ten que ser detido.$\nQuere que sexa o instalador quen o deteña?"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Matando os procesos ${APPLICATION_EXECUTABLE}."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Non se atopou o proceso para matalo!"
 StrCpy $PageReinstall_NEW_Field_1 "No seu sistema hai instalada unha versión anterior do ${APPLICATION_NAME}. Recomendámoslle que desinstale a versión actual antes de instalar. Seleccione a operación que quere realizar e prema en Seguinte para continuar."
 StrCpy $PageReinstall_NEW_Field_2 "Desinstalar antes de instalar"

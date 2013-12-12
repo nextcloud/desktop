@@ -1,6 +1,6 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Näita väljalaske märkmeid"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Protsessi ${processName} lõpetamine."
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Protsessi ${APPLICATION_EXECUTABLE} lõpetamine."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Ei leitud protsessi, mida tappa!"
 StrCpy $PageReinstall_NEW_Field_2 "Eemalda enne paigaldamist"
 StrCpy $PageReinstall_NEW_Field_3 "Ära paigalda"
@@ -23,7 +23,7 @@ StrCpy $UAC_INSTALLER_REQUIRE_ADMIN "See paigaldaja vajab admini ligipääsu, proo
 StrCpy $INIT_INSTALLER_RUNNING "Paigaldaja on juba käimas."
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "See desinstallija vajab admini ligipääsu, proovi uuesti"
 StrCpy $INIT_UNINSTALLER_RUNNING "See desinstallija on juba käimas"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Found ${processName} process(s) which need to be stopped.$\nDo you want the installer to stop these for you?"
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Found ${APPLICATION_EXECUTABLE} process(s) which need to be stopped.$\nDo you want the installer to stop these for you?"
 StrCpy $PageReinstall_NEW_Field_1 "An older version of ${APPLICATION_NAME} is installed on your system. It is recommended that you uninstall the current version before installing. Select the operation you want to perform and click Next to continue."
 StrCpy $PageReinstall_OLD_Field_1 "A newer version of ${APPLICATION_NAME} is already installed! It is not recommended that you install an older version. If you really want to install this older version, it is better to uninstall the current version first. Select the operation you want to perform and click Next to continue."
 StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} is already installed.\r\nSelect the operation you want to perform and click Next to continue."

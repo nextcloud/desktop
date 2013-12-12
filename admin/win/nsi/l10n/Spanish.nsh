@@ -1,7 +1,7 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Mostrar las notas de la versión"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Se encontró el proceso(s) ${processName} el cual necesita detenerse. $\n¿Desea que el instalador lo detenga por usted?"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Terminando los procesos de ${processName}"
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Se encontró el proceso(s) ${APPLICATION_EXECUTABLE} el cual necesita detenerse. $\n¿Desea que el instalador lo detenga por usted?"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Terminando los procesos de ${APPLICATION_EXECUTABLE}"
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "¡Proceso a detener no encontrado!"
 StrCpy $PageReinstall_NEW_Field_1 "Una versión anterior de ${APPLICATION_NAME} se encuentra instalada en el sistema. Se recomienda de instalar la versión actual antes de instalar la nueva. Seleccione la operacion deseada y haga click en Siguiente para continuar."
 StrCpy $PageReinstall_NEW_Field_2 "Desinstalar antes de instalar"

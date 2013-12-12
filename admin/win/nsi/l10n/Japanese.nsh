@@ -1,7 +1,7 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "リリースノートを表示"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "次の ${processName} のプロセスを終了する必要があります。\nインストーラーがそのプロセスを停止してもよろしいですか？"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "${processName} プロセスを終了しています。"
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "次の ${APPLICATION_EXECUTABLE} のプロセスを終了する必要があります。\nインストーラーがそのプロセスを停止してもよろしいですか？"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "${APPLICATION_EXECUTABLE} プロセスを終了しています。"
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "終了するプロセスがありません"
 StrCpy $PageReinstall_NEW_Field_2 "インストール前にアンインストールする"
 StrCpy $PageReinstall_NEW_Field_3 "アンインストールしない"

@@ -1,7 +1,7 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Zobraziù zoznam zmien"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Naöli sa ${processName} proces (y), ktorÈ je potrebnÈ zastaviù.$\nChcete, aby ich inötal·tor zastavil?"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "UkonËiù ${processName} procesy."
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Naöli sa ${APPLICATION_EXECUTABLE} proces (y), ktorÈ je potrebnÈ zastaviù.$\nChcete, aby ich inötal·tor zastavil?"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "UkonËiù ${APPLICATION_EXECUTABLE} procesy."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Proces ukonËenia nebol n·jden˝!"
 StrCpy $PageReinstall_NEW_Field_1 "Staröia verzia ${APPLICATION_NAME} je nainötalovan· vo vaöom systÈme. Odpor˙Ëam v·m odinötalovaù aktu·lnu verziu pred inötal·ciou. Vyberte oper·ciu, ktor˙ chcete vykonaù, a kliknite na tlaËidlo œalej pre pokraËovanie."
 StrCpy $PageReinstall_NEW_Field_2 "Odinötalovaù pred inötal·ciou"

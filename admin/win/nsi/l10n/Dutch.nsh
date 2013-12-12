@@ -1,7 +1,7 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "toon releaseopmerkingen"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Proces(sen) ${processName} moet worden gestopt.$\nWilt u dat het installatieprogramma dat voor u doet?"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Stoppen ${processName} processen."
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Proces(sen) ${APPLICATION_EXECUTABLE} moet worden gestopt.$\nWilt u dat het installatieprogramma dat voor u doet?"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Stoppen ${APPLICATION_EXECUTABLE} processen."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Het te stoppen proces is niet gevonden!"
 StrCpy $PageReinstall_NEW_Field_1 "Er is een oudere versie van ${APPLICATION_NAME} geïnstalleerd op uw systeem. geadviseerd wordt om de huidige versie te de-installeren voordat de nieuwe versie wordt geïnstalleerd. Selecteer de uit te voeren actie en klik op Verder om door te gaan."
 StrCpy $PageReinstall_NEW_Field_2 "De-installeren voor installeren"
