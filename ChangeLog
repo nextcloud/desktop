@@ -1,6 +1,22 @@
 ChangeLog
 ==========
-version 0.91.3  (released 2013-12-, ownCloud Client 1.5.0 ) 
+version 0.91.4  (released 2013-12-12, ownCloud Cleint 1.5.0)
+ * changelog added, version bumped.
+
+version 0.91.3  (released 2013-12-11, ownCloud Client 1.5.0rc1) 
+ * Fix progress bar on win32
+ * Fix network rate limiting on win32
+ * Do not check for etag during failing requests
+ * Start quota timer only after the predecessor returned
+ * Remove tmp files in case of certain download problems
+ * Some valgrind fixes
+ * Theming fix: button behaviour
+ * Fix a case where a sync loop could happen.
+ * Multi-linguar installer
+ * Fix handling of quotes in etags written by older ownClouds
+ * Fix errno handling in update phase
+ * Make csync compile on FreeBSD
+ * Minor cleanups.
 
 version 0.91.2 (released 2013-12-10, ownCloud Client 1.5.0beta3)
  * have translatable error message for indiv. file errors.
