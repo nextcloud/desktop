@@ -686,7 +686,7 @@ int SyncJournalDb::blackListEntryCount()
     QMutexLocker locker(&_mutex);
     if( checkConnect() ) {
         QSqlQuery query(_db);
-        if( ! query.exec("SELECT count(*) FROM blacklist WHERE retrycount >= 0") ) {
+        if( ! query.exec("SELECT count(*) FROM blacklist") ) {
             sqlFail("Count number of blacklist entries failed", query);
         }
         if( query.next() ) {
@@ -702,7 +702,7 @@ int SyncJournalDb::wipeBlacklist()
     if( checkConnect() ) {
         QSqlQuery query(_db);
 
-        query.prepare("DELETE FROM blacklist WHERE retrycount >= 0");
+        query.prepare("DELETE FROM blacklist");
 
         if( ! query.exec() ) {
             sqlFail("Deletion of whole blacklist failed", query);

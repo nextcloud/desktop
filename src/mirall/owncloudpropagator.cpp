@@ -81,7 +81,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     int retries = 0;
 
     if( _item._httpErrorCode == 403 || _item._httpErrorCode == 413 || _item._httpErrorCode == 415 ) {
-        qDebug() << "Fatal Error condition, disallow retry!";
+        qDebug() << "Fatal Error condition" << _item._httpErrorCode << ", forbid retry!";
         retries = -1;
     } else {
         retries = 3; // FIXME: good number of allowed retries?

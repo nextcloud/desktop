@@ -491,44 +491,6 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
     }
 }
 
-//void AccountSettings::slotOCInfo( const QString& url, const QString& versionStr, const QString& version, const QString& )
-//{
-//#ifdef Q_OS_WIN
-//        // work around a bug in QDesktopServices on Win32, see i-net
-//        QString filePath = url;
-
-//        if (filePath.startsWith("\\\\") || filePath.startsWith("//"))
-//            _OCUrl.setUrl(QDir::toNativeSeparators(filePath));
-//        else
-//            _OCUrl = QUrl::fromLocalFile(filePath);
-//#else
-//    _OCUrl = QUrl::fromLocalFile(url);
-//#endif
-
-//    qDebug() << "#-------# oC found on " << url;
-//    /* enable the open button */
-//    ui->connectLabel->setOpenExternalLinks(true);
-//    QUrl safeUrl(url);
-//    safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
-//    showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(url, safeUrl.toString()),
-//                         tr("Version: %1 (%2)").arg(versionStr).arg(version) );
-//    ui->_buttonAdd->setEnabled(true);
-
-//    disconnect(ownCloudInfo::instance(), SIGNAL(ownCloudInfoFound(const QString&, const QString&, const QString&, const QString&)),
-//            this, SLOT(slotOCInfo( const QString&, const QString&, const QString&, const QString& )));
-//    disconnect(ownCloudInfo::instance(), SIGNAL(noOwncloudFound(QNetworkReply*)),
-//            this, SLOT(slotOCInfoFail(QNetworkReply*)));
-//}
-
-//void AccountSettings::slotOCInfoFail( QNetworkReply *reply)
-//{
-//    QString errStr = tr("unknown problem.");
-//    if( reply ) errStr = reply->errorString();
-
-//    showConnectionLabel( tr("<p>Failed to connect to %1: <tt>%2</tt></p>").arg(Theme::instance()->appNameGUI()).arg(errStr) );
-//    ui->_buttonAdd->setEnabled( false);
-//}
-
 void AccountSettings::slotOpenOC()
 {
   if( _OCUrl.isValid() )
