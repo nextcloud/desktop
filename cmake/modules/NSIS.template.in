@@ -545,6 +545,7 @@ Function .onInit
    ;!insertmacro MUI_LANGDLL_DISPLAY
 
    # load the selected language file
+  StrCmp $LANGUAGE ${LANG_ENGLISH} English 0
   StrCmp $LANGUAGE ${LANG_GERMAN} German 0
   StrCmp $LANGUAGE ${LANG_DUTCH} Dutch 0
   StrCmp $LANGUAGE ${LANG_FINNISH} Finnish 0
@@ -559,6 +560,9 @@ Function .onInit
   StrCmp $LANGUAGE ${LANG_GREEK} Slovak 0
   StrCmp $LANGUAGE ${LANG_GREEK} Turkish 0
   StrCmp $LANGUAGE ${LANG_PORTUGUESEBR} Brazilian EndLanguageCmp
+  English:
+  !include "${source_path}/admin/win/nsi/l10n\English.nsh"
+  Goto EndLanguageCmp
   German:
   !include "${source_path}/admin/win/nsi/l10n\German.nsh"
   Goto EndLanguageCmp
