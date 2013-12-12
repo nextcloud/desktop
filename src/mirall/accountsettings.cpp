@@ -121,7 +121,7 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
       ui->_buttonAdd->setVisible(!haveFolders);
   } else {
       ui->_buttonAdd->setVisible(true);
-      ui->_buttonAdd->setEnabled( state );
+      ui->_buttonAdd->setEnabled( true );
   }
   ui->_buttonEnable->setEnabled( state );
 
@@ -207,10 +207,8 @@ void AccountSettings::slotAddFolder( Folder *folder )
 void AccountSettings::slotButtonsSetEnabled()
 {
     QModelIndex selected = ui->_folderList->currentIndex();
-    bool isSelected = selected.isValid();
-    if (isSelected) {
-        slotFolderActivated(selected);
-    }
+
+    slotFolderActivated(selected);
 }
 
 void AccountSettings::setGeneralErrors( const QStringList& errors )
@@ -316,6 +314,7 @@ void AccountSettings::slotRemoveCurrentFolder()
         }
     }
 }
+
 void AccountSettings::slotResetCurrentFolder()
 {
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
