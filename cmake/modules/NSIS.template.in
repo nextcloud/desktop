@@ -227,9 +227,9 @@ Function PageReinstall
 
    older_version:
       !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 1" "Text" $PageReinstall_OLD_Field_1
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 2" "Text" $PageReinstall_NEW_Field_2
-      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 3" "Text" $PageReinstall_NEW_Field_3
-      !insertmacro MUI_HEADER_TEXT $PageReinstall_NEW_MUI_HEADER_TEXT_TITLE $PageReinstall_NEW_MUI_HEADER_TEXT_SUBTITLE
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 2" "Text" $PageReinstall_OLD_Field_2
+      !insertmacro INSTALLOPTIONS_WRITE "NSIS.InstallOptions.ini" "Field 3" "Text" $PageReinstall_OLD_Field_3
+      !insertmacro MUI_HEADER_TEXT $PageReinstall_NEW_MUI_HEADER_TEXT_TITLE $PageReinstall_OLD_MUI_HEADER_TEXT_SUBTITLE
       StrCpy $R0 "1"
       Goto reinst_start
 
