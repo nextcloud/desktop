@@ -78,14 +78,6 @@ void OwncloudSetupPage::setupCustomization()
 
     variant = theme->customMedia( Theme::oCSetupBottom );
     WizardCommon::setupCustomMedia( variant, _ui.bottomLabel );
-
-    QString fixUrl = theme->overrideServerUrl();
-    if( !fixUrl.isEmpty() ) {
-        _ui.label_2->hide();
-        setServerUrl( fixUrl );
-        _ui.leUrl->setEnabled( false );
-        _ui.leUrl->hide();
-    }
 }
 
 // slot hit from textChanged of the url entry field.
@@ -138,12 +130,13 @@ void OwncloudSetupPage::initializePage()
     if (pushButton)
         pushButton->setDefault(true);
 
-    // URL entry is disabled when url is overriden by theme. In that
-    // case we just check the server type and switch to second page
+    // If url is overriden by theme, it's already set and
+    // we just check the server type and switch to second page
     // immediately.
-    if (_ui.leUrl->isEnabled()) {
+    if (Theme::instance()->overrideServerUrl().isEmpty()) {
         _ui.leUrl->setFocus();
     } else {
+        setEnabled(false);
         validatePage();
     }
 }

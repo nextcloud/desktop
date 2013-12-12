@@ -59,6 +59,7 @@ void AccountManager::setAccount(Account *account)
 
 Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     : QObject(parent)
+    , _url(Theme::instance()->overrideServerUrl())
     , _sslErrorHandler(sslErrorHandler)
     , _am(0)
     , _credentials(0)
