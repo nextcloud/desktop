@@ -57,11 +57,17 @@ void QuotaInfo::slotAccountStateChanged(int state)
     }
 }
 
+void QuotaInfo::slotRequestFailed()
+{
+    _refreshTimer->start(failIntervalT);
+}
+
 void QuotaInfo::slotCheckQuota()
 {
     if (!_account.isNull() && _account->credentials() && _account->credentials()->ready()) {
         CheckQuotaJob *job = new CheckQuotaJob(_account, "/", this);
         connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
+        connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
         job->start();
     } else {
         _lastQuotaTotalBytes = 0;
