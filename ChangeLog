@@ -1,6 +1,37 @@
 ChangeLog
 =========
 
+version 1.5.0 (release 2013-12-12 ), csync 0.91.4 required
+  * New owncloud propagator that skips the vio abstraction layer
+  * Add owncloudcmd to replace the ocsync command line tool
+  * Localize Windows installer
+  * Allow to sign in and out
+  * Ask for password if missing
+  * Introduce activity view
+  * Introduce black list for files which could not be synced
+  * Enabling accessbility by shipping accessibility enables on OS X (#736)
+  * Toggle Settings window when clicking on systray icon on Win and KDE (#896)
+  * FolderWizard: Sanitize error detection (#1201)
+  * Set proper enable state of blacklist button after the dialog was opened
+  * Set proper tooltips in blacklist
+  * Translatable error messages for file errors
+  * Add man page for owncloudcmd (#1234)
+  * Don't close setup wizard when the initial sync run is started
+  * Close the sync journal if a folder gets removed (#1252)
+  * Activity: Avoid horizontal scrollbar (#1213)
+  * Fix crash (#1229)
+  * Resize wizard appropriately (#1130)
+  * Fix account identity test (#1231)
+  * Maintain the file type correctly
+  * Display rename-target in sync protocol action column
+  * Let recursive removal also remove the top dir
+  * If item is a directory, remove its contents from the database as well (#1257)
+  * Install headers for owncloudsync library
+  * Fix opening the explorer with a selected file in Windows (#1249)
+  * Add build number into versioning scheme
+  * Windows: Fix rename of temporary files
+  * Windows: Fix move file operation
+
 version 1.4.2 (release 2013-10-18 ), csync 0.90.4 required
 
   * Do not show the warning icon in the tray (#944)
