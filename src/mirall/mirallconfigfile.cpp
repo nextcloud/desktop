@@ -30,6 +30,7 @@
 #include <QSettings>
 #include <QDebug>
 #include <QNetworkProxy>
+#include <QHeaderView>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000
@@ -134,6 +135,28 @@ void MirallConfigFile::restoreGeometry(QWidget *w)
 {
     w->restoreGeometry(getValue(geometryC, w->objectName()).toByteArray());
 }
+
+void MirallConfigFile::saveGeometryHeader(QHeaderView *header)
+{
+    if(!header) return;
+    Q_ASSERT(!header->objectName().isNull());
+
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup(header->objectName());
+    settings.setValue(QLatin1String(geometryC), header->saveState());
+    settings.sync();
+}
+
+void MirallConfigFile::restoreGeometryHeader(QHeaderView *header)
+{
+    if(!header) return;
+    Q_ASSERT(!header->objectName().isNull());
+
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup(header->objectName());
+    header->restoreState(getValue(geometryC, header->objectName()).toByteArray());
+}
+
 
 QString MirallConfigFile::configPath() const
 {

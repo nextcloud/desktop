@@ -17,6 +17,7 @@
 #endif
 
 #include "mirall/protocolwidget.h"
+#include "mirall/mirallconfigfile.h"
 #include "mirall/syncresult.h"
 #include "mirall/logger.h"
 #include "mirall/utility.h"
@@ -56,6 +57,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     _ui->_treeWidget->setColumnCount(5);
     _ui->_treeWidget->setRootIsDecorated(false);
     _ui->_treeWidget->setTextElideMode(Qt::ElideMiddle);
+    _ui->_treeWidget->header()->setObjectName("ActivityListHeader");
 
     connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
 
@@ -67,6 +69,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
     connect(copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
 
+    MirallConfigFile cfg;
+    cfg.restoreGeometryHeader(_ui->_treeWidget->header());
 }
 
 void ProtocolWidget::initializeList()
@@ -101,6 +105,9 @@ void ProtocolWidget::initializeList()
 
 ProtocolWidget::~ProtocolWidget()
 {
+    MirallConfigFile cfg;
+    cfg.saveGeometryHeader(_ui->_treeWidget->header() );
+
     delete _ui;
 }
 

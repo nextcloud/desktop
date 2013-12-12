@@ -20,6 +20,7 @@
 #include <QVariant>
 
 class QWidget;
+class QHeaderView;
 
 namespace Mirall {
 
@@ -104,6 +105,8 @@ public:
     void saveGeometry(QWidget *w);
     void restoreGeometry(QWidget *w);
 
+    void saveGeometryHeader(QHeaderView *header);
+    void restoreGeometryHeader(QHeaderView *header);
 protected:
     void storeData(const QString& group, const QString& key, const QVariant& value);
     QVariant retrieveData(const QString& group, const QString& key) const;
