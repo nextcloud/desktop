@@ -1,7 +1,7 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Sürüm notlarýný göster"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Durdurulmasý gereken ${APPLICATION_EXECUTABLE} süreci bulunuyor.$\nYükleyicinin bunu sizin için yapmasýný ister misiniz?"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "${APPLICATION_EXECUTABLE} süreç sonlandýrýlýyor."
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Durdurulmasý gereken ${processName} süreci bulunuyor.$\nYükleyicinin bunu sizin için yapmasýný ister misiniz?"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "${processName} süreç sonlandýrýlýyor."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Sonlandýrýlacak süreç bulunamadý!"
 StrCpy $PageReinstall_NEW_Field_1 "${APPLICATION_NAME} önceki sürümü sisteminizde yüklü. Kurulumdan önce bunu kaldýrmanýz önerilir. Yapmak istediðiniz iþlemi seçip devam etmek için Ýleri týklayýn."
 StrCpy $PageReinstall_NEW_Field_2 "Yüklemeden önce kaldýr"

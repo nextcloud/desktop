@@ -1,7 +1,7 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Zobraz poznámky k vydání"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Nalezen proces(y) ${APPLICATION_EXECUTABLE}, které je nutné ukončit .$\nPřejete si, aby je instalátor ukončil?"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Ukončuji proces ${APPLICATION_EXECUTABLE}."
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Nalezen proces(y) ${processName}, které je nutné ukončit .$\nPřejete si, aby je instalátor ukončil?"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Ukončuji proces ${processName}."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Proces k ukončení nebyl nalezen! "
 StrCpy $PageReinstall_NEW_Field_1 "Starší verze ${APPLICATION_NAME} je nainstalována na tomto systému. Doporučuje se předem tuto verzi odinstalovat. Zvolte operaci, kterou chcete uskutečnit a klikněte na tlačítko Další pro pokračování."
 StrCpy $PageReinstall_NEW_Field_2 "Odinstalovat před instalací"
