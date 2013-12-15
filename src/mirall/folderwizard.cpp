@@ -135,12 +135,12 @@ bool FolderWizardSourcePage::isComplete() const
           isOk = false;
       }
 
-      if( isOk && QDir::cleanPath(QString(userInput+'/')).startsWith( QDir::cleanPath(folderDir)) ) {
+      if( isOk && QDir::cleanPath(QString(userInput)).startsWith( QDir::cleanPath(folderDir)+'/') ) {
         qDebug() << "An already configured folder is parent of the current selected";
         warnStrings.append( tr("An already configured folder contains the currently entered folder."));
         isOk = false;
       }
-      if( isOk && absCleanUserFolder.startsWith( QDir::cleanPath(folderDir)) ) {
+      if( isOk && absCleanUserFolder.startsWith( QDir::cleanPath(folderDir)+'/') ) {
           qDebug() << "The selected folder is a symbolic link. An already configured folder is\n"
                       "the parent of the current selected contains the folder this link is pointing to.";
           warnStrings.append( tr("The selected folder is a symbolic link. An already configured folder "
