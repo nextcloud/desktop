@@ -447,6 +447,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   read_from_db = ctx->remote.read_from_db;
 
   if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
+    int asp = 0;
     /* permission denied */
     ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
     if (errno == EACCES) {
@@ -455,7 +456,10 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       /* Proxy problems (ownCloud) */
       ctx->status_code = CSYNC_STATUS_PROXY_ERROR;
     } else if(errno == ENOENT) {
-        asprintf( &ctx->error_string, "%s", uri);
+      asp = asprintf( &ctx->error_string, "%s", uri);
+      if (asp < 0) {
+	CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
+      }
     } else {
       C_STRERROR(errno, errbuf, sizeof(errbuf));
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
