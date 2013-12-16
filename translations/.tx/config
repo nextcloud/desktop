@@ -22,6 +22,7 @@ trans.pt_BR = mirall_pt_BR.ts
 trans.ru = mirall_ru.ts    
 trans.sl = mirall_sl.ts
 trans.sv = mirall_sv.ts
+trans.tr = pofiles/tr.po
 trans.uk = mirall_uk.ts     
 trans.zh_TW = mirall_zh_TW.ts  
 trans.zh_CN = mirall_zh_CN.ts  
