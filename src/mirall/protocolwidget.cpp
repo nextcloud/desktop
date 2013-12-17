@@ -247,7 +247,8 @@ void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
 
     Folder *folder = FolderMan::instance()->folder(folderName);
     if (folder) {
-        QString fullPath = folder->path() + '/' + fileName;
+        // folder->path() always comes back with trailing path
+        QString fullPath = folder->path() + fileName;
         if (QFile(fullPath).exists()) {
             Utility::showInFileManager(fullPath);
         }
