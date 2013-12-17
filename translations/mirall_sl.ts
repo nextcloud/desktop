@@ -797,7 +797,7 @@ Program ne bo deloval dovolj zanesljivo. Možne rešitve so zabeležene v dokume
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="242"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Vpisati je treba geslo %1 za uporabnika &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -1372,7 +1372,7 @@ Izbrani predmeti bodo tudi izbrisani, v kolikor bi sicer onemogočali brisanje m
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
         <source>Currently no files are ignored because of previous errors.</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno zaradi predhodnih napak ni prezrta nobena datoteka.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="288"/>

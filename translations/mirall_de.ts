@@ -354,7 +354,7 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="239"/>
         <source>The item is not synced because of previous errors:</source>
-        <translation type="unfinished"/>
+        <translation>Das Element ist aufgrund vorheriger Fehler nicht synchronisiert:</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="275"/>
@@ -658,7 +658,7 @@ Dokumentation für mögliche Lösungen.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="92"/>
         <source>No valid local folder selected!</source>
-        <translation>Keinen gültigen lokalen Ordner gewählt!</translation>
+        <translation>Keinen gültigen lokales Ordner gewählt!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="97"/>

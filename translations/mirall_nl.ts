@@ -353,7 +353,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="239"/>
         <source>The item is not synced because of previous errors:</source>
-        <translation type="unfinished"/>
+        <translation>Dit object is niet gesynchroniseerd door eerdere fouten:</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="275"/>

@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>Manutenção da Conta</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="29"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="52"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ligado a &lt;server&gt; como &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="71"/>
@@ -539,7 +539,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="775"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Remover todos os ficheiros</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="776"/>

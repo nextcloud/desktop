@@ -353,7 +353,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="239"/>
         <source>The item is not synced because of previous errors:</source>
-        <translation type="unfinished"/>
+        <translation>以前のエラーが発生した為、対象アイテムを同期していません：</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="275"/>
@@ -672,7 +672,7 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="133"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>選択したフォルダは、シンボリックリンクです。そのリンクの参照先のフォルダには、既に登録されているフォルダがあります。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="140"/>
@@ -682,7 +682,7 @@ documentation for possible fixes.</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>このフォルダは、シンボリックリンクです。このリンクが指している参照元フォルダを含んだ親フォルダが既に登録されています。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="170"/>

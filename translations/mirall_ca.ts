@@ -1346,7 +1346,7 @@ Els elements marcats també s&apos;eliminaran si prevenen l&apos;eliminació d&a
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="64"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>Reintenta la sincronització</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="68"/>
@@ -1356,7 +1356,7 @@ Els elements marcats també s&apos;eliminaran si prevenen l&apos;eliminació d&a
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="69"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Copia la llista d&apos;activitats al porta-retalls.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="143"/>
@@ -2090,7 +2090,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronització realitzada amb èxit, alguns fitxers s&apos;han ignorat.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
