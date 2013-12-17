@@ -180,7 +180,9 @@ void HttpCredentials::fetch(Account *account)
         Q_EMIT fetched();
     } else {
         ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
-        job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+        if( ! account->property("fetch_from_old_place").isValid() ) {
+            job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+        }
         job->setInsecureFallback(true);
         job->setKey(keychainKey(account->url().toString(), _user));
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
@@ -212,20 +214,30 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(job);
     delete readJob->settings();
     _password = readJob->textData();
+    Account *account = qvariant_cast<Account*>(readJob->property("account"));
+
     QKeychain::Error error = job->error();
     switch (error) {
     case NoError:
         _ready = true;
+        account->setProperty("fetch_from_old_place", QVariant());
         Q_EMIT fetched();
         break;
     default:
         if (!_user.isEmpty()) {
             bool ok;
+            // In case we haven't tried at the old place yet, do!
+            if( !account->property("fetch_from_old_place").isValid() ) {
+                account->setProperty("fetch_from_old_place", QVariant(true) );
+
+                fetch(account);
+                return;
+            }
             QString pwd = queryPassword(&ok);
             if (ok) {
                 _password = pwd;
                 _ready = true;
-                persist(qvariant_cast<Account*>(readJob->property("account")));
+                persist(account);
                 Q_EMIT fetched();
                 break;
             }
