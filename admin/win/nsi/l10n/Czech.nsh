@@ -40,4 +40,4 @@ StrCpy $UAC_INSTALLER_REQUIRE_ADMIN "Tento instalátor vyžaduje správcovská o
 StrCpy $INIT_INSTALLER_RUNNING "Instalátor je již spuštěn."
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Tento odinstalátor vyžaduje správcovská oprávnění, opakujte znovu"
 StrCpy $INIT_UNINSTALLER_RUNNING "Odinstalátor je již spuštěn."
-StrCpy $SectionGroup_Shortcuts "Shortcuts"
+StrCpy $SectionGroup_Shortcuts "Zástupci"

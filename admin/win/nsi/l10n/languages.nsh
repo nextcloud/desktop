@@ -8,6 +8,7 @@
 !insertmacro MUI_LANGUAGE "Turkish"
 !insertmacro MUI_LANGUAGE "German"
 !insertmacro MUI_LANGUAGE "Slovenian"
+!insertmacro MUI_LANGUAGE "Hungarian"
 !insertmacro MUI_LANGUAGE "Basque"
 !insertmacro MUI_LANGUAGE "Japanese"
 !insertmacro MUI_LANGUAGE "French"
