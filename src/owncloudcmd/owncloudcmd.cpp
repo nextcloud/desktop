@@ -20,6 +20,8 @@
 #include <QFile>
 #include <qdebug.h>
 
+#include <neon/ne_socket.h>
+
 #include "csyncthread.h"
 #include <syncjournaldb.h>
 #include "logger.h"
@@ -119,6 +121,10 @@ int main(int argc, char **argv) {
         qFatal("Unable to create csync-context!");
         return EXIT_FAILURE;
     }
+    int rc = ne_sock_init();
+    if (rc < 0) {
+        qFatal("ne_sock_init failed!");
+    }
 
     csync_set_log_level(11);
     csync_enable_conflictcopys(_csync_ctx);
@@ -142,6 +148,8 @@ int main(int argc, char **argv) {
     app.exec();
 
     csync_destroy(_csync_ctx);
+
+    ne_sock_exit();
 
     return 0;
 }
