@@ -353,22 +353,22 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="239"/>
         <source>The item is not synced because of previous errors:</source>
-        <translation type="unfinished"/>
+        <translation>Cet élément n&apos;a pas été synchronisé en raison des erreurs précédentes :</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="275"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Les liens symboliques ne sont pas supportés par la synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="278"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier est présent dans la liste de fichiers à ignorer.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="281"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier contient des caractères invalides qui ne peuvent être synchronisés entre plate-formes.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="453"/>
@@ -1346,7 +1346,7 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="64"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>Lancer à nouveau la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="68"/>
@@ -1356,7 +1356,7 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="69"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Copier la liste d&apos;activités dans le presse papiers.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="143"/>
@@ -1376,13 +1376,14 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
         <source>Currently no files are ignored because of previous errors.</source>
-        <translation type="unfinished"/>
+        <translation>Actuellement aucun fichier n&apos;a été ignoré en raison d&apos;erreurs précédentes.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 fichiers ont été ignorés en raison des erreurs précédentes.
+ Essayer à nouveau de les synchroniser.</translation>
     </message>
 </context>
 <context>
@@ -2019,7 +2020,7 @@ Veuillez vous assurer qu&apos;une connexion réseau est disponible.</translation
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Déplacé vers %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
@@ -2091,7 +2092,7 @@ Veuillez vous assurer qu&apos;une connexion réseau est disponible.</translation
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation terminée avec succès, certains fichiers ont été ignorés.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
