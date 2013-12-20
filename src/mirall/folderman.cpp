@@ -278,6 +278,7 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
         f->setSyncEnabled(enable);
         f->evaluateSync(QStringList());
 
+        // FIXME: Use MirallConfigFile
         QSettings settings(_folderConfigPath + QLatin1Char('/') + f->configFile(), QSettings::IniFormat);
         settings.beginGroup(escapeAlias(f->alias()));
         if (enable) {
@@ -287,6 +288,7 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
             settings.setValue("paused", true);
             _disabledFolders.insert(f);
         }
+        emit folderSyncStateChange(alias);
     }
 }
 
@@ -554,44 +556,113 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
 {
     SyncResult overallResult(SyncResult::Undefined);
 
-    foreach ( Folder *folder, folders ) {
-        SyncResult folderResult = folder->syncResult();
-        SyncResult::Status syncStatus = folderResult.status();
+    int cnt = folders.count();
 
-        switch( syncStatus ) {
-        case SyncResult::Undefined:
-            if ( overallResult.status() != SyncResult::Error )
+    // if one folder: show the state of the one folder.
+    // if more folder:
+    // if one of them has an error -> show error
+    // if one is paused, but others ok, show ok
+    // do not show "problem" in the tray
+    //
+    if( cnt == 1 ) {
+        Folder *folder = folders.at(0);
+        if( folder ) {
+            SyncResult::Status syncStatus = folder->syncResult().status();
+
+            switch( syncStatus ) {
+            case SyncResult::Undefined:
                 overallResult.setStatus(SyncResult::Error);
-            break;
-        case SyncResult::NotYetStarted:
-            overallResult.setStatus( SyncResult::NotYetStarted );
-            break;
-        case SyncResult::SyncPrepare:
-            overallResult.setStatus( SyncResult::SyncPrepare );
-            break;
-        case SyncResult::SyncRunning:
-            overallResult.setStatus( SyncResult::SyncRunning );
-            break;
-        case SyncResult::Unavailable:
-            overallResult.setStatus( SyncResult::Unavailable );
-            break;
-        case SyncResult::Problem: // don't show the problem icon in tray.
-        case SyncResult::Success:
-            if( overallResult.status() == SyncResult::Undefined )
-                overallResult.setStatus( SyncResult::Success );
-            break;
-        case SyncResult::Error:
-            overallResult.setStatus( SyncResult::Error );
-            break;
-        case SyncResult::SetupError:
-            if ( overallResult.status() != SyncResult::Error )
-                overallResult.setStatus( SyncResult::SetupError );
-            break;
-        case SyncResult::SyncAbortRequested:
-            break;
-            // no default case on purpose, check compiler warnings
+                break;
+            case SyncResult::NotYetStarted:
+                overallResult.setStatus( SyncResult::NotYetStarted );
+                break;
+            case SyncResult::SyncPrepare:
+                overallResult.setStatus( SyncResult::SyncPrepare );
+                break;
+            case SyncResult::SyncRunning:
+                overallResult.setStatus( SyncResult::SyncRunning );
+                break;
+            case SyncResult::Unavailable:
+                overallResult.setStatus( SyncResult::Unavailable );
+                break;
+            case SyncResult::Problem: // don't show the problem icon in tray.
+            case SyncResult::Success:
+                if( overallResult.status() == SyncResult::Undefined )
+                    overallResult.setStatus( SyncResult::Success );
+                break;
+            case SyncResult::Error:
+                overallResult.setStatus( SyncResult::Error );
+                break;
+            case SyncResult::SetupError:
+                if ( overallResult.status() != SyncResult::Error )
+                    overallResult.setStatus( SyncResult::SetupError );
+                break;
+            case SyncResult::SyncAbortRequested:
+                overallResult.setStatus( SyncResult::SyncAbortRequested);
+                break;
+            case SyncResult::Paused:
+                overallResult.setStatus( SyncResult::Paused);
+                break;
+            }
+        }
+    } else {
+        int errorsSeen = 0;
+        int goodSeen = 0;
+        int abortSeen = 0;
+        int runSeen = 0;
+        int various = 0;
+        int unavail = 0;
+
+        foreach ( Folder *folder, folders ) {
+            SyncResult folderResult = folder->syncResult();
+            SyncResult::Status syncStatus = folderResult.status();
+
+            switch( syncStatus ) {
+            case SyncResult::Undefined:
+            case SyncResult::NotYetStarted:
+            case SyncResult::SyncPrepare:
+                various++;
+                break;
+            case SyncResult::SyncRunning:
+                runSeen++;
+                break;
+            case SyncResult::Unavailable:
+                unavail++;
+                break;
+            case SyncResult::Problem: // don't show the problem icon in tray.
+            case SyncResult::Success:
+                goodSeen++;
+                break;
+            case SyncResult::Error:
+            case SyncResult::SetupError:
+                errorsSeen++;
+                break;
+            case SyncResult::SyncAbortRequested:
+            case SyncResult::Paused:
+                abortSeen++;
+                // no default case on purpose, check compiler warnings
+            }
+        }
+        bool set = false;
+        if( errorsSeen > 0 ) {
+            overallResult.setStatus(SyncResult::Error);
+            set = true;
+        }
+        if( !set && abortSeen > 0 && abortSeen == cnt ) {
+            // only if all folders are paused
+            overallResult.setStatus(SyncResult::Paused);
+            set = true;
+        }
+        if( !set && runSeen > 0 ) {
+            overallResult.setStatus(SyncResult::SyncRunning);
+            set = true;
+        }
+        if( !set && goodSeen > 0 ) {
+            overallResult.setStatus(SyncResult::Success);
+            set = true;
         }
     }
+
     return overallResult;
 }
 
@@ -627,6 +698,9 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool enabled ) const
         break;
     case SyncResult::SyncAbortRequested:
         folderMessage = tr( "User Abort." );
+        break;
+    case SyncResult::Paused:
+        folderMessage = tr("Sync is paused.");
         break;
     // no default case on purpose, check compiler warnings
     }

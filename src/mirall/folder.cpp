@@ -235,12 +235,14 @@ void Folder::setSyncEnabled( bool doit )
   _enabled = doit;
 
   if( doit ) {
+      setSyncState(SyncResult::SyncPrepare);
       // qDebug() << "Syncing enabled on folder " << name();
   } else {
       // do not stop or start the watcher here, that is done internally by
       // folder class. Even if the watcher fires, the folder does not
       // schedule itself because it checks the var. _enabled before.
       _pollTimer.stop();
+      setSyncState(SyncResult::Paused);
   }
 }
 

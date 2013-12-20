@@ -74,7 +74,9 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
     case SyncResult::SyncAbortRequested:
         resultStr = QCoreApplication::translate("theme", "Aborting..." );
         break;
-
+    case SyncResult::Paused:
+        resultStr = QCoreApplication::translate("theme", "Sync is paused");
+        break;
     }
     return resultStr;
 }
@@ -249,8 +251,11 @@ QIcon Theme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
         statusIcon = QLatin1String("state-offline");
         break;
     case SyncResult::SyncRunning:
-    case SyncResult::SyncAbortRequested:
         statusIcon = QLatin1String("state-sync");
+        break;
+    case SyncResult::SyncAbortRequested:
+    case SyncResult::Paused:
+        statusIcon = QLatin1String("state-pause");
         break;
     case SyncResult::SyncPrepare:
     case SyncResult::Success:

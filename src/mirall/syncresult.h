@@ -38,6 +38,7 @@ public:
       Problem,
       Error,
       SetupError,
+      Paused,
       Unavailable
     };
 
