@@ -457,75 +457,75 @@
         <translation>%1 non é lexíbel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="330"/>
+        <location filename="../src/mirall/folder.cpp" line="332"/>
         <source>File %1: %2</source>
         <translation>Ficheiro %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="331"/>
-        <location filename="../src/mirall/folder.cpp" line="411"/>
+        <location filename="../src/mirall/folder.cpp" line="333"/>
+        <location filename="../src/mirall/folder.cpp" line="413"/>
         <source>File %1</source>
         <translation>Ficheiro %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="386"/>
+        <location filename="../src/mirall/folder.cpp" line="388"/>
         <source>downloaded</source>
         <translation>descargado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="387"/>
+        <location filename="../src/mirall/folder.cpp" line="389"/>
         <source>removed</source>
         <translation>Retirado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="388"/>
+        <location filename="../src/mirall/folder.cpp" line="390"/>
         <source>updated</source>
         <translation>actualizado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="391"/>
+        <location filename="../src/mirall/folder.cpp" line="393"/>
         <source>renamed</source>
         <translation>renomeado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="396"/>
+        <location filename="../src/mirall/folder.cpp" line="398"/>
         <source>moved</source>
         <translation>movido</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="398"/>
+        <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>%1 to %2</source>
         <translation>%1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="411"/>
+        <location filename="../src/mirall/folder.cpp" line="413"/>
         <source>&apos;%1&apos; has been %2.</source>
         <translation>«%1» foi %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="413"/>
+        <location filename="../src/mirall/folder.cpp" line="415"/>
         <source>Files %1</source>
         <translation>Ficheiros %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="414"/>
+        <location filename="../src/mirall/folder.cpp" line="416"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
         <translation>«%1» e outros %2 ficheiros foron %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="466"/>
+        <location filename="../src/mirall/folder.cpp" line="468"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="766"/>
+        <location filename="../src/mirall/folder.cpp" line="768"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Esta sincronización retirará todos os ficheiros do cartafol local de  sincronización «%1».
 Se vostede, ou o administrador, restabeleceu a súa conta no servidor, escolla «Manter os ficheiros». Se quere que os seus datos sexan eliminados, escolla «Retirar todos os ficheiros».</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="769"/>
+        <location filename="../src/mirall/folder.cpp" line="771"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +534,17 @@ Isto podería ser debido a que o cartafol foi reconfigurado en silencio, ou a qu
 Confirma que quere realizar esta operación?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="773"/>
+        <location filename="../src/mirall/folder.cpp" line="775"/>
         <source>Remove All Files?</source>
         <translation>Retirar todos os ficheiros?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="775"/>
+        <location filename="../src/mirall/folder.cpp" line="777"/>
         <source>Remove all files</source>
         <translation>Retirar todos os ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="776"/>
+        <location filename="../src/mirall/folder.cpp" line="778"/>
         <source>Keep files</source>
         <translation>Manter os ficheiros</translation>
     </message>
@@ -562,52 +562,57 @@ Confirma que quere realizar esta operación?</translation>
         <translation>Atopouse un diario de sincronización antigo en «%1» máis non pode ser retirado. Asegúrese de que non o está a usar ningún aplicativo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="603"/>
+        <location filename="../src/mirall/folderman.cpp" line="674"/>
         <source>Undefined State.</source>
         <translation>Estado sen definir.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="606"/>
+        <location filename="../src/mirall/folderman.cpp" line="677"/>
         <source>Waits to start syncing.</source>
         <translation>Agardando polo comezo da sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="609"/>
+        <location filename="../src/mirall/folderman.cpp" line="680"/>
         <source>Preparing for sync.</source>
         <translation>Preparando para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="612"/>
+        <location filename="../src/mirall/folderman.cpp" line="683"/>
         <source>Sync is running.</source>
         <translation>Estase sincronizando.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="615"/>
+        <location filename="../src/mirall/folderman.cpp" line="686"/>
         <source>Server is currently not available.</source>
         <translation>O servidor non está dispoñíbel actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="618"/>
+        <location filename="../src/mirall/folderman.cpp" line="689"/>
         <source>Last Sync was successful.</source>
         <translation>A última sincronización fíxose correctamente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="623"/>
+        <location filename="../src/mirall/folderman.cpp" line="694"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>A última sincronización fíxose correctamente, mais con algún aviso en ficheiros individuais.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="626"/>
+        <location filename="../src/mirall/folderman.cpp" line="697"/>
         <source>Setup Error.</source>
         <translation>Erro de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="629"/>
+        <location filename="../src/mirall/folderman.cpp" line="700"/>
         <source>User Abort.</source>
         <translation>Interrompido polo usuario.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="635"/>
+        <location filename="../src/mirall/folderman.cpp" line="703"/>
+        <source>Sync is paused.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderman.cpp" line="709"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (sincronización en pausa)</translation>
     </message>
@@ -2118,6 +2123,11 @@ Asegúrese de que a súa conexión de rede está a funcionar.</translation>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
         <translation>Interrompendo</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="78"/>
+        <source>Sync is paused</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
