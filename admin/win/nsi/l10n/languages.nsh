@@ -16,4 +16,5 @@
 !insertmacro MUI_LANGUAGE "Greek"
 !insertmacro MUI_LANGUAGE "Slovak"
 !insertmacro MUI_LANGUAGE "Dutch"
+!insertmacro MUI_LANGUAGE "Polish"
 !insertmacro MUI_LANGUAGE "Italian"
