@@ -606,7 +606,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="703"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje je začasno v premoru.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="709"/>
@@ -726,7 +726,7 @@ Program ne bo deloval dovolj zanesljivo. Možne rešitve so zabeležene v dokume
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="264"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Ustvarjanje mape na %1 je spodletelo. Poskusite znova.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="368"/>

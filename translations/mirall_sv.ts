@@ -609,7 +609,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderman.cpp" line="703"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering är pausad.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="709"/>

@@ -609,7 +609,7 @@ Esteu segur que voleu executar aquesta operació?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="703"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>La sincronització està en pausa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="709"/>

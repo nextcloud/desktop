@@ -609,7 +609,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="703"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie gepauzeerd.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="709"/>

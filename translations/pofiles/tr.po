@@ -151,7 +151,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="427"/>
         <source>Sync Running</source>
-        <translation>Sync Çalışıyor</translation>
+        <translation>Eşitleme Çalışıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="102"/>
@@ -569,7 +569,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="677"/>
         <source>Waits to start syncing.</source>
-        <translation>Sync başlatmak için bekleniyor.</translation>
+        <translation>Eşitleme başlatmak için bekleniyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="680"/>
@@ -579,7 +579,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="683"/>
         <source>Sync is running.</source>
-        <translation>Sync çalışıyor.</translation>
+        <translation>Eşitleme çalışıyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="686"/>
@@ -589,7 +589,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="689"/>
         <source>Last Sync was successful.</source>
-        <translation>Son sync başarılı.</translation>
+        <translation>Son Eşitleme başarılı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="694"/>
@@ -609,7 +609,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="703"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme duraklatıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="709"/>
@@ -1579,7 +1579,7 @@ Lütfen ağ bağlantınızın çalıştığından emin olun.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="209"/>
         <source>No sync folders configured.</source>
-        <translation>Sync dizini yapılandırılmamış.</translation>
+        <translation>Eşitleme dizini yapılandırılmamış.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="234"/>
@@ -2127,7 +2127,7 @@ Lütfen ağ bağlantınızın çalıştığından emin olun.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme duraklatıldı</translation>
     </message>
 </context>
 </TS>
