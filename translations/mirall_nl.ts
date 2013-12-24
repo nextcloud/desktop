@@ -2127,7 +2127,7 @@ Controleer de werking van uw netwerkverbinding.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Sync is gepauzeerd</translation>
     </message>
 </context>
 </TS>

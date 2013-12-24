@@ -196,7 +196,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="655"/>
         <source>Completely finished.</source>
-        <translation>Tamamen tamamlandı.</translation>
+        <translation>Tamamen bitti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="662"/>
@@ -692,7 +692,7 @@ düzeltmeler için belgelendirmeye bakın.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="170"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>&lt;i&gt;%1&lt;/i&gt; takma adı zate nkullanımda. Lütfen farklı bir isim seçin.</translation>
+        <translation>&lt;i&gt;%1&lt;/i&gt; takma adı zaten kullanımda. Lütfen farklı bir isim seçin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="126"/>
@@ -787,7 +787,7 @@ düzeltmeler için belgelendirmeye bakın.</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
         <source>Use Monochrome Icons</source>
-        <translation>İki Renkli Simgeler Kulla</translation>
+        <translation>İki Renkli Simgeler Kullan</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="50"/>
@@ -1160,7 +1160,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="229"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Arkiv simdiki  %1 zaten varmi, onu sink. &lt;br/&gt;&lt;br/&gt; icin yuklemek edebilir. </translation>
+        <translation>Yerel eşitleme klasörü %1 zaten mevcut, eşitlemek için ayarlanıyor.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="231"/>
@@ -1470,7 +1470,7 @@ Lütfen ağ bağlantınızın çalıştığından emin olun.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation>Uyari Baglama simdiki SSL icin. </translation>
+        <translation>Geçerli SSL Bağlantısı hakkında uyarılar:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="170"/>
@@ -1609,7 +1609,7 @@ Lütfen ağ bağlantınızın çalıştığından emin olun.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="344"/>
         <source>Open %1 in browser</source>
-        <translation>%1 tarayıcıda aç</translation>
+        <translation>%1&apos;ı tarayıcıda aç</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="346"/>
@@ -1624,7 +1624,7 @@ Lütfen ağ bağlantınızın çalıştığından emin olun.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="350"/>
         <source>Settings...</source>
-        <translation>Ayarlar..</translation>
+        <translation>Ayarlar...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="351"/>
@@ -1659,7 +1659,7 @@ Lütfen ağ bağlantınızın çalıştığından emin olun.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="380"/>
         <source>%1% of %2 in use</source>
-        <translation>%%1 kullanılıyor. Toplam: %2</translation>
+        <translation>% %1 kullanılıyor. Toplam: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="401"/>
@@ -1967,7 +1967,7 @@ Lütfen ağ bağlantınızın çalıştığından emin olun.</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Git gözden geçirme &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; ile %3 üzerinde, %4 %5 ve Qt %6 kullanılarak inşa edildi.&lt;/small&gt;&lt;p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Git gözden geçirme &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; ile %3 tarihinde, %4 %5 ve Qt %6 kullanılarak inşa edildi.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="56"/>
