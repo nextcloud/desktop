@@ -353,7 +353,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="239"/>
         <source>The item is not synced because of previous errors:</source>
-        <translation type="unfinished"/>
+        <translation>Predmet ni usklajen zaradi predhodnih napak:</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="275"/>
@@ -495,7 +495,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>%1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 vo %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="413"/>
@@ -668,7 +668,7 @@ Program ne bo deloval dovolj zanesljivo. Možne rešitve so zabeležene v dokume
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="121"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Krajevna pot %1 je že mapa za pošiljanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="133"/>
@@ -678,7 +678,7 @@ Program ne bo deloval dovolj zanesljivo. Možne rešitve so zabeležene v dokume
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="140"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno vpisana mapa je že usklajena kot podrejena mapa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -688,7 +688,7 @@ Program ne bo deloval dovolj zanesljivo. Možne rešitve so zabeležene v dokume
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="170"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>Vzdevek &lt;i&gt;%1&lt;/i&gt; je že v uporabi. Izbrati je treba drugega.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="126"/>
@@ -736,7 +736,7 @@ Program ne bo deloval dovolj zanesljivo. Možne rešitve so zabeležene v dokume
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="374"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno so v usklajevanju vse datoteke korenske mape. Usklajevanje še ene mape &lt;b&gt;ni&lt;/b&gt; podprto. Če želite uskladiti več map, je treba odstraniti trenutno nastavljeno korensko mapo in spremeniti nastavitve.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="313"/>
@@ -1383,7 +1383,8 @@ Izbrani predmeti bodo tudi izbrisani, v kolikor bi sicer onemogočali brisanje m
         <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 datotek je prezrtih zaradi predhodnih napak.
+Te je treba uskladiti znova.</translation>
     </message>
 </context>
 <context>
@@ -2019,7 +2020,7 @@ Please ensure that your network connection is working.</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Premaknjeno v %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
@@ -2091,7 +2092,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje je končano, ostajajo pa nerešene težave s posameznimi datotekami.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
@@ -2121,7 +2122,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje je ustavljeno</translation>
     </message>
 </context>
 </TS>
