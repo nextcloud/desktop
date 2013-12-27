@@ -510,7 +510,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="416"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; in %2 drugih datotek je %3.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="468"/>

@@ -2127,7 +2127,7 @@ Assicurati che la tua connessione sia funzionante.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione sospesa</translation>
     </message>
 </context>
 </TS>
