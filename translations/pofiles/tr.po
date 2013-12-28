@@ -1639,7 +1639,7 @@ Lütfen ağ bağlantınızın çalıştığından emin olun.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="358"/>
         <source>Quit %1</source>
-        <translation>%1 Çıkışı Yap</translation>
+        <translation>%1&apos;tan Çık</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="361"/>

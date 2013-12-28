@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="324"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ali ste prepričani, da želite mapo &lt;i&gt;%1&lt;/i&gt; ponastaviti in ponovno izgraditi podatkovno zbirko?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opozorilo:&lt;/b&gt; Možnost je zasnovana za vzdrževanje. Datoteke sicer ne bodo spremenjene, vendar pa je opravilo lahko zelo dolgotrajno in lahko traja tudi več ur. Trajanje je odvisno od velikosti mape. Možnost uporabite le, če vam to svetuje skrbnik sistema.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="764"/>
@@ -393,7 +393,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>Dostop s CSync je spodletel</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="176"/>
@@ -521,14 +521,17 @@
         <location filename="../src/mirall/folder.cpp" line="768"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Z usklajevanjem bodo odstranjene vse krajevne datoteke v mapi &apos;%1&apos;.
+Če je bil račun na strežniku kakorkoli ponastavljen, izberite možnost &quot;Ohrani datoteke&quot;, če pa želite datoteke res odstraniti, izberite drugo možnost.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="771"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Z usklajevanjem bodo odstranjene vse datoteke v usklajevani mapi &apos;%1&apos;.
+Mapa je bila morda odstranjena ali pa so bile nastavitve spremenjene.
+Ali sta prepričani, da želite izvesti to opravilo?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="775"/>
@@ -673,7 +676,7 @@ Program ne bo deloval dovolj zanesljivo. Možne rešitve so zabeležene v dokume
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="133"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Izbrana mapa je simbolna povezava. Ta povezava vodi do že nastavljene mape znotraj ciljne mape.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="140"/>
@@ -683,7 +686,7 @@ Program ne bo deloval dovolj zanesljivo. Možne rešitve so zabeležene v dokume
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Izbrana mapa je simbolna povezava. Naslov povezave je nadrejena mapa trenutno izbrane mape.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="170"/>
@@ -1441,7 +1444,8 @@ Te je treba uskladiti znova.</translation>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
         <source>Could not load Shibboleth login page to log you in.
 Please ensure that your network connection is working.</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče naložiti prijavne strani Shibboleth in izvesti prijave.
+Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     </message>
 </context>
 <context>
@@ -1899,7 +1903,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="908"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Te mape ni dovoljeno preimenovati, zato bo samodejno preimenovana v izvorno ime.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="910"/>
