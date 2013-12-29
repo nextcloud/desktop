@@ -470,22 +470,22 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="388"/>
         <source>downloaded</source>
-        <translation>prejeto</translation>
+        <translation>prejeta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="389"/>
         <source>removed</source>
-        <translation>odstranjeno</translation>
+        <translation>odstranjena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="390"/>
         <source>updated</source>
-        <translation>posodobljeno</translation>
+        <translation>posodobljena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="393"/>
         <source>renamed</source>
-        <translation>preimenovano</translation>
+        <translation>preimenovana.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="398"/>
@@ -500,7 +500,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="413"/>
         <source>&apos;%1&apos; has been %2.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka &apos;%1&apos; je %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="415"/>
