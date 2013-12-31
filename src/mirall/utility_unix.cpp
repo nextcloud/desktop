@@ -26,17 +26,30 @@ static void setupFavLink_private(const QString &folder) {
     }
 }
 
+// returns the autostart directory the linux way
+// and respects the XDG_CONFIG_HOME env variable
+// can be replaces for qt5 with QStandardPaths
+QString getUserAutostartDir_private()
+{
+    QString config = QLatin1String(qgetenv("XDG_CONFIG_HOME"));
+
+    if (config.isEmpty()) {
+        config = QDir::homePath()+QLatin1String("/.config");
+    }
+    config += QLatin1String("/autostart/");
+    return config;
+}
+
 bool hasLaunchOnStartup_private(const QString &appName)
 {
-    QString userAutoStartPath = QDir::homePath()+QLatin1String("/.config/autostart/");
-    QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
+    QString desktopFileLocation = getUserAutostartDir_private()+appName+QLatin1String(".desktop");
     return QFile::exists(desktopFileLocation);
 }
 
 
 void setLaunchOnStartup_private(const QString &appName, const QString& guiName, bool enable)
 {
-    QString userAutoStartPath = QDir::homePath()+QLatin1String("/.config/autostart/");
+    QString userAutoStartPath = getUserAutostartDir_private();
     QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
     if (enable) {
         if (!QDir().exists(userAutoStartPath) && !QDir().mkdir(userAutoStartPath)) {
