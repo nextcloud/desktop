@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="132"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>&lt;b&gt;Opmerking:&lt;/b&gt; Sommige folders, waaronder netwerkfolders en gedeelde folders, kunnen andere limieten hebben.</translation>
+        <translation>&lt;b&gt;Opmerking:&lt;/b&gt; Sommige mappen, waaronder netwerkmappen en gedeelde mappen, kunnen andere limieten hebben.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="134"/>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="287"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Weet u zeker dat u de synchronisatie van de folder &lt;i&gt;%1&lt;/i&gt; wilt stoppen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opmerking:&lt;/b&gt; Dit zal de bestanden niet van uw computer verwijderen.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Weet u zeker dat u de synchronisatie van de map &lt;i&gt;%1&lt;/i&gt; wilt stoppen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opmerking:&lt;/b&gt; Dit zal de bestanden niet van uw computer verwijderen.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="323"/>
@@ -529,8 +529,8 @@ Als u of uw beheerder uw account op de server heeft gereset, kies dan &quot;Bewa
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation>Deze synchronisatie zal alle bestanden in de synchronisatiefolder &apos;%1&apos; verwijderen.
-Dit kan komen doordat de folder ongemerkt gereconfigureerd is of doordat alle bestanden met de hand zijn verwijderd.
+        <translation>Deze synchronisatie zal alle bestanden in de synchronisatiemap &apos;%1&apos; verwijderen.
+Dit kan komen doordat de map ongemerkt gereconfigureerd is of doordat alle bestanden met de hand zijn verwijderd.
 Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     </message>
     <message>
@@ -554,7 +554,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="126"/>
         <source>Could not reset folder state</source>
-        <translation>Kan je beginstaat van de map niet resetten</translation>
+        <translation>Kan de beginstaat van de map niet terugzetten</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="127"/>
@@ -672,12 +672,12 @@ werken. Controleer de de documentatie voor mogelijke oplossingen.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="121"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation>Het lokale pad %1 is al een uploadfolder. Kies een andere.</translation>
+        <translation>Het lokale pad %1 is al een uploadmap. Kies een andere.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="133"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation>De gekozen folder is een symbolic link. De map waarnaar deze link verwijst bevat een reeds geconfigureerde map.</translation>
+        <translation>De gekozen map is een symbolic link. De map waarnaar deze link verwijst bevat een reeds geconfigureerde map.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="140"/>
@@ -687,7 +687,7 @@ werken. Controleer de de documentatie voor mogelijke oplossingen.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation>De gekozen folder is een symbolic link. Een reeds geconfigureerde map is de bovenliggende map van de gekozen map, waarnaar de link verwijst.</translation>
+        <translation>De gekozen map is een symbolic link. Een reeds geconfigureerde map is de bovenliggende map van de gekozen map, waarnaar de link verwijst.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="170"/>
@@ -707,7 +707,7 @@ werken. Controleer de de documentatie voor mogelijke oplossingen.</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="193"/>
         <source>Select the source folder</source>
-        <translation>Selecteer de bron map</translation>
+        <translation>Selecteer de bronmap</translation>
     </message>
 </context>
 <context>
@@ -1050,7 +1050,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="108"/>
         <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation>Uw volledige account zal worden gesynchroniseerd met de lokale folder &apos;%1&apos;.</translation>
+        <translation>Uw volledige account zal worden gesynchroniseerd met de lokale map &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="111"/>
