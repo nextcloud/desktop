@@ -257,7 +257,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="100"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>Bu istemci üzerinde sistem saati sunucudaki sistem saati ile farklıdır. Sunucu ve istemci makinelerde bir zaman senkronizasyonu hizmeti (NTP) kullanın böylece zaman aynı kalır.</translation>
+        <translation>Bu istemci üzerinde sistem saati sunucudaki sistem saati ile farklıdır. Sunucu ve istemci makinelerde bir zaman eşitleme hizmeti (NTP) kullanırsanız zaman aynı kalır.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="105"/>
