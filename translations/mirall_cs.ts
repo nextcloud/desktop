@@ -2127,7 +2127,7 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizace pozastavena.</translation>
     </message>
 </context>
 </TS>

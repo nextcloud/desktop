@@ -2128,7 +2128,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>同期を一時停止</translation>
     </message>
 </context>
 </TS>
