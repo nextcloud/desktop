@@ -38,6 +38,7 @@ protected:
     OwncloudPropagator *_propagator;
 public:
     explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator) {}
+
 public slots:
     virtual void start() = 0;
 signals:
@@ -168,9 +169,12 @@ public:
 
     QAtomicInt *_abortRequested; // boolean set by the main thread to abort.
 
+    void overallTransmissionSizeChanged( qint64 change );
+
 signals:
     void completed(const SyncFileItem &);
     void progress(Progress::Kind kind, const SyncFileItem&, quint64 bytes, quint64 total);
+    void progressChanged(qint64 change);
     void finished();
 
 };

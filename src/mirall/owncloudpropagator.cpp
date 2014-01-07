@@ -256,7 +256,7 @@ static QByteArray parseEtag(const char *header) {
 class PropagateUploadFile: public PropagateItemJob {
 public:
     explicit PropagateUploadFile(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateItemJob(propagator, item) {}
+        : PropagateItemJob(propagator, item), _previousFileSize(0) {}
     void start();
 private:
     // Log callback for httpbf
@@ -304,11 +304,11 @@ private:
 
     qint64 _chunked_done; // amount of bytes already sent with the previous chunks
     qint64 _chunked_total_size; // total size of the whole file
+    qint64 _previousFileSize;   // In case the file size has changed during upload, this is the previous one.
 };
 
 void PropagateUploadFile::start()
 {
-    emit progress(Progress::StartUpload, _item, 0, _item._size);
 
     QFile file(_propagator->_localDir + _item._file);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -336,7 +336,22 @@ void PropagateUploadFile::start()
         hbf_set_abort_callback(trans.data(), _user_want_abort);
         trans.data()->chunk_finished_cb = chunk_finished_cb;
         Q_ASSERT(trans);
+
         state = hbf_splitlist(trans.data(), file.handle());
+
+        // If the source file has changed during upload, it is detected and the
+        // variable _previousFileSize is set accordingly. The propagator waits a
+        // couple of seconds and retries.
+        if(_previousFileSize > 0) {
+            qDebug() << "File size changed underway: " << trans->stat_size - _previousFileSize;
+            // Report the change of the overall transmission size to the propagator
+            _propagator->overallTransmissionSizeChanged(qint64(trans->stat_size - _previousFileSize));
+            // update the item's values to the current from trans. hbf_splitlist does a stat
+            _item._size = trans->stat_size;
+            _item._modtime = trans->modtime;
+
+        }
+        emit progress(Progress::StartUpload, _item, 0, trans->stat_size);
 
         if (progressInfo._valid) {
             if (progressInfo._modtime.toTime_t() == (uint)_item._modtime) {
@@ -382,6 +397,11 @@ void PropagateUploadFile::start()
                 if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
                     qDebug("SOURCE file has changed during upload, retry #%d in %d seconds!", attempts, 2*attempts);
                     sleep(2*attempts);
+                    if( _previousFileSize == 0 ) {
+                        _previousFileSize = _item._size;
+                    } else {
+                        _previousFileSize = trans->stat_size;
+                    }
                     continue;
                 }
 
@@ -1082,6 +1102,11 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
 
     _rootJob->start();
+}
+
+void OwncloudPropagator::overallTransmissionSizeChanged(qint64 change)
+{
+    emit progressChanged(change);
 }
 
 void PropagateDirectory::start()

@@ -82,6 +82,7 @@ private slots:
     void transferCompleted(const SyncFileItem& item);
     void slotFinished();
     void slotProgress(Progress::Kind kind, const SyncFileItem &item, quint64 curr = 0, quint64 total = 0);
+    void slotProgressChanged(qint64 change);
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
@@ -115,6 +116,7 @@ private:
     Progress::Info _progressInfo;
     int _downloadLimit;
     int _uploadLimit;
+    int _previousIndex;   // store the index of the previous item in progress update slot
     qint64 _currentFileNo;
     qint64 _overallFileCount;
     quint64 _lastOverallBytes;

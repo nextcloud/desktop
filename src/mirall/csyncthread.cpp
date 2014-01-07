@@ -58,6 +58,7 @@ QMutex CSyncThread::_mutex;
 QMutex CSyncThread::_syncMutex;
 
 CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &remotePath, SyncJournalDb *journal)
+    :_previousIndex(-1)
 {
     _mutex.lock();
     _localPath = localPath;
@@ -561,6 +562,7 @@ void CSyncThread::startSync()
             this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)),
             this, SLOT(slotProgress(Progress::Kind,SyncFileItem,quint64,quint64)));
+    connect(_propagator.data(), SIGNAL(progressChanged(qint64)), this, SLOT(slotProgressChanged(qint64)));
     connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()));
 
     int downloadLimit = 0;
@@ -634,6 +636,11 @@ void CSyncThread::progressProblem(Progress::Kind kind, const SyncFileItem& item)
     emit transmissionProblem( problem );
 }
 
+void CSyncThread::slotProgressChanged(qint64 change)
+{
+    _progressInfo.overall_transmission_size += change;
+}
+
 void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, quint64 curr, quint64 total)
 {
     if( Progress::isErrorKind(kind) ) {
@@ -651,7 +658,11 @@ void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, qu
             kind == Progress::StartRename ||
             kind == Progress::StartUpload ) {
         QMutexLocker lock(&_mutex);
-        _currentFileNo += 1;
+        int indx = _syncedItems.indexOf(item);
+        if( _previousIndex != indx ) {
+            _currentFileNo += 1;
+            _previousIndex = indx;
+        }
     }
 
     if( kind == Progress::EndUpload ||
