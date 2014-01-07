@@ -2127,7 +2127,7 @@ Palun veendu, et võrguühendus toimib.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimine on peatatud</translation>
     </message>
 </context>
 </TS>
