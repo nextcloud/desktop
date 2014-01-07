@@ -67,9 +67,11 @@ void AbstractNetworkJob::setTimeout(qint64 msec)
 
 void AbstractNetworkJob::resetTimeout()
 {
-    qint64 interval = _timer->interval();
-    _timer->stop();
-    _timer->start(interval);
+    if( _timer ) {
+        qint64 interval = _timer->interval();
+        _timer->stop();
+        _timer->start(interval);
+    }
 }
 
 void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
