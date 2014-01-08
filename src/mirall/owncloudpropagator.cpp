@@ -1114,7 +1114,7 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
                 _item._file = _item._renameTarget;
             }
 
-            if (_item._should_update_etag) {
+            if (_item._should_update_etag && _item._instruction != CSYNC_INSTRUCTION_REMOVE) {
                 SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
                 _propagator->_journal->setFileRecord(record);
             }
