@@ -70,6 +70,9 @@ QString SyncResult::statusString() const
     case SyncAbortRequested:
         re = QLatin1String("Sync Request aborted by user");
         break;
+    case Paused:
+        re = QLatin1String("Sync Paused");
+        break;
     }
     return re;
 }
