@@ -4,3 +4,4 @@ include(owncloud_add_test.cmake)
 
 owncloud_add_test(OwncloudPropagator)
 owncloud_add_test(Utility)
+owncloud_add_test(FolderWatcherPrivate)

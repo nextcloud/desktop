@@ -16,7 +16,6 @@
 #include "mirall/folderwatcher.h"
 #include "mirall/folder.h"
 #include "mirall/inotify.h"
-#include "mirall/fileutils.h"
 
 #include <stdint.h>
 

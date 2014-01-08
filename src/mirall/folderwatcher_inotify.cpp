@@ -1,5 +1,4 @@
 /*
- * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
  * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,7 +16,6 @@
 
 #include "mirall/inotify.h"
 #include "mirall/folderwatcher.h"
-#include "mirall/fileutils.h"
 
 #include "mirall/folderwatcher_inotify.h"
 
@@ -33,6 +31,12 @@ static const uint32_t standard_event_mask =
     IN_MOVE_SELF |IN_UNMOUNT |IN_ONLYDIR |
     IN_DONT_FOLLOW;
 
+FolderWatcherPrivate::FolderWatcherPrivate()
+    :QObject(), _inotify(0), _parent(0), _lastMask(0)
+{
+
+}
+
 FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p)
     : QObject(), _parent(p), _lastMask(0)
 
@@ -42,6 +46,31 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p)
                      this, SLOT(slotINotifyEvent(int, int, const QString &)));
 
     QMetaObject::invokeMethod(this, "slotAddFolderRecursive", Q_ARG(QString, _parent->root()));
+}
+
+// attention: result list passed by reference!
+bool FolderWatcherPrivate::findFoldersBelow( const QDir& dir, QStringList& fullList )
+{
+    bool ok = true;
+    if( !(dir.exists() && dir.isReadable()) ) {
+        qDebug() << "Non existing path coming in: " << dir.absolutePath();
+        ok = false;
+    } else {
+        QStringList nameFilter;
+        nameFilter << QLatin1String("*");
+        QDir::Filters filter = QDir::Dirs | QDir::NoDotAndDotDot;
+        const QStringList pathes = dir.entryList(nameFilter, filter);
+
+        QStringList::const_iterator constIterator;
+        for (constIterator = pathes.constBegin(); constIterator != pathes.constEnd();
+               ++constIterator) {
+            const QString fullPath(dir.path()+QLatin1String("/")+(*constIterator));
+            fullList.append(fullPath);
+            ok = findFoldersBelow(QDir(fullPath), fullList);
+        }
+    }
+
+    return ok;
 }
 
 void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
@@ -54,9 +83,14 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
                           "The application will not work reliably. Please check the\n"
                           "documentation for possible fixes."));
     }
-    QStringList watchedFolders(_inotify->directories());
+    const QStringList watchedFolders(_inotify->directories());
+
+    QStringList allSubfolders;
+    if( !findFoldersBelow(QDir(path), allSubfolders)) {
+        qDebug() << "Could not traverse all sub folders";
+    }
     // qDebug() << "currently watching " << watchedFolders;
-    QStringListIterator subfoldersIt(FileUtils::subFoldersList(path, FileUtils::SubFolderRecursive));
+    QStringListIterator subfoldersIt(allSubfolders);
     while (subfoldersIt.hasNext()) {
         QString subfolder = subfoldersIt.next();
         // qDebug() << "  (**) subfolder: " << subfolder;

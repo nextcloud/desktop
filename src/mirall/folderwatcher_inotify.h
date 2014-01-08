@@ -16,6 +16,7 @@
 #define MIRALL_FOLDERWATCHER_INOTIFY_H
 
 #include <QObject>
+#include <QDir>
 
 namespace Mirall {
 
@@ -25,14 +26,21 @@ class FolderWatcher;
 class FolderWatcherPrivate : public QObject {
     Q_OBJECT
 public:
+    FolderWatcherPrivate();
     FolderWatcherPrivate(FolderWatcher *p);
     void addPath(const QString &path) { slotAddFolderRecursive(path);  }
     void removePath(const QString &);
+
 signals:
     void error(const QString& error);
+
 private slots:
     void slotAddFolderRecursive(const QString &path);
     void slotINotifyEvent(int mask, int cookie, const QString &path);
+
+protected:
+    bool findFoldersBelow( const QDir& dir, QStringList& fullList );
+
 private:
     INotify *_inotify;
     FolderWatcher *_parent;

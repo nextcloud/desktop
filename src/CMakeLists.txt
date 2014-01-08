@@ -57,7 +57,6 @@ set(libsync_SRCS
     mirall/owncloudpropagator.cpp
     mirall/syncjournalfilerecord.cpp
     mirall/syncjournaldb.cpp
-    mirall/fileutils.cpp
     mirall/theme.cpp
     mirall/owncloudtheme.cpp
     mirall/logger.cpp
