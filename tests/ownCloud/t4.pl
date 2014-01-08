@@ -89,11 +89,28 @@ assertLocalAndRemoteDir( '', 1 );
 
 printInfo("Remove a directory containing a local file\n");
 remoteCleanup('test_stat');
+
+#Add an executable file for next test
+system( "echo echo hello >> " . localDir() . 'echo.sh' );
+chmod 0751, localDir() . 'echo.sh';
+
 csync();
 assertLocalAndRemoteDir( '', 0 );
 
+open(my $fh, "<", localDir() . 'echo.sh');
+my $perm = (stat $fh)[2] & 07777;
+assert( $perm eq 0751, "permissions not kept" );
 
 
+printInfo("Modify a file in the remote and check its permission\n");
+system( "echo \"echo bonjour\" > /tmp/echo.sh" );
+put_to_dir( '/tmp/echo.sh', "" );
+csync();
+assertLocalAndRemoteDir( '', 0 );
+
+open(my $fh, "<", localDir() . 'echo.sh');
+my $perm = (stat $fh)[2] & 07777;
+assert( $perm eq 0751, "permissions not kept" );
 
 
 cleanup();
