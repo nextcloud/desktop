@@ -811,6 +811,11 @@ void PropagateDownloadFile::start()
         }
     }
 
+    QFileInfo existingFile(fn);
+    if(existingFile.exists() && existingFile.permissions() != tmpFile.permissions()) {
+        tmpFile.setPermissions(existingFile.permissions());
+    }
+
     csync_win32_set_file_hidden(tmpFileName.toUtf8().constData(), false);
 
 #ifndef Q_OS_WIN
