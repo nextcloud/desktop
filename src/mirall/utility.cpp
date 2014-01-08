@@ -27,6 +27,7 @@
 #include <QDesktopServices>
 #include <QProcess>
 #include <QThread>
+#include <QDateTime>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QDesktopServices>
@@ -52,6 +53,31 @@
 #endif
 
 namespace Mirall {
+
+bool Utility::writeRandomFile( const QString& fname, int size )
+{
+    int maxSize = 10*10*1024;
+    qsrand(QDateTime::currentMSecsSinceEpoch());
+
+    if( size == -1 ) size = qrand() % maxSize;
+
+    QString randString;
+    for( int i = 0; i < size; i++ ) {
+        int r = qrand() % 128;
+        randString.append(QChar(r));
+    }
+
+    QFile file(fname);
+    if( file.open(QIODevice::WriteOnly | QIODevice::Text) ) {
+        QTextStream out(&file);
+        out << randString;
+     // optional, as QFile destructor will already do it:
+        file.close();
+        return true;
+    }
+    return false;
+
+}
 
 QString Utility::formatFingerprint( const QByteArray& fmhash )
 {

@@ -28,6 +28,7 @@ namespace Utility
     void usleep(int usec);
     QString formatFingerprint( const QByteArray& );
     void setupFavLink( const QString &folder );
+    bool writeRandomFile( const QString& fname, int size = -1);
     QString octetsToString( qint64 octets );
     QString platform();
     QByteArray userAgentString();
