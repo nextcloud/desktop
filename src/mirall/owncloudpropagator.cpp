@@ -706,7 +706,7 @@ void PropagateDownloadFile::start()
         return;
     }
 
-    csync_win32_set_file_hidden(tmpFileName.toUtf8().constData(), true);
+    csync_win32_set_file_hidden(tmpFile.fileName().toUtf8().constData(), true);
 
     {
         SyncJournalDb::DownloadInfo pi;
@@ -816,7 +816,7 @@ void PropagateDownloadFile::start()
         tmpFile.setPermissions(existingFile.permissions());
     }
 
-    csync_win32_set_file_hidden(tmpFileName.toUtf8().constData(), false);
+    csync_win32_set_file_hidden(tmpFile.fileName().toUtf8().constData(), false);
 
 #ifndef Q_OS_WIN
     bool success;
