@@ -78,9 +78,10 @@ assertLocalAndRemoteDir( 'fromLocal1', 0);
 
 # remove a local dir
 printInfo( "Remove a local directory.");
-localCleanup( localDir() . 'remoteToLocal1/rtlX' );
+localCleanup( 'remoteToLocal1/rtlX' );
 csync();
 assertLocalAndRemoteDir( 'fromLocal1', 0);
+assert( ! -e localDir().'remoteToLocal1/rtlX' );
 
 # create a false conflict, only the mtimes are changed, by content are equal.
 printInfo( "Create a false conflict.");
@@ -103,6 +104,33 @@ my $realMD5 = md5OfFile( '/tmp/kernelcrash.txt' );
 print "MD5 compare $localMD5 <-> $realMD5\n";
 assert( $localMD5 eq $realMD5 );
 assert(  glob(localDir().'remoteToLocal1/kernelcrash_conflict-*.txt' ) );
+
+
+# prepare test for issue 1329, rtlX need to be modified
+# [https://github.com/owncloud/mirall/issues/1329]
+printInfo( "Add a local directory");
+system("cp -r 'toremote1/rtl1/'  '" . localDir(). "remoteToLocal1/rtlX'");
+csync();
+assertLocalAndRemoteDir( 'fromLocal1', 0);
+
+# remove a local dir (still for issue 1329)
+printInfo( "Remove that directory.");
+localCleanup( 'remoteToLocal1/rtlX' );
+csync();
+assertLocalAndRemoteDir( 'fromLocal1', 0);
+assert( ! -e localDir().'remoteToLocal1/rtlX' );
+
+
+# add it back again  (still for issue 1329)
+printInfo( "Add back the local dir.");
+system("cp -r 'toremote1/rtl1/'  '" . localDir(). "remoteToLocal1/rtlX'");
+assert( -e localDir().'remoteToLocal1/rtlX' );
+assert( -e localDir().'remoteToLocal1/rtlX/rtl11/file.txt' );
+csync();
+assertLocalAndRemoteDir( 'fromLocal1', 0);
+assert( -e localDir().'remoteToLocal1/rtlX' );
+assert( -e localDir().'remoteToLocal1/rtlX/rtl11/file.txt' );
+
 
 
 # ==================================================================
