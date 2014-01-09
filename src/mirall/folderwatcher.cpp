@@ -44,7 +44,6 @@ namespace Mirall {
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     : QObject(parent),
       _eventsEnabled(true),
-      _eventInterval(DEFAULT_EVENT_INTERVAL_MSEC),
       _root(root),
       _processTimer(new QTimer(this))
 {
@@ -125,16 +124,6 @@ void FolderWatcher::clearPendingEvents()
     _pendingPathes.clear();
 }
 
-int FolderWatcher::eventInterval() const
-{
-    return _eventInterval;
-}
-
-void FolderWatcher::setEventInterval(int seconds)
-{
-    _eventInterval = seconds;
-}
-
 void FolderWatcher::slotProcessTimerTimeout()
 {
     qDebug() << "* Processing of event queue for" << root();
@@ -153,11 +142,11 @@ void FolderWatcher::setProcessTimer()
     if (!_processTimer->isActive()) {
         qDebug() << "* Pending events for" << root()
                  << "will be processed after events stop for"
-                 << eventInterval() << "milliseconds ("
-                 << QTime::currentTime().addSecs(eventInterval()).toString(QLatin1String("HH:mm:ss"))
+                 << DEFAULT_EVENT_INTERVAL_MSEC << "milliseconds ("
+                 << QTime::currentTime().addSecs(DEFAULT_EVENT_INTERVAL_MSEC).toString(QLatin1String("HH:mm:ss"))
                  << ")." << _pendingPathes.size() << "events until now )";
     }
-    _processTimer->start(eventInterval());
+    _processTimer->start(DEFAULT_EVENT_INTERVAL_MSEC);
 }
 
 void FolderWatcher::changeDetected(const QString& f)

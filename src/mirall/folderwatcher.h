@@ -75,18 +75,6 @@ public:
      */
     void clearPendingEvents();
 
-    /**
-     * The minimum amounts of seconds that will separate
-     * folderChanged() intervals
-     */
-    int eventInterval() const;
-
-    /**
-     * Sets minimum amounts of seconds that will separate
-     * folderChanged() intervals
-     */
-    void setEventInterval(int seconds);
-
     QStringList ignores() const;
 
     /**
@@ -131,7 +119,6 @@ protected:
 
 private:
     bool _eventsEnabled;
-    int _eventInterval;
     FolderWatcherPrivate *_d;
     QString _root;
     // paths pending to notified
