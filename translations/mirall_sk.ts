@@ -639,7 +639,7 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
 <context>
     <name>Mirall::FolderWatcherPrivate</name>
     <message>
-        <location filename="../src/mirall/folderwatcher_inotify.cpp" line="53"/>
+        <location filename="../src/mirall/folderwatcher_inotify.cpp" line="82"/>
         <source>Could not monitor directories due to system limitations.
 The application will not work reliably. Please check the
 documentation for possible fixes.</source>
@@ -1914,27 +1914,27 @@ Skontrolujte prosím, či máte pracuje pripojenie k sieti.</translation>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="87"/>
+        <location filename="../src/mirall/utility.cpp" line="113"/>
         <source>%L1 TB</source>
         <translation>%L1 TB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="90"/>
+        <location filename="../src/mirall/utility.cpp" line="116"/>
         <source>%L1 GB</source>
         <translation>%L1 GB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="93"/>
+        <location filename="../src/mirall/utility.cpp" line="119"/>
         <source>%L1 MB</source>
         <translation>%L1 MB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="96"/>
+        <location filename="../src/mirall/utility.cpp" line="122"/>
         <source>%L1 kB</source>
         <translation>%L1 kB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="99"/>
+        <location filename="../src/mirall/utility.cpp" line="125"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
