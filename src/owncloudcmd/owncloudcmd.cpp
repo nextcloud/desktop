@@ -20,6 +20,8 @@
 #include <QFile>
 #include <qdebug.h>
 
+#include <neon/ne_socket.h>
+
 #include "csyncthread.h"
 #include <syncjournaldb.h>
 #include "logger.h"
@@ -36,26 +38,11 @@ int getauth(const char* prompt, char* buf, size_t len, int echo, int verify, voi
     return 0;
 }
 
-struct ProxyInfo {
-    const char *proxyType;
-    const char *proxyHost;
-    int         proxyPort;
-    const char *proxyUser;
-    const char *proxyPwd;
-
-    ProxyInfo() {
-        proxyType = 0;
-        proxyHost = 0;
-        proxyPort = 0;
-        proxyUser = 0;
-        proxyPwd = 0;
-    }
-};
-
 struct CmdOptions {
     QString source_dir;
     QString target_url;
     QString config_directory;
+    QString proxy;
 };
 
 void help()
@@ -66,6 +53,8 @@ void help()
     std::cout << "" << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "  --confdir = configdir: Read config from there." << std::endl;
+    std::cout << "  --httpproxy = proxy:   Specify a http proxy to use." << std::endl;
+    std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "" << std::endl;
     exit(1);
 
@@ -95,6 +84,8 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
 
         if( option == "--confdir" && !it.peekNext().startsWith("-") ) {
             options->config_directory = it.next();
+        } else if( option == "--httpproxy" && !it.peekNext().startsWith("-")) {
+            options->proxy = it.next();
         } else {
             help();
         }
@@ -108,7 +99,6 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
 
-    ProxyInfo proxyInfo;
     CmdOptions options;
 
     parseOptions( app.arguments(), &options );
@@ -118,6 +108,10 @@ int main(int argc, char **argv) {
                       options.target_url.toUtf8()) < 0 ) {
         qFatal("Unable to create csync-context!");
         return EXIT_FAILURE;
+    }
+    int rc = ne_sock_init();
+    if (rc < 0) {
+        qFatal("ne_sock_init failed!");
     }
 
     csync_set_log_level(11);
@@ -133,6 +127,29 @@ int main(int argc, char **argv) {
     }
 
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
+    if( !options.proxy.isNull() ) {
+        QString host;
+        int port = 0;
+        bool ok;
+
+        QStringList pList = options.proxy.split(':');
+        if(pList.count() == 3) {
+            // http: //192.168.178.23 : 8080
+            //  0            1            2
+            host = pList.at(1);
+            if( host.startsWith("//") ) host.remove(0, 2);
+
+            port = pList.at(2).toInt(&ok);
+
+            if( !host.isNull() ) {
+                csync_set_module_property(_csync_ctx, "proxy_type", (void*) "HttpProxy");
+                csync_set_module_property(_csync_ctx, "proxy_host", host.toUtf8().data());
+                if( ok && port ) {
+                    csync_set_module_property(_csync_ctx, "proxy_port", (void*) &port);
+                }
+            }
+        }
+    }
 
     SyncJournalDb db(options.source_dir);
     CSyncThread csyncthread(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), &db);
@@ -142,6 +159,8 @@ int main(int argc, char **argv) {
     app.exec();
 
     csync_destroy(_csync_ctx);
+
+    ne_sock_exit();
 
     return 0;
 }
