@@ -799,12 +799,12 @@ documentação por possíveis correções.</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="241"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
         <translation>Entrar Senha</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="242"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Por favor entrar %1 senha para o usuário &apos;%2&apos;:</translation>
     </message>
@@ -1378,12 +1378,12 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
         <translation>Não existe mais espaço disponível para armazenamento no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Correntemente nenhum arquivo será ignorado por causa de erros prévios.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 arquivos são ignorados por causa de erros prévios.
@@ -1901,12 +1901,12 @@ Certifique-se que sua conexão de rede está funcionando.</translation>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="928"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="933"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Esta pasta não pode ser renomeada. Ele será renomeado de volta ao seu nome original.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="930"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="935"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Esta pasta não pode ser renomeada. Por favor, nomeie-a de volta para Compartilhada.</translation>
     </message>

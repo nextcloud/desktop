@@ -799,12 +799,12 @@ documentation for possible fixes.</source>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="241"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
         <translation>Введите пароль</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="242"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation type="unfinished"/>
     </message>
@@ -1371,7 +1371,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="143"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Статус синхронизации скопирован в буфер обмена.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="215"/>
@@ -1379,12 +1379,12 @@ Checked items will also be deleted if they prevent a directory from being remove
         <translation>На сервере нет места для хранения информации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation type="unfinished"/>
@@ -1428,12 +1428,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="52"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Авторизация</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="113"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="117"/>
@@ -1886,7 +1886,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="203"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>не удалось создать директорию %1</translation>
     </message>
 </context>
 <context>
@@ -1900,12 +1900,12 @@ Please ensure that your network connection is working.</source>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="928"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="933"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Эта папка не должна переименовываться. Ей будет присвоено изначальное имя. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="930"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="935"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Эта папка не должна переименовываться. Пожалуйста, верните ей имя Shared</translation>
     </message>

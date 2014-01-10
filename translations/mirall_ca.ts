@@ -799,12 +799,12 @@ documentació per possibles solucions.</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="241"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="242"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation type="unfinished"/>
     </message>
@@ -1379,12 +1379,12 @@ Els elements marcats també s&apos;eliminaran si prevenen l&apos;eliminació d&a
         <translation>No hi ha més espai disponible en el servidor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation type="unfinished"/>
@@ -1900,12 +1900,12 @@ Please ensure that your network connection is working.</source>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="928"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="933"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>No s&apos;ha de canviar el nom d&apos;aquesta carpeta. Es reanomena de nou amb el seu nom original.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="930"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="935"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Aquesta carpeta no es pot reanomenar. Reanomeneu-la de nou Shared.</translation>
     </message>

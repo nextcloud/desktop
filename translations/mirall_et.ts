@@ -799,12 +799,12 @@ dokumentatsioonist võimalikke lahendusi.</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="241"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
         <translation>Sisesta parool</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="242"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Palun sisesta %1 parool kasutajale &apos;%2&apos;:</translation>
     </message>
@@ -1379,12 +1379,12 @@ Checked items will also be deleted if they prevent a directory from being remove
         <translation>Serveris pole rohkem vaba ruumi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Hetkel ei ignoreerita ühtegi faili eelnenud vigade tõttu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 faili on ignoreeritud eelnenud vigade tõttu.
@@ -1902,12 +1902,12 @@ Palun veendu, et võrguühendus toimib.</translation>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="928"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="933"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Kausta ei tohi ümber nimetada. Kausta algne nimi taastati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="930"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="935"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Kausta nime ei tohi muuta. Palun pane selle nimeks tagasi Shared.</translation>
     </message>

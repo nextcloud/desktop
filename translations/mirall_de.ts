@@ -800,12 +800,12 @@ Dokumentation für mögliche Lösungen.</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="241"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
         <translation>Passwort eingeben</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="242"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Bitte %1 Passwort für den Nutzer &apos;%2&apos; eingeben:</translation>
     </message>
@@ -1380,12 +1380,12 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
         <translation>Auf dem Server ist kein Speicherplatz mehr vorhanden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Aktuell werden keine Dateien, aufgrund vorheriger Fehler, ignoriert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 Datei(en) werden aufgrund vorheriger Fehler ignoriert.
@@ -1903,12 +1903,12 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="928"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="933"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Dieser Ordner muss nicht umbenannt werden. Er wurde zurück zum Originalnamen umbenannt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="930"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="935"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Dieser Ordner muss nicht umbenannt werden. Bitte benennen Sie es zurück wie in der Freigabe.</translation>
     </message>

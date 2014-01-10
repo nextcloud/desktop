@@ -799,12 +799,12 @@ dokumentací pro možnost opravy.</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="241"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
         <translation>Zadejte heslo</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="242"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Zadejte prosím %1 heslo pro uživatele &apos;%2&apos;: </translation>
     </message>
@@ -1379,12 +1379,12 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
         <translation>Na serveru již není k dispozici volné místo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Nyní nejsou v seznamu ignorovaných žádné soubory kvůli předchozím chybám.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 souborů je na seznamu ignorovaných kvůli předchozím chybovým stavům.
@@ -1903,12 +1903,12 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="928"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="933"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Tato složka nemůže být přejmenována. Byl jí vrácen původní název.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="930"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="935"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Tato složka nemůže být přejmenována. Přejmenujte jí prosím zpět na Shared.</translation>
     </message>

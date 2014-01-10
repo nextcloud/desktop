@@ -799,12 +799,12 @@ dokumentáciu pre možné riešenia.</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="241"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
         <translation>Vložte heslo</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="242"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Zadajte prosím %1 heslo pre používateľa &apos;%2&apos;: </translation>
     </message>
@@ -1379,12 +1379,12 @@ Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri ods
         <translation>Nedostatok diskovej kapacity na serveri.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>V súčastnosti niesú na čiernej listine žiadne súbory kvôli predchádzajúcim chybovým stavom.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 súborov je na čiernej listine kvôli predchádzajúcim chybovým stavom.</translation>
@@ -1901,12 +1901,12 @@ Skontrolujte prosím, či máte pracuje pripojenie k sieti.</translation>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="928"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="933"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Tento priečinok nemôže byť premenovaný. Prosím, vráťte mu pôvodné meno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="930"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="935"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Tento priečinok nemôže byť premenovaný. Prosím, vráťte mu meno Shared.</translation>
     </message>

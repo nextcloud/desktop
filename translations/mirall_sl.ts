@@ -798,12 +798,12 @@ Program ne bo deloval dovolj zanesljivo. Možne rešitve so zabeležene v dokume
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="241"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
         <translation>Vnos gesla</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="242"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Vpisati je treba geslo %1 za uporabnika &apos;%2&apos;:</translation>
     </message>
@@ -1378,12 +1378,12 @@ Izbrani predmeti bodo tudi izbrisani, v kolikor bi sicer onemogočali brisanje m
         <translation>Na strežniku ni več razpoložljivega prostora.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Trenutno zaradi predhodnih napak ni prezrta nobena datoteka.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 datotek je prezrtih zaradi predhodnih napak.
@@ -1901,12 +1901,12 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="928"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="933"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Te mape ni dovoljeno preimenovati, zato bo samodejno preimenovana v izvorno ime.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="930"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="935"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Mape ni dovoljeno preimenovati. Preimenujte jo nazaj na enako vrednost.</translation>
     </message>

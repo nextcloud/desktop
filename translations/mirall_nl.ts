@@ -799,12 +799,12 @@ werken. Controleer de de documentatie voor mogelijke oplossingen.</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="241"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
         <translation>Vul het wachtwoord in</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="242"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Vul het %1 wachtwoord in voor gebruiker &apos;%2&apos;:</translation>
     </message>
@@ -1379,12 +1379,12 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
         <translation>Geen opslagruimte meer beschikbaar op de server.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="286"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Er zijn nu geen bestanden genegeerd vanwege eerdere fouten.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="288"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 bestanden zijn genegeerd vanwege eerdere fouten.
@@ -1902,12 +1902,12 @@ Controleer de werking van uw netwerkverbinding.</translation>
 <context>
     <name>PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="928"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="933"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Deze map mag niet worden hernoemd. De naam van de map is teruggezet naar de originele naam.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="930"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="935"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Deze map mag niet worden hernoemd. Verander de naam terug in Gedeeld.</translation>
     </message>
