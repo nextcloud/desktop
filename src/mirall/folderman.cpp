@@ -50,6 +50,10 @@ FolderMan::FolderMan(QObject *parent) :
     _folderChangeSignalMapper = new QSignalMapper(this);
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),
             this, SIGNAL(folderSyncStateChange(const QString &)));
+
+    _folderWatcherSignalMapper = new QSignalMapper(this);
+    connect(_folderWatcherSignalMapper, SIGNAL(mapped(const QString&)),
+            this, SLOT(slotScheduleSync(const QString&)));
 }
 
 FolderMan *FolderMan::instance()
@@ -88,6 +92,50 @@ int FolderMan::unloadAllFolders()
     return cnt;
 }
 
+// add a monitor to the local file system. If there is a change in the
+// file system, the method slotFolderMonitorFired is triggered through
+// the SignalMapper
+void FolderMan::registerFolderMonitor( Folder *folder )
+{
+    if( !folder ) return;
+
+    if( !_folderWatchers.contains(folder->alias() ) ) {
+        FolderWatcher *fw = new FolderWatcher(folder->path(), this);
+        MirallConfigFile cfg;
+        fw->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::SystemScope) );
+        fw->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::UserScope) );
+
+        // Connect the folderChanged signal, which comes with the changed path,
+        // to the signal mapper which maps to the folder alias. The changed path
+        // is lost this way, but we do not need it for the current implementation.
+        connect(fw, SIGNAL(folderChanged(QString)), _folderWatcherSignalMapper, SLOT(map()));
+        _folderWatcherSignalMapper->setMapping(fw, folder->alias());
+        _folderWatchers.insert(folder->alias(), fw);
+    }
+}
+
+void FolderMan::addMonitorPath( const QString& alias, const QString& path )
+{
+    if( !alias.isEmpty() && _folderWatchers.contains(alias) ) {
+        FolderWatcher *fw = _folderWatchers[alias];
+
+        if( fw ) {
+            fw->addPath(path);
+        }
+    }
+}
+
+void FolderMan::removeMonitorPath( const QString& alias, const QString& path )
+{
+    if( !alias.isEmpty() && _folderWatchers.contains(alias) ) {
+        FolderWatcher *fw = _folderWatchers[alias];
+
+        if( fw ) {
+            fw->removePath(path);
+        }
+    }
+}
+
 int FolderMan::setupFolders()
 {
   qDebug() << "* Setup folders from " << _folderConfigPath;
@@ -101,6 +149,8 @@ int FolderMan::setupFolders()
   foreach ( const QString& alias, list ) {
     Folder *f = setupFolderFromConfigFile( alias );
     if( f ) {
+        registerFolderMonitor(f);
+
         emit( folderSyncStateChange( f->alias() ) );
     }
   }
@@ -276,7 +326,7 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
     Folder *f = _folderMap[alias];
     if( f ) {
         f->setSyncEnabled(enable);
-        f->evaluateSync(QStringList());
+        slotScheduleSync(alias);
 
         // FIXME: Use MirallConfigFile
         QSettings settings(_folderConfigPath + QLatin1Char('/') + f->configFile(), QSettings::IniFormat);
@@ -348,18 +398,29 @@ void FolderMan::slotScheduleSync( const QString& alias )
 {
     if( alias.isEmpty() ) return;
 
-    qDebug() << "Schedule folder " << alias << " to sync!";
     if( _currentSyncFolder == alias ) {
         qDebug() << " the current folder is currently syncing.";
         return;
     }
+    qDebug() << "Schedule folder " << alias << " to sync!";
 
     if( ! _scheduleQueue.contains(alias )) {
+        Folder *f = _folderMap[alias];
+        if( f ) {
+            if( f->syncEnabled() ) { // FIXME: check if that is ok
+                f->prepareToSync();
+            } else {
+                qDebug() << "Folder is not enabled, not scheduled!";
+                return;
+            }
+        }
         _scheduleQueue.enqueue(alias);
     } else {
         qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
-    slotScheduleFolderSync();
+
+    // wait two seconds until the syncing starts
+    QTimer::singleShot(2000, this, SLOT(slotScheduleFolderSync()));
 }
 
 void FolderMan::setSyncEnabled( bool enabled )
@@ -399,6 +460,7 @@ void FolderMan::slotScheduleFolderSync()
             Folder *f = _folderMap[alias];
             if( f->syncEnabled() ) {
                 _currentSyncFolder = alias;
+
                 f->startSync( QStringList() );
             }
         }
@@ -419,6 +481,7 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
     qDebug() << "<===================================== sync finished for " << _currentSyncFolder;
 
     _currentSyncFolder.clear();
+
     QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
 }
 

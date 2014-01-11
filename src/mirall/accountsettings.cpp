@@ -459,11 +459,8 @@ void AccountSettings::slotSyncCurrentFolderNow()
         return;
     QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
     FolderMan *folderMan = FolderMan::instance();
-    Folder *f = folderMan->folder( alias );
-    if (!f)
-        return;
 
-    f->evaluateSync(QStringList());
+    folderMan->slotScheduleSync(alias);
 }
 
 void AccountSettings::slotUpdateFolderState( Folder *folder )

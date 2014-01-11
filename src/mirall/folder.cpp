@@ -18,7 +18,6 @@
 #include "mirall/account.h"
 #include "mirall/folder.h"
 #include "mirall/folderman.h"
-#include "mirall/folderwatcher.h"
 #include "mirall/logger.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/networkjobs.h"
@@ -72,14 +71,10 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     qsrand(QTime::currentTime().msec());
     _timeSinceLastSync.start();
 
-    _watcher = new FolderWatcher(path, this);
-
     MirallConfigFile cfg;
-    _watcher->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::SystemScope) );
-    _watcher->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::UserScope) );
 
-    QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
-                     SLOT(slotChanged(const QStringList &)));
+    // QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
+    //                 SLOT(slotChanged(const QStringList &)));
 
     _syncResult.setStatus( SyncResult::NotYetStarted );
 
@@ -256,17 +251,10 @@ SyncResult Folder::syncResult() const
   return _syncResult;
 }
 
-void Folder::evaluateSync(const QStringList &/*pathList*/)
+void Folder::prepareToSync()
 {
-  if( !_enabled ) {
-    qDebug() << "*" << alias() << "sync skipped, disabled!";
-    return;
-  }
-
-  _syncResult.setStatus( SyncResult::NotYetStarted );
-  _syncResult.clearErrors();
-  emit scheduleToSync( alias() );
-
+    _syncResult.setStatus( SyncResult::NotYetStarted );
+    _syncResult.clearErrors();
 }
 
 void Folder::slotPollTimerTimeout()
@@ -276,7 +264,7 @@ void Folder::slotPollTimerTimeout()
     if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval() ||
             !(_syncResult.status() == SyncResult::Success ||_syncResult.status() == SyncResult::Problem)) {
         qDebug() << "** Force Sync now, state is " << _syncResult.statusString();
-        evaluateSync(QStringList());
+        emit scheduleToSync(alias());
     } else {
         RequestEtagJob* job = new RequestEtagJob(AccountManager::instance()->account(), remotePath(), this);
         // check if the etag is different
@@ -295,7 +283,7 @@ void Folder::etagRetreived(const QString& etag)
 
     if (_lastEtag != etag) {
         _lastEtag = etag;
-        evaluateSync(QStringList());
+        emit scheduleToSync(alias());
     }
 }
 
@@ -304,12 +292,6 @@ void Folder::slotNetworkUnavailable()
     AccountManager::instance()->account()->setState(Account::Disconnected);
     _syncResult.setStatus(SyncResult::Unavailable);
     emit syncStateChange();
-}
-
-void Folder::slotChanged(const QStringList &pathList)
-{
-    qDebug() << "** Changed was notified on " << pathList;
-    evaluateSync(pathList);
 }
 
 void Folder::bubbleUpSyncResult()
@@ -341,7 +323,8 @@ void Folder::bubbleUpSyncResult()
                         firstItemNew = item;
 
                     if (item._type == SyncFileItem::Directory) {
-                        _watcher->addPath(path() + item._file);
+                        FolderMan::instance()->addMonitorPath( alias(), path()+item._file );
+                        // _watcher->addPath(path() + item._file);
                     }
 
                     break;
@@ -351,7 +334,8 @@ void Folder::bubbleUpSyncResult()
                         firstItemDeleted = item;
 
                     if (item._type == SyncFileItem::Directory) {
-                        _watcher->removePath(path() + item._file);
+                        // _watcher->removePath(path() + item._file);
+                        FolderMan::instance()->addMonitorPath( alias(), path()+item._file );
                     }
 
                     break;
@@ -659,7 +643,7 @@ void Folder::startSync(const QStringList &pathList)
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
 
     // disable events until syncing is done
-    _watcher->setEventsEnabled(false);
+    // _watcher->setEventsEnabled(false);
     _pollTimer.stop();
     emit syncStarted();
 }
@@ -685,7 +669,7 @@ void Folder::slotCsyncUnavailable()
 void Folder::slotCSyncFinished()
 {
     qDebug() << "-> CSync Finished slot with error " << _csyncError << "warn count" << _syncResult.warnCount();
-    _watcher->setEventsEnabledDelayed(2000);
+    // _watcher->setEventsEnabledDelayed(2000);
     _pollTimer.start();
     _timeSinceLastSync.restart();
 

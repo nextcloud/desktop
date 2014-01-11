@@ -106,6 +106,8 @@ public:
 
      bool syncEnabled() const;
 
+     void prepareToSync();
+
     /**
      * True if the folder is busy and can't initiate
      * a synchronization
@@ -128,6 +130,8 @@ public:
       */
      virtual void wipe();
 
+     void setSyncState(SyncResult::Status state);
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -135,11 +139,6 @@ signals:
     void scheduleToSync( const QString& );
 
 public slots:
-
-     /**
-       *
-       */
-     void slotChanged(const QStringList &pathList = QStringList() );
 
      /**
        * terminate the current sync run
@@ -157,12 +156,6 @@ public slots:
       * If the list of changed files is known, it is passed.
       */
       void startSync(const QStringList &pathList = QStringList());
-
-      /**
-       * Starts a sync (calling startSync)
-       * if the policies allow for it
-       */
-      void evaluateSync(const QStringList &pathList);
 
       void setProxyDirty(bool value);
       bool proxyDirty();
@@ -193,7 +186,6 @@ private slots:
 private:
     bool init();
 
-    void setSyncState(SyncResult::Status state);
 
     void setIgnoredFiles();
     void setProxy();
@@ -211,7 +203,7 @@ private:
     QString   _configFile;
     QFileSystemWatcher *_pathWatcher;
     bool       _enabled;
-    FolderWatcher *_watcher;
+    // FolderWatcher *_watcher;
     SyncResult _syncResult;
     QThread     *_thread;
     CSyncThread *_csync;

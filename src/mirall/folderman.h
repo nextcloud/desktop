@@ -85,6 +85,9 @@ public:
 
     static SyncResult accountStatus( const QList<Folder*> &folders );
 
+    void removeMonitorPath( const QString& alias, const QString& path );
+    void addMonitorPath( const QString& alias, const QString& path );
+
 signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.
@@ -112,9 +115,10 @@ public slots:
 
     void setDirtyProxy(bool value = true);
 
-private slots:
     // slot to add a folder to the syncing queue
     void slotScheduleSync( const QString & );
+
+private slots:
 
     // slot to take the next folder from queue and start syncing.
     void slotScheduleFolderSync();
@@ -124,6 +128,7 @@ private:
     // and create the folders
     void terminateCurrentSync();
     QString getBackupName( const QString& ) const;
+    void registerFolderMonitor( Folder *folder );
 
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.
@@ -136,10 +141,13 @@ private:
     Folder::Map    _folderMap;
     QString        _folderConfigPath;
     QSignalMapper *_folderChangeSignalMapper;
+    QSignalMapper *_folderWatcherSignalMapper;
     QString        _currentSyncFolder;
     bool           _syncEnabled;
     QQueue<QString> _scheduleQueue;
     bool            _dirtyProxy; // If the proxy need to be re-configured
+    QMap<QString, FolderWatcher*> _folderWatchers;
+
 
     explicit FolderMan(QObject *parent = 0);
     static FolderMan *_instance;
