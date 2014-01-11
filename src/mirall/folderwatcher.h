@@ -19,12 +19,21 @@
 
 #include "mirall/folder.h"
 
+#if defined(Q_OS_WIN)
+#include "mirall/folderwatcher_win.h"
+#elif defined(Q_OS_MAC)
+#include "mirall/folderwatcher_mac.h"
+#elif defined(USE_INOTIFY)
+#include "mirall/folderwatcher_qt.h"
+#endif
+
 #include <QList>
 #include <QObject>
 #include <QString>
 #include <QStringList>
 #include <QTime>
 #include <QHash>
+#include <QScopedPointer>
 
 class QTimer;
 
@@ -32,15 +41,12 @@ namespace Mirall {
 
 class FolderWatcherPrivate;
 
-/**
- * Watches a folder and sub folders for changes
- *
- * Will notify changed files relative to the root()
- * directory.
- *
- * If too many changes happen in a short time interval,
- * it will accumulate and be fired together later.
+/*
+ * Folder Watcher monitors a directory and its sub directories
+ * for changes in the local file system. Changes are signalled
+ * through the folderChanged() signal.
  */
+
 class FolderWatcher : public QObject
 {
     Q_OBJECT
@@ -49,12 +55,6 @@ public:
      * @param root Path of the root of the folder
      */
     FolderWatcher(const QString &root, QObject *parent = 0L);
-    ~FolderWatcher();
-
-    /**
-     * Root path being monitored
-     */
-    QString root() const;
 
     /**
       * Set a file name to load a file with ignore patterns.
@@ -63,17 +63,6 @@ public:
       * and may contain wildcards
       */
     void addIgnoreListFile( const QString& );
-
-    /**
-     * If true, folderChanged() events are sent
-     * at least as often as eventInterval() seconds.
-     */
-    bool eventsEnabled() const;
-
-    /**
-     * Clear all pending events
-     */
-    void clearPendingEvents();
 
     QStringList ignores() const;
 
@@ -85,45 +74,23 @@ public:
     void addPath(const QString&);
     void removePath(const QString&);
 
-public slots:
-    /**
-     * Enabled or disables folderChanged() events.
-     * If disabled, events are accumulated and emptied
-     * the next time a folderChanged() event happens.
-     */
-    void setEventsEnabled(bool enabled=true);
-
-    /**
-     * @brief setEventsEnabledDelayed - start event logging after a while
-     * @param delay     - delay time in milliseconds
-     * @param enabled   - enable the events.
-     */
-    void setEventsEnabledDelayed( int );
-
 signals:
     /** Emitted when one of the paths is changed */
-    void folderChanged(const QStringList &pathList);
+    void folderChanged(const QString &path);
+
     /** Emitted if an error occurs */
     void error(const QString& error);
 
-protected:
-    void setProcessTimer();
-
 protected slots:
-    // called when the manually process timer triggers
-    void slotProcessTimerTimeout();
-    void changeDetected(const QString &f);
+    // called from the implementations to indicate a change in path
+    void changeDetected( const QString& path);
 
 protected:
     QHash<QString, int> _pendingPathes;
 
 private:
-    bool _eventsEnabled;
-    FolderWatcherPrivate *_d;
+    QScopedPointer<FolderWatcherPrivate> _d;
     QString _root;
-    // paths pending to notified
-    // QStringList _pendingPaths;
-    QTimer *_processTimer;
     QStringList _ignores;
 
     friend class FolderWatcherPrivate;

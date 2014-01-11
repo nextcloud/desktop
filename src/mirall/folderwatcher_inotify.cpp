@@ -45,7 +45,7 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p)
     QObject::connect(_inotify, SIGNAL(notifyEvent(int, int, const QString &)),
                      this, SLOT(slotINotifyEvent(int, int, const QString &)));
 
-    QMetaObject::invokeMethod(this, "slotAddFolderRecursive", Q_ARG(QString, _parent->root()));
+
 }
 
 // attention: result list passed by reference!
@@ -124,8 +124,6 @@ void FolderWatcherPrivate::slotINotifyEvent(int mask, int /*cookie*/, const QStr
     _lastMask = mask;
     _lastPath = path;
 
-    // TODO: Unify behaviour acress backends!
-    if( ! _parent->eventsEnabled() ) return;
     qDebug() << "** Inotify Event " << mask << " on " << path;
     // cancel close write events that come after create
     if (lastMask == IN_CREATE && mask == IN_CLOSE_WRITE
@@ -195,11 +193,14 @@ void FolderWatcherPrivate::slotINotifyEvent(int mask, int /*cookie*/, const QStr
         }
     }
 
+#if 0
     if( !_parent->_pendingPathes.contains( path )) {
         _parent->_pendingPathes[path] = 0;
     }
     _parent->_pendingPathes[path] = _parent->_pendingPathes[path]+mask;
     _parent->setProcessTimer();
+#endif
+    _parent->changeDetected(path);
 }
 
 void FolderWatcherPrivate::removePath(const QString &path )
