@@ -46,7 +46,7 @@ private:
 class FolderWatcherPrivate : public QObject {
     Q_OBJECT
 public:
-    FolderWatcherPrivate(FolderWatcher *p);
+    FolderWatcherPrivate(FolderWatcher *p, const QString& path);
     ~FolderWatcherPrivate();
 
     void addPath(const QString &) {}

@@ -72,10 +72,10 @@ WatcherThread::~WatcherThread()
         FindCloseChangeNotification(_handle);
 }
 
-FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p)
+FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString& path)
     : _parent(p)
 {
-    _thread = new WatcherThread(p->root());
+    _thread = new WatcherThread(path);
     connect(_thread, SIGNAL(changed(const QString&)),
             _parent,SLOT(changeDetected(const QString&)));
     _thread->start();

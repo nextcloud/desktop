@@ -28,7 +28,7 @@ class FolderWatcherPrivate : public QObject {
     Q_OBJECT
 public:
     FolderWatcherPrivate();
-    FolderWatcherPrivate(FolderWatcher *p);
+    FolderWatcherPrivate(FolderWatcher *p, const QString& path);
     void addPath(const QString &path) { slotAddFolderRecursive(path);  }
     void removePath(const QString &);
 
@@ -37,7 +37,6 @@ signals:
 
 private slots:
     void slotAddFolderRecursive(const QString &path);
-    void slotDirectoryChanged(const QString& path );
 
 protected:
     bool findFoldersBelow( const QDir& dir, QStringList& fullList );
@@ -46,8 +45,7 @@ private:
     QScopedPointer<QFileSystemWatcher> _watcher;
 
     FolderWatcher *_parent;
-    // to cancel events that belong to the same action
-    QString _lastPath;
+
 };
 
 }

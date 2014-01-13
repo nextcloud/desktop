@@ -27,14 +27,16 @@ FolderWatcherPrivate::FolderWatcherPrivate()
 
 }
 
-FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p)
+FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path)
     : QObject(), _parent(p)
 
 {
     _watcher.reset(new QFileSystemWatcher);
 
     QObject::connect(_watcher.data(), SIGNAL(directoryChanged(QString)),
-                     this, SLOT(slotDirectoryChanged(QString)));
+                     _parent, SLOT(changeDetected(QString)) );
+
+    QMetaObject::invokeMethod(this, "slotAddFolderRecursive", Q_ARG(QString, path));
 }
 
 // attention: result list passed by reference!
