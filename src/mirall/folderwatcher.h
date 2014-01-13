@@ -74,6 +74,9 @@ public:
     void addPath(const QString&);
     void removePath(const QString&);
 
+    /* Check if the path is ignored. */
+    bool pathIsIgnored( const QString& path );
+
 signals:
     /** Emitted when one of the paths is changed */
     void folderChanged(const QString &path);
@@ -90,8 +93,9 @@ protected:
 
 private:
     QScopedPointer<FolderWatcherPrivate> _d;
-    QString _root;
     QStringList _ignores;
+    QTime _timer;
+    QString _lastPath;
 
     friend class FolderWatcherPrivate;
 };

@@ -82,31 +82,18 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
         QDir folder (subfolder);
         if (folder.exists() && !watchedFolders.contains(folder.path())) {
             subdirs++;
-            // check that it does not match the ignore list
-            foreach ( const QString& pattern, _parent->ignores()) {
-                QRegExp regexp(pattern);
-                regexp.setPatternSyntax(QRegExp::Wildcard);
-                if ( regexp.exactMatch(folder.path()) ) {
-                    qDebug() << "* Not adding" << folder.path();
-                    continue;
-                }
-
+            if( _parent->pathIsIgnored(subfolder) ) {
+                qDebug() << "* Not adding" << folder.path();
+                continue;
             }
             _watcher->addPath(folder.path());
-        }
-        else
+        } else {
             qDebug() << "    `-> discarded:" << folder.path();
+        }
     }
-    if (subdirs >0)
-        qDebug() << "    `-> and" << subdirs << "subdirectories";
-}
 
-void FolderWatcherPrivate::slotDirectoryChanged( const QString& path )
-{
-    if( path != _lastPath ) {
-        qDebug() << "OOOooo change detected: " << path;
-        _parent->changeDetected(path);
-        _lastPath = path;
+    if (subdirs >0) {
+        qDebug() << "    `-> and" << subdirs << "subdirectories";
     }
 }
 
