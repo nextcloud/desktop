@@ -9,7 +9,7 @@
 
 #include <QtTest>
 
-#include "mirall/folderwatcher_inotify.h"
+#include "mirall/folderwatcher_qt.h"
 #include "mirall/utility.h"
 
 using namespace Mirall;
