@@ -26,10 +26,10 @@
 
 namespace Mirall {
 
-FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p)
-    : parent(p)
+FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString& path)
+    : _parent(p),
+      _folder(path)
 {
-    folder = parent->root();
     this->startWatching();
 }
 
@@ -53,9 +53,9 @@ static void callback(
 
 void FolderWatcherPrivate::startWatching()
 {
-    qDebug() << "FolderWatcherPrivate::startWatching()" << folder;
-    CFStringRef folderCF = CFStringCreateWithCharacters(0, reinterpret_cast<const UniChar *>(folder.unicode()),
-                                                        folder.length());
+    qDebug() << "FolderWatcherPrivate::startWatching()" << _folder;
+    CFStringRef folderCF = CFStringCreateWithCharacters(0, reinterpret_cast<const UniChar *>(_folder.unicode()),
+                                                        _folder.length());
     CFArrayRef pathsToWatch = CFStringCreateArrayBySeparatingStrings (NULL, folderCF, CFSTR(":"));
 
             //CFStringCreateArrayBySeparatingStrings (NULL, folderCF, CFSTR(":"));
@@ -78,7 +78,7 @@ void FolderWatcherPrivate::startWatching()
 }
 
 void FolderWatcherPrivate::doNotifyParent() {
-    parent->changeDetected(folder);
+    _parent->changeDetected(_folder);
 }
 
 

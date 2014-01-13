@@ -28,7 +28,7 @@ class FolderWatcherPrivate
 {
 public:
 
-    FolderWatcherPrivate(FolderWatcher *p);
+    FolderWatcherPrivate(FolderWatcher *p, const QString &path);
     ~FolderWatcherPrivate();
 
     void addPath(const QString &) {}
@@ -38,9 +38,9 @@ public:
     void doNotifyParent();
 
 private:
-    FolderWatcher *parent;
+    FolderWatcher *_parent;
 
-    QString folder;
+    QString _folder;
 
     FSEventStreamRef stream;
 };
