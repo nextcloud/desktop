@@ -6,7 +6,7 @@
 #  NEON_LIBRARIES - Link these to use Neon
 #  NEON_DEFINITIONS - Compiler switches required for using Neon
 #
-#  Copyright (c) 2011 Andreas Schneider <asn@cryptomilk.org>
+#  Copyright (c) 2011-2013 Andreas Schneider <asn@cryptomilk.org>
 #
 #  Redistribution and use is allowed according to the terms of the New
 #  BSD license.

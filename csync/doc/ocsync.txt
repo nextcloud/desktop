@@ -1,0 +1,315 @@
+CSYNC User Guide
+================
+Andreas Schneider <asn@cryptomilk.org>
+:Author Initials: ADS
+
+csync is a lightweight utility to synchronize files between two directories
+on a system or between multiple systems.
+
+It synchronizes bidirectionally and allows the user to keep two copies of files
+and directories in sync.  csync uses widely adopted protocols, such as smb or
+sftp, so that there is no need for a server component. It is a user-level
+program which means you don't need to be a superuser or administrator.
+
+Together with a Pluggable Authentication Module (PAM), the intent is to provide
+Roaming Home Directories for Linux (see <<X80, The PAM Module>>).
+
+Introduction
+------------
+
+It is often the case that we have multiple copies (called replicas) of a
+filesystem or part of a filesystem (for example on a notebook and desktop
+computer). Changes to each replica are often made independently, and as a
+result, they do not contain the same information. In that case, a file
+synchronizer is used to make them consistent again, without losing any
+information.
+
+The goal is to detect conflicting updates (files which have been modified) and
+propagate non-conflicting updates to each replica. If there are no conflicts
+left, we are done, and the replicas are identical. To resolve or handle
+conflicts there are several algorithms available. They will be discussed
+one of the following sections.
+
+Basics
+------
+
+This section describes some basics of file synchronization.
+
+Paths
+~~~~~
+A path normally refers to a point which contains a set of files which should be
+synchronized. It is specified relative to the root of the replica locally, but
+has to be absolute if you use a protocol. The path is just a sequence of names
+separated by '/'.
+
+NOTE: The path separator is always a forward slash '/', even for Windows.
+
+csync always uses the absolute path on remote replicas. This could
+'sftp://gladiac:secret@myserver/home/gladiac' for sftp.
+
+What is an update?
+~~~~~~~~~~~~~~~~~~
+The contents of a path could be a file, a directory or a symbolic link
+(symbolic links are not supported yet). To be more precise, if the path refers
+to:
+
+- a regular file: the contents of the file are the byte stream and the
+  metadata of the file.
+- a directory: then the content is the metadata of the directory.
+- a symbolic link: the content is the named file the link points to.
+
+csync keeps a record of each path which has been successfully synchronized. The
+path gets compared with the record and if it has changed since the last
+synchronization, we have an update. This is done by comparing the modification
+or change (modification time of the metadata) time. This is the way how updates
+are detected.
+
+What is a conflict?
+~~~~~~~~~~~~~~~~~~~
+A path is conflicting if it fulfills the following conditions:
+
+1. it has been updated in one replica,
+2. it or any of its descendants has been updated on the other replica too, and
+3. its contents in are not identical.
+
+File Synchronization
+--------------------
+
+The primary goal of the file synchronizer is correctness.  It may change
+scattered or large parts of the filesystem.  Since this in mostly not monitored
+by the user, and the file synchronizer is in a position to harm the system,
+csync must be safe, even in the case of unexpected errors (e.g. disk full).
+What was done to make csync safe is described in the following sections.
+
+
+One problem concerning correctness is the handling of conflicts.  Each file
+synchronizer tries to propagate conflicting changes to the other replica.  At
+the end both replicas should be identical. There are different strategies to
+fulfill these goals.
+
+csync is a three-phase file synchronizer. The decision for this design was that
+user interaction should be possible and it should be easy to understand the
+process. The three phases are update detection, reconciliation and propagation.
+These will be described in the following sections.
+
+Update detection
+~~~~~~~~~~~~~~~~
+There are different strategies for update detection.  csync uses a state-based
+modtime-inode update detector.  This means it uses the modification time to
+detect updates.  It doesn't require many resources.  A record of each file is
+stored in a database (called statedb) and compared with the current
+modification time during update detection. If the file has changed since the
+last synchronization an instruction is set to evaluate it during the
+reconciliation phase. If we don't have a record for a file we investigate, it
+is marked as new.
+
+It can be difficult to detect renaming of files.  This problem is also solved
+by the record we store in the statedb.  If we don't find the file by the name
+in the database, we search for the inode number. If the inode number is found
+then the file has been renamed.
+
+Reconciliation
+~~~~~~~~~~~~~~
+The most important component is the update detector, because the reconciler
+depends on it. The correctness of reconciler is mandatory because it can damage
+a filesystem. It decides which file:
+
+* Stays untouched
+* Has a conflict
+* Gets synchronized
+* or is *deleted*
+
+A wrong decision of the reconciler leads in most cases to a loss of data. So
+there are several conditions which a file synchronizer has to follow.
+
+Algorithms
+^^^^^^^^^^
+
+For conflict resolution several different algorithms could be implemented. The
+most common algorithms are the merge and the conflict algorithm. The first
+is a batch algorithm and the second is one which needs user interaction.
+
+Merge algorithm
++++++++++++++++
+
+The merge algorithm is an algorithm which doesn't need any user interaction. It
+is simple and used for example by Microsoft for Roaming Profiles. If it detects
+a conflict (the same file changed on both replicas) then it will use the most
+recent file and overwrite the other. This means you can loose some data, but
+normally you want the latest file.
+
+Conflict algorithm
+++++++++++++++++++
+
+This is not implemented yet.
+
+If a file has a conflict the user has to decide which file should be used.
+
+Propagation
+~~~~~~~~~~~
+
+The next instance of the file synchronizer is the propagator. It uses the
+calculated records to apply them on the current replica.
+
+
+The propagator uses a two-phase-commit mechanism to simulate an atomic
+filesystem operation.
+
+In the first phase we copy the file to a temporary file on the opposite
+replica. This has the advantage that we can check if the file which has been
+copied to the opposite replica has been transferred successfully. If the
+connection gets interrupted during the transfer we still have the original
+states of the file. This means no data will be lost.
+
+In the second phase the file on the opposite replica will be overwritten by
+the temporary file.
+
+After a successful propagation we have to merge the trees to reflect the
+current state of the filesystem tree.  This updated tree will be written as a
+journal into the state database. It will be used during the update detection of
+the next synchronization. See above for a description of the state database
+during synchronization.
+
+Robustness
+~~~~~~~~~~
+
+This is a very important topic. The file synchronizer should not crash, and if
+it has crashed, there should be no loss of data. To achieve this goal there are
+several mechanisms which will be discussed in the following sections.
+
+Crash resistance
+^^^^^^^^^^^^^^^^
+
+The synchronization process can be interrupted by different events, this can
+be:
+
+* the system could be halted due to errors.
+* the disk could be full or the quota exceeded.
+* the network or power cable could be pulled out.
+* the user could force a stop of the synchronization process.
+* various communication errors could occur.
+
+That no data will be lost due to an event we enforce the following invariant:
+
+IMPORTANT: At every moment of the synchronization each file, has either its
+original content or its correct final content.
+
+This means that the original content can not be incorrect, no data can be lost
+until we overwrite it after a successful synchronization.  Therefore, each
+interrupted synchronization process is a partial sync and can be continued and
+completed by simply running csync again. The only problem could be an error of
+the filesystem, so we reach this invariant only approximately.
+
+Transfer errors
+^^^^^^^^^^^^^^^
+
+With the Two-Phase-Commit we check the file size after the file has transferred
+and we are able to detect transfer errors. A more robust approach would be a
+transfer protocol with checksums, but this is not doable at the moment. We may
+add this in the future.
+
+Future filesystems, like btrfs, will help to compare checksums instead of the
+filesize. This will make the synchronization safer. This does not imply that it
+is unsafe now, but checksums are safer than simple filesize checks.
+
+Database loss
+^^^^^^^^^^^^^
+
+It is possible that the state database could get corrupted. If this happens,
+all files get evaluated. In this case the file synchronizer wont delete any
+file, but it could occur that deleted files will be restored from the other
+replica.
+
+To prevent a corruption or loss of the database if an error occurs or the user
+forces an abort, the synchronizer is working on a copy of the database and will
+use a Two-Phase-Commit to save it at the end.
+
+Getting started
+---------------
+
+Installing csync
+~~~~~~~~~~~~~~~~
+
+See the `README` and `INSTALL` files for install prerequisites and
+procedures. Packagers should take a look at <<X90, Appendix A: Packager Notes>>.
+
+Using the commandline client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The synopsis of the commandline client is
+
+  csync [OPTION...] SOURCE DESTINATION
+
+It synchronizes the content of SOURCE with DESTINATION and vice versa. The
+DESTINATION can be a local directory or a remote file server.
+
+  csync /home/csync scheme://user:password@server:port/full/path
+
+Examples
+^^^^^^^^
+
+To synchronize two local directories:
+
+  csync /home/csync/replica1 /home/csync/relplica2
+
+Two synchronizer a local directory with an smb server, use
+
+  csync /home/csync smb://rupert.galaxy.site/Users/csync
+
+If you use kerberos, you don't have to specify a username or a password. If you
+don't use kerberos, the commandline client will ask about the user and the
+password.  If you don't want to be prompted, you can specify it on the
+commandline:
+
+  csync /home/csync smb://csync:secret@rupert.galaxy.site/Users/csync
+
+If you use the sftp protocol and want to specify a port, you do it the
+following way:
+
+  csync /home/csync sftp://csync@krikkit.galaxy.site:2222/home/csync
+
+The remote destination is supported by plugins. By default csync ships with smb
+and sftp support. For more information, see the manpage of csync(1).
+
+Exclude lists
+~~~~~~~~~~~~~
+
+csync provides exclude lists with simple shell wildcard patterns. There is a
+global exclude list, which is normally located in
+'/etc/csync/csync_exclude.conf' and it has already some sane defaults. If you
+run csync the first time, it will create an empty exclude list for the user.
+This file will be '~/.csync/csync_exclude.conf'. csync considers both
+configuration files and an additional one if you specify it.
+
+The entries in the file are newline separated. Use
+'/etc/csync/csync_exclude.conf' as an example.
+
+Debug messages and dry run
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default the csync client logs to stderr and you can increase the debug
+level with a commandline options.
+
+To simulate a run of the file synchronizer, you should set the priority to
+'debug' for the categories 'csync.updater' and 'csync.reconciler' in the config
+file '~/.csync/csync_log.conf'. Then run csync with the '--dry-run' option.
+This will only run update detection and reconciliation.
+
+[[X80]]
+The PAM module
+~~~~~~~~~~~~~~
+
+pam_csync is a PAM module to provide roaming home directories for a user
+session. This module is aimed at environments with central file servers where a
+user wishes to store his home directory. The Authentication Module verifies the
+identity of a user and triggers a synchronization with the server on the first
+login and the last logout. More information can be found in the manpage of the
+module pam_csync(8) or pam itself pam(8).
+
+
+[[X90]]
+Appendix A: Packager Notes
+--------------------------
+
+Read the `README`, `INSTALL` and `FAQ` files (in the distribution root
+directory).

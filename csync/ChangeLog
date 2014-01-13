@@ -1,0 +1,355 @@
+ChangeLog
+==========
+version 0.91.4  (released 2013-12-12, ownCloud Cleint 1.5.0)
+ * changelog added, version bumped.
+
+version 0.91.3  (released 2013-12-11, ownCloud Client 1.5.0rc1) 
+ * Fix progress bar on win32
+ * Fix network rate limiting on win32
+ * Do not check for etag during failing requests
+ * Start quota timer only after the predecessor returned
+ * Remove tmp files in case of certain download problems
+ * Some valgrind fixes
+ * Theming fix: button behaviour
+ * Fix a case where a sync loop could happen.
+ * Multi-linguar installer
+ * Fix handling of quotes in etags written by older ownClouds
+ * Fix errno handling in update phase
+ * Make csync compile on FreeBSD
+ * Minor cleanups.
+
+version 0.91.2 (released 2013-12-10, ownCloud Client 1.5.0beta3)
+ * have translatable error message for indiv. file errors.
+ * Use uint64_t for inode on win32 to fix a type glitch.
+ * Add test that directrories are properly moved.
+ * Handle symlinks correctly.
+ * Do not longer recurse into ignored directories in update 
+   phase.
+ * Added proper symlink detection for win32 platform.
+
+version 0.91.1 (released 2013-12-03, ownCloud Client 1.5.0beta2)
+ * Close database correctly to fix a potential crash (mirall#1229)
+ * Handle invalid inodes correctly.
+ * Use lstat rather than stat to detect symlinks correctly. 
+   (core#6146)
+
+version 0.91.0 (released 2013-11-28, ownCloud Client 1.5.0beta1)
+ * fix ascii to int conversion for large numbers.
+ * add support for file ids, needed to detect server side moves.
+ * removed unused code, ie. database writing code that went to 
+   mirall.
+ * add functions to query the database by fileid.
+ * add functions to read fileids from PUT replies.
+ * add server side move detection.
+ * enhanced test scripts
+ * Remove ne_sock_init and ne_sock_exit from owncloud module 
+   (mirall#1115)
+ * Renamed 'md5' to 'etag' in code identifiers to avoid confusion.
+ * add new state EVAL_RENAME 
+ * link the owncloud module directly rather than dl-loading it.
+ * add a content type header 'application/octet-stream' to PUTs.
+ * remove -gzip from etag header if its there. (mirall#1195)
+ * Many minor fixes, refactorings and improvements.
+
+version 0.90.4  (released 2013-10-18, ownCloud Client 1.4.2)
+
+  * Count renamed and deleted files for progress information.
+  * Do not reset csync internal error state in helper funcs 
+    and do not overwrite error messages.
+    That fixes error reporting to the client.
+  * Disable check on inodes on all platforms as inodes are not 
+    reliable.
+  * Fix resuming after user aborting the sync process.
+  * enabled HBF debugging permanently.
+
+version 0.90.1  (released 2013-09-24, ownCloud Client 1.4.1)
+  * no more check on the local inode in updater for win32 (bug #779)
+  * detect if server does not send an etag after an upload 
+    completed.
+  * fix crash in case of network timeout, reported as
+    https://github.com/owncloud/mirall/issues/1010
+  * compile and cmake fixes for win32
+  * fixed behaviour of csync_exclude
+  * documentation and spelling fixes.
+
+version 0.90.0  (released 2013-09-04, ownCloud Client 1.4.0)
+  * Added API to get progress information from csync.
+  * Added c_rename function to csync std.
+  * Fix: Do renames of files before any puts.
+  * Improved database integrity checks.
+  * Improvements of database writing efficiendy.
+  * Fix: stat file on win32 even if its opened by application.
+  * httpbf: configurable block size and threshold.
+  * Many fixes found by a Coverity check.
+  * Fix: use correct stat struct on all platforms
+  * Fix: download resuming.
+  * ownCloud module: Bandwith limitation added.
+  * Added ability to remove ignored files automatically.
+  * Fix: Use int64_t and friends
+  * Fix: Removed all compile warnings.
+  * Left excluded files and links in csync's tree to be able to show.
+    them to the user.
+  * Add OC-Total-Length header for better quota handling.
+  * Report inbetween progress
+
+version 0.80.0  (released 2013-06-25)
+  * Big file chunking (e.g. up/download of big files should now be no
+    problem anymore)
+  * Resuming (download of big files will resume)
+  * Fix false conflicts when database is corrupt/missing
+  * Fix false conflicts when file is locked
+  * Put legitimate conflict files only on client side
+  * Fix unreliable sync after push_file failed
+  * Fix rename due to inode cast error
+  * Make chunking work on nginx setups or through nginx proxies
+  * Improve error reporting in csync_update
+  * Clean progress database on csync_commit
+  * Fix issues detected by Coverity
+  * Fix conflict file appearing when a file cannot be stated
+  * Do not shadow server errors by not downloading files that have
+    failed to download in the past
+
+version 0.70.6  (released 2013-04-11)
+  * [Fixes] Try to avoid to upload incomplete files
+  * [Fixes] Increase read timeout to 300 seconds
+  * [Fixes] Handle IGNORE status correctly
+  * [Fixes] Set path and phash for ignored files
+  * [Fixes] Fix some issues discovered by Coverity
+  * [Fixes] Make sure to never allow empty pathes in rmdir
+  * [Fixes] Fix a crash caused by superfluous free() calls
+
+version 0.70.5  (released 2013-04-02)
+  * detect 'wrong' conflict files on client side. 
+  * [Fixes] Give context to module to enable logging (cmd client).
+  * [Fixes] Fix version table contents.
+  * [Fixes] Fix handling of non statable files on Win32.
+  * [Fixes] Fix renames on clientside on read only shares.
+  * [Fixes] Various small fixes and improvements.
+
+version 0.70.4  (released 2013-02-26)
+  * [Win32] Ship with upto-date openssl version to fix SSL problems we saw.
+  * [Fixes] Fix crash during mkdir.
+  * [Fixes] Added workaround for problem that server sometimes does
+            not respond properly to PROPFIND (mirall#285)
+  * [Fixes] Fix handling of deletion of non empty or locked
+            directories.
+  * [Fixes] Fixed some potential memory leaks.
+  * [Fixes] Files with filenames with unix extensions
+	    are ignored now.
+
+version 0.70.3  (released 2013-01-24)
+  * [Platform] Fix session cookie extraction (mirall bug #260).
+
+version 0.70.2  (released 2013-01-23)
+  * [Platform] Improved module parameter system.
+  * [Platform] New logging framework. Dropped log4c dependency.
+  * [Platform] New API to provide sync progress information.
+  * [Fixes] More efficiency for the ownCloud plugin through less HTTP requests to
+            the server.
+  * [Fixes] ownCloud plugin: Improved upload performance.
+  * [Fixes] Improved error reporting to mirall.
+  * [Fixes] ownCloud plugin: Improved interpretation of HTTP error codes.
+  * [Fixes] ownCloud plugin: Do not abort on errors with individual files any
+            more.
+  * [Fixes] Lots of other minor fixes.
+  * [MacOSX] Use libneon with proper big file support.
+  * [Win32] Use libneon with openSSL support now.
+
+version 0.70.0 and 0.70.1 were beta versions.
+
+version 0.60.2  (released 2012-11-26)
+  * Migration to cross platform testing system cmocka.
+  * Fixed variuos minor things incl. potential mem leaks.
+  * Clang fixes.
+  * Moved journal database to sync directory.
+  * Fixed more csync->ocsync renaming issues.
+  * Fixed statedb query below path.
+  * Fixed win32 Daylight Saving Time issues.
+  * Allow static linking with iniparser and sqlite.
+  * Win32: Fix CreateHandle function in local stat.
+  * Win32: More wide char fixes.
+  * Added version table to journal database.
+  * Fixes for HTTP reply computation.
+  * Stricter error checks on PROPFIND results.
+  * Workaround for DST influenced times from previous versions.
+  * Detect looping in mkdirs to fix sharing.
+
+version 0.60.1  (released 2012-10-18)
+  * Fix improper memory cleanup which could
+            cause memory leaks and crashes
+  * Fix memory leak
+  * Allow single quote (') in file names
+  * Remove stray temporary files
+
+version 0.60.0  (released 2012-10-10)
+  * simplification of pac based proxy support. 
+  * syncing algorithm based on ids rather than on timestamps
+  * make it possible to relocate database
+
+version 0.50.11 (third beta version, released 2012-10-05)
+  * Renamed ownCloud version of csync to ocsync for ownCloud.
+  * Migration paths for csync database and config.
+  * Fixed that exclude patterns are also tested on files basenames.
+  * Fixed return type for query function if no database exists.
+  * minor code fixes
+
+version 0.50.10 (second beta version, released 2012-09-20)
+  * Fixed crash by removing a bogus free.
+  * More useful logging.
+  * ownCloud: Maintain the http session by handling the HTTP Cookie.
+
+version 0.50.9 (first beta version, released 2012-08-30)
+  * Fixed strncpy handling (mkdir on windows problem).
+  * extend database with columns uniq id and type.
+  * Use server maintained uniq IDs for update detection instead of 
+    mtimes. 
+  * Maintain uniq IDs in local database
+  * Handle change propagation through the file tree locally and remote.
+  * Added module to build a file tree from the local database (dbtree.c)
+  * Added methods to query IDs from the server and maintain it locally.
+
+version 0.50.8 (released 2012-08-10)
+  * Inode equivalent support for Win32 platforms to support rename
+  * ownCloud supports propagates renames from local to webdav MOVE
+  * ownCloud module works with proxy, settings from mirall.
+  * improved CMake modules (openSSL)
+  * Fixed namespace for lastmodified propset.
+  * Added cmocka based tests for ownCloud module.
+  * Added a config_test.h config header file.
+  * Fix link handling: Ignore symlinks.
+  * Modules can now report their capabilities to csync core.
+  * A lot of minor fixes and improvements.
+
+version 0.50.7 (released 2012-06-19)
+  * Added ability to log to a callback, ie. let the app 
+    catch the log output
+  * Added push to remote without pushing to temp file first.
+  * Fixed file copy function to use wide character (win32).
+  * Fixed loading of statedb if user has special char (win32).
+
+version 0.50.6 (released 2012-05-18)
+  * Directories with 'strange' characters broke sync. (oC bug #613)
+  * Special characters in Windows did not sync correctly. (oC bug #478)
+  * Make neon redirecting
+  * Switch logging off on Apple to not fill the syslog. (oC bug #622)
+
+version 0.50.5 (released 2012-04-18)
+  * removed argp lib dependency
+  * simplified and fixed CMake files
+  * MacOS porting efforts
+  * more granular error reports, thread save
+
+version 0.50.0 (released 2013-08-01)
+  * Added owncloud module.
+  * Added support for more platforms: FreeBSD, Windows and MacOSX
+  * Added support for more compilers: CLang, MinGW and latest GCC
+  * Added a backup mode to the reconciler.
+  * Added new logging framework (removed log4c dependency).
+  * Added new config parser (removed iniparser dependency).
+  * Added cmocka tests.
+  * Added a way to exported file_tree_walk functions.
+  * Added capabilities for modules.
+  * Added possiblity to push information to the modules.
+  * Added iconv support to support various char sets.
+  * Added csync_commit() to rerun on the same context.
+  * Added content checking in conflict case.
+  * Added callbacks for progress information.
+  * Added get() and put() functions for modules.
+  * Improved database: more performance, more integrity checks
+  * Improved error reporting: status codes, custom errnos
+  * Fixed serveral bugs.
+  * Relicensed libcsync to LGPLv2.1+.
+
+version 0.44.0 (released 2010-02-15)
+  * Migrated sftp module to libssh 0.4.
+  * Added more cache entries to the default config.
+  * Added missing requirements.
+  * Fixed build warnings.
+  * Fixed some memory leaks using sftp attributes.
+  * Some code cleanups.
+
+version 0.43.0 (released 2009-05-25)
+  * Added SFTP support with libssh 0.3.
+  * Added possibility to pass userdata to the auth function.
+  * Added a better version function.
+  * Fixed CMake build.
+  * Fixed CMake find modules.
+  * Fixed some flaws in cstd functions.
+  * Documented all public functions.
+
+version 0.42.0 (released 2009-02-10)
+  * Small fix in the userguide.
+
+version 0.42.0 rc3 (released 2009-01-23)
+  libcsync:
+  * Added checks for unix extensions.
+  * Added more documentation to the userguide.
+  * Fixed loading of plugins.
+  * Fixed call for deletion functions.
+  * Normalize the path to <hostname>/<path> for the statedb filename.
+  * More change name of client options to be more descriptive.
+
+version 0.42.0 rc2 (released 2009-01-07)
+  libcsync:
+  * Fixed a bug in the creation of the statedb
+  * Completed userguide
+
+version 0.42.0 rc1 (released 2008-12-04)
+  libcsync:
+  * Reduced calls of syscall functions.
+  * Added own function to create a temporary filename.
+  * Fixed libsmbclient 3.0.x support.
+
+version 0.42.0 beta1 (released 2008-09-10)
+
+  libcsync:
+  * Added a sftp module using libssh
+  * Added user guide (just a start)
+  * Added testcase for update detection
+  * Added a function to parse an uri to cstdlib
+  * Updated the manpage
+  * Fixed some segfaults in cstdlib
+  * Fixed some memory leaks
+
+  csync:
+  * Improved the auth callback
+
+version 0.42.0 alpha4 (released 2008-07-02)
+
+  libcsync:
+  * Added the possibility to run csync completely without a journal
+  * Improved chmod calls during propagation. Most of the time we use the
+    default mode and don't need to call chmod.
+  * Improved the exclude list handling in the file tree walker. This
+    increased the speed of the update detection.
+  * Fixed csync on PPC
+  * Fixed serveral small bugs
+
+  csync:
+  * Added commandline option to run csync completely without a journal
+  * Added a manpage
+
+version 0.42.0 alpha3 (released 2008-06-25)
+
+  libcsync:
+  * Added a tree merger to write a complete journal
+  * Added support to run csync without a journal
+  * Fixed kerberos support in csync_smb module
+  * Fixed closing of files after the copy
+  * Fixed update detection to detect special files (fifo, pipes,
+    char devices, ..)
+  * Fixed O_NOATIME flag on open() if we don't have the permission
+
+  csync:
+  * Add a variable to run csync completely without a journal
+
+version 0.42.0 alpha2 (released 2008-06-16)
+
+  libcsync:
+  * Peformance improvements
+  * Add more directories to the standard exclude file
+  * Bugfixes
+
+version 0.42.0 alpha1 (released 2008-06-02)
+
+  * Initial release

@@ -1,0 +1,154 @@
+#!/usr/bin/env ruby
+
+# Simple script to generate simple cmake modules for finding
+# libraries (packages)
+#
+# usage: generate_findpackage_file
+# then you will be prompted to enter the required parameters
+#
+#####################################################################
+#
+# Copyright (c) 2006 Alexander Neundorf <neundorf@kde.org>
+# Copyright (c) 2006 Andreas Schneider <asn@cryptomilk.org>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor,
+# Boston, MA  02110-1301, USA.
+#
+
+require 'readline'
+
+package=Readline.readline("Name of package: ")
+
+name=Readline.readline("\nYour Name (for copyright): ")
+
+email=Readline.readline("\nYour mail (for copyright): ")
+
+pkgconfig=Readline.readline("\npkgconfig package name (e.g. \"libxml-2.0\", leave empty to skip pkgconfig): ")
+
+header=Readline.readline("\nLook for header (e.g. \"jpeglib.h\" or \"libxml/xpath.h\"): ")
+
+incSubDir=Readline.readline("\nLook for header subdir (e.g. \"libxml2\", empty to skip ): ")
+
+libs=Readline.readline("\nLook for library (e.g. \"xml2\" or \"avcodec avutil\"): ")
+
+t = Time.now
+
+cmakeIncDirName=package.upcase+"_INCLUDE_DIR"
+cmakeIncDirNames=package.upcase+"_INCLUDE_DIRS"
+cmakeLibNames=package.upcase+"_LIBRARIES"
+cmakeDefsName=package.upcase+"_DEFINITIONS"
+cmakeFoundName=package.upcase+"_FOUND"
+cmakeQuietName=package+"_FIND_QUIETLY"
+cmakeRequiredName=package+"_FIND_REQUIRED"
+
+file=File.new("Find#{package}.cmake", "w+")
+
+
+file.printf("# - Try to find #{package}\n")
+file.printf("# Once done this will define\n")
+file.printf("#\n")
+file.printf("#  #{cmakeFoundName} - system has #{package}\n")
+file.printf("#  #{cmakeIncDirNames} - the #{package} include directory\n")
+file.printf("#  #{cmakeLibNames} - Link these to use #{package}\n")
+file.printf("#  #{cmakeDefsName} - Compiler switches required for using #{package}\n")
+file.printf("#\n")
+file.printf("#  Copyright (c) #{t.year} #{name} <#{email}>\n")
+file.printf("#\n")
+file.printf("#  Redistribution and use is allowed according to the terms of the New\n")
+file.printf("#  BSD license.\n")
+file.printf("#  For details see the accompanying COPYING-CMAKE-SCRIPTS file.\n")
+file.printf("#\n")
+
+file.printf("\n")
+file.printf("\n")
+
+file.printf("if (#{cmakeLibNames} AND #{cmakeIncDirNames})\n")
+file.printf("  # in cache already\n")
+file.printf("  set(#{cmakeFoundName} TRUE)\n")
+file.printf("else (#{cmakeLibNames} AND #{cmakeIncDirNames})\n")
+
+if not pkgconfig.empty?
+   file.printf("  find_package(PkgConfig)\n")
+   file.printf("  if (PKG_CONFIG_FOUND)\n")
+   file.printf("    pkg_check_modules(_#{package.upcase} #{pkgconfig})\n")
+   file.printf("  endif (PKG_CONFIG_FOUND)\n")
+end
+
+file.printf("\n")
+
+file.printf("  find_path(#{cmakeIncDirName}\n")
+file.printf("    NAMES\n")
+file.printf("      #{header}\n")
+file.printf("    PATHS\n")
+if not pkgconfig.empty?
+   file.printf("      ${_#{package.upcase}_INCLUDEDIR}\n")
+end
+file.printf("      /usr/include\n")
+file.printf("      /usr/local/include\n")
+file.printf("      /opt/local/include\n")
+file.printf("      /sw/include\n")
+
+if not incSubDir.empty?
+	file.printf("    PATH_SUFFIXES\n")
+	file.printf("      #{incSubDir}\n")
+end
+file.printf("  )\n")
+
+file.printf("\n")
+
+libs.split(" ").each do |lib|
+	file.printf("  find_library(#{lib.upcase}_LIBRARY\n")
+	file.printf("    NAMES\n")
+	file.printf("      #{lib}\n")
+	file.printf("    PATHS\n")
+	if not pkgconfig.empty?
+		file.printf("      ${_#{package.upcase}_LIBDIR}\n")
+	end
+	file.printf("      /usr/lib\n")
+	file.printf("      /usr/local/lib\n")
+	file.printf("      /opt/local/lib\n")
+	file.printf("      /sw/lib\n")
+	file.printf("  )\n")
+	file.printf("\n")
+end
+
+file.printf("  set(#{cmakeIncDirNames}\n")
+file.printf("    ${#{cmakeIncDirName}}\n")
+file.printf("  )\n")
+
+file.printf("\n")
+
+libs.split(" ").each do |lib|
+	file.printf("  if (#{lib.upcase}_LIBRARY)\n")
+	file.printf("    set(#{cmakeLibNames}\n")
+	file.printf("        ${#{cmakeLibNames}}\n")
+	file.printf("        ${#{lib.upcase}_LIBRARY}\n")
+	file.printf("    )\n")
+	file.printf("  endif (#{lib.upcase}_LIBRARY)\n")
+	file.printf("\n")
+end
+
+file.printf("  include(FindPackageHandleStandardArgs)\n")
+file.printf("  find_package_handle_standard_args(#{package} DEFAULT_MSG #{cmakeLibNames} #{cmakeIncDirNames})\n")
+
+file.printf("\n")
+
+file.printf("  # show the #{cmakeIncDirNames} and #{cmakeLibNames} variables only in the advanced view\n")
+file.printf("  mark_as_advanced(#{cmakeIncDirNames} #{cmakeLibNames})\n\n")
+
+file.printf("endif (#{cmakeLibNames} AND #{cmakeIncDirNames})\n\n")
+
+printf("Done, generated Find#{package}.cmake\n")
+

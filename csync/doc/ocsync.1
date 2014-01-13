@@ -1,0 +1,183 @@
+'\" t
+.\"     Title: ocsync
+.\"    Author: [see the "AUTHORS" section]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 12/22/2012
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "OCSYNC" "1" "12/22/2012" "\ \&" "\ \&"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+ocsync \- A commandline frontent for csync a user level bidirectional file synchronizer\&.
+.SH "SYNOPSIS"
+.sp
+\fBocsync\fR [\fIOPTION\fR\&...] \fISOURCE\fR \fIDESTINATION\fR
+.SH "DESCRIPTION"
+.sp
+ocsync is a client only bidirectional file synchronizer\&. It synchronizes the content of \fISOURCE\fR with \fIDESTINATION\fR and vice versa\&. The \fIDESTINATION\fR can be a local directory or a remote file server\&.
+.sp
+You can use ocsync for different things\&. The intention is to provide Roaming Home Directories for Linux but you can use it to synchronize your music collection or create a backup of a directory\&.
+.SH "OPTIONS"
+.PP
+\fB\-\-create\-statedb\fR
+.RS 4
+Run update detection and write the statedb (TESTING ONLY!)
+.RE
+.PP
+\fB\-d, \-\-disable\-statedb\fR
+.RS 4
+Disable the usage and creation of a statedb\&.
+.RE
+.PP
+\fB\-\-exclude\-file=\fR\fB\fI<file>\fR\fR
+.RS 4
+Add an additional exclude file
+.RE
+.PP
+\fB\-r, \-\-reconcile\fR
+.RS 4
+Run ONLY update detection and reconcilation This option is for debugging
+.RE
+.PP
+\fB\-u, \-\-update\fR
+.RS 4
+Run ONLY the update detection This option is for debugging
+.RE
+.PP
+\fB\-?, \-\-help\fR
+.RS 4
+Print the help list
+.RE
+.PP
+\fB\-V, \-\-version\fR
+.RS 4
+Print program version
+.RE
+.SH "EXIT STATUS"
+.PP
+\fB0\fR
+.RS 4
+Success
+.RE
+.PP
+\fB1\fR
+.RS 4
+Failure (syntax or usage error; configuration error; unexpected error)\&.
+.RE
+.SH "EXAMPLES"
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+ocsync /home/user /backup/home/user
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+Synchronizer two local directories\&.
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+ocsync /home/user smb://server/share/user
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+Synchronize a home directory with a SMB share\&.
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+ocsync /home/user smb://user:password@server/share/user
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+Synchronize a home directory with a SMB share and provide username and
+password directly\&.
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.SH "BUGS"
+.sp
+Please report bugs at https://dev\&.csync\&.org/\&.
+.SH "SEE ALSO"
+.sp
+\fBlibocsync\fR(7)
+.SH "AUTHORS"
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Andreas Schneider <mail@cynapses\&.org>
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Klaas Freitag <freitag@owncloud\&.com>
+.RE
+.SH "COPYING"
+.sp
+Copyright \e(c) 2006\-2008 Andreas Schneider\&. Free use of this software is granted under the terms of the GNU General Public License (GPL)\&.

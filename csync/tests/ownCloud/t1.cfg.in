@@ -1,0 +1,5 @@
+ user   => "joe",
+  passwd => "secret",
+  url    => "http://localhost/ocm/remote.php/webdav/",
+  ld_libpath => "/home/joe/owncloud/csync/csync-build/modules",
+  csync => "/home/joe/owncloud/csync/csync-build/client/csync"
