@@ -16,7 +16,6 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/folder.h"
 #include "mirall/syncresult.h"
-#include "mirall/inotify.h"
 #include "mirall/theme.h"
 
 #include <neon/ne_socket.h>

@@ -112,10 +112,8 @@ set(libsync_HEADERS
     3rdparty/qjson/json.h
 )
 
-IF( INOTIFY_FOUND )
-    set(libsync_SRCS ${libsync_SRCS} mirall/inotify.cpp)
+IF( NOT WIN32 AND NOT APPLE )
     set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_qt.cpp)
-    set(libsync_HEADERS ${libsync_HEADERS} mirall/inotify.h)
     set(libsync_HEADERS ${libsync_HEADERS} mirall/folderwatcher_qt.h)
 ENDIF()
 IF( WIN32 )
@@ -172,12 +170,6 @@ list(APPEND libsync_LINK_TARGETS
     ${CSYNC_LIBRARY}
     ${HTTPBF_LIBRARY}
 )
-
-IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-   list(APPEND libsync_LINK_TARGETS
-      inotify
-   )
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
 
 if(QTKEYCHAIN_FOUND)
     list(APPEND libsync_LINK_TARGETS ${QTKEYCHAIN_LIBRARY})
@@ -294,12 +286,6 @@ set(mirall_HEADERS
     mirall/owncloudgui.h
     mirall/socketapi.h
 )
-
-if( UNIX AND NOT APPLE)
-    if(NOT DEFINED USE_INOTIFY)
-        set(USE_INOTIFY ON)
-    endif()
-endif()
 
 # csync is required.
 include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR} ${CSYNC_INCLUDE_DIR}/httpbf/src ${CSYNC_BUILD_PATH}/src)

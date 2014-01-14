@@ -78,16 +78,10 @@ endif()
 find_package(Neon REQUIRED)
 find_package(Csync REQUIRED)
 find_package(QtKeychain REQUIRED)
-if(UNIX)
-find_package(INotify REQUIRED)
-else()
-find_package(INotify)
-endif()
 find_package(Sphinx)
 find_package(PdfLatex)
 
 set(WITH_QTKEYCHAIN ${QTKEYCHAIN_FOUND})
-set(USE_INOTIFY ${INOTIFY_FOUND})
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 

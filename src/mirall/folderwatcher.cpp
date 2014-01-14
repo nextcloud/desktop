@@ -14,7 +14,6 @@
 // event masks
 #include "mirall/folderwatcher.h"
 #include "mirall/folder.h"
-#include "mirall/inotify.h"
 
 #include <stdint.h>
 

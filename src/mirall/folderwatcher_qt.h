@@ -20,7 +20,6 @@
 
 namespace Mirall {
 
-class INotify;
 class FolderWatcher;
 
 class FolderWatcherPrivate : public QObject {
