@@ -36,12 +36,12 @@ protected:
 /**
  * page to ask for the local source folder
  */
-class FolderWizardSourcePage : public FormatWarningsWizardPage
+class FolderWizardLocalPath : public FormatWarningsWizardPage
 {
     Q_OBJECT
 public:
-    FolderWizardSourcePage();
-    ~FolderWizardSourcePage();
+    FolderWizardLocalPath();
+    ~FolderWizardLocalPath();
 
     virtual bool isComplete() const;
     void initializePage();
@@ -49,8 +49,8 @@ public:
 
     void setFolderMap( const Folder::Map &fm ) { _folderMap = fm; }
 protected slots:
-    void on_localFolderChooseBtn_clicked();
-    void on_localFolderLineEdit_textChanged();
+    void slotChooseLocalFolder();
+    void slotLocalFolderChanged();
 
 private:
     Ui_FolderWizardSourcePage _ui;
@@ -62,12 +62,12 @@ private:
  * page to ask for the target folder
  */
 
-class FolderWizardTargetPage : public FormatWarningsWizardPage
+class FolderWizardRemotePath : public FormatWarningsWizardPage
 {
     Q_OBJECT
 public:
-    FolderWizardTargetPage();
-    ~FolderWizardTargetPage();
+    FolderWizardRemotePath();
+    ~FolderWizardRemotePath();
 
     virtual bool isComplete() const;
 
@@ -114,8 +114,8 @@ public:
 
 private:
 
-    FolderWizardSourcePage *_folderWizardSourcePage;
-    FolderWizardTargetPage *_folderWizardTargetPage;
+    FolderWizardLocalPath *_folderWizardSourcePage;
+    FolderWizardRemotePath *_folderWizardTargetPage;
 };
 
 

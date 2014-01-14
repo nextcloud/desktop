@@ -52,35 +52,41 @@ QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) co
     return ret;
 }
 
-FolderWizardSourcePage::FolderWizardSourcePage()
+FolderWizardLocalPath::FolderWizardLocalPath()
     : FormatWarningsWizardPage()
 {
     _ui.setupUi(this);
     registerField(QLatin1String("sourceFolder*"), _ui.localFolderLineEdit);
+    connect(_ui.localFolderChooseBtn, SIGNAL(clicked()), this, SLOT(slotChooseLocalFolder()));
+    _ui.localFolderChooseBtn->setToolTip(tr("Click to select a local folder to sync."));
+
     QString defaultPath = QString::fromLatin1( "%1/%2").arg( QDir::homePath() ).arg(Theme::instance()->appName() );
     _ui.localFolderLineEdit->setText( QDir::toNativeSeparators( defaultPath ) );
+    _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
+
     registerField(QLatin1String("alias*"), _ui.aliasLineEdit);
     _ui.aliasLineEdit->setText( Theme::instance()->appNameGUI() );
+    _ui.aliasLineEdit->setToolTip(tr("The directory alias is a descriptive name for this sync connection."));
     _ui.warnLabel->setTextFormat(Qt::RichText);
     _ui.warnLabel->hide();
 }
 
-FolderWizardSourcePage::~FolderWizardSourcePage()
+FolderWizardLocalPath::~FolderWizardLocalPath()
 {
 
 }
 
-void FolderWizardSourcePage::initializePage()
-{
-  _ui.warnLabel->hide();
-}
-
-void FolderWizardSourcePage::cleanupPage()
+void FolderWizardLocalPath::initializePage()
 {
   _ui.warnLabel->hide();
 }
 
-bool FolderWizardSourcePage::isComplete() const
+void FolderWizardLocalPath::cleanupPage()
+{
+  _ui.warnLabel->hide();
+}
+
+bool FolderWizardLocalPath::isComplete() const
 {
   QFileInfo selFile( QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()) );
   QString   userInput = selFile.canonicalFilePath();
@@ -187,24 +193,41 @@ bool FolderWizardSourcePage::isComplete() const
   return isOk;
 }
 
-void FolderWizardSourcePage::on_localFolderChooseBtn_clicked()
+void FolderWizardLocalPath::slotChooseLocalFolder()
 {
+    QString sf = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
+    QDir d(sf);
+
+    // open the first entry of the home dir. Otherwise the dir picker comes
+    // up with the closed home dir icon, stupid Qt default...
+    QStringList dirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks,
+                                   QDir::DirsFirst|QDir::Name);
+
+    if(dirs.count() > 0) sf += "/"+dirs.at(0); // Take the first dir in home dir.
+
     QString dir = QFileDialog::getExistingDirectory(this,
                                                     tr("Select the source folder"),
-                                                    QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+                                                    sf);
     if (!dir.isEmpty()) {
+        // set the last directory component name as alias
         _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
+
+        QDir pickedDir(dir);
+        QString newAlias = pickedDir.dirName();
+        if( !newAlias.isEmpty() ) {
+            _ui.aliasLineEdit->setText(newAlias);
+        }
     }
 }
 
-void FolderWizardSourcePage::on_localFolderLineEdit_textChanged()
+void FolderWizardLocalPath::slotLocalFolderChanged()
 {
     emit completeChanged();
 }
 
 
 // =================================================================================
-FolderWizardTargetPage::FolderWizardTargetPage()
+FolderWizardRemotePath::FolderWizardRemotePath()
     : FormatWarningsWizardPage()
     ,_warnWasVisible(false)
 {
@@ -219,7 +242,7 @@ FolderWizardTargetPage::FolderWizardTargetPage()
 
 }
 
-void FolderWizardTargetPage::slotAddRemoteFolder()
+void FolderWizardRemotePath::slotAddRemoteFolder()
 {
     QTreeWidgetItem *current = _ui.folderTreeWidget->currentItem();
 
@@ -237,7 +260,7 @@ void FolderWizardTargetPage::slotAddRemoteFolder()
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void FolderWizardTargetPage::slotCreateRemoteFolder(const QString &folder)
+void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
 {
     if( folder.isEmpty() ) return;
 
@@ -249,7 +272,7 @@ void FolderWizardTargetPage::slotCreateRemoteFolder(const QString &folder)
     job->start();
 }
 
-void FolderWizardTargetPage::slotCreateRemoteFolderFinished(QNetworkReply::NetworkError error)
+void FolderWizardRemotePath::slotCreateRemoteFolderFinished(QNetworkReply::NetworkError error)
 {
     if (error == QNetworkReply::NoError) {
         qDebug() << "** webdav mkdir request finished";
@@ -258,7 +281,7 @@ void FolderWizardTargetPage::slotCreateRemoteFolderFinished(QNetworkReply::Netwo
     }
 }
 
-void FolderWizardTargetPage::slotHandleNetworkError(QNetworkReply *reply)
+void FolderWizardRemotePath::slotHandleNetworkError(QNetworkReply *reply)
 {
     qDebug() << "** webdav mkdir request failed:" << reply->error();
     showWarn(tr("Failed to create the folder on %1. Please check manually.")
@@ -276,7 +299,7 @@ static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& t
     return 0;
 }
 
-void FolderWizardTargetPage::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
+void FolderWizardRemotePath::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
 {
     QFileIconProvider prov;
     QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
@@ -301,7 +324,7 @@ void FolderWizardTargetPage::recursiveInsert(QTreeWidgetItem *parent, QStringLis
     }
 }
 
-void FolderWizardTargetPage::slotUpdateDirectories(const QStringList &list)
+void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
 {
     QString webdavFolder = QUrl(AccountManager::instance()->account()->davUrl()).path();
 
@@ -322,7 +345,7 @@ void FolderWizardTargetPage::slotUpdateDirectories(const QStringList &list)
     root->setExpanded(true);
 }
 
-void FolderWizardTargetPage::slotRefreshFolders()
+void FolderWizardRemotePath::slotRefreshFolders()
 {
     LsColJob *job = new LsColJob(AccountManager::instance()->account(), "/", this);
     connect(job, SIGNAL(directoryListing(QStringList)),
@@ -331,7 +354,7 @@ void FolderWizardTargetPage::slotRefreshFolders()
     _ui.folderTreeWidget->clear();
 }
 
-void FolderWizardTargetPage::slotItemExpanded(QTreeWidgetItem *item)
+void FolderWizardRemotePath::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
     LsColJob *job = new LsColJob(AccountManager::instance()->account(), dir, this);
@@ -340,11 +363,11 @@ void FolderWizardTargetPage::slotItemExpanded(QTreeWidgetItem *item)
     job->start();
 }
 
-FolderWizardTargetPage::~FolderWizardTargetPage()
+FolderWizardRemotePath::~FolderWizardRemotePath()
 {
 }
 
-bool FolderWizardTargetPage::isComplete() const
+bool FolderWizardRemotePath::isComplete() const
 {
     if (!_ui.folderTreeWidget->currentItem())
         return false;
@@ -381,18 +404,18 @@ bool FolderWizardTargetPage::isComplete() const
     return warnStrings.isEmpty();
 }
 
-void FolderWizardTargetPage::cleanupPage()
+void FolderWizardRemotePath::cleanupPage()
 {
     showWarn();
 }
 
-void FolderWizardTargetPage::initializePage()
+void FolderWizardRemotePath::initializePage()
 {
     showWarn();
     slotRefreshFolders();
 }
 
-void FolderWizardTargetPage::showWarn( const QString& msg ) const
+void FolderWizardRemotePath::showWarn( const QString& msg ) const
 {
   if( msg.isEmpty() ) {
     _ui.warnFrame->hide();
@@ -411,13 +434,13 @@ void FolderWizardTargetPage::showWarn( const QString& msg ) const
 
 FolderWizard::FolderWizard( QWidget *parent )
     : QWizard(parent),
-    _folderWizardSourcePage(new FolderWizardSourcePage),
+    _folderWizardSourcePage(new FolderWizardLocalPath),
     _folderWizardTargetPage(0)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(Page_Source, _folderWizardSourcePage );
     if (!Theme::instance()->singleSyncFolder()) {
-        _folderWizardTargetPage = new FolderWizardTargetPage();
+        _folderWizardTargetPage = new FolderWizardRemotePath();
         setPage(Page_Target, _folderWizardTargetPage );
     }
 
