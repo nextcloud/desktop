@@ -25,6 +25,8 @@ public:
     SparkleUpdater(const QString& appCastUrl, QObject *parent = 0);
     ~SparkleUpdater();
 
+    // unused in this updater
+    Updater::UpdateState updateState() { return Updater::NoUpdate; }
     void checkForUpdate();
     void backgroundCheckForUpdate();
 private:
