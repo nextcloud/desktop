@@ -228,8 +228,8 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
     if (HAVE_SPARKLE)
-        install(DIRECTORY "${SPARKLE}/Versions/Current/Resources"
-	        DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks/Sparkle.framework")
+        install(DIRECTORY "${SPARKLE}"
+	        DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks")
     endif (HAVE_SPARKLE)
 
 endif()
