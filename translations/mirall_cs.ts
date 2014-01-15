@@ -552,67 +552,67 @@ Opravdu chcete provést tuto akci?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="176"/>
+        <location filename="../src/mirall/folderman.cpp" line="175"/>
         <source>Could not reset folder state</source>
         <translation>Nelze obnovit stav složky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="177"/>
+        <location filename="../src/mirall/folderman.cpp" line="176"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Byl nalezen starý záznam synchronizace &apos;%1&apos;, ale nebylo možné jej odebrat. Ujistěte se, že není aktuálně používán jinou aplikací.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="737"/>
+        <location filename="../src/mirall/folderman.cpp" line="736"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="740"/>
+        <location filename="../src/mirall/folderman.cpp" line="739"/>
         <source>Waits to start syncing.</source>
         <translation>Vyčkává na spuštění synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="743"/>
+        <location filename="../src/mirall/folderman.cpp" line="742"/>
         <source>Preparing for sync.</source>
         <translation>Příprava na synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="746"/>
+        <location filename="../src/mirall/folderman.cpp" line="745"/>
         <source>Sync is running.</source>
         <translation>Synchronizace probíhá.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="749"/>
+        <location filename="../src/mirall/folderman.cpp" line="748"/>
         <source>Server is currently not available.</source>
         <translation>Server je nyní nedostupný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="752"/>
+        <location filename="../src/mirall/folderman.cpp" line="751"/>
         <source>Last Sync was successful.</source>
         <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="757"/>
+        <location filename="../src/mirall/folderman.cpp" line="756"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Poslední synchronizace byla úspěšná, ale s varováním u některých souborů</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="760"/>
+        <location filename="../src/mirall/folderman.cpp" line="759"/>
         <source>Setup Error.</source>
         <translation>Chyba nastavení.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="763"/>
+        <location filename="../src/mirall/folderman.cpp" line="762"/>
         <source>User Abort.</source>
         <translation>Zrušení uživatelem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="766"/>
+        <location filename="../src/mirall/folderman.cpp" line="765"/>
         <source>Sync is paused.</source>
         <translation>Synchronizace pozastavena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="772"/>
+        <location filename="../src/mirall/folderman.cpp" line="771"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizace je pozastavena)</translation>
     </message>
@@ -639,106 +639,121 @@ Opravdu chcete provést tuto akci?</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="424"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="426"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="447"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="449"/>
         <source>Add Folder</source>
         <translation>Přidat složku</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::FolderWizardSourcePage</name>
+    <name>Mirall::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="92"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="61"/>
+        <source>Click to select a local folder to sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="65"/>
+        <source>Enter the path to the local folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="69"/>
+        <source>The directory alias is a descriptive name for this sync connection.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation>Nebyla vybrána místní složka!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="97"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Nemáte oprávněné pro zápis do zvolené složky!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="121"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation>Místní cesta %1 je již nastavena jako složka pro odesílání. Zvolte, prosím, jinou!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="133"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="132"/>
+        <source>An already configured folder is contained in the current entry.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation>Zvolená složka je symbolický odkaz. Cílová složka tohoto odkazu již obsahuje nastavenou složku. </translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="140"/>
-        <source>An already configured folder contains the currently entered folder.</source>
-        <translation>Nastavená složka již obsahuje právě zadaný adresář.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
+        <source>An already configured folder contains the currently entered folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation>Zvolená složka je symbolický odkaz. Cílová složka tohoto odkazu již obsahuje nastavenou složku. </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="170"/>
-        <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>Alias &lt;i&gt;%1&lt;/i&gt; je již používán. Zvolte prosím jiný.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="126"/>
-        <source>An already configured folder is contained in the current entry.</source>
-        <translation>Nastavená složka je již obsažena v aktuálním záznamu.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="159"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="165"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation>Alias nemůže být prázdný. Zadejte prosím slovo, kterým složku popíšete.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="193"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="176"/>
+        <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation>Zvolte zdrojovou složku</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>Mirall::FolderWizardTargetPage</name>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="233"/>
-        <source>Add Remote Folder</source>
-        <translation>Přidat vzdálený adresář</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="234"/>
-        <source>Enter the name of the new folder:</source>
-        <translation>Zadejte název nového adresáře:</translation>
-    </message>
+    <name>Mirall::FolderWizardRemotePath</name>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="256"/>
+        <source>Add Remote Folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
+        <source>Enter the name of the new folder:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="279"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Složka byla úspěšně vytvořena na %1.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="264"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="287"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Na %1 selhalo vytvoření složky. Zkontrolujte to, prosím, ručně.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="368"/>
-        <source>This folder is already being synced.</source>
-        <translation>Tato složka je již synchronizována.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="374"/>
-        <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation>Již synchronizujete všechny vaše soubory. Synchronizování další složky &lt;b&gt;není&lt;/b&gt; podporováno. Pokud chcete synchronizovat více složek, odstraňte, prosím, synchronizaci aktuální kořenové složky.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="313"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="336"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Zvolte toto k provedení synchronizace celého účtu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="370"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
+        <source>This folder is already being synced.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="393"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Již synchronizujete složku &lt;i&gt;%1&lt;/i&gt;, která je složce &lt;i&gt;%2&lt;/i&gt; nadřazená.</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="397"/>
+        <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

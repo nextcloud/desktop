@@ -552,67 +552,67 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="176"/>
+        <location filename="../src/mirall/folderman.cpp" line="175"/>
         <source>Could not reset folder state</source>
         <translation>No se pudo  </translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="177"/>
+        <location filename="../src/mirall/folderman.cpp" line="176"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Una antigua sincronización con journaling &apos;%1&apos; fue encontrada, pero no se pudo eliminar. Por favor, asegurate que ninguna aplicación la está utilizando.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="737"/>
+        <location filename="../src/mirall/folderman.cpp" line="736"/>
         <source>Undefined State.</source>
         <translation>Estado no definido.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="740"/>
+        <location filename="../src/mirall/folderman.cpp" line="739"/>
         <source>Waits to start syncing.</source>
         <translation>Esperando el comienzo de la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="743"/>
+        <location filename="../src/mirall/folderman.cpp" line="742"/>
         <source>Preparing for sync.</source>
         <translation>Preparando la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="746"/>
+        <location filename="../src/mirall/folderman.cpp" line="745"/>
         <source>Sync is running.</source>
         <translation>Sincronización en funcionamiento.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="749"/>
+        <location filename="../src/mirall/folderman.cpp" line="748"/>
         <source>Server is currently not available.</source>
         <translation>El servidor actualmente no está disponible.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="752"/>
+        <location filename="../src/mirall/folderman.cpp" line="751"/>
         <source>Last Sync was successful.</source>
         <translation>La última sincronización fue exitosa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="757"/>
+        <location filename="../src/mirall/folderman.cpp" line="756"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="760"/>
+        <location filename="../src/mirall/folderman.cpp" line="759"/>
         <source>Setup Error.</source>
         <translation>Error de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="763"/>
+        <location filename="../src/mirall/folderman.cpp" line="762"/>
         <source>User Abort.</source>
         <translation>Interrumpir.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="766"/>
+        <location filename="../src/mirall/folderman.cpp" line="765"/>
         <source>Sync is paused.</source>
         <translation>La sincronización está en pausa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="772"/>
+        <location filename="../src/mirall/folderman.cpp" line="771"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sincronización en pausa)</translation>
     </message>
@@ -639,106 +639,121 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="424"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="426"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="447"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="449"/>
         <source>Add Folder</source>
         <translation>gregar directorio</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::FolderWizardSourcePage</name>
+    <name>Mirall::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="92"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="61"/>
+        <source>Click to select a local folder to sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="65"/>
+        <source>Enter the path to the local folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="69"/>
+        <source>The directory alias is a descriptive name for this sync connection.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="97"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>¡No tenés permisos para escribir el directorio seleccionado!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="121"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="133"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="132"/>
+        <source>An already configured folder is contained in the current entry.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="140"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>An already configured folder contains the currently entered folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="146"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="170"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="165"/>
+        <source>The alias can not be empty. Please provide a descriptive alias word.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="126"/>
-        <source>An already configured folder is contained in the current entry.</source>
-        <translation>Hay un directorio sincronizado en de la selección actual.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="159"/>
-        <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation>El campo &quot;alias&quot; no puede quedar vacío. Por favor, escribí un texto descriptivo.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="193"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation>Seleccioná el directorio origen</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>Mirall::FolderWizardTargetPage</name>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="233"/>
-        <source>Add Remote Folder</source>
-        <translation>Agregar directorio remoto</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="234"/>
-        <source>Enter the name of the new folder:</source>
-        <translation>Ingresá el nombre del directorio nuevo:</translation>
-    </message>
+    <name>Mirall::FolderWizardRemotePath</name>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="256"/>
-        <source>Folder was successfully created on %1.</source>
-        <translation>El directorio fue creado con éxito en %1.</translation>
+        <source>Add Remote Folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="264"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
+        <source>Enter the name of the new folder:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="279"/>
+        <source>Folder was successfully created on %1.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="287"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="368"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="336"/>
+        <source>Choose this to sync the entire account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
         <source>This folder is already being synced.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="374"/>
-        <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
+        <location filename="../src/mirall/folderwizard.cpp" line="393"/>
+        <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="313"/>
-        <source>Choose this to sync the entire account</source>
-        <translation>Seleccioná acá para sincronizar la cuenta completa</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="370"/>
-        <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Ya estás sincronizando &lt;i&gt;%1&lt;/i&gt;, el cual es el directorio de &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <location filename="../src/mirall/folderwizard.cpp" line="397"/>
+        <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

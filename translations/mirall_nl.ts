@@ -552,67 +552,67 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="176"/>
+        <location filename="../src/mirall/folderman.cpp" line="175"/>
         <source>Could not reset folder state</source>
         <translation>Kan de beginstaat van de map niet terugzetten</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="177"/>
+        <location filename="../src/mirall/folderman.cpp" line="176"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Een oud synchronisatieverslag  &apos;%1&apos; is gevonden maar kan niet worden verwijderd. Zorg ervoor dat geen applicatie dit bestand gebruikt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="737"/>
+        <location filename="../src/mirall/folderman.cpp" line="736"/>
         <source>Undefined State.</source>
         <translation>Ongedefiniëerde staat</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="740"/>
+        <location filename="../src/mirall/folderman.cpp" line="739"/>
         <source>Waits to start syncing.</source>
         <translation>In afwachting van synchronisatie.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="743"/>
+        <location filename="../src/mirall/folderman.cpp" line="742"/>
         <source>Preparing for sync.</source>
         <translation>Synchronisatie wordt voorbereid</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="746"/>
+        <location filename="../src/mirall/folderman.cpp" line="745"/>
         <source>Sync is running.</source>
         <translation>Bezig met synchroniseren.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="749"/>
+        <location filename="../src/mirall/folderman.cpp" line="748"/>
         <source>Server is currently not available.</source>
         <translation>De server is nu niet beschikbaar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="752"/>
+        <location filename="../src/mirall/folderman.cpp" line="751"/>
         <source>Last Sync was successful.</source>
         <translation>Laatste synchronisatie was succesvol.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="757"/>
+        <location filename="../src/mirall/folderman.cpp" line="756"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Laatste synchronisatie geslaagd, maar met waarschuwingen over individuele bestanden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="760"/>
+        <location filename="../src/mirall/folderman.cpp" line="759"/>
         <source>Setup Error.</source>
         <translation>Installatiefout.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="763"/>
+        <location filename="../src/mirall/folderman.cpp" line="762"/>
         <source>User Abort.</source>
         <translation>Afgebroken door gebruiker.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="766"/>
+        <location filename="../src/mirall/folderman.cpp" line="765"/>
         <source>Sync is paused.</source>
         <translation>Synchronisatie gepauzeerd.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="772"/>
+        <location filename="../src/mirall/folderman.cpp" line="771"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronisatie onderbroken)</translation>
     </message>
@@ -639,106 +639,121 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="424"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="426"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="447"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="449"/>
         <source>Add Folder</source>
         <translation>Voeg Map Toe</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::FolderWizardSourcePage</name>
+    <name>Mirall::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="92"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="61"/>
+        <source>Click to select a local folder to sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="65"/>
+        <source>Enter the path to the local folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="69"/>
+        <source>The directory alias is a descriptive name for this sync connection.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation>Geen geldige lokale map geselecteerd!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="97"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>U heeft geen permissie om te schrijven naar de geselecteerde map!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="121"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation>Het lokale pad %1 is al een uploadmap. Kies een andere.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="133"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="132"/>
+        <source>An already configured folder is contained in the current entry.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation>De gekozen map is een symbolic link. De map waarnaar deze link verwijst bevat een reeds geconfigureerde map.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="140"/>
-        <source>An already configured folder contains the currently entered folder.</source>
-        <translation>Een reeds geconfigureerde map bevat de nu ingevoerde map.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
+        <source>An already configured folder contains the currently entered folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation>De gekozen map is een symbolic link. Een reeds geconfigureerde map is de bovenliggende map van de gekozen map, waarnaar de link verwijst.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="170"/>
-        <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>De alias &lt;i&gt;%1&lt;/i&gt; is al in gebruik. Kies een andere.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="126"/>
-        <source>An already configured folder is contained in the current entry.</source>
-        <translation>Er bestaat een al geconfigureerde map in de huidige opdracht.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="159"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="165"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation>De alias kan niet leeg zijn. Voer een beschrijvende alias in.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="193"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="176"/>
+        <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation>Selecteer de bronmap</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>Mirall::FolderWizardTargetPage</name>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="233"/>
-        <source>Add Remote Folder</source>
-        <translation>Voeg externe map toe</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="234"/>
-        <source>Enter the name of the new folder:</source>
-        <translation>Voer de naam in van de nieuwe map:</translation>
-    </message>
+    <name>Mirall::FolderWizardRemotePath</name>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="256"/>
+        <source>Add Remote Folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
+        <source>Enter the name of the new folder:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="279"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Map is succesvol aangemaakt op %1.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="264"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="287"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Aanmaken van de map op %1 mislukt.&lt;br/&gt;Controleer handmatig.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="368"/>
-        <source>This folder is already being synced.</source>
-        <translation>Deze map is al gesynchroniseerd.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="374"/>
-        <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation>U bent al uw bestanden al aan het synchroniseren.Het synchroniseren van een andere map wordt &lt;b&gt;niet&lt;/b&gt; ondersteund. Als u meerdere mappen wilt synchroniseren moet u de nu geconfigureerde synchronisatie hoofdmap verwijderen.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="313"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="336"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Kies dit om uw volledige account te synchroniseren</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="370"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
+        <source>This folder is already being synced.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="393"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>U synchroniseert &lt;i&gt;%1&lt;/i&gt; al, dat is de bovenliggende map van &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folderwizard.cpp" line="397"/>
+        <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
