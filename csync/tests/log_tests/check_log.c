@@ -2,7 +2,7 @@
 
 #include "support.h"
 
-#include "config.h"
+#include "config_csync.h"
 #include "csync_log.h"
 
 static void setup(void) {

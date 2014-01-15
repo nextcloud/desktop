@@ -23,10 +23,10 @@
 #ifndef _C_PRIVATE_H
 #define _C_PRIVATE_H
 
-#include "config.h"
+#include "config_csync.h"
 
 /* cross platform defines */
-#include "config.h"
+#include "config_csync.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -94,7 +94,9 @@ typedef struct stat csync_stat_t;
 #endif
 
 /* tchar definitions for clean win32 filenames */
+#ifndef _UNICODE
 #define _UNICODE
+#endif
 
 #if defined _WIN32 && defined _UNICODE
 typedef  wchar_t         mbchar_t;

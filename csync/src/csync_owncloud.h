@@ -31,7 +31,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "config.h"
+#include "config_csync.h"
 #ifdef NEON_WITH_LFS /* Switch on LFS in libneon. Never remove the NE_LFS! */
 #define NE_LFS
 #endif

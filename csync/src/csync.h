@@ -36,7 +36,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <config.h>
+#include <config_csync.h>
 
 #include "csync_version.h"
 

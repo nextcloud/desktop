@@ -21,7 +21,7 @@
 #ifndef _HBF_SEND_H
 #define _HBF_SEND_H
 
-#include "config.h"
+#include "config_csync.h"
 #ifdef NEON_WITH_LFS /* Switch on LFS in libneon. Never remove the NE_LFS! */
 #define NE_LFS
 #endif

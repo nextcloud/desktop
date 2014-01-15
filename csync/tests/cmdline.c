@@ -1,4 +1,4 @@
-#include "config.h"
+#include "config_csync.h"
 #include "torture.h"
 
 #ifdef HAVE_ARGP_H

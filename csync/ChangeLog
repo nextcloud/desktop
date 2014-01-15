@@ -215,7 +215,7 @@ version 0.50.8 (released 2012-08-10)
   * improved CMake modules (openSSL)
   * Fixed namespace for lastmodified propset.
   * Added cmocka based tests for ownCloud module.
-  * Added a config_test.h config header file.
+  * Added a config_test.h config_csync.header file.
   * Fix link handling: Ignore symlinks.
   * Modules can now report their capabilities to csync core.
   * A lot of minor fixes and improvements.

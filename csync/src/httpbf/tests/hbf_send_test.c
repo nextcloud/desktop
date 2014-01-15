@@ -12,7 +12,7 @@
 
 #include <cmocka.h>
 
-#include "config.h"
+#include "config_csync.h"
 
 #include <httpbf.h>
 

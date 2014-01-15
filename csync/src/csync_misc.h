@@ -22,7 +22,7 @@
 #ifndef _CSYNC_MISC_H
 #define _CSYNC_MISC_H
 
-#include <config.h>
+#include <config_csync.h>
 #include <csync.h>
 
 #ifdef HAVE_FNMATCH

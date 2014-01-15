@@ -36,7 +36,7 @@
 #include <stdbool.h>
 #include <sqlite3.h>
 
-#include "config.h"
+#include "config_csync.h"
 #include "c_lib.h"
 #include "c_private.h"
 #include "csync.h"
