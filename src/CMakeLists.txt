@@ -439,8 +439,11 @@ set_target_properties(${owncloudcmd_NAME} PROPERTIES
 target_link_libraries(${owncloudcmd_NAME} ${synclib_NAME})
 target_link_libraries(${owncloudcmd_NAME} ${CSYNC_LIBRARY})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mirall)
-install(TARGETS ${owncloudcmd_NAME}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if(BUILD_OWNCLOUD_OSX_BUNDLE)
+    install(TARGETS ${owncloudcmd_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
+else()
+    install(TARGETS ${owncloudcmd_NAME}
+	    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+endif()
