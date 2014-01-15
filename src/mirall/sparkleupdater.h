@@ -22,11 +22,11 @@ namespace Mirall {
 
 class SparkleUpdater : public Updater {
 public:
-    SparkleUpdater(const QString& appCastUrl, QObject *parent = 0);
+    SparkleUpdater(const QString& appCastUrl);
     ~SparkleUpdater();
 
     // unused in this updater
-    Updater::UpdateState updateState() { return Updater::NoUpdate; }
+    Updater::UpdateState updateState() const { return Updater::NoUpdate; }
     void checkForUpdate();
     void backgroundCheckForUpdate();
 private:

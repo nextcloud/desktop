@@ -27,8 +27,8 @@ class SparkleUpdater::Private
         SUUpdater* updater;
 };
 
-SparkleUpdater::SparkleUpdater(const QString& appCastUrl, QObject *parent)
-    : Updater(parent)
+SparkleUpdater::SparkleUpdater(const QString& appCastUrl)
+    : Updater()
 {
     d = new Private;
 
@@ -50,12 +50,12 @@ SparkleUpdater::~SparkleUpdater()
     delete d;
 }
 
-void SparkleUpdater::checkForUpdates()
+void SparkleUpdater::checkForUpdate()
 {
     [d->updater checkForUpdates: NSApp];
 }
 
-void SparkleUpdater::backgroundCheckForUpdates()
+void SparkleUpdater::backgroundCheckForUpdate()
 {
     [d->updater checkForUpdatesInBackground];
 }

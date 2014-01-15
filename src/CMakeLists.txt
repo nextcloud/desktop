@@ -227,6 +227,11 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     endif()
 else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
+    if (HAVE_SPARKLE)
+        install(DIRECTORY "${SPARKLE}/Versions/Current/Resources"
+	        DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks/Sparkle.framework")
+    endif (HAVE_SPARKLE)
+
 endif()
 
 set(mirall_UI
