@@ -462,5 +462,14 @@ bool Utility::isUnix()
 #endif
 }
 
+bool Utility::isLinux()
+{
+#ifdef Q_OS_LINUX
+    return true;
+#else
+    return false;
+#endif
+}
+
 
 } // namespace Mirall

@@ -135,6 +135,8 @@ QNetworkReply *AbstractNetworkJob::headRequest(const QUrl &url)
 
 void AbstractNetworkJob::slotFinished()
 {
+    qDebug() << _reply->error() << _reply->errorString();
+
     static QMutex mutex;
     AbstractCredentials *creds = _account->credentials();
     if (creds->stillValid(_reply) || _ignoreCredentialFailure) {

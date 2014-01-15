@@ -18,19 +18,19 @@
 
 #include "config.h"
 
+
+#include "mirall/account.h"
 #include "mirall/application.h"
+#include "mirall/connectionvalidator.h"
 #include "mirall/folder.h"
 #include "mirall/folderman.h"
-#include "mirall/folder.h"
+#include "mirall/logger.h"
+#include "mirall/mirallconfigfile.h"
+#include "mirall/socketapi.h"
 #include "mirall/sslerrordialog.h"
 #include "mirall/theme.h"
-#include "mirall/mirallconfigfile.h"
-#include "mirall/updatedetector.h"
-#include "mirall/logger.h"
+#include "mirall/updater.h"
 #include "mirall/utility.h"
-#include "mirall/connectionvalidator.h"
-#include "mirall/socketapi.h"
-#include "mirall/account.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -139,7 +139,7 @@ Application::Application(int &argc, char **argv) :
     // startup procedure.
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
 
-    if( !cfg.ownCloudSkipUpdateCheck() ) {
+    if( !cfg.skipUpdateCheck() ) {
         QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
     }
 
@@ -202,8 +202,8 @@ void Application::slotCleanup()
 
 void Application::slotStartUpdateDetector()
 {
-    UpdateDetector *updateDetector = new UpdateDetector(this);
-    updateDetector->versionCheck(_theme);
+    Updater *updater = Updater::instance();
+    updater->backgroundCheckForUpdate();
 }
 
 void Application::slotCheckConnection()

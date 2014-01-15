@@ -19,6 +19,8 @@
 #include "mirall/application.h"
 #include "mirall/utility.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/updater.h"
+#include "mirall/genericupdater.h"
 
 #include <QNetworkProxy>
 #include <QDir>
@@ -47,6 +49,7 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     }
 
     loadMiscSettings();
+    slotUpdateInfo();
 
     // misc
     connect(_ui->monoIconsCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
@@ -56,7 +59,6 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     QString themeDir = QString::fromLatin1(":/mirall/theme/%1/")
             .arg(Theme::instance()->systrayIconFlavor(true));
     _ui->monoIconsCheckBox->setVisible(QDir(themeDir).exists());
-
 }
 
 GeneralSettings::~GeneralSettings()
@@ -69,6 +71,20 @@ void GeneralSettings::loadMiscSettings()
     MirallConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
+}
+
+void GeneralSettings::slotUpdateInfo()
+{
+    if (GenericUpdater *updater = dynamic_cast<GenericUpdater*>(Updater::instance()))
+    {
+        connect(updater, SIGNAL(stateChanged()), SLOT(slotUpdateInfo()), Qt::UniqueConnection);
+        connect(_ui->restartButton, SIGNAL(clicked()), updater, SLOT(slotStartInstaller()), Qt::UniqueConnection);
+        _ui->updateStateLabel->setText(updater->statusString());
+        _ui->restartButton->setVisible(updater->state() == GenericUpdater::UpdateAvailable);
+    } else {
+        // can't have those infos from sparkle currently
+        _ui->updatesGroupBox->setVisible(false);
+    }
 }
 
 void GeneralSettings::saveMiscSettings()

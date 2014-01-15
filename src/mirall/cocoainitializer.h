@@ -11,41 +11,18 @@
  * for more details.
  */
 
-#ifndef MIRALL_GENERALSETTINGS_H
-#define MIRALL_GENERALSETTINGS_H
-
-#include <QWidget>
-
-
 namespace Mirall {
+namespace Mac {
 
-namespace Ui {
-class GeneralSettings;
-}
-
-class GeneralSettings : public QWidget
-{
-    Q_OBJECT
-
+/** CocoaInitializer provides an AutoRelease Pool via RIIA for use in main() */
+class CocoaInitializer {
 public:
-    explicit GeneralSettings(QWidget *parent = 0);
-    ~GeneralSettings();
-
-signals:
-    void proxySettingsChanged();
-
-private slots:
-    void saveMiscSettings();
-    void slotToggleLaunchOnStartup(bool);
-    void slotToggleOptionalDesktopNotifications(bool);
-    void slotUpdateInfo();
-
+    CocoaInitializer();
+    ~CocoaInitializer();
 private:
-    void loadMiscSettings();
-
-    Ui::GeneralSettings *_ui;
+    class Private;
+    Private *d;
 };
 
-
+} // namespace Mac
 } // namespace Mirall
-#endif // MIRALL_GENERALSETTINGS_H

@@ -11,41 +11,32 @@
  * for more details.
  */
 
-#ifndef MIRALL_GENERALSETTINGS_H
-#define MIRALL_GENERALSETTINGS_H
+#ifndef UPDATER_H
+#define UPDATER_H
 
-#include <QWidget>
-
+#include <QObject>
 
 namespace Mirall {
 
-namespace Ui {
-class GeneralSettings;
-}
-
-class GeneralSettings : public QWidget
-{
-    Q_OBJECT
-
+class Updater {
 public:
-    explicit GeneralSettings(QWidget *parent = 0);
-    ~GeneralSettings();
+    enum UpdateState { NoUpdate = 0, UpdateAvailable, UpdateFailed };
 
-signals:
-    void proxySettingsChanged();
+    static Updater *instance();
 
-private slots:
-    void saveMiscSettings();
-    void slotToggleLaunchOnStartup(bool);
-    void slotToggleOptionalDesktopNotifications(bool);
-    void slotUpdateInfo();
+    virtual void checkForUpdate() = 0;
+    virtual void backgroundCheckForUpdate() = 0;
+
+    virtual UpdateState updateState() const = 0;
+    virtual void performUpdate() {}
+
+    virtual void showFallbackMessage() {}
 
 private:
-    void loadMiscSettings();
-
-    Ui::GeneralSettings *_ui;
+    static Updater *create();
+    static Updater *_instance;
 };
 
-
 } // namespace Mirall
-#endif // MIRALL_GENERALSETTINGS_H
+
+#endif // UPDATER_H

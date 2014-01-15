@@ -58,6 +58,7 @@ namespace Utility
     bool isWindows();
     bool isMac();
     bool isUnix();
+    bool isLinux(); // use with care
 }
 
 }

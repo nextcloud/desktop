@@ -60,7 +60,6 @@ static const char downloadLimitC[]    = "BWLimit/downloadLimit";
 static const char seenVersionC[] = "Updater/seenVersion";
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
-QString MirallConfigFile::_oCVersion;
 QString MirallConfigFile::_confDir = QString::null;
 bool    MirallConfigFile::_askedUser = false;
 
@@ -334,19 +333,7 @@ quint64 MirallConfigFile::forceSyncInterval(const QString& connection) const
     return interval;
 }
 
-QString MirallConfigFile::ownCloudVersion() const
-{
-    return _oCVersion;
-}
-
-void MirallConfigFile::setOwnCloudVersion( const QString& ver)
-{
-    qDebug() << "** Setting ownCloud Server version to " << ver;
-    _oCVersion = ver;
-}
-
-
-bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) const
+bool MirallConfigFile::skipUpdateCheck( const QString& connection ) const
 {
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
@@ -359,7 +346,7 @@ bool MirallConfigFile::ownCloudSkipUpdateCheck( const QString& connection ) cons
     return skipIt;
 }
 
-void MirallConfigFile::setOwnCloudSkipUpdateCheck( bool skip, const QString& connection )
+void MirallConfigFile::setSkipUpdateCheck( bool skip, const QString& connection )
 {
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();

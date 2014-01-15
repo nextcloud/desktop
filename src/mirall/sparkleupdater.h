@@ -11,41 +11,27 @@
  * for more details.
  */
 
-#ifndef MIRALL_GENERALSETTINGS_H
-#define MIRALL_GENERALSETTINGS_H
+#ifndef SPARKLEUPDATER_H
+#define SPARKLEUPDATER_H
 
-#include <QWidget>
+#include "mirall/updater.h"
 
+#include <QObject>
 
 namespace Mirall {
 
-namespace Ui {
-class GeneralSettings;
-}
-
-class GeneralSettings : public QWidget
-{
-    Q_OBJECT
-
+class SparkleUpdater : public Updater {
 public:
-    explicit GeneralSettings(QWidget *parent = 0);
-    ~GeneralSettings();
+    SparkleUpdater(const QString& appCastUrl, QObject *parent = 0);
+    ~SparkleUpdater();
 
-signals:
-    void proxySettingsChanged();
-
-private slots:
-    void saveMiscSettings();
-    void slotToggleLaunchOnStartup(bool);
-    void slotToggleOptionalDesktopNotifications(bool);
-    void slotUpdateInfo();
-
+    void checkForUpdate();
+    void backgroundCheckForUpdate();
 private:
-    void loadMiscSettings();
-
-    Ui::GeneralSettings *_ui;
+    class Private;
+    Private *d;
 };
 
-
 } // namespace Mirall
-#endif // MIRALL_GENERALSETTINGS_H
+
+#endif // SPARKLEUPDATER_H

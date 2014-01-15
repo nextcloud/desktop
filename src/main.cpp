@@ -16,9 +16,13 @@
 #include "mirall/application.h"
 #include "mirall/theme.h"
 #include "mirall/utility.h"
+#include "mirall/cocoainitializer.h"
+#include "mirall/updater.h"
 
-#include <QMessageBox>
 #include <QTimer>
+#include <QMessageBox>
+
+using namespace Mirall;
 
 void warnSystray()
 {
@@ -27,13 +31,16 @@ void warnSystray()
                                           "If you are running XFCE, please follow "
                                           "<a href=\"http://docs.xfce.org/xfce/xfce4-panel/systray\">these instructions</a>. "
                                           "Otherwise, please install a system tray application such as 'trayer' and try again.")
-                          .arg(Mirall::Theme::instance()->appNameGUI()));
+                          .arg(Theme::instance()->appNameGUI()));
 }
 
 int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(mirall);
 
+#ifdef Q_OS_MAC
+    Mac::CocoaInitializer cocoaInit; // RIIA
+#endif
     Mirall::Application app(argc, argv);
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
@@ -41,6 +48,19 @@ int main(int argc, char **argv)
     if( app.giveHelp() ) {
         app.showHelp();
         return 0;
+    }
+
+    Updater *updater = Updater::instance();
+    switch (updater->updateState()) {
+    case Updater::UpdateAvailable:
+        updater->performUpdate();
+        return true;
+    case Updater::UpdateFailed:
+        updater->showFallbackMessage();
+        break;
+    case Updater::NoUpdate:
+    default:
+        break;
     }
 
     // if the application is already running, notify it.
@@ -56,7 +76,7 @@ int main(int argc, char **argv)
         int attempts = 0;
         forever {
             if (!QSystemTrayIcon::isSystemTrayAvailable() && qgetenv("DESKTOP_SESSION") != "ubuntu") {
-                Mirall::Utility::sleep(1);
+                Utility::sleep(1);
                 attempts++;
                 if (attempts < 30) continue;
             } else {

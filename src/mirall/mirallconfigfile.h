@@ -55,9 +55,6 @@ public:
     int  maxLogLines() const;
     void setMaxLogLines(int);
 
-    bool ownCloudSkipUpdateCheck( const QString& connection = QString() ) const;
-    void setOwnCloudSkipUpdateCheck( bool, const QString& );
-
     /* Server poll interval in milliseconds */
     int remotePollInterval( const QString& connection = QString() ) const;
     /* Set poll interval. Value in microseconds has to be larger than 5000 */
@@ -99,11 +96,18 @@ public:
     bool optionalDesktopNotifications() const;
     void setOptionalDesktopNotifications(bool show);
 
-    QString seenVersion() const;
-    void setSeenVersion(const QString &version);
-
     void saveGeometry(QWidget *w);
     void restoreGeometry(QWidget *w);
+
+    // installer
+    bool skipUpdateCheck( const QString& connection = QString() ) const;
+    void setSkipUpdateCheck( bool, const QString& );
+
+    QString lastVersion() const;
+    void setLastVersion(const QString &version);
+
+    QString seenVersion() const;
+    void setSeenVersion(const QString &version);
 
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
