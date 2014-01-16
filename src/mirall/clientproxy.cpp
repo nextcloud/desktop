@@ -42,8 +42,14 @@ QNetworkProxy ClientProxy::proxyFromConfig(const MirallConfigFile& cfg)
 void ClientProxy::setupQtProxyFromConfig()
 {
     Mirall::MirallConfigFile cfg;
-    int proxyType = cfg.proxyType();
-    QNetworkProxy proxy = proxyFromConfig(cfg);
+    int proxyType = QNetworkProxy::DefaultProxy;
+    QNetworkProxy proxy;
+
+    // if there is no config file, default to system proxy.
+    if( cfg.exists() ) {
+        proxyType = cfg.proxyType();
+        proxy  = proxyFromConfig(cfg);
+    }
 
     switch(proxyType) {
     case QNetworkProxy::NoProxy:
