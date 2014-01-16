@@ -26,12 +26,13 @@
 #include <syncjournaldb.h>
 #include "logger.h"
 #include "csync.h"
+#include "mirall/clientproxy.h"
 
 using namespace Mirall;
 
 int getauth(const char* prompt, char* buf, size_t len, int echo, int verify, void*)
 {
-    std::cout << "AUTH CALLBACK\n" << prompt << std::endl;
+    std::cout << "** Authentication required: \n" << prompt << std::endl;
     std::string s;
     std::getline(std::cin, s);
     strncpy( buf, s.c_str(), len );
@@ -51,6 +52,9 @@ void help()
     std::cout << "" << std::endl;
     std::cout << "Usage: owncloudcmd <sourcedir> <owncloudurl>" << std::endl;
     std::cout << "" << std::endl;
+    std::cout << "A proxy can either be set manually using --httpproxy or it" << std::endl;
+    std::cout << "uses the setting from a configured sync client." << std::endl;
+    std::cout << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "  --confdir = configdir: Read config from there." << std::endl;
     std::cout << "  --httpproxy = proxy:   Specify a http proxy to use." << std::endl;
@@ -69,6 +73,13 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     }
 
     options->target_url = args.takeLast();
+    // check if the remote.php/webdav tail was added and append if not.
+    if( !options->target_url.contains("remote.php/webdav")) {
+        if(!options->target_url.endsWith("/")) {
+            options->target_url.append("/");
+        }
+        options->target_url.append("remote.php/webdav/");
+    }
     options->source_dir = args.takeLast();
     if( !QFile::exists( options->source_dir )) {
         std::cerr << "Source dir does not exists.";
@@ -100,6 +111,7 @@ int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
 
     CmdOptions options;
+    ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
 
@@ -132,6 +144,9 @@ int main(int argc, char **argv) {
         int port = 0;
         bool ok;
 
+        // Set as default and let overwrite later
+        csync_set_module_property(_csync_ctx, "proxy_type", (void*) "NoProxy");
+
         QStringList pList = options.proxy.split(':');
         if(pList.count() == 3) {
             // http: //192.168.178.23 : 8080
@@ -149,6 +164,14 @@ int main(int argc, char **argv) {
                 }
             }
         }
+    } else {
+        clientProxy.setupQtProxyFromConfig();
+        QString url( options.target_url );
+        if( url.startsWith("owncloud")) {
+            url.remove(0, 8);
+            url = QString("http%1").arg(url);
+        }
+        clientProxy.setCSyncProxy(QUrl(url), _csync_ctx);
     }
 
     SyncJournalDb db(options.source_dir);
