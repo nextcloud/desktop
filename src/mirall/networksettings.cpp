@@ -19,6 +19,7 @@
 #include "mirall/application.h"
 #include "mirall/utility.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/folderman.h"
 
 #include <QNetworkProxy>
 
@@ -138,7 +139,13 @@ void NetworkSettings::saveProxySettings()
                              _ui->portSpinBox->value(), needsAuth, user, pass);
     }
 
-    emit proxySettingsChanged();
+    ClientProxy proxy;
+    proxy.setupQtProxyFromConfig(); // Refresh the Qt proxy settings as the
+    // quota check can happen all the time.
+
+    // ...and set the folders dirty, they refresh their proxy next time they
+    // start the sync.
+    FolderMan::instance()->setDirtyProxy(true);
 }
 
 void NetworkSettings::saveBWLimitSettings()

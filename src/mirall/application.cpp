@@ -31,16 +31,15 @@
 #include "mirall/theme.h"
 #include "mirall/updater.h"
 #include "mirall/utility.h"
+#include "mirall/clientproxy.h"
 
 #include "creds/abstractcredentials.h"
 
-#if defined(Q_OS_WIN)
+#if defined(QOS_WIN)
 #include <windows.h>
 #endif
 
 #include <QTranslator>
-#include <QNetworkProxy>
-#include <QNetworkProxyFactory>
 #include <QMenu>
 #include <QMessageBox>
 
@@ -123,13 +122,13 @@ Application::Application(int &argc, char **argv) :
     connect (_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));
 
     FolderMan::instance()->setupFolders();
-    slotSetupProxy(); // folders have to be defined first.
+    _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
     _gui = new ownCloudGui(this);
     if( _showLogWindow ) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
-    connect( _gui, SIGNAL(setupProxy()), SLOT(slotSetupProxy()));
+
     if (account) {
         connect(account, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
     }
@@ -312,54 +311,6 @@ void Application::setupLogging()
                 .arg(property("ui_lang").toString())
                 .arg(_theme->version());
 
-}
-
-QNetworkProxy proxyFromConfig(const MirallConfigFile& cfg)
-{
-    QNetworkProxy proxy;
-
-    if (cfg.proxyHostName().isEmpty())
-        return QNetworkProxy();
-
-    proxy.setHostName(cfg.proxyHostName());
-    proxy.setPort(cfg.proxyPort());
-    if (cfg.proxyNeedsAuth()) {
-        proxy.setUser(cfg.proxyUser());
-        proxy.setPassword(cfg.proxyPassword());
-    }
-    return proxy;
-}
-
-void Application::slotSetupProxy()
-{
-    Mirall::MirallConfigFile cfg;
-    int proxyType = cfg.proxyType();
-    QNetworkProxy proxy = proxyFromConfig(cfg);
-
-    switch(proxyType) {
-    case QNetworkProxy::NoProxy:
-        QNetworkProxyFactory::setUseSystemConfiguration(false);
-        QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
-        break;
-    case QNetworkProxy::DefaultProxy:
-        QNetworkProxyFactory::setUseSystemConfiguration(true);
-        break;
-    case QNetworkProxy::Socks5Proxy:
-        proxy.setType(QNetworkProxy::Socks5Proxy);
-        QNetworkProxyFactory::setUseSystemConfiguration(false);
-        QNetworkProxy::setApplicationProxy(proxy);
-        break;
-    case QNetworkProxy::HttpProxy:
-        proxy.setType(QNetworkProxy::HttpProxy);
-        QNetworkProxyFactory::setUseSystemConfiguration(false);
-        QNetworkProxy::setApplicationProxy(proxy);
-        break;
-    default:
-        break;
-    }
-
-    FolderMan::instance()->setDirtyProxy(true);
-    FolderMan::instance()->slotScheduleAllFolders();
 }
 
 void Application::slotUseMonoIconsChanged(bool)

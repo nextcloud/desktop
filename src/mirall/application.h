@@ -26,6 +26,7 @@
 #include "mirall/owncloudgui.h"
 #include "mirall/connectionvalidator.h"
 #include "mirall/progressdispatcher.h"
+#include "mirall/clientproxy.h"
 
 class QMessageBox;
 class QSystemTrayIcon;
@@ -71,7 +72,6 @@ protected slots:
     void slotCheckConnection();
     void slotConnectionValidatorResult(ConnectionValidator::Status);
     void slotStartUpdateDetector();
-    void slotSetupProxy();
     void slotUseMonoIconsChanged( bool );
     void slotCredentialsFetched();
     void slotLogin();
@@ -101,6 +101,8 @@ private:
     bool    _logFlush;
     bool    _userTriggeredConnect;
     QPointer<QMessageBox> _connectionMsgBox;
+
+    ClientProxy _proxy;
 
     friend class ownCloudGui; // for _startupNetworkError
 };

@@ -24,6 +24,7 @@
 #include "mirall/syncjournalfilerecord.h"
 #include "mirall/syncresult.h"
 #include "mirall/utility.h"
+#include "mirall/clientproxy.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -520,30 +521,6 @@ void Folder::setIgnoredFiles()
     }
 }
 
-void Folder::setProxy()
-{
-
-    /* Store proxy */
-    QUrl proxyUrl(AccountManager::instance()->account()->url());
-    QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(proxyUrl));
-    // We set at least one in Application
-    Q_ASSERT(proxies.count() > 0);
-    QNetworkProxy proxy = proxies.first();
-    if (proxy.type() == QNetworkProxy::NoProxy) {
-        qDebug() << "Passing NO proxy to csync for" << proxyUrl;
-    } else {
-        qDebug() << "Passing" << proxy.hostName() << "of proxy type " << proxy.type()
-                    << " to csync for" << proxyUrl;
-    }
-    _proxy_type = proxyTypeToCStr(proxy.type());
-    _proxy_host = proxy.hostName().toUtf8();
-    _proxy_port = proxy.port();
-    _proxy_user = proxy.user().toUtf8();
-    _proxy_pwd  = proxy.password().toUtf8();
-
-    setProxyDirty(false);
-}
-
 void Folder::setProxyDirty(bool value)
 {
     _proxyDirty = value;
@@ -587,15 +564,11 @@ void Folder::startSync(const QStringList &pathList)
             QMetaObject::invokeMethod(this, "slotCSyncFinished", Qt::QueuedConnection);
             return;
         }
-        setProxy();
+        _clientProxy.setCSyncProxy(AccountManager::instance()->account()->url(), _csync_ctx);
     } else if (proxyDirty()) {
-        setProxy();
+        _clientProxy.setCSyncProxy(AccountManager::instance()->account()->url(), _csync_ctx);
+        setProxyDirty(false);
     }
-    csync_set_module_property(_csync_ctx, "proxy_type", const_cast<char*>(_proxy_type) );
-    csync_set_module_property(_csync_ctx, "proxy_host", _proxy_host.data() );
-    csync_set_module_property(_csync_ctx, "proxy_port", &_proxy_port );
-    csync_set_module_property(_csync_ctx, "proxy_user", _proxy_user.data() );
-    csync_set_module_property(_csync_ctx, "proxy_pwd", _proxy_pwd.data() );
 
     if (_thread && _thread->isRunning()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";

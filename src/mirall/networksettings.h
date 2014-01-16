@@ -31,9 +31,6 @@ public:
     explicit NetworkSettings(QWidget *parent = 0);
     ~NetworkSettings();
 
-signals:
-    void proxySettingsChanged();
-
 private slots:
     void saveProxySettings();
     void saveBWLimitSettings();

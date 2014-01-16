@@ -73,7 +73,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     _ui->labelWidget->addItem(network);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
-    connect(networkSettings, SIGNAL(proxySettingsChanged()), gui, SIGNAL(setupProxy()));
 
     FolderMan *folderMan = FolderMan::instance();
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),

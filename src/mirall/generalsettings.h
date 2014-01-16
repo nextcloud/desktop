@@ -31,9 +31,6 @@ public:
     explicit GeneralSettings(QWidget *parent = 0);
     ~GeneralSettings();
 
-signals:
-    void proxySettingsChanged();
-
 private slots:
     void saveMiscSettings();
     void slotToggleLaunchOnStartup(bool);

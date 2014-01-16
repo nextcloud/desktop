@@ -21,6 +21,9 @@
 #include "mirall/progressdispatcher.h"
 #include "mirall/csyncthread.h"
 #include "mirall/syncjournaldb.h"
+#include "mirall/clientproxy.h"
+
+#include <csync.h>
 
 #include <QDir>
 #include <QHash>
@@ -39,6 +42,7 @@ class QThread;
 namespace Mirall {
 
 class FolderWatcher;
+
 
 typedef enum SyncFileStatus_s {
     FILE_STATUS_NONE,
@@ -188,7 +192,7 @@ private:
 
 
     void setIgnoredFiles();
-    void setProxy();
+
     const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
 
     void bubbleUpSyncResult();
@@ -218,6 +222,8 @@ private:
     QElapsedTimer _timeSinceLastSync;
 
     SyncJournalDb _journal;
+
+    ClientProxy   _clientProxy;
 
     CSYNC *_csync_ctx;
 
