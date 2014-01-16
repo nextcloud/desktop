@@ -670,7 +670,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>¡No tenés permisos para escribir el directorio seleccionado!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
@@ -680,7 +680,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>Hay un directorio sincronizado en de la selección actual.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
@@ -700,7 +700,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation type="unfinished"/>
+        <translation>El campo &quot;alias&quot; no puede quedar vacío. Por favor, escribí un texto descriptivo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
@@ -710,7 +710,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>Seleccioná el directorio origen</translation>
     </message>
 </context>
 <context>
@@ -718,17 +718,17 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="256"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Agregar directorio remoto</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Enter the name of the new folder:</source>
-        <translation type="unfinished"/>
+        <translation>Ingresá el nombre del directorio nuevo:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="279"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>El directorio fue creado con éxito en %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
@@ -738,7 +738,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="336"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Seleccioná acá para sincronizar la cuenta completa</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="391"/>
@@ -748,7 +748,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="393"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ya estás sincronizando &lt;i&gt;%1&lt;/i&gt;, el cual es el directorio de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="397"/>
@@ -797,6 +797,85 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
         <location filename="../src/mirall/generalsettings.ui" line="56"/>
         <source>About</source>
         <translation>Acerca de</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/generalsettings.ui" line="66"/>
+        <source>Updates</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/generalsettings.ui" line="88"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::GenericUpdater</name>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="76"/>
+        <source>New Update Ready</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="77"/>
+        <source>A new update is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="101"/>
+        <source>Downloading version %1. Please wait...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="103"/>
+        <source>Version %1 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="105"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; %2 to download the update manually</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="107"/>
+        <source>New version %1 available. Please use the systems update tool to install it.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="109"/>
+        <source>Checking update server...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="113"/>
+        <source>Your installation is at the latest version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="209"/>
+        <source>New Version Available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="215"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="228"/>
+        <source>Skip this version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="229"/>
+        <source>Skip this time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="230"/>
+        <source>Get update</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1538,34 +1617,6 @@ Please ensure that your network connection is working.</source>
     </message>
 </context>
 <context>
-    <name>Mirall::UpdateDetector</name>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="113"/>
-        <source>New Version Available</source>
-        <translation>Nueva versión disponible</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="119"/>
-        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Hay disponible una nueva versión del cliente %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; está disponible para su descarga. La versión instalada es %3.&lt;p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="133"/>
-        <source>Skip update</source>
-        <translation>No actualizar</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="134"/>
-        <source>Skip this time</source>
-        <translation>Saltear esta vez</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="135"/>
-        <source>Get update</source>
-        <translation>Obtener actualización</translation>
-    </message>
-</context>
-<context>
     <name>Mirall::ownCloudGui</name>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
@@ -1945,12 +1996,12 @@ Please ensure that your network connection is working.</source>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="25"/>
+        <location filename="../src/main.cpp" line="29"/>
         <source>System Tray not available</source>
         <translation>La bandeja del sistema no está disponible</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="26"/>
+        <location filename="../src/main.cpp" line="30"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>% 1 requiere una bandeja del sistema funcionando. Si estás usando XFCE, por favor leé &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; estas instrucciones&lt;/ a&gt;. De lo contrario, instalá una aplicación de la bandeja del sistema, como &apos;trayer&apos; e intentalo de nuevo.</translation>
     </message>

@@ -666,52 +666,52 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Keinen gültigen lokales Ordner gewählt!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Sie haben keine Schreibberechtigung für den ausgewählten Ordner!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Das lokale Verzeichnis %1 ist bereits ein Verzeichnis zum Hochladen. Bitte wählen Sie ein anderes Verzeichnis!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>Ein bereits konfigurierter Ordner ist im aktuellen Verzeichnis vorhanden.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Das gewählte Verzeichnis ist ein symbolischer Link. Ein bereits konfigurierter Ordner befindet sich in dem Ordner auf den dieser Link zeigt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ein bereits konfigurierter Ordner beinhaltet den aktuell eingegebenen Ordner.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Der ausgewählte Ordner ist ein symbolischer Link. Ein bereits konfigurierter Ordner ist die Wurzel des aktuell ausgewählten Ordners, auf den der Link zeigt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation type="unfinished"/>
+        <translation>Der Alias darf nicht leer sein. Bitte ein anschauliches Alias-Wort eingeben.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>Der Alias &lt;i&gt;%1&lt;/i&gt; wird bereits benutzt. Bitte wählen Sie einen anderen Alias.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>Den Quellordner wählen</translation>
     </message>
 </context>
 <context>
@@ -719,42 +719,42 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="256"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Entfernten Ordner hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Enter the name of the new folder:</source>
-        <translation type="unfinished"/>
+        <translation>Geben Sie den Namen des neuen Ordners ein:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="279"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>Order erfolgreich auf %1 erstellt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Die Erstellung des Ordners auf %1 ist fehlgeschlagen. Bitte prüfen Sie dies manuell.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="336"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Wählen Sie dies, um das gesamte Konto zu synchronisieren</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="391"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Dieser Ordner wird bereits synchronisiert.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="393"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Sie synchronisieren bereits &lt;i&gt;%1&lt;/i&gt;, das ein übergeordneten Ordner von &lt;i&gt;%2&lt;/i&gt; ist.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="397"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>Sie synchronisieren bereits alle Ihre Dateien. Die Synchronisation anderer Verzeichnisse wird &lt;b&gt;nicht&lt;/b&gt; unterstützt. Wenn Sie mehrere Ordner synchronisieren möchten, entfernen Sie bitte das aktuell konfigurierte Wurzelverzeichnis zur Synchronisation.</translation>
     </message>
 </context>
 <context>
@@ -798,6 +798,85 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
         <location filename="../src/mirall/generalsettings.ui" line="56"/>
         <source>About</source>
         <translation>Über</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/generalsettings.ui" line="66"/>
+        <source>Updates</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/generalsettings.ui" line="88"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::GenericUpdater</name>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="76"/>
+        <source>New Update Ready</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="77"/>
+        <source>A new update is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="101"/>
+        <source>Downloading version %1. Please wait...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="103"/>
+        <source>Version %1 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="105"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; %2 to download the update manually</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="107"/>
+        <source>New version %1 available. Please use the systems update tool to install it.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="109"/>
+        <source>Checking update server...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="113"/>
+        <source>Your installation is at the latest version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="209"/>
+        <source>New Version Available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="215"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="228"/>
+        <source>Skip this version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="229"/>
+        <source>Skip this time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="230"/>
+        <source>Get update</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1541,34 +1620,6 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
     </message>
 </context>
 <context>
-    <name>Mirall::UpdateDetector</name>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="113"/>
-        <source>New Version Available</source>
-        <translation>Eine neue Version ist verfügbar.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="119"/>
-        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Eine neue Version des %1-Clients ist verfügbar.&lt;/p&gt;&lt;p&gt;Version &lt;b&gt;%2&lt;/b&gt; steht zum Download bereit. Die zur Zeit installierte Version: %3.&lt;p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="133"/>
-        <source>Skip update</source>
-        <translation>Update überspringen</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="134"/>
-        <source>Skip this time</source>
-        <translation>Dieses Mal überspringen</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="135"/>
-        <source>Get update</source>
-        <translation>Update durchführen</translation>
-    </message>
-</context>
-<context>
     <name>Mirall::ownCloudGui</name>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
@@ -1947,12 +1998,12 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="25"/>
+        <location filename="../src/main.cpp" line="29"/>
         <source>System Tray not available</source>
         <translation>Die Taskleiste ist nicht verfügbar.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="26"/>
+        <location filename="../src/main.cpp" line="30"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 wird für eine funktionierende Taskleiste benötigt. Falls Sie XFCE einsetzen, dann folgen Sie bitte &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;diesen Anweisungen&lt;/a&gt;. Anderenfalls installieren Sie bitte eine Taskleisten-Anwendung wie &apos;trayer&apos; und versuchen Sie es erneut.</translation>
     </message>

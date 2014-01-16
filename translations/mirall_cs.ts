@@ -665,52 +665,52 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Nebyla vybrána místní složka!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Nemáte oprávněné pro zápis do zvolené složky!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Místní cesta %1 je již nastavena jako složka pro odesílání. Zvolte, prosím, jinou!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>Nastavená složka je již obsažena v aktuálním záznamu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Zvolená složka je symbolický odkaz. Cílová složka tohoto odkazu již obsahuje nastavenou složku. </translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Nastavená složka již obsahuje právě zadaný adresář.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Zvolená složka je symbolický odkaz. Cílová složka tohoto odkazu již obsahuje nastavenou složku. </translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation type="unfinished"/>
+        <translation>Alias nemůže být prázdný. Zadejte prosím slovo, kterým složku popíšete.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>Alias &lt;i&gt;%1&lt;/i&gt; je již používán. Zvolte prosím jiný.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>Zvolte zdrojovou složku</translation>
     </message>
 </context>
 <context>
@@ -718,42 +718,42 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="256"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Přidat vzdálený adresář</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Enter the name of the new folder:</source>
-        <translation type="unfinished"/>
+        <translation>Zadejte název nového adresáře:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="279"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>Složka byla úspěšně vytvořena na %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Na %1 selhalo vytvoření složky. Zkontrolujte to, prosím, ručně.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="336"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Zvolte toto k provedení synchronizace celého účtu</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="391"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Tato složka je již synchronizována.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="393"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Již synchronizujete složku &lt;i&gt;%1&lt;/i&gt;, která je složce &lt;i&gt;%2&lt;/i&gt; nadřazená.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="397"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>Již synchronizujete všechny vaše soubory. Synchronizování další složky &lt;b&gt;není&lt;/b&gt; podporováno. Pokud chcete synchronizovat více složek, odstraňte, prosím, synchronizaci aktuální kořenové složky.</translation>
     </message>
 </context>
 <context>
@@ -797,6 +797,85 @@ Opravdu chcete provést tuto akci?</translation>
         <location filename="../src/mirall/generalsettings.ui" line="56"/>
         <source>About</source>
         <translation>O aplikaci</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/generalsettings.ui" line="66"/>
+        <source>Updates</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/generalsettings.ui" line="88"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::GenericUpdater</name>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="76"/>
+        <source>New Update Ready</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="77"/>
+        <source>A new update is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="101"/>
+        <source>Downloading version %1. Please wait...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="103"/>
+        <source>Version %1 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="105"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; %2 to download the update manually</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="107"/>
+        <source>New version %1 available. Please use the systems update tool to install it.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="109"/>
+        <source>Checking update server...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="113"/>
+        <source>Your installation is at the latest version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="209"/>
+        <source>New Version Available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="215"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="228"/>
+        <source>Skip this version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="229"/>
+        <source>Skip this time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="230"/>
+        <source>Get update</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1541,34 +1620,6 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::UpdateDetector</name>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="113"/>
-        <source>New Version Available</source>
-        <translation>Je dostupná nová verze</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="119"/>
-        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Je k dispozici nová verze klienta %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; je k dispozici ke stažení. Aktuálně nainstalovaná verze je %3.&lt;p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="133"/>
-        <source>Skip update</source>
-        <translation>Přeskočit aktualizaci</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="134"/>
-        <source>Skip this time</source>
-        <translation>Tentokrát přeskočit</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="135"/>
-        <source>Get update</source>
-        <translation>Získat aktualizaci</translation>
-    </message>
-</context>
-<context>
     <name>Mirall::ownCloudGui</name>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
@@ -1947,12 +1998,12 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="25"/>
+        <location filename="../src/main.cpp" line="29"/>
         <source>System Tray not available</source>
         <translation>Systémová lišta není k dispozici</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="26"/>
+        <location filename="../src/main.cpp" line="30"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 vyžaduje fungující systémovou lištu. Pokud používáte XFCE, řiďte se &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;těmito instrukcemi&lt;/a&gt;. V ostatních případech prosím nainstalujte do svého systému aplikaci pro systémovou lištu, např. &apos;trayer&apos;, a zkuste to znovu.</translation>
     </message>

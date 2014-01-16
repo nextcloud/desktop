@@ -650,67 +650,67 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="61"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Klõpsa valimaks kohalikku sünkroniseeritavat kataloogi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="65"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta otsingutee kohaliku kataloogini.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="69"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>Kataloogi alias on kirjeldav nimi selle sünkroniseeringu ühenduse jaoks.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Ühtegi toimivat kohalikku kausta pole valitud!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Sul puuduvad õigused valitud kataloogi kirjutamiseks!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik kataloog %1 juba on üleslaaditav kataloog. Palun vali mõni teine!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>Antud kataloogis juba sidaldub eelnevalt seadistatud kataloog.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Valitud kataloog on sümboolne link. Juba eelnevalt seadistatud kataloog sisaldub kataloogis, millele antud link viitab.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Eelnevalt seadistatud kataloog juba sisaldab praegu sisestatud kataloogi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Valitud kataloog on sümboolne link. Juba eelnevalt seadistatud kataloog on praegu valitud kataloogi ülemkataloog, sisaldades kataloogi, millele antud link viitab.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation type="unfinished"/>
+        <translation>Alias ei saa olla tühi. Palun sisesta kirjeldav sõna.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>Alias &lt;i&gt;%1&lt;/i&gt; on juba kasutuses. Palun vali mõni teine alias.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>Vali algne kaust</translation>
     </message>
 </context>
 <context>
@@ -718,42 +718,42 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="256"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Lisa võrgukataloog</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Enter the name of the new folder:</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta uue kataloogi nimi:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="279"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>%1 - kaust on loodud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Kausta loomine ebaõnnestus - %1. Palun kontrolli käsitsi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="336"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Vali see sünkroniseering tervele kontole</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="391"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Seda kataloogi juba sünkroniseeritakse.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="393"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Sa juba sünkroniseerid &lt;i&gt;%1&lt;/i&gt;, mis on &lt;i&gt;%2&lt;/i&gt; ülemkataloog.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="397"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>Sa juba sünkroniseerid kõiki oma faile. Teise kataloogi sünkroniseering &lt;b&gt;ei ole&lt;/b&gt; toetatud. Kui soovid sünkroniseerida mitut kataloogi, palun eemalda hektel seadistatud sünkroniseeritav juurkataloog.</translation>
     </message>
 </context>
 <context>
@@ -797,6 +797,85 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
         <location filename="../src/mirall/generalsettings.ui" line="56"/>
         <source>About</source>
         <translation>Info</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/generalsettings.ui" line="66"/>
+        <source>Updates</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/generalsettings.ui" line="88"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::GenericUpdater</name>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="76"/>
+        <source>New Update Ready</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="77"/>
+        <source>A new update is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="101"/>
+        <source>Downloading version %1. Please wait...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="103"/>
+        <source>Version %1 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="105"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; %2 to download the update manually</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="107"/>
+        <source>New version %1 available. Please use the systems update tool to install it.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="109"/>
+        <source>Checking update server...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="113"/>
+        <source>Your installation is at the latest version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="209"/>
+        <source>New Version Available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="215"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="228"/>
+        <source>Skip this version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="229"/>
+        <source>Skip this time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="230"/>
+        <source>Get update</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1540,34 +1619,6 @@ Palun veendu, et võrguühendus toimib.</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::UpdateDetector</name>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="113"/>
-        <source>New Version Available</source>
-        <translation>Saadaval on uuem versioon</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="119"/>
-        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Uus versioon %1 kliendist on saadaval.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; on saadaval alla laadimiseks. Paigaldatud on versioon %3.&lt;p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="133"/>
-        <source>Skip update</source>
-        <translation>Jäta uuendus vahele</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="134"/>
-        <source>Skip this time</source>
-        <translation>Jäta seekord vahele</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="135"/>
-        <source>Get update</source>
-        <translation>Hangi uuendus</translation>
-    </message>
-</context>
-<context>
     <name>Mirall::ownCloudGui</name>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
@@ -1946,12 +1997,12 @@ Palun veendu, et võrguühendus toimib.</translation>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="25"/>
+        <location filename="../src/main.cpp" line="29"/>
         <source>System Tray not available</source>
         <translation>Süsteemisalv pole saadaval</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="26"/>
+        <location filename="../src/main.cpp" line="30"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 vajab tööks süsteemisalve. Kui Sa kasutad XFCE-d, palun järgi &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;neid juhiseid&lt;/a&gt;. Muudel juhtudel palun paigalda süsteemisalve rakendus nagu näiteks &apos;trayer&apos; ning proovi uuesti.</translation>
     </message>

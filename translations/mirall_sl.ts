@@ -665,52 +665,52 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Ni izbrane veljavne krajevne mape!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Ni ustreznih dovoljenj za pisanje v izbrano mapo!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Krajevna pot %1 je že mapa za pošiljanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>Trenutni vnos določa mapo, ki je že nastavljena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Izbrana mapa je simbolna povezava. Ta povezava vodi do že nastavljene mape znotraj ciljne mape.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno vpisana mapa je že usklajena kot podrejena mapa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Izbrana mapa je simbolna povezava. Naslov povezave je nadrejena mapa trenutno izbrane mape.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation type="unfinished"/>
+        <translation>Vzdevek ne sme biti izpuščen, zato ga je treba vpisati.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>Vzdevek &lt;i&gt;%1&lt;/i&gt; je že v uporabi. Izbrati je treba drugega.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>Izbor izvorne mape</translation>
     </message>
 </context>
 <context>
@@ -718,42 +718,42 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="256"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj oddaljeno mapo</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Enter the name of the new folder:</source>
-        <translation type="unfinished"/>
+        <translation>Ime nove mape:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="279"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>Mapa je uspešno ustvarjena na %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Ustvarjanje mape na %1 je spodletelo. Poskusite znova.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="336"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Izberite možnost za usklajevanje celotnega računa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="391"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Ta mapa je že določena za usklajevanje.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="393"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke se že usklajujejo na ravni mape &lt;i&gt;%1&lt;/i&gt;, ki je nadrejena mapi &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="397"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno so v usklajevanju vse datoteke korenske mape. Usklajevanje še ene mape &lt;b&gt;ni&lt;/b&gt; podprto. Če želite uskladiti več map, je treba odstraniti trenutno nastavljeno korensko mapo in spremeniti nastavitve.</translation>
     </message>
 </context>
 <context>
@@ -797,6 +797,85 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
         <location filename="../src/mirall/generalsettings.ui" line="56"/>
         <source>About</source>
         <translation>O oblaku</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/generalsettings.ui" line="66"/>
+        <source>Updates</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/generalsettings.ui" line="88"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::GenericUpdater</name>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="76"/>
+        <source>New Update Ready</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="77"/>
+        <source>A new update is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="101"/>
+        <source>Downloading version %1. Please wait...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="103"/>
+        <source>Version %1 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="105"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; %2 to download the update manually</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="107"/>
+        <source>New version %1 available. Please use the systems update tool to install it.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="109"/>
+        <source>Checking update server...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="113"/>
+        <source>Your installation is at the latest version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="209"/>
+        <source>New Version Available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="215"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="228"/>
+        <source>Skip this version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="229"/>
+        <source>Skip this time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/genericupdater.cpp" line="230"/>
+        <source>Get update</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1540,34 +1619,6 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::UpdateDetector</name>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="113"/>
-        <source>New Version Available</source>
-        <translation>Na voljo je novejša različica</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="119"/>
-        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Na voljo je nova različica odjemalca %1.&lt;/p&gt;&lt;p&gt;Datoteka &lt;b&gt;%2&lt;/b&gt; je na voljo za prejem. Trenutno je nameščena različica %3.&lt;p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="133"/>
-        <source>Skip update</source>
-        <translation>Preskoči posodobitev</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="134"/>
-        <source>Skip this time</source>
-        <translation>Posodobitev tokrat preskoči</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/updatedetector.cpp" line="135"/>
-        <source>Get update</source>
-        <translation>Pridobi posodobitve</translation>
-    </message>
-</context>
-<context>
     <name>Mirall::ownCloudGui</name>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
@@ -1946,12 +1997,12 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="25"/>
+        <location filename="../src/main.cpp" line="29"/>
         <source>System Tray not available</source>
         <translation>Sistemska vrstica ni na voljo</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="26"/>
+        <location filename="../src/main.cpp" line="30"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 zahteva uporabo sistemske obvestilne vrstice. Pri uporabnikih namizja XFCE je treba upoštevati &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;posebne nastavitve&lt;/a&gt;. V kolikor to ni mogoče, je treba namestiti katerikoli sistem obveščanja, kot je na primer program &apos;trayer&apos;.</translation>
     </message>
