@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>525</width>
+    <width>602</width>
     <height>193</height>
    </rect>
   </property>
@@ -19,8 +19,8 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="QLabel" name="topLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -39,8 +39,8 @@
      </property>
     </widget>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -58,28 +58,75 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Server &amp;Address</string>
-       </property>
-       <property name="buddy">
-        <cstring>leUrl</cstring>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>13</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Server &amp;Address</string>
+           </property>
+           <property name="buddy">
+            <cstring>leUrl</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Utils::FancyLineEdit" name="leUrl">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>Enter the URL of the server that you want to connect to (without http or https).</string>
+           </property>
+           <property name="placeholderText">
+            <string>https://...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>18</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="Utils::FancyLineEdit" name="leUrl">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Enter the URL of the server that you want to connect to (without http or https).</string>
-       </property>
-       <property name="placeholderText">
-        <string>https://...</string>
+      <widget class="QLabel" name="urlLabel">
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -101,7 +148,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="2" column="0">
     <widget class="QLabel" name="errorLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
@@ -114,7 +161,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="3" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -127,14 +174,14 @@
      </property>
     </spacer>
    </item>
-   <item>
+   <item row="4" column="0">
     <layout class="QHBoxLayout" name="resultLayout">
      <property name="spacing">
       <number>0</number>
      </property>
     </layout>
    </item>
-   <item>
+   <item row="5" column="0">
     <widget class="QLabel" name="bottomLabel">
      <property name="text">
       <string>TextLabel</string>
@@ -142,6 +189,14 @@
     </widget>
    </item>
   </layout>
+  <zorder>topLabel</zorder>
+  <zorder>errorLabel</zorder>
+  <zorder>bottomLabel</zorder>
+  <zorder>label</zorder>
+  <zorder>verticalSpacer</zorder>
+  <zorder>verticalSpacer_2</zorder>
+  <zorder>verticalSpacer_3</zorder>
+  <zorder>urlLabel</zorder>
  </widget>
  <customwidgets>
   <customwidget>

@@ -97,20 +97,15 @@ void OwncloudSetupPage::slotUrlChanged(const QString& url)
     if (newUrl != url) {
         _ui.leUrl->setText(newUrl);
     }
-#if 0
-    bool visible = false;
 
-    if (url.startsWith(QLatin1String("https://"))) {
-        _ui.urlLabel->setPixmap( QPixmap(":/mirall/resources/security-high.png"));
-        _ui.urlLabel->setToolTip(tr("This url is secure. You can use it."));
-        visible = true;
-    }
     if (url.startsWith(QLatin1String("http://"))) {
-        _ui.urlLabel->setPixmap( QPixmap(":/mirall/resources/security-low.png"));
-        _ui.urlLabel->setToolTip(tr("This url is NOT secure. You should not use it."));
-        visible = true;
+        _ui.urlLabel->setPixmap( QPixmap(":/mirall/resources/lock-http.png"));
+        _ui.urlLabel->setToolTip(tr("This url is NOT secure as it is not encrypted.\n"
+                                    "It is not advisable to use it."));
+    } else {
+        _ui.urlLabel->setPixmap( QPixmap(":/mirall/resources/lock-https.png"));
+        _ui.urlLabel->setToolTip(tr("This url is secure. You can use it."));
     }
-#endif
 }
 
 bool OwncloudSetupPage::isComplete() const
