@@ -100,6 +100,7 @@ set(libsync_HEADERS
     mirall/folderwatcher.h
     mirall/csyncthread.h
     mirall/owncloudpropagator.h
+    mirall/owncloudpropagator_p.h
     mirall/syncjournaldb.h
     mirall/theme.h
     mirall/owncloudtheme.h

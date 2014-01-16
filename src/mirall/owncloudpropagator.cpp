@@ -13,7 +13,7 @@
  * for more details.
  */
 
-#include "owncloudpropagator.h"
+#include "owncloudpropagator_p.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 #include "utility.h"
@@ -52,25 +52,6 @@ extern "C" int c_utimes(const char *, const struct timeval *);
 extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
 
 namespace Mirall {
-
-/* Helper for QScopedPointer<>, to be used as the deleter.
- * QScopePointer will call the right overload of cleanup for the pointer it holds
- */
-struct ScopedPointerHelpers {
-    static inline void cleanup(hbf_transfer_t *pointer) { if (pointer) hbf_free_transfer(pointer); }
-    static inline void cleanup(ne_request *pointer) { if (pointer) ne_request_destroy(pointer); }
-    static inline void cleanup(ne_decompress *pointer) { if (pointer) ne_decompress_destroy(pointer); }
-//     static inline void cleanup(ne_propfind_handler *pointer) { if (pointer) ne_propfind_destroy(pointer); }
-};
-
-#define DECLARE_JOB(NAME) \
-class NAME : public PropagateItemJob { \
-  /* Q_OBJECT */ \
-public: \
-    NAME(OwncloudPropagator* propagator,const SyncFileItem& item) \
-    : PropagateItemJob(propagator, item) {} \
-    void start(); \
-};
 
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
 {
@@ -170,8 +151,6 @@ static bool removeRecursively(const QString &path)
     return success;
 }
 
-DECLARE_JOB(PropagateLocalRemove)
-
 void PropagateLocalRemove::start()
 {
     QString filename = _propagator->_localDir +  _item._file;
@@ -194,8 +173,6 @@ void PropagateLocalRemove::start()
     emit progress(Progress::EndDelete, _item, _item._size, _item._size);
 }
 
-DECLARE_JOB(PropagateLocalMkdir)
-
 void PropagateLocalMkdir::start()
 {
     QDir d;
@@ -205,8 +182,6 @@ void PropagateLocalMkdir::start()
     }
     done(SyncFileItem::Success);
 }
-
-DECLARE_JOB(PropagateRemoteRemove)
 
 void PropagateRemoteRemove::start()
 {
@@ -224,8 +199,6 @@ void PropagateRemoteRemove::start()
     done(SyncFileItem::Success);
     emit progress(Progress::EndDelete, _item, _item._size, _item._size);
 }
-
-DECLARE_JOB(PropagateRemoteMkdir)
 
 void PropagateRemoteMkdir::start()
 {
@@ -252,60 +225,6 @@ static QByteArray parseEtag(const char *header) {
     }
     return arr;
 }
-
-class PropagateUploadFile: public PropagateItemJob {
-public:
-    explicit PropagateUploadFile(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateItemJob(propagator, item), _previousFileSize(0) {}
-    void start();
-private:
-    // Log callback for httpbf
-    static void _log_callback(const char *func, const char *text, void*)
-    {
-        qDebug() << "  " << func << text;
-    }
-
-    // abort callback for httpbf
-    static int _user_want_abort(void *userData)
-    {
-        return  static_cast<PropagateUploadFile *>(userData)->_propagator->_abortRequested->fetchAndAddRelaxed(0);
-    }
-
-    // callback from httpbf when a chunk is finished
-    static void chunk_finished_cb(hbf_transfer_s *trans, int chunk, void* userdata)
-    {
-        PropagateUploadFile *that = static_cast<PropagateUploadFile *>(userdata);
-        Q_ASSERT(that);
-        that->_chunked_done += trans->block_arr[chunk]->size;
-        if (trans->block_cnt > 1) {
-            SyncJournalDb::UploadInfo pi;
-            pi._valid = true;
-            pi._chunk = chunk + 1; // next chunk to start with
-            pi._transferid = trans->transfer_id;
-            pi._modtime =  QDateTime::fromTime_t(trans->modtime);
-            that->_propagator->_journal->setUploadInfo(that->_item._file, pi);
-            that->_propagator->_journal->commit("Upload info");
-        }
-    }
-
-    static void notify_status_cb(void* userdata, ne_session_status status,
-                          const ne_session_status_info* info)
-    {
-        PropagateUploadFile* that = reinterpret_cast<PropagateUploadFile*>(userdata);
-
-        if (status == ne_status_sending && info->sr.total > 0) {
-            emit that->progress(Progress::Context, that->_item,
-                                that->_chunked_done + info->sr.progress,
-                                that->_chunked_total_size ? that->_chunked_total_size : info->sr.total );
-
-            that->limitBandwidth(that->_chunked_done + info->sr.progress,  that->_propagator->_uploadLimit);
-        }
-    }
-
-    qint64 _chunked_done; // amount of bytes already sent with the previous chunks
-    qint64 _chunked_total_size; // total size of the whole file
-    qint64 _previousFileSize;   // In case the file size has changed during upload, this is the previous one.
-};
 
 void PropagateUploadFile::start()
 {
@@ -473,6 +392,37 @@ void PropagateUploadFile::start()
     } while( true );
 }
 
+void PropagateUploadFile::chunk_finished_cb(hbf_transfer_s *trans, int chunk, void* userdata)
+{
+  PropagateUploadFile *that = static_cast<PropagateUploadFile *>(userdata);
+  Q_ASSERT(that);
+  that->_chunked_done += trans->block_arr[chunk]->size;
+  if (trans->block_cnt > 1) {
+    SyncJournalDb::UploadInfo pi;
+    pi._valid = true;
+    pi._chunk = chunk + 1; // next chunk to start with
+    pi._transferid = trans->transfer_id;
+    pi._modtime =  QDateTime::fromTime_t(trans->modtime);
+    that->_propagator->_journal->setUploadInfo(that->_item._file, pi);
+    that->_propagator->_journal->commit("Upload info");
+  }
+}
+
+void PropagateUploadFile::notify_status_cb(void* userdata, ne_session_status status,
+                             const ne_session_status_info* info)
+{
+  PropagateUploadFile* that = reinterpret_cast<PropagateUploadFile*>(userdata);
+
+  if (status == ne_status_sending && info->sr.total > 0) {
+    emit that->progress(Progress::Context, that->_item,
+                        that->_chunked_done + info->sr.progress,
+                        that->_chunked_total_size ? that->_chunked_total_size : info->sr.total );
+
+    that->limitBandwidth(that->_chunked_done + info->sr.progress,  that->_propagator->_uploadLimit);
+  }
+}
+
+
 
 static QString parseFileId(ne_request *req) {
     QString fileId;
@@ -558,139 +508,109 @@ void PropagateItemJob::limitBandwidth(qint64 progress, qint64 bandwidth_limit)
     }
 }
 
-class PropagateDownloadFile: public PropagateItemJob {
-public:
-    explicit PropagateDownloadFile(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateItemJob(propagator, item), _file(0) {}
-    void start();
+int PropagateDownloadFile::content_reader(void *userdata, const char *buf, size_t len)
+{
+    PropagateDownloadFile *that = static_cast<PropagateDownloadFile *>(userdata);
+    size_t written = 0;
 
-private:
-    QFile *_file;
-    QScopedPointer<ne_decompress, ScopedPointerHelpers> _decompress;
-    QString errorString;
-    QByteArray _expectedEtagForResume;
+    if (that->_propagator->_abortRequested->fetchAndAddRelaxed(0)) {
+        ne_set_error(that->_propagator->_session, tr("Sync was aborted by user.").toUtf8());
+        return NE_ERROR;
+    }
 
-    static int content_reader(void *userdata, const char *buf, size_t len)
-    {
-        PropagateDownloadFile *that = static_cast<PropagateDownloadFile *>(userdata);
-        size_t written = 0;
-
-        if (that->_propagator->_abortRequested->fetchAndAddRelaxed(0)) {
-            ne_set_error(that->_propagator->_session, tr("Sync was aborted by user.").toUtf8());
+    if(buf) {
+        written = that->_file->write(buf, len);
+        if( len != written || that->_file->error() != QFile::NoError) {
+            qDebug() << "WRN: content_reader wrote wrong num of bytes:" << len << "," << written;
             return NE_ERROR;
         }
+        return NE_OK;
+    }
+    return NE_ERROR;
+}
 
-        if(buf) {
-            written = that->_file->write(buf, len);
-            if( len != written || that->_file->error() != QFile::NoError) {
-                qDebug() << "WRN: content_reader wrote wrong num of bytes:" << len << "," << written;
-                return NE_ERROR;
-            }
-            return NE_OK;
-        }
-        return NE_ERROR;
+/*
+ * This hook is called after the response is here from the server, but before
+ * the response body is parsed. It decides if the response is compressed and
+ * if it is it installs the compression reader accordingly.
+ * If the response is not compressed, the normal response body reader is installed.
+ */
+void PropagateDownloadFile::install_content_reader( ne_request *req, void *userdata, const ne_status *status )
+{
+    PropagateDownloadFile *that = static_cast<PropagateDownloadFile *>(userdata);
+
+    Q_UNUSED(status);
+
+    if( !that ) {
+        qDebug("Error: install_content_reader called without valid write context!");
+        return;
     }
 
-    static int do_not_accept (void *userdata, ne_request *req, const ne_status *st)
-    {
-        Q_UNUSED(userdata);
-        Q_UNUSED(req);
-        Q_UNUSED(st);
-
-        return 0; // ignore this response
-    }
-
-    static int do_not_download_content_reader(void *userdata, const char *buf, size_t len)
-    {
-        Q_UNUSED(userdata);
-        Q_UNUSED(buf);
-        Q_UNUSED(len);
-        return NE_ERROR;
-    }
-
-    /*
-    * This hook is called after the response is here from the server, but before
-    * the response body is parsed. It decides if the response is compressed and
-    * if it is it installs the compression reader accordingly.
-    * If the response is not compressed, the normal response body reader is installed.
-    */
-    static void install_content_reader( ne_request *req, void *userdata, const ne_status *status )
-    {
-        PropagateDownloadFile *that = static_cast<PropagateDownloadFile *>(userdata);
-
-        Q_UNUSED(status);
-
-        if( !that ) {
-            qDebug("Error: install_content_reader called without valid write context!");
-            return;
-        }
-
-        if( ne_get_status(req)->klass != 2 ) {
-            qDebug() << "Request class != 2, aborting.";
-            ne_add_response_body_reader( req, do_not_accept,
-                                         do_not_download_content_reader,
-                                         (void*) that );
-            return;
-        }
-
-        QByteArray reason_phrase = ne_get_status(req)->reason_phrase;
-        if(reason_phrase == QByteArray("Connection established")) {
-            ne_add_response_body_reader( req, ne_accept_2xx,
-                                        content_reader,
+    if( ne_get_status(req)->klass != 2 ) {
+        qDebug() << "Request class != 2, aborting.";
+        ne_add_response_body_reader( req, do_not_accept,
+                                        do_not_download_content_reader,
                                         (void*) that );
-            return;
-        }
+        return;
+    }
 
-        QByteArray etag = parseEtag(ne_get_response_header(req, "etag"));
-        if(etag.isEmpty())
-            etag = parseEtag(ne_get_response_header(req, "ETag"));
+    QByteArray reason_phrase = ne_get_status(req)->reason_phrase;
+    if(reason_phrase == QByteArray("Connection established")) {
+        ne_add_response_body_reader( req, ne_accept_2xx,
+                                    content_reader,
+                                    (void*) that );
+        return;
+    }
 
-        if (etag.isEmpty()) {
-            qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
-            that->errorString = tr("No E-Tag received from server, check Proxy/Gateway");
-            ne_set_error(that->_propagator->_session, that->errorString.toUtf8());
-            ne_add_response_body_reader( req, do_not_accept,
-                                         do_not_download_content_reader,
-                                         (void*) that );
-            return;
-        } else if (!that->_expectedEtagForResume.isEmpty() && that->_expectedEtagForResume != etag) {
-            qDebug() << Q_FUNC_INFO <<  "We received a different E-Tag for resuming!"
-                     << QString::fromLatin1(that->_expectedEtagForResume.data()) << "vs"
-                     << QString::fromLatin1(etag.data());
-            that->errorString = tr("We received a different E-Tag for resuming. Retrying next time.");
-            ne_set_error(that->_propagator->_session, that->errorString.toUtf8());
-            ne_add_response_body_reader( req, do_not_accept,
-                                         do_not_download_content_reader,
-                                         (void*) that );
-            return;
-        }
+    QByteArray etag = parseEtag(ne_get_response_header(req, "etag"));
+    if(etag.isEmpty())
+        etag = parseEtag(ne_get_response_header(req, "ETag"));
 
-
-        const char *enc = ne_get_response_header( req, "Content-Encoding" );
-        qDebug("Content encoding ist <%s> with status %d", enc ? enc : "empty",
-                    status ? status->code : -1 );
-
-        if( enc == QLatin1String("gzip") ) {
-            that->_decompress.reset(ne_decompress_reader( req, ne_accept_2xx,
-                                                             content_reader,     /* reader callback */
-                                                             that ));  /* userdata        */
-        } else {
-            ne_add_response_body_reader( req, ne_accept_2xx,
-                                        content_reader,
+    if (etag.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
+        that->errorString = tr("No E-Tag received from server, check Proxy/Gateway");
+        ne_set_error(that->_propagator->_session, that->errorString.toUtf8());
+        ne_add_response_body_reader( req, do_not_accept,
+                                        do_not_download_content_reader,
                                         (void*) that );
-        }
+        return;
+    } else if (!that->_expectedEtagForResume.isEmpty() && that->_expectedEtagForResume != etag) {
+        qDebug() << Q_FUNC_INFO <<  "We received a different E-Tag for resuming!"
+                    << QString::fromLatin1(that->_expectedEtagForResume.data()) << "vs"
+                    << QString::fromLatin1(etag.data());
+        that->errorString = tr("We received a different E-Tag for resuming. Retrying next time.");
+        ne_set_error(that->_propagator->_session, that->errorString.toUtf8());
+        ne_add_response_body_reader( req, do_not_accept,
+                                        do_not_download_content_reader,
+                                        (void*) that );
+        return;
     }
 
-    static void notify_status_cb(void* userdata, ne_session_status status,
-                          const ne_session_status_info* info)
-    {
-        PropagateDownloadFile* that = reinterpret_cast<PropagateDownloadFile*>(userdata);
-        if (status == ne_status_recving && info->sr.total > 0) {
-            emit that->progress(Progress::Context, that->_item, info->sr.progress, info->sr.total );
-            that->limitBandwidth(info->sr.progress,  that->_propagator->_downloadLimit);
-        }
+
+    const char *enc = ne_get_response_header( req, "Content-Encoding" );
+    qDebug("Content encoding ist <%s> with status %d", enc ? enc : "empty",
+                status ? status->code : -1 );
+
+    if( enc == QLatin1String("gzip") ) {
+        that->_decompress.reset(ne_decompress_reader( req, ne_accept_2xx,
+                                                            content_reader,     /* reader callback */
+                                                            that ));  /* userdata        */
+    } else {
+        ne_add_response_body_reader( req, ne_accept_2xx,
+                                    content_reader,
+                                    (void*) that );
     }
-};
+}
+
+void PropagateDownloadFile::notify_status_cb(void* userdata, ne_session_status status,
+                        const ne_session_status_info* info)
+{
+    PropagateDownloadFile* that = reinterpret_cast<PropagateDownloadFile*>(userdata);
+    if (status == ne_status_recving && info->sr.total > 0) {
+        emit that->progress(Progress::Context, that->_item, info->sr.progress, info->sr.total );
+        that->limitBandwidth(info->sr.progress,  that->_propagator->_downloadLimit);
+    }
+}
 
 void PropagateDownloadFile::start()
 {
@@ -884,7 +804,6 @@ void PropagateDownloadFile::start()
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
 
-DECLARE_JOB(PropagateLocalRename)
 
 void PropagateLocalRename::start()
 {
@@ -912,8 +831,6 @@ void PropagateLocalRename::start()
 
     done(SyncFileItem::Success);
 }
-
-DECLARE_JOB(PropagateRemoteRename)
 
 void PropagateRemoteRename::start()
 {
