@@ -576,7 +576,7 @@ private:
         size_t written = 0;
 
         if (that->_propagator->_abortRequested->fetchAndAddRelaxed(0)) {
-            ne_set_error(that->_propagator->_session, "Aborted by user");
+            ne_set_error(that->_propagator->_session, tr("Sync was aborted by user.").toUtf8());
             return NE_ERROR;
         }
 
@@ -647,8 +647,8 @@ private:
 
         if (etag.isEmpty()) {
             qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
-            that->errorString = QLatin1String("No E-Tag received from server, check Proxy/Gateway");
-            ne_set_error(that->_propagator->_session, "No E-Tag received from server, check Proxy/Gateway");
+            that->errorString = tr("No E-Tag received from server, check Proxy/Gateway");
+            ne_set_error(that->_propagator->_session, that->errorString.toUtf8());
             ne_add_response_body_reader( req, do_not_accept,
                                          do_not_download_content_reader,
                                          (void*) that );
@@ -657,8 +657,8 @@ private:
             qDebug() << Q_FUNC_INFO <<  "We received a different E-Tag for resuming!"
                      << QString::fromLatin1(that->_expectedEtagForResume.data()) << "vs"
                      << QString::fromLatin1(etag.data());
-            that->errorString = QLatin1String("We received a different E-Tag for resuming. Retrying next time.");
-            ne_set_error(that->_propagator->_session, "We received a different E-Tag for resuming. Retrying next time.");
+            that->errorString = tr("We received a different E-Tag for resuming. Retrying next time.");
+            ne_set_error(that->_propagator->_session, that->errorString.toUtf8());
             ne_add_response_body_reader( req, do_not_accept,
                                          do_not_download_content_reader,
                                          (void*) that );
