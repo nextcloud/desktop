@@ -222,7 +222,7 @@
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="268"/>
+        <location filename="../src/mirall/application.cpp" line="267"/>
         <source>Connection failed</source>
         <translation>Spojení selhalo</translation>
     </message>
@@ -437,95 +437,95 @@
 <context>
     <name>Mirall::Folder</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="100"/>
+        <location filename="../src/mirall/folder.cpp" line="101"/>
         <source>Unable to create csync-context</source>
         <translation>Nepodařilo se vytvořit csync-context</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="160"/>
+        <location filename="../src/mirall/folder.cpp" line="161"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Místní složka %1 neexistuje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="163"/>
+        <location filename="../src/mirall/folder.cpp" line="164"/>
         <source>%1 should be a directory but is not.</source>
         <translation>%1 by měl být adresář, ale není.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="166"/>
+        <location filename="../src/mirall/folder.cpp" line="167"/>
         <source>%1 is not readable.</source>
         <translation>%1 není čitelný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="314"/>
+        <location filename="../src/mirall/folder.cpp" line="315"/>
         <source>File %1: %2</source>
         <translation>Soubor %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="315"/>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
+        <location filename="../src/mirall/folder.cpp" line="316"/>
+        <location filename="../src/mirall/folder.cpp" line="398"/>
         <source>File %1</source>
         <translation>Soubor %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="372"/>
+        <location filename="../src/mirall/folder.cpp" line="373"/>
         <source>downloaded</source>
         <translation>staženo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="373"/>
+        <location filename="../src/mirall/folder.cpp" line="374"/>
         <source>removed</source>
         <translation>odstraněno</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="374"/>
+        <location filename="../src/mirall/folder.cpp" line="375"/>
         <source>updated</source>
         <translation>aktualizováno</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="377"/>
+        <location filename="../src/mirall/folder.cpp" line="378"/>
         <source>renamed</source>
         <translation>přejmenováno</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="382"/>
+        <location filename="../src/mirall/folder.cpp" line="383"/>
         <source>moved</source>
         <translation>přesunuto</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="384"/>
+        <location filename="../src/mirall/folder.cpp" line="385"/>
         <source>%1 to %2</source>
         <translation>%1 do %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
+        <location filename="../src/mirall/folder.cpp" line="398"/>
         <source>&apos;%1&apos; has been %2.</source>
         <translation>&apos;%1&apos; byl %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="399"/>
+        <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>Files %1</source>
         <translation>Soubory %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="400"/>
+        <location filename="../src/mirall/folder.cpp" line="401"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
         <translation> &apos;%1&apos; a %2 dalších souborů bylo %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="452"/>
+        <location filename="../src/mirall/folder.cpp" line="453"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="752"/>
+        <location filename="../src/mirall/folder.cpp" line="725"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Tato synchronizace by smazala všechny soubory v místní složce &apos;%1&apos;
 Pokud jste vy nebo váš správce zresetovali účet na serveru, zvolte &quot;Ponechat soubory&quot;. Pokud chcete místní data odstranit, zvolte &quot;Odstranit všechny soubory&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="755"/>
+        <location filename="../src/mirall/folder.cpp" line="728"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +534,17 @@ Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím
 Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="759"/>
+        <location filename="../src/mirall/folder.cpp" line="732"/>
         <source>Remove All Files?</source>
         <translation>Odstranit všechny soubory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="761"/>
+        <location filename="../src/mirall/folder.cpp" line="734"/>
         <source>Remove all files</source>
         <translation>Odstranit všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="762"/>
+        <location filename="../src/mirall/folder.cpp" line="735"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>
@@ -855,12 +855,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="209"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Je dostupná nová verze</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="215"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Je k dispozici nová verze klienta %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; je k dispozici ke stažení. Aktuálně nainstalovaná verze je %3.&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="228"/>
@@ -870,12 +870,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="229"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Tentokrát přeskočit</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="230"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Získat aktualizaci</translation>
     </message>
 </context>
 <context>
@@ -1087,27 +1087,27 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
         <translation>Omezovat automaticky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.cpp" line="33"/>
+        <location filename="../src/mirall/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
         <translation>Adresa proxy serveru</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.cpp" line="34"/>
+        <location filename="../src/mirall/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
         <translation>Uživatelské jméno pro proxy server</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.cpp" line="35"/>
+        <location filename="../src/mirall/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
         <translation>Heslo pro proxy server</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.cpp" line="37"/>
+        <location filename="../src/mirall/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
         <translation>HTTP(S) proxy</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.cpp" line="38"/>
+        <location filename="../src/mirall/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
         <translation>SOCKS5 proxy</translation>
     </message>
@@ -1191,17 +1191,18 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
         <translation>Nastavit server %1</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="103"/>
+        <source>This url is NOT secure as it is not encrypted.
+It is not advisable to use it.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="107"/>
         <source>This url is secure. You can use it.</source>
         <translation>URL je bezpečná. Můžete ji použít.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
-        <source>This url is NOT secure. You should not use it.</source>
-        <translation>URL není zabezpečená. Neměli byste ji používat.</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="242"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="237"/>
         <source>Update %1 server</source>
         <translation>Upravit server %1</translation>
     </message>
@@ -1370,15 +1371,62 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
     </message>
 </context>
 <context>
+    <name>Mirall::PropagateDownloadFile</name>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="517"/>
+        <source>Sync was aborted by user.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
+        <source>No E-Tag received from server, check Proxy/Gateway</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="581"/>
+        <source>We received a different E-Tag for resuming. Retrying next time.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::PropagateLocalMkdir</name>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
+        <source>could not create directory %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::PropagateLocalRemove</name>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="159"/>
+        <source>Could not remove directory %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::PropagateRemoteRename</name>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="850"/>
+        <source>This folder must not be renamed. It is renamed back to its original name.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="852"/>
+        <source>This folder must not be renamed. Please name it back to Shared.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::PropagateUploadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="408"/>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="462"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="327"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="381"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation>Místní soubor byl změněn během synchronizace, bude sesynchronizán, jakmile bude kompletní</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="411"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="330"/>
         <source>Sync was aborted by user.</source>
         <translation>Synchronizace zrušena uživatelem.</translation>
     </message>
@@ -1839,7 +1887,7 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="129"/>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="156"/>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="32"/>
-        <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="140"/>
+        <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="187"/>
         <source>TextLabel</source>
         <translation>Textový popisek</translation>
     </message>
@@ -1894,22 +1942,22 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
         <translation>Zadejte URL ownCloud, ke které si přejete se připojit (bez http, či https).</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="63"/>
+        <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="83"/>
         <source>Server &amp;Address</source>
         <translation>&amp;Adresa serveru</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="82"/>
+        <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="102"/>
         <source>https://...</source>
         <translation>https://...</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="113"/>
+        <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="160"/>
         <source>Error Label</source>
         <translation>Popis chyby</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="79"/>
+        <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="99"/>
         <source>Enter the URL of the server that you want to connect to (without http or https).</source>
         <translation>Zadejte URL adresu serveru, ke kterému se chcete připojit (bez http či https).</translation>
     </message>
@@ -1936,35 +1984,6 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="119"/>
         <source>PushButton</source>
         <translation>Tlačítko</translation>
-    </message>
-</context>
-<context>
-    <name>PropagateLocalMkdir</name>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="203"/>
-        <source>could not create directory %1</source>
-        <translation>nepodařilo se vytvořit adresář %1</translation>
-    </message>
-</context>
-<context>
-    <name>PropagateLocalRemove</name>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
-        <source>Could not remove directory %1</source>
-        <translation>Nepodařilo se odstranit adresář %1</translation>
-    </message>
-</context>
-<context>
-    <name>PropagateRemoteRename</name>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="933"/>
-        <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation>Tato složka nemůže být přejmenována. Byl jí vrácen původní název.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="935"/>
-        <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation>Tato složka nemůže být přejmenována. Přejmenujte jí prosím zpět na Shared.</translation>
     </message>
 </context>
 <context>
