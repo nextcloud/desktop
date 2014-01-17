@@ -633,6 +633,16 @@ Function .onInit
       SectionSetInstTypes ${SEC_QUICK_LAUNCH} 0
    ${EndIf}
 
+   ; Some people might have a shortcut called 'ownCloud' pointing elsewhere, see #356
+   ; Unselect item and adjust text
+   ${If} ${FileExists} "$DESKTOP\${APPLICATION_NAME}.lnk"
+      SectionSetText ${SEC_DESKTOP} $INIT_NO_DESKTOP
+      Push $0
+      SectionSetFlags ${SEC_DESKTOP} 0
+      SectionSetInstTypes ${SEC_DESKTOP} 0
+      Pop $0
+   ${EndIf}
+
    ${MementoSectionRestore}
 
    UAC_Elevate:
