@@ -348,33 +348,27 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    SetDetailsPrint listonly
    SetOutPath "$INSTDIR"
 
-   !ifdef INSTALL_PATH
-        ;Main executable.
-        File "${INSTALL_PATH}\bin\${APPLICATION_EXECUTABLE}"
-   !endif
-   !ifndef INSTALL_PATH
-        ;Main executable.
-        File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
-        File "${BUILD_PATH}\src\lib${APPLICATION_SHORTNAME}sync.dll"
+   ;Main executable.
+   File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
+   File "${BUILD_PATH}\src\lib${APPLICATION_SHORTNAME}sync.dll"
 
-        File "${BUILD_PATH}\src\mirall_*.qm"
-        ; Make sure only to copy qt, not qt_help, etc
-        File "${MING_SHARE}\qt4\translations\qt_??.qm"
-        File "${MING_SHARE}\qt4\translations\qt_??_??.qm"
-        File "${MING_SHARE}\qt4\translations\qtkeychain_*.qm"
+   File "${BUILD_PATH}\src\mirall_*.qm"
+   ; Make sure only to copy qt, not qt_help, etc
+   File "${MING_SHARE}\qt4\translations\qt_??.qm"
+   File "${MING_SHARE}\qt4\translations\qt_??_??.qm"
+   File "${MING_SHARE}\qt4\translations\qtkeychain_*.qm"
 
-        SetOutPath "$INSTDIR\accessible"
-        File "${ACCESSIBLE_DLL_PATH}\qtaccessiblewidgets4.dll"
-        SetOutPath "$INSTDIR\imageformats"
-        File "${IMAGEFORMATS_DLL_PATH}\qgif4.dll"
-        File "${IMAGEFORMATS_DLL_PATH}\qjpeg4.dll"
-        File "${IMAGEFORMATS_DLL_PATH}\qico4.dll"
+   SetOutPath "$INSTDIR\accessible"
+   File "${ACCESSIBLE_DLL_PATH}\qtaccessiblewidgets4.dll"
+   SetOutPath "$INSTDIR\imageformats"
+   File "${IMAGEFORMATS_DLL_PATH}\qgif4.dll"
+   File "${IMAGEFORMATS_DLL_PATH}\qjpeg4.dll"
+   File "${IMAGEFORMATS_DLL_PATH}\qico4.dll"
 
-        SetOutPath "$INSTDIR\sqldrivers"
-        File "${SQLITE_DLL_PATH}\qsqlite4.dll"
+   SetOutPath "$INSTDIR\sqldrivers"
+   File "${SQLITE_DLL_PATH}\qsqlite4.dll"
 
-        SetOutPath "$INSTDIR"
-   !endif
+   SetOutPath "$INSTDIR"
 
 
 
