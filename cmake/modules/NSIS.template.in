@@ -212,6 +212,13 @@ UninstPage custom un.UnPageUserAppData un.UnPageUserAppDataLeave
 !insertmacro SETLANG ""
 !insertmacro SETLANG "un."
 
+; Usage: ${If} ${HasSection} SectionName
+!macro _HasSection _a _b _t _f
+   ReadRegDWORD $_LOGICLIB_TEMP "${MEMENTO_REGISTRY_ROOT}" "${MEMENTO_REGISTRY_KEY}" "MementoSection_${_b}"
+   IntCmpU $_LOGICLIB_TEMP 0 ${_f} ${_t}
+!macroend
+!define HasSection `"" HasSection`
+
 ##############################################################################
 #                                                                            #
 #   FINISH PAGE LAUNCHER FUNCTIONS                                           #
@@ -547,12 +554,11 @@ FunctionEnd
 
 Section Uninstall
    IfFileExists "$INSTDIR\${APPLICATION_EXECUTABLE}" owncloud_installed
-      MessageBox MB_YESNO $UNINSTALL_MESSAGEBOX IDYES owncloud_installed
+      MessageBox MB_YESNO $UNINSTALL_MESSAGEBOX /SD IDYES IDYES owncloud_installed
       Abort $UNINSTALL_ABORT
    owncloud_installed:
 
    ;Delete registry keys.
-   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}"
    DeleteRegValue HKLM "Software\${APPLICATION_NAME}" "VersionBuild"
    DeleteRegValue HKLM "Software\${APPLICATION_NAME}" "VersionMajor"
    DeleteRegValue HKLM "Software\${APPLICATION_NAME}" "VersionMinor"
@@ -562,23 +568,31 @@ Section Uninstall
 
    DeleteRegKey HKCR "${APPLICATION_NAME}"
 
-   ;Start menu shortcuts.
+   ;Start menu shortcut
    !ifdef OPTION_SECTION_SC_START_MENU
       SetShellVarContext all
-      Delete "$SMPROGRAMS\${APPLICATION_NAME}.lnk"
+      ${If} ${HasSection} SEC_START_MENU
+         Delete "$SMPROGRAMS\${APPLICATION_NAME}.lnk"
+      ${EndIf}
       SetShellVarContext current
    !endif
 
    ;Desktop shortcut.
    !ifdef OPTION_SECTION_SC_DESKTOP
-      IfFileExists "$DESKTOP\${APPLICATION_NAME}.lnk" 0 +2
-         Delete "$DESKTOP\${APPLICATION_NAME}.lnk"
+      ${If} ${HasSection} SEC_DESKTOP
+         ${If} ${FileExists} "$DESKTOP\${APPLICATION_NAME}.lnk"
+            Delete "$DESKTOP\${APPLICATION_NAME}.lnk"
+         ${EndIf}
+      ${EndIf}
    !endif
 
    ;Quick Launch shortcut.
    !ifdef OPTION_SECTION_SC_QUICK_LAUNCH
-      IfFileExists "$QUICKLAUNCH\${APPLICATION_NAME}.lnk" 0 +2
-         Delete "$QUICKLAUNCH\${APPLICATION_NAME}.lnk"
+      ${If} ${HasSection} SEC_QUICK_LAUNCH
+         ${If} ${FileExists} "$QUICKLAUNCH\${APPLICATION_NAME}.lnk"
+            Delete "$QUICKLAUNCH\${APPLICATION_NAME}.lnk"
+         ${EndIf}
+      ${EndIf}
    !endif
 
    ;Remove all the Program Files.
@@ -588,6 +602,8 @@ Section Uninstall
    ${If} $UnPageUserAppDataCheckbox_State == ${BST_CHECKED}
       RMDir /r "$LOCALAPPDATA\${APPLICATION_NAME}"
    ${EndIf}
+
+   DeleteRegKey ${MEMENTO_REGISTRY_ROOT} ${MEMENTO_REGISTRY_KEY}
 
    SetDetailsPrint textonly
    DetailPrint $UNINSTALLER_FINISHED_Detail
@@ -610,7 +626,7 @@ Function .onInit
 
    Call SetLang
 
-   ;Remove Quick Launch option from Windows 7, as no longer applicable - usually.
+   ; Remove Quick Launch option from Windows 7, as no longer applicable - usually.
    ${IfNot} ${AtMostWinVista}
       SectionSetText ${SEC_QUICK_LAUNCH} $INIT_NO_QUICK_LAUNCH
       SectionSetFlags ${SEC_QUICK_LAUNCH} ${SF_RO}
