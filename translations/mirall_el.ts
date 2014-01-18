@@ -1375,7 +1375,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="517"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Ο συγχρονισμός ματαιώθηκε από το χρήστη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
@@ -1393,7 +1393,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>αδυναμία δημιουργίας καταλόγου %1</translation>
     </message>
 </context>
 <context>
@@ -1401,7 +1401,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="159"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία αφαίρεσης καταλόγου %1</translation>
     </message>
 </context>
 <context>
@@ -1409,12 +1409,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="850"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτός ο φάκελος δεν πρέπει να μετονομαστεί. Μετονομάζεται πίσω στο αρχικό του όνομα.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="852"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτός ο φάκελος δεν πρέπει να μετονομαστεί. Παρακαλώ ονομάστε το  ξανά Κοινόχρηστος.</translation>
     </message>
 </context>
 <context>

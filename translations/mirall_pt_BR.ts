@@ -1194,7 +1194,7 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="103"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Esta URL não é segura, pois não é criptografada. Não é aconselhável usá-lo.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="107"/>
@@ -1375,17 +1375,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="517"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>A sincronização foi abortada pelo usuário.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma E-Tag recebida do servidor, verifique Proxy / gateway</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="581"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Recebemos um e-Tag diferente para resumir. Tente uma próxima vez.</translation>
     </message>
 </context>
 <context>
@@ -1393,7 +1393,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível criar diretório %1</translation>
     </message>
 </context>
 <context>
@@ -1401,7 +1401,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="159"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>O diretório %1 não pode ser removido</translation>
     </message>
 </context>
 <context>
@@ -1409,12 +1409,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="850"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Esta pasta não pode ser renomeada. Ele será renomeado de volta ao seu nome original.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="852"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Esta pasta não pode ser renomeada. Por favor, nomeie-a de volta para Compartilhada.</translation>
     </message>
 </context>
 <context>

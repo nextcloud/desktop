@@ -1195,7 +1195,8 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="103"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Deze url is NIET veilig omdat versleuteling omntbreekt.
+We adviseren deze site niet te gebruiken.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="107"/>
@@ -1376,17 +1377,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="517"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie afgebroken door gebruiker.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Geen E-Tag ontvangen van de server, controleer Proxy/Gateway</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="581"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>We ontvingen een afwijkende E-Tag om door te gaan. We proberen het later opnieuw.</translation>
     </message>
 </context>
 <context>
@@ -1394,7 +1395,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>kon map %1 niet maken</translation>
     </message>
 </context>
 <context>
@@ -1402,7 +1403,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="159"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Kon map %1 niet verwijderen</translation>
     </message>
 </context>
 <context>
@@ -1410,12 +1411,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="850"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Deze map mag niet worden hernoemd. De naam van de map is teruggezet naar de originele naam.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="852"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Deze map mag niet worden hernoemd. Verander de naam terug in Gedeeld.</translation>
     </message>
 </context>
 <context>

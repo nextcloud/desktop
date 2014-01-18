@@ -1397,7 +1397,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="159"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Kansion %1 poistaminen epäonnistui</translation>
     </message>
 </context>
 <context>
@@ -1405,7 +1405,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="850"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Tätä kansiota ei ole tule nimetä uudelleen. Muutetaan takaisin alkuperäinen nimi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="852"/>
@@ -2164,7 +2164,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronointi onnistui, jotkin tiedostot ohitettiin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
