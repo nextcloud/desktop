@@ -650,17 +650,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="61"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>同期したいローカルフォルダをクリックしてください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="65"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>ローカルフォルダのパスを入力してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="69"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>このディレクトリのエイリアスは、この同期接続用の記述名です。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
@@ -802,12 +802,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="88"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>再起動して更新(&amp;R)</translation>
     </message>
 </context>
 <context>
@@ -815,43 +815,43 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="76"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>更新の準備完了</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="77"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>新しい更新のインストール準備ができました。更新のインストール中、追加の権限が必要な場合があります。</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="101"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>バージョン %1 をダウンロードしています。しばらくお待ちください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="103"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>バージョン %1 が利用可能です。アプリケーションを再起動して更新を開始してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="105"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; %2 to download the update manually</source>
-        <translation type="unfinished"/>
+        <translation>更新をダウンロード出来ませんでした。手動で更新をダウンロードするには、&lt;a href=&apos;%1&apos;&gt;ここ&lt;/a&gt; %2 をクリックしてください。 </translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="107"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>新しいバージョン %1 が利用可能です。インストールするには、システムアップデートツールを利用してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="109"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>更新をチェックしています....。</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="113"/>
         <source>Your installation is at the latest version</source>
-        <translation type="unfinished"/>
+        <translation>最新版がインストールされています。</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="209"/>
@@ -866,7 +866,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="228"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>今回のバージョンをスキップ</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="229"/>
@@ -1195,7 +1195,7 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="103"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>このURLは暗号化されていない為、安全ではありません。ご利用はお勧めしません。</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="107"/>
@@ -1381,12 +1381,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>サーバーから、E-Tagを受信できません。プロキシー/ゲートウェイを確認してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="581"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>同期再開時に違う E-Tagを受信しました。次回リトライします。</translation>
     </message>
 </context>
 <context>

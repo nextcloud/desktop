@@ -1195,7 +1195,8 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="103"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Este sitio de Internet non é seguro, xa que non está cifrado.
+Recomendámoslle que non o use.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="107"/>
@@ -1381,12 +1382,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Non se recibiu a «E-Tag» do servidor, comprobe o proxy e/ou a pasarela</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="581"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Recibiuse unha «E-Tag» diferente para continuar. Tentándoo outra vez.</translation>
     </message>
 </context>
 <context>
