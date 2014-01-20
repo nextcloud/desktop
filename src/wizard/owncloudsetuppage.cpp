@@ -17,6 +17,7 @@
 #include <QFileDialog>
 #include <QUrl>
 #include <QPushButton>
+#include <QMessageBox>
 
 #include "QProgressIndicator.h"
 
@@ -218,6 +219,18 @@ void OwncloudSetupPage::setErrorString( const QString& err )
     if( err.isEmpty()) {
         _ui.errorLabel->setVisible(false);
     } else {
+        if (_ui.leUrl->text().startsWith("https://")) {
+            QString msg = tr("Could not connect securely. Do you want to connect unencrypted instead (not recommended)?").arg(err);
+            QString title = tr("Connection failed");
+            if (QMessageBox::question(this, title, msg, QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+                QUrl url(_ui.leUrl->text());
+                url.setScheme("http");
+                _ui.leUrl->setText(url.toString());
+                // skip ahead to next page, since the user would expect us to retry automatically
+                wizard()->next();
+            }
+        }
+
         _ui.errorLabel->setVisible(true);
         _ui.errorLabel->setText(err);
     }
