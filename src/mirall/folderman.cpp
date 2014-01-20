@@ -156,6 +156,18 @@ int FolderMan::setupFolders()
   // return the number of valid folders.
   return _folderMap.size();
 }
+
+void FolderMan::wipeAllJournals()
+{
+    terminateCurrentSync();
+
+    foreach( Folder *f, _folderMap.values() ) {
+        if(f) {
+            f->wipe();
+        }
+    }
+}
+
 bool FolderMan::ensureJournalGone(const QString &localPath)
 {
 
@@ -368,7 +380,7 @@ SyncResult FolderMan::syncResult( const QString& alias )
 void FolderMan::slotScheduleAllFolders()
 {
     foreach( Folder *f, _folderMap.values() ) {
-        if (f->syncEnabled()) {
+        if (f && f->syncEnabled()) {
             slotScheduleSync( f->alias() );
         }
     }
@@ -416,7 +428,9 @@ void FolderMan::setSyncEnabled( bool enabled )
     _syncEnabled = enabled;
 
     foreach( Folder *f, _folderMap.values() ) {
-        f->setSyncEnabled(enabled && !_disabledFolders.contains(f));
+        if(f) { // check for f != 0. That can happen, do not remove the check!
+            f->setSyncEnabled(enabled && !_disabledFolders.contains(f));
+        }
     }
 }
 
@@ -442,7 +456,7 @@ void FolderMan::slotScheduleFolderSync()
         const QString alias = _scheduleQueue.dequeue();
         if( _folderMap.contains( alias ) ) {
             Folder *f = _folderMap[alias];
-            if( f->syncEnabled() ) {
+            if( f && f->syncEnabled() ) {
                 _currentSyncFolder = alias;
 
                 f->startSync( QStringList() );
@@ -503,7 +517,9 @@ Folder *FolderMan::folderForPath(const QUrl &path)
 void FolderMan::removeAllFolderDefinitions()
 {
     foreach( Folder *f, _folderMap.values() ) {
-        slotRemoveFolder( f->alias() );
+        if(f) {
+            slotRemoveFolder( f->alias() );
+        }
     }
     // clear the queue.
     _scheduleQueue.clear();
@@ -531,7 +547,9 @@ void FolderMan::removeFolder( const QString& alias )
     if( _folderMap.contains( alias )) {
         qDebug() << "Removing " << alias;
         f = _folderMap.take( alias );
-        f->wipe();
+        if(f) {
+            f->wipe();
+        }
     } else {
         qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
     }
@@ -594,7 +612,9 @@ bool FolderMan::startFromScratch( const QString& localFolder )
 void FolderMan::setDirtyProxy(bool value)
 {
     foreach( Folder *f, _folderMap.values() ) {
-        f->setProxyDirty(value);
+        if(f) {
+            f->setProxyDirty(value);
+        }
     }
 }
 
