@@ -103,6 +103,13 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QLabel" name="urlLabel">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -122,13 +129,6 @@
         </spacer>
        </item>
       </layout>
-     </item>
-     <item>
-      <widget class="QLabel" name="urlLabel">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_2">
@@ -192,11 +192,7 @@
   <zorder>topLabel</zorder>
   <zorder>errorLabel</zorder>
   <zorder>bottomLabel</zorder>
-  <zorder>label</zorder>
   <zorder>verticalSpacer</zorder>
-  <zorder>verticalSpacer_2</zorder>
-  <zorder>verticalSpacer_3</zorder>
-  <zorder>urlLabel</zorder>
  </widget>
  <customwidgets>
   <customwidget>
