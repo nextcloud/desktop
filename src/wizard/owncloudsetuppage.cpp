@@ -51,6 +51,7 @@ OwncloudSetupPage::OwncloudSetupPage()
     setupCustomization();
 
     connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(slotUrlChanged(QString)));
+    connect(_ui.leUrl, SIGNAL(editingFinished()), SLOT(slotUrlEditFinished()));
 }
 
 void OwncloudSetupPage::setServerUrl( const QString& newUrl )
@@ -106,6 +107,16 @@ void OwncloudSetupPage::slotUrlChanged(const QString& url)
         _ui.urlLabel->setPixmap( QPixmap(":/mirall/resources/lock-https.png"));
         _ui.urlLabel->setToolTip(tr("This url is secure. You can use it."));
     }
+}
+
+void OwncloudSetupPage::slotUrlEditFinished()
+{
+    QString url = _ui.leUrl->text();
+    if (QUrl(url).isRelative()) {
+        // no scheme defined, set one
+        url.prepend("https://");
+    }
+    _ui.leUrl->setText(url);
 }
 
 bool OwncloudSetupPage::isComplete() const

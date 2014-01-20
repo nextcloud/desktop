@@ -53,6 +53,7 @@ public slots:
 
 protected slots:
   void slotUrlChanged(const QString&);
+  void slotUrlEditFinished();
 
   void setupCustomization();
 
