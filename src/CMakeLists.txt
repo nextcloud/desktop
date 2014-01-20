@@ -55,7 +55,6 @@ set(3rdparty_INC
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qtsingleapplication
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/QProgressIndicator
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/fancylineedit
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/csync
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qjson
     )
 
@@ -172,22 +171,10 @@ IF (NOT APPLE)
     )
 ENDIF(NOT APPLE)
 
-IF( DEFINED CSYNC_BUILD_PATH )
-SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbf.a)
-ELSE()
-FIND_LIBRARY(HTTPBF_LIBRARY NAMES httpbf HINTS $ENV{CSYNC_DIR})
-ENDIF()
-
-IF( DEFINED CSYNC_BUILD_PATH )
-SET(HTTPBF_LIBRARY ${CSYNC_BUILD_PATH}/src/httpbf/libhttpbf.a)
-ELSE()
-FIND_LIBRARY(HTTPBF_LIBRARY NAMES httpbflib HINTS $ENV{CSYNC_DIR})
-ENDIF()
-
 list(APPEND libsync_LINK_TARGETS
     ${QT_LIBRARIES}
-    ${CSYNC_LIBRARY}
-    ${HTTPBF_LIBRARY}
+    ocsync
+    httpbf
     ${OS_SPECIFIC_LINK_LIBRARIES}
 )
 
@@ -320,7 +307,7 @@ IF( APPLE )
 ENDIF()
 
 # csync is required.
-include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR} ${CSYNC_INCLUDE_DIR}/httpbf/src ${CSYNC_BUILD_PATH}/src)
+include_directories(../csync/src ../csync/src/httpbf/src ${CMAKE_CURRENT_BINARY_DIR}/../csync ${CMAKE_CURRENT_BINARY_DIR}/../csync/src )
 include_directories(${3rdparty_INC})
 
 qt_wrap_cpp(mirallMoc ${mirall_HEADERS})
@@ -406,7 +393,6 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${CSYNC_LIBRARY} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
 
 install(TARGETS ${APPLICATION_EXECUTABLE}
@@ -440,7 +426,6 @@ qt5_use_modules(${owncloudcmd_NAME} Network Sql)
 set_target_properties(${owncloudcmd_NAME} PROPERTIES
 	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
 target_link_libraries(${owncloudcmd_NAME} ${synclib_NAME})
-target_link_libraries(${owncloudcmd_NAME} ${CSYNC_LIBRARY})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mirall)
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS ${owncloudcmd_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)

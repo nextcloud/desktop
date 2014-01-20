@@ -6,9 +6,13 @@ CMakeLists.txt.user*
 *~
 *.autosave
 doc/_build/*
-*~
 *.kate-swp
 *.kdev4
 win/
-
 admin/win/nsi/l10n/pofiles/*.po
+*.swp
+*~$
+build*
+cscope.*
+tags
+t1.cfg

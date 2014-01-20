@@ -17,11 +17,12 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
-#include <c_jhash.h>
 #include <inttypes.h>
 
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
+
+#include "../../csync/src/std/c_jhash.h"
 
 #define QSQLITE "QSQLITE"
 

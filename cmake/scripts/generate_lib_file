@@ -1,0 +1,135 @@
+#!/usr/bin/env ruby
+
+# simple script to generate CMakeLists.txt for wengophone libs
+#
+# usage: generate_lib_file
+# then you will be prompted to enter the required parameters
+#
+#####################################################################
+#
+# Copyright (c) 2006 Andreas Schneider <asn@cryptomilk.org>
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor,
+# Boston, MA  02110-1301, USA.
+#
+
+print("Name of project: ")
+project=gets.chomp
+
+printf("\n")
+
+print("Other projects to includes (e.g. \"owutil tinyxml\", leave emtpy to skip): ")
+otherprojects=gets.chomp
+
+printf("\n")
+
+print("Defininitions (leave empty to skip): ")
+definitions=gets.chomp
+
+cmakePublicIncDirName = project.upcase+"_PUBLIC_INCLUDE_DIRS"
+cmakePrivateIncDirName = project.upcase+"_PRIVATE_INCLUDE_DIRS"
+cmakeLibName = project.upcase+"_LIBRARY"
+cmakeLibNames = project.upcase+"_LINK_LIBRARIES"
+cmakePublicDefsName = project.upcase+"_PUBLIC_DEFINITIONS"
+cmakePrivateDefsName = project.upcase+"_PRIVATE_DEFINITIONS"
+
+file=File.new("CMakeLists.txt", "w+")
+
+file.printf("project(#{project})\n")
+file.printf("\n")
+file.printf("# needed include directories to build #{project}\n")
+file.printf("# saves the variable in internal cache for later use\n")
+file.printf("set(#{cmakePublicIncDirName}\n")
+file.printf("  ${CMAKE_CURRENT_SOURCE_DIR}\n")
+file.printf("  ${CMAKE_CURRENT_SOURCE_DIR}/include\n")
+file.printf("  CACHE INTERNAL \"#{project} public include directories\"\n")
+file.printf(")\n")
+
+file.printf("\n")
+
+file.printf("set(#{cmakePrivateIncDirName}\n")
+otherprojects.split(" ").each do |otherproject|
+	file.printf("  ${#{otherproject.upcase}_PUBLIC_INCLUDE_DIRS}\n")
+end
+file.printf("  ${CMAKE_CURRENT_BINARY_DIR}\n")
+file.printf(")\n")
+
+file.printf("\n")
+
+file.printf("set(#{cmakeLibName}\n")
+file.printf("  #{project}\n")
+file.printf("  CACHE INTERNAL \"#{project} library\"\n")
+file.printf(")\n")
+
+file.printf("\n")
+
+file.printf("# #{project} lib and dependencies\n")
+file.printf("set(#{cmakeLibNames}\n")
+file.printf("  #{cmakeLibName}\n")
+otherprojects.split(" ").each do |otherproject|
+	file.printf("  ${#{otherproject.upcase}_LIBRARIES}\n")
+end
+file.printf(")\n")
+
+file.printf("\n")
+
+if not definitions.empty?
+	file.printf("set(#{cmakePublicDefsName}\n")
+	file.printf("  #{definitions}\n")
+	file.printf("  CACHE INTERNAL \"#{project} public definitions\"\n")
+	file.printf(")\n")
+
+	file.printf("\n")
+
+	file.printf("set(#{cmakePrivateDefsName}\n")
+	file.printf("  #{definitions}\n")
+	file.printf(")\n")
+
+	file.printf("\n")
+end
+
+file.printf("set(#{project}_SRCS\n")
+file.printf("  files.c\n")
+file.printf(")\n")
+
+file.printf("\n")
+
+file.printf("include_directories(\n")
+file.printf("  ${#{cmakePublicIncDirName}}\n")
+file.printf("  ${#{cmakePrivateIncDirName}}\n")
+file.printf(")\n")
+
+file.printf("\n")
+
+if not definitions.empty?
+	file.printf("add_definitions(\n")
+	file.printf("  ${#{cmakePublicDefsName}}\n")
+	file.printf("  ${#{cmakePrivateDefsName}}\n")
+	file.printf(")\n")
+
+	file.printf("\n")
+end
+
+file.printf("\n")
+
+file.printf("add_library(${#{cmakeLibName}} STATIC ${#{project}_SRCS})\n")
+
+file.printf("\n")
+
+file.printf("target_link_libraries(${#{cmakeLibNames}})\n")
+
+file.printf("\n")
+
+printf("Generated CMakeLists.txt for #{project}\n")
+
