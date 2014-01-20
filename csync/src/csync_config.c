@@ -99,11 +99,6 @@ static int _csync_config_copy_default (const char *config) {
 #else
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Copy %s/config/%s to %s", SYSCONFDIR,
         CSYNC_CONF_FILE, config);
-# ifdef WITH_UNIT_TESTING
-    rc = c_copy(BINARYDIR "/config/" CSYNC_CONF_FILE, config, 0644);
-# else
-    rc = 0;
-# endif
     if (c_copy(SYSCONFDIR "/ocsync/" CSYNC_CONF_FILE, config, 0644) < 0) {
       if (c_copy(BINARYDIR "/config/" CSYNC_CONF_FILE, config, 0644) < 0) {
         rc = -1;
