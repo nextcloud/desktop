@@ -59,17 +59,11 @@ public:
     /** Returns the last sync result by alias */
     SyncResult syncResult( const QString& );
 
-    /** Returns the last sync result by Folder */
-    SyncResult syncResult( Folder* );
-
     /** Creates a folder for a specific configuration, identified by alias. */
     Folder* setupFolderFromConfigFile(const QString & );
 
     /** Wipes all folder defintions. No way back! */
     void removeAllFolderDefinitions();
-
-    /** Removes csync journals from all folders. */
-    void wipeAllJournals();
 
     /**
      * Ensures that a given directory does not contain a .csync_journal.
@@ -145,7 +139,6 @@ private:
     QString        _currentSyncFolder;
     bool           _syncEnabled;
     QQueue<QString> _scheduleQueue;
-    bool            _dirtyProxy; // If the proxy need to be re-configured
     QMap<QString, FolderWatcher*> _folderWatchers;
 
 

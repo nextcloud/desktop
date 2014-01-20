@@ -156,16 +156,6 @@ int FolderMan::setupFolders()
   // return the number of valid folders.
   return _folderMap.size();
 }
-
-void FolderMan::wipeAllJournals()
-{
-    terminateCurrentSync();
-
-    foreach( Folder *f, _folderMap.values() ) {
-        f->wipe();
-    }
-}
-
 bool FolderMan::ensureJournalGone(const QString &localPath)
 {
 
@@ -372,12 +362,7 @@ Folder *FolderMan::folder( const QString& alias )
 SyncResult FolderMan::syncResult( const QString& alias )
 {
     Folder *f = folder( alias );
-    return syncResult(f);
-}
-
-SyncResult FolderMan::syncResult( Folder *f )
-{
-   return f ? f->syncResult() : SyncResult();
+    return f ? f->syncResult() : SyncResult();
 }
 
 void FolderMan::slotScheduleAllFolders()
