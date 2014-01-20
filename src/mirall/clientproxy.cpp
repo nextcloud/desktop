@@ -108,17 +108,12 @@ void ClientProxy::setCSyncProxy( const QUrl& url, CSYNC *csync_ctx )
                  << " to csync for" << url.toString();
     }
 
-    const char *proxy_type = proxyTypeToCStr(proxy.type());
-    const char* proxy_host = proxy.hostName().toUtf8().data();
+    csync_set_module_property( csync_ctx, "proxy_type", (void*)(proxyTypeToCStr(proxy.type())));
+    csync_set_module_property( csync_ctx, "proxy_host", proxy.hostName().toUtf8().data());
     int proxy_port         = proxy.port();
-    const char *proxy_user = proxy.user().toUtf8().data();
-    const char *proxy_pwd  = proxy.password().toUtf8().data();
-
-    csync_set_module_property( csync_ctx, "proxy_type", (void*)proxy_type );
-    csync_set_module_property( csync_ctx, "proxy_host", (void*)proxy_host );
-    csync_set_module_property( csync_ctx, "proxy_port", (void*)&proxy_port );
-    csync_set_module_property( csync_ctx, "proxy_user", (void*)proxy_user );
-    csync_set_module_property( csync_ctx, "proxy_pwd",  (void*)proxy_pwd );
+    csync_set_module_property( csync_ctx, "proxy_port", &proxy_port );
+    csync_set_module_property( csync_ctx, "proxy_user", proxy.user().toUtf8().data());
+    csync_set_module_property( csync_ctx, "proxy_pwd",  proxy.password().toUtf8().data());
 
 }
 
