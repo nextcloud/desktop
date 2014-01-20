@@ -125,8 +125,8 @@ void IgnoreListEditor::slotEditPattern(QListWidgetItem *item)
     if (!(item->flags() & Qt::ItemIsEnabled))
         return;
 
-    QString pattern = QInputDialog::getText(this, tr("Add Ignore Pattern"),
-                                            tr("Add a new ignore pattern:"),
+    QString pattern = QInputDialog::getText(this, tr("Edit Ignore Pattern"),
+                                            tr("Edit ignore pattern:"),
                                             QLineEdit::Normal, item->text());
     if (!pattern.isEmpty()) {
         item->setText(pattern);
