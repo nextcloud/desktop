@@ -158,17 +158,6 @@ int FolderMan::setupFolders()
   return _folderMap.size();
 }
 
-void FolderMan::wipeAllJournals()
-{
-    terminateCurrentSync();
-
-    foreach( Folder *f, _folderMap.values() ) {
-        if(f) {
-            f->wipe();
-        }
-    }
-}
-
 bool FolderMan::ensureJournalGone(const QString &localPath)
 {
 
