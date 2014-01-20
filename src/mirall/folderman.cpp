@@ -349,7 +349,7 @@ void FolderMan::terminateSyncProcess( const QString& alias )
     if( alias.isEmpty() ) {
         folderAlias = _currentSyncFolder;
     }
-    if( ! folderAlias.isEmpty() ) {
+    if( ! folderAlias.isEmpty() && _folderMap.contains(folderAlias) ) {
         Folder *f = _folderMap[folderAlias];
         if( f ) {
             f->slotTerminateSync(true);
@@ -403,7 +403,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
     }
     qDebug() << "Schedule folder " << alias << " to sync!";
 
-    if( ! _scheduleQueue.contains(alias )) {
+    if( ! _scheduleQueue.contains(alias ) && _folderMap.contains(alias) ) {
         Folder *f = _folderMap[alias];
         if( f ) {
             if( f->syncEnabled() ) { // FIXME: check if that is ok
