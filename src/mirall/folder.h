@@ -226,13 +226,6 @@ private:
     ClientProxy   _clientProxy;
 
     CSYNC *_csync_ctx;
-
-    const char *_proxy_type;
-    QByteArray  _proxy_host;
-    int         _proxy_port;
-    QByteArray  _proxy_user;
-    QByteArray  _proxy_pwd;
-
 };
 
 }
