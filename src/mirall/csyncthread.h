@@ -93,7 +93,6 @@ private:
     int treewalkFile( TREE_WALK_FILE*, bool );
     bool checkBlacklisting( SyncFileItem *item );
 
-    static QMutex _mutex;
     static QMutex _syncMutex;
     SyncFileItemVector _syncedItems;
 
@@ -121,6 +120,7 @@ private:
     qint64 _overallFileCount;
     quint64 _lastOverallBytes;
 
+    QMutex _abortRequestedMutex; // avoid a race between csync_abort and csync_resume
     QAtomicInt _abortRequested;
 
     friend struct CSyncRunScopeHelper;

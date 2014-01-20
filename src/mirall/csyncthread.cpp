@@ -54,18 +54,15 @@ void csyncLogCatcher(int /*verbosity*/,
 }
 
 /* static variables to hold the credentials */
-QMutex CSyncThread::_mutex;
 QMutex CSyncThread::_syncMutex;
 
 CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &remotePath, SyncJournalDb *journal)
     :_previousIndex(-1)
 {
-    _mutex.lock();
     _localPath = localPath;
     _remotePath = remotePath;
     _csync_ctx = csync;
     _journal = journal;
-    _mutex.unlock();
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
 }
@@ -426,13 +423,13 @@ void CSyncThread::startSync()
 
     qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
     _syncedItems.clear();
-
-    _mutex.lock();
     _needsUpdate = false;
+
+    _abortRequestedMutex.lock();
     if (!_abortRequested.fetchAndAddRelease(0)) {
         csync_resume(_csync_ctx);
     }
-    _mutex.unlock();
+    _abortRequestedMutex.unlock();
 
 
     // maybe move this somewhere else where it can influence a running sync?
@@ -649,7 +646,6 @@ void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, qu
     }
 
     if( kind == Progress::StartSync ) {
-        QMutexLocker lock(&_mutex);
         _currentFileNo = 0;
         _lastOverallBytes = 0;
     }
@@ -657,7 +653,6 @@ void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, qu
             kind == Progress::StartDownload ||
             kind == Progress::StartRename ||
             kind == Progress::StartUpload ) {
-        QMutexLocker lock(&_mutex);
         int indx = _syncedItems.indexOf(item);
         if( _previousIndex != indx ) {
             _currentFileNo += 1;
@@ -669,7 +664,6 @@ void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, qu
             kind == Progress::EndDownload ||
             kind == Progress::EndRename ||
             kind == Progress::EndDelete ) {
-        QMutexLocker lock(&_mutex);
         _lastOverallBytes += total;
         curr = 0;
     }
@@ -702,7 +696,7 @@ QString CSyncThread::adjustRenamedPath(const QString& original)
 
 void CSyncThread::abort()
 {
-    QMutexLocker locker(&_mutex);
+    QMutexLocker locker(&_abortRequestedMutex);
     csync_request_abort(_csync_ctx);
     _abortRequested = true;
 }
