@@ -658,14 +658,12 @@ void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, qu
             _currentFileNo += 1;
             _previousIndex = indx;
         }
+        curr = 0;
     }
 
     if( kind == Progress::EndUpload ||
-            kind == Progress::EndDownload ||
-            kind == Progress::EndRename ||
-            kind == Progress::EndDelete ) {
+            kind == Progress::EndDownload) {
         _lastOverallBytes += total;
-        curr = 0;
     }
 
     Progress::Info pInfo(_progressInfo);
