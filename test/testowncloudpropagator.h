@@ -9,9 +9,6 @@
 
 #include <QtTest>
 
-#include "mirall/owncloudpropagator.h"
-
-using namespace Mirall;
 
 class TestOwncloudPropagator : public QObject
 {
