@@ -336,7 +336,7 @@ void Folder::bubbleUpSyncResult()
 
                     if (item._type == SyncFileItem::Directory) {
                         // _watcher->removePath(path() + item._file);
-                        FolderMan::instance()->addMonitorPath( alias(), path()+item._file );
+                        FolderMan::instance()->removeMonitorPath( alias(), path()+item._file );
                     }
 
                     break;
