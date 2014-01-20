@@ -1,5 +1,5 @@
 /*
- * 
+ *
  *
  * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
  * Copyright (c) 2012-2013 by Klaas Freitag <freitag@owncloud.com>

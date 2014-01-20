@@ -1,0 +1,1119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.6" />
+<title>CSYNC User Guide</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+tt {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+.monospaced {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([2-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>CSYNC User Guide</h1>
+<span id="author">Andreas Schneider</span><br />
+<span id="email"><tt>&lt;<a href="mailto:asn@cryptomilk.org">asn@cryptomilk.org</a>&gt;</tt></span><br />
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>csync is a lightweight utility to synchronize files between two directories
+on a system or between multiple systems.</p></div>
+<div class="paragraph"><p>It synchronizes bidirectionally and allows the user to keep two copies of files
+and directories in sync.  csync uses widely adopted protocols, such as smb or
+sftp, so that there is no need for a server component. It is a user-level
+program which means you don&#8217;t need to be a superuser or administrator.</p></div>
+<div class="paragraph"><p>Together with a Pluggable Authentication Module (PAM), the intent is to provide
+Roaming Home Directories for Linux (see <a href="#X80">The PAM Module</a>).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>It is often the case that we have multiple copies (called replicas) of a
+filesystem or part of a filesystem (for example on a notebook and desktop
+computer). Changes to each replica are often made independently, and as a
+result, they do not contain the same information. In that case, a file
+synchronizer is used to make them consistent again, without losing any
+information.</p></div>
+<div class="paragraph"><p>The goal is to detect conflicting updates (files which have been modified) and
+propagate non-conflicting updates to each replica. If there are no conflicts
+left, we are done, and the replicas are identical. To resolve or handle
+conflicts there are several algorithms available. They will be discussed
+one of the following sections.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basics">2. Basics</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This section describes some basics of file synchronization.</p></div>
+<div class="sect2">
+<h3 id="_paths">2.1. Paths</h3>
+<div class="paragraph"><p>A path normally refers to a point which contains a set of files which should be
+synchronized. It is specified relative to the root of the replica locally, but
+has to be absolute if you use a protocol. The path is just a sequence of names
+separated by <em>/</em>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">The path separator is always a forward slash <em>/</em>, even for Windows.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>csync always uses the absolute path on remote replicas. This could
+<em>sftp://gladiac:secret@myserver/home/gladiac</em> for sftp.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_what_is_an_update">2.2. What is an update?</h3>
+<div class="paragraph"><p>The contents of a path could be a file, a directory or a symbolic link
+(symbolic links are not supported yet). To be more precise, if the path refers
+to:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+a regular file: the contents of the file are the byte stream and the
+  metadata of the file.
+</p>
+</li>
+<li>
+<p>
+a directory: then the content is the metadata of the directory.
+</p>
+</li>
+<li>
+<p>
+a symbolic link: the content is the named file the link points to.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>csync keeps a record of each path which has been successfully synchronized. The
+path gets compared with the record and if it has changed since the last
+synchronization, we have an update. This is done by comparing the modification
+or change (modification time of the metadata) time. This is the way how updates
+are detected.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_what_is_a_conflict">2.3. What is a conflict?</h3>
+<div class="paragraph"><p>A path is conflicting if it fulfills the following conditions:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+it has been updated in one replica,
+</p>
+</li>
+<li>
+<p>
+it or any of its descendants has been updated on the other replica too, and
+</p>
+</li>
+<li>
+<p>
+its contents in are not identical.
+</p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_synchronization">3. File Synchronization</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The primary goal of the file synchronizer is correctness.  It may change
+scattered or large parts of the filesystem.  Since this in mostly not monitored
+by the user, and the file synchronizer is in a position to harm the system,
+csync must be safe, even in the case of unexpected errors (e.g. disk full).
+What was done to make csync safe is described in the following sections.</p></div>
+<div class="paragraph"><p>One problem concerning correctness is the handling of conflicts.  Each file
+synchronizer tries to propagate conflicting changes to the other replica.  At
+the end both replicas should be identical. There are different strategies to
+fulfill these goals.</p></div>
+<div class="paragraph"><p>csync is a three-phase file synchronizer. The decision for this design was that
+user interaction should be possible and it should be easy to understand the
+process. The three phases are update detection, reconciliation and propagation.
+These will be described in the following sections.</p></div>
+<div class="sect2">
+<h3 id="_update_detection">3.1. Update detection</h3>
+<div class="paragraph"><p>There are different strategies for update detection.  csync uses a state-based
+modtime-inode update detector.  This means it uses the modification time to
+detect updates.  It doesn&#8217;t require many resources.  A record of each file is
+stored in a database (called statedb) and compared with the current
+modification time during update detection. If the file has changed since the
+last synchronization an instruction is set to evaluate it during the
+reconciliation phase. If we don&#8217;t have a record for a file we investigate, it
+is marked as new.</p></div>
+<div class="paragraph"><p>It can be difficult to detect renaming of files.  This problem is also solved
+by the record we store in the statedb.  If we don&#8217;t find the file by the name
+in the database, we search for the inode number. If the inode number is found
+then the file has been renamed.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_reconciliation">3.2. Reconciliation</h3>
+<div class="paragraph"><p>The most important component is the update detector, because the reconciler
+depends on it. The correctness of reconciler is mandatory because it can damage
+a filesystem. It decides which file:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Stays untouched
+</p>
+</li>
+<li>
+<p>
+Has a conflict
+</p>
+</li>
+<li>
+<p>
+Gets synchronized
+</p>
+</li>
+<li>
+<p>
+or is <strong>deleted</strong>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>A wrong decision of the reconciler leads in most cases to a loss of data. So
+there are several conditions which a file synchronizer has to follow.</p></div>
+<div class="sect3">
+<h4 id="_algorithms">3.2.1. Algorithms</h4>
+<div class="paragraph"><p>For conflict resolution several different algorithms could be implemented. The
+most common algorithms are the merge and the conflict algorithm. The first
+is a batch algorithm and the second is one which needs user interaction.</p></div>
+<div class="sect4">
+<h5 id="_merge_algorithm">Merge algorithm</h5>
+<div class="paragraph"><p>The merge algorithm is an algorithm which doesn&#8217;t need any user interaction. It
+is simple and used for example by Microsoft for Roaming Profiles. If it detects
+a conflict (the same file changed on both replicas) then it will use the most
+recent file and overwrite the other. This means you can loose some data, but
+normally you want the latest file.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_conflict_algorithm">Conflict algorithm</h5>
+<div class="paragraph"><p>This is not implemented yet.</p></div>
+<div class="paragraph"><p>If a file has a conflict the user has to decide which file should be used.</p></div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_propagation">3.3. Propagation</h3>
+<div class="paragraph"><p>The next instance of the file synchronizer is the propagator. It uses the
+calculated records to apply them on the current replica.</p></div>
+<div class="paragraph"><p>The propagator uses a two-phase-commit mechanism to simulate an atomic
+filesystem operation.</p></div>
+<div class="paragraph"><p>In the first phase we copy the file to a temporary file on the opposite
+replica. This has the advantage that we can check if the file which has been
+copied to the opposite replica has been transferred successfully. If the
+connection gets interrupted during the transfer we still have the original
+states of the file. This means no data will be lost.</p></div>
+<div class="paragraph"><p>In the second phase the file on the opposite replica will be overwritten by
+the temporary file.</p></div>
+<div class="paragraph"><p>After a successful propagation we have to merge the trees to reflect the
+current state of the filesystem tree.  This updated tree will be written as a
+journal into the state database. It will be used during the update detection of
+the next synchronization. See above for a description of the state database
+during synchronization.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_robustness">3.4. Robustness</h3>
+<div class="paragraph"><p>This is a very important topic. The file synchronizer should not crash, and if
+it has crashed, there should be no loss of data. To achieve this goal there are
+several mechanisms which will be discussed in the following sections.</p></div>
+<div class="sect3">
+<h4 id="_crash_resistance">3.4.1. Crash resistance</h4>
+<div class="paragraph"><p>The synchronization process can be interrupted by different events, this can
+be:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the system could be halted due to errors.
+</p>
+</li>
+<li>
+<p>
+the disk could be full or the quota exceeded.
+</p>
+</li>
+<li>
+<p>
+the network or power cable could be pulled out.
+</p>
+</li>
+<li>
+<p>
+the user could force a stop of the synchronization process.
+</p>
+</li>
+<li>
+<p>
+various communication errors could occur.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>That no data will be lost due to an event we enforce the following invariant:</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/important.png" alt="Important" />
+</td>
+<td class="content">At every moment of the synchronization each file, has either its
+original content or its correct final content.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>This means that the original content can not be incorrect, no data can be lost
+until we overwrite it after a successful synchronization.  Therefore, each
+interrupted synchronization process is a partial sync and can be continued and
+completed by simply running csync again. The only problem could be an error of
+the filesystem, so we reach this invariant only approximately.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_transfer_errors">3.4.2. Transfer errors</h4>
+<div class="paragraph"><p>With the Two-Phase-Commit we check the file size after the file has transferred
+and we are able to detect transfer errors. A more robust approach would be a
+transfer protocol with checksums, but this is not doable at the moment. We may
+add this in the future.</p></div>
+<div class="paragraph"><p>Future filesystems, like btrfs, will help to compare checksums instead of the
+filesize. This will make the synchronization safer. This does not imply that it
+is unsafe now, but checksums are safer than simple filesize checks.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_database_loss">3.4.3. Database loss</h4>
+<div class="paragraph"><p>It is possible that the state database could get corrupted. If this happens,
+all files get evaluated. In this case the file synchronizer wont delete any
+file, but it could occur that deleted files will be restored from the other
+replica.</p></div>
+<div class="paragraph"><p>To prevent a corruption or loss of the database if an error occurs or the user
+forces an abort, the synchronizer is working on a copy of the database and will
+use a Two-Phase-Commit to save it at the end.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_started">4. Getting started</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_installing_csync">4.1. Installing csync</h3>
+<div class="paragraph"><p>See the <tt>README</tt> and <tt>INSTALL</tt> files for install prerequisites and
+procedures. Packagers should take a look at <a href="#X90">Appendix A: Packager Notes</a>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_using_the_commandline_client">4.2. Using the commandline client</h3>
+<div class="paragraph"><p>The synopsis of the commandline client is</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>csync [OPTION...] SOURCE DESTINATION</tt></pre>
+</div></div>
+<div class="paragraph"><p>It synchronizes the content of SOURCE with DESTINATION and vice versa. The
+DESTINATION can be a local directory or a remote file server.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>csync /home/csync scheme://user:password@server:port/full/path</tt></pre>
+</div></div>
+<div class="sect3">
+<h4 id="_examples">4.2.1. Examples</h4>
+<div class="paragraph"><p>To synchronize two local directories:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>csync /home/csync/replica1 /home/csync/relplica2</tt></pre>
+</div></div>
+<div class="paragraph"><p>Two synchronizer a local directory with an smb server, use</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>csync /home/csync smb://rupert.galaxy.site/Users/csync</tt></pre>
+</div></div>
+<div class="paragraph"><p>If you use kerberos, you don&#8217;t have to specify a username or a password. If you
+don&#8217;t use kerberos, the commandline client will ask about the user and the
+password.  If you don&#8217;t want to be prompted, you can specify it on the
+commandline:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>csync /home/csync smb://csync:secret@rupert.galaxy.site/Users/csync</tt></pre>
+</div></div>
+<div class="paragraph"><p>If you use the sftp protocol and want to specify a port, you do it the
+following way:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>csync /home/csync sftp://csync@krikkit.galaxy.site:2222/home/csync</tt></pre>
+</div></div>
+<div class="paragraph"><p>The remote destination is supported by plugins. By default csync ships with smb
+and sftp support. For more information, see the manpage of <tt>csync(1)</tt>.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exclude_lists">4.3. Exclude lists</h3>
+<div class="paragraph"><p>csync provides exclude lists with simple shell wildcard patterns. There is a
+global exclude list, which is normally located in
+<em>/etc/csync/csync_exclude.conf</em> and it has already some sane defaults. If you
+run csync the first time, it will create an empty exclude list for the user.
+This file will be <em>~/.csync/csync_exclude.conf</em>. csync considers both
+configuration files and an additional one if you specify it.</p></div>
+<div class="paragraph"><p>The entries in the file are newline separated. Use
+<em>/etc/csync/csync_exclude.conf</em> as an example.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_debug_messages_and_dry_run">4.4. Debug messages and dry run</h3>
+<div class="paragraph"><p>By default the csync client logs to stderr and you can increase the debug
+level with a commandline options.</p></div>
+<div class="paragraph"><p>To simulate a run of the file synchronizer, you should set the priority to
+<em>debug</em> for the categories <em>csync.updater</em> and <em>csync.reconciler</em> in the config
+file <em>~/.csync/csync_log.conf</em>. Then run csync with the <em>--dry-run</em> option.
+This will only run update detection and reconciliation.</p></div>
+</div>
+<div class="sect2">
+<h3 id="X80">4.5. The PAM module</h3>
+<div class="paragraph"><p>pam_csync is a PAM module to provide roaming home directories for a user
+session. This module is aimed at environments with central file servers where a
+user wishes to store his home directory. The Authentication Module verifies the
+identity of a user and triggers a synchronization with the server on the first
+login and the last logout. More information can be found in the manpage of the
+module pam_csync(8) or pam itself pam(8).</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="X90">5. Appendix A: Packager Notes</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Read the <tt>README</tt>, <tt>INSTALL</tt> and <tt>FAQ</tt> files (in the distribution root
+directory).</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2012-10-29 12:05:41 CET
+</div>
+</div>
+</body>
+</html>

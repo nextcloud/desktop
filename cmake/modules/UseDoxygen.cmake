@@ -74,7 +74,7 @@ IF (DOXYGEN_FOUND)
     ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config")
   ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doxy.config.in")
 
-  ADD_CUSTOM_TARGET(doc ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG} DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/doxy.config)
+  ADD_CUSTOM_TARGET(csync_doc ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG} DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/doxy.config)
 
   # create a windows help .chm file using hhc.exe
   # HTMLHelp DLL must be in path!

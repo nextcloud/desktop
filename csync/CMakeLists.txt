@@ -47,7 +47,7 @@ endif (MEM_NULL_TESTS)
 
 add_subdirectory(src)
 add_subdirectory(config)
-add_subdirectory(doc)
+add_subdirectory(csync_doc)
 
 if (CMOCKA_FOUND AND UNIT_TESTING)
     add_subdirectory(tests)

@@ -101,4 +101,3 @@ COPYING
 -------
 Copyright \(c) 2006-2008 Andreas Schneider. Free use of this software is
 granted under the terms of the GNU General Public License (GPL).
-

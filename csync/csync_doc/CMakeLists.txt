@@ -1,4 +1,4 @@
-project(doc C)
+project(csync_doc C)
 # Build the documentation
 #
 
