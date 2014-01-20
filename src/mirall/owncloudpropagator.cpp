@@ -514,7 +514,7 @@ int PropagateDownloadFile::content_reader(void *userdata, const char *buf, size_
     size_t written = 0;
 
     if (that->_propagator->_abortRequested->fetchAndAddRelaxed(0)) {
-        ne_set_error(that->_propagator->_session, tr("Sync was aborted by user.").toUtf8());
+        ne_set_error(that->_propagator->_session, "%s", tr("Sync was aborted by user.").toUtf8().data());
         return NE_ERROR;
     }
 
@@ -569,7 +569,7 @@ void PropagateDownloadFile::install_content_reader( ne_request *req, void *userd
     if (etag.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
         that->errorString = tr("No E-Tag received from server, check Proxy/Gateway");
-        ne_set_error(that->_propagator->_session, that->errorString.toUtf8());
+        ne_set_error(that->_propagator->_session, "%s", that->errorString.toUtf8().data());
         ne_add_response_body_reader( req, do_not_accept,
                                         do_not_download_content_reader,
                                         (void*) that );
@@ -579,7 +579,7 @@ void PropagateDownloadFile::install_content_reader( ne_request *req, void *userd
                     << QString::fromLatin1(that->_expectedEtagForResume.data()) << "vs"
                     << QString::fromLatin1(etag.data());
         that->errorString = tr("We received a different E-Tag for resuming. Retrying next time.");
-        ne_set_error(that->_propagator->_session, that->errorString.toUtf8());
+        ne_set_error(that->_propagator->_session, "%s", that->errorString.toUtf8().data());
         ne_add_response_body_reader( req, do_not_accept,
                                         do_not_download_content_reader,
                                         (void*) that );
