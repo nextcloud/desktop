@@ -88,6 +88,7 @@ int FolderMan::unloadAllFolders()
         cnt++;
     }
     _currentSyncFolder.clear();
+    _scheduleQueue.clear();
     return cnt;
 }
 
@@ -149,7 +150,7 @@ int FolderMan::setupFolders()
     Folder *f = setupFolderFromConfigFile( alias );
     if( f ) {
         registerFolderMonitor(f);
-
+        slotScheduleSync(alias);
         emit( folderSyncStateChange( f->alias() ) );
     }
   }
