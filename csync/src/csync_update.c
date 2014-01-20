@@ -452,9 +452,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
     if (errno == EACCES) {
        return 0;
-    } else if(errno == EIO ) {
-      /* Proxy problems (ownCloud) */
-      ctx->status_code = CSYNC_STATUS_PROXY_ERROR;
     } else if(errno == ENOENT) {
       asp = asprintf( &ctx->error_string, "%s", uri);
       if (asp < 0) {
