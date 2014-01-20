@@ -73,7 +73,7 @@ MirallConfigFile::MirallConfigFile()
     QSettings settings(config, QSettings::IniFormat);
     settings.beginGroup( defaultConnection() );
 
-    qDebug() << "Loading config: " << config << " (URL is " << settings.value("url").toString() << ")";
+    // qDebug() << "Loading config: " << config << " (URL is " << settings.value("url").toString() << ")";
 }
 
 void MirallConfigFile::setConfDir(const QString &value)
