@@ -268,6 +268,7 @@ set(mirall_SRCS
     mirall/socketapi.cpp
     mirall/updater.cpp
     mirall/genericupdater.cpp
+    mirall/sslbutton.cpp
 )
 
 set(mirall_HEADERS
@@ -295,6 +296,7 @@ set(mirall_HEADERS
     mirall/socketapi.h
     mirall/updater.h
     mirall/genericupdater.h
+    mirall/sslbutton.h
 )
 
 IF( APPLE )

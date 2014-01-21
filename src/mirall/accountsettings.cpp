@@ -735,6 +735,7 @@ void AccountSettings::slotIgnoreFilesEditor()
 void AccountSettings::slotAccountStateChanged(int state)
 {
     if (_account) {
+        ui->sslButton->updateAccountInfo(_account);
         QUrl safeUrl(_account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
         ui->_buttonAdd->setEnabled(state == Account::Connected);

@@ -342,7 +342,7 @@ bool CheckServerJob::installed(const QVariantMap &info)
 
 void CheckServerJob::finished()
 {
-    account()->setCertificateChain(reply()->sslConfiguration().peerCertificateChain());
+    account()->setSslConfiguration(reply()->sslConfiguration());
 
     // ### the qDebugs here should be exported via displayErrors() so they
     // ### can be presented to the user if the job executor has a GUI

@@ -208,9 +208,9 @@ QNetworkReply *Account::davRequest(const QByteArray &verb, const QUrl &url, QNet
     return _am->sendCustomRequest(req, verb, data);
 }
 
-void Account::setCertificateChain(const QList<QSslCertificate> &certs)
+void Account::setSslConfiguration(const QSslConfiguration &config)
 {
-    _certificateChain = certs;
+    _sslConfiguration = config;
 }
 
 void Account::setApprovedCerts(const QList<QSslCertificate> certs)

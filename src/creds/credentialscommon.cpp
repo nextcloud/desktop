@@ -17,6 +17,7 @@
 #include <QRegExp>
 #include <QString>
 #include <QSslCertificate>
+#include <QSslConfiguration>
 
 #include <QDebug>
 
@@ -47,7 +48,7 @@ int handleNeonSSLProblems(const char* prompt,
         int pos = 0;
         // This is the set of certificates which QNAM accepted, so we should accept
         // them as well
-        QList<QSslCertificate> certs = AccountManager::instance()->account()->certificateChain();
+        QList<QSslCertificate> certs = AccountManager::instance()->account()->sslConfiguration().peerCertificateChain();
 
         while (!certOk && (pos = regexp.indexIn(qPrompt, 1+pos)) != -1) {
             QString neon_fingerprint = regexp.cap(1);

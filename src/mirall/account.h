@@ -20,6 +20,7 @@
 #include <QNetworkCookie>
 #include <QNetworkRequest>
 #include <QSslCertificate>
+#include <QSslConfiguration>
 #include <QSslError>
 
 class QSettings;
@@ -119,9 +120,9 @@ public:
     QNetworkReply* davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data = 0);
     QNetworkReply* davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data = 0);
 
-    /** The certificates of the account */
-    QList<QSslCertificate> certificateChain() const { return _certificateChain; }
-    void setCertificateChain(const QList<QSslCertificate> &certs);
+    /** The ssl configuration during the first connection */
+    QSslConfiguration sslConfiguration() const { return _sslConfiguration; }
+    void setSslConfiguration(const QSslConfiguration &config);
     /** The certificates of the account */
     QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
     void setApprovedCerts(const QList<QSslCertificate> certs);
@@ -150,7 +151,7 @@ private:
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
     QList<QSslCertificate> _approvedCerts;
-    QList<QSslCertificate> _certificateChain;
+    QSslConfiguration _sslConfiguration;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QNetworkAccessManager *_am;
     AbstractCredentials* _credentials;
