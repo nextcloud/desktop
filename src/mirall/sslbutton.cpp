@@ -19,6 +19,8 @@
 #include <QUrl>
 #include <QtNetwork>
 #include <QSslConfiguration>
+#include <QWidgetAction>
+#include <QLabel>
 
 namespace Mirall {
 
@@ -43,57 +45,74 @@ QString SslButton::protoToString(QSsl::SslProtocol proto)
     }
 }
 
-static QString escapeAmps(QString str)
+static QString addCertDetailsField(const QString &key, const QString &value, bool tt = false)
 {
-    return str.replace('&', "&&");
+    if (value.isEmpty())
+        return QString();
+
+    QString row = QString::fromLatin1("<tr><td style=\"vertical-align: top;\"><b>%1</b></td><td style=\"vertical-align: bottom;\">%2</td></tr>").arg(key);
+
+    if (tt) {
+        row = row.arg(QString::fromLatin1("<tt style=\"font-size: small\">%1</tt>").arg(value));
+    } else {
+        row = row.arg(value);
+    }
+    return row;
 }
 
 QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
                                 const QList<QSslCertificate>& userApproved, int pos)
 {
-    QString cn = QStringList(cert.subjectInfo(QSslCertificate::CommonName)).join(';');
-    QString ou = QStringList(cert.subjectInfo(QSslCertificate::OrganizationalUnitName)).join(';');
-    QString org = QStringList(cert.subjectInfo(QSslCertificate::Organization)).join(';');
-    QString country = QStringList(cert.subjectInfo(QSslCertificate::CountryName)).join(';');
-    QString state = QStringList(cert.subjectInfo(QSslCertificate::StateOrProvinceName)).join(';');
-    QString issuer = QStringList(cert.issuerInfo(QSslCertificate::CommonName)).join(';');
+    QString cn = QStringList(cert.subjectInfo(QSslCertificate::CommonName)).join(QChar(';'));
+    QString ou = QStringList(cert.subjectInfo(QSslCertificate::OrganizationalUnitName)).join(QChar(';'));
+    QString org = QStringList(cert.subjectInfo(QSslCertificate::Organization)).join(QChar(';'));
+    QString country = QStringList(cert.subjectInfo(QSslCertificate::CountryName)).join(QChar(';'));
+    QString state = QStringList(cert.subjectInfo(QSslCertificate::StateOrProvinceName)).join(QChar(';'));
+    QString issuer = QStringList(cert.issuerInfo(QSslCertificate::CommonName)).join(QChar(';'));
     QString md5 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Md5).toHex());
     QString sha1 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
-    QString serial = QString::fromUtf8(cert.serialNumber());
+    QString serial = QString::fromUtf8(cert.serialNumber(), true);
     QString effectiveDate = cert.effectiveDate().date().toString();
     QString expiryDate = cert.expiryDate().date().toString();
-    QString sna = QStringList(cert.alternateSubjectNames().values()).join(", ");
+    QString sna = QStringList(cert.alternateSubjectNames().values()).join(" ");
 
-    QMenu *details = new QMenu(parent);
-    details->addAction(tr("Common Name (CN): %1").arg(escapeAmps(cn)))->setEnabled(false);
-    if (!sna.isEmpty()) {
-        details->addAction(tr("Subject Alternative Names: %1").arg(escapeAmps(sna)))->setEnabled(false);
-    }
-    if (!org.isEmpty()) {
-    details->addAction(tr("Organization (O): %1").arg(escapeAmps(org)))->setEnabled(false);
-    }
-    if (!ou.isEmpty()) {
-    details->addAction(tr("Organizational Unit (OU): %1").arg(escapeAmps(ou)))->setEnabled(false);
-    }
-    if (!country.isEmpty()) {
-    details->addAction(tr("Country: %1").arg(escapeAmps(country)))->setEnabled(false);
-    }
-    if (!state.isEmpty()) {
-    details->addAction(tr("State/Province: %1").arg(escapeAmps(state)))->setEnabled(false);
-    }
-    details->addAction(tr("Serial: %1").arg(escapeAmps(serial)))->setEnabled(false);
-    details->addAction(tr("Issuer: %1").arg(escapeAmps(issuer)))->setEnabled(false);
-    details->addAction(tr("Issued on: %1").arg(effectiveDate))->setEnabled(false);
-    details->addAction(tr("Expires on: %1").arg(expiryDate))->setEnabled(false);
-    details->addSeparator();
-    details->addAction(tr("Fingerprints:"))->setEnabled(false);
-    details->addAction(tr("MD 5: %1").arg(md5))->setEnabled(false);
-    details->addAction(tr("SHA-1: %1").arg(sha1))->setEnabled(false);
+    QString details;
+    QTextStream stream(&details);
+
+    stream << QLatin1String("<html><body>");
+
+    stream << tr("<h3>Certificate Details</h3>");
+
+    stream << QLatin1String("<table>");
+    stream << addCertDetailsField(tr("Common Name (CN):"), Utility::escape(cn));
+    stream << addCertDetailsField(tr("Subject Alternative Names:"), Utility::escape(sna)
+                                  .replace(" ", "<br/>"));
+    stream << addCertDetailsField(tr("Organization (O):"), Utility::escape(org));
+    stream << addCertDetailsField(tr("Organizational Unit (OU):"), Utility::escape(ou));
+    stream << addCertDetailsField(tr("State/Provice:"), Utility::escape(state));
+    stream << addCertDetailsField(tr("Country:"), Utility::escape(country));
+    stream << addCertDetailsField(tr("Serial:"), Utility::escape(serial), true);
+    stream << QLatin1String("</table>");
+
+    stream << tr("<h3>Issuer</h3>");
+
+    stream << QLatin1String("<table>");
+    stream << addCertDetailsField(tr("Issuer:"), Utility::escape(issuer));
+    stream << addCertDetailsField(tr("Issued on:"), Utility::escape(effectiveDate));
+    stream << addCertDetailsField(tr("Expires on:"), Utility::escape(expiryDate));
+    stream << QLatin1String("</table>");
+
+    stream << tr("<h3>Fingerprints</h3>");
+
+    stream << QLatin1String("<table>");
+    stream << addCertDetailsField(tr("MD 5:"), Utility::escape(md5), true);
+    stream << addCertDetailsField(tr("SHA-1:"), Utility::escape(sha1), true);
+    stream << QLatin1String("</table>");
+
     if (userApproved.contains(cert)) {
-        details->addSeparator();
-        details->addAction(tr("This certificate was manually approved"))->setEnabled(false);
+        stream << tr("<p><b>Note:</b> This certificate was manually approved</p>");
     }
-
+    stream << QLatin1String("</body></html>");
 
     QString txt;
     if (pos > 0) {
@@ -111,8 +130,20 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
             txt += tr("%1").arg(cn);
         }
     }
-    details->menuAction()->setText(txt);
-    return details;
+
+    // create label first
+    QLabel *label = new QLabel(parent);
+    label->setStyleSheet(QLatin1String("QLabel { padding: 8px; background-color: #fff; }"));
+    label->setText(details);
+    // plug label into widget action
+    QWidgetAction *action = new QWidgetAction(parent);
+    action->setDefaultWidget(label);
+    // plug action into menu
+    QMenu *menu = new QMenu(parent);
+    menu->menuAction()->setText(txt);
+    menu->addAction(action);
+
+    return menu;
 
 }
 
