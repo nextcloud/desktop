@@ -18,7 +18,7 @@ It contains settings in the ini file format known from Windows.
 
 These are config settings that may be changed:
 
-``remotePollinterval`` (default: ``30000``)
+``remotePollInterval`` (default: ``30000``)
         Poll time for the remote repository in milliseconds
 
 ``maxLogLines`` (default:  ``20000``)
