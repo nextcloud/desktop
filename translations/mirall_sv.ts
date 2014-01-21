@@ -230,178 +230,178 @@
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="83"/>
         <source>Success.</source>
         <translation>Lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync misslyckades med att skapa en låsfil.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync misslyckades ladda status db.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
         <source>CSync failed to write the state db.</source>
         <translation>CSync misslyckades med att skriva till status db.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="98"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Plugin %1 för csync kunde inte laddas.&lt;br/&gt;Var god verifiera installationen!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="101"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="98"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Systemtiden på denna klientdator är annorlunda än systemtiden på servern. Använd en tjänst för tidssynkronisering (NTP) på servern och alla klientdatorer så att tiden är lika.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="103"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync kunde inte upptäcka filsystemtyp.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="109"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSYNC fel vid intern bearbetning.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="112"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="109"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync misslyckades att reservera minne.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="115"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="112"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync fatal parameter fel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="115"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync processteg update misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync processteg reconcile misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="124"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync processteg propagate misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="127"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="124"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Målmappen finns inte&lt;/p&gt;&lt;p&gt;Vänligen, kontroller inställningen för sync.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="128"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>En fil på servern kan inte skapas. Kontrollera åtkomst till fjärranslutningen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="132"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Kan inte skriva till det lokala filsystemet. Var god kontrollera rättigheterna.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync misslyckades att ansluta genom en proxy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation>CSync kunde inte autentisera mot proxy. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync misslyckades att  hitta proxy eller server.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync misslyckades att autentisera mot %1 servern.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSYNC misslyckades på grund av att nekad åtkomst inte hanterades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>CSync försökte skapa en mapp som redan finns.</translation>
     </message>
     <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
         <location filename="../src/mirall/csyncthread.cpp" line="168"/>
-        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Ingen plats på %1 server tillgänglig.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>CSync unspecified error.</source>
         <translation>CSync ospecificerat fel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="237"/>
         <source>The item is not synced because of previous errors:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="276"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="273"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="276"/>
         <source>File is listed on the ignore list.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="282"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="454"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="451"/>
         <source>Unable to initialize a sync journal.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync misslyckades att ansluta mot nätverket.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>A network connection timeout happend.</source>
         <translation>Ett anslutningsfel mot nätverket uppstod.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Ett HTTP överföringsfel inträffade.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
         <source>CSync failed to access </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="177"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>Aborted by the user</source>
         <translation>Avbruten av användare</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="181"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="178"/>
         <source>An internal error number %1 happend.</source>
         <translation>Internt fel nummer %1 uppstod.</translation>
     </message>
@@ -552,67 +552,67 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="175"/>
+        <location filename="../src/mirall/folderman.cpp" line="167"/>
         <source>Could not reset folder state</source>
         <translation>Kunde inte återställa mappens skick</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="176"/>
+        <location filename="../src/mirall/folderman.cpp" line="168"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>En gammal synkroniseringsjournal &apos;%1&apos; hittades, men kunde inte raderas. Vänligen se till att inga program för tillfället använder den.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="736"/>
+        <location filename="../src/mirall/folderman.cpp" line="731"/>
         <source>Undefined State.</source>
         <translation>Okänt tillstånd.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="739"/>
+        <location filename="../src/mirall/folderman.cpp" line="734"/>
         <source>Waits to start syncing.</source>
         <translation>Väntar på att starta synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="742"/>
+        <location filename="../src/mirall/folderman.cpp" line="737"/>
         <source>Preparing for sync.</source>
         <translation>Förbereder synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="745"/>
+        <location filename="../src/mirall/folderman.cpp" line="740"/>
         <source>Sync is running.</source>
         <translation>Synkronisering pågår.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="748"/>
+        <location filename="../src/mirall/folderman.cpp" line="743"/>
         <source>Server is currently not available.</source>
         <translation>Servern är för tillfället inte tillgänglig.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="751"/>
+        <location filename="../src/mirall/folderman.cpp" line="746"/>
         <source>Last Sync was successful.</source>
         <translation>Senaste synkronisering lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="756"/>
+        <location filename="../src/mirall/folderman.cpp" line="751"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Senaste synkning lyckades, men det finns varningar för vissa filer!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="759"/>
+        <location filename="../src/mirall/folderman.cpp" line="754"/>
         <source>Setup Error.</source>
         <translation>Inställningsfel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="762"/>
+        <location filename="../src/mirall/folderman.cpp" line="757"/>
         <source>User Abort.</source>
         <translation>Användare Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="765"/>
+        <location filename="../src/mirall/folderman.cpp" line="760"/>
         <source>Sync is paused.</source>
         <translation>Synkronisering är pausad.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="771"/>
+        <location filename="../src/mirall/folderman.cpp" line="766"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synk är stoppad)</translation>
     </message>
@@ -929,15 +929,23 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Add Ignore Pattern</source>
         <translation>Lägg till synk-filter</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Add a new ignore pattern:</source>
         <translation>Lägg till ett nytt synk-filter:</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
+        <source>Edit Ignore Pattern</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
+        <source>Edit ignore pattern:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -1181,28 +1189,38 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
 <context>
     <name>Mirall::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="43"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
         <source>Connect to %1</source>
         <translation>Anslut till %1</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
         <source>Setup %1 server</source>
         <translation>Installerar %1 server</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="103"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="107"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
         <source>This url is secure. You can use it.</source>
         <translation>Denna url är säker. Du kan använda den.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="237"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
+        <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
+        <source>Connection failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
         <source>Update %1 server</source>
         <translation>Uppdaterar %1 server</translation>
     </message>

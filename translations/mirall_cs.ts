@@ -230,178 +230,178 @@
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="83"/>
         <source>Success.</source>
         <translation>Úspěch.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync nemůže vytvořit zámek.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
         <source>CSync failed to load the state db.</source>
         <translation>CSync nemůže načíst databázi stavu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
         <source>CSync failed to write the state db.</source>
         <translation>CSync selhal při zápisu do databáze stavu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="98"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Modul %1 pro csync nelze načíst.&lt;br/&gt;Zkontrolujte prosím instalaci!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="101"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="98"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Systémový čas na klientovi je rozdílný od systémového času serveru. Použijte, prosím, službu synchronizace času (NTP) na serveru i klientu, aby byl čas na obou strojích stejný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="103"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync nemohl detekovat typ souborového systému.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="109"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="106"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync obdrželo chybu při zpracování vnitřních struktur.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="112"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="109"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync se nezdařilo rezervovat paměť.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="115"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="112"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync: kritická chyba parametrů.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="115"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync se nezdařilo zpracovat krok aktualizace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="118"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync se nezdařilo zpracovat krok sladění.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="124"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="121"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync se nezdařilo zpracovat krok propagace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="127"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="124"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cílový adresář neexistuje.&lt;/p&gt;&lt;p&gt;Zkontrolujte, prosím, nastavení synchronizace.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="128"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Vzdálený soubor nelze zapsat. Ověřte prosím vzdálený přístup.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="132"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Do místního souborového systému nelze zapisovat. Ověřte, prosím, přístupová práva.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync se nezdařilo připojit skrze proxy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation>CSync se nemohlo přihlásit k proxy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync se nezdařilo najít proxy server nebo cílový server.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync se nezdařilo přihlásit k serveru %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSync selhalo z důvodu nezpracovaného odmítnutí práv.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>CSync se pokusilo vytvořit adresář, který již existuje.</translation>
     </message>
     <message>
+        <location filename="../src/mirall/csyncthread.cpp" line="165"/>
         <location filename="../src/mirall/csyncthread.cpp" line="168"/>
-        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Nedostatek volného místa na serveru %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="171"/>
         <source>CSync unspecified error.</source>
         <translation>Nespecifikovaná chyba CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="240"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="237"/>
         <source>The item is not synced because of previous errors:</source>
         <translation>Položka nebyla synchronizována kvůli předchozím chybám:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="276"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="273"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symbolické odkazy nejsou při synchronizaci podporovány.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="276"/>
         <source>File is listed on the ignore list.</source>
         <translation>Soubor se nachází na seznamu ignorovaných.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="282"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="279"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Soubor obsahuje alespoň jeden neplatný znak, který narušuje synchronizaci v prostředí více platforem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="454"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="451"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nemohu inicializovat synchronizační žurnál.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="147"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync se nezdařilo připojit k síti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="150"/>
         <source>A network connection timeout happend.</source>
         <translation>Došlo k vypršení časového limitu síťového spojení.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="156"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="153"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Nastala chyba HTTP přenosu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="162"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="159"/>
         <source>CSync failed to access </source>
         <translation>CSync se nezdařil přístup</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="177"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>Aborted by the user</source>
         <translation>Zrušeno uživatelem</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="181"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="178"/>
         <source>An internal error number %1 happend.</source>
         <translation>Nastala vnitřní chyba číslo %1.</translation>
     </message>
@@ -552,67 +552,67 @@ Opravdu chcete provést tuto akci?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="175"/>
+        <location filename="../src/mirall/folderman.cpp" line="167"/>
         <source>Could not reset folder state</source>
         <translation>Nelze obnovit stav složky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="176"/>
+        <location filename="../src/mirall/folderman.cpp" line="168"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Byl nalezen starý záznam synchronizace &apos;%1&apos;, ale nebylo možné jej odebrat. Ujistěte se, že není aktuálně používán jinou aplikací.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="736"/>
+        <location filename="../src/mirall/folderman.cpp" line="731"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="739"/>
+        <location filename="../src/mirall/folderman.cpp" line="734"/>
         <source>Waits to start syncing.</source>
         <translation>Vyčkává na spuštění synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="742"/>
+        <location filename="../src/mirall/folderman.cpp" line="737"/>
         <source>Preparing for sync.</source>
         <translation>Příprava na synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="745"/>
+        <location filename="../src/mirall/folderman.cpp" line="740"/>
         <source>Sync is running.</source>
         <translation>Synchronizace probíhá.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="748"/>
+        <location filename="../src/mirall/folderman.cpp" line="743"/>
         <source>Server is currently not available.</source>
         <translation>Server je nyní nedostupný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="751"/>
+        <location filename="../src/mirall/folderman.cpp" line="746"/>
         <source>Last Sync was successful.</source>
         <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="756"/>
+        <location filename="../src/mirall/folderman.cpp" line="751"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Poslední synchronizace byla úspěšná, ale s varováním u některých souborů</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="759"/>
+        <location filename="../src/mirall/folderman.cpp" line="754"/>
         <source>Setup Error.</source>
         <translation>Chyba nastavení.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="762"/>
+        <location filename="../src/mirall/folderman.cpp" line="757"/>
         <source>User Abort.</source>
         <translation>Zrušení uživatelem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="765"/>
+        <location filename="../src/mirall/folderman.cpp" line="760"/>
         <source>Sync is paused.</source>
         <translation>Synchronizace pozastavena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="771"/>
+        <location filename="../src/mirall/folderman.cpp" line="766"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizace je pozastavena)</translation>
     </message>
@@ -650,17 +650,17 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="61"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Kliknutím zvolíte místní složku na vašem počítači k synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="65"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Zadejte cestu k místní složce.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="69"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>Alias složky je popisné jméno pro tuto synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
@@ -801,7 +801,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizace</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="88"/>
@@ -814,43 +814,44 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="76"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Nová aktualizace hotova</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="77"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Nová aktualizace bude nainstalována. Aktualizační proces
+si může v průběhu vyžádat dodatečná práva.</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="101"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Stahuji verzi %1. Počkejte prosím ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="103"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Verze %1 je dostupná. Aktualizaci zahájíte restartováním aplikace.</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="105"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; %2 to download the update manually</source>
-        <translation type="unfinished"/>
+        <translation>Nemohu stáhnout aktualizaci. Klikněte, prosím, na &lt;a href=&apos;%1&apos;&gt;tento odkaz&lt;/a&gt; %2 pro manuální stažení.</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="107"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nová verze %1 je dostupná. Pro instalaci použijte, prosím, aktualizační nástroj systému. </translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="109"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Kontroluji server s aktualizacemi ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="113"/>
         <source>Your installation is at the latest version</source>
-        <translation type="unfinished"/>
+        <translation>Používáte aktuální verzi</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="209"/>
@@ -865,7 +866,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="228"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Přeskoč tuto verzi</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="229"/>
@@ -929,15 +930,23 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Add Ignore Pattern</source>
         <translation>Přidat masku ignorovaných</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
-        <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Add a new ignore pattern:</source>
         <translation>Přidat novou masku ignorovaných souborů:</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
+        <source>Edit Ignore Pattern</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
+        <source>Edit ignore pattern:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -1181,28 +1190,39 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
 <context>
     <name>Mirall::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="43"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
         <source>Connect to %1</source>
         <translation>Připojit k %1</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
         <source>Setup %1 server</source>
         <translation>Nastavit server %1</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="103"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Tato adresa NENÍ bezpečná, protože není šifrovaná.
+Nedoporučuje se jí používat.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="107"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
         <source>This url is secure. You can use it.</source>
         <translation>URL je bezpečná. Můžete ji použít.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="237"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
+        <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
+        <source>Connection failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
         <source>Update %1 server</source>
         <translation>Upravit server %1</translation>
     </message>
@@ -1380,12 +1400,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Ze serveru nebyl obdržen E-Tag, zkontrolujte proxy/brány</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="581"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Obdrželi jsme jiný E-Tag pro pokračování. Zkusím znovu příště.</translation>
     </message>
 </context>
 <context>
