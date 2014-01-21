@@ -250,7 +250,7 @@ void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
         // folder->path() always comes back with trailing path
         QString fullPath = folder->path() + fileName;
         if (QFile(fullPath).exists()) {
-            // Utility::showInFileManager(fullPath);
+            Utility::showInFileManager(fullPath);
         }
     }
 }
