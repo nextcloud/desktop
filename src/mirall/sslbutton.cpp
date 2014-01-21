@@ -19,7 +19,6 @@
 #include <QUrl>
 #include <QtNetwork>
 #include <QSslConfiguration>
-#include <openssl/x509.h>
 
 namespace Mirall {
 
