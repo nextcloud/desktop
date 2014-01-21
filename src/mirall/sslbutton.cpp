@@ -51,12 +51,12 @@ static QString escapeAmps(QString str)
 QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
                                 const QList<QSslCertificate>& userApproved, int pos)
 {
-    QString cn = cert.subjectInfo(QSslCertificate::CommonName);
-    QString ou = cert.subjectInfo(QSslCertificate::OrganizationalUnitName);
-    QString org = cert.subjectInfo(QSslCertificate::Organization);
-    QString country = cert.subjectInfo(QSslCertificate::CountryName);
-    QString state = cert.subjectInfo(QSslCertificate::StateOrProvinceName);
-    QString issuer = cert.issuerInfo(QSslCertificate::CommonName);
+    QString cn = QStringList(cert.subjectInfo(QSslCertificate::CommonName)).join(';');
+    QString ou = QStringList(cert.subjectInfo(QSslCertificate::OrganizationalUnitName)).join(';');
+    QString org = QStringList(cert.subjectInfo(QSslCertificate::Organization)).join(';');
+    QString country = QStringList(cert.subjectInfo(QSslCertificate::CountryName)).join(';');
+    QString state = QStringList(cert.subjectInfo(QSslCertificate::StateOrProvinceName)).join(';');
+    QString issuer = QStringList(cert.issuerInfo(QSslCertificate::CommonName)).join(';');
     QString md5 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Md5).toHex());
     QString sha1 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
     QString serial = QString::fromUtf8(cert.serialNumber());
@@ -134,10 +134,8 @@ void SslButton::updateAccountInfo(Account *account)
 
         // find trust anchor (informational only, verification is done by QSslSocket!)
         foreach (const QSslCertificate &rootCA, QSslSocket::systemCaCertificates()) {
-            QString cn = chain.last().issuerInfo(QSslCertificate::CommonName);\
-            QString org = chain.last().issuerInfo(QSslCertificate::Organization);\
-            if (rootCA.issuerInfo(QSslCertificate::CommonName) == cn &&
-                rootCA.issuerInfo(QSslCertificate::Organization) == org) {
+            if (rootCA.issuerInfo(QSslCertificate::CommonName) == chain.last().issuerInfo(QSslCertificate::CommonName) &&
+                    rootCA.issuerInfo(QSslCertificate::Organization) == chain.last().issuerInfo(QSslCertificate::Organization)) {
                 chain << rootCA;
                 break;
             }
