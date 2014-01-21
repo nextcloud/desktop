@@ -90,7 +90,7 @@ QString Utility::formatFingerprint( const QByteArray& fmhash )
     }
 
     QString fp = QString::fromLatin1( hash.trimmed() );
-    //fp.replace(QChar(' '), QChar(':'));
+    fp.replace(QChar(' '), QChar(':'));
 
     return fp;
 }
