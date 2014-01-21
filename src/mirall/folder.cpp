@@ -231,7 +231,6 @@ void Folder::setSyncEnabled( bool doit )
   _enabled = doit;
 
   if( doit ) {
-      setSyncState(SyncResult::SyncPrepare);
       // qDebug() << "Syncing enabled on folder " << name();
   } else {
       // do not stop or start the watcher here, that is done internally by
