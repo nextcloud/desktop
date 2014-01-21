@@ -430,7 +430,7 @@ void Utility::showInFileManager(const QString &localPath)
             // fall back: open the default file manager, without ever selecting the file
             QDesktopServices::openUrl(QUrl::fromLocalFile(pathToOpen));
         } else {
-            QProcess::execute(app, args);
+            QProcess::startDetached(app, args);
         }
     }
 }
