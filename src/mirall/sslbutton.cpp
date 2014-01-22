@@ -89,7 +89,7 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
                                   .replace(" ", "<br/>"));
     stream << addCertDetailsField(tr("Organization (O):"), Utility::escape(org));
     stream << addCertDetailsField(tr("Organizational Unit (OU):"), Utility::escape(ou));
-    stream << addCertDetailsField(tr("State/Provice:"), Utility::escape(state));
+    stream << addCertDetailsField(tr("State/Province:"), Utility::escape(state));
     stream << addCertDetailsField(tr("Country:"), Utility::escape(country));
     stream << addCertDetailsField(tr("Serial:"), Utility::escape(serial), true);
     stream << QLatin1String("</table>");
