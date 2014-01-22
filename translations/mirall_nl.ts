@@ -63,58 +63,58 @@
         <translation>Formulier</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="20"/>
+        <location filename="../src/mirall/accountsettings.ui" line="136"/>
         <source>Account Maintenance</source>
         <translation>Accountonderhoud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="29"/>
+        <location filename="../src/mirall/accountsettings.ui" line="145"/>
         <source>Edit Ignored Files</source>
         <translation>Wijzig genegeerde bestanden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="36"/>
+        <location filename="../src/mirall/accountsettings.ui" line="152"/>
         <source>Modify Account</source>
         <translation>Aanpassen account</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="46"/>
+        <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account to Synchronize</source>
         <translation>Account om te synchroniseren</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="52"/>
+        <location filename="../src/mirall/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
         <translation>Verbonden met &lt;server&gt; als &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="71"/>
+        <location filename="../src/mirall/accountsettings.ui" line="62"/>
         <location filename="../src/mirall/accountsettings.cpp" line="132"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="78"/>
+        <location filename="../src/mirall/accountsettings.ui" line="69"/>
         <source>Remove</source>
         <translation>Verwijder</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="64"/>
+        <location filename="../src/mirall/accountsettings.ui" line="55"/>
         <source>Add Folder...</source>
         <translation>Map toevoegen...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="103"/>
+        <location filename="../src/mirall/accountsettings.ui" line="94"/>
         <source>Storage Usage</source>
         <translation>Gebruik opslagruimte</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="125"/>
+        <location filename="../src/mirall/accountsettings.ui" line="116"/>
         <source>Retrieving usage information...</source>
         <translation>Gebruiksinformatie wordt opgehaald ...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.ui" line="132"/>
+        <location filename="../src/mirall/accountsettings.ui" line="123"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>&lt;b&gt;Opmerking:&lt;/b&gt; Sommige mappen, waaronder netwerkmappen en gedeelde mappen, kunnen andere limieten hebben.</translation>
     </message>
@@ -144,7 +144,7 @@
         <translation>&lt;p&gt;Wilt u de map &lt;i&gt;%1&lt;/i&gt; echt resetten en de database opnieuw opbouwen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Deze functie is alleen ontworpen voor onderhoudsdoeleinden. Hoewel er geen bestanden worden verwijderd, kan dit een aanzienlijke hoeveelheid dataverkeer tot gevolg hebben en minuten tot zelfs uren duren, afhankelijk van de omvang van de map. Gebruik deze functie alleen als dit wordt geadviseerd door uw applicatiebeheerder.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="761"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="762"/>
         <source>No %1 connection configured.</source>
         <translation>Geen %1 connectie geconfigureerd.</translation>
     </message>
@@ -169,7 +169,7 @@
         <translation>%1 van %2 (%3%) in gebruik.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="747"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="748"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Verbonden met &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
@@ -204,12 +204,12 @@
         <translation>%1 van %2, bestand %3 van %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="750"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="751"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Verbonden met &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; als &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="754"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="755"/>
         <source>No connection to %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Geen verbinding met %1 op &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
@@ -457,75 +457,75 @@
         <translation>%1 is niet leesbaar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="315"/>
+        <location filename="../src/mirall/folder.cpp" line="314"/>
         <source>File %1: %2</source>
         <translation>Bestand %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="316"/>
-        <location filename="../src/mirall/folder.cpp" line="398"/>
+        <location filename="../src/mirall/folder.cpp" line="315"/>
+        <location filename="../src/mirall/folder.cpp" line="397"/>
         <source>File %1</source>
         <translation>Bestand %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="373"/>
+        <location filename="../src/mirall/folder.cpp" line="372"/>
         <source>downloaded</source>
         <translation>gedownload</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="374"/>
+        <location filename="../src/mirall/folder.cpp" line="373"/>
         <source>removed</source>
         <translation>verwijderd</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="375"/>
+        <location filename="../src/mirall/folder.cpp" line="374"/>
         <source>updated</source>
         <translation>geüpdatet</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="378"/>
+        <location filename="../src/mirall/folder.cpp" line="377"/>
         <source>renamed</source>
         <translation>hernoemd</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="383"/>
+        <location filename="../src/mirall/folder.cpp" line="382"/>
         <source>moved</source>
         <translation>verplaatst</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="385"/>
+        <location filename="../src/mirall/folder.cpp" line="384"/>
         <source>%1 to %2</source>
         <translation>%1 naar %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="398"/>
+        <location filename="../src/mirall/folder.cpp" line="397"/>
         <source>&apos;%1&apos; has been %2.</source>
         <translation>&apos;%1&apos; was %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="400"/>
+        <location filename="../src/mirall/folder.cpp" line="399"/>
         <source>Files %1</source>
         <translation>Bestanden %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="401"/>
+        <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
         <translation>&apos;%1&apos; en %2 andere bestanden waren %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="453"/>
+        <location filename="../src/mirall/folder.cpp" line="452"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="725"/>
+        <location filename="../src/mirall/folder.cpp" line="724"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Deze synchronisatie verwijdert alle bestanden in lokale synchronisatiemap &apos;%1&apos;.
 Als u of uw beheerder uw account op de server heeft gereset, kies dan &quot;Bewaar bestanden&quot;. Als u uw bestanden wilt verwijderen, kies dan &quot;Verwijder alle bestanden&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="728"/>
+        <location filename="../src/mirall/folder.cpp" line="727"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +534,17 @@ Dit kan komen doordat de map ongemerkt gereconfigureerd is of doordat alle besta
 Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="732"/>
+        <location filename="../src/mirall/folder.cpp" line="731"/>
         <source>Remove All Files?</source>
         <translation>Verwijder alle bestanden?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="734"/>
+        <location filename="../src/mirall/folder.cpp" line="733"/>
         <source>Remove all files</source>
         <translation>Verwijder alle bestanden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="735"/>
+        <location filename="../src/mirall/folder.cpp" line="734"/>
         <source>Keep files</source>
         <translation>Bewaar bestanden</translation>
     </message>
@@ -941,12 +941,12 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Bewerk negeerpatroon</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Bewerk negeerpatroon:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -1214,12 +1214,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Kon geen beveiligde verbinding maken. Wilt u een onversleutelde verbinding maken (niet aan te raden)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Verbinding mislukt</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
@@ -1597,6 +1597,121 @@ Probeer opnieuw te synchroniseren.</translation>
 Please ensure that your network connection is working.</source>
         <translation>Kon de Shibboleth loginpagina niet laden om u in te loggen.
 Controleer de werking van uw netwerkverbinding.</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::SslButton</name>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="84"/>
+        <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="87"/>
+        <source>Common Name (CN):</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="88"/>
+        <source>Subject Alternative Names:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="90"/>
+        <source>Organization (O):</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="91"/>
+        <source>Organizational Unit (OU):</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="92"/>
+        <source>State/Provice:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="93"/>
+        <source>Country:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="94"/>
+        <source>Serial:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="97"/>
+        <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="100"/>
+        <source>Issuer:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="101"/>
+        <source>Issued on:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
+        <source>Expires on:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="105"/>
+        <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="108"/>
+        <source>MD 5:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="109"/>
+        <source>SHA-1:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="113"/>
+        <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="125"/>
+        <source>%1 (in Root CA store)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="128"/>
+        <source>%1 (self-signed)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="130"/>
+        <source>%1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="161"/>
+        <source>This connection is encrypted using %1 bit %2.
+</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="164"/>
+        <source>Certificate information:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="185"/>
+        <source>This connection is NOT secure as it is not encrypted.
+</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
