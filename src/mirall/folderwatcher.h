@@ -23,7 +23,7 @@
 #elif defined(Q_OS_MAC)
 #include "mirall/folderwatcher_mac.h"
 #elif defined(Q_OS_LINUX)
-#include "mirall/folderwatcher_qt.h"
+#include "mirall/folderwatcher_linux.h"
 #endif
 
 #include <QList>

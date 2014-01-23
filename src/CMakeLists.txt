@@ -127,8 +127,8 @@ set(libsync_HEADERS
 )
 
 IF( NOT WIN32 AND NOT APPLE )
-    set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_qt.cpp)
-    set(libsync_HEADERS ${libsync_HEADERS} mirall/folderwatcher_qt.h)
+    set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_linux.cpp)
+    set(libsync_HEADERS ${libsync_HEADERS} mirall/folderwatcher_linux.h)
 ENDIF()
 IF( WIN32 )
     set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_win.cpp)
