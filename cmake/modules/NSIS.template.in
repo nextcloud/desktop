@@ -355,9 +355,11 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    SetDetailsPrint listonly
    SetOutPath "$INSTDIR"
 
-   ;Main executable.
+   ;Main executable & csync
    File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
    File "${BUILD_PATH}\src\lib${APPLICATION_SHORTNAME}sync.dll"
+   File "${BUILD_PATH}\csync\src\libocsync.dll"
+
 
    File "${BUILD_PATH}\src\mirall_*.qm"
    ; Make sure only to copy qt, not qt_help, etc
@@ -376,14 +378,11 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${SQLITE_DLL_PATH}\qsqlite4.dll"
 
    SetOutPath "$INSTDIR"
-
-
-
    ;License & release notes.
    File "@CPACK_RESOURCE_FILE_LICENSE@"
    ;File /oname=NOTES.txt ${NSI_PATH}\RELEASE_NOTES.txt
 
-   ;QT stuff:
+   ;Qt stuff:
    File "${QT_DLL_PATH}\QtCore4.dll"
    File "${QT_DLL_PATH}\QtGui4.dll"
    File "${QT_DLL_PATH}\QtNetwork4.dll"
@@ -391,12 +390,14 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${QT_DLL_PATH}\QtXml4.dll"
    File "${QT_DLL_PATH}\QtWebKit4.dll"
 
+   ;Qt deps
+   File "${MING_BIN}\libpng15-15.dll"
+
+   ;QtSql and csync dep
+   File "${MING_BIN}\libsqlite3-0.dll"
+
    ;QtKeyChain stuff
    File "${MING_BIN}\libqtkeychain.dll"
-
-   File "${CSYNC_LIBRARY_DIR}\libocsync.dll"
-   File "${MING_BIN}\libsqlite3-0.dll"
-   File "${MING_BIN}\libpng15-15.dll"
 
    ; ownCloud plugin
    File "${MING_BIN}\libintl-8.dll"
