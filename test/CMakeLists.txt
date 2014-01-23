@@ -1,7 +1,12 @@
-include_directories(${CMAKE_CURRENT_LIST_DIR}/../src)
-include_directories(${CSYNC_INCLUDE_DIR}/csync ${CSYNC_INCLUDE_DIR} ${CSYNC_INCLUDE_DIR}/httpbf/src ${CSYNC_BUILD_PATH}/src)
+include_directories(${CMAKE_BINARY_DIR}/csync ${CMAKE_BINARY_DIR}/csync/src ${CMAKE_BINARY_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/csync/src/ ${CMAKE_SOURCE_DIR}/csync/src/httpbf/src)
 include(owncloud_add_test.cmake)
 
 owncloud_add_test(OwncloudPropagator)
 owncloud_add_test(Utility)
-owncloud_add_test(FolderWatcherPrivate)
+
+if( UNIX AND NOT APPLE )
+	owncloud_add_test(InotifyWatcher)
+endif(UNIX AND NOT APPLE)
+
+owncloud_add_test(FolderWatcher)
