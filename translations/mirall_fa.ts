@@ -1619,13 +1619,13 @@ Please ensure that your network connection is working.</source>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="92"/>
-        <source>State/Provice:</source>
+        <source>State/Province:</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="93"/>
         <source>Country:</source>
-        <translation type="unfinished"/>
+        <translation>کشور:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>

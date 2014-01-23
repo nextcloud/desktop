@@ -80,7 +80,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Cuenta para syncronizar</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="41"/>
@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="324"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;¿Realmente deseas resetear el directorio &lt;i&gt;%1&lt;/i&gt; y reconstruir la base de datos del cliente?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Esta función está designada para propósitos de mantenimiento solamente. Ningún archivo será eliminado, pero puede causar un tráfico de datos significante y tomar varios minutos o horas para completarse, dependiendo del tamaño del directorio. Sólo use esta opción si es aconsejado por su administrador.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="762"/>
@@ -156,7 +156,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="102"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>No hay cuenta configurada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="428"/>
@@ -166,7 +166,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="716"/>
         <source>%1 of %2 (%3%) in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2(%3) en uso.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="748"/>
@@ -206,17 +206,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="751"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Conectado a &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; como &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="755"/>
         <source>No connection to %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Sin conexión a %1 en &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="720"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>Actualmente no hay información disponible acerca del uso del almacenamiento.</translation>
     </message>
 </context>
 <context>
@@ -224,7 +224,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="267"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Fallo de Conexión</translation>
     </message>
 </context>
 <context>
@@ -247,7 +247,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="92"/>
         <source>CSync failed to write the state db.</source>
-        <translation type="unfinished"/>
+        <translation>Falló CSync en escribir la base de datos de estados.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="95"/>
@@ -353,27 +353,27 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="237"/>
         <source>The item is not synced because of previous errors:</source>
-        <translation type="unfinished"/>
+        <translation>Los items no fueron sincronizados por errores previos:</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="273"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Los vínculos simbólicos no está soportados al sincronizar.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="276"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo está en la lista de ignorados.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="279"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo contiene caracteres inválidos que no pueden ser sincronizados entre plataforma.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="451"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Imposible inicializar un diario de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="147"/>
@@ -393,7 +393,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="159"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>CSync falló al acceder</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="174"/>
@@ -411,7 +411,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="90"/>
         <source>No ownCloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>No hay una cuenta ownCloud configurada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="105"/>
@@ -421,7 +421,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Por favor actualice a la última versión del servidor y reinicie el cliente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="120"/>
@@ -431,7 +431,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="148"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>Las credenciales otorgadas no son correctas</translation>
     </message>
 </context>
 <context>
@@ -470,47 +470,47 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="372"/>
         <source>downloaded</source>
-        <translation type="unfinished"/>
+        <translation>descargado</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="373"/>
         <source>removed</source>
-        <translation type="unfinished"/>
+        <translation>removido</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="374"/>
         <source>updated</source>
-        <translation type="unfinished"/>
+        <translation>actualizado</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="377"/>
         <source>renamed</source>
-        <translation type="unfinished"/>
+        <translation>renombrado</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="382"/>
         <source>moved</source>
-        <translation type="unfinished"/>
+        <translation>movido</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="384"/>
         <source>%1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 a %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="397"/>
         <source>&apos;%1&apos; has been %2.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; ha sido %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="399"/>
         <source>Files %1</source>
-        <translation type="unfinished"/>
+        <translation>Archivos %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; y %2 otros archivos han sido %3.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="452"/>
@@ -594,7 +594,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderman.cpp" line="751"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>El último Sync fue exitoso, pero hubo advertencias en archivos individuales.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="754"/>
@@ -650,22 +650,22 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="61"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Clic para seleccionar un directorio local a sincornizar</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="65"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ingrese el path al directorio local.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="69"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>El alias de directorio es un nombre descriptivo para esta conexión de sincronización</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>¡No se ha seleccionado un directorio local válido!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
@@ -675,7 +675,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>El path local %1 ya es un directorio actualizado. ¡Por favor seleccione otro!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
@@ -685,17 +685,17 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>El directorio seleccionado es un vínculo simbólico. Un directorio ya configurado está contenido en la carpeta que este vínculo apunta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Un directorio configurado ya está contenido en el ingresado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>El directorio seleccionado es un vínculo simbólico. Un directorio ya configurado es el padre del actual y es contenido por el directorio que este vínculo apunta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
@@ -705,7 +705,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>El alias &lt;i&gt;%1&lt;/i&gt; ya está en uso. Por favor, seleccione otro.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
@@ -733,7 +733,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Fallo al crear el directorio en %1. Por favor chequee manualmente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="336"/>
@@ -743,7 +743,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="391"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Este folder ya está siendo sincronizado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="393"/>
@@ -762,7 +762,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
         <location filename="../src/mirall/folderwizard.cpp" line="43"/>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; </source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Advertencia:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -775,7 +775,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Setttings</source>
-        <translation type="unfinished"/>
+        <translation>Configuraciones Generales</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -883,12 +883,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Ingresar contraseña</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, ingresa %1 contraseña para el usuario &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -1196,7 +1196,7 @@ Los elementos marcados también se borrarán si impiden la eliminación de algú
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Configurando servidor %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
@@ -1217,12 +1217,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Fallo de Conexión</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
         <source>Update %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Actualizando servidor %1</translation>
     </message>
 </context>
 <context>
@@ -1287,12 +1287,12 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="181"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>Falló al conectarse a %1 en %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="264"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>¡No se ha especificado un directorio remoto!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="270"/>
@@ -1385,7 +1385,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
         <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>el directorio %1 &lt;i&gt;%1&lt;/i&gt; está sincronizándose con el directorio local &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
@@ -1393,7 +1393,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="517"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizaciójn abortada por el usuario.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
@@ -1441,12 +1441,12 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="327"/>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="381"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Los archivos locales han cambiado durante la sincronización, la primera vez ha funcionado completamente</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="330"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizaciójn abortada por el usuario.</translation>
     </message>
 </context>
 <context>
@@ -1459,7 +1459,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Actividad de Sync</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
@@ -1499,7 +1499,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="64"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>Volver a intentar el Sync</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="68"/>
@@ -1509,7 +1509,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="69"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Copiar la lista de actividades al portapapeles.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="143"/>
@@ -1519,7 +1519,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="143"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>El estado de sincronización ha sido copiado al portapapeles</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="215"/>
@@ -1529,13 +1529,14 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
-        <translation type="unfinished"/>
+        <translation>Actualmente ningún archivo es ignorado por errores previos.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 archivos fueron ignorados por errores previos.
+Intente sincronizar estos nuevamente.</translation>
     </message>
 </context>
 <context>
@@ -1576,23 +1577,24 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="52"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Autenticarse</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="113"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="117"/>
         <source>Error loading IdP login page</source>
-        <translation type="unfinished"/>
+        <translation>Error descargando la página de inicio de sesión de ldp</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
         <source>Could not load Shibboleth login page to log you in.
 Please ensure that your network connection is working.</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo cargar la página de inicio de sesión de Shibboleth.
+Por favor asegúrese que su conexión de red esté en buen estado.</translation>
     </message>
 </context>
 <context>
@@ -1624,13 +1626,13 @@ Please ensure that your network connection is working.</source>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="92"/>
-        <source>State/Provice:</source>
+        <source>State/Province:</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="93"/>
         <source>Country:</source>
-        <translation type="unfinished"/>
+        <translation>Pais:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
@@ -1690,7 +1692,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="130"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="161"/>
@@ -1794,7 +1796,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/systray.cpp" line="49"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -1802,7 +1804,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, inicie sesión</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="203"/>
@@ -1877,12 +1879,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
         <source>Sign in...</source>
-        <translation type="unfinished"/>
+        <translation>Iniciando sesión...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>Salir</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="373"/>
@@ -1952,7 +1954,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="158"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si esta caja es activada, el contenido existente en el directorio local será borrado para empezar una sincronización limpia desde el servidor&lt;/p&gt;&lt;p&gt;No activar esto si el contenido local debe ser actualizado con el directorio del servidor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
@@ -2090,7 +2092,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="99"/>
         <source>Enter the URL of the server that you want to connect to (without http or https).</source>
-        <translation type="unfinished"/>
+        <translation>Ingresar la URL del servidor que deseas conectarte (sin http o https).</translation>
     </message>
 </context>
 <context>
@@ -2177,7 +2179,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="56"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versión %2. Para más información visite &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Por Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Basado en Mirall por Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
 </context>
 <context>
@@ -2230,7 +2232,7 @@ Please ensure that your network connection is working.</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Movido a %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
@@ -2269,12 +2271,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="116"/>
         <source>move</source>
-        <translation type="unfinished"/>
+        <translation>mover</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="119"/>
         <source>moved</source>
-        <translation type="unfinished"/>
+        <translation>movido</translation>
     </message>
 </context>
 <context>
@@ -2302,12 +2304,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Syncronización exitosa, algunos archivos fueron ignorados.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>Error de Sync</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
@@ -2327,12 +2329,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>Abortando...</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Sincronización Pausada</translation>
     </message>
 </context>
 </TS>

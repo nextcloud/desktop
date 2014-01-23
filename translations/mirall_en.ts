@@ -1621,7 +1621,7 @@ Please ensure that your network connection is working.</source>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="92"/>
-        <source>State/Provice:</source>
+        <source>State/Province:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

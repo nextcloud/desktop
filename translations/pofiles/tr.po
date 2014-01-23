@@ -1603,114 +1603,116 @@ Lütfen ağ bağlantınızın çalıştığından emin olun.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="84"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Sertifika Ayrıntıları&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="87"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Ortam Ad (CN):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="88"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Konu Alternatif İsimleri:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="90"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Organizasyon (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="91"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Organizasyon Birimi (OU):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="92"/>
-        <source>State/Provice:</source>
+        <source>State/Province:</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="93"/>
         <source>Country:</source>
-        <translation type="unfinished"/>
+        <translation>Ülke:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Seri No:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Yayıncı&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Yayıncı:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Yayınlanma:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Bitiş:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="105"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Parmak İzleri&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="108"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu sertifika el ile onaylandı&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
         <source>%1 (in Root CA store)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Kök CA deposunda)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="128"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (kendinden imzalı)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="130"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="161"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Bu bağlantı %1 bit %2 kullanılarak şifrelenmiştir.
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="164"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika bilgisi:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="185"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Bu bağlantı şifrelenmediğinden güvenli DEĞİL.
+</translation>
     </message>
 </context>
 <context>

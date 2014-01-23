@@ -1604,37 +1604,37 @@ Por favor asegurese de que la conexión de red está trabajando.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="84"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Detalles del certificado&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="87"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Nombre común (NC):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="88"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Nombres alternativos del sujeto:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="90"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Organización (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="91"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Unidad organizacional (UO):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="92"/>
-        <source>State/Provice:</source>
+        <source>State/Province:</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="93"/>
         <source>Country:</source>
-        <translation type="unfinished"/>
+        <translation>Pais:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
@@ -1659,7 +1659,7 @@ Por favor asegurese de que la conexión de red está trabajando.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Expira en:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="105"/>
@@ -1669,17 +1669,17 @@ Por favor asegurese de que la conexión de red está trabajando.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="108"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Notificación:&lt;/b&gt; Este certificado fue aprobado manualmente&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
@@ -1694,24 +1694,26 @@ Por favor asegurese de que la conexión de red está trabajando.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="130"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="161"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Esta conexión está cifrada con %1 bit %2.
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="164"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Información del certificado:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="185"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Esta conexión NO ES SEGURA, pues no está cifrada.
+</translation>
     </message>
 </context>
 <context>

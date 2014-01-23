@@ -1629,13 +1629,13 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="92"/>
-        <source>State/Provice:</source>
+        <source>State/Province:</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="93"/>
         <source>Country:</source>
-        <translation type="unfinished"/>
+        <translation>Země:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
@@ -1695,7 +1695,7 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="130"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="161"/>
