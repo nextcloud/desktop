@@ -315,29 +315,27 @@ void Folder::bubbleUpSyncResult()
             logger->postOptionalGuiLog(tr("File %1").arg(item._file), item._errorString);
 
         } else {
+            // add new directories or remove gone away dirs to the watcher
+            if (item._type == SyncFileItem::Directory &&
+                    item._instruction == CSYNC_INSTRUCTION_NEW ) {
+                FolderMan::instance()->addMonitorPath( alias(), path()+item._file );
+            }
+            if (item._type == SyncFileItem::Directory &&
+                    item._instruction == CSYNC_INSTRUCTION_REMOVE ) {
+                FolderMan::instance()->removeMonitorPath( alias(), path()+item._file );
+            }
+
             if (item._dir == SyncFileItem::Down) {
                 switch (item._instruction) {
                 case CSYNC_INSTRUCTION_NEW:
                     newItems++;
                     if (firstItemNew.isEmpty())
                         firstItemNew = item;
-
-                    if (item._type == SyncFileItem::Directory) {
-                        FolderMan::instance()->addMonitorPath( alias(), path()+item._file );
-                        // _watcher->addPath(path() + item._file);
-                    }
-
                     break;
                 case CSYNC_INSTRUCTION_REMOVE:
                     removedItems++;
                     if (firstItemDeleted.isEmpty())
                         firstItemDeleted = item;
-
-                    if (item._type == SyncFileItem::Directory) {
-                        // _watcher->removePath(path() + item._file);
-                        FolderMan::instance()->removeMonitorPath( alias(), path()+item._file );
-                    }
-
                     break;
                 case CSYNC_INSTRUCTION_CONFLICT:
                 case CSYNC_INSTRUCTION_SYNC:
