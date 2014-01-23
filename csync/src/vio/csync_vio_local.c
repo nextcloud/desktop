@@ -27,7 +27,6 @@
 
 #ifdef _WIN32
 #include "windows.h"
-#define _UNICODE
 #endif
 
 #include "c_private.h"

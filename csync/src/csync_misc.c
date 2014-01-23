@@ -66,18 +66,20 @@ char *csync_get_user_home_dir(void) {
 
 char *csync_get_local_username(void) {
     DWORD size = 0;
-    char *user;
+    wchar_t *user;
 
     /* get the size */
     GetUserName(NULL, &size);
 
-    user = (char *) c_malloc(size);
+    user = (wchar_t *) c_malloc(2*size);
     if (user == NULL) {
         return NULL;
     }
 
     if (GetUserName(user, &size)) {
-        return user;
+	char *uuser = c_utf8_from_locale(user);
+	SAFE_FREE(user);
+        return uuser;
     }
 
     return NULL;
@@ -144,9 +146,20 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
 
 #include <shlwapi.h>
 int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
+    wchar_t *pat = NULL;
+    wchar_t *name = NULL;
+    BOOL match;
+
     (void) __flags;
-    /* FIXME check if we rather should use the PathMatchSpecW variant here? */
-    if(PathMatchSpec(__name, __pattern))
+
+    name = c_utf8_to_locale(__name);
+    pat = c_utf8_to_locale(__pattern);
+
+    match = PathMatchSpec(name, pat);
+
+    c_free_locale_string(pat);
+    c_free_locale_string(name);
+    if(match)
         return 0;
     else
         return 1;
