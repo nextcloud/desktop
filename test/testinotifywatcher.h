@@ -4,17 +4,17 @@
  *          any purpose.
  *          */
 
-#ifndef MIRALL_TESTFOLDERWATCHERPRIVATE_H
-#define MIRALL_TESTFOLDERWATCHERPRIVATE_H
+#ifndef MIRALL_INOTIFYWATCHER_H
+#define MIRALL_INOTIFYWATCHER_H
 
 #include <QtTest>
 
-#include "mirall/folderwatcher_qt.h"
+#include "mirall/folderwatcher_linux.h"
 #include "mirall/utility.h"
 
 using namespace Mirall;
 
-class TestFolderWatcherPrivate : public FolderWatcherPrivate
+class TestInotifyWatcher: public FolderWatcherPrivate
 {
     Q_OBJECT
 
@@ -23,6 +23,8 @@ private:
 
 private slots:
     void initTestCase() {
+        qsrand(QTime::currentTime().msec());
+
         _root = QDir::tempPath() + "/" + "test_" + QString::number(qrand());
         qDebug() << "creating test directory tree in " << _root;
         QDir rootDir(_root);
