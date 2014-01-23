@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#cmakedefine USE_INOTIFY 1
 #cmakedefine WITH_QTKEYCHAIN 1
 
 #cmakedefine GIT_SHA1 "@GIT_SHA1@"
@@ -14,6 +15,9 @@
 
 #cmakedefine SYSCONFDIR "@SYSCONFDIR@"
 #cmakedefine DATADIR "@DATADIR@"
+
+#ifndef NEON_WITH_LFS
 #cmakedefine NEON_WITH_LFS "@NEON_WITH_LFS@"
+#endif
 
 #endif
