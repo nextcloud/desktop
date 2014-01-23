@@ -618,7 +618,6 @@ SectionEnd
 
 Function .onInit
    SetOutPath $INSTDIR
-   LogSet on
 
    !insertmacro INSTALLOPTIONS_EXTRACT "NSIS.InstallOptions.ini"
 
