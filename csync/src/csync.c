@@ -169,10 +169,8 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 int csync_init(CSYNC *ctx) {
   int rc;
   time_t timediff = -1;
-  char *exclude = NULL;
   char *lock = NULL;
   char *config = NULL;
-  char errbuf[256] = {0};
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -186,11 +184,6 @@ int csync_init(CSYNC *ctx) {
     return 1;
   }
 
-  /* create dir if it doesn't exist */
-  if (! c_isdir(ctx->options.config_dir)) {
-    c_mkdirs(ctx->options.config_dir, 0700);
-  }
-
   /* create lock file */
   if (asprintf(&lock, "%s/%s", ctx->local.uri, CSYNC_LOCK_FILE) < 0) {
     rc = -1;
@@ -202,47 +195,6 @@ int csync_init(CSYNC *ctx) {
     rc = -1;
     ctx->status_code = CSYNC_STATUS_NO_LOCK;
     goto out;
-  }
-
-  /* load config file */
-  if (asprintf(&config, "%s/%s", ctx->options.config_dir, CSYNC_CONF_FILE) < 0) {
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    rc = -1;
-    goto out;
-  }
-
-  rc = csync_config_parse_file(ctx, config);
-  if (rc < 0) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load config file %s, using defaults.", config);
-  }
-
-#ifndef _WIN32
-  /* load global exclude list */
-  if (asprintf(&exclude, "%s/ocsync/%s", SYSCONFDIR, CSYNC_EXCLUDE_FILE) < 0) {
-    rc = -1;
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    goto out;
-  }
-
-  if (csync_exclude_load(ctx, exclude) < 0) {
-    C_STRERROR(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Could not load %s - %s", exclude,
-              errbuf);
-  }
-  SAFE_FREE(exclude);
-#endif
-  /* load exclude list */
-  if (asprintf(&exclude, "%s/%s", ctx->options.config_dir,
-        CSYNC_EXCLUDE_FILE) < 0) {
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    rc = -1;
-    goto out;
-  }
-
-  if (csync_exclude_load(ctx, exclude) < 0) {
-    C_STRERROR(errno, errbuf, sizeof(errbuf));
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Could not load %s - %s", exclude,
-              errbuf);
   }
 
   ctx->local.type = LOCAL_REPLICA;
@@ -346,7 +298,6 @@ retry_vio_init:
 
 out:
   SAFE_FREE(lock);
-  SAFE_FREE(exclude);
   SAFE_FREE(config);
   return rc;
 }
