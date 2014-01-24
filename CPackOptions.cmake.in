@@ -7,6 +7,8 @@ if(CPACK_GENERATOR MATCHES "NSIS")
     SET( CPACK_NSIS_COMPRESSOR   "/SOLID lzma" ) # The arguments that will be passed to the NSIS SetCompressor command.    /SOLID lzma
 endif(CPACK_GENERATOR MATCHES "NSIS")
 
+set( CMAKE_SOURCE_DIR  @CMAKE_SOURCE_DIR@ )
+set( CMAKE_BINARY_DIR  @CMAKE_BINARY_DIR@ )
 set( OEM_THEME_DIR     @OEM_THEME_DIR@ )
 
 if ( DEFINED OEM_THEME_DIR AND EXISTS ${OEM_THEME_DIR}/OEM.cmake )
