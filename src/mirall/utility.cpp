@@ -340,16 +340,15 @@ static bool checkDolphinCanSelect()
 // inspired by Qt Creator's showInGraphicalShell();
 void Utility::showInFileManager(const QString &localPath)
 {
-    const QString sillyQuote("\"\"\"");
     if (isWindows()) {
         QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
 
         if (!QFileInfo(localPath).isDir()) {
             explorer += QLatin1String("/select,");
         }
-        explorer += sillyQuote;
+        explorer += QLatin1Char('"');
         explorer += QDir::toNativeSeparators(localPath);
-        explorer += sillyQuote;
+        explorer += QLatin1Char('"');
 
         qDebug() << "OO Open explorer commandline:" << explorer;
         QProcess p;
