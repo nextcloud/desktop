@@ -18,7 +18,7 @@ if (UNIX)
 
   # The following are directories where stuff will be installed to
   SET(BIN_INSTALL_DIR
-    "${EXEC_INSTALL_PREFIX}/bin"
+    "${CMAKE_INSTALL_BINDIR}"
     CACHE PATH "The ${APPLICATION_SHORT_NAME} binary install dir (default prefix/bin)"
   )
   SET(SBIN_INSTALL_DIR
@@ -26,7 +26,7 @@ if (UNIX)
     CACHE PATH "The ${APPLICATION_SHORT_NAME} sbin install dir (default prefix/sbin)"
   )
   SET(LIB_INSTALL_DIR
-    "${EXEC_INSTALL_PREFIX}/lib${LIB_SUFFIX}"
+    "${CMAKE_INSTALL_LIBDIR}"
     CACHE PATH "The subdirectory relative to the install prefix where libraries will be installed (default is prefix/lib)"
   )
   SET(LIBEXEC_INSTALL_DIR
