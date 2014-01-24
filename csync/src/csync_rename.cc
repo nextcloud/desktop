@@ -91,4 +91,4 @@ char* csync_rename_adjust_path(CSYNC* ctx, const char* path)
     return c_strdup(path);
 }
 
-};
+}
