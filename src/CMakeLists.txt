@@ -16,6 +16,7 @@ if ( APPLE )
          /System/Library/Frameworks/CoreServices.framework
          /System/Library/Frameworks/Foundation.framework
          /System/Library/Frameworks/AppKit.framework
+	 ${SPARKLE}
     )
 endif()
 
