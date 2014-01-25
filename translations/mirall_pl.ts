@@ -206,12 +206,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="751"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Podłączony do &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; jako &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="755"/>
         <source>No connection to %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Brak połączenia do %1 w &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="720"/>
@@ -662,7 +662,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Nie wybrano poprawnego lokalnego katalogu!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
@@ -672,7 +672,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Ścieżka lokalna %1 już istnieje w  zdalnym folderze. Proszę wybrać inną!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
@@ -687,7 +687,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Folder już skonfigurowany zawiera katalogi aktualnie wprowadzone.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
@@ -702,7 +702,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>Alias &lt;i&gt;%1&lt;/i&gt; jest już używany. Wprowadź inny alias.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
@@ -730,7 +730,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się utworzyć folderu na %1. Proszę sprawdzić ręcznie.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="336"/>
@@ -740,7 +740,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="391"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Ten katalog jest już synchronizowany.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="393"/>
@@ -798,12 +798,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizacje</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="88"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Zrestartuj &amp;&amp; Aktualizuj</translation>
     </message>
 </context>
 <context>
@@ -811,7 +811,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="76"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Nowe aktualizacje gotowe</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="77"/>
@@ -822,12 +822,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="101"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Pobieranie wersji %1. Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="103"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Wersja %1 jest dostępna. Uruchom ponownie aplikację aby uruchomić aktualizację.</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="105"/>
@@ -862,7 +862,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="228"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Pomiń tą wersję</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="229"/>
@@ -1191,7 +1191,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Ustaw serwer %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
@@ -1217,7 +1217,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
         <source>Update %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Zaktualizuj serwer %1</translation>
     </message>
 </context>
 <context>
@@ -1504,7 +1504,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="69"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Kopiuj listę aktywności do schowka.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="143"/>
@@ -1514,7 +1514,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="143"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Status synchronizacji został skopiowany do schowka.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="215"/>
@@ -1596,7 +1596,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="84"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Szczegóły certyfikatu&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="87"/>
@@ -1611,7 +1611,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="90"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Organizacja (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="91"/>
@@ -1661,12 +1661,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="108"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
@@ -1697,7 +1697,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="164"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Informacje Certyfikatu:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="185"/>
@@ -2265,7 +2265,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="116"/>
         <source>move</source>
-        <translation type="unfinished"/>
+        <translation>przenieś</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="119"/>
@@ -2328,7 +2328,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizacja wstrzymana</translation>
     </message>
 </context>
 </TS>
