@@ -42,7 +42,6 @@
 
 #include "c_lib.h"
 #include "csync_private.h"
-#include "csync_config.h"
 #include "csync_exclude.h"
 #include "csync_lock.h"
 #include "csync_statedb.h"

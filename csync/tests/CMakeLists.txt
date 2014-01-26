@@ -40,7 +40,6 @@ add_cmocka_test(check_csync_create csync_tests/check_csync_create.c ${TEST_TARGE
 # add_cmocka_test(check_csync_lock csync_tests/check_csync_lock.c ${TEST_TARGET_LIBRARIES})
 # endif()
 add_cmocka_test(check_csync_log csync_tests/check_csync_log.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_csync_config csync_tests/check_csync_config.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_exclude csync_tests/check_csync_exclude.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_statedb_load csync_tests/check_csync_statedb_load.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_time csync_tests/check_csync_time.c ${TEST_TARGET_LIBRARIES})
