@@ -1604,7 +1604,7 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="84"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Podrobnosti potrdila&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="87"/>
@@ -1619,7 +1619,7 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="90"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Ustanova (U):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="91"/>
@@ -1629,7 +1629,7 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="92"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Okraj:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="93"/>
@@ -1639,47 +1639,47 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Zaporedna številka:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Izdaljatelj&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Izdaljatelj:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Izdano na:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Poteče na:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="105"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Prstni odtisi&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="108"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Opomba:&lt;/b&gt; to potrdilo je bilo ročno odobreno&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
@@ -1700,18 +1700,20 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
         <location filename="../src/mirall/sslbutton.cpp" line="161"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Ta povezava je šifrirana z %1 bitnim %2.
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="164"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Podrobnosti potrdila:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="185"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Ta povezava NI varna, saj ni šifrirana.
+</translation>
     </message>
 </context>
 <context>
