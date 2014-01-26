@@ -3,7 +3,7 @@
 #include "torture.h"
 
 #define CSYNC_TEST 1
-#include "csync.h"
+#include "csync_private.h"
 
 static void setup_local(void **state) {
     CSYNC *csync;
