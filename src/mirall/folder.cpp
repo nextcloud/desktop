@@ -530,26 +530,6 @@ bool Folder::proxyDirty()
     return _proxyDirty;
 }
 
-const char* Folder::proxyTypeToCStr(QNetworkProxy::ProxyType type)
-{
-    switch (type) {
-    case QNetworkProxy::NoProxy:
-        return "NoProxy";
-    case QNetworkProxy::DefaultProxy:
-        return "DefaultProxy";
-    case QNetworkProxy::Socks5Proxy:
-        return "Socks5Proxy";
-    case QNetworkProxy::HttpProxy:
-        return "HttpProxy";
-    case QNetworkProxy::HttpCachingProxy:
-        return "HttpCachingProxy";
-    case QNetworkProxy::FtpCachingProxy:
-        return "FtpCachingProxy";
-    default:
-        return "NoProxy";
-    }
-}
-
 void Folder::startSync(const QStringList &pathList)
 {
     Q_UNUSED(pathList)

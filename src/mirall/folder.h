@@ -27,8 +27,6 @@
 
 #include <QDir>
 #include <QHash>
-#include <QNetworkAccessManager>
-#include <QNetworkProxy>
 #include <QObject>
 #include <QStringList>
 
@@ -192,8 +190,6 @@ private:
 
 
     void setIgnoredFiles();
-
-    const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
 
     void bubbleUpSyncResult();
 
