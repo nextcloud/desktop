@@ -3,6 +3,7 @@
 ## Introduction
 
 Translations on transifex: http://www.transifex.com/projects/p/owncloud/resource/mirall-wininstaller/
+
 Daily sync job: https://ci.owncloud.org/view/translation-sync/job/translation-sync-mirall-wininstaller/
 
 ## How to add a new translation string?
