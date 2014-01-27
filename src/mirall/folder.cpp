@@ -28,6 +28,8 @@
 
 #include "creds/abstractcredentials.h"
 
+#include <QThread>
+
 
 extern "C" {
 

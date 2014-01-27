@@ -19,12 +19,8 @@
 #include <stdint.h>
 
 #include <QMutex>
-#include <QThread>
 #include <QString>
 #include <qelapsedtimer.h>
-#include <qstack.h>
-#include <QNetworkProxy>
-#include <QNetworkCookie>
 
 #include <csync.h>
 
