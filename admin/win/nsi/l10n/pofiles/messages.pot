@@ -170,6 +170,10 @@ msgstr "Uninstall aborted by user"
 msgid "Quick Launch Shortcut (N/A)"
 msgstr "Quick Launch Shortcut (N/A)"
 
+#. INIT_NO_DESKTOP
+msgid "Desktop Shortcut (overwrites existing)"
+msgstr "Desktop Shortcut (overwrites existing)"
+
 #. UAC_ERROR_ELEVATE
 msgid "Unable to elevate, error:"
 msgstr "Unable to elevate, error:"
