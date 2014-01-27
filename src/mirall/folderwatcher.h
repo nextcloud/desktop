@@ -16,16 +16,6 @@
 
 #include "config.h"
 
-#include "mirall/folder.h"
-
-#if defined(Q_OS_WIN)
-#include "mirall/folderwatcher_win.h"
-#elif defined(Q_OS_MAC)
-#include "mirall/folderwatcher_mac.h"
-#elif defined(Q_OS_LINUX)
-#include "mirall/folderwatcher_linux.h"
-#endif
-
 #include <QList>
 #include <QObject>
 #include <QString>
@@ -54,6 +44,7 @@ public:
      * @param root Path of the root of the folder
      */
     FolderWatcher(const QString &root, QObject *parent = 0L);
+    virtual ~FolderWatcher();
 
     /**
       * Set a file name to load a file with ignore patterns.

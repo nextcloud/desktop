@@ -25,6 +25,15 @@
 #include <QStringList>
 #include <QTimer>
 
+#if defined(Q_OS_WIN)
+#include "mirall/folderwatcher_win.h"
+#elif defined(Q_OS_MAC)
+#include "mirall/folderwatcher_mac.h"
+#elif defined(Q_OS_LINUX)
+#include "mirall/folderwatcher_linux.h"
+#endif
+
+
 namespace Mirall {
 
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
@@ -34,6 +43,9 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
 
     _timer.start();
 }
+
+FolderWatcher::~FolderWatcher()
+{ }
 
 void FolderWatcher::addIgnoreListFile( const QString& file )
 {
