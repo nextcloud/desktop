@@ -265,6 +265,9 @@ void HttpCredentials::invalidateToken(Account *account)
 {
     _password = QString();
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+    job->setInsecureFallback(true);
+    connect(job, SIGNAL(destroyed(QObject*)), job->settings(), SLOT(deleteLater()));
     job->setKey(keychainKey(account->url().toString(), _user));
     job->start();
     _ready = false;
