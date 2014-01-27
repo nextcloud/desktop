@@ -941,12 +941,12 @@ Izbrani predmeti bodo tudi izbrisani, v kolikor bi sicer onemogočali brisanje m
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Uredi vzorec za izpuščanje</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Uredi vzorec za izpuščanje:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -1689,7 +1689,7 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="128"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (samopodpisano)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="130"/>

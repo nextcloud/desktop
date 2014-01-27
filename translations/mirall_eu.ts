@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation type="unfinished"/>
+        <translation>Hautatu zure ordenagailuko karpeta lokala sinkronizatzeko</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="44"/>
@@ -47,7 +47,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="174"/>
         <source>Folders</source>
-        <translation type="unfinished"/>
+        <translation>Karpetak</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="107"/>
@@ -75,17 +75,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="152"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>Aldatu Kontua</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatzeko Kontua</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;user&gt; bezala &lt;server&gt;-n konektatuta</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
@@ -101,17 +101,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="55"/>
         <source>Add Folder...</source>
-        <translation type="unfinished"/>
+        <translation>Gehitu Karpeta...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="94"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>Biltegiratze Erabilera</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="116"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>Erabileraren informazioa eskuratzen...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="123"/>
@@ -156,7 +156,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="102"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>Ez da konturik konfiguratu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="428"/>
@@ -171,12 +171,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="748"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;ra konektatuta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="598"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Hasi</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="607"/>
@@ -186,7 +186,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="615"/>
         <source>Completely</source>
-        <translation type="unfinished"/>
+        <translation>Guztiz</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="649"/>
@@ -196,7 +196,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="652"/>
         <source>Completely finished.</source>
-        <translation type="unfinished"/>
+        <translation>Guztiz bukatuta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="659"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="720"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>Orain ez dago eskuragarri biltegiratze erabileraren informazioa.</translation>
     </message>
 </context>
 <context>
@@ -224,7 +224,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="267"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Konexioak huts egin du</translation>
     </message>
 </context>
 <context>
@@ -358,7 +358,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="273"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Esteka sinbolikoak ezin dira sinkronizatu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="276"/>
@@ -398,7 +398,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Erabiltzaileak bertan behera utzita</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="178"/>
@@ -411,27 +411,27 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="90"/>
         <source>No ownCloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago ownCloud konturik konfiguratuta</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="105"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Bezero honentzako konfiguratutako zerbitzaria oso zaharra da</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Mesedez eguneratu zerbitzarira eta berrabiarazi bezeroa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="120"/>
         <source>Unable to connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da %1ra konektatu</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="148"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>Emandako kredentzialak ez dira zuzenak</translation>
     </message>
 </context>
 <context>
@@ -459,38 +459,38 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="314"/>
         <source>File %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 Fitxategia: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="315"/>
         <location filename="../src/mirall/folder.cpp" line="395"/>
         <source>File %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 Fitxategia</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>
         <source>downloaded</source>
-        <translation type="unfinished"/>
+        <translation>deskargatuta</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="371"/>
         <source>removed</source>
-        <translation type="unfinished"/>
+        <translation>ezabatuta</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="372"/>
         <source>updated</source>
-        <translation type="unfinished"/>
+        <translation>eguneratuta</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="375"/>
         <source>renamed</source>
-        <translation type="unfinished"/>
+        <translation>berrizendatuta</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="380"/>
         <source>moved</source>
-        <translation type="unfinished"/>
+        <translation>mugitua</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="382"/>
@@ -500,7 +500,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="395"/>
         <source>&apos;%1&apos; has been %2.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; &apos;%2&apos; izan da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="397"/>
@@ -533,17 +533,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="729"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Ezabatu Fitxategi Guztiak?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="731"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Ezabatu fitxategi guztiak</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="732"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Mantendu fitxategiak</translation>
     </message>
 </context>
 <context>
@@ -571,7 +571,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="737"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazioa prestatzen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="740"/>
@@ -581,7 +581,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="743"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Zerbitzaria orain ez dago eskuragarri.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="746"/>
@@ -601,7 +601,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="757"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Erabiltzaileak Bertan Behera Utzi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="760"/>
@@ -611,7 +611,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="766"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Sinkronizazioa pausatuta dago)</translation>
     </message>
 </context>
 <context>
@@ -620,7 +620,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="95"/>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="250"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategia</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
@@ -647,12 +647,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="61"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Klikatu sinkronizatzeko bertako karpeta bat sinkronizatzeko.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="65"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Sartu bertako karpeta berriaren bidea:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="69"/>
@@ -662,7 +662,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Ez da bertako karpeta egokirik hautatu!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
@@ -715,12 +715,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="256"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Gehitu Urruneko Karpeta</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Enter the name of the new folder:</source>
-        <translation type="unfinished"/>
+        <translation>Sartu karpeta berriaren izena:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="279"/>
@@ -740,7 +740,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="391"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Karpeta hau dagoeneko sinkronizatzen ari da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="393"/>
@@ -759,7 +759,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderwizard.cpp" line="43"/>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; </source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Abisua:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -772,7 +772,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Setttings</source>
-        <translation type="unfinished"/>
+        <translation>Ezarpen Orokorrak</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -782,7 +782,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Erakutsi Mahagaineko Jakinarazpenak</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
@@ -798,12 +798,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Eguneraketak</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="88"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>Be&amp;rrabiarazi eta Eguneratu</translation>
     </message>
 </context>
 <context>
@@ -811,7 +811,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="76"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Eguneraketa Berria Prest</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="77"/>
@@ -880,12 +880,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="253"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Sartu Pasahitza</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="254"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Mesedez sartu %1 pasahitza &apos;%2&apos; erabiltzailerako:</translation>
     </message>
 </context>
 <context>
@@ -915,7 +915,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da fitxategia ireki</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="98"/>
@@ -1059,35 +1059,35 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="182"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Deskargatzeko Banda Zabalera</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="188"/>
         <location filename="../src/mirall/networksettings.ui" line="287"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>Honetara mugatu</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="210"/>
         <location filename="../src/mirall/networksettings.ui" line="312"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>KByte/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="232"/>
         <location filename="../src/mirall/networksettings.ui" line="270"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Mugarik ez</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="264"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Igotzeko Banda Zabalera</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="277"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>Automatikoki mugatu</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="34"/>
@@ -1107,12 +1107,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 proxy</translation>
     </message>
 </context>
 <context>
@@ -1120,7 +1120,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="48"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1era konektatu</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
@@ -1130,12 +1130,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>Konektatu...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="108"/>
         <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Zure kontu osoa &apos;%1&apos; karpeta lokalera sinkronizatuko da.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="111"/>
@@ -1155,7 +1155,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="235"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazio karpeta lokala</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="248"/>
@@ -1168,17 +1168,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="42"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1ra konektatu</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="43"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Sartu erabiltzailearen kredentzialak</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="159"/>
         <source>Update user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Eguneratu erabiltzailearen kredentzialak</translation>
     </message>
 </context>
 <context>
@@ -1186,7 +1186,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1ra konektatu</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
@@ -1212,7 +1212,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Konexioak huts egin du</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
@@ -1251,7 +1251,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="215"/>
         <source>Error: Wrong credentials.</source>
-        <translation type="unfinished"/>
+        <translation>Errorea: Kredentzial okerrak.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="229"/>
@@ -1287,7 +1287,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="264"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Ez da urruneko karpeta zehaztu!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="270"/>
@@ -1360,7 +1360,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1</source>
-        <translation type="unfinished"/>
+        <translation>Ireki %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="42"/>
@@ -1388,7 +1388,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="517"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazioa erabiltzaileak bertan behera utzi du</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
@@ -1441,7 +1441,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="330"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazioa erabiltzaileak bertan behera utzi du</translation>
     </message>
 </context>
 <context>
@@ -1454,17 +1454,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazio Jarduerak</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="54"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
@@ -1474,7 +1474,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategia</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
@@ -1484,7 +1484,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="52"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Ekintza</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="53"/>
@@ -1514,12 +1514,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="143"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazio egoera arbelera kopiatu da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="215"/>
         <source>No more storage space available on server.</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago biltegiratze leku gehiago zerbitzarian.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
@@ -1543,7 +1543,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="51"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
@@ -1558,12 +1558,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="71"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Sarea</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="54"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Kontua</translation>
     </message>
 </context>
 <context>
@@ -1576,7 +1576,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="113"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="117"/>
@@ -1660,12 +1660,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="108"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
@@ -1685,7 +1685,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="130"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="161"/>
@@ -1789,7 +1789,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/systray.cpp" line="49"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -1797,7 +1797,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Mesedez saioa hasi</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="203"/>
@@ -1812,12 +1812,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="234"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>Bat ere ez.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="238"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>Azkenengo Aldaketak</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="255"/>
@@ -1832,12 +1832,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="268"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ireki &apos;%1&apos; karpeta</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="344"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ireki %1 arakatzailean</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="346"/>
@@ -1847,17 +1847,17 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="348"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>Egoera ezezaguna</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="350"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>Ezarpenak...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="351"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>Xehetasunak...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="356"/>
@@ -1867,17 +1867,17 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="358"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 Irten</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
         <source>Sign in...</source>
-        <translation type="unfinished"/>
+        <translation>Saioa hasi...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>Saioa bukatu</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="373"/>
@@ -1927,7 +1927,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="69"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Karpeta &amp;lokala</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="85"/>
@@ -1937,12 +1937,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="107"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>Mantendu datu lo&amp;kalak</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="139"/>
         <source>&lt;small&gt;Syncs your existing data to new location.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;Existitzen diren zure datuak leku berri batera sinkronizatuko ditu.&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="158"/>
@@ -1952,7 +1952,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
         <source>&amp;Start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>Hasi &amp;Sinkronizazio garbia</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="193"/>
@@ -1962,7 +1962,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Egoera mezua</translation>
     </message>
 </context>
 <context>
@@ -1975,12 +1975,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Erabiltzaile-izena</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Pasahitza</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="58"/>
@@ -2116,27 +2116,27 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/utility.cpp" line="113"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="116"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="119"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="122"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 kB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="125"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
 </context>
 <context>
@@ -2202,7 +2202,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="50"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Hasi</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="53"/>
@@ -2212,7 +2212,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>For deletion</source>
-        <translation type="unfinished"/>
+        <translation>Ezabatzeko</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
@@ -2231,14 +2231,14 @@ Please ensure that your network connection is working.</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="92"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="98"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>deskargatzen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="95"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="101"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>igotzen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="89"/>
@@ -2248,12 +2248,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="104"/>
         <source>starting</source>
-        <translation type="unfinished"/>
+        <translation>hasten</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="107"/>
         <source>finished</source>
-        <translation type="unfinished"/>
+        <translation>bukatuta</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="110"/>
@@ -2263,12 +2263,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="116"/>
         <source>move</source>
-        <translation type="unfinished"/>
+        <translation>mugitu</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="119"/>
         <source>moved</source>
-        <translation type="unfinished"/>
+        <translation>mugituta</translation>
     </message>
 </context>
 <context>
@@ -2301,7 +2301,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazio Errorea</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
@@ -2311,22 +2311,22 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>The server is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Zerbitzaria orain ez dago eskuragarri.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazioa prestatzen</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>Bertan-behera uzten</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazioa pausatuta dago</translation>
     </message>
 </context>
 </TS>
