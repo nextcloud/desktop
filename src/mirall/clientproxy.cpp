@@ -15,6 +15,7 @@
 
 #include "mirall/mirallconfigfile.h"
 #include "mirall/folderman.h"
+#include <QUrl>
 
 namespace Mirall {
 
