@@ -132,7 +132,7 @@ void GenericUpdater::slotStartInstaller()
     QString updateFile = settings.value(updateAvailableC).toString();
     settings.setValue(ranUpdateC, true);
     qDebug() << "Running updater" << updateFile;
-    QProcess::startDetached(updateFile, QStringList() << "/S");
+    QProcess::startDetached(updateFile, QStringList() << "/S" << "/launch");
     qApp->quit();
 }
 
