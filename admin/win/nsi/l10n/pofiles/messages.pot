@@ -20,13 +20,13 @@ msgstr "Show release notes"
 
 #. ConfirmEndProcess_MESSAGEBOX_TEXT
 msgid ""
-"Found ${processName} process(s) which need to be stopped.$\n"
+"Found ${APPLICATION_EXECUTABLE} process(s) which need to be stopped.$\n"
 "Do you want the installer to stop these for you?"
-msgstr "Found ${processName} process(s) which need to be stopped.$\nDo you want the installer to stop these for you?"
+msgstr "Found ${APPLICATION_EXECUTABLE} process(s) which need to be stopped.$\nDo you want the installer to stop these for you?"
 
 #. ConfirmEndProcess_KILLING_PROCESSES_TEXT
-msgid "Killing ${processName} processes."
-msgstr "Killing ${processName} processes."
+msgid "Killing ${APPLICATION_EXECUTABLE} processes."
+msgstr "Killing ${APPLICATION_EXECUTABLE} processes."
 
 #. ConfirmEndProcess_KILL_NOT_FOUND_TEXT
 msgid "Process to kill not found!"
