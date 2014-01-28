@@ -80,7 +80,7 @@ void GeneralSettings::slotUpdateInfo()
         connect(updater, SIGNAL(stateChanged()), SLOT(slotUpdateInfo()), Qt::UniqueConnection);
         connect(_ui->restartButton, SIGNAL(clicked()), updater, SLOT(slotStartInstaller()), Qt::UniqueConnection);
         _ui->updateStateLabel->setText(updater->statusString());
-        _ui->restartButton->setVisible(updater->state() == GenericUpdater::UpdateAvailable);
+        _ui->restartButton->setVisible(updater->downloadState() == GenericUpdater::DownloadComplete);
     } else {
         // can't have those infos from sparkle currently
         _ui->updatesGroupBox->setVisible(false);

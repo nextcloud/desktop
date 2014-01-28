@@ -26,9 +26,9 @@ public:
     ~SparkleUpdater();
 
     // unused in this updater
-    Updater::UpdateState updateState() const { return Updater::NoUpdate; }
     void checkForUpdate();
     void backgroundCheckForUpdate();
+    bool handleStartup() { return false; }
 private:
     class Private;
     Private *d;

@@ -50,17 +50,11 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    Updater *updater = Updater::instance();
-    switch (updater->updateState()) {
-    case Updater::UpdateAvailable:
-        updater->performUpdate();
+    // if handleStartup returns true, main()
+    // needs to terminate here, e.g. because
+    // the updater is triggered
+    if (Updater::instance()->handleStartup()) {
         return true;
-    case Updater::UpdateFailed:
-        updater->showFallbackMessage();
-        break;
-    case Updater::NoUpdate:
-    default:
-        break;
     }
 
     // if the application is already running, notify it.

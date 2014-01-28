@@ -273,7 +273,7 @@ set(mirall_SRCS
     mirall/owncloudgui.cpp
     mirall/socketapi.cpp
     mirall/updater.cpp
-    mirall/genericupdater.cpp
+    mirall/ocupdater.cpp
     mirall/sslbutton.cpp
 )
 
@@ -301,7 +301,7 @@ set(mirall_HEADERS
     mirall/owncloudgui.h
     mirall/socketapi.h
     mirall/updater.h
-    mirall/genericupdater.h
+    mirall/ocupdater.h
     mirall/sslbutton.h
 )
 

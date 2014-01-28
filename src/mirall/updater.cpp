@@ -29,11 +29,14 @@ Updater * Updater::instance()
 
 Updater *Updater::create()
 {
+    QString updateBaseUrl(QLatin1String("http://update.thinkpad/"));
 #ifdef Q_OS_MAC
-    return new SparkleUpdater(QLatin1String("https://updates.owncloud.com/testing/feed.rss"));
-#else
+    return new SparkleUpdater(updateBaseUrl+QLatin1String("/rss/");
+#elif defined (Q_OS_WIN32)
     // the best we can do is notify about updates
-    return new GenericUpdater(QUrl("https://updates.owncloud.com/testing/"));
+    return new NSISUpdater(QUrl(updateBaseUrl));
+#else
+    return new PassiveUpdateNotifier(QUrl(updateBaseUrl));
 #endif
 }
 
