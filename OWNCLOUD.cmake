@@ -3,7 +3,7 @@ set( APPLICATION_NAME       "ownCloud" )
 set( APPLICATION_EXECUTABLE "owncloud" )
 set( APPLICATION_DOMAIN     "owncloud.com" )
 set( APPLICATION_VENDOR     "ownCloud, Inc" )
-set( APPLICATION_UPDATE_URL "https://updates.owncloud.com/client/" )
+set( APPLICATION_UPDATE_URL "https://updates.owncloud.com/client/" CACHE string "URL for updater" )
 
 set( THEME_CLASS            "ownCloudTheme" )
 set( APPLICATION_REV_DOMAIN "com.owncloud.desktopclient" )
