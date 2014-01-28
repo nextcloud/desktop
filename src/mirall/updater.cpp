@@ -15,6 +15,8 @@
 #include "mirall/sparkleupdater.h"
 #include "mirall/ocupdater.h"
 
+#include "config.h"
+
 namespace Mirall {
 
 Updater *Updater::_instance = 0;
@@ -29,7 +31,7 @@ Updater * Updater::instance()
 
 Updater *Updater::create()
 {
-    QString updateBaseUrl(QLatin1String("http://update.thinkpad/"));
+    QString updateBaseUrl(QLatin1String(APPLICATION_UPDATE_URL));
 #ifdef Q_OS_MAC
     return new SparkleUpdater(updateBaseUrl+QLatin1String("/rss/");
 #elif defined (Q_OS_WIN32)
