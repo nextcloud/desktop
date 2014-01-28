@@ -34,6 +34,25 @@ static const char updateAvailableC[] = "Updater/updateAvailable";
 static const char lastVersionC[] = "Updater/lastVersion";
 static const char ranUpdateC[] = "Updater/ranUpdate";
 
+static qint64 versionToInt(qint64 major, qint64 minor, qint64 patch, qint64 build)
+{
+    return major << 56 | minor << 48 | patch << 40 | build;
+}
+
+static qint64 currentVersionToInt()
+{
+    return versionToInt(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR,
+                        MIRALL_VERSION_PATCH, MIRALL_VERSION_BUILD);
+}
+
+static qint64 stringVersionToInt(const QString& version)
+{
+    QByteArray baVersion = version.toLatin1();
+    int major = 0, minor = 0, patch = 0, build = 0;
+    sscanf(baVersion, "%d.%d.%d.%d", &major, &minor, &patch, &build);
+    return versionToInt(major, minor, patch, build);
+}
+
 OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
     QObject(parent)
   , _updateUrl(url)
@@ -164,22 +183,12 @@ QString OCUpdater::getSystemInfo()
 #endif
 }
 
-static qint64 versionToInt(qint64 major, qint64 minor, qint64 patch, qint64 build)
-{
-    return major << 56 | minor << 48 | patch << 40 | build;
-}
-
 bool OCUpdater::updateSucceeded() const
 {
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    QByteArray lastVersion = settings.value(lastVersionC).toString().toLatin1();
-    int major = 0, minor = 0, patch = 0, build = 0;
-    sscanf(lastVersion, "%d.%d.%d.%d", &major, &minor, &patch, &build);
-    qint64 oldVersionInt = versionToInt(major, minor, patch, build);
-    qint64 versionInt = versionToInt(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR,
-                                     MIRALL_VERSION_PATCH, MIRALL_VERSION_BUILD);
-    return versionInt > oldVersionInt;
+    qint64 oldVersionInt = stringVersionToInt(settings.value(lastVersionC).toString().toLatin1());
+    return currentVersionToInt() > oldVersionInt;
 }
 
 QString OCUpdater::clientVersion() const
@@ -189,6 +198,7 @@ QString OCUpdater::clientVersion() const
 
 void OCUpdater::slotVersionInfoArrived()
 {
+    _timer->stop();
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if( reply->error() != QNetworkReply::NoError ) {
         qDebug() << "Failed to reach version check url: " << reply->errorString();
@@ -254,13 +264,16 @@ void NSISUpdater::showFallbackMessage()
 void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
 {
     MirallConfigFile cfg;
-    if( info.version().isEmpty() || info.version() == cfg.seenVersion() ) {
+    qint64 infoVersion = stringVersionToInt(info.version());
+    qint64 seenVersion = stringVersionToInt(cfg.seenVersion());
+
+    if(info.version().isEmpty() || infoVersion <= seenVersion ) {
         qDebug() << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
         QString url = info.downloadUrl();
         if (url.isEmpty() || _showFallbackMessage) {
-                showDialog(info);
+            showDialog(info);
         }
         if (!url.isEmpty()) {
             _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/'));
