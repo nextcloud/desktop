@@ -73,7 +73,6 @@ protected:
 
 private slots:
     void slotFinished();
-    void slotError(QNetworkReply::NetworkError);
     virtual void slotTimeout() {}
 
 private:

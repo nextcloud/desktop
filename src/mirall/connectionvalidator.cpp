@@ -129,7 +129,6 @@ void ConnectionValidator::slotCheckAuthentication()
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
     PropfindJob *job = new PropfindJob(_account, "/", this);
-    job->setIgnoreCredentialFailure(true);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
     connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));

@@ -86,7 +86,6 @@ void OwncloudSetupWizard::startWizard()
         account = new Account;
         account->setCredentials(CredentialsFactory::create("dummy"));
     } else {
-        account->credentials()->fetch(account);
         _ocWizard->setConfigExists(true);
     }
     account->setSslErrorHandler(new SslDialogErrorHandler);
@@ -450,7 +449,7 @@ void DetermineAuthTypeJob::start()
 void DetermineAuthTypeJob::finished()
 {
     QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    qDebug() << redirection.toString();
+    qDebug() << Q_FUNC_INFO << redirection.toString();
     if (_redirects >= maxRedirects()) {
         redirection.clear();
     }

@@ -67,7 +67,8 @@ class Account : public QObject {
 public:
     enum State { Disconnected = 0, /// no network connection
                  Connected, /// account is online
-                 SignedOut /// Disconnected + credential token has been discarded
+                 SignedOut, /// Disconnected + credential token has been discarded
+                 InvalidCredidential /// The credidential are invalids and we are asking for them to the user
                };
 
     static QString davPath() { return "remote.php/webdav/"; }

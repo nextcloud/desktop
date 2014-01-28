@@ -73,20 +73,19 @@ protected slots:
     void slotConnectionValidatorResult(ConnectionValidator::Status);
     void slotStartUpdateDetector();
     void slotUseMonoIconsChanged( bool );
-    void slotCredentialsFetched();
     void slotLogin();
     void slotLogout();
     void slotCleanup();
     void slotAccountChanged(Account *newAccount, Account *oldAccount);
+    void slotCredentialsFetched();
 
 private:
     void setHelp();
-    void runValidator();
 
     QPointer<ownCloudGui> _gui;
     QPointer<SocketApi> _socketApi;
 
-    ConnectionValidator *_conValidator;
+    QPointer<ConnectionValidator> _conValidator;
 
     Theme *_theme;
 

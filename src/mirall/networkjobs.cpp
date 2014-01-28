@@ -25,6 +25,7 @@
 #include <QTimer>
 #include <QMutex>
 #include <QDebug>
+#include <QCoreApplication>
 
 #include "json.h"
 
@@ -89,17 +90,9 @@ void AbstractNetworkJob::setPath(const QString &path)
     _path = path;
 }
 
-void AbstractNetworkJob::slotError(QNetworkReply::NetworkError)
-{
-    qDebug() << metaObject()->className() << "Error:" << _reply->errorString();
-    emit networkError(_reply);
-}
-
 void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
     connect(reply, SIGNAL(finished()), SLOT(slotFinished()));
-    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(slotError(QNetworkReply::NetworkError)));
 }
 
 QNetworkReply* AbstractNetworkJob::davRequest(const QByteArray &verb, const QString &relPath,
@@ -137,25 +130,21 @@ void AbstractNetworkJob::slotFinished()
 {
     if( _reply->error() != QNetworkReply::NoError ) {
         qDebug() << Q_FUNC_INFO << _reply->error() << _reply->errorString();
+        emit networkError(_reply);
     }
-
-    static QMutex mutex;
+    finished();
     AbstractCredentials *creds = _account->credentials();
-    if (creds->stillValid(_reply) || _ignoreCredentialFailure) {
-        finished();
-    } else {
-        // If other jobs that still were created from before
-        // the account was put offline by the code below,
-        // we do want them to fail silently while we
-        // query the user
-        if (mutex.tryLock()) {
-            Account *a = account();
-            bool fetched = creds->fetchFromUser(a);
-            if (fetched) {
-                a->setState(Account::Connected);
-            }
-            mutex.unlock();
-        }
+    if (!creds->stillValid(_reply) &&! _ignoreCredentialFailure
+            && _account->state() != Account::InvalidCredidential) {
+        // invalidate & forget token/password
+        _account->credentials()->invalidateToken(_account);
+
+        _account->setState(Account::InvalidCredidential);
+
+        // but try to re-sign in.
+        connect( creds, SIGNAL(fetched()),
+                 qApp, SLOT(slotCredentialsFetched()), Qt::UniqueConnection);
+        creds->fetch(_account);   // this triggers Application::runValidator when the credidentials are fetched
     }
     deleteLater();
 }

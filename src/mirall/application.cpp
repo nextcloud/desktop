@@ -210,14 +210,20 @@ void Application::slotCheckConnection()
     Account *account = AccountManager::instance()->account();
 
     if( account ) {
+        if (account->state() == Account::InvalidCredidential
+                || account->state() == Account::SignedOut) {
+            //Do not try to connect if we are logged out
+            return;
+        }
+
         AbstractCredentials* credentials(account->credentials());
 
         if (! credentials->ready()) {
             connect( credentials, SIGNAL(fetched()),
-                     this, SLOT(slotCredentialsFetched()));
+                     this, SLOT(slotCredentialsFetched()), Qt::UniqueConnection);
             credentials->fetch(account);
         } else {
-            runValidator();
+            slotCredentialsFetched();
         }
     } else {
         // let gui open the setup wizard
@@ -228,14 +234,21 @@ void Application::slotCheckConnection()
 void Application::slotCredentialsFetched()
 {
     Account *account = AccountManager::instance()->account();
-    disconnect(account->credentials(), SIGNAL(fetched()),
-               this, SLOT(slotCredentialsFetched()));
-    runValidator();
-}
+    Q_ASSERT(account);
+    disconnect(account->credentials(), SIGNAL(fetched()), this, SLOT(slotCredentialsFetched()));
+    if (!account->credentials()->ready()) {
+        // User canceled the connection or did not give a password
+        account->setState(Account::SignedOut);
+        return;
+    }
+    if (account->state() == Account::InvalidCredidential) {
+        // Then we ask again for the credidentials if they are wrong again
+        account->setState(Account::Disconnected);
+    }
 
-void Application::runValidator()
-{
-    _conValidator = new ConnectionValidator(AccountManager::instance()->account());
+    if (_conValidator)
+        _conValidator->deleteLater();
+    _conValidator = new ConnectionValidator(account);
     connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
              this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
     _conValidator->checkConnection();
