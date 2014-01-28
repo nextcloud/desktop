@@ -92,7 +92,7 @@ QString OCUpdater::statusString() const
     case DownloadComplete:
         return tr("Version %1 available. Restart application to start the update.").arg(updateVersion);
     case DownloadFailed:
-        return tr("Could not download update. Please click <a href='%1'>here</a> %2 to download the update manually.").arg(_updateInfo.web(), updateVersion);
+        return tr("Could not download update. Please click <a href='%1'>here</a> to download the update manually.").arg(_updateInfo.web());
     case DownloadTimedOut:
         return tr("Could not check for new updates.");
     case UpdateOnlyAvailableThroughSystem:
