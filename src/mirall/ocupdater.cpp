@@ -251,8 +251,8 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
         QString url = info.downloadUrl();
         if (url.isEmpty() || _showFallbackMessage) {
                 showDialog(info);
-            setDownloadState(Unknown);
-        } else {
+        }
+        if (!url.isEmpty()) {
             _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/'));
             if (QFile(_targetFile).exists()) {
                 setDownloadState(DownloadComplete);
