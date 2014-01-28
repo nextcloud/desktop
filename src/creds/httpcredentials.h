@@ -52,6 +52,7 @@ public:
     QString password() const;
     QString queryPassword(bool *ok);
     void invalidateToken(Account *account);
+    QString fetchUser(Account *account);
 
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply*, QAuthenticator*);

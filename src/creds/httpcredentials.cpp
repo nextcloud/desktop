@@ -173,9 +173,15 @@ bool HttpCredentials::ready() const
     return _ready;
 }
 
-void HttpCredentials::fetch(Account *account)
+QString HttpCredentials::fetchUser(Account* account)
 {
     _user = account->credentialSetting(QLatin1String(userC)).toString();
+    return _user;
+}
+
+void HttpCredentials::fetch(Account *account)
+{
+    fetchUser(account);
     if (_ready) {
         Q_EMIT fetched();
     } else {
