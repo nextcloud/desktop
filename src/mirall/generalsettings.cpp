@@ -77,7 +77,7 @@ void GeneralSettings::slotUpdateInfo()
 {
     if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance()))
     {
-        connect(updater, SIGNAL(stateChanged()), SLOT(slotUpdateInfo()), Qt::UniqueConnection);
+        connect(updater, SIGNAL(downloadStateChanged()), SLOT(slotUpdateInfo()), Qt::UniqueConnection);
         connect(_ui->restartButton, SIGNAL(clicked()), updater, SLOT(slotStartInstaller()), Qt::UniqueConnection);
         _ui->updateStateLabel->setText(updater->statusString());
         _ui->restartButton->setVisible(updater->downloadState() == OCUpdater::DownloadComplete);
