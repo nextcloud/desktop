@@ -12,7 +12,7 @@
  * for more details.
  */
 
-#include "mirall/genericupdater.h"
+#include "mirall/ocupdater.h"
 #include "mirall/theme.h"
 #include "mirall/version.h"
 #include "mirall/mirallconfigfile.h"

@@ -20,7 +20,7 @@
 #include "mirall/utility.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/updater.h"
-#include "mirall/genericupdater.h"
+#include "mirall/ocupdater.h"
 
 #include <QNetworkProxy>
 #include <QDir>

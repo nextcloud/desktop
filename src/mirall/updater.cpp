@@ -13,7 +13,7 @@
 
 #include "mirall/updater.h"
 #include "mirall/sparkleupdater.h"
-#include "mirall/genericupdater.h"
+#include "mirall/ocupdater.h"
 
 namespace Mirall {
 
