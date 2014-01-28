@@ -151,7 +151,7 @@ void OCUpdater::checkForUpdate()
     url.addQueryItem( QLatin1String("oem"), theme->appName() );
 
     QNetworkReply *reply = _accessManager->get( QNetworkRequest(url) );
-    connect(_timer, SIGNAL(timeout()), this, slot(slotTimedOut()));
+    connect(_timer, SIGNAL(timeout()), this, SLOT(slotTimedOut()));
     _timer->start(30*1000);
     connect(reply, SIGNAL(finished()), this, SLOT(slotVersionInfoArrived()));
 }
