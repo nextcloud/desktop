@@ -75,12 +75,12 @@ void GeneralSettings::loadMiscSettings()
 
 void GeneralSettings::slotUpdateInfo()
 {
-    if (GenericUpdater *updater = dynamic_cast<GenericUpdater*>(Updater::instance()))
+    if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance()))
     {
         connect(updater, SIGNAL(stateChanged()), SLOT(slotUpdateInfo()), Qt::UniqueConnection);
         connect(_ui->restartButton, SIGNAL(clicked()), updater, SLOT(slotStartInstaller()), Qt::UniqueConnection);
         _ui->updateStateLabel->setText(updater->statusString());
-        _ui->restartButton->setVisible(updater->downloadState() == GenericUpdater::DownloadComplete);
+        _ui->restartButton->setVisible(updater->downloadState() == OCUpdater::DownloadComplete);
     } else {
         // can't have those infos from sparkle currently
         _ui->updatesGroupBox->setVisible(false);

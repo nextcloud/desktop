@@ -43,10 +43,10 @@ public:
 
     QString statusString() const;
     int downloadState() const;
-    void setState(int downloadState);
+    void setDownloadState(DownloadState state);
 
 signals:
-    void stateChanged();
+    void downloadStateChanged();
 
 public slots:
     void slotStartInstaller();

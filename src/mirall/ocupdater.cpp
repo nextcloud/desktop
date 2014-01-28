@@ -34,7 +34,7 @@ static const char updateAvailableC[] = "Updater/updateAvailable";
 static const char lastVersionC[] = "Updater/lastVersion";
 static const char ranUpdateC[] = "Updater/ranUpdate";
 
-GenericUpdater::GenericUpdater(const QUrl &url, QObject *parent) :
+OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
     QObject(parent)
   , _updateUrl(url)
   , _state(Unknown)
@@ -42,7 +42,7 @@ GenericUpdater::GenericUpdater(const QUrl &url, QObject *parent) :
 {
 }
 
-void GenericUpdater::performUpdate()
+void OCUpdater::performUpdate()
 {
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
@@ -56,13 +56,13 @@ void GenericUpdater::performUpdate()
     }
 }
 
-void GenericUpdater::backgroundCheckForUpdate()
+void OCUpdater::backgroundCheckForUpdate()
 {
     // FIXME
     checkForUpdate();
 }
 
-QString GenericUpdater::statusString() const
+QString OCUpdater::statusString() const
 {
     QString updateVersion = _updateInfo.version();
 
@@ -73,7 +73,7 @@ QString GenericUpdater::statusString() const
         return tr("Version %1 available. Restart application to start the update.").arg(updateVersion);
     case DownloadFailed:
         return tr("Could not download update. Please click <a href='%1'>here</a> %2 to download the update manually.").arg(_updateInfo.web(), updateVersion);
-    case UpdateAvailableThroughSystem:
+    case UpdateOnlyAvailableThroughSystem:
         return tr("New version %1 available. Please use the systems update tool to install it.").arg(updateVersion);
     case Unknown:
         return tr("Checking update server...");
@@ -84,18 +84,18 @@ QString GenericUpdater::statusString() const
     }
 }
 
-int GenericUpdater::downloadState() const
+int OCUpdater::downloadState() const
 {
     return _state;
 }
 
-void GenericUpdater::setState(int state)
+void OCUpdater::setDownloadState(DownloadState state)
 {
     _state = state;
-    emit stateChanged();
+    emit downloadStateChanged();
 }
 
-void GenericUpdater::slotStartInstaller()
+void OCUpdater::slotStartInstaller()
 {
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
@@ -106,7 +106,7 @@ void GenericUpdater::slotStartInstaller()
     qApp->quit();
 }
 
-void GenericUpdater::checkForUpdate()
+void OCUpdater::checkForUpdate()
 {
     Theme *theme = Theme::instance();
     QUrl url(_updateUrl);
@@ -132,18 +132,18 @@ void GenericUpdater::checkForUpdate()
     connect(reply, SIGNAL(finished()), this, SLOT(slotVersionInfoArrived()));
 }
 
-void GenericUpdater::slotOpenUpdateUrl()
+void OCUpdater::slotOpenUpdateUrl()
 {
     QDesktopServices::openUrl(_updateInfo.web());
 }
 
-void GenericUpdater::slotSetVersionSeen()
+void OCUpdater::slotSetVersionSeen()
 {
     MirallConfigFile cfg;
     cfg.setSeenVersion(_updateInfo.version());
 }
 
-QString GenericUpdater::getSystemInfo()
+QString OCUpdater::getSystemInfo()
 {
 #ifdef Q_OS_LINUX
     QProcess process;
@@ -164,7 +164,7 @@ static qint64 versionToInt(qint64 major, qint64 minor, qint64 patch, qint64 buil
     return major << 56 | minor << 48 | patch << 40 | build;
 }
 
-bool GenericUpdater::updateSucceeded() const
+bool OCUpdater::updateSucceeded() const
 {
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
@@ -177,12 +177,12 @@ bool GenericUpdater::updateSucceeded() const
     return versionInt > oldVersionInt;
 }
 
-QString GenericUpdater::clientVersion() const
+QString OCUpdater::clientVersion() const
 {
     return QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_FULL));
 }
 
-void GenericUpdater::slotVersionInfoArrived()
+void OCUpdater::slotVersionInfoArrived()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if( reply->error() != QNetworkReply::NoError ) {
@@ -204,7 +204,7 @@ void GenericUpdater::slotVersionInfoArrived()
 ////////////////////////////////////////////////////////////////////////
 
 NSISUpdater::NSISUpdater(const QUrl &url, QObject *parent)
-    : GenericUpdater(url, parent)
+    : OCUpdater(url, parent)
     , _showFallbackMessage(false)
 {
 }
@@ -221,14 +221,14 @@ void NSISUpdater::slotDownloadFinished()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if (reply->error() != QNetworkReply::NoError) {
-        setState(DownloadFailed);
+        setDownloadState(DownloadFailed);
         return;
     }
 
     QUrl url(reply->url());
     _file->close();
     QFile::copy(_file->fileName(), _targetFile);
-    setState(DownloadComplete);
+    setDownloadState(DownloadComplete);
     qDebug() << "Downloaded" << url.toString() << "to" << _targetFile;
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
@@ -246,21 +246,21 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     MirallConfigFile cfg;
     if( info.version().isEmpty() || info.version() == cfg.seenVersion() ) {
         qDebug() << "Client is on latest version!";
-        setState(UpToDate);
+        setDownloadState(UpToDate);
     } else {
         QString url = info.downloadUrl();
         if (url.isEmpty() || _showFallbackMessage) {
                 showDialog(info);
-            setState(UpdateAvailableThroughSystem);
+            setDownloadState(Unknown);
         } else {
             _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/'));
             if (QFile(_targetFile).exists()) {
-                setState(DownloadComplete);
+                setDownloadState(DownloadComplete);
             } else {
                 QNetworkReply *reply = qnam()->get(QNetworkRequest(QUrl(url)));
                 connect(reply, SIGNAL(readyRead()), SLOT(slotWriteFile()));
                 connect(reply, SIGNAL(finished()), SLOT(slotDownloadFinished()));
-                setState(Downloading);
+                setDownloadState(Downloading);
                 _file.reset(new QTemporaryFile);
                 _file->setAutoRemove(true);
                 _file->open();
@@ -361,7 +361,7 @@ bool NSISUpdater::handleStartup()
 ////////////////////////////////////////////////////////////////////////
 
 PassiveUpdateNotifier::PassiveUpdateNotifier(const QUrl &url, QObject *parent)
-    : GenericUpdater(url, parent)
+    : OCUpdater(url, parent)
 {
 
 }
@@ -371,9 +371,9 @@ void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
     MirallConfigFile cfg;
     if( info.version().isEmpty() || info.version() == cfg.seenVersion() ) {
         qDebug() << "Client is on latest version!";
-        setState(UpToDate);
+        setDownloadState(UpToDate);
     } else {
-        setState(UpdateAvailableThroughSystem);
+        setDownloadState(UpdateOnlyAvailableThroughSystem);
     }
 }
 
