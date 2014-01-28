@@ -24,6 +24,7 @@
 
 class QNetworkAccessManager;
 class QNetworkReply;
+class QTimer;
 
 namespace Mirall {
 
@@ -33,7 +34,8 @@ class OCUpdater : public QObject, public Updater
     Q_OBJECT
 public:
     enum DownloadState { Unknown = 0, UpToDate, Downloading, DownloadComplete,
-                         DownloadFailed, UpdateOnlyAvailableThroughSystem };
+                         DownloadFailed, DownloadTimedOut,
+                         UpdateOnlyAvailableThroughSystem };
     explicit OCUpdater(const QUrl &url, QObject *parent = 0);
 
     void performUpdate();
@@ -55,6 +57,7 @@ private slots:
     void slotOpenUpdateUrl();
     void slotSetVersionSeen();
     void slotVersionInfoArrived();
+    void slotTimedOut();
 
 protected:
     virtual void versionInfoArrived(const UpdateInfo &info) = 0;
@@ -67,6 +70,7 @@ private:
     QUrl _updateUrl;
     int _state;
     QNetworkAccessManager *_accessManager;
+    QTimer *_timer;
     UpdateInfo _updateInfo;
 };
 

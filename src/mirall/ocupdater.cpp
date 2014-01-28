@@ -39,6 +39,7 @@ OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
   , _updateUrl(url)
   , _state(Unknown)
   , _accessManager(new MirallAccessManager(this))
+  , _timer(new QTimer(this))
 {
 }
 
@@ -73,6 +74,8 @@ QString OCUpdater::statusString() const
         return tr("Version %1 available. Restart application to start the update.").arg(updateVersion);
     case DownloadFailed:
         return tr("Could not download update. Please click <a href='%1'>here</a> %2 to download the update manually.").arg(_updateInfo.web(), updateVersion);
+    case DownloadTimedOut:
+        return tr("Could not check for new updates.");
     case UpdateOnlyAvailableThroughSystem:
         return tr("New version %1 available. Please use the systems update tool to install it.").arg(updateVersion);
     case Unknown:
@@ -129,6 +132,8 @@ void OCUpdater::checkForUpdate()
     url.addQueryItem( QLatin1String("oem"), theme->appName() );
 
     QNetworkReply *reply = _accessManager->get( QNetworkRequest(url) );
+    connect(_timer, SIGNAL(timeout()), this, slot(slotTimedOut()));
+    _timer->start(30*1000);
     connect(reply, SIGNAL(finished()), this, SLOT(slotVersionInfoArrived()));
 }
 
@@ -199,6 +204,11 @@ void OCUpdater::slotVersionInfoArrived()
     } else {
         qDebug() << "Could not parse update information.";
     }
+}
+
+void OCUpdater::slotTimedOut()
+{
+    setDownloadState(DownloadTimedOut);
 }
 
 ////////////////////////////////////////////////////////////////////////
