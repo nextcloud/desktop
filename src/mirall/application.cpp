@@ -436,7 +436,7 @@ void Application::setHelp()
     _helpOnly = true;
 }
 
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(5,0,0)
 bool Application::winEventFilter(MSG *pMsg, long *result)
 {
     if (pMsg->message == WM_POWERBROADCAST) {

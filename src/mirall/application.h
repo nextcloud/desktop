@@ -59,7 +59,7 @@ protected:
     bool checkConfigExists(bool openSettings);
 
     // reimplemented
-#if defined(Q_WS_WIN)
+#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(5,0,0)
     bool winEventFilter( MSG * message, long * result );
 #endif
 
