@@ -437,95 +437,95 @@
 <context>
     <name>Mirall::Folder</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="101"/>
+        <location filename="../src/mirall/folder.cpp" line="103"/>
         <source>Unable to create csync-context</source>
         <translation>Αδυναμία δημιουργίας πλαισίου csync</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="161"/>
+        <location filename="../src/mirall/folder.cpp" line="163"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Δεν υπάρχει ο τοπικός φάκελος %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="164"/>
+        <location filename="../src/mirall/folder.cpp" line="166"/>
         <source>%1 should be a directory but is not.</source>
         <translation>%1 επρεπε να ειναι χωρος αποθηκευσης αλλα δεν ειναι.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="167"/>
+        <location filename="../src/mirall/folder.cpp" line="169"/>
         <source>%1 is not readable.</source>
         <translation> %1 δεν είναι αναγνώσιμο. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="314"/>
+        <location filename="../src/mirall/folder.cpp" line="316"/>
         <source>File %1: %2</source>
         <translation>Αρχείο %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="315"/>
-        <location filename="../src/mirall/folder.cpp" line="395"/>
+        <location filename="../src/mirall/folder.cpp" line="317"/>
+        <location filename="../src/mirall/folder.cpp" line="397"/>
         <source>File %1</source>
         <translation>Αρχείο %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="370"/>
+        <location filename="../src/mirall/folder.cpp" line="372"/>
         <source>downloaded</source>
         <translation>κατέβηκε</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="371"/>
+        <location filename="../src/mirall/folder.cpp" line="373"/>
         <source>removed</source>
         <translation>αφαιρέθηκε</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="372"/>
+        <location filename="../src/mirall/folder.cpp" line="374"/>
         <source>updated</source>
         <translation>ενημερώθηκε</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="375"/>
+        <location filename="../src/mirall/folder.cpp" line="377"/>
         <source>renamed</source>
         <translation>μετονομάστηκε</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="380"/>
+        <location filename="../src/mirall/folder.cpp" line="382"/>
         <source>moved</source>
         <translation>μετακινήθηκαν</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="382"/>
+        <location filename="../src/mirall/folder.cpp" line="384"/>
         <source>%1 to %2</source>
         <translation>%1 προς %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="395"/>
+        <location filename="../src/mirall/folder.cpp" line="397"/>
         <source>&apos;%1&apos; has been %2.</source>
         <translation>Το &apos;%1&apos; %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
+        <location filename="../src/mirall/folder.cpp" line="399"/>
         <source>Files %1</source>
         <translation>Αρχεία %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="398"/>
+        <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
         <translation>Τα &apos;%1&apos; και άλλα %2 αρχεία %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="450"/>
+        <location filename="../src/mirall/folder.cpp" line="452"/>
         <source>Error</source>
         <translation>Σφάλμα</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="722"/>
+        <location filename="../src/mirall/folder.cpp" line="704"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Αυτός ο συγχρονισμός θα αφαιρέσει όλα τα αρχεία στον τοπικό φάκελο συγχρονισμού &apos;%1&apos;.
 Εάν εσείς ή ο διαχειριστής σας επαναφέρατε τον λογαριασμό σας στο διακομιστή, επιλέξτε &quot;Διατήρηση αρχείων&quot;. Εάν θέλετε να αφαιρεθούν τα δεδομένα σας, επιλέξτε &quot;Αφαίρεση όλων των αρχείων&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="725"/>
+        <location filename="../src/mirall/folder.cpp" line="707"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +534,17 @@ Are you sure you want to perform this operation?</source>
 Είστε σίγουροι ότι θέλετε να πραγματοποιήσετε αυτή εντολή;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="729"/>
+        <location filename="../src/mirall/folder.cpp" line="711"/>
         <source>Remove All Files?</source>
         <translation>Αφαίρεση Όλων των Αρχείων;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="731"/>
+        <location filename="../src/mirall/folder.cpp" line="713"/>
         <source>Remove all files</source>
         <translation>Αφαίρεση όλων των αρχείων</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="732"/>
+        <location filename="../src/mirall/folder.cpp" line="714"/>
         <source>Keep files</source>
         <translation>Διατήρηση αρχείων</translation>
     </message>

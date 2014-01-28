@@ -437,95 +437,95 @@
 <context>
     <name>Mirall::Folder</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="101"/>
+        <location filename="../src/mirall/folder.cpp" line="103"/>
         <source>Unable to create csync-context</source>
         <translation>Ei suuda luua csync-konteksti</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="161"/>
+        <location filename="../src/mirall/folder.cpp" line="163"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Kohalikku kausta %1 pole olemas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="164"/>
+        <location filename="../src/mirall/folder.cpp" line="166"/>
         <source>%1 should be a directory but is not.</source>
         <translation>%1 peaks olema kataloog, kuid pole seda mitte.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="167"/>
+        <location filename="../src/mirall/folder.cpp" line="169"/>
         <source>%1 is not readable.</source>
         <translation>%1 pole loetav.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="314"/>
+        <location filename="../src/mirall/folder.cpp" line="316"/>
         <source>File %1: %2</source>
         <translation>Fail %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="315"/>
-        <location filename="../src/mirall/folder.cpp" line="395"/>
+        <location filename="../src/mirall/folder.cpp" line="317"/>
+        <location filename="../src/mirall/folder.cpp" line="397"/>
         <source>File %1</source>
         <translation>Fail %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="370"/>
+        <location filename="../src/mirall/folder.cpp" line="372"/>
         <source>downloaded</source>
         <translation>allalaaditud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="371"/>
+        <location filename="../src/mirall/folder.cpp" line="373"/>
         <source>removed</source>
         <translation>eemaldatud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="372"/>
+        <location filename="../src/mirall/folder.cpp" line="374"/>
         <source>updated</source>
         <translation>uuendatud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="375"/>
+        <location filename="../src/mirall/folder.cpp" line="377"/>
         <source>renamed</source>
         <translation>ümber nimetatud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="380"/>
+        <location filename="../src/mirall/folder.cpp" line="382"/>
         <source>moved</source>
         <translation>ümber tõstetud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="382"/>
+        <location filename="../src/mirall/folder.cpp" line="384"/>
         <source>%1 to %2</source>
         <translation>%1 kuni %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="395"/>
+        <location filename="../src/mirall/folder.cpp" line="397"/>
         <source>&apos;%1&apos; has been %2.</source>
         <translation>&apos;%1&apos; on olnud %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
+        <location filename="../src/mirall/folder.cpp" line="399"/>
         <source>Files %1</source>
         <translation>Failid %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="398"/>
+        <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
         <translation>&apos;%1&apos; ja %2 teist faili on olnud %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="450"/>
+        <location filename="../src/mirall/folder.cpp" line="452"/>
         <source>Error</source>
         <translation>Viga</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="722"/>
+        <location filename="../src/mirall/folder.cpp" line="704"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>See sünkroniseering kustutab kõik failid kohalikust kataloogist &apos;%1&apos;.⏎
 Kui sina või adminstraator on sinu konto serveris algseadistanud, siis vali &quot;Säilita failid&quot;. Kui soovid oma andmed kustutada, vali &quot;Kustuta kõik failid&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="725"/>
+        <location filename="../src/mirall/folder.cpp" line="707"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +534,17 @@ See võib olla põhjustatud kataloogi ümberseadistusest või on toimunud kõiki
 Oled kindel, et soovid seda operatsiooni teostada?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="729"/>
+        <location filename="../src/mirall/folder.cpp" line="711"/>
         <source>Remove All Files?</source>
         <translation>Kustutada kõik failid?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="731"/>
+        <location filename="../src/mirall/folder.cpp" line="713"/>
         <source>Remove all files</source>
         <translation>Kustutada kõik failid</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="732"/>
+        <location filename="../src/mirall/folder.cpp" line="714"/>
         <source>Keep files</source>
         <translation>Säilita failid</translation>
     </message>
@@ -801,12 +801,12 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Uuendused</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="88"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Taaskäivita &amp;&amp; Uuenda</translation>
     </message>
 </context>
 <context>
@@ -814,43 +814,44 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="76"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Uundus on valmis</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="77"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Uuendust hakatakse paigaldama. Uuendus võib küsida
+täiendavaid õigusi protsessi käigus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="101"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Laadin alla versiooni %1. Palun oota...</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="103"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Versioon %1 on saadaval. Taaskäivita rakendus alustamaks uuendust.</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="105"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; %2 to download the update manually</source>
-        <translation type="unfinished"/>
+        <translation>Ei suutnud uuendust alla laadida. Palun klõpsa käsitsi uuenduse alla laadimiseks &lt;a href=&apos;%1&apos;&gt;siin&lt;/a&gt; %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="107"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Uus versioon %1 on saadaval. Palun kasuta süsteemi uuendushaldurit selle paigaldamiseks.</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="109"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollin uuendusserverit...</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="113"/>
         <source>Your installation is at the latest version</source>
-        <translation type="unfinished"/>
+        <translation>Sul on paigaldatud viimane versioon</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="209"/>
@@ -865,7 +866,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="228"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Jäta see versioon vahele</translation>
     </message>
     <message>
         <location filename="../src/mirall/genericupdater.cpp" line="229"/>
@@ -940,12 +941,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Muuda ignoreerimis mustrit</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Muuda ignoreerimis mustrit:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -1202,7 +1203,8 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>See url EI OLE turvaline, kuna see pole krüpteeritud.
+Selle kasutamine pole soovitatav.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
@@ -1212,7 +1214,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Ei suutnud turvaliselt ühenduda. Soovid minna üle krüpteerimata ühendusele (pole soovitatav)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -1398,12 +1400,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Ühtegi E-Silti ei saabunud serverist, kontrolli puhverserverit/lüüsi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="581"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Saime jätkamiseks erineva E-Sildi. Proovin järgmine kord uuesti.</translation>
     </message>
 </context>
 <context>
@@ -1602,32 +1604,32 @@ Palun veendu, et võrguühendus toimib.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="84"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Sertifikaadi detailid&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="87"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Üldine nimi (CN):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="88"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Subjekti Alternatiivsed Nimed:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="90"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Organisatsioon (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="91"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Organisatsiooni üksus (OU):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="92"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Riik/Maakond:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="93"/>
@@ -1637,57 +1639,57 @@ Palun veendu, et võrguühendus toimib.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Järjenumber:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Väljastaja&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Väljastaja:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Väljastatud:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Aegub:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="105"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Sõrmejäljendid&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="108"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Märkus&lt;/b&gt;See sertifikaat on käsitsi heakskiidetud&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
         <source>%1 (in Root CA store)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (juursertifikaadihoidlas)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="128"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (oma-signeering)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="130"/>
@@ -1698,18 +1700,20 @@ Palun veendu, et võrguühendus toimib.</translation>
         <location filename="../src/mirall/sslbutton.cpp" line="161"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Ühendus on krüpteeritud kasutades %1 bitt %2
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="164"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Seritifikaadi informatsioon:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="185"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>See url EI OLE turvaline, kuna see pole krüpteeritud.
+</translation>
     </message>
 </context>
 <context>
