@@ -1,7 +1,5 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Release-Informationen anzeigen"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "${processName} Prozess(e) müssen gestoppt werden.$\nWollen Sie diese nun stoppen?"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Beende  ${processName} Prozesse."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Prozess zum Beenden nicht gefunden!"
 StrCpy $PageReinstall_NEW_Field_1 "Eine ältere Version von  ${APPLICATION_NAME} ist auf Ihrem System installiert. Es wird empfohlen, diese Version zunächst zu entfernen. Wählen Sie unter folgenden Vorgehenweisen und wählen Sie $\"Weiter$\"."
 StrCpy $PageReinstall_NEW_Field_2 "Vor der Installation entfernen"
@@ -41,3 +39,6 @@ StrCpy $INIT_INSTALLER_RUNNING "Das Installationsprogramm wird bereits ausgeführ
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Das Deinstallationsprogramm erfordert Administrator-Rechte. Bitte erneut versuchen."
 StrCpy $INIT_UNINSTALLER_RUNNING "Das Deinstallationsprogramm wird bereits ausgeführt."
 StrCpy $SectionGroup_Shortcuts "Verknüpfungen"
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Found ${APPLICATION_EXECUTABLE} process(s) which need to be stopped.$\nDo you want the installer to stop these for you?"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Killing ${APPLICATION_EXECUTABLE} processes."
+StrCpy $INIT_NO_DESKTOP "Desktop Shortcut (overwrites existing)"
