@@ -35,7 +35,7 @@
 
 #include "creds/abstractcredentials.h"
 
-#if defined(QOS_WIN)
+#if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
 
