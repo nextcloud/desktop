@@ -17,6 +17,7 @@
 
 #include <QString>
 #include <QByteArray>
+#include <QDateTime>
 
 class QWidget;
 
@@ -53,6 +54,11 @@ namespace Utility
     // porting methods
     QString escape(const QString&);
     QString dataLocation();
+
+    // conversion function QDateTime <-> time_t   (because the ones builtin work on only unsigned 32bit)
+    QDateTime qDateTimeFromTime_t(qint64 t);
+    qint64 qDateTimeToTime_t(const QDateTime &t);
+
 
     // convinience OS detection methods
     bool isWindows();

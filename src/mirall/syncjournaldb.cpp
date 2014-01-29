@@ -21,6 +21,7 @@
 
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
+#include "utility.h"
 
 #include "../../csync/src/std/c_jhash.h"
 
@@ -353,7 +354,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
         _setFileRecordQuery->bindValue(4, record._uid );
         _setFileRecordQuery->bindValue(5, record._gid );
         _setFileRecordQuery->bindValue(6, record._mode );
-        _setFileRecordQuery->bindValue(7, QString::number(record._modtime.toTime_t()));
+        _setFileRecordQuery->bindValue(7, QString::number(Utility::qDateTimeToTime_t(record._modtime)));
         _setFileRecordQuery->bindValue(8, QString::number(record._type) );
         _setFileRecordQuery->bindValue(9, etag );
         _setFileRecordQuery->bindValue(10, fileId );
@@ -366,7 +367,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
 
         qDebug() <<  _setFileRecordQuery->lastQuery() << phash << plen << record._path << record._inode
                  << record._uid << record._gid << record._mode
-                 << QString::number(record._modtime.toTime_t()) << QString::number(record._type)
+                 << QString::number(Utility::qDateTimeToTime_t(record._modtime)) << QString::number(record._type)
                  << record._etag << record._fileId;
         _setFileRecordQuery->finish();
 
@@ -444,7 +445,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._uid     = _getFileRecordQuery->value(2).toInt(&ok);
             rec._gid     = _getFileRecordQuery->value(3).toInt(&ok);
             rec._mode    = _getFileRecordQuery->value(4).toInt(&ok);
-            rec._modtime = QDateTime::fromTime_t(_getFileRecordQuery->value(5).toLongLong(&ok));
+            rec._modtime = Utility::qDateTimeFromTime_t(_getFileRecordQuery->value(5).toLongLong(&ok));
             rec._type    = _getFileRecordQuery->value(6).toInt(&ok);
             rec._etag    = _getFileRecordQuery->value(7).toString();
             rec._fileId  = _getFileRecordQuery->value(8).toString();
@@ -607,7 +608,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString& file)
             res._transferid = _getUploadInfoQuery->value(1).toInt(&ok);
             res._errorCount = _getUploadInfoQuery->value(2).toInt(&ok);
             res._size       = _getUploadInfoQuery->value(3).toLongLong(&ok);
-            res._modtime    = QDateTime::fromTime_t(_getUploadInfoQuery->value(4).toLongLong(&ok));
+            res._modtime    = Utility::qDateTimeFromTime_t(_getUploadInfoQuery->value(4).toLongLong(&ok));
             res._valid      = ok;
         }
         _getUploadInfoQuery->finish();
@@ -629,7 +630,7 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
         _setUploadInfoQuery->bindValue(2, i._transferid );
         _setUploadInfoQuery->bindValue(3, i._errorCount );
         _setUploadInfoQuery->bindValue(4, i._size );
-        _setUploadInfoQuery->bindValue(5, QString::number(i._modtime.toTime_t()) );
+        _setUploadInfoQuery->bindValue(5, Utility::qDateTimeToTime_t(i._modtime) );
 
         if( !_setUploadInfoQuery->exec() ) {
             qWarning() << "Exec error of SQL statement: " << _setUploadInfoQuery->lastQuery() <<  " :"   << _setUploadInfoQuery->lastError().text();

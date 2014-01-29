@@ -13,6 +13,7 @@
 
 #include "syncjournalfilerecord.h"
 #include "syncfileitem.h"
+#include "utility.h"
 
 #include <qfileinfo.h>
 #include <qdebug.h>
@@ -39,7 +40,7 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
         // refersh modtime
         _modtime = fi.lastModified();
     } else {
-        _modtime = QDateTime::fromTime_t(item._modtime);
+        _modtime = Utility::qDateTimeFromTime_t(item._modtime);
     }
 
     // Query the inode:

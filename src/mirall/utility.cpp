@@ -434,6 +434,18 @@ void Utility::showInFileManager(const QString &localPath)
     }
 }
 
+QDateTime Utility::qDateTimeFromTime_t(qint64 t)
+{
+    return QDateTime::fromMSecsSinceEpoch(t * 1000);
+}
+
+qint64 Utility::qDateTimeToTime_t(const QDateTime& t)
+{
+    return t.toMSecsSinceEpoch() / 1000;
+}
+
+
+
 bool Utility::isWindows()
 {
 #ifdef Q_OS_WIN

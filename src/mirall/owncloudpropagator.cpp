@@ -273,7 +273,7 @@ void PropagateUploadFile::start()
         emit progress(Progress::StartUpload, _item, 0, trans->stat_size);
 
         if (progressInfo._valid) {
-            if (progressInfo._modtime.toTime_t() == (uint)_item._modtime) {
+            if (Utility::qDateTimeToTime_t(progressInfo._modtime) == _item._modtime) {
                 trans->start_id = progressInfo._chunk;
                 trans->transfer_id = progressInfo._transferid;
             }
@@ -402,7 +402,7 @@ void PropagateUploadFile::chunk_finished_cb(hbf_transfer_s *trans, int chunk, vo
     pi._valid = true;
     pi._chunk = chunk + 1; // next chunk to start with
     pi._transferid = trans->transfer_id;
-    pi._modtime =  QDateTime::fromTime_t(trans->modtime);
+    pi._modtime =  Utility::qDateTimeFromTime_t(trans->modtime);
     that->_propagator->_journal->setUploadInfo(that->_item._file, pi);
     that->_propagator->_journal->commit("Upload info");
   }
@@ -743,7 +743,8 @@ void PropagateDownloadFile::start()
         if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
             dotLocation = conflictFileName.size();
         }
-        conflictFileName.insert(dotLocation, "_conflict-" + QDateTime::fromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss"));
+        QString timeString = Utility::qDateTimeFromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss");
+        conflictFileName.insert(dotLocation, "_conflict-" + timeString);
         if (!f.rename(conflictFileName)) {
             //If the rename fails, don't replace it.
             done(SyncFileItem::NormalError, f.errorString());
