@@ -222,7 +222,7 @@
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="267"/>
+        <location filename="../src/mirall/application.cpp" line="280"/>
         <source>Connection failed</source>
         <translation>Сбой подключения</translation>
     </message>
@@ -429,7 +429,7 @@
         <translation>Невозможно подключиться к %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="148"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="147"/>
         <source>The provided credentials are not correct</source>
         <translation>Введённые учётные данные не верны</translation>
     </message>
@@ -804,90 +804,20 @@ Are you sure you want to perform this operation?</source>
         <translation>Обновления</translation>
     </message>
     <message>
-        <location filename="../src/mirall/generalsettings.ui" line="88"/>
+        <location filename="../src/mirall/generalsettings.ui" line="91"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Перезапуск &amp;&amp; Обновление</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::GenericUpdater</name>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="76"/>
-        <source>New Update Ready</source>
-        <translation>Доступна новая версия</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="77"/>
-        <source>A new update is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>Новое обновление в процессе установки. Установщик может запросить
-дополнительные права во время обновления.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="101"/>
-        <source>Downloading version %1. Please wait...</source>
-        <translation>Загрузка файлов %1. Пожалуйста, подождите...</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="103"/>
-        <source>Version %1 available. Restart application to start the update.</source>
-        <translation>Доступна версия %1. Перезапустите приложение для начала процедуры обновления.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="105"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; %2 to download the update manually</source>
-        <translation>Не удалось загрузить обновление. Пожалуйста, нажмите здесь &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt;%2, для ручной загрузки файлов</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="107"/>
-        <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation>Доступна новая версия %1. Для её установки перейдите в раздел обновления системы.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="109"/>
-        <source>Checking update server...</source>
-        <translation>Проверка наличия обновлений на сервере...</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="113"/>
-        <source>Your installation is at the latest version</source>
-        <translation>У Вас установлена новейшая версия</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="209"/>
-        <source>New Version Available</source>
-        <translation>Доступна новая версия</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="215"/>
-        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Новая версия программы-клиента %1 доступна.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; доступна для скачивания. Установленная версия %3.&lt;p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="228"/>
-        <source>Skip this version</source>
-        <translation>Пропустить эту версию</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="229"/>
-        <source>Skip this time</source>
-        <translation>Пропустить в этот раз</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/genericupdater.cpp" line="230"/>
-        <source>Get update</source>
-        <translation>Получить обновление</translation>
-    </message>
-</context>
-<context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="253"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="258"/>
         <source>Enter Password</source>
         <translation>Введите пароль</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="254"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="259"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Пожалуйста введите пароль от  %1 для пользователя &apos;%2&apos;:</translation>
     </message>
@@ -1021,6 +951,34 @@ Checked items will also be deleted if they prevent a directory from being remove
     </message>
 </context>
 <context>
+    <name>Mirall::NSISUpdater</name>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="310"/>
+        <source>New Version Available</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="316"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="329"/>
+        <source>Skip this version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="330"/>
+        <source>Skip this time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="331"/>
+        <source>Get update</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::NetworkSettings</name>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="14"/>
@@ -1119,6 +1077,55 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/mirall/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
         <translation>SOCKS5-прокси</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::OCUpdater</name>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="71"/>
+        <source>New Update Ready</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="72"/>
+        <source>A new update is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="91"/>
+        <source>Downloading version %1. Please wait...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="93"/>
+        <source>Version %1 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="95"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="97"/>
+        <source>Could not check for new updates.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="99"/>
+        <source>New version %1 available. Please use the systems update tool to install it.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="101"/>
+        <source>Checking update server...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/ocupdater.cpp" line="105"/>
+        <source>No updates available. Your installation is at the latest version.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1230,126 +1237,126 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="356"/>
         <source>Folder rename failed</source>
         <translation>Ошибка переименования папки</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program.Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Невозможно стереть папку и создать её резервную копию так как папка или файл в ней открыты в другой программе. Пожалуйста закройте папку или файл и повторите попытку, либо прервите мастер настройки.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локальная папка для синхронизации %1 успешно создана!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="192"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="191"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Попытка соединиться с %1 на %2...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="150"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="149"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Успешно подключено к %1: %2 версия %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="215"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="214"/>
         <source>Error: Wrong credentials.</source>
         <translation>Ошибка: Неверные учётные данные.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="229"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="228"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Локальная синхронизация папки %1 уже существует, ее настройки для синхронизации.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="231"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="230"/>
         <source>Creating local sync folder %1... </source>
         <translation>Создание локальной папки синхронизации %1... </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="235"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="234"/>
         <source>ok</source>
         <translation>ок</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="237"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="236"/>
         <source>failed.</source>
         <translation>не удалось.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="239"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="238"/>
         <source>Could not create local folder %1</source>
         <translation>Не удалось создать локальную папку синхронизации %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="181"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="180"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Не удалось подключиться к %1 в %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="264"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
         <source>No remote folder specified!</source>
         <translation>Не указана удалённая папка!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="270"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="269"/>
         <source>Error: %1</source>
         <translation>Ошибка: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="283"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>создание папки на ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="299"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="298"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Удалённая папка %1 успешно создана.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="301"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="300"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Удалённая папка %1 уже существует. Подключение к ней для синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="303"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="305"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="302"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="304"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Создание папки завершилось с HTTP-ошибкой %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="307"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="306"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Не удалось создать удаленную папку — представленные параметры доступа неверны!&lt;br/&gt;Пожалуйста, вернитесь назад и проверьте параметры доступа.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="310"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Удаленное создание папки не удалось, вероятно, потому, что предоставленные учетные данные неверны.&lt;/font&gt;&lt;br/&gt;Пожалуйста, вернитесь назад и проверьте данные.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="316"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Удаленная папка %1 не создана из-за ошибки &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="332"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="331"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Установлено соединение синхронизации с %1 к удалённой директории %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="337"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="336"/>
         <source>Successfully connected to %1!</source>
         <translation>Соединение с  %1 установлено успешно!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="344"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="343"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Подключение к %1 не воможно. Пожалуйста, проверьте еще раз.</translation>
     </message>
