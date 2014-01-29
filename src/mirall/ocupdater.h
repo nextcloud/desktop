@@ -38,7 +38,7 @@ public:
                          UpdateOnlyAvailableThroughSystem };
     explicit OCUpdater(const QUrl &url, QObject *parent = 0);
 
-    void performUpdate();
+    bool performUpdate();
 
     void checkForUpdate();
     void backgroundCheckForUpdate();

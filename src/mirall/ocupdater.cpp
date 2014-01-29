@@ -34,25 +34,6 @@ static const char updateAvailableC[] = "Updater/updateAvailable";
 static const char lastVersionC[] = "Updater/lastVersion";
 static const char ranUpdateC[] = "Updater/ranUpdate";
 
-static qint64 versionToInt(qint64 major, qint64 minor, qint64 patch, qint64 build)
-{
-    return major << 56 | minor << 48 | patch << 40 | build;
-}
-
-static qint64 currentVersionToInt()
-{
-    return versionToInt(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR,
-                        MIRALL_VERSION_PATCH, MIRALL_VERSION_BUILD);
-}
-
-static qint64 stringVersionToInt(const QString& version)
-{
-    QByteArray baVersion = version.toLatin1();
-    int major = 0, minor = 0, patch = 0, build = 0;
-    sscanf(baVersion, "%d.%d.%d.%d", &major, &minor, &patch, &build);
-    return versionToInt(major, minor, patch, build);
-}
-
 OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
     QObject(parent)
   , _updateUrl(url)
@@ -62,7 +43,7 @@ OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
 {
 }
 
-void OCUpdater::performUpdate()
+bool OCUpdater::performUpdate()
 {
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
@@ -72,8 +53,10 @@ void OCUpdater::performUpdate()
                                      tr("A new update is about to be installed. The updater may ask\n"
                                         "for additional privileges during the process."), QMessageBox::Ok)) {
             slotStartInstaller();
+            return true;
         }
     }
+    return false;
 }
 
 void OCUpdater::backgroundCheckForUpdate()
@@ -187,8 +170,8 @@ bool OCUpdater::updateSucceeded() const
 {
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    qint64 oldVersionInt = stringVersionToInt(settings.value(lastVersionC).toString().toLatin1());
-    return currentVersionToInt() > oldVersionInt;
+    qint64 oldVersionInt = Helper::stringVersionToInt(settings.value(lastVersionC).toString().toLatin1());
+    return Helper::currentVersionToInt() > oldVersionInt;
 }
 
 QString OCUpdater::clientVersion() const
@@ -264,8 +247,8 @@ void NSISUpdater::showFallbackMessage()
 void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
 {
     MirallConfigFile cfg;
-    qint64 infoVersion = stringVersionToInt(info.version());
-    qint64 seenVersion = stringVersionToInt(cfg.seenVersion());
+    qint64 infoVersion = Helper::stringVersionToInt(info.version());
+    qint64 seenVersion = Helper::stringVersionToInt(cfg.seenVersion());
 
     if(info.version().isEmpty() || infoVersion <= seenVersion ) {
         qDebug() << "Client is on latest version!";
@@ -370,8 +353,7 @@ bool NSISUpdater::handleStartup()
 {
     switch (updateState()) {
     case NSISUpdater::UpdateAvailable:
-        performUpdate();
-        return true;
+        return performUpdate();
     case NSISUpdater::UpdateFailed:
         showFallbackMessage();
         return false;

@@ -14,6 +14,7 @@
 #include "mirall/updater.h"
 #include "mirall/sparkleupdater.h"
 #include "mirall/ocupdater.h"
+#include "mirall/version.h"
 
 #include "config.h"
 
@@ -41,5 +42,26 @@ Updater *Updater::create()
     return new PassiveUpdateNotifier(QUrl(updateBaseUrl));
 #endif
 }
+
+
+qint64 Updater::Helper::versionToInt(qint64 major, qint64 minor, qint64 patch, qint64 build)
+{
+    return major << 56 | minor << 48 | patch << 40 | build;
+}
+
+qint64 Updater::Helper::currentVersionToInt()
+{
+    return versionToInt(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR,
+                        MIRALL_VERSION_PATCH, MIRALL_VERSION_BUILD);
+}
+
+qint64 Updater::Helper::stringVersionToInt(const QString& version)
+{
+    QByteArray baVersion = version.toLatin1();
+    int major = 0, minor = 0, patch = 0, build = 0;
+    sscanf(baVersion, "%d.%d.%d.%d", &major, &minor, &patch, &build);
+    return versionToInt(major, minor, patch, build);
+}
+
 
 } // namespace Mirall
