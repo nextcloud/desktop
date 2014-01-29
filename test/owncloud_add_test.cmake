@@ -11,6 +11,7 @@ macro(owncloud_add_test test_class)
     qt5_use_modules(${OWNCLOUD_TEST_CLASS}Test Test Sql)
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
+        updater
         ${APPLICATION_EXECUTABLE}sync
         ${QT_QTTEST_LIBRARY}
         ${QT_QTCORE_LIBRARY}

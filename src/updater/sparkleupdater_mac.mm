@@ -16,7 +16,8 @@
 #include <Sparkle/Sparkle.h>
 #include <AppKit/NSApplication.h>
 
-#include "mirall/sparkleupdater.h"
+#include "updater/sparkleupdater.h"
+
 #include "mirall/utility.h"
 
 namespace Mirall {

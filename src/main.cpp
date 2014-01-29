@@ -17,7 +17,8 @@
 #include "mirall/theme.h"
 #include "mirall/utility.h"
 #include "mirall/cocoainitializer.h"
-#include "mirall/updater.h"
+
+#include "updater/updater.h"
 
 #include <QTimer>
 #include <QMessageBox>

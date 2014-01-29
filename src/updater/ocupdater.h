@@ -19,8 +19,8 @@
 #include <QUrl>
 #include <QTemporaryFile>
 
-#include "mirall/updateinfo.h"
-#include "mirall/updater.h"
+#include "updater/updateinfo.h"
+#include "updater/updater.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;

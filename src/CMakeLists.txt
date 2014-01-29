@@ -262,7 +262,6 @@ set(mirall_SRCS
     wizard/owncloudshibbolethcredspage.cpp
     wizard/owncloudadvancedsetuppage.cpp
     mirall/owncloudsetupwizard.cpp
-    mirall/updateinfo.cpp
     mirall/sslerrordialog.cpp
     mirall/logbrowser.cpp
     mirall/settingsdialog.cpp
@@ -272,8 +271,6 @@ set(mirall_SRCS
     mirall/ignorelisteditor.cpp
     mirall/owncloudgui.cpp
     mirall/socketapi.cpp
-    mirall/updater.cpp
-    mirall/ocupdater.cpp
     mirall/sslbutton.cpp
 )
 
@@ -300,24 +297,33 @@ set(mirall_HEADERS
     mirall/protocolwidget.h
     mirall/owncloudgui.h
     mirall/socketapi.h
-    mirall/updater.h
-    mirall/ocupdater.h
     mirall/sslbutton.h
 )
 
+set(updater_SRCS
+    updater/updateinfo.cpp
+    updater/updater.cpp
+    updater/ocupdater.cpp
+)
+
+set(updater_HEADERS
+    updater/updater.h
+    updater/ocupdater.h
+)
+
 IF( APPLE )
-    list(APPEND mirall_SRCS
-        mirall/cocoainitializer_mac.mm
-        mirall/sparkleupdater_mac.mm)
-    list(APPEND mirall_HEADERS
-        mirall/cocoainitializer.h
-        mirall/sparkleupdater.h)
+    list(APPEND mirall_SRCS mirall/cocoainitializer_mac.mm)
+    list(APPEND mirall_HEADERS mirall/cocoainitializer.h)
+
+    list(APPEND updater_SRCS mirall/sparkleupdater_mac.mm)
+    list(APPEND updater_HEADERS mirall/sparkleupdater.h)
 ENDIF()
 
 # csync is required.
 include_directories(../csync/src ../csync/src/httpbf/src ${CMAKE_CURRENT_BINARY_DIR}/../csync ${CMAKE_CURRENT_BINARY_DIR}/../csync/src )
 include_directories(${3rdparty_INC})
 
+qt_wrap_cpp(updaterMoc ${updater_HEADERS})
 qt_wrap_cpp(mirallMoc ${mirall_HEADERS})
 
 qt_add_translation(mirall_I18N ${TRANSLATIONS})
@@ -395,12 +401,15 @@ else()
     install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
 endif()
 
+message(${updater_SRCS} ${updater_Moc})
+add_library(updater STATIC ${updater_SRCS} ${updaterMoc})
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
+target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
 
 install(TARGETS ${APPLICATION_EXECUTABLE}

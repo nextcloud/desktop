@@ -12,12 +12,13 @@
  * for more details.
  */
 
-#include "mirall/ocupdater.h"
 #include "mirall/theme.h"
 #include "mirall/version.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/utility.h"
 #include "mirall/mirallaccessmanager.h"
+
+#include "updater/ocupdater.h"
 
 #include <QtCore>
 #include <QtNetwork>

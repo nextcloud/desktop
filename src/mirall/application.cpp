@@ -29,9 +29,10 @@
 #include "mirall/socketapi.h"
 #include "mirall/sslerrordialog.h"
 #include "mirall/theme.h"
-#include "mirall/updater.h"
 #include "mirall/utility.h"
 #include "mirall/clientproxy.h"
+
+#include "updater/updater.h"
 
 #include "creds/abstractcredentials.h"
 

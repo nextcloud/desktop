@@ -14,7 +14,7 @@
 #ifndef SPARKLEUPDATER_H
 #define SPARKLEUPDATER_H
 
-#include "mirall/updater.h"
+#include "updater/updater.h"
 
 #include <QObject>
 

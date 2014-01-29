@@ -19,8 +19,9 @@
 #include "mirall/application.h"
 #include "mirall/utility.h"
 #include "mirall/mirallconfigfile.h"
-#include "mirall/updater.h"
-#include "mirall/ocupdater.h"
+
+#include "updater/updater.h"
+#include "updater/ocupdater.h"
 
 #include <QNetworkProxy>
 #include <QDir>

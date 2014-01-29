@@ -4,9 +4,10 @@ include(owncloud_add_test.cmake)
 
 owncloud_add_test(OwncloudPropagator)
 owncloud_add_test(Utility)
+owncloud_add_test(Updater)
+owncloud_add_test(FolderWatcher)
 
 if( UNIX AND NOT APPLE )
 	owncloud_add_test(InotifyWatcher)
 endif(UNIX AND NOT APPLE)
 
-owncloud_add_test(FolderWatcher)

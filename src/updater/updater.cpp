@@ -11,9 +11,10 @@
  * for more details.
  */
 
-#include "mirall/updater.h"
-#include "mirall/sparkleupdater.h"
-#include "mirall/ocupdater.h"
+#include "updater/updater.h"
+#include "updater/sparkleupdater.h"
+#include "updater/ocupdater.h"
+
 #include "mirall/version.h"
 
 #include "config.h"
