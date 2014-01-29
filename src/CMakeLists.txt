@@ -401,7 +401,6 @@ else()
     install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
 endif()
 
-message(${updater_SRCS} ${updater_Moc})
 add_library(updater STATIC ${updater_SRCS} ${updaterMoc})
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
