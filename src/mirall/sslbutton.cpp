@@ -125,7 +125,7 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
         txt += tr("%1 (in Root CA store)").arg(cn);
     } else {
         if (cn == issuer) {
-            txt += tr("%1 (self-signed)").arg(cn, issuer);
+            txt += tr("%1 (self-signed)").arg(cn);
         } else {
             txt += tr("%1").arg(cn);
         }
