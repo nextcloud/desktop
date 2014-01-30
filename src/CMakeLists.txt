@@ -16,7 +16,6 @@ if ( APPLE )
          /System/Library/Frameworks/CoreServices.framework
          /System/Library/Frameworks/Foundation.framework
          /System/Library/Frameworks/AppKit.framework
-	 ${SPARKLE}
     )
 endif()
 
@@ -26,10 +25,9 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
     )
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
 
-if( ENABLE_SPARKLE AND SPARKLE )
-    set( HAVE_SPARKLE ON )
-    list (APPEND OS_SPECIFIC_LINK_LIBRARIES ${SPARKLE})
-endif( ENABLE_SPARKLE AND SPARKLE )
+if(SPARKLE_FOUND)
+    list (APPEND OS_SPECIFIC_LINK_LIBRARIES ${SPARKLE_LIBRARY})
+endif(SPARKLE_FOUND)
 
 set(3rdparty_SRC
 3rdparty/qtsingleapplication/qtsingleapplication.cpp
@@ -223,10 +221,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     endif()
 else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
-    if (HAVE_SPARKLE)
-        install(DIRECTORY "${SPARKLE}"
+    if (SPARKLE_FOUND)
+        install(DIRECTORY "${SPARKLE_LIBRARY}"
 	        DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks")
-    endif (HAVE_SPARKLE)
+    endif (SPARKLE_FOUND)
 
 endif()
 
@@ -382,9 +380,6 @@ endif(NOT WIN32)
 else()
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
     include(DeployQt4)
-
-    option(ENABLE_SPARKLE "Sparkle updating" ON)
-    find_library(SPARKLE Sparkle)
 
     set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
