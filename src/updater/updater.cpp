@@ -35,7 +35,7 @@ Updater *Updater::create()
 {
     QString updateBaseUrl(QLatin1String(APPLICATION_UPDATE_URL));
 #ifdef Q_OS_MAC
-    return new SparkleUpdater(updateBaseUrl+QLatin1String("/rss/");
+    return new SparkleUpdater(updateBaseUrl+QLatin1String("/rss/"));
 #elif defined (Q_OS_WIN32)
     // the best we can do is notify about updates
     return new NSISUpdater(QUrl(updateBaseUrl));
