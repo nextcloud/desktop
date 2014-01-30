@@ -315,8 +315,8 @@ IF( APPLE )
     list(APPEND mirall_SRCS mirall/cocoainitializer_mac.mm)
     list(APPEND mirall_HEADERS mirall/cocoainitializer.h)
 
-    list(APPEND updater_SRCS mirall/sparkleupdater_mac.mm)
-    list(APPEND updater_HEADERS mirall/sparkleupdater.h)
+    list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
+    list(APPEND updater_HEADERS updater/sparkleupdater.h)
 ENDIF()
 
 # csync is required.
