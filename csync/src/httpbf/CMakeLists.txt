@@ -47,10 +47,11 @@ INSTALL(
     ${BIN_INSTALL_DIR}
 )
 
-INSTALL(
-    FILES
-    ${httpbf_HEADERS}
-    DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}
-)
-
+if (NOT APPLE)
+    INSTALL(
+        FILES
+        ${httpbf_HEADERS}
+        DESTINATION
+        ${CMAKE_INSTALL_INCLUDEDIR}
+    )
+endif (BUILD_OWNCLOUD_OSX_BUNDLE)
