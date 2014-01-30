@@ -28,6 +28,7 @@ SslButton::SslButton(QWidget *parent) :
     QToolButton(parent)
 {
     setPopupMode(QToolButton::InstantPopup);
+    setAutoRaise(true);
 }
 
 QString SslButton::protoToString(QSsl::SslProtocol proto)
