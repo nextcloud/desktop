@@ -222,7 +222,7 @@
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="280"/>
+        <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Connection failed</source>
         <translation>Produciuse un fallo de conexión</translation>
     </message>
@@ -953,29 +953,29 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="310"/>
+        <location filename="../src/updater/ocupdater.cpp" line="294"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Hai dispoñíbel unha nova versión</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="316"/>
+        <location filename="../src/updater/ocupdater.cpp" line="300"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Hai dispoñíbel unha nova versión do cliente %1.&lt;/p&gt;&lt;p&gt;Pode descargar a versión &lt;b&gt;%2&lt;/b&gt;. A versión instalada é a %3.&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="329"/>
+        <location filename="../src/updater/ocupdater.cpp" line="313"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Omitir esta versión</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="330"/>
+        <location filename="../src/updater/ocupdater.cpp" line="314"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Omitir polo de agora</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="331"/>
+        <location filename="../src/updater/ocupdater.cpp" line="315"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Obter a actualización</translation>
     </message>
 </context>
 <context>
@@ -1082,50 +1082,51 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
 <context>
     <name>Mirall::OCUpdater</name>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="71"/>
+        <location filename="../src/updater/ocupdater.cpp" line="53"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Preparada a nova actualización</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="72"/>
+        <location filename="../src/updater/ocupdater.cpp" line="54"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Está a piques de instalarse unha nova actualización. O proceso de
+actualización pode pedir privilexios adicionais durante o proceso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="91"/>
+        <location filename="../src/updater/ocupdater.cpp" line="75"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Descargando a versión %1. Agarde...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="93"/>
+        <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Dispoñíbel a versión %1. Reinicie o aplicativo para iniciar a actualización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="95"/>
+        <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel descargar a actualización. Prema &lt;a href=&apos;%1&apos;&gt;aquí&lt;/a&gt; para descargar manualmente a actualización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="97"/>
+        <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel comprobar se hai novas actualizacións.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="99"/>
+        <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Está dispoñíbel unha nova versión %1. Utilice a ferramenta de actualización do sistema para instalala.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="101"/>
+        <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Comprobando o servidor de actualizacións...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="105"/>
+        <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Non hai actualizacións dispoñíbeis. A instalación xa está na versión máis recente</translation>
     </message>
 </context>
 <context>
@@ -1434,12 +1435,12 @@ Recomendámoslle que non o use.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="850"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="851"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Non é posíbel renomear este cartafol. Non se lle cambiou o nome, mantense o orixinal.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="852"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="853"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Non é posíbel renomear este cartafol. Devólvalle o nome ao compartido.</translation>
     </message>
@@ -2160,12 +2161,12 @@ Asegúrese de que a súa conexión de rede está a funcionar.</translation>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="29"/>
+        <location filename="../src/main.cpp" line="30"/>
         <source>System Tray not available</source>
         <translation>Área de notificación non dispoñíbel</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="30"/>
+        <location filename="../src/main.cpp" line="31"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 require dunha área de notificación. Se está executando XFCE, siga  &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instrucións&lt;/a&gt;. Senón, instale un aplicativo de área de notificación como «trayer» e ténteo de novo.</translation>
     </message>

@@ -222,7 +222,7 @@
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="280"/>
+        <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Connection failed</source>
         <translation>La conexión falló</translation>
     </message>
@@ -953,29 +953,29 @@ Los elementos marcados también se eliminarán si impiden la eliminación de alg
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="310"/>
+        <location filename="../src/updater/ocupdater.cpp" line="294"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Nueva versión disponible</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="316"/>
+        <location filename="../src/updater/ocupdater.cpp" line="300"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Una nueva versión del cliente %1 está disponible.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; está disponible para descarga. La versión instalada es la %3.&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="329"/>
+        <location filename="../src/updater/ocupdater.cpp" line="313"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Saltarse esta versión</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="330"/>
+        <location filename="../src/updater/ocupdater.cpp" line="314"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Omitir esta vez</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="331"/>
+        <location filename="../src/updater/ocupdater.cpp" line="315"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Actualizar</translation>
     </message>
 </context>
 <context>
@@ -1082,50 +1082,51 @@ Los elementos marcados también se eliminarán si impiden la eliminación de alg
 <context>
     <name>Mirall::OCUpdater</name>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="71"/>
+        <location filename="../src/updater/ocupdater.cpp" line="53"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>La siguiente actualización está lista</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="72"/>
+        <location filename="../src/updater/ocupdater.cpp" line="54"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Está a punto de instalarse una nueva actualización. Puede que el gestor de actualizaciones
+pida privilegios adicionales durante el proceso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="91"/>
+        <location filename="../src/updater/ocupdater.cpp" line="75"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Descargando la versión %1. Espere...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="93"/>
+        <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Versión %1 disponible. Reinicie la aplicación para comenzar con la actualización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="95"/>
+        <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>No se puede descrgar la actualización. Por favor haga click &lt;a href=&apos;%1&apos;&gt;aqui&lt;/a&gt; para iniciar descarga manual.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="97"/>
+        <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>No se puede comprobar si hay actualizaciones.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="99"/>
+        <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nueva versión %1 disponible. Use la actualización de sistema para instalarla.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="101"/>
+        <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Verificando el servidor de actualización...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="105"/>
+        <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>No hay actualizaciones disponibles. Tiene la última versión.</translation>
     </message>
 </context>
 <context>
@@ -1434,12 +1435,12 @@ No se recomienda usarlo.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="850"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="851"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Esta carpeta no debe ser renombrada. Ha sido renombrada a su nombre original</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="852"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="853"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Esta carpeta no debe ser renombrada. Favor de renombrar a Compartida.</translation>
     </message>
@@ -1646,22 +1647,22 @@ Por favor asegurese de que la conexión de red está trabajando.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>nº serie:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Emisor&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Emisor:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Emitido en:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
@@ -1671,7 +1672,7 @@ Por favor asegurese de que la conexión de red está trabajando.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="105"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Firma&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="108"/>
@@ -1691,12 +1692,12 @@ Por favor asegurese de que la conexión de red está trabajando.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
         <source>%1 (in Root CA store)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (in Root CA store)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="128"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (self-signed)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="130"/>
@@ -2160,12 +2161,12 @@ Por favor asegurese de que la conexión de red está trabajando.</translation>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="29"/>
+        <location filename="../src/main.cpp" line="30"/>
         <source>System Tray not available</source>
         <translation>Bandeja del sistema no está disponible</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="30"/>
+        <location filename="../src/main.cpp" line="31"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>% 1 requiere en una bandeja del sistema de trabajo. Si está ejecutando XFCE, por favor siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; estas instrucciones &lt;/ a&gt;. De lo contrario, instale una aplicación de la bandeja del sistema, tales como &quot;trayer &apos;y vuelva a intentarlo.</translation>
     </message>

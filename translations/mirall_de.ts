@@ -223,7 +223,7 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="280"/>
+        <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Connection failed</source>
         <translation>Verbindung fehlgeschlagen</translation>
     </message>
@@ -954,29 +954,29 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="310"/>
+        <location filename="../src/updater/ocupdater.cpp" line="294"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Eine neue Version ist verfügbar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="316"/>
+        <location filename="../src/updater/ocupdater.cpp" line="300"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Eine neue Version des %1-Clients ist verfügbar.&lt;/p&gt;&lt;p&gt;Version &lt;b&gt;%2&lt;/b&gt; steht zum Download bereit. Die zur Zeit installierte Version: %3.&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="329"/>
+        <location filename="../src/updater/ocupdater.cpp" line="313"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Diese Version auslassen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="330"/>
+        <location filename="../src/updater/ocupdater.cpp" line="314"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Dieses Mal überspringen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="331"/>
+        <location filename="../src/updater/ocupdater.cpp" line="315"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Update durchführen</translation>
     </message>
 </context>
 <context>
@@ -1083,48 +1083,49 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
 <context>
     <name>Mirall::OCUpdater</name>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="71"/>
+        <location filename="../src/updater/ocupdater.cpp" line="53"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Neue Aktualisierung steht bereit</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="72"/>
+        <location filename="../src/updater/ocupdater.cpp" line="54"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Eine neue Aktualiserung steht zur Installation bereit. Der Updater fragt evtl.
+nach zusätzlichen Privilegien während des Prozesses.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="91"/>
+        <location filename="../src/updater/ocupdater.cpp" line="75"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Lade Version %1 herunter. Bitte warten...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="93"/>
+        <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Version %1 verfügbar. Anwendung zum Start der Aktualisierung neustarten.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="95"/>
+        <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="97"/>
+        <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not check for new updates.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="99"/>
+        <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Neue Version %1 verfügbar. Bitte nutzen Sie zur Installation das Systemaktualisierungstool.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="101"/>
+        <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Aktualisierungsserver wird überprüft...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="105"/>
+        <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation type="unfinished"/>
     </message>
@@ -1435,12 +1436,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="850"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="851"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Dieser Ordner muss nicht umbenannt werden. Er wurde zurück zum Originalnamen umbenannt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="852"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="853"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Dieser Ordner muss nicht umbenannt werden. Bitte benennen Sie es zurück wie in der Freigabe.</translation>
     </message>
@@ -2161,12 +2162,12 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="29"/>
+        <location filename="../src/main.cpp" line="30"/>
         <source>System Tray not available</source>
         <translation>Die Taskleiste ist nicht verfügbar.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="30"/>
+        <location filename="../src/main.cpp" line="31"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 wird für eine funktionierende Taskleiste benötigt. Falls Sie XFCE einsetzen, dann folgen Sie bitte &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;diesen Anweisungen&lt;/a&gt;. Anderenfalls installieren Sie bitte eine Taskleisten-Anwendung wie &apos;trayer&apos; und versuchen Sie es erneut.</translation>
     </message>

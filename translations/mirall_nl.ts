@@ -222,7 +222,7 @@
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="280"/>
+        <location filename="../src/mirall/application.cpp" line="281"/>
         <source>Connection failed</source>
         <translation>Verbinding mislukt</translation>
     </message>
@@ -953,29 +953,29 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="310"/>
+        <location filename="../src/updater/ocupdater.cpp" line="294"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Nieuwe versie beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="316"/>
+        <location filename="../src/updater/ocupdater.cpp" line="300"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Er is een nieuwe versie van de %1-client.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; kan gedownload worden. De geïnstalleerde versie is %3.&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="329"/>
+        <location filename="../src/updater/ocupdater.cpp" line="313"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Deze versie overslaan.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="330"/>
+        <location filename="../src/updater/ocupdater.cpp" line="314"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Deze keer overslaan</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="331"/>
+        <location filename="../src/updater/ocupdater.cpp" line="315"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Ophalen update</translation>
     </message>
 </context>
 <context>
@@ -1082,50 +1082,51 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
 <context>
     <name>Mirall::OCUpdater</name>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="71"/>
+        <location filename="../src/updater/ocupdater.cpp" line="53"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Nieuwe update is klaar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="72"/>
+        <location filename="../src/updater/ocupdater.cpp" line="54"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Er wordt een nieuwe update geïnstalleerd. De updater kan
+vragen om extra autorisaties tijdens installatie.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="91"/>
+        <location filename="../src/updater/ocupdater.cpp" line="75"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Downloaden versie %1. Even geduld...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="93"/>
+        <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Versie %1 is beschikbaar. Herstart de applicatie om de update te starten.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="95"/>
+        <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Kon de download niet bijwerken. Klik &lt;a href=&apos;%1&apos;&gt;hier&lt;/a&gt;  om de download handmatig bij te werken.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="97"/>
+        <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Kon niet controleren op updates.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="99"/>
+        <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nieuwe versie %1 beschikbaar. Gebruik de Bijwerkapplicatie voor installeren ervan.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="101"/>
+        <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Controleren updateserver...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/ocupdater.cpp" line="105"/>
+        <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Geen updates beschikbaar. Uw installatie is al de laatste versie.</translation>
     </message>
 </context>
 <context>
@@ -1434,12 +1435,12 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="850"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="851"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Deze map mag niet worden hernoemd. De naam van de map is teruggezet naar de originele naam.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="852"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="853"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Deze map mag niet worden hernoemd. Verander de naam terug in Gedeeld.</translation>
     </message>
@@ -2160,12 +2161,12 @@ Controleer de werking van uw netwerkverbinding.</translation>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/main.cpp" line="29"/>
+        <location filename="../src/main.cpp" line="30"/>
         <source>System Tray not available</source>
         <translation>Systeem icoon niet beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="30"/>
+        <location filename="../src/main.cpp" line="31"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 heeft een werkend systeem icoon nodig. Als je XFCE draait volg &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;deze instructies&lt;/a&gt;. Anders, installeer een systeem icoon applicatie zoals &apos;trayer&apos; and probeer het opnieuw.</translation>
     </message>
