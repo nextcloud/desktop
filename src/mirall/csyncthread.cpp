@@ -431,10 +431,6 @@ void CSyncThread::startSync()
     }
     _abortRequestedMutex.unlock();
 
-
-    // maybe move this somewhere else where it can influence a running sync?
-    MirallConfigFile cfg;
-
     if (!_journal->exists()) {
         qDebug() << "=====sync looks new (no DB exists), activating recursive PROPFIND if csync supports it";
         bool no_recursive_propfind = false;
@@ -562,6 +558,17 @@ void CSyncThread::startSync()
     connect(_propagator.data(), SIGNAL(progressChanged(qint64)), this, SLOT(slotProgressChanged(qint64)));
     connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()));
 
+    setNetworkLimits();
+
+    _propagator->start(_syncedItems);
+}
+
+void CSyncThread::setNetworkLimits()
+{
+    MirallConfigFile cfg;
+
+    if( !_propagator ) return;
+
     int downloadLimit = 0;
     if (cfg.useDownloadLimit()) {
         downloadLimit = cfg.downloadLimit() * 1000;
@@ -577,7 +584,8 @@ void CSyncThread::startSync()
     }
     _propagator->_uploadLimit = uploadLimit;
 
-    _propagator->start(_syncedItems);
+    qDebug() << " N------N Network Limits changed!";
+
 }
 
 void CSyncThread::transferCompleted(const SyncFileItem &item)

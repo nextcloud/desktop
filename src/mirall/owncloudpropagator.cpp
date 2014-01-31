@@ -30,6 +30,7 @@
 #include <QDebug>
 #include <QDateTime>
 #include <qstack.h>
+#include <QCoreApplication>
 
 #include <neon/ne_basic.h>
 #include <neon/ne_socket.h>
@@ -418,6 +419,7 @@ void PropagateUploadFile::notify_status_cb(void* userdata, ne_session_status sta
                         that->_chunked_done + info->sr.progress,
                         that->_chunked_total_size ? that->_chunked_total_size : info->sr.total );
 
+     QCoreApplication::processEvents();
     that->limitBandwidth(that->_chunked_done + info->sr.progress,  that->_propagator->_uploadLimit);
   }
 }
@@ -526,6 +528,7 @@ int PropagateDownloadFile::content_reader(void *userdata, const char *buf, size_
         }
         return NE_OK;
     }
+
     return NE_ERROR;
 }
 
@@ -608,6 +611,8 @@ void PropagateDownloadFile::notify_status_cb(void* userdata, ne_session_status s
     PropagateDownloadFile* that = reinterpret_cast<PropagateDownloadFile*>(userdata);
     if (status == ne_status_recving && info->sr.total > 0) {
         emit that->progress(Progress::Context, that->_item, info->sr.progress, info->sr.total );
+
+        QCoreApplication::processEvents();
         that->limitBandwidth(info->sr.progress,  that->_propagator->_downloadLimit);
     }
 }

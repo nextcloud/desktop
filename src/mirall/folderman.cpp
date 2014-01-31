@@ -608,6 +608,16 @@ void FolderMan::setDirtyProxy(bool value)
     }
 }
 
+void FolderMan::setDirtyNetworkLimits()
+{
+    foreach( Folder *f, _folderMap.values() ) {
+        // set only in busy folders. Otherwise they read the config anyway.
+        if(f && f->isBusy()) {
+            f->setDirtyNetworkLimits();
+        }
+    }
+
+}
 
 SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
 {

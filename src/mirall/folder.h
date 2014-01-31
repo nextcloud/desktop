@@ -134,6 +134,8 @@ public:
 
      void setSyncState(SyncResult::Status state);
 
+     void setDirtyNetworkLimits();
+
 signals:
     void syncStateChange();
     void syncStarted();

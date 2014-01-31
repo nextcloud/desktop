@@ -600,6 +600,13 @@ void Folder::startSync(const QStringList &pathList)
     emit syncStarted();
 }
 
+void Folder::setDirtyNetworkLimits()
+{
+    if( _csync ) {
+        QMetaObject::invokeMethod(_csync, "setNetworkLimits", Qt::QueuedConnection);
+    }
+}
+
 void Folder::slotCSyncError(const QString& err)
 {
     _errors.append( err );

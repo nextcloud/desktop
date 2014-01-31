@@ -108,6 +108,7 @@ public slots:
     void slotScheduleAllFolders();
 
     void setDirtyProxy(bool value = true);
+    void setDirtyNetworkLimits();
 
     // slot to add a folder to the syncing queue
     void slotScheduleSync( const QString & );

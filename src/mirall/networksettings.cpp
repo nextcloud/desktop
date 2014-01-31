@@ -163,6 +163,8 @@ void NetworkSettings::saveBWLimitSettings()
 
     cfgFile.setDownloadLimit(_ui->downloadSpinBox->value());
     cfgFile.setUploadLimit(_ui->uploadSpinBox->value());
+
+    FolderMan::instance()->setDirtyNetworkLimits();
 }
 
 } // namespace Mirall

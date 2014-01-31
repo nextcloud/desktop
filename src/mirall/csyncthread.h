@@ -53,6 +53,7 @@ public:
     static QString csyncErrorToString( CSYNC_STATUS);
 
     Q_INVOKABLE void startSync();
+    Q_INVOKABLE void setNetworkLimits();
 
     /* Abort the sync.  Called from the main thread */
     void abort();
