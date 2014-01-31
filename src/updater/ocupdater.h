@@ -85,7 +85,7 @@ private slots:
     void slotDownloadFinished();
     void slotWriteFile();
 private:
-    NSISUpdater::UpdateState updateState();
+    NSISUpdater::UpdateState updateStateOnStart();
     void showDialog(const UpdateInfo &info);
     void versionInfoArrived(const UpdateInfo &info);
     QScopedPointer<QTemporaryFile> _file;
