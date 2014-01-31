@@ -334,6 +334,7 @@ out:
   st->type  = type;
   st->etag   = NULL;
   if( fs->etag ) {
+      SAFE_FREE(st->etag);
       st->etag  = c_strdup(fs->etag);
   }
   csync_vio_set_file_id(st->file_id, fs->file_id);
