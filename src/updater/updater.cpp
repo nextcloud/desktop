@@ -58,6 +58,8 @@ qint64 Updater::Helper::currentVersionToInt()
 
 qint64 Updater::Helper::stringVersionToInt(const QString& version)
 {
+    if (version.isEmpty())
+        return 0;
     QByteArray baVersion = version.toLatin1();
     int major = 0, minor = 0, patch = 0, build = 0;
     sscanf(baVersion, "%d.%d.%d.%d", &major, &minor, &patch, &build);

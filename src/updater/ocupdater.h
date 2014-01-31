@@ -55,7 +55,6 @@ public slots:
 
 private slots:
     void slotOpenUpdateUrl();
-    void slotSetVersionSeen();
     void slotVersionInfoArrived();
     void slotTimedOut();
 
@@ -65,7 +64,7 @@ protected:
     QString clientVersion() const;
     QString getSystemInfo();
     QNetworkAccessManager* qnam() const { return _accessManager; }
-
+    UpdateInfo updateInfo() const { return _updateInfo; }
 private:
     QUrl _updateUrl;
     int _state;
@@ -82,12 +81,12 @@ public:
     explicit NSISUpdater(const QUrl &url, QObject *parent = 0);
     bool handleStartup();
 private slots:
+    void slotSetSeenVersion();
     void slotDownloadFinished();
     void slotWriteFile();
 private:
-    NSISUpdater::UpdateState updateState() const;
+    NSISUpdater::UpdateState updateState();
     void showDialog(const UpdateInfo &info);
-    void showFallbackMessage();
     void versionInfoArrived(const UpdateInfo &info);
     QScopedPointer<QTemporaryFile> _file;
     QString _targetFile;

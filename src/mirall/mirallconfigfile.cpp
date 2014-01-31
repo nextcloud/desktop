@@ -57,7 +57,6 @@ static const char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
 static const char uploadLimitC[]      = "BWLimit/uploadLimit";
 static const char downloadLimitC[]    = "BWLimit/downloadLimit";
 
-static const char seenVersionC[] = "Updater/seenVersion";
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
 QString MirallConfigFile::_confDir = QString::null;
@@ -105,19 +104,6 @@ void MirallConfigFile::setOptionalDesktopNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(optionalDesktopNoficationsC), show);
-    settings.sync();
-}
-
-QString MirallConfigFile::seenVersion() const
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(seenVersionC)).toString();
-}
-
-void MirallConfigFile::setSeenVersion(const QString &version)
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(seenVersionC), version);
     settings.sync();
 }
 

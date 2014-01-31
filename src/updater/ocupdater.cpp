@@ -32,7 +32,9 @@
 namespace Mirall {
 
 static const char updateAvailableC[] = "Updater/updateAvailable";
-static const char lastVersionC[] = "Updater/lastVersion";
+static const char updateTargetVersionC[] = "Updater/updateTargetVersion";
+static const char seenVersionC[] = "Updater/seenVersion";
+static const char autoUpdateFailedVersionC[] = "Updater/autoUpdateFailedVersion";
 static const char ranUpdateC[] = "Updater/ranUpdate";
 
 OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
@@ -107,9 +109,9 @@ void OCUpdater::slotStartInstaller()
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     QString updateFile = settings.value(updateAvailableC).toString();
     settings.setValue(ranUpdateC, true);
+    settings.sync();
     qDebug() << "Running updater" << updateFile;
     QProcess::startDetached(updateFile, QStringList() << "/S" << "/launch");
-    qApp->quit();
 }
 
 void OCUpdater::checkForUpdate()
@@ -145,12 +147,6 @@ void OCUpdater::slotOpenUpdateUrl()
     QDesktopServices::openUrl(_updateInfo.web());
 }
 
-void OCUpdater::slotSetVersionSeen()
-{
-    MirallConfigFile cfg;
-    cfg.setSeenVersion(_updateInfo.version());
-}
-
 QString OCUpdater::getSystemInfo()
 {
 #ifdef Q_OS_LINUX
@@ -171,8 +167,8 @@ bool OCUpdater::updateSucceeded() const
 {
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    qint64 oldVersionInt = Helper::stringVersionToInt(settings.value(lastVersionC).toString().toLatin1());
-    return Helper::currentVersionToInt() > oldVersionInt;
+    qint64 targetVersionInt = Helper::stringVersionToInt(settings.value(updateTargetVersionC).toString());
+    return Helper::currentVersionToInt() >= targetVersionInt;
 }
 
 QString OCUpdater::clientVersion() const
@@ -236,27 +232,25 @@ void NSISUpdater::slotDownloadFinished()
     qDebug() << "Downloaded" << url.toString() << "to" << _targetFile;
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    settings.setValue(lastVersionC, clientVersion());
+    settings.setValue(updateTargetVersionC, updateInfo().version());
     settings.setValue(updateAvailableC, _targetFile);
-}
-
-void NSISUpdater::showFallbackMessage()
-{
-    _showFallbackMessage = true;
 }
 
 void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
 {
     MirallConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
     qint64 infoVersion = Helper::stringVersionToInt(info.version());
-    qint64 seenVersion = Helper::stringVersionToInt(cfg.seenVersion());
+    qint64 seenVersion = Helper::stringVersionToInt(settings.value(seenVersionC).toString());
 
     if(info.version().isEmpty() || infoVersion <= seenVersion ) {
         qDebug() << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
         QString url = info.downloadUrl();
-        if (url.isEmpty() || _showFallbackMessage) {
+        qint64 autoUpdateFailedVersion =
+                Helper::stringVersionToInt(settings.value(autoUpdateFailedVersionC).toString());
+        if (url.isEmpty() || _showFallbackMessage || infoVersion == autoUpdateFailedVersion) {
             showDialog(info);
         }
         if (!url.isEmpty()) {
@@ -318,7 +312,7 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
     connect(reject, SIGNAL(clicked()), msgBox, SLOT(reject()));
     connect(getupdate, SIGNAL(clicked()), msgBox, SLOT(accept()));
 
-    connect(skip, SIGNAL(clicked()), SLOT(slotSetVersionSeen()));
+    connect(skip, SIGNAL(clicked()), SLOT(slotSetSeenVersion()));
     connect(getupdate, SIGNAL(clicked()), SLOT(slotOpenUpdateUrl()));
 
     layout->addWidget(bb);
@@ -326,7 +320,7 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
     msgBox->open();
 }
 
-NSISUpdater::UpdateState NSISUpdater::updateState() const
+NSISUpdater::UpdateState NSISUpdater::updateState()
 {
     MirallConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
@@ -336,14 +330,27 @@ NSISUpdater::UpdateState NSISUpdater::updateState() const
         // we have an update, did we succeed running it?
         bool ranUpdate = settings.value(ranUpdateC, false).toBool();
         if (ranUpdate) {
+            // regardless if things went well or not
+            QFile::remove(updateFile);
+            settings.remove(ranUpdateC);
             if (updateSucceeded()) {
                 settings.remove(ranUpdateC);
+                settings.remove(updateTargetVersionC);
+                settings.remove(autoUpdateFailedVersionC);
+                slotSetSeenVersion();
                 return NoUpdate;
             } else {
+                QString targetVersion = settings.value(updateTargetVersionC).toString();
+                settings.setValue(autoUpdateFailedVersionC, targetVersion);
+                settings.remove(updateTargetVersionC);
                 return UpdateFailed;
             }
         } else {
-            return UpdateAvailable;
+            if (settings.contains(autoUpdateFailedVersionC)) {
+                return NoUpdate;
+            } else {
+                return UpdateAvailable;
+            }
         }
     } else {
         return NoUpdate;
@@ -356,12 +363,19 @@ bool NSISUpdater::handleStartup()
     case NSISUpdater::UpdateAvailable:
         return performUpdate();
     case NSISUpdater::UpdateFailed:
-        showFallbackMessage();
+        _showFallbackMessage = true;
         return false;
     case NSISUpdater::NoUpdate:
     default:
         return false;
     }
+}
+
+void NSISUpdater::slotSetSeenVersion()
+{
+    MirallConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    settings.setValue(seenVersionC, updateInfo().version());
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -375,7 +389,12 @@ PassiveUpdateNotifier::PassiveUpdateNotifier(const QUrl &url, QObject *parent)
 void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
 {
     MirallConfigFile cfg;
-    if( info.version().isEmpty() || info.version() == cfg.seenVersion() ) {
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QString seenVersion = settings.value(seenVersionC).toString();
+    if( info.version().isEmpty() ||
+            Helper::stringVersionToInt(info.version())
+            >= Helper::stringVersionToInt(seenVersion))
+    {
         qDebug() << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {

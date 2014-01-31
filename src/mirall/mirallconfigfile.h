@@ -106,9 +106,6 @@ public:
     QString lastVersion() const;
     void setLastVersion(const QString &version);
 
-    QString seenVersion() const;
-    void setSeenVersion(const QString &version);
-
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
 protected:
