@@ -953,27 +953,27 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="294"/>
+        <location filename="../src/updater/ocupdater.cpp" line="293"/>
         <source>New Version Available</source>
         <translation>Nieuwe versie beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="300"/>
+        <location filename="../src/updater/ocupdater.cpp" line="299"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
         <translation>&lt;p&gt;Er is een nieuwe versie van de %1-client.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; kan gedownload worden. De geïnstalleerde versie is %3.&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="313"/>
+        <location filename="../src/updater/ocupdater.cpp" line="312"/>
         <source>Skip this version</source>
         <translation>Deze versie overslaan.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="314"/>
+        <location filename="../src/updater/ocupdater.cpp" line="313"/>
         <source>Skip this time</source>
         <translation>Deze keer overslaan</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="315"/>
+        <location filename="../src/updater/ocupdater.cpp" line="314"/>
         <source>Get update</source>
         <translation>Ophalen update</translation>
     </message>
@@ -1082,49 +1082,49 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
 <context>
     <name>Mirall::OCUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="53"/>
+        <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
         <translation>Nieuwe update is klaar</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="54"/>
+        <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>Er wordt een nieuwe update geïnstalleerd. De updater kan
 vragen om extra autorisaties tijdens installatie.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="75"/>
+        <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
         <translation>Downloaden versie %1. Even geduld...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="77"/>
+        <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Version %1 available. Restart application to start the update.</source>
         <translation>Versie %1 is beschikbaar. Herstart de applicatie om de update te starten.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="79"/>
+        <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>Kon de download niet bijwerken. Klik &lt;a href=&apos;%1&apos;&gt;hier&lt;/a&gt;  om de download handmatig bij te werken.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="81"/>
+        <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
         <translation>Kon niet controleren op updates.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="83"/>
+        <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
         <translation>Nieuwe versie %1 beschikbaar. Gebruik de Bijwerkapplicatie voor installeren ervan.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="85"/>
+        <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
         <translation>Controleren updateserver...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="89"/>
+        <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Geen updates beschikbaar. Uw installatie is al de laatste versie.</translation>
     </message>
@@ -1610,114 +1610,114 @@ Controleer de werking van uw netwerkverbinding.</translation>
 <context>
     <name>Mirall::SslButton</name>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="84"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Certificaat details&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="87"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>Common Name (CN):</source>
         <translation>Common Name (CN):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="88"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Subject Alternative Names:</source>
         <translation>Alternatieve subject namen:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="90"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Organization (O):</source>
         <translation>Organisatie (O):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="91"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organizational Unit (OU):</source>
         <translation>Organisatie unit (OU):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="92"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>State/Province:</source>
         <translation>Land/Provincie:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="93"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="103"/>
         <source>Country:</source>
         <translation>Land:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="94"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>Serial:</source>
         <translation>Serienummer:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="97"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Uitgever&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="100"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="110"/>
         <source>Issuer:</source>
         <translation>Uitgever:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="101"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
         <translation>Uitgegeven op:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Expires on:</source>
         <translation>Vervalt op:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="105"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Vingerafdrukken&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="108"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="118"/>
         <source>MD 5:</source>
         <translation>MD 5:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="109"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>SHA-1:</source>
         <translation>SHA-1:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="113"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Dit certificaat werd handmatig goedgekeurd&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="125"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="137"/>
         <source>%1 (in Root CA store)</source>
         <translation>%1 (in Root CA database)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="128"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="140"/>
         <source>%1 (self-signed)</source>
         <translation>%1 (zelf ondertekend)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="130"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="142"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="161"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="173"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
         <translation>Deze verbinding is versleuteld via %1 bit %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="164"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="176"/>
         <source>Certificate information:</source>
         <translation>Certificaat informatie:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="185"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="201"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
         <translation>Deze verbinding is NIET veilig, omdat de verbinding niet is versleuteld.

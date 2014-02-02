@@ -953,27 +953,27 @@ Checked items will also be deleted if they prevent a directory from being remove
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="294"/>
+        <location filename="../src/updater/ocupdater.cpp" line="293"/>
         <source>New Version Available</source>
         <translation>Saadaval on uuem versioon</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="300"/>
+        <location filename="../src/updater/ocupdater.cpp" line="299"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
         <translation>&lt;p&gt;Uus versioon %1 kliendist on saadaval.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; on saadaval alla laadimiseks. Paigaldatud on versioon %3.&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="313"/>
+        <location filename="../src/updater/ocupdater.cpp" line="312"/>
         <source>Skip this version</source>
         <translation>Jäta see versioon vahele</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="314"/>
+        <location filename="../src/updater/ocupdater.cpp" line="313"/>
         <source>Skip this time</source>
         <translation>Jäta seekord vahele</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="315"/>
+        <location filename="../src/updater/ocupdater.cpp" line="314"/>
         <source>Get update</source>
         <translation>Hangi uuendus</translation>
     </message>
@@ -1082,49 +1082,49 @@ Checked items will also be deleted if they prevent a directory from being remove
 <context>
     <name>Mirall::OCUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="53"/>
+        <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
         <translation>Uundus on valmis</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="54"/>
+        <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>Uuendust hakatakse paigaldama. Uuendus võib küsida
 täiendavaid õigusi protsessi käigus.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="75"/>
+        <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
         <translation>Laadin alla versiooni %1. Palun oota...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="77"/>
+        <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Version %1 available. Restart application to start the update.</source>
         <translation>Versioon %1 on saadaval. Taaskäivita rakendus alustamaks uuendust.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="79"/>
+        <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="81"/>
+        <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="83"/>
+        <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
         <translation>Uus versioon %1 on saadaval. Palun kasuta süsteemi uuendushaldurit selle paigaldamiseks.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="85"/>
+        <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
         <translation>Kontrollin uuendusserverit...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="89"/>
+        <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation type="unfinished"/>
     </message>
@@ -1610,114 +1610,114 @@ Palun veendu, et võrguühendus toimib.</translation>
 <context>
     <name>Mirall::SslButton</name>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="84"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Sertifikaadi detailid&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="87"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>Common Name (CN):</source>
         <translation>Üldine nimi (CN):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="88"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Subject Alternative Names:</source>
         <translation>Subjekti Alternatiivsed Nimed:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="90"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Organization (O):</source>
         <translation>Organisatsioon (O):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="91"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organizational Unit (OU):</source>
         <translation>Organisatsiooni üksus (OU):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="92"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>State/Province:</source>
         <translation>Riik/Maakond:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="93"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="103"/>
         <source>Country:</source>
         <translation>Riik:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="94"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>Serial:</source>
         <translation>Järjenumber:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="97"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Väljastaja&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="100"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="110"/>
         <source>Issuer:</source>
         <translation>Väljastaja:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="101"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
         <translation>Väljastatud:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Expires on:</source>
         <translation>Aegub:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="105"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Sõrmejäljendid&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="108"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="118"/>
         <source>MD 5:</source>
         <translation>MD 5:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="109"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>SHA-1:</source>
         <translation>SHA-1:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="113"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Märkus&lt;/b&gt;See sertifikaat on käsitsi heakskiidetud&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="125"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="137"/>
         <source>%1 (in Root CA store)</source>
         <translation>%1 (juursertifikaadihoidlas)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="128"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="140"/>
         <source>%1 (self-signed)</source>
         <translation>%1 (oma-signeering)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="130"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="142"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="161"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="173"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
         <translation>Ühendus on krüpteeritud kasutades %1 bitt %2
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="164"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="176"/>
         <source>Certificate information:</source>
         <translation>Seritifikaadi informatsioon:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="185"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="201"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
         <translation>See url EI OLE turvaline, kuna see pole krüpteeritud.

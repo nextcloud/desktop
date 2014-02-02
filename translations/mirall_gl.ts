@@ -953,27 +953,27 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="294"/>
+        <location filename="../src/updater/ocupdater.cpp" line="293"/>
         <source>New Version Available</source>
         <translation>Hai dispoñíbel unha nova versión</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="300"/>
+        <location filename="../src/updater/ocupdater.cpp" line="299"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
         <translation>&lt;p&gt;Hai dispoñíbel unha nova versión do cliente %1.&lt;/p&gt;&lt;p&gt;Pode descargar a versión &lt;b&gt;%2&lt;/b&gt;. A versión instalada é a %3.&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="313"/>
+        <location filename="../src/updater/ocupdater.cpp" line="312"/>
         <source>Skip this version</source>
         <translation>Omitir esta versión</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="314"/>
+        <location filename="../src/updater/ocupdater.cpp" line="313"/>
         <source>Skip this time</source>
         <translation>Omitir polo de agora</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="315"/>
+        <location filename="../src/updater/ocupdater.cpp" line="314"/>
         <source>Get update</source>
         <translation>Obter a actualización</translation>
     </message>
@@ -1082,49 +1082,49 @@ Os elementos marcados tamén se eliminarán se impiden retirar un directorio. Is
 <context>
     <name>Mirall::OCUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="53"/>
+        <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
         <translation>Preparada a nova actualización</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="54"/>
+        <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>Está a piques de instalarse unha nova actualización. O proceso de
 actualización pode pedir privilexios adicionais durante o proceso.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="75"/>
+        <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
         <translation>Descargando a versión %1. Agarde...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="77"/>
+        <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Version %1 available. Restart application to start the update.</source>
         <translation>Dispoñíbel a versión %1. Reinicie o aplicativo para iniciar a actualización.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="79"/>
+        <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>Non foi posíbel descargar a actualización. Prema &lt;a href=&apos;%1&apos;&gt;aquí&lt;/a&gt; para descargar manualmente a actualización.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="81"/>
+        <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
         <translation>Non foi posíbel comprobar se hai novas actualizacións.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="83"/>
+        <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
         <translation>Está dispoñíbel unha nova versión %1. Utilice a ferramenta de actualización do sistema para instalala.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="85"/>
+        <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
         <translation>Comprobando o servidor de actualizacións...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="89"/>
+        <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Non hai actualizacións dispoñíbeis. A instalación xa está na versión máis recente</translation>
     </message>
@@ -1610,114 +1610,114 @@ Asegúrese de que a súa conexión de rede está a funcionar.</translation>
 <context>
     <name>Mirall::SslButton</name>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="84"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Detalles do certificado&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="87"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>Common Name (CN):</source>
         <translation>Nome común (CN):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="88"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Subject Alternative Names:</source>
         <translation>Nomes alternativos do titular:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="90"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Organization (O):</source>
         <translation>Organización (O):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="91"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organizational Unit (OU):</source>
         <translation>Unidade organizativa (OU):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="92"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>State/Province:</source>
         <translation>Estado/provincia:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="93"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="103"/>
         <source>Country:</source>
         <translation>País</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="94"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>Serial:</source>
         <translation>Serie:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="97"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Emisor&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="100"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="110"/>
         <source>Issuer:</source>
         <translation>Emisor:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="101"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
         <translation>Emitido o:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Expires on:</source>
         <translation>Caduca o:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="105"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Pegadas dixitais&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="108"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="118"/>
         <source>MD 5:</source>
         <translation>MD 5:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="109"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>SHA-1:</source>
         <translation>SHA-1:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="113"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Este certificado foi aprobado manualmente&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="125"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="137"/>
         <source>%1 (in Root CA store)</source>
         <translation>%1 (no almacén de CA do Root)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="128"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="140"/>
         <source>%1 (self-signed)</source>
         <translation>%1 (autoasinada)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="130"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="142"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="161"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="173"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
         <translation>Esta conexión está cifrada empregando %1 a %2 bits.
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="164"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="176"/>
         <source>Certificate information:</source>
         <translation>Información do certificado:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="185"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="201"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
         <translation>Esta conexión non é segura e non está cifrada.

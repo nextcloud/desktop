@@ -953,27 +953,27 @@ Izbrani predmeti bodo tudi izbrisani, v kolikor bi sicer onemogočali brisanje m
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="294"/>
+        <location filename="../src/updater/ocupdater.cpp" line="293"/>
         <source>New Version Available</source>
         <translation>Na voljo je novejša različica</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="300"/>
+        <location filename="../src/updater/ocupdater.cpp" line="299"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
         <translation>&lt;p&gt;Na voljo je nova različica odjemalca %1.&lt;/p&gt;&lt;p&gt;Datoteka &lt;b&gt;%2&lt;/b&gt; je na voljo za prejem. Trenutno je nameščena različica %3.&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="313"/>
+        <location filename="../src/updater/ocupdater.cpp" line="312"/>
         <source>Skip this version</source>
         <translation>Preskoči to različico</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="314"/>
+        <location filename="../src/updater/ocupdater.cpp" line="313"/>
         <source>Skip this time</source>
         <translation>Posodobitev tokrat preskoči</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="315"/>
+        <location filename="../src/updater/ocupdater.cpp" line="314"/>
         <source>Get update</source>
         <translation>Pridobi posodobitve</translation>
     </message>
@@ -1082,49 +1082,49 @@ Izbrani predmeti bodo tudi izbrisani, v kolikor bi sicer onemogočali brisanje m
 <context>
     <name>Mirall::OCUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="53"/>
+        <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
         <translation>Nova posodobitev je pripravljena</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="54"/>
+        <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>Nameščena bo najnovejša posodobitev. Program lahko
 zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="75"/>
+        <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
         <translation>Poteka prejemanje različice %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="77"/>
+        <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Version %1 available. Restart application to start the update.</source>
         <translation>Na voljo je nova različica %1. Za začetek namestitve je treba program ponovno zagnati.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="79"/>
+        <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="81"/>
+        <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="83"/>
+        <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
         <translation>Na voljo je nova različica %1. Priporočeno je uporabiti sistemsko orodje za nameščanje. </translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="85"/>
+        <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
         <translation>Preverjanje strežnika za posodabljanje ...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="89"/>
+        <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation type="unfinished"/>
     </message>
@@ -1610,114 +1610,114 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
 <context>
     <name>Mirall::SslButton</name>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="84"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Podrobnosti potrdila&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="87"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>Common Name (CN):</source>
         <translation>Splošno ime (CN):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="88"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Subject Alternative Names:</source>
         <translation>Druga imena:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="90"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Organization (O):</source>
         <translation>Ustanova (U):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="91"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organizational Unit (OU):</source>
         <translation>Organizacijska enota (OE):</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="92"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>State/Province:</source>
         <translation>Okraj:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="93"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="103"/>
         <source>Country:</source>
         <translation>Država:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="94"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>Serial:</source>
         <translation>Zaporedna številka:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="97"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Izdaljatelj&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="100"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="110"/>
         <source>Issuer:</source>
         <translation>Izdaljatelj:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="101"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
         <translation>Izdano na:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Expires on:</source>
         <translation>Poteče na:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="105"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Prstni odtisi&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="108"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="118"/>
         <source>MD 5:</source>
         <translation>MD5:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="109"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>SHA-1:</source>
         <translation>SHA-1:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="113"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Opomba:&lt;/b&gt; to potrdilo je bilo ročno odobreno&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="125"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="137"/>
         <source>%1 (in Root CA store)</source>
         <translation>%1 (v korenski hrambi CA)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="128"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="140"/>
         <source>%1 (self-signed)</source>
         <translation>%1 (samopodpisano)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="130"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="142"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="161"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="173"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
         <translation>Ta povezava je šifrirana z %1 bitnim %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="164"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="176"/>
         <source>Certificate information:</source>
         <translation>Podrobnosti potrdila:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="185"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="201"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
         <translation>Ta povezava NI varna, saj ni šifrirana.
