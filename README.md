@@ -17,7 +17,7 @@ It uses OCSync as its syncing backend.
 
 ## Building the source code
 
-Please refer to [Building the Client](http://doc.owncloud.org/desktop/1.2/building.html)
+Please refer to [Building the Client](http://doc.owncloud.org/desktop/1.5/building.html)
 in the ownCloud client manual.
 
 ## Authors
