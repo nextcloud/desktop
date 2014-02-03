@@ -333,7 +333,7 @@ NSISUpdater::UpdateState NSISUpdater::updateStateOnStart()
     // has the previous run downloaded an update?
     if (!updateFileName.isEmpty() && QFile(updateFileName).exists()) {
         // did it try to execute the update?
-        if (settings.value(autoUpdateAttemptedC).toBool()) {
+        if (settings.value(autoUpdateAttemptedC, false).toBool()) {
             // clean up
             settings.remove(autoUpdateAttemptedC);
             settings.remove(updateAvailableC);
@@ -351,13 +351,13 @@ NSISUpdater::UpdateState NSISUpdater::updateStateOnStart()
                 settings.remove(updateTargetVersionC);
                 return UpdateFailed;
             }
-        }
-    } else {
-        if (!settings.contains(autoUpdateFailedVersionC)) {
-            return UpdateAvailable;
+        } else {
+            if (!settings.contains(autoUpdateFailedVersionC)) {
+                return UpdateAvailable;
+            }
         }
     }
-    return NoUpdate;
+        return NoUpdate;
 }
 
 bool NSISUpdater::handleStartup()
