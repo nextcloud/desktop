@@ -34,6 +34,11 @@ class FolderWatcherPrivate;
  * Folder Watcher monitors a directory and its sub directories
  * for changes in the local file system. Changes are signalled
  * through the folderChanged() signal.
+ *
+ * Note that if new folders are created, this folderwatcher class
+ * does not automatically adds them to the list of monitored
+ * dirs. That is the responsibility of the user of this class to
+ * call addPath() with the new dir.
  */
 
 class FolderWatcher : public QObject
