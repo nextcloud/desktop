@@ -313,8 +313,12 @@ IF( APPLE )
     list(APPEND mirall_SRCS mirall/cocoainitializer_mac.mm)
     list(APPEND mirall_HEADERS mirall/cocoainitializer.h)
 
-    list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
-    list(APPEND updater_HEADERS updater/sparkleupdater.h)
+    if(SPARKLE_FOUND)
+       # Define this, we need to check in updater.cpp
+       add_definitions( -DHAVE_SPARKLE )
+       list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
+       list(APPEND updater_HEADERS updater/sparkleupdater.h)
+   endif()
 ENDIF()
 
 # csync is required.
