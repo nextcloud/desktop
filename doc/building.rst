@@ -172,6 +172,7 @@ To build an installer/app bundle (requires the mingw32-cross-nsis packages on Wi
 Known cmake parameters:
 
 * WITH_DOC=TRUE: create doc and manpages via running ``make``; also adds install statements to be able to install it via ``make install``.
+* BUILD_WITH_QT4=OFF CMAKE_MODULE_PATH=/path/to/Qt5.2.0/5.2.0/ : Build with Qt5 instead of Qt4
 
 .. _`ownCloud repository from OBS`: http://software.opensuse.org/download/package?project=isv:ownCloud:devel&package=owncloud-client
 .. _CSync: http://www.csync.org
