@@ -218,13 +218,8 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
             _ui.aliasLineEdit->setText(newAlias);
         }
     }
-}
-
-void FolderWizardLocalPath::slotLocalFolderChanged()
-{
     emit completeChanged();
 }
-
 
 // =================================================================================
 FolderWizardRemotePath::FolderWizardRemotePath()

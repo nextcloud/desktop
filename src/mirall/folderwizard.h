@@ -50,7 +50,6 @@ public:
     void setFolderMap( const Folder::Map &fm ) { _folderMap = fm; }
 protected slots:
     void slotChooseLocalFolder();
-    void slotLocalFolderChanged();
 
 private:
     Ui_FolderWizardSourcePage _ui;
