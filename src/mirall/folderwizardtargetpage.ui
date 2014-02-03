@@ -125,7 +125,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Select a destination folder</string>
+      <string>Select a remote destination folder</string>
      </property>
      <property name="flat">
       <bool>true</bool>
