@@ -371,7 +371,7 @@
         <translation>Soubor obsahuje alespoň jeden neplatný znak, který narušuje synchronizaci v prostředí více platforem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="451"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="447"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nemohu inicializovat synchronizační žurnál.</translation>
     </message>
@@ -518,14 +518,14 @@
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="704"/>
+        <location filename="../src/mirall/folder.cpp" line="711"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Tato synchronizace by smazala všechny soubory v místní složce &apos;%1&apos;
 Pokud jste vy nebo váš správce zresetovali účet na serveru, zvolte &quot;Ponechat soubory&quot;. Pokud chcete místní data odstranit, zvolte &quot;Odstranit všechny soubory&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="707"/>
+        <location filename="../src/mirall/folder.cpp" line="714"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +534,17 @@ Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím
 Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="711"/>
+        <location filename="../src/mirall/folder.cpp" line="718"/>
         <source>Remove All Files?</source>
         <translation>Odstranit všechny soubory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="713"/>
+        <location filename="../src/mirall/folder.cpp" line="720"/>
         <source>Remove all files</source>
         <translation>Odstranit všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="714"/>
+        <location filename="../src/mirall/folder.cpp" line="721"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>
@@ -562,57 +562,57 @@ Opravdu chcete provést tuto akci?</translation>
         <translation>Byl nalezen starý záznam synchronizace &apos;%1&apos;, ale nebylo možné jej odebrat. Ujistěte se, že není aktuálně používán jinou aplikací.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="731"/>
+        <location filename="../src/mirall/folderman.cpp" line="741"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="734"/>
+        <location filename="../src/mirall/folderman.cpp" line="744"/>
         <source>Waits to start syncing.</source>
         <translation>Vyčkává na spuštění synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="737"/>
+        <location filename="../src/mirall/folderman.cpp" line="747"/>
         <source>Preparing for sync.</source>
         <translation>Příprava na synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="740"/>
+        <location filename="../src/mirall/folderman.cpp" line="750"/>
         <source>Sync is running.</source>
         <translation>Synchronizace probíhá.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="743"/>
+        <location filename="../src/mirall/folderman.cpp" line="753"/>
         <source>Server is currently not available.</source>
         <translation>Server je nyní nedostupný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="746"/>
+        <location filename="../src/mirall/folderman.cpp" line="756"/>
         <source>Last Sync was successful.</source>
         <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="751"/>
+        <location filename="../src/mirall/folderman.cpp" line="761"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Poslední synchronizace byla úspěšná, ale s varováním u některých souborů</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="754"/>
+        <location filename="../src/mirall/folderman.cpp" line="764"/>
         <source>Setup Error.</source>
         <translation>Chyba nastavení.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="757"/>
+        <location filename="../src/mirall/folderman.cpp" line="767"/>
         <source>User Abort.</source>
         <translation>Zrušení uživatelem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="760"/>
+        <location filename="../src/mirall/folderman.cpp" line="770"/>
         <source>Sync is paused.</source>
         <translation>Synchronizace pozastavena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="766"/>
+        <location filename="../src/mirall/folderman.cpp" line="776"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizace je pozastavena)</translation>
     </message>
@@ -1401,17 +1401,17 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>Mirall::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="517"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="519"/>
         <source>Sync was aborted by user.</source>
         <translation>Synchronizace zrušena uživatelem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="574"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ze serveru nebyl obdržen E-Tag, zkontrolujte proxy/brány</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="581"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="584"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Obdrželi jsme jiný E-Tag pro pokračování. Zkusím znovu příště.</translation>
     </message>
@@ -1419,7 +1419,7 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="181"/>
         <source>could not create directory %1</source>
         <translation>nepodařilo se vytvořit adresář %1</translation>
     </message>
@@ -1427,7 +1427,7 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="159"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="160"/>
         <source>Could not remove directory %1</source>
         <translation>Nepodařilo se odstranit adresář %1</translation>
     </message>
@@ -1435,12 +1435,12 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="851"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="856"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Tato složka nemůže být přejmenována. Byl jí vrácen původní název.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="853"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="858"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Tato složka nemůže být přejmenována. Přejmenujte jí prosím zpět na Shared.</translation>
     </message>
@@ -1448,13 +1448,13 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>Mirall::PropagateUploadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="327"/>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="381"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="328"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="382"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation>Místní soubor byl změněn během synchronizace, bude sesynchronizán, jakmile bude kompletní</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="330"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="331"/>
         <source>Sync was aborted by user.</source>
         <translation>Synchronizace zrušena uživatelem.</translation>
     </message>

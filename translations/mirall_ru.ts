@@ -371,7 +371,7 @@
         <translation>Файл содержит недопустимые символы, которые невозможно синхронизировать между платформами.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="451"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="447"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Не удалось инициализировать журнал синхронизации.</translation>
     </message>
@@ -518,14 +518,14 @@
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="704"/>
+        <location filename="../src/mirall/folder.cpp" line="711"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Это действие может удалить все файлы в локальной папке &apos;%1&apos;.
 Если вы или ваш администратор заново создали вашу учётную запись на сервере, выберите &quot;Сохранить файлы&quot;. Если вы хотите стереть всё - выберите &quot;Удалить все файлы&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="707"/>
+        <location filename="../src/mirall/folder.cpp" line="714"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +534,17 @@ Are you sure you want to perform this operation?</source>
 Вы уверены, что хотите выполнить операцию?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="711"/>
+        <location filename="../src/mirall/folder.cpp" line="718"/>
         <source>Remove All Files?</source>
         <translation>Удалить все файлы?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="713"/>
+        <location filename="../src/mirall/folder.cpp" line="720"/>
         <source>Remove all files</source>
         <translation>Удалить все файлы</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="714"/>
+        <location filename="../src/mirall/folder.cpp" line="721"/>
         <source>Keep files</source>
         <translation>Сохранить файлы</translation>
     </message>
@@ -562,57 +562,57 @@ Are you sure you want to perform this operation?</source>
         <translation>Найден старый журнал синхронизации &apos;%1&apos;, и он не может быть удалён. Пожалуйста убедитесь что он не открыт в каком-либо приложении.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="731"/>
+        <location filename="../src/mirall/folderman.cpp" line="741"/>
         <source>Undefined State.</source>
         <translation>Неопределенное состояние.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="734"/>
+        <location filename="../src/mirall/folderman.cpp" line="744"/>
         <source>Waits to start syncing.</source>
         <translation>Ожидает, чтобы начать синхронизацию.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="737"/>
+        <location filename="../src/mirall/folderman.cpp" line="747"/>
         <source>Preparing for sync.</source>
         <translation>Подготовка к синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="740"/>
+        <location filename="../src/mirall/folderman.cpp" line="750"/>
         <source>Sync is running.</source>
         <translation>Идет синхронизация.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="743"/>
+        <location filename="../src/mirall/folderman.cpp" line="753"/>
         <source>Server is currently not available.</source>
         <translation>Сервер недоступен.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="746"/>
+        <location filename="../src/mirall/folderman.cpp" line="756"/>
         <source>Last Sync was successful.</source>
         <translation>Последняя синхронизация прошла успешно.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="751"/>
+        <location filename="../src/mirall/folderman.cpp" line="761"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Последняя синхронизация прошла успешно, но были предупреждения о нескольких файлах.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="754"/>
+        <location filename="../src/mirall/folderman.cpp" line="764"/>
         <source>Setup Error.</source>
         <translation>Ошибка установки.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="757"/>
+        <location filename="../src/mirall/folderman.cpp" line="767"/>
         <source>User Abort.</source>
         <translation>Отмена пользователем.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="760"/>
+        <location filename="../src/mirall/folderman.cpp" line="770"/>
         <source>Sync is paused.</source>
         <translation>Синхронизация приостановлена.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="766"/>
+        <location filename="../src/mirall/folderman.cpp" line="776"/>
         <source>%1 (Sync is paused)</source>
         <translation>%! (синхронизация приостановлена)</translation>
     </message>
@@ -871,12 +871,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Изменить проигнорированные  шаблоны</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Изменить проигнорированные  шаблоны:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -1106,12 +1106,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось загрузить обновление. Пожалуйста, нажмите здесь &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt;%2, для ручной загрузки файлов</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось проверить наличие новых обновлений.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
@@ -1126,7 +1126,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>У Вас установлена новейшая версия</translation>
     </message>
 </context>
 <context>
@@ -1222,7 +1222,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось безопасно подключиться . Вы хотите подключиться в незашифрованном виде(не рекомендуется)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -1401,17 +1401,17 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="517"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="519"/>
         <source>Sync was aborted by user.</source>
         <translation>Синхронизация прервана пользователем.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="571"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="574"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation> E-Tag от сервера на получен, проверьте сетевые настройки (настройки прокси, шлюз).</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="581"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="584"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Мы получили другой E-Tag для возобновления. Повторите попытку позже.</translation>
     </message>
@@ -1419,7 +1419,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="181"/>
         <source>could not create directory %1</source>
         <translation>не удалось создать директорию %1</translation>
     </message>
@@ -1427,7 +1427,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="159"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="160"/>
         <source>Could not remove directory %1</source>
         <translation>Невозможно удалить директорию %1</translation>
     </message>
@@ -1435,12 +1435,12 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="851"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="856"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Эта папка не должна переименовываться. Ей будет присвоено изначальное имя. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="853"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="858"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Эта папка не должна переименовываться. Пожалуйста, верните ей имя Shared</translation>
     </message>
@@ -1448,13 +1448,13 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="327"/>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="381"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="328"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="382"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation>Локальный файл изменился в процессе синхронизации, повторяем процесс</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="330"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="331"/>
         <source>Sync was aborted by user.</source>
         <translation>Синхронизация прервана пользователем.</translation>
     </message>
@@ -1612,32 +1612,32 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Детали сертефиката&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Общее имя (CN):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Альтернативное имя субьекта:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Огранизация(О):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Организационное подразделение(OU):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Область/район:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
@@ -1647,57 +1647,57 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Серия:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Издатель&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="110"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Издатель:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Выдан для:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Истекает:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt; Отпечатки пальцев &lt;/ h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="118"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt; Примечание: &lt;/b&gt;  Этот сертификат был одобрен вручную &lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="137"/>
         <source>%1 (in Root CA store)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (in Root CA store)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="140"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (самозаверяющий)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="142"/>
@@ -1713,13 +1713,14 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="176"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Информация сертификата :</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="201"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Эта ссылка НЕ зашифрована.
+Мы не рекомендуем открывать такие ссылки.</translation>
     </message>
 </context>
 <context>
