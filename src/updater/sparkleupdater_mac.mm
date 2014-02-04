@@ -14,11 +14,26 @@
 
 #include <Cocoa/Cocoa.h>
 #include <Sparkle/Sparkle.h>
+#include <Sparkle/SUUpdater.h>
 #include <AppKit/NSApplication.h>
 
 #include "updater/sparkleupdater.h"
 
 #include "mirall/utility.h"
+#include <QDebug>
+
+// Does not work yet
+@interface DelegateObject : NSObject
+- (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;
+@end
+@implementation DelegateObject //(SUUpdaterDelegateInformalProtocol)
+- (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
+{
+    qDebug() << Q_FUNC_INFO << "may check: YES";
+    return YES;
+}
+@end
+
 
 namespace Mirall {
 
@@ -26,14 +41,24 @@ class SparkleUpdater::Private
 {
     public:
         SUUpdater* updater;
+        DelegateObject *delegate;
 };
 
+// Delete ~/Library//Preferences/com.owncloud.desktopclient.plist to re-test
 SparkleUpdater::SparkleUpdater(const QString& appCastUrl)
     : Updater()
 {
     d = new Private;
 
+    d->delegate = [[DelegateObject alloc] init];
+    [d->delegate retain];
+
     d->updater = [SUUpdater sharedUpdater];
+    [d->updater setDelegate:d->delegate];
+    [d->updater setAutomaticallyChecksForUpdates:YES];
+    [d->updater setAutomaticallyDownloadsUpdates:NO];
+    [d->updater setSendsSystemProfile:NO];
+    [d->updater resetUpdateCycle];
     [d->updater retain];
 
     NSURL* url = [NSURL URLWithString:
@@ -58,6 +83,7 @@ void SparkleUpdater::checkForUpdate()
 
 void SparkleUpdater::backgroundCheckForUpdate()
 {
+    qDebug() << Q_FUNC_INFO << "launching background check";
     [d->updater checkForUpdatesInBackground];
 }
 

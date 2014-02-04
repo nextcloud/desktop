@@ -31,11 +31,12 @@ Updater * Updater::instance()
     return _instance;
 }
 
+// To test, cmake with -DAPPLICATION_UPDATE_URL="http://127.0.0.1:8080/test.rss"
 Updater *Updater::create()
 {
     QString updateBaseUrl(QLatin1String(APPLICATION_UPDATE_URL));
-#if defined(Q_OS_MAC) && defined(SPARKLE_FOUND)
-    return new SparkleUpdater(updateBaseUrl+QLatin1String("/rss/"));
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+    return new SparkleUpdater(updateBaseUrl);
 #elif defined (Q_OS_WIN32)
     // the best we can do is notify about updates
     return new NSISUpdater(QUrl(updateBaseUrl));
