@@ -402,6 +402,7 @@ endif()
 
 add_library(updater STATIC ${updater_SRCS} ${updaterMoc})
 target_link_libraries(updater ${synclib_NAME})
+qt5_use_modules(updater Widgets Network Xml)
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
