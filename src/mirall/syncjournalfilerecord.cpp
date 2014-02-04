@@ -32,16 +32,10 @@ SyncJournalFileRecord::SyncJournalFileRecord()
 }
 
 SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QString &localFileName)
-    : _path(item._file), _type(item._type), _etag(item._etag), _fileId(item._fileId),
+    : _path(item._file), _modtime(Utility::qDateTimeFromTime_t(item._modtime)),
+      _type(item._type), _etag(item._etag), _fileId(item._fileId),
       _uid(0), _gid(0), _mode(0)
 {
-    if (item._dir == SyncFileItem::Down) {
-        QFileInfo fi(localFileName);
-        // refersh modtime
-        _modtime = fi.lastModified();
-    } else {
-        _modtime = Utility::qDateTimeFromTime_t(item._modtime);
-    }
 
     // Query the inode:
     //   based on code from csync_vio_local.c (csync_vio_local_stat)
