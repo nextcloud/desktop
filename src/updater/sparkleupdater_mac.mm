@@ -27,11 +27,32 @@
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;
 @end
 @implementation DelegateObject //(SUUpdaterDelegateInformalProtocol)
+
+// Only possible in later versions, we're not up to date here.
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
 {
     qDebug() << Q_FUNC_INFO << "may check: YES";
     return YES;
 }
+
+// Sent when a valid update is found by the update driver.
+- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
+// Sent when a valid update is not found.
+- (void)updaterDidNotFindUpdate:(SUUpdater *)update
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
+// Sent immediately before installing the specified update.
+- (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
 @end
 
 
