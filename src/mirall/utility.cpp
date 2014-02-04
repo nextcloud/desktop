@@ -257,7 +257,7 @@ QString Utility::dataLocation()
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     return QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 #else
-    return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+    return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 #endif
 }
 
