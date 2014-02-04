@@ -62,7 +62,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     // Blacklisting
     int retries = 0;
 
-    if( _item._httpErrorCode == 403 || _item._httpErrorCode == 413 || _item._httpErrorCode == 415 ) {
+    if( _item._httpErrorCode == 403 ||_item._httpErrorCode == 413 || _item._httpErrorCode == 415 ) {
         qDebug() << "Fatal Error condition" << _item._httpErrorCode << ", forbid retry!";
         retries = -1;
     } else {
@@ -98,6 +98,37 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     emit completed(_item);
     emit finished(status);
 }
+
+
+bool PropagateItemJob::checkForProblemsWithShared()
+{
+    QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
+    int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+
+    if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item._file )) {
+        // the file was removed locally from a read only Shared sync
+        // the file is gone locally and it should be recovered.
+        SyncFileItem downloadItem(_item);
+        downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
+        downloadItem._dir = SyncFileItem::Down;
+        _restoreJob.reset(new PropagateDownloadFile(_propagator, downloadItem));
+        connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
+                this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
+        _restoreJob->start();
+        return true;
+    }
+    return false;
+}
+
+void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
+{
+    if( item._status == SyncFileItem::Success ) {
+        done( SyncFileItem::SoftError, tr("The file was removed from a read only share. The file has been restored."));
+    } else {
+        done( item._status, tr("A file was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
+    }
+}
+
 
 // compare two files with given filename and return true if they have the same content
 static bool fileEquals(const QString &fn1, const QString &fn2) {
@@ -191,10 +222,16 @@ void PropagateRemoteRemove::start()
     emit progress(Progress::StartDelete, _item, 0, _item._size);
     qDebug() << "** DELETE " << uri.data();
     int rc = ne_delete(_propagator->_session, uri.data());
+
+    if( checkForProblemsWithShared() ) {
+        return;
+    }
+
     /* Ignore the error 404,  it means it is already deleted */
     if (updateErrorFromSession(rc, 0, 404)) {
         return;
     }
+
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
     _propagator->_journal->commit("Remote Remove");
     done(SyncFileItem::Success);
@@ -866,13 +903,17 @@ void PropagateRemoteRename::start()
         qDebug() << "MOVE on Server: " << uri1.data() << "->" << uri2.data();
 
         int rc = ne_move(_propagator->_session, 1, uri1.data(), uri2.data());
+
+        if( checkForProblemsWithShared()) {
+            return;
+        }
+
         if (updateErrorFromSession(rc)) {
             return;
         }
 
         updateMTimeAndETag(uri2.data(), _item._modtime);
         emit progress(Progress::EndRename, _item, _item._size, _item._size);
-
     }
 
     _propagator->_journal->deleteFileRecord(_item._originalFile);
@@ -1037,6 +1078,21 @@ void OwncloudPropagator::overallTransmissionSizeChanged(qint64 change)
     emit progressChanged(change);
 }
 
+bool OwncloudPropagator::isInSharedDirectory(const QString& file)
+{
+    bool re = false;
+    if( _remoteDir.contains("remote.php/webdav/Shared") ) {
+        // The Shared directory is synced as its own sync connection
+        re = true;
+    } else {
+        if( file.startsWith("Shared/") )  {
+            // The whole ownCloud is synced and Shared is always a top dir
+            re = true;
+        }
+    }
+    return re;
+}
+
 void PropagateDirectory::start()
 {
     _current = -1;
@@ -1075,5 +1131,6 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
         emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
     }
 }
+
 
 }

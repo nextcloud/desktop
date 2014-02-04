@@ -115,14 +115,23 @@ protected:
      */
     void limitBandwidth(qint64 progress, qint64 limit);
 
+    bool checkForProblemsWithShared();
+
     QElapsedTimer _lastTime;
     qint64        _lastProgress;
     int           _httpStatusCode;
     SyncFileItem  _item;
 
+protected slots:
+    void slotRestoreJobCompleted(const SyncFileItem& );
+
+private:
+    QScopedPointer<PropagateItemJob> _restoreJob;
+
 public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItem &item)
         : PropagatorJob(propagator), _lastProgress(0), _httpStatusCode(0), _item(item) {}
+
 };
 
 // Dummy job that just mark it as completed and ignored.
@@ -171,6 +180,7 @@ public:
 
     void overallTransmissionSizeChanged( qint64 change );
 
+    bool isInSharedDirectory(const QString& file);
 signals:
     void completed(const SyncFileItem &);
     void progress(Progress::Kind kind, const SyncFileItem&, quint64 bytes, quint64 total);
