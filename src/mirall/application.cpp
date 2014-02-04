@@ -214,7 +214,8 @@ void Application::slotCheckConnection()
         if (account->state() == Account::InvalidCredidential
                 || account->state() == Account::SignedOut) {
             //Do not try to connect if we are logged out
-            return;
+            if (!_userTriggeredConnect)
+                return;
         }
 
         AbstractCredentials* credentials(account->credentials());
