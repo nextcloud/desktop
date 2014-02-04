@@ -31,8 +31,8 @@
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
-        <source>Select a destination folder</source>
-        <translation>选择目标文件夹</translation>
+        <source>Select a remote destination folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -636,8 +636,8 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="447"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="449"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="442"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="444"/>
         <source>Add Folder</source>
         <translation>添加目录</translation>
     </message>
@@ -713,42 +713,42 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="256"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="251"/>
         <source>Add Remote Folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="252"/>
         <source>Enter the name of the new folder:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="279"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="274"/>
         <source>Folder was successfully created on %1.</source>
         <translation>文件夹在您的 %1 上不可用。&lt;br/&gt;请点此创建它。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="287"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="282"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="336"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="331"/>
         <source>Choose this to sync the entire account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="386"/>
         <source>This folder is already being synced.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="393"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="388"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="397"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation type="unfinished"/>
     </message>

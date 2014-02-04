@@ -31,8 +31,8 @@
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
-        <source>Select a destination folder</source>
-        <translation>Selecione uma pasta destino</translation>
+        <source>Select a remote destination folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -639,8 +639,8 @@ Você tem certeza que quer executar esta operação?</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="447"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="449"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="442"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="444"/>
         <source>Add Folder</source>
         <translation>Adicionar Pasta</translation>
     </message>
@@ -716,42 +716,42 @@ Você tem certeza que quer executar esta operação?</translation>
 <context>
     <name>Mirall::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="256"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="251"/>
         <source>Add Remote Folder</source>
         <translation>Adicionar Pasta Remota</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="252"/>
         <source>Enter the name of the new folder:</source>
         <translation>Informe o nome da nova pasta:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="279"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="274"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Pasta foi criada com sucesso em %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="287"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="282"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Falha ao criar a pasta em %1. Por favor, verifique manualmente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="336"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="331"/>
         <source>Choose this to sync the entire account</source>
         <translation>Escolha esta opção para sincronizar a conta inteira</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="386"/>
         <source>This folder is already being synced.</source>
         <translation>Esta pasta já está sendo sincronizada.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="393"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="388"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Você já está sincronizando &lt;i&gt;%1&lt;/i&gt;, que é uma pasta pai de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="397"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>Você já está sincronizando todos os seus arquivos. Sincronizar outra pasta &lt;b&gt;não&lt;/ b&gt; é possível. Se você deseja sincronizar várias pastas, por favor, remova a sincronização configurada atualmente para a pasta raiz.</translation>
     </message>

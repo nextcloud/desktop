@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>同期するコンピュータのローカルフォルダを選択して下さい</translation>
+        <translation>同期するコンピュータのローカルフォルダを選択してください</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="44"/>
@@ -31,8 +31,8 @@
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
-        <source>Select a destination folder</source>
-        <translation>同期元のフォルダを選択</translation>
+        <source>Select a remote destination folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="152"/>
         <source>Modify Account</source>
-        <translation>アカウント修正</translation>
+        <translation>アカウントを修正</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="324"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;本当にフォルダ &lt;i&gt;%1&lt;/i&gt; をリセットしてクライアントのデータベースを再構築しますか?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt;この機能は保守目的のためだけにデザインされています。ファイルは削除されませんが、完了するまでにデータ通信が明らかに増大し、数分、あるいはフォルダのサイズによっては数時間かかります。このオプションは管理者に指示された場合にのみ使用して下さい。</translation>
+        <translation>&lt;p&gt;本当にフォルダ &lt;i&gt;%1&lt;/i&gt; をリセットしてクライアントのデータベースを再構築しますか?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt;この機能は保守目的のためだけにデザインされています。ファイルは削除されませんが、完了するまでにデータ通信が明らかに増大し、数分、あるいはフォルダのサイズによっては数時間かかります。このオプションは管理者に指示された場合にのみ使用してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="762"/>
@@ -151,7 +151,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="427"/>
         <source>Sync Running</source>
-        <translation>同期実行中</translation>
+        <translation>同期を実行中</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="102"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="755"/>
         <source>No connection to %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation>No connection to %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
+        <translation>%1 に接続していません: &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="720"/>
@@ -257,7 +257,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="98"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>このクライアントのシステム時刻はサーバのシステム時刻と異なります。時刻が同じになるように、クライアントとサーバの両方で時刻同期サービス（NTP）を実行してください。</translation>
+        <translation>このクライアントのシステム時刻はサーバーのシステム時刻と異なります。時刻が同じになるように、クライアントとサーバーの両方で時刻同期サービス(NTP)を実行してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="103"/>
@@ -297,7 +297,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="124"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;ターゲットディレクトリは存在しません。&lt;/p&gt;&lt;p&gt;同期設定を確認して下さい。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;ターゲットディレクトリは存在しません。&lt;/p&gt;&lt;p&gt;同期設定を確認してください。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="128"/>
@@ -312,22 +312,22 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="135"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation>CSyncがプロキシ経由での接続に失敗しました。</translation>
+        <translation>CSyncがプロキシー経由での接続に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="138"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation>CSyncはそのプロクシで認証できませんでした。</translation>
+        <translation>CSyncはそのプロキシーで認証できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="141"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation>CSyncはプロキシもしくはサーバの参照に失敗しました。</translation>
+        <translation>CSyncはプロキシーもしくはサーバーの参照に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="144"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation>CSyncは %1 サーバでの認証に失敗しました。</translation>
+        <translation>CSyncは %1 サーバーでの認証に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="156"/>
@@ -343,7 +343,7 @@
         <location filename="../src/mirall/csyncthread.cpp" line="165"/>
         <location filename="../src/mirall/csyncthread.cpp" line="168"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation>CSync: %1 サーバには利用可能な空きがありません。</translation>
+        <translation>CSync: %1 サーバーには利用可能な空きがありません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="171"/>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="279"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation>ファイルに不正文字がある為、クロスプラットフォーム環境での同期を破壊が出来ません。</translation>
+        <translation>ファイルに無効な文字が含まれているため、クロスプラットフォーム環境での同期ができません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="447"/>
@@ -398,7 +398,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="174"/>
         <source>Aborted by the user</source>
-        <translation>ユーザによって中止されました</translation>
+        <translation>ユーザーによって中止されました</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="178"/>
@@ -421,7 +421,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>サーバーを最新に更新して、クライアントを再起動してください。</translation>
+        <translation>サーバーを最新にアップデートして、クライアントを再起動してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="120"/>
@@ -439,7 +439,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="103"/>
         <source>Unable to create csync-context</source>
-        <translation>csync-context を作成出来ません</translation>
+        <translation>csync-context を作成できません</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="163"/>
@@ -480,7 +480,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="374"/>
         <source>updated</source>
-        <translation>更新</translation>
+        <translation>アップデート済</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="377"/>
@@ -554,12 +554,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="167"/>
         <source>Could not reset folder state</source>
-        <translation>フォルダーの状態をリセット出来ませんでした</translation>
+        <translation>フォルダーの状態をリセットできませんでした</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="168"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>古い同期ジャーナル  &apos;%1&apos; が見つかりましたが、削除出来ませんでした。それを現在使用しているアプリケーションが存在しないか確認してください。</translation>
+        <translation>古い同期ジャーナル  &apos;%1&apos; が見つかりましたが、削除できませんでした。それを現在使用しているアプリケーションが存在しないか確認してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="741"/>
@@ -584,7 +584,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="753"/>
         <source>Server is currently not available.</source>
-        <translation>サーバは現在利用できません。</translation>
+        <translation>サーバーは現在利用できません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="756"/>
@@ -604,7 +604,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="767"/>
         <source>User Abort.</source>
-        <translation>ユーザによる中止。</translation>
+        <translation>ユーザーによる中止。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="770"/>
@@ -639,8 +639,8 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="447"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="449"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="442"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="444"/>
         <source>Add Folder</source>
         <translation>フォルダを追加</translation>
     </message>
@@ -716,45 +716,45 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="256"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="251"/>
         <source>Add Remote Folder</source>
         <translation>リモートフォルダを追加</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="252"/>
         <source>Enter the name of the new folder:</source>
         <translation>新しいフォルダの名前を入力:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="279"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="274"/>
         <source>Folder was successfully created on %1.</source>
         <translation>%1 にフォルダーが作成されました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="287"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="282"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>%1 にフォルダを作成できませんでした。手作業で確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="336"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="331"/>
         <source>Choose this to sync the entire account</source>
         <translation>アカウント全体を同期するには、こちらを選択</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="386"/>
         <source>This folder is already being synced.</source>
         <translation>このフォルダはすでに同期されています。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="393"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="388"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>&lt;i&gt;%1&lt;/i&gt;は、&lt;i&gt;%2&lt;/i&gt;の親フォルダーで既に同期しています。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="397"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation>現在ファイルの同期中です。同時に他のフォルダーの同期が出来ません。
-同時に複数フォルダーを同期したい場合、現在の設定済ロートフォルダー同期構成を削除してください。</translation>
+        <translation>現在ファイルの同期中です。同時に他のフォルダーの同期ができません。
+同時に複数フォルダーを同期したい場合、現在の設定済ルートフォルダー同期構成を削除してください。</translation>
     </message>
 </context>
 <context>
@@ -802,12 +802,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation>更新</translation>
+        <translation>アップデート</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>再起動して更新(&amp;R)</translation>
+        <translation>再起動してアップデート(&amp;R)</translation>
     </message>
 </context>
 <context>
@@ -820,7 +820,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="259"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation>ユーザ &apos;%2&apos; の %1 パスワードを入力してください:</translation>
+        <translation>ユーザー &apos;%2&apos; の %1 パスワードを入力してください:</translation>
     </message>
 </context>
 <context>
@@ -976,7 +976,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="314"/>
         <source>Get update</source>
-        <translation>更新を取得</translation>
+        <translation>アップデートを取得</translation>
     </message>
 </context>
 <context>
@@ -989,17 +989,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation>プロキシ設定</translation>
+        <translation>プロキシー設定</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>プロキシを利用しない</translation>
+        <translation>プロキシーを利用しない</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>システムのプロキシを利用</translation>
+        <translation>システムのプロキシーを利用</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="52"/>
@@ -1019,7 +1019,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="134"/>
         <source>Proxy server requires authentication</source>
-        <translation>プロキシサーバーは、認証が必要</translation>
+        <translation>プロキシーサーバーは認証が必要です</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="182"/>
@@ -1057,27 +1057,27 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation>プロキシサーバのホスト名</translation>
+        <translation>プロキシーサーバーのホスト名</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
-        <translation>プロキシサーバ用のユーザ名</translation>
+        <translation>プロキシーサーバーのユーザー名</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
-        <translation>プロキシサーバ用のパスワード</translation>
+        <translation>プロキシーサーバーのパスワード</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
-        <translation>HTTP(S) プロキシー</translation>
+        <translation>HTTP(S)プロキシー</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
-        <translation>SOCKS5 プロキシー</translation>
+        <translation>SOCKS5プロキシー</translation>
     </message>
 </context>
 <context>
@@ -1085,13 +1085,13 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
-        <translation>更新の準備完了</translation>
+        <translation>アップデートの準備完了</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>新しい更新のインストール準備ができました。更新のインストール中、追加の権限が必要な場合があります。</translation>
+        <translation>新しいアップデートのインストール準備ができました。アップデートのインストール中、追加の権限が必要な場合があります。</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="77"/>
@@ -1101,17 +1101,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation>バージョン %1 が利用可能です。アプリケーションを再起動して更新を開始してください。</translation>
+        <translation>バージョン %1 が利用可能です。アプリケーションを再起動してアップデートを開始してください。</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>更新をダウンロード出来ませんでした。手動で更新するには、&lt;a href=&apos;%1&apos;&gt;ここ&lt;/a&gt; をクリックしてください。 </translation>
+        <translation>アップデートをダウンロードできませんでした。手動でアップデートするには、&lt;a href=&apos;%1&apos;&gt;ここ&lt;/a&gt; をクリックしてください。 </translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation>更新を確認出来ませんでした。</translation>
+        <translation>アップデートを確認できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
@@ -1121,7 +1121,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
-        <translation>更新をチェックしています....。</translation>
+        <translation>アップデートをチェックしています....</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="91"/>
@@ -1205,7 +1205,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
         <source>Setup %1 server</source>
-        <translation>%1 サーバを設定</translation>
+        <translation>%1 サーバーを設定</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
@@ -1221,7 +1221,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation>通信経路を安全に接続出来ませんでした。暗号化無しで接続しますか(推奨しません)？</translation>
+        <translation>安全に接続できませんでした。暗号化せずに接続しますか？(非推奨)</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -1231,7 +1231,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
         <source>Update %1 server</source>
-        <translation>%1 サーバを更新</translation>
+        <translation>%1 サーバーをアップデート</translation>
     </message>
 </context>
 <context>
@@ -1244,7 +1244,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program.Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>このフォルダ内のフォルダまたはファイルが他のプログラムで開かれているため、このフォルダーを削除し、バックアップすることが出来ません。フォルダまたはファイルを閉じて再試行するか、このセットアップをキャンセルしてください。</translation>
+        <translation>このフォルダ内のフォルダまたはファイルが他のプログラムで開かれているため、このフォルダーを削除し、バックアップすることができません。フォルダまたはファイルを閉じて再試行するか、このセットアップをキャンセルしてください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
@@ -1332,7 +1332,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="306"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>資格情報が間違っていたため、リモートフォルダの作成は失敗しました！&lt;br/&gt;前に戻って資格情報を確認して下さい。&lt;/p&gt;</translation>
+        <translation>資格情報が間違っていたため、リモートフォルダの作成に失敗しました！&lt;br/&gt;前に戻って資格情報を確認してください。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
@@ -1358,7 +1358,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="343"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>%1 への接続を確立できませんでした。もう一度確認して下さい。</translation>
+        <translation>%1 への接続を確立できませんでした。もう一度確認してください。</translation>
     </message>
 </context>
 <context>
@@ -1402,12 +1402,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="519"/>
         <source>Sync was aborted by user.</source>
-        <translation>同期はユーザによって中止されました。</translation>
+        <translation>同期はユーザーによって中止されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="574"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>サーバーから、E-Tagを受信できません。プロキシー/ゲートウェイを確認してください。</translation>
+        <translation>サーバーからE-Tagを受信できません。プロキシー/ゲートウェイを確認してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="584"/>
@@ -1455,7 +1455,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="331"/>
         <source>Sync was aborted by user.</source>
-        <translation>同期はユーザによって中止されました。</translation>
+        <translation>同期はユーザーによって中止されました。</translation>
     </message>
 </context>
 <context>
@@ -1508,7 +1508,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="64"/>
         <source>Retry Sync</source>
-        <translation>シンクを再実行する</translation>
+        <translation>同期を再実行</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="68"/>
@@ -1602,8 +1602,8 @@ It is not advisable to use it.</source>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
         <source>Could not load Shibboleth login page to log you in.
 Please ensure that your network connection is working.</source>
-        <translation>Shibboleth ログインページをロード出来ません
-ネットワーク接続を確認ください</translation>
+        <translation>Shibboleth ログインページをロードできません。
+ネットワーク接続を確認してください。</translation>
     </message>
 </context>
 <context>
@@ -1965,7 +1965,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="158"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;チェックした場合、ローカルディレクトリ内に存在するコンテンツはサーバからクリーンな同期を開始するために削除されます。&lt;/p&gt;&lt;p&gt;もしローカルのコンテンツをサーバのディレクトリにアップロードするなら、チェックしないでください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;チェックした場合、ローカルディレクトリ内に存在するコンテンツはサーバーからクリーンな同期を開始するために削除されます。&lt;/p&gt;&lt;p&gt;もしローカルのコンテンツをサーバーのディレクトリにアップロードするなら、チェックしないでください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
@@ -1993,7 +1993,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
-        <translation>ユーザ名(&amp;U)</translation>
+        <translation>ユーザー名(&amp;U)</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="48"/>
@@ -2023,7 +2023,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation>サーバアドレス(&amp;A):</translation>
+        <translation>サーバーアドレス(&amp;A):</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -2047,12 +2047,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="75"/>
         <source>&amp;Username:</source>
-        <translation>ユーザ名(&amp;U)</translation>
+        <translation>ユーザー名(&amp;U)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="85"/>
         <source>Enter the ownCloud username.</source>
-        <translation>ownCloudのユーザ名を入力してください。</translation>
+        <translation>ownCloudのユーザー名を入力してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="92"/>
@@ -2087,7 +2087,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="83"/>
         <source>Server &amp;Address</source>
-        <translation>サーバアドレス(&amp;A)</translation>
+        <translation>サーバーアドレス(&amp;A)</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="102"/>
@@ -2102,7 +2102,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="99"/>
         <source>Enter the URL of the server that you want to connect to (without http or https).</source>
-        <translation>接続したいサーバ（http もしくは https 無し）のURLを入力してください</translation>
+        <translation>接続したいサーバーのURLを（httpもしくはhttpsを含めず）入力してください</translation>
     </message>
 </context>
 <context>
@@ -2176,7 +2176,7 @@ Please ensure that your network connection is working.</source>
         <location filename="../src/mirall/owncloudtheme.cpp" line="90"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
-        <translation>ownCloudサーバーをまだ持っていないなら、&lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt;で詳細を見ましょう。</translation>
+        <translation>ownCloudサーバーをまだ持っていない場合は、詳細な情報は&lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt;を参照してください。</translation>
     </message>
 </context>
 <context>
@@ -2189,7 +2189,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="56"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation>&lt;p&gt;Version %2. 詳細な情報は、&lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;を見てください。&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</translation>
+        <translation>&lt;p&gt;Version %2. 詳細な情報は、&lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;を参照してください。&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
 </context>
 <context>
@@ -2329,7 +2329,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>The server is currently unavailable</source>
-        <translation>サーバは現在利用できません</translation>
+        <translation>サーバーは現在利用できません</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
