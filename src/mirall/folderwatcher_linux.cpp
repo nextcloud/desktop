@@ -173,8 +173,7 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         // Note: The name of the changed file and stuff could be taken from
         // the event data structure. That does not happen yet.
         if (event->len > 0 && event->wd > -1) {
-            const QString p = _watches[event->wd];
-            _parent->changeDetected(p);
+            _parent->changeDetected(QString::fromLocal8Bit(event->name));
         }
 
         // increment counter

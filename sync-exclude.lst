@@ -5,8 +5,8 @@
 
 *.unison*
 *csync_timedif.ctmp*
-csync_journal.db
-csync_journal.db.ctmp
+.csync_journal.db
+.csync_journal.db.ctmp
 .*.sw?
 .*.*sw?
 ].csync-progressdatabase

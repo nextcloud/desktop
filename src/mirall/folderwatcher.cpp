@@ -109,6 +109,7 @@ bool FolderWatcher::pathIsIgnored( const QString& path )
 
 void FolderWatcher::changeDetected( const QString& path )
 {
+    qDebug() << Q_FUNC_INFO << path;
     // Check if the same path was reported within the last second.
     if( path == _lastPath && _timer.elapsed() < 1000 ) {
         // the same path was reported within the last second. Skip.
