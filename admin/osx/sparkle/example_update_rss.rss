@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  
+xmlns:dc="http://purl.org/dc/elements/1.1/">
+   <channel>
+      <title>oC</title>
+      <link>127.0.0.1/test.rss</link>
+      <description>Most recent changes with links to updates.</description>
+      <language>en</language>
+         <item>
+            <title>Version 1.5.1.2180-nightly20140202</title>
+            <pubDate>Wed, 09 Feb 2013 19:20:11 +0000</pubDate>
+            <enclosure url="http://127.0.0.1:8080/signed_ownCloud-1.5.1.2180-nightly20140202.dmg" 
+sparkle:version="1.5.1.2180-nightly20140202" 
+length="21078089" 
+type="application/octet-stream"
+sparkle:dsaSignature="MCwCFA/RpP/MvNS1SpjD/2/U6RPyju3HAhQteFXvpUjTnNv3sC/lGkxtEkoB4Q=="
+/>
+         </item>
+   </channel>
+</rss>
+
