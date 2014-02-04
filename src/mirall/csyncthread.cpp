@@ -86,10 +86,11 @@ QString CSyncThread::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("CSync failed to create a lock file.");
         break;
     case CSYNC_STATUS_STATEDB_LOAD_ERROR:
-        errStr = tr("CSync failed to load the state db.");
+        errStr = tr("CSync failed to load or create the journal file. "
+                    "Make sure you have read and write permissions in the local sync directory.");
         break;
     case CSYNC_STATUS_STATEDB_WRITE_ERROR:
-        errStr = tr("CSync failed to write the state db.");
+        errStr = tr("CSync failed to write the journal file.");
         break;
     case CSYNC_STATUS_NO_MODULE:
         errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appNameGUI());
