@@ -447,11 +447,6 @@ void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
     _syncResult.setSyncFileItemVector(items);
 }
 
-void Folder::slotCatchWatcherError(const QString& error)
-{
-    Logger::instance()->postOptionalGuiLog(tr("Error"), error);
-}
-
 void Folder::slotTerminateSync(bool block)
 {
     qDebug() << "folder " << alias() << " Terminating!";

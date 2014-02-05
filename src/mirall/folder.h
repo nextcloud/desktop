@@ -185,7 +185,6 @@ private slots:
      */
     void slotLocalPathChanged( const QString& );
     void slotThreadTreeWalkResult(const SyncFileItemVector& );
-    void slotCatchWatcherError( const QString& );
 
 private:
     bool init();
@@ -205,7 +204,6 @@ private:
     QString   _configFile;
     QFileSystemWatcher *_pathWatcher;
     bool       _enabled;
-    // FolderWatcher *_watcher;
     SyncResult _syncResult;
     QThread     *_thread;
     CSyncThread *_csync;
@@ -214,7 +212,6 @@ private:
     bool         _csyncUnavail;
     bool         _wipeDb;
     bool         _proxyDirty;
-    Progress::Kind _progressKind;
     QTimer        _pollTimer;
     QString       _lastEtag;
     QElapsedTimer _timeSinceLastSync;
