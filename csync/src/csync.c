@@ -43,7 +43,6 @@
 #include "c_lib.h"
 #include "csync_private.h"
 #include "csync_exclude.h"
-#include "csync_lock.h"
 #include "csync_statedb.h"
 #include "csync_time.h"
 #include "csync_util.h"
@@ -168,7 +167,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 int csync_init(CSYNC *ctx) {
   int rc;
   time_t timediff = -1;
-  char *lock = NULL;
   char *config = NULL;
 
   if (ctx == NULL) {
@@ -181,19 +179,6 @@ int csync_init(CSYNC *ctx) {
   /* Do not initialize twice */
   if (ctx->status & CSYNC_STATUS_INIT) {
     return 1;
-  }
-
-  /* create lock file */
-  if (asprintf(&lock, "%s/%s", ctx->local.uri, CSYNC_LOCK_FILE) < 0) {
-    rc = -1;
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    goto out;
-  }
-
-  if (csync_lock(lock) < 0) {
-    rc = -1;
-    ctx->status_code = CSYNC_STATUS_NO_LOCK;
-    goto out;
   }
 
   ctx->local.type = LOCAL_REPLICA;
@@ -286,8 +271,6 @@ retry_vio_init:
 
   ctx->status = CSYNC_STATUS_INIT;
 
-  csync_lock_remove(lock);
-
   csync_set_module_property(ctx, "csync_context", ctx);
 
   /* initialize random generator */
@@ -296,7 +279,6 @@ retry_vio_init:
   rc = 0;
 
 out:
-  SAFE_FREE(lock);
   SAFE_FREE(config);
   return rc;
 }
@@ -304,28 +286,12 @@ out:
 int csync_update(CSYNC *ctx) {
   int rc = -1;
   struct timespec start, finish;
-  char *lock = NULL;
 
   if (ctx == NULL) {
     errno = EBADF;
     return -1;
   }
   ctx->status_code = CSYNC_STATUS_OK;
-
-  /* try to create lock file */
-  if (asprintf(&lock, "%s/%s", ctx->local.uri, CSYNC_LOCK_FILE) < 0) {
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    rc = -1;
-    return rc;
-  }
-
-  if (csync_lock(lock) < 0) {
-    ctx->status_code = CSYNC_STATUS_NO_LOCK;
-    rc = -1;
-    return rc;
-  }
-
-  SAFE_FREE(lock);
 
   /* create/load statedb */
   if (! csync_is_statedb_disabled(ctx)) {
@@ -698,8 +664,7 @@ out:
 }
 
 int csync_destroy(CSYNC *ctx) {
-  char *lock = NULL;
-  int rc;
+  int rc = 0;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -719,12 +684,6 @@ int csync_destroy(CSYNC *ctx) {
   /* destroy exclude list */
   csync_exclude_destroy(ctx);
 
-  /* remove the lock file */
-  rc = asprintf(&lock, "%s/%s", ctx->options.config_dir, CSYNC_LOCK_FILE);
-  if (rc > 0) {
-    csync_lock_remove(lock);
-  }
-
   _csync_clean_ctx(ctx);
 
   SAFE_FREE(ctx->local.uri);
@@ -738,9 +697,7 @@ int csync_destroy(CSYNC *ctx) {
 
   SAFE_FREE(ctx);
 
-  SAFE_FREE(lock);
-
-  return 0;
+  return rc;
 }
 
 /* Check if csync is the required version or get the version string. */

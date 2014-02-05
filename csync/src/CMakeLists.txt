@@ -61,7 +61,6 @@ set(csync_SRCS
   csync_time.c
   csync_util.c
   csync_misc.c
-  csync_lock.c
 
   csync_update.c
   csync_reconcile.c

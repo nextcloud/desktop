@@ -148,11 +148,6 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
   CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
   CSYNC_EXCLUDE_TYPE type  = CSYNC_NOT_EXCLUDED;
 
-  /* exclude the lock file */
-  if (c_streq( path, CSYNC_LOCK_FILE )) {
-      return CSYNC_FILE_SILENTLY_EXCLUDED;
-  }
-
   if (! ctx->options.unix_extensions) {
     for (p = path; *p; p++) {
       switch (*p) {

@@ -50,7 +50,6 @@ extern "C" {
 #define CSYNC_CONF_DIR ".ocsync"
 #define CSYNC_CONF_FILE "ocsync.conf"
 #define CSYNC_EXCLUDE_FILE "ocsync_exclude.conf"
-#define CSYNC_LOCK_FILE ".csync.lock"
 
 /**
   * Instruction enum. In the file traversal structure, it describes
@@ -62,7 +61,7 @@ enum csync_status_codes_e {
   CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
                                      just use in csync_status_ok */
   CSYNC_STATUS_UNSUCCESSFUL,
-  CSYNC_STATUS_NO_LOCK,
+  CSYNC_STATUS_NO_LOCK, /* OBSOLETE  does not happen anymore */
   CSYNC_STATUS_STATEDB_LOAD_ERROR,
   CSYNC_STATUS_STATEDB_WRITE_ERROR,
   CSYNC_STATUS_NO_MODULE,
@@ -242,7 +241,7 @@ int csync_create(CSYNC **csync, const char *local, const char *remote);
 /**
  * @brief Initialize the file synchronizer.
  *
- * This function loads the configuration, the statedb and locks the client.
+ * This function loads the configuration
  *
  * @param ctx  The context to initialize.
  *
@@ -289,7 +288,7 @@ int csync_commit(CSYNC *ctx);
 /**
  * @brief Destroy the csync context
  *
- * Writes the statedb, unlocks csync and frees the memory.
+ * frees the memory.
  *
  * @param ctx  The context to destroy.
  *
