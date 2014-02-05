@@ -19,6 +19,7 @@
 #include <stdint.h>
 
 #include <QMutex>
+#include <QThread>
 #include <QString>
 #include <qelapsedtimer.h>
 
@@ -80,8 +81,11 @@ private slots:
     void slotFinished();
     void slotProgress(Progress::Kind kind, const SyncFileItem &item, quint64 curr = 0, quint64 total = 0);
     void slotProgressChanged(qint64 change);
+    void slotUpdateFinished(int updateResult);
 
 private:
+
+
     void handleSyncError(CSYNC *ctx, const char *state);
     void progressProblem(Progress::Kind kind, const SyncFileItem& item);
 
@@ -102,6 +106,7 @@ private:
     QElapsedTimer _syncTime;
     QString _lastDeleted; // if the last item was a path and it has been deleted
     QHash <QString, QString> _seenFiles;
+    QThread _thread;
 
 
     // maps the origin and the target of the folders that have been renamed
@@ -117,11 +122,25 @@ private:
     qint64 _overallFileCount;
     quint64 _lastOverallBytes;
 
-    QMutex _abortRequestedMutex; // avoid a race between csync_abort and csync_resume
     QAtomicInt _abortRequested;
 
     friend struct CSyncRunScopeHelper;
 };
+
+
+struct UpdateJob : public QObject {
+    Q_OBJECT
+public:
+    CSYNC *_csync_ctx;
+    Q_INVOKABLE void start() {
+        emit finished(csync_update(_csync_ctx));
+        deleteLater();
+    }
+signals:
+    void finished(int result);
+};
+
+
 }
 
 #endif // CSYNCTHREAD_H

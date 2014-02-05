@@ -100,7 +100,8 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 }
 
 
-bool PropagateItemJob::checkForProblemsWithShared()
+
+bool PropagateNeonJob::checkForProblemsWithShared()
 {
     QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
     int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
@@ -114,13 +115,13 @@ bool PropagateItemJob::checkForProblemsWithShared()
         _restoreJob.reset(new PropagateDownloadFile(_propagator, downloadItem));
         connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
                 this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
-        _restoreJob->start();
+        QMetaObject::invokeMethod(_restoreJob.data(), "start");
         return true;
     }
     return false;
 }
 
-void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
+void PropagateNeonJob::slotRestoreJobCompleted(const SyncFileItem& item )
 {
     if( item._status == SyncFileItem::Success ) {
         done( SyncFileItem::SoftError, tr("The file was removed from a read only share. The file has been restored."));
@@ -456,8 +457,7 @@ void PropagateUploadFile::notify_status_cb(void* userdata, ne_session_status sta
                         that->_chunked_done + info->sr.progress,
                         that->_chunked_total_size ? that->_chunked_total_size : info->sr.total );
 
-     QCoreApplication::processEvents();
-    that->limitBandwidth(that->_chunked_done + info->sr.progress,  that->_propagator->_uploadLimit);
+    that->limitBandwidth(that->_chunked_done + info->sr.progress,  that->_propagator->_uploadLimit.fetchAndAddAcquire(0));
   }
 }
 
@@ -473,7 +473,7 @@ static QString parseFileId(ne_request *req) {
     return fileId;
 }
 
-void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
+void PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
 {
     QByteArray modtime = QByteArray::number(qlonglong(mtime));
     ne_propname pname;
@@ -519,7 +519,7 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
     }
 }
 
-void PropagateItemJob::limitBandwidth(qint64 progress, qint64 bandwidth_limit)
+void PropagateNeonJob::limitBandwidth(qint64 progress, qint64 bandwidth_limit)
 {
     if (bandwidth_limit > 0) {
         int64_t diff = _lastTime.nsecsElapsed() / 1000;
@@ -649,8 +649,7 @@ void PropagateDownloadFile::notify_status_cb(void* userdata, ne_session_status s
     if (status == ne_status_recving && info->sr.total > 0) {
         emit that->progress(Progress::Context, that->_item, info->sr.progress, info->sr.total );
 
-        QCoreApplication::processEvents();
-        that->limitBandwidth(info->sr.progress,  that->_propagator->_downloadLimit);
+        that->limitBandwidth(info->sr.progress,  that->_propagator->_downloadLimit.fetchAndAddAcquire(0));
     }
 }
 
@@ -925,7 +924,7 @@ void PropagateRemoteRename::start()
     done(SyncFileItem::Success);
 }
 
-bool PropagateItemJob::updateErrorFromSession(int neon_code, ne_request* req, int ignoreHttpCode)
+bool PropagateNeonJob::updateErrorFromSession(int neon_code, ne_request* req, int ignoreHttpCode)
 {
     if( neon_code != NE_OK ) {
         qDebug("Neon error code was %d", neon_code);
@@ -1070,7 +1069,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
             SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
 
-    _rootJob->start();
+    QMetaObject::invokeMethod(_rootJob.data(), "start");
 }
 
 void OwncloudPropagator::overallTransmissionSizeChanged(qint64 change)

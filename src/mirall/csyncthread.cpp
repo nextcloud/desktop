@@ -65,11 +65,14 @@ CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &
     _journal = journal;
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
+
+    _thread.start();
 }
 
 CSyncThread::~CSyncThread()
 {
-
+    _thread.quit();
+    _thread.wait();
 }
 
 //Convert an error code from csync to a user readable string.
@@ -406,7 +409,7 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     csync_commit(_csync_ctx);
     emit finished();
     _syncMutex.unlock();
-    thread()->quit();
+    _thread.quit();
 }
 
 void CSyncThread::startSync()
@@ -426,11 +429,9 @@ void CSyncThread::startSync()
     _syncedItems.clear();
     _needsUpdate = false;
 
-    _abortRequestedMutex.lock();
     if (!_abortRequested.fetchAndAddRelease(0)) {
         csync_resume(_csync_ctx);
     }
-    _abortRequestedMutex.unlock();
 
     if (!_journal->exists()) {
         qDebug() << "=====sync looks new (no DB exists), activating recursive PROPFIND if csync supports it";
@@ -450,7 +451,7 @@ void CSyncThread::startSync()
             csync_commit(_csync_ctx);
             emit finished();
             _syncMutex.unlock();
-            thread()->quit();
+            _thread.quit();
 
             return;
             // database creation error!
@@ -493,15 +494,22 @@ void CSyncThread::startSync()
 
     _syncTime.start();
 
-    QElapsedTimer updateTime;
-    updateTime.start();
     qDebug() << "#### Update start #################################################### >>";
 
-    if( csync_update(_csync_ctx) < 0 ) {
+    UpdateJob *job = new UpdateJob;
+    job->_csync_ctx = _csync_ctx;
+    job->moveToThread(&_thread);
+    connect(job, SIGNAL(finished(int)), this, SLOT(slotUpdateFinished(int)));
+    QMetaObject::invokeMethod(job, "start");
+}
+
+void CSyncThread::slotUpdateFinished(int updateResult)
+{
+    if (updateResult < 0 ) {
         handleSyncError(_csync_ctx, "csync_update");
         return;
     }
-    qDebug() << "<<#### Update end #################################################### " << updateTime.elapsed();
+    qDebug() << "<<#### Update end #################################################### " << _syncTime.elapsed();
 
     if( csync_reconcile(_csync_ctx) < 0 ) {
         handleSyncError(_csync_ctx, "csync_reconcile");
@@ -551,7 +559,7 @@ void CSyncThread::startSync()
     Q_ASSERT(session);
 
     _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath,
-                                              _journal, &_abortRequested));
+                                              _journal, &_abortRequested, &_thread));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
             this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)),
@@ -586,7 +594,6 @@ void CSyncThread::setNetworkLimits()
     _propagator->_uploadLimit = uploadLimit;
 
     qDebug() << " N------N Network Limits changed!";
-
 }
 
 void CSyncThread::transferCompleted(const SyncFileItem &item)
@@ -625,7 +632,7 @@ void CSyncThread::slotFinished()
     emit finished();
     _propagator.reset(0);
     _syncMutex.unlock();
-    thread()->quit();
+    _thread.quit();
 }
 
 void CSyncThread::progressProblem(Progress::Kind kind, const SyncFileItem& item)
@@ -703,10 +710,8 @@ QString CSyncThread::adjustRenamedPath(const QString& original)
 
 void CSyncThread::abort()
 {
-    QMutexLocker locker(&_abortRequestedMutex);
     csync_request_abort(_csync_ctx);
     _abortRequested = true;
 }
-
 
 } // ns Mirall

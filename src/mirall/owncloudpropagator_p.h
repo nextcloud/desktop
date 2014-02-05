@@ -34,6 +34,49 @@ struct ScopedPointerHelpers {
 };
 
 
+/*
+ * Abstract class for neon job.  Lives in the neon thread
+ */
+class PropagateNeonJob : public PropagateItemJob {
+    Q_OBJECT
+protected:
+
+    void updateMTimeAndETag(const char *uri, time_t);
+
+    /* fetch the error code and string from the session
+       in case of error, calls done with the error and returns true.
+
+       If the HTTP error code is ignoreHTTPError,  the error is ignored
+     */
+    bool updateErrorFromSession(int neon_code = 0, ne_request *req = 0, int ignoreHTTPError = 0);
+
+    /*
+     * to be called by the progress callback and will wait the amount of time needed.
+     */
+    void limitBandwidth(qint64 progress, qint64 limit);
+
+    bool checkForProblemsWithShared();
+
+    QElapsedTimer _lastTime;
+    qint64        _lastProgress;
+    int           _httpStatusCode;
+
+protected slots:
+    void slotRestoreJobCompleted(const SyncFileItem& );
+
+private:
+    QScopedPointer<PropagateItemJob> _restoreJob;
+
+public:
+    PropagateNeonJob(OwncloudPropagator* propagator, const SyncFileItem &item)
+        : PropagateItemJob(propagator, item), _lastProgress(0), _httpStatusCode(0) {
+            moveToThread(propagator->_neonThread);
+        }
+
+};
+
+
+
 class PropagateLocalRemove : public PropagateItemJob {
     Q_OBJECT
 public:
@@ -46,16 +89,16 @@ public:
     PropagateLocalMkdir (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
     void start();
 };
-class PropagateRemoteRemove : public PropagateItemJob {
+class PropagateRemoteRemove : public PropagateNeonJob {
     Q_OBJECT
 public:
-    PropagateRemoteRemove (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
+    PropagateRemoteRemove (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
     void start();
 };
-class PropagateRemoteMkdir : public PropagateItemJob {
+class PropagateRemoteMkdir : public PropagateNeonJob {
     Q_OBJECT
 public:
-    PropagateRemoteMkdir (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
+    PropagateRemoteMkdir (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
     void start();
 };
 class PropagateLocalRename : public PropagateItemJob {
@@ -64,18 +107,18 @@ public:
     PropagateLocalRename (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
     void start();
 };
-class PropagateRemoteRename : public PropagateItemJob {
+class PropagateRemoteRename : public PropagateNeonJob {
     Q_OBJECT
 public:
-    PropagateRemoteRename (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
+    PropagateRemoteRename (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
     void start();
 };
 
-class PropagateUploadFile: public PropagateItemJob {
+class PropagateUploadFile: public PropagateNeonJob {
     Q_OBJECT
 public:
     explicit PropagateUploadFile(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateItemJob(propagator, item), _previousFileSize(0) {}
+        : PropagateNeonJob(propagator, item), _previousFileSize(0) {}
     void start();
 private:
     // Log callback for httpbf
@@ -100,11 +143,11 @@ private:
     qint64 _previousFileSize;   // In case the file size has changed during upload, this is the previous one.
 };
 
-class PropagateDownloadFile: public PropagateItemJob {
+class PropagateDownloadFile: public PropagateNeonJob {
     Q_OBJECT
 public:
     explicit PropagateDownloadFile(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateItemJob(propagator, item), _file(0) {}
+        : PropagateNeonJob(propagator, item), _file(0) {}
     void start();
 private:
     QFile *_file;

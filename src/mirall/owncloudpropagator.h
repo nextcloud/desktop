@@ -86,7 +86,7 @@ private slots:
         connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(proceedNext(SyncFileItem::Status)), Qt::QueuedConnection);
         connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
         connect(next, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
-        next->start();
+        QMetaObject::invokeMethod(next, "start");
     }
 
     void proceedNext(SyncFileItem::Status status);
@@ -95,42 +95,21 @@ private slots:
 
 /*
  * Abstract class to propagate a single item
+ * (Only used for neon job)
  */
 class PropagateItemJob : public PropagatorJob {
     Q_OBJECT
 protected:
     void done(SyncFileItem::Status status, const QString &errorString = QString());
 
-    void updateMTimeAndETag(const char *uri, time_t);
-
-    /* fetch the error code and string from the session
-       in case of error, calls done with the error and returns true.
-
-       If the HTTP error code is ignoreHTTPError,  the error is ignored
-     */
-    bool updateErrorFromSession(int neon_code = 0, ne_request *req = 0, int ignoreHTTPError = 0);
-
-    /*
-     * to be called by the progress callback and will wait the amount of time needed.
-     */
-    void limitBandwidth(qint64 progress, qint64 limit);
-
-    bool checkForProblemsWithShared();
-
-    QElapsedTimer _lastTime;
-    qint64        _lastProgress;
-    int           _httpStatusCode;
     SyncFileItem  _item;
-
-protected slots:
-    void slotRestoreJobCompleted(const SyncFileItem& );
 
 private:
     QScopedPointer<PropagateItemJob> _restoreJob;
 
 public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItem &item)
-        : PropagatorJob(propagator), _lastProgress(0), _httpStatusCode(0), _item(item) {}
+        : PropagatorJob(propagator), _item(item) {}
 
 };
 
@@ -153,28 +132,27 @@ class OwncloudPropagator : public QObject {
     QScopedPointer<PropagateDirectory> _rootJob;
 
 public:
+    QThread* _neonThread;
     ne_session_s *_session;
-    QString _localDir; // absolute path to the local directory. ends with '/'
-    QString _remoteDir; // path to the root of the remote. ends with '/'
+    const QString _localDir; // absolute path to the local directory. ends with '/'
+    const QString _remoteDir; // path to the root of the remote. ends with '/'
     SyncJournalDb *_journal;
 
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
-                       SyncJournalDb *progressDb, QAtomicInt *abortRequested)
-            : _session(session)
-            , _localDir(localDir)
-            , _remoteDir(remoteDir)
+                       SyncJournalDb *progressDb, QAtomicInt *abortRequested, QThread *neonThread)
+            : _neonThread(neonThread)
+            , _session(session)
+            , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/'  )
+            , _remoteDir((remoteDir.endsWith(QChar('/'))) ? remoteDir : remoteDir+'/'  )
             , _journal(progressDb)
             , _abortRequested(abortRequested)
-    {
-        if (!localDir.endsWith(QChar('/'))) _localDir+='/';
-        if (!remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
-    }
+    { }
 
     void start(const SyncFileItemVector &_syncedItems);
 
-    int _downloadLimit;
-    int _uploadLimit;
+    QAtomicInt _downloadLimit;
+    QAtomicInt _uploadLimit;
 
     QAtomicInt *_abortRequested; // boolean set by the main thread to abort.
 

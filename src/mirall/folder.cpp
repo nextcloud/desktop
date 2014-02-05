@@ -28,9 +28,6 @@
 
 #include "creds/abstractcredentials.h"
 
-#include <QThread>
-
-
 extern "C" {
 
 enum csync_exclude_type_e {
@@ -62,7 +59,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _remotePath(secondPath)
       , _alias(alias)
       , _enabled(true)
-      , _thread(0)
       , _csync(0)
       , _csyncError(false)
       , _csyncUnavail(false)
@@ -135,11 +131,10 @@ bool Folder::init()
 
 Folder::~Folder()
 {
-    if( _thread ) {
+    if( _csync ) {
         _csync->abort();
-        _thread->wait();
+        delete _csync;
     }
-    delete _csync;
     // Destroy csync here.
     csync_destroy(_csync_ctx);
 }
@@ -196,7 +191,7 @@ QString Folder::path() const
 
 bool Folder::isBusy() const
 {
-    return ( _thread && _thread->isRunning() );
+    return _csync;
 }
 
 QString Folder::remotePath() const
@@ -420,7 +415,7 @@ void Folder::slotLocalPathChanged( const QString& dir )
     if( notifiedDir.absolutePath() == localPath.absolutePath() ) {
         if( !localPath.exists() ) {
             qDebug() << "XXXXXXX The sync folder root was removed!!";
-            if( _thread && _thread->isRunning() ) {
+            if( isBusy() ) {
                 qDebug() << "CSync currently running, set wipe flag!!";
             } else {
                 qDebug() << "CSync not running, wipe it now!!";
@@ -451,7 +446,7 @@ void Folder::slotTerminateSync(bool block)
 {
     qDebug() << "folder " << alias() << " Terminating!";
 
-    if( _thread && _csync ) {
+    if( _csync ) {
         _csync->abort();
 
         // Do not display an error message, user knows his own actions.
@@ -462,10 +457,7 @@ void Folder::slotTerminateSync(bool block)
             return;
         }
 
-        _thread->wait();
-        _csync->deleteLater();
-        delete _thread;
-        _thread = 0;
+        delete _csync;
         slotCSyncFinished();
     }
     setSyncEnabled(false);
@@ -544,14 +536,11 @@ void Folder::startSync(const QStringList &pathList)
         setProxyDirty(false);
     }
 
-    if (_thread && _thread->isRunning()) {
+    if (isBusy()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";
         return;
     }
-    if (_thread)
-        _thread->quit();
     delete _csync;
-    delete _thread;
     _errors.clear();
     _csyncError = false;
     _csyncUnavail = false;
@@ -562,10 +551,8 @@ void Folder::startSync(const QStringList &pathList)
 
 
     qDebug() << "*** Start syncing";
-    _thread = new QThread(this);
     setIgnoredFiles();
     _csync = new CSyncThread( _csync_ctx, path(), remoteUrl().path(), &_journal);
-    _csync->moveToThread(_thread);
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
@@ -583,9 +570,6 @@ void Folder::startSync(const QStringList &pathList)
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
     connect(_csync, SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
     connect(_csync, SIGNAL(transmissionProblem(Progress::SyncProblem)), this, SLOT(slotTransmissionProblem(Progress::SyncProblem)));
-
-    _thread->start();
-    _thread->setPriority(QThread::LowPriority);
 
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
 
@@ -623,6 +607,8 @@ void Folder::slotCsyncUnavailable()
 void Folder::slotCSyncFinished()
 {
     qDebug() << "-> CSync Finished slot with error " << _csyncError << "warn count" << _syncResult.warnCount();
+    delete _csync;
+    _csync = 0;
     // _watcher->setEventsEnabledDelayed(2000);
     _pollTimer.start();
     _timeSinceLastSync.restart();
@@ -643,9 +629,6 @@ void Folder::slotCSyncFinished()
         _syncResult.setStatus(SyncResult::Success);
     }
 
-    if( _thread && _thread->isRunning() ) {
-        _thread->quit();
-    }
     emit syncStateChange();
     emit syncFinished( _syncResult );
 }
