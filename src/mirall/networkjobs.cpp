@@ -35,6 +35,8 @@
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
 
+Q_DECLARE_METATYPE(QTimer*)
+
 namespace Mirall {
 
 AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QObject *parent)
@@ -95,35 +97,41 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
     connect(reply, SIGNAL(finished()), SLOT(slotFinished()));
 }
 
+QNetworkReply* AbstractNetworkJob::addTimer(QNetworkReply *reply)
+{
+    reply->setProperty("timer", QVariant::fromValue(_timer));
+    return reply;
+}
+
 QNetworkReply* AbstractNetworkJob::davRequest(const QByteArray &verb, const QString &relPath,
                                               QNetworkRequest req, QIODevice *data)
 {
-    return _account->davRequest(verb, relPath, req, data);
+    return addTimer(_account->davRequest(verb, relPath, req, data));
 }
 
 QNetworkReply *AbstractNetworkJob::davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
-    return _account->davRequest(verb, url, req, data);
+    return addTimer(_account->davRequest(verb, url, req, data));
 }
 
 QNetworkReply* AbstractNetworkJob::getRequest(const QString &relPath)
 {
-    return _account->getRequest(relPath);
+    return addTimer(_account->getRequest(relPath));
 }
 
 QNetworkReply *AbstractNetworkJob::getRequest(const QUrl &url)
 {
-    return _account->getRequest(url);
+    return addTimer(_account->getRequest(url));
 }
 
 QNetworkReply *AbstractNetworkJob::headRequest(const QString &relPath)
 {
-    return _account->headRequest(relPath);
+    return addTimer(_account->headRequest(relPath));
 }
 
 QNetworkReply *AbstractNetworkJob::headRequest(const QUrl &url)
 {
-    return _account->headRequest(url);
+    return addTimer(_account->headRequest(url));
 }
 
 void AbstractNetworkJob::slotFinished()
@@ -523,6 +531,21 @@ void CheckQuotaJob::finished()
         }
         qint64 total = quotaUsedBytes + quotaAvailableBytes;
         emit quotaRetrieved(total, quotaUsedBytes);
+    }
+}
+
+NetworkJobTimeoutPauser::NetworkJobTimeoutPauser(QNetworkReply *reply)
+{
+    _timer = reply->property("timer").value<QTimer*>();
+    if(!_timer.isNull()) {
+        _timer->stop();
+    }
+}
+
+NetworkJobTimeoutPauser::~NetworkJobTimeoutPauser()
+{
+    if(!_timer.isNull()) {
+        _timer->start();
     }
 }
 

@@ -19,6 +19,7 @@
 #include <QObject>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QPointer>
 
 class QUrl;
 class QTimer;
@@ -27,6 +28,18 @@ namespace Mirall {
 
 class Account;
 class AbstractSslErrorHandler;
+
+
+/**
+ * @brief Internal Helper class
+ */
+class NetworkJobTimeoutPauser {
+public:
+    NetworkJobTimeoutPauser(QNetworkReply *reply);
+    ~NetworkJobTimeoutPauser();
+private:
+    QPointer<QTimer> _timer;
+};
 
 /**
  * @brief The AbstractNetworkJob class
@@ -76,6 +89,7 @@ private slots:
     virtual void slotTimeout() {}
 
 private:
+    QNetworkReply* addTimer(QNetworkReply *reply);
     bool _ignoreCredentialFailure;
     QNetworkReply *_reply;
     Account *_account;

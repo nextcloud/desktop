@@ -13,6 +13,7 @@
 
 #include "mirall/account.h"
 #include "mirall/theme.h"
+#include "mirall/networkjobs.h"
 #include "mirall/mirallconfigfile.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
@@ -299,6 +300,7 @@ void Account::setState(int state)
 
 void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
 {
+    NetworkJobTimeoutPauser pauser(reply);
     qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
 
     if( _treatSslErrorsAsFailure ) {
