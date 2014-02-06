@@ -83,13 +83,13 @@ public:
 
 private slots:
     void startJob(PropagatorJob *next) {
-        connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(proceedNext(SyncFileItem::Status)), Qt::QueuedConnection);
+        connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
         connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
         connect(next, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
         QMetaObject::invokeMethod(next, "start");
     }
 
-    void proceedNext(SyncFileItem::Status status);
+    void slotSubJobFinished(SyncFileItem::Status status);
 };
 
 

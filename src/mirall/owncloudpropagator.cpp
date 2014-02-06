@@ -1087,13 +1087,13 @@ void PropagateDirectory::start()
     _current = -1;
     _hasError = SyncFileItem::NoStatus;
     if (!_firstJob) {
-        proceedNext(SyncFileItem::Success);
+        slotSubJobFinished(SyncFileItem::Success);
     } else {
         startJob(_firstJob.data());
     }
 }
 
-void PropagateDirectory::proceedNext(SyncFileItem::Status status)
+void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 {
     if (status == SyncFileItem::FatalError) {
         emit finished(status);
@@ -1102,11 +1102,17 @@ void PropagateDirectory::proceedNext(SyncFileItem::Status status)
         _hasError = status;
     }
 
+    if (_current == -1) {
+        // Start all the jobs
+        foreach( PropagatorJob *next , _subJobs ) {
+            startJob(next);
+        }
+    }
+
     _current ++;
-    if (_current < _subJobs.size() && !_propagator->_abortRequested->fetchAndAddRelaxed(0)) {
-        PropagatorJob *next = _subJobs.at(_current);
-        startJob(next);
-    } else {
+    if (_current >= _subJobs.size()) {
+        // We finished to process all the jobs
+
         if (!_item.isEmpty() && _hasError == SyncFileItem::NoStatus) {
             if( !_item._renameTarget.isEmpty() ) {
                 _item._file = _item._renameTarget;
