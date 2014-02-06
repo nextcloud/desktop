@@ -157,6 +157,9 @@ void ChunkedPUTFileJob::slotChunkFinished()
 
 void PropagateUploadFileQNAM::start()
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+        return;
+
     QFile *file = new QFile(_propagator->_localDir + _item._file);
     if (!file->open(QIODevice::ReadOnly)) {
         done(SyncFileItem::NormalError, file->errorString());
@@ -220,6 +223,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
 {
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
     Q_ASSERT(job);
+
+    qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS" << job->reply()->error() << job->reply()->errorString();
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
@@ -309,5 +314,12 @@ void PropagateUploadFileQNAM::slotPutFinished()
     emit progress(Progress::EndUpload, _item, _item._size, _item._size);
     done(SyncFileItem::Success);
 }
+
+void PropagateUploadFileQNAM::abort()
+{
+    if (_job &&  _job->reply())
+        _job->reply()->abort();
+}
+
 
 }

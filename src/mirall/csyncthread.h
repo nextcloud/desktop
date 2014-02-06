@@ -122,8 +122,6 @@ private:
     qint64 _overallFileCount;
     quint64 _lastOverallBytes;
 
-    QAtomicInt _abortRequested;
-
     friend struct CSyncRunScopeHelper;
 };
 

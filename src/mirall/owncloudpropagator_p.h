@@ -130,7 +130,7 @@ private:
     // abort callback for httpbf
     static int _user_want_abort(void *userData)
     {
-        return  static_cast<PropagateUploadFile *>(userData)->_propagator->_abortRequested->fetchAndAddRelaxed(0);
+        return  static_cast<PropagateUploadFile *>(userData)->_propagator->_abortRequested.fetchAndAddRelaxed(0);
     }
 
     // callback from httpbf when a chunk is finished

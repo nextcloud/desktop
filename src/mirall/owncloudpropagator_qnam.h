@@ -69,11 +69,13 @@ signals:
 
 class PropagateUploadFileQNAM : public PropagateItemJob {
     Q_OBJECT
+    QPointer<PUTFileJob> _job;
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
     void start();
 private slots:
     void slotPutFinished();
+    void abort();
 };
 
 class ChunkedPUTFileJob : public AbstractNetworkJob {

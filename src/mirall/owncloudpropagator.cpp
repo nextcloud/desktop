@@ -187,6 +187,9 @@ static bool removeRecursively(const QString &path)
 
 void PropagateLocalRemove::start()
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+        return;
+
     QString filename = _propagator->_localDir +  _item._file;
     if (_item._isDirectory) {
         if (QDir(filename).exists() && !removeRecursively(filename)) {
@@ -209,6 +212,9 @@ void PropagateLocalRemove::start()
 
 void PropagateLocalMkdir::start()
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+        return;
+
     QDir d;
     if (!d.mkpath(_propagator->_localDir +  _item._file)) {
         done(SyncFileItem::NormalError, tr("could not create directory %1").arg(_propagator->_localDir +  _item._file));
@@ -219,6 +225,9 @@ void PropagateLocalMkdir::start()
 
 void PropagateRemoteRemove::start()
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+        return;
+
     QScopedPointer<char, QScopedPointerPodDeleter> uri(
         ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
     emit progress(Progress::StartDelete, _item, 0, _item._size);
@@ -242,6 +251,9 @@ void PropagateRemoteRemove::start()
 
 void PropagateRemoteMkdir::start()
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+        return;
+
     QScopedPointer<char, QScopedPointerPodDeleter> uri(
         ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
 
@@ -257,6 +269,8 @@ void PropagateRemoteMkdir::start()
 
 void PropagateUploadFile::start()
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+        return;
 
     QFile file(_propagator->_localDir + _item._file);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -542,7 +556,7 @@ int PropagateDownloadFile::content_reader(void *userdata, const char *buf, size_
     PropagateDownloadFile *that = static_cast<PropagateDownloadFile *>(userdata);
     size_t written = 0;
 
-    if (that->_propagator->_abortRequested->fetchAndAddRelaxed(0)) {
+    if (that->_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
         ne_set_error(that->_propagator->_session, "%s", tr("Sync was aborted by user.").toUtf8().data());
         return NE_ERROR;
     }
@@ -645,6 +659,9 @@ void PropagateDownloadFile::notify_status_cb(void* userdata, ne_session_status s
 
 void PropagateDownloadFile::start()
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+        return;
+
     emit progress(Progress::StartDownload, _item, 0, _item._size);
 
     QString tmpFileName;
@@ -839,6 +856,9 @@ void PropagateDownloadFile::start()
 
 void PropagateLocalRename::start()
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+        return;
+
     // if the file is a file underneath a moved dir, the _item.file is equal
     // to _item.renameTarget and the file is not moved as a result.
     if (_item._file != _item._renameTarget) {
@@ -866,6 +886,9 @@ void PropagateLocalRename::start()
 
 void PropagateRemoteRename::start()
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+        return;
+
     if (_item._file == _item._renameTarget) {
         if (!_item._isDirectory) {
             // The parents has been renamed already so there is nothing more to do.
@@ -1096,6 +1119,7 @@ void PropagateDirectory::start()
 void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 {
     if (status == SyncFileItem::FatalError) {
+        abort();
         emit finished(status);
         return;
     } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {

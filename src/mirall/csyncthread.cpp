@@ -429,9 +429,7 @@ void CSyncThread::startSync()
     _syncedItems.clear();
     _needsUpdate = false;
 
-    if (!_abortRequested.fetchAndAddRelease(0)) {
-        csync_resume(_csync_ctx);
-    }
+    csync_resume(_csync_ctx);
 
     if (!_journal->exists()) {
         qDebug() << "=====sync looks new (no DB exists), activating recursive PROPFIND if csync supports it";
@@ -559,7 +557,7 @@ void CSyncThread::slotUpdateFinished(int updateResult)
     Q_ASSERT(session);
 
     _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath,
-                                              _journal, &_abortRequested, &_thread));
+                                              _journal, &_thread));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
             this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)),
@@ -711,7 +709,8 @@ QString CSyncThread::adjustRenamedPath(const QString& original)
 void CSyncThread::abort()
 {
     csync_request_abort(_csync_ctx);
-    _abortRequested = true;
+    if(_propagator);
+        _propagator->abort();
 }
 
 } // ns Mirall

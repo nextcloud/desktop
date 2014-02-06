@@ -41,6 +41,7 @@ public:
 
 public slots:
     virtual void start() = 0;
+    virtual void abort() {}
 signals:
     void finished(SyncFileItem::Status);
     void completed(const SyncFileItem &);
@@ -79,7 +80,12 @@ public:
     }
 
     virtual void start();
-
+    virtual void abort() {
+        if (_firstJob)
+            _firstJob->abort();
+        foreach (PropagatorJob *j, _subJobs)
+            j->abort();
+    }
 
 private slots:
     void startJob(PropagatorJob *next) {
@@ -140,13 +146,12 @@ public:
 
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
-                       SyncJournalDb *progressDb, QAtomicInt *abortRequested, QThread *neonThread)
+                       SyncJournalDb *progressDb, QThread *neonThread)
             : _neonThread(neonThread)
             , _session(session)
             , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/'  )
             , _remoteDir((remoteDir.endsWith(QChar('/'))) ? remoteDir : remoteDir+'/'  )
             , _journal(progressDb)
-            , _abortRequested(abortRequested)
     { }
 
     void start(const SyncFileItemVector &_syncedItems);
@@ -154,11 +159,17 @@ public:
     QAtomicInt _downloadLimit;
     QAtomicInt _uploadLimit;
 
-    QAtomicInt *_abortRequested; // boolean set by the main thread to abort.
+    QAtomicInt _abortRequested; // boolean set by the main thread to abort.
 
     void overallTransmissionSizeChanged( qint64 change );
 
     bool isInSharedDirectory(const QString& file);
+    void abort() {
+        _abortRequested.fetchAndStoreOrdered(true);
+        if (_rootJob)
+            _rootJob->abort();
+        emit finished();
+    }
 signals:
     void completed(const SyncFileItem &);
     void progress(Progress::Kind kind, const SyncFileItem&, quint64 bytes, quint64 total);
