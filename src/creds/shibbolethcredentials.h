@@ -21,6 +21,10 @@
 
 #include "creds/abstractcredentials.h"
 
+namespace QKeychain {
+    class Job;
+}
+
 namespace Mirall
 {
 
@@ -52,15 +56,17 @@ public Q_SLOTS:
     void invalidateAndFetch(Account *account);
 
 private Q_SLOTS:
-    void onShibbolethCookieReceived(const QNetworkCookie& cookie);
+    void onShibbolethCookieReceived(const QNetworkCookie& cookie, Account*);
     void slotBrowserHidden();
     void onFetched();
+    void slotReadJobDone(QKeychain::Job*);
 
 Q_SIGNALS:
     void newCookie(const QNetworkCookie& cookie);
     void invalidatedAndFetched(const QByteArray& cookieData);
 
 private:
+    void storeShibCookie(const QNetworkCookie &cookie, Account *account);
     QUrl _url;
     QByteArray prepareCookieData() const;
     void disposeBrowser();

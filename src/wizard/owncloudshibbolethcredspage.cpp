@@ -84,8 +84,8 @@ void OwncloudShibbolethCredsPage::disposeBrowser()
                    this, SLOT(slotOtherCookiesReceived(QList<QNetworkCookie>, QUrl)));
         disconnect(_browser, SIGNAL(viewHidden()),
                    this, SLOT(slotViewHidden()));
-        disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
-                   this, SLOT(slotShibbolethCookieReceived(QNetworkCookie)));
+        disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
+                   this, SLOT(slotShibbolethCookieReceived(QNetworkCookie, Account*)));
         _browser->hide();
         _browser->deleteLater();
         _browser = 0;
@@ -107,7 +107,7 @@ AbstractCredentials* OwncloudShibbolethCredsPage::getCredentials() const
     return new ShibbolethCredentials(_cookie, _cookiesForUrl);
 }
 
-void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived(const QNetworkCookie& cookie)
+void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived(const QNetworkCookie& cookie, Account*)
 {
     disposeBrowser();
     _cookie = cookie;

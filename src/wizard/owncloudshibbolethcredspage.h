@@ -23,6 +23,7 @@
 
 namespace Mirall {
 
+class Account;
 class ShibbolethWebView;
 
 class OwncloudShibbolethCredsPage : public AbstractCredentialsWizardPage
@@ -44,7 +45,7 @@ public Q_SLOTS:
   void setVisible(bool visible);
 
 private Q_SLOTS:
-  void slotShibbolethCookieReceived(const QNetworkCookie& cookie);
+  void slotShibbolethCookieReceived(const QNetworkCookie& cookie, Account*);
   void slotOtherCookiesReceived(const QList<QNetworkCookie>& cookieList, const QUrl& url);
   void slotViewHidden();
 

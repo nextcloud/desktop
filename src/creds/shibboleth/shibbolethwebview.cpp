@@ -29,6 +29,7 @@ namespace Mirall
 
 void ShibbolethWebView::setup(Account *account, ShibbolethCookieJar* jar)
 {
+    _account = account;
     MirallAccessManager* nm = new MirallAccessManager(this);
     // we need our own QNAM, but the we offload the SSL error handling to
     // the account object, which already can do this
@@ -90,7 +91,7 @@ void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieL
     Q_EMIT otherCookiesReceived(otherCookies, url);
   }
   if (!shibCookie.name().isEmpty()) {
-    Q_EMIT shibbolethCookieReceived(shibCookie);
+    Q_EMIT shibbolethCookieReceived(shibCookie, _account);
   }
 }
 
