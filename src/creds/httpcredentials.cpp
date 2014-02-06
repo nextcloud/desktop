@@ -203,18 +203,6 @@ bool HttpCredentials::stillValid(QNetworkReply *reply)
             && (reply->error() != QNetworkReply::OperationCanceledError));
 }
 
-bool HttpCredentials::fetchFromUser(Account *account)
-{
-    bool ok = false;
-    QString password = queryPassword(&ok);
-    if (ok) {
-        _password = password;
-        _ready = true;
-        persist(account);
-    }
-    return ok;
-}
-
 void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 {
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(job);

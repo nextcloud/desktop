@@ -46,7 +46,6 @@ public:
     bool ready() const;
     void fetch(Account *account);
     bool stillValid(QNetworkReply *reply);
-    bool fetchFromUser(Account *account);
     void persist(Account *account);
     QString user() const;
     QString password() const;

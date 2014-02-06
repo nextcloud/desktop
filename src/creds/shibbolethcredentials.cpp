@@ -198,12 +198,6 @@ bool ShibbolethCredentials::stillValid(QNetworkReply *reply)
     return true;
 }
 
-bool ShibbolethCredentials::fetchFromUser(Account *account)
-{
-    Q_UNUSED(account)
-    return false;
-}
-
 void ShibbolethCredentials::persist(Account* /*account*/)
 {
     ShibbolethConfigFile cfg;
