@@ -59,7 +59,6 @@ private Q_SLOTS:
     void slotWriteJobDone(QKeychain::Job*);
 
 private:
-    static QString keychainKey(const QString &url, const QString &user);
     QString _user;
     QString _password;
     bool _ready;

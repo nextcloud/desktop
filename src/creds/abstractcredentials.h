@@ -44,6 +44,8 @@ public:
     virtual void invalidateToken(Account *account) = 0;
 
 
+    static QString keychainKey(const QString &url, const QString &user);
+
 Q_SIGNALS:
     void fetched();
 };

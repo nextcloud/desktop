@@ -163,4 +163,6 @@ private:
 
 }
 
+Q_DECLARE_METATYPE(Mirall::Account*)
+
 #endif //SERVERCONNECTION_H
