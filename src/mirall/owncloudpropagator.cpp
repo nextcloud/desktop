@@ -866,7 +866,9 @@ void PropagateLocalRename::start()
     SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
     record._path = _item._renameTarget;
 
-    _propagator->_journal->setFileRecord(record);
+    if (!_item._isDirectory) { // Directory are saved at the end
+        _propagator->_journal->setFileRecord(record);
+    }
     _propagator->_journal->commit("localRename");
 
 

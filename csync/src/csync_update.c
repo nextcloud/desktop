@@ -620,7 +620,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     if (ctx->current_fs && (ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL ||
-        ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW)) {
+            ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW ||
+            ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL_RENAME)) {
         ctx->current_fs->should_update_etag = true;
     }
 
