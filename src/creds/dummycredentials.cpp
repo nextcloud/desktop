@@ -37,7 +37,7 @@ QString DummyCredentials::authType() const
 
 QString DummyCredentials::user() const
 {
-    return QString();
+    return _user;
 }
 
 QNetworkAccessManager* DummyCredentials::getQNAM() const

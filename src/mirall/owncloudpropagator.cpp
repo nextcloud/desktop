@@ -17,6 +17,7 @@
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 #include "utility.h"
+#include "owncloudpropagator_qnam.h"
 #include <httpbf.h>
 #include <qfile.h>
 #include <qdir.h>
@@ -252,17 +253,6 @@ void PropagateRemoteMkdir::start()
         return;
     }
     done(SyncFileItem::Success);
-}
-
-static QByteArray parseEtag(const char *header) {
-    if (!header)
-        return QByteArray();
-    QByteArray arr = header;
-    arr.replace("-gzip", ""); // https://github.com/owncloud/mirall/issues/1195
-    if(arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
-        arr = arr.mid(1, arr.length() - 2);
-    }
-    return arr;
 }
 
 void PropagateUploadFile::start()
@@ -1005,7 +995,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
                 return 0;
             }
             if (item._dir != SyncFileItem::Up) return new PropagateDownloadFile(this, item);
-            else return new PropagateUploadFile(this, item);
+            else return new PropagateUploadFileQNAM(this, item);
         case CSYNC_INSTRUCTION_RENAME:
             if (item._dir == SyncFileItem::Up) {
                 return new PropagateRemoteRename(this, item);

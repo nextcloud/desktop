@@ -70,6 +70,7 @@ set(libsync_SRCS
     mirall/mirallconfigfile.cpp
     mirall/csyncthread.cpp
     mirall/owncloudpropagator.cpp
+    mirall/owncloudpropagator_qnam.cpp
     mirall/syncjournalfilerecord.cpp
     mirall/syncjournaldb.cpp
     mirall/theme.cpp
@@ -104,6 +105,7 @@ set(libsync_HEADERS
     mirall/csyncthread.h
     mirall/owncloudpropagator.h
     mirall/owncloudpropagator_p.h
+    mirall/owncloudpropagator_qnam.h
     mirall/syncjournaldb.h
     mirall/theme.h
     mirall/owncloudtheme.h
