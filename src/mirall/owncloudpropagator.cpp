@@ -381,7 +381,8 @@ void PropagateUploadFile::start()
         if( trans->modtime_accepted ) {
             _item._etag = parseEtag(hbf_transfer_etag( trans.data() ));
         } else {
-            updateMTimeAndETag(uri.data(), _item._modtime);
+            if (!updateMTimeAndETag(uri.data(), _item._modtime))
+                return;
         }
 
         _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
@@ -473,7 +474,7 @@ static QString parseFileId(ne_request *req) {
     return fileId;
 }
 
-void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
+bool PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
 {
     QByteArray modtime = QByteArray::number(qlonglong(mtime));
     ne_propname pname;
@@ -497,12 +498,8 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
     // get the etag
     QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_propagator->_session, "HEAD", uri));
     int neon_stat = ne_request_dispatch(req.data());
-    const ne_status *status = ne_get_status(req.data());
-    if( neon_stat != NE_OK || status->klass != 2 ) {
-        // error happend
-        _item._httpErrorCode = status->code;
-        qDebug() << "Could not issue HEAD request for ETag." << ne_get_error(_propagator->_session);
-        _item._errorString = ne_get_error( _propagator->_session );
+    if (updateErrorFromSession(neon_stat, req.data())) {
+        return false;
     } else {
         _item._etag = parseEtag(ne_get_response_header(req.data(), "etag"));
         QString fid = parseFileId(req.data());
@@ -516,6 +513,7 @@ void PropagateItemJob::updateMTimeAndETag(const char* uri, time_t mtime)
                 qDebug() << "FileID is " << _item._fileId;
             }
         }
+        return true;
     }
 }
 
@@ -885,7 +883,8 @@ void PropagateRemoteRename::start()
             // Note: we also update the mtime because the server do not keep the mtime when moving files
             QScopedPointer<char, QScopedPointerPodDeleter> uri2(
                 ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
-            updateMTimeAndETag(uri2.data(), _item._modtime);
+            if (!updateMTimeAndETag(uri2.data(), _item._modtime))
+                return;
         }
     } else if (_item._file == QLatin1String("Shared") ) {
         // Check if it is the toplevel Shared folder and do not propagate it.
@@ -912,7 +911,8 @@ void PropagateRemoteRename::start()
             return;
         }
 
-        updateMTimeAndETag(uri2.data(), _item._modtime);
+        if (!updateMTimeAndETag(uri2.data(), _item._modtime))
+            return;
         emit progress(Progress::EndRename, _item, _item._size, _item._size);
     }
 
