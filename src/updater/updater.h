@@ -16,8 +16,9 @@
 
 #include <QObject>
 
-namespace Mirall {
+class QUrl;
 
+namespace Mirall {
 
 class Updater {
 public:
