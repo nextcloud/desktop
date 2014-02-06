@@ -116,27 +116,7 @@ void OCUpdater::slotStartInstaller()
 
 void OCUpdater::checkForUpdate()
 {
-    Theme *theme = Theme::instance();
-    QUrl url(_updateUrl);
-    QString platform = QLatin1String("stranger");
-    if (Utility::isLinux()) {
-        platform = QLatin1String("linux");
-    } else if (Utility::isWindows()) {
-        platform = QLatin1String("win32");
-    } else if (Utility::isMac()) {
-        platform = QLatin1String("macos");
-    }
-    qDebug() << "00 client update check to " << url.toString();
-
-    QString sysInfo = getSystemInfo();
-    if( !sysInfo.isEmpty() ) {
-        url.addQueryItem(QLatin1String("client"), sysInfo );
-    }
-    url.addQueryItem( QLatin1String("version"), clientVersion() );
-    url.addQueryItem( QLatin1String("platform"), platform );
-    url.addQueryItem( QLatin1String("oem"), theme->appName() );
-
-    QNetworkReply *reply = _accessManager->get( QNetworkRequest(url) );
+    QNetworkReply *reply = _accessManager->get(QNetworkRequest(_updateUrl));
     connect(_timer, SIGNAL(timeout()), this, SLOT(slotTimedOut()));
     _timer->start(30*1000);
     connect(reply, SIGNAL(finished()), this, SLOT(slotVersionInfoArrived()));
@@ -147,22 +127,6 @@ void OCUpdater::slotOpenUpdateUrl()
     QDesktopServices::openUrl(_updateInfo.web());
 }
 
-QString OCUpdater::getSystemInfo()
-{
-#ifdef Q_OS_LINUX
-    QProcess process;
-    process.start( QLatin1String("lsb_release -a") );
-    process.waitForFinished();
-    QByteArray output = process.readAllStandardOutput();
-    qDebug() << "Sys Info size: " << output.length();
-    if( output.length() > 1024 ) output.clear(); // don't send too much.
-
-    return QString::fromLocal8Bit( output.toBase64() );
-#else
-    return QString::null;
-#endif
-}
-
 bool OCUpdater::updateSucceeded() const
 {
     MirallConfigFile cfg;
@@ -171,11 +135,6 @@ bool OCUpdater::updateSucceeded() const
     qint64 targetVersionInt = Helper::stringVersionToInt(settings.value(updateTargetVersionC).toString());
     qint64 currentVersion = Helper::currentVersionToInt();
     return currentVersion >= targetVersionInt;
-}
-
-QString OCUpdater::clientVersion() const
-{
-    return QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_FULL));
 }
 
 void OCUpdater::slotVersionInfoArrived()
