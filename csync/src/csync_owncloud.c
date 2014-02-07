@@ -798,8 +798,6 @@ int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     int len = 0;
     errno = 0;
 
-    DEBUG_WEBDAV("owncloud_stat %s called", uri );
-
     buf->name = c_basename(uri);
 
     if (buf->name == NULL) {
@@ -935,8 +933,6 @@ csync_vio_handle_t *owncloud_opendir(const char *uri) {
 int owncloud_closedir(csync_vio_handle_t *dhandle) {
 
     struct listdir_context *fetchCtx = dhandle;
-
-    DEBUG_WEBDAV("closedir method called %p!", dhandle);
 
     free_fetchCtx(fetchCtx);
 
