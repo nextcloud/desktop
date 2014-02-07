@@ -154,8 +154,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
     return -1;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "==> file: %s - hash %llu, mtime: %llu, fileId: %s",
-      path, (unsigned long long ) h, (unsigned long long) fs->mtime, fs->file_id);
 
   /* Set instruction by default to none */
   st->instruction = CSYNC_INSTRUCTION_NONE;
@@ -240,7 +238,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 && c_streq(fs->file_id, tmp->file_id)) {
             /* If both etag and file id are equal for a directory, read all contents from
              * the database. */
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", path);
             ctx->remote.read_from_db = true;
         }
         st->instruction = CSYNC_INSTRUCTION_NONE;
@@ -362,9 +359,9 @@ fastout:  /* target if the file information is read from database into st */
     default:
       break;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: %s <<=", st->path,
-      csync_instruction_str(st->instruction));
-
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "==> %s %s - hash %llu, mtime: %llu, fileId: %s",
+            csync_instruction_str(st->instruction), path, (unsigned long long ) h,
+            (unsigned long long) fs->mtime, fs->file_id);
   return 0;
 }
 
@@ -376,18 +373,18 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   uint64_t h;
 
   if (ctx->abort) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Aborted!");
     ctx->status_code = CSYNC_STATUS_ABORTED;
     return -1;
   }
 
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
+      // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
       type = CSYNC_FTW_TYPE_FILE;
       break;
   case CSYNC_FTW_FLAG_DIR: /* enter directory */
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
       type = CSYNC_FTW_TYPE_DIR;
       break;
   case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
