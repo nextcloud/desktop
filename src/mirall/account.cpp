@@ -301,7 +301,11 @@ void Account::setState(int state)
 void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
 {
     NetworkJobTimeoutPauser pauser(reply);
-    qDebug() << "SSL-Warnings happened for url " << reply->url().toString();
+    qDebug() << "SSL-Errors happened for url " << reply->url().toString();
+    foreach(const QSslError &error, errors) {
+       qDebug() << "\tError in " << error.certificate() << ":"
+                << error.errorString() << "("<< error.error()<< ")";
+    }
 
     if( _treatSslErrorsAsFailure ) {
         // User decided once not to trust. Honor this decision.
@@ -317,7 +321,7 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
             QSslSocket::addDefaultCaCertificates(approvedCerts);
             addApprovedCerts(approvedCerts);
             // all ssl certs are known and accepted. We can ignore the problems right away.
-            qDebug() << "Certs are already known and trusted, Warnings are not valid.";
+            qDebug() << "Certs are already known and trusted, Errors are not valid.";
             reply->ignoreSslErrors();
         } else {
             _treatSslErrorsAsFailure = true;
