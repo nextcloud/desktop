@@ -190,6 +190,16 @@ static int _csync_statedb_is_empty(sqlite3 *db) {
   return rc;
 }
 
+#ifndef NDEBUG
+static void sqlite_profile( void *x, const char* sql, sqlite3_uint64 time)
+{
+    (void)x;
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+              "_SQL_ %s: %llu", sql, time);
+
+}
+#endif
+
 int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   int rc = -1;
   int check_rc = -1;
@@ -255,6 +265,9 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   result = csync_statedb_query(db, "PRAGMA case_sensitive_like = ON;");
   c_strlist_destroy(result);
 
+#ifndef NDEBUG
+  sqlite3_profile(db, sqlite_profile, 0 );
+#endif
   *pdb = db;
 
   return 0;
@@ -329,13 +342,67 @@ int csync_statedb_close(const char *statedb, sqlite3 *db, int jwritten) {
   return rc;
 }
 
+// This funciton parses a line from the metadata table into the given csync_file_stat
+// structure which it is also allocating.
+// Note that this function calls laso sqlite3_step to actually get the info from db and
+// returns the sqlite return type.
+static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3_stmt *stmt )
+{
+    int rc = SQLITE_ERROR;
+    int column_count;
+    int len;
+
+    if( ! stmt ) return -1;
+
+    column_count = sqlite3_column_count(stmt);
+
+    rc = sqlite3_step(stmt);
+
+    if( rc == SQLITE_ROW ) {
+        if(column_count > 7) {
+            const char *name;
+
+            /* phash, pathlen, path, inode, uid, gid, mode, modtime */
+            len = sqlite3_column_int(stmt, 1);
+            *st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
+            if (*st == NULL) {
+                return -1;
+            }
+            /* clear the whole structure */
+            ZERO_STRUCTP(*st);
+
+            /* The query suceeded so use the phash we pass to the function. */
+            (*st)->phash = sqlite3_column_int64(stmt, 0);
+
+            (*st)->pathlen = sqlite3_column_int(stmt, 1);
+            name = (const char*) sqlite3_column_text(stmt, 2);
+            memcpy((*st)->path, (len ? name : ""), len + 1);
+            (*st)->inode = sqlite3_column_int64(stmt,3);
+            (*st)->uid = sqlite3_column_int(stmt, 4);
+            (*st)->gid = sqlite3_column_int(stmt, 5);
+            (*st)->mode = sqlite3_column_int(stmt, 6);
+            (*st)->modtime = strtoul((char*)sqlite3_column_text(stmt, 7), NULL, 10);
+
+            if(*st && column_count > 8 ) {
+                (*st)->type = sqlite3_column_int(stmt, 8);
+            }
+
+            if(column_count > 9 && sqlite3_column_text(stmt, 9)) {
+                (*st)->etag = c_strdup( (char*) sqlite3_column_text(stmt, 9) );
+            }
+            if(column_count > 10 && sqlite3_column_text(stmt,10)) {
+                csync_vio_set_file_id((*st)->file_id, (char*) sqlite3_column_text(stmt, 10));
+            }
+        }
+    }
+    return rc;
+}
+
 /* caller must free the memory */
 csync_file_stat_t *csync_statedb_get_stat_by_hash(sqlite3 *db,
                                                   uint64_t phash)
 {
   csync_file_stat_t *st = NULL;
-  size_t len = 0;
-  int column_count = 0;
   int rc;
 
   if( _by_hash_stmt == NULL ) {
@@ -350,64 +417,11 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(sqlite3 *db,
     return NULL;
   }
 
-  column_count = sqlite3_column_count(_by_hash_stmt);
-
   sqlite3_bind_int64(_by_hash_stmt, 1, (long long signed int)phash);
-  rc = sqlite3_step(_by_hash_stmt);
 
-  if( rc == SQLITE_ROW ) {
-    if(column_count > 7) {
-      /* phash, pathlen, path, inode, uid, gid, mode, modtime */
-      len = sqlite3_column_int(_by_hash_stmt, 1);
-      st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
-      if (st == NULL) {
-        return NULL;
-      }
-      /* clear the whole structure */
-      ZERO_STRUCTP(st);
-
-      /*
-       * FIXME:
-       * We use an INTEGER(8) which is signed to the phash in the sqlite3 db,
-       * but the phash is an uint64_t. So for some values we get a string like
-       * "1.66514565505016e+19". For such a string strtoull() returns 1.
-       * phash = 1
-       *
-       * st->phash = strtoull(result->vector[0], NULL, 10);
-       */
-
-      /* The query suceeded so use the phash we pass to the function. */
-      st->phash = phash;
-
-      st->pathlen = sqlite3_column_int(_by_hash_stmt, 1);
-      memcpy(st->path, (len ? (char*) sqlite3_column_text(_by_hash_stmt, 2) : ""), len + 1);
-      st->inode = sqlite3_column_int64(_by_hash_stmt,3);
-      st->uid = sqlite3_column_int(_by_hash_stmt, 4);
-      st->gid = sqlite3_column_int(_by_hash_stmt, 5);
-      st->mode = sqlite3_column_int(_by_hash_stmt, 6);
-      st->modtime = strtoul((char*)sqlite3_column_text(_by_hash_stmt, 7), NULL, 10);
-
-      if(st && column_count > 8 ) {
-        st->type = sqlite3_column_int(_by_hash_stmt, 8);
-      }
-
-      if(column_count > 9 && sqlite3_column_text(_by_hash_stmt, 9)) {
-        st->etag = c_strdup( (char*) sqlite3_column_text(_by_hash_stmt, 9) );
-      }
-      if(column_count > 10 && sqlite3_column_text(_by_hash_stmt,10)) {
-          csync_vio_set_file_id(st->file_id, (char*) sqlite3_column_text(_by_hash_stmt, 10));
-      }
-    }
-  } else {
-    /* SQLITE_DONE says there is no further row. That's not an error. */
-    if (rc != SQLITE_DONE) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "sqlite hash query fail: %s", sqlite3_errmsg(db));
-    }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "No result record found for phash = %llu",
-              (long long unsigned int) phash);
-    SAFE_FREE(st);
+  if( _csync_file_stat_from_metadata_table(&st, _by_hash_stmt) < 0 ) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata!");
   }
-
   sqlite3_reset(_by_hash_stmt);
 
   return st;
@@ -559,23 +573,63 @@ char *csync_statedb_get_uniqId( CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_
     return ret;
 }
 
-c_strlist_t *csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
-    c_strlist_t *list = NULL;
-    char *stmt = NULL;
+#define BELOW_PATH_QUERY "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid FROM metadata WHERE path LIKE(?)"
 
-    stmt = sqlite3_mprintf("SELECT phash, path, inode, uid, gid, mode, modtime, type, md5, fileid "
-                           "FROM metadata WHERE path LIKE('%q/%%')", path);
-    if (stmt == NULL) {
-      return NULL;
+int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
+    int rc;
+    sqlite3_stmt *stmt = NULL;
+    int64_t cnt = 0;
+    char *likepath;
+    int asp;
+
+    if( !path ) {
+        return -1;
     }
 
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "SQL: %s", stmt);
+    rc = sqlite3_prepare_v2(ctx->statedb.db, BELOW_PATH_QUERY, -1, &stmt, NULL);
+    if( rc != SQLITE_OK ) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for hash query.");
+      return -1;
+    }
 
-    list = csync_statedb_query( ctx->statedb.db, stmt );
+    if (stmt == NULL) {
+      return -1;
+    }
 
-    sqlite3_free(stmt);
+    asp = asprintf( &likepath, "%s/%%%%", path);
+    if (asp < 0) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
+        return -1;
+    }
 
-    return list;
+    sqlite3_bind_text(stmt, 1, likepath, -1, SQLITE_STATIC);
+
+    cnt = 0;
+
+    do {
+        csync_file_stat_t *st = NULL;
+
+        rc = _csync_file_stat_from_metadata_table( &st, stmt);
+        if( st ) {
+            /* store into result list. */
+            if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
+                SAFE_FREE(st);
+                ctx->status_code = CSYNC_STATUS_TREE_ERROR;
+                break;
+            }
+            cnt++;
+        }
+    } while( rc == SQLITE_ROW );
+
+    if( rc != SQLITE_DONE ) {
+        ctx->status_code = CSYNC_STATUS_TREE_ERROR;
+    } else {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "%ld entries read below path %s from db.", cnt, path);
+    }
+    sqlite3_finalize(stmt);
+    SAFE_FREE(likepath);
+
+    return 0;
 }
 
 /* query the statedb, caller must free the memory */

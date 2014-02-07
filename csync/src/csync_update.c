@@ -423,6 +423,22 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   return rc;
 }
 
+static void fill_tree_from_db(CSYNC *ctx, const char *uri)
+{
+    const char *path = NULL;
+
+    if( strlen(uri) < strlen(ctx->remote.uri)+1) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "name does not contain remote uri!");
+        return;
+    }
+
+    path = uri + strlen(ctx->remote.uri)+1;
+
+    if( csync_statedb_get_below_path(ctx, path) < 0 ) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "StateDB could not be read!");
+    }
+}
+
 /* File tree walker */
 int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     unsigned int depth) {
@@ -447,24 +463,31 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
   read_from_db = ctx->remote.read_from_db;
 
+  // if the etag of this dir is still the same, its content is restored from the
+  // database.
+  if( do_read_from_db ) {
+      fill_tree_from_db(ctx, uri);
+      goto done;
+  }
+
   if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
-    int asp = 0;
-    /* permission denied */
-    ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
-    if (errno == EACCES) {
-       return 0;
-    } else if(errno == ENOENT) {
-      asp = asprintf( &ctx->error_string, "%s", uri);
-      if (asp < 0) {
-	CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
+      int asp = 0;
+      /* permission denied */
+      ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
+      if (errno == EACCES) {
+          return 0;
+      } else if(errno == ENOENT) {
+          asp = asprintf( &ctx->error_string, "%s", uri);
+          if (asp < 0) {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
+          }
+      } else {
+          C_STRERROR(errno, errbuf, sizeof(errbuf));
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
+                    "opendir failed for %s - %s (errno %d)",
+                    uri, errbuf, errno);
       }
-    } else {
-      C_STRERROR(errno, errbuf, sizeof(errbuf));
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-          "opendir failed for %s - %s (errno %d)",
-          uri, errbuf, errno);
-    }
-    goto error;
+      goto error;
   }
 
   while ((dirent = csync_vio_readdir(ctx, dh))) {
@@ -528,13 +551,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     /* == see if really stat has to be called. */
-    if( do_read_from_db ) {
-        fs = dirent;
-        res = 0;
-    } else {
-        fs = csync_vio_file_stat_new();
-        res = csync_vio_stat(ctx, filename, fs);
-    }
+    fs = csync_vio_file_stat_new();
+    res = csync_vio_stat(ctx, filename, fs);
 
     if( res == 0) {
       switch (fs->type) {
@@ -587,11 +605,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         previous_fs->child_modified = ctx->current_fs->child_modified;
     }
 
-    if( ! do_read_from_db ) {
-        csync_vio_file_stat_destroy(fs);
-    } else {
-        SAFE_FREE(fs->etag);
-    }
+    csync_vio_file_stat_destroy(fs);
 
     if (rc < 0) {
       if (CSYNC_STATUS_IS_OK(ctx->status_code)) {

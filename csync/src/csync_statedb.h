@@ -82,7 +82,7 @@ char *csync_statedb_get_uniqId(CSYNC *ctx, uint64_t jHash, csync_vio_file_stat_t
  *
  * @return   A stringlist containing a multiple of 9 entries.
  */
-c_strlist_t *csync_statedb_get_below_path(CSYNC *ctx, const char *path);
+int csync_statedb_get_below_path(CSYNC *ctx, const char *path);
 
 /**
  * @brief A generic statedb query.

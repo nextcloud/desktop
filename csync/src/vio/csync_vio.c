@@ -26,7 +26,6 @@
 #include <stdio.h>
 
 #include "csync_private.h"
-#include "csync_dbtree.h"
 #include "csync_util.h"
 #include "vio/csync_vio.h"
 #include "vio/csync_vio_handle_private.h"
@@ -364,11 +363,9 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
   switch(ctx->replica) {
     case REMOTE_REPLICA:
       if(ctx->remote.read_from_db) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Reading directory %s from database", name);
-          mh = csync_dbtree_opendir(ctx, name);
-      } else {
-          mh = ctx->module.method->opendir(name);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Read from db flag is true, should not!" );
       }
+      mh = ctx->module.method->opendir(name);
       break;
     case LOCAL_REPLICA:
       mh = csync_vio_local_opendir(name);
@@ -395,17 +392,16 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
   }
 
   switch(ctx->replica) {
-    case REMOTE_REPLICA:
-      if(ctx->remote.read_from_db) {
-          rc = csync_dbtree_closedir(ctx, dhandle->method_handle);
-      } else {
-          rc = ctx->module.method->closedir(dhandle->method_handle);
+  case REMOTE_REPLICA:
+      if( ctx->remote.read_from_db ) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Remote ReadFromDb is true, should not!");
       }
+      rc = ctx->module.method->closedir(dhandle->method_handle);
       break;
-    case LOCAL_REPLICA:
+  case LOCAL_REPLICA:
       rc = csync_vio_local_closedir(dhandle->method_handle);
       break;
-    default:
+  default:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->replica);
       break;
   }
@@ -421,11 +417,10 @@ csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle
 
   switch(ctx->replica) {
     case REMOTE_REPLICA:
-      if(ctx->remote.read_from_db) {
-          fs = csync_dbtree_readdir(ctx, dhandle->method_handle);
-      } else {
-          fs = ctx->module.method->readdir(dhandle->method_handle);
+      if( ctx->remote.read_from_db ) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Remote readfromdb is true, should not!");
       }
+      fs = ctx->module.method->readdir(dhandle->method_handle);
       break;
     case LOCAL_REPLICA:
       fs = csync_vio_local_readdir(dhandle->method_handle);
