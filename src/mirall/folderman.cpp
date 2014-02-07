@@ -401,12 +401,12 @@ void FolderMan::slotScheduleSync( const QString& alias )
             }
         }
         _scheduleQueue.enqueue(alias);
+
     } else {
         qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
-
-    // wait two seconds until the syncing starts
-    QTimer::singleShot(2000, this, SLOT(slotScheduleFolderSync()));
+    // wait a moment until the syncing starts
+    QTimer::singleShot(500, this, SLOT(slotScheduleFolderSync()));
 }
 
 void FolderMan::setSyncEnabled( bool enabled )
