@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Zvolte vzdálenou cílovou složku</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -513,19 +513,14 @@
         <translation> &apos;%1&apos; a %2 dalších souborů bylo %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="452"/>
-        <source>Error</source>
-        <translation>Chyba</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folder.cpp" line="711"/>
+        <location filename="../src/mirall/folder.cpp" line="706"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Tato synchronizace by smazala všechny soubory v místní složce &apos;%1&apos;
 Pokud jste vy nebo váš správce zresetovali účet na serveru, zvolte &quot;Ponechat soubory&quot;. Pokud chcete místní data odstranit, zvolte &quot;Odstranit všechny soubory&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="714"/>
+        <location filename="../src/mirall/folder.cpp" line="709"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +529,17 @@ Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím
 Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="718"/>
+        <location filename="../src/mirall/folder.cpp" line="713"/>
         <source>Remove All Files?</source>
         <translation>Odstranit všechny soubory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="720"/>
+        <location filename="../src/mirall/folder.cpp" line="715"/>
         <source>Remove all files</source>
         <translation>Odstranit všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="721"/>
+        <location filename="../src/mirall/folder.cpp" line="716"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>
@@ -806,18 +801,18 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Restart &amp;&amp; aktualizace</translation>
     </message>
 </context>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="258"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="244"/>
         <source>Enter Password</source>
         <translation>Zadejte heslo</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="259"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="245"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Zadejte prosím %1 heslo pro uživatele &apos;%2&apos;: </translation>
     </message>
@@ -871,12 +866,12 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Upravit masku ignorovaných</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Upravit masku ignorovaných:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -953,27 +948,27 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="293"/>
+        <location filename="../src/updater/ocupdater.cpp" line="252"/>
         <source>New Version Available</source>
         <translation>Je dostupná nová verze</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="299"/>
+        <location filename="../src/updater/ocupdater.cpp" line="258"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
         <translation>&lt;p&gt;Je k dispozici nová verze klienta %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; je k dispozici ke stažení. Aktuálně nainstalovaná verze je %3.&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="312"/>
+        <location filename="../src/updater/ocupdater.cpp" line="271"/>
         <source>Skip this version</source>
         <translation>Přeskoč tuto verzi</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="313"/>
+        <location filename="../src/updater/ocupdater.cpp" line="272"/>
         <source>Skip this time</source>
         <translation>Tentokrát přeskočit</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="314"/>
+        <location filename="../src/updater/ocupdater.cpp" line="273"/>
         <source>Get update</source>
         <translation>Získat aktualizaci</translation>
     </message>
@@ -1106,12 +1101,12 @@ si může v průběhu vyžádat dodatečná práva.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nemohu stáhnout aktualizaci. Klikněte, prosím, na &lt;a href=&apos;%1&apos;&gt;tento odkaz&lt;/a&gt; pro manuální stažení.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Nemohu zkontrolovat aktualizace.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
@@ -1126,7 +1121,7 @@ si může v průběhu vyžádat dodatečná práva.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Žádne aktualizace nejsou k dispozici. Používáte aktuální verzi.</translation>
     </message>
 </context>
 <context>
@@ -1222,7 +1217,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Nemohu se připojit zabezpečeně. Přejete si místo toho připojit nezabezpečeně (nedoporučuje se)? </translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -1401,17 +1396,17 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>Mirall::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="556"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="554"/>
         <source>Sync was aborted by user.</source>
         <translation>Synchronizace zrušena uživatelem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="611"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="609"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ze serveru nebyl obdržen E-Tag, zkontrolujte proxy/brány</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="621"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="619"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Obdrželi jsme jiný E-Tag pro pokračování. Zkusím znovu příště.</translation>
     </message>
@@ -1448,12 +1443,12 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="893"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="894"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Tato složka nemůže být přejmenována. Byl jí vrácen původní název.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="895"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="896"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Tato složka nemůže být přejmenována. Přejmenujte jí prosím zpět na Shared.</translation>
     </message>
@@ -1462,7 +1457,7 @@ Nedoporučuje se jí používat.</translation>
     <name>Mirall::PropagateUploadFile</name>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="365"/>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="419"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="420"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation>Místní soubor byl změněn během synchronizace, bude sesynchronizán, jakmile bude kompletní</translation>
     </message>
@@ -1599,22 +1594,22 @@ Zkuste provést novou synchronizaci.
 <context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="52"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="53"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - ověření</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="113"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="114"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="117"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
         <source>Error loading IdP login page</source>
         <translation>Chyba při načítání přihlašovací stránky IdP</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
         <source>Could not load Shibboleth login page to log you in.
 Please ensure that your network connection is working.</source>
         <translation>Nemohu načíst přihlašovací stránku Shibboleth potřebnou pro přihlášení.
@@ -1626,32 +1621,32 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Detaily certifikátu&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Běžný název (CN):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Alternativní jména subjektu:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Organizace (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Organizační jednotka (OU):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Stát/provincie</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
@@ -1666,22 +1661,22 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Vydavatel&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="110"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Vydavatel:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Vydáno:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Platný do:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="115"/>
@@ -1691,17 +1686,17 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="118"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Poznánka:&lt;/b&gt; Tento certifikát byl schválen manuálně&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="137"/>
@@ -1711,7 +1706,7 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="140"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (podepsaný sám sebou)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="142"/>
@@ -1722,18 +1717,21 @@ Ujistěte se, prosím, že síťové spojení funguje.</translation>
         <location filename="../src/mirall/sslbutton.cpp" line="173"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Toto spojení je šifrováno pomocí %1 bitové šifry
+
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="176"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Informace o certifikátu:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="201"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Toto spojení NENÍ bezpečná, protože není šifrovaná.
+</translation>
     </message>
 </context>
 <context>
