@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Επιλέξτε έναν απομακρυσμένο φάκελο προορισμού</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -373,12 +373,12 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="89"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε να φορτώσει ή να δημιουργήσει το αρχείο καταλόγου. Βεβαιωθείτε ότι έχετε άδειες ανάγνωσης και εγγραφής στον τοπικό κατάλογο συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="93"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε να εγγράψει στο αρχείο καταλόγου.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="151"/>
@@ -645,17 +645,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="61"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Κλικάρετε για να επιλέξετε έναν τοπικό φάκελο προς συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="65"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Εισάγετε τη διαδρομή προς τον τοπικό φάκελο.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="69"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>Το όνομα καταλόγου είναι ένα περιγραφικό όνομα για αυτή τη σύνδεση συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
@@ -690,7 +690,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Ο επιλεγμένος φάκελος είναι ένας συμβολικός σύνδεσμος. Ο φάκελος στον οποίο οδηγεί ο σύνδεσμος περιέχεται σε έναν φάκελο που είναι ήδη ρυθμισμένος.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
@@ -796,7 +796,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Ενημερώσεις</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
@@ -866,12 +866,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Επεξεργασία Προτύπου Αγνόησης</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Επεξεργασία προτύπου αγνόησης:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -960,7 +960,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Παράλειψη αυτής της έκδοσης</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="272"/>
@@ -1079,48 +1079,49 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Νέα ενημέρωση διαθέσιμη</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Μια νέα ενημέρωση πρόκειται να εγκατασταθεί. Ο βοηθός ενημέρωσης μπορεί να ζητήσει
+επιπλέον παραχωρήσεις δικαιωμάτων κατά τη διαδικασία.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Λήψη έκδοσης %1. Παρακαλώ περιμένετε...</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Η έκδοση %1 είναι διαθέσιμη. Επανεκκινήστε την εφαρμογή για να ξεκινήσει η ενημέρωση.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία λήψης της ενημέρωσης. Παρακαλώ κλικάρετε &lt;a href=&apos;%1&apos;&gt;εδώ&lt;/a&gt; για να κατεβάσετε την ενημέρωση χειροκίνητα.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία ελέγχου για νέες ενημερώσεις.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Νέα έκδοση %1 διαθέσιμη. Παρακαλώ χρησιμοποιήστε το εργαλείο ενημερώσεων του συστήματος για την εγκαταστήσετε.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Έλεγχος διακομιστή ενημερώσεων...</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν υπάρχουν ενημερώσεις διαθέσιμες. Η εγκατάστασή σας βρίσκεται στην τελευταία έκδοση.</translation>
     </message>
 </context>
 <context>
@@ -1205,7 +1206,8 @@ for additional privileges during the process.</source>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτή η ιστοσελίδα ΔΕΝ είναι ασφαλής καθώς δεν είναι κρυπτογραφημένη.
+Δεν προτείνεται να τη χρησιμοποιήσετε.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
@@ -1215,7 +1217,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία ασφαλούς σύνδεσης. Θα θέλατε να συνδεθείτε χωρίς κρυπτογράφηση παρ&apos;όλα αυτά (δεν προτείνεται);</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -1414,12 +1416,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="126"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο διαγράφηκε από ένα διαμοιρασμένο κατάλογο χωρίς άδεια εγγραφής. Το αρχείο επαναφέρθηκε.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="128"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ένα αρχείο διαγράφηκε από ένα διαμοιρασμένο κατάλογο χωρίς άδεια εγγραφής, αλλά η επαναφορά απέτυχε: %1</translation>
     </message>
 </context>
 <context>
@@ -1618,32 +1620,32 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Λεπτομέρειες Πιστοποιητικού&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Κοινό Όνομα (ΚΝ):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Εναλλακτικά Ονόματα Υποκειμένου:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Οργανισμός (Ο):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Μονάδα Οργανισμού (ΜΟ):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Νομός ή περιφέρεια:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
@@ -1653,32 +1655,32 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Σειριακός αριθμός:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Εκδότης&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="110"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Εκδότης:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Εκδόθηκε στις:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Λήγει στις:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Αποτυπώματα&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="118"/>
@@ -1693,17 +1695,17 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό το πιστοποιητικό εγκρίθηκε χειροκίνητα&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="137"/>
         <source>%1 (in Root CA store)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (στο κατάστημα ρίζας CA)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="140"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (αυτό-πιστοποιημένο)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="142"/>
@@ -1719,13 +1721,14 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="176"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Πληροφορίες πιστοποιητικού:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="201"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Αυτή η σύνδεση δεν είναι ασφαλής καθώς δεν είναι κρυπτογραφημένη.
+</translation>
     </message>
 </context>
 <context>
