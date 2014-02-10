@@ -82,8 +82,11 @@ sub initTesting(;$)
 {
   my ($prefix) = @_;
   
-  if( -r "./t1.cfg" ) {
-    my %config = do 't1.cfg';
+  my $cfgFile = "./t1.cfg";
+  $cfgFile = "/etc/ownCloud/t1.cfg" if( -r "/etc/ownCloud/t1.cfg" );
+
+  if( -r "$cfgFile" ) {
+    my %config = do $cfgFile;
     warn "Could not parse t1.cfg: $!\n" unless %config;
     warn "Could not do t1.cfg: $@\n" if $@;
 
@@ -92,11 +95,13 @@ sub initTesting(;$)
     $owncloud   = $config{url}  if( $config{url} );
     $ld_libpath = $config{ld_libpath} if( $config{ld_libpath} );
     $csync      = $config{csync} if( $config{csync} );
-    print "Read t1.cfg: $config{url}\n";
+    print "Read config from $cfgFile: $config{url}\n";
+  } else {
+    print STDERR "Could not read a config file $cfgFile\n";
+    exit(1);
   }
 
   $owncloud .= "/" unless( $owncloud =~ /\/$/ );
-
 
   print "Connecting to ownCloud at ". $owncloud ."\n";
   $d = HTTP::DAV->new();
