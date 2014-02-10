@@ -40,6 +40,120 @@ void PUTFileJob::start() {
 
 }
 
+#define CHUNKING_SIZE (10*1024*1024)
+
+int ChunkedPUTFileJob::computeChunks()
+{
+    qint64 size = _device->size();
+    qint64 blockSize = CHUNKING_SIZE;
+    qint64 overall;
+    qint64 numBlocks = size / blockSize;
+
+    /* there migth be a remainder. */
+    qint64 remainder = size - numBlocks * blockSize;
+    qsrand(QTime::currentTime().msec());
+
+    _transferId = qrand(); // FIXME: Sufficient?
+
+    /* if there is a remainder, add one block */
+    if( remainder > 0 ) {
+        numBlocks++;
+    }
+
+    /* The file has size 0. There still needs to be at least one block. */
+    if( size == 0 ) {
+      numBlocks = 1;
+      blockSize   = 0;
+    }
+
+    qDebug() << "Chunks: " << numBlocks << "a" << blockSize << ", remainder " << remainder;
+
+
+    for( qint64 cnt=0; cnt < numBlocks; cnt++ ) {
+        /* allocate a block struct and fill */
+        ChunkBlock block;
+
+        block._sequenceNo = cnt;
+        block._start = cnt * blockSize;
+        block._size  = blockSize;
+        block._state = ChunkBlock::NotTransfered;
+
+        _device->seek(block._start);
+        block._buffer = new QBuffer;
+        block._buffer->setData(_device->read(block._size));
+
+        /* consider the remainder if we're already at the end */
+        if( cnt == numBlocks-1 && remainder > 0 ) {
+            block._size = remainder;
+        }
+        overall += block._size;
+
+        _chunks.append(block);
+        qDebug() << "  computed chunk " << cnt << "from" << block._start << block._size << "bytes";
+    }
+    return numBlocks;
+}
+
+void ChunkedPUTFileJob::start()
+{
+    int blockCount = _chunks.size();
+
+    _transferedChunks = 0;
+
+    foreach( ChunkBlock block, _chunks ) {
+        QMap<QByteArray, QByteArray> headers;
+        headers["OC-Total-Length"] = QByteArray::number(qint64(block._size));
+        headers["Content-Type"] = "application/octet-stream";
+        headers["X-OC-Mtime"] = QByteArray::number(qint64(_modtime));
+        headers["OC-Chunked"] = QByteArray::number(1);
+
+        if (!_item._etag.isEmpty() && _item._etag != "empty_etag") {
+            // We add quotes because the owncloud server always add quotes around the etag, and
+            //  csync_owncloud.c's owncloud_file_id always strip the quotes.
+            headers["If-Match"] = '"' + _item._etag + '"';
+        }
+
+        PUTFileJob *job;
+        QString url = _item._file;
+        url += QString("-chunking-%1-%2-%3").arg(_transferId).arg(blockCount).arg(block._sequenceNo);
+
+        job = new PUTFileJob(account(), url, block._buffer, headers);
+
+        _chunkUploadJobs.insert(job, block);
+        connect(job, SIGNAL(finishedSignal()), this, SLOT(slotChunkFinished()));
+        job->start();
+    }
+}
+
+void ChunkedPUTFileJob::slotChunkFinished()
+{
+    PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
+    Q_ASSERT(job);
+
+    QNetworkReply::NetworkError err = job->reply()->error();
+    if (err != QNetworkReply::NoError) {
+        Q_ASSERT(_chunkUploadJobs.contains(job));
+        ChunkBlock block = _chunkUploadJobs[job];
+        _chunkUploadJobs[job]._state = ChunkBlock::TransferSuccess;
+        delete block._buffer;
+    }
+    _transferedChunks++;
+
+    if( _transferedChunks >= _chunkUploadJobs.size() ) {
+        bool completed = true;
+        // FIXME: Build
+        foreach( ChunkBlock block, _chunkUploadJobs ) {
+            if( block._state != ChunkBlock::TransferSuccess ) {
+                completed = false;
+                break;
+            }
+        }
+        if( completed ) {
+            emit finishedSignal();
+        }
+    }
+
+}
 
 void PropagateUploadFileQNAM::start()
 {
@@ -53,20 +167,28 @@ void PropagateUploadFileQNAM::start()
     //TODO
     //const SyncJournalDb::UploadInfo progressInfo = _propagator->_journal->getUploadInfo(_item._file);
     QMap<QByteArray, QByteArray> headers;
-    headers["OC-Total-Length"] = QByteArray::number(file->size());
-    headers["Content-Type"] = "application/octet-stream";
-    headers["X-OC-Mtime"] = QByteArray::number(qint64(_item._modtime));
-    if (!_item._etag.isEmpty() && _item._etag != "empty_etag") {
-        // We add quotes because the owncloud server always add quotes around the etag, and
-        //  csync_owncloud.c's owncloud_file_id always strip the quotes.
-        headers["If-Match"] = '"' + _item._etag + '"';
+    qint64 fileSize = file->size();
+
+    AbstractNetworkJob *job;
+    if( fileSize < CHUNKING_SIZE ) {
+        headers["OC-Total-Length"] = QByteArray::number(fileSize);
+        headers["Content-Type"] = "application/octet-stream";
+        headers["X-OC-Mtime"] = QByteArray::number(qint64(_item._modtime));
+
+        if (!_item._etag.isEmpty() && _item._etag != "empty_etag") {
+            // We add quotes because the owncloud server always add quotes around the etag, and
+            //  csync_owncloud.c's owncloud_file_id always strip the quotes.
+            headers["If-Match"] = '"' + _item._etag + '"';
+        }
+        job = new PUTFileJob(AccountManager::instance()->account(), _item._file, file, headers);
+    } else {
+        job = new ChunkedPUTFileJob(AccountManager::instance()->account(), _item._file, _item, file);
     }
-    PUTFileJob *job = new PUTFileJob(AccountManager::instance()->account(), _item._file, file, headers);
     connect(job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
 
-//     if( transfer->block_cnt > 1 ) {
-//         ne_add_request_header(req, "OC-Chunked", "1");
-//     }
+    //     if( transfer->block_cnt > 1 ) {
+    //         ne_add_request_header(req, "OC-Chunked", "1");
+    //     }
 
 
         /*
