@@ -31,6 +31,7 @@
 #include <QDateTime>
 #include <qstack.h>
 #include <QCoreApplication>
+#include <QThread>
 
 #include <neon/ne_basic.h>
 #include <neon/ne_socket.h>
@@ -353,7 +354,7 @@ void PropagateUploadFile::start()
             if( state == HBF_SOURCE_FILE_CHANGE ) {
                 if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
                     qDebug("SOURCE file has changed during upload, retry #%d in %d seconds!", attempts, 2*attempts);
-                    sleep(2*attempts);
+                    QThread::sleep(2*attempts);
                     if( _previousFileSize == 0 ) {
                         _previousFileSize = _item._size;
                     } else {
@@ -401,7 +402,7 @@ void PropagateUploadFile::start()
 
             if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
                 qDebug("SOURCE file has changed after upload, retry #%d in %d seconds!", attempts, 2*attempts);
-                sleep(2*attempts);
+                QThread::sleep(2*attempts);
                 continue;
             }
 
