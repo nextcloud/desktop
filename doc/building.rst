@@ -173,7 +173,7 @@ Known cmake parameters:
 
 * WITH_DOC=TRUE: create doc and manpages via running ``make``; also adds install statements to be able to install it via ``make install``.
 * BUILD_WITH_QT4=OFF and CMAKE_PREFIX_PATH=/path/to/Qt5.2.0/5.2.0/yourarch/lib/cmake/ : Build with Qt5 instead of Qt4
-* QTKEYCHAIN_LIBRARY=/path/to/qtkeychain.dylib : Use QtKeychain for stored credentials
+* QTKEYCHAIN_LIBRARY=/path/to/qtkeychain.dylib -DQTKEYCHAIN_INCLUDE_DIR=/path/to/qtkeychain/: Use QtKeychain for stored credentials. When compiling with Qt5, the library is called qt5keychain.dylib. You need to compile QtKeychain with the same Qt version.
 
 .. _`ownCloud repository from OBS`: http://software.opensuse.org/download/package?project=isv:ownCloud:devel&package=owncloud-client
 .. _CSync: http://www.csync.org
