@@ -1395,17 +1395,17 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Mirall::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="554"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="563"/>
         <source>Sync was aborted by user.</source>
         <translation>Sincronizzazione interrotta dall&apos;utente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="609"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="618"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Nessun E-Tag ricevuto dal server, controlla il Proxy/Gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="619"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="628"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Abbiamo ricevuto un E-Tag diverso per il recupero. Riprova più tardi.</translation>
     </message>
@@ -1413,12 +1413,12 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="126"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="127"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
         <translation>Il file è stato rimosso da una condivisione in sola lettura. Il file è stato ripristinato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="128"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="129"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
         <translation>Un file è stato rimosso da una condivisione in sola lettura, ma il ripristino non è riuscito: %1</translation>
     </message>
@@ -1426,7 +1426,7 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="213"/>
         <source>could not create directory %1</source>
         <translation>impossibile creare la cartella %1</translation>
     </message>
@@ -1434,7 +1434,7 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="191"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="192"/>
         <source>Could not remove directory %1</source>
         <translation>Impossibile rimuovere la cartella %1</translation>
     </message>
@@ -1442,12 +1442,12 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="894"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="903"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Questa cartella non può essere rinominata. Il nome originale è stato ripristinato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="896"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="905"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Questa cartella non può essere rinominata. Ripristina il nome Shared.</translation>
     </message>
@@ -1455,13 +1455,13 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Mirall::PropagateUploadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="365"/>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="420"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="370"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="429"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation>Un file locale è cambiato durante la sincronizzazione, riprova più tardi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="373"/>
         <source>Sync was aborted by user.</source>
         <translation>Sincronizzazione interrotta dall&apos;utente.</translation>
     </message>

@@ -1396,17 +1396,17 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="554"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="563"/>
         <source>Sync was aborted by user.</source>
         <translation>Ο συγχρονισμός ματαιώθηκε από το χρήστη.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="609"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="618"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="619"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="628"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation type="unfinished"/>
     </message>
@@ -1414,12 +1414,12 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="126"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="127"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
         <translation>Το αρχείο διαγράφηκε από ένα διαμοιρασμένο κατάλογο χωρίς άδεια εγγραφής. Το αρχείο επαναφέρθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="128"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="129"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
         <translation>Ένα αρχείο διαγράφηκε από ένα διαμοιρασμένο κατάλογο χωρίς άδεια εγγραφής, αλλά η επαναφορά απέτυχε: %1</translation>
     </message>
@@ -1427,7 +1427,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="213"/>
         <source>could not create directory %1</source>
         <translation>αδυναμία δημιουργίας καταλόγου %1</translation>
     </message>
@@ -1435,7 +1435,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="191"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="192"/>
         <source>Could not remove directory %1</source>
         <translation>Αδυναμία αφαίρεσης καταλόγου %1</translation>
     </message>
@@ -1443,12 +1443,12 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="894"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="903"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Αυτός ο φάκελος δεν πρέπει να μετονομαστεί. Μετονομάζεται πίσω στο αρχικό του όνομα.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="896"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="905"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Αυτός ο φάκελος δεν πρέπει να μετονομαστεί. Παρακαλώ ονομάστε το  ξανά Κοινόχρηστος.</translation>
     </message>
@@ -1456,13 +1456,13 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="365"/>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="420"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="370"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="429"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation>Το τοπικό αρχείο τροποποιήθηκε κατά τη διάρκεια του συγχρονισμού, θα συγχρονιστεί και πάλι όταν φτάσει πλήρως</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="373"/>
         <source>Sync was aborted by user.</source>
         <translation>Ο συγχρονισμός ματαιώθηκε από το χρήστη.</translation>
     </message>
