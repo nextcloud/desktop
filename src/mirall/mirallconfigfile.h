@@ -108,7 +108,9 @@ public:
 
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
+
 protected:
+    QVariant getPolicySetting(const QString& policy, const QVariant& defaultValue = QVariant()) const;
     void storeData(const QString& group, const QString& key, const QVariant& value);
     QVariant retrieveData(const QString& group, const QString& key) const;
     void removeData(const QString& group, const QString& key);

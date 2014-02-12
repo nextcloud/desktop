@@ -482,5 +482,4 @@ bool Utility::isLinux()
 #endif
 }
 
-
 } // namespace Mirall

@@ -67,7 +67,7 @@ Name "@CPACK_NSIS_PACKAGE_NAME@"
 BrandingText "${APPLICATION_NAME} ${VERSION}  -- ${BUILD_TIME}"
 OutFile "@CPACK_TOPLEVEL_DIRECTORY@/@CPACK_OUTPUT_FILE_NAME@"
 InstallDir "$PROGRAMFILES\@CPACK_PACKAGE_INSTALL_DIRECTORY@"
-InstallDirRegKey HKCU "Software\${APPLICATION_NAME}" ""
+InstallDirRegKey HKCU "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" ""
 InstType Standard
 InstType Full
 InstType Minimal
@@ -277,21 +277,21 @@ FunctionEnd
 ##############################################################################
 
 Function PageReinstall
-   ReadRegStr $R0 HKLM "Software\${APPLICATION_NAME}" ""
+   ReadRegStr $R0 HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" ""
    StrCmp $R0 "" 0 +2
    Abort
 
    ;Detect version
-   ReadRegDWORD $R0 HKLM "Software\${APPLICATION_NAME}" "VersionMajor"
+   ReadRegDWORD $R0 HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionMajor"
    IntCmp $R0 ${VER_MAJOR} minor_check new_version older_version
    minor_check:
-      ReadRegDWORD $R0 HKLM "Software\${APPLICATION_NAME}" "VersionMinor"
+      ReadRegDWORD $R0 HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionMinor"
       IntCmp $R0 ${VER_MINOR} rev_check new_version older_version
    rev_check:
-      ReadRegDWORD $R0 HKLM "Software\${APPLICATION_NAME}" "VersionRevision"
+      ReadRegDWORD $R0 HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionRevision"
       IntCmp $R0 ${VER_PATCH} build_check new_version older_version
    build_check:
-      ReadRegDWORD $R0 HKLM "Software\${APPLICATION_NAME}" "VersionBuild"
+      ReadRegDWORD $R0 HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionBuild"
       IntCmp $R0 ${VER_BUILD} same_version new_version older_version
 
    new_version:
@@ -487,11 +487,11 @@ Section -post
    SetDetailsPrint listonly
 
    ;Version numbers used to detect existing installation version for comparisson.
-   WriteRegStr HKLM "Software\${APPLICATION_NAME}" "" $INSTDIR
-   WriteRegDWORD HKLM "Software\${APPLICATION_NAME}" "VersionMajor" "${VER_MAJOR}"
-   WriteRegDWORD HKLM "Software\${APPLICATION_NAME}" "VersionMinor" "${VER_MINOR}"
-   WriteRegDWORD HKLM "Software\${APPLICATION_NAME}" "VersionRevision" "${VER_PATCH}"
-   WriteRegDWORD HKLM "Software\${APPLICATION_NAME}" "VersionBuild" "${VER_BUILD}"
+   WriteRegStr HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "" $INSTDIR
+   WriteRegDWORD HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionMajor" "${VER_MAJOR}"
+   WriteRegDWORD HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionMinor" "${VER_MINOR}"
+   WriteRegDWORD HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionRevision" "${VER_PATCH}"
+   WriteRegDWORD HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionBuild" "${VER_BUILD}"
 
    ;Add or Remove Programs entry.
    WriteRegExpandStr ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
@@ -563,12 +563,12 @@ Section Uninstall
    owncloud_installed:
 
    ;Delete registry keys.
-   DeleteRegValue HKLM "Software\${APPLICATION_NAME}" "VersionBuild"
-   DeleteRegValue HKLM "Software\${APPLICATION_NAME}" "VersionMajor"
-   DeleteRegValue HKLM "Software\${APPLICATION_NAME}" "VersionMinor"
-   DeleteRegValue HKLM "Software\${APPLICATION_NAME}" "VersionRevision"
-   DeleteRegValue HKLM "Software\${APPLICATION_NAME}" ""
-   DeleteRegKey HKLM "Software\${APPLICATION_NAME}"
+   DeleteRegValue HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionBuild"
+   DeleteRegValue HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionMajor"
+   DeleteRegValue HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionMinor"
+   DeleteRegValue HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionRevision"
+   DeleteRegValue HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" ""
+   DeleteRegKey HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}"
 
    DeleteRegKey HKCR "${APPLICATION_NAME}"
 

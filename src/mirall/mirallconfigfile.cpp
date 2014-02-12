@@ -142,6 +142,26 @@ void MirallConfigFile::restoreGeometryHeader(QHeaderView *header)
     header->restoreState(getValue(geometryC, header->objectName()).toByteArray());
 }
 
+QVariant MirallConfigFile::getPolicySetting(const QString &setting, const QVariant& defaultValue) const
+{
+    if (Utility::isWindows()) {
+        // check for policies first and return immediately if a value is found.
+        QSettings userPolicy(QString::fromLatin1("HKEY_CURRENT_USER\\Software\\Policies\\%1\\%2")
+                             .arg(APPLICATION_VENDOR).arg(APPLICATION_NAME),
+                             QSettings::NativeFormat);
+        if(userPolicy.contains(setting)) {
+            return userPolicy.value(setting);
+        }
+
+        QSettings machinePolicy(QString::fromLatin1("HKEY_LOCAL_MACHINE\\Software\\Policies\\%1\\%2")
+                                .arg(APPLICATION_VENDOR).arg(APPLICATION_NAME),
+                                QSettings::NativeFormat);
+        if(machinePolicy.contains(setting)) {
+            return machinePolicy.value(setting);
+        }
+    }
+    return defaultValue;
+}
 
 QString MirallConfigFile::configPath() const
 {
@@ -324,12 +344,13 @@ bool MirallConfigFile::skipUpdateCheck( const QString& connection ) const
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
 
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup( con );
+    QVariant fallback = getValue(QLatin1String(skipUpdateCheckC), con, false);
+    fallback = getValue(QLatin1String(skipUpdateCheckC), QString(), fallback);
 
-    bool skipIt = settings.value( QLatin1String(skipUpdateCheckC), false ).toBool();
-
-    return skipIt;
+    qDebug() << Q_FUNC_INFO << fallback;
+    QVariant value = getPolicySetting(QLatin1String(skipUpdateCheckC), fallback);
+    qDebug() << Q_FUNC_INFO << value;
+    return value.toBool();
 }
 
 void MirallConfigFile::setSkipUpdateCheck( bool skip, const QString& connection )
@@ -382,11 +403,35 @@ void MirallConfigFile::setProxyType(int proxyType,
 QVariant MirallConfigFile::getValue(const QString& param, const QString& group,
                                     const QVariant& defaultValue) const
 {
-    QSettings settings(configFile(), QSettings::IniFormat);
-    if (!group.isEmpty())
-        settings.beginGroup(group);
+    QVariant systemSetting;
+    qDebug() << Q_FUNC_INFO;
+    if (Utility::isMac()) {
+            QSettings systemSettings(QSettings::NativeFormat, QSettings::SystemScope, QCoreApplication::organizationName());
+            if (!group.isEmpty()) {
+                systemSettings.beginGroup(group);
+            }
+            systemSetting = systemSettings.value(param, defaultValue);
+    } else if (Utility::isUnix()) {
+        QSettings systemSettings(QString( SYSCONFDIR "/%1/%1.conf").arg(Theme::instance()->appName()), QSettings::NativeFormat);
+        if (!group.isEmpty()) {
+            systemSettings.beginGroup(group);
+        }
+        systemSetting = systemSettings.value(param, defaultValue);
+    } else { // Windows
+        QSettings systemSettings(QString::fromLatin1("HKEY_LOCAL_MACHINE\\Software\\%1\\%2")
+                                .arg(APPLICATION_VENDOR).arg(APPLICATION_NAME),
+                                QSettings::NativeFormat);
+        if (!group.isEmpty()) {
+            systemSettings.beginGroup(group);
+        }
+        systemSetting = systemSettings.value(param, defaultValue);
+        qDebug() << Q_FUNC_INFO << "Windows, read" << systemSetting << "from registry!";
+    }
 
-    return settings.value(param, defaultValue);
+    QSettings settings(configFile(), QSettings::IniFormat);
+    if (!group.isEmpty()) settings.beginGroup(group);
+
+    return settings.value(param, systemSetting);
 }
 
 void MirallConfigFile::setValue(const QString& key, const QVariant &value)
