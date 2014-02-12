@@ -127,8 +127,11 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
     QString txt;
     if (pos > 0) {
         txt += QString(2*pos, ' ');
-        txt += QChar(0x21AA); // nicer '->' symbol
-        txt += QChar(' ');
+        if (!Utility::isWindows()) {
+            // doesn't seem to work reliably on Windows
+            txt += QChar(0x21AA); // nicer '->' symbol
+            txt += QChar(' ');
+        }
     }
 
     QString certId = cn.isEmpty() ? ou : cn;
