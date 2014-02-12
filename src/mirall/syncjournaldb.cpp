@@ -776,6 +776,25 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
 
 }
 
+void SyncJournalDb::avoidRenamesOnNextSync(const QString& path)
+{
+    QMutexLocker locker(&_mutex);
+
+    if( !checkConnect() ) {
+        return;
+    }
+
+    QSqlQuery query(_db);
+    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE path LIKE(?||'/%')");
+    query.bindValue(0, path);
+    if( !query.exec() ) {
+        qDebug() << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
+    } else {
+        qDebug() << query.executedQuery()  << path;
+    }
+}
+
+
 void SyncJournalDb::commit(const QString& context, bool startTrans)
 {
     QMutexLocker lock(&_mutex);
