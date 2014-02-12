@@ -147,7 +147,7 @@ QVariant MirallConfigFile::getPolicySetting(const QString &setting, const QVaria
     if (Utility::isWindows()) {
         // check for policies first and return immediately if a value is found.
         QSettings userPolicy(QString::fromLatin1("HKEY_CURRENT_USER\\Software\\Policies\\%1\\%2")
-                             .arg(APPLICATION_VENDOR).arg(APPLICATION_NAME),
+                             .arg(APPLICATION_VENDOR).arg(Theme::instance()->appName()),
                              QSettings::NativeFormat);
         if(userPolicy.contains(setting)) {
             return userPolicy.value(setting);
@@ -417,7 +417,7 @@ QVariant MirallConfigFile::getValue(const QString& param, const QString& group,
         systemSetting = systemSettings.value(param, defaultValue);
     } else { // Windows
         QSettings systemSettings(QString::fromLatin1("HKEY_LOCAL_MACHINE\\Software\\%1\\%2")
-                                .arg(APPLICATION_VENDOR).arg(APPLICATION_NAME),
+                                .arg(APPLICATION_VENDOR).arg(Theme::instance()->appName()),
                                 QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
