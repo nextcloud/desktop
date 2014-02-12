@@ -41,11 +41,10 @@ its own repository which contains non-standard recipes.  Add it with::
 
 Next, install the missing dependencies::
 
-  brew install $(brew deps ocsync) 
   brew install $(brew deps mirall)
 
   
-To build mirall and csync, follow the `generic build instructions`_.
+To build mirall, follow the `generic build instructions`_.
 
 .. note::
   You should not call ``make install`` at any time, since the product of the
@@ -55,8 +54,8 @@ To build mirall and csync, follow the `generic build instructions`_.
 Windows (cross-compile)
 -----------------------
 
-Due to the amount of dependencies that csync entails, building the client
-for Windows is **currently only supported on openSUSE**, by using the MinGW
+Due to the amount of dependencies, building the client for Windows
+is **currently only supported on openSUSE**, by using the MinGW
 cross compiler. You can set up openSUSE 12.1, 12.2 or 13.1 in a virtual machine
 if you do not have it installed already.
 
@@ -115,50 +114,20 @@ Generic Build Instructions
 --------------------------
 .. _`generic build instructions`
 
-The ownCloud Client requires Mirall and CSync_. Mirall is the GUI frontend,
-while CSync is responsible for handling the actual synchronization process.
-
-At the moment, ownCloud Client requires a forked version of CSync. Both
-CMake and Mirall can be downloaded at ownCloud's `Client Download Page`_.
-
 If you want to build the leading edge version of the client, you should
 use the latest versions of Mirall and CSync via Git_, like so::
 
-  git clone git://git.csync.org/users/owncloud/csync.git ocsync
   git clone git://github.com/owncloud/mirall.git
 
-Next, create build directories::
 
-  mkdir ocsync-build
+Next, build it::
+
   mkdir mirall-build
-
-This guide assumes that all directories are residing next to each other.
-Next, make sure to check out the branch called 'ocsync' in the newly checked out
-`ocsync` directory::
-
-  cd ocsync
-  git checkout ocsync
-
-The first package to build is CSync::
-
-  cd ocsync-build
-  cmake -DCMAKE_BUILD_TYPE="Debug" ../ocsync
-  make
+  cd mirall-build
+  cmake -DCMAKE_BUILD_TYPE="Debug" ../mirall
 
 You probably have to satisfy some dependencies. Make sure to install all the
-needed development packages. You will need ``sqlite3`` as well as ``neon`` for 
-the ownCloud module. Take special care about ``neon``. If that is missing, the 
-cmake run will succeed but silently not build the ownCloud module.
-
-``libssh`` and ``libsmbclient`` are optional and not required for the client
-to work. If you want to install the client, run ``make install`` as a final step.
-
-Next, we build mirall::
-
-  cd ../mirall-build
-  cmake -DCMAKE_BUILD_TYPE="Debug" ../mirall \
-        -DCSYNC_BUILD_PATH=/path/to/ocsync-build \
-        -DCSYNC_INCLUDE_PATH=/path/to/ocsync/src
+needed development packages. You will need ``qtkeychain``, ``sqlite3`` and ``neon``.
 
 Note that it is important to use absolute pathes for the include- and library
 directories. If this succeeds, call ``make``. The owncloud binary should appear
@@ -171,9 +140,10 @@ To build an installer/app bundle (requires the mingw32-cross-nsis packages on Wi
 
 Known cmake parameters:
 
-* WITH_DOC=TRUE: create doc and manpages via running ``make``; also adds install statements to be able to install it via ``make install``.
-* BUILD_WITH_QT4=OFF and CMAKE_PREFIX_PATH=/path/to/Qt5.2.0/5.2.0/yourarch/lib/cmake/ : Build with Qt5 instead of Qt4
 * QTKEYCHAIN_LIBRARY=/path/to/qtkeychain.dylib -DQTKEYCHAIN_INCLUDE_DIR=/path/to/qtkeychain/: Use QtKeychain for stored credentials. When compiling with Qt5, the library is called qt5keychain.dylib. You need to compile QtKeychain with the same Qt version.
+* WITH_DOC=TRUE: create doc and manpages via running ``make``; also adds install statements to be able to install it via ``make install``.
+* CMAKE_PREFIX_PATH=/path/to/Qt5.2.0/5.2.0/yourarch/lib/cmake/ : to build with Qt5
+* BUILD_WITH_QT4=ON : to build with Qt4 even if Qt5 is found
 
 .. _`ownCloud repository from OBS`: http://software.opensuse.org/download/package?project=isv:ownCloud:devel&package=owncloud-client
 .. _CSync: http://www.csync.org
@@ -181,3 +151,4 @@ Known cmake parameters:
 .. _Git: http://git-scm.com
 .. _MacPorts: http://www.macports.org
 .. _Homebrew: http://mxcl.github.com/homebrew/
+.. _QtKeychain https://github.com/frankosterfeld/qtkeychain
