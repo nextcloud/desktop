@@ -10,6 +10,7 @@ Contents
    accountsetup
    visualtour
    advancedusage
+   autoupdate
 
    building 
    architecture

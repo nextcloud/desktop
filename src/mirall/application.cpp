@@ -33,8 +33,9 @@
 #include "mirall/clientproxy.h"
 
 #include "updater/updater.h"
-
 #include "creds/abstractcredentials.h"
+
+#include "config.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
@@ -88,6 +89,9 @@ Application::Application(int &argc, char **argv) :
     _logFlush(false),
     _userTriggeredConnect(false)
 {
+// TODO: Can't set this without breaking current config pathes
+//    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
+    setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
     setApplicationName( _theme->appNameGUI() );
     setWindowIcon( _theme->applicationIcon() );
 
@@ -139,7 +143,9 @@ Application::Application(int &argc, char **argv) :
     // startup procedure.
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
 
-    if( !cfg.skipUpdateCheck() ) {
+    if( cfg.skipUpdateCheck() ) {
+        qDebug() << Q_FUNC_INFO << "Skipping update check";
+    } else {
         QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
     }
 
