@@ -36,16 +36,39 @@ class PropagatorJob : public QObject {
     Q_OBJECT
 protected:
     OwncloudPropagator *_propagator;
+    void emitReady() {
+        bool wasReady = _readySent;
+        _readySent = true;
+        if (!wasReady)
+            emit ready();
+    };
 public:
-    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator) {}
+    bool _readySent;
+    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator), _readySent(false) {}
 
 public slots:
     virtual void start() = 0;
     virtual void abort() {}
 signals:
+    /**
+     * Emitted when the job is fully finished
+     */
     void finished(SyncFileItem::Status);
+
+    /**
+     * Emitted when one item has been completed within a job.
+     */
     void completed(const SyncFileItem &);
+
+    /**
+     * Emitted when all the sub-jobs have been scheduled and
+     * we are ready and more jobs might be started
+     * This signal is not always emitted.
+     */
+    void ready();
+
     void progress(Progress::Kind, const SyncFileItem& item, quint64 bytes, quint64 total);
+
 };
 
 /*
@@ -64,12 +87,13 @@ public:
     SyncFileItem _item;
 
     int _current; // index of the current running job
+    int _runningNow; // number of subJob running now
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
 
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItem &item = SyncFileItem())
         : PropagatorJob(propagator)
-        , _firstJob(0), _item(item),  _current(-1), _hasError(SyncFileItem::NoStatus) { }
+        , _firstJob(0), _item(item),  _current(-1), _runningNow(0), _hasError(SyncFileItem::NoStatus) { }
 
     virtual ~PropagateDirectory() {
         qDeleteAll(_subJobs);
@@ -92,10 +116,13 @@ private slots:
         connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
         connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
         connect(next, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
+        connect(next, SIGNAL(ready()), this, SLOT(slotSubJobReady()));
+        _runningNow++;
         QMetaObject::invokeMethod(next, "start");
     }
 
     void slotSubJobFinished(SyncFileItem::Status status);
+    void slotSubJobReady();
 };
 
 
@@ -152,6 +179,7 @@ public:
             , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/'  )
             , _remoteDir((remoteDir.endsWith(QChar('/'))) ? remoteDir : remoteDir+'/'  )
             , _journal(progressDb)
+            , _activeJobs(0)
     { }
 
     void start(const SyncFileItemVector &_syncedItems);
@@ -161,9 +189,14 @@ public:
 
     QAtomicInt _abortRequested; // boolean set by the main thread to abort.
 
+    /* The number of currently active jobs */
+    int _activeJobs;
+
     void overallTransmissionSizeChanged( qint64 change );
 
     bool isInSharedDirectory(const QString& file);
+
+
     void abort() {
         _abortRequested.fetchAndStoreOrdered(true);
         if (_rootJob)

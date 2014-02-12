@@ -709,7 +709,7 @@ QString CSyncThread::adjustRenamedPath(const QString& original)
 void CSyncThread::abort()
 {
     csync_request_abort(_csync_ctx);
-    if(_propagator);
+    if(_propagator)
         _propagator->abort();
 }
 

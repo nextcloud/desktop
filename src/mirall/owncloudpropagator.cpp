@@ -49,6 +49,9 @@
 
 #include <time.h>
 
+/* The maximum number of active job in parallel  */
+static const int maximumActiveJob = 6;
+
 // We use some internals of csync:
 extern "C" int c_utimes(const char *, const struct timeval *);
 extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
@@ -1110,7 +1113,7 @@ void PropagateDirectory::start()
     _current = -1;
     _hasError = SyncFileItem::NoStatus;
     if (!_firstJob) {
-        slotSubJobFinished(SyncFileItem::Success);
+        slotSubJobReady();
     } else {
         startJob(_firstJob.data());
     }
@@ -1125,18 +1128,32 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
     } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
         _hasError = status;
     }
+    _runningNow--;
+    slotSubJobReady();
+}
 
-    if (_current == -1) {
-        // Start all the jobs
-        foreach( PropagatorJob *next , _subJobs ) {
-            startJob(next);
-        }
+void PropagateDirectory::slotSubJobReady()
+{
+    qDebug() << Q_FUNC_INFO << _runningNow << _propagator->_activeJobs;
+
+    if (_runningNow && _current == -1)
+        return; // Ignore the case when the _fistJob is ready and not yet finished
+    if (_runningNow && _current >= 0 && _current < _subJobs.count()) {
+        // there is a job running and the current one is not ready yet, we can't start new job
+        qDebug() <<  _subJobs[_current]->_readySent << maximumActiveJob << _subJobs[_current];
+        if (!_subJobs[_current]->_readySent || _propagator->_activeJobs >= maximumActiveJob)
+            return;
     }
 
-    _current ++;
-    if (_current >= _subJobs.size()) {
-        // We finished to process all the jobs
-
+    _current++;
+    if (_current < _subJobs.size() && !_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
+        PropagatorJob *next = _subJobs.at(_current);
+        startJob(next);
+        return;
+    }
+    // We finished to processing all the jobs
+    emitReady();
+    if (!_runningNow) {
         if (!_item.isEmpty() && _hasError == SyncFileItem::NoStatus) {
             if( !_item._renameTarget.isEmpty() ) {
                 _item._file = _item._renameTarget;

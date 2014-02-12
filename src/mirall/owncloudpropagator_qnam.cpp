@@ -23,7 +23,6 @@ namespace Mirall {
 
 void PUTFileJob::start() {
     QNetworkRequest req;
-    qDebug() << _headers;
     for(QMap<QByteArray, QByteArray>::const_iterator it = _headers.begin(); it != _headers.end(); ++it) {
         req.setRawHeader(it.key(), it.value());
         qDebug() << it.key() << it.value();
@@ -217,10 +216,14 @@ void PropagateUploadFileQNAM::start()
 
     emit progress(Progress::StartUpload, _item, 0, file->size());
     job->start();
+
+    _propagator->_activeJobs++;
+    emitReady();
 }
 
 void PropagateUploadFileQNAM::slotPutFinished()
 {
+    _propagator->_activeJobs--;
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
     Q_ASSERT(job);
 
