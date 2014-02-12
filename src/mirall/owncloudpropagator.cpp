@@ -100,18 +100,36 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 }
 
 
+/**
+ * For delete or remove, check that we are not removing from a shared directory.
+ * If we are, try to restore the file
+ *
+ * Return true if the problem is handled.
+ */
 bool PropagateItemJob::checkForProblemsWithShared()
 {
     QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
     int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
 
     if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item._file )) {
-        // the file was removed locally from a read only Shared sync
-        // the file is gone locally and it should be recovered.
-        SyncFileItem downloadItem(_item);
-        downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
-        downloadItem._dir = SyncFileItem::Down;
-        _restoreJob.reset(new PropagateDownloadFile(_propagator, downloadItem));
+        if( _item._type != SyncFileItem::Directory ) {
+            // the file was removed locally from a read only Shared sync
+            // the file is gone locally and it should be recovered.
+            SyncFileItem downloadItem(_item);
+            downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
+            downloadItem._dir = SyncFileItem::Down;
+            _restoreJob.reset(new PropagateDownloadFile(_propagator, downloadItem));
+        } else {
+            // Directories are harder to recover.
+            // But just re-create the directory, next sync will be able to recover the files
+            SyncFileItem mkdirItem(_item);
+            mkdirItem._instruction = CSYNC_INSTRUCTION_SYNC;
+            mkdirItem._dir = SyncFileItem::Down;
+            _restoreJob.reset(new PropagateLocalMkdir(_propagator, mkdirItem));
+            // Also remove the inodes and fileid from the db so no further renames are tried for
+            // this item.
+            _propagator->_journal->avoidRenamesOnNextSync(_item._file);
+        }
         connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
                 this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
         _restoreJob->start();

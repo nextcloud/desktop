@@ -79,6 +79,7 @@ system( "echo \"super new\" >> " . localDir() . 'newdir/myfile.txt' );
 #Add some files for the next test.
 system( "echo \"un\" > " . localDir() . '1.txt' );
 system( "echo \"deux\" > " . localDir() . '2.txt' );
+system( "echo \"trois\" > " . localDir() . '3.txt' );
 mkdir( localDir() . 'newdir2' );
 
 csync();
@@ -104,6 +105,17 @@ my $newdir3Id = remoteFileId( localDir(), 'newdir3' );
 my $newdir4Id = remoteFileId( localDir(), 'newdir4' );
 assert( $newdirId eq $newdir3Id, "newdir was not MOVE'd to newdir3?" );
 assert( $newdir2Id eq $newdir4Id, "newdir2 was not MOVE'd to newdir4?" );
+
+printInfo("Move a file and replace it by a new one");
+
+
+move( localDir() . '1.txt', localDir() . '1_bis.txt' );
+move( localDir() . '3.txt', localDir() . '3_bis.txt' );
+system( "echo \"new file un\" > " . localDir() . '1.txt' );
+system( "echo \"new file trois\" > " . localDir() . '3.txt' );
+
+csync();
+assertLocalAndRemoteDir( '', 0);
 
 
 cleanup();
