@@ -114,23 +114,26 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 
             if( tmp ) {
                 if( tmp->path ) {
-                    /* Find the temporar file in the other tree. */
                     len = strlen( tmp->path );
                     h = c_jhash64((uint8_t *) tmp->path, len, 0);
-                    node = c_rbtree_find(tree, &h);
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "PHash of temporary opposite (%s): %" PRIu64 " %s",
-                              tmp->path , h, node ? "found": "not found" );
-                    if (!node) {
-                        /* the renamed file could not be found in the opposite tree. That is because it
-                         * is not longer existing there, maybe because it was renamed or deleted.
-                         * The journal is cleaned up later after propagation.
-                         */
-
+                    /* First, check that the file is NOT in our tree (another file with the same name was added) */
+                    node = c_rbtree_find(ctx->current == REMOTE_REPLICA ? ctx->remote.tree : ctx->local.tree, &h);
+                    if (node) {
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Origin found in our tree : %s", tmp->path);
+                    } else {
+                        /* Find the temporar file in the other tree. */
+                        node = c_rbtree_find(tree, &h);
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "PHash of temporary opposite (%s): %" PRIu64 " %s",
+                                tmp->path , h, node ? "found": "not found" );
+                        if (node) {
+                            other = (csync_file_stat_t*)node->data;
+                        } else {
+                            /* the renamed file could not be found in the opposite tree. That is because it
+                            * is not longer existing there, maybe because it was renamed or deleted.
+                            * The journal is cleaned up later after propagation.
+                            */
+                        }
                     }
-                }
-
-                if(node) {
-                    other = (csync_file_stat_t*)node->data;
                 }
 
                 if(!other) {
@@ -159,9 +162,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                     other->instruction = CSYNC_INSTRUCTION_SYNC;
                 }
-
-                SAFE_FREE(tmp->etag);
-                SAFE_FREE(tmp);
+                csync_file_stat_free(tmp);
            }
 
             break;
