@@ -54,6 +54,7 @@
 !define VERSION "@CPACK_PACKAGE_VERSION@"
 
 Var InstallRunIfSilent
+Var NoAutomaticUpdates
 
 ;-----------------------------------------------------------------------------
 ; Installer build timestamp.
@@ -628,6 +629,13 @@ Function .onInit
       StrCpy $InstallRunIfSilent "yes"
    ${EndIf}
 
+   ${GetParameters} $R0
+   ${GetOptions} $R0 "/noautoupdate" $R0
+   ${IfNot} ${Errors}
+      StrCpy $NoAutomaticUpdates "yes"
+   ${EndIf}
+
+
    !insertmacro INSTALLOPTIONS_EXTRACT "NSIS.InstallOptions.ini"
 
    ; uncomment this line if you want to see the language selection
@@ -694,6 +702,10 @@ FunctionEnd
 
 Function .onInstSuccess
    ${MementoSectionSave}
+
+   ${If} $NoAutomaticUpdates == "yes"
+      WriteRegDWORD HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "skipUpdateCheck" "1"
+   ${EndIf}
 
    ${If} ${Silent}
    ${AndIf} $InstallRunIfSilent == "yes"
