@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="136"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>Utrzymanie Konta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="145"/>
@@ -551,7 +551,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="168"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Stary sync journal &apos;%1&apos; został znaleziony, lecz nie mógł być usunięty. Proszę się upewnić, że żaden program go obecnie nie używa.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="741"/>
@@ -836,7 +836,9 @@ Are you sure you want to perform this operation?</source>
         <source>Files or directories matching a pattern will not be synchronized.
 
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Pliki lub katalogi zgodne ze wzorem nie będą zsynchronizowane.
+
+Zaznaczone przedmioty także będą usunięte, jeżeli będą przeszkadzać w usunięciu katalogu. Jest to przydatne dla meta data.</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
@@ -871,7 +873,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Ten wpis jest podawany przez system w &apos;%1&apos; i nie może być zmieniony w tym widoku.</translation>
     </message>
 </context>
 <context>
@@ -1148,7 +1150,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="117"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uwaga:&lt;/strong&gt; Masz obecnie skonfigurowane wielokrotne katalogi . Jeśli będziesz kontynuować z obecnymi ustawieniami, konfiguracje katalogów będą odrzucone i pojedyncza synchronizacja głównego katalogu będzie utworzona!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="124"/>
@@ -2168,7 +2170,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/main.cpp" line="31"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 potrzebuje na pracującej tacce systemu. Jeżeli używasz XFCE, proszę dostosować się &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;do tych instrukcji&lt;/a&gt;. Alternatywnie, proszę zainstalować program tacki systemu jak np. &apos;trayer&apos; i spróbować ponownie.</translation>
     </message>
 </context>
 <context>
@@ -2185,7 +2187,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using OCsync %5 and Qt %6.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Zbudowany z wersji Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 używając OCsync %5 oraz Qt %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="56"/>

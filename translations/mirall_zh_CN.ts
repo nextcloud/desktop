@@ -65,17 +65,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="136"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>帐户维护</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="145"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>编辑忽略的文件</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="152"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>修改帐户</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;user&gt; 已经连接到 &lt;server&gt; </translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
@@ -111,7 +111,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="116"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>返回使用率信息...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="123"/>
@@ -181,27 +181,27 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="607"/>
         <source>Currently</source>
-        <translation type="unfinished"/>
+        <translation>当前地</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="615"/>
         <source>Completely</source>
-        <translation type="unfinished"/>
+        <translation>完整地</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="649"/>
         <source>%1 %2 %3 (%4 of %5)</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %3 (%4 of %5)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="652"/>
         <source>Completely finished.</source>
-        <translation type="unfinished"/>
+        <translation>完全结束。</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="659"/>
         <source>%1 of %2, file %3 of %4</source>
-        <translation type="unfinished"/>
+        <translation>%1 of %2, file %3 of %4</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="751"/>
@@ -439,7 +439,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="103"/>
         <source>Unable to create csync-context</source>
-        <translation type="unfinished"/>
+        <translation>不能生成 csync-context</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="163"/>
@@ -528,17 +528,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="713"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>删除所有文件？</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="715"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>删除所有文件</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="716"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>保持所有文件</translation>
     </message>
 </context>
 <context>
@@ -566,7 +566,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="747"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>准备同步。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="750"/>
@@ -576,7 +576,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="753"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>服务器当前是不可用的。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="756"/>
@@ -620,7 +620,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
         <source>Syncing all files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>同步所有的文件到你的帐户里通过</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="207"/>
@@ -772,12 +772,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>在系统启动是启动</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>显示桌面提醒</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
@@ -819,7 +819,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>忽略的文件编辑器</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="53"/>
@@ -841,7 +841,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>不能打开文件</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="98"/>
@@ -2132,27 +2132,27 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/utility.cpp" line="113"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="116"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="119"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="122"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 kB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="125"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
 </context>
 <context>
