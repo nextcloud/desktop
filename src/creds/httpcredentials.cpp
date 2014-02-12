@@ -30,8 +30,6 @@
 
 using namespace QKeychain;
 
-Q_DECLARE_METATYPE(Mirall::Account*)
-
 namespace Mirall
 {
 
@@ -203,18 +201,6 @@ bool HttpCredentials::stillValid(QNetworkReply *reply)
             && (reply->error() != QNetworkReply::OperationCanceledError));
 }
 
-bool HttpCredentials::fetchFromUser(Account *account)
-{
-    bool ok = false;
-    QString password = queryPassword(&ok);
-    if (ok) {
-        _password = password;
-        _ready = true;
-        persist(account);
-    }
-    return ok;
-}
-
 void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 {
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(job);
@@ -309,26 +295,6 @@ void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* a
     // those credentials were invalid and we terminate.
     qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
     reply->close();
-}
-
-QString HttpCredentials::keychainKey(const QString &url, const QString &user)
-{
-    QString u(url);
-    if( u.isEmpty() ) {
-        qDebug() << "Empty url in keyChain, error!";
-        return QString::null;
-    }
-    if( user.isEmpty() ) {
-        qDebug() << "Error: User is emty!";
-        return QString::null;
-    }
-
-    if( !u.endsWith(QChar('/')) ) {
-        u.append(QChar('/'));
-    }
-
-    QString key = user+QLatin1Char(':')+u;
-    return key;
 }
 
 } // ns Mirall

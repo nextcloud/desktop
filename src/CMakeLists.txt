@@ -85,6 +85,7 @@ set(libsync_SRCS
     mirall/quotainfo.cpp
     mirall/clientproxy.cpp
     creds/dummycredentials.cpp
+    creds/abstractcredentials.cpp
     creds/httpcredentials.cpp
     creds/credentialsfactory.cpp
     creds/http/httpconfigfile.cpp

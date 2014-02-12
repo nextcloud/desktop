@@ -513,19 +513,14 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="452"/>
-        <source>Error</source>
-        <translation>Fel</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folder.cpp" line="711"/>
+        <location filename="../src/mirall/folder.cpp" line="706"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Denna synk skulle radera alla filer i den lokala mappen &apos;%1&apos;.
 Om systemadministratören har återställt ditt konto på servern, välj &quot;Behåll filer&quot;. Om du vill att dina filer ska raderas, välj &quot;Radera alla filer&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="714"/>
+        <location filename="../src/mirall/folder.cpp" line="709"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -534,17 +529,17 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 Är du säker på att du vill fortsätta?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="718"/>
+        <location filename="../src/mirall/folder.cpp" line="713"/>
         <source>Remove All Files?</source>
         <translation>Ta bort alla filer?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="720"/>
+        <location filename="../src/mirall/folder.cpp" line="715"/>
         <source>Remove all files</source>
         <translation>Ta bort alla filer</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="721"/>
+        <location filename="../src/mirall/folder.cpp" line="716"/>
         <source>Keep files</source>
         <translation>Behåll filer</translation>
     </message>
@@ -812,12 +807,12 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="258"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="244"/>
         <source>Enter Password</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="259"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="245"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation type="unfinished"/>
     </message>
@@ -953,27 +948,27 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="293"/>
+        <location filename="../src/updater/ocupdater.cpp" line="252"/>
         <source>New Version Available</source>
         <translation>Ny version tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="299"/>
+        <location filename="../src/updater/ocupdater.cpp" line="258"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
         <translation>&lt;p&gt;En ny version av %1 Client är tillgänglig.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; är tillgänglig för nedladdning. Den installerade versionen är %3.&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="312"/>
+        <location filename="../src/updater/ocupdater.cpp" line="271"/>
         <source>Skip this version</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="313"/>
+        <location filename="../src/updater/ocupdater.cpp" line="272"/>
         <source>Skip this time</source>
         <translation>Hoppa över denna gång</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="314"/>
+        <location filename="../src/updater/ocupdater.cpp" line="273"/>
         <source>Get update</source>
         <translation>Hämta uppdatering</translation>
     </message>
@@ -1399,17 +1394,17 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="556"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="563"/>
         <source>Sync was aborted by user.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="611"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="618"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="621"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="628"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation type="unfinished"/>
     </message>
@@ -1417,12 +1412,12 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="126"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="127"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="128"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="129"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1430,7 +1425,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="213"/>
         <source>could not create directory %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1438,7 +1433,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="191"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="192"/>
         <source>Could not remove directory %1</source>
         <translation>Kunde ej ta bort mappen %1</translation>
     </message>
@@ -1446,12 +1441,12 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="893"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="903"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Denna katalog får inte byta namn. Den kommer att döpas om till sitt original namn.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="895"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="905"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Denna katalog får ej döpas om. Snälla döp den till Delad</translation>
     </message>
@@ -1459,13 +1454,13 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="365"/>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="419"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="370"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="429"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="373"/>
         <source>Sync was aborted by user.</source>
         <translation type="unfinished"/>
     </message>
@@ -1595,22 +1590,22 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="52"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="53"/>
         <source>%1 - Authenticate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="113"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="114"/>
         <source>%1 - %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="117"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
         <source>Error loading IdP login page</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
         <source>Could not load Shibboleth login page to log you in.
 Please ensure that your network connection is working.</source>
         <translation type="unfinished"/>

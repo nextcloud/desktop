@@ -64,6 +64,7 @@ public:
     UploadInfo getUploadInfo(const QString &file);
     void setUploadInfo(const QString &file, const UploadInfo &i);
     SyncJournalBlacklistRecord blacklistEntry( const QString& );
+    void avoidRenamesOnNextSync(const QString &path);
 
     bool postSyncCleanup( const QHash<QString, QString>& items );
 

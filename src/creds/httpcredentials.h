@@ -46,7 +46,6 @@ public:
     bool ready() const;
     void fetch(Account *account);
     bool stillValid(QNetworkReply *reply);
-    bool fetchFromUser(Account *account);
     void persist(Account *account);
     QString user() const;
     QString password() const;
@@ -60,7 +59,6 @@ private Q_SLOTS:
     void slotWriteJobDone(QKeychain::Job*);
 
 private:
-    static QString keychainKey(const QString &url, const QString &user);
     QString _user;
     QString _password;
     bool _ready;

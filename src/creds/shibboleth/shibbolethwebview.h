@@ -15,6 +15,7 @@
 #define MIRALL_WIZARD_SHIBBOLETH_WEB_VIEW_H
 
 #include <QList>
+#include <QPointer>
 #include <QWebView>
 
 class QNetworkCookie;
@@ -39,7 +40,7 @@ protected:
   void hideEvent(QHideEvent* event);
 
 Q_SIGNALS:
-  void shibbolethCookieReceived(const QNetworkCookie& cookie);
+  void shibbolethCookieReceived(const QNetworkCookie& cookie, Account* account);
   void viewHidden();
   void otherCookiesReceived(const QList<QNetworkCookie>& cookieList, const QUrl& url);
 
@@ -50,6 +51,7 @@ private Q_SLOTS:
 
 private:
   void setup(Account *account, ShibbolethCookieJar* jar);
+  QPointer<Account> _account;
 };
 
 } // ns Mirall

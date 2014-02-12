@@ -41,7 +41,11 @@ class PropagateNeonJob : public PropagateItemJob {
     Q_OBJECT
 protected:
 
-    void updateMTimeAndETag(const char *uri, time_t);
+    /* Issue a PROPPATCH and PROPFIND to update the mtime, and fetch the etag
+     * Return true in case of success, and false if the PROPFIND failed and the
+     * error has been reported
+     */
+    bool updateMTimeAndETag(const char *uri, time_t);
 
     /* fetch the error code and string from the session
        in case of error, calls done with the error and returns true.

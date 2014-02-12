@@ -607,7 +607,7 @@ Section Uninstall
       RMDir /r "$LOCALAPPDATA\${APPLICATION_NAME}"
    ${EndIf}
 
-   DeleteRegKey ${MEMENTO_REGISTRY_ROOT} ${MEMENTO_REGISTRY_KEY}
+   DeleteRegKey ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}"
 
    SetDetailsPrint textonly
    DetailPrint $UNINSTALLER_FINISHED_Detail

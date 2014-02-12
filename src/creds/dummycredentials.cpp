@@ -56,12 +56,6 @@ bool DummyCredentials::stillValid(QNetworkReply *reply)
     return true;
 }
 
-bool DummyCredentials::fetchFromUser(Account *account)
-{
-    Q_UNUSED(account)
-    return false;
-}
-
 void DummyCredentials::fetch(Account*)
 {
     Q_EMIT(fetched());

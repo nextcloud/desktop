@@ -12,8 +12,8 @@
  * for more details.
  */
 
-#include <QDebug>
 #include <QMutex>
+#include <QSettings>
 
 #include "creds/shibbolethcredentials.h"
 #include "creds/shibboleth/shibbolethaccessmanager.h"
@@ -21,7 +21,13 @@
 #include "creds/shibboleth/shibbolethrefresher.h"
 #include "creds/shibboleth/shibbolethconfigfile.h"
 #include "creds/credentialscommon.h"
+
 #include "mirall/account.h"
+#include "mirall/theme.h"
+
+#include <qtkeychain/keychain.h>
+
+using namespace QKeychain;
 
 namespace Mirall
 {
@@ -179,16 +185,16 @@ void ShibbolethCredentials::fetch(Account *account)
     if (_ready) {
         Q_EMIT fetched();
     } else {
-        ShibbolethConfigFile cfg;
         if (account) {
             _url = account->url();
         }
-        _browser = new ShibbolethWebView(account, cfg.createCookieJar());
-        connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
-                this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
-        connect(_browser, SIGNAL(viewHidden()),
-                this, SLOT(slotBrowserHidden()));
-        _browser->show ();
+        ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+        job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+        job->setInsecureFallback(false);
+        job->setKey(keychainKey(account->url().toString(), "shibAssertion"));
+        job->setProperty("account", QVariant::fromValue(account));
+        connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
+        job->start();
     }
 }
 
@@ -198,23 +204,20 @@ bool ShibbolethCredentials::stillValid(QNetworkReply *reply)
     return true;
 }
 
-bool ShibbolethCredentials::fetchFromUser(Account *account)
-{
-    Q_UNUSED(account)
-    return false;
-}
-
-void ShibbolethCredentials::persist(Account* /*account*/)
+void ShibbolethCredentials::persist(Account* account)
 {
     ShibbolethConfigFile cfg;
 
     cfg.storeCookies(_otherCookies);
+
+    storeShibCookie(_shibCookie, account);
 }
 
 void ShibbolethCredentials::invalidateToken(Account *account)
 {
     Q_UNUSED(account)
-    _shibCookie.setValue("");
+    _shibCookie = QNetworkCookie();
+    storeShibCookie(_shibCookie, account);
     // ### access to ctx missing, but might not be required at all
     //csync_set_module_property(ctx, "session_key", "");
 }
@@ -223,18 +226,19 @@ void ShibbolethCredentials::disposeBrowser()
 {
     disconnect(_browser, SIGNAL(viewHidden()),
                this, SLOT(slotBrowserHidden()));
-    disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
-               this, SLOT(onShibbolethCookieReceived(QNetworkCookie)));
+    disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
+               this, SLOT(onShibbolethCookieReceived(QNetworkCookie, Account*)));
     _browser->hide();
     _browser->deleteLater();
     _browser = 0;
 }
 
-void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& cookie)
+void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& cookie, Account* account)
 {
     disposeBrowser();
     _ready = true;
     _shibCookie = cookie;
+    storeShibCookie(_shibCookie, account);
     Q_EMIT newCookie(_shibCookie);
     Q_EMIT fetched();
 }
@@ -264,6 +268,44 @@ void ShibbolethCredentials::onFetched()
                 this, SLOT(onFetched()));
 
     Q_EMIT invalidatedAndFetched(prepareCookieData());
+}
+
+void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
+{
+    Account *account = qvariant_cast<Account*>(job->property("account"));
+    if (job->error() == QKeychain::NoError) {
+        ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(job);
+        delete readJob->settings();
+        QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(readJob->textData().toUtf8());
+        if (cookies.count() > 0) {
+            _shibCookie = cookies.first();
+        }
+        job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+
+        _ready = true;
+        Q_EMIT newCookie(_shibCookie);
+        Q_EMIT fetched();
+    } else {
+        ShibbolethConfigFile cfg;
+        _browser = new ShibbolethWebView(account, cfg.createCookieJar());
+        connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
+                this, SLOT(onShibbolethCookieReceived(QNetworkCookie, Account*)));
+        connect(_browser, SIGNAL(viewHidden()),
+                this, SLOT(slotBrowserHidden()));
+
+        _browser->show();
+    }
+}
+
+void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie, Account *account)
+{
+    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+    // we don't really care if it works...
+    //connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
+    job->setKey(keychainKey(account->url().toString(), "shibAssertion"));
+    job->setTextData(QString::fromUtf8(cookie.toRawForm()));
+    job->start();
 }
 
 } // ns Mirall

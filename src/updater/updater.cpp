@@ -11,11 +11,17 @@
  * for more details.
  */
 
+#include <QUrl>
+#include <QProcess>
+#include <QDebug>
+
 #include "updater/updater.h"
 #include "updater/sparkleupdater.h"
 #include "updater/ocupdater.h"
 
 #include "mirall/version.h"
+#include "mirall/theme.h"
+#include "mirall/utility.h"
 
 #include "config.h"
 
@@ -31,15 +37,56 @@ Updater * Updater::instance()
     return _instance;
 }
 
+QUrl Updater::addQueryParams(const QUrl &url)
+{
+    QUrl paramUrl = url;
+    Theme *theme = Theme::instance();
+    QString platform = QLatin1String("stranger");
+    if (Utility::isLinux()) {
+        platform = QLatin1String("linux");
+    } else if (Utility::isWindows()) {
+        platform = QLatin1String("win32");
+    } else if (Utility::isMac()) {
+        platform = QLatin1String("macos");
+    }
+
+    QString sysInfo = getSystemInfo();
+    if( !sysInfo.isEmpty() ) {
+        paramUrl.addQueryItem(QLatin1String("client"), sysInfo );
+    }
+    paramUrl.addQueryItem( QLatin1String("version"), clientVersion() );
+    paramUrl.addQueryItem( QLatin1String("platform"), platform );
+    paramUrl.addQueryItem( QLatin1String("oem"), theme->appName() );
+    return paramUrl;
+}
+
+
+QString Updater::getSystemInfo()
+{
+#ifdef Q_OS_LINUX
+    QProcess process;
+    process.start( QLatin1String("lsb_release -a") );
+    process.waitForFinished();
+    QByteArray output = process.readAllStandardOutput();
+    qDebug() << "Sys Info size: " << output.length();
+    if( output.length() > 1024 ) output.clear(); // don't send too much.
+
+    return QString::fromLocal8Bit( output.toBase64() );
+#else
+    return QString::null;
+#endif
+}
+
 // To test, cmake with -DAPPLICATION_UPDATE_URL="http://127.0.0.1:8080/test.rss"
 Updater *Updater::create()
 {
-    QString updateBaseUrl(QLatin1String(APPLICATION_UPDATE_URL));
+    QUrl updateBaseUrl = addQueryParams(QUrl(QLatin1String(APPLICATION_UPDATE_URL)));
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    return new SparkleUpdater(updateBaseUrl);
+    updateBaseUrl.addQueryItem( QLatin1String("sparkle"), QLatin1String("true"));
+    return new SparkleUpdater(updateBaseUrl.toString());
 #elif defined (Q_OS_WIN32)
     // the best we can do is notify about updates
-    return new NSISUpdater(QUrl(updateBaseUrl));
+    return new NSISUpdater(updateBaseUrl);
 #else
     return new PassiveUpdateNotifier(QUrl(updateBaseUrl));
 #endif
@@ -67,5 +114,9 @@ qint64 Updater::Helper::stringVersionToInt(const QString& version)
     return versionToInt(major, minor, patch, build);
 }
 
+QString Updater::clientVersion()
+{
+    return QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_FULL));
+}
 
 } // namespace Mirall

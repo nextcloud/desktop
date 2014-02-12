@@ -61,8 +61,6 @@ private slots:
 protected:
     virtual void versionInfoArrived(const UpdateInfo &info) = 0;
     bool updateSucceeded() const;
-    QString clientVersion() const;
-    QString getSystemInfo();
     QNetworkAccessManager* qnam() const { return _accessManager; }
     UpdateInfo updateInfo() const { return _updateInfo; }
 private:

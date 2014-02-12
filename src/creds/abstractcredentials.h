@@ -39,11 +39,12 @@ public:
     virtual bool ready() const = 0;
     virtual void fetch(Account *account) = 0;
     virtual bool stillValid(QNetworkReply *reply) = 0;
-    virtual bool fetchFromUser(Account *account) = 0;
     virtual void persist(Account *account) = 0;
     /** Invalidates auth token, or password for basic auth */
     virtual void invalidateToken(Account *account) = 0;
 
+
+    static QString keychainKey(const QString &url, const QString &user);
 
 Q_SIGNALS:
     void fetched();

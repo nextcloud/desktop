@@ -104,19 +104,36 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 }
 
 
-
+/**
+ * For delete or remove, check that we are not removing from a shared directory.
+ * If we are, try to restore the file
+ *
+ * Return true if the problem is handled.
+ */
 bool PropagateNeonJob::checkForProblemsWithShared()
 {
     QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
     int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
 
     if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item._file )) {
-        // the file was removed locally from a read only Shared sync
-        // the file is gone locally and it should be recovered.
-        SyncFileItem downloadItem(_item);
-        downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
-        downloadItem._dir = SyncFileItem::Down;
-        _restoreJob.reset(new PropagateDownloadFile(_propagator, downloadItem));
+        if( _item._type != SyncFileItem::Directory ) {
+            // the file was removed locally from a read only Shared sync
+            // the file is gone locally and it should be recovered.
+            SyncFileItem downloadItem(_item);
+            downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
+            downloadItem._dir = SyncFileItem::Down;
+            _restoreJob.reset(new PropagateDownloadFile(_propagator, downloadItem));
+        } else {
+            // Directories are harder to recover.
+            // But just re-create the directory, next sync will be able to recover the files
+            SyncFileItem mkdirItem(_item);
+            mkdirItem._instruction = CSYNC_INSTRUCTION_SYNC;
+            mkdirItem._dir = SyncFileItem::Down;
+            _restoreJob.reset(new PropagateLocalMkdir(_propagator, mkdirItem));
+            // Also remove the inodes and fileid from the db so no further renames are tried for
+            // this item.
+            _propagator->_journal->avoidRenamesOnNextSync(_item._file);
+        }
         connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
                 this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
         QMetaObject::invokeMethod(_restoreJob.data(), "start");
@@ -361,7 +378,7 @@ void PropagateUploadFile::start()
             if( state == HBF_SOURCE_FILE_CHANGE ) {
                 if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
                     qDebug("SOURCE file has changed during upload, retry #%d in %d seconds!", attempts, 2*attempts);
-                    sleep(2*attempts);
+                    Utility::sleep(2*attempts);
                     if( _previousFileSize == 0 ) {
                         _previousFileSize = _item._size;
                     } else {
@@ -389,7 +406,8 @@ void PropagateUploadFile::start()
         if( trans->modtime_accepted ) {
             _item._etag = parseEtag(hbf_transfer_etag( trans.data() ));
         } else {
-            updateMTimeAndETag(uri.data(), _item._modtime);
+            if (!updateMTimeAndETag(uri.data(), _item._modtime))
+                return;
         }
 
         _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
@@ -408,7 +426,7 @@ void PropagateUploadFile::start()
 
             if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
                 qDebug("SOURCE file has changed after upload, retry #%d in %d seconds!", attempts, 2*attempts);
-                sleep(2*attempts);
+                Utility::sleep(2*attempts);
                 continue;
             }
 
@@ -480,7 +498,7 @@ static QString parseFileId(ne_request *req) {
     return fileId;
 }
 
-void PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
+bool PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
 {
     QByteArray modtime = QByteArray::number(qlonglong(mtime));
     ne_propname pname;
@@ -504,12 +522,8 @@ void PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
     // get the etag
     QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_propagator->_session, "HEAD", uri));
     int neon_stat = ne_request_dispatch(req.data());
-    const ne_status *status = ne_get_status(req.data());
-    if( neon_stat != NE_OK || status->klass != 2 ) {
-        // error happend
-        _item._httpErrorCode = status->code;
-        qDebug() << "Could not issue HEAD request for ETag." << ne_get_error(_propagator->_session);
-        _item._errorString = ne_get_error( _propagator->_session );
+    if (updateErrorFromSession(neon_stat, req.data())) {
+        return false;
     } else {
         _item._etag = parseEtag(ne_get_response_header(req.data(), "etag"));
         QString fid = parseFileId(req.data());
@@ -523,6 +537,7 @@ void PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
                 qDebug() << "FileID is " << _item._fileId;
             }
         }
+        return true;
     }
 }
 
@@ -880,7 +895,9 @@ void PropagateLocalRename::start()
     SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
     record._path = _item._renameTarget;
 
-    _propagator->_journal->setFileRecord(record);
+    if (!_item._isDirectory) { // Directory are saved at the end
+        _propagator->_journal->setFileRecord(record);
+    }
     _propagator->_journal->commit("localRename");
 
 
@@ -900,7 +917,8 @@ void PropagateRemoteRename::start()
             // Note: we also update the mtime because the server do not keep the mtime when moving files
             QScopedPointer<char, QScopedPointerPodDeleter> uri2(
                 ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
-            updateMTimeAndETag(uri2.data(), _item._modtime);
+            if (!updateMTimeAndETag(uri2.data(), _item._modtime))
+                return;
         }
     } else if (_item._file == QLatin1String("Shared") ) {
         // Check if it is the toplevel Shared folder and do not propagate it.
@@ -927,7 +945,8 @@ void PropagateRemoteRename::start()
             return;
         }
 
-        updateMTimeAndETag(uri2.data(), _item._modtime);
+        if (!updateMTimeAndETag(uri2.data(), _item._modtime))
+            return;
         emit progress(Progress::EndRename, _item, _item._size, _item._size);
     }
 

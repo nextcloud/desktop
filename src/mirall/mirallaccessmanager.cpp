@@ -12,6 +12,7 @@
  */
 
 #include <QNetworkRequest>
+#include <QNetworkProxy>
 
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/utility.h"
@@ -22,6 +23,12 @@ namespace Mirall
 MirallAccessManager::MirallAccessManager(QObject* parent)
     : QNetworkAccessManager (parent)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    // FIXME Workaround http://stackoverflow.com/a/15707366/2941 https://bugreports.qt-project.org/browse/QTBUG-30434
+    QNetworkProxy proxy = this->proxy();
+    proxy.setHostName(" ");
+    setProxy(proxy);
+#endif
 }
 
 QNetworkReply* MirallAccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)

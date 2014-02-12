@@ -16,8 +16,9 @@
 
 #include <QObject>
 
-namespace Mirall {
+class QUrl;
 
+namespace Mirall {
 
 class Updater {
 public:
@@ -34,7 +35,12 @@ public:
 
     virtual bool handleStartup() = 0;
 
+protected:
+    static QString clientVersion();
+
 private:
+    static QString getSystemInfo();
+    static QUrl addQueryParams(const QUrl &url);
     static Updater *create();
     static Updater *_instance;
 };
