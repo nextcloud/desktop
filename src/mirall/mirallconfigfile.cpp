@@ -347,9 +347,7 @@ bool MirallConfigFile::skipUpdateCheck( const QString& connection ) const
     QVariant fallback = getValue(QLatin1String(skipUpdateCheckC), con, false);
     fallback = getValue(QLatin1String(skipUpdateCheckC), QString(), fallback);
 
-    qDebug() << Q_FUNC_INFO << fallback;
     QVariant value = getPolicySetting(QLatin1String(skipUpdateCheckC), fallback);
-    qDebug() << Q_FUNC_INFO << value;
     return value.toBool();
 }
 
@@ -425,7 +423,6 @@ QVariant MirallConfigFile::getValue(const QString& param, const QString& group,
             systemSettings.beginGroup(group);
         }
         systemSetting = systemSettings.value(param, defaultValue);
-        qDebug() << Q_FUNC_INFO << "Windows, read" << systemSetting << "from registry!";
     }
 
     QSettings settings(configFile(), QSettings::IniFormat);
