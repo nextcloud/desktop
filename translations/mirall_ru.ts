@@ -222,7 +222,7 @@
 <context>
     <name>Mirall::Application</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="282"/>
+        <location filename="../src/mirall/application.cpp" line="288"/>
         <source>Connection failed</source>
         <translation>Сбой подключения</translation>
     </message>
@@ -1396,17 +1396,17 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="563"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="572"/>
         <source>Sync was aborted by user.</source>
         <translation>Синхронизация прервана пользователем.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="618"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="627"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation> E-Tag от сервера на получен, проверьте сетевые настройки (настройки прокси, шлюз).</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="628"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="637"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Мы получили другой E-Tag для возобновления. Повторите попытку позже.</translation>
     </message>
@@ -1414,12 +1414,12 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="127"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="144"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
         <translation>Файл был удалён из опубликованной папки с правами только для чтения. Файл был восстановлен.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="129"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="146"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
         <translation>Файл был удалён из опубликованной папки с правами только для чтения, но восстановить его не удалось: %1</translation>
     </message>
@@ -1427,7 +1427,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="213"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="230"/>
         <source>could not create directory %1</source>
         <translation>не удалось создать директорию %1</translation>
     </message>
@@ -1435,7 +1435,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="192"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="209"/>
         <source>Could not remove directory %1</source>
         <translation>Невозможно удалить директорию %1</translation>
     </message>
@@ -1443,12 +1443,12 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="903"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="912"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Эта папка не должна переименовываться. Ей будет присвоено изначальное имя. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="905"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="914"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Эта папка не должна переименовываться. Пожалуйста, верните ей имя Shared</translation>
     </message>
@@ -1456,13 +1456,13 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFile</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="370"/>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="429"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="383"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="438"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation>Локальный файл изменился в процессе синхронизации, повторяем процесс</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="373"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="386"/>
         <source>Sync was aborted by user.</source>
         <translation>Синхронизация прервана пользователем.</translation>
     </message>
@@ -1698,34 +1698,34 @@ Please ensure that your network connection is working.</source>
         <translation>&lt;p&gt;&lt;b&gt; Примечание: &lt;/b&gt;  Этот сертификат был одобрен вручную &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="137"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="140"/>
         <source>%1 (in Root CA store)</source>
         <translation>%1 (in Root CA store)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="140"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="143"/>
         <source>%1 (self-signed)</source>
         <translation>%1 (самозаверяющий)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="142"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="145"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="173"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="176"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
         <translation>Это соединение зашифровано %1-битным %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="176"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="179"/>
         <source>Certificate information:</source>
         <translation>Информация сертификата :</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="201"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="204"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
         <translation>Эта ссылка НЕ зашифрована.
