@@ -51,12 +51,11 @@ Windows
 
 There are two alternative approaches:
 
-1. In ``HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud``, add a key of type DWORD
-   with the value ``skipUpdateCheck`` and the value 1 to the machine. This key
+1. In ``HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud``, add a key ``skipUpdateCheck`` (of type DWORD) with the value 1 to the machine. This key
    can be manually overrideen by the same value in ``HKEY_CURRENT_USER``.
 
-2. In ``HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud``, add a key of
-   type DWORD  the value ``skipUpdateCheck`` and the value 1 to the machine.
+2. In ``HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud``, add a key
+   ``skipUpdateCheck`` (of type DWORD) with the value 1 to the machine.
    Setting the value here cannot be overridden by the user and is the preferred
    way to control the updater behavior via Group Policies.
 
