@@ -70,47 +70,20 @@ signals:
 class PropagateUploadFileQNAM : public PropagateItemJob {
     Q_OBJECT
     QPointer<PUTFileJob> _job;
+    QFile *_file;
+    int _startChunk;
+    int _currentChunk;
+    int _chunkCount;
+    int _transferId;
 public:
-    PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
+    PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
+        : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0) {}
     void start();
 private slots:
     void slotPutFinished();
     void abort();
+    void startNextChunk();
+
 };
-
-class ChunkedPUTFileJob : public AbstractNetworkJob {
-    Q_OBJECT
-
-private:
-    QIODevice* _device;
-    QMap<QByteArray, QByteArray> _headers;
-    QMap <PUTFileJob*, ChunkBlock>_chunkUploadJobs;
-    QVector<ChunkBlock> _chunks;
-    time_t _modtime;
-    SyncFileItem _item;
-    int _transferId;
-    int _transferedChunks;
-
-public:
-    explicit ChunkedPUTFileJob(Account* account, const QString& path, SyncFileItem& item, QIODevice *device,
-                               QObject* parent = 0) :
-        AbstractNetworkJob(account, path, parent), _device(device), _item(item)
-    {}
-
-    virtual void start();
-
-    virtual void finished() {
-        emit finishedSignal();
-    }
-
-    int computeChunks();
-
-private slots:
-    void slotChunkFinished();
-
-signals:
-    void finishedSignal();
-};
-
 
 }
