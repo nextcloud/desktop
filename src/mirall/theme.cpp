@@ -202,7 +202,13 @@ QString Theme::updateCheckUrl() const
 
 QString Theme::about() const
 {
-    return QString::null;
+    return tr("<p>Version %1 For more information please visit <a href='%2'>%3</a>.</p>"
+              "<p>Copyright ownCloud, Inc.<p>"
+              "<p>Distributed by %4 and licensed under the GNU Public License (GPL) Version 2.0.<br>"
+              "%5 and the %5 logo are registered trademarks of %4 in the<br>"
+              "United States, other countries, or both.</p>")
+            .arg(MIRALL_VERSION_STRING).arg("http://"MIRALL_STRINGIFY(APPLICATION_DOMAIN))
+            .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN)).arg(APPLICATION_VENDOR).arg(APPLICATION_NAME);
 }
 
 QVariant Theme::customMedia( CustomMediaType type )
