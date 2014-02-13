@@ -28,6 +28,7 @@
 #include <QProcess>
 #include <QThread>
 #include <QDateTime>
+#include <QSysInfo>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QDesktopServices>
@@ -341,6 +342,11 @@ static bool checkDolphinCanSelect()
 void Utility::showInFileManager(const QString &localPath)
 {
     if (isWindows()) {
+#ifdef Q_OS_WIN
+        if (QSysInfo::windowsVersion() <= QSysInfo::WV_2003) {
+            return;
+        }
+#endif
         QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
 
         if (!QFileInfo(localPath).isDir()) {
