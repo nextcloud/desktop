@@ -1,6 +1,41 @@
 ChangeLog
 =========
 
+version 1.5.1 (release 2014-02-13 )
+  * Added an auto updater that updates the client if a
+    more recent version was found automatically (Windows, Mac OS X)
+  * Added a button to the account dialog that gives information
+    about the encryption layer used for communication, plus a
+    certificate information widget
+  * Preserve the permission settings of local files rather than
+    setting them to a default (Bug #820)
+  * Handle windows lnk files correctly (Bug #1307)
+  * Detect removes and renames in read only shares and
+    restore the gone away files. (Bug #1386)
+  * Fixes sign in/sign out and password dialog. (Bug #1353)
+  * Fixed error messages (Bug #1394)
+  * Lots of fixes for building with Qt5
+  * Changes to network limits are now also applied during a
+    sync run
+  * Fixed mem leak after via valgrind on Mac
+  * Imported the ocsync library into miralls repository.
+    Adopted all build systems and packaging to that.
+  * Introduce a new linux packaging scheme following the
+    debian upstream scheme
+  * Use a refactored Linux file system watcher based on
+    inotify, incl. unit tests
+  * Wizard: Gracefully fall back to HTTP if HTTPS connection
+    fails, issuing a warning
+  * Fixed translation misses in the propagator
+  * Fixes in proxy configuration
+  * Fixes in sync journal handling
+  * Fix the upload progress if the local source is still
+    changing when the upload begins.
+  * Add proxy support to owncloud commandline client
+  * NSIS fixes
+  * A lot of other fixes and minor improvements
+  * Improve Qt5 compatability
+
 version 1.5.0 (release 2013-12-12 ), csync 0.91.4 required
   * New owncloud propagator that skips the vio abstraction layer
   * Add owncloudcmd to replace the ocsync command line tool
