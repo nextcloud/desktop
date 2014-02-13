@@ -63,9 +63,12 @@ There are two alternative approaches:
 Mac OS X
 ^^^^^^^^
 
-You can disable the update check via the system-wide ``.plist`` file located
+You can disable the update check via a system-wide ``.plist`` file located
 at ``/Library/Preferences/com.owncloud.desktopclient.plist``. Add a new root
 level item of type bool and the name ``skipUpdateCheck`` and set it to ``true``.
+You can also just copy the file
+``owncloud.app/Contents/Resources/deny_autoupdate_com.owncloud.desktopclient.plist```
+to ``/Library/Preferences/com.owncloud.desktopclient.plist``.
 
 Linux
 ^^^^^
