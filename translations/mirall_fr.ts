@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Veuillez spécifier un répertoire distant</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -373,12 +373,12 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="89"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync n’a pu charger ou créer le fichier de journalisation. Veuillez vérifier que vous possédez les droits en lecture/écriture dans le répertoire de synchronisation local.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="93"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync n’a pu écrire le fichier de journalisation.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="151"/>
@@ -1101,12 +1101,12 @@ peut demander des privilèges additionnels durant le processus.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de télécharger la mise à jour. Veuillez cliquer &lt;a href=&apos;%1&apos;&gt;ici&lt;/a&gt; afin de télécharger la mise à jour manuellement.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de vérifier la présence de nouvelles mises à jour.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
@@ -1121,7 +1121,7 @@ peut demander des privilèges additionnels durant le processus.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Aucune mise à jour détectée. Votre installation est à jour.</translation>
     </message>
 </context>
 <context>
@@ -1416,12 +1416,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="144"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>Ce fichier a été retiré d’un partage en lecture seule. Il a été restauré.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="146"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Un fichier a été retiré d’un partage en lecture seule, mais sa restauration a échoué : %1</translation>
     </message>
 </context>
 <context>

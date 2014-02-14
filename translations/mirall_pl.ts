@@ -421,7 +421,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Proszę zaaktualizować serwer do najnowszej wersji i zrestartować klienta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="120"/>
@@ -431,7 +431,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="147"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>Podane dane logowania są nieprawidłowe</translation>
     </message>
 </context>
 <context>
@@ -2104,7 +2104,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="99"/>
         <source>Enter the URL of the server that you want to connect to (without http or https).</source>
-        <translation type="unfinished"/>
+        <translation>Wpisz adres URL serwera z którym chcesz się połączyć (bez http lub https).</translation>
     </message>
 </context>
 <context>
