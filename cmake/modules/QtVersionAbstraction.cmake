@@ -16,6 +16,9 @@ if( NOT BUILD_WITH_QT4 )
         find_package(Qt5Sensors QUIET)
         find_package(Qt5Xml QUIET)
 #        find_package(Qt5WebKitWidgets QUIET)
+if(APPLE)
+        find_package(Qt5MacExtras QUIET)
+endif()
 
         message(STATUS "Using Qt 5!")
 
@@ -31,6 +34,11 @@ if( NOT BUILD_WITH_QT4 )
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 #        set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
+if(APPLE)
+        include_directories(${Qt5MacExtras_INCLUDE_DIRS})
+        add_definitions(${Qt5MacExtras_DEFINITIONS})
+        set (QT_LIBRARIES ${QT_LIBRARIES} ${Qt5MacExtras_LIBRARIES})
+endif()
 
         macro(qt_wrap_ui)
             qt5_wrap_ui(${ARGN})

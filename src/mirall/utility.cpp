@@ -166,11 +166,13 @@ void Utility::raiseDialog( QWidget *raiseWidget )
     if( raiseWidget ) {
 #if defined(Q_OS_WIN) || defined (Q_OS_MAC)
         Qt::WindowFlags eFlags = raiseWidget->windowFlags();
-        eFlags |= Qt::WindowStaysOnTopHint;
-        raiseWidget->setWindowFlags(eFlags);
-        raiseWidget->show();
-        eFlags &= ~Qt::WindowStaysOnTopHint;
-        raiseWidget->setWindowFlags(eFlags);
+        if (!(eFlags & Qt::WindowStaysOnTopHint)) {
+            eFlags |= Qt::WindowStaysOnTopHint;
+            raiseWidget->setWindowFlags(eFlags);
+            raiseWidget->show();
+            eFlags &= ~Qt::WindowStaysOnTopHint;
+            raiseWidget->setWindowFlags(eFlags);
+        }
 #endif
         raiseWidget->show();
         raiseWidget->raise();

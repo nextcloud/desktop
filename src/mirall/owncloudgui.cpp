@@ -19,7 +19,11 @@
 #include "mirall/utility.h"
 #include "mirall/progressdispatcher.h"
 #include "mirall/owncloudsetupwizard.h"
-#include "mirall/settingsdialog.h"
+#if defined(Q_OS_MAC)
+#    include "mirall/settingsdialogmac.h"
+#else
+#    include "mirall/settingsdialog.h"
+#endif
 #include "mirall/logger.h"
 #include "mirall/logbrowser.h"
 #include "mirall/account.h"
@@ -473,7 +477,12 @@ void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &messag
 void ownCloudGui::slotShowSettings()
 {
     if (_settingsDialog.isNull()) {
-        _settingsDialog = new SettingsDialog(this);
+        _settingsDialog =
+#if defined(Q_OS_MAC)
+                new SettingsDialogMac(this);
+#else
+                new SettingsDialog(this);
+#endif
         _settingsDialog->setAttribute( Qt::WA_DeleteOnClose, true );
         _settingsDialog->show();
     }

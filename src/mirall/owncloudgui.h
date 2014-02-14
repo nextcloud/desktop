@@ -28,6 +28,7 @@
 namespace Mirall {
 
 class SettingsDialog;
+class SettingsDialogMac;
 class Application;
 class LogBrowser;
 
@@ -77,7 +78,11 @@ private:
     void setupActions();
 
     QPointer<Systray> _tray;
+#if defined(Q_OS_MAC)
+    QPointer<SettingsDialogMac> _settingsDialog;
+#else
     QPointer<SettingsDialog> _settingsDialog;
+#endif
     QPointer<LogBrowser>_logBrowser;
        // tray's menu
     QMenu *_contextMenu;

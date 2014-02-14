@@ -67,7 +67,11 @@ AccountSettings::AccountSettings(QWidget *parent) :
 
     ui->_folderList->setItemDelegate( delegate );
     ui->_folderList->setModel( _model );
+#if defined(Q_OS_MAC)
+    ui->_folderList->setMinimumWidth( 400 );
+#else
     ui->_folderList->setMinimumWidth( 300 );
+#endif
     ui->_folderList->setEditTriggers( QAbstractItemView::NoEditTriggers );
 
     ui->_buttonRemove->setEnabled(false);
@@ -424,9 +428,18 @@ void AccountSettings::slotEnableCurrentFolder()
             if( f && folderEnabled ) {
                 // check if a sync is still running and if so, ask if we should terminate.
                 if( f->isBusy() ) { // its still running
-                    int reply = QMessageBox::question( 0, tr("Sync Running"),
-                                                       tr("The syncing operation is running.<br/>Do you want to terminate it?"),
-                                                       QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
+#if defined(Q_OS_MAC)
+                    QWidget *parent = this;
+                    Qt::WindowFlags flags = Qt::Sheet;
+#else
+                    QWidget *parent = 0;
+                    Qt::WindowFlags flags = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint; // default flags
+#endif
+                    QMessageBox msgbox(QMessageBox::Question, tr("Sync Running"),
+                                       tr("The syncing operation is running.<br/>Do you want to terminate it?"),
+                                       QMessageBox::Yes | QMessageBox::No, parent, flags);
+                    msgbox.setDefaultButton(QMessageBox::Yes);
+                    int reply = msgbox.exec();
                     if ( reply == QMessageBox::Yes )
                         terminate = true;
                     else

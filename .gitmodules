@@ -1,3 +1,6 @@
 [submodule "doc/ocdoc"]
 	path = doc/ocdoc
 	url = https://github.com/owncloud/documentation
+[submodule "src/3rdparty/qtmacgoodies"]
+	path = src/3rdparty/qtmacgoodies
+	url = git://github.com/shadone/qtmacgoodies.git

@@ -58,6 +58,9 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     _ui->_treeWidget->setRootIsDecorated(false);
     _ui->_treeWidget->setTextElideMode(Qt::ElideMiddle);
     _ui->_treeWidget->header()->setObjectName("ActivityListHeader");
+#if defined(Q_OS_MAC)
+    _ui->_treeWidget->setMinimumWidth(400);
+#endif
 
     connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
 
