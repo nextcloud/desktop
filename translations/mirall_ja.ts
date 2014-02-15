@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>同期するコンピュータのローカルフォルダーを選択してください</translation>
+        <translation>同期するコンピューターのローカルフォルダーを選択してください</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="44"/>
@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="123"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>&lt;b&gt;注:&lt;/b&gt; 外部ネットワークストレージ、共有フォルダーを含んだフォルダーの場合は、上限値は違うかもしれません。</translation>
+        <translation>&lt;b&gt;注:&lt;/b&gt; 外部ネットワークストレージ、共有フォルダーを含んだフォルダーの場合は、上限値が異なることがあります。</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="134"/>
@@ -166,7 +166,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="716"/>
         <source>%1 of %2 (%3%) in use.</source>
-        <translation>%1 / %2 (%3%) を使用中。</translation>
+        <translation>%1 / %2 (%3%) を使用中です。</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="748"/>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="751"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation> &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; に &lt;i&gt;%3&lt;/i&gt; として接続。</translation>
+        <translation> &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; に &lt;i&gt;%3&lt;/i&gt; として接続</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="755"/>
@@ -302,17 +302,17 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="136"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation>CSyncがプロキシー経由での接続に失敗しました。</translation>
+        <translation>CSyncがプロキシ経由での接続に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="139"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation>CSyncはそのプロキシーで認証できませんでした。</translation>
+        <translation>CSyncはそのプロキシで認証できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="142"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation>CSyncはプロキシーもしくはサーバーの参照に失敗しました。</translation>
+        <translation>CSyncはプロキシもしくはサーバーの参照に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="145"/>
@@ -373,12 +373,12 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="89"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはジャーナルファイルの読み込みや作成に失敗しました。ローカルの同期ディレクトリに読み書きの権限があるか確認してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="93"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはジャーナルファイルの書き込みに失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="151"/>
@@ -517,7 +517,7 @@
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>この同期により、ローカルの同期フォルダー &apos;%1&apos;にある全ファイルが削除されます。
-あなた、またはあなたの管理者がサーバー上のあなたのアカウントをリセットした場合、「ファイルを残す」を選んでください。データを削除したい場合は、「すべてのファイルを削除」を選んでください。</translation>
+あなた、または管理者がサーバー上のアカウントをリセットした場合、「ファイルを残す」を選んでください。データを削除したい場合は、「すべてのファイルを削除」を選んでください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="709"/>
@@ -623,7 +623,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
         <source>Syncing all files in your account with</source>
-        <translation>あなたのアカウントで全てのファイルを同期中</translation>
+        <translation>アカウントの全てのファイルを同期中</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="207"/>
@@ -984,22 +984,22 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation>プロキシー設定</translation>
+        <translation>プロキシ設定</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>プロキシーを利用しない</translation>
+        <translation>プロキシを利用しない</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>システムのプロキシーを利用</translation>
+        <translation>システムのプロキシを利用</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation>プロキシーを手動設定</translation>
+        <translation>プロキシを手動設定</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="80"/>
@@ -1014,7 +1014,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="134"/>
         <source>Proxy server requires authentication</source>
-        <translation>プロキシーサーバーは認証が必要です</translation>
+        <translation>プロキシサーバーは認証が必要です</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="182"/>
@@ -1052,27 +1052,27 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation>プロキシーサーバーのホスト名</translation>
+        <translation>プロキシサーバーのホスト名</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
-        <translation>プロキシーサーバーのユーザー名</translation>
+        <translation>プロキシサーバーのユーザー名</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
-        <translation>プロキシーサーバーのパスワード</translation>
+        <translation>プロキシサーバーのパスワード</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
-        <translation>HTTP(S)プロキシー</translation>
+        <translation>HTTP(S)プロキシ</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
-        <translation>SOCKS5プロキシー</translation>
+        <translation>SOCKS5プロキシ</translation>
     </message>
 </context>
 <context>
@@ -1402,7 +1402,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="627"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>サーバーからE-Tagを受信できません。プロキシー/ゲートウェイを確認してください。</translation>
+        <translation>サーバーからE-Tagを受信できません。プロキシ/ゲートウェイを確認してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="637"/>
@@ -1415,12 +1415,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="144"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>ファイルは読み込み専用の共有から削除されました。ファイルは復元されます。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="146"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>ファイルは読み込み専用の共有から削除されましたが、ファイルの復元に失敗しました: %1</translation>
     </message>
 </context>
 <context>
@@ -1863,12 +1863,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="344"/>
         <source>Open %1 in browser</source>
-        <translation>%1 をブラウザーで開く</translation>
+        <translation>%1をブラウザーで開く</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="346"/>
         <source>Calculating quota...</source>
-        <translation>制限容量を計算中...</translation>
+        <translation>クォータを計算中...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="348"/>
@@ -1908,7 +1908,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="373"/>
         <source>Quota n/a</source>
-        <translation>クオータ n/a</translation>
+        <translation>クォータ n/a</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="380"/>
@@ -2184,7 +2184,7 @@ Please ensure that your network connection is working.</source>
         <location filename="../src/mirall/owncloudtheme.cpp" line="90"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
-        <translation>ownCloudサーバーをまだ持っていない場合は、詳細な情報は&lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt;を参照してください。</translation>
+        <translation>ownCloudサーバーをまだ持っていない場合は、&lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt;で詳細な情報を参照してください。</translation>
     </message>
 </context>
 <context>

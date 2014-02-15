@@ -1631,7 +1631,7 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Subject Alternative Names:</source>
-        <translation>Betreffende alternative Namen (SAN):</translation>
+        <translation>Subject Alternative Names:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
@@ -1656,7 +1656,7 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>Serial:</source>
-        <translation>Schlüssel:</translation>
+        <translation>Seriennummer:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="107"/>
@@ -1671,7 +1671,7 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
-        <translation>Ausgestellt auf:</translation>
+        <translation>Ausgestellt am:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
