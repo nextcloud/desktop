@@ -57,8 +57,6 @@ void FolderWatcherPrivate::startWatching()
                                                         _folder.length());
     CFArrayRef pathsToWatch = CFStringCreateArrayBySeparatingStrings (NULL, folderCF, CFSTR(":"));
 
-            //CFStringCreateArrayBySeparatingStrings (NULL, folderCF, CFSTR(":"));
-
     FSEventStreamContext ctx =  {0, this, NULL, NULL, NULL};
 
     // TODO: Add kFSEventStreamCreateFlagFileEvents ?
