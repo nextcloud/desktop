@@ -42,12 +42,26 @@ static void callback(
         ConstFSEventStreamRef streamRef,
         void *clientCallBackInfo,
         size_t numEvents,
-        void *eventPaths,
+        void *eventPathsVoid,
         const FSEventStreamEventFlags eventFlags[],
         const FSEventStreamEventId eventIds[])
 {
     qDebug() << "FolderWatcherPrivate::callback by OS X";
-    reinterpret_cast<FolderWatcherPrivate*>(clientCallBackInfo)->doNotifyParent();
+
+    QStringList paths;
+    CFArrayRef eventPaths = (CFArrayRef)eventPathsVoid;
+    for (int i = 0; i < numEvents; ++i) {
+        CFStringRef path = reinterpret_cast<CFStringRef>(CFArrayGetValueAtIndex(eventPaths, i));
+
+        QString qstring;
+        CFIndex pathLength = CFStringGetLength(path);
+        qstring.resize(pathLength);
+        CFStringGetCharacters(path, CFRangeMake(0, pathLength), reinterpret_cast<UniChar *>(qstring.data()));
+
+        paths.append(qstring);
+    }
+
+    reinterpret_cast<FolderWatcherPrivate*>(clientCallBackInfo)->doNotifyParent(paths);
 }
 
 void FolderWatcherPrivate::startWatching()
@@ -67,7 +81,7 @@ void FolderWatcherPrivate::startWatching()
                                  pathsToWatch,
                                  kFSEventStreamEventIdSinceNow,
                                  0, // latency
-                                 kFSEventStreamCreateFlagNone+kFSEventStreamCreateFlagIgnoreSelf
+                                 kFSEventStreamCreateFlagUseCFTypes|kFSEventStreamCreateFlagFileEvents|kFSEventStreamCreateFlagIgnoreSelf
                                  );
 
     CFRelease(pathsToWatch);
@@ -75,8 +89,9 @@ void FolderWatcherPrivate::startWatching()
     FSEventStreamStart(stream);
 }
 
-void FolderWatcherPrivate::doNotifyParent() {
-    _parent->changeDetected(_folder);
+void FolderWatcherPrivate::doNotifyParent(const QStringList &paths) {
+
+    _parent->changeDetected(paths);
 }
 
 

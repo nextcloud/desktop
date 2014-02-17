@@ -23,6 +23,7 @@
 #include <QTime>
 #include <QHash>
 #include <QScopedPointer>
+#include <QSet>
 
 class QTimer;
 
@@ -82,6 +83,7 @@ signals:
 protected slots:
     // called from the implementations to indicate a change in path
     void changeDetected( const QString& path);
+    void changeDetected( const QStringList& paths);
 
 protected:
     QHash<QString, int> _pendingPathes;
@@ -90,7 +92,7 @@ private:
     QScopedPointer<FolderWatcherPrivate> _d;
     QStringList _ignores;
     QTime _timer;
-    QString _lastPath;
+    QSet<QString> _lastPaths;
 
     friend class FolderWatcherPrivate;
 };

@@ -109,21 +109,52 @@ bool FolderWatcher::pathIsIgnored( const QString& path )
 
 void FolderWatcher::changeDetected( const QString& path )
 {
-    qDebug() << Q_FUNC_INFO << path;
+    QStringList paths(path);
+    changeDetected(paths);
+}
+
+void FolderWatcher::changeDetected( const QStringList& paths )
+{
+    qDebug() << Q_FUNC_INFO << paths;
+
+    // TODO: this shortcut doesn't look very reliable:
+    //   - why is the timeout only 1 second?
+    //   - what if there are more than one file being updated frequently?
+    //   - why do we skip the file alltogether instead of e.g. reducing the upload frequency?
+
     // Check if the same path was reported within the last second.
-    if( path == _lastPath && _timer.elapsed() < 1000 ) {
+    QSet<QString> pathsSet = paths.toSet();
+    if( pathsSet == _lastPaths && _timer.elapsed() < 1000 ) {
         // the same path was reported within the last second. Skip.
         return;
     }
-    _lastPath = path;
+    _lastPaths = pathsSet;
     _timer.restart();
 
+    QSet<QString> changedFolders;
+
     // ------- handle ignores:
-    if( pathIsIgnored(path) ) {
+    for (int i = 0; i < paths.size(); ++i) {
+        QString path = paths[i];
+        if( pathIsIgnored(path) ) {
+            continue;
+        }
+
+        QFileInfo fi(path);
+        if (fi.isDir()) {
+            changedFolders.insert(path);
+        } else {
+            changedFolders.insert(fi.dir().path());
+        }
+    }
+    if (changedFolders.isEmpty()) {
         return;
     }
 
-    emit folderChanged(path);
+    qDebug() << "detected changes in folders:" << changedFolders;
+    foreach (const QString &path, changedFolders) {
+        emit folderChanged(path);
+    }
 }
 
 void FolderWatcher::addPath(const QString &path )

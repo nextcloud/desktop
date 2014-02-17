@@ -34,7 +34,7 @@ public:
     void removePath(const QString &) {}
 
     void startWatching();
-    void doNotifyParent();
+    void doNotifyParent(const QStringList &);
 
 private:
     FolderWatcher *_parent;
