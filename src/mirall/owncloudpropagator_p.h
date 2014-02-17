@@ -21,7 +21,15 @@
 #include <QFile>
 #include <qdebug.h>
 
+// We use some internals of csync:
+extern "C" int c_utimes(const char *, const struct timeval *);
+extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
+
+
 namespace Mirall {
+
+/** compare two files with given filename and return true if they have the same content */
+bool fileEquals(const QString &fn1, const QString &fn2);
 
 /* Helper for QScopedPointer<>, to be used as the deleter.
  * QScopePointer will call the right overload of cleanup for the pointer it holds

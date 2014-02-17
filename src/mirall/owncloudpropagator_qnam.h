@@ -53,6 +53,7 @@ class PUTFileJob : public AbstractNetworkJob {
     QMap<QByteArray, QByteArray> _headers;
 
 public:
+    // Takes ownership of the device
     explicit PUTFileJob(Account* account, const QString& path, QIODevice *device,
                         const QMap<QByteArray, QByteArray> &headers, QObject* parent = 0)
     : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers) {}
@@ -66,6 +67,7 @@ public:
 signals:
     void finishedSignal();
 };
+
 
 class PropagateUploadFileQNAM : public PropagateItemJob {
     Q_OBJECT
@@ -85,5 +87,48 @@ private slots:
     void startNextChunk();
 
 };
+
+
+class GETFileJob : public AbstractNetworkJob {
+    Q_OBJECT
+    QIODevice* _device;
+    QMap<QByteArray, QByteArray> _headers;
+public:
+    // DOES NOT take owncership of the device.
+    explicit GETFileJob(Account* account, const QString& path, QIODevice *device,
+                        const QMap<QByteArray, QByteArray> &headers, QObject* parent = 0)
+    : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers) {}
+
+    virtual void start();
+    virtual void finished() {
+        emit finishedSignal();
+    }
+
+signals:
+    void finishedSignal();
+private slots:
+    void slotReadyRead();
+};
+
+
+class PropagateDownloadFileQNAM : public PropagateItemJob {
+    Q_OBJECT
+    QPointer<GETFileJob> _job;
+    QByteArray _expectedEtagForResume;
+
+//  QFile *_file;
+    QFile _tmpFile;
+public:
+    PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
+        : PropagateItemJob(propagator, item) {}
+    void start();
+private slots:
+    void slotGetFinished();
+    void abort();
+    void downloadFinished();
+
+};
+
+
 
 }

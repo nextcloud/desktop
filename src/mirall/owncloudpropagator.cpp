@@ -52,10 +52,6 @@
 /* The maximum number of active job in parallel  */
 static const int maximumActiveJob = 6;
 
-// We use some internals of csync:
-extern "C" int c_utimes(const char *, const struct timeval *);
-extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
-
 namespace Mirall {
 
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
@@ -153,7 +149,7 @@ void PropagateNeonJob::slotRestoreJobCompleted(const SyncFileItem& item )
 
 
 // compare two files with given filename and return true if they have the same content
-static bool fileEquals(const QString &fn1, const QString &fn2) {
+bool fileEquals(const QString &fn1, const QString &fn2) {
     QFile f1(fn1);
     QFile f2(fn2);
     if (!f1.open(QIODevice::ReadOnly) || !f2.open(QIODevice::ReadOnly)) {
@@ -1039,7 +1035,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
                 // Should we set the mtime?
                 return 0;
             }
-            if (item._dir != SyncFileItem::Up) return new PropagateDownloadFile(this, item);
+            if (item._dir != SyncFileItem::Up) return new PropagateDownloadFileQNAM(this, item);
             else return new PropagateUploadFileQNAM(this, item);
         case CSYNC_INSTRUCTION_RENAME:
             if (item._dir == SyncFileItem::Up) {
