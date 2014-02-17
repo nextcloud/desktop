@@ -165,19 +165,25 @@ class OwncloudPropagator : public QObject {
     QScopedPointer<PropagateDirectory> _rootJob;
 
 public:
+    /* 'const' because they are accessed by the thread */
+
     QThread* _neonThread;
-    ne_session_s *_session;
+    ne_session_s * const _session;
+
     const QString _localDir; // absolute path to the local directory. ends with '/'
-    const QString _remoteDir; // path to the root of the remote. ends with '/'
-    SyncJournalDb *_journal;
+    const QString _remoteDir; // path to the root of the remote. ends with '/'  (include remote.php/webdav)
+    const QString _remoteFolder; // folder. (same as remoteDir but without remote.php/webdav)
+
+    SyncJournalDb * const _journal;
 
 public:
-    OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
+    OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir, const QString &remoteFolder,
                        SyncJournalDb *progressDb, QThread *neonThread)
             : _neonThread(neonThread)
             , _session(session)
-            , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/'  )
-            , _remoteDir((remoteDir.endsWith(QChar('/'))) ? remoteDir : remoteDir+'/'  )
+            , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/' )
+            , _remoteDir((remoteDir.endsWith(QChar('/'))) ? remoteDir : remoteDir+'/' )
+            , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder+'/' )
             , _journal(progressDb)
             , _activeJobs(0)
     { }
@@ -203,6 +209,8 @@ public:
             _rootJob->abort();
         emit finished();
     }
+
+
 signals:
     void completed(const SyncFileItem &);
     void progress(Progress::Kind kind, const SyncFileItem&, quint64 bytes, quint64 total);

@@ -145,7 +145,7 @@ void PropagateUploadFileQNAM::startNextChunk()
         device = _file;
     }
 
-    _job = new PUTFileJob(AccountManager::instance()->account(), path, device, headers);
+    _job = new PUTFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + path, device, headers);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
     _job->start();
 }
@@ -382,7 +382,7 @@ void PropagateDownloadFileQNAM::start()
         qDebug() << "Retry with range " << headers["Range"];
     }
 
-    _job = new GETFileJob(AccountManager::instance()->account(), _item._file, &_tmpFile, headers);
+    _job = new GETFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + _item._file, &_tmpFile, headers);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
     _propagator->_activeJobs ++;
     _job->start();

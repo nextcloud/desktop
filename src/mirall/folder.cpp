@@ -552,7 +552,7 @@ void Folder::startSync(const QStringList &pathList)
 
     qDebug() << "*** Start syncing";
     setIgnoredFiles();
-    _csync = new CSyncThread( _csync_ctx, path(), remoteUrl().path(), &_journal);
+    _csync = new CSyncThread( _csync_ctx, path(), remoteUrl().path(), _remotePath, &_journal);
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");

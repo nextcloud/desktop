@@ -27,10 +27,13 @@
 #include "logger.h"
 #include "csync.h"
 #include "mirall/clientproxy.h"
+#include "account.h"
+#include <creds/httpcredentials.h>
 
 using namespace Mirall;
 
-int getauth(const char* prompt, char* buf, size_t len, int echo, int verify, void*)
+
+int getauth(const char* prompt, char* buf, size_t len, int, int, void*)
 {
     std::cout << "** Authentication required: \n" << prompt << std::endl;
     std::string s;
@@ -115,6 +118,21 @@ int main(int argc, char **argv) {
 
     parseOptions( app.arguments(), &options );
 
+
+    QUrl url(options.target_url.toUtf8());
+    Account account;
+
+    // Find the folder and the original owncloud url
+    QStringList splitted = url.path().split(Account::davPath());
+    url.setPath(splitted.value(0));
+    url.setScheme(url.scheme().replace("owncloud", "http"));
+    QString folder = splitted.value(1);
+
+    account.setUrl(url);
+    account.setCredentials(new HttpCredentials(url.userName(), url.password()));
+    AccountManager::instance()->setAccount(&account);
+
+
     CSYNC *_csync_ctx;
     if( csync_create( &_csync_ctx, options.source_dir.toUtf8(),
                       options.target_url.toUtf8()) < 0 ) {
@@ -175,7 +193,7 @@ int main(int argc, char **argv) {
     }
 
     SyncJournalDb db(options.source_dir);
-    CSyncThread csyncthread(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), &db);
+    CSyncThread csyncthread(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&csyncthread, SIGNAL(finished()), &app, SLOT(quit()));
     csyncthread.startSync();
 

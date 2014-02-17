@@ -48,7 +48,7 @@ class CSyncThread : public QObject
     Q_OBJECT
 
 public:
-    CSyncThread(CSYNC *, const QString &localPath, const QString &remotePath, SyncJournalDb *journal);
+    CSyncThread(CSYNC *, const QString &localPath, const QString &remoteURL, const QString &remotePath, SyncJournalDb *journal);
     ~CSyncThread();
 
     static QString csyncErrorToString( CSYNC_STATUS);
@@ -100,6 +100,7 @@ private:
     CSYNC *_csync_ctx;
     bool _needsUpdate;
     QString _localPath;
+    QString _remoteUrl;
     QString _remotePath;
     SyncJournalDb *_journal;
     QScopedPointer <OwncloudPropagator> _propagator;

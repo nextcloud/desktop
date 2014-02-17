@@ -56,12 +56,13 @@ void csyncLogCatcher(int /*verbosity*/,
 /* static variables to hold the credentials */
 QMutex CSyncThread::_syncMutex;
 
-CSyncThread::CSyncThread(CSYNC *csync, const QString &localPath, const QString &remotePath, SyncJournalDb *journal)
+CSyncThread::CSyncThread(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, Mirall::SyncJournalDb* journal)
     :_previousIndex(-1)
 {
     _localPath = localPath;
     _remotePath = remotePath;
-    _csync_ctx = csync;
+    _remoteUrl = remoteURL;
+    _csync_ctx = ctx;
     _journal = journal;
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
@@ -556,7 +557,7 @@ void CSyncThread::slotUpdateFinished(int updateResult)
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
     Q_ASSERT(session);
 
-    _propagator.reset(new OwncloudPropagator (session, _localPath, _remotePath,
+    _propagator.reset(new OwncloudPropagator (session, _localPath, _remoteUrl, _remotePath,
                                               _journal, &_thread));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
             this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
