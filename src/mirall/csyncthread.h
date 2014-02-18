@@ -127,13 +127,27 @@ private:
 };
 
 
-struct UpdateJob : public QObject {
+class UpdateJob : public QObject {
     Q_OBJECT
-public:
     CSYNC *_csync_ctx;
+    csync_log_callback _log_callback;
+    int _log_level;
+    void* _log_userdata;
     Q_INVOKABLE void start() {
+        csync_set_log_callback(_log_callback);
+        csync_set_log_level(_log_level);
+        csync_set_log_userdata(_log_userdata);
         emit finished(csync_update(_csync_ctx));
         deleteLater();
+    }
+public:
+    explicit UpdateJob(CSYNC *ctx, QObject* parent = 0)
+            : QObject(parent), _csync_ctx(ctx) {
+        // We need to forward the log property as csync uses thread local
+        // and updates run in another thread
+        _log_callback = csync_get_log_callback();
+        _log_level = csync_get_log_level();
+        _log_userdata = csync_get_log_userdata();
     }
 signals:
     void finished(int result);

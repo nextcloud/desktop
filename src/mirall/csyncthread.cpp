@@ -495,8 +495,7 @@ void CSyncThread::startSync()
 
     qDebug() << "#### Update start #################################################### >>";
 
-    UpdateJob *job = new UpdateJob;
-    job->_csync_ctx = _csync_ctx;
+    UpdateJob *job = new UpdateJob(_csync_ctx);
     job->moveToThread(&_thread);
     connect(job, SIGNAL(finished(int)), this, SLOT(slotUpdateFinished(int)));
     QMetaObject::invokeMethod(job, "start");
