@@ -409,6 +409,23 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     thread()->quit();
 }
 
+static void updater_progress_callback(CSYNC_PROGRESS *progress, void *userdata)
+{
+    static QElapsedTimer localTimer;
+    static QElapsedTimer remoteTimer;
+    if (progress->kind == CSYNC_NOTIFY_START_LOCAL_UPDATE) {
+        localTimer.start();
+    } else if (progress->kind == CSYNC_NOTIFY_FINISHED_LOCAL_UPDATE) {
+        // There is also localTimer.nsecsElapsed()
+        qDebug() << "Local Update took" << localTimer.elapsed() << "msec";
+    } else if (progress->kind == CSYNC_NOTIFY_START_REMOTE_UPDATE) {
+        remoteTimer.start();
+    } else if (progress->kind == CSYNC_NOTIFY_FINISHED_REMOTE_UPDATE) {
+        qDebug() << "Remote Update took" << remoteTimer.elapsed() << "msec";
+    }
+
+}
+
 void CSyncThread::startSync()
 {
     if (!_syncMutex.tryLock()) {
@@ -492,6 +509,9 @@ void CSyncThread::startSync()
     csync_set_log_level( 11 );
 
     _syncTime.start();
+
+    // Only used for the updater progress as we use the new propagator right now which does its own thing
+    csync_set_progress_callback(_csync_ctx, updater_progress_callback);
 
     QElapsedTimer updateTime;
     updateTime.start();

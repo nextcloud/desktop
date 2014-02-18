@@ -57,6 +57,9 @@
 #include "csync_log.h"
 #include "csync_rename.h"
 
+// Breaking the abstraction for fun and profit.
+#include "csync_owncloud.h"
+
 static int _key_cmp(const void *key, const void *data) {
   uint64_t a;
   csync_file_stat_t *b;
@@ -315,6 +318,7 @@ int csync_update(CSYNC *ctx) {
   csync_memstat_check();
 
   /* update detection for local replica */
+  oc_notify_progress(NULL, CSYNC_NOTIFY_START_LOCAL_UPDATE, 0, 0);
   csync_gettime(&start);
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
@@ -327,6 +331,7 @@ int csync_update(CSYNC *ctx) {
   }
 
   csync_gettime(&finish);
+  oc_notify_progress(NULL, CSYNC_NOTIFY_FINISHED_LOCAL_UPDATE, 0, 0);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Update detection for local replica took %.2f seconds walking %zu files.",
@@ -340,6 +345,7 @@ int csync_update(CSYNC *ctx) {
 
   /* update detection for remote replica */
   if( ! ctx->options.local_only_mode ) {
+    oc_notify_progress(NULL, CSYNC_NOTIFY_START_REMOTE_UPDATE, 0, 0);
     csync_gettime(&start);
     ctx->current = REMOTE_REPLICA;
     ctx->replica = ctx->remote.type;
@@ -353,6 +359,7 @@ int csync_update(CSYNC *ctx) {
 
 
     csync_gettime(&finish);
+    oc_notify_progress(NULL, CSYNC_NOTIFY_FINISHED_REMOTE_UPDATE, 0, 0);
 
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
               "Update detection for remote replica took %.2f seconds "
