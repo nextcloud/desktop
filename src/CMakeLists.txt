@@ -79,6 +79,7 @@ set(libsync_SRCS
     mirall/owncloudtheme.cpp
     mirall/logger.cpp
     mirall/utility.cpp
+    mirall/filesystem.cpp
     mirall/connectionvalidator.cpp
     mirall/progressdispatcher.cpp
     mirall/mirallaccessmanager.cpp

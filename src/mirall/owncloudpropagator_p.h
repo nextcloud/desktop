@@ -15,15 +15,7 @@
 
 #pragma once
 
-// We use some internals of csync:
-extern "C" int c_utimes(const char *, const struct timeval *);
-extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
-
-
 namespace Mirall {
-
-/** compare two files with given filename and return true if they have the same content */
-bool fileEquals(const QString &fn1, const QString &fn2);
 
 inline QByteArray parseEtag(const char *header) {
     if (!header)

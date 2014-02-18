@@ -101,39 +101,6 @@ void PropagateNeonJob::slotRestoreJobCompleted(const SyncFileItem& item )
     }
 }
 
-
-// compare two files with given filename and return true if they have the same content
-bool fileEquals(const QString &fn1, const QString &fn2) {
-    QFile f1(fn1);
-    QFile f2(fn2);
-    if (!f1.open(QIODevice::ReadOnly) || !f2.open(QIODevice::ReadOnly)) {
-        qDebug() << "fileEquals: Failed to open " << fn1 << "or" << fn2;
-        return false;
-    }
-
-    if (f1.size() != f2.size()) {
-        return false;
-    }
-
-    const int BufferSize = 16 * 1024;
-    char buffer1[BufferSize];
-    char buffer2[BufferSize];
-    do {
-        int r = f1.read(buffer1, BufferSize);
-        if (f2.read(buffer2, BufferSize) != r) {
-            // this should normaly not happen: the file are supposed to have the same size.
-            return false;
-        }
-        if (r <= 0) {
-            return true;
-        }
-        if (memcmp(buffer1, buffer2, r) != 0) {
-            return false;
-        }
-    } while (true);
-    return false;
-}
-
 // Code copied from Qt5's QDir::removeRecursively
 static bool removeRecursively(const QString &path)
 {

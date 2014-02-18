@@ -18,6 +18,7 @@
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 #include "utility.h"
+#include "filesystem.h"
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <cmath>
@@ -354,7 +355,7 @@ void PropagateDownloadFileQNAM::start()
         return;
     }
 
-    csync_win32_set_file_hidden(_tmpFile.fileName().toUtf8().constData(), true);
+    FileSystem::setFileHidden(_tmpFile.fileName(), true);
 
     {
         SyncJournalDb::DownloadInfo pi;
@@ -426,7 +427,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
 
 
     bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT
-            && !fileEquals(fn, _tmpFile.fileName()); // compare the files to see if there was an actual conflict.
+            && !FileSystem::fileEquals(fn, _tmpFile.fileName()); // compare the files to see if there was an actual conflict.
     //In case of conflict, make a backup of the old file
     if (isConflict) {
         QFile f(fn);
@@ -451,7 +452,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
         _tmpFile.setPermissions(existingFile.permissions());
     }
 
-    csync_win32_set_file_hidden(_tmpFile.fileName().toUtf8().constData(), false);
+    FileSystem::setFileHidden(_tmpFile.fileName(), false);
 
     //FIXME: duplicated code.
 #ifndef Q_OS_WIN
@@ -488,10 +489,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
         return;
     }
 #endif
-    struct timeval times[2];
-    times[0].tv_sec = times[1].tv_sec = _item._modtime;
-    times[0].tv_usec = times[1].tv_usec = 0;
-    c_utimes(fn.toUtf8().data(), times);
+    FileSystem::setModTime(fn, _item._modtime);
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
