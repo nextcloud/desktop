@@ -41,7 +41,7 @@ private:
 
     QString _folder;
 
-    FSEventStreamRef stream;
+    FSEventStreamRef _stream;
 };
 
 }

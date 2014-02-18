@@ -34,9 +34,9 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString& path
 
 FolderWatcherPrivate::~FolderWatcherPrivate()
 {
-    FSEventStreamStop(stream);
-    FSEventStreamInvalidate(stream);
-    FSEventStreamRelease(stream);
+    FSEventStreamStop(_stream);
+    FSEventStreamInvalidate(_stream);
+    FSEventStreamRelease(_stream);
 }
 
 static void callback(
@@ -76,7 +76,7 @@ void FolderWatcherPrivate::startWatching()
 
     // TODO: Add kFSEventStreamCreateFlagFileEvents ?
 
-    stream = FSEventStreamCreate(NULL,
+    _stream = FSEventStreamCreate(NULL,
                                  &callback,
                                  &ctx,
                                  pathsToWatch,
@@ -86,8 +86,8 @@ void FolderWatcherPrivate::startWatching()
                                  );
 
     CFRelease(pathsToWatch);
-    FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-    FSEventStreamStart(stream);
+    FSEventStreamScheduleWithRunLoop(_stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+    FSEventStreamStart(_stream);
 }
 
 void FolderWatcherPrivate::doNotifyParent(const QStringList &paths) {
