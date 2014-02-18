@@ -163,6 +163,7 @@ class OwncloudPropagator : public QObject {
 
     PropagateItemJob *createJob(const SyncFileItem& item);
     QScopedPointer<PropagateDirectory> _rootJob;
+    bool useLegacyJobs();
 
 public:
     /* 'const' because they are accessed by the thread */

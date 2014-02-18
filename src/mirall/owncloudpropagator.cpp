@@ -90,8 +90,19 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
                 // Should we set the mtime?
                 return 0;
             }
-            if (item._dir != SyncFileItem::Up) return new PropagateDownloadFileQNAM(this, item);
-            else return new PropagateUploadFileQNAM(this, item);
+            if (useLegacyJobs()) {
+                if (item._dir != SyncFileItem::Up) {
+                    return new PropagateDownloadFileLegacy(this, item);
+                } else {
+                    return new PropagateUploadFileLegacy(this, item);
+                }
+            } else {
+                if (item._dir != SyncFileItem::Up) {
+                    return new PropagateDownloadFileQNAM(this, item);
+                } else {
+                    return new PropagateUploadFileQNAM(this, item);
+                }
+            }
         case CSYNC_INSTRUCTION_RENAME:
             if (item._dir == SyncFileItem::Up) {
                 return new PropagateRemoteRename(this, item);
@@ -177,6 +188,24 @@ bool OwncloudPropagator::isInSharedDirectory(const QString& file)
     }
     return re;
 }
+
+/**
+ * Return true if we should use the legacy jobs.
+ * Some feature are not supported by QNAM and therefore we still use the legacy jobs
+ * for this case.
+ */
+bool OwncloudPropagator::useLegacyJobs()
+{
+    if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
+        // QNAM does not support bandwith limiting
+        return true;
+    }
+
+    // Allow an environement variable for debugging
+    QByteArray env = qgetenv("OWNCLOUD_USE_LEGACY_JOBS");
+    return env=="true" || env =="1";
+}
+
 
 void PropagateDirectory::start()
 {
