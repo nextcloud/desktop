@@ -36,6 +36,7 @@ FolderWatcherPrivate::~FolderWatcherPrivate()
 {
     FSEventStreamStop(stream);
     FSEventStreamInvalidate(stream);
+    FSEventStreamRelease(stream);
 }
 
 static void callback(
