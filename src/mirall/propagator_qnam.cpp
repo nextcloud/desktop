@@ -454,41 +454,12 @@ void PropagateDownloadFileQNAM::downloadFinished()
 
     FileSystem::setFileHidden(_tmpFile.fileName(), false);
 
-    //FIXME: duplicated code.
-#ifndef Q_OS_WIN
-    bool success;
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    success = _tmpFile.fileEngine()->rename(fn);
-    // qDebug() << "Renaming " << tmpFile.fileName() << " to " << fn;
-#else
-    // We want a rename that also overwite.  QFile::rename does not overwite.
-    // Qt 5.1 has QSaveFile::renameOverwrite we cold use.
-    // ### FIXME
-    QFile::remove(fn);
-    success = _tmpFile.rename(fn);
-#endif
-    // unixoids
-    if (!success) {
-        qDebug() << "FAIL: renaming temp file to final failed: " << _tmpFile.errorString();
-        done(SyncFileItem::NormalError, _tmpFile.errorString());
+    QString error;
+    if (!FileSystem::renameReplace(_tmpFile.fileName(), fn, &error)) {
+        done(SyncFileItem::NormalError, error);
         return;
     }
-#else //Q_OS_WIN
-    BOOL ok;
-    ok = MoveFileEx((wchar_t*)_tmpFile.fileName().utf16(),
-                    (wchar_t*)QString(_propagator->_localDir + _item._file).utf16(),
-                    MOVEFILE_REPLACE_EXISTING+MOVEFILE_COPY_ALLOWED+MOVEFILE_WRITE_THROUGH);
-    if (!ok) {
-        wchar_t *string = 0;
-        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
-                      NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                      (LPWSTR)&string, 0, NULL);
 
-        done(SyncFileItem::NormalError, QString::fromWCharArray(string));
-        LocalFree((HLOCAL)string);
-        return;
-    }
-#endif
     FileSystem::setModTime(fn, _item._modtime);
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));

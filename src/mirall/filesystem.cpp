@@ -15,6 +15,16 @@
 #include <QFile>
 #include <QDebug>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#include <qabstractfileengine.h>
+#endif
+
+#ifdef Q_OS_WIN
+#include <windef.h>
+#include <winbase.h>
+#endif
+
+
 // We use some internals of csync:
 extern "C" int c_utimes(const char *, const struct timeval *);
 extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
@@ -65,6 +75,45 @@ void FileSystem::setModTime(const QString& filename, time_t modTime)
     times[0].tv_sec = times[1].tv_sec = modTime;
     times[0].tv_usec = times[1].tv_usec = 0;
     c_utimes(filename.toUtf8().data(), times);
+}
+
+bool FileSystem::renameReplace(const QString& originFileName, const QString& destinationFileName, QString* errorString)
+{
+#ifndef Q_OS_WIN
+    bool success;
+    QFile orig(originFileName);
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    success = orig.fileEngine()->rename(destinationFileName);
+    // qDebug() << "Renaming " << tmpFile.fileName() << " to " << fn;
+#else
+    // We want a rename that also overwite.  QFile::rename does not overwite.
+    // Qt 5.1 has QSaveFile::renameOverwrite we cold use.
+    // ### FIXME
+    QFile::remove(destinationFileName);
+    success = orig.rename(destinationFileName);
+#endif
+    if (!success) {
+        *errorString = orig.errorString();
+        qDebug() << "FAIL: renaming temp file to final failed: " << *errorString ;
+        return false;
+    }
+#else //Q_OS_WIN
+    BOOL ok;
+    ok = MoveFileEx((wchar_t*)originFileName.utf16(),
+                    (wchar_t*)destinationFileName.utf16(),
+                    MOVEFILE_REPLACE_EXISTING+MOVEFILE_COPY_ALLOWED+MOVEFILE_WRITE_THROUGH);
+    if (!ok) {
+        wchar_t *string = 0;
+        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
+                      NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                      (LPWSTR)&string, 0, NULL);
+
+        *errorString = QString::fromWCharArray(string);
+        LocalFree((HLOCAL)string);
+        return false;
+    }
+#endif
+    return true;
 }
 
 

@@ -32,4 +32,11 @@ void setFileHidden(const QString& filename, bool hidden);
 
 void setModTime(const QString &filename, time_t modTime);
 
+/**
+ * Rename the file \a originFileName to \a destinationFileName, and overwrite the destination if it
+ * already exists
+ */
+bool renameReplace(const QString &originFileName, const QString &destinationFileName,
+                   QString *errorString);
+
 }}
