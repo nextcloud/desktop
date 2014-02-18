@@ -12,7 +12,7 @@
  * for more details.
  */
 
-#include "owncloudpropagator_qnam.h"
+#include "propagator_qnam.h"
 #include "networkjobs.h"
 #include "account.h"
 #include "syncjournaldb.h"

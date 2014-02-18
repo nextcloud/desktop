@@ -14,11 +14,13 @@
  */
 #pragma once
 
-#include <QBuffer>
 
+#include "owncloudpropagator.h"
 #include "owncloudpropagator_p.h"
 #include "networkjobs.h"
 
+#include <QBuffer>
+#include <QFile>
 
 namespace Mirall {
 
