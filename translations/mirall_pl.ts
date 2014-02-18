@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Wybierz zdalny folder docelowy</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -363,7 +363,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="448"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Nie można zainicjować synchronizacji dziennika.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="148"/>
@@ -642,12 +642,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="61"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Kliknij, aby wybrać folder lokalny do synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="65"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Wpisz ścieżkę do folderu lokalnego.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="69"/>
@@ -730,7 +730,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="331"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Wybierz to, aby zsynchronizować całe konto</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="386"/>
@@ -1202,7 +1202,8 @@ for additional privileges during the process.</source>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Ten adres url NIE jest bezpieczny, ponieważ jest nieszyfrowany.
+Niezalecane jest jego użycie.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
@@ -1212,7 +1213,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się połączyć bezpiecznie. Czy chcesz nawiązać połączenie nieszyfrowane (niezalecane)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -1292,7 +1293,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Nie określono folderu zdalnego!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="269"/>
@@ -1411,7 +1412,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="144"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>Plik został usunięty z udziału tylko do odczytu. Plik został przywrócony.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="146"/>
@@ -1590,7 +1591,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="53"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Uwierzytelnienia</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="114"/>
@@ -1600,7 +1601,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
         <source>Error loading IdP login page</source>
-        <translation type="unfinished"/>
+        <translation>Błąd wczytywania strony logowania IdP</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
@@ -1649,32 +1650,32 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Numer seryjny:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Wystawca&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="110"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Emitent:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Data wydania:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Wygasa:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Odciski palców&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="118"/>
@@ -1699,7 +1700,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="143"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (własnoręcznie podpisany)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="145"/>
@@ -1722,7 +1723,8 @@ Please ensure that your network connection is working.</source>
         <location filename="../src/mirall/sslbutton.cpp" line="204"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>To połączenie NIE jest bezpieczne, ponieważ jest nieszyfrowane.
+</translation>
     </message>
 </context>
 <context>

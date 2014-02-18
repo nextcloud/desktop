@@ -156,7 +156,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="102"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>Nincs beállított kapcsolat.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="428"/>
@@ -224,7 +224,7 @@
     <message>
         <location filename="../src/mirall/application.cpp" line="288"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>A kapcsolódás sikertelen</translation>
     </message>
 </context>
 <context>
@@ -470,27 +470,27 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="372"/>
         <source>downloaded</source>
-        <translation type="unfinished"/>
+        <translation>letöltva</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="373"/>
         <source>removed</source>
-        <translation type="unfinished"/>
+        <translation>eltávolítva</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="374"/>
         <source>updated</source>
-        <translation type="unfinished"/>
+        <translation>módosítva</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="377"/>
         <source>renamed</source>
-        <translation type="unfinished"/>
+        <translation>átnevezve</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="382"/>
         <source>moved</source>
-        <translation type="unfinished"/>
+        <translation>mozgatva</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="384"/>
@@ -735,7 +735,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="386"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Ez a mappa már szinkronizálva van.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="388"/>
@@ -767,17 +767,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Setttings</source>
-        <translation type="unfinished"/>
+        <translation>Általános beállítások</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>Indítás a rendszer indulásakor</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Asztali értesítések kijelzése</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
@@ -793,7 +793,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Frissítések</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
@@ -806,7 +806,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="244"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Jelszómegadás</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="245"/>
@@ -819,7 +819,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>Kihagyott fájlok szerkesztője</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="53"/>
@@ -1003,12 +1003,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="100"/>
         <source>:</source>
-        <translation type="unfinished"/>
+        <translation>:</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="134"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>A proxy szerver azonosítást kér</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="182"/>
@@ -1019,7 +1019,7 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/mirall/networksettings.ui" line="188"/>
         <location filename="../src/mirall/networksettings.ui" line="287"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>Korlátozva</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="210"/>
@@ -1031,7 +1031,7 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/mirall/networksettings.ui" line="232"/>
         <location filename="../src/mirall/networksettings.ui" line="270"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Nincs korlát</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="264"/>
@@ -1046,17 +1046,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Proxy kiszolgáló</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Proxy felhasználónév</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Proxy jelszó</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="38"/>
@@ -1100,7 +1100,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Nem ellenőrzi a frissítéseket.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
@@ -1115,7 +1115,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Nincs újabb kiadás. Ez a legfrissebb verzió.</translation>
     </message>
 </context>
 <context>
@@ -1133,7 +1133,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>Kapcsolódás...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="108"/>
@@ -1176,12 +1176,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="43"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Azonosítási adatok megadása</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="159"/>
         <source>Update user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Azonosítási adatok módosítása</translation>
     </message>
 </context>
 <context>
@@ -1215,7 +1215,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>A kapcsolódás sikertelen</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
@@ -1254,7 +1254,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="214"/>
         <source>Error: Wrong credentials.</source>
-        <translation type="unfinished"/>
+        <translation>Hiba: rossz azonosítási adatok</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="228"/>
@@ -1373,7 +1373,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="38"/>
         <source>Everything set up!</source>
-        <translation type="unfinished"/>
+        <translation>Minden beállítva!</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
@@ -1475,12 +1475,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="54"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
@@ -1611,32 +1611,32 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="94"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Tanúsítvány részletei&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Általános név (CN):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>A tárgy további nevei:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Szervezet (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Szervezeti egység (OU):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Tagállam/Megye:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
@@ -1646,57 +1646,57 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Sorozatszám:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Kibocsátó&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="110"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Aláíró:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Kibocsátva:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Lejárat:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Ujjlenyomatok&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="118"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Megjegyzés:&lt;/b&gt; A tanúsítvány kézileg jóváhagyva&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="140"/>
         <source>%1 (in Root CA store)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (legfelső szintű tárban)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="143"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (önaláírt)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="145"/>
@@ -1712,7 +1712,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="179"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Tanúsítvány adatok:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="204"/>
@@ -1813,7 +1813,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Belépés szükséges</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="203"/>
@@ -1828,7 +1828,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="234"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>Nincs</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="238"/>
@@ -1888,12 +1888,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
         <source>Sign in...</source>
-        <translation type="unfinished"/>
+        <translation>Belépés...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>Kilépés</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="373"/>
@@ -2132,27 +2132,27 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/utility.cpp" line="113"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="116"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="119"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="122"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 kB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="125"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
 </context>
 <context>
@@ -2247,29 +2247,29 @@ Please ensure that your network connection is working.</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="92"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="98"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>letöltés folyamatban</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="95"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="101"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>feltöltés folyamatban</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="89"/>
         <source>inactive</source>
-        <translation type="unfinished"/>
+        <translation>inaktív</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="104"/>
         <source>starting</source>
-        <translation type="unfinished"/>
+        <translation>indítás folyamatban</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="107"/>
         <source>finished</source>
-        <translation type="unfinished"/>
+        <translation>befejeződött</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="110"/>
@@ -2279,12 +2279,12 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="116"/>
         <source>move</source>
-        <translation type="unfinished"/>
+        <translation>mozgat</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="119"/>
         <source>moved</source>
-        <translation type="unfinished"/>
+        <translation>mozgatva</translation>
     </message>
 </context>
 <context>
@@ -2292,7 +2292,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Meghatározatlan állapit</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>

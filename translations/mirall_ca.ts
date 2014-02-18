@@ -796,7 +796,7 @@ Esteu segur que voleu executar aquesta operació?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Actualitzacions</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
@@ -960,7 +960,7 @@ Els elements marcats també s&apos;eliminaran si prevenen l&apos;eliminació d&a
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Omet aquesta versió</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="272"/>
@@ -1622,7 +1622,7 @@ Assegureu-vos que la connexió a la xarxa funciona.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="97"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Nom comú (NC):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="98"/>
@@ -1632,17 +1632,17 @@ Assegureu-vos que la connexió a la xarxa funciona.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Organització (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Unitat organitzativa (UO):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Estat o província</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
@@ -1662,17 +1662,17 @@ Assegureu-vos que la connexió a la xarxa funciona.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="110"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Emissor:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Enviat el:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Expira el:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="115"/>
@@ -1682,12 +1682,12 @@ Assegureu-vos que la connexió a la xarxa funciona.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="118"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
@@ -2246,7 +2246,7 @@ Assegureu-vos que la connexió a la xarxa funciona.</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha mogut a %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
