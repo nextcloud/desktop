@@ -69,7 +69,7 @@ void FolderWatcherPrivate::startWatching()
                                  pathsToWatch,
                                  kFSEventStreamEventIdSinceNow,
                                  0, // latency
-                                 kFSEventStreamCreateFlagNone
+                                 kFSEventStreamCreateFlagNone+kFSEventStreamCreateFlagIgnoreSelf
                                  );
 
     FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
