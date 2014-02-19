@@ -36,15 +36,39 @@ class PropagatorJob : public QObject {
     Q_OBJECT
 protected:
     OwncloudPropagator *_propagator;
+    void emitReady() {
+        bool wasReady = _readySent;
+        _readySent = true;
+        if (!wasReady)
+            emit ready();
+    };
 public:
-    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator) {}
+    bool _readySent;
+    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator), _readySent(false) {}
 
 public slots:
     virtual void start() = 0;
+    virtual void abort() {}
 signals:
+    /**
+     * Emitted when the job is fully finished
+     */
     void finished(SyncFileItem::Status);
+
+    /**
+     * Emitted when one item has been completed within a job.
+     */
     void completed(const SyncFileItem &);
+
+    /**
+     * Emitted when all the sub-jobs have been scheduled and
+     * we are ready and more jobs might be started
+     * This signal is not always emitted.
+     */
+    void ready();
+
     void progress(Progress::Kind, const SyncFileItem& item, quint64 bytes, quint64 total);
+
 };
 
 /*
@@ -63,12 +87,13 @@ public:
     SyncFileItem _item;
 
     int _current; // index of the current running job
+    int _runningNow; // number of subJob running now
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
 
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItem &item = SyncFileItem())
         : PropagatorJob(propagator)
-        , _firstJob(0), _item(item),  _current(-1), _hasError(SyncFileItem::NoStatus) { }
+        , _firstJob(0), _item(item),  _current(-1), _runningNow(0), _hasError(SyncFileItem::NoStatus) { }
 
     virtual ~PropagateDirectory() {
         qDeleteAll(_subJobs);
@@ -79,62 +104,45 @@ public:
     }
 
     virtual void start();
-
+    virtual void abort() {
+        if (_firstJob)
+            _firstJob->abort();
+        foreach (PropagatorJob *j, _subJobs)
+            j->abort();
+    }
 
 private slots:
     void startJob(PropagatorJob *next) {
-        connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(proceedNext(SyncFileItem::Status)), Qt::QueuedConnection);
+        connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
         connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
         connect(next, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
-        next->start();
+        connect(next, SIGNAL(ready()), this, SLOT(slotSubJobReady()));
+        _runningNow++;
+        QMetaObject::invokeMethod(next, "start");
     }
 
-    void proceedNext(SyncFileItem::Status status);
+    void slotSubJobFinished(SyncFileItem::Status status);
+    void slotSubJobReady();
 };
 
 
 /*
  * Abstract class to propagate a single item
+ * (Only used for neon job)
  */
 class PropagateItemJob : public PropagatorJob {
     Q_OBJECT
 protected:
     void done(SyncFileItem::Status status, const QString &errorString = QString());
 
-    /* Issue a PROPPATCH and PROPFIND to update the mtime, and fetch the etag
-     * Return true in case of success, and false if the PROPFIND failed and the
-     * error has been reported
-     */
-    bool updateMTimeAndETag(const char* uri, time_t mtime);
-
-    /* fetch the error code and string from the session
-       in case of error, calls done with the error and returns true.
-
-       If the HTTP error code is ignoreHTTPError,  the error is ignored
-     */
-    bool updateErrorFromSession(int neon_code = 0, ne_request *req = 0, int ignoreHTTPError = 0);
-
-    /*
-     * to be called by the progress callback and will wait the amount of time needed.
-     */
-    void limitBandwidth(qint64 progress, qint64 limit);
-
-    bool checkForProblemsWithShared();
-
-    QElapsedTimer _lastTime;
-    qint64        _lastProgress;
-    int           _httpStatusCode;
     SyncFileItem  _item;
-
-protected slots:
-    void slotRestoreJobCompleted(const SyncFileItem& );
 
 private:
     QScopedPointer<PropagateItemJob> _restoreJob;
 
 public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItem &item)
-        : PropagatorJob(propagator), _lastProgress(0), _httpStatusCode(0), _item(item) {}
+        : PropagatorJob(propagator), _item(item) {}
 
 };
 
@@ -155,36 +163,55 @@ class OwncloudPropagator : public QObject {
 
     PropagateItemJob *createJob(const SyncFileItem& item);
     QScopedPointer<PropagateDirectory> _rootJob;
+    bool useLegacyJobs();
 
 public:
-    ne_session_s *_session;
-    QString _localDir; // absolute path to the local directory. ends with '/'
-    QString _remoteDir; // path to the root of the remote. ends with '/'
-    SyncJournalDb *_journal;
+    /* 'const' because they are accessed by the thread */
+
+    QThread* _neonThread;
+    ne_session_s * const _session;
+
+    const QString _localDir; // absolute path to the local directory. ends with '/'
+    const QString _remoteDir; // path to the root of the remote. ends with '/'  (include remote.php/webdav)
+    const QString _remoteFolder; // folder. (same as remoteDir but without remote.php/webdav)
+
+    SyncJournalDb * const _journal;
 
 public:
-    OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir,
-                       SyncJournalDb *progressDb, QAtomicInt *abortRequested)
-            : _session(session)
-            , _localDir(localDir)
-            , _remoteDir(remoteDir)
+    OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir, const QString &remoteFolder,
+                       SyncJournalDb *progressDb, QThread *neonThread)
+            : _neonThread(neonThread)
+            , _session(session)
+            , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/' )
+            , _remoteDir((remoteDir.endsWith(QChar('/'))) ? remoteDir : remoteDir+'/' )
+            , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder+'/' )
             , _journal(progressDb)
-            , _abortRequested(abortRequested)
-    {
-        if (!localDir.endsWith(QChar('/'))) _localDir+='/';
-        if (!remoteDir.endsWith(QChar('/'))) _remoteDir+='/';
-    }
+            , _activeJobs(0)
+    { }
 
     void start(const SyncFileItemVector &_syncedItems);
 
-    int _downloadLimit;
-    int _uploadLimit;
+    QAtomicInt _downloadLimit;
+    QAtomicInt _uploadLimit;
 
-    QAtomicInt *_abortRequested; // boolean set by the main thread to abort.
+    QAtomicInt _abortRequested; // boolean set by the main thread to abort.
+
+    /* The number of currently active jobs */
+    int _activeJobs;
 
     void overallTransmissionSizeChanged( qint64 change );
 
     bool isInSharedDirectory(const QString& file);
+
+
+    void abort() {
+        _abortRequested.fetchAndStoreOrdered(true);
+        if (_rootJob)
+            _rootJob->abort();
+        emit finished();
+    }
+
+
 signals:
     void completed(const SyncFileItem &);
     void progress(Progress::Kind kind, const SyncFileItem&, quint64 bytes, quint64 total);

@@ -85,14 +85,6 @@ public:
      * Creates an account object from from a given settings file.
      */
     static Account* restore();
-    /**
-     * @brief Creates a minimal account object
-     *
-     * This will set up a ssl error handler
-     *
-     * @return A new Account object
-     */
-    static Account* create(const QUrl &url);
 
     /**
      * @brief Checks the Account instance is different from \param other

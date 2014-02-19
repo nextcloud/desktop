@@ -24,6 +24,9 @@ class DummyCredentials : public AbstractCredentials
     Q_OBJECT
 
 public:
+
+    QString _user;
+    QString _password;
     void syncContextPreInit(CSYNC* ctx);
     void syncContextPreStart(CSYNC* ctx);
     bool changed(AbstractCredentials* credentials) const;

@@ -205,7 +205,6 @@ private:
     QFileSystemWatcher *_pathWatcher;
     bool       _enabled;
     SyncResult _syncResult;
-    QThread     *_thread;
     CSyncThread *_csync;
     QStringList  _errors;
     bool         _csyncError;

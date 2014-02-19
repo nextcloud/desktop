@@ -19,6 +19,7 @@
 #include <stdint.h>
 
 #include <QMutex>
+#include <QThread>
 #include <QString>
 #include <qelapsedtimer.h>
 
@@ -47,7 +48,7 @@ class CSyncThread : public QObject
     Q_OBJECT
 
 public:
-    CSyncThread(CSYNC *, const QString &localPath, const QString &remotePath, SyncJournalDb *journal);
+    CSyncThread(CSYNC *, const QString &localPath, const QString &remoteURL, const QString &remotePath, SyncJournalDb *journal);
     ~CSyncThread();
 
     static QString csyncErrorToString( CSYNC_STATUS);
@@ -80,8 +81,11 @@ private slots:
     void slotFinished();
     void slotProgress(Progress::Kind kind, const SyncFileItem &item, quint64 curr = 0, quint64 total = 0);
     void slotProgressChanged(qint64 change);
+    void slotUpdateFinished(int updateResult);
 
 private:
+
+
     void handleSyncError(CSYNC *ctx, const char *state);
     void progressProblem(Progress::Kind kind, const SyncFileItem& item);
 
@@ -96,12 +100,14 @@ private:
     CSYNC *_csync_ctx;
     bool _needsUpdate;
     QString _localPath;
+    QString _remoteUrl;
     QString _remotePath;
     SyncJournalDb *_journal;
     QScopedPointer <OwncloudPropagator> _propagator;
     QElapsedTimer _syncTime;
     QString _lastDeleted; // if the last item was a path and it has been deleted
     QHash <QString, QString> _seenFiles;
+    QThread _thread;
 
 
     // maps the origin and the target of the folders that have been renamed
@@ -117,11 +123,37 @@ private:
     qint64 _overallFileCount;
     quint64 _lastOverallBytes;
 
-    QMutex _abortRequestedMutex; // avoid a race between csync_abort and csync_resume
-    QAtomicInt _abortRequested;
-
     friend struct CSyncRunScopeHelper;
 };
+
+
+class UpdateJob : public QObject {
+    Q_OBJECT
+    CSYNC *_csync_ctx;
+    csync_log_callback _log_callback;
+    int _log_level;
+    void* _log_userdata;
+    Q_INVOKABLE void start() {
+        csync_set_log_callback(_log_callback);
+        csync_set_log_level(_log_level);
+        csync_set_log_userdata(_log_userdata);
+        emit finished(csync_update(_csync_ctx));
+        deleteLater();
+    }
+public:
+    explicit UpdateJob(CSYNC *ctx, QObject* parent = 0)
+            : QObject(parent), _csync_ctx(ctx) {
+        // We need to forward the log property as csync uses thread local
+        // and updates run in another thread
+        _log_callback = csync_get_log_callback();
+        _log_level = csync_get_log_level();
+        _log_userdata = csync_get_log_userdata();
+    }
+signals:
+    void finished(int result);
+};
+
+
 }
 
 #endif // CSYNCTHREAD_H
