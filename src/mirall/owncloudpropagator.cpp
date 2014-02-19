@@ -72,8 +72,6 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     emit finished(status);
 }
 
-
-
 PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
@@ -137,7 +135,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
             continue;
         }
 
-        while (!item._file.startsWith(directories.top().first)) {
+        while (!item.destination().startsWith(directories.top().first)) {
             directories.pop();
         }
 
@@ -151,7 +149,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
             } else {
                 directories.top().second->append(dir);
             }
-            directories.push(qMakePair(item._file + "/" , dir));
+            directories.push(qMakePair(item.destination() + "/" , dir));
         } else if (PropagateItemJob* current = createJob(item)) {
             directories.top().second->append(current);
         }
@@ -181,7 +179,7 @@ bool OwncloudPropagator::isInSharedDirectory(const QString& file)
         // The Shared directory is synced as its own sync connection
         re = true;
     } else {
-        if( file.startsWith("Shared/") )  {
+        if( file.startsWith("Shared/") || file == "Shared" )  {
             // The whole ownCloud is synced and Shared is always a top dir
             re = true;
         }
@@ -220,7 +218,7 @@ void PropagateDirectory::start()
 
 void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 {
-    if (status == SyncFileItem::FatalError) {
+    if (status == SyncFileItem::FatalError || (_current == -1 && status != SyncFileItem::Success)) {
         abort();
         emit finished(status);
         return;

@@ -785,8 +785,9 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QString& path)
     }
 
     QSqlQuery query(_db);
-    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE path LIKE(?||'/%')");
+    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE path == ? OR path LIKE(?||'/%')");
     query.bindValue(0, path);
+    query.bindValue(1, path);
     if( !query.exec() ) {
         qDebug() << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
     } else {
