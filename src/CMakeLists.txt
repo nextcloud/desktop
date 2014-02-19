@@ -1,3 +1,5 @@
+set(CMAKE_AUTOMOC TRUE)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 qt_add_resources(MIRALL_RC_SRC ../mirall.qrc)
@@ -45,8 +47,6 @@ set(3rdparty_HEADER
 3rdparty/fancylineedit/fancylineedit.h
 3rdparty/QProgressIndicator/QProgressIndicator.h
 )
-
-qt_wrap_cpp(3rdparty_MOC ${3rdparty_HEADER})
 
 if(NOT WIN32)
 	list(APPEND 3rdparty_SRC 3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
@@ -150,7 +150,6 @@ IF( APPLE )
     list(APPEND libsync_SRCS mirall/folderwatcher_mac.cpp)
 ENDIF()
 
-qt_wrap_cpp(syncMoc ${libsync_HEADERS})
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS
@@ -333,9 +332,6 @@ ENDIF()
 include_directories(../csync/src ../csync/src/httpbf/src ${CMAKE_CURRENT_BINARY_DIR}/../csync ${CMAKE_CURRENT_BINARY_DIR}/../csync/src )
 include_directories(${3rdparty_INC})
 
-qt_wrap_cpp(updaterMoc ${updater_HEADERS})
-qt_wrap_cpp(mirallMoc ${mirall_HEADERS})
-
 qt_add_translation(mirall_I18N ${TRANSLATIONS})
 
 set( final_src
@@ -446,7 +442,6 @@ endif()
 
 set(owncloudcmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 set(OWNCLOUDCMD_SRC owncloudcmd/owncloudcmd.cpp)
-qt_wrap_cpp(OWNCLOUDCMD_MOCS owncloudcmd/owncloudcmd.cpp)
 add_executable(${owncloudcmd_NAME}  ${OWNCLOUDCMD_SRC})
 qt5_use_modules(${owncloudcmd_NAME} Network Sql)
 set_target_properties(${owncloudcmd_NAME} PROPERTIES

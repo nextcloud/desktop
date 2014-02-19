@@ -52,8 +52,6 @@ public slots:
         }
     }
 };
-#include "owncloudcmd/moc_owncloudcmd.cpp"
-
 
 int getauth(const char* prompt, char* buf, size_t len, int, int, void*)
 {
@@ -236,3 +234,6 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
+#include "owncloudcmd.moc"
+
