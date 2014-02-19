@@ -1107,7 +1107,7 @@ bool OwncloudPropagator::isInSharedDirectory(const QString& file)
         // The Shared directory is synced as its own sync connection
         re = true;
     } else {
-        if( file.startsWith("Shared/") )  {
+        if( file.startsWith("Shared/") || file == "Shared" )  {
             // The whole ownCloud is synced and Shared is always a top dir
             re = true;
         }
