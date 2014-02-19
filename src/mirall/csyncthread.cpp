@@ -66,6 +66,8 @@ CSyncThread::CSyncThread(CSYNC *ctx, const QString& localPath, const QString& re
     _journal = journal;
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
+    qRegisterMetaType<Progress::Info>("Progress::Info");
+    qRegisterMetaType<Progress::Kind>("Progress::Kind");
 
     _thread.start();
 }

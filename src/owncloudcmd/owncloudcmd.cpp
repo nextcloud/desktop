@@ -223,7 +223,6 @@ int main(int argc, char **argv) {
     SyncJournalDb db(options.source_dir);
     CSyncThread csyncthread(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&csyncthread, SIGNAL(finished()), &app, SLOT(quit()));
-    qRegisterMetaType<Progress::Info>("Progress::Info");
     QObject::connect(&csyncthread, SIGNAL(transmissionProgress(Progress::Info)), &owncloudCmd, SLOT(transmissionProgressSlot(Progress::Info)));
     csyncthread.startSync();
 
