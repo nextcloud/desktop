@@ -413,7 +413,7 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     _thread.quit();
 }
 
-static void updater_progress_callback(CSYNC_PROGRESS *progress, void *userdata)
+void csyncthread_updater_progress_callback(CSYNC_PROGRESS *progress, void *userdata)
 {
     Progress::Info pInfo;
     if (progress->kind == CSYNC_NOTIFY_START_LOCAL_UPDATE) {
@@ -513,7 +513,7 @@ void CSyncThread::startSync()
     _syncTime.start();
 
     // Only used for the updater progress as we use the new propagator right now which does its own thing
-    csync_set_progress_callback(_csync_ctx, updater_progress_callback);
+    csync_set_progress_callback(_csync_ctx, csyncthread_updater_progress_callback);
 
     qDebug() << "#### Update start #################################################### >>";
 

@@ -46,7 +46,7 @@ void csyncLogCatcher(int /*verbosity*/,
 class CSyncThread : public QObject
 {
     Q_OBJECT
-
+    friend void csyncthread_updater_progress_callback(CSYNC_PROGRESS *progress, void *userdata);
 public:
     CSyncThread(CSYNC *, const QString &localPath, const QString &remoteURL, const QString &remotePath, SyncJournalDb *journal);
     ~CSyncThread();
