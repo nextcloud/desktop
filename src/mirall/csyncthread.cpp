@@ -411,19 +411,21 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
 
 static void updater_progress_callback(CSYNC_PROGRESS *progress, void *userdata)
 {
-    static QElapsedTimer localTimer;
-    static QElapsedTimer remoteTimer;
+    Progress::Info pInfo;
     if (progress->kind == CSYNC_NOTIFY_START_LOCAL_UPDATE) {
-        localTimer.start();
+        pInfo.kind = Progress::StartLocalUpdate;
     } else if (progress->kind == CSYNC_NOTIFY_FINISHED_LOCAL_UPDATE) {
-        // There is also localTimer.nsecsElapsed()
-        qDebug() << "Local Update took" << localTimer.elapsed() << "msec";
+        pInfo.kind = Progress::EndLocalUpdate;
     } else if (progress->kind == CSYNC_NOTIFY_START_REMOTE_UPDATE) {
-        remoteTimer.start();
+        pInfo.kind = Progress::StartRemoteUpdate;
     } else if (progress->kind == CSYNC_NOTIFY_FINISHED_REMOTE_UPDATE) {
-        qDebug() << "Remote Update took" << remoteTimer.elapsed() << "msec";
+        pInfo.kind = Progress::EndRemoteUpdate;
+    } else {
+        return; // FIXME, but most progress stuff should come from the new propagator
     }
-
+    pInfo.timestamp = QDateTime::currentDateTime();
+    CSyncThread *self = static_cast<CSyncThread*>(userdata);
+    emit self->transmissionProgress( pInfo );
 }
 
 void CSyncThread::startSync()
@@ -506,7 +508,7 @@ void CSyncThread::startSync()
 
     // csync_set_auth_callback( _csync_ctx, getauth );
     csync_set_log_callback( csyncLogCatcher );
-    csync_set_log_level( 11 );
+    //csync_set_log_level( 11 ); don't set the loglevel here, it shall be done by folder.cpp or owncloudcmd.cpp
 
     _syncTime.start();
 
