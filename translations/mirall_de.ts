@@ -145,7 +145,7 @@
 Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entfernt, jedoch kann diese Aktion erheblichen Datenverkehr verursachen und je nach Umfang des Ordners mehrere Minuten oder Stunden in Anspruch nehmen. Verwenden Sie diese Funktion nur dann, wenn ihr Administrator dies ausdrücklich wünscht.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="762"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No %1 connection configured.</source>
         <translation>Keine %1-Verbindung konfiguriert.</translation>
     </message>
@@ -165,12 +165,12 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
         <translation>Die Synchronistation läuft gerade.&lt;br/&gt;Wollen Sie diese beenden?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="716"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="722"/>
         <source>%1 of %2 (%3%) in use.</source>
         <translation>%1 von %2 (%3%) benutzt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="748"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="754"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Verbunden mit &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
@@ -190,32 +190,32 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
         <translation>Vollständig</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="649"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="655"/>
         <source>%1 %2 %3 (%4 of %5)</source>
         <translation>%1 %2 %3 (%4 von %5)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="652"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="658"/>
         <source>Completely finished.</source>
         <translation>Vollständig abgeschlossen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="659"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="665"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 of %2, Datei %3 von %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="751"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="757"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Verbunden mit &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; als &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="755"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="761"/>
         <source>No connection to %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Keine Verbindung mit %1 zu &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="720"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="726"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Derzeit sind keine Speichernutzungsinformationen verfügbar.</translation>
     </message>
@@ -231,178 +231,178 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="83"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
         <source>Success.</source>
         <translation>Erfolgreich</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync konnte keine lock-Datei erstellen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="96"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="102"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Das %1-Plugin für csync konnte nicht geladen werden.&lt;br/&gt;Bitte überprüfen Sie die Installation!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Die Uhrzeit auf diesem Klienten und dem Server sind verschieden. Bitte verwenden Sie ein Zeitsynchronisationsprotokolls (NTP) auf Ihrem Server und Klienten, damit die gleiche Uhrzeit verwendet wird.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="110"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync konnte den Typ des Dateisystem nicht feststellen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="107"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="113"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync hatte einen Fehler bei der Verarbeitung von internen Strukturen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="110"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="116"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync konnte keinen Speicher reservieren.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="113"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="119"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync hat einen schwerwiegender Parameterfehler festgestellt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="116"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="122"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync Verarbeitungsschritt &quot;Aktualisierung&quot; fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="119"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="125"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync Verarbeitungsschritt &quot;Abgleich&quot; fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="122"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="128"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync Verarbeitungsschritt &quot;Übertragung&quot; fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="125"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Das Zielverzeichnis existiert nicht.&lt;/p&gt;&lt;p&gt;Bitte prüfen Sie die Synchronisationseinstellungen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="129"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Eine Remote-Datei konnte nicht geschrieben werden. Bitte den Remote-Zugriff überprüfen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Kann auf dem lokalen Dateisystem nicht schreiben. Bitte Berechtigungen überprüfen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync konnte sich nicht über einen Proxy verbinden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="145"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation>CSync konnte sich nicht am Proxy authentifizieren.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="148"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync konnte den Proxy oder Server nicht auflösen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="145"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="151"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync konnte sich nicht am Server %1 authentifizieren.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="157"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSync wegen fehlender Berechtigung fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>CSync versuchte, ein Verzeichnis zu erstellen, welches bereits existiert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="172"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="175"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Kein Platz auf Server %1 frei.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="172"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="178"/>
         <source>CSync unspecified error.</source>
         <translation>CSync unbekannter Fehler.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="238"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>The item is not synced because of previous errors:</source>
         <translation>Das Element ist aufgrund vorheriger Fehler nicht synchronisiert:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="274"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symbolische Verknüpfungen werden bei der Synchronisation nicht unterstützt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="277"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>File is listed on the ignore list.</source>
         <translation>Die Datei ist in der Ignorierliste geführt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="286"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Die Datei beinhaltet ungültige Zeichen und kann nicht plattformübergreifend synchronisiert werden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="448"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="469"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Synchronisationsbericht konnte nicht initialisiert werden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="148"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="154"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync konnte sich nicht mit dem Netzwerk verbinden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
         <translation>CSync konnte den Synchronisationsbericht nicht laden oder erstellen. Stellen Sie bitte sicher, dass Sie Lese- und Schreibrechte auf das lokale Synchronisationsverzeichnis haben.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
         <source>CSync failed to write the journal file.</source>
         <translation>CSync konnte den Synchronisationsbericht nicht schreiben.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="151"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="157"/>
         <source>A network connection timeout happend.</source>
         <translation>Es ist zu einer Zeitüberschreitung der Netzwerkverbindung gekommen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="154"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Es hat sich ein HTTP-Übertragungsfehler ereignet.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
         <source>CSync failed to access </source>
         <translation>CSync-Zugriff fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="175"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="181"/>
         <source>Aborted by the user</source>
         <translation>Abbruch durch den Benutzer</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="179"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="185"/>
         <source>An internal error number %1 happend.</source>
         <translation>Interne Fehlernummer %1 aufgetreten.</translation>
     </message>
@@ -438,90 +438,90 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
 <context>
     <name>Mirall::Folder</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="103"/>
+        <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Unable to create csync-context</source>
         <translation>Kann keinen CSync-Kontext erstellen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="163"/>
+        <location filename="../src/mirall/folder.cpp" line="158"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Lokales Verzeichnis %1 existiert nicht.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="166"/>
+        <location filename="../src/mirall/folder.cpp" line="161"/>
         <source>%1 should be a directory but is not.</source>
         <translation>%1 sollte ein Verzeichnis sein, ist es aber nicht.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="169"/>
+        <location filename="../src/mirall/folder.cpp" line="164"/>
         <source>%1 is not readable.</source>
         <translation>%1 ist nicht lesbar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="316"/>
+        <location filename="../src/mirall/folder.cpp" line="311"/>
         <source>File %1: %2</source>
         <translation>Datei %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="317"/>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
+        <location filename="../src/mirall/folder.cpp" line="312"/>
+        <location filename="../src/mirall/folder.cpp" line="392"/>
         <source>File %1</source>
         <translation>Datei %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="372"/>
+        <location filename="../src/mirall/folder.cpp" line="367"/>
         <source>downloaded</source>
         <translation>Heruntergeladen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="373"/>
+        <location filename="../src/mirall/folder.cpp" line="368"/>
         <source>removed</source>
         <translation>Entfernt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="374"/>
+        <location filename="../src/mirall/folder.cpp" line="369"/>
         <source>updated</source>
         <translation>Aktualisiert</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="377"/>
+        <location filename="../src/mirall/folder.cpp" line="372"/>
         <source>renamed</source>
         <translation>Umbenannt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="382"/>
+        <location filename="../src/mirall/folder.cpp" line="377"/>
         <source>moved</source>
         <translation>verschoben</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="384"/>
+        <location filename="../src/mirall/folder.cpp" line="379"/>
         <source>%1 to %2</source>
         <translation>%1 nach %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
+        <location filename="../src/mirall/folder.cpp" line="392"/>
         <source>&apos;%1&apos; has been %2.</source>
         <translation>&apos;%1&apos; wurde %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="399"/>
+        <location filename="../src/mirall/folder.cpp" line="394"/>
         <source>Files %1</source>
         <translation>Dateien %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="400"/>
+        <location filename="../src/mirall/folder.cpp" line="395"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
         <translation>&apos;%1&apos; und %2 andere Dateien wurden %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="706"/>
+        <location filename="../src/mirall/folder.cpp" line="689"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Dieser Synchronisationsvorgang würde alle Dateien in dem lokalen Ordner &apos;%1&apos; entfernen.
 Wenn Sie oder Ihr Administrator Ihr Konto auf dem Server zurückgesetzt haben, wählen Sie &quot;Dateien behalten&quot;. Wenn Sie ihre Daten löschen wollen, wählen Sie &quot;Alle Dateien entfernen&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="709"/>
+        <location filename="../src/mirall/folder.cpp" line="692"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -530,17 +530,17 @@ Vielleicht wurde der Ordner neu konfiguriert, oder alle Dateien wurden händisch
 Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="713"/>
+        <location filename="../src/mirall/folder.cpp" line="696"/>
         <source>Remove All Files?</source>
         <translation>Alle Dateien löschen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="715"/>
+        <location filename="../src/mirall/folder.cpp" line="698"/>
         <source>Remove all files</source>
         <translation>Lösche alle Dateien</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="716"/>
+        <location filename="../src/mirall/folder.cpp" line="699"/>
         <source>Keep files</source>
         <translation>Dateien behalten</translation>
     </message>
@@ -1395,40 +1395,27 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::PropagateDownloadFile</name>
+    <name>Mirall::PropagateDownloadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="572"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation>Synchronisation wurde durch den Nutzer abgebrochen.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="627"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Kein E-Tag vom Server empfangen, bitte Proxy / Gateway überprüfen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="637"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="401"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Es wurde ein unterschiedlicher E-Tag zum Fortfahren empfangen. Bitte beim nächsten mal nochmal versuchen.</translation>
-    </message>
-</context>
-<context>
-    <name>Mirall::PropagateItemJob</name>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="144"/>
-        <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation>Die Datei wurde von einer Nur-Lese-Freigabe gelöscht. Die Datei wurde wiederhergestellt.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="146"/>
-        <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation>Eine Datei wurde von einer Nur-Lese-Freigabe wiederhergestellt, aber die Wiederherstellung ist mit folgendem Fehler fehlgeschlagen: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="230"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="157"/>
         <source>could not create directory %1</source>
         <translation>Verzeichnis %1 konnte nicht erstellt werden</translation>
     </message>
@@ -1436,36 +1423,62 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="209"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="133"/>
         <source>Could not remove directory %1</source>
         <translation>Verzeichnis %1 konnte nicht entfernt werden</translation>
     </message>
 </context>
 <context>
+    <name>Mirall::PropagateNeonJob</name>
+    <message>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
+        <source>The file was removed from a read only share. The file has been restored.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
+        <source>A file was removed from a read only share, but restoring failed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="912"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="259"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Dieser Ordner muss nicht umbenannt werden. Er wurde zurück zum Originalnamen umbenannt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="914"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="261"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Dieser Ordner muss nicht umbenannt werden. Bitte benennen Sie es zurück wie in der Freigabe.</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::PropagateUploadFile</name>
+    <name>Mirall::PropagateUploadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="383"/>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="438"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation>Eine lokale Datei wurde während der Synchronisation geändert, synchronisieren Sie nochmals sobald die aktuelle Datei vollständig angekommen ist</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="386"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation>Synchronisation wurde durch den Nutzer abgebrochen.</translation>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::PropagateUploadFileQNAM</name>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="197"/>
+        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="242"/>
+        <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1821,6 +1834,14 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
     </message>
 </context>
 <context>
+    <name>Mirall::Theme</name>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="205"/>
+        <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::ownCloudGui</name>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
@@ -2142,27 +2163,27 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="113"/>
+        <location filename="../src/mirall/utility.cpp" line="114"/>
         <source>%L1 TB</source>
         <translation>%L1 TB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="116"/>
+        <location filename="../src/mirall/utility.cpp" line="117"/>
         <source>%L1 GB</source>
         <translation>%L1 GB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="119"/>
+        <location filename="../src/mirall/utility.cpp" line="120"/>
         <source>%L1 MB</source>
         <translation>%L1 MB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="122"/>
+        <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 kB</source>
         <translation>%L1 kB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="125"/>
+        <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
@@ -2218,7 +2239,7 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="91"/>
         <source>Context</source>
         <translation>Kontext</translation>
     </message>
@@ -2244,7 +2265,7 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="113"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="118"/>
         <source>deleted</source>
         <translation>gelöscht</translation>
     </message>
@@ -2255,46 +2276,46 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
         <translation>Verschoben nach %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="92"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="98"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="85"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="97"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="103"/>
         <source>downloading</source>
         <translation>Herunterladen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="95"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="101"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="88"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="100"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="106"/>
         <source>uploading</source>
         <translation>Lade hoch</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="89"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="94"/>
         <source>inactive</source>
         <translation>Inaktiv</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="104"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="109"/>
         <source>starting</source>
         <translation>Starte</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="107"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="112"/>
         <source>finished</source>
         <translation>abgeschlossen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="110"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="115"/>
         <source>delete</source>
         <translation>löschen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="116"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="121"/>
         <source>move</source>
         <translation>verschiebe</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="119"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="124"/>
         <source>moved</source>
         <translation>verschoben</translation>
     </message>

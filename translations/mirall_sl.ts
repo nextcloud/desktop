@@ -144,7 +144,7 @@
         <translation>&lt;p&gt;Ali ste prepričani, da želite mapo &lt;i&gt;%1&lt;/i&gt; ponastaviti in ponovno izgraditi podatkovno zbirko?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opozorilo:&lt;/b&gt; Možnost je zasnovana za vzdrževanje. Datoteke sicer ne bodo spremenjene, vendar pa je opravilo lahko zelo dolgotrajno in lahko traja tudi več ur. Trajanje je odvisno od velikosti mape. Možnost uporabite le, če vam to svetuje skrbnik sistema.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="762"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No %1 connection configured.</source>
         <translation>Ni nastavljenih %1 povezav.</translation>
     </message>
@@ -164,12 +164,12 @@
         <translation>Izvaja se usklajevanje.&lt;br/&gt;Ali želite opravilo prekiniti?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="716"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="722"/>
         <source>%1 of %2 (%3%) in use.</source>
         <translation>%1 od %2 (%3%) v uporabi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="748"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="754"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Vzpostavljena je povezava s strežnikom &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
@@ -189,32 +189,32 @@
         <translation>V celoti</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="649"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="655"/>
         <source>%1 %2 %3 (%4 of %5)</source>
         <translation>%1 %2 %3 (%4 od %5)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="652"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="658"/>
         <source>Completely finished.</source>
         <translation>V celoti končano.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="659"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="665"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 od %2, datoteka %3 od %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="751"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="757"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Vzpostavljena je povezava z &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; kot &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="755"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="761"/>
         <source>No connection to %1 at &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Povezava z %1 ni vzpostavljena pri &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="720"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="726"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Trenutno ni na voljo nobenih podatkov o porabi prostora.</translation>
     </message>
@@ -230,178 +230,178 @@
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="83"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
         <source>Success.</source>
         <translation>Uspešno vzpostavljeno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="86"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
         <source>CSync failed to create a lock file.</source>
         <translation>Ustvarjanje datoteke zaklepa s CSync je spodletelo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="96"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="102"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vstavka %1 za CSync ni mogoče naložiti.&lt;br/&gt;Preveriti je treba namestitev!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Sistemski čas na odjemalcu ni skladen s sistemskim časom na strežniku. Priporočljivo je uporabiti storitev usklajevanja časa (NTP) na strežniku in odjemalcu. S tem omogočimo ujemanje podatkov o času krajevnih in oddaljenih datotek.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="104"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="110"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>Zaznavanje vrste datotečnega sistema s CSync je spodletelo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="107"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="113"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>Pri obdelavi notranje drevesne strukture s CSync je prišlo do napake.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="110"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="116"/>
         <source>CSync failed to reserve memory.</source>
         <translation>Vpisovanje prostora v pomnilniku za CSync je spodletelo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="113"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="119"/>
         <source>CSync fatal parameter error.</source>
         <translation>Usodna napaka parametra CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="116"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="122"/>
         <source>CSync processing step update failed.</source>
         <translation>Korak opravila posodobitve CSync je spodletel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="119"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="125"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>Korak opravila poravnave CSync je spodletel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="122"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="128"/>
         <source>CSync processing step propagate failed.</source>
         <translation>Korak opravila razširjanja CSync je spodletel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="125"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ciljna mapa ne obstaja.&lt;/p&gt;&lt;p&gt;Preveriti je treba nastavitve usklajevanja.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="129"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Oddaljene datoteke ni mogoče zapisati. Najverjetneje je vzrok v oddaljenem dostopu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>V krajevni datotečni sistem ni mogoče pisati. Najverjetneje je vzrok v neustreznih dovoljenjih.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="136"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>Povezava CSync preko posredniškega strežnika je spodletel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="145"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation>Overitev CSync na posredniškem strežniku je spodletela.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="148"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>Poizvedba posredniškega strežnika s CSync je spodletela.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="145"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="151"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>Overitev CSync pri strežniku %1 je spodletela.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="157"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>Delovanje CSync je zaradi neustreznih dovoljenj spodletelo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>Prišlo je do napake programa CSync zaradi poskusa ustvarjanja mape z že obstoječim imenom.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="172"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="175"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>Odziv CSync: na strežniku %1 ni razpoložljivega prostora.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="172"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="178"/>
         <source>CSync unspecified error.</source>
         <translation>Nedoločena napaka CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="238"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>The item is not synced because of previous errors:</source>
         <translation>Predmet ni usklajen zaradi predhodnih napak:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="274"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Usklajevanje simbolnih povezav ni podprto.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="277"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>File is listed on the ignore list.</source>
         <translation>Datoteka je na seznamu prezrtih datotek.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="286"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Ime datoteke vsebuje neveljavne znake, ki niso podprti na vseh okoljih.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="448"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="469"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Dnevnika usklajevanja ni mogoče začeti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="148"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="154"/>
         <source>CSync failed to connect to the network.</source>
         <translation>Povezava CSync v omrežje je spodletela.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
         <translation>Nalaganje ali ustvarjanje dnevniške datoteke s CSync je spodletelo. Za to opravilo so zahtevana posebna dovoljenja krajevne mape za usklajevanje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
         <source>CSync failed to write the journal file.</source>
         <translation>Zapisovanje dnevniške datoteke s CSync je spodletelo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="151"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="157"/>
         <source>A network connection timeout happend.</source>
         <translation>Poskus vzpostavitve povezave je časovno potekel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="154"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Prišlo je do napake med prenosom HTTP.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
         <source>CSync failed to access </source>
         <translation>Dostop s CSync je spodletel</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="175"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="181"/>
         <source>Aborted by the user</source>
         <translation>Opravilo je bilo prekinjeno s strani uporabnika</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="179"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="185"/>
         <source>An internal error number %1 happend.</source>
         <translation>Prišlo je do notranje napake s številko %1.</translation>
     </message>
@@ -437,90 +437,90 @@
 <context>
     <name>Mirall::Folder</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="103"/>
+        <location filename="../src/mirall/folder.cpp" line="99"/>
         <source>Unable to create csync-context</source>
         <translation>Ni mogoče ustvariti vsebine csync-context</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="163"/>
+        <location filename="../src/mirall/folder.cpp" line="158"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Krajevna mapa %1 ne obstaja.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="166"/>
+        <location filename="../src/mirall/folder.cpp" line="161"/>
         <source>%1 should be a directory but is not.</source>
         <translation>%1 bi morala biti mapa, vendar ni.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="169"/>
+        <location filename="../src/mirall/folder.cpp" line="164"/>
         <source>%1 is not readable.</source>
         <translation>%1 ni mogoče brati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="316"/>
+        <location filename="../src/mirall/folder.cpp" line="311"/>
         <source>File %1: %2</source>
         <translation>Datoteka %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="317"/>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
+        <location filename="../src/mirall/folder.cpp" line="312"/>
+        <location filename="../src/mirall/folder.cpp" line="392"/>
         <source>File %1</source>
         <translation>Datoteka %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="372"/>
+        <location filename="../src/mirall/folder.cpp" line="367"/>
         <source>downloaded</source>
         <translation>prejeta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="373"/>
+        <location filename="../src/mirall/folder.cpp" line="368"/>
         <source>removed</source>
         <translation>odstranjena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="374"/>
+        <location filename="../src/mirall/folder.cpp" line="369"/>
         <source>updated</source>
         <translation>posodobljena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="377"/>
+        <location filename="../src/mirall/folder.cpp" line="372"/>
         <source>renamed</source>
         <translation>preimenovana.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="382"/>
+        <location filename="../src/mirall/folder.cpp" line="377"/>
         <source>moved</source>
         <translation>premaknjeno</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="384"/>
+        <location filename="../src/mirall/folder.cpp" line="379"/>
         <source>%1 to %2</source>
         <translation>%1 vo %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
+        <location filename="../src/mirall/folder.cpp" line="392"/>
         <source>&apos;%1&apos; has been %2.</source>
         <translation>Datoteka &apos;%1&apos; je %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="399"/>
+        <location filename="../src/mirall/folder.cpp" line="394"/>
         <source>Files %1</source>
         <translation>Datoteke %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="400"/>
+        <location filename="../src/mirall/folder.cpp" line="395"/>
         <source>&apos;%1&apos; and %2 other files have been %3.</source>
         <translation>&apos;%1&apos; in %2 drugih datotek je %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="706"/>
+        <location filename="../src/mirall/folder.cpp" line="689"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Z usklajevanjem bodo odstranjene vse krajevne datoteke v mapi &apos;%1&apos;.
 Če je bil račun na strežniku kakorkoli ponastavljen, izberite možnost &quot;Ohrani datoteke&quot;, če pa želite datoteke res odstraniti, izberite drugo možnost.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="709"/>
+        <location filename="../src/mirall/folder.cpp" line="692"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -529,17 +529,17 @@ Mapa je bila morda odstranjena ali pa so bile nastavitve spremenjene.
 Ali sta prepričani, da želite izvesti to opravilo?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="713"/>
+        <location filename="../src/mirall/folder.cpp" line="696"/>
         <source>Remove All Files?</source>
         <translation>Ali naj bodo odstranjene vse datoteke?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="715"/>
+        <location filename="../src/mirall/folder.cpp" line="698"/>
         <source>Remove all files</source>
         <translation>Odstrani vse datoteke</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="716"/>
+        <location filename="../src/mirall/folder.cpp" line="699"/>
         <source>Keep files</source>
         <translation>Ohrani datoteke</translation>
     </message>
@@ -1394,40 +1394,27 @@ Uporaba ni priporočljiva.</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::PropagateDownloadFile</name>
+    <name>Mirall::PropagateDownloadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="572"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation>Usklajevanje je bilo prekinjeno s strani uporabnika</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="627"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Ni prejete oznake s strežnika. Preveriti je treba podatke posredovalnega strežnika ali prehoda.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="637"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="401"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Prejeta je različna oznaka za nadaljevanje opravila. Ponovni poskus bo izveden kasneje.</translation>
-    </message>
-</context>
-<context>
-    <name>Mirall::PropagateItemJob</name>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="144"/>
-        <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation>Datoteka je bila odstranjena iz mesta v souporabi, vendar je uspešno obnovljena.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="146"/>
-        <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation>Datoteka je bila odstranjena iz mesta v souporabi, ki je le za branje, obnavljanje pa je spodletelo: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="230"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="157"/>
         <source>could not create directory %1</source>
         <translation>ni mogoče ustvariti mape %1</translation>
     </message>
@@ -1435,36 +1422,62 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="209"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="133"/>
         <source>Could not remove directory %1</source>
         <translation>ni mogoče odstraniti mape %1</translation>
     </message>
 </context>
 <context>
+    <name>Mirall::PropagateNeonJob</name>
+    <message>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
+        <source>The file was removed from a read only share. The file has been restored.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
+        <source>A file was removed from a read only share, but restoring failed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="912"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="259"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Te mape ni dovoljeno preimenovati, zato bo samodejno preimenovana v izvorno ime.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="914"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="261"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Mape ni dovoljeno preimenovati. Preimenujte jo nazaj na privzeto vrednost.</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::PropagateUploadFile</name>
+    <name>Mirall::PropagateUploadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="383"/>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="438"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation>Krajevna datoteka je bila med usklajevanjem spremenjena. Usklajena bo, ko bo shranjena.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="386"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation>Usklajevanje je prekinil uporabnik.</translation>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::PropagateUploadFileQNAM</name>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="197"/>
+        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="242"/>
+        <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1820,6 +1833,14 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     </message>
 </context>
 <context>
+    <name>Mirall::Theme</name>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="205"/>
+        <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::ownCloudGui</name>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
@@ -2141,27 +2162,27 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="113"/>
+        <location filename="../src/mirall/utility.cpp" line="114"/>
         <source>%L1 TB</source>
         <translation>%L1 TB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="116"/>
+        <location filename="../src/mirall/utility.cpp" line="117"/>
         <source>%L1 GB</source>
         <translation>%L1 GB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="119"/>
+        <location filename="../src/mirall/utility.cpp" line="120"/>
         <source>%L1 MB</source>
         <translation>%L1 MB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="122"/>
+        <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 kB</source>
         <translation>%L1 kB</translation>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="125"/>
+        <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
@@ -2217,7 +2238,7 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="91"/>
         <source>Context</source>
         <translation>Vsebina</translation>
     </message>
@@ -2243,7 +2264,7 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="113"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="118"/>
         <source>deleted</source>
         <translation>izbrisano</translation>
     </message>
@@ -2254,46 +2275,46 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
         <translation>Premaknjeno v %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="92"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="98"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="85"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="97"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="103"/>
         <source>downloading</source>
         <translation>prejemanje</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="83"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="95"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="101"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="88"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="100"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="106"/>
         <source>uploading</source>
         <translation>pošiljanje</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="89"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="94"/>
         <source>inactive</source>
         <translation>nedejavno</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="104"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="109"/>
         <source>starting</source>
         <translation>začenjanje</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="107"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="112"/>
         <source>finished</source>
         <translation>končano</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="110"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="115"/>
         <source>delete</source>
         <translation>izbriši</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="116"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="121"/>
         <source>move</source>
         <translation>premakni</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="119"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="124"/>
         <source>moved</source>
         <translation>premaknjeno</translation>
     </message>
