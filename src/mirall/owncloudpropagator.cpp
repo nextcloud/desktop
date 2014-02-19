@@ -895,6 +895,8 @@ void PropagateLocalRename::start()
 
 void PropagateRemoteRename::start()
 {
+    qDebug() << Q_FUNC_INFO << _item._file << "-->"<< _item._renameTarget;
+
     if (_item._file == _item._renameTarget) {
         if (!_item._isDirectory) {
             // The parents has been renamed already so there is nothing more to do.
@@ -1061,7 +1063,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
             continue;
         }
 
-        while (!item._file.startsWith(directories.top().first)) {
+        while (!item.destination().startsWith(directories.top().first)) {
             directories.pop();
         }
 
@@ -1075,7 +1077,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
             } else {
                 directories.top().second->append(dir);
             }
-            directories.push(qMakePair(item._file + "/" , dir));
+            directories.push(qMakePair(item.destination() + "/" , dir));
         } else if (PropagateItemJob* current = createJob(item)) {
             directories.top().second->append(current);
         }
@@ -1126,7 +1128,7 @@ void PropagateDirectory::start()
 
 void PropagateDirectory::proceedNext(SyncFileItem::Status status)
 {
-    if (status == SyncFileItem::FatalError) {
+    if (status == SyncFileItem::FatalError || (_current == -1 && status != SyncFileItem::Success)) {
         emit finished(status);
         return;
     } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
