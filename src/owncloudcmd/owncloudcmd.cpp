@@ -105,6 +105,8 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
         }
         options->target_url.append("remote.php/webdav/");
     }
+    if (options->target_url.startsWith("http"))
+        options->target_url.replace(0, 4, "owncloud");
     options->source_dir = args.takeLast();
     if( !QFile::exists( options->source_dir )) {
         std::cerr << "Source dir does not exists.";
