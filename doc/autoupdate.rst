@@ -51,21 +51,23 @@ Windows
 
 There are two alternative approaches:
 
-1. In ``HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud``, add a key of type DWORD
-   with the value ``skipUpdateCheck`` and the value 1 to the machine. This key
+1. In ``HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud``, add a key ``skipUpdateCheck`` (of type DWORD) with the value 1 to the machine. This key
    can be manually overrideen by the same value in ``HKEY_CURRENT_USER``.
 
-2. In ``HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud``, add a key of
-   type DWORD  the value ``skipUpdateCheck`` and the value 1 to the machine.
+2. In ``HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud``, add a key
+   ``skipUpdateCheck`` (of type DWORD) with the value 1 to the machine.
    Setting the value here cannot be overridden by the user and is the preferred
    way to control the updater behavior via Group Policies.
 
 Mac OS X
 ^^^^^^^^
 
-You can disable the update check via the system-wide ``.plist`` file located
+You can disable the update check via a system-wide ``.plist`` file located
 at ``/Library/Preferences/com.owncloud.desktopclient.plist``. Add a new root
 level item of type bool and the name ``skipUpdateCheck`` and set it to ``true``.
+You can also just copy the file
+``owncloud.app/Contents/Resources/deny_autoupdate_com.owncloud.desktopclient.plist```
+to ``/Library/Preferences/com.owncloud.desktopclient.plist``.
 
 Linux
 ^^^^^

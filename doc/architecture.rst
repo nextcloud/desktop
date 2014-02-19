@@ -123,7 +123,7 @@ database. If the ETag is still the same, the file has not changed.
 
 In case a file has changed on both, the local and the remote repository since
 the last sync run, it can not easily be decided which version of the file is
- the one that should be used. However, changes to any side must not be lost.
+the one that should be used. However, changes to any side must not be lost.
 
 That is called a **conflict case**. The client solves it by creating a conflict
 file of the older of the two files and save the newer one under the original

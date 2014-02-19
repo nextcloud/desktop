@@ -404,7 +404,7 @@ QVariant MirallConfigFile::getValue(const QString& param, const QString& group,
     QVariant systemSetting;
     qDebug() << Q_FUNC_INFO;
     if (Utility::isMac()) {
-            QSettings systemSettings(QSettings::NativeFormat, QSettings::SystemScope, QCoreApplication::organizationName());
+            QSettings systemSettings(QLatin1String("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"), QSettings::NativeFormat);
             if (!group.isEmpty()) {
                 systemSettings.beginGroup(group);
             }

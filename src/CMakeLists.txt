@@ -448,6 +448,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mirall)
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS ${owncloudcmd_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
     if (SPARKLE_FOUND)
+        install(FILES ${CMAKE_SOURCE_DIR}/admin/osx/deny_autoupdate_com.owncloud.desktopclient.plist
+                DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources)
         install(FILES ${CMAKE_SOURCE_DIR}/admin/osx/sparkle/dsa_pub.pem
                 DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources)
     endif()

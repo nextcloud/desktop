@@ -1,12 +1,12 @@
 Setting up an Account
 =====================
 
-If no account has been configured, ownCloud Client will automatically assist
-you in connecting to your ownCloud Server after the application has been
+If no account has been configured, the ownCloud Client will automatically
+assist in connecting to your ownCloud server after the application has been
 started.
 
-As a first step, specify the URL to your Server, just
-like you would when you open your ownCloud instance inside a browser.
+As a first step, specify the URL to your Server. This is the same address
+that is used in the browser.
 
 .. image:: images/wizard_url.png
    :scale: 50 %
@@ -16,22 +16,30 @@ like you would when you open your ownCloud instance inside a browser.
    This makes it easy for third parties to intercept your communication, and
    getting hold of your password!
 
-Next, you are prompted for your username and password. Again, use the same
-credentials that you would use to log on via the web interface.
+Next, enter the username and password.  These are the same credentials used
+to log into the web interface.
 
 .. image:: images/wizard_user.png
    :scale: 50 %
 
 Finally, choose the folder that ownCloud Client is supposed to sync the
 contents of your ownCloud account with. By default, this is a folder
-called `ownCloud`, which will reside in your home directory.
+called `ownCloud`, which will be created in the home directory.
 
 .. image:: images/wizard_targetfolder.png
    :scale: 50 %
 
-After pressing `Connect`, ownCloud Client will commence with the syncing
-process. The next screen will give you the opportunity to review your
-settings:
+At this time, the synchronization between the root directories of the
+ownCloud server will begin.
 
 .. image:: images/wizard_overview.png
    :scale: 50 %
+
+If selecting a local folder that already contains data, there are
+two options that exist.
+
+* Keep local data: If selected, the files in the local folder on the
+  client will be synced up to the ownCloud server.
+* Start a clean sync: If selected, all files in the local folder on
+  the client will be deleted and therefore not synced to the ownCloud
+  server.

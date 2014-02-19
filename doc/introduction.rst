@@ -1,23 +1,19 @@
 Introduction
 ============
 
-This is the documentation for the ownCloud Sync Client, also referred to as
-the ownCloud Client.
+The ownCloud Sync Client is a desktop program installed on a user’s computer.
+It allows a user to specify one or more directories on the local machine to
+sync to the ownCloud server.  It allows the user to always have the latest
+files wherever they may be.  When a change is made to the file on the
+computer, it will sync to the ownCloud server via the sync client.
 
-The ownCloud Sync Client is a desktop program you install on your computer.
-Specify one ore more directories on the local machine to sync your ownCloud
-server, and always have your latest files wherever you are. Make a change to the
-files on one computer, it will flow across the others using these desktop sync
-clients.
-
-ownCloud Client is available for Windows, Mac OS X and various Linux
-distributions. See below for details on how to obtain the Client.
+The ownCloud Sync Client is available for Windows, MAC OS X, and various
+Linux distributions.
 
 Obtaining the Client
 --------------------
 
-The latest version of the ownCloud Client can be obtained at
-http://owncloud.org/sync-clients/.
+The latest version of the Client can be obtained on the ownCloud web site.
 
 ownCloud client for **Windows** is provided as a NSIS-based setup file for
 machine-wide install. Installing the ownCloud client on **Mac OS** follows
@@ -29,9 +25,8 @@ the normal app bundle installation pattern:
    folder.
 3. On the right hand side From ``Applications``, choose ``ownCloud``.
 
-The ownCloud Client is also provided as in a convenient repository for a wide
-range of popular **Linux distributions**. If you want to build the sources
-instead.
+The ownCloud client is also provided as in a convenient repository for a wide
+range of popular **Linux distributions**.
 
 Supported distributions are Fedora, openSUSE, Ubuntu and Debian.
 To support other distributions, a is required, see :ref:`building-label`
