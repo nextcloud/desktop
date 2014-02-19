@@ -119,12 +119,20 @@ protected:
      */
     void limitBandwidth(qint64 progress, qint64 limit);
 
-    bool checkForProblemsWithShared();
+    bool checkForProblemsWithShared(const QString& msg);
+
+    /*
+     * set a custom restore job message that is used if the restore job succeeded.
+     * It is displayed in the activity view.
+     */
+    QString restoreJobMsg();
+    void setRestoreJobMsg( const QString& msg = QString() );
 
     QElapsedTimer _lastTime;
     qint64        _lastProgress;
     int           _httpStatusCode;
     SyncFileItem  _item;
+    QString       _restoreJobMsg;
 
 protected slots:
     void slotRestoreJobCompleted(const SyncFileItem& );

@@ -106,10 +106,12 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
  *
  * Return true if the problem is handled.
  */
-bool PropagateItemJob::checkForProblemsWithShared()
+bool PropagateItemJob::checkForProblemsWithShared(const QString& msg)
 {
     QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
     int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+
+    PropagateItemJob *newJob = NULL;
 
     if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item._file )) {
         if( _item._type != SyncFileItem::Directory ) {
@@ -118,21 +120,25 @@ bool PropagateItemJob::checkForProblemsWithShared()
             SyncFileItem downloadItem(_item);
             downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
             downloadItem._dir = SyncFileItem::Down;
-            _restoreJob.reset(new PropagateDownloadFile(_propagator, downloadItem));
+            newJob = new PropagateDownloadFile(_propagator, downloadItem);
         } else {
             // Directories are harder to recover.
             // But just re-create the directory, next sync will be able to recover the files
             SyncFileItem mkdirItem(_item);
             mkdirItem._instruction = CSYNC_INSTRUCTION_SYNC;
             mkdirItem._dir = SyncFileItem::Down;
-            _restoreJob.reset(new PropagateLocalMkdir(_propagator, mkdirItem));
+            newJob = new PropagateLocalMkdir(_propagator, mkdirItem);
             // Also remove the inodes and fileid from the db so no further renames are tried for
             // this item.
             _propagator->_journal->avoidRenamesOnNextSync(_item._file);
         }
-        connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
-                this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
-        _restoreJob->start();
+        if( newJob )  {
+            newJob->setRestoreJobMsg(msg);
+            _restoreJob.reset(newJob);
+            connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
+                    this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
+            _restoreJob->start();
+        }
         return true;
     }
     return false;
@@ -140,13 +146,29 @@ bool PropagateItemJob::checkForProblemsWithShared()
 
 void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
 {
+    QString msg;
+    if(_restoreJob) {
+        msg = _restoreJob->restoreJobMsg();
+        _restoreJob->setRestoreJobMsg();
+    }
+
     if( item._status == SyncFileItem::Success ) {
-        done( SyncFileItem::SoftError, tr("The file was removed from a read only share. The file has been restored."));
+        done( SyncFileItem::SoftError, msg);
     } else {
-        done( item._status, tr("A file was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
+        done( item._status, tr("A file or directory was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
     }
 }
 
+
+QString PropagateItemJob::restoreJobMsg()
+{
+    return _restoreJobMsg;
+}
+
+void PropagateItemJob::setRestoreJobMsg( const QString& msg )
+{
+    _restoreJobMsg = msg;
+}
 
 // compare two files with given filename and return true if they have the same content
 static bool fileEquals(const QString &fn1, const QString &fn2) {
@@ -241,7 +263,7 @@ void PropagateRemoteRemove::start()
     qDebug() << "** DELETE " << uri.data();
     int rc = ne_delete(_propagator->_session, uri.data());
 
-    if( checkForProblemsWithShared() ) {
+    if( checkForProblemsWithShared(tr("The file has been removed from a read only share. It was restored.")) ) {
         return;
     }
 
@@ -387,8 +409,26 @@ void PropagateUploadFile::start()
                 done( SyncFileItem::SoftError, errMsg );
             } else {
                 // Other HBF error conditions.
-                // FIXME: find out the error class.
                 _item._httpErrorCode = hbf_fail_http_code(trans.data());
+                if( _item._httpErrorCode == 403 && _propagator->isInSharedDirectory(_item._file) ) {
+                    // a read only share file has been modified. Conflict it and
+                    // restore the original file.
+                    QString fn = _propagator->_localDir + _item._file;
+                    QFile f(fn);
+                    QString conflictFileName(fn);
+                    int dotLocation = conflictFileName.lastIndexOf('.');
+
+                    QString timeString = Utility::qDateTimeFromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss");
+                    conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+                    if (!f.rename(conflictFileName)) {
+                        //If the rename fails, don't replace it.
+                        done(SyncFileItem::NormalError, f.errorString());
+                        return;
+                    }
+                    if( checkForProblemsWithShared(tr("The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file."))) {
+                        return;
+                    }
+                }
                 done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
             }
             return;
@@ -925,7 +965,7 @@ void PropagateRemoteRename::start()
 
         int rc = ne_move(_propagator->_session, 1, uri1.data(), uri2.data());
 
-        if( checkForProblemsWithShared()) {
+        if( checkForProblemsWithShared(tr("The file was renamed but is part of a read only share. The original file was restored."))) {
             return;
         }
 
