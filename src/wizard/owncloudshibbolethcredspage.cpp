@@ -38,8 +38,8 @@ void OwncloudShibbolethCredsPage::setupBrowser()
     }
     OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard*>(wizard());
     _browser = new ShibbolethWebView(ocWizard->account());
-    connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
-            this, SLOT(slotShibbolethCookieReceived(QNetworkCookie)));
+    connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
+            this, SLOT(slotShibbolethCookieReceived(QNetworkCookie, Account*)));
     connect(_browser, SIGNAL(viewHidden()),
             this, SLOT(slotViewHidden()));
     connect(_browser, SIGNAL(otherCookiesReceived(QList<QNetworkCookie>, QUrl)),
