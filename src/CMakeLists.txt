@@ -446,6 +446,7 @@ endif()
 
 set(owncloudcmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 set(OWNCLOUDCMD_SRC owncloudcmd/owncloudcmd.cpp)
+qt_wrap_cpp(OWNCLOUDCMD_MOCS owncloudcmd/owncloudcmd.cpp)
 add_executable(${owncloudcmd_NAME}  ${OWNCLOUDCMD_SRC})
 qt5_use_modules(${owncloudcmd_NAME} Network Sql)
 set_target_properties(${owncloudcmd_NAME} PROPERTIES

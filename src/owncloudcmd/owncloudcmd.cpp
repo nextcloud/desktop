@@ -32,6 +32,28 @@
 
 using namespace Mirall;
 
+class OwncloudCmd : public QObject {
+    Q_OBJECT
+public:
+    OwncloudCmd() : QObject() { }
+public slots:
+    void transmissionProgressSlot(Progress::Info pI) {
+        static QElapsedTimer localTimer;
+        static QElapsedTimer remoteTimer;
+        if (pI.kind == Progress::StartLocalUpdate) {
+            localTimer.start();
+        } else if (pI.kind == Progress::EndLocalUpdate) {
+            // There is also localTimer.nsecsElapsed()
+            qDebug() << "Local Update took" << localTimer.elapsed() << "msec";
+        } else if (pI.kind == Progress::StartRemoteUpdate) {
+            remoteTimer.start();
+        } else if (pI.kind == Progress::EndRemoteUpdate) {
+            qDebug() << "Remote Update took" << remoteTimer.elapsed() << "msec";
+        }
+    }
+};
+#include "owncloudcmd/moc_owncloudcmd.cpp"
+
 
 int getauth(const char* prompt, char* buf, size_t len, int, int, void*)
 {
@@ -47,6 +69,7 @@ struct CmdOptions {
     QString target_url;
     QString config_directory;
     QString proxy;
+    bool silent;
 };
 
 void help()
@@ -59,6 +82,7 @@ void help()
     std::cout << "uses the setting from a configured sync client." << std::endl;
     std::cout << std::endl;
     std::cout << "Options:" << std::endl;
+    std::cout << "  --silent               Don't be so verbose" << std::endl;
     std::cout << "  --confdir = configdir: Read config from there." << std::endl;
     std::cout << "  --httpproxy = proxy:   Specify a http proxy to use." << std::endl;
     std::cout << "                         Proxy is http://server:port" << std::endl;
@@ -83,6 +107,8 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
         }
         options->target_url.append("remote.php/webdav/");
     }
+    if (options->target_url.startsWith("http"))
+        options->target_url.replace(0, 4, "owncloud");
     options->source_dir = args.takeLast();
     if( !QFile::exists( options->source_dir )) {
         std::cerr << "Source dir does not exists.";
@@ -100,6 +126,8 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
             options->config_directory = it.next();
         } else if( option == "--httpproxy" && !it.peekNext().startsWith("-")) {
             options->proxy = it.next();
+        } else if( option == "--silent") {
+            options->silent = true;
         } else {
             help();
         }
@@ -144,7 +172,7 @@ int main(int argc, char **argv) {
         qFatal("ne_sock_init failed!");
     }
 
-    csync_set_log_level(11);
+    csync_set_log_level(options.silent ? 1 : 11);
     csync_enable_conflictcopys(_csync_ctx);
     Logger::instance()->setLogFile("-");
 
@@ -192,9 +220,12 @@ int main(int argc, char **argv) {
         clientProxy.setCSyncProxy(QUrl(url), _csync_ctx);
     }
 
+    OwncloudCmd owncloudCmd;
+
     SyncJournalDb db(options.source_dir);
     CSyncThread csyncthread(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&csyncthread, SIGNAL(finished()), &app, SLOT(quit()));
+    QObject::connect(&csyncthread, SIGNAL(transmissionProgress(Progress::Info)), &owncloudCmd, SLOT(transmissionProgressSlot(Progress::Info)));
     csyncthread.startSync();
 
     app.exec();

@@ -64,6 +64,11 @@ QString Progress::asResultString( const Progress::Info& progress)
     case EndRename:
         re = QCoreApplication::translate( "progress", "Moved to %1").arg(progress.rename_target);
         break;
+    case StartLocalUpdate:
+    case EndLocalUpdate:
+    case StartRemoteUpdate:
+    case EndRemoteUpdate:
+        break; // FIXME
     default:
         Q_ASSERT(false);
     }
@@ -118,6 +123,11 @@ QString Progress::asActionString( Kind kind )
     case EndRename:
         re = QCoreApplication::translate( "progress", "moved");
         break;
+    case StartLocalUpdate:
+    case EndLocalUpdate:
+    case StartRemoteUpdate:
+    case EndRemoteUpdate:
+        break; // FIXME
     default:
         Q_ASSERT(false);
     }

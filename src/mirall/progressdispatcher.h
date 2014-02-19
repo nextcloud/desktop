@@ -46,7 +46,11 @@ namespace Progress
         EndRename,
         SoftError,
         NormalError,
-        FatalError
+        FatalError,
+        StartLocalUpdate,
+        EndLocalUpdate,
+        StartRemoteUpdate,
+        EndRemoteUpdate
     };
 
     struct Info {
