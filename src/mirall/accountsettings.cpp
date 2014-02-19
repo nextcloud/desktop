@@ -635,6 +635,12 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     case Progress::NormalError:
     case Progress::FatalError:
         break;
+    case Progress::StartLocalUpdate:
+    case Progress::EndLocalUpdate:
+    case Progress::StartRemoteUpdate:
+    case Progress::EndRemoteUpdate:
+        // FIXME could be interesting to show this to the user
+        break;
     }
 
     QString fileProgressString;
