@@ -179,15 +179,30 @@ QString HttpCredentials::fetchUser(Account* account)
 
 void HttpCredentials::fetch(Account *account)
 {
+    if( !account ) {
+        return;
+    }
+
     fetchUser(account);
+
+    QSettings *settings = account->settingsWithGroup(Theme::instance()->appName());
+    QString kck = keychainKey(account->url().toString(), _user );
+
+    QString key = QString::fromLatin1( "%1/data" ).arg( kck );
+    if( settings && settings->contains(key) ) {
+        // Clean the password from the config file if it is in there.
+        // we do not want a security problem.
+        settings->remove(key);
+        key = QString::fromLatin1( "%1/type" ).arg( kck );
+        settings->remove(kck);
+        settings->sync();
+    }
+
     if (_ready) {
         Q_EMIT fetched();
     } else {
         ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
-        if( ! account->property("fetch_from_old_place").isValid() ) {
-            job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
-        }
-        job->setInsecureFallback(true);
+        job->setInsecureFallback(false);
         job->setKey(keychainKey(account->url().toString(), _user));
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
         job->setProperty("account", QVariant::fromValue(account));
@@ -212,19 +227,11 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
     switch (error) {
     case NoError:
         _ready = true;
-        account->setProperty("fetch_from_old_place", QVariant());
         Q_EMIT fetched();
         break;
     default:
         if (!_user.isEmpty()) {
             bool ok;
-            // In case we haven't tried at the old place yet, do!
-            if( !account->property("fetch_from_old_place").isValid() ) {
-                account->setProperty("fetch_from_old_place", QVariant(true) );
-
-                fetch(account);
-                return;
-            }
             QString pwd = queryPassword(&ok);
             if (ok) {
                 _password = pwd;
@@ -268,8 +275,7 @@ void HttpCredentials::persist(Account *account)
 {
     account->setCredentialSetting(QLatin1String(userC), _user);
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
-    job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
-    job->setInsecureFallback(true);
+    job->setInsecureFallback(false);
     connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
     job->setKey(keychainKey(account->url().toString(), _user));
     job->setTextData(_password);
