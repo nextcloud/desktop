@@ -42,8 +42,6 @@ public:
 
     bool checkAccountExists(bool openSettings);
 
-    QuotaInfo *quotaInfo() const;
-
 signals:
     void setupProxy();
 
@@ -93,8 +91,6 @@ private:
     QAction *_actionRecent;
     QAction *_actionHelp;
     QAction *_actionQuit;
-
-    QuotaInfo *_quotaInfo;
 
     QSignalMapper *_folderOpenActionMapper;
     QSignalMapper *_recentItemsMapper;

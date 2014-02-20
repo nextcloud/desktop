@@ -291,7 +291,10 @@ void Folder::etagRetreived(const QString& etag)
 
 void Folder::slotNetworkUnavailable()
 {
-    AccountManager::instance()->account()->setState(Account::Disconnected);
+    Account *account = AccountManager::instance()->account();
+    if (account && account->state() == Account::Connected) {
+        account->setState(Account::Disconnected);
+    }
     _syncResult.setStatus(SyncResult::Unavailable);
     emit syncStateChange();
 }

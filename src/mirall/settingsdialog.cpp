@@ -78,10 +78,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
              this, SLOT(slotSyncStateChange(QString)));
 
-    QuotaInfo *quotaInfo = gui->quotaInfo();
-    connect( quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
-             _accountSettings, SLOT(slotUpdateQuota(qint64,qint64)));
-    _accountSettings->slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
     connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              gui, SLOT(slotFolderOpenAction(QString)));

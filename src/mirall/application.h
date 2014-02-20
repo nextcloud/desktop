@@ -76,8 +76,9 @@ protected slots:
     void slotLogin();
     void slotLogout();
     void slotCleanup();
-    void slotAccountChanged(Account *newAccount, Account *oldAccount);
+    void slotAccountChanged(Account *newAccount, Account *oldAccount = 0);
     void slotCredentialsFetched();
+    void slotToggleFolderman(int state);
 
 private:
     void setHelp();
