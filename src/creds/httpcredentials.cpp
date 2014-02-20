@@ -223,24 +223,30 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
     _password = readJob->textData();
     Account *account = qvariant_cast<Account*>(readJob->property("account"));
 
+    if( _user.isEmpty()) {
+        qDebug() << "Strange: User is empty!";
+    }
+
     QKeychain::Error error = job->error();
-    switch (error) {
-    case NoError:
+
+    if( !_password.isEmpty() && error == NoError ) {
+        // All cool, the keychain did not come back with error.
+        // Still, the password can be empty which indicates a problem and
+        // the password dialog has to be opened.
         _ready = true;
-        Q_EMIT fetched();
-        break;
-    default:
-        if (!_user.isEmpty()) {
-            bool ok;
-            QString pwd = queryPassword(&ok);
-            if (ok) {
-                _password = pwd;
-                _ready = true;
-                persist(account);
-            }
-            emit fetched();
+        emit fetched();
+    } else {
+        if( error != NoError ) {
+            qDebug() << "Error while reading password" << job->errorString();
         }
-        qDebug() << "Error while reading password" << job->errorString();
+        bool ok;
+        QString pwd = queryPassword(&ok);
+        if (ok) {
+            _password = pwd;
+            _ready = true;
+            persist(account);
+        }
+        emit fetched();
     }
 }
 
