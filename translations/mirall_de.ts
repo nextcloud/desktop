@@ -1399,17 +1399,17 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation wurde durch den Nutzer abgebrochen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Kein E-Tag vom Server empfangen, bitte Proxy / Gateway überprüfen</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="401"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Es wurde ein unterschiedlicher E-Tag zum Fortfahren empfangen. Bitte beim nächsten mal nochmal versuchen.</translation>
     </message>
 </context>
 <context>
@@ -1433,12 +1433,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>Die Datei wurde von einer Nur-Lese-Freigabe gelöscht. Die Datei wurde wiederhergestellt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Eine Datei wurde von einer Nur-Lese-Freigabe wiederhergestellt, aber die Wiederherstellung ist mit folgendem Fehler fehlgeschlagen: %1</translation>
     </message>
 </context>
 <context>
@@ -1460,12 +1460,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Eine lokale Datei wurde während der Synchronisation geändert, synchronisieren Sie nochmals sobald die aktuelle Datei vollständig angekommen ist</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation wurde durch den Nutzer abgebrochen.</translation>
     </message>
 </context>
 <context>

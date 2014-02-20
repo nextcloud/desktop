@@ -1396,7 +1396,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizaciójn abortada por el usuario.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
@@ -1457,12 +1457,12 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Los archivos locales han cambiado durante la sincronización, la primera vez ha funcionado completamente</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizaciójn abortada por el usuario.</translation>
     </message>
 </context>
 <context>

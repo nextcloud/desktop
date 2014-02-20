@@ -1398,17 +1398,17 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje je bilo prekinjeno s strani uporabnika</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Ni prejete oznake s strežnika. Preveriti je treba podatke posredovalnega strežnika ali prehoda.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="401"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Prejeta je različna oznaka za nadaljevanje opravila. Ponovni poskus bo izveden kasneje.</translation>
     </message>
 </context>
 <context>
@@ -1432,12 +1432,12 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka je bila odstranjena iz mesta v souporabi, vendar je uspešno obnovljena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka je bila odstranjena iz mesta v souporabi, ki je le za branje, obnavljanje pa je spodletelo: %1</translation>
     </message>
 </context>
 <context>
@@ -1459,12 +1459,12 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Krajevna datoteka je bila med usklajevanjem spremenjena. Usklajena bo, ko bo shranjena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje je bilo prekinjeno s strani uporabnika</translation>
     </message>
 </context>
 <context>

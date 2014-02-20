@@ -1398,17 +1398,17 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizace zrušena uživatelem.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Ze serveru nebyl obdržen E-Tag, zkontrolujte proxy/bránu</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="401"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Obdrželi jsme jiný E-Tag pro pokračování. Zkusím znovu příště.</translation>
     </message>
 </context>
 <context>
@@ -1432,12 +1432,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor by odebrán ze sdílení pouze pro čtení. Soubor byl obnoven.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Soubor by odebrán ze sdílení pouze pro čtení, ale jeho obnovení selhalo: %1</translation>
     </message>
 </context>
 <context>
@@ -1459,12 +1459,12 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Místní soubor byl změněn během synchronizace, bude sesynchronizán, jakmile bude kompletní</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizace zrušena uživatelem.</translation>
     </message>
 </context>
 <context>

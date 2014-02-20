@@ -1396,17 +1396,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>A sincronização foi abortada pelo usuário.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma E-Tag recebida do servidor, verifique Proxy / gateway</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="401"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Recebemos um e-Tag diferente para resumir. Tente uma próxima vez.</translation>
     </message>
 </context>
 <context>
@@ -1430,12 +1430,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo foi removido de um compartilhamento somente de leitura. O arquivo foi restaurado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Um arquivo foi removido de um compartilhamento de somente leitura, mas a restauração falhou: %1</translation>
     </message>
 </context>
 <context>
@@ -1457,12 +1457,12 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo local alterado durante a sincronização, sincronizando uma vez que chegou completamente</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>A sincronização foi abortada pelo usuário.</translation>
     </message>
 </context>
 <context>
@@ -1470,12 +1470,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="197"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>O servidor não reconheceu o último pedaço. (Nenhuma e-etiqueta estava presente)</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="242"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>Sem extensão X-OC-mtime, ownCloud 5 é necessário</translation>
     </message>
 </context>
 <context>
@@ -1835,7 +1835,7 @@ Certifique-se que sua conexão de rede está funcionando.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="205"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versão %1 Para mais informações, visite &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;. &lt;/p&gt; Direitos autorais ownCloud, Inc. &lt;p&gt;&lt;p&gt; Distribuído por 4% e licenciado sob a GNU General Public License (GPL) Versão 2.0.&lt;br&gt;%5 e o logotipo 5% são marcas comerciais registradas da 4% no de Estados Unidos, outros países, ou ambos. &lt;/p&gt;</translation>
     </message>
 </context>
 <context>

@@ -1425,12 +1425,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>文件只读共享已取消，文件恢复完毕</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>一个文件已经解除只读共享，但是恢复失败: %1</translation>
     </message>
 </context>
 <context>

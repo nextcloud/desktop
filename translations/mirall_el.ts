@@ -1398,7 +1398,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Ο συγχρονισμός ματαιώθηκε από το χρήστη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
@@ -1432,12 +1432,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο διαγράφηκε από ένα διαμοιρασμένο κατάλογο χωρίς άδεια εγγραφής. Το αρχείο επαναφέρθηκε.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ένα αρχείο διαγράφηκε από ένα διαμοιρασμένο κατάλογο χωρίς άδεια εγγραφής, αλλά η επαναφορά απέτυχε: %1</translation>
     </message>
 </context>
 <context>
@@ -1459,12 +1459,12 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Το τοπικό αρχείο τροποποιήθηκε κατά τη διάρκεια του συγχρονισμού, θα συγχρονιστεί και πάλι όταν φτάσει πλήρως</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Ο συγχρονισμός ματαιώθηκε από το χρήστη.</translation>
     </message>
 </context>
 <context>

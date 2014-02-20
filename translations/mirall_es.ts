@@ -1398,17 +1398,17 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>La sincronización ha sido Interrumpida por el usuario</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>No se recibió ninguna e-tag del servidor, revisar el proxy/gateway</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="401"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Se recibió una e-tag distinta para reanudar. Se intentará nuevamente.</translation>
     </message>
 </context>
 <context>
@@ -1432,12 +1432,12 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo fue retirado de una carpeta compartida en modo de solo lectura. El archivo ha sido restaurado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Un archivo fue retirado de una carpeta compartida en modo de solo lectura, pero su restauración falló: %1</translation>
     </message>
 </context>
 <context>
@@ -1459,12 +1459,12 @@ No se recomienda usarlo.</translation>
         <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Fichero local modificado mientras se sincronizaba, sincronice otra vez cuando termine de editar</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>La sincronización ha sido Interrumpida por el usuario</translation>
     </message>
 </context>
 <context>
@@ -1472,12 +1472,12 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="197"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>El servidor no reconoció la última parte. (No había una e-tag presente.)</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="242"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>No hay una extensión X-OC-MTime, se requiere ownCloud 5</translation>
     </message>
 </context>
 <context>

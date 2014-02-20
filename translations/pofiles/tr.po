@@ -1397,17 +1397,17 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme kullanıcı tarafından iptal edildi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan E-Etiket alınamadı, Vekil sunucu/Ağ geçidini denetleyin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="401"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Devam etmek üzere farklı bir E-Etiket altık. Sonraki işlemde yeniden denenecek.</translation>
     </message>
 </context>
 <context>
@@ -1431,12 +1431,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya salt okunur bir paylaşımdan kaldırılmıştı. Dosya geri yüklendi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Dosya bir salt okunur paylaşımdan kaldırılmıştı, ancak geri yükleme başarısız oldu: %1</translation>
     </message>
 </context>
 <context>
@@ -1458,12 +1458,12 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme sırasında yerel dosya değişti, tamamen ulaştıktan sonra bir kez eşitlenecek</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme kullanıcı tarafından iptal edildi.</translation>
     </message>
 </context>
 <context>

@@ -1398,17 +1398,17 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseering katkestati kasutaja poolt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Ühtegi E-Silti ei saabunud serverist, kontrolli puhverserverit/lüüsi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="401"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Saime jätkamiseks erineva E-Sildi. Proovin järgmine kord uuesti.</translation>
     </message>
 </context>
 <context>
@@ -1432,12 +1432,12 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>Fail oli kustutatud kirjutamisõiguseta kataloogist, kuid on nüüd taastatud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fail oli eemaldatud kirjutamisõiguseta kataloogist ning taastamine ebaõnnestus: %1</translation>
     </message>
 </context>
 <context>
@@ -1459,12 +1459,12 @@ Selle kasutamine pole soovitatav.</translation>
         <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="203"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik fail muutus sünkroniseerimise ajal, sünkroniseerin kuni ülekanne on täielik</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseering katkestati kasutaja poolt.</translation>
     </message>
 </context>
 <context>

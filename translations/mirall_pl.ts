@@ -1394,7 +1394,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizacja anulowane przez użytkownika.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
@@ -1428,7 +1428,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="98"/>
         <source>The file was removed from a read only share. The file has been restored.</source>
-        <translation type="unfinished"/>
+        <translation>Plik został usunięty z udziału tylko do odczytu. Plik został przywrócony.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
@@ -1460,7 +1460,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizacja anulowane przez użytkownika.</translation>
     </message>
 </context>
 <context>
