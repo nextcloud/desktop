@@ -115,10 +115,17 @@ bool PropagateItemJob::checkForProblemsWithShared(const QString& msg)
 
     if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item._file )) {
         if( _item._type != SyncFileItem::Directory ) {
-            // the file was removed locally from a read only Shared sync
-            // the file is gone locally and it should be recovered.
             SyncFileItem downloadItem(_item);
-            downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
+            if (downloadItem._instruction == CSYNC_INSTRUCTION_NEW) {
+                // don't try to recover pushing new files
+                return false;
+            } else if (downloadItem._instruction == CSYNC_INSTRUCTION_SYNC) {
+                // we modified the file locally, jsut create a conflict then
+                downloadItem._instruction = CSYNC_INSTRUCTION_CONFLICT;
+            } else {
+                // the file was removed or renamed, just recover the old one
+                downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
+            }
             downloadItem._dir = SyncFileItem::Down;
             newJob = new PropagateDownloadFile(_propagator, downloadItem);
         } else {
@@ -152,7 +159,7 @@ void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
         _restoreJob->setRestoreJobMsg();
     }
 
-    if( item._status == SyncFileItem::Success ) {
+    if( item._status == SyncFileItem::Success ||  item._status == SyncFileItem::Conflict) {
         done( SyncFileItem::SoftError, msg);
     } else {
         done( item._status, tr("A file or directory was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
@@ -409,26 +416,9 @@ void PropagateUploadFile::start()
                 done( SyncFileItem::SoftError, errMsg );
             } else {
                 // Other HBF error conditions.
-                _item._httpErrorCode = hbf_fail_http_code(trans.data());
-                if( _item._httpErrorCode == 403 && _propagator->isInSharedDirectory(_item._file) ) {
-                    // a read only share file has been modified. Conflict it and
-                    // restore the original file.
-                    QString fn = _propagator->_localDir + _item._file;
-                    QFile f(fn);
-                    QString conflictFileName(fn);
-                    int dotLocation = conflictFileName.lastIndexOf('.');
-
-                    QString timeString = Utility::qDateTimeFromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss");
-                    conflictFileName.insert(dotLocation, "_conflict-" + timeString);
-                    if (!f.rename(conflictFileName)) {
-                        //If the rename fails, don't replace it.
-                        done(SyncFileItem::NormalError, f.errorString());
-                        return;
-                    }
-                    if( checkForProblemsWithShared(tr("The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file."))) {
-                        return;
-                    }
-                }
+                if(checkForProblemsWithShared(tr("The file was edited locally but is part of a read only share. "
+                                                 "It is restored and your edit is in the conflict file.")))
+                    return;
                 done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
             }
             return;
