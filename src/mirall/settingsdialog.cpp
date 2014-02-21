@@ -128,10 +128,11 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::addAccount(const QString &title, QWidget *widget)
 {
-    _accountItem = new QListWidgetItem(Theme::instance()->syncStateIcon(SyncResult::Undefined, true), title);
+    _accountItem = new QListWidgetItem(title);
     _accountItem->setSizeHint(QSize(0, 32));
     _ui->labelWidget->addItem(_accountItem);
     _ui->stack->addWidget(widget);
+    slotSyncStateChange();
 
 }
 
@@ -141,9 +142,11 @@ void SettingsDialog::slotSyncStateChange(const QString& alias)
     SyncResult state = folderMan->accountStatus(folderMan->map().values());
     _accountItem->setIcon(Theme::instance()->syncStateIcon(state.status()));
 
-    Folder *folder = folderMan->folder(alias);
-    if( folder ) {
-        _accountSettings->slotUpdateFolderState(folder);
+    if (!alias.isEmpty()) {
+        Folder *folder = folderMan->folder(alias);
+        if( folder ) {
+            _accountSettings->slotUpdateFolderState(folder);
+        }
     }
 }
 

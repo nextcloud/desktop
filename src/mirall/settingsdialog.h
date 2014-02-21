@@ -45,7 +45,7 @@ public:
     void setGeneralErrors( const QStringList& errors );
 
 public slots:
-    void slotSyncStateChange(const QString& alias);
+    void slotSyncStateChange(const QString& alias = QString());
     void slotRefreshResultList();
     void showActivityPage();
 
