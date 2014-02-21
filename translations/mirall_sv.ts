@@ -457,12 +457,6 @@
         <translation>%1 är inte läsbar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="311"/>
-        <source>File %1: %2</source>
-        <translation>Fil %1: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folder.cpp" line="312"/>
         <location filename="../src/mirall/folder.cpp" line="392"/>
         <source>File %1</source>
         <translation>Fil %1</translation>

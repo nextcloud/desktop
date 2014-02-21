@@ -457,12 +457,6 @@
         <translation>%1 ezin da irakurri.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="311"/>
-        <source>File %1: %2</source>
-        <translation>%1 Fitxategia: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folder.cpp" line="312"/>
         <location filename="../src/mirall/folder.cpp" line="392"/>
         <source>File %1</source>
         <translation>%1 Fitxategia</translation>

@@ -458,12 +458,6 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
         <translation>Não é possível ler %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="311"/>
-        <source>File %1: %2</source>
-        <translation>Ficheiro %1: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folder.cpp" line="312"/>
         <location filename="../src/mirall/folder.cpp" line="392"/>
         <source>File %1</source>
         <translation>Ficheiro %1</translation>

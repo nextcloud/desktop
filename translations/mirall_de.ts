@@ -458,12 +458,6 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
         <translation>%1 ist nicht lesbar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="311"/>
-        <source>File %1: %2</source>
-        <translation>Datei %1: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folder.cpp" line="312"/>
         <location filename="../src/mirall/folder.cpp" line="392"/>
         <source>File %1</source>
         <translation>Datei %1</translation>
@@ -1473,12 +1467,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="197"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Der Server hat den letzten Block nicht bestätigt. (Der E-Tag war nicht vorhanden)</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="242"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>Keine X-OC-MTime Erweiterung vorhanden, owncloud 5 ist erforderlich</translation>
     </message>
 </context>
 <context>
@@ -1838,7 +1832,7 @@ Bitte stellen Sie sicher, dass Ihre Netzwerkverbindung funktioniert.</translatio
     <message>
         <location filename="../src/mirall/theme.cpp" line="205"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %1 Für weitere Informationen besuchen Sie bitte &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Urheberrecht von ownCloud, Inc.&lt;p&gt;&lt;p&gt;Zur Verfügung gestellt durch %4 und lizensiert unter der GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 und das %5 Logo sind eingetragene Warenzeichen von %4 in den &lt;br&gt;Vereinigten Staaten, anderen Ländern oder beides.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
