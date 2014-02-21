@@ -598,7 +598,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           ctx->status_code = CSYNC_STATUS_UPDATE_ERROR;
       }
 
-      csync_vio_closedir(ctx, dh);
       ctx->current_fs = previous_fs;
       goto done;
     }
@@ -608,7 +607,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       rc = csync_ftw(ctx, filename, fn, depth - 1);
       if (rc < 0) {
         ctx->current_fs = previous_fs;
-        csync_vio_closedir(ctx, dh);
         goto done;
       }
 
@@ -637,6 +635,9 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
 done:
   ctx->remote.read_from_db = read_from_db;
+  if (dh != NULL) {
+      csync_vio_closedir(ctx, dh);
+  }
   csync_vio_file_stat_destroy(dirent);
   SAFE_FREE(filename);
   return rc;
