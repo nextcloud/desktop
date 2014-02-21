@@ -303,13 +303,104 @@ static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
 	return t / 10000000;
     }
 }
-#endif
+
+int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
+    HANDLE h, hFind;
+    FILETIME ftCreate, ftAccess, ftWrite;
+    BY_HANDLE_FILE_INFORMATION fileInfo;
+    WIN32_FIND_DATAW FindFileData;
+    ULARGE_INTEGER FileIndex;
+    mbchar_t *wuri = c_utf8_to_locale( uri );
+
+    h = CreateFileW( wuri, 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+                     FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
+    if( h == INVALID_HANDLE_VALUE ) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "CreateFileW failed on %s", uri );
+        errno = GetLastError();
+        c_free_locale_string(wuri);
+        return -1;
+    }
+
+    if(!GetFileInformationByHandle( h, &fileInfo ) ) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "GetFileInformationByHandle failed on %s", uri );
+        errno = GetLastError();
+        c_free_locale_string(wuri);
+        CloseHandle(h);
+        return -1;
+    }
+
+    buf->flags = CSYNC_VIO_FILE_FLAGS_NONE;
+    do {
+        // Check first if it is a symlink (code from c_islink)
+        if (fileInfo.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
+            hFind = FindFirstFileW(wuri, &FindFileData );
+            if (hFind !=  INVALID_HANDLE_VALUE) {
+                if( (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) &&
+                        (FindFileData.dwReserved0 & IO_REPARSE_TAG_SYMLINK) ) {
+                    buf->flags = CSYNC_VIO_FILE_FLAGS_SYMLINK;
+                    buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+                    break;
+                }
+            }
+            FindClose(hFind);
+        }
+        if (fileInfo.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
+                || fileInfo.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
+                || fileInfo.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
+            buf->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
+            break;
+        }
+        if (fileInfo.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            buf->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+            break;
+        }
+        // fallthrough:
+        buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+        break;
+    } while (0);
+    buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FLAGS;
+    buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+
+    buf->mode = 666;
+    buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+
+    buf->device = fileInfo.dwVolumeSerialNumber;
+    buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DEVICE;
+
+    /* Get the Windows file id as an inode replacement. */
+    FileIndex.HighPart = fileInfo.nFileIndexHigh;
+    FileIndex.LowPart = fileInfo.nFileIndexLow;
+    FileIndex.QuadPart &= 0x0000FFFFFFFFFFFF;
+    /* printf("Index: %I64i\n", FileIndex.QuadPart); */
+    buf->inode = FileIndex.QuadPart;
+
+    /* Get the file time with a win32 call rather than through stat. See
+      * http://www.codeproject.com/Articles/1144/Beating-the-Daylight-Savings-Time-bug-and-getting
+      * for deeper explanation.
+      */
+    if( GetFileTime(h, &ftCreate, &ftAccess, &ftWrite) ) {
+        DWORD rem;
+        buf->atime = FileTimeToUnixTime(&ftAccess, &rem);
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
+
+        buf->mtime = FileTimeToUnixTime(&ftWrite, &rem);
+        /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Local File MTime: %llu", (unsigned long long) buf->mtime ); */
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+
+        buf->ctime = FileTimeToUnixTime(&ftCreate, &rem);
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
+    }
+
+    CloseHandle(h);
+
+    return 0;
+}
+
+#else
 
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   csync_stat_t sb;
-#ifdef _WIN32
-  HANDLE h;
-#endif
+
   mbchar_t *wuri = c_utf8_to_locale( uri );
 
   if( _tstat(wuri, &sb) < 0) {
@@ -342,14 +433,12 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     case S_IFREG:
       buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
       break;
-#ifndef _WIN32
     case S_IFLNK:
       buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
       break;
     case S_IFSOCK:
       buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
       break;
-#endif
     default:
       buf->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
       break;
@@ -371,56 +460,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DEVICE;
 
   buf->inode = sb.st_ino;
-#ifdef _WIN32
-  /* Get the Windows file id as an inode replacement. */
-  h = CreateFileW( wuri, 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-                   FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
-  if( h == INVALID_HANDLE_VALUE ) {
-     errno = GetLastError();
-     c_free_locale_string(wuri);
-     return -1;
-
-  } else {
-     FILETIME ftCreate, ftAccess, ftWrite;
-//     SYSTEMTIME stUTC;
-
-     BY_HANDLE_FILE_INFORMATION fileInfo;
-
-     if( GetFileInformationByHandle( h, &fileInfo ) ) {
-        ULARGE_INTEGER FileIndex;
-        FileIndex.HighPart = fileInfo.nFileIndexHigh;
-        FileIndex.LowPart = fileInfo.nFileIndexLow;
-        FileIndex.QuadPart &= 0x0000FFFFFFFFFFFF;
-
-        /* printf("Index: %I64i\n", FileIndex.QuadPart); */
-
-        buf->inode = FileIndex.QuadPart;
-     }
-
-     /* Get the file time with a win32 call rather than through stat. See
-      * http://www.codeproject.com/Articles/1144/Beating-the-Daylight-Savings-Time-bug-and-getting
-      * for deeper explanation.
-      */
-     if( GetFileTime(h, &ftCreate, &ftAccess, &ftWrite) ) {
-       DWORD rem;
-       buf->atime = FileTimeToUnixTime(&ftAccess, &rem);
-       buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
-
-       buf->mtime = FileTimeToUnixTime(&ftWrite, &rem);
-       /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Local File MTime: %llu", (unsigned long long) buf->mtime ); */
-       buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
-
-       buf->ctime = FileTimeToUnixTime(&ftCreate, &rem);
-       buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
-     }
-     CloseHandle(h);
-  }
-
-  /* check if it is a symlink on win32 */
-  if (c_islink(uri)) {
-      buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
-  }
-#else /* non windows platforms: */
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
 
   /* Both values are only initialized to zero as they are not used in csync */
   /* They are deprecated and will be rmemoved later. */
@@ -435,9 +475,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
   buf->ctime = sb.st_ctime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
-#endif
-
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
 
   buf->nlink = sb.st_nlink;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
@@ -454,6 +491,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   c_free_locale_string(wuri);
   return 0;
 }
+#endif
 
 int csync_vio_local_rename(const char *olduri, const char *newuri) {
   return c_rename(olduri, newuri);
