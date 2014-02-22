@@ -1431,7 +1431,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="100"/>
         <source>A file was removed from a read only share, but restoring failed: %1</source>
-        <translation>Datoteka je bila odstranjena iz mesta v souporabi, ki je le za branje, obnavljanje pa je spodletelo: %1</translation>
+        <translation>Datoteka je bila odstranjena iz mesta v souporabi, ki je nastavljena le za branje, obnavljanje pa je spodletelo: %1</translation>
     </message>
 </context>
 <context>
@@ -1466,12 +1466,12 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="197"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Ni prejetega odziva s strežnnika s potrdilom o prejemu zadnjega dela datoteke (ni prejete oznake).</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="242"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>Ni razširitve X-OC-MTime, saj zahteva namestitev ownCloud 5.</translation>
     </message>
 </context>
 <context>
@@ -1831,7 +1831,7 @@ Prepričajte se, da je omrežna povezava omogočena in delujoča.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="205"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Različica %1. Več podrobnosti je zabeleženih na &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Avtorske pravice ownCloud, Inc.&lt;p&gt;&lt;p&gt;Programski paket objavlja %4 z dovoljenjem GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 in logotip %5 sta blagovni znamki %4 v &lt;br&gt;Združenih državah, drugih državah ali oboje.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
