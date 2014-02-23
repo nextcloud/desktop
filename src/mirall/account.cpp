@@ -158,11 +158,15 @@ AbstractCredentials *Account::credentials() const
 
 void Account::setCredentials(AbstractCredentials *cred)
 {
-    _credentials = cred;
     // set active credential manager
     if (_am) {
         _am->deleteLater();
     }
+
+    if (_credentials) {
+        credentials()->deleteLater();
+    }
+    _credentials = cred;
     _am = _credentials->getQNAM();
     connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
