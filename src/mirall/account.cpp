@@ -69,6 +69,7 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     , _treatSslErrorsAsFailure(false)
     , _state(Account::Disconnected)
 {
+    qRegisterMetaType<Account*>();
 }
 
 Account::~Account()
