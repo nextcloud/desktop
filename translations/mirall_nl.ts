@@ -1466,12 +1466,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="197"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>De server heeft het laatste deel niet bevestigd (er was geen e-tag aanwezig)</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="242"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>Er is geen X-OC-MTime extensie aanwezig, ownCloud 5 is vereist</translation>
     </message>
 </context>
 <context>
@@ -1831,7 +1831,7 @@ Controleer de werking van uw netwerkverbinding.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="205"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versie %1 Voor meer informatie bezoekt u &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Gedistribueer door %4 en verstrekt onder de GNU General Public License (GPL) Versie 2.0.&lt;br&gt;%5 en het %5 logo zijn geregistereerde handelsmerken van %4 in de&lt;br&gt;Verenigde Staten, andere landen, of beide.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
