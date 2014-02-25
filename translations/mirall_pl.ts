@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="123"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Uwaga:&lt;/b&gt; Niektóre foldery, włączając podłączone w sieci lub współdzielone mogą mieć różne limity.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="134"/>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="287"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Czy naprawdę chcesz przerwać synchronizację folderu &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Uwaga:&lt;/b&gt; Ta czynność nie usunie plików z klienta.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="323"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="726"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>Obecnie nie ma dostępnych informacji o wykorzystaniu pamięci masowej.</translation>
     </message>
 </context>
 <context>
@@ -343,7 +343,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="244"/>
         <source>The item is not synced because of previous errors:</source>
-        <translation type="unfinished"/>
+        <translation>Produkt nie jest zsynchronizowany z powodu wcześniejszych błędów:</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="280"/>
@@ -358,7 +358,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="286"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>Plik zawiera nieprawidłowe znaki, które nie mogą być synchronizowane wieloplatformowo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="469"/>
@@ -1435,7 +1435,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="259"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Folder ten nie może być zmieniony. Został zmieniony z powrotem do pierwotnej nazwy.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="261"/>
@@ -1550,7 +1550,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
         <source>Currently no files are ignored because of previous errors.</source>
-        <translation type="unfinished"/>
+        <translation>Obecnie nie ma plików, które są ignorowane z powodu wcześniejszych błędów.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
