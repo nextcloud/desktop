@@ -52,6 +52,8 @@ public:
 
     QNetworkCookie cookie() const;
 
+    void showLoginWindow(Account*);
+
 public Q_SLOTS:
     void invalidateAndFetch(Account *account);
 
@@ -61,6 +63,7 @@ private Q_SLOTS:
     void onFetched();
     void slotReadJobDone(QKeychain::Job*);
     void slotInvalidateAndFetchInvalidateDone(QKeychain::Job*);
+    void slotReplyFinished(QNetworkReply*);
 
 Q_SIGNALS:
     void newCookie(const QNetworkCookie& cookie);
@@ -74,6 +77,7 @@ private:
 
     QNetworkCookie _shibCookie;
     bool _ready;
+    bool _stillValid;
     ShibbolethWebView* _browser;
     QMap<QUrl, QList<QNetworkCookie> > _otherCookies;
 };
