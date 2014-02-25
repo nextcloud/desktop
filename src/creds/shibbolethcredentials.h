@@ -60,6 +60,7 @@ private Q_SLOTS:
     void slotBrowserHidden();
     void onFetched();
     void slotReadJobDone(QKeychain::Job*);
+    void slotInvalidateAndFetchInvalidateDone(QKeychain::Job*);
 
 Q_SIGNALS:
     void newCookie(const QNetworkCookie& cookie);

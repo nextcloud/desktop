@@ -254,6 +254,20 @@ void ShibbolethCredentials::slotBrowserHidden()
 void ShibbolethCredentials::invalidateAndFetch(Account* account)
 {
     _ready = false;
+
+    // delete the credentials, then in the slot fetch them again (which will trigger browser)
+    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    job->setProperty("account", QVariant::fromValue(account));
+    job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+    connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotInvalidateAndFetchInvalidateDone(QKeychain::Job*)));
+    job->setKey(keychainKey(account->url().toString(), "shibAssertion"));
+    job->start();
+}
+
+void ShibbolethCredentials::slotInvalidateAndFetchInvalidateDone(QKeychain::Job* job)
+{
+    Account *account = qvariant_cast<Account*>(job->property("account"));
+
     connect (this, SIGNAL(fetched()),
              this, SLOT(onFetched()));
     // small hack to support the ShibbolethRefresher hack
