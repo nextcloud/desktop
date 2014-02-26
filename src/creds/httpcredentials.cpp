@@ -100,7 +100,8 @@ HttpCredentials::HttpCredentials()
 HttpCredentials::HttpCredentials(const QString& user, const QString& password)
     : _user(user),
       _password(password),
-      _ready(true)
+      _ready(true),
+      _fetchJobInProgress(false)
 {
 }
 
@@ -183,6 +184,10 @@ void HttpCredentials::fetch(Account *account)
         return;
     }
 
+    if (_fetchJobInProgress) {
+        return;
+    }
+
     fetchUser(account);
 
     QSettings *settings = account->settingsWithGroup(Theme::instance()->appName());
@@ -207,6 +212,7 @@ void HttpCredentials::fetch(Account *account)
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
         job->setProperty("account", QVariant::fromValue(account));
         job->start();
+        _fetchJobInProgress = true;
     }
 }
 bool HttpCredentials::stillValid(QNetworkReply *reply)
@@ -234,6 +240,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
         // Still, the password can be empty which indicates a problem and
         // the password dialog has to be opened.
         _ready = true;
+        _fetchJobInProgress = false;
         emit fetched();
     } else {
         if( error != NoError ) {
@@ -241,6 +248,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
         }
         bool ok;
         QString pwd = queryPassword(&ok);
+        _fetchJobInProgress = false;
         if (ok) {
             _password = pwd;
             _ready = true;
