@@ -65,29 +65,29 @@ void QuotaInfo::slotRequestFailed()
     if (!_account.isNull() && _account->state() == Account::Connected) {
         _account->setState(Account::Disconnected);
     }
+
+    _lastQuotaTotalBytes = 0;
+    _lastQuotaUsedBytes = 0;
+    _jobRestartTimer->start(failIntervalT);
+
     _jobRestartTimer->start(failIntervalT);
 }
 
 void QuotaInfo::slotCheckQuota()
 {
-    if (!_account.isNull() && _account->credentials() && _account->credentials()->ready()
-            && _account->state() == Account::Connected) {
-        if(_account->state() == Account::Disconnected) {
-            _account->setState(Account::Connected);
-        }
+    if (!_account.isNull() && _account->credentials() && _account->credentials()->ready()) {
         CheckQuotaJob *job = new CheckQuotaJob(_account, "/", this);
         connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
         connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
         job->start();
-    } else {
-        _lastQuotaTotalBytes = 0;
-        _lastQuotaUsedBytes = 0;
-        _jobRestartTimer->start(failIntervalT);
     }
 }
 
 void QuotaInfo::slotUpdateLastQuota(qint64 total, qint64 used)
 {
+    if(_account->state() == Account::Disconnected) {
+        _account->setState(Account::Connected);
+    }
     _lastQuotaTotalBytes = total;
     _lastQuotaUsedBytes = used;
     emit quotaUpdated(total, used);
