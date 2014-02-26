@@ -10,6 +10,7 @@ version 1.5.2 (release 2014-02-26 )
   * Fix online state handling (#1441, #1459)
   * Fix potential crash in c_iconv on Mac OS
   * Fix certificate chain display in SSLButton
+  * Fix sporadicly appearing multiple auth prompts on sign-in
   * Show correct state icon in Account Settings right away
   * Re-fetch content that gets deleted from read only shared directories
   * Do not store the password in the config file, erase existing ones (#1469)
