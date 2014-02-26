@@ -342,16 +342,4 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
     }
 }
 
-
-void Account::singOut()
-{
-    credentials()->invalidateToken(this);
-    if (_am) {
-        // Forget all cookies
-        _am->setCookieJar(new QNetworkCookieJar);
-    }
-    setState(Account::SignedOut);
-}
-
-
 } // namespace Mirall

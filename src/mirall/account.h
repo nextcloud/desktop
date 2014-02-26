@@ -145,7 +145,6 @@ public:
     void setState(int state);
 
     QuotaInfo *quotaInfo();
-    void singOut();
 signals:
     void stateChanged(int state);
 

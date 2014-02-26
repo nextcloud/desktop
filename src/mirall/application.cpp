@@ -174,16 +174,15 @@ void Application::slotLogout()
 {
     Account *a = AccountManager::instance()->account();
     if (a) {
-        // forget the password and cookies and change the state
-        a->singOut();
-
+        // invalidate & forget token/password
+        a->credentials()->invalidateToken(a);
         // terminate all syncs and unload folders
         FolderMan *folderMan = FolderMan::instance();
         folderMan->setSyncEnabled(false);
         folderMan->terminateSyncProcess();
         folderMan->unloadAllFolders();
-
-        // Show result
+        a->setState(Account::SignedOut);
+        // show result
         _gui->slotComputeOverallSyncStatus();
     }
 }
