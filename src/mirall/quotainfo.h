@@ -11,6 +11,9 @@
  * for more details.
  */
 
+#ifndef QUOTAINFO_H
+#define QUOTAINFO_H
+
 #include <QObject>
 #include <QPointer>
 
@@ -23,7 +26,7 @@ class Account;
 class QuotaInfo : public QObject {
     Q_OBJECT
 public:
-    QuotaInfo(QObject *parent);
+    QuotaInfo(Account *account);
 
     qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
@@ -44,9 +47,11 @@ private:
     QPointer<Account> _account;
     qint64 _lastQuotaTotalBytes;
     qint64 _lastQuotaUsedBytes;
-    QTimer *_refreshTimer;
+    QTimer *_jobRestartTimer;
 };
 
 
 
 } // namespace Mirall
+
+#endif //QUOTAINFO_H

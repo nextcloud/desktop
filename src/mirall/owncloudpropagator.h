@@ -135,7 +135,20 @@ class PropagateItemJob : public PropagatorJob {
 protected:
     void done(SyncFileItem::Status status, const QString &errorString = QString());
 
+    bool checkForProblemsWithShared(const QString& msg);
+
+    /*
+     * set a custom restore job message that is used if the restore job succeeded.
+     * It is displayed in the activity view.
+     */
+    QString restoreJobMsg() const { return _restoreJobMsg; }
+    void setRestoreJobMsg( const QString& msg = QString() ) { _restoreJobMsg = msg; }
+
     SyncFileItem  _item;
+    QString       _restoreJobMsg;
+
+protected slots:
+    void slotRestoreJobCompleted(const SyncFileItem& );
 
 private:
     QScopedPointer<PropagateItemJob> _restoreJob;

@@ -126,7 +126,7 @@ static char *c_iconv(const char* str, enum iconv_direction dir)
   }
 
   if (ret == (size_t)-1) {
-      SAFE_FREE(out);
+      SAFE_FREE(out_in);
       return NULL;
   }
 

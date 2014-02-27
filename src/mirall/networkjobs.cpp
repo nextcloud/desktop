@@ -34,6 +34,7 @@
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
+#include "creds/shibbolethcredentials.h"
 
 Q_DECLARE_METATYPE(QTimer*)
 
@@ -144,15 +145,13 @@ void AbstractNetworkJob::slotFinished()
     AbstractCredentials *creds = _account->credentials();
     if (!creds->stillValid(_reply) &&! _ignoreCredentialFailure
             && _account->state() != Account::InvalidCredidential) {
-        // invalidate & forget token/password
-        _account->credentials()->invalidateToken(_account);
-
         _account->setState(Account::InvalidCredidential);
 
+        // invalidate & forget token/password
         // but try to re-sign in.
         connect( creds, SIGNAL(fetched()),
                  qApp, SLOT(slotCredentialsFetched()), Qt::UniqueConnection);
-        creds->fetch(_account);   // this triggers Application::runValidator when the credidentials are fetched
+        creds->invalidateAndFetch(_account);   // this triggers Application::runValidator when the credidentials are fetched
     }
     deleteLater();
 }
@@ -458,7 +457,8 @@ void PropfindJob::finished()
         }
         emit result(items);
     } else {
-        qDebug() << "Quota request *not* successful, http result code is " << http_result_code;
+        qDebug() << "Quota request *not* successful, http result code is" << http_result_code
+                 << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString()  : QLatin1String(""));
     }
 }
 

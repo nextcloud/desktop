@@ -14,6 +14,7 @@
 
 #include <QMutex>
 #include <QSettings>
+#include <QNetworkReply>
 
 #include "creds/shibbolethcredentials.h"
 #include "creds/shibboleth/shibbolethaccessmanager.h"
@@ -76,6 +77,7 @@ ShibbolethCredentials::ShibbolethCredentials()
       _url(),
       _shibCookie(),
       _ready(false),
+      _stillValid(false),
       _browser(0),
       _otherCookies()
 {}
@@ -172,7 +174,20 @@ QNetworkAccessManager* ShibbolethCredentials::getQNAM() const
 
     connect(this, SIGNAL(newCookie(QNetworkCookie)),
             qnam, SLOT(setCookie(QNetworkCookie)));
+    connect(qnam, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(slotReplyFinished(QNetworkReply*)));
     return qnam;
+}
+
+void ShibbolethCredentials::slotReplyFinished(QNetworkReply* r)
+{
+    QVariant target = r->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    if (target.isValid()) {
+        _stillValid = false;
+        qWarning() << Q_FUNC_INFO << "detected redirect, will open Login Window"; // will be done in NetworkJob's finished signal
+    } else {
+        //_stillValid = true; // gets set when reading from keychain or getting it from browser
+    }
 }
 
 bool ShibbolethCredentials::ready() const
@@ -201,7 +216,7 @@ void ShibbolethCredentials::fetch(Account *account)
 bool ShibbolethCredentials::stillValid(QNetworkReply *reply)
 {
     Q_UNUSED(reply)
-    return true;
+    return _stillValid;
 }
 
 void ShibbolethCredentials::persist(Account* account)
@@ -213,17 +228,20 @@ void ShibbolethCredentials::persist(Account* account)
     storeShibCookie(_shibCookie, account);
 }
 
+// only used by Application::slotLogout(). Use invalidateAndFetch for normal usage
 void ShibbolethCredentials::invalidateToken(Account *account)
 {
     Q_UNUSED(account)
     _shibCookie = QNetworkCookie();
-    storeShibCookie(_shibCookie, account);
+    storeShibCookie(_shibCookie, account); // store/erase cookie
+
     // ### access to ctx missing, but might not be required at all
     //csync_set_module_property(ctx, "session_key", "");
 }
 
 void ShibbolethCredentials::disposeBrowser()
 {
+    qDebug() << Q_FUNC_INFO;
     disconnect(_browser, SIGNAL(viewHidden()),
                this, SLOT(slotBrowserHidden()));
     disconnect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
@@ -237,6 +255,7 @@ void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& coo
 {
     disposeBrowser();
     _ready = true;
+    _stillValid = true;
     _shibCookie = cookie;
     storeShibCookie(_shibCookie, account);
     Q_EMIT newCookie(_shibCookie);
@@ -254,6 +273,20 @@ void ShibbolethCredentials::slotBrowserHidden()
 void ShibbolethCredentials::invalidateAndFetch(Account* account)
 {
     _ready = false;
+
+    // delete the credentials, then in the slot fetch them again (which will trigger browser)
+    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    job->setProperty("account", QVariant::fromValue(account));
+    job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+    connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotInvalidateAndFetchInvalidateDone(QKeychain::Job*)));
+    job->setKey(keychainKey(account->url().toString(), "shibAssertion"));
+    job->start();
+}
+
+void ShibbolethCredentials::slotInvalidateAndFetchInvalidateDone(QKeychain::Job* job)
+{
+    Account *account = qvariant_cast<Account*>(job->property("account"));
+
     connect (this, SIGNAL(fetched()),
              this, SLOT(onFetched()));
     // small hack to support the ShibbolethRefresher hack
@@ -276,6 +309,7 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
     if (job->error() == QKeychain::NoError) {
         ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(job);
         delete readJob->settings();
+        qDebug() << Q_FUNC_INFO;
         QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(readJob->textData().toUtf8());
         if (cookies.count() > 0) {
             _shibCookie = cookies.first();
@@ -283,18 +317,32 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
         job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
 
         _ready = true;
+        _stillValid = true;
         Q_EMIT newCookie(_shibCookie);
         Q_EMIT fetched();
     } else {
-        ShibbolethConfigFile cfg;
-        _browser = new ShibbolethWebView(account, cfg.createCookieJar());
-        connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
-                this, SLOT(onShibbolethCookieReceived(QNetworkCookie, Account*)));
-        connect(_browser, SIGNAL(viewHidden()),
-                this, SLOT(slotBrowserHidden()));
-
-        _browser->show();
+        showLoginWindow(account);
     }
+}
+
+void ShibbolethCredentials::showLoginWindow(Account* account)
+{
+    if (_browser) {
+        _browser->activateWindow();
+        _browser->raise();
+        // FIXME On OS X this does not raise properly
+        return;
+    }
+    ShibbolethConfigFile cfg;
+    _browser = new ShibbolethWebView(account, cfg.createCookieJar());
+    connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
+            this, SLOT(onShibbolethCookieReceived(QNetworkCookie, Account*)));
+    connect(_browser, SIGNAL(viewHidden()),
+            this, SLOT(slotBrowserHidden()));
+    // FIXME If the browser was hidden (e.g. user closed it) without us logging in, the logic gets stuck
+    // and can only be unstuck by restarting the app or pressing "Sign in" (we should switch to offline but we don't)
+
+    _browser->show();
 }
 
 void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie, Account *account)

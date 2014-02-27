@@ -69,7 +69,6 @@ static bool isSelfSigned(const QSslCertificate &certificate)
            certificate.issuerInfo(QSslCertificate::OrganizationalUnitName) == certificate.subjectInfo(QSslCertificate::OrganizationalUnitName);
 }
 
-
 QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
                                 const QList<QSslCertificate>& userApproved, int pos)
 {
@@ -79,6 +78,8 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
     QString country = QStringList(cert.subjectInfo(QSslCertificate::CountryName)).join(QChar(';'));
     QString state = QStringList(cert.subjectInfo(QSslCertificate::StateOrProvinceName)).join(QChar(';'));
     QString issuer = QStringList(cert.issuerInfo(QSslCertificate::CommonName)).join(QChar(';'));
+    if (issuer.isEmpty())
+        issuer = QStringList(cert.issuerInfo(QSslCertificate::OrganizationalUnitName)).join(QChar(';'));
     QString md5 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Md5).toHex());
     QString sha1 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
     QString serial = QString::fromUtf8(cert.serialNumber(), true);
@@ -136,8 +137,8 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
 
     QString certId = cn.isEmpty() ? ou : cn;
 
-    if (QSslSocket::systemCaCertificates().contains(cert) && pos == 0) {
-        txt += tr("%1 (in Root CA store)").arg(certId);
+    if (QSslSocket::systemCaCertificates().contains(cert)) {
+        txt += certId;
     } else {
         if (isSelfSigned(cert)) {
             txt += tr("%1 (self-signed)").arg(certId);
@@ -178,15 +179,19 @@ void SslButton::updateAccountInfo(Account *account)
         QList<QSslCertificate> chain = account->sslConfiguration().peerCertificateChain();
         menu->addAction(tr("Certificate information:"))->setEnabled(false);
 
-        QListIterator<QSslCertificate> caIt(QSslSocket::systemCaCertificates());
-        caIt.toBack();
+        QList<QSslCertificate> tmpChain;
+        foreach(QSslCertificate cert, chain) {
+            tmpChain << cert;
+            if (QSslSocket::systemCaCertificates().contains(cert))
+                break;
+        }
+        chain = tmpChain;
+
         // find trust anchor (informational only, verification is done by QSslSocket!)
-        while (caIt.hasPrevious()) {
-            QSslCertificate rootCA = caIt.previous();
+        foreach(QSslCertificate rootCA, QSslSocket::systemCaCertificates()) {
             if (rootCA.issuerInfo(QSslCertificate::CommonName) == chain.last().issuerInfo(QSslCertificate::CommonName) &&
-                    rootCA.issuerInfo(QSslCertificate::Organization) == chain.last().issuerInfo(QSslCertificate::Organization)
-                    && !isSelfSigned(rootCA)) {
-                chain << rootCA;
+                    rootCA.issuerInfo(QSslCertificate::Organization) == chain.last().issuerInfo(QSslCertificate::Organization)) {
+                chain.append(rootCA);
                 break;
             }
         }

@@ -42,6 +42,10 @@ public:
     virtual void persist(Account *account) = 0;
     /** Invalidates auth token, or password for basic auth */
     virtual void invalidateToken(Account *account) = 0;
+    virtual void invalidateAndFetch(Account *account) {
+        invalidateToken(account);
+        fetch(account);
+    }
 
 
     static QString keychainKey(const QString &url, const QString &user);

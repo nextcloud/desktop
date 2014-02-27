@@ -24,7 +24,8 @@ class AbstractCredentials;
 class AbstractCredentialsWizardPage : public QWizardPage
 {
 public:
-  virtual AbstractCredentials* getCredentials() const = 0;
+    void cleanupPage();
+    virtual AbstractCredentials* getCredentials() const = 0;
 };
 
 } // ns Mirall

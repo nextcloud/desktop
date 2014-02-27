@@ -32,6 +32,7 @@ namespace Mirall {
 
 class AbstractCredentials;
 class Account;
+class QuotaInfo;
 
 class AccountManager : public QObject {
     Q_OBJECT
@@ -134,6 +135,8 @@ public:
 
     int state() const;
     void setState(int state);
+
+    QuotaInfo *quotaInfo();
 signals:
     void stateChanged(int state);
 
@@ -146,6 +149,7 @@ private:
     QList<QSslCertificate> _approvedCerts;
     QSslConfiguration _sslConfiguration;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
+    QuotaInfo *_quotaInfo;
     QNetworkAccessManager *_am;
     AbstractCredentials* _credentials;
     bool _treatSslErrorsAsFailure;

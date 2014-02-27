@@ -27,18 +27,17 @@ static const int failIntervalT = 5*1000;
 static const int initialTimeT = 1*1000;
 }
 
-QuotaInfo::QuotaInfo(QObject *parent)
-    : QObject(parent)
-    , _account(AccountManager::instance()->account())
+QuotaInfo::QuotaInfo(Account *account)
+    : QObject(account)
+    , _account(account)
     , _lastQuotaTotalBytes(0)
     , _lastQuotaUsedBytes(0)
-    , _refreshTimer(new QTimer(this))
+    , _jobRestartTimer(new QTimer(this))
 {
-    connect(AccountManager::instance(), SIGNAL(accountChanged(Account*,Account*)),
-            SLOT(slotAccountChanged(Account*,Account*)));
-    connect(_refreshTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
-    _refreshTimer->setSingleShot(true);
-    _refreshTimer->start(initialTimeT);
+    connect(_account, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
+    connect(_jobRestartTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
+    _jobRestartTimer->setSingleShot(true);
+    _jobRestartTimer->start(initialTimeT);
 }
 
 void QuotaInfo::slotAccountChanged(Account *newAccount, Account *oldAccount)
@@ -50,39 +49,49 @@ void QuotaInfo::slotAccountChanged(Account *newAccount, Account *oldAccount)
 
 void QuotaInfo::slotAccountStateChanged(int state)
 {
-    if (state == Account::Connected) {
+    switch (state) {
+    case Account::SignedOut: // fall through
+    case Account::InvalidCredidential:
+        _jobRestartTimer->stop();
+        break;
+    case Account::Connected: // fall through
+    case Account::Disconnected:
         slotCheckQuota();
-    } else {
-        _refreshTimer->stop();
     }
 }
 
 void QuotaInfo::slotRequestFailed()
 {
-    _refreshTimer->start(failIntervalT);
+    if (!_account.isNull() && _account->state() == Account::Connected) {
+        _account->setState(Account::Disconnected);
+    }
+
+    _lastQuotaTotalBytes = 0;
+    _lastQuotaUsedBytes = 0;
+    _jobRestartTimer->start(failIntervalT);
+
+    _jobRestartTimer->start(failIntervalT);
 }
 
 void QuotaInfo::slotCheckQuota()
 {
-    if (!_account.isNull() && _account->credentials() && _account->credentials()->ready()
-            && _account->state() == Account::Connected) {
+    if (!_account.isNull() && _account->credentials() && _account->credentials()->ready()) {
         CheckQuotaJob *job = new CheckQuotaJob(_account, "/", this);
         connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
         connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
         job->start();
-    } else {
-        _lastQuotaTotalBytes = 0;
-        _lastQuotaUsedBytes = 0;
-        _refreshTimer->start(failIntervalT);
     }
 }
 
 void QuotaInfo::slotUpdateLastQuota(qint64 total, qint64 used)
 {
+    if(_account->state() == Account::Disconnected) {
+        _account->setState(Account::Connected);
+    }
     _lastQuotaTotalBytes = total;
     _lastQuotaUsedBytes = used;
     emit quotaUpdated(total, used);
-    _refreshTimer->start(defaultIntervalT);
+    _jobRestartTimer->start(defaultIntervalT);
 }
 
 }

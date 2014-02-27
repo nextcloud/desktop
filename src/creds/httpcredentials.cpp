@@ -100,7 +100,8 @@ HttpCredentials::HttpCredentials()
 HttpCredentials::HttpCredentials(const QString& user, const QString& password)
     : _user(user),
       _password(password),
-      _ready(true)
+      _ready(true),
+      _fetchJobInProgress(false)
 {
 }
 
@@ -179,19 +180,39 @@ QString HttpCredentials::fetchUser(Account* account)
 
 void HttpCredentials::fetch(Account *account)
 {
+    if( !account ) {
+        return;
+    }
+
+    if (_fetchJobInProgress) {
+        return;
+    }
+
     fetchUser(account);
+
+    QSettings *settings = account->settingsWithGroup(Theme::instance()->appName());
+    QString kck = keychainKey(account->url().toString(), _user );
+
+    QString key = QString::fromLatin1( "%1/data" ).arg( kck );
+    if( settings && settings->contains(key) ) {
+        // Clean the password from the config file if it is in there.
+        // we do not want a security problem.
+        settings->remove(key);
+        key = QString::fromLatin1( "%1/type" ).arg( kck );
+        settings->remove(kck);
+        settings->sync();
+    }
+
     if (_ready) {
         Q_EMIT fetched();
     } else {
         ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
-        if( ! account->property("fetch_from_old_place").isValid() ) {
-            job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
-        }
-        job->setInsecureFallback(true);
+        job->setInsecureFallback(false);
         job->setKey(keychainKey(account->url().toString(), _user));
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
         job->setProperty("account", QVariant::fromValue(account));
         job->start();
+        _fetchJobInProgress = true;
     }
 }
 bool HttpCredentials::stillValid(QNetworkReply *reply)
@@ -208,32 +229,32 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
     _password = readJob->textData();
     Account *account = qvariant_cast<Account*>(readJob->property("account"));
 
-    QKeychain::Error error = job->error();
-    switch (error) {
-    case NoError:
-        _ready = true;
-        account->setProperty("fetch_from_old_place", QVariant());
-        Q_EMIT fetched();
-        break;
-    default:
-        if (!_user.isEmpty()) {
-            bool ok;
-            // In case we haven't tried at the old place yet, do!
-            if( !account->property("fetch_from_old_place").isValid() ) {
-                account->setProperty("fetch_from_old_place", QVariant(true) );
+    if( _user.isEmpty()) {
+        qDebug() << "Strange: User is empty!";
+    }
 
-                fetch(account);
-                return;
-            }
-            QString pwd = queryPassword(&ok);
-            if (ok) {
-                _password = pwd;
-                _ready = true;
-                persist(account);
-            }
-            emit fetched();
+    QKeychain::Error error = job->error();
+
+    if( !_password.isEmpty() && error == NoError ) {
+        // All cool, the keychain did not come back with error.
+        // Still, the password can be empty which indicates a problem and
+        // the password dialog has to be opened.
+        _ready = true;
+        _fetchJobInProgress = false;
+        emit fetched();
+    } else {
+        if( error != NoError ) {
+            qDebug() << "Error while reading password" << job->errorString();
         }
-        qDebug() << "Error while reading password" << job->errorString();
+        bool ok;
+        QString pwd = queryPassword(&ok);
+        _fetchJobInProgress = false;
+        if (ok) {
+            _password = pwd;
+            _ready = true;
+            persist(account);
+        }
+        emit fetched();
     }
 }
 
@@ -268,8 +289,7 @@ void HttpCredentials::persist(Account *account)
 {
     account->setCredentialSetting(QLatin1String(userC), _user);
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
-    job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
-    job->setInsecureFallback(true);
+    job->setInsecureFallback(false);
     connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
     job->setKey(keychainKey(account->url().toString(), _user));
     job->setTextData(_password);

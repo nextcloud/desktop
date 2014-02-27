@@ -38,7 +38,6 @@ ownCloudGui::ownCloudGui(Application *parent) :
     _logBrowser(0),
     _contextMenu(0),
     _recentActionsMenu(0),
-    _quotaInfo(0),
     _folderOpenActionMapper(new QSignalMapper(this)),
     _recentItemsMapper(new QSignalMapper(this)),
     _app(parent)
@@ -96,11 +95,6 @@ void ownCloudGui::slotOpenSettingsDialog( bool openSettings )
         qDebug() << "No configured folders yet, starting setup wizard";
         OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
     }
-}
-
-QuotaInfo *ownCloudGui::quotaInfo() const
-{
-    return _quotaInfo;
 }
 
 void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
@@ -363,8 +357,6 @@ void ownCloudGui::setupActions()
     _actionLogout = new QAction(tr("Sign out"), this);
     connect(_actionLogout, SIGNAL(triggered()), _app, SLOT(slotLogout()));
 
-    _quotaInfo = new QuotaInfo(this);
-    connect(_quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)), SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
 }
 
 void ownCloudGui::slotRefreshQuotaDisplay( qint64 total, qint64 used )

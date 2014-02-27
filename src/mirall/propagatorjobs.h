@@ -58,17 +58,9 @@ protected:
      */
     void limitBandwidth(qint64 progress, qint64 limit);
 
-    bool checkForProblemsWithShared();
-
     QElapsedTimer _lastTime;
     qint64        _lastProgress;
     int           _httpStatusCode;
-
-protected slots:
-    void slotRestoreJobCompleted(const SyncFileItem& );
-
-private:
-    QScopedPointer<PropagateItemJob> _restoreJob;
 
 public:
     PropagateNeonJob(OwncloudPropagator* propagator, const SyncFileItem &item)

@@ -262,6 +262,7 @@ set(mirall_SRCS
     wizard/owncloudwizard.cpp
     wizard/owncloudsetuppage.cpp
     wizard/owncloudhttpcredspage.cpp
+    wizard/abstractcredswizardpage.cpp
     wizard/owncloudwizardresultpage.cpp
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudshibbolethcredspage.cpp
@@ -287,6 +288,7 @@ set(mirall_HEADERS
     wizard/owncloudwizard.h
     wizard/owncloudsetuppage.h
     wizard/owncloudhttpcredspage.h
+    wizard/abstractcredswizardpage.h
     wizard/owncloudwizardresultpage.h
     wizard/owncloudwizardcommon.h
     wizard/owncloudshibbolethcredspage.h

@@ -15,6 +15,7 @@
 #include "mirall/theme.h"
 #include "mirall/networkjobs.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/quotainfo.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
 
@@ -62,11 +63,13 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     : QObject(parent)
     , _url(Theme::instance()->overrideServerUrl())
     , _sslErrorHandler(sslErrorHandler)
+    , _quotaInfo(new QuotaInfo(this))
     , _am(0)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
     , _state(Account::Disconnected)
 {
+    qRegisterMetaType<Account*>("Account*");
 }
 
 Account::~Account()
@@ -156,11 +159,15 @@ AbstractCredentials *Account::credentials() const
 
 void Account::setCredentials(AbstractCredentials *cred)
 {
-    _credentials = cred;
     // set active credential manager
     if (_am) {
         _am->deleteLater();
     }
+
+    if (_credentials) {
+        credentials()->deleteLater();
+    }
+    _credentials = cred;
     _am = _credentials->getQNAM();
     connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
@@ -296,6 +303,11 @@ void Account::setState(int state)
         _state = state;
         emit stateChanged(state);
     }
+}
+
+QuotaInfo *Account::quotaInfo()
+{
+    return _quotaInfo;
 }
 
 void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)

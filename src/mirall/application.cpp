@@ -135,7 +135,7 @@ Application::Application(int &argc, char **argv) :
     }
 
     if (account) {
-        connect(account, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
+        slotAccountChanged(account);
     }
     connect(AccountManager::instance(), SIGNAL(accountChanged(Account*,Account*)),
             this, SLOT(slotAccountChanged(Account*,Account*)));
@@ -189,8 +189,16 @@ void Application::slotLogout()
 
 void Application::slotAccountChanged(Account *newAccount, Account *oldAccount)
 {
-    disconnect(oldAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
+    if (oldAccount) {
+        disconnect(oldAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
+        disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotToggleFolderman(int)));
+        connect(oldAccount->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
+                _gui, SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
+    }
     connect(newAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
+    connect(newAccount, SIGNAL(stateChanged(int)), this, SLOT(slotToggleFolderman(int)));
+    connect(newAccount->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
+            _gui, SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
 }
 
 
@@ -260,6 +268,24 @@ void Application::slotCredentialsFetched()
     connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
              this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
     _conValidator->checkConnection();
+}
+
+void Application::slotToggleFolderman(int state)
+{
+    FolderMan* folderMan = FolderMan::instance();
+    switch (state) {
+    case Account::Connected:
+        folderMan->setSyncEnabled(true);
+        folderMan->slotScheduleAllFolders();
+        break;
+    case Account::Disconnected:
+    case Account::SignedOut:
+    case Account::InvalidCredidential:
+        folderMan->setSyncEnabled(false);
+        folderMan->terminateSyncProcess();
+        break;
+    }
+
 }
 
 void Application::slotConnectionValidatorResult(ConnectionValidator::Status status)

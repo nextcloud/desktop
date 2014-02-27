@@ -54,53 +54,6 @@
 
 namespace Mirall {
 
-/**
- * For delete or remove, check that we are not removing from a shared directory.
- * If we are, try to restore the file
- *
- * Return true if the problem is handled.
- */
-bool PropagateNeonJob::checkForProblemsWithShared()
-{
-    QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-    int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-
-    if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item._file )) {
-        if( _item._type != SyncFileItem::Directory ) {
-            // the file was removed locally from a read only Shared sync
-            // the file is gone locally and it should be recovered.
-            SyncFileItem downloadItem(_item);
-            downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
-            downloadItem._dir = SyncFileItem::Down;
-            _restoreJob.reset(new PropagateDownloadFileLegacy(_propagator, downloadItem));
-        } else {
-            // Directories are harder to recover.
-            // But just re-create the directory, next sync will be able to recover the files
-            SyncFileItem mkdirItem(_item);
-            mkdirItem._instruction = CSYNC_INSTRUCTION_SYNC;
-            mkdirItem._dir = SyncFileItem::Down;
-            _restoreJob.reset(new PropagateLocalMkdir(_propagator, mkdirItem));
-            // Also remove the inodes and fileid from the db so no further renames are tried for
-            // this item.
-            _propagator->_journal->avoidRenamesOnNextSync(_item._file);
-        }
-        connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
-                this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
-        QMetaObject::invokeMethod(_restoreJob.data(), "start");
-        return true;
-    }
-    return false;
-}
-
-void PropagateNeonJob::slotRestoreJobCompleted(const SyncFileItem& item )
-{
-    if( item._status == SyncFileItem::Success ) {
-        done( SyncFileItem::SoftError, tr("The file was removed from a read only share. The file has been restored."));
-    } else {
-        done( item._status, tr("A file was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
-    }
-}
-
 // Code copied from Qt5's QDir::removeRecursively
 static bool removeRecursively(const QString &path)
 {
@@ -171,7 +124,7 @@ void PropagateRemoteRemove::start()
     qDebug() << "** DELETE " << uri.data();
     int rc = ne_delete(_propagator->_session, uri.data());
 
-    if( checkForProblemsWithShared() ) {
+    if( checkForProblemsWithShared(tr("The file has been removed from a read only share. It was restored.")) ) {
         return;
     }
 
@@ -270,7 +223,7 @@ void PropagateRemoteRename::start()
 
         int rc = ne_move(_propagator->_session, 1, uri1.data(), uri2.data());
 
-        if( checkForProblemsWithShared()) {
+        if( checkForProblemsWithShared(tr("The file was renamed but is part of a read only share. The original file was restored."))) {
             return;
         }
 

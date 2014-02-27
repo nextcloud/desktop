@@ -25,6 +25,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/ignorelisteditor.h"
 #include "mirall/account.h"
+#include "mirall/quotainfo.h"
 #include "creds/abstractcredentials.h"
 
 #include <math.h>
@@ -106,6 +107,11 @@ AccountSettings::AccountSettings(QWidget *parent) :
         slotAccountStateChanged(_account->state());
     }
 
+    QuotaInfo *quotaInfo = _account->quotaInfo();
+    connect( quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
+             this, SLOT(slotUpdateQuota(qint64,qint64)));
+    slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
+
     setFolderList(FolderMan::instance()->map());
 }
 
@@ -133,6 +139,7 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
     } else {
       ui->_buttonEnable->setText( tr( "Resume" ) );
     }
+    ui->_buttonEnable->setEnabled(_account && _account->state() == Account::Connected);
   }
 }
 
@@ -758,7 +765,7 @@ void AccountSettings::slotAccountStateChanged(int state)
                                  /*, tr("Version: %1 (%2)").arg(versionStr).arg(version) */ );
             }
         } else {
-            showConnectionLabel( tr("No connection to %1 at <a href=\"%1\">%2</a>.")
+            showConnectionLabel( tr("No connection to %1 at <a href=\"%2\">%3</a>.")
                                  .arg(Theme::instance()->appNameGUI(),
                                       _account->url().toString(),
                                       safeUrl.toString()) );

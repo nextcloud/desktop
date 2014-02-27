@@ -1,6 +1,28 @@
 ChangeLog
 =========
 
+version 1.5.2 (release 2014-02-26 )
+
+  * Fix behavior when attempting to rename Shared folder
+  * Fix potential endless sync loops on Mac OS (#1463)
+  * Fix potential crash when pausing during update phase (#1442)
+  * Fix handing of shared directories
+  * Fix online state handling (#1441, #1459)
+  * Fix potential crash in c_iconv on Mac OS
+  * Fix certificate chain display in SSLButton
+  * Fix sporadicly appearing multiple auth prompts on sign-in
+  * Show correct state icon in Account Settings right away
+  * Re-fetch content that gets deleted from read only shared directories
+  * Do not store the password in the config file, erase existing ones (#1469)
+  * Shibboleth: Close browser window after login
+  * Shibboleth: Proper invalidation if timeout during sync
+  * Shibboleth: Do not pop up IdP login immediately when modifying account
+  * Shibboleth: Avoid auth on restart by storing cookies in the wallet
+  * Fix license headers 
+
+ChangeLog
+=========
+
 version 1.5.1 (release 2014-02-13 )
   * Added an auto updater that updates the client if a
     more recent version was found automatically (Windows, Mac OS X)

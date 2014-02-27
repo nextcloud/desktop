@@ -31,14 +31,13 @@ QNetworkReply* ShibbolethAccessManager::createRequest(QNetworkAccessManager::Ope
         QNetworkCookieJar* jar(cookieJar());
         QUrl url(request.url());
         QList<QNetworkCookie> cookies;
-
         Q_FOREACH(const QNetworkCookie& cookie, jar->cookiesForUrl(url)) {
             if (!cookie.name().startsWith("_shibsession_")) {
                 cookies << cookie;
             }
         }
 
-        cookies << _cookie;
+        cookies << _cookie; // this line and the line above replace all cookies with self and then add the shibboleth cookie (filtering the current shib cookie)
         jar->setCookiesFromUrl(cookies, url);
     }
 

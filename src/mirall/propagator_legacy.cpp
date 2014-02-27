@@ -152,8 +152,11 @@ void PropagateUploadFileLegacy::start()
                 done( SyncFileItem::SoftError, errMsg );
             } else {
                 // Other HBF error conditions.
-                // FIXME: find out the error class.
                 _item._httpErrorCode = hbf_fail_http_code(trans.data());
+                if(checkForProblemsWithShared(tr("The file was edited locally but is part of a read only share. "
+                                                 "It is restored and your edit is in the conflict file.")))
+                    return;
+
                 done(SyncFileItem::NormalError, hbf_error_string(trans.data(), state));
             }
             return;

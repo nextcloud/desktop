@@ -72,6 +72,72 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     emit finished(status);
 }
 
+/**
+ * For delete or remove, check that we are not removing from a shared directory.
+ * If we are, try to restore the file
+ *
+ * Return true if the problem is handled.
+ */
+bool PropagateItemJob::checkForProblemsWithShared(const QString& msg)
+{
+    QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
+    int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+
+    PropagateItemJob *newJob = NULL;
+
+    if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item._file )) {
+        if( _item._type != SyncFileItem::Directory ) {
+            SyncFileItem downloadItem(_item);
+            if (downloadItem._instruction == CSYNC_INSTRUCTION_NEW) {
+                // don't try to recover pushing new files
+                return false;
+            } else if (downloadItem._instruction == CSYNC_INSTRUCTION_SYNC) {
+                // we modified the file locally, jsut create a conflict then
+                downloadItem._instruction = CSYNC_INSTRUCTION_CONFLICT;
+            } else {
+                // the file was removed or renamed, just recover the old one
+                downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
+            }
+            downloadItem._dir = SyncFileItem::Down;
+            newJob = new PropagateDownloadFileLegacy(_propagator, downloadItem);
+        } else {
+            // Directories are harder to recover.
+            // But just re-create the directory, next sync will be able to recover the files
+            SyncFileItem mkdirItem(_item);
+            mkdirItem._instruction = CSYNC_INSTRUCTION_SYNC;
+            mkdirItem._dir = SyncFileItem::Down;
+            newJob = new PropagateLocalMkdir(_propagator, mkdirItem);
+            // Also remove the inodes and fileid from the db so no further renames are tried for
+            // this item.
+            _propagator->_journal->avoidRenamesOnNextSync(_item._file);
+        }
+        if( newJob )  {
+            newJob->setRestoreJobMsg(msg);
+            _restoreJob.reset(newJob);
+            connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
+                    this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
+            _restoreJob->start();
+        }
+        return true;
+    }
+    return false;
+}
+
+void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
+{
+    QString msg;
+    if(_restoreJob) {
+        msg = _restoreJob->restoreJobMsg();
+        _restoreJob->setRestoreJobMsg();
+    }
+
+    if( item._status == SyncFileItem::Success ||  item._status == SyncFileItem::Conflict) {
+        done( SyncFileItem::SoftError, msg);
+    } else {
+        done( item._status, tr("A file or directory was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
+    }
+}
+
 PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:

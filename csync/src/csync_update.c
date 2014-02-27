@@ -612,9 +612,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           ctx->status_code = CSYNC_STATUS_UPDATE_ERROR;
       }
 
-      csync_vio_closedir(ctx, dh);
       ctx->current_fs = previous_fs;
-      goto done;
+      goto error;
     }
 
     if (flag == CSYNC_FTW_FLAG_DIR && depth
@@ -622,8 +621,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       rc = csync_ftw(ctx, filename, fn, depth - 1);
       if (rc < 0) {
         ctx->current_fs = previous_fs;
-        csync_vio_closedir(ctx, dh);
-        goto done;
+        goto error;
       }
 
       if (ctx->current_fs && !ctx->current_fs->child_modified
@@ -650,15 +648,14 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
 
 done:
-  ctx->remote.read_from_db = read_from_db;
   csync_vio_file_stat_destroy(dirent);
   SAFE_FREE(filename);
   return rc;
 error:
+  ctx->remote.read_from_db = read_from_db;
   if (dh != NULL) {
     csync_vio_closedir(ctx, dh);
   }
-  ctx->remote.read_from_db = read_from_db;
   SAFE_FREE(filename);
   return -1;
 }
