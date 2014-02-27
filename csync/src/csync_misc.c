@@ -64,27 +64,6 @@ char *csync_get_user_home_dir(void) {
     return NULL;
 }
 
-char *csync_get_local_username(void) {
-    DWORD size = 0;
-    wchar_t *user;
-
-    /* get the size */
-    GetUserName(NULL, &size);
-
-    user = (wchar_t *) c_malloc(2*size);
-    if (user == NULL) {
-        return NULL;
-    }
-
-    if (GetUserName(user, &size)) {
-	char *uuser = c_utf8_from_locale(user);
-	SAFE_FREE(user);
-        return uuser;
-    }
-
-    return NULL;
-}
-
 #else /* ************* !WIN32 ************ */
 
 #ifndef NSS_BUFLEN_PASSWD
@@ -110,27 +89,6 @@ char *csync_get_user_home_dir(void) {
     }
 
     return NULL;
-}
-
-char *csync_get_local_username(void) {
-    struct passwd pwd;
-    struct passwd *pwdbuf;
-    char buf[NSS_BUFLEN_PASSWD];
-    char *name;
-    int rc;
-
-    rc = getpwuid_r(getuid(), &pwd, buf, NSS_BUFLEN_PASSWD, &pwdbuf);
-    if (rc != 0) {
-        return NULL;
-    }
-
-    name = c_strdup(pwd.pw_name);
-
-    if (name == NULL) {
-        return NULL;
-    }
-
-    return name;
 }
 
 #endif /* ************* WIN32 ************ */
