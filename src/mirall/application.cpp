@@ -232,15 +232,13 @@ void Application::slotCheckConnection()
                 return;
         }
 
-        AbstractCredentials* credentials(account->credentials());
+        if (_conValidator)
+            _conValidator->deleteLater();
+        _conValidator = new ConnectionValidator(account);
+        connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
+                 this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
+        _conValidator->checkConnection();
 
-        if (! credentials->ready()) {
-            connect( credentials, SIGNAL(fetched()),
-                     this, SLOT(slotCredentialsFetched()), Qt::UniqueConnection);
-            credentials->fetch(account);
-        } else {
-            slotCredentialsFetched();
-        }
     } else {
         // let gui open the setup wizard
         _gui->slotOpenSettingsDialog( true );
@@ -261,13 +259,7 @@ void Application::slotCredentialsFetched()
         // Then we ask again for the credidentials if they are wrong again
         account->setState(Account::Disconnected);
     }
-
-    if (_conValidator)
-        _conValidator->deleteLater();
-    _conValidator = new ConnectionValidator(account);
-    connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
-             this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
-    _conValidator->checkConnection();
+    slotCheckConnection();
 }
 
 void Application::slotToggleFolderman(int state)
