@@ -30,6 +30,4 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandl
 
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf);
 
-int csync_vio_local_utimes(const char *uri, const struct timeval *times);
-
 #endif /* _CSYNC_VIO_LOCAL_H */

@@ -37,7 +37,6 @@ typedef csync_vio_method_t *(*csync_vio_method_init_fn)(const char *method_name,
     const char *config_args, csync_auth_callback cb, void *userdata);
 typedef void (*csync_vio_method_finish_fn)(csync_vio_method_t *method);
 
-typedef const char* (*csync_method_get_etag_fn)(const char* path);
 typedef csync_vio_method_handle_t *(*csync_method_open_fn)(const char *durl, int flags, mode_t mode);
 typedef csync_vio_method_handle_t *(*csync_method_creat_fn)(const char *durl, mode_t mode);
 typedef int (*csync_method_close_fn)(csync_vio_method_handle_t *fhandle);
@@ -84,7 +83,6 @@ struct csync_vio_method_s {
   csync_method_set_property_fn set_property;
   csync_method_get_error_string_fn get_error_string;
   csync_method_commit_fn commit;
-  csync_method_get_etag_fn get_etag;
 };
 
 #endif /* _CSYNC_VIO_H */

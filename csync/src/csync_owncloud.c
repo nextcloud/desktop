@@ -891,68 +891,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     return 0;
 }
 
-static const char* owncloud_get_etag( const char *path )
-{
-    ne_request *req    = NULL;
-    const char *header = NULL;
-    char *uri          = _cleanPath(path);
-    char *cbuf   = NULL;
-    csync_vio_file_stat_t *fs = NULL;
-    bool doHeadRequest = false;
-
-    if (_id_cache.uri && c_streq(path, _id_cache.uri)) {
-        header = _id_cache.id;
-    }
-
-    doHeadRequest= false; /* ownCloud server doesn't have good support for HEAD yet */
-
-    if( !header && doHeadRequest ) {
-        int neon_stat;
-        /* Perform an HEAD request to the resource. HEAD delivers the
-         * ETag header back. */
-        req = ne_request_create(dav_session.ctx, "HEAD", uri);
-        neon_stat = ne_request_dispatch(req);
-        set_errno_from_neon_errcode( neon_stat );
-
-        header = ne_get_response_header(req, "etag");
-    }
-    /* If the request went wrong or the server did not respond correctly
-     * (that can happen for collections) a stat call is done which translates
-     * into a PROPFIND request.
-     */
-    if( ! header ) {
-        /* ... and do a stat call. */
-        fs = csync_vio_file_stat_new();
-        if(fs == NULL) {
-            DEBUG_WEBDAV( "owncloud_get_etag: memory fault.");
-            errno = ENOMEM;
-            return NULL;
-        }
-        if( owncloud_stat( path, fs ) == 0 ) {
-            header = fs->etag;
-        }
-    }
-
-    /* In case the result is surrounded by "" cut them away. */
-    if( header ) {
-        cbuf = csync_normalize_etag(header);
-    }
-
-    /* fix server problem: If we end up with an empty string, set something strange... */
-    if( c_streq(cbuf, "") || c_streq(cbuf, "\"\"") ) {
-        SAFE_FREE(cbuf);
-        cbuf = c_strdup("empty_etag");
-    }
-
-    DEBUG_WEBDAV("Get file ID for %s: %s", path, cbuf ? cbuf:"<null>");
-    if( fs ) csync_vio_file_stat_destroy(fs);
-    if( req ) ne_request_destroy(req);
-    SAFE_FREE(uri);
-
-
-    return cbuf;
-}
-
 /*
  * directory functions
  */
@@ -1152,7 +1090,6 @@ csync_vio_method_t _method = {
     .set_property = owncloud_set_property,
     .get_error_string = owncloud_error_string,
     .commit = owncloud_commit,
-    .get_etag = owncloud_get_etag
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
