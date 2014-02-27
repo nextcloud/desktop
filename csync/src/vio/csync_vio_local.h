@@ -28,15 +28,7 @@ csync_vio_method_handle_t *csync_vio_local_opendir(const char *name);
 int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle);
 csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandle);
 
-int csync_vio_local_mkdir(const char *uri, mode_t mode);
-int csync_vio_local_rmdir(const char *uri);
-
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf);
-int csync_vio_local_rename(const char *olduri, const char *newuri);
-int csync_vio_local_unlink(const char *uri);
-
-int csync_vio_local_chmod(const char *uri, mode_t mode);
-int csync_vio_local_chown(const char *uri, uid_t owner, gid_t group);
 
 int csync_vio_local_utimes(const char *uri, const struct timeval *times);
 

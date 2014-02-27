@@ -1145,29 +1145,14 @@ static int owncloud_set_property(const char *key, void *data) {
 
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
-    .get_etag = owncloud_get_etag,
-    .open = 0,
-    .creat = 0,
-    .close = 0,
-    .read = 0,
-    .write = 0,
-    .sendfile = 0,
-    .lseek = 0,
     .opendir = owncloud_opendir,
     .closedir = owncloud_closedir,
     .readdir = owncloud_readdir,
-    .mkdir = 0,
-    .rmdir = 0,
     .stat = owncloud_stat,
-    .rename = 0,
-    .unlink = 0,
-    .chmod = 0,
-    .chown = 0,
-    .utimes = 0,
     .set_property = owncloud_set_property,
     .get_error_string = owncloud_error_string,
-    .commit = owncloud_commit
-
+    .commit = owncloud_commit,
+    .get_etag = owncloud_get_etag
 };
 
 csync_vio_method_t *vio_module_init(const char *method_name, const char *args,

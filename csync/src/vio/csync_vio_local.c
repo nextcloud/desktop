@@ -150,18 +150,6 @@ err:
   return NULL;
 }
 
-int csync_vio_local_mkdir(const char *uri, mode_t mode) {
-  return c_mkdirs(uri, mode);
-}
-
-int csync_vio_local_rmdir(const char *uri) {
-  mbchar_t *dirname = c_utf8_to_locale(uri);
-  int re = -1;
-
-  re = _trmdir(dirname);
-  c_free_locale_string(dirname);
-  return re;
-}
 
 #ifdef _WIN32
 static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
@@ -371,35 +359,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 }
 #endif
 
-int csync_vio_local_rename(const char *olduri, const char *newuri) {
-  return c_rename(olduri, newuri);
-}
 
-int csync_vio_local_unlink(const char *uri) {
-  mbchar_t *nuri = c_utf8_to_locale(uri);
-  int re = _tunlink( nuri );
-  c_free_locale_string(nuri);
-  return re;
-}
 
-int csync_vio_local_chmod(const char *uri, mode_t mode) {
-  mbchar_t *nuri = c_utf8_to_locale(uri);
-  int re = -1;
 
-  re = _tchmod(nuri, mode);
-  c_free_locale_string(nuri);
-  return re;
-}
-
-int csync_vio_local_chown(const char *uri, uid_t owner, gid_t group) {
-#if defined _WIN32
-    (void)uri;
-    (void)owner;
-    (void)group;
-#endif
-  return _tchown(uri, owner, group);
-}
-
-int csync_vio_local_utimes(const char *uri, const struct timeval *times) {
-    return c_utimes(uri, times);
-}

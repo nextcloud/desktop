@@ -77,30 +77,14 @@ typedef int (*csync_method_put_fn)(csync_vio_method_handle_t *flocal,
 
 struct csync_vio_method_s {
   size_t method_table_size;           /* Used for versioning */
-  csync_method_open_fn open;
-  csync_method_creat_fn creat;
-  csync_method_close_fn close;
-  csync_method_read_fn read;
-  csync_method_write_fn write;
-  csync_method_lseek_fn lseek;
   csync_method_opendir_fn opendir;
   csync_method_closedir_fn closedir;
   csync_method_readdir_fn readdir;
-  csync_method_mkdir_fn mkdir;
-  csync_method_rmdir_fn rmdir;
   csync_method_stat_fn stat;
-  csync_method_rename_fn rename;
-  csync_method_unlink_fn unlink;
-  csync_method_chmod_fn chmod;
-  csync_method_chown_fn chown;
-  csync_method_utimes_fn utimes;
   csync_method_set_property_fn set_property;
   csync_method_get_error_string_fn get_error_string;
   csync_method_commit_fn commit;
-  csync_method_put_fn put;
-  csync_method_get_fn get;
   csync_method_get_etag_fn get_etag;
-  csync_method_sendfile_fn sendfile;
 };
 
 #endif /* _CSYNC_VIO_H */
