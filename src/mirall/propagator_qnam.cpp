@@ -184,6 +184,13 @@ void PropagateUploadFileQNAM::slotPutFinished()
 //                 _item._httpErrorCode = hbf_fail_http_code(trans.data());
         _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         _propagator->_activeJobs--;
+
+        if(checkForProblemsWithShared(_item._httpErrorCode,
+            tr("The file was edited locally but is part of a read only share. "
+               "It is restored and your edit is in the conflict file."))) {
+            return;
+        }
+
         done(SyncFileItem::NormalError, job->reply()->errorString());
         return;
     }

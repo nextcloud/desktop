@@ -124,7 +124,10 @@ void PropagateRemoteRemove::start()
     qDebug() << "** DELETE " << uri.data();
     int rc = ne_delete(_propagator->_session, uri.data());
 
-    if( checkForProblemsWithShared(tr("The file has been removed from a read only share. It was restored.")) ) {
+    QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
+    int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+    if( checkForProblemsWithShared(httpStatusCode,
+            tr("The file has been removed from a read only share. It was restored.")) ) {
         return;
     }
 
@@ -223,7 +226,10 @@ void PropagateRemoteRename::start()
 
         int rc = ne_move(_propagator->_session, 1, uri1.data(), uri2.data());
 
-        if( checkForProblemsWithShared(tr("The file was renamed but is part of a read only share. The original file was restored."))) {
+        QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
+        int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
+        if( checkForProblemsWithShared(httpStatusCode,
+                tr("The file was renamed but is part of a read only share. The original file was restored."))) {
             return;
         }
 

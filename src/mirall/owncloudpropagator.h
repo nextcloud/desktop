@@ -135,7 +135,7 @@ class PropagateItemJob : public PropagatorJob {
 protected:
     void done(SyncFileItem::Status status, const QString &errorString = QString());
 
-    bool checkForProblemsWithShared(const QString& msg);
+    bool checkForProblemsWithShared(int httpStatusCode, const QString& msg);
 
     /*
      * set a custom restore job message that is used if the restore job succeeded.

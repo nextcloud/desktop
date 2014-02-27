@@ -78,11 +78,8 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
  *
  * Return true if the problem is handled.
  */
-bool PropagateItemJob::checkForProblemsWithShared(const QString& msg)
+bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QString& msg)
 {
-    QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-    int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-
     PropagateItemJob *newJob = NULL;
 
     if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item._file )) {
