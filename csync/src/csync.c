@@ -127,9 +127,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   }
 
   ctx->status_code = CSYNC_STATUS_OK;
-  ctx->options.max_depth = MAX_DEPTH;
-  ctx->options.max_time_difference = MAX_TIME_DIFFERENCE;
-  ctx->options.with_conflict_copys=false;
   ctx->options.local_only_mode = false;
 
   ctx->pwd.uid = getuid();
@@ -168,7 +165,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
 int csync_init(CSYNC *ctx) {
   int rc;
-  time_t timediff = -1;
   char *config = NULL;
 
   if (ctx == NULL) {
@@ -824,22 +820,6 @@ CSYNC_STATUS csync_get_status(CSYNC *ctx) {
   }
 
   return ctx->status_code;
-}
-
-int csync_enable_conflictcopys(CSYNC* ctx){
-  if (ctx == NULL) {
-    return -1;
-  }
-
-  if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "This function must be called before initialization.");
-    ctx->status_code = CSYNC_STATUS_CSYNC_STATUS_ERROR;
-    return -1;
-  }
-
-  ctx->options.with_conflict_copys=true;
-
-  return 0;
 }
 
 int csync_set_local_only(CSYNC *ctx, bool local_only) {

@@ -105,7 +105,6 @@ bool Folder::init()
         MirallConfigFile cfgFile;
         csync_set_config_dir( _csync_ctx, cfgFile.configPath().toUtf8() );
 
-        csync_enable_conflictcopys(_csync_ctx);
         setIgnoredFiles();
         if (Account *account = AccountManager::instance()->account()) {
             account->credentials()->syncContextPreInit(_csync_ctx);

@@ -171,7 +171,6 @@ int main(int argc, char **argv) {
     }
 
     csync_set_log_level(options.silent ? 1 : 11);
-    csync_enable_conflictcopys(_csync_ctx);
     Logger::instance()->setLogFile("-");
 
     csync_set_auth_callback( _csync_ctx, getauth );

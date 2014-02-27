@@ -133,12 +133,8 @@ struct csync_s {
   } module;
 
   struct {
-    int max_depth;
-    int max_time_difference;
     int sync_symbolic_links;
-    int unix_extensions;
     char *config_dir;
-    bool with_conflict_copys;
     bool local_only_mode;
     int timeout;
 #if defined(HAVE_ICONV) && defined(WITH_ICONV)

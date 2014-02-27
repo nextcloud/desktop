@@ -38,8 +38,6 @@ typedef struct csync_vio_method_s csync_vio_method_t;
 struct csync_vio_capabilities_s {
  bool atomar_copy_support; /* set to true if the backend provides atomar copy */
  bool do_post_copy_stat;   /* true if csync should check the copy afterwards  */
- int  unix_extensions;     /* -1: do csync detection, 0: no unix extensions,
-                               1: extensions available */
  bool use_send_file_to_propagate; /* if set, the module rather copies files using send_file than read and write */
  bool get_support;
  bool put_support;

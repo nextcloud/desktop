@@ -501,15 +501,6 @@ int csync_set_log_userdata(void *data);
 const char *csync_get_statedb_file(CSYNC *ctx);
 
 /**
- * @brief Enable the creation of backup copys if files are changed on both sides
- *
- * @param ctx           The csync context.
- *
- * @return              0 on success, less than 0 if an error occured.
- */
-int csync_enable_conflictcopys(CSYNC *ctx);
-
-/**
   * @brief Flag to tell csync that only a local run is intended. Call before csync_init
   *
   * @param local_only   Bool flag to indicate local only mode.
