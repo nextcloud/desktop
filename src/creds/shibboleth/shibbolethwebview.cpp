@@ -17,9 +17,12 @@
 #include <QWebFrame>
 #include <QWebPage>
 #include <QMessageBox>
+#include <QAuthenticator>
+#include <QNetworkReply>
 
 #include "creds/shibboleth/shibbolethcookiejar.h"
 #include "creds/shibboleth/shibbolethwebview.h"
+#include "creds/shibboleth/authenticationdialog.h"
 #include "mirall/account.h"
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/theme.h"
@@ -35,6 +38,8 @@ void ShibbolethWebView::setup(Account *account, ShibbolethCookieJar* jar)
     // the account object, which already can do this
     connect(nm, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             account, SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
+    connect(nm, SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
+            SLOT(slotHandleAuthentication(QNetworkReply*,QAuthenticator*)));
 
     QWebPage* page = new QWebPage(this);
 
@@ -119,6 +124,23 @@ void ShibbolethWebView::slotLoadFinished(bool success)
                               tr("Could not load Shibboleth login page to log you in.\n"
                                  "Please ensure that your network connection is working."));
 
+    }
+}
+
+void ShibbolethWebView::slotHandleAuthentication(QNetworkReply *reply, QAuthenticator *authenticator)
+{
+    Q_UNUSED(reply)
+    QUrl url = reply->url();
+    // show only scheme, host and port
+    QUrl reducedUrl;
+    reducedUrl.setScheme(url.scheme());
+    reducedUrl.setHost(url.host());
+    reducedUrl.setPort(url.port());
+
+    AuthenticationDialog dialog(authenticator->realm(), reducedUrl.toString(), this);
+    if (dialog.exec() == QDialog::Accepted) {
+        authenticator->setUser(dialog.user());
+        authenticator->setPassword(dialog.password());
     }
 }
 
