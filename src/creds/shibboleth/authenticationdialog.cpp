@@ -35,6 +35,8 @@ AuthenticationDialog::AuthenticationDialog(const QString &realm, const QString &
     form->addRow(tr("&User:"), _user);
     form->addRow(tr("&Password:"), _password);
     lay->addLayout(form);
+    _password->setEchoMode(QLineEdit::Password);
+
     QDialogButtonBox *box = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal);
     connect(box, SIGNAL(accepted()), this, SLOT(accept()));
     connect(box, SIGNAL(rejected()), this, SLOT(reject()));
