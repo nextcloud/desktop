@@ -120,9 +120,7 @@ void ShibbolethWebView::slotLoadFinished(bool success)
     }
 
     if (!success) {
-        QMessageBox::critical(this, tr("Error loading IdP login page"),
-                              tr("Could not load Shibboleth login page to log you in.\n"
-                                 "Please ensure that your network connection is working."));
+        qDebug() << Q_FUNC_INFO << "Could not load Shibboleth login page to log you in.";
 
     }
 }
