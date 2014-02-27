@@ -106,40 +106,6 @@ void csync_memstat_check(void) {
                  m.size * 4, m.resident * 4, m.shared * 4);
 }
 
-int csync_unix_extensions(CSYNC *ctx) {
-  int rc = -1;
-  char *uri = NULL;
-  csync_vio_handle_t *fp = NULL;
-
-  ctx->options.unix_extensions = 0;
-
-  rc = asprintf(&uri, "%s/csync_unix_extension*test.ctmp", ctx->remote.uri);
-  if (rc < 0) {
-    goto out;
-  }
-
-  ctx->replica = ctx->remote.type;
-  fp = csync_vio_creat(ctx, uri, 0644);
-  if (fp == NULL) {
-    rc = 0;
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO,
-        "Disabled unix filesystem synchronization");
-    goto out;
-  }
-  csync_vio_close(ctx, fp);
-
-  ctx->options.unix_extensions = 1;
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Enabled unix filesystem synchronization");
-
-  rc = 1;
-
-out:
-  csync_vio_unlink(ctx, uri);
-  SAFE_FREE(uri);
-
-  return rc;
-}
-
 void csync_win32_set_file_hidden( const char *file, bool h ) {
 #ifdef _WIN32
   const mbchar_t *fileName;

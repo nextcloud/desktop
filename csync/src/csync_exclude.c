@@ -148,7 +148,6 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
   CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
   CSYNC_EXCLUDE_TYPE type  = CSYNC_NOT_EXCLUDED;
 
-  if (! ctx->options.unix_extensions) {
     for (p = path; *p; p++) {
       switch (*p) {
         case '\\':
@@ -164,7 +163,6 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
           break;
       }
     }
-  }
 
   /* split up the path */
   dname = c_dirname(path);

@@ -129,7 +129,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->status_code = CSYNC_STATUS_OK;
   ctx->options.max_depth = MAX_DEPTH;
   ctx->options.max_time_difference = MAX_TIME_DIFFERENCE;
-  ctx->options.unix_extensions = 0;
   ctx->options.with_conflict_copys=false;
   ctx->options.local_only_mode = false;
 
@@ -222,20 +221,6 @@ retry_vio_init:
     }
   } else {
     ctx->remote.type = LOCAL_REPLICA;
-  }
-
-  if(!ctx->options.local_only_mode) {
-    if(ctx->module.capabilities.unix_extensions == -1) { /* detect */
-      if (csync_unix_extensions(ctx) < 0) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL, "Could not detect filesystem type.");
-          ctx->status_code = CSYNC_STATUS_FILESYSTEM_UNKNOWN;
-          rc = -1;
-          goto out;
-      }
-    } else {
-      /* The module specifies the value for the unix_extensions. */
-      ctx->options.unix_extensions = ctx->module.capabilities.unix_extensions;
-    }
   }
 
   if (ctx->options.timeout)

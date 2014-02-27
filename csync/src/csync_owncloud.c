@@ -894,16 +894,12 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 /* capabilities are currently:
  *  bool atomar_copy_support - oC provides atomar copy
  *  bool do_post_copy_stat   - oC does not want the post copy check
- *  int  unix_extensions     - oC supports unix extensions.
  *  bool propagate_on_fd     - oC supports the send_file method.
  */
-static csync_vio_capabilities_t _owncloud_capabilities = { true, false, 0, true, false, false };
+static csync_vio_capabilities_t _owncloud_capabilities = { true, false, true, false, false };
 
 static csync_vio_capabilities_t *owncloud_capabilities(void)
 {
-#ifdef _WIN32
-  _owncloud_capabilities.unix_extensions = 0;
-#endif
   return &_owncloud_capabilities;
 }
 

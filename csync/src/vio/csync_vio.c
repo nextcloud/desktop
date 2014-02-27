@@ -73,7 +73,6 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   /* Useful defaults to the module capabilities */
   ctx->module.capabilities.atomar_copy_support = false;
   ctx->module.capabilities.do_post_copy_stat   = true;
-  ctx->module.capabilities.unix_extensions     = -1; /* detect automatically */
   ctx->module.capabilities.use_send_file_to_propagate = false; /* do use read/write by default */
 
   /* Load the module capabilities from the module if it implements the it. */
@@ -85,8 +84,6 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
             ctx->module.capabilities.atomar_copy_support ? "yes": "no");
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: post copy stat: %s",
             ctx->module.capabilities.do_post_copy_stat ? "yes": "no");
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: unix extensions: %d",
-            ctx->module.capabilities.unix_extensions );
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: use send_file: %s",
             ctx->module.capabilities.use_send_file_to_propagate ? "yes" : "no" );
   CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: get support: %s",
