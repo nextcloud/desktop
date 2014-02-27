@@ -70,27 +70,6 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
     return -1;
   }
 
-  /* Useful defaults to the module capabilities */
-  ctx->module.capabilities.atomar_copy_support = false;
-  ctx->module.capabilities.do_post_copy_stat   = true;
-  ctx->module.capabilities.use_send_file_to_propagate = false; /* do use read/write by default */
-
-  /* Load the module capabilities from the module if it implements the it. */
-  if( VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
-    ctx->module.capabilities = *(m->get_capabilities());
-  }
-
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: atomar copy support: %s",
-            ctx->module.capabilities.atomar_copy_support ? "yes": "no");
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: post copy stat: %s",
-            ctx->module.capabilities.do_post_copy_stat ? "yes": "no");
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: use send_file: %s",
-            ctx->module.capabilities.use_send_file_to_propagate ? "yes" : "no" );
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: get support: %s",
-            ctx->module.capabilities.get_support ? "yes" : "no" );
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "capabilities: put support: %s",
-            ctx->module.capabilities.put_support? "yes" : "no" );
-
   /* Some basic checks */
   if (m->method_table_size == 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s method table size is 0", module);
@@ -100,18 +79,6 @@ int csync_vio_init(CSYNC *ctx, const char *module, const char *args) {
   if (! VIO_METHOD_HAS_FUNC(m, opendir)) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "module %s has no opendir fn", module);
     return -1;
-  }
-
-  /* Useful defaults to the module capabilities */
-  ctx->module.capabilities.atomar_copy_support = false;
-  ctx->module.capabilities.put_support         = false;
-  ctx->module.capabilities.get_support         = false;
-
-  /* Load the module capabilities from the module if it implements the it. */
-  if( VIO_METHOD_HAS_FUNC(m, get_capabilities)) {
-    ctx->module.capabilities = *(m->get_capabilities());
-  } else {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "module %s has no capabilities fn", module);
   }
 
   if (! VIO_METHOD_HAS_FUNC(m, get_etag)) {

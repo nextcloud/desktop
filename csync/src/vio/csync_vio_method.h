@@ -33,23 +33,10 @@
 
 typedef struct csync_vio_method_s csync_vio_method_t;
 
-/* module capabilities definition.
- * remember to set useful defaults in csync_vio.c if you add something here. */
-struct csync_vio_capabilities_s {
- bool atomar_copy_support; /* set to true if the backend provides atomar copy */
- bool do_post_copy_stat;   /* true if csync should check the copy afterwards  */
- bool use_send_file_to_propagate; /* if set, the module rather copies files using send_file than read and write */
- bool get_support;
- bool put_support;
-};
-
-typedef struct csync_vio_capabilities_s csync_vio_capabilities_t;
-
 typedef csync_vio_method_t *(*csync_vio_method_init_fn)(const char *method_name,
     const char *config_args, csync_auth_callback cb, void *userdata);
 typedef void (*csync_vio_method_finish_fn)(csync_vio_method_t *method);
 
-typedef csync_vio_capabilities_t *(*csync_method_get_capabilities_fn)(void);
 typedef const char* (*csync_method_get_etag_fn)(const char* path);
 typedef csync_vio_method_handle_t *(*csync_method_open_fn)(const char *durl, int flags, mode_t mode);
 typedef csync_vio_method_handle_t *(*csync_method_creat_fn)(const char *durl, mode_t mode);
@@ -90,7 +77,6 @@ typedef int (*csync_method_put_fn)(csync_vio_method_handle_t *flocal,
 
 struct csync_vio_method_s {
   size_t method_table_size;           /* Used for versioning */
-  csync_method_get_capabilities_fn get_capabilities;
   csync_method_open_fn open;
   csync_method_creat_fn creat;
   csync_method_close_fn close;

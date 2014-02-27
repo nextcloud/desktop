@@ -891,18 +891,6 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     return 0;
 }
 
-/* capabilities are currently:
- *  bool atomar_copy_support - oC provides atomar copy
- *  bool do_post_copy_stat   - oC does not want the post copy check
- *  bool propagate_on_fd     - oC supports the send_file method.
- */
-static csync_vio_capabilities_t _owncloud_capabilities = { true, false, true, false, false };
-
-static csync_vio_capabilities_t *owncloud_capabilities(void)
-{
-  return &_owncloud_capabilities;
-}
-
 static const char* owncloud_get_etag( const char *path )
 {
     ne_request *req    = NULL;
@@ -1157,7 +1145,6 @@ static int owncloud_set_property(const char *key, void *data) {
 
 csync_vio_method_t _method = {
     .method_table_size = sizeof(csync_vio_method_t),
-    .get_capabilities = owncloud_capabilities,
     .get_etag = owncloud_get_etag,
     .open = 0,
     .creat = 0,
