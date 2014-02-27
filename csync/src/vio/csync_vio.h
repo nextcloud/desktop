@@ -35,13 +35,8 @@ typedef struct fhandle_s {
 
 int csync_vio_init(CSYNC *ctx, const char *module, const char *args);
 void csync_vio_shutdown(CSYNC *ctx);
-csync_vio_handle_t *csync_vio_open(CSYNC *ctx, const char *uri, int flags, mode_t mode);
-csync_vio_handle_t *csync_vio_creat(CSYNC *ctx, const char *uri, mode_t mode);
-int csync_vio_close(CSYNC *ctx, csync_vio_handle_t *handle);
-ssize_t csync_vio_read(CSYNC *ctx, csync_vio_handle_t *fhandle, void *buf, size_t count);
-ssize_t csync_vio_write(CSYNC *ctx, csync_vio_handle_t *fhandle, const void *buf, size_t count);
+
 int csync_vio_sendfile(CSYNC *ctx,  csync_vio_handle_t *sfp, csync_vio_handle_t *dst);
-int64_t csync_vio_lseek(CSYNC *ctx, csync_vio_handle_t *fhandle, int64_t offset, int whence);
 
 int csync_vio_put(CSYNC *ctx, csync_vio_handle_t *flocal, csync_vio_handle_t *fremote, csync_file_stat_t *st);
 int csync_vio_get(CSYNC *ctx, csync_vio_handle_t *flocal, csync_vio_handle_t *fremote, csync_file_stat_t *st);
@@ -69,7 +64,5 @@ int csync_vio_set_property(CSYNC *ctx, const char *key, void *data);
 char *csync_vio_get_status_string(CSYNC *ctx);
 
 int csync_vio_commit(CSYNC *ctx);
-
-int csync_vio_getfd(csync_vio_handle_t *fhandle);
 
 #endif /* _CSYNC_VIO_H */

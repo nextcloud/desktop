@@ -24,15 +24,6 @@
 #include "vio/csync_vio_method.h"
 #include <sys/time.h>
 
-int csync_vio_local_getfd(csync_vio_handle_t *hnd);
-
-csync_vio_method_handle_t *csync_vio_local_open(const char *durl, int flags, mode_t mode);
-csync_vio_method_handle_t *csync_vio_local_creat(const char *durl, mode_t mode);
-int csync_vio_local_close(csync_vio_method_handle_t *fhandle);
-ssize_t csync_vio_local_read(csync_vio_method_handle_t *fhandle, void *buf, size_t count);
-ssize_t csync_vio_local_write(csync_vio_method_handle_t *fhandle, const void *buf, size_t count);
-int64_t csync_vio_local_lseek(csync_vio_method_handle_t *fhandle, int64_t offset, int whence);
-
 csync_vio_method_handle_t *csync_vio_local_opendir(const char *name);
 int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle);
 csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandle);
