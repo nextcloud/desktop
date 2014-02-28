@@ -21,12 +21,11 @@
 #ifndef _CSYNC_VIO_LOCAL_H
 #define _CSYNC_VIO_LOCAL_H
 
-#include "vio/csync_vio_method.h"
 #include <sys/time.h>
 
-csync_vio_method_handle_t *csync_vio_local_opendir(const char *name);
-int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle);
-csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandle);
+csync_vio_handle_t *csync_vio_local_opendir(const char *name);
+int csync_vio_local_closedir(csync_vio_handle_t *dhandle);
+csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle);
 
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf);
 

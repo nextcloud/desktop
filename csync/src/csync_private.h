@@ -54,7 +54,6 @@
 #include <sys/iconv.h>
 #endif
 
-#include "vio/csync_vio_method.h"
 #include "csync_macros.h"
 
 /**
@@ -125,11 +124,6 @@ struct csync_s {
     int  read_from_db;
     c_list_t *ignored_cleanup;
   } remote;
-
-  struct {
-    csync_vio_method_t *method;
-    csync_vio_method_finish_fn finish_fn;
-  } module;
 
   struct {
     int sync_symbolic_links;
@@ -216,6 +210,7 @@ struct _csync_treewalk_context_s
     void *userdata;
 };
 typedef struct _csync_treewalk_context_s _csync_treewalk_context;
+
 
 /**
  * }@

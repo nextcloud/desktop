@@ -56,7 +56,6 @@
 #include "c_private.h"
 #include "httpbf.h"
 
-#include "vio/csync_vio_module.h"
 #include "vio/csync_vio_file_stat.h"
 #include "vio/csync_vio.h"
 
@@ -177,5 +176,15 @@ int _stat_perms( int type );
 csync_vio_file_stat_t *resourceToFileStat( struct resource *res );
 
 void oc_notify_progress(const char *file, enum csync_notify_type_e kind, int64_t current_size, int64_t full_size);
+
+// Public API from vio
+csync_vio_handle_t *owncloud_opendir(const char *uri);
+csync_vio_file_stat_t *owncloud_readdir(csync_vio_handle_t *dhandle);
+int owncloud_closedir(csync_vio_handle_t *dhandle);
+int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf);
+int owncloud_commit(void);
+char *owncloud_error_string(void);
+void owncloud_init(csync_auth_callback cb, void *userdata);
+int owncloud_set_property(const char *key, void *data);
 
 #endif /* CSYNC_OWNCLOUD_H */

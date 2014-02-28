@@ -786,7 +786,7 @@ static void fill_stat_cache( csync_vio_file_stat_t *lfs ) {
 /*
  * file functions
  */
-static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
+int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
     /* get props:
      *   modtime
      *   creattime
@@ -894,7 +894,7 @@ static int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
 /*
  * directory functions
  */
-static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
+csync_vio_handle_t *owncloud_opendir(const char *uri) {
     struct listdir_context *fetchCtx = NULL;
     char *curi = NULL;
 
@@ -932,7 +932,7 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
     /* no freeing of curi because its part of the fetchCtx and gets freed later */
 }
 
-static int owncloud_closedir(csync_vio_method_handle_t *dhandle) {
+int owncloud_closedir(csync_vio_handle_t *dhandle) {
 
     struct listdir_context *fetchCtx = dhandle;
 
@@ -943,9 +943,13 @@ static int owncloud_closedir(csync_vio_method_handle_t *dhandle) {
     return 0;
 }
 
-static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandle) {
-
+csync_vio_file_stat_t *owncloud_readdir(csync_vio_handle_t *dhandle) {
     struct listdir_context *fetchCtx = dhandle;
+
+//    DEBUG_WEBDAV("owncloud_readdir" );
+//    DEBUG_WEBDAV("owncloud_readdir %s ", fetchCtx->target);
+//    DEBUG_WEBDAV("owncloud_readdir %d", fetchCtx->result_count );
+//    DEBUG_WEBDAV("owncloud_readdir %p %p", fetchCtx->currResource, fetchCtx->list );
 
     if( fetchCtx == NULL) {
         /* DEBUG_WEBDAV("An empty dir or at end"); */
@@ -979,12 +983,12 @@ static csync_vio_file_stat_t *owncloud_readdir(csync_vio_method_handle_t *dhandl
     return NULL;
 }
 
-static char *owncloud_error_string()
+char *owncloud_error_string(void)
 {
     return dav_session.error_string;
 }
 
-static int owncloud_commit() {
+int owncloud_commit(void) {
 
   clean_caches();
 
@@ -1010,7 +1014,7 @@ static int owncloud_commit() {
   return 0;
 }
 
-static int owncloud_set_property(const char *key, void *data) {
+int owncloud_set_property(const char *key, void *data) {
 #define READ_STRING_PROPERTY(P) \
     if (c_streq(key, #P)) { \
         SAFE_FREE(dav_session.P); \
@@ -1081,21 +1085,7 @@ static int owncloud_set_property(const char *key, void *data) {
     return -1;
 }
 
-csync_vio_method_t _method = {
-    .method_table_size = sizeof(csync_vio_method_t),
-    .opendir = owncloud_opendir,
-    .closedir = owncloud_closedir,
-    .readdir = owncloud_readdir,
-    .stat = owncloud_stat,
-    .set_property = owncloud_set_property,
-    .get_error_string = owncloud_error_string,
-    .commit = owncloud_commit,
-};
-
-csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
-                                    csync_auth_callback cb, void *userdata) {
-    (void) method_name;
-    (void) args;
+void owncloud_init(csync_auth_callback cb, void *userdata) {
     (void) userdata;
 
     _authcb = cb;
@@ -1105,14 +1095,6 @@ csync_vio_method_t *vio_module_init(const char *method_name, const char *args,
 
     /* Disable it, Mirall can enable it for the first sync (= no DB)*/
     dav_session.no_recursive_propfind = true;
-
-    return &_method;
-}
-
-void vio_module_shutdown(csync_vio_method_t *method) {
-    (void) method;
-
-    /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
 }
 
 /* vim: set ts=4 sw=4 et cindent: */

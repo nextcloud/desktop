@@ -67,7 +67,6 @@ set(csync_SRCS
   csync_rename.cc
 
   vio/csync_vio.c
-  vio/csync_vio_handle.c
   vio/csync_vio_file_stat.c
   vio/csync_vio_local.c
 

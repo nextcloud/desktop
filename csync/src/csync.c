@@ -179,42 +179,18 @@ int csync_init(CSYNC *ctx) {
     return 1;
   }
 
+  /* check for uri */
+  if (csync_fnmatch("owncloud://*", ctx->remote.uri, 0) == 0 && csync_fnmatch("ownclouds://*", ctx->remote.uri, 0) == 0) {
+      ctx->status_code = CSYNC_STATUS_NO_MODULE;
+      rc = -1;
+      goto out;
+  }
+
   ctx->local.type = LOCAL_REPLICA;
 
-  /* check for uri */
-  if ( !ctx->options.local_only_mode && csync_fnmatch("*://*", ctx->remote.uri, 0) == 0) {
-    size_t len;
-    len = strstr(ctx->remote.uri, "://") - ctx->remote.uri;
-    /* get protocol */
-    if (len > 0) {
-      char *module = NULL;
-      /* module name */
-      module = c_strndup(ctx->remote.uri, len);
-      if (module == NULL) {
-        rc = -1;
-        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-        goto out;
-      }
-      /* load module */
-retry_vio_init:
-      rc = csync_vio_init(ctx, module, NULL);
-      if (rc < 0) {
-        len = strlen(module);
-
-        if (len > 0 && module[len-1] == 's') {
-          module[len-1] = '\0';
-          goto retry_vio_init;
-        }
-        /* Now vio init finally failed which means a module could not be found. */
-	CSYNC_LOG(CSYNC_LOG_PRIORITY_FATAL,
-		  "The csync module %s could not be loaded.", module);
-        SAFE_FREE(module);
-        ctx->status_code = CSYNC_STATUS_NO_MODULE;
-        goto out;
-      }
-      SAFE_FREE(module);
+  if ( !ctx->options.local_only_mode) {
+      owncloud_init(csync_get_auth_callback(ctx), csync_get_userdata(ctx));
       ctx->remote.type = REMOTE_REPLICA;
-    }
   } else {
     ctx->remote.type = LOCAL_REPLICA;
   }
@@ -647,8 +623,6 @@ int csync_destroy(CSYNC *ctx) {
     rc = -1;
   }
   ctx->statedb.db = NULL;
-
-  csync_vio_shutdown(ctx);
 
   /* destroy exclude list */
   csync_exclude_destroy(ctx);

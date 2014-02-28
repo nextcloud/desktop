@@ -21,7 +21,6 @@
 #ifndef _CSYNC_VIO_HANDLE_H
 #define _CSYNC_VIO_HANDLE_H
 
-typedef void csync_vio_method_handle_t;
-typedef struct csync_vio_handle_s csync_vio_handle_t;
+typedef void csync_vio_handle_t;
 
 #endif /* _CSYNC_VIO_HANDLE_H */

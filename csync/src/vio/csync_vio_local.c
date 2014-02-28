@@ -50,7 +50,7 @@ typedef struct dhandle_s {
   char *path;
 } dhandle_t;
 
-csync_vio_method_handle_t *csync_vio_local_opendir(const char *name) {
+csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   dhandle_t *handle = NULL;
   mbchar_t *dirname = c_utf8_to_locale(name);
 
@@ -70,10 +70,10 @@ csync_vio_method_handle_t *csync_vio_local_opendir(const char *name) {
   handle->path = c_strdup(name);
   c_free_locale_string(dirname);
 
-  return (csync_vio_method_handle_t *) handle;
+  return (csync_vio_handle_t *) handle;
 }
 
-int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle) {
+int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
   dhandle_t *handle = NULL;
   int rc = -1;
 
@@ -91,7 +91,7 @@ int csync_vio_local_closedir(csync_vio_method_handle_t *dhandle) {
   return rc;
 }
 
-csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_method_handle_t *dhandle) {
+csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
   struct _tdirent *dirent = NULL;
 
   dhandle_t *handle = NULL;
