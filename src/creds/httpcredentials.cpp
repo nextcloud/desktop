@@ -199,7 +199,7 @@ void HttpCredentials::fetch(Account *account)
         // we do not want a security problem.
         settings->remove(key);
         key = QString::fromLatin1( "%1/type" ).arg( kck );
-        settings->remove(kck);
+        settings->remove(key);
         settings->sync();
     }
 
