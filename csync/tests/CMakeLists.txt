@@ -38,7 +38,6 @@ add_cmocka_test(check_csync_create csync_tests/check_csync_create.c ${TEST_TARGE
 add_cmocka_test(check_csync_log csync_tests/check_csync_log.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_exclude csync_tests/check_csync_exclude.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_statedb_load csync_tests/check_csync_statedb_load.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_csync_time csync_tests/check_csync_time.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_util csync_tests/check_csync_util.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_misc csync_tests/check_csync_misc.c ${TEST_TARGET_LIBRARIES})
 
@@ -51,7 +50,6 @@ add_cmocka_test(check_csync_commit csync_tests/check_csync_commit.c ${TEST_TARGE
 add_cmocka_test(check_csync_treewalk csync_tests/check_csync_treewalk.c ${TEST_TARGET_LIBRARIES})
 
 # vio
-add_cmocka_test(check_vio_handle vio_tests/check_vio_handle.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_vio_file_stat vio_tests/check_vio_file_stat.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_vio vio_tests/check_vio.c ${TEST_TARGET_LIBRARIES})
 
