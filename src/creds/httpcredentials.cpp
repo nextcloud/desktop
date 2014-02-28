@@ -287,6 +287,10 @@ void HttpCredentials::invalidateToken(Account *account)
 
 void HttpCredentials::persist(Account *account)
 {
+    if (_user.isEmpty()) {
+        // We never connected or fetched the user, there is nothing to save.
+        return;
+    }
     account->setCredentialSetting(QLatin1String(userC), _user);
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
