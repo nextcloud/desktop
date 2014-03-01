@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Sen conexión con %1 en &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="775"/>
@@ -1410,7 +1410,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="134"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Foi retirado un ficheiro ou directorio desde unha compartición de só lectura, mais non foi posíbel a súa restauración: %1</translation>
     </message>
 </context>
 <context>
@@ -1434,7 +1434,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="130"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Foi retirado un ficheiro desde unha compartición de só lectura. Foi restaurado.</translation>
     </message>
 </context>
 <context>
@@ -1452,7 +1452,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="232"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro foi renomeado mais é parte dunha compartición de só lectura. O ficheiro orixinal foi restaurado.</translation>
     </message>
 </context>
 <context>
@@ -1471,7 +1471,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="157"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro foi editado localmente mais é parte dunha compartición de só lectura. O ficheiro foi restaurado e a súa edición atopase no ficheiro de conflitos.</translation>
     </message>
 </context>
 <context>
@@ -1479,7 +1479,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="189"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro foi editado localmente mais é parte dunha compartición de só lectura. O ficheiro foi restaurado e a súa edición atopase no ficheiro de conflitos.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="204"/>

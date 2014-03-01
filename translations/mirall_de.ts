@@ -147,7 +147,7 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Keine Verbindung mit %1 zu &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="775"/>
@@ -1411,7 +1411,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="134"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Eine Datei oder Verzeichnis wurde von einer Nur-Lese-Freigabe wiederhergestellt, aber die Wiederherstellung ist mit folgendem Fehler fehlgeschlagen: %1</translation>
     </message>
 </context>
 <context>
@@ -1435,7 +1435,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="130"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Die Datei wurde von einer Nur-Lese-Freigabe gelöscht. Die Datei wurde wiederhergestellt.</translation>
     </message>
 </context>
 <context>
@@ -1453,7 +1453,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="232"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Die Datei wurde auf einer Nur-Lese-Freigabe umbenannt. Die Original-Datei wurde wiederhergestellt.</translation>
     </message>
 </context>
 <context>
@@ -1472,7 +1472,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="157"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Die Datei wurde von einer Nur-Lese-Freigabe lokal bearbeitet. Die Datei wurde wiederhergestellt und Ihre Bearbeitung ist in der Konflikte-Datei.</translation>
     </message>
 </context>
 <context>
@@ -1480,7 +1480,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="189"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Die Datei wurde von einer Nur-Lese-Freigabe lokal bearbeitet. Die Datei wurde wiederhergestellt und Ihre Bearbeitung ist in der Konflikte-Datei.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="204"/>

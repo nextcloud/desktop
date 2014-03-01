@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>%1 bağlantısı &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt; üzerinde yok.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="775"/>
@@ -1409,7 +1409,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="134"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Bir dosya veya dizin bir salt okunur paylaşımdan kaldırılmıştı, ancak geri yükleme başarısız oldu: %1</translation>
     </message>
 </context>
 <context>
@@ -1433,7 +1433,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="130"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya salt okunur bir paylaşımdan kaldırılmıştı. Geri yüklendi.</translation>
     </message>
 </context>
 <context>
@@ -1451,7 +1451,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="232"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adlandırıldı ancak salt okunur paylaşımın bir parçası. Özgün dosya geri yüklendi.</translation>
     </message>
 </context>
 <context>
@@ -1470,7 +1470,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="157"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya yerel olarak düzenlendi ancak salt okunur paylaşımın bir parçası. Geri yüklendi ve düzenlemeniz çakışan dosyada.</translation>
     </message>
 </context>
 <context>
@@ -1478,7 +1478,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="189"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya yerel olarak düzenlendi ancak salt okunur paylaşımın bir parçası. Geri yüklendi ve düzenlemeniz çakışan dosyada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="204"/>

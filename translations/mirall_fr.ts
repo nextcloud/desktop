@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Aucune connexion à %1 à &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="775"/>
@@ -1410,7 +1410,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="134"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Un fichier ou un dossier a été supprimé du partage en lecture seule, mais la restauration à échoué : %1</translation>
     </message>
 </context>
 <context>
@@ -1434,7 +1434,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="130"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier a été supprimé d&apos;un partage en lecture seule. Il a été restauré.</translation>
     </message>
 </context>
 <context>
@@ -1452,7 +1452,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="232"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier a été renommé mais appartient à un partage en lecture seule. Le fichier original a été restauré.</translation>
     </message>
 </context>
 <context>
@@ -1471,7 +1471,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="157"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier a été modifié localement mais appartient à un partage en lecture seule. Il a été restauré et vos modifications sont présentes dans le fichiers de confit.</translation>
     </message>
 </context>
 <context>
@@ -1479,17 +1479,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="189"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier a été modifié localement mais appartient à un partage en lecture seule. Il a été restauré et vos modifications sont présentes dans le fichiers de confit.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="204"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur n&apos;a pas acquitté le dernier morceau (aucun e-tag n&apos;était présent).</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="249"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>Aucune extension X-OC-MTime, ownCloud 5 est exigé</translation>
     </message>
 </context>
 <context>
@@ -1844,7 +1844,7 @@ Veuillez vous assurer qu&apos;une connexion réseau est disponible.</translation
     <message>
         <location filename="../src/mirall/theme.cpp" line="205"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %1 Pour plus d&apos;informations, veuillez visiter &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
