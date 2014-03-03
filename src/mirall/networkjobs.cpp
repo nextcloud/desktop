@@ -145,20 +145,13 @@ void AbstractNetworkJob::slotFinished()
     AbstractCredentials *creds = _account->credentials();
     if (!creds->stillValid(_reply) &&! _ignoreCredentialFailure
             && _account->state() != Account::InvalidCredidential) {
+        _account->setState(Account::InvalidCredidential);
+
         // invalidate & forget token/password
         // but try to re-sign in.
         connect( creds, SIGNAL(fetched()),
                  qApp, SLOT(slotCredentialsFetched()), Qt::UniqueConnection);
-
-        // If the state is (still) disconnected, it is the first attempt to connect and
-        // the credentials must be fetched.
-        if(_account->state() == Account::Disconnected) {
-            creds->fetch(_account);
-        } else {
-            // Note: Invalidate removes the creds from the keychain!
-            creds->invalidateAndFetch(_account);   // this triggers Application::runValidator when the credidentials are fetched
-        }
-        _account->setState(Account::InvalidCredidential);
+        creds->invalidateAndFetch(_account);   // this triggers Application::runValidator when the credidentials are fetched
     }
     deleteLater();
 }
