@@ -302,13 +302,7 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         startupFails = _conValidator->errors();
         _startupNetworkError = _conValidator->networkError();
         if (_userTriggeredConnect) {
-            if(_connectionMsgBox.isNull()) {
-                _connectionMsgBox = new QMessageBox(QMessageBox::Warning, tr("Connection failed"),
-                                      _conValidator->errors().join(". ").append('.'), QMessageBox::Ok, 0);
-                _connectionMsgBox->setAttribute(Qt::WA_DeleteOnClose);
-                _connectionMsgBox->open();
-                _userTriggeredConnect = false;
-            }
+            _userTriggeredConnect = false;
         }
         QTimer::singleShot(30*1000, this, SLOT(slotCheckConnection()));
     }
