@@ -144,6 +144,8 @@ public:
     int state() const;
     void setState(int state);
 
+    void clearCookieJar();
+
     QuotaInfo *quotaInfo();
 signals:
     void stateChanged(int state);

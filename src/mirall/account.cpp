@@ -183,6 +183,11 @@ QList<QNetworkCookie> Account::lastAuthCookies() const
     return _am->cookieJar()->cookiesForUrl(_url);
 }
 
+void Account::clearCookieJar()
+{
+    _am->setCookieJar(new QNetworkCookieJar);
+}
+
 QNetworkReply *Account::headRequest(const QString &relPath)
 {
     return headRequest(concatUrlPath(url(), relPath));
