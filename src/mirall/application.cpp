@@ -291,10 +291,6 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         folderMan->setSyncEnabled(true);
         // queue up the sync for all folders.
         folderMan->slotScheduleAllFolders();
-        if(!_connectionMsgBox.isNull()) {
-            _connectionMsgBox->close();
-        }
-
     } else {
         // if we have problems here, it's unlikely that syncing will work.
         FolderMan::instance()->setSyncEnabled(false);
