@@ -94,8 +94,10 @@ private:
 HttpCredentials::HttpCredentials()
     : _user(),
       _password(),
-      _ready(false)
-{}
+      _ready(false),
+      _fetchJobInProgress(false)
+{
+}
 
 HttpCredentials::HttpCredentials(const QString& user, const QString& password)
     : _user(user),
