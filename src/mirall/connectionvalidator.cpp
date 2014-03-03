@@ -19,6 +19,7 @@
 #include "mirall/theme.h"
 #include "mirall/account.h"
 #include "mirall/networkjobs.h"
+#include <creds/abstractcredentials.h>
 
 namespace Mirall {
 
@@ -108,7 +109,14 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
         return;
     }
 
-    QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
+    AbstractCredentials *creds = _account->credentials();
+    if (creds->ready()) {
+        QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
+    } else {
+        connect( creds, SIGNAL(fetched()),
+                 this, SLOT(slotCheckAuthentication()), Qt::UniqueConnection);
+        creds->fetch(_account);
+    }
 }
 
 // status.php could not be loaded.
@@ -126,6 +134,9 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 
 void ConnectionValidator::slotCheckAuthentication()
 {
+    AbstractCredentials *creds = _account->credentials();
+    disconnect( creds, SIGNAL(fetched()),
+                this, SLOT(slotCheckAuthentication()));
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
     PropfindJob *job = new PropfindJob(_account, "/", this);
