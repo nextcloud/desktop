@@ -307,6 +307,7 @@ CheckServerJob::CheckServerJob(Account *account, bool followRedirect, QObject *p
     , _followRedirects(followRedirect)
     , _redirectCount(0)
 {
+    setIgnoreCredentialFailure(true);
 }
 
 void CheckServerJob::start()
