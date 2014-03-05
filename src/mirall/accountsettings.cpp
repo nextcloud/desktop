@@ -726,7 +726,7 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
         QString totalStr = Utility::octetsToString(total);
         double percent = used/(double)total*100;
         QString percentStr = Utility::compactFormatDouble(percent, 1);
-        ui->quotaLabel->setText(tr("%1 of %2 (%3%) server space in use.").arg(usedStr, totalStr, percentStr));
+        ui->quotaLabel->setText(tr("%1 (%3%) of %2 server space in use.").arg(usedStr, totalStr, percentStr));
     } else {
         ui->quotaProgressBar->setVisible(false);
         ui->quotaInfoLabel->setVisible(false);
