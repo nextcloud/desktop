@@ -136,12 +136,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="330"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Baieztatu Karpetaren Leheneratzea</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="331"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Benetan nahi duzu &lt;i&gt;%1&lt;/i&gt; karpeta leheneratu eta zure bezeroaren datu basea berreraiki?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/p&gt; Funtzio hau mantenurako bakarrik diseinauta izan da. Ez da fitxategirik ezabatuko, baina honek datu trafiko handia sor dezake eta minutu edo ordu batzuk behar izango ditu burutzeko, karpetaren tamainaren arabera. Erabili aukera hau bakarrik zure kudeatzaileak esanez gero.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
@@ -363,7 +363,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="469"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da sinkronizazio egunerokoa hasieratu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="154"/>
@@ -580,7 +580,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="761"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Azkenengo sinkronizazioa ongi burutu zen, baina banakako fitxategi batzuetan abisuak egon dira.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="764"/>
@@ -842,7 +842,7 @@ Markatutakoak ezabatuko dira karpeta bat ezabatzeko beharrezkoa bada. Hau meta d
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="98"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan dira aldaketa idatzi hemen &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
@@ -1124,7 +1124,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguratu bertako karpeten aukerak</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
@@ -1296,7 +1296,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
         <source>creating folder on ownCloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>ownClouden karpeta sortzen: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="298"/>
@@ -1625,13 +1625,14 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
         <source>Error loading IdP login page</source>
-        <translation type="unfinished"/>
+        <translation>Errorea idP saioa hasteko orria kargatzen</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
         <source>Could not load Shibboleth login page to log you in.
 Please ensure that your network connection is working.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da Shibboleth saioa hasteko orria kargatu saioa hasteko.
+Mesedez ziurtatu zure sareko konexioa ongi dagoela.</translation>
     </message>
 </context>
 <context>
@@ -2004,7 +2005,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="193"/>
         <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;Bertako karpetaren edukiak ezabatzen ditu ezarpen berriak erabiliz sinkronizatu baino lehen&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="224"/>
@@ -2131,7 +2132,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="99"/>
         <source>Enter the URL of the server that you want to connect to (without http or https).</source>
-        <translation type="unfinished"/>
+        <translation>Sartu konektatu nahi duzun zerbitzariaren URLa (http edo https gabe).</translation>
     </message>
 </context>
 <context>
