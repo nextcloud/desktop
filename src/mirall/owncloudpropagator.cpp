@@ -227,7 +227,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
             SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
 
-    QMetaObject::invokeMethod(_rootJob.data(), "start");
+    QMetaObject::invokeMethod(_rootJob.data(), "start", Qt::QueuedConnection);
 }
 
 void OwncloudPropagator::overallTransmissionSizeChanged(qint64 change)

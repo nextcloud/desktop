@@ -522,7 +522,7 @@ void CSyncThread::startSync()
     UpdateJob *job = new UpdateJob(_csync_ctx);
     job->moveToThread(&_thread);
     connect(job, SIGNAL(finished(int)), this, SLOT(slotUpdateFinished(int)));
-    QMetaObject::invokeMethod(job, "start");
+    QMetaObject::invokeMethod(job, "start", Qt::QueuedConnection);
 }
 
 void CSyncThread::slotUpdateFinished(int updateResult)

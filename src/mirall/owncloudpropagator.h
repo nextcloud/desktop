@@ -118,7 +118,7 @@ private slots:
         connect(next, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
         connect(next, SIGNAL(ready()), this, SLOT(slotSubJobReady()));
         _runningNow++;
-        QMetaObject::invokeMethod(next, "start");
+        QMetaObject::invokeMethod(next, "start", Qt::QueuedConnection);
     }
 
     void slotSubJobFinished(SyncFileItem::Status status);
