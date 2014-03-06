@@ -48,6 +48,7 @@ private Q_SLOTS:
   void onNewCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
   void slotLoadStarted();
   void slotLoadFinished(bool success = true);
+  void slotHandleAuthentication(QNetworkReply*,QAuthenticator*);
 
 private:
   void setup(Account *account, ShibbolethCookieJar* jar);

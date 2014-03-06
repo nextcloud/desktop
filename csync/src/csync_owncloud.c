@@ -1006,11 +1006,6 @@ int owncloud_commit(void) {
   SAFE_FREE( dav_session.session_key);
   SAFE_FREE( dav_session.error_string );
 
-  SAFE_FREE( dav_session.proxy_type );
-  SAFE_FREE( dav_session.proxy_host );
-  SAFE_FREE( dav_session.proxy_user );
-  SAFE_FREE( dav_session.proxy_pwd  );
-
   return 0;
 }
 

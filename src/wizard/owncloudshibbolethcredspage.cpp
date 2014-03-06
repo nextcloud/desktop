@@ -45,6 +45,7 @@ void OwncloudShibbolethCredsPage::setupBrowser()
     connect(_browser, SIGNAL(otherCookiesReceived(QList<QNetworkCookie>, QUrl)),
             this, SLOT(slotOtherCookiesReceived(QList<QNetworkCookie>, QUrl)));
 
+    _browser->move(ocWizard->x(), ocWizard->y());
     _browser->show();
     _browser->setFocus();
 }

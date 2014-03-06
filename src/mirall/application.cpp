@@ -232,15 +232,13 @@ void Application::slotCheckConnection()
                 return;
         }
 
-        AbstractCredentials* credentials(account->credentials());
+        if (_conValidator)
+            _conValidator->deleteLater();
+        _conValidator = new ConnectionValidator(account);
+        connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
+                 this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
+        _conValidator->checkConnection();
 
-        if (! credentials->ready()) {
-            connect( credentials, SIGNAL(fetched()),
-                     this, SLOT(slotCredentialsFetched()), Qt::UniqueConnection);
-            credentials->fetch(account);
-        } else {
-            slotCredentialsFetched();
-        }
     } else {
         // let gui open the setup wizard
         _gui->slotOpenSettingsDialog( true );
@@ -261,13 +259,7 @@ void Application::slotCredentialsFetched()
         // Then we ask again for the credidentials if they are wrong again
         account->setState(Account::Disconnected);
     }
-
-    if (_conValidator)
-        _conValidator->deleteLater();
-    _conValidator = new ConnectionValidator(account);
-    connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
-             this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
-    _conValidator->checkConnection();
+    slotCheckConnection();
 }
 
 void Application::slotToggleFolderman(int state)
@@ -299,10 +291,6 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         folderMan->setSyncEnabled(true);
         // queue up the sync for all folders.
         folderMan->slotScheduleAllFolders();
-        if(!_connectionMsgBox.isNull()) {
-            _connectionMsgBox->close();
-        }
-
     } else {
         // if we have problems here, it's unlikely that syncing will work.
         FolderMan::instance()->setSyncEnabled(false);
@@ -310,13 +298,7 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         startupFails = _conValidator->errors();
         _startupNetworkError = _conValidator->networkError();
         if (_userTriggeredConnect) {
-            if(_connectionMsgBox.isNull()) {
-                _connectionMsgBox = new QMessageBox(QMessageBox::Warning, tr("Connection failed"),
-                                      _conValidator->errors().join(". ").append('.'), QMessageBox::Ok, 0);
-                _connectionMsgBox->setAttribute(Qt::WA_DeleteOnClose);
-                _connectionMsgBox->open();
-                _userTriggeredConnect = false;
-            }
+            _userTriggeredConnect = false;
         }
         QTimer::singleShot(30*1000, this, SLOT(slotCheckConnection()));
     }

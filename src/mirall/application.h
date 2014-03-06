@@ -100,7 +100,6 @@ private:
     int     _logExpire;
     bool    _logFlush;
     bool    _userTriggeredConnect;
-    QPointer<QMessageBox> _connectionMsgBox;
 
     ClientProxy _proxy;
 

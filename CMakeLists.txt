@@ -96,6 +96,9 @@ include(OwnCloudCPack.cmake)
 
 add_definitions(-DUNICODE)
 add_definitions(-D_UNICODE)
+if( WIN32 )
+add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
+endif( WIN32 )
 
 # Handle Translations, pick all mirall_* files from trans directory.
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/mirall_*.ts)

@@ -151,7 +151,11 @@ void AbstractNetworkJob::slotFinished()
         // but try to re-sign in.
         connect( creds, SIGNAL(fetched()),
                  qApp, SLOT(slotCredentialsFetched()), Qt::UniqueConnection);
-        creds->invalidateAndFetch(_account);   // this triggers Application::runValidator when the credidentials are fetched
+        if (creds->ready()) {
+            creds->invalidateAndFetch(_account);
+        } else {
+            creds->fetch(_account);
+        }
     }
     deleteLater();
 }
@@ -307,6 +311,7 @@ CheckServerJob::CheckServerJob(Account *account, bool followRedirect, QObject *p
     , _followRedirects(followRedirect)
     , _redirectCount(0)
 {
+    setIgnoreCredentialFailure(true);
 }
 
 void CheckServerJob::start()

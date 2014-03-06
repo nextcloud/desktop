@@ -98,6 +98,7 @@ set(libsync_SRCS
     creds/shibboleth/shibbolethwebview.cpp
     creds/shibboleth/shibbolethrefresher.cpp
     creds/shibboleth/shibbolethconfigfile.cpp
+    creds/shibboleth/authenticationdialog.cpp
     creds/credentialscommon.cpp
     3rdparty/qjson/json.cpp
 )
@@ -134,6 +135,7 @@ set(libsync_HEADERS
     creds/shibboleth/shibbolethwebview.h
     creds/shibboleth/shibbolethrefresher.h
     creds/shibboleth/shibbolethconfigfile.h
+    creds/shibboleth/authenticationdialog.h
     creds/credentialscommon.h
     3rdparty/qjson/json.h
 )

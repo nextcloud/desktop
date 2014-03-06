@@ -94,8 +94,10 @@ private:
 HttpCredentials::HttpCredentials()
     : _user(),
       _password(),
-      _ready(false)
-{}
+      _ready(false),
+      _fetchJobInProgress(false)
+{
+}
 
 HttpCredentials::HttpCredentials(const QString& user, const QString& password)
     : _user(user),
@@ -188,10 +190,11 @@ void HttpCredentials::fetch(Account *account)
         return;
     }
 
+    // User must be fetched from config file
     fetchUser(account);
 
     QSettings *settings = account->settingsWithGroup(Theme::instance()->appName());
-    QString kck = keychainKey(account->url().toString(), _user );
+    const QString kck = keychainKey(account->url().toString(), _user );
 
     QString key = QString::fromLatin1( "%1/data" ).arg( kck );
     if( settings && settings->contains(key) ) {
@@ -199,7 +202,7 @@ void HttpCredentials::fetch(Account *account)
         // we do not want a security problem.
         settings->remove(key);
         key = QString::fromLatin1( "%1/type" ).arg( kck );
-        settings->remove(kck);
+        settings->remove(key);
         settings->sync();
     }
 
@@ -207,8 +210,11 @@ void HttpCredentials::fetch(Account *account)
         Q_EMIT fetched();
     } else {
         ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+        settings->setParent(job); // make the job parent to make setting deleted properly
+        job->setSettings(settings);
+
         job->setInsecureFallback(false);
-        job->setKey(keychainKey(account->url().toString(), _user));
+        job->setKey(kck);
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
         job->setProperty("account", QVariant::fromValue(account));
         job->start();
@@ -225,7 +231,6 @@ bool HttpCredentials::stillValid(QNetworkReply *reply)
 void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 {
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(job);
-    delete readJob->settings();
     _password = readJob->textData();
     Account *account = qvariant_cast<Account*>(readJob->property("account"));
 
@@ -236,11 +241,12 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
     QKeychain::Error error = job->error();
 
     if( !_password.isEmpty() && error == NoError ) {
+        _fetchJobInProgress = false;
+
         // All cool, the keychain did not come back with error.
         // Still, the password can be empty which indicates a problem and
         // the password dialog has to be opened.
         _ready = true;
-        _fetchJobInProgress = false;
         emit fetched();
     } else {
         if( error != NoError ) {
@@ -276,19 +282,40 @@ QString HttpCredentials::queryPassword(bool *ok)
 void HttpCredentials::invalidateToken(Account *account)
 {
     _password = QString();
-    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
-    job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
-    job->setInsecureFallback(true);
-    connect(job, SIGNAL(destroyed(QObject*)), job->settings(), SLOT(deleteLater()));
-    job->setKey(keychainKey(account->url().toString(), _user));
-    job->start();
     _ready = false;
+
+    // User must be fetched from config file to generate a valid key
+    fetchUser(account);
+
+    const QString kck = keychainKey(account->url().toString(), _user);
+    if( kck.isEmpty() ) {
+        qDebug() << "InvalidateToken: User is empty, bailing out!";
+        return;
+    }
+
+    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    QSettings *settings = account->settingsWithGroup(Theme::instance()->appName());
+    settings->setParent(job); // make the job parent to make setting deleted properly
+    job->setSettings(settings);
+    job->setInsecureFallback(true);
+    job->setKey(kck);
+    job->start();
+
+    account->clearCookieJar();
 }
 
 void HttpCredentials::persist(Account *account)
 {
+    if (_user.isEmpty()) {
+        // We never connected or fetched the user, there is nothing to save.
+        return;
+    }
     account->setCredentialSetting(QLatin1String(userC), _user);
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    QSettings *settings = account->settingsWithGroup(Theme::instance()->appName());
+    settings->setParent(job); // make the job parent to make setting deleted properly
+    job->setSettings(settings);
+
     job->setInsecureFallback(false);
     connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
     job->setKey(keychainKey(account->url().toString(), _user));
