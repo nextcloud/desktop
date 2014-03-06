@@ -310,7 +310,7 @@ void Folder::bubbleUpSyncResult()
 
     foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
         if( item._status == SyncFileItem::FatalError || item._status == SyncFileItem::NormalError ) {
-            slotCSyncError( QString::fromLatin1("%1: %2").arg(item._file).arg(item._errorString) );
+            slotCSyncError( tr("%1: %2").arg(item._file, item._errorString) );
             logger->postOptionalGuiLog(item._file, item._errorString);
 
         } else {
