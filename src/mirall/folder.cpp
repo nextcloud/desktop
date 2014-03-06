@@ -459,7 +459,6 @@ void Folder::slotTerminateSync(bool block)
             return;
         }
 
-        delete _csync;
         slotCSyncFinished();
     }
     setSyncEnabled(false);
