@@ -160,31 +160,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
-        //             /* If the source file changed during submission, lets try again */
-//             if( state == HBF_SOURCE_FILE_CHANGE ) {
-//                 if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
-//                     qDebug("SOURCE file has changed during upload, retry #%d in %d seconds!", attempts, 2*attempts);
-//                     sleep(2*attempts);
-//                     if( _previousFileSize == 0 ) {
-//                         _previousFileSize = _item._size;
-//                     } else {
-//                         _previousFileSize = trans->stat_size;
-//                     }
-//                     continue;
-//                 }
-//
-//                 const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
-//                 done( SyncFileItem::SoftError, errMsg );
-//             } else if( state == HBF_USER_ABORTED ) {
-//                 const QString errMsg = tr("Sync was aborted by user.");
-//                 done( SyncFileItem::SoftError, errMsg );
-//             } else {
-//                 // Other HBF error conditions.
-//                 // FIXME: find out the error class.
-//                 _item._httpErrorCode = hbf_fail_http_code(trans.data());
         _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        //FIXME: classify error
         _propagator->_activeJobs--;
-
         if(checkForProblemsWithShared(_item._httpErrorCode,
             tr("The file was edited locally but is part of a read only share. "
                "It is restored and your edit is in the conflict file."))) {
@@ -196,7 +174,18 @@ void PropagateUploadFileQNAM::slotPutFinished()
     }
 
     bool finished = job->reply()->hasRawHeader("ETag");
+
     if (!finished) {
+
+        if (Utility::qDateTimeToTime_t(QFileInfo(_propagator->_localDir + _item._file).lastModified())
+                != _item._modtime) {
+            /* Uh oh:  The local file has changed during upload */
+            _propagator->_activeJobs--;
+            done(SyncFileItem::SoftError, tr("Local file changed during sync."));
+            // FIXME:  the previous code was retrying for a few seconds.
+            return;
+        }
+
         // Proceed to next chunk.
         _currentChunk++;
         if (_currentChunk >= _chunkCount) {
