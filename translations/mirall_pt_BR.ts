@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma conexão para %1 em &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="775"/>
@@ -1408,7 +1408,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="134"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Um arquivo ou diretório foi removido de um compartilhamento somente de leitura, mas a restauração falhou: %1</translation>
     </message>
 </context>
 <context>
@@ -1432,7 +1432,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="130"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo foi removido de um compartilhamento somente de leitura. Ele foi restaurado.</translation>
     </message>
 </context>
 <context>
@@ -1450,7 +1450,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="232"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo foi renomeado mas faz parte de compartilhamento só de leitura. O arquivo original foi restaurado.</translation>
     </message>
 </context>
 <context>
@@ -1469,7 +1469,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="157"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo foi editado localmente mas faz parte de compartilhamento só de leitura. Ele foi restaurado mas sua edição está em conflito com o arquivo.</translation>
     </message>
 </context>
 <context>
@@ -1477,7 +1477,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="189"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo foi editado localmente mas faz parte de compartilhamento só de leitura. Ele foi restaurado mas sua edição está em conflito com o arquivo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="204"/>
