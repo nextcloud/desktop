@@ -25,6 +25,26 @@
 
 namespace Mirall {
 
+/**
+ * Fiven an error from the network, map to a SyncFileItem::Status error
+ */
+static SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror, int httpCode) {
+    Q_ASSERT (nerror != QNetworkReply::NoError); // we should only be called when there is an error
+
+    if (nerror > QNetworkReply::NoError &&  nerror <= QNetworkReply::UnknownProxyError) {
+        // network error or proxy error -> fatal
+        return SyncFileItem::FatalError;
+    }
+
+    if (httpCode == 412) {
+        // "Precondition Failed"
+        // Happens when the e-tag has changed
+        return SyncFileItem::SoftError;
+    }
+
+    return SyncFileItem::NormalError;
+}
+
 void PUTFileJob::start() {
     QNetworkRequest req;
     for(QMap<QByteArray, QByteArray>::const_iterator it = _headers.begin(); it != _headers.end(); ++it) {
@@ -36,7 +56,7 @@ void PUTFileJob::start() {
     setupConnections(reply());
 
     if( reply()->error() != QNetworkReply::NoError ) {
-        qDebug() << "getting etag: request network error: " << reply()->errorString();
+        qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
     }
     AbstractNetworkJob::start();
 }
@@ -161,7 +181,6 @@ void PropagateUploadFileQNAM::slotPutFinished()
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
         _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        //FIXME: classify error
         _propagator->_activeJobs--;
         if(checkForProblemsWithShared(_item._httpErrorCode,
             tr("The file was edited locally but is part of a read only share. "
@@ -169,7 +188,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
             return;
         }
 
-        done(SyncFileItem::NormalError, job->reply()->errorString());
+        done(classifyError(err, _item._httpErrorCode) , job->reply()->errorString());
         return;
     }
 
@@ -182,7 +201,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
             /* Uh oh:  The local file has changed during upload */
             _propagator->_activeJobs--;
             done(SyncFileItem::SoftError, tr("Local file changed during sync."));
-            // FIXME:  the previous code was retrying for a few seconds.
+            // FIXME:  the legacy code was retrying for a few seconds.
+            //         and also checking that after the last chunk, and removed the file in case of INSTRUCTION_NEW
             return;
         }
 
@@ -206,19 +226,6 @@ void PropagateUploadFileQNAM::slotPutFinished()
     }
 
     _propagator->_activeJobs--;
-
-    // FIXME:  hack to check that the server did not accept the first chunk as a file
-//     if (transfer->block_cnt > 1 && state == HBF_SUCCESS && cnt == 0) {
-//         /* Success on the first chunk is suspicious.
-//          *      It could happen that the server did not support chunking */
-//         int rc = ne_delete(session, transfer_url);
-//         if (rc == NE_OK && _hbf_http_error_code(session) == 204) {
-//             /* If delete suceeded, it means some proxy strips the OC_CHUNKING header
-//              *          start again without chunking: */
-//             free( transfer_url );
-//             return _hbf_transfer_no_chunk(session, transfer, verb);
-//         }
-//     }
 
     // the file id should only be empty for new files up- or downloaded
     QString fid = QString::fromUtf8(job->reply()->rawHeader("OC-FileID"));
@@ -244,38 +251,6 @@ void PropagateUploadFileQNAM::slotPutFinished()
     _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
     _propagator->_journal->commit("upload file start");
 
-//     if (hbf_validate_source_file(trans.data()) == HBF_SOURCE_FILE_CHANGE) {
-//             /* Did the source file changed since the upload ?
-//              *               This is different from the previous check because the previous check happens between
-//              *               chunks while this one happens when the whole file has been uploaded.
-//              *
-//              *               The new etag is already stored in the database in the previous lines so in case of
-//              *               crash, we won't have a conflict but we will properly do a new upload
-//              */
-//
-//             if( attempts++ < 5 ) { /* FIXME: How often do we want to try? */
-//                 qDebug("SOURCE file has changed after upload, retry #%d in %d seconds!", attempts, 2*attempts);
-//                 sleep(2*attempts);
-//                 continue;
-//             }
-//
-//             // Still the file change error, but we tried a couple of times.
-//             // Ignore this file for now.
-//             // Lets remove the file from the server (at least if it is new) as it is different
-//             // from our file here.
-//             if( _item._instruction == CSYNC_INSTRUCTION_NEW ) {
-//                 QScopedPointer<char, QScopedPointerPodDeleter> uri(
-//                     ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-//
-//                 int rc = ne_delete(_propagator->_session, uri.data());
-//                 qDebug() << "Remove the invalid file from server:" << rc;
-//             }
-//
-//             const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
-//             done( SyncFileItem::SoftError, errMsg );
-//             return;
-//         }
-//
     emit progress(Progress::EndUpload, _item, _item._size, _item._size);
     done(SyncFileItem::Success);
 }
@@ -298,7 +273,7 @@ void GETFileJob::start() {
     setupConnections(reply());
 
     if( reply()->error() != QNetworkReply::NoError ) {
-        qDebug() << "getting etag: request network error: " << reply()->errorString();
+        qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
     }
 
     connect(reply(), SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
@@ -403,10 +378,9 @@ void PropagateDownloadFileQNAM::slotGetFinished()
             _tmpFile.remove();
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         }
-        // FIXME!
         _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         _propagator->_activeJobs--;
-        done(SyncFileItem::NormalError, job->reply()->errorString());
+        done(classifyError(err, _item._httpErrorCode), job->reply()->errorString());
         return;
     }
 
