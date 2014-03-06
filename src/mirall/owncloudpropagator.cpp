@@ -25,7 +25,7 @@
 namespace Mirall {
 
 /* The maximum number of active job in parallel  */
-static const int maximumActiveJob = 6;
+static const int maximumActiveJob = 3;
 
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
 {

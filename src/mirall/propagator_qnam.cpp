@@ -62,7 +62,7 @@ void PUTFileJob::start() {
 }
 
 // FIXME:  increase and make configurable
-static const int CHUNKING_SIZE = (100*1024);
+static const int CHUNKING_SIZE = (10*1024*1024);
 
 void PropagateUploadFileQNAM::start()
 {
