@@ -170,11 +170,11 @@ set(creds_HEADERS
 IF (NOT APPLE)
     INSTALL(
         FILES ${owncloudsync_HEADERS}
-        DESTINATION ${INCLUDE_INSTALL_DIR}/owncloudsync/mirall
+	DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}/mirall
     )
     INSTALL(
         FILES ${creds_HEADERS}
-        DESTINATION ${INCLUDE_INSTALL_DIR}/owncloudsync/creds
+	DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}/creds
     )
 ENDIF(NOT APPLE)
 
