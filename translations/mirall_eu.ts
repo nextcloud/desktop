@@ -144,6 +144,11 @@
         <translation>&lt;p&gt;Benetan nahi duzu &lt;i&gt;%1&lt;/i&gt; karpeta leheneratu eta zure bezeroaren datu basea berreraiki?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/p&gt; Funtzio hau mantenurako bakarrik diseinauta izan da. Ez da fitxategirik ezabatuko, baina honek datu trafiko handia sor dezake eta minutu edo ordu batzuk behar izango ditu burutzeko, karpetaren tamainaren arabera. Erabili aukera hau bakarrik zure kudeatzaileak esanez gero.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
+        <source>%1 (%3%) of %2 server space in use.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation type="unfinished"/>
@@ -167,11 +172,6 @@
         <location filename="../src/mirall/accountsettings.cpp" line="435"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Sinkronizazio martxan da.&lt;br/&gt;Bukatu nahi al duzu?</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
-        <source>%1 of %2 (%3%) in use.</source>
-        <translation>%2tik %1 (%%3) erabilita.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="761"/>
@@ -220,11 +220,26 @@
     </message>
 </context>
 <context>
-    <name>Mirall::Application</name>
+    <name>Mirall::AuthenticationDialog</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="314"/>
-        <source>Connection failed</source>
-        <translation>Konexioak huts egin du</translation>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
+        <source>Authentication Required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
+        <source>Enter username and password for &apos;%1&apos; at %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
+        <source>&amp;User:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
+        <source>&amp;Password:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -409,27 +424,27 @@
 <context>
     <name>Mirall::ConnectionValidator</name>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="90"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="91"/>
         <source>No ownCloud account configured</source>
         <translation>Ez dago ownCloud konturik konfiguratuta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="105"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>The configured server for this client is too old</source>
         <translation>Bezero honentzako konfiguratutako zerbitzaria oso zaharra da</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="107"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Mesedez eguneratu zerbitzarira eta berrabiarazi bezeroa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="120"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="128"/>
         <source>Unable to connect to %1</source>
         <translation>Ezin izan da %1ra konektatu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="147"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="158"/>
         <source>The provided credentials are not correct</source>
         <translation>Emandako kredentzialak ez dira zuzenak</translation>
     </message>
@@ -465,6 +480,11 @@
         <location filename="../src/mirall/folder.cpp" line="369"/>
         <source>downloaded</source>
         <translation>deskargatuta</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="313"/>
+        <source>%1: %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>
@@ -507,30 +527,30 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="691"/>
+        <location filename="../src/mirall/folder.cpp" line="690"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="694"/>
+        <location filename="../src/mirall/folder.cpp" line="693"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="698"/>
+        <location filename="../src/mirall/folder.cpp" line="697"/>
         <source>Remove All Files?</source>
         <translation>Ezabatu Fitxategi Guztiak?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="700"/>
+        <location filename="../src/mirall/folder.cpp" line="699"/>
         <source>Remove all files</source>
         <translation>Ezabatu fitxategi guztiak</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="701"/>
+        <location filename="../src/mirall/folder.cpp" line="700"/>
         <source>Keep files</source>
         <translation>Mantendu fitxategiak</translation>
     </message>
@@ -798,12 +818,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="265"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="274"/>
         <source>Enter Password</source>
         <translation>Sartu Pasahitza</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="266"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="275"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Mesedez sartu %1 pasahitza &apos;%2&apos; erabiltzailerako:</translation>
     </message>
@@ -1007,35 +1027,35 @@ Markatutakoak ezabatuko dira karpeta bat ezabatzeko beharrezkoa bada. Hau meta d
         <translation>Proxy zerbitzariak autentikazioa behar du</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="182"/>
+        <location filename="../src/mirall/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
         <translation>Deskargatzeko Banda Zabalera</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="188"/>
-        <location filename="../src/mirall/networksettings.ui" line="287"/>
+        <location filename="../src/mirall/networksettings.ui" line="196"/>
+        <location filename="../src/mirall/networksettings.ui" line="278"/>
         <source>Limit to</source>
         <translation>Honetara mugatu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="210"/>
-        <location filename="../src/mirall/networksettings.ui" line="312"/>
+        <location filename="../src/mirall/networksettings.ui" line="218"/>
+        <location filename="../src/mirall/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
         <translation>KByte/s</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="232"/>
-        <location filename="../src/mirall/networksettings.ui" line="270"/>
+        <location filename="../src/mirall/networksettings.ui" line="227"/>
+        <location filename="../src/mirall/networksettings.ui" line="295"/>
         <source>No limit</source>
         <translation>Mugarik ez</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="264"/>
+        <location filename="../src/mirall/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
         <translation>Igotzeko Banda Zabalera</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="277"/>
+        <location filename="../src/mirall/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
         <translation>Automatikoki mugatu</translation>
     </message>
@@ -1472,17 +1492,22 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="189"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="186"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="204"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
+        <source>Local file changed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="249"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="245"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation type="unfinished"/>
     </message>
@@ -1613,26 +1638,14 @@ Saiatu horiek berriz sinkronizatzen.</translation>
 <context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="53"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="58"/>
         <source>%1 - Authenticate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="114"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
-    </message>
-    <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
-        <source>Error loading IdP login page</source>
-        <translation>Errorea idP saioa hasteko orria kargatzen</translation>
-    </message>
-    <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
-        <source>Could not load Shibboleth login page to log you in.
-Please ensure that your network connection is working.</source>
-        <translation>Ezin da Shibboleth saioa hasteko orria kargatu saioa hasteko.
-Mesedez ziurtatu zure sareko konexioa ongi dagoela.</translation>
     </message>
 </context>
 <context>

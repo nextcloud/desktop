@@ -144,6 +144,11 @@
         <translation>&lt;p&gt;Skutečně chcete resetovat složku &lt;i&gt;%1&lt;/i&gt; a znovu sestavit klientskou databázi?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Tato funkce je určena pouze pro účely údržby. Žádné soubory nebudou smazány, ale může to způsobit velké datové přenosy a dokončení může trvat mnoho minut či hodin v závislosti na množství dat ve složce. Použijte tuto volbu pouze na pokyn správce.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
+        <source>%1 (%3%) of %2 server space in use.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation type="unfinished"/>
@@ -167,11 +172,6 @@
         <location filename="../src/mirall/accountsettings.cpp" line="435"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Operace synchronizace právě probíhá.&lt;br/&gt;Přejete si ji ukončit?</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
-        <source>%1 of %2 (%3%) in use.</source>
-        <translation>%1 z %2 (%3%) v užívání.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="761"/>
@@ -220,11 +220,26 @@
     </message>
 </context>
 <context>
-    <name>Mirall::Application</name>
+    <name>Mirall::AuthenticationDialog</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="314"/>
-        <source>Connection failed</source>
-        <translation>Spojení selhalo</translation>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
+        <source>Authentication Required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
+        <source>Enter username and password for &apos;%1&apos; at %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
+        <source>&amp;User:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
+        <source>&amp;Password:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -409,27 +424,27 @@
 <context>
     <name>Mirall::ConnectionValidator</name>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="90"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="91"/>
         <source>No ownCloud account configured</source>
         <translation>Žádný účet ownCloud nenastaven</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="105"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>The configured server for this client is too old</source>
         <translation>Server nastavený pro tohoto klienta je příliš starý</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="107"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Prosím, aktualizujte na poslední verzi serveru a restartujte klienta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="120"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="128"/>
         <source>Unable to connect to %1</source>
         <translation>Nelze se připojit k %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="147"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="158"/>
         <source>The provided credentials are not correct</source>
         <translation>Poskytnuté přihlašovací údaje nejsou správné</translation>
     </message>
@@ -465,6 +480,11 @@
         <location filename="../src/mirall/folder.cpp" line="369"/>
         <source>downloaded</source>
         <translation>staženo</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="313"/>
+        <source>%1: %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>
@@ -507,14 +527,14 @@
         <translation> &apos;%1&apos; a %2 dalších souborů bylo %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="691"/>
+        <location filename="../src/mirall/folder.cpp" line="690"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Tato synchronizace by smazala všechny soubory v místní složce &apos;%1&apos;
 Pokud jste vy nebo váš správce zresetovali účet na serveru, zvolte &quot;Ponechat soubory&quot;. Pokud chcete místní data odstranit, zvolte &quot;Odstranit všechny soubory&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="694"/>
+        <location filename="../src/mirall/folder.cpp" line="693"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -523,17 +543,17 @@ Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím
 Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="698"/>
+        <location filename="../src/mirall/folder.cpp" line="697"/>
         <source>Remove All Files?</source>
         <translation>Odstranit všechny soubory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="700"/>
+        <location filename="../src/mirall/folder.cpp" line="699"/>
         <source>Remove all files</source>
         <translation>Odstranit všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="701"/>
+        <location filename="../src/mirall/folder.cpp" line="700"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>
@@ -801,12 +821,12 @@ Opravdu chcete provést tuto akci?</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="265"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="274"/>
         <source>Enter Password</source>
         <translation>Zadejte heslo</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="266"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="275"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Zadejte prosím %1 heslo pro uživatele &apos;%2&apos;: </translation>
     </message>
@@ -1010,35 +1030,35 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
         <translation>Proxy server vyžaduje přihlášení</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="182"/>
+        <location filename="../src/mirall/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
         <translation>Rychlost stahování</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="188"/>
-        <location filename="../src/mirall/networksettings.ui" line="287"/>
+        <location filename="../src/mirall/networksettings.ui" line="196"/>
+        <location filename="../src/mirall/networksettings.ui" line="278"/>
         <source>Limit to</source>
         <translation>Omezit na</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="210"/>
-        <location filename="../src/mirall/networksettings.ui" line="312"/>
+        <location filename="../src/mirall/networksettings.ui" line="218"/>
+        <location filename="../src/mirall/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
         <translation>KBytů/s</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="232"/>
-        <location filename="../src/mirall/networksettings.ui" line="270"/>
+        <location filename="../src/mirall/networksettings.ui" line="227"/>
+        <location filename="../src/mirall/networksettings.ui" line="295"/>
         <source>No limit</source>
         <translation>Bez limitu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="264"/>
+        <location filename="../src/mirall/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
         <translation>Rychlost odesílání</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="277"/>
+        <location filename="../src/mirall/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
         <translation>Omezovat automaticky</translation>
     </message>
@@ -1477,17 +1497,22 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="189"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="186"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="204"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
+        <source>Local file changed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>Server nepotvrdil poslední část dat. (Nebyl nalezen e-tag)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="249"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="245"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation>Rozšíření X-OC-MTime není k dispozici, je vyžadováno ownCloud 5</translation>
     </message>
@@ -1619,26 +1644,14 @@ Zkuste provést novou synchronizaci.
 <context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="53"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="58"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - ověření</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="114"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
-    </message>
-    <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
-        <source>Error loading IdP login page</source>
-        <translation>Chyba při načítání přihlašovací stránky IdP</translation>
-    </message>
-    <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
-        <source>Could not load Shibboleth login page to log you in.
-Please ensure that your network connection is working.</source>
-        <translation>Nemohu načíst přihlašovací stránku Shibboleth potřebnou pro přihlášení.
-Ujistěte se, prosím, že síťové spojení funguje.</translation>
     </message>
 </context>
 <context>

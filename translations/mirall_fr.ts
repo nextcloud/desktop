@@ -144,6 +144,11 @@
         <translation>&lt;p&gt;Voulez-vous réellement réinitialiser le dossier &lt;i&gt;%1&lt;/i&gt; et reconstruire votre base de données cliente ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt; Cette fonctionnalité existe pour des besoins de maintenance uniquement. Aucun fichier ne sera supprimé, mais cela peut causer un trafic de données conséquent et peut durer de plusieurs minutes à plusieurs heures, en fonction de la taille du dossier. Utilisez cette option uniquement sur avis de votre administrateur.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
+        <source>%1 (%3%) of %2 server space in use.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation>Aucune connexion à %1 à &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
@@ -167,11 +172,6 @@
         <location filename="../src/mirall/accountsettings.cpp" line="435"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>La synchronisation est en cours.&lt;br/&gt;Voulez-vous y mettre un terme?</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
-        <source>%1 of %2 (%3%) in use.</source>
-        <translation>%1 of %2 (%3%) occupés.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="761"/>
@@ -220,11 +220,26 @@
     </message>
 </context>
 <context>
-    <name>Mirall::Application</name>
+    <name>Mirall::AuthenticationDialog</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="314"/>
-        <source>Connection failed</source>
-        <translation>Échec de la connexion</translation>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
+        <source>Authentication Required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
+        <source>Enter username and password for &apos;%1&apos; at %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
+        <source>&amp;User:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
+        <source>&amp;Password:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -409,27 +424,27 @@
 <context>
     <name>Mirall::ConnectionValidator</name>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="90"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="91"/>
         <source>No ownCloud account configured</source>
         <translation>Aucun compte ownCloud configuré</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="105"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>The configured server for this client is too old</source>
         <translation>Le serveur configuré pour ce client est trop vieux</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="107"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Veuillez mettre à jour avec la dernière version du serveur et redémarrer le client.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="120"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="128"/>
         <source>Unable to connect to %1</source>
         <translation>Impossible de se connecter à %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="147"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="158"/>
         <source>The provided credentials are not correct</source>
         <translation>Les informations d&apos;identification fournies ne sont pas correctes</translation>
     </message>
@@ -465,6 +480,11 @@
         <location filename="../src/mirall/folder.cpp" line="369"/>
         <source>downloaded</source>
         <translation>téléchargé</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="313"/>
+        <source>%1: %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>
@@ -507,14 +527,14 @@
         <translation>&apos;%1&apos; et %2 autres fichiers ont été %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="691"/>
+        <location filename="../src/mirall/folder.cpp" line="690"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Cette synchronisation supprimerait tous les fichiers du dossier local de synchronisation &apos;%1&apos;.
 Si vous-même ou votre administrateur avez réinitialisé votre compte sur le serveur, choisissez &quot;Garder les fichiers&quot;. Si vous voulez que vos données soient supprimées, choisissez &quot;Supprimer tous les fichiers&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="694"/>
+        <location filename="../src/mirall/folder.cpp" line="693"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -523,17 +543,17 @@ Cela est peut-être du à une reconfiguration silencieuse du dossier, ou parce q
 Voulez-vous réellement effectuer cette opération ?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="698"/>
+        <location filename="../src/mirall/folder.cpp" line="697"/>
         <source>Remove All Files?</source>
         <translation>Supprimer tous les fichiers ?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="700"/>
+        <location filename="../src/mirall/folder.cpp" line="699"/>
         <source>Remove all files</source>
         <translation>Supprimer tous les fichiers</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="701"/>
+        <location filename="../src/mirall/folder.cpp" line="700"/>
         <source>Keep files</source>
         <translation>Garder les fichiers</translation>
     </message>
@@ -801,12 +821,12 @@ Voulez-vous réellement effectuer cette opération ?</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="265"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="274"/>
         <source>Enter Password</source>
         <translation>Entrez le mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="266"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="275"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Veuillez entrer %1 mot de passe pour l&apos;utilisateur &apos;%2&apos;:</translation>
     </message>
@@ -1010,35 +1030,35 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
         <translation>Le serveur mandataire requiert une authentification</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="182"/>
+        <location filename="../src/mirall/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
         <translation>Bande passante de téléchargement</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="188"/>
-        <location filename="../src/mirall/networksettings.ui" line="287"/>
+        <location filename="../src/mirall/networksettings.ui" line="196"/>
+        <location filename="../src/mirall/networksettings.ui" line="278"/>
         <source>Limit to</source>
         <translation>Limiter à</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="210"/>
-        <location filename="../src/mirall/networksettings.ui" line="312"/>
+        <location filename="../src/mirall/networksettings.ui" line="218"/>
+        <location filename="../src/mirall/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
         <translation>KOctets/s</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="232"/>
-        <location filename="../src/mirall/networksettings.ui" line="270"/>
+        <location filename="../src/mirall/networksettings.ui" line="227"/>
+        <location filename="../src/mirall/networksettings.ui" line="295"/>
         <source>No limit</source>
         <translation>Aucune limite</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="264"/>
+        <location filename="../src/mirall/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
         <translation>Bande passante de téléversement</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="277"/>
+        <location filename="../src/mirall/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
         <translation>Limiter automatiquement</translation>
     </message>
@@ -1477,17 +1497,22 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="189"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="186"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Le fichier a été modifié localement mais appartient à un partage en lecture seule. Il a été restauré et vos modifications sont présentes dans le fichiers de confit.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="204"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
+        <source>Local file changed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>Le serveur n&apos;a pas acquitté le dernier morceau (aucun e-tag n&apos;était présent).</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="249"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="245"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation>Aucune extension X-OC-MTime, ownCloud 5 est exigé</translation>
     </message>
@@ -1618,26 +1643,14 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="53"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="58"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - Authentifier</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="114"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
-    </message>
-    <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
-        <source>Error loading IdP login page</source>
-        <translation>Erreur pendant le chargement de la page de connexion IdP</translation>
-    </message>
-    <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
-        <source>Could not load Shibboleth login page to log you in.
-Please ensure that your network connection is working.</source>
-        <translation>Impossible de charger la page de connexion Shibboleth pour vous connecter.
-Veuillez vous assurer qu&apos;une connexion réseau est disponible.</translation>
     </message>
 </context>
 <context>

@@ -144,9 +144,14 @@
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
+        <source>%1 (%3%) of %2 server space in use.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Brak połączenia do %1 na &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="775"/>
@@ -167,11 +172,6 @@
         <location filename="../src/mirall/accountsettings.cpp" line="435"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Operacja synchronizacji jest uruchomiona.&lt;br&gt;Czy chcesz ją zakończyć?</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
-        <source>%1 of %2 (%3%) in use.</source>
-        <translation>%1 z %2 (%3%) w użyciu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="761"/>
@@ -220,11 +220,26 @@
     </message>
 </context>
 <context>
-    <name>Mirall::Application</name>
+    <name>Mirall::AuthenticationDialog</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="314"/>
-        <source>Connection failed</source>
-        <translation>Połączenie nie powiodło się</translation>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
+        <source>Authentication Required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
+        <source>Enter username and password for &apos;%1&apos; at %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
+        <source>&amp;User:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
+        <source>&amp;Password:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -378,7 +393,7 @@
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="99"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync nie udało się zapisać pliku dziennika.</translation>
     </message>
     <message>
         <location filename="../src/mirall/csyncthread.cpp" line="157"/>
@@ -409,27 +424,27 @@
 <context>
     <name>Mirall::ConnectionValidator</name>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="90"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="91"/>
         <source>No ownCloud account configured</source>
         <translation>Nie skonfigurowano konta ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="105"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>The configured server for this client is too old</source>
         <translation>Konfigurowany serwer dla tego klienta jest za stary</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="107"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Proszę zaaktualizować serwer do najnowszej wersji i zrestartować klienta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="120"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="128"/>
         <source>Unable to connect to %1</source>
         <translation>Nie mogę połączyć się do %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="147"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="158"/>
         <source>The provided credentials are not correct</source>
         <translation>Podane dane logowania są nieprawidłowe</translation>
     </message>
@@ -465,6 +480,11 @@
         <location filename="../src/mirall/folder.cpp" line="369"/>
         <source>downloaded</source>
         <translation>Pobrane</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="313"/>
+        <source>%1: %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>
@@ -507,30 +527,33 @@
         <translation>&apos;%1&apos; i %2 inne pliki zostały %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="691"/>
+        <location filename="../src/mirall/folder.cpp" line="690"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Ta synchronizacja usunie wszystkie pliku z lokalnego folderu synchronizacji &apos;%1&apos;.
+Jeśli Ty lub Twój administrator zresetowali Twoje konto na serwerze, wybierz &quot;Zachowaj pliki&quot;. Jeśli chcesz aby Twoje dane zostały usunięte, wybierz &quot;Usuń wszystkie pliki&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="694"/>
+        <location filename="../src/mirall/folder.cpp" line="693"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Ta synchronizacja usunie wszystkie pliku z lokalnego folderu synchronizacji &apos;%1&apos;.
+Mogło się tak zdarzyć z powodu niezauważonej rekonfiguracji folderu, lub też wszystkie pliki zostały ręcznie usunięte.
+Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="698"/>
+        <location filename="../src/mirall/folder.cpp" line="697"/>
         <source>Remove All Files?</source>
         <translation>Usunąć wszystkie pliki?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="700"/>
+        <location filename="../src/mirall/folder.cpp" line="699"/>
         <source>Remove all files</source>
         <translation>Usuń wszystkie pliki</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="701"/>
+        <location filename="../src/mirall/folder.cpp" line="700"/>
         <source>Keep files</source>
         <translation>Pozostaw pliki</translation>
     </message>
@@ -798,12 +821,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="265"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="274"/>
         <source>Enter Password</source>
         <translation>Wprowadź hasło</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="266"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="275"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Proszę podać %1 hasło dla użytkownika &apos;%2&apos;:</translation>
     </message>
@@ -1007,35 +1030,35 @@ Zaznaczone przedmioty także będą usunięte, jeżeli będą przeszkadzać w us
         <translation>Serwer proxy wymaga uwierzytelnienia</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="182"/>
+        <location filename="../src/mirall/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
         <translation>Przepustowość pobierania</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="188"/>
-        <location filename="../src/mirall/networksettings.ui" line="287"/>
+        <location filename="../src/mirall/networksettings.ui" line="196"/>
+        <location filename="../src/mirall/networksettings.ui" line="278"/>
         <source>Limit to</source>
         <translation>Limit do</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="210"/>
-        <location filename="../src/mirall/networksettings.ui" line="312"/>
+        <location filename="../src/mirall/networksettings.ui" line="218"/>
+        <location filename="../src/mirall/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
         <translation>KBajtów/s</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="232"/>
-        <location filename="../src/mirall/networksettings.ui" line="270"/>
+        <location filename="../src/mirall/networksettings.ui" line="227"/>
+        <location filename="../src/mirall/networksettings.ui" line="295"/>
         <source>No limit</source>
         <translation>Brak limitu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="264"/>
+        <location filename="../src/mirall/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
         <translation>Przepustowość wysyłania</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="277"/>
+        <location filename="../src/mirall/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
         <translation>Limit automatyczniy</translation>
     </message>
@@ -1149,7 +1172,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="124"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uwaga:&lt;/strong&gt; Lokalny katalog nie jest pusty. Wybierz rozważnie!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="235"/>
@@ -1393,12 +1416,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="395"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Nie otrzymano E-Tag z serwera, sprawdź Proxy/Bramę</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="405"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Otrzymaliśmy inny E-Tag wznowienia. Spróbuje ponownie następnym razem.</translation>
     </message>
 </context>
 <context>
@@ -1414,7 +1437,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="110"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>nie można utworzyć katalogu %1</translation>
     </message>
 </context>
 <context>
@@ -1443,7 +1466,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="217"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Nie wolno zmieniać nazwy tego folderu. Proszę zmień nazwę z powrotem na Shared.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="232"/>
@@ -1457,7 +1480,7 @@ Niezalecane jest jego użycie.</translation>
         <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="207"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Lokalny plik zmienił się podczas synchronizacji, synchronizuję ponownie ponieważ dotarł w całości.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
@@ -1473,19 +1496,24 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="189"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="186"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="204"/>
-        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
+        <source>Local file changed during sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="249"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>
+        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
+        <translation>Serwer nie potwierdził ostatniego łańcucha danych. (Nie było żadnego e-tag-u)</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="245"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>Brak rozszerzenia X-OC-MTime, wymagany ownCloud 5</translation>
     </message>
 </context>
 <context>
@@ -1614,25 +1642,14 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="53"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="58"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - Uwierzytelnienia</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="114"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
-    </message>
-    <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
-        <source>Error loading IdP login page</source>
-        <translation>Błąd wczytywania strony logowania IdP</translation>
-    </message>
-    <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
-        <source>Could not load Shibboleth login page to log you in.
-Please ensure that your network connection is working.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1715,7 +1732,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="124"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Uwaga:&lt;/b&gt; Ten certyfikat został ręcznie zaakceptowany&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="144"/>
@@ -1839,7 +1856,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="205"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Wersja %1 Aby uzyskać więcej informacji kliknij &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Rozprowadzany przez %4 i licencjonowany według GNU General Public License (GPL) Wersja 2.0.&lt;br&gt;%5 oraz logo %5 są zarejestrowanymi znakami towarowymi %4 w&lt;br&gt;Stanach Zjednoczonych, innych krajach lub obydwu.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1997,7 +2014,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="158"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jeśli zaznaczysz, istniejąca zawartość w lokalnym katalogu zostanie wymazana w celu rozpoczęcia czystej synchronizacji z serwerem.&lt;/p&gt;&lt;p&gt;Nie zaznaczaj, jeśli chcesz aby lokalna zawartość została wysłana do katalogu na serwerze.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
@@ -2007,7 +2024,7 @@ Please ensure that your network connection is working.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="193"/>
         <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;Usuwa zawartość lokalnego folderu przed wykonaniem synchronizacji, z użyciem nowych ustawień.&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="224"/>
@@ -2222,7 +2239,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="56"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Wersja %2. Aby uzyskać więcej informacji odwiedź &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Oparty na Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
 </context>
 <context>

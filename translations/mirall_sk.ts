@@ -144,6 +144,11 @@
         <translation>&lt;p&gt;Skutočne chcete zresetovať priečinok &lt;i&gt;%1&lt;/i&gt; a opätovne zostaviť klientskú databázu?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Táto funkcia je navrhnutá len pre účely údržby. Žiadne súbory nebudú odstránené, ale môže to spôsobiť značnú dátovú prevádzku a vyžiadať si niekoľko minút alebo hodín pre dokončenie, v závislosti od veľkosti priečinka. Použite túto možnosť pokiaľ máte doporučenie od správcu.&lt;/p&gt;</translation>
     </message>
     <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
+        <source>%1 (%3%) of %2 server space in use.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation type="unfinished"/>
@@ -167,11 +172,6 @@
         <location filename="../src/mirall/accountsettings.cpp" line="435"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Proces synchronizácie práve prebieha.&lt;br/&gt;Chcete ho ukončiť?</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
-        <source>%1 of %2 (%3%) in use.</source>
-        <translation>%1 of %2 (%3%) v používaní.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="761"/>
@@ -220,11 +220,26 @@
     </message>
 </context>
 <context>
-    <name>Mirall::Application</name>
+    <name>Mirall::AuthenticationDialog</name>
     <message>
-        <location filename="../src/mirall/application.cpp" line="314"/>
-        <source>Connection failed</source>
-        <translation>Spojenie zlyhalo</translation>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
+        <source>Authentication Required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
+        <source>Enter username and password for &apos;%1&apos; at %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
+        <source>&amp;User:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
+        <source>&amp;Password:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -409,27 +424,27 @@
 <context>
     <name>Mirall::ConnectionValidator</name>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="90"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="91"/>
         <source>No ownCloud account configured</source>
         <translation>Žiadny účet v ownCloude nie je nastavený</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="105"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>The configured server for this client is too old</source>
         <translation>Nakonfigurovaný server pre tohto klienta je príliš starý</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="107"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Prosím aktualizujte na najnovšiu verziu servera a reštartujte klienta.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="120"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="128"/>
         <source>Unable to connect to %1</source>
         <translation>Nedá sa pripojiť k %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/connectionvalidator.cpp" line="147"/>
+        <location filename="../src/mirall/connectionvalidator.cpp" line="158"/>
         <source>The provided credentials are not correct</source>
         <translation>Poskytnuté poverenia nie sú správne</translation>
     </message>
@@ -465,6 +480,11 @@
         <location filename="../src/mirall/folder.cpp" line="369"/>
         <source>downloaded</source>
         <translation>stiahnuté</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="313"/>
+        <source>%1: %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>
@@ -507,14 +527,14 @@
         <translation>&apos;%1&apos; a %2 ďalších súborov bolo %3.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="691"/>
+        <location filename="../src/mirall/folder.cpp" line="690"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Táto synchronizácia odstráni všetky súbory v lokálnom synchronizačnom priečinku &apos;%1&apos;.
 Pokiaľ vy alebo váš správca zresetoval váš účet na serveri, vyberte možnosť &quot;Ponechať súbory&quot;. Pokiaľ chcete odstrániť vaše dáta, vyberte možnosť &quot;Odstrániť všetky súbory&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="694"/>
+        <location filename="../src/mirall/folder.cpp" line="693"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -523,17 +543,17 @@ Toto môže byť kvôli tichej rekonfigurácii priečinka, prípadne boli všetk
 Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="698"/>
+        <location filename="../src/mirall/folder.cpp" line="697"/>
         <source>Remove All Files?</source>
         <translation>Odstrániť všetky súbory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="700"/>
+        <location filename="../src/mirall/folder.cpp" line="699"/>
         <source>Remove all files</source>
         <translation>Odstrániť všetky súbory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="701"/>
+        <location filename="../src/mirall/folder.cpp" line="700"/>
         <source>Keep files</source>
         <translation>Ponechať súbory</translation>
     </message>
@@ -790,23 +810,23 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizácie</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Restart &amp;&amp; aktualizácia</translation>
     </message>
 </context>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="265"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="274"/>
         <source>Enter Password</source>
         <translation>Vložte heslo</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="266"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="275"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Zadajte prosím %1 heslo pre používateľa &apos;%2&apos;: </translation>
     </message>
@@ -860,12 +880,12 @@ Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri ods
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Úprava ignorovacích vzorov</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Uprav ignorovací vzor:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -1010,35 +1030,35 @@ Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri ods
         <translation>Proxy server vyžaduje autentifikáciu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="182"/>
+        <location filename="../src/mirall/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
         <translation>Dátová šírka pre download</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="188"/>
-        <location filename="../src/mirall/networksettings.ui" line="287"/>
+        <location filename="../src/mirall/networksettings.ui" line="196"/>
+        <location filename="../src/mirall/networksettings.ui" line="278"/>
         <source>Limit to</source>
         <translation>Limitovať do</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="210"/>
-        <location filename="../src/mirall/networksettings.ui" line="312"/>
+        <location filename="../src/mirall/networksettings.ui" line="218"/>
+        <location filename="../src/mirall/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
         <translation>KBytov/s</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="232"/>
-        <location filename="../src/mirall/networksettings.ui" line="270"/>
+        <location filename="../src/mirall/networksettings.ui" line="227"/>
+        <location filename="../src/mirall/networksettings.ui" line="295"/>
         <source>No limit</source>
         <translation>Žiadny limit</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="264"/>
+        <location filename="../src/mirall/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
         <translation>Dátová šírka pre upload</translation>
     </message>
     <message>
-        <location filename="../src/mirall/networksettings.ui" line="277"/>
+        <location filename="../src/mirall/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
         <translation>Limitovať automaticky</translation>
     </message>
@@ -1199,7 +1219,8 @@ for additional privileges during the process.</source>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Táto adresa nie je bezpečná, pretože nie je šifrovaná.
+Nie je vhodné ju používať.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
@@ -1209,7 +1230,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Nemožno bezpečne pripojiť. Chcete sa pripojiť nešifrovane (neodporúča sa)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -1475,17 +1496,22 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="189"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="186"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="204"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
+        <source>Local file changed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="249"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="245"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation type="unfinished"/>
     </message>
@@ -1615,26 +1641,14 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="53"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="58"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - overenie</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="114"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
-    </message>
-    <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="118"/>
-        <source>Error loading IdP login page</source>
-        <translation>Chyba pri načítavaní prihlasovacej stránky IdP</translation>
-    </message>
-    <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
-        <source>Could not load Shibboleth login page to log you in.
-Please ensure that your network connection is working.</source>
-        <translation>Nemôžem načítať prihlasovaciu stránku Shibboleth potrebnú pre prihlásenie.
-Skontrolujte prosím, či máte pracuje pripojenie k sieti.</translation>
     </message>
 </context>
 <context>
@@ -1707,12 +1721,12 @@ Skontrolujte prosím, či máte pracuje pripojenie k sieti.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="120"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="124"/>
