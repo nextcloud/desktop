@@ -62,8 +62,8 @@ if you do not have it installed already.
 In order to cross-compile, the following repositories need to be added
 via YaST or ``zypper ar`` (adjust when using openSUSE 12.2 or 13.1)::
 
-  zypper ar http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_12.1/windows:mingw:win32.repo
-  zypper ar http://download.opensuse.org/repositories/windows:/mingw/openSUSE_12.1/windows:mingw.repo
+  zypper ar http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_13.1/windows:mingw:win32.repo
+  zypper ar http://download.opensuse.org/repositories/windows:/mingw/openSUSE_13.1/windows:mingw.repo
 
 Next, install the cross-compiler packages and the cross-compiled dependencies::
 
@@ -98,12 +98,9 @@ You will also need to manually download and install the following files with
 Now, follow the `generic build instructions`_, but pay attention to
 the following differences:
 
-1. For building ``libocsync``, you need to use ``mingw32-cmake`` instead
-   of cmake.
-2. for building ``mirall``, you need to use ``cmake`` again, but make sure
-   to append the following parameter::
-3. Also, you need to specify *absolute pathes* for ``CSYNC_LIBRARY_PATH``
-   and ``CSYNC_LIBRARY_PATH`` when running ``cmake`` on mirall.
+For building for windows a special toolchain file has to be specified.
+That makes cmake finding the platform specific tools. This parameter 
+has to be added to the call to cmake:
 
   ``-DCMAKE_TOOLCHAIN_FILE=../mirall/admin/win/Toolchain-mingw32-openSUSE.cmake``
 
@@ -114,20 +111,25 @@ Generic Build Instructions
 --------------------------
 .. _`generic build instructions`
 
+Compared to previous versions building of Mirall has become more easy.
+CSync, which is the sync engine library of Mirall, is now part of the 
+Mirall source repository, not, like it was before, a separate module.
+
+Mirall can be downloaded at ownCloud's `Client Download Page`_.
+
 If you want to build the leading edge version of the client, you should
-use the latest versions of Mirall and CSync via Git_, like so::
+use the latest versions of Mirall via Git_, like so::
 
   git clone git://github.com/owncloud/mirall.git
 
-
-Next, build it::
+Next, create build directories::
 
   mkdir mirall-build
-  cd mirall-build
-  cmake -DCMAKE_BUILD_TYPE="Debug" ../mirall
 
-You probably have to satisfy some dependencies. Make sure to install all the
-needed development packages. You will need ``qtkeychain``, ``sqlite3`` and ``neon``.
+Now build mirall::
+
+  cd ../mirall-build
+  cmake -DCMAKE_BUILD_TYPE="Debug" ../mirall
 
 Note that it is important to use absolute pathes for the include- and library
 directories. If this succeeds, call ``make``. The owncloud binary should appear
