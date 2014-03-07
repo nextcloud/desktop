@@ -41,6 +41,7 @@ get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 # if we cannot get it from git, directly try .tag (packages)
 # this will work if the tar balls have been properly created
 # via git-archive.
+if (GIT_SHA1)
 if (${GIT_SHA1} STREQUAL "GITDIR-NOTFOUND")
     file(READ ${CMAKE_SOURCE_DIR}/.tag sha1_candidate)
     string(REPLACE "\n" "" sha1_candidate ${sha1_candidate})
@@ -48,6 +49,7 @@ if (${GIT_SHA1} STREQUAL "GITDIR-NOTFOUND")
         message("${sha1_candidate}")
         set (GIT_SHA1 "${sha1_candidate}")
     endif()
+endif()
 endif()
 
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
