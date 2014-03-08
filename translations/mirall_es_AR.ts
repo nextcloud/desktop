@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Contraseña</translation>
     </message>
 </context>
 <context>
@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="313"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>

@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="729"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) de %2 espacio usado en el servidor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
@@ -224,22 +224,22 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Autenticación requerida</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Ingresar usuario y contraseña para &apos;%1&apos; en %2.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Usuario:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Contraseña:</translation>
     </message>
 </context>
 <context>
@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="313"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>
@@ -1353,7 +1353,7 @@ No se recomienda usarlo.</translation>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Creación %1 de carpeta remota ha fallado con errores &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>Creación %1 de carpeta remota ha fallado con el error &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="331"/>
@@ -1504,7 +1504,7 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>

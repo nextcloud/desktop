@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>密码 (&amp;P)：</translation>
     </message>
 </context>
 <context>

@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="729"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) / %2 palvelimen tilasta käytössä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
@@ -224,7 +224,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Tunnistautuminen vaaditaan</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
@@ -234,12 +234,12 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>K&amp;äyttäjä:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Salasana:</translation>
     </message>
 </context>
 <context>
@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="313"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>
@@ -1235,7 +1235,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
         <source>Update %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Päivitä %1-palvelin</translation>
     </message>
 </context>
 <context>
@@ -1498,7 +1498,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Paikallinen tiedosto muuttui synkronoinnin aikana.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>

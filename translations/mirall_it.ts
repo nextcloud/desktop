@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="729"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) di %2 spazio in uso sul server.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
@@ -224,22 +224,22 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Autenticazione richiesta</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Digita nome utente e password per &apos;%1&apos; su %2.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Utente:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Password:</translation>
     </message>
 </context>
 <context>
@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="313"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="370"/>
@@ -1503,7 +1503,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Un file locale è cambiato durante la sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>
