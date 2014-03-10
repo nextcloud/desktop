@@ -537,14 +537,17 @@ void FolderMan::removeFolder( const QString& alias )
     if( _folderMap.contains( alias )) {
         qDebug() << "Removing " << alias;
         f = _folderMap.take( alias );
-        if(f) {
-            f->wipe();
-        }
     } else {
         qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
     }
 
     if( f ) {
+        f->wipe();
+
+        // can be removed if we are able to delete the folder object.
+        f->setSyncEnabled(false);
+
+        // remove the folder configuration
         QFile file( _folderConfigPath + QLatin1Char('/') + f->configFile() );
         if( file.exists() ) {
             qDebug() << "Remove folder config file " << file.fileName();
