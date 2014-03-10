@@ -1,8 +1,20 @@
 ChangeLog
 =========
 
-version 1.5.2 (release 2014-02-26 )
+version 1.5.3 (release 2014-03-10 )
+  * Fix usage of proxies after first sync run (#1502, #1524, #1459, #1521)
+  * Do not wipe the credentials from config for reconnect (#1499, #1503)
+  * Do not erase the full account config if an old version of the client stored
+    the password (related to above)
+  * Fix layout of the network tab (fixes #1491)
+  * Handle authentication requests by a Shibboleth IdP
+  * Shibboleth: If no connection is available, don't open the login window
+  * [Packaging] Debian/Ubuntu: ship sync-exclude.lst
+  * [Packaging] Fix issues with access to gnome keychain in Fedora and RHEL6
+  * [Packaging] Ensure all sub packages get updated
+  * [Packaging] Fix incorrect path in desktop file (RHEL6/CentOS6)
 
+version 1.5.2 (release 2014-02-26 )
   * Fix behavior when attempting to rename Shared folder
   * Fix potential endless sync loops on Mac OS (#1463)
   * Fix potential crash when pausing during update phase (#1442)
@@ -19,9 +31,6 @@ version 1.5.2 (release 2014-02-26 )
   * Shibboleth: Do not pop up IdP login immediately when modifying account
   * Shibboleth: Avoid auth on restart by storing cookies in the wallet
   * Fix license headers 
-
-ChangeLog
-=========
 
 version 1.5.1 (release 2014-02-13 )
   * Added an auto updater that updates the client if a
@@ -90,7 +99,6 @@ version 1.5.0 (release 2013-12-12 ), csync 0.91.4 required
   * Windows: Fix move file operation
 
 version 1.4.2 (release 2013-10-18 ), csync 0.90.4 required
-
   * Do not show the warning icon in the tray (#944)
   * Fix manual proxy support when switching (#1016)
   * Add folder column to detailed sync protocol (#1037)
