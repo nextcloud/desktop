@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="729"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) van %2 serverruimte in gebruik.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
@@ -224,17 +224,17 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Authenticatie vereist</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Geen gebruikersnaam en wachtwoord op voor &apos;%1&apos; bij %2.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Gebruiker:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
@@ -1430,7 +1430,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="134"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Er is een bestand of map verwijderd van een alleen-lezen share, maar herstellen is mislukt: %1</translation>
     </message>
 </context>
 <context>
@@ -1454,7 +1454,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="130"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand is verwijderd van een alleen-lezen share. Het is teruggezet.</translation>
     </message>
 </context>
 <context>
@@ -1472,7 +1472,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="232"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand is hernoemd, maar hoort bij een alleen-lezen share. Het originele bestand is teruggezet.</translation>
     </message>
 </context>
 <context>
@@ -1491,7 +1491,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="157"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand is lokaal bewerkt, maar hoort bij een alleen-lezen share. Het originele bestand is teruggezet en uw bewerking staat in het conflicten bestand.</translation>
     </message>
 </context>
 <context>
@@ -1499,12 +1499,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="186"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand is lokaal bewerkt, maar hoort bij een alleen-lezen share. Het originele bestand is teruggezet en uw bewerking staat in het conflicten bestand.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokaal bestand gewijzigd bij sync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>
