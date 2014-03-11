@@ -146,12 +146,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="729"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) z %2 místa na disku použito.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Žádné spojení s %1 na &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="775"/>
@@ -224,17 +224,17 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Ověření vyžadováno</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Zadejte uživatelské jméno a heslo pro &apos;%1&apos; na %2.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Uživatel:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
@@ -472,69 +472,80 @@
         <translation>%1 není čitelný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="394"/>
-        <source>File %1</source>
-        <translation>Soubor %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folder.cpp" line="369"/>
-        <source>downloaded</source>
-        <translation>staženo</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/folder.cpp" line="313"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="370"/>
-        <source>removed</source>
-        <translation>odstraněno</translation>
+        <location filename="../src/mirall/folder.cpp" line="400"/>
+        <source>%1 and %2 other files have been removed.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="371"/>
-        <source>updated</source>
-        <translation>aktualizováno</translation>
+        <location filename="../src/mirall/folder.cpp" line="402"/>
+        <source>%1 has been removed.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="374"/>
-        <source>renamed</source>
-        <translation>přejmenováno</translation>
+        <location filename="../src/mirall/folder.cpp" line="407"/>
+        <source>%1 and %2 other files have been downloaded.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="379"/>
-        <source>moved</source>
-        <translation>přesunuto</translation>
+        <location filename="../src/mirall/folder.cpp" line="409"/>
+        <source>%1 has been downloaded.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="381"/>
-        <source>%1 to %2</source>
-        <translation>%1 do %2</translation>
+        <location filename="../src/mirall/folder.cpp" line="414"/>
+        <source>%1 and %2 other files have been updated.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="394"/>
-        <source>&apos;%1&apos; has been %2.</source>
-        <translation>&apos;%1&apos; byl %2.</translation>
+        <location filename="../src/mirall/folder.cpp" line="416"/>
+        <source>%1 has been updated.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="396"/>
-        <source>Files %1</source>
-        <translation>Soubory %1</translation>
+        <location filename="../src/mirall/folder.cpp" line="421"/>
+        <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
-        <source>&apos;%1&apos; and %2 other files have been %3.</source>
-        <translation> &apos;%1&apos; a %2 dalších souborů bylo %3.</translation>
+        <location filename="../src/mirall/folder.cpp" line="423"/>
+        <source>%1 has been renamed to %2.</source>
+        <comment>%1 and %2 name files.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="690"/>
+        <location filename="../src/mirall/folder.cpp" line="428"/>
+        <source>%1 has been moved to %2 and %3 other files have been moved.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="430"/>
+        <source>%1 has been moved to %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="438"/>
+        <source>Sync Activity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="731"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Tato synchronizace by smazala všechny soubory v místní složce &apos;%1&apos;
 Pokud jste vy nebo váš správce zresetovali účet na serveru, zvolte &quot;Ponechat soubory&quot;. Pokud chcete místní data odstranit, zvolte &quot;Odstranit všechny soubory&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="693"/>
+        <location filename="../src/mirall/folder.cpp" line="734"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -543,17 +554,17 @@ Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím
 Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="697"/>
+        <location filename="../src/mirall/folder.cpp" line="738"/>
         <source>Remove All Files?</source>
         <translation>Odstranit všechny soubory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="699"/>
+        <location filename="../src/mirall/folder.cpp" line="740"/>
         <source>Remove all files</source>
         <translation>Odstranit všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="700"/>
+        <location filename="../src/mirall/folder.cpp" line="741"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>
@@ -1430,7 +1441,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="134"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Soubor by odebrán ze sdílení pouze pro čtení, ale jeho obnovení selhalo: %1</translation>
     </message>
 </context>
 <context>
@@ -1454,7 +1465,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="130"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor by odebrán ze sdílení pouze pro čtení. Soubor byl obnoven.</translation>
     </message>
 </context>
 <context>
@@ -1472,7 +1483,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="232"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor byl přejmenován, ale je součástí sdílení pouze pro čtení. Původní soubor byl obnoven.</translation>
     </message>
 </context>
 <context>
@@ -1491,7 +1502,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="157"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor zde byl editován, ale je součástí sdílení pouze pro čtení. Původní soubor byl obnoven a editovaná verze jje uložena v konfliktním souboru.</translation>
     </message>
 </context>
 <context>
@@ -1499,12 +1510,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="186"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor zde byl editován, ale je součástí sdílení pouze pro čtení. Původní soubor byl obnoven a editovaná verze jje uložena v konfliktním souboru.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokální soubor byl změněn během synchronizace.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>

@@ -472,69 +472,80 @@
         <translation>%1 pole loetav.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="394"/>
-        <source>File %1</source>
-        <translation>Fail %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folder.cpp" line="369"/>
-        <source>downloaded</source>
-        <translation>allalaaditud</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/folder.cpp" line="313"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="370"/>
-        <source>removed</source>
-        <translation>eemaldatud</translation>
+        <location filename="../src/mirall/folder.cpp" line="400"/>
+        <source>%1 and %2 other files have been removed.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="371"/>
-        <source>updated</source>
-        <translation>uuendatud</translation>
+        <location filename="../src/mirall/folder.cpp" line="402"/>
+        <source>%1 has been removed.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="374"/>
-        <source>renamed</source>
-        <translation>ümber nimetatud</translation>
+        <location filename="../src/mirall/folder.cpp" line="407"/>
+        <source>%1 and %2 other files have been downloaded.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="379"/>
-        <source>moved</source>
-        <translation>ümber tõstetud</translation>
+        <location filename="../src/mirall/folder.cpp" line="409"/>
+        <source>%1 has been downloaded.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="381"/>
-        <source>%1 to %2</source>
-        <translation>%1 kuni %2</translation>
+        <location filename="../src/mirall/folder.cpp" line="414"/>
+        <source>%1 and %2 other files have been updated.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="394"/>
-        <source>&apos;%1&apos; has been %2.</source>
-        <translation>&apos;%1&apos; on olnud %2.</translation>
+        <location filename="../src/mirall/folder.cpp" line="416"/>
+        <source>%1 has been updated.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="396"/>
-        <source>Files %1</source>
-        <translation>Failid %1</translation>
+        <location filename="../src/mirall/folder.cpp" line="421"/>
+        <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
-        <source>&apos;%1&apos; and %2 other files have been %3.</source>
-        <translation>&apos;%1&apos; ja %2 teist faili on olnud %3.</translation>
+        <location filename="../src/mirall/folder.cpp" line="423"/>
+        <source>%1 has been renamed to %2.</source>
+        <comment>%1 and %2 name files.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="690"/>
+        <location filename="../src/mirall/folder.cpp" line="428"/>
+        <source>%1 has been moved to %2 and %3 other files have been moved.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="430"/>
+        <source>%1 has been moved to %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="438"/>
+        <source>Sync Activity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="731"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>See sünkroniseering kustutab kõik failid kohalikust kataloogist &apos;%1&apos;.⏎
 Kui sina või adminstraator on sinu konto serveris algseadistanud, siis vali &quot;Säilita failid&quot;. Kui soovid oma andmed kustutada, vali &quot;Kustuta kõik failid&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="693"/>
+        <location filename="../src/mirall/folder.cpp" line="734"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -543,17 +554,17 @@ See võib olla põhjustatud kataloogi ümberseadistusest või on toimunud kõiki
 Oled kindel, et soovid seda operatsiooni teostada?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="697"/>
+        <location filename="../src/mirall/folder.cpp" line="738"/>
         <source>Remove All Files?</source>
         <translation>Kustutada kõik failid?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="699"/>
+        <location filename="../src/mirall/folder.cpp" line="740"/>
         <source>Remove all files</source>
         <translation>Kustutada kõik failid</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="700"/>
+        <location filename="../src/mirall/folder.cpp" line="741"/>
         <source>Keep files</source>
         <translation>Säilita failid</translation>
     </message>
