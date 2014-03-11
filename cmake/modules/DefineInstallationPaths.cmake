@@ -33,6 +33,10 @@ if (UNIX)
     "${EXEC_INSTALL_PREFIX}/libexec"
     CACHE PATH "The subdirectory relative to the install prefix where libraries will be installed (default is prefix/libexec)"
   )
+  SET(LIB_PRIVATE_INSTALL_DIR
+	  "${LIB_INSTALL_DIR}/${APPLICATION_SHORT_NAME}"
+	  CACHE PATH "The subdirectory relative to the install prefix where private libs are installed"
+	  )
   SET(PLUGIN_INSTALL_DIR
     "${LIB_INSTALL_DIR}/${APPLICATION_SHORT_NAME}"
     CACHE PATH "The subdirectory relative to the install prefix where plugins will be installed (default is prefix/lib/${APPLICATION_SHORT_NAME})"
