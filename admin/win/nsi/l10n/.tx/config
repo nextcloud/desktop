@@ -1,8 +1,8 @@
 [main]
-host = https://www.transifex.net
+host = https://www.transifex.com
 
 [owncloud.mirall-wininstaller]
-host = https://www.transifex.net
+host = https://www.transifex.com
 source_file = pofiles/messages.pot
 source_lang = en
 type = PO
