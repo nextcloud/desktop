@@ -1,0 +1,240 @@
+/*
+ * Copyright (C) by Klaas Freitag <freitag@kde.org>
+ * Copyright (c) by Markus Goetz <guruz@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
+#include <QMutex>
+#include <QDebug>
+#include <QNetworkReply>
+#include <QSettings>
+#include <QInputDialog>
+
+
+#include "mirall/account.h"
+#include "mirall/mirallaccessmanager.h"
+#include "mirall/utility.h"
+#include "mirall/theme.h"
+#include "creds/credentialscommon.h"
+#include "creds/tokencredentials.h"
+
+
+namespace Mirall
+{
+
+namespace
+{
+
+int getauth(const char *prompt,
+            char *buf,
+            size_t len,
+            int echo,
+            int verify,
+            void *userdata)
+{
+    int re = 0;
+    QMutex mutex;
+    // ### safe?
+    TokenCredentials* http_credentials = qobject_cast<TokenCredentials*>(AccountManager::instance()->account()->credentials());
+
+    if (!http_credentials) {
+      qDebug() << "Not a HTTP creds instance!";
+      return -1;
+    }
+
+    QString qPrompt = QString::fromLatin1( prompt ).trimmed();
+    QString user = http_credentials->user();
+    QString pwd  = http_credentials->password();
+
+    if( qPrompt == QLatin1String("Enter your username:") ) {
+        // qDebug() << "OOO Username requested!";
+        QMutexLocker locker( &mutex );
+        qstrncpy( buf, user.toUtf8().constData(), len );
+    } else if( qPrompt == QLatin1String("Enter your password:") ) {
+        QMutexLocker locker( &mutex );
+        // qDebug() << "OOO Password requested!";
+        qstrncpy( buf, pwd.toUtf8().constData(), len );
+    } else {
+        re = handleNeonSSLProblems(prompt, buf, len, echo, verify, userdata);
+    }
+    return re;
+}
+
+const char userC[] = "user";
+
+} // ns
+
+class TokenCredentialsAccessManager : public MirallAccessManager {
+public:
+    TokenCredentialsAccessManager(const TokenCredentials *cred, QObject* parent = 0)
+        : MirallAccessManager(parent), _cred(cred) {}
+protected:
+    QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) {
+        QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
+        QNetworkRequest req(request);
+        req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
+        //qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
+        return MirallAccessManager::createRequest(op, req, outgoingData);
+    }
+private:
+    const TokenCredentials *_cred;
+};
+
+TokenCredentials::TokenCredentials()
+    : _user(),
+      _password(),
+      _ready(false)
+{
+}
+
+TokenCredentials::TokenCredentials(const QString& user, const QString& password)
+    : _user(user),
+      _password(password),
+      _ready(true)
+{
+}
+
+void TokenCredentials::syncContextPreInit (CSYNC* ctx)
+{
+    csync_set_auth_callback (ctx, getauth);
+}
+
+void TokenCredentials::syncContextPreStart (CSYNC* ctx)
+{
+    // TODO: This should not be a part of this method, but we don't have
+    // any way to get "session_key" module property from csync. Had we
+    // have it, then we could remove this code and keep it in
+    // csyncthread code (or folder code, git remembers).
+    QList<QNetworkCookie> cookies(AccountManager::instance()->account()->lastAuthCookies());
+    QString cookiesAsString;
+
+    // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
+    // when https://github.com/owncloud/core/pull/4042 is merged.
+    foreach(QNetworkCookie c, cookies) {
+        cookiesAsString += c.name();
+        cookiesAsString += '=';
+        cookiesAsString += c.value();
+        cookiesAsString += "; ";
+    }
+
+    csync_set_module_property(ctx, "session_key", cookiesAsString.toLatin1().data());
+}
+
+bool TokenCredentials::changed(AbstractCredentials* credentials) const
+{
+    TokenCredentials* other(dynamic_cast< TokenCredentials* >(credentials));
+
+    if (!other || (other->user() != this->user())) {
+        return true;
+    }
+
+    return false;
+}
+
+QString TokenCredentials::authType() const
+{
+    return QString::fromLatin1("http");
+}
+
+QString TokenCredentials::user() const
+{
+    return _user;
+}
+
+QString TokenCredentials::password() const
+{
+    return _password;
+}
+
+QNetworkAccessManager* TokenCredentials::getQNAM() const
+{
+    MirallAccessManager* qnam = new TokenCredentialsAccessManager(this);
+
+    connect( qnam, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
+             this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
+
+    return qnam;
+}
+
+bool TokenCredentials::ready() const
+{
+    return _ready;
+}
+
+QString TokenCredentials::fetchUser(Account* account)
+{
+    _user = account->credentialSetting(QLatin1String(userC)).toString();
+    return _user;
+}
+
+void TokenCredentials::fetch(Account *account)
+{
+    if( !account ) {
+        return;
+    }
+    Q_EMIT fetched();
+}
+bool TokenCredentials::stillValid(QNetworkReply *reply)
+{
+    return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
+            // returned if user or password is incorrect
+            && (reply->error() != QNetworkReply::OperationCanceledError));
+}
+
+QString TokenCredentials::queryPassword(bool *ok)
+{
+    qDebug() << AccountManager::instance()->account()->state();
+    if (ok) {
+        QString str = QInputDialog::getText(0, tr("Enter Password"),
+                                     tr("Please enter %1 password for user '%2':")
+                                     .arg(Theme::instance()->appNameGUI(), _user),
+                                     QLineEdit::Password, QString(), ok);
+        qDebug() << AccountManager::instance()->account()->state();
+        return str;
+    } else {
+        return QString();
+    }
+}
+
+void TokenCredentials::invalidateToken(Account *account)
+{
+    _password = QString();
+    _ready = false;
+
+    // User must be fetched from config file to generate a valid key
+    fetchUser(account);
+
+    const QString kck = keychainKey(account->url().toString(), _user);
+    if( kck.isEmpty() ) {
+        qDebug() << "InvalidateToken: User is empty, bailing out!";
+        return;
+    }
+
+    account->clearCookieJar();
+}
+
+void TokenCredentials::persist(Account *account)
+{
+}
+
+
+void TokenCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* authenticator)
+{
+    Q_UNUSED(authenticator)
+    // we cannot use QAuthenticator, because it sends username and passwords with latin1
+    // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
+    // those credentials were invalid and we terminate.
+    qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
+    reply->close();
+}
+
+} // ns Mirall
