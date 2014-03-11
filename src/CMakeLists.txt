@@ -419,7 +419,7 @@ if(NOT WIN32 AND NOT BUILD_LIBRARIES_ONLY)
         string( REPLACE ".png" "" _res ${_res} )
 	install( FILES ${_file} RENAME ${ICON_APP_NAME}.png DESTINATION ${DATADIR}/icons/hicolor/${_res}x${_res}/apps )
     endforeach( _file )
-endif(NOT WIN32)
+endif(NOT WIN32 AND NOT BUILD_LIBRARIES_ONLY)
 
     install(FILES ${mirall_I18N} DESTINATION share/${APPLICATION_EXECUTABLE}/i18n)
 
