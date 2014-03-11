@@ -428,7 +428,7 @@ endif(NOT WIN32 AND NOT BUILD_LIBRARIES_ONLY)
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
     qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql ${ADDITIONAL_APP_MODULES})
-elif(NOT BUILD_LIBRARIES_ONLY)
+elseif(NOT BUILD_LIBRARIES_ONLY)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
     include(DeployQt4)
 
@@ -505,7 +505,7 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
         install(FILES ${CMAKE_SOURCE_DIR}/admin/osx/sparkle/dsa_pub.pem
                 DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources)
     endif()
-elsif(NOT BUILD_LIBRARIES_ONLY)
+elseif(NOT BUILD_LIBRARIES_ONLY)
     install(TARGETS ${owncloudcmd_NAME}
 	    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 	    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
