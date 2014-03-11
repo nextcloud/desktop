@@ -47,6 +47,7 @@ typedef enum SyncFileStatus_s {
     FILE_STATUS_EVAL,
     FILE_STATUS_REMOVE,
     FILE_STATUS_RENAME,
+    FILE_STATUS_MOVE,
     FILE_STATUS_NEW,
     FILE_STATUS_CONFLICT,
     FILE_STATUS_IGNORE,
@@ -196,7 +197,8 @@ private:
 
     void checkLocalPath();
 
-    void createGuiLog( const QString& filename, const QString& verb, int count );
+    void createGuiLog(const QString& filename, SyncFileStatus status, int count,
+                       const QString& renameTarget = QString::null );
 
     QString   _path;
     QString   _remotePath;

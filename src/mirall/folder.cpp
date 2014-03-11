@@ -365,36 +365,77 @@ void Folder::bubbleUpSyncResult()
 
     _syncResult.setWarnCount(ignoredItems);
 
-
-    createGuiLog( firstItemNew._file,     tr("downloaded"), newItems );
-    createGuiLog( firstItemDeleted._file, tr("removed"), removedItems );
-    createGuiLog( firstItemUpdated._file, tr("updated"), updatedItems );
+    createGuiLog( firstItemNew._file,     FILE_STATUS_NEW, newItems );
+    createGuiLog( firstItemDeleted._file, FILE_STATUS_REMOVE, removedItems );
+    createGuiLog( firstItemUpdated._file, FILE_STATUS_UPDATED, updatedItems );
 
     if( !firstItemRenamed.isEmpty() ) {
-        QString renameVerb = tr("renamed");
+        SyncFileStatus status = FILE_STATUS_RENAME;
         // if the path changes it's rather a move
         QDir renTarget = QFileInfo(firstItemRenamed._renameTarget).dir();
         QDir renSource = QFileInfo(firstItemRenamed._file).dir();
         if(renTarget != renSource) {
-            renameVerb = tr("moved");
+            status = FILE_STATUS_MOVE;
         }
-        createGuiLog( firstItemRenamed._file, tr("%1 to %2").arg(renameVerb).arg(firstItemRenamed._renameTarget), renamedItems );
+        createGuiLog( firstItemRenamed._file, status, renamedItems, firstItemRenamed._renameTarget );
     }
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
 }
 
-void Folder::createGuiLog( const QString& filename, const QString& verb, int count )
+void Folder::createGuiLog( const QString& filename, SyncFileStatus status, int count,
+                           const QString& renameTarget )
 {
     if(count > 0) {
         Logger *logger = Logger::instance();
 
         QString file = QDir::toNativeSeparators(filename);
-        if (count == 1) {
-            logger->postOptionalGuiLog(tr("File %1").arg(verb), tr("'%1' has been %2.").arg(file).arg(verb));
-        } else {
-            logger->postOptionalGuiLog(tr("Files %1").arg(verb),
-                                       tr("'%1' and %2 other files have been %3.").arg(file).arg(count-1).arg(verb));
+        QString text;
+
+        // not all possible values of status are evaluated here because the others
+        // are not used in the calling function. Please check there.
+        switch (status) {
+        case FILE_STATUS_REMOVE:
+            if( count > 1 ) {
+                text = tr("%1 and %2 other files have been removed.", "%1 names a file.").arg(file).arg(count-1);
+            } else {
+                text = tr("%1 has been removed.", "%1 names a file.").arg(file);
+            }
+            break;
+        case FILE_STATUS_NEW:
+            if( count > 1 ) {
+                text = tr("%1 and %2 other files have been downloaded.", "%1 names a file.").arg(file).arg(count-1);
+            } else {
+                text = tr("%1 has been downloaded.", "%1 names a file.").arg(file);
+            }
+            break;
+        case FILE_STATUS_UPDATED:
+            if( count > 1 ) {
+                text = tr("%1 and %2 other files have been updated.").arg(file).arg(count-1);
+            } else {
+                text = tr("%1 has been updated.", "%1 names a file.").arg(file);
+            }
+            break;
+        case FILE_STATUS_RENAME:
+            if( count > 1 ) {
+                text = tr("%1 has been renamed to %2 and %3 other files have been renamed.").arg(file).arg(renameTarget).arg(count-1);
+            } else {
+                text = tr("%1 has been renamed to %2.", "%1 and %2 name files.").arg(file).arg(renameTarget);
+            }
+            break;
+        case FILE_STATUS_MOVE:
+            if( count > 1 ) {
+                text = tr("%1 has been moved to %2 and %3 other files have been moved.").arg(file).arg(renameTarget).arg(count-1);
+            } else {
+                text = tr("%1 has been moved to %2.").arg(file).arg(renameTarget);
+            }
+            break;
+        default:
+            break;
+        }
+
+        if( !text.isEmpty() ) {
+            logger->postOptionalGuiLog( tr("Sync Activity"), text );
         }
     }
 }
