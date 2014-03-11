@@ -1,8 +1,8 @@
 [main]
-host = https://www.transifex.net
+host = https://www.transifex.com
 
 [owncloud.mirall]
-host = https://www.transifex.net
+host = https://www.transifex.com
 source_file = mirall_en.ts
 source_lang = en
 
