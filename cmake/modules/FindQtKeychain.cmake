@@ -20,9 +20,6 @@ find_library(QTKEYCHAIN_LIBRARY
                ${CMAKE_INSTALL_PREFIX}/lib
             )
 
-message(${QTKEYCHAIN_LIBRARY})
-message(${QTKEYCHAIN_INCLUDE_DIR})
-
 include(FindPackageHandleStandardArgs)
 # handle the QUIETLY and REQUIRED arguments and set QTKEYCHAIN_FOUND to TRUE
 # if all listed variables are TRUE
