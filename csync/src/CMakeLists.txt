@@ -32,7 +32,6 @@ set(CSYNC_LIBRARY
 )
 
 set(CSYNC_LINK_LIBRARIES
-  ${CSYNC_LIBRARY}
   ${CSTDLIB_LIBRARY}
   ${CSYNC_REQUIRED_LIBRARIES}
   ${SQLITE3_LIBRARIES}
@@ -102,7 +101,9 @@ include_directories(
 add_library(${CSYNC_LIBRARY} SHARED ${csync_SRCS})
 add_library(${CSYNC_LIBRARY}_static STATIC ${csync_SRCS})
 
-target_link_libraries(${CSYNC_LINK_LIBRARIES})
+target_link_libraries(${CSYNC_LIBRARY} ${CSYNC_LINK_LIBRARIES})
+target_link_libraries(${CSYNC_LIBRARY}_static ${CSYNC_LINK_LIBRARIES})
+
 
 set_target_properties(
   ${CSYNC_LIBRARY}
