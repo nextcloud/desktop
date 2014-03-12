@@ -391,7 +391,11 @@ endif(NOT WIN32)
     qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql ${ADDITIONAL_APP_MODULES})
 else()
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
-    include(DeployQt4)
+    if (Qt5Core_FOUND)
+        include(DeployQt5)
+    else(Qt5Core_FOUND)
+        include(DeployQt4)
+    endif(Qt5Core_FOUND)
 
     set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
@@ -431,7 +435,11 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
 # currently it needs to be done because the code right above needs to be executed no matter
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    install_qt4_executable(${OWNCLOUD_OSX_BUNDLE} "qtaccessiblewidgets;qsqlite")
+    if(Qt5Core_FOUND)
+        install_qt5_executable(${OWNCLOUD_OSX_BUNDLE} "qtaccessiblewidgets;qsqlite;qcocoa")
+    else(Qt5Core_FOUND)
+        install_qt4_executable(${OWNCLOUD_OSX_BUNDLE} "qtaccessiblewidgets;qsqlite")
+    endif(Qt5Core_FOUND)
 endif()
 
 find_program(KRAZY2_EXECUTABLE krazy2)
