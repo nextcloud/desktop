@@ -7,7 +7,21 @@
 
 find_path(QTKEYCHAIN_INCLUDE_DIR qtkeychain/keychain.h)
 
-find_library(QTKEYCHAIN_LIBRARY NAMES libqtkeychain qtkeychain)
+find_library(QTKEYCHAIN_LIBRARY
+            NAMES
+              qtkeychain
+              libqtkeychain
+            PATHS
+               /usr/lib
+               /usr/lib/${CMAKE_ARCH_TRIPLET}
+               /usr/local/lib
+               /opt/local/lib
+               ${CMAKE_LIBRARY_PATH}
+               ${CMAKE_INSTALL_PREFIX}/lib
+            )
+
+message(${QTKEYCHAIN_LIBRARY})
+message(${QTKEYCHAIN_INCLUDE_DIR})
 
 include(FindPackageHandleStandardArgs)
 # handle the QUIETLY and REQUIRED arguments and set QTKEYCHAIN_FOUND to TRUE
@@ -15,4 +29,4 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(QtKeychain  DEFAULT_MSG
 	QTKEYCHAIN_LIBRARY QTKEYCHAIN_INCLUDE_DIR)
 
-mark_as_advanced(QTKEYCHAIN_INCLUDE_DIR QTKEYCHAIN_LIBRARY )
+mark_as_advanced(QTKEYCHAIN_INCLUDE_DIR QTKEYCHAIN_LIBRARY)
