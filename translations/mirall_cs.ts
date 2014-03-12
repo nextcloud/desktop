@@ -535,7 +535,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="438"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivita synchronizace</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="731"/>

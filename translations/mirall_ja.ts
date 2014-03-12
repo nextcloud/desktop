@@ -146,12 +146,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="729"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) / %2 使用中のサーバー領域</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="768"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt; に %1 への接続がありません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="775"/>
@@ -224,17 +224,17 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>要求される認証</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>%2 で &apos;%1&apos; に対してユーザー名とパスワードを入力してください。</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;User:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
@@ -480,57 +480,57 @@
         <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 と他 %2 個のファイルが削除されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="402"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 は削除されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="407"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 と他 %2 個のファイルがダウンロードされました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="409"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 はダウンロードされました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="414"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 と他 %2 個のファイルが更新されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="416"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 が更新されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="421"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>%1 の名前が %2 に変更され、他 %3 個のファイルの名前が変更されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="423"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 の名前が %2 に変更されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="428"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>%1 が %2 に移され、他 %3 個のファイルが移されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="430"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 は %2 に移されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="438"/>
@@ -1440,7 +1440,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="134"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>ファイルまたはディレクトリが読み込み専用の共有から削除されましたが、復元に失敗しました: %1</translation>
     </message>
 </context>
 <context>
@@ -1464,7 +1464,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="130"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>ファイルが読み込み専用の共有から削除されました。ファイルは復元されました。</translation>
     </message>
 </context>
 <context>
@@ -1482,7 +1482,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="232"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>ファイルの名前が変更されましたが、読み込み専用の共有の一部です。オリジナルのファイルが復元されました。</translation>
     </message>
 </context>
 <context>
@@ -1501,7 +1501,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="157"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>ファイルがローカルで編集されましたが、読み込み専用の共有の一部です。それは復元され、あなたの編集は競合するファイル内にあります。</translation>
     </message>
 </context>
 <context>
@@ -1509,22 +1509,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="186"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>ファイルがローカルで編集されましたが、読み込み専用の共有の一部です。ファイルは復元され、あなたの編集は競合するファイル内にあります。</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>ローカルのファイルが同期中に変更されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>サーバーは最終チャンクを認識しませんでした。（e-tag が存在しませんでした）</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="245"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>X-OC-MTime 拡張がありません、 ownCloud 5 が必要です。</translation>
     </message>
 </context>
 <context>
@@ -1678,7 +1678,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="99"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Subject Alternative Names(サブジェクトの別名):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
@@ -1718,7 +1718,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>発行日:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
@@ -1867,7 +1867,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="205"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;バージョン %1 詳細については、&lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;をご覧ください。&lt;/p&gt;&lt;p&gt;著作権 ownCloud, Inc.&lt;p&gt;&lt;p&gt;%4 が配布し、 GNU General Public License (GPL) バージョン2.0 の下でライセンスされています。&lt;br&gt;%5 及び %5 のロゴはアメリカ合衆国またはその他の国、あるいはその両方における&lt;br&gt; %4 の登録商標です。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

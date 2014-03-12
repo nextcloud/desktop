@@ -480,62 +480,62 @@
         <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 e %2 altri file sono stati rimossi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="402"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 è stato rimosso.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="407"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 e %2 altri file sono stati scaricati.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="409"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 è stato scaricato.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="414"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 e %2 altri file sono stati aggiornati.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="416"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 è stato aggiornato.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="421"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>%1 è stato rinominato in %2 e %3 altri file sono stati rinominati.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="423"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 è stato rinominato in %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="428"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>%1 è stato spostato in %2 e %3 altri file sono stati spostati.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="430"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 è stato spostato in %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="438"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizza attività</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="731"/>
