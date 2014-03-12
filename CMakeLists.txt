@@ -74,13 +74,30 @@ else()
 endif()
 #####
 
+# this option removes Http authentication, keychain, shibboleth etc and is intended for
+# external authentication mechanisms
+option(TOKEN_AUTH_ONLY "TOKEN_AUTH_ONLY" OFF)
+if(TOKEN_AUTH_ONLY)
+   message("Compiling with token authentication")
+   add_definitions(-DTOKEN_AUTH_ONLY=1)
+endif()
+
+# this option creates only libocsync and libowncloudsync
+option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
+
 #### find libs
 #find_package(Qt4 4.7.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest QtWebkit REQUIRED )
 #if( UNIX AND NOT APPLE ) # Fdo notifications
 #    find_package(Qt4 4.7.0 COMPONENTS QtDBus REQUIRED )
 #endif()
 find_package(Neon REQUIRED)
-find_package(QtKeychain REQUIRED)
+
+if(NOT TOKEN_AUTH_ONLY)
+	find_package(QtKeychain REQUIRED)
+	set(WITH_QTKEYCHAIN ${QTKEYCHAIN_FOUND})
+else()	
+endif()
+
 Find_package(Sparkle)
 if(UNIX)
 find_package(INotify REQUIRED)
@@ -90,7 +107,7 @@ endif()
 find_package(Sphinx)
 find_package(PdfLatex)
 
-set(WITH_QTKEYCHAIN ${QTKEYCHAIN_FOUND})
+
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 

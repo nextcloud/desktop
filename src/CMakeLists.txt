@@ -1,16 +1,5 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-# this option removes Http authentication, keychain, shibboleth etc and is intended for
-# external authentication mechanisms
-option(TOKEN_AUTH_ONLY "TOKEN_AUTH_ONLY" OFF)
-if(TOKEN_AUTH_ONLY)
-   message("Compiling with token authentication")
-   add_definitions(-DTOKEN_AUTH_ONLY=1)
-endif()
-
-# this option creates only libocsync and libowncloudsync
-option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
-
 qt_add_resources(MIRALL_RC_SRC ../mirall.qrc)
 if ( IS_DIRECTORY ${OEM_THEME_DIR} )
     qt_add_resources(MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
