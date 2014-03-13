@@ -1985,7 +1985,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="452"/>
         <source>Up to date</source>
-        <translation>最近です</translation>
+        <translation>最新です</translation>
     </message>
 </context>
 <context>
