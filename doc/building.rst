@@ -70,7 +70,7 @@ Next, install the cross-compiler packages and the cross-compiled dependencies::
   zypper install cmake make mingw32-cross-binutils mingw32-cross-cpp mingw32-cross-gcc \
                  mingw32-cross-gcc-c++ mingw32-cross-pkg-config mingw32-filesystem \
                  mingw32-headers mingw32-runtime site-config mingw32-libqt4-sql \
-                 mingw32-libqt4-sql-sqlite mingw32-libsqlite-devel \
+                 mingw32-libqt4-sql-sqlite mingw32-sqlite mingw32-libsqlite-devel \
                  mingw32-dlfcn-devel mingw32-libssh2-devel kdewin-png2ico \
                  mingw32-libqt4 mingw32-libqt4-devel mingw32-libgcrypt \
                  mingw32-libgnutls mingw32-libneon-openssl mingw32-libneon-devel \
