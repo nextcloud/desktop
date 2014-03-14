@@ -168,10 +168,6 @@ void SettingsDialog::accept() {
     QDialog::accept();
 }
 
-void SettingsDialog::slotRefreshResultList() {
-
-}
-
 void SettingsDialog::showActivityPage()
 {
     _ui->labelWidget->setCurrentRow(_protocolIdx);

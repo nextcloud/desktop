@@ -34,7 +34,7 @@ namespace Mirall {
 ownCloudGui::ownCloudGui(Application *parent) :
     QObject(parent),
     _tray(0),
-    _settingsDialog(0),
+    _settingsDialog(new SettingsDialog(this)),
     _logBrowser(0),
     _contextMenu(0),
     _recentActionsMenu(0),
@@ -83,7 +83,7 @@ void ownCloudGui::slotOpenSettingsDialog( bool openSettings )
     // if account is set up, start the configuration wizard.
     if( AccountManager::instance()->account() ) {
         if( openSettings ) {
-            if (_settingsDialog.isNull()) {
+            if (_settingsDialog.isNull() || !_settingsDialog->isVisible()) {
                 slotShowSettings();
             } else {
                 _settingsDialog->close();
@@ -445,13 +445,9 @@ void ownCloudGui::slotShowSettings()
 {
     if (_settingsDialog.isNull()) {
         _settingsDialog = new SettingsDialog(this);
-        _settingsDialog->setAttribute( Qt::WA_DeleteOnClose, true );
-        _settingsDialog->show();
     }
-
     _settingsDialog->setGeneralErrors( _startupFails );
     Utility::raiseDialog(_settingsDialog.data());
-    _settingsDialog->slotRefreshResultList();
 }
 
 void ownCloudGui::slotShowSyncProtocol()
