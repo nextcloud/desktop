@@ -43,7 +43,6 @@ signals:
 
 public slots:
     void slotProgressInfo( const QString& folder, const Progress::Info& progress );
-    void slotProgressProblem(const QString& folder, const Progress::SyncProblem& problem );
     void slotOpenFile( QTreeWidgetItem* item, int );
 
 protected slots:
@@ -59,7 +58,6 @@ private:
     void computeResyncButtonEnabled();
 
     QTreeWidgetItem* createCompletedTreewidgetItem(const QString &folder, const SyncFileItem &item );
-    QTreeWidgetItem* createProblemTreewidgetItem( const Progress::SyncProblem& problem);
     QList<QTreeWidgetItem*> errorItems(const QString &folder);
 
     QString timeString(QDateTime dt, QLocale::FormatType format = QLocale::NarrowFormat) const;

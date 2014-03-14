@@ -64,8 +64,6 @@ ownCloudGui::ownCloudGui(Application *parent) :
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect( pd, SIGNAL(progressInfo(QString,Progress::Info)), this,
              SLOT(slotUpdateProgress(QString,Progress::Info)) );
-    connect( pd, SIGNAL(progressSyncProblem(QString,Progress::SyncProblem)),
-             SLOT(slotProgressSyncProblem(QString,Progress::SyncProblem)));
 
     FolderMan *folderMan = FolderMan::instance();
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
@@ -369,16 +367,6 @@ void ownCloudGui::slotRefreshQuotaDisplay( qint64 total, qint64 used )
     _actionQuota->setText(tr("%1% of %2 in use").arg(percentFormatted).arg(totalFormatted));
 }
 
-void ownCloudGui::slotProgressSyncProblem(const QString& folder, const Progress::SyncProblem& problem)
-{
-    Q_UNUSED(folder);
-    Q_UNUSED(problem);
-
-    // display a warn icon if warnings happend.
-    QIcon warnIcon(":/mirall/resources/warning-16");
-    _actionRecent->setIcon(warnIcon);
-}
-
 void ownCloudGui::slotRebuildRecentMenus()
 {
     _recentActionsMenu->clear();
@@ -423,6 +411,13 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
             _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
 
     if (!progress._lastCompletedItem.isEmpty()) {
+
+        if (Progress::isWarningKind(progress._lastCompletedItem._status)) {
+            // display a warn icon if warnings happend.
+            QIcon warnIcon(":/mirall/resources/warning-16");
+            _actionRecent->setIcon(warnIcon);
+        }
+
         slotRebuildRecentMenus();
 
         if (progress._completedFileCount == progress._totalFileCount) {

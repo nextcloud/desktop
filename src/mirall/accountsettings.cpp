@@ -540,22 +540,17 @@ QString AccountSettings::shortenFilename( const QString& folder, const QString& 
     return shortFile;
 }
 
-void AccountSettings::slotProgressProblem(const QString& folder, const Progress::SyncProblem& problem)
-{
-    Q_UNUSED(problem);
-
-    QStandardItem *item = itemForFolder( folder );
-    if( !item ) return;
-
-    int warnCount = qvariant_cast<int>( item->data(FolderStatusDelegate::WarningCount) );
-    warnCount++;
-    item->setData( QVariant(warnCount), FolderStatusDelegate::WarningCount );
-}
-
 void AccountSettings::slotSetProgress(const QString& folder, const Progress::Info &progress )
 {
     QStandardItem *item = itemForFolder( folder );
     if( !item ) return;
+
+    if(!progress._lastCompletedItem.isEmpty()
+            && Progress::isWarningKind(progress._lastCompletedItem._status)) {
+        int warnCount = item->data(FolderStatusDelegate::WarningCount).toInt();
+        warnCount++;
+        item->setData( QVariant(warnCount), FolderStatusDelegate::WarningCount );
+    }
 
     // find the single item to display:  This is going to be the bigger item, or the last completed
     // item if no items are in progress.

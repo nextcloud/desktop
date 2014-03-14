@@ -100,21 +100,10 @@ namespace Progress
         EndRemoteUpdate
     };
 
-    struct SyncProblem {
-        Kind    kind;
-        QString folder;
-        QString current_file;
-        QString error_message;
-        int     error_code;
-        QDateTime  timestamp;
-
-        SyncProblem() : kind(Invalid), error_code(0) {}
-    };
-
     QString asActionString( const SyncFileItem& item );
     QString asResultString(  const SyncFileItem& item );
 
-    bool isErrorKind( Kind );
+    bool isWarningKind( SyncFileItem::Status );
 
 }
 
@@ -145,11 +134,9 @@ signals:
 
      */
     void progressInfo( const QString& folder, const Progress::Info& progress );
-    void progressSyncProblem( const QString& folder, const Progress::SyncProblem& problem );
 
 protected:
     void setProgressInfo(const QString& folder, const Progress::Info& progress);
-    void setProgressProblem( const QString& folder, const Progress::SyncProblem& problem);
 
 private:
     ProgressDispatcher(QObject* parent = 0);

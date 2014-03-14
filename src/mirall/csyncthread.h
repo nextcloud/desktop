@@ -66,7 +66,6 @@ signals:
     void treeWalkResult(const SyncFileItemVector&);
 
     void transmissionProgress( const Progress::Kind, const Progress::Info& progress );
-    void transmissionProblem( const Progress::SyncProblem& problem );
 
     void csyncStateDbFile( const QString& );
     void wipeDb();
@@ -87,7 +86,6 @@ private:
 
 
     void handleSyncError(CSYNC *ctx, const char *state);
-    void progressProblem(Progress::Kind kind, const SyncFileItem& item);
 
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);

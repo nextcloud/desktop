@@ -39,8 +39,6 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 
     connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString,Progress::Info)),
             this, SLOT(slotProgressInfo(QString,Progress::Info)));
-    connect(ProgressDispatcher::instance(), SIGNAL(progressSyncProblem(const QString&,const Progress::SyncProblem&)),
-            this, SLOT(slotProgressProblem(const QString&, const Progress::SyncProblem&)));
 
     connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(slotOpenFile(QTreeWidgetItem*,int)));
 
@@ -170,47 +168,6 @@ QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) con
     return timeStr;
 }
 
-QTreeWidgetItem *ProtocolWidget::createProblemTreewidgetItem( const Progress::SyncProblem& problem)
-{
-    QStringList columns;
-    QString timeStr = timeString(problem.timestamp);
-    QString longTimeStr = timeString(problem.timestamp, QLocale::LongFormat);
-
-    columns << timeStr;
-    columns << problem.current_file;
-    columns << problem.folder;
-    QString errMsg = problem.error_message;
-  #if 0
-    if( problem.error_code == 507 ) {
-        errMsg = tr("No more storage space available on server.");
-    }
-  #endif
-    columns << errMsg;
-
-    QTreeWidgetItem *item = new QTreeWidgetItem(columns);
-    item->setData(0, ErrorIndicatorRole, QVariant(true) );
-    // Maybe we should not set the error icon for all problems but distinguish
-    // by error_code. A quota problem is considered an error, others might not??
-    if( problem.kind == Progress::SoftError ) {
-        item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Problem, true));
-    } else {
-        item->setIcon(0, Theme::instance()->syncStateIcon(SyncResult::Error, true));
-    }
-    item->setToolTip(0, longTimeStr);
-    item->setToolTip(1, problem.current_file);
-    item->setToolTip(3, errMsg );
-
-    return item;
-}
-
-void ProtocolWidget::slotProgressProblem( const QString& folder, const Progress::SyncProblem& problem)
-{
-    Q_UNUSED(folder);
-    QTreeWidgetItem *item = createProblemTreewidgetItem(problem);
-    _ui->_treeWidget->insertTopLevelItem(0, item);
-    computeResyncButtonEnabled();
-}
-
 void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
 {
     QString folderName = item->text(2);
@@ -232,19 +189,39 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
     QDateTime timestamp = QDateTime::currentDateTime();
     const QString timeStr = timeString(timestamp);
     const QString longTimeStr = timeString(timestamp, QLocale::LongFormat);
-    const QString actionStr = Progress::asResultString(item);
+    QIcon icon;
+    QString message;
 
     columns << timeStr;
     columns << item._file;
     columns << folder;
-    columns << actionStr;
-    if (Progress::isSizeDependent(item._instruction)) {
-        columns <<  Utility::octetsToString( item._size );
+    if (Progress::isWarningKind(item._status)) {
+        message= item._errorString;
+        columns << message;
+        if (item._status == SyncFileItem::NormalError || item._status == SyncFileItem::FatalError) {
+            icon = Theme::instance()->syncStateIcon(SyncResult::Error);
+        } else {
+            icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
+        }
+
+    } else {
+        message = Progress::asResultString(item);
+        columns << message;
+        if (Progress::isSizeDependent(item._instruction)) {
+            columns <<  Utility::octetsToString( item._size );
+        }
     }
 
     QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
+    if (item._status == SyncFileItem::FileIgnored) {
+        // Tell that we want to remove it on the next sync.
+        twitem->setData(0, ErrorIndicatorRole, true);
+    }
+
+    twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
-    twitem->setToolTip(3, actionStr);
+    twitem->setToolTip(1, item._file);
+    twitem->setToolTip(3, message );
     return twitem;
 }
 

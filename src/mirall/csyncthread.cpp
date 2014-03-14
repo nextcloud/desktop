@@ -242,7 +242,6 @@ bool CSyncThread::checkBlacklisting( SyncFileItem *item )
             // FIXME: put the error string into an .arg(..) later
             item->_errorString = tr("The item is not synced because of previous errors:")
                     + QLatin1String(" ")+ entry._errorString;
-            progressProblem( Progress::SoftError, *item );
         }
     }
 
@@ -355,8 +354,6 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_CONFLICT:
     case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
-        //
-        progressProblem(Progress::SoftError, item);
         dir = SyncFileItem::None;
         break;
     case CSYNC_INSTRUCTION_EVAL:
@@ -635,12 +632,7 @@ void CSyncThread::slotJobCompleted(const SyncFileItem &item)
     _progressInfo.setProgressComplete(item);
 
     if (item._status == SyncFileItem::FatalError) {
-        progressProblem(Progress::FatalError, item);
         emit csyncError(item._errorString);
-    } else if (item._status == SyncFileItem::NormalError) {
-        progressProblem(Progress::FatalError, item);
-    } else if (item._status == SyncFileItem::SoftError) {
-        progressProblem(Progress::SoftError, item);
     }
 
     emit transmissionProgress(Progress::Context, _progressInfo);
@@ -663,20 +655,6 @@ void CSyncThread::slotFinished()
     _propagator.reset(0);
     _syncMutex.unlock();
     _thread.quit();
-}
-
-void CSyncThread::progressProblem(Progress::Kind kind, const SyncFileItem& item)
-{
-    Progress::SyncProblem problem;
-
-    problem.kind = kind;
-    problem.current_file = item._file;
-    problem.error_message = item._errorString;
-    problem.error_code = item._httpErrorCode;
-    problem.timestamp =  QDateTime::currentDateTime();
-
-    // connected to something in folder.
-    emit transmissionProblem( problem );
 }
 
 void CSyncThread::slotProgress(const SyncFileItem& item, quint64 current)

@@ -120,7 +120,6 @@ Application::Application(int &argc, char **argv) :
 
     qRegisterMetaType<Progress::Kind>("Progress::Kind");
     qRegisterMetaType<Progress::Info>("Progress::Info");
-    qRegisterMetaType<Progress::SyncProblem>("Progress::SyncProblem");
 
     MirallConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());

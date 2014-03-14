@@ -28,7 +28,7 @@ QString Progress::asResultString( const SyncFileItem& item)
         case CSYNC_INSTRUCTION_CONFLICT:
         case CSYNC_INSTRUCTION_SYNC:
         case CSYNC_INSTRUCTION_NEW:
-            if (item._dir == SyncFileItem::Down)
+            if (item._dir != SyncFileItem::Up)
                 return QCoreApplication::translate( "progress", "Downloaded");
             else
                 return QCoreApplication::translate( "progress", "Uploaded");
@@ -48,7 +48,7 @@ QString Progress::asActionString( const SyncFileItem &item )
     case CSYNC_INSTRUCTION_CONFLICT:
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_NEW:
-        if (item._dir == SyncFileItem::Down)
+        if (item._dir != SyncFileItem::Up)
             return QCoreApplication::translate( "progress", "downloading");
         else
             return QCoreApplication::translate( "progress", "uploading");
@@ -62,13 +62,12 @@ QString Progress::asActionString( const SyncFileItem &item )
     }
 }
 
-bool Progress::isErrorKind( Kind kind )
+bool Progress::isWarningKind( SyncFileItem::Status kind)
 {
-    bool re = false;
-    if( kind == SoftError || kind == NormalError || kind == FatalError ) {
-        re = true;
-    }
-    return re;
+    return  kind == SyncFileItem::SoftError || kind == SyncFileItem::NormalError
+         || kind == SyncFileItem::FatalError || kind == SyncFileItem::FileIgnored
+         || kind == SyncFileItem::Conflict;
+
 }
 
 ProgressDispatcher* ProgressDispatcher::instance() {
@@ -87,13 +86,6 @@ ProgressDispatcher::ProgressDispatcher(QObject *parent) :
 ProgressDispatcher::~ProgressDispatcher()
 {
 
-}
-
-
-void ProgressDispatcher::setProgressProblem(const QString& folder, const Progress::SyncProblem &problem)
-{
-    Q_ASSERT( Progress::isErrorKind(problem.kind));
-    emit progressSyncProblem( folder, problem );
 }
 
 void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::Info& progress)

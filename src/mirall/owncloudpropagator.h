@@ -165,7 +165,7 @@ public:
     PropagateIgnoreJob(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateItemJob(propagator, item) {}
     void start() {
-        done(SyncFileItem::FileIgnored);
+        done(SyncFileItem::FileIgnored, _item._errorString);
     }
 };
 
