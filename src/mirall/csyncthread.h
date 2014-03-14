@@ -70,7 +70,7 @@ signals:
     // after sync is done
     void treeWalkResult(const SyncFileItemVector&);
 
-    void transmissionProgress( const Progress::Kind, const Progress::Info& progress );
+    void transmissionProgress( const Progress::Info& progress );
 
     void csyncStateDbFile( const QString& );
     void wipeDb();

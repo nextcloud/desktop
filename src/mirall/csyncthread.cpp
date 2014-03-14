@@ -66,7 +66,6 @@ CSyncThread::CSyncThread(CSYNC *ctx, const QString& localPath, const QString& re
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
     qRegisterMetaType<Progress::Info>("Progress::Info");
-    qRegisterMetaType<Progress::Kind>("Progress::Kind");
 
     _thread.start();
 }
@@ -407,24 +406,6 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     _thread.quit();
 }
 
-void csyncthread_updater_progress_callback(CSYNC_PROGRESS *progress, void *userdata)
-{
-    Progress::Kind kind;
-    if (progress->kind == CSYNC_NOTIFY_START_LOCAL_UPDATE) {
-        kind = Progress::StartLocalUpdate;
-    } else if (progress->kind == CSYNC_NOTIFY_FINISHED_LOCAL_UPDATE) {
-        kind = Progress::EndLocalUpdate;
-    } else if (progress->kind == CSYNC_NOTIFY_START_REMOTE_UPDATE) {
-        kind = Progress::StartRemoteUpdate;
-    } else if (progress->kind == CSYNC_NOTIFY_FINISHED_REMOTE_UPDATE) {
-        kind = Progress::EndRemoteUpdate;
-    } else {
-        return; // FIXME, but most progress stuff should come from the new propagator
-    }
-    CSyncThread *self = static_cast<CSyncThread*>(userdata);
-    emit self->transmissionProgress( kind, self->_progressInfo );
-}
-
 void CSyncThread::startSync()
 {
     if (!_syncMutex.tryLock()) {
@@ -505,8 +486,6 @@ void CSyncThread::startSync()
 
     _syncTime.start();
 
-    // Only used for the updater progress as we use the new propagator right now which does its own thing
-    csync_set_progress_callback(_csync_ctx, csyncthread_updater_progress_callback);
 
     qDebug() << "#### Update start #################################################### >>";
 
@@ -550,7 +529,8 @@ void CSyncThread::slotUpdateFinished(int updateResult)
         it->_file = adjustRenamedPath(it->_file);
     }
 
-    emit transmissionProgress(Progress::StartSync, _progressInfo);
+    // To announce the beginning of the sync
+    emit transmissionProgress(_progressInfo);
 
     if (!_hasFiles && !_syncedItems.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be removed, asking the user";
@@ -632,7 +612,7 @@ void CSyncThread::slotJobCompleted(const SyncFileItem &item)
         emit csyncError(item._errorString);
     }
 
-    emit transmissionProgress(Progress::Context, _progressInfo);
+    emit transmissionProgress(_progressInfo);
 }
 
 void CSyncThread::slotFinished()
@@ -647,7 +627,6 @@ void CSyncThread::slotFinished()
     csync_commit(_csync_ctx);
 
     qDebug() << "CSync run took " << _syncTime.elapsed() << " Milliseconds";
-    emit transmissionProgress(Progress::EndSync, _progressInfo);
     emit finished();
     _propagator.reset(0);
     _syncMutex.unlock();
@@ -657,7 +636,7 @@ void CSyncThread::slotFinished()
 void CSyncThread::slotProgress(const SyncFileItem& item, quint64 current)
 {
     _progressInfo.setProgressItem(item, current);
-    emit transmissionProgress(Progress::Context, _progressInfo);
+    emit transmissionProgress(_progressInfo);
 }
 
 

@@ -74,32 +74,6 @@ namespace Progress
         }
     };
 
-
-    enum Kind {
-        Invalid,
-        StartSync,
-        Download,
-        Upload,
-        Context,
-        Inactive,
-        StartDownload,
-        StartUpload,
-        EndDownload,
-        EndUpload,
-        EndSync,
-        StartDelete,
-        EndDelete,
-        StartRename,
-        EndRename,
-        SoftError,
-        NormalError,
-        FatalError,
-        StartLocalUpdate,
-        EndLocalUpdate,
-        StartRemoteUpdate,
-        EndRemoteUpdate
-    };
-
     QString asActionString( const SyncFileItem& item );
     QString asResultString(  const SyncFileItem& item );
 

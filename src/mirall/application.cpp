@@ -118,7 +118,6 @@ Application::Application(int &argc, char **argv) :
 
     setQuitOnLastWindowClosed(false);
 
-    qRegisterMetaType<Progress::Kind>("Progress::Kind");
     qRegisterMetaType<Progress::Info>("Progress::Info");
 
     MirallConfigFile cfg;

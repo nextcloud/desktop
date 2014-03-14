@@ -610,7 +610,7 @@ void Folder::startSync(const QStringList &pathList)
     //blocking connection so the message box happens in this thread, but block the csync thread.
     connect(_csync, SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
-    connect(_csync, SIGNAL(transmissionProgress(Progress::Kind,Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Kind,Progress::Info)));
+    connect(_csync, SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
 
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
 
@@ -676,7 +676,7 @@ void Folder::slotCSyncFinished()
 
 // the progress comes without a folder and the valid path set. Add that here
 // and hand the result over to the progress dispatcher.
-void Folder::slotTransmissionProgress(Progress::Kind kind, const Progress::Info &pi)
+void Folder::slotTransmissionProgress(const Progress::Info &pi)
 {
     if (!pi._lastCompletedItem.isEmpty()
             && Progress::isWarningKind(pi._lastCompletedItem._status)) {
@@ -685,7 +685,7 @@ void Folder::slotTransmissionProgress(Progress::Kind kind, const Progress::Info 
     }
 
     // remember problems happening to set the correct Sync status in slot slotCSyncFinished.
-    if( kind == Progress::StartSync ) {
+    if( pi._completedFileCount ) {
         _syncResult.setWarnCount(0);
     }
     ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
