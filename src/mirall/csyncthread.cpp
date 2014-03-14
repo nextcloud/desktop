@@ -312,20 +312,6 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     int re = 0;
 
     switch(file->instruction) {
-    case CSYNC_INSTRUCTION_NONE:
-        break;
-    case CSYNC_INSTRUCTION_NEW:
-    case CSYNC_INSTRUCTION_SYNC:
-    case CSYNC_INSTRUCTION_CONFLICT:
-    case CSYNC_INSTRUCTION_RENAME:
-    case CSYNC_INSTRUCTION_REMOVE:
-        _progressInfo._totalFileCount++;
-        _progressInfo._totalSize += file->size;
-        //fall trough
-    default:
-        _needsUpdate = true;
-    }
-    switch(file->instruction) {
     case CSYNC_INSTRUCTION_UPDATED:
         // We need to update the database.
         _journal->setFileRecord(SyncJournalFileRecord(item, _localPath + item._file));
@@ -376,8 +362,16 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
         && file->instruction != CSYNC_INSTRUCTION_REMOVE) {
       _hasFiles = true;
     }
-    _syncedItems.append(item);
 
+    if (!item._isDirectory) {
+        _progressInfo._totalFileCount++;
+        if (Progress::isSizeDependent(file->instruction)) {
+            _progressInfo._totalSize += file->size;
+        }
+    }
+    _needsUpdate = true;
+
+    _syncedItems.append(item);
     emit syncItemDisconvered(item);
     return re;
 }
@@ -537,7 +531,6 @@ void CSyncThread::slotUpdateFinished(int updateResult)
 
 
     _progressInfo = Progress::Info();
-    emit transmissionProgress(Progress::StartSync, _progressInfo);
 
     _hasFiles = false;
     bool walkOk = true;
@@ -556,6 +549,8 @@ void CSyncThread::slotUpdateFinished(int updateResult)
             it != _syncedItems.end(); ++it) {
         it->_file = adjustRenamedPath(it->_file);
     }
+
+    emit transmissionProgress(Progress::StartSync, _progressInfo);
 
     if (!_hasFiles && !_syncedItems.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be removed, asking the user";

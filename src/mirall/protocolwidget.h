@@ -54,15 +54,14 @@ signals:
 
 private:
     void setSyncResultStatus(const SyncResult& result );
-    void cleanErrorItems( const QString& folder );
+    void cleanIgnoreItems( const QString& folder );
     void computeResyncButtonEnabled();
 
     QTreeWidgetItem* createCompletedTreewidgetItem(const QString &folder, const SyncFileItem &item );
-    QList<QTreeWidgetItem*> errorItems(const QString &folder);
 
     QString timeString(QDateTime dt, QLocale::FormatType format = QLocale::NarrowFormat) const;
 
-    const int ErrorIndicatorRole;
+    const int IgnoredIndicatorRole;
     Ui::ProtocolWidget *_ui;
     QPushButton *_clearBlacklistBtn;
 };

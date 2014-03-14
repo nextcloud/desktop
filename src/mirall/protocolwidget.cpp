@@ -32,7 +32,7 @@ namespace Mirall {
 
 ProtocolWidget::ProtocolWidget(QWidget *parent) :
     QWidget(parent),
-    ErrorIndicatorRole( Qt::UserRole +1 ),
+    IgnoredIndicatorRole( Qt::UserRole +1 ),
     _ui(new Ui::ProtocolWidget)
 {
     _ui->setupUi(this);
@@ -125,28 +125,16 @@ void ProtocolWidget::slotClearBlacklist()
     folderMan->slotScheduleAllFolders();
 }
 
-QList<QTreeWidgetItem*> ProtocolWidget::errorItems( const QString& folder )
+void ProtocolWidget::cleanIgnoreItems(const QString& folder)
 {
-    QList<QTreeWidgetItem*> list;
-
     int itemCnt = _ui->_treeWidget->topLevelItemCount();
-
-    for( int cnt = 0; cnt < itemCnt; cnt++ ) {
+    for( int cnt = itemCnt-1; cnt >=0 ; cnt-- ) {
         QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(cnt);
-        bool isErrorItem = item->data(0, ErrorIndicatorRole).toBool();
+        bool isErrorItem = item->data(0, IgnoredIndicatorRole).toBool();
         QString itemFolder = item->data(2, Qt::DisplayRole).toString();
         if( isErrorItem && itemFolder == folder ) {
-            list.append(item);
+            delete item;
         }
-    }
-    return list;
-}
-
-void ProtocolWidget::cleanErrorItems( const QString& folder ) // FIXME: Use the folder to detect which errors can be deleted.
-{
-    QList<QTreeWidgetItem*> wipeList = errorItems(folder);
-    if( wipeList.count() > 0 ) {
-        qDeleteAll(wipeList.begin(), wipeList.end());
     }
 }
 
@@ -215,7 +203,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
     QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
     if (item._status == SyncFileItem::FileIgnored) {
         // Tell that we want to remove it on the next sync.
-        twitem->setData(0, ErrorIndicatorRole, true);
+        twitem->setData(0, IgnoredIndicatorRole, true);
     }
 
     twitem->setIcon(0, icon);
@@ -247,16 +235,14 @@ void ProtocolWidget::computeResyncButtonEnabled()
 
 void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::Info& progress )
 {
-    /*
-    if( progress.kind == Progress::StartSync ) {
-      cleanErrorItems( folder );
-      _clearBlacklistBtn->setEnabled(false);
-    }
-
-    if( progress.kind == Progress::EndSync ) {
+    if( progress._completedFileCount == 0 ) {
+        // The sync is restarting, clean the old items
+        cleanIgnoreItems(folder);
+        computeResyncButtonEnabled();
+    } else if (progress._totalFileCount == progress._completedFileCount) {
+        //Sync completed
         computeResyncButtonEnabled();
     }
-    */
     SyncFileItem last = progress._lastCompletedItem;
     if (last.isEmpty()) return;
 
