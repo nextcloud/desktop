@@ -13,9 +13,13 @@
 
 #include <QString>
 
+#ifdef TOKEN_AUTH_ONLY
+#include "creds/tokencredentials.h"
+#else
 #include "creds/httpcredentials.h"
 #include "creds/dummycredentials.h"
 #include "creds/shibbolethcredentials.h"
+#endif
 
 namespace Mirall
 {
@@ -25,6 +29,10 @@ namespace CredentialsFactory
 
 AbstractCredentials* create(const QString& type)
 {
+#ifdef TOKEN_AUTH_ONLY
+	return new TokenCredentials;
+#else
+	
     // empty string might happen for old version of configuration
     if (type == "http" || type == "") {
         return new HttpCredentials;
@@ -36,6 +44,7 @@ AbstractCredentials* create(const QString& type)
         qWarning("Unknown credentials type: %s", qPrintable(type));
         return new DummyCredentials;
     }
+#endif
 }
 
 } // ns CredentialsFactory

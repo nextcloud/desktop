@@ -13,6 +13,7 @@
 
 #include <QNetworkRequest>
 #include <QNetworkProxy>
+#include <QAuthenticator>
 
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/utility.h"
@@ -29,6 +30,8 @@ MirallAccessManager::MirallAccessManager(QObject* parent)
     proxy.setHostName(" ");
     setProxy(proxy);
 #endif
+    QObject::connect(this, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
+                     this, SLOT(slotProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
 }
 
 QNetworkReply* MirallAccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)
@@ -42,6 +45,17 @@ QNetworkReply* MirallAccessManager::createRequest(QNetworkAccessManager::Operati
         newRequest.setHeader( QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml; charset=utf-8"));
     }
     return QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
+}
+
+void MirallAccessManager::slotProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
+{
+    Q_UNUSED(authenticator);
+    qDebug() << Q_FUNC_INFO << proxy.type();
+    // We put in the password here and in ClientProxy in the proxy itself.
+    if (!proxy.user().isEmpty() || !proxy.password().isEmpty()) {
+        authenticator->setUser(proxy.user());
+        authenticator->setPassword(proxy.password());
+    }
 }
 
 } // ns Mirall

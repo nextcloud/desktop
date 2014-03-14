@@ -28,6 +28,8 @@ public:
 
 protected:
     QNetworkReply* createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData = 0);
+protected slots:
+    void slotProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator);
 };
 
 } // ns Mirall

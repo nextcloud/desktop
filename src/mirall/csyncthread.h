@@ -63,6 +63,11 @@ signals:
     void csyncError( const QString& );
     void csyncWarning( const QString& );
     void csyncUnavailable();
+
+    // before actual syncing (after update+reconcile)
+    void syncItemDisconvered(const SyncFileItem&);
+
+    // after sync is done
     void treeWalkResult(const SyncFileItemVector&);
 
     void transmissionProgress( const Progress::Kind, const Progress::Info& progress );

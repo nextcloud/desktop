@@ -89,19 +89,30 @@ set(libsync_SRCS
     mirall/clientproxy.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
-    creds/httpcredentials.cpp
     creds/credentialsfactory.cpp
     creds/http/httpconfigfile.cpp
-    creds/shibbolethcredentials.cpp
-    creds/shibboleth/shibbolethaccessmanager.cpp
-    creds/shibboleth/shibbolethcookiejar.cpp
-    creds/shibboleth/shibbolethwebview.cpp
-    creds/shibboleth/shibbolethrefresher.cpp
-    creds/shibboleth/shibbolethconfigfile.cpp
-    creds/shibboleth/authenticationdialog.cpp
     creds/credentialscommon.cpp
     3rdparty/qjson/json.cpp
 )
+if(TOKEN_AUTH_ONLY)
+	set (libsync_SRCS
+		${libsync_SRCS}
+		creds/tokencredentials.cpp
+	)
+	else()
+		set (libsync_SRCS
+			${libsync_SRCS}
+	    	creds/httpcredentials.cpp		
+	    	creds/shibbolethcredentials.cpp
+	    	creds/shibboleth/shibbolethaccessmanager.cpp
+	    	creds/shibboleth/shibbolethcookiejar.cpp
+	    	creds/shibboleth/shibbolethwebview.cpp
+	    	creds/shibboleth/shibbolethrefresher.cpp
+	    	creds/shibboleth/shibbolethconfigfile.cpp
+	    	creds/shibboleth/authenticationdialog.cpp		
+	)	
+endif()
+
 
 set(libsync_HEADERS
     mirall/folderman.h
@@ -126,19 +137,30 @@ set(libsync_HEADERS
     mirall/clientproxy.h
     creds/abstractcredentials.h
     creds/dummycredentials.h
-    creds/httpcredentials.h
     creds/credentialsfactory.h
     creds/http/httpconfigfile.h
-    creds/shibbolethcredentials.h
-    creds/shibboleth/shibbolethaccessmanager.h
-    creds/shibboleth/shibbolethcookiejar.h
-    creds/shibboleth/shibbolethwebview.h
-    creds/shibboleth/shibbolethrefresher.h
-    creds/shibboleth/shibbolethconfigfile.h
-    creds/shibboleth/authenticationdialog.h
     creds/credentialscommon.h
     3rdparty/qjson/json.h
 )
+if(TOKEN_AUTH_ONLY)
+	set (libsync_HEADERS
+	    ${libsync_HEADERS}
+	    creds/tokencredentials.h
+	)
+else()
+	set (libsync_HEADERS
+	    ${libsync_HEADERS}
+	    creds/httpcredentials.h	
+		 creds/shibbolethcredentials.h
+       creds/shibboleth/shibbolethaccessmanager.h
+       creds/shibboleth/shibbolethcookiejar.h
+       creds/shibboleth/shibbolethwebview.h
+       creds/shibboleth/shibbolethrefresher.h
+       creds/shibboleth/shibbolethconfigfile.h
+       creds/shibboleth/authenticationdialog.h
+    )
+endif()
+
 
 IF( NOT WIN32 AND NOT APPLE )
     set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_linux.cpp)
@@ -176,11 +198,11 @@ set(creds_HEADERS
 IF (NOT APPLE)
     INSTALL(
         FILES ${owncloudsync_HEADERS}
-        DESTINATION ${INCLUDE_INSTALL_DIR}/owncloudsync/mirall
+	DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}/mirall
     )
     INSTALL(
         FILES ${creds_HEADERS}
-        DESTINATION ${INCLUDE_INSTALL_DIR}/owncloudsync/creds
+	DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}/creds
     )
 ENDIF(NOT APPLE)
 
@@ -207,15 +229,22 @@ if(NEON_FOUND)
 endif()
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
+add_library(${synclib_NAME}_static STATIC ${libsync_SRCS} ${syncMoc})
 
 qt5_use_modules(${synclib_NAME} Widgets Network Xml WebKitWidgets Sql)
+qt5_use_modules(${synclib_NAME}_static Widgets Network Xml WebKitWidgets Sql)
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${MIRALL_VERSION}
 	SOVERSION ${MIRALL_SOVERSION}
 )
+set_target_properties( ${synclib_NAME}_static  PROPERTIES
+	VERSION ${MIRALL_VERSION}
+	SOVERSION ${MIRALL_SOVERSION}
+)
 
 target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )
+target_link_libraries(${synclib_NAME}_static ${libsync_LINK_TARGETS} )
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS ${synclib_NAME}
@@ -281,6 +310,8 @@ set(mirall_SRCS
     mirall/socketapi.cpp
     mirall/sslbutton.cpp
 )
+
+
 
 set(mirall_HEADERS
     mirall/application.h
@@ -373,14 +404,14 @@ endif(WITH_DBUS)
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-if(NOT WIN32)
+if(NOT WIN32 AND NOT BUILD_LIBRARIES_ONLY)
 	file( GLOB _icons "${theme_dir}/colored/${ICON_APP_NAME}-icon-*.png" )
     foreach( _file ${_icons} )
 	    string( REPLACE "${theme_dir}/colored/${ICON_APP_NAME}-icon-" "" _res ${_file} )
         string( REPLACE ".png" "" _res ${_res} )
 	install( FILES ${_file} RENAME ${ICON_APP_NAME}.png DESTINATION ${DATADIR}/icons/hicolor/${_res}x${_res}/apps )
     endforeach( _file )
-endif(NOT WIN32)
+endif(NOT WIN32 AND NOT BUILD_LIBRARIES_ONLY)
 
     install(FILES ${mirall_I18N} DESTINATION share/${APPLICATION_EXECUTABLE}/i18n)
 
@@ -389,7 +420,7 @@ endif(NOT WIN32)
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
     qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql ${ADDITIONAL_APP_MODULES})
-else()
+elseif(NOT BUILD_LIBRARIES_ONLY)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
     if (Qt5Core_FOUND)
         include(DeployQt5)
@@ -416,25 +447,28 @@ add_library(updater STATIC ${updater_SRCS} ${updaterMoc})
 target_link_libraries(updater ${synclib_NAME})
 qt5_use_modules(updater Widgets Network Xml)
 
-set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
-)
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
-target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
+if(NOT BUILD_LIBRARIES_ONLY)
+  set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
+          RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
+  )
+  target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
+  target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
+  target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
+  target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
 
-install(TARGETS ${APPLICATION_EXECUTABLE}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        BUNDLE  DESTINATION "."
-)
+  install(TARGETS ${APPLICATION_EXECUTABLE}
+          RUNTIME DESTINATION bin
+          LIBRARY DESTINATION lib
+          ARCHIVE DESTINATION lib
+          BUNDLE  DESTINATION "."
+ )
+endif()
+
 
 #FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary
 # currently it needs to be done because the code right above needs to be executed no matter
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
-if(BUILD_OWNCLOUD_OSX_BUNDLE)
+if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
     if(Qt5Core_FOUND)
         install_qt5_executable(${OWNCLOUD_OSX_BUNDLE} "qtaccessiblewidgets;qsqlite;qcocoa")
     else(Qt5Core_FOUND)
@@ -454,13 +488,16 @@ endif()
 
 set(owncloudcmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 set(OWNCLOUDCMD_SRC owncloudcmd/owncloudcmd.cpp)
-add_executable(${owncloudcmd_NAME}  ${OWNCLOUDCMD_SRC})
-qt5_use_modules(${owncloudcmd_NAME} Network Sql)
-set_target_properties(${owncloudcmd_NAME} PROPERTIES
-	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
-target_link_libraries(${owncloudcmd_NAME} ${synclib_NAME})
+if(NOT BUILD_LIBRARIES_ONLY)
+   add_executable(${owncloudcmd_NAME}  ${OWNCLOUDCMD_SRC})
+	qt5_use_modules(${owncloudcmd_NAME} Network Sql)
+	set_target_properties(${owncloudcmd_NAME} PROPERTIES
+		        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+	target_link_libraries(${owncloudcmd_NAME} ${synclib_NAME})
+endif()
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mirall)
-if(BUILD_OWNCLOUD_OSX_BUNDLE)
+if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
     install(TARGETS ${owncloudcmd_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
     if (SPARKLE_FOUND)
         install(FILES ${CMAKE_SOURCE_DIR}/admin/osx/deny_autoupdate_com.owncloud.desktopclient.plist
@@ -468,7 +505,7 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE)
         install(FILES ${CMAKE_SOURCE_DIR}/admin/osx/sparkle/dsa_pub.pem
                 DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources)
     endif()
-else()
+elseif(NOT BUILD_LIBRARIES_ONLY)
     install(TARGETS ${owncloudcmd_NAME}
 	    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 	    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
