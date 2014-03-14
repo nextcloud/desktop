@@ -610,7 +610,7 @@ void Folder::startSync(const QStringList &pathList)
     //blocking connection so the message box happens in this thread, but block the csync thread.
     connect(_csync, SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
-    connect(_csync, SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
+    connect(_csync, SIGNAL(transmissionProgress(Progress::Kind,Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Kind,Progress::Info)));
     connect(_csync, SIGNAL(transmissionProblem(Progress::SyncProblem)), this, SLOT(slotTransmissionProblem(Progress::SyncProblem)));
 
     QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
@@ -701,28 +701,13 @@ void Folder::slotTransmissionProblem( const Progress::SyncProblem& problem )
 
 // the progress comes without a folder and the valid path set. Add that here
 // and hand the result over to the progress dispatcher.
-void Folder::slotTransmissionProgress(const Progress::Info& progress)
+void Folder::slotTransmissionProgress(Progress::Kind kind, const Progress::Info &pi)
 {
-    Progress::Info newInfo = progress;
-    newInfo.folder = alias();
-
-    if(newInfo.current_file.startsWith(QLatin1String("ownclouds://")) ||
-            newInfo.current_file.startsWith(QLatin1String("owncloud://")) ) {
-        // rip off the whole ownCloud URL.
-        newInfo.current_file.remove(Utility::toCSyncScheme(remoteUrl().toString()));
-    }
-    QString localPath = path();
-    if( newInfo.current_file.startsWith(localPath) ) {
-        // remove the local dir.
-        newInfo.current_file = newInfo.current_file.right( newInfo.current_file.length() - localPath.length());
-    }
-
     // remember problems happening to set the correct Sync status in slot slotCSyncFinished.
-    if( newInfo.kind == Progress::StartSync ) {
+    if( kind == Progress::StartSync ) {
         _syncResult.setWarnCount(0);
     }
-
-    ProgressDispatcher::instance()->setProgressInfo(alias(), newInfo);
+    ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel)

@@ -62,7 +62,7 @@ public slots:
     void slotUpdateFolderState( Folder* );
     void slotDoubleClicked( const QModelIndex& );
     void slotFolderOpenAction( const QString& );
-    void slotSetProgress(const QString&, const Progress::Info& progress);
+    void slotSetProgress(const QString& folder, const Progress::Info& progress);
     void slotProgressProblem(const QString& folder, const Progress::SyncProblem& problem);
     void slotButtonsSetEnabled();
 
@@ -95,10 +95,11 @@ private:
     QStandardItemModel *_model;
     QUrl   _OCUrl;
     QHash<QStandardItem*, QTimer*> _hideProgressTimers;
-    QString _kindContext;
     QStringList _generalErrors;
     bool _wasDisabledBefore;
     Account *_account;
+private slots:
+    void slotFolderSyncStateChange();
 };
 
 } // namespace Mirall

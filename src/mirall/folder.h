@@ -174,7 +174,7 @@ private slots:
     void slotCsyncUnavailable();
     void slotCSyncFinished();
 
-    void slotTransmissionProgress(const Progress::Info& progress);
+    void slotTransmissionProgress(Progress::Kind kind, const Progress::Info& pi);
     void slotTransmissionProblem( const Progress::SyncProblem& problem );
 
     void slotPollTimerTimeout();

@@ -57,7 +57,6 @@ void csyncLogCatcher(int /*verbosity*/,
 QMutex CSyncThread::_syncMutex;
 
 CSyncThread::CSyncThread(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, Mirall::SyncJournalDb* journal)
-    :_previousIndex(-1)
 {
     _localPath = localPath;
     _remotePath = remotePath;
@@ -243,7 +242,7 @@ bool CSyncThread::checkBlacklisting( SyncFileItem *item )
             // FIXME: put the error string into an .arg(..) later
             item->_errorString = tr("The item is not synced because of previous errors:")
                     + QLatin1String(" ")+ entry._errorString;
-            slotProgress( Progress::SoftError, *item );
+            progressProblem( Progress::SoftError, *item );
         }
     }
 
@@ -321,8 +320,8 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_CONFLICT:
     case CSYNC_INSTRUCTION_RENAME:
     case CSYNC_INSTRUCTION_REMOVE:
-        _progressInfo.overall_file_count++;
-        _progressInfo.overall_transmission_size += file->size;
+        _progressInfo._totalFileCount++;
+        _progressInfo._totalSize += file->size;
         //fall trough
     default:
         _needsUpdate = true;
@@ -357,7 +356,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
         //
-        slotProgress(Progress::SoftError, item, 0, 0);
+        progressProblem(Progress::SoftError, item);
         dir = SyncFileItem::None;
         break;
     case CSYNC_INSTRUCTION_EVAL:
@@ -417,21 +416,20 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
 
 void csyncthread_updater_progress_callback(CSYNC_PROGRESS *progress, void *userdata)
 {
-    Progress::Info pInfo;
+    Progress::Kind kind;
     if (progress->kind == CSYNC_NOTIFY_START_LOCAL_UPDATE) {
-        pInfo.kind = Progress::StartLocalUpdate;
+        kind = Progress::StartLocalUpdate;
     } else if (progress->kind == CSYNC_NOTIFY_FINISHED_LOCAL_UPDATE) {
-        pInfo.kind = Progress::EndLocalUpdate;
+        kind = Progress::EndLocalUpdate;
     } else if (progress->kind == CSYNC_NOTIFY_START_REMOTE_UPDATE) {
-        pInfo.kind = Progress::StartRemoteUpdate;
+        kind = Progress::StartRemoteUpdate;
     } else if (progress->kind == CSYNC_NOTIFY_FINISHED_REMOTE_UPDATE) {
-        pInfo.kind = Progress::EndRemoteUpdate;
+        kind = Progress::EndRemoteUpdate;
     } else {
         return; // FIXME, but most progress stuff should come from the new propagator
     }
-    pInfo.timestamp = QDateTime::currentDateTime();
     CSyncThread *self = static_cast<CSyncThread*>(userdata);
-    emit self->transmissionProgress( pInfo );
+    emit self->transmissionProgress( kind, self->_progressInfo );
 }
 
 void CSyncThread::startSync()
@@ -538,9 +536,9 @@ void CSyncThread::slotUpdateFinished(int updateResult)
         return;
     }
 
-    slotProgress(Progress::StartSync, SyncFileItem(), 0, 0);
 
     _progressInfo = Progress::Info();
+    emit transmissionProgress(Progress::StartSync, _progressInfo);
 
     _hasFiles = false;
     bool walkOk = true;
@@ -583,10 +581,10 @@ void CSyncThread::slotUpdateFinished(int updateResult)
     _propagator.reset(new OwncloudPropagator (session, _localPath, _remoteUrl, _remotePath,
                                               _journal, &_thread));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
-            this, SLOT(transferCompleted(SyncFileItem)), Qt::QueuedConnection);
-    connect(_propagator.data(), SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)),
-            this, SLOT(slotProgress(Progress::Kind,SyncFileItem,quint64,quint64)));
-    connect(_propagator.data(), SIGNAL(progressChanged(qint64)), this, SLOT(slotProgressChanged(qint64)));
+            this, SLOT(slotJobCompleted(SyncFileItem)));
+    connect(_propagator.data(), SIGNAL(progress(SyncFileItem,quint64)),
+            this, SLOT(slotProgress(SyncFileItem,quint64)));
+    connect(_propagator.data(), SIGNAL(adjustTotalTransmissionSize(qint64)), this, SLOT(slotAdjustTotalTransmissionSize(qint64)));
     connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()));
 
     setNetworkLimits();
@@ -618,7 +616,7 @@ void CSyncThread::setNetworkLimits()
     qDebug() << " N------N Network Limits changed!";
 }
 
-void CSyncThread::transferCompleted(const SyncFileItem &item)
+void CSyncThread::slotJobCompleted(const SyncFileItem &item)
 {
     qDebug() << Q_FUNC_INFO << item._file << item._status << item._errorString;
 
@@ -631,11 +629,21 @@ void CSyncThread::transferCompleted(const SyncFileItem &item)
 
     } else {
         qWarning() << Q_FUNC_INFO << "Could not find index in synced items!";
+
     }
 
+    _progressInfo.setProgressComplete(item);
+
     if (item._status == SyncFileItem::FatalError) {
+        progressProblem(Progress::FatalError, item);
         emit csyncError(item._errorString);
+    } else if (item._status == SyncFileItem::NormalError) {
+        progressProblem(Progress::FatalError, item);
+    } else if (item._status == SyncFileItem::SoftError) {
+        progressProblem(Progress::SoftError, item);
     }
+
+    emit transmissionProgress(Progress::Context, _progressInfo);
 }
 
 void CSyncThread::slotFinished()
@@ -650,7 +658,7 @@ void CSyncThread::slotFinished()
     csync_commit(_csync_ctx);
 
     qDebug() << "CSync run took " << _syncTime.elapsed() << " Milliseconds";
-    slotProgress(Progress::EndSync,SyncFileItem(), 0 , 0);
+    emit transmissionProgress(Progress::EndSync, _progressInfo);
     emit finished();
     _propagator.reset(0);
     _syncMutex.unlock();
@@ -671,50 +679,16 @@ void CSyncThread::progressProblem(Progress::Kind kind, const SyncFileItem& item)
     emit transmissionProblem( problem );
 }
 
-void CSyncThread::slotProgressChanged(qint64 change)
+void CSyncThread::slotProgress(const SyncFileItem& item, quint64 current)
 {
-    _progressInfo.overall_transmission_size += change;
+    _progressInfo.setProgressItem(item, current);
+    emit transmissionProgress(Progress::Context, _progressInfo);
 }
 
-void CSyncThread::slotProgress(Progress::Kind kind, const SyncFileItem& item, quint64 curr, quint64 total)
+
+void CSyncThread::slotAdjustTotalTransmissionSize(qint64 change)
 {
-    if( Progress::isErrorKind(kind) ) {
-        progressProblem(kind, item);
-        return;
-    }
-
-    if( kind == Progress::StartSync ) {
-        _currentFileNo = 0;
-        _lastOverallBytes = 0;
-    }
-    if( kind == Progress::StartDelete ||
-            kind == Progress::StartDownload ||
-            kind == Progress::StartRename ||
-            kind == Progress::StartUpload ) {
-        int indx = _syncedItems.indexOf(item);
-        if( _previousIndex != indx ) {
-            _currentFileNo += 1;
-            _previousIndex = indx;
-        }
-        curr = 0;
-    }
-
-    if( kind == Progress::EndUpload ||
-            kind == Progress::EndDownload) {
-        _lastOverallBytes += total;
-    }
-
-    Progress::Info pInfo(_progressInfo);
-    pInfo.kind                  = kind;
-    pInfo.current_file          = item._file;
-    pInfo.rename_target         = item._renameTarget;
-    pInfo.file_size             = total;
-    pInfo.current_file_bytes    = curr;
-    pInfo.current_file_no       = _currentFileNo;
-    pInfo.timestamp             = QDateTime::currentDateTime();
-    pInfo.overall_current_bytes = _lastOverallBytes + curr;
-    // Connect to something in folder!
-    emit transmissionProgress( pInfo );
+    _progressInfo._totalSize += change;
 }
 
 /* Given a path on the remote, give the path as it is when the rename is done */

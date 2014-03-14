@@ -65,7 +65,7 @@ signals:
     void csyncUnavailable();
     void treeWalkResult(const SyncFileItemVector&);
 
-    void transmissionProgress( const Progress::Info& progress );
+    void transmissionProgress( const Progress::Kind, const Progress::Info& progress );
     void transmissionProblem( const Progress::SyncProblem& problem );
 
     void csyncStateDbFile( const QString& );
@@ -77,10 +77,10 @@ signals:
     void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
 
 private slots:
-    void transferCompleted(const SyncFileItem& item);
+    void slotJobCompleted(const SyncFileItem& item);
     void slotFinished();
-    void slotProgress(Progress::Kind kind, const SyncFileItem &item, quint64 curr = 0, quint64 total = 0);
-    void slotProgressChanged(qint64 change);
+    void slotProgress(const SyncFileItem& item, quint64 curent);
+    void slotAdjustTotalTransmissionSize(qint64 change);
     void slotUpdateFinished(int updateResult);
 
 private:
@@ -109,19 +109,16 @@ private:
     QHash <QString, QString> _seenFiles;
     QThread _thread;
 
+    Progress::Info _progressInfo;
 
     // maps the origin and the target of the folders that have been renamed
     QHash<QString, QString> _renamedFolders;
     QString adjustRenamedPath(const QString &original);
 
     bool _hasFiles; // true if there is at least one file that is not ignored or removed
-    Progress::Info _progressInfo;
+
     int _downloadLimit;
     int _uploadLimit;
-    int _previousIndex;   // store the index of the previous item in progress update slot
-    qint64 _currentFileNo;
-    qint64 _overallFileCount;
-    quint64 _lastOverallBytes;
 
     friend struct CSyncRunScopeHelper;
 };

@@ -84,14 +84,15 @@ void PropagateUploadFileLegacy::start()
         // couple of seconds and retries.
         if(_previousFileSize > 0) {
             qDebug() << "File size changed underway: " << trans->stat_size - _previousFileSize;
-            // Report the change of the overall transmission size to the propagator
-            _propagator->overallTransmissionSizeChanged(qint64(trans->stat_size - _previousFileSize));
+            // Report the change of the overall transmission size to the propagator (queued connection because we are in a thread)
+            QMetaObject::invokeMethod(_propagator, "adjustTotalTransmissionSize", Qt::QueuedConnection,
+                                      Q_ARG(qint64, trans->stat_size - _previousFileSize));
             // update the item's values to the current from trans. hbf_splitlist does a stat
             _item._size = trans->stat_size;
             _item._modtime = trans->modtime;
 
         }
-        emit progress(Progress::StartUpload, _item, 0, trans->stat_size);
+        emit progress(_item, 0);
 
         if (progressInfo._valid) {
             if (Utility::qDateTimeToTime_t(progressInfo._modtime) == _item._modtime) {
@@ -209,9 +210,6 @@ void PropagateUploadFileLegacy::start()
             return;
         }
 
-
-
-        emit progress(Progress::EndUpload, _item, _item._size, _item._size);
         done(SyncFileItem::Success);
         return;
 
@@ -240,9 +238,7 @@ void PropagateUploadFileLegacy::notify_status_cb(void* userdata, ne_session_stat
     PropagateUploadFileLegacy* that = reinterpret_cast<PropagateUploadFileLegacy*>(userdata);
 
     if (status == ne_status_sending && info->sr.total > 0) {
-        emit that->progress(Progress::Context, that->_item,
-                            that->_chunked_done + info->sr.progress,
-                            that->_chunked_total_size ? that->_chunked_total_size : info->sr.total );
+        emit that->progress(that->_item, that->_chunked_done + info->sr.progress);
 
         that->limitBandwidth(that->_chunked_done + info->sr.progress,  that->_propagator->_uploadLimit.fetchAndAddAcquire(0));
     }
@@ -431,7 +427,7 @@ void PropagateDownloadFileLegacy::notify_status_cb(void* userdata, ne_session_st
 {
     PropagateDownloadFileLegacy* that = reinterpret_cast<PropagateDownloadFileLegacy*>(userdata);
     if (status == ne_status_recving && info->sr.total > 0) {
-        emit that->progress(Progress::Context, that->_item, info->sr.progress, info->sr.total );
+        emit that->progress(that->_item, info->sr.progress );
 
         that->limitBandwidth(info->sr.progress,  that->_propagator->_downloadLimit.fetchAndAddAcquire(0));
     }
@@ -442,7 +438,7 @@ void PropagateDownloadFileLegacy::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    emit progress(Progress::StartDownload, _item, 0, _item._size);
+    emit progress(_item, 0);
 
     QString tmpFileName;
     const SyncJournalDb::DownloadInfo progressInfo = _propagator->_journal->getDownloadInfo(_item._file);
@@ -598,7 +594,6 @@ void PropagateDownloadFileLegacy::start()
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
     _propagator->_journal->commit("download file start2");
-    emit progress(Progress::EndDownload, _item, _item._size, _item._size);
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
 

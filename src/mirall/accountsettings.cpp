@@ -206,10 +206,8 @@ void AccountSettings::slotAddFolder( Folder *folder )
     folderToModelItem( item, folder );
     _model->appendRow( item );
     // in order to update the enabled state of the "Sync now" button
-    connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotButtonsSetEnabled()), Qt::UniqueConnection);
+    connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChange()), Qt::UniqueConnection);
 }
-
-
 
 void AccountSettings::slotButtonsSetEnabled()
 {
@@ -556,126 +554,56 @@ void AccountSettings::slotProgressProblem(const QString& folder, const Progress:
 
 void AccountSettings::slotSetProgress(const QString& folder, const Progress::Info &progress )
 {
-    // qDebug() << "================================> Progress for folder " << folder << " progress " << Progress::asResultString(progress.kind);
     QStandardItem *item = itemForFolder( folder );
-    qint64 prog1 = progress.current_file_bytes;
-    qint64 prog2 = progress.file_size;
+    if( !item ) return;
 
-    if( item == NULL ) {
-        return;
-    }
-
-    // Hotfix for a crash that I experienced in a very rare case/setup
-    if (progress.kind == Mirall::Progress::Invalid) {
-        qDebug() << "================================> INVALID Progress for folder " << folder;
-        return;
-    }
-    if( (progress.kind == Progress::StartSync)
-            && progress.overall_file_count == 0 ) {
-        // do not show progress if nothing is transmitted.
-        return;
-    }
-
-    QString itemFileName = shortenFilename(folder, progress.current_file);
-    QString syncFileProgressString;
-
-    // stay with the previous kind-string for Context.
-    if( progress.kind != Progress::Context ) {
-        _kindContext = Progress::asActionString(progress.kind);
-    } else {
-        if( _kindContext.isEmpty() ) {
-            // empty kind context means that the dialog was opened after the action
-            // was started.
-            Progress::Kind kind = ProgressDispatcher::instance()->currentFolderContext(progress.folder);
-            if( kind != Progress::Invalid ) {
-                _kindContext = Progress::asActionString(kind);
-            }
+    // find the single item to display:  This is going to be the bigger item, or the last completed
+    // item if no items are in progress.
+    SyncFileItem curItem = progress._lastCompletedItem;
+    qint64 curItemProgress = -1; // -1 means finished
+    quint64 biggerItemSize = -1;
+    foreach(const Progress::Info::ProgressItem &citm, progress._currentItems) {
+        if (curItemProgress == -1 || (Progress::isSizeDependent(citm._item._instruction)
+                                      && biggerItemSize < citm._item._size)) {
+            curItemProgress = citm._completedSize;
+            curItem = citm._item;
+            biggerItemSize = citm._item._size;
         }
     }
-    QString kindString = _kindContext;
-
-    switch( progress.kind ) {
-    case Progress::StartSync:
-        item->setData( QVariant(0), FolderStatusDelegate::WarningCount );
-        break;
-    case Progress::StartDownload:
-    case Progress::StartUpload:
-    case Progress::StartDelete:
-    case Progress::StartRename:
-        syncFileProgressString = tr("Start");
-        if( _hideProgressTimers.contains(item) ) {
-            // The timer is still running.
-            QTimer *t = _hideProgressTimers.take(item);
-            t->stop();
-            t->deleteLater();
-        }
-        break;
-    case Progress::Context:
-        syncFileProgressString = tr("Currently");
-        break;
-    case Progress::EndDownload:
-    case Progress::EndUpload:
-    case Progress::EndDelete:
-    case Progress::EndRename:
-        break;
-    case Progress::EndSync:
-        syncFileProgressString = tr("Completely");
-
-        // start a timer to stop the progress display
-        QTimer *timer;
-        if( _hideProgressTimers.contains(item) ) {
-            timer = _hideProgressTimers[item];
-            // there is already one timer running.
-        } else {
-            timer = new QTimer;
-            connect(timer, SIGNAL(timeout()), this, SLOT(slotHideProgress()));
-            timer->setSingleShot(true);
-            _hideProgressTimers.insert(item, timer);
-        }
-        timer->start(5000);
-        break;
-    case Progress::Invalid:
-    case Progress::Download:
-    case Progress::Upload:
-    case Progress::Inactive:
-    case Progress::SoftError:
-    case Progress::NormalError:
-    case Progress::FatalError:
-        break;
-    case Progress::StartLocalUpdate:
-    case Progress::EndLocalUpdate:
-    case Progress::StartRemoteUpdate:
-    case Progress::EndRemoteUpdate:
-        // FIXME could be interesting to show this to the user
-        break;
+    if (curItemProgress == -1) {
+        curItemProgress = curItem._size;
     }
 
-    QString fileProgressString;
-    QString s1 = Utility::octetsToString( prog1 );
-    QString s2 = Utility::octetsToString( prog2 );
+    QString itemFileName = shortenFilename(folder, curItem._file);
+    QString kindString = Progress::asActionString(curItem);
 
     // switch on extra space.
     item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
 
-    if( progress.kind != Progress::EndSync ) {
-        // Example text: "Currently uploading foobar.png (1MB of 2MB)"
-        fileProgressString = tr("%1 %2 %3 (%4 of %5)").arg(syncFileProgressString).arg(kindString).
-                arg(itemFileName).arg(s1).arg(s2);
+    QString fileProgressString;
+    if (Progress::isSizeDependent(curItem._instruction)) {
+        QString s1 = Utility::octetsToString( curItemProgress );
+        QString s2 = Utility::octetsToString( curItem._size );
+        //: Example text: "uploading foobar.png (1MB of 2MB)"
+        fileProgressString = tr("%1 %2 (%3 of %4)").arg(kindString, itemFileName, s1, s2);
     } else {
-        fileProgressString = tr("Completely finished.");
+        //: Example text: "uploading foobar.png"
+        fileProgressString = tr("%1 %2").arg(kindString, itemFileName);
     }
     item->setData( fileProgressString,FolderStatusDelegate::SyncProgressItemString);
 
     // overall progress
-    s1 = Utility::octetsToString( progress.overall_current_bytes );
-    s2 = Utility::octetsToString( progress.overall_transmission_size );
-    QString overallSyncString = tr("%1 of %2, file %3 of %4").arg(s1).arg(s2)
-            .arg(progress.current_file_no).arg(progress.overall_file_count);
+    quint64 completedSize = progress.completedSize();
+    quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();
+    QString s1 = Utility::octetsToString( completedSize );
+    QString s2 = Utility::octetsToString( progress._totalSize );
+    QString overallSyncString = tr("%1 of %2, file %3 of %4").arg(s1, s2)
+            .arg(currentFile).arg(progress._totalFileCount);
     item->setData( overallSyncString, FolderStatusDelegate::SyncProgressOverallString );
 
     int overallPercent = 0;
-    if( progress.overall_transmission_size > 0 ) {
-        overallPercent = qRound(double(progress.overall_current_bytes)/double(progress.overall_transmission_size) * 100.0);
+    if( progress._totalSize > 0 ) {
+        overallPercent = qRound(double(completedSize)/double(progress._totalSize) * 100.0);
     }
     item->setData( overallPercent, FolderStatusDelegate::SyncProgressOverallPercent);
 }
@@ -697,10 +625,10 @@ void AccountSettings::slotHideProgress()
             }
 
             if( ok ) {
-                item->setData( QVariant(false),  FolderStatusDelegate::AddProgressSpace );
-                item->setData( QVariant(QString::null), FolderStatusDelegate::SyncProgressOverallString );
-                item->setData( QVariant(QString::null), FolderStatusDelegate::SyncProgressItemString );
-                item->setData( 0,                       FolderStatusDelegate::SyncProgressOverallPercent );
+                item->setData( false,     FolderStatusDelegate::AddProgressSpace );
+                item->setData( QString(), FolderStatusDelegate::SyncProgressOverallString );
+                item->setData( QString(), FolderStatusDelegate::SyncProgressItemString );
+                item->setData( 0,         FolderStatusDelegate::SyncProgressOverallPercent );
             }
             _hideProgressTimers.remove(item);
             break;
@@ -710,6 +638,35 @@ void AccountSettings::slotHideProgress()
 
     send_timer->deleteLater();
 }
+
+void AccountSettings::slotFolderSyncStateChange()
+{
+    slotButtonsSetEnabled();
+    Folder* folder = qobject_cast<Folder *>(sender());
+    if (!folder) return;
+
+    QStandardItem *item = itemForFolder( folder->alias() );
+    if( !item ) return;
+
+    SyncResult::Status state = folder->syncResult().status();
+    if (state == SyncResult::SyncPrepare)  {
+        item->setData( QVariant(0), FolderStatusDelegate::WarningCount );
+    } else if (state == SyncResult::Success || state == SyncResult::Problem) {
+        // start a timer to stop the progress display
+        QTimer *timer;
+        if( _hideProgressTimers.contains(item) ) {
+            timer = _hideProgressTimers[item];
+            // there is already one timer running.
+        } else {
+            timer = new QTimer(this);
+            connect(timer, SIGNAL(timeout()), this, SLOT(slotHideProgress()));
+            timer->setSingleShot(true);
+            _hideProgressTimers.insert(item, timer);
+        }
+        timer->start(5000);
+    }
+}
+
 
 void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 {

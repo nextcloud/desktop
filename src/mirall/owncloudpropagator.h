@@ -21,7 +21,6 @@
 #include <qelapsedtimer.h>
 
 #include "syncfileitem.h"
-#include "progressdispatcher.h"
 
 struct hbf_transfer_s;
 struct ne_session_s;
@@ -67,7 +66,7 @@ signals:
      */
     void ready();
 
-    void progress(Progress::Kind, const SyncFileItem& item, quint64 bytes, quint64 total);
+    void progress(const SyncFileItem& item, quint64 bytes);
 
 };
 
@@ -115,7 +114,7 @@ private slots:
     void startJob(PropagatorJob *next) {
         connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
         connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
-        connect(next, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)), this, SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
+        connect(next, SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
         connect(next, SIGNAL(ready()), this, SLOT(slotSubJobReady()));
         _runningNow++;
         QMetaObject::invokeMethod(next, "start", Qt::QueuedConnection);
@@ -212,7 +211,6 @@ public:
     /* The number of currently active jobs */
     int _activeJobs;
 
-    void overallTransmissionSizeChanged( qint64 change );
 
     bool isInSharedDirectory(const QString& file);
 
@@ -227,9 +225,13 @@ public:
 
 signals:
     void completed(const SyncFileItem &);
-    void progress(Progress::Kind kind, const SyncFileItem&, quint64 bytes, quint64 total);
-    void progressChanged(qint64 change);
+    void progress(const SyncFileItem&, quint64 bytes);
     void finished();
+    /**
+     * Called when we detect that the total number of bytes changes (because a download or upload
+     * turns out to be bigger or smaller than what was initially computed in the update phase
+     */
+    void adjustTotalTransmissionSize( qint64 adjust );
 
 };
 

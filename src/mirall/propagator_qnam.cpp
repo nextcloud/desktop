@@ -58,6 +58,9 @@ void PUTFileJob::start() {
     if( reply()->error() != QNetworkReply::NoError ) {
         qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
     }
+
+    connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SIGNAL(uploadProgress(qint64,qint64)));
+
     AbstractNetworkJob::start();
 }
 
@@ -92,7 +95,7 @@ void PropagateUploadFileQNAM::start()
     _currentChunk = 0;
 
     _propagator->_activeJobs++;
-    emit progress(Progress::StartUpload, _item, 0, fileSize);
+    emit progress(_item, 0);
     emitReady();
     this->startNextChunk();
 }
@@ -168,6 +171,7 @@ void PropagateUploadFileQNAM::startNextChunk()
 
     _job = new PUTFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + path, device, headers);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
+    connect(_job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
     _job->start();
 }
 
@@ -216,7 +220,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
 
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
-        pi._chunk = _currentChunk; // next chunk to start with
+        pi._chunk = (_currentChunk + _startChunk) % _chunkCount; // next chunk to start with
         pi._transferid = _transferId;
         pi._modtime =  Utility::qDateTimeFromTime_t(_item._modtime);
         _propagator->_journal->setUploadInfo(_item._file, pi);
@@ -251,9 +255,17 @@ void PropagateUploadFileQNAM::slotPutFinished()
     _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
     _propagator->_journal->commit("upload file start");
 
-    emit progress(Progress::EndUpload, _item, _item._size, _item._size);
     done(SyncFileItem::Success);
 }
+
+void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
+{
+    int progressChunk = _currentChunk + _startChunk;
+    if (progressChunk >= _chunkCount)
+        progressChunk = _currentChunk;
+    emit progress(_item, sent + _currentChunk * CHUNKING_SIZE);
+}
+
 
 void PropagateUploadFileQNAM::abort()
 {
@@ -277,6 +289,7 @@ void GETFileJob::start() {
     }
 
     connect(reply(), SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
+    connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SIGNAL(downloadProgress(qint64,qint64)));
 
     AbstractNetworkJob::start();
 }
@@ -295,7 +308,7 @@ void PropagateDownloadFileQNAM::start()
 
     qDebug() << Q_FUNC_INFO << _item._file << _propagator->_activeJobs;
 
-    emit progress(Progress::StartDownload, _item, 0, _item._size);
+    emit progress(_item, 0);
 
     QString tmpFileName;
     const SyncJournalDb::DownloadInfo progressInfo = _propagator->_journal->getDownloadInfo(_item._file);
@@ -352,10 +365,12 @@ void PropagateDownloadFileQNAM::start()
         headers["Range"] = "bytes=" + QByteArray::number(done) +'-';
         headers["Accept-Ranges"] = "bytes";
         qDebug() << "Retry with range " << headers["Range"];
+        _startSize = done;
     }
 
     _job = new GETFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + _item._file, &_tmpFile, headers);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
+    connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
     _propagator->_activeJobs ++;
     _job->start();
     emitReady();
@@ -435,9 +450,14 @@ void PropagateDownloadFileQNAM::downloadFinished()
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
     _propagator->_journal->commit("download file start2");
-    emit progress(Progress::EndDownload, _item, _item._size, _item._size);
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
+
+void PropagateDownloadFileQNAM::slotDownloadProgress(qint64 received, qint64)
+{
+    emit progress(_item, received + _startSize);
+}
+
 
 void PropagateDownloadFileQNAM::abort()
 {

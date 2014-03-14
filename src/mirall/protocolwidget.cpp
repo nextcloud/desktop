@@ -73,36 +73,6 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     cfg.restoreGeometryHeader(_ui->_treeWidget->header());
 }
 
-void ProtocolWidget::initializeList()
-{
-  QList<Progress::Info> progressList = ProgressDispatcher::instance()->recentChangedItems(0); // All.
-  QList<QTreeWidgetItem*> items;
-  QTreeWidgetItem *item;
-
-  _ui->_treeWidget->clear();
-
-  QList<Progress::SyncProblem> problemList = ProgressDispatcher::instance()->recentProblems(0);
-  items.clear();
-  foreach( Progress::SyncProblem prob, problemList ) {
-      item = createProblemTreewidgetItem(prob);
-      if (item) {
-          items.append(item);
-      }
-  }
-  _ui->_treeWidget->addTopLevelItems(items);
-
-  foreach( Progress::Info info, progressList ) {
-      item = createProgressTreewidgetItem(info);
-      if(item) {
-          items.append(item);
-      }
-  }
-  _ui->_treeWidget->addTopLevelItems(items);
-
-  computeResyncButtonEnabled();
-
-}
-
 ProtocolWidget::~ProtocolWidget()
 {
     MirallConfigFile cfg;
@@ -238,6 +208,7 @@ void ProtocolWidget::slotProgressProblem( const QString& folder, const Progress:
     Q_UNUSED(folder);
     QTreeWidgetItem *item = createProblemTreewidgetItem(problem);
     _ui->_treeWidget->insertTopLevelItem(0, item);
+    computeResyncButtonEnabled();
 }
 
 void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
@@ -255,23 +226,26 @@ void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
     }
 }
 
-QTreeWidgetItem* ProtocolWidget::createProgressTreewidgetItem( const Progress::Info& progress )
+QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& folder, const SyncFileItem& item)
 {
     QStringList columns;
-    const QString timeStr = timeString(progress.timestamp);
-    const QString longTimeStr = timeString(progress.timestamp, QLocale::LongFormat);
-    const QString actionStr = Progress::asResultString(progress);
+    QDateTime timestamp = QDateTime::currentDateTime();
+    const QString timeStr = timeString(timestamp);
+    const QString longTimeStr = timeString(timestamp, QLocale::LongFormat);
+    const QString actionStr = Progress::asResultString(item);
 
     columns << timeStr;
-    columns << progress.current_file;
-    columns << progress.folder;
+    columns << item._file;
+    columns << folder;
     columns << actionStr;
-    columns << Utility::octetsToString( progress.file_size );
+    if (Progress::isSizeDependent(item._instruction)) {
+        columns <<  Utility::octetsToString( item._size );
+    }
 
-    QTreeWidgetItem *item = new QTreeWidgetItem(columns);
-    item->setToolTip(0, longTimeStr);
-    item->setToolTip(3, actionStr);
-    return item;
+    QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
+    twitem->setToolTip(0, longTimeStr);
+    twitem->setToolTip(3, actionStr);
+    return twitem;
 }
 
 void ProtocolWidget::computeResyncButtonEnabled()
@@ -296,6 +270,7 @@ void ProtocolWidget::computeResyncButtonEnabled()
 
 void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::Info& progress )
 {
+    /*
     if( progress.kind == Progress::StartSync ) {
       cleanErrorItems( folder );
       _clearBlacklistBtn->setEnabled(false);
@@ -304,14 +279,11 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::In
     if( progress.kind == Progress::EndSync ) {
         computeResyncButtonEnabled();
     }
+    */
+    SyncFileItem last = progress._lastCompletedItem;
+    if (last.isEmpty()) return;
 
-    // Ingore other events than finishing an individual up- or download.
-    if( !(progress.kind == Progress::EndDownload || progress.kind == Progress::EndUpload
-          || progress.kind == Progress::EndDelete || progress.kind == Progress::EndRename)) {
-        return;
-    }
-
-    QTreeWidgetItem *item = createProgressTreewidgetItem(progress);
+    QTreeWidgetItem *item = createCompletedTreewidgetItem(folder, last);
     if(item) {
         _ui->_treeWidget->insertTopLevelItem(0, item);
     }

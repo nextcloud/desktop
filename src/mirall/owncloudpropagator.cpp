@@ -46,14 +46,10 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     switch( status ) {
     case SyncFileItem::SoftError:
         // do not blacklist in case of soft error.
-        emit progress( Progress::SoftError, _item, 0, 0 );
         break;
     case SyncFileItem::FatalError:
     case SyncFileItem::NormalError:
         _propagator->_journal->updateBlacklistEntry( record );
-        if( status == SyncFileItem::NormalError ) {
-            emit progress( Progress::NormalError, _item, 0, 0 );
-        }
         break;
     case SyncFileItem::Success:
         if( _item._blacklistedInDb ) {
@@ -223,16 +219,10 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
     }
 
     connect(_rootJob.data(), SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
-    connect(_rootJob.data(), SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)), this,
-            SIGNAL(progress(Progress::Kind,SyncFileItem,quint64,quint64)));
+    connect(_rootJob.data(), SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
 
     QMetaObject::invokeMethod(_rootJob.data(), "start", Qt::QueuedConnection);
-}
-
-void OwncloudPropagator::overallTransmissionSizeChanged(qint64 change)
-{
-    emit progressChanged(change);
 }
 
 bool OwncloudPropagator::isInSharedDirectory(const QString& file)

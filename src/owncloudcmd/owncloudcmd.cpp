@@ -37,17 +37,17 @@ class OwncloudCmd : public QObject {
 public:
     OwncloudCmd() : QObject() { }
 public slots:
-    void transmissionProgressSlot(Progress::Info pI) {
+    void transmissionProgressSlot(Progress::Kind pI) {
         static QElapsedTimer localTimer;
         static QElapsedTimer remoteTimer;
-        if (pI.kind == Progress::StartLocalUpdate) {
+        if (pI == Progress::StartLocalUpdate) {
             localTimer.start();
-        } else if (pI.kind == Progress::EndLocalUpdate) {
+        } else if (pI == Progress::EndLocalUpdate) {
             // There is also localTimer.nsecsElapsed()
             qDebug() << "Local Update took" << localTimer.elapsed() << "msec";
-        } else if (pI.kind == Progress::StartRemoteUpdate) {
+        } else if (pI == Progress::StartRemoteUpdate) {
             remoteTimer.start();
-        } else if (pI.kind == Progress::EndRemoteUpdate) {
+        } else if (pI == Progress::EndRemoteUpdate) {
             qDebug() << "Remote Update took" << remoteTimer.elapsed() << "msec";
         }
     }
@@ -222,7 +222,7 @@ int main(int argc, char **argv) {
     SyncJournalDb db(options.source_dir);
     CSyncThread csyncthread(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&csyncthread, SIGNAL(finished()), &app, SLOT(quit()));
-    QObject::connect(&csyncthread, SIGNAL(transmissionProgress(Progress::Info)), &owncloudCmd, SLOT(transmissionProgressSlot(Progress::Info)));
+    QObject::connect(&csyncthread, SIGNAL(transmissionProgress(Progress::Kind,Progress::Info)), &owncloudCmd, SLOT(transmissionProgressSlot(Progress::Kind)));
     csyncthread.startSync();
 
     app.exec();

@@ -286,9 +286,6 @@ void ownCloudGui::setupContextMenu()
         _contextMenu->addAction(_actionLogin);
     }
     _contextMenu->addAction(_actionQuit);
-
-    // Populate once at start
-    slotRebuildRecentMenus();
 }
 
 
@@ -380,28 +377,17 @@ void ownCloudGui::slotProgressSyncProblem(const QString& folder, const Progress:
     // display a warn icon if warnings happend.
     QIcon warnIcon(":/mirall/resources/warning-16");
     _actionRecent->setIcon(warnIcon);
-
-    slotRebuildRecentMenus();
 }
 
 void ownCloudGui::slotRebuildRecentMenus()
 {
     _recentActionsMenu->clear();
-    const QList<Progress::Info>& progressInfoList = ProgressDispatcher::instance()->recentChangedItems(5);
-
-    if( progressInfoList.size() == 0 ) {
-        _recentActionsMenu->addAction(tr("No items synced recently"))->setEnabled(false);
-    } else {
-        QListIterator<Progress::Info> i(progressInfoList);
-
-        while(i.hasNext()) {
-            Progress::Info info = i.next();
-            QString kindStr = Progress::asResultString(info);
-            QString timeStr = info.timestamp.toString("hh:mm");
-
-            QString actionText = tr("%1 (%2, %3)").arg(info.current_file).arg(kindStr).arg(timeStr);
-            QAction *action = _recentActionsMenu->addAction( actionText );
-
+    // TODO
+    //_recentActionsMenu->addAction(tr("No items synced recently"))->setEnabled(false);
+/*           QString kindStr = Progress::asResultString(info);
+           QString timeStr = info.timestamp.toString("hh:mm");
+           QString actionText = tr("%1 (%2, %3)").arg(info.current_file).arg(kindStr).arg(timeStr);
+           QAction *action = _recentActionsMenu->addAction( actionText );
             Folder *folder = FolderMan::instance()->folder(info.folder);
             if (folder) {
                 QString fullPath = folder->path() + '/' + info.current_file;
@@ -413,9 +399,11 @@ void ownCloudGui::slotRebuildRecentMenus()
                 }
             }
         }
-    }
+    }*/
+
+
     // add a more... entry.
-    _recentActionsMenu->addSeparator();
+//    _recentActionsMenu->addSeparator();
     _recentActionsMenu->addAction(_actionRecent);
 }
 
@@ -424,26 +412,22 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
 {
     Q_UNUSED(folder);
 
-    // shows an entry in the context menu.
-    QString curAmount = Utility::octetsToString(progress.overall_current_bytes);
-    QString totalAmount = Utility::octetsToString(progress.overall_transmission_size);
-    _actionStatus->setText(tr("Syncing %1 of %2 (%3 of %4) ").arg(progress.current_file_no)
-                           .arg(progress.overall_file_count).arg(curAmount, totalAmount));
+    quint64 completedSize = progress.completedSize();
+    quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();
+    QString s1 = Utility::octetsToString( completedSize );
+    QString s2 = Utility::octetsToString( progress._totalSize );
 
-    // wipe the problem list at start of sync.
-    if( progress.kind == Progress::StartSync ) {
-        _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
-    }
+    _actionStatus->setText(tr("Syncing %1 of %2 (%3 of %4)")
+        .arg(currentFile).arg(progress._totalFileCount).arg(s1, s2));
 
-    // If there was a change in the file list, redo the progress menu.
-    if( progress.kind == Progress::EndDownload || progress.kind == Progress::EndUpload ||
-            progress.kind == Progress::EndDelete || progress.kind == Progress::EndRename ) {
+            _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
+
+    if (!progress._lastCompletedItem.isEmpty()) {
         slotRebuildRecentMenus();
-    }
 
-    if (progress.kind == Progress::EndSync) {
-        slotRebuildRecentMenus();  // show errors.
-        QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
+        if (progress._completedFileCount == progress._totalFileCount) {
+            QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
+        }
     }
 }
 

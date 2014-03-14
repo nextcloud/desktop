@@ -171,9 +171,7 @@ void SettingsDialog::accept() {
 }
 
 void SettingsDialog::slotRefreshResultList() {
-    if( _protocolWidget ) {
-        _protocolWidget->initializeList();
-    }
+
 }
 
 void SettingsDialog::showActivityPage()

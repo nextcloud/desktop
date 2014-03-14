@@ -93,11 +93,10 @@ void PropagateLocalRemove::start()
             return;
         }
     }
-    emit progress(Progress::StartDelete, _item, 0, _item._size);
+    emit progress(_item, 0);
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
     _propagator->_journal->commit("Local remove");
     done(SyncFileItem::Success);
-    emit progress(Progress::EndDelete, _item, _item._size, _item._size);
 }
 
 void PropagateLocalMkdir::start()
@@ -120,7 +119,7 @@ void PropagateRemoteRemove::start()
 
     QScopedPointer<char, QScopedPointerPodDeleter> uri(
         ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-    emit progress(Progress::StartDelete, _item, 0, _item._size);
+    emit progress(_item, 0);
     qDebug() << "** DELETE " << uri.data();
     int rc = ne_delete(_propagator->_session, uri.data());
 
@@ -139,7 +138,6 @@ void PropagateRemoteRemove::start()
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
     _propagator->_journal->commit("Remote Remove");
     done(SyncFileItem::Success);
-    emit progress(Progress::EndDelete, _item, _item._size, _item._size);
 }
 
 void PropagateRemoteMkdir::start()
@@ -169,10 +167,9 @@ void PropagateLocalRename::start()
     // if the file is a file underneath a moved dir, the _item.file is equal
     // to _item.renameTarget and the file is not moved as a result.
     if (_item._file != _item._renameTarget) {
-        emit progress(Progress::StartRename, _item, 0, _item._size);
+        emit progress(_item, 0);
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
         QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
-        emit progress(Progress::EndRename, _item, _item._size, _item._size);
     }
 
     _item._instruction = CSYNC_INSTRUCTION_DELETED;
@@ -218,7 +215,7 @@ void PropagateRemoteRename::start()
         }
         return;
     } else {
-        emit progress(Progress::StartRename, _item, 0, _item._size);
+        emit progress(_item, 0);
 
         QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
         QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
@@ -239,7 +236,6 @@ void PropagateRemoteRename::start()
 
         if (!updateMTimeAndETag(uri2.data(), _item._modtime))
             return;
-        emit progress(Progress::EndRename, _item, _item._size, _item._size);
     }
 
     _propagator->_journal->deleteFileRecord(_item._originalFile);

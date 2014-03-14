@@ -68,6 +68,7 @@ public:
 
 signals:
     void finishedSignal();
+    void uploadProgress(qint64,qint64);
 };
 
 
@@ -85,6 +86,7 @@ public:
     void start();
 private slots:
     void slotPutFinished();
+    void slotUploadProgress(qint64,qint64);
     void abort();
     void startNextChunk();
 
@@ -108,6 +110,7 @@ public:
 
 signals:
     void finishedSignal();
+    void downloadProgress(qint64,qint64);
 private slots:
     void slotReadyRead();
 };
@@ -120,14 +123,17 @@ class PropagateDownloadFileQNAM : public PropagateItemJob {
 
 //  QFile *_file;
     QFile _tmpFile;
+    quint64 _startSize;
 public:
     PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateItemJob(propagator, item) {}
+        : PropagateItemJob(propagator, item), _startSize(0) {}
     void start();
 private slots:
     void slotGetFinished();
     void abort();
     void downloadFinished();
+    void slotDownloadProgress(qint64,qint64);
+
 
 };
 

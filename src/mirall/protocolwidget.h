@@ -39,8 +39,6 @@ public:
     explicit ProtocolWidget(QWidget *parent = 0);
     ~ProtocolWidget();
 
-    void initializeList();
-
 signals:
 
 public slots:
@@ -60,7 +58,7 @@ private:
     void cleanErrorItems( const QString& folder );
     void computeResyncButtonEnabled();
 
-    QTreeWidgetItem* createProgressTreewidgetItem(const Progress::Info& progress );
+    QTreeWidgetItem* createCompletedTreewidgetItem(const QString &folder, const SyncFileItem &item );
     QTreeWidgetItem* createProblemTreewidgetItem( const Progress::SyncProblem& problem);
     QList<QTreeWidgetItem*> errorItems(const QString &folder);
 

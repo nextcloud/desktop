@@ -19,15 +19,62 @@
 #include <QTime>
 #include <QQueue>
 #include <QElapsedTimer>
+#include "syncfileitem.h"
 
 namespace Mirall {
-
 
 /**
  * @brief The FolderScheduler class schedules folders for sync
  */
 namespace Progress
 {
+    /** Return true is the size need to be taken in account in the total amount of time */
+    inline bool isSizeDependent(csync_instructions_e instruction) {
+        return instruction == CSYNC_INSTRUCTION_CONFLICT || instruction == CSYNC_INSTRUCTION_SYNC
+            || instruction == CSYNC_INSTRUCTION_NEW;
+    }
+
+
+    struct Info {
+        Info() : _totalFileCount(0), _totalSize(0), _completedFileCount(0), _completedSize(0) {}
+
+        quint64 _totalFileCount;
+        quint64 _totalSize;
+        quint64 _completedFileCount;
+        quint64 _completedSize;
+
+        struct ProgressItem {
+            ProgressItem() : _completedSize(0) {}
+            SyncFileItem _item;
+            quint64 _completedSize;
+        };
+        QHash<QString, ProgressItem> _currentItems;
+        SyncFileItem _lastCompletedItem;
+
+        void setProgressComplete(const SyncFileItem &item) {
+            _currentItems.remove(item._file);
+            if (Progress::isSizeDependent(item._instruction)) {
+                _completedSize += item._size;
+            }
+            _completedFileCount++;
+            _lastCompletedItem = item;
+        }
+        void setProgressItem(const SyncFileItem &item, quint64 size) {
+            _currentItems[item._file]._item = item;
+            _currentItems[item._file]._completedSize = size;
+            _lastCompletedItem = SyncFileItem();
+        }
+
+        quint64 completedSize() const {
+            quint64 r = _completedSize;
+            foreach(const ProgressItem &i, _currentItems) {
+                r += i._completedSize;
+            }
+            return r;
+        }
+    };
+
+
     enum Kind {
         Invalid,
         StartSync,
@@ -53,27 +100,6 @@ namespace Progress
         EndRemoteUpdate
     };
 
-    struct Info {
-        Kind    kind;
-        QString folder;
-        QString current_file;
-        QString rename_target;
-
-        qint64  file_size;
-        qint64  current_file_bytes;
-
-        qint64  overall_file_count;
-        qint64  current_file_no;
-        qint64  overall_transmission_size;
-        qint64  overall_current_bytes;
-
-        QDateTime timestamp;
-
-        Info() : kind(Invalid), file_size(0), current_file_bytes(0),
-                 overall_file_count(0), current_file_no(0),
-                 overall_transmission_size(0), overall_current_bytes(0)  { }
-    };
-
     struct SyncProblem {
         Kind    kind;
         QString folder;
@@ -85,10 +111,11 @@ namespace Progress
         SyncProblem() : kind(Invalid), error_code(0) {}
     };
 
-    QString asActionString( Kind );
-    QString asResultString(  const Progress::Info& progress );
+    QString asActionString( const SyncFileItem& item );
+    QString asResultString(  const SyncFileItem& item );
 
     bool isErrorKind( Kind );
+
 }
 
 /**
@@ -109,20 +136,14 @@ public:
     static ProgressDispatcher* instance();
     ~ProgressDispatcher();
 
-    QList<Progress::Info> recentChangedItems(int count);
-    QList<Progress::SyncProblem> recentProblems(int count);
-
-    Progress::Kind currentFolderContext( const QString& folder );
-
 signals:
     /**
       @brief Signals the progress of data transmission.
 
       @param[out]  folder The folder which is being processed
-      @param[out]  newProgress   A struct with all progress info.
+      @param[out]  progress   A struct with all progress info.
 
      */
-
     void progressInfo( const QString& folder, const Progress::Info& progress );
     void progressSyncProblem( const QString& folder, const Progress::SyncProblem& problem );
 
@@ -132,11 +153,6 @@ protected:
 
 private:
     ProgressDispatcher(QObject* parent = 0);
-    const int _QueueSize;
-    QList<Progress::Info> _recentChanges;
-    QList<Progress::SyncProblem> _recentProblems;
-
-    QHash<QString, Progress::Kind> _currentAction;
 
     QElapsedTimer _timer;
     static ProgressDispatcher* _instance;
