@@ -335,6 +335,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
             // No need to do anything.
             _hasFiles = true;
 
+            emit syncItemDisconvered(item);
             return re;
         }
         break;
@@ -375,6 +376,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
     _syncedItems.append(item);
 
+    emit syncItemDisconvered(item);
     return re;
 }
 
