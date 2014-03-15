@@ -124,42 +124,54 @@
         <translation>Taasta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="293"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="291"/>
         <source>Confirm Folder Remove</source>
         <translation>Kinnita kausta eemaldamist</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="294"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="292"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kas tõesti soovid peatada kataloogi &lt;i&gt;%1&lt;/i&gt; sünkroniseerimist?.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Märkus:&lt;/b&gt; See ei eemalda faile sinu kliendist.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="330"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="328"/>
         <source>Confirm Folder Reset</source>
         <translation>Kinnita kataloogi algseadistus</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="331"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="329"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kas tõesti soovid kataloogi &lt;i&gt;%1&lt;/i&gt; algseadistada ning uuesti luua oma kliendi andmebaasi?&lt;/p&gt;&lt;p&gt;&lt;b&gt;See funktsioon on mõeldud peamiselt ainult hooldustöödeks. Märkus:&lt;/b&gt;Kuigi ühtegi faili ei eemaldata, siis see võib põhjustada märkimisväärset andmeliiklust ja võtta mitu minutit või tundi, sõltuvalt kataloogi suurusest. Kasuta seda võimalust ainult siis kui seda soovitab süsteemihaldur.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="729"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="583"/>
+        <source>%1 %2 (%3 of %4)</source>
+        <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="586"/>
+        <source>%1 %2</source>
+        <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="681"/>
         <source>%1 (%3%) of %2 server space in use.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="768"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="720"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="775"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="727"/>
         <source>No %1 connection configured.</source>
         <translation>Ühtegi %1 ühendust pole seadistatud.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="434"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="432"/>
         <source>Sync Running</source>
         <translation>Sünkroniseerimine on käimas</translation>
     </message>
@@ -169,52 +181,27 @@
         <translation>Ühtegi kontot pole seadistatud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="435"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="433"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Sünkroniseerimine on käimas.&lt;br/&gt;Kas sa soovid seda lõpetada?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="761"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="713"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Ühendatud &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="605"/>
-        <source>Start</source>
-        <translation>Start</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="614"/>
-        <source>Currently</source>
-        <translation>Hetkel</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="622"/>
-        <source>Completely</source>
-        <translation>Täielikult</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="662"/>
-        <source>%1 %2 %3 (%4 of %5)</source>
-        <translation>%1 %2 %3 (%4 / %5)</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="665"/>
-        <source>Completely finished.</source>
-        <translation>Täielikult lõpetatud.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="672"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="595"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 / %2, fail %3 / %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="764"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="716"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Ühendatud &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; kui &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="733"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="685"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Hetkel pole mahu kasutuse info saadaval.</translation>
     </message>
@@ -245,178 +232,178 @@
 <context>
     <name>Mirall::CSyncThread</name>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="89"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="87"/>
         <source>Success.</source>
         <translation>Korras.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="92"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync lukustusfaili loomine ebaõnnestus.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="102"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="100"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ei suuda laadida csync lisa %1.&lt;br/&gt;Palun kontrolli paigaldust!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="105"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="103"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Kliendi arvuti kellaeg erineb serveri omast. Palun kasuta õige aja hoidmiseks kella sünkroniseerimise teenust (NTP) nii serveris kui kliendi arvutites, et kell oleks kõikjal õige.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="110"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync ei suutnud tuvastada failisüsteemi tüüpi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="113"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="111"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync sai vea sisemiste andmestruktuuride töötlemisel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="116"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync ei suutnud mälu reserveerida.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="119"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="117"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync parameetri saatuslik viga.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="122"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="120"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync uuendusprotsess ebaõnnestus.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="125"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="123"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync tasakaalustuse protsess ebaõnnestus.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="128"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="126"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync edasikandeprotsess ebaõnnestus.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="131"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="129"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Sihtkataloogi ei eksisteeri.&lt;/p&gt;&lt;p&gt;Palun kontrolli sünkroniseeringu seadistust&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="135"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Eemalolevasse faili ei saa kirjutada. Palun kontrolli kaugühenduse ligipääsu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="139"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="137"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Kohalikku failissüsteemi ei saa kirjutada. Palun kontrolli õiguseid.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="142"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="140"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync ühendus läbi puhverserveri ebaõnnestus.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="145"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="143"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation>CSync ei suutnud puhverserveris autoriseerida.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="148"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="146"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>Csync ei suuda leida puhverserverit.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="151"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="149"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync autoriseering serveris %1 ebaõnnestus.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="163"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="161"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSync ebaõnnestus ligipääsu puudumisel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="169"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="167"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>Csync proovis tekitada kataloogi, mis oli juba olemas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="172"/>
-        <location filename="../src/mirall/csyncthread.cpp" line="175"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="170"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="173"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Serveris %1 on ruum otsas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="178"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="176"/>
         <source>CSync unspecified error.</source>
         <translation>CSync tuvastamatu viga.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="244"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="242"/>
         <source>The item is not synced because of previous errors:</source>
         <translation>Üksust ei sünkroniseeritud eelnenud vigade tõttu:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="277"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Sümboolsed lingid ei ole sünkroniseerimisel toetatud.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
         <source>File is listed on the ignore list.</source>
         <translation>Fail on märgitud ignoreeritavate nimistus.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="286"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Fail sisaldab sobimatuid sümboleid, mida ei saa sünkroniseerida erinevate platvormide vahel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="469"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="441"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Ei suuda lähtestada sünkroniseeringu zurnaali.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="154"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="152"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync võrguga ühendumine ebaõnnestus.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="95"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
         <translation>Csync ei suutnud avada või luua registri faili.  Tee kindlaks et sul on õigus lugeda ja kirjutada kohalikus sünkrooniseerimise kataloogis</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="99"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="97"/>
         <source>CSync failed to write the journal file.</source>
         <translation>CSync ei suutnud luua registri faili.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="157"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
         <source>A network connection timeout happend.</source>
         <translation>Toimus võrgukatkestus.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="160"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
         <source>A HTTP transmission error happened.</source>
         <translation>HTTP ülekande viga.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="166"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
         <source>CSync failed to access </source>
         <translation>CSyncile ligipääs ebaõnnestus</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="181"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="179"/>
         <source>Aborted by the user</source>
         <translation>Kasutaja poolt tühistatud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="185"/>
+        <location filename="../src/mirall/csyncthread.cpp" line="183"/>
         <source>An internal error number %1 happend.</source>
         <translation>Tekkis sisemine viga number %1.</translation>
     </message>
@@ -538,14 +525,14 @@
         <translation>Sünkroniseerimise tegevus</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="731"/>
+        <location filename="../src/mirall/folder.cpp" line="697"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>See sünkroniseering kustutab kõik failid kohalikust kataloogist &apos;%1&apos;.⏎
 Kui sina või adminstraator on sinu konto serveris algseadistanud, siis vali &quot;Säilita failid&quot;. Kui soovid oma andmed kustutada, vali &quot;Kustuta kõik failid&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="734"/>
+        <location filename="../src/mirall/folder.cpp" line="700"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -554,17 +541,17 @@ See võib olla põhjustatud kataloogi ümberseadistusest või on toimunud kõiki
 Oled kindel, et soovid seda operatsiooni teostada?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="738"/>
+        <location filename="../src/mirall/folder.cpp" line="704"/>
         <source>Remove All Files?</source>
         <translation>Kustutada kõik failid?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="740"/>
+        <location filename="../src/mirall/folder.cpp" line="706"/>
         <source>Remove all files</source>
         <translation>Kustutada kõik failid</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="741"/>
+        <location filename="../src/mirall/folder.cpp" line="707"/>
         <source>Keep files</source>
         <translation>Säilita failid</translation>
     </message>
@@ -582,57 +569,57 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
         <translation>Leiti vana sünkroniseeringu zurnaal &apos;%1&apos;, kuid selle eemaldamine ebaõnnenstus. Palun veendu, et seda kasutaks ükski programm.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="741"/>
+        <location filename="../src/mirall/folderman.cpp" line="744"/>
         <source>Undefined State.</source>
         <translation>Määramata staatus.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="744"/>
+        <location filename="../src/mirall/folderman.cpp" line="747"/>
         <source>Waits to start syncing.</source>
         <translation>Ootab sünkroniseerimise alustamist.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="747"/>
+        <location filename="../src/mirall/folderman.cpp" line="750"/>
         <source>Preparing for sync.</source>
         <translation>Valmistun sünkroniseerima.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="750"/>
+        <location filename="../src/mirall/folderman.cpp" line="753"/>
         <source>Sync is running.</source>
         <translation>Sünkroniseerimine on käimas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="753"/>
+        <location filename="../src/mirall/folderman.cpp" line="756"/>
         <source>Server is currently not available.</source>
         <translation>Server pole hetkel saadaval.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="756"/>
+        <location filename="../src/mirall/folderman.cpp" line="759"/>
         <source>Last Sync was successful.</source>
         <translation>Viimane sünkroniseerimine oli edukas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="761"/>
+        <location filename="../src/mirall/folderman.cpp" line="764"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Viimane sünkroniseering oli edukas, kuid mõned failid põhjustasid tõrkeid.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="764"/>
+        <location filename="../src/mirall/folderman.cpp" line="767"/>
         <source>Setup Error.</source>
         <translation>Seadistamise viga.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="767"/>
+        <location filename="../src/mirall/folderman.cpp" line="770"/>
         <source>User Abort.</source>
         <translation>Kasutaja tühistamine.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="770"/>
+        <location filename="../src/mirall/folderman.cpp" line="773"/>
         <source>Sync is paused.</source>
         <translation>Sünkroniseerimine on peatatud.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="776"/>
+        <location filename="../src/mirall/folderman.cpp" line="779"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sünkroniseerimine on peatatud)</translation>
     </message>
@@ -1421,17 +1408,17 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="340"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="336"/>
         <source>Sync was aborted by user.</source>
         <translation>Sünkroniseering katkestati kasutaja poolt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="395"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="391"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ühtegi E-Silti ei saabunud serverist, kontrolli puhverserverit/lüüsi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="405"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="401"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Saime jätkamiseks erineva E-Sildi. Proovin järgmine kord uuesti.</translation>
     </message>
@@ -1439,7 +1426,7 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="134"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="130"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1447,7 +1434,7 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="110"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="109"/>
         <source>could not create directory %1</source>
         <translation>ei suuda luua kataloogi %1</translation>
     </message>
@@ -1463,7 +1450,7 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>Mirall::PropagateRemoteRemove</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="130"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="129"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation type="unfinished"/>
     </message>
@@ -1471,17 +1458,17 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="215"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="212"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Kausta ei tohi ümber nimetada. Kausta algne nimi taastati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="217"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="214"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Kausta nime ei tohi muuta. Palun pane selle nimeks tagasi Shared.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="232"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="229"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation type="unfinished"/>
     </message>
@@ -1489,18 +1476,18 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>Mirall::PropagateUploadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="148"/>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="207"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="149"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="208"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation>Kohalik fail muutus sünkroniseerimise ajal, sünkroniseerin kuni ülekanne on täielik</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="151"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="152"/>
         <source>Sync was aborted by user.</source>
         <translation>Sünkroniseering katkestati kasutaja poolt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="157"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="158"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
@@ -1508,22 +1495,22 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="186"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="190"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="203"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="207"/>
         <source>Local file changed during sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="213"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="217"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="245"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="249"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation type="unfinished"/>
     </message>
@@ -1551,67 +1538,62 @@ Selle kasutamine pole soovitatav.</translation>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="47"/>
         <source>Time</source>
         <translation>Aeg</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="48"/>
         <source>File</source>
         <translation>Fail</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
         <source>Folder</source>
         <translation>Kaust</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="52"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
         <source>Action</source>
         <translation>Tegevus</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="53"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
         <source>Size</source>
         <translation>Suurus</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="64"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="62"/>
         <source>Retry Sync</source>
         <translation>Proovi uuesti sünkroniseerida</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="68"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="66"/>
         <source>Copy</source>
         <translation>Kopeeri</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="69"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="67"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopeeri tegevuste nimistu puhvrisse.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="143"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="111"/>
         <source>Copied to clipboard</source>
         <translation>Kopeeritud lõikepuhvrisse</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="143"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="111"/>
         <source>The sync status has been copied to the clipboard.</source>
         <translation>Sünkroniseeringu staatus on kopeeritud lõikepuhvrisse.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="215"/>
-        <source>No more storage space available on server.</source>
-        <translation>Serveris pole rohkem vaba ruumi.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="287"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="226"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Hetkel ei ignoreerita ühtegi faili eelnenud vigade tõttu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="289"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="228"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 faili on ignoreeritud eelnenud vigade tõttu.
@@ -1872,119 +1854,122 @@ Proovi neid uuesti sünkroniseerida.</translation>
     </message>
 </context>
 <context>
+    <name>Mirall::TokenCredentials</name>
+    <message>
+        <location filename="../src/creds/tokencredentials.cpp" line="197"/>
+        <source>Enter Password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/tokencredentials.cpp" line="198"/>
+        <source>Please enter %1 password for user &apos;%2&apos;:</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::ownCloudGui</name>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="165"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="163"/>
         <source>Please sign in</source>
         <translation>Palun logi sisse</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="197"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="195"/>
         <source>Folder %1: %2</source>
         <translation>Kaust %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="203"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="201"/>
         <source>No sync folders configured.</source>
         <translation>Sünkroniseeritavaid kaustasid pole seadistatud.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="228"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="226"/>
         <source>None.</source>
         <translation>Pole.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="232"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="230"/>
         <source>Recent Changes</source>
         <translation>Hiljutised muudatused</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="249"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="247"/>
         <source>Open %1 folder</source>
         <translation>Ava kaust %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="259"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="257"/>
         <source>Managed Folders:</source>
         <translation>Hallatavad kaustad:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="262"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="260"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Ava kaust &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="338"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="333"/>
         <source>Open %1 in browser</source>
         <translation>Ava %1 veebilehitsejas</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="340"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="335"/>
         <source>Calculating quota...</source>
         <translation>Mahupiiri arvutamine...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="342"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="337"/>
         <source>Unknown status</source>
         <translation>Tundmatu staatus</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="344"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="339"/>
         <source>Settings...</source>
         <translation>Seaded...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="345"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="340"/>
         <source>Details...</source>
         <translation>Üksikasjad...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="350"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="345"/>
         <source>Help</source>
         <translation>Abiinfo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="352"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="347"/>
         <source>Quit %1</source>
         <translation>Lõpeta %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="355"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="350"/>
         <source>Sign in...</source>
         <translation>Logi sisse...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="357"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="352"/>
         <source>Sign out</source>
         <translation>Logi välja</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="365"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="360"/>
         <source>Quota n/a</source>
         <translation>Mahupiir n/a</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="372"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="367"/>
         <source>%1% of %2 in use</source>
         <translation>Kasutusel %1% / %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="393"/>
-        <source>No items synced recently</source>
-        <translation>Ühtegi üksust pole hiljuti sünkroniseeritud</translation>
+        <location filename="../src/mirall/owncloudgui.cpp" line="408"/>
+        <source>Syncing %1 of %2 (%3 of %4)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="402"/>
-        <source>%1 (%2, %3)</source>
-        <translation>%1 (%2, %3)</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="430"/>
-        <source>Syncing %1 of %2 (%3 of %4) </source>
-        <translation>Sünkroniseerin %1 / %2 (%3 / %4) </translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="452"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="431"/>
         <source>Up to date</source>
         <translation>Ajakohane</translation>
     </message>
@@ -2256,98 +2241,54 @@ Proovi neid uuesti sünkroniseerida.</translation>
 <context>
     <name>progress</name>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="31"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
-        <source>Download</source>
-        <translation>Lae alla</translation>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="32"/>
+        <source>Downloaded</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
-        <source>Upload</source>
-        <translation>Lae üles</translation>
+        <source>Uploaded</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="91"/>
-        <source>Context</source>
-        <translation>Kontekst</translation>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="36"/>
+        <source>Deleted</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
-        <source>Inactive</source>
-        <translation>Passiivne</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="50"/>
-        <source>Start</source>
-        <translation>Start</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="53"/>
-        <source>Finished</source>
-        <translation>Lõpetatud</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
-        <source>For deletion</source>
-        <translation>Kustutamiseks</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="59"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="118"/>
-        <source>deleted</source>
-        <translation>kustutatud</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="38"/>
         <source>Moved to %1</source>
         <translation>Tõstetud %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="85"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="97"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="103"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="41"/>
+        <source>Unknown</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
         <source>downloading</source>
         <translation>allalaadimine</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="88"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="100"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="106"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="54"/>
         <source>uploading</source>
         <translation>üleslaadimine</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="94"/>
-        <source>inactive</source>
-        <translation>passiivne</translation>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
+        <source>deleting</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="109"/>
-        <source>starting</source>
-        <translation>alustamine</translation>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
+        <source>moving</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="112"/>
-        <source>finished</source>
-        <translation>lõpetatud</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="115"/>
-        <source>delete</source>
-        <translation>kustuta</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="121"/>
-        <source>move</source>
-        <translation>tõsta ümber</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="124"/>
-        <source>moved</source>
-        <translation>ümber tõstetud</translation>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
+        <source>processing</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
