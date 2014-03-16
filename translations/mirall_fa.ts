@@ -2233,17 +2233,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>دریافت شده اند</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>بارگذاری شده است.</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="36"/>
         <source>Deleted</source>
-        <translation type="unfinished"/>
+        <translation>حذف شده</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="38"/>
@@ -2253,7 +2253,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="41"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>نامشخص</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>

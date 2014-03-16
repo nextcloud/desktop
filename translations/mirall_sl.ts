@@ -1428,7 +1428,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="130"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka ali mapa je bila odstranjena iz mesta v souporabi, ki je nastavljeno le za branje, obnavljanje pa je spodletelo: %1</translation>
     </message>
 </context>
 <context>
@@ -1452,7 +1452,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="129"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka je bila odstranjena iz mesta v souporabi, vendar je uspešno obnovljena.</translation>
     </message>
 </context>
 <context>
@@ -1858,12 +1858,12 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="197"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Vnos gesla</translation>
     </message>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="198"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Vpisati je treba geslo %1 za uporabnika &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -2243,17 +2243,17 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Prejeto</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Poslano</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="36"/>
         <source>Deleted</source>
-        <translation type="unfinished"/>
+        <translation>Izbrisano</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="38"/>
@@ -2263,7 +2263,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="41"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Neznano</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>

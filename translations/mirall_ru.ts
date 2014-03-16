@@ -1858,12 +1858,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="197"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Введите пароль</translation>
     </message>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="198"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Пожалуйста введите пароль от  %1 для пользователя &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -2245,17 +2245,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Скачано</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Загружено</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="36"/>
         <source>Deleted</source>
-        <translation type="unfinished"/>
+        <translation>Удалён</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="38"/>
@@ -2265,7 +2265,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="41"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Неизвестно</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>

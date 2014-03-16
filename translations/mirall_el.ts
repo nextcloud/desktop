@@ -147,13 +147,13 @@
         <location filename="../src/mirall/accountsettings.cpp" line="583"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 από %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="586"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="681"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Απαιτείται πιστοποίηση</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>@Χρήστης:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
@@ -1716,12 +1716,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="120"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="124"/>
@@ -1857,12 +1857,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="197"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Εισάγετε Κωδικό Πρόσβασης</translation>
     </message>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="198"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Παρακαλώ εισάγετε τον κωδικό %1 για το χρήστη &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -2264,17 +2264,17 @@ Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Λυφθηκε</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Καταχωρήθηκε </translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="36"/>
         <source>Deleted</source>
-        <translation type="unfinished"/>
+        <translation>Διαγραμμένα</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="38"/>
@@ -2284,7 +2284,7 @@ Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="41"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Άγνωστο</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>

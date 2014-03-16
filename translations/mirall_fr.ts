@@ -147,13 +147,13 @@
         <location filename="../src/mirall/accountsettings.cpp" line="583"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="586"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="681"/>
@@ -1858,12 +1858,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="197"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Entrez le mot de passe</translation>
     </message>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="198"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Veuillez entrer %1 mot de passe pour l&apos;utilisateur &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -1966,7 +1966,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="408"/>
         <source>Syncing %1 of %2 (%3 of %4)</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation en cours : %1 de %2 (%3 de %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="431"/>
@@ -2243,17 +2243,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Téléchargé</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Importé</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="36"/>
         <source>Deleted</source>
-        <translation type="unfinished"/>
+        <translation>Effacé</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="38"/>
@@ -2263,7 +2263,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="41"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Inconnu</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
@@ -2278,17 +2278,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>suppression</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>déplacement</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
         <source>processing</source>
-        <translation type="unfinished"/>
+        <translation>traitement</translation>
     </message>
 </context>
 <context>
