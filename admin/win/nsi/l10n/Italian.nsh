@@ -1,7 +1,7 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Mostra le note di rilascio"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Trovati i processi ${APPLICATION_EXECUTABLE} che dovrebbero essere fermati.$\nVuoi che il programma di installazione li fermi per te?"
-StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Sto terminando i processi ${APPLICATION_EXECUTABLE}."
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Trovati ${APPLICATION_EXECUTABLE} processi che dovrebbero essere fermati.$\nVuoi che il programma di installazione li fermi per te?"
+StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Sto terminando ${APPLICATION_EXECUTABLE} processi."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Il processo da terminare non è stato trovato!"
 StrCpy $PageReinstall_NEW_Field_1 "Una versione più datata di ${APPLICATION_NAME} è installata sul tuo sistema. Si consiglia di disinstallare la versione attuale prima di installare. Seleziona l'operazione da eseguire e fai clic su Avanti per continuare."
 StrCpy $PageReinstall_NEW_Field_2 "Disinstalla prima di installare"
