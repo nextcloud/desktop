@@ -52,10 +52,10 @@ void QuotaInfo::slotAccountStateChanged(int state)
     switch (state) {
     case Account::SignedOut: // fall through
     case Account::InvalidCredidential:
+    case Account::Disconnected:
         _jobRestartTimer->stop();
         break;
     case Account::Connected: // fall through
-    case Account::Disconnected:
         slotCheckQuota();
     }
 }
@@ -75,7 +75,8 @@ void QuotaInfo::slotRequestFailed()
 
 void QuotaInfo::slotCheckQuota()
 {
-    if (!_account.isNull() && _account->credentials() && _account->credentials()->ready()) {
+    if (!_account.isNull() && _account->state() == Account::Connected
+            && _account->credentials() && _account->credentials()->ready()) {
         CheckQuotaJob *job = new CheckQuotaJob(_account, "/", this);
         connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
         connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
