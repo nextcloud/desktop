@@ -352,7 +352,7 @@ void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
 {
     if( info.version().isEmpty() ||
             Helper::stringVersionToInt(info.version())
-            >= Helper::stringVersionToInt(info.version()))
+            >= Helper::currentVersionToInt() )
     {
         qDebug() << "Client is on latest version!";
         setDownloadState(UpToDate);
