@@ -60,7 +60,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _remotePath(secondPath)
       , _alias(alias)
       , _enabled(true)
-      , _csync(0)
       , _csyncError(false)
       , _csyncUnavail(false)
       , _wipeDb(false)
@@ -97,7 +96,7 @@ bool Folder::init()
 
     if( csync_create( &_csync_ctx, localpath.toUtf8().data(), url.toUtf8().data() ) < 0 ) {
         qDebug() << "Unable to create csync-context!";
-        slotCSyncError(tr("Unable to create csync-context"));
+        slotSyncError(tr("Unable to create csync-context"));
         _csync_ctx = 0;
     } else {
         csync_set_log_callback( csyncLogCatcher );
@@ -121,7 +120,7 @@ bool Folder::init()
                 errStr += QLatin1String("<br/>");
                 errStr += QString::fromUtf8(errMsg);
             }
-            slotCSyncError(errStr);
+            slotSyncError(errStr);
             csync_destroy(_csync_ctx);
             _csync_ctx = 0;
         }
@@ -131,9 +130,9 @@ bool Folder::init()
 
 Folder::~Folder()
 {
-    if( _csync ) {
-        _csync->abort();
-        delete _csync;
+    if( _engine ) {
+        _engine->abort();
+        _engine.reset(0);
     }
     // Destroy csync here.
     csync_destroy(_csync_ctx);
@@ -191,7 +190,7 @@ QString Folder::path() const
 
 bool Folder::isBusy() const
 {
-    return _csync;
+    return !_engine.isNull();
 }
 
 QString Folder::remotePath() const
@@ -311,7 +310,7 @@ void Folder::bubbleUpSyncResult()
 
     foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
         if( item._status == SyncFileItem::FatalError || item._status == SyncFileItem::NormalError ) {
-            slotCSyncError( tr("%1: %2").arg(item._file, item._errorString) );
+            slotSyncError( tr("%1: %2").arg(item._file, item._errorString) );
             logger->postOptionalGuiLog(item._file, item._errorString);
 
         } else {
@@ -490,8 +489,8 @@ void Folder::slotTerminateSync(bool block)
 {
     qDebug() << "folder " << alias() << " Terminating!";
 
-    if( _csync ) {
-        _csync->abort();
+    if( _engine ) {
+        _engine->abort();
 
         // Do not display an error message, user knows his own actions.
         // _errors.append( tr("The CSync thread terminated.") );
@@ -501,7 +500,7 @@ void Folder::slotTerminateSync(bool block)
             return;
         }
 
-        slotCSyncFinished();
+        slotSyncFinished();
     }
     setSyncEnabled(false);
 }
@@ -583,7 +582,6 @@ void Folder::startSync(const QStringList &pathList)
         qCritical() << "* ERROR csync is still running and new sync requested.";
         return;
     }
-    delete _csync;
     _errors.clear();
     _csyncError = false;
     _csyncUnavail = false;
@@ -595,25 +593,25 @@ void Folder::startSync(const QStringList &pathList)
 
     qDebug() << "*** Start syncing";
     setIgnoredFiles();
-    _csync = new SyncEngine( _csync_ctx, path(), remoteUrl().path(), _remotePath, &_journal);
+    _engine.reset(new SyncEngine( _csync_ctx, path(), remoteUrl().path(), _remotePath, &_journal));
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
 
-    connect( _csync, SIGNAL(treeWalkResult(const SyncFileItemVector&)),
+    connect( _engine.data(), SIGNAL(treeWalkResult(const SyncFileItemVector&)),
               this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
 
-    connect(_csync, SIGNAL(started()),  SLOT(slotCSyncStarted()), Qt::QueuedConnection);
-    connect(_csync, SIGNAL(finished()), SLOT(slotCSyncFinished()), Qt::QueuedConnection);
-    connect(_csync, SIGNAL(csyncError(QString)), SLOT(slotCSyncError(QString)), Qt::QueuedConnection);
-    connect(_csync, SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(started()),  SLOT(slotSyncStarted()), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(finished()), SLOT(slotSyncFinished()), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(csyncError(QString)), SLOT(slotSyncError(QString)), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
 
     //blocking connection so the message box happens in this thread, but block the csync thread.
-    connect(_csync, SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
+    connect(_engine.data(), SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)), Qt::BlockingQueuedConnection);
-    connect(_csync, SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
+    connect(_engine.data(), SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
 
-    QMetaObject::invokeMethod(_csync, "startSync", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
     // disable events until syncing is done
     // _watcher->setEventsEnabled(false);
@@ -623,18 +621,18 @@ void Folder::startSync(const QStringList &pathList)
 
 void Folder::setDirtyNetworkLimits()
 {
-    if( _csync ) {
-        QMetaObject::invokeMethod(_csync, "setNetworkLimits", Qt::QueuedConnection);
+    if (_engine) {
+        _engine->setNetworkLimits();
     }
 }
 
-void Folder::slotCSyncError(const QString& err)
+void Folder::slotSyncError(const QString& err)
 {
     _errors.append( err );
     _csyncError = true;
 }
 
-void Folder::slotCSyncStarted()
+void Folder::slotSyncStarted()
 {
     qDebug() << "    * csync thread started";
     _syncResult.setStatus(SyncResult::SyncRunning);
@@ -646,11 +644,10 @@ void Folder::slotCsyncUnavailable()
     _csyncUnavail = true;
 }
 
-void Folder::slotCSyncFinished()
+void Folder::slotSyncFinished()
 {
     qDebug() << "-> CSync Finished slot with error " << _csyncError << "warn count" << _syncResult.warnCount();
-    delete _csync;
-    _csync = 0;
+    _engine.reset(0);
     // _watcher->setEventsEnabledDelayed(2000);
     _pollTimer.start();
     _timeSinceLastSync.restart();

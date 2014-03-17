@@ -170,10 +170,10 @@ public slots:
       int blackListEntryCount();
 
 private slots:
-    void slotCSyncStarted();
-    void slotCSyncError(const QString& );
+    void slotSyncStarted();
+    void slotSyncError(const QString& );
     void slotCsyncUnavailable();
-    void slotCSyncFinished();
+    void slotSyncFinished();
 
     void slotTransmissionProgress(const Progress::Info& pi);
 
@@ -207,7 +207,7 @@ private:
     QFileSystemWatcher *_pathWatcher;
     bool       _enabled;
     SyncResult _syncResult;
-    SyncEngine *_csync;
+    QScopedPointer<SyncEngine> _engine;
     QStringList  _errors;
     bool         _csyncError;
     bool         _csyncUnavail;
