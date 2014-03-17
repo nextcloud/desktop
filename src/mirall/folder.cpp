@@ -25,6 +25,7 @@
 #include "mirall/syncresult.h"
 #include "mirall/utility.h"
 #include "mirall/clientproxy.h"
+#include "mirall/syncengine.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -114,7 +115,7 @@ bool Folder::init()
 
         if( csync_init( _csync_ctx ) < 0 ) {
             qDebug() << "Could not initialize csync!" << csync_get_status(_csync_ctx) << csync_get_status_string(_csync_ctx);
-            QString errStr = CSyncThread::csyncErrorToString(CSYNC_STATUS(csync_get_status(_csync_ctx)));
+            QString errStr = SyncEngine::csyncErrorToString(CSYNC_STATUS(csync_get_status(_csync_ctx)));
             const char *errMsg = csync_get_status_string(_csync_ctx);
             if( errMsg ) {
                 errStr += QLatin1String("<br/>");
@@ -594,7 +595,7 @@ void Folder::startSync(const QStringList &pathList)
 
     qDebug() << "*** Start syncing";
     setIgnoredFiles();
-    _csync = new CSyncThread( _csync_ctx, path(), remoteUrl().path(), _remotePath, &_journal);
+    _csync = new SyncEngine( _csync_ctx, path(), remoteUrl().path(), _remotePath, &_journal);
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");

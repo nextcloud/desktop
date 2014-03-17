@@ -13,7 +13,7 @@
  * for more details.
  */
 
-#include "mirall/csyncthread.h"
+#include "mirall/syncengine.h"
 #include "mirall/account.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
@@ -54,9 +54,9 @@ void csyncLogCatcher(int /*verbosity*/,
 }
 
 /* static variables to hold the credentials */
-QMutex CSyncThread::_syncMutex;
+QMutex SyncEngine::_syncMutex;
 
-CSyncThread::CSyncThread(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, Mirall::SyncJournalDb* journal)
+SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, Mirall::SyncJournalDb* journal)
 {
     _localPath = localPath;
     _remotePath = remotePath;
@@ -70,7 +70,7 @@ CSyncThread::CSyncThread(CSYNC *ctx, const QString& localPath, const QString& re
     _thread.start();
 }
 
-CSyncThread::~CSyncThread()
+SyncEngine::~SyncEngine()
 {
     _thread.quit();
     _thread.wait();
@@ -78,7 +78,7 @@ CSyncThread::~CSyncThread()
 
 //Convert an error code from csync to a user readable string.
 // Keep that function thread safe as it can be called from the sync thread or the main thread
-QString CSyncThread::csyncErrorToString(CSYNC_STATUS err)
+QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
 {
     QString errStr;
 
@@ -187,7 +187,7 @@ QString CSyncThread::csyncErrorToString(CSYNC_STATUS err)
 
 }
 
-bool CSyncThread::checkBlacklisting( SyncFileItem *item )
+bool SyncEngine::checkBlacklisting( SyncFileItem *item )
 {
     bool re = false;
 
@@ -247,17 +247,17 @@ bool CSyncThread::checkBlacklisting( SyncFileItem *item )
     return re;
 }
 
-int CSyncThread::treewalkLocal( TREE_WALK_FILE* file, void *data )
+int SyncEngine::treewalkLocal( TREE_WALK_FILE* file, void *data )
 {
-    return static_cast<CSyncThread*>(data)->treewalkFile( file, false );
+    return static_cast<SyncEngine*>(data)->treewalkFile( file, false );
 }
 
-int CSyncThread::treewalkRemote( TREE_WALK_FILE* file, void *data )
+int SyncEngine::treewalkRemote( TREE_WALK_FILE* file, void *data )
 {
-    return static_cast<CSyncThread*>(data)->treewalkFile( file, true );
+    return static_cast<SyncEngine*>(data)->treewalkFile( file, true );
 }
 
-int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
+int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 {
     if( ! file ) return -1;
     SyncFileItem item;
@@ -375,7 +375,7 @@ int CSyncThread::treewalkFile( TREE_WALK_FILE *file, bool remote )
     return re;
 }
 
-void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
+void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
     CSYNC_STATUS err = csync_get_status( ctx );
     const char *errMsg = csync_get_status_string( ctx );
     QString errStr = csyncErrorToString(err);
@@ -406,7 +406,7 @@ void CSyncThread::handleSyncError(CSYNC *ctx, const char *state) {
     _thread.quit();
 }
 
-void CSyncThread::startSync()
+void SyncEngine::startSync()
 {
     if (!_syncMutex.tryLock()) {
         qDebug() << Q_FUNC_INFO << "WARNING: Another sync seems to be running. Not starting a new one.";
@@ -495,7 +495,7 @@ void CSyncThread::startSync()
     QMetaObject::invokeMethod(job, "start", Qt::QueuedConnection);
 }
 
-void CSyncThread::slotUpdateFinished(int updateResult)
+void SyncEngine::slotUpdateFinished(int updateResult)
 {
     if (updateResult < 0 ) {
         handleSyncError(_csync_ctx, "csync_update");
@@ -566,7 +566,7 @@ void CSyncThread::slotUpdateFinished(int updateResult)
     _propagator->start(_syncedItems);
 }
 
-void CSyncThread::setNetworkLimits()
+void SyncEngine::setNetworkLimits()
 {
     MirallConfigFile cfg;
 
@@ -590,7 +590,7 @@ void CSyncThread::setNetworkLimits()
     qDebug() << " N------N Network Limits changed!";
 }
 
-void CSyncThread::slotJobCompleted(const SyncFileItem &item)
+void SyncEngine::slotJobCompleted(const SyncFileItem &item)
 {
     qDebug() << Q_FUNC_INFO << item._file << item._status << item._errorString;
 
@@ -615,7 +615,7 @@ void CSyncThread::slotJobCompleted(const SyncFileItem &item)
     emit transmissionProgress(_progressInfo);
 }
 
-void CSyncThread::slotFinished()
+void SyncEngine::slotFinished()
 {
     // emit the treewalk results.
     if( ! _journal->postSyncCleanup( _seenFiles ) ) {
@@ -633,20 +633,20 @@ void CSyncThread::slotFinished()
     _thread.quit();
 }
 
-void CSyncThread::slotProgress(const SyncFileItem& item, quint64 current)
+void SyncEngine::slotProgress(const SyncFileItem& item, quint64 current)
 {
     _progressInfo.setProgressItem(item, current);
     emit transmissionProgress(_progressInfo);
 }
 
 
-void CSyncThread::slotAdjustTotalTransmissionSize(qint64 change)
+void SyncEngine::slotAdjustTotalTransmissionSize(qint64 change)
 {
     _progressInfo._totalSize += change;
 }
 
 /* Given a path on the remote, give the path as it is when the rename is done */
-QString CSyncThread::adjustRenamedPath(const QString& original)
+QString SyncEngine::adjustRenamedPath(const QString& original)
 {
     int slashPos = original.size();
     while ((slashPos = original.lastIndexOf('/' , slashPos - 1)) > 0) {
@@ -658,7 +658,7 @@ QString CSyncThread::adjustRenamedPath(const QString& original)
     return original;
 }
 
-void CSyncThread::abort()
+void SyncEngine::abort()
 {
     csync_request_abort(_csync_ctx);
     if(_propagator)

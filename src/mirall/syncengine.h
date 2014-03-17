@@ -43,13 +43,13 @@ void csyncLogCatcher(int /*verbosity*/,
                      const char *buffer,
                      void */*userdata*/);
 
-class CSyncThread : public QObject
+class SyncEngine : public QObject
 {
     Q_OBJECT
     friend void csyncthread_updater_progress_callback(CSYNC_PROGRESS *progress, void *userdata);
 public:
-    CSyncThread(CSYNC *, const QString &localPath, const QString &remoteURL, const QString &remotePath, SyncJournalDb *journal);
-    ~CSyncThread();
+    SyncEngine(CSYNC *, const QString &localPath, const QString &remoteURL, const QString &remotePath, SyncJournalDb *journal);
+    ~SyncEngine();
 
     static QString csyncErrorToString( CSYNC_STATUS);
 

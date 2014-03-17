@@ -22,7 +22,7 @@
 
 #include <neon/ne_socket.h>
 
-#include "csyncthread.h"
+#include "syncengine.h"
 #include <syncjournaldb.h>
 #include "logger.h"
 #include "csync.h"
@@ -208,10 +208,10 @@ int main(int argc, char **argv) {
     OwncloudCmd owncloudCmd;
 
     SyncJournalDb db(options.source_dir);
-    CSyncThread csyncthread(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
-    QObject::connect(&csyncthread, SIGNAL(finished()), &app, SLOT(quit()));
-    QObject::connect(&csyncthread, SIGNAL(transmissionProgress(Progress::Info)), &owncloudCmd, SLOT(transmissionProgressSlot()));
-    csyncthread.startSync();
+    SyncEngine engine(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
+    QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
+    QObject::connect(&engine, SIGNAL(transmissionProgress(Progress::Info)), &owncloudCmd, SLOT(transmissionProgressSlot()));
+    engine.startSync();
 
     app.exec();
 

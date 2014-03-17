@@ -19,7 +19,6 @@
 
 #include "mirall/syncresult.h"
 #include "mirall/progressdispatcher.h"
-#include "mirall/csyncthread.h"
 #include "mirall/syncjournaldb.h"
 #include "mirall/clientproxy.h"
 
@@ -38,6 +37,8 @@ class QFileSystemWatcher;
 class QThread;
 
 namespace Mirall {
+
+class SyncEngine;
 
 class FolderWatcher;
 
@@ -206,7 +207,7 @@ private:
     QFileSystemWatcher *_pathWatcher;
     bool       _enabled;
     SyncResult _syncResult;
-    CSyncThread *_csync;
+    SyncEngine *_csync;
     QStringList  _errors;
     bool         _csyncError;
     bool         _csyncUnavail;

@@ -68,7 +68,7 @@ set(libsync_SRCS
     mirall/folderwatcher.cpp
     mirall/syncresult.cpp
     mirall/mirallconfigfile.cpp
-    mirall/csyncthread.cpp
+    mirall/syncengine.cpp
     mirall/owncloudpropagator.cpp
     mirall/propagatorjobs.cpp
     mirall/propagator_qnam.cpp
@@ -118,7 +118,7 @@ set(libsync_HEADERS
     mirall/folderman.h
     mirall/folder.h
     mirall/folderwatcher.h
-    mirall/csyncthread.h
+    mirall/syncengine.h
     mirall/owncloudpropagator.h
     mirall/owncloudpropagator_p.h
     mirall/propagator_qnam.h
@@ -178,7 +178,7 @@ ENDIF()
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS
     mirall/account.h
-    mirall/csyncthread.h
+    mirall/syncengine.h
     mirall/folder.h
     mirall/folderman.h
     mirall/folderwatcher.h
