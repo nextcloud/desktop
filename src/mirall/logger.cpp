@@ -19,13 +19,24 @@
 
 namespace Mirall {
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 // logging handler.
-void mirallLogCatcher(QtMsgType type, const char *msg)
+static void mirallLogCatcher(QtMsgType type, const char *msg)
 {
   Q_UNUSED(type)
   // qDebug() exports to local8Bit, which is not always UTF-8
   Logger::instance()->mirallLog( QString::fromLocal8Bit(msg) );
 }
+#else
+static void mirallLogCatcher(QtMsgType, const QMessageLogContext &ctx, const QString &message) {
+    Q_UNUSED(ctx);
+
+    QByteArray file = ctx.file;
+    file = file.mid(file.lastIndexOf('/') + 1);
+    Logger::instance()->mirallLog( QString::fromLocal8Bit(file) + QLatin1Char(':') + QString::number(ctx.line)
+                                    + QLatin1Char(' ')  + message) ;
+}
+#endif
 
 Logger* Logger::_instance=0;
 
@@ -39,7 +50,11 @@ Logger *Logger::instance()
 {
     if( !Logger::_instance ) {
         Logger::_instance = new Logger;
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         qInstallMsgHandler( mirallLogCatcher );
+#else
+        qInstallMessageHandler(mirallLogCatcher);
+#endif
     }
     return Logger::_instance;
 }
