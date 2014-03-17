@@ -147,13 +147,13 @@
         <location filename="../src/mirall/accountsettings.cpp" line="583"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3/%4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="586"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="681"/>
@@ -1965,7 +1965,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="408"/>
         <source>Syncing %1 of %2 (%3 of %4)</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlenen %1/%2 (%3/%4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="431"/>
@@ -2242,12 +2242,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>İndirildi</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Yüklendi</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="36"/>
@@ -2277,17 +2277,17 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>siliniyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>taşınıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
         <source>processing</source>
-        <translation type="unfinished"/>
+        <translation>işleniyor</translation>
     </message>
 </context>
 <context>
