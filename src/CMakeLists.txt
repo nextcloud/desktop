@@ -114,61 +114,12 @@ if(TOKEN_AUTH_ONLY)
 endif()
 
 
-set(libsync_HEADERS
-    mirall/folderman.h
-    mirall/folder.h
-    mirall/folderwatcher.h
-    mirall/syncengine.h
-    mirall/owncloudpropagator.h
-    mirall/owncloudpropagator_p.h
-    mirall/propagator_qnam.h
-    mirall/propagator_legacy.h
-    mirall/propagatorjobs.h
-    mirall/syncjournaldb.h
-    mirall/theme.h
-    mirall/owncloudtheme.h
-    mirall/logger.h
-    mirall/connectionvalidator.h
-    mirall/progressdispatcher.h
-    mirall/mirallaccessmanager.h
-    mirall/networkjobs.h
-    mirall/account.h
-    mirall/quotainfo.h
-    mirall/clientproxy.h
-    creds/abstractcredentials.h
-    creds/dummycredentials.h
-    creds/credentialsfactory.h
-    creds/http/httpconfigfile.h
-    creds/credentialscommon.h
-    3rdparty/qjson/json.h
-)
-if(TOKEN_AUTH_ONLY)
-	set (libsync_HEADERS
-	    ${libsync_HEADERS}
-	    creds/tokencredentials.h
-	)
-else()
-	set (libsync_HEADERS
-	    ${libsync_HEADERS}
-	    creds/httpcredentials.h	
-		 creds/shibbolethcredentials.h
-       creds/shibboleth/shibbolethaccessmanager.h
-       creds/shibboleth/shibbolethcookiejar.h
-       creds/shibboleth/shibbolethwebview.h
-       creds/shibboleth/shibbolethrefresher.h
-       creds/shibboleth/shibbolethconfigfile.h
-       creds/shibboleth/authenticationdialog.h
-    )
-endif()
-
 
 IF( NOT WIN32 AND NOT APPLE )
     set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_linux.cpp)
-    set(libsync_HEADERS ${libsync_HEADERS} mirall/folderwatcher_linux.h)
 ENDIF()
 IF( WIN32 )
     set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_win.cpp)
-    set(libsync_HEADERS ${libsync_HEADERS} mirall/folderwatcher_win.h)
 ENDIF()
 IF( APPLE )
     list(APPEND libsync_SRCS mirall/folderwatcher_mac.cpp)
