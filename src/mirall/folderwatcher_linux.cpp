@@ -22,6 +22,7 @@
 #include <QDebug>
 #include <QStringList>
 #include <QObject>
+#include <QVarLengthArray>
 
 namespace Mirall {
 
@@ -129,13 +130,10 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
     struct inotify_event* event;
     int i;
     int error;
-    char *buffer = NULL;
-    int buf_size = 2048;
-
-    buffer = (char*) malloc(buf_size);
+    QVarLengthArray<char, 2048> buffer(2048);
 
     do {
-         len = read(fd, buffer, buf_size);
+         len = read(fd, buffer.data(), buffer.size());
          error = errno;
          /**
           * From inotify documentation:
@@ -149,8 +147,7 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
          if (len < 0 && error == EINVAL)
          {
              // double the buffer size
-             buf_size *= 2;
-             buffer = (char *) realloc(buffer, buf_size);
+             buffer.resize(buffer.size() * 2);
              /* and try again ... */
              continue;
          }

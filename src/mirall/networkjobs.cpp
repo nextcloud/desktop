@@ -531,9 +531,11 @@ void CheckQuotaJob::finished()
                     reader.namespaceUri() == QLatin1String("DAV:")) {
                 QString name = reader.name().toString();
                 if (name == QLatin1String("quota-available-bytes")) {
-                    quotaAvailableBytes = reader.readElementText().toLongLong();
+                    // I have seen the server returning frational bytes:
+                    //   <d:quota-available-bytes>1374532061.2</d:quota-available-bytes>
+                    quotaAvailableBytes = reader.readElementText().toDouble();
                 } else if (name == QLatin1String("quota-used-bytes")) {
-                    quotaUsedBytes = reader.readElementText().toLongLong();
+                    quotaUsedBytes = reader.readElementText().toDouble();
                 }
             }
         }
