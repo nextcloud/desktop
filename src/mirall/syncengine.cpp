@@ -416,10 +416,7 @@ void SyncEngine::startSync()
     if( ! _csync_ctx ) {
         qDebug() << "XXXXXXXXXXXXXXXX FAIL: do not have csync_ctx!";
     }
-    qDebug() << Q_FUNC_INFO << "Sync started";
 
-
-    qDebug() << "starting to sync " << qApp->thread() << QThread::currentThread();
     _syncedItems.clear();
     _needsUpdate = false;
 

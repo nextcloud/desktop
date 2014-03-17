@@ -133,7 +133,6 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
 
   if ( state ) {
     bool folderEnabled = _model->data( indx, FolderStatusDelegate::FolderSyncEnabled).toBool();
-    qDebug() << "folder is sync enabled: " << folderEnabled;
     if ( folderEnabled ) {
       ui->_buttonEnable->setText( tr( "Pause" ) );
     } else {

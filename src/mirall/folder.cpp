@@ -208,7 +208,6 @@ QUrl Folder::remoteUrl() const
     }
     path.append(_remotePath);
     url.setPath(path);
-    qDebug() << url;
     return url;
 }
 

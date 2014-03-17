@@ -47,15 +47,14 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
         socketPath = localFile.toLocalFile();
 
     }
-    DEBUG << "ctor: " << socketPath;
 
     // setup socket
     _localServer = new QLocalServer(this);
     QLocalServer::removeServer(socketPath);
     if(!_localServer->listen(socketPath))
-        DEBUG << "can't start server";
+        DEBUG << "can't start server" << socketPath;
     else
-        DEBUG << "server started";
+        DEBUG << "server started" << socketPath;
     connect(_localServer, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
 
     // folder watcher
@@ -116,8 +115,6 @@ void SocketApi::onReadyRead()
 
 void SocketApi::onSyncStateChanged(const QString&)
 {
-    DEBUG << "Sync state changed";
-
     broadcastMessage("UPDATE_VIEW");
 }
 

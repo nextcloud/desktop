@@ -215,10 +215,7 @@ QString MirallConfigFile::excludeFile(Scope scope) const
 #endif
         }
     }
-    qDebug() << "  ==> returning exclude file path: " << fi.absoluteFilePath();
     return fi.absoluteFilePath();
-    qDebug() << "EMPTY exclude file path!";
-    return QString::null;
 }
 
 QString MirallConfigFile::configFile() const
