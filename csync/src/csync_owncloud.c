@@ -497,15 +497,6 @@ static int dav_connect(const char *base_url) {
         port = ne_uri_defaultport(protocol);
     }
 
-#if 0
-    rc = ne_sock_init();
-    DEBUG_WEBDAV("ne_sock_init: %d", rc );
-    if (rc < 0) {
-        rc = -1;
-        goto out;
-    }
-#endif
-
     dav_session.ctx = ne_session_create( protocol, host, port);
 
     if (dav_session.ctx == NULL) {
