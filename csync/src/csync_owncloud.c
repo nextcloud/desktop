@@ -486,9 +486,8 @@ static int dav_connect(const char *base_url) {
         strcpy( protocol, "https");
         useSSL = 1;
     } else {
-        DEBUG_WEBDAV("Invalid scheme %s, go outa here!", scheme );
-        rc = -1;
-        goto out;
+        // Trust the original protocol
+        strcpy( protocol, scheme );
     }
 
     DEBUG_WEBDAV("* user %s", dav_session.user ? dav_session.user : "");
