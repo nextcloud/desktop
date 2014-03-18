@@ -480,13 +480,13 @@ static int dav_connect(const char *base_url) {
     DEBUG_WEBDAV("* port %u", port );
     DEBUG_WEBDAV("* path %s", path );
 
-    if( strcmp( scheme, "owncloud" ) == 0 ) {
+    if( strcmp( scheme, "owncloud" ) == 0 || strcmp( scheme, "http" ) == 0 ) {
         strcpy( protocol, "http");
-    } else if( strcmp( scheme, "ownclouds" ) == 0 ) {
+    } else if( strcmp( scheme, "ownclouds" ) == 0 || strcmp( scheme, "https") == 0 ) {
         strcpy( protocol, "https");
         useSSL = 1;
     } else {
-        DEBUG_WEBDAV("Invalid scheme %s, go outa here!", scheme );
+        DEBUG_WEBDAV("Invalid scheme %s, go out here!", scheme );
         rc = -1;
         goto out;
     }
