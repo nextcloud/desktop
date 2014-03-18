@@ -89,7 +89,7 @@
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
-        <location filename="../src/mirall/accountsettings.cpp" line="138"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="137"/>
         <source>Pause</source>
         <translation>Pausa</translation>
     </message>
@@ -119,59 +119,59 @@
         <translation>&lt;b&gt;Nota:&lt;/b&gt; alcune cartelle, incluse le cartelle montate o condivise in rete, potrebbero avere limiti diversi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="140"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="139"/>
         <source>Resume</source>
         <translation>Riprendi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="291"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="290"/>
         <source>Confirm Folder Remove</source>
         <translation>Conferma la rimozione della cartella</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="292"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="291"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vuoi davvero fermare la sincronizzazione della cartella &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; ciò non rimuoverà i file dal tuo client.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="328"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="327"/>
         <source>Confirm Folder Reset</source>
         <translation>Conferma il ripristino della cartella</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="329"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="328"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vuoi davvero ripristinare la cartella &lt;i&gt;%1&lt;/i&gt; e ricostruire il database del client?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; questa funzione è destinata solo a scopi di manutenzione. Nessun file sarà rimosso, ma può causare un significativo traffico di dati e richiedere diversi minuti oppure ore, in base alla dimensione della cartella. Utilizza questa funzione solo se consigliata dal tuo amministratore.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="583"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="582"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 di %4)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="586"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="585"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="681"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="680"/>
         <source>%1 (%3%) of %2 server space in use.</source>
         <translation>%1 (%3%) di %2 spazio in uso sul server.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="720"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="719"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation>Nessuna connessione a %1 su &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="727"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="726"/>
         <source>No %1 connection configured.</source>
         <translation>Nessuna connessione di %1 configurata.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="432"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="431"/>
         <source>Sync Running</source>
         <translation>La sincronizzazione è in corso</translation>
     </message>
@@ -181,27 +181,27 @@
         <translation>Nessun account  configurato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="433"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="432"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>L&apos;operazione di sincronizzazione è in corso.&lt;br/&gt;Vuoi terminarla?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="713"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="712"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Connesso a &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="595"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="594"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 di %2, file %3 di %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="716"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="715"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Connesso a &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; come &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="685"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="684"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Non ci sono informazioni disponibili sull&apos;utilizzo dello spazio di archiviazione.</translation>
     </message>
@@ -227,185 +227,6 @@
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
         <translation>&amp;Password:</translation>
-    </message>
-</context>
-<context>
-    <name>Mirall::CSyncThread</name>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="87"/>
-        <source>Success.</source>
-        <translation>Successo.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="90"/>
-        <source>CSync failed to create a lock file.</source>
-        <translation>CSync non è riuscito a creare il file di lock.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="100"/>
-        <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Il plugin %1 per csync non può essere caricato.&lt;br/&gt;Verifica l&apos;installazione!&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="103"/>
-        <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>L&apos;ora di sistema su questo client è diversa dall&apos;ora di sistema del server. Usa un servizio di sincronizzazione dell&apos;orario (NTP) sul server e sulle macchine client in modo che l&apos;ora sia la stessa.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="108"/>
-        <source>CSync could not detect the filesystem type.</source>
-        <translation>CSync non è riuscito a individuare il tipo di filesystem.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="111"/>
-        <source>CSync got an error while processing internal trees.</source>
-        <translation>Errore di CSync durante l&apos;elaborazione degli alberi interni.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="114"/>
-        <source>CSync failed to reserve memory.</source>
-        <translation>CSync non è riuscito a riservare la memoria.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="117"/>
-        <source>CSync fatal parameter error.</source>
-        <translation>Errore grave di parametro di CSync.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="120"/>
-        <source>CSync processing step update failed.</source>
-        <translation>La fase di aggiornamento di CSync non è riuscita.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="123"/>
-        <source>CSync processing step reconcile failed.</source>
-        <translation>La fase di riconciliazione di CSync non è riuscita.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="126"/>
-        <source>CSync processing step propagate failed.</source>
-        <translation>La fase di propagazione di CSync non è riuscita.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="129"/>
-        <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;La cartella di destinazione non esiste.&lt;/p&gt;&lt;p&gt;Controlla la configurazione della sincronizzazione.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="133"/>
-        <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Un file remoto non può essere scritto. Controlla l&apos;accesso remoto.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="137"/>
-        <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation>Il filesystem locale non può essere scritto. Controlla i permessi.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="140"/>
-        <source>CSync failed to connect through a proxy.</source>
-        <translation>CSync non è riuscito a connettersi tramite un proxy.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="143"/>
-        <source>CSync could not authenticate at the proxy.</source>
-        <translation>CSync non è in grado di autenticarsi al proxy.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="146"/>
-        <source>CSync failed to lookup proxy or server.</source>
-        <translation>CSync non è riuscito a trovare un proxy o server.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="149"/>
-        <source>CSync failed to authenticate at the %1 server.</source>
-        <translation>CSync non è riuscito ad autenticarsi al server %1.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="161"/>
-        <source>CSync failed due to not handled permission deniend.</source>
-        <translation>Problema di CSync dovuto alla mancata gestione dei permessi.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="167"/>
-        <source>CSync tried to create a directory that already exists.</source>
-        <translation>CSync ha cercato di creare una cartella già esistente.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="170"/>
-        <location filename="../src/mirall/csyncthread.cpp" line="173"/>
-        <source>CSync: No space on %1 server available.</source>
-        <translation>CSync: spazio insufficiente sul server %1.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="176"/>
-        <source>CSync unspecified error.</source>
-        <translation>Errore non specificato di CSync.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="242"/>
-        <source>The item is not synced because of previous errors:</source>
-        <translation>Questo oggetto non è stato sincronizzato a causa di errori precedenti:</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="277"/>
-        <source>Symbolic links are not supported in syncing.</source>
-        <translation>I collegamenti simbolici non sono supportati dalla sincronizzazione.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="280"/>
-        <source>File is listed on the ignore list.</source>
-        <translation>Il file è stato aggiunto alla lista ignorati.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="283"/>
-        <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation>Il file contiene caratteri non validi che non possono essere sincronizzati su diverse piattaforme.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="441"/>
-        <source>Unable to initialize a sync journal.</source>
-        <translation>Impossibile inizializzare il registro di sincronizzazione.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="152"/>
-        <source>CSync failed to connect to the network.</source>
-        <translation>CSync non è riuscito a connettersi alla rete.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="93"/>
-        <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation>CSync non è riuscito a caricare o a creare il file journal. Assicurati di avere i permessi di lettura e scrittura nella cartella di sincronizzazione locale.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="97"/>
-        <source>CSync failed to write the journal file.</source>
-        <translation>CSync non è riuscito a scrivere il file journal.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="155"/>
-        <source>A network connection timeout happend.</source>
-        <translation>Si è verificato un timeout sulla connessione alla rete.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="158"/>
-        <source>A HTTP transmission error happened.</source>
-        <translation>Si è verificato un errore di trasmissione HTTP.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="164"/>
-        <source>CSync failed to access </source>
-        <translation>CSync non è riuscito ad accedere</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="179"/>
-        <source>Aborted by the user</source>
-        <translation>Interrotto dall&apos;utente</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/csyncthread.cpp" line="183"/>
-        <source>An internal error number %1 happend.</source>
-        <translation>SI è verificato un errore interno numero %1</translation>
     </message>
 </context>
 <context>
@@ -459,80 +280,80 @@
         <translation>%1 non è leggibile.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="313"/>
+        <location filename="../src/mirall/folder.cpp" line="312"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="400"/>
+        <location filename="../src/mirall/folder.cpp" line="399"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 e %2 altri file sono stati rimossi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="402"/>
+        <location filename="../src/mirall/folder.cpp" line="401"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato rimosso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="407"/>
+        <location filename="../src/mirall/folder.cpp" line="406"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 e %2 altri file sono stati scaricati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="409"/>
+        <location filename="../src/mirall/folder.cpp" line="408"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato scaricato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="414"/>
+        <location filename="../src/mirall/folder.cpp" line="413"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 e %2 altri file sono stati aggiornati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="416"/>
+        <location filename="../src/mirall/folder.cpp" line="415"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato aggiornato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="421"/>
+        <location filename="../src/mirall/folder.cpp" line="420"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 è stato rinominato in %2 e %3 altri file sono stati rinominati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="423"/>
+        <location filename="../src/mirall/folder.cpp" line="422"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 è stato rinominato in %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="428"/>
+        <location filename="../src/mirall/folder.cpp" line="427"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 è stato spostato in %2 e %3 altri file sono stati spostati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="430"/>
+        <location filename="../src/mirall/folder.cpp" line="429"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 è stato spostato in %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="438"/>
+        <location filename="../src/mirall/folder.cpp" line="437"/>
         <source>Sync Activity</source>
         <translation>Sincronizza attività</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="697"/>
+        <location filename="../src/mirall/folder.cpp" line="694"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Questa sincronizzazione rimuoverà tutti i file nella cartella di sincronizzazione locale &apos;%1&apos;.
 Se tu o il tuo amministratore avete ripristinato il tuo account sul server, scegli &quot;Mantieni i file&quot;. Se desideri che i dati siano rimossi, scegli &quot;Rimuovi tutti i file&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="700"/>
+        <location filename="../src/mirall/folder.cpp" line="697"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -541,17 +362,17 @@ Ciò potrebbe accadere in caso di riconfigurazione della cartella o di rimozione
 Sei sicuro di voler eseguire questa operazione?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="704"/>
+        <location filename="../src/mirall/folder.cpp" line="701"/>
         <source>Remove All Files?</source>
         <translation>Vuoi rimuovere tutti i file?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="706"/>
+        <location filename="../src/mirall/folder.cpp" line="703"/>
         <source>Remove all files</source>
         <translation>Rimuovi tutti i file</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="707"/>
+        <location filename="../src/mirall/folder.cpp" line="704"/>
         <source>Keep files</source>
         <translation>Mantieni i file</translation>
     </message>
@@ -819,12 +640,12 @@ Sei sicuro di voler eseguire questa operazione?</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="274"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="273"/>
         <source>Enter Password</source>
         <translation>Digita la password</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="275"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="274"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Digita la password di %1 per l&apos;utente &apos;%2&apos;:</translation>
     </message>
@@ -947,12 +768,12 @@ Gli elementi marcati saranno inoltre eliminati se impediscono la rimozione di un
 <context>
     <name>Mirall::Logger</name>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="140"/>
+        <location filename="../src/mirall/logger.cpp" line="155"/>
         <source>Error</source>
         <translation>Errore</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="141"/>
+        <location filename="../src/mirall/logger.cpp" line="156"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Il file &apos;%1&apos;&lt;br/&gt;non può essere aperto in scrittura.&lt;br/&gt;&lt;br/&gt;Il risultato del log &lt;b&gt;non&lt;/b&gt; può essere salvato!&lt;/nobr&gt;</translation>
     </message>
@@ -1834,6 +1655,185 @@ Prova a sincronizzare nuovamente.</translation>
         <location filename="../src/mirall/sslerrordialog.cpp" line="198"/>
         <source>Issuer: %1</source>
         <translation>Emittente: %1</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::SyncEngine</name>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="87"/>
+        <source>Success.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="90"/>
+        <source>CSync failed to create a lock file.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="93"/>
+        <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="97"/>
+        <source>CSync failed to write the journal file.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="100"/>
+        <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="103"/>
+        <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="108"/>
+        <source>CSync could not detect the filesystem type.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="111"/>
+        <source>CSync got an error while processing internal trees.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="114"/>
+        <source>CSync failed to reserve memory.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="117"/>
+        <source>CSync fatal parameter error.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="120"/>
+        <source>CSync processing step update failed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="123"/>
+        <source>CSync processing step reconcile failed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="126"/>
+        <source>CSync processing step propagate failed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="129"/>
+        <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="133"/>
+        <source>A remote file can not be written. Please check the remote access.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="137"/>
+        <source>The local filesystem can not be written. Please check permissions.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="140"/>
+        <source>CSync failed to connect through a proxy.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="143"/>
+        <source>CSync could not authenticate at the proxy.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="146"/>
+        <source>CSync failed to lookup proxy or server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="149"/>
+        <source>CSync failed to authenticate at the %1 server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="152"/>
+        <source>CSync failed to connect to the network.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="155"/>
+        <source>A network connection timeout happend.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="158"/>
+        <source>A HTTP transmission error happened.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="161"/>
+        <source>CSync failed due to not handled permission deniend.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="164"/>
+        <source>CSync failed to access </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="167"/>
+        <source>CSync tried to create a directory that already exists.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="170"/>
+        <location filename="../src/mirall/syncengine.cpp" line="173"/>
+        <source>CSync: No space on %1 server available.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="176"/>
+        <source>CSync unspecified error.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="179"/>
+        <source>Aborted by the user</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="183"/>
+        <source>An internal error number %1 happend.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="242"/>
+        <source>The item is not synced because of previous errors:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="277"/>
+        <source>Symbolic links are not supported in syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="280"/>
+        <source>File is listed on the ignore list.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="283"/>
+        <source>File contains invalid characters that can not be synced cross platform.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="438"/>
+        <source>Unable to initialize a sync journal.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
