@@ -101,11 +101,11 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         case CSYNC_INSTRUCTION_EVAL_RENAME:
             if(ctx->current == LOCAL_REPLICA ) {
                 /* use the old name to find the "other" node */
-                tmp = csync_statedb_get_stat_by_inode(ctx->statedb.db, cur->inode);
+                tmp = csync_statedb_get_stat_by_inode(ctx, cur->inode);
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Finding opposite temp through inode %" PRIu64 ": %s",
                           cur->inode, tmp ? "true":"false");
             } else if( ctx->current == REMOTE_REPLICA ) {
-                tmp = csync_statedb_get_stat_by_file_id(ctx->statedb.db, cur->file_id);
+                tmp = csync_statedb_get_stat_by_file_id(ctx, cur->file_id);
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Finding opposite temp through file ID %s: %s",
                           cur->file_id, tmp ? "true":"false");
             } else {

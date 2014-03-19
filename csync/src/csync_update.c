@@ -168,7 +168,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     }
 
     if (fs->mtime == 0) {
-      tmp = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
+      tmp = csync_statedb_get_stat_by_hash(ctx, h);
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", path);
       if (tmp == NULL) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - not found in db, IGNORE!", path);
@@ -204,7 +204,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
    * does not change on rename.
    */
   if (csync_get_statedb_exists(ctx)) {
-    tmp = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
+    tmp = csync_statedb_get_stat_by_hash(ctx, h);
 
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
@@ -238,6 +238,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 && c_streq(fs->file_id, tmp->file_id)) {
             /* If both etag and file id are equal for a directory, read all contents from
              * the database. */
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", path);
             ctx->remote.read_from_db = true;
         }
         st->instruction = CSYNC_INSTRUCTION_NONE;
@@ -246,7 +247,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
         /* check if it's a file and has been renamed */
         if (ctx->current == LOCAL_REPLICA) {
-            tmp = csync_statedb_get_stat_by_inode(ctx->statedb.db, fs->inode);
+            tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
 
             /* translate the file type between the two stat types csync has. */
             if( tmp && tmp->type == 0 ) {
@@ -273,7 +274,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             }
         } else {
             /* Remote Replica Rename check */
-            tmp = csync_statedb_get_stat_by_file_id(ctx->statedb.db, fs->file_id);
+            tmp = csync_statedb_get_stat_by_file_id(ctx, fs->file_id);
             if(tmp ) {                           /* tmp existing at all */
                 if ((tmp->type == CSYNC_FTW_TYPE_DIR && fs->type != CSYNC_VIO_FILE_TYPE_DIRECTORY) ||
                         (tmp->type == CSYNC_FTW_TYPE_FILE && fs->type != CSYNC_VIO_FILE_TYPE_REGULAR)) {
@@ -359,9 +360,9 @@ fastout:  /* target if the file information is read from database into st */
     default:
       break;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "==> %s %s - hash %llu, mtime: %llu, fileId: %s",
-            csync_instruction_str(st->instruction), path, (unsigned long long ) h,
-            (unsigned long long) fs->mtime, fs->file_id);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: %s <<=", st->path,
+      csync_instruction_str(st->instruction));
+
   return 0;
 }
 
@@ -373,18 +374,18 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   uint64_t h;
 
   if (ctx->abort) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Aborted!");
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
     ctx->status_code = CSYNC_STATUS_ABORTED;
     return -1;
   }
 
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
-      // CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
       type = CSYNC_FTW_TYPE_FILE;
       break;
   case CSYNC_FTW_FLAG_DIR: /* enter directory */
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
       type = CSYNC_FTW_TYPE_DIR;
       break;
   case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
@@ -394,7 +395,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     if( h == 0 ) {
       return 0;
     }
-    st = csync_statedb_get_stat_by_hash(ctx->statedb.db, h);
+    st = csync_statedb_get_stat_by_hash(ctx, h);
     if( !st ) {
       return 0;
     }
@@ -420,20 +421,23 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   return rc;
 }
 
-static void fill_tree_from_db(CSYNC *ctx, const char *uri)
+static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
 {
     const char *path = NULL;
 
     if( strlen(uri) < strlen(ctx->remote.uri)+1) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "name does not contain remote uri!");
-        return;
+        return false;
     }
 
     path = uri + strlen(ctx->remote.uri)+1;
 
     if( csync_statedb_get_below_path(ctx, path) < 0 ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "StateDB could not be read!");
+        return false;
     }
+
+    return true;
 }
 
 /* File tree walker */
@@ -463,7 +467,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   // if the etag of this dir is still the same, its content is restored from the
   // database.
   if( do_read_from_db ) {
-      fill_tree_from_db(ctx, uri);
+      if( ! fill_tree_from_db(ctx, uri) ) {
+        errno = ENOENT;
+        ctx->status_code = CSYNC_STATUS_OPENDIR_ERROR;
+        goto error;
+      }
       goto done;
   }
 
@@ -579,16 +587,18 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         char *etag = NULL;
         int len = strlen( path );
         uint64_t h = c_jhash64((uint8_t *) path, len, 0);
-        etag = csync_statedb_get_uniqId( ctx, h, fs );
+        etag = csync_statedb_get_etag( ctx, h );
+
         if( etag ) {
             SAFE_FREE(fs->etag);
             fs->etag = etag;
             fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
-        }
-        if( c_streq(etag, "")) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database is EMPTY: %s", path);
-        } else {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database: %s -> %s", path, fs->etag ? fs->etag : "<NULL>" );
+
+            if( c_streq(etag, "")) {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database is EMPTY: %s", path);
+            } else {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database: %s -> %s", path, fs->etag ? fs->etag : "<NULL>" );
+            }
         }
     }
 

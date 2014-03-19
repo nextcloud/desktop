@@ -106,6 +106,10 @@ struct csync_s {
     sqlite3 *db;
     int exists;
     int disabled;
+
+    sqlite3_stmt* by_hash_stmt;
+    sqlite3_stmt* by_fileid_stmt;
+    sqlite3_stmt* by_inode_stmt;
   } statedb;
 
   struct {
