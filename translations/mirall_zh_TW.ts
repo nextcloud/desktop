@@ -1653,12 +1653,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="87"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>成功。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 無法建立文件鎖</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="93"/>
@@ -1673,67 +1673,67 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="100"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;用於csync的套件%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="103"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>本客戶端的系統時間和伺服器系統時間不一致,請在伺服器與客戶端上使用時間同步服務(NTP)讓時間保持一致</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="108"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 無法偵測檔案系統的類型</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="111"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 處理內部資料樹時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="114"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 無法取得記憶體空間。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="117"/>
         <source>CSync fatal parameter error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 參數錯誤。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="120"/>
         <source>CSync processing step update failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 處理步驟 &quot;update&quot; 失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="123"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 處理步驟 &quot;reconcile&quot; 失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="126"/>
         <source>CSync processing step propagate failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 處理步驟 &quot;propagate&quot; 失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="129"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;目標資料夾不存在&lt;/p&gt;&lt;p&gt;請檢查同步設定&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="133"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation type="unfinished"/>
+        <translation>遠端檔案無法寫入，請確認遠端存取權限。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="137"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation type="unfinished"/>
+        <translation>本地檔案系統無法寫入，請確認權限。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="140"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 透過代理伺服器連線失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="143"/>
@@ -1743,32 +1743,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="146"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 查詢代理伺服器或伺服器失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="149"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 於伺服器 %1 認證失敗。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="152"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 無法連接到網路。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="155"/>
         <source>A network connection timeout happend.</source>
-        <translation type="unfinished"/>
+        <translation>網路連線逾時。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="158"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>HTTP 傳輸錯誤。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="161"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 失敗，由於未處理的存取被拒。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="164"/>
@@ -1778,18 +1778,18 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="167"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 試圖建立一個已經存在的目錄。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="170"/>
         <location filename="../src/mirall/syncengine.cpp" line="173"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync：伺服器 %1 沒有可用空間。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="176"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 未知的錯誤。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="179"/>
@@ -1799,7 +1799,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happend.</source>
-        <translation type="unfinished"/>
+        <translation>發生內部錯誤，錯誤編號 %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="242"/>

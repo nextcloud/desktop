@@ -1662,178 +1662,178 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="87"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>成功。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncがロックファイルの作成に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="93"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはジャーナルファイルの読み込みや作成に失敗しました。ローカルの同期ディレクトリに読み書きの権限があるか確認してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="97"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはジャーナルファイルの書き込みに失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="100"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;csync 用の %1 プラグインをロードできませんでした。&lt;br/&gt;インストール状態を確認してください！&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="103"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>このクライアントのシステム時刻はサーバーのシステム時刻と異なります。時刻が同じになるように、クライアントとサーバーの両方で時刻同期サービス(NTP)を実行してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="108"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはファイルシステムタイプを検出できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="111"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncは内部ツリーの処理中にエラーに遭遇しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="114"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncで使用するメモリの確保に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="117"/>
         <source>CSync fatal parameter error.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncの致命的なパラメータエラーです。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="120"/>
         <source>CSync processing step update failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncの処理ステップの更新に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="123"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncの処理ステップの調停に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="126"/>
         <source>CSync processing step propagate failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncの処理ステップの伝播に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="129"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;ターゲットディレクトリは存在しません。&lt;/p&gt;&lt;p&gt;同期設定を確認してください。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="133"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation type="unfinished"/>
+        <translation>リモートファイルは書き込みできません。リモートアクセスをチェックしてください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="137"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation type="unfinished"/>
+        <translation>ローカルファイルシステムは書き込みができません。パーミッションをチェックしてください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="140"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncがプロキシ経由での接続に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="143"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはそのプロキシで認証できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="146"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはプロキシもしくはサーバーの参照に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="149"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncは %1 サーバーでの認証に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="152"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはネットワークへの接続に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="155"/>
         <source>A network connection timeout happend.</source>
-        <translation type="unfinished"/>
+        <translation>ネットワーク接続のタイムアウトが発生しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="158"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>HTTPの伝送エラーが発生しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="161"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncは対応できないパーミッション拒否が原因で失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="164"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>CSync はアクセスに失敗しました</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="167"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncはすでに存在するディレクトリを作成しようとしました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="170"/>
         <location filename="../src/mirall/syncengine.cpp" line="173"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: %1 サーバーには利用可能な空き領域がありません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="176"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSyncの未指定のエラーです。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="179"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーによって中止されました</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happend.</source>
-        <translation type="unfinished"/>
+        <translation>内部エラー番号 %1 が発生しました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="242"/>
         <source>The item is not synced because of previous errors:</source>
-        <translation type="unfinished"/>
+        <translation>前にエラーが発生したため、対象アイテムは同期されていません:</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="277"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>同期の際にシンボリックリンクはサポートしていません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="280"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>対象ファイルは無視した一覧に登録しています</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="283"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>ファイルに無効な文字が含まれているため、クロスプラットフォーム環境での同期ができません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="438"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>同期ジャーナルの初期化ができません。</translation>
     </message>
 </context>
 <context>

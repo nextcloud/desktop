@@ -1653,12 +1653,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="87"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>موفقیت</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync موفق به ایجاد یک فایل قفل شده، نشد.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="93"/>
@@ -1673,27 +1673,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="100"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;ماژول %1 برای csync نمی تواند بارگذاری شود.&lt;br/&gt;لطفا نصب را بررسی کنید!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="103"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>سیستم زمان بر روی این مشتری با سیستم زمان بر روی سرور متفاوت است.لطفا از خدمات هماهنگ سازی زمان (NTP) بر روی ماشین های سرور و کلاینت استفاده کنید تا زمان ها یکسان باقی بمانند.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="108"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation type="unfinished"/>
+        <translation>CSync  نوع فایل های سیستم را نتوانست تشخیص بدهد.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="111"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation type="unfinished"/>
+        <translation>CSync هنگام پردازش درختان داخلی یک خطا دریافت نمود.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="114"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync موفق به رزرو حافظه نشد است.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="117"/>
@@ -1703,37 +1703,37 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="120"/>
         <source>CSync processing step update failed.</source>
-        <translation type="unfinished"/>
+        <translation>مرحله به روز روسانی پردازش CSync ناموفق بود.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="123"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>مرحله تطبیق پردازش CSync ناموفق بود.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="126"/>
         <source>CSync processing step propagate failed.</source>
-        <translation type="unfinished"/>
+        <translation>مرحله گسترش پردازش CSync ناموفق بود.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="129"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;پوشه هدف وجود ندارد.&lt;/p&gt;&lt;p&gt;لطفا راه اندازی همگام سازی را بررسی کنید.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="133"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation type="unfinished"/>
+        <translation>یک فایل از راه دور نمی تواند نوشته شود. لطفا دسترسی از راه دور را بررسی نمایید.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="137"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation type="unfinished"/>
+        <translation>بر روی فایل سیستمی محلی نمی توانید چیزی بنویسید.لطفا مجوزش را بررسی کنید.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="140"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation type="unfinished"/>
+        <translation>عدم موفقیت CSync  برای اتصال از طریق یک پروکسی.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="143"/>
@@ -1743,27 +1743,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="146"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>عدم موفقیت CSync  برای مراجعه به پروکسی یا سرور.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="149"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>عدم موفقیت CSync  برای اعتبار دادن در %1 سرور.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="152"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>عدم موفقیت CSync برای اتصال به شبکه.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="155"/>
         <source>A network connection timeout happend.</source>
-        <translation type="unfinished"/>
+        <translation>اتصال به یک شبکه متوقف شده است.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="158"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>خطا در انتقال HTTP اتفاق افتاده است.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="161"/>
@@ -1778,18 +1778,18 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="167"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync برای ایجاد یک پوشه که در حال حاضر موجود است تلاش کرده است.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="170"/>
         <location filename="../src/mirall/syncengine.cpp" line="173"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: فضا در %1 سرور در دسترس نیست.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="176"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>خطای نامشخص CSync </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="179"/>
@@ -1799,7 +1799,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happend.</source>
-        <translation type="unfinished"/>
+        <translation>یک خطای داخلی به شماره ی %1 اتفاق افتاد.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="242"/>

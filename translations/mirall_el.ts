@@ -1662,178 +1662,178 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="87"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>Επιτυχία.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε να δημιουργήσει ένα αρχείο κλειδώματος.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="93"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε να φορτώσει ή να δημιουργήσει το αρχείο καταλόγου. Βεβαιωθείτε ότι έχετε άδειες ανάγνωσης και εγγραφής στον τοπικό κατάλογο συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="97"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε να εγγράψει στο αρχείο καταλόγου.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="100"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Το πρόσθετο του %1 για το csync δεν μπόρεσε να φορτωθεί.&lt;br/&gt;Παρακαλούμε επαληθεύσετε την εγκατάσταση!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="103"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>Η ώρα του συστήματος μεταξύ του τοπικού υπολογιστή και του διακομιστή διαφέρει πάρα πολύ. Παρακαλούμε χρησιμοποιήστε μια υπηρεσία συγχρονισμός του χρόνου (NTP) και στους δύο υπολογιστές.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="108"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation type="unfinished"/>
+        <translation>To CSync δεν μπορούσε να ανιχνεύσει τον τύπο του αρχείου συστήματος.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="111"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync έλαβε κάποιο μήνυμα λάθους κατά την επεξεργασία της εσωτερικής διεργασίας.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="114"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε να διατηρήσει τη μνήμη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="117"/>
         <source>CSync fatal parameter error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync μοιραίο σφαλμα παράμετρου.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="120"/>
         <source>CSync processing step update failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ενημέρωση στάδιο επεξεργασίας απέτυχε. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="123"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync στάδιο επεξεργασίας συμφιλίωση απέτυχε. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="126"/>
         <source>CSync processing step propagate failed.</source>
-        <translation type="unfinished"/>
+        <translation>Η προώθηση του CSync απέτυχε.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="129"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ο στοχευμένος κατάλογος δεν υπάρχει.&lt;/p&gt;&lt;p&gt;Παρακαλώ ελέγξτε τις ρυθμίσεις συγχρονισμού.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="133"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation type="unfinished"/>
+        <translation>Ένα απομακρυσμένο αρχείο δεν μπόρεσε να επεξεργαστεί. Παρακαλούμε ελέγξτε την απομακρυσμένη πρόσβαση.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="137"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Το τοπικό σύστημα αρχείων δεν μπορεί να εγγράψει. Παρακαλούμε ελέγξτε τα δικαιώματα.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="140"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε να συνδεθεί μέσω ενός proxy. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="143"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync αδυναμία ελέγχου ταυτότητας στο διακομιστή μεσολάβησης.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="146"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync απέτυχε να lookup μεσολάβησης ή διακομιστή. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="149"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync απέτυχε τον έλεγχο ταυτότητας στο 1% διακομιστή. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="152"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε να συνδεθεί με το δίκτυο.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="155"/>
         <source>A network connection timeout happend.</source>
-        <translation type="unfinished"/>
+        <translation>Συνέβη ένα χρονικό όριο σύνδεσης δικτύου. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="158"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>Ένα σφάλμα μετάδοσης HTTP συνέβη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="161"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync απέτυχε λόγω μη γίνεται deniend άδεια. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="164"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε να αποκτήσει πρόσβαση</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="167"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync προσπαθησε να δημιουργησει εναν χωρο αποθηκευσης που υπηρχε ηδη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="170"/>
         <location filename="../src/mirall/syncengine.cpp" line="173"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Δεν υπαρχει διαθεσιμος χωρος στον %1 διακομιστη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="176"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync αγνωστο σφαλμα.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="179"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Ματαιώθηκε από το χρήστη</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happend.</source>
-        <translation type="unfinished"/>
+        <translation>Ένα εσωτερικό σφάλμα με αριθμό %1 συνέβη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="242"/>
         <source>The item is not synced because of previous errors:</source>
-        <translation type="unfinished"/>
+        <translation>Αυτό το αντικείμενο δεν θα συγχρονιστεί λόγω προηγούμενων σφαλμάτων:</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="277"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Οι συμβολικού σύνδεσμοι δεν υποστηρίζονται για το συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="280"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο περιέχεται στη λίστα αρχείων προς αγνόηση.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="283"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο περιέχει άκυρους χαρακτήρες που δεν μπορούν να συγχρονιστούν σε όλα τα συστήματα.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="438"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία προετοιμασίας αρχείου συγχρονισμού.</translation>
     </message>
 </context>
 <context>

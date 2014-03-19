@@ -1663,178 +1663,178 @@ Proovi neid uuesti sünkroniseerida.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="87"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>Korras.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync lukustusfaili loomine ebaõnnestus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="93"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>Csync ei suutnud avada või luua registri faili.  Tee kindlaks et sul on õigus lugeda ja kirjutada kohalikus sünkrooniseerimise kataloogis</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="97"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ei suutnud luua registri faili.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="100"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ei suuda laadida csync lisa %1.&lt;br/&gt;Palun kontrolli paigaldust!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="103"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation type="unfinished"/>
+        <translation>Kliendi arvuti kellaeg erineb serveri omast. Palun kasuta õige aja hoidmiseks kella sünkroniseerimise teenust (NTP) nii serveris kui kliendi arvutites, et kell oleks kõikjal õige.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="108"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ei suutnud tuvastada failisüsteemi tüüpi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="111"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation type="unfinished"/>
+        <translation>CSync sai vea sisemiste andmestruktuuride töötlemisel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="114"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ei suutnud mälu reserveerida.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="117"/>
         <source>CSync fatal parameter error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync parameetri saatuslik viga.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="120"/>
         <source>CSync processing step update failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync uuendusprotsess ebaõnnestus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="123"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync tasakaalustuse protsess ebaõnnestus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="126"/>
         <source>CSync processing step propagate failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync edasikandeprotsess ebaõnnestus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="129"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Sihtkataloogi ei eksisteeri.&lt;/p&gt;&lt;p&gt;Palun kontrolli sünkroniseeringu seadistust&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="133"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation type="unfinished"/>
+        <translation>Eemalolevasse faili ei saa kirjutada. Palun kontrolli kaugühenduse ligipääsu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="137"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Kohalikku failissüsteemi ei saa kirjutada. Palun kontrolli õiguseid.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="140"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ühendus läbi puhverserveri ebaõnnestus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="143"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ei suutnud puhverserveris autoriseerida.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="146"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>Csync ei suuda leida puhverserverit.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="149"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync autoriseering serveris %1 ebaõnnestus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="152"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>CSync võrguga ühendumine ebaõnnestus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="155"/>
         <source>A network connection timeout happend.</source>
-        <translation type="unfinished"/>
+        <translation>Toimus võrgukatkestus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="158"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>HTTP ülekande viga.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="161"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ebaõnnestus ligipääsu puudumisel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="164"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>CSyncile ligipääs ebaõnnestus</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="167"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Csync proovis tekitada kataloogi, mis oli juba olemas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="170"/>
         <location filename="../src/mirall/syncengine.cpp" line="173"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Serveris %1 on ruum otsas.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="176"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync tuvastamatu viga.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="179"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Kasutaja poolt tühistatud</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happend.</source>
-        <translation type="unfinished"/>
+        <translation>Tekkis sisemine viga number %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="242"/>
         <source>The item is not synced because of previous errors:</source>
-        <translation type="unfinished"/>
+        <translation>Üksust ei sünkroniseeritud eelnenud vigade tõttu:</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="277"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Sümboolsed lingid ei ole sünkroniseerimisel toetatud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="280"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Fail on märgitud ignoreeritavate nimistus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="283"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>Fail sisaldab sobimatuid sümboleid, mida ei saa sünkroniseerida erinevate platvormide vahel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="438"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Ei suuda lähtestada sünkroniseeringu zurnaali.</translation>
     </message>
 </context>
 <context>
