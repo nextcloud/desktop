@@ -296,8 +296,26 @@ void GETFileJob::start() {
 
 void GETFileJob::slotReadyRead()
 {
-    // FIXME: error handling (hard drive full, ....)
-    _device->write(reply()->readAll());
+    int bufferSize = qMax(1024*8ll , reply()->bytesAvailable());
+    QByteArray buffer(bufferSize, Qt::Uninitialized);
+
+    while(reply()->bytesAvailable() > 0) {
+        qint64 r = reply()->read(buffer.data(), bufferSize);
+        if (r < 0) {
+            _errorString = reply()->errorString();
+            qDebug() << "Error while reading from device: " << _errorString;
+            reply()->abort();
+            return;
+        }
+
+        qint64 w = _device->write(buffer.constData(), r);
+        if (w != r) {
+            _errorString = _device->errorString();
+            qDebug() << "Error while writing to file" << w << r <<  _errorString;
+            reply()->abort();
+            return;
+        }
+    }
 }
 
 
@@ -395,7 +413,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         }
         _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         _propagator->_activeJobs--;
-        done(classifyError(err, _item._httpErrorCode), job->reply()->errorString());
+        done(classifyError(err, _item._httpErrorCode), job->errorString());
         return;
     }
 

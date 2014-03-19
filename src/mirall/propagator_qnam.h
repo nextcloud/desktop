@@ -97,7 +97,9 @@ class GETFileJob : public AbstractNetworkJob {
     Q_OBJECT
     QIODevice* _device;
     QMap<QByteArray, QByteArray> _headers;
+    QString _errorString;
 public:
+
     // DOES NOT take owncership of the device.
     explicit GETFileJob(Account* account, const QString& path, QIODevice *device,
                         const QMap<QByteArray, QByteArray> &headers, QObject* parent = 0)
@@ -107,6 +109,10 @@ public:
     virtual void finished() {
         emit finishedSignal();
     }
+
+    QString errorString() {
+        return _errorString.isEmpty() ? reply()->errorString() : _errorString;
+    };
 
 signals:
     void finishedSignal();
