@@ -469,7 +469,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
     }
 
     if( ctx->statedb.by_fileid_stmt == NULL ) {
-        const char *query = "SELECT * FROM metadata WHERE fileid='?1'";
+        const char *query = "SELECT * FROM metadata WHERE fileid=?1";
 
         rc = sqlite3_prepare_v2(ctx->statedb.db, query, strlen(query), &ctx->statedb.by_fileid_stmt, NULL);
         if( rc != SQLITE_OK ) {
