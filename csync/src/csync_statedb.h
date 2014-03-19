@@ -33,6 +33,10 @@
 #ifndef _CSYNC_STATEDB_H
 #define _CSYNC_STATEDB_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "c_lib.h"
 #include "csync_private.h"
 
@@ -114,6 +118,10 @@ typedef struct csync_progressinfo_s {
   char *tmpfile;
   char *error_string;
 } csync_progressinfo_t;
+
+#ifdef __cplusplus
+}
+#endif
 
 /**
  * }@
