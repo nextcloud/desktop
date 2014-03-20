@@ -79,7 +79,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
     PropagateItemJob *newJob = NULL;
 
     if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item._file )) {
-        if( _item._type != SyncFileItem::Directory ) {
+        if( !_item._isDirectory ) {
             SyncFileItem downloadItem(_item);
             if (downloadItem._instruction == CSYNC_INSTRUCTION_NEW) {
                 // don't try to recover pushing new files

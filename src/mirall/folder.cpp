@@ -314,12 +314,10 @@ void Folder::bubbleUpSyncResult()
 
         } else {
             // add new directories or remove gone away dirs to the watcher
-            if (item._type == SyncFileItem::Directory &&
-                    item._instruction == CSYNC_INSTRUCTION_NEW ) {
+            if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_NEW ) {
                 FolderMan::instance()->addMonitorPath( alias(), path()+item._file );
             }
-            if (item._type == SyncFileItem::Directory &&
-                    item._instruction == CSYNC_INSTRUCTION_REMOVE ) {
+            if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE ) {
                 FolderMan::instance()->removeMonitorPath( alias(), path()+item._file );
             }
 
