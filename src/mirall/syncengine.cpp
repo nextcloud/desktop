@@ -212,7 +212,7 @@ bool SyncEngine::checkBlacklisting( SyncFileItem *item )
         // has changed, it is tried again
         // note that if the retryCount is -1 we never try again.
         if( entry._retryCount == 0 ) {
-            if( item->_dir == SyncFileItem::Up ) { // check the modtime
+            if( item->_direction == SyncFileItem::Up ) { // check the modtime
                 if(item->_modtime == 0 || entry._lastTryModtime == 0) {
                     re = false;
                 } else {
@@ -262,7 +262,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._file = QString::fromUtf8( file->path );
     item._originalFile = item._file;
     item._instruction = file->instruction;
-    item._dir = SyncFileItem::None;
+    item._direction = SyncFileItem::None;
     item._fileId = QString::fromUtf8(file->file_id);
 
     // record the seen files to be able to clean the journal later
@@ -350,7 +350,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         break;
     }
 
-    item._dir = dir;
+    item._direction = dir;
     // check for blacklisting of this item.
     // if the item is on blacklist, the instruction was set to IGNORE
     checkBlacklisting( &item );
@@ -530,7 +530,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     if (!_hasFiles && !_syncedItems.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be removed, asking the user";
         bool cancel = false;
-        emit aboutToRemoveAllFiles(_syncedItems.first()._dir, &cancel);
+        emit aboutToRemoveAllFiles(_syncedItems.first()._direction, &cancel);
         if (cancel) {
             qDebug() << Q_FUNC_INFO << "Abort sync";
             return;

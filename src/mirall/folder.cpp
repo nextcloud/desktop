@@ -323,7 +323,7 @@ void Folder::bubbleUpSyncResult()
                 FolderMan::instance()->removeMonitorPath( alias(), path()+item._file );
             }
 
-            if (item._dir == SyncFileItem::Down) {
+            if (item._direction == SyncFileItem::Down) {
                 switch (item._instruction) {
                 case CSYNC_INSTRUCTION_NEW:
                     newItems++;
@@ -354,7 +354,7 @@ void Folder::bubbleUpSyncResult()
                     // nothing.
                     break;
                 }
-            } else if( item._dir == SyncFileItem::None ) { // ignored files counting.
+            } else if( item._direction == SyncFileItem::None ) { // ignored files counting.
                 if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
                     ignoredItems++;
                 }

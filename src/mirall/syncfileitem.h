@@ -73,7 +73,7 @@ public:
     QString _file;
     QString _renameTarget;
     Type      _type;
-    Direction _dir;
+    Direction _direction;
     bool _isDirectory;
 
     // Variables used by the propagator

@@ -28,7 +28,7 @@ QString Progress::asResultString( const SyncFileItem& item)
         case CSYNC_INSTRUCTION_CONFLICT:
         case CSYNC_INSTRUCTION_SYNC:
         case CSYNC_INSTRUCTION_NEW:
-            if (item._dir != SyncFileItem::Up)
+            if (item._direction != SyncFileItem::Up)
                 return QCoreApplication::translate( "progress", "Downloaded");
             else
                 return QCoreApplication::translate( "progress", "Uploaded");
@@ -48,7 +48,7 @@ QString Progress::asActionString( const SyncFileItem &item )
     case CSYNC_INSTRUCTION_CONFLICT:
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_NEW:
-        if (item._dir != SyncFileItem::Up)
+        if (item._direction != SyncFileItem::Up)
             return QCoreApplication::translate( "progress", "downloading");
         else
             return QCoreApplication::translate( "progress", "uploading");

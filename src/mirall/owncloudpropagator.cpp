@@ -91,14 +91,14 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
                 // the file was removed or renamed, just recover the old one
                 downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
             }
-            downloadItem._dir = SyncFileItem::Down;
+            downloadItem._direction = SyncFileItem::Down;
             newJob = new PropagateDownloadFileLegacy(_propagator, downloadItem);
         } else {
             // Directories are harder to recover.
             // But just re-create the directory, next sync will be able to recover the files
             SyncFileItem mkdirItem(_item);
             mkdirItem._instruction = CSYNC_INSTRUCTION_SYNC;
-            mkdirItem._dir = SyncFileItem::Down;
+            mkdirItem._direction = SyncFileItem::Down;
             newJob = new PropagateLocalMkdir(_propagator, mkdirItem);
             // Also remove the inodes and fileid from the db so no further renames are tried for
             // this item.
@@ -134,11 +134,11 @@ void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
 PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
-            if (item._dir == SyncFileItem::Down) return new PropagateLocalRemove(this, item);
+            if (item._direction == SyncFileItem::Down) return new PropagateLocalRemove(this, item);
             else return new PropagateRemoteRemove(this, item);
         case CSYNC_INSTRUCTION_NEW:
             if (item._isDirectory) {
-                if (item._dir == SyncFileItem::Down) return new PropagateLocalMkdir(this, item);
+                if (item._direction == SyncFileItem::Down) return new PropagateLocalMkdir(this, item);
                 else return new PropagateRemoteMkdir(this, item);
             }   //fall trough
         case CSYNC_INSTRUCTION_SYNC:
@@ -148,20 +148,20 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
                 return 0;
             }
             if (useLegacyJobs()) {
-                if (item._dir != SyncFileItem::Up) {
+                if (item._direction != SyncFileItem::Up) {
                     return new PropagateDownloadFileLegacy(this, item);
                 } else {
                     return new PropagateUploadFileLegacy(this, item);
                 }
             } else {
-                if (item._dir != SyncFileItem::Up) {
+                if (item._direction != SyncFileItem::Up) {
                     return new PropagateDownloadFileQNAM(this, item);
                 } else {
                     return new PropagateUploadFileQNAM(this, item);
                 }
             }
         case CSYNC_INSTRUCTION_RENAME:
-            if (item._dir == SyncFileItem::Up) {
+            if (item._direction == SyncFileItem::Up) {
                 return new PropagateRemoteRename(this, item);
             } else {
                 return new PropagateLocalRename(this, item);
