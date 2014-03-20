@@ -80,7 +80,6 @@ public:
     QScopedPointer<PropagatorJob>_firstJob;
 
     // all the sub files or sub directories.
-    //TODO:  in the future, all sub job can be run in parallel
     QVector<PropagatorJob *> _subJobs;
 
     SyncFileItem _item;

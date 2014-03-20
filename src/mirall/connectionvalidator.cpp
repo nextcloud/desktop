@@ -124,7 +124,6 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
     _account->setState(Account::Disconnected);
 
-    // ### TODO
     _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
     _errors.append( reply->errorString() );
     _networkError = (reply->error() != QNetworkReply::NoError);

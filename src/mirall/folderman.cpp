@@ -393,7 +393,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
     if( ! _scheduleQueue.contains(alias ) && _folderMap.contains(alias) ) {
         Folder *f = _folderMap[alias];
         if( f ) {
-            if( f->syncEnabled() ) { // FIXME: check if that is ok
+            if( f->syncEnabled() ) {
                 f->prepareToSync();
             } else {
                 qDebug() << "Folder is not enabled, not scheduled!";
