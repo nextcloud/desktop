@@ -91,6 +91,8 @@ private:
     QAction *_actionHelp;
     QAction *_actionQuit;
 
+    QList<QAction*> _recentItemsActions;
+
     QSignalMapper *_folderOpenActionMapper;
     QSignalMapper *_recentItemsMapper;
 

@@ -370,28 +370,15 @@ void ownCloudGui::slotRefreshQuotaDisplay( qint64 total, qint64 used )
 void ownCloudGui::slotRebuildRecentMenus()
 {
     _recentActionsMenu->clear();
-    // TODO
-    //_recentActionsMenu->addAction(tr("No items synced recently"))->setEnabled(false);
-/*           QString kindStr = Progress::asResultString(info);
-           QString timeStr = info.timestamp.toString("hh:mm");
-           QString actionText = tr("%1 (%2, %3)").arg(info.current_file).arg(kindStr).arg(timeStr);
-           QAction *action = _recentActionsMenu->addAction( actionText );
-            Folder *folder = FolderMan::instance()->folder(info.folder);
-            if (folder) {
-                QString fullPath = folder->path() + '/' + info.current_file;
-                if (QFile(fullPath).exists()) {
-                    _recentItemsMapper->setMapping(action, fullPath);
-                    connect(action, SIGNAL(triggered()), _recentItemsMapper, SLOT(map()));
-                } else {
-                    action->setEnabled(false);
-                }
-            }
+    if (!_recentItemsActions.isEmpty()) {
+        foreach(QAction *a, _recentItemsActions) {
+            _recentActionsMenu->addAction(a);
         }
-    }*/
-
-
+        _recentActionsMenu->addSeparator();
+    } else {
+        _recentActionsMenu->addAction(tr("No items synced recently"))->setEnabled(false);
+    }
     // add a more... entry.
-//    _recentActionsMenu->addSeparator();
     _recentActionsMenu->addAction(_actionRecent);
 }
 
@@ -408,7 +395,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
     _actionStatus->setText(tr("Syncing %1 of %2 (%3 of %4)")
         .arg(currentFile).arg(progress._totalFileCount).arg(s1, s2));
 
-            _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
+    _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
 
     if (!progress._lastCompletedItem.isEmpty()) {
 
@@ -418,11 +405,30 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
             _actionRecent->setIcon(warnIcon);
         }
 
-        slotRebuildRecentMenus();
-
-        if (progress._completedFileCount == progress._totalFileCount) {
-            QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
+        QString kindStr = Progress::asResultString(progress._lastCompletedItem);
+        QString timeStr = QTime::currentTime().toString("hh:mm");
+        QString actionText = tr("%1 (%2, %3)").arg(progress._lastCompletedItem._file, kindStr, timeStr);
+        QAction *action = new QAction(actionText, this);
+        Folder *f = FolderMan::instance()->folder(folder);
+        if (f) {
+            QString fullPath = f->path() + '/' + progress._lastCompletedItem._file;
+            if (QFile(fullPath).exists()) {
+                _recentItemsMapper->setMapping(action, fullPath);
+                connect(action, SIGNAL(triggered()), _recentItemsMapper, SLOT(map()));
+            } else {
+                action->setEnabled(false);
+            }
         }
+        if (_recentItemsActions.length() > 5) {
+            _recentItemsActions.takeFirst()->deleteLater();
+        }
+        _recentItemsActions.append(action);
+
+        slotRebuildRecentMenus();
+    }
+
+    if (progress._completedFileCount == progress._totalFileCount) {
+        QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
     }
 }
 
