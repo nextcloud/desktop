@@ -22,7 +22,6 @@
 
 namespace Mirall {
 
-// FIXME: Unhack this.
 class SyncFileItem {
 public:
     enum Direction {
