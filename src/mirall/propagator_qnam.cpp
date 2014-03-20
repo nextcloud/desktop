@@ -288,10 +288,29 @@ void GETFileJob::start() {
         qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
     }
 
+    connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(slotMetaDataChanged()));
     connect(reply(), SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
     connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SIGNAL(downloadProgress(qint64,qint64)));
 
     AbstractNetworkJob::start();
+}
+
+void GETFileJob::slotMetaDataChanged()
+{
+    QByteArray etag = parseEtag(reply()->rawHeader("Etag"));
+
+    if (etag.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid";
+        _errorString = tr("No E-Tag received from server, check Proxy/Gateway");
+        reply()->abort();
+        return;
+    } else if (!_expectedEtagForResume.isEmpty() && _expectedEtagForResume != etag) {
+        qDebug() << Q_FUNC_INFO <<  "We received a different E-Tag for resuming!"
+                << _expectedEtagForResume << "vs" << etag;
+        _errorString = tr("We received a different E-Tag for resuming. Retrying next time.");
+        reply()->abort();
+        return;
+    }
 }
 
 void GETFileJob::slotReadyRead()
@@ -319,6 +338,7 @@ void GETFileJob::slotReadyRead()
 }
 
 
+
 void PropagateDownloadFileQNAM::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
@@ -329,6 +349,7 @@ void PropagateDownloadFileQNAM::start()
     emit progress(_item, 0);
 
     QString tmpFileName;
+    QByteArray expectedEtagForResume;
     const SyncJournalDb::DownloadInfo progressInfo = _propagator->_journal->getDownloadInfo(_item._file);
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
@@ -337,7 +358,7 @@ void PropagateDownloadFileQNAM::start()
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
-            _expectedEtagForResume = progressInfo._etag;
+            expectedEtagForResume = progressInfo._etag;
         }
 
     }
@@ -386,7 +407,9 @@ void PropagateDownloadFileQNAM::start()
         _startSize = done;
     }
 
-    _job = new GETFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + _item._file, &_tmpFile, headers);
+    _job = new GETFileJob(AccountManager::instance()->account(),
+                          _propagator->_remoteFolder + _item._file,
+                          &_tmpFile, headers, expectedEtagForResume);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
     connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
     _propagator->_activeJobs ++;

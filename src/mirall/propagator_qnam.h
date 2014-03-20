@@ -98,12 +98,15 @@ class GETFileJob : public AbstractNetworkJob {
     QIODevice* _device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
+    QByteArray _expectedEtagForResume;
 public:
 
     // DOES NOT take owncership of the device.
     explicit GETFileJob(Account* account, const QString& path, QIODevice *device,
-                        const QMap<QByteArray, QByteArray> &headers, QObject* parent = 0)
-    : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers) {}
+                        const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
+                        QObject* parent = 0)
+    : AbstractNetworkJob(account, path, parent),
+      _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume) {}
 
     virtual void start();
     virtual void finished() {
@@ -119,13 +122,13 @@ signals:
     void downloadProgress(qint64,qint64);
 private slots:
     void slotReadyRead();
+    void slotMetaDataChanged();
 };
 
 
 class PropagateDownloadFileQNAM : public PropagateItemJob {
     Q_OBJECT
     QPointer<GETFileJob> _job;
-    QByteArray _expectedEtagForResume;
 
 //  QFile *_file;
     QFile _tmpFile;
