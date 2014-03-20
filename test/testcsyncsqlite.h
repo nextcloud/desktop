@@ -45,7 +45,7 @@ private slots:
 
         memset(&_ctx, 0, sizeof(MY_CSYNC));
 
-        _ctx.statedb.file = "./test_journal.db";
+        _ctx.statedb.file = c_strdup("./test_journal.db");
 
         rc = csync_statedb_load((CSYNC*)(&_ctx), _ctx.statedb.file, &(_ctx.statedb.db));
         Q_ASSERT(rc == 0);
@@ -115,6 +115,7 @@ private slots:
     }
 
     void cleanupTestCase() {
+        SAFE_FREE(_ctx.statedb.file);
         csync_statedb_close((CSYNC*)(&_ctx), _written);
     }
 
