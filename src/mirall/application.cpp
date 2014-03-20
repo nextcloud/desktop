@@ -313,8 +313,6 @@ void Application::slotownCloudWizardDone( int res )
         qDebug() << "Set up " << cnt << " folders.";
         // We have some sort of configuration. Enable autostart
         Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
-// FIXME!
-//        _statusDialog->setFolderList( folderMan->map() );
     }
     folderMan->setSyncEnabled( true );
     if( res == QDialog::Accepted ) {
