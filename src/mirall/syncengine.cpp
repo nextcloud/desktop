@@ -238,9 +238,7 @@ bool SyncEngine::checkBlacklisting( SyncFileItem *item )
         if( re ) {
             qDebug() << "Item is on blacklist: " << entry._file << "retries:" << entry._retryCount;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            // FIXME: put the error string into an .arg(..) later
-            item->_errorString = tr("The item is not synced because of previous errors:")
-                    + QLatin1String(" ")+ entry._errorString;
+            item->_errorString = tr("The item is not synced because of previous errors: %1").arg(entry._errorString);
         }
     }
 
@@ -544,8 +542,6 @@ void SyncEngine::slotUpdateFinished(int updateResult)
 
     ne_session_s *session = 0;
     // that call to set property actually is a get which will return the session
-    // FIXME add a csync_get_module_property to csync
-
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
     Q_ASSERT(session);
 
