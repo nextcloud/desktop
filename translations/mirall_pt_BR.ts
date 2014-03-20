@@ -147,13 +147,13 @@
         <location filename="../src/mirall/accountsettings.cpp" line="582"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="585"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="680"/>
@@ -1964,7 +1964,7 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="408"/>
         <source>Syncing %1 of %2 (%3 of %4)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1 de %2 (%3 de %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="431"/>
@@ -2276,17 +2276,17 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>eliminando</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>movendo</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
         <source>processing</source>
-        <translation type="unfinished"/>
+        <translation>processando</translation>
     </message>
 </context>
 <context>
