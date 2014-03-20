@@ -127,7 +127,8 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
 
-    CmdOptions options = {};
+    CmdOptions options;
+    options.silent = false;
     ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
