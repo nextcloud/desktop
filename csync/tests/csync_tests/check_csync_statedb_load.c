@@ -43,6 +43,7 @@ static void setup(void **state) {
 
     csync_set_config_dir(csync, "/tmp/check_csync1/");
 
+    csync->statedb.file = c_strdup( TESTDB );
     *state = csync;
 }
 
@@ -123,7 +124,7 @@ static void check_csync_statedb_close(void **state)
     assert_int_equal(rc, 0);
     modtime = sb.st_mtime;
 
-    rc = csync_statedb_close(TESTDB, csync->statedb.db, 0);
+    rc = csync_statedb_close(csync, 0);
     assert_int_equal(rc, 0);
 
     rc = _tstat(testdb, &sb);
@@ -140,7 +141,7 @@ static void check_csync_statedb_close(void **state)
     sleep(1);
 
     /* statedb written */
-    rc = csync_statedb_close(TESTDB, csync->statedb.db, 1);
+    rc = csync_statedb_close(csync, 1);
     assert_int_equal(rc, 0);
 
     rc = _tstat(testdb, &sb);

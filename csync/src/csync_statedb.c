@@ -307,17 +307,15 @@ int csync_statedb_close(CSYNC *ctx, int jwritten) {
   /* close the temporary database */
   sqlite3_close(ctx->statedb.db);
 
-  if (asprintf(&statedb_tmp, "%s.ctmp", ctx->statedb.file) < 0) {
-    return -1;
-  }
-
-  /* If we successfully synchronized, overwrite the original statedb */
-
-  /*
-   * Check the integrity of the tmp db. If ok, overwrite the old database with
-   * the tmp db.
+  /* If we successfully synchronized, overwrite the original statedb
+   *
+   * First check the integrity of the tmp db. If ok, overwrite the old
+   * database with the tmp db.
    */
   if (jwritten) {
+      if (!ctx->statedb.file || asprintf(&statedb_tmp, "%s.ctmp", ctx->statedb.file) < 0) {
+        return -1;
+      }
       /* statedb check returns either
        * 0  : database exists and is fine
        * 1  : new database was set up

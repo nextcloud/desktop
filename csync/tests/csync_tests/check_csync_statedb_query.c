@@ -237,7 +237,7 @@ static void check_csync_statedb_get_stat_by_hash_not_found(void **state)
     CSYNC *csync = *state;
     csync_file_stat_t *tmp;
 
-    tmp = csync_statedb_get_stat_by_hash(csync->statedb.db, (uint64_t) 666);
+    tmp = csync_statedb_get_stat_by_hash(csync, (uint64_t) 666);
     assert_null(tmp);
 
     free(tmp);
@@ -248,7 +248,7 @@ static void check_csync_statedb_get_stat_by_inode(void **state)
     CSYNC *csync = *state;
     csync_file_stat_t *tmp;
 
-    tmp = csync_statedb_get_stat_by_inode(csync->statedb.db, (ino_t) 23);
+    tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 23);
     assert_non_null(tmp);
 
     assert_int_equal(tmp->phash, 42);
@@ -262,7 +262,7 @@ static void check_csync_statedb_get_stat_by_inode_not_found(void **state)
     CSYNC *csync = *state;
     csync_file_stat_t *tmp;
 
-    tmp = csync_statedb_get_stat_by_inode(csync->statedb.db, (ino_t) 666);
+    tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 666);
     assert_null(tmp);
 }
 
