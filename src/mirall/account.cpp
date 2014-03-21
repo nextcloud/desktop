@@ -68,6 +68,7 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
     , _state(Account::Disconnected)
+    , _davPath("remote.php/webdav/")
 {
     qRegisterMetaType<Account*>("Account*");
 }

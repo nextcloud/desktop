@@ -72,7 +72,8 @@ public:
                  InvalidCredidential /// The credidential are invalids and we are asking for them to the user
                };
 
-    static QString davPath() { return "remote.php/webdav/"; }
+    QString davPath() const { return _davPath; }
+    void setDavPath(const QString&s) { _davPath = s; }
 
     Account(AbstractSslErrorHandler *sslErrorHandler = 0, QObject *parent = 0);
     ~Account();
@@ -157,6 +158,7 @@ private:
     bool _treatSslErrorsAsFailure;
     int _state;
     static QString _configFileName;
+    QString _davPath; // default "remote.php/webdav/";
 };
 
 }
