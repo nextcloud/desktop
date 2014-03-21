@@ -75,6 +75,7 @@ const char userC[] = "user";
 
 class TokenCredentialsAccessManager : public MirallAccessManager {
 public:
+    friend class TokenCredentials;
     TokenCredentialsAccessManager(const TokenCredentials *cred, QObject* parent = 0)
         : MirallAccessManager(parent), _cred(cred) {}
 protected:
@@ -83,6 +84,7 @@ protected:
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
         //qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
+        req.setRawHeader(QByteArray("Cookie"), _cred->_token.toLocal8Bit());
         return MirallAccessManager::createRequest(op, req, outgoingData);
     }
 private:
@@ -96,9 +98,10 @@ TokenCredentials::TokenCredentials()
 {
 }
 
-TokenCredentials::TokenCredentials(const QString& user, const QString& password)
+TokenCredentials::TokenCredentials(const QString& user, const QString& password, const QString &token)
     : _user(user),
       _password(password),
+      _token(token),
       _ready(true)
 {
 }
@@ -110,23 +113,7 @@ void TokenCredentials::syncContextPreInit (CSYNC* ctx)
 
 void TokenCredentials::syncContextPreStart (CSYNC* ctx)
 {
-    // TODO: This should not be a part of this method, but we don't have
-    // any way to get "session_key" module property from csync. Had we
-    // have it, then we could remove this code and keep it in
-    // csyncthread code (or folder code, git remembers).
-    QList<QNetworkCookie> cookies(AccountManager::instance()->account()->lastAuthCookies());
-    QString cookiesAsString;
-
-    // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
-    // when https://github.com/owncloud/core/pull/4042 is merged.
-    foreach(QNetworkCookie c, cookies) {
-        cookiesAsString += c.name();
-        cookiesAsString += '=';
-        cookiesAsString += c.value();
-        cookiesAsString += "; ";
-    }
-
-    csync_set_module_property(ctx, "session_key", cookiesAsString.toLatin1().data());
+    csync_set_module_property(ctx, "session_key", _token.toLocal8Bit().data());
 }
 
 bool TokenCredentials::changed(AbstractCredentials* credentials) const
@@ -142,7 +129,7 @@ bool TokenCredentials::changed(AbstractCredentials* credentials) const
 
 QString TokenCredentials::authType() const
 {
-    return QString::fromLatin1("http");
+    return QString::fromLatin1("token");
 }
 
 QString TokenCredentials::user() const

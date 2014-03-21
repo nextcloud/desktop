@@ -30,13 +30,15 @@ class Job;
 namespace Mirall
 {
 
+class TokenCredentialsAccessManager;
 class TokenCredentials : public AbstractCredentials
 {
     Q_OBJECT
 
 public:
+    friend class TokenCredentialsAccessManager;
     TokenCredentials();
-    TokenCredentials(const QString& user, const QString& password);
+    TokenCredentials(const QString& user, const QString& password, const QString &token);
 
     void syncContextPreInit(CSYNC* ctx);
     void syncContextPreStart(CSYNC* ctx);
@@ -59,6 +61,7 @@ private Q_SLOTS:
 private:
     QString _user;
     QString _password;
+    QString _token;
     bool _ready;
 };
 
