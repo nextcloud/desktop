@@ -398,6 +398,8 @@ static void pre_send_hook(ne_request *req, void *userdata,
 
     if(dav_session.session_key) {
         ne_buffer_concat(header, "Cookie: ", dav_session.session_key, "\r\n", NULL);
+    } else {
+        DEBUG_WEBDAV("csync pre_send_hook We don't have a Auth Cookie (session_key), this is wrong!");
     }
 }
 
