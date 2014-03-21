@@ -177,7 +177,10 @@ int main(int argc, char **argv) {
     SyncJournalDb db(options.source_dir);
     CSyncThread csyncthread(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), &db);
     QObject::connect(&csyncthread, SIGNAL(finished()), &app, SLOT(quit()));
-    csyncthread.startSync();
+
+    // Have to be done async, else, an error while updating does not terminate the event loop.
+    QMetaObject::invokeMethod(&csyncthread, "startSync", Qt::QueuedConnection);
+
 
     app.exec();
 
