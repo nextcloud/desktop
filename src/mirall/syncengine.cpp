@@ -606,6 +606,7 @@ void SyncEngine::slotJobCompleted(const SyncFileItem &item)
     }
 
     emit transmissionProgress(_progressInfo);
+    emit jobCompleted(item);
 }
 
 void SyncEngine::slotFinished()

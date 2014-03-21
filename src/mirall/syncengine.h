@@ -67,6 +67,9 @@ signals:
     // before actual syncing (after update+reconcile)
     void syncItemDisconvered(const SyncFileItem&);
 
+    // after each job (successful or not)
+    void jobCompleted(const SyncFileItem&);
+
     // after sync is done
     void treeWalkResult(const SyncFileItemVector&);
 
