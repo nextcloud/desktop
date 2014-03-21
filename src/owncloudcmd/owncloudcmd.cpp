@@ -126,6 +126,7 @@ int main(int argc, char **argv) {
         qFatal("ne_sock_init failed!");
     }
 
+    csync_set_log_callback( csyncLogCatcher );
     csync_set_log_level(11);
     csync_enable_conflictcopys(_csync_ctx);
     Logger::instance()->setLogFile("-");

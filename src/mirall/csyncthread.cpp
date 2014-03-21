@@ -490,8 +490,6 @@ void CSyncThread::startSync()
     // }
 
     // csync_set_auth_callback( _csync_ctx, getauth );
-    csync_set_log_callback( csyncLogCatcher );
-    csync_set_log_level( 11 );
 
     _syncTime.start();
 
