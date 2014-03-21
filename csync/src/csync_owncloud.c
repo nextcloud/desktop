@@ -970,7 +970,10 @@ static csync_vio_method_handle_t *owncloud_opendir(const char *uri) {
 
     DEBUG_WEBDAV("opendir method called on %s", uri );
 
-    dav_connect( uri );
+    if (dav_connect( uri ) < 0) {
+        DEBUG_WEBDAV("connection failed");
+        return NULL;
+    }
 
     curi = _cleanPath( uri );
     if (is_first_propfind && !dav_session.no_recursive_propfind) {
