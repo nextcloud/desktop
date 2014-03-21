@@ -212,7 +212,9 @@ int main(int argc, char **argv) {
     SyncEngine engine(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(Progress::Info)), &owncloudCmd, SLOT(transmissionProgressSlot()));
-    engine.startSync();
+
+    // Have to be done async, else, an error before exec() does not terminate the event loop.
+    QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);
 
     app.exec();
 

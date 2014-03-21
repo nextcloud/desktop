@@ -480,13 +480,13 @@ static int dav_connect(const char *base_url) {
     DEBUG_WEBDAV("* port %u", port );
     DEBUG_WEBDAV("* path %s", path );
 
-    if( strcmp( scheme, "owncloud" ) == 0 ) {
+    if( strcmp( scheme, "owncloud" ) == 0 || strcmp( scheme, "http" ) == 0 ) {
         strcpy( protocol, "http");
-    } else if( strcmp( scheme, "ownclouds" ) == 0 ) {
+    } else if( strcmp( scheme, "ownclouds" ) == 0 || strcmp( scheme, "https") == 0 ) {
         strcpy( protocol, "https");
         useSSL = 1;
     } else {
-        DEBUG_WEBDAV("Invalid scheme %s, go outa here!", scheme );
+        DEBUG_WEBDAV("Invalid scheme %s, go out here!", scheme );
         rc = -1;
         goto out;
     }
@@ -496,15 +496,6 @@ static int dav_connect(const char *base_url) {
     if (port == 0) {
         port = ne_uri_defaultport(protocol);
     }
-
-#if 0
-    rc = ne_sock_init();
-    DEBUG_WEBDAV("ne_sock_init: %d", rc );
-    if (rc < 0) {
-        rc = -1;
-        goto out;
-    }
-#endif
 
     dav_session.ctx = ne_session_create( protocol, host, port);
 
@@ -898,7 +889,10 @@ csync_vio_handle_t *owncloud_opendir(const char *uri) {
 
     DEBUG_WEBDAV("opendir method called on %s", uri );
 
-    dav_connect( uri );
+    if (dav_connect( uri ) < 0) {
+        DEBUG_WEBDAV("connection failed");
+        return NULL;
+    }
 
     curi = _cleanPath( uri );
     if (is_first_propfind && !dav_session.no_recursive_propfind) {
