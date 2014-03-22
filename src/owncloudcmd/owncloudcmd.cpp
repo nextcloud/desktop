@@ -138,7 +138,7 @@ int main(int argc, char **argv) {
     Account account;
 
     // Find the folder and the original owncloud url
-    QStringList splitted = url.path().split(Account::davPath());
+    QStringList splitted = url.path().split(account.davPath());
     url.setPath(splitted.value(0));
     url.setScheme(url.scheme().replace("owncloud", "http"));
     QString folder = splitted.value(1);

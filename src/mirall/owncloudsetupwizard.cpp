@@ -440,7 +440,7 @@ DetermineAuthTypeJob::DetermineAuthTypeJob(Account *account, QObject *parent)
 
 void DetermineAuthTypeJob::start()
 {
-    QNetworkReply *reply = getRequest(Account::davPath());
+    QNetworkReply *reply = getRequest(account()->davPath());
     setReply(reply);
     setupConnections(reply);
     AbstractNetworkJob::start();
@@ -455,7 +455,7 @@ void DetermineAuthTypeJob::finished()
     }
     if ((reply()->error() == QNetworkReply::AuthenticationRequiredError) || redirection.isEmpty()) {
         emit authType(WizardCommon::HttpCreds);
-    } else if (redirection.toString().endsWith(Account::davPath())) {
+    } else if (redirection.toString().endsWith(account()->davPath())) {
         // do a new run
         _redirects++;
         setReply(getRequest(redirection));
@@ -481,7 +481,7 @@ ValidateDavAuthJob::ValidateDavAuthJob(Account *account, QObject *parent)
 
 void ValidateDavAuthJob::start()
 {
-    QNetworkReply *reply = getRequest(Account::davPath());
+    QNetworkReply *reply = getRequest(account()->davPath());
     setReply(reply);
     setupConnections(reply);
     AbstractNetworkJob::start();
