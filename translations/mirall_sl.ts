@@ -598,12 +598,12 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="304"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Ni prejete oznake s strežnika. Preveriti je treba podatke posredovalnega strežnika ali prehoda.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="310"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Prejeta je različna oznaka za nadaljevanje opravila. Ponovni poskus bo izveden kasneje.</translation>
     </message>
 </context>
 <context>
@@ -1869,12 +1869,12 @@ Te je treba uskladiti znova.</translation>
 <context>
     <name>Mirall::TokenCredentials</name>
     <message>
-        <location filename="../src/creds/tokencredentials.cpp" line="197"/>
+        <location filename="../src/creds/tokencredentials.cpp" line="184"/>
         <source>Enter Password</source>
         <translation>Vnos gesla</translation>
     </message>
     <message>
-        <location filename="../src/creds/tokencredentials.cpp" line="198"/>
+        <location filename="../src/creds/tokencredentials.cpp" line="185"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Vpisati je treba geslo %1 za uporabnika &apos;%2&apos;:</translation>
     </message>
@@ -1979,7 +1979,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="379"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>Ni nedavno usklajenih predmetov</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
@@ -1989,7 +1989,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="410"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="437"/>

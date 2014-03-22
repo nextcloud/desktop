@@ -595,7 +595,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="304"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Ez da E-Tagik jaso zerbitzaritik, egiaztatu Proxy/Gateway</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="310"/>
@@ -1862,12 +1862,12 @@ Saiatu horiek berriz sinkronizatzen.</translation>
 <context>
     <name>Mirall::TokenCredentials</name>
     <message>
-        <location filename="../src/creds/tokencredentials.cpp" line="197"/>
+        <location filename="../src/creds/tokencredentials.cpp" line="184"/>
         <source>Enter Password</source>
         <translation>Sartu Pasahitza</translation>
     </message>
     <message>
-        <location filename="../src/creds/tokencredentials.cpp" line="198"/>
+        <location filename="../src/creds/tokencredentials.cpp" line="185"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Mesedez sartu %1 pasahitza &apos;%2&apos; erabiltzailerako:</translation>
     </message>
@@ -1972,7 +1972,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="379"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>Ez da azken aldian ezer sinkronizatu</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="395"/>

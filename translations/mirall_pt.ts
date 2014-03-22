@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Add Folder</source>
-        <translation>Acrescentar pasta</translation>
+        <translation>Adicionar pasta</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="69"/>
         <source>Remove</source>
-        <translation>Apagar</translation>
+        <translation>Remover</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="55"/>
@@ -111,7 +111,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="116"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>A obter estatísticas de utilização...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="123"/>
@@ -328,7 +328,7 @@
         <location filename="../src/mirall/folder.cpp" line="420"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 foi renomeado para %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="425"/>
@@ -338,7 +338,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="427"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 foi movido para %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="435"/>
@@ -657,7 +657,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="274"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Por favor introduza %1 password para o utilizador &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -844,7 +844,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation>Anfitrião</translation>
+        <translation>Endereço</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="100"/>
@@ -1818,7 +1818,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>O item não está sincronizado devido a erros anteriores: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="275"/>
@@ -1860,14 +1860,14 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
 <context>
     <name>Mirall::TokenCredentials</name>
     <message>
-        <location filename="../src/creds/tokencredentials.cpp" line="197"/>
+        <location filename="../src/creds/tokencredentials.cpp" line="184"/>
         <source>Enter Password</source>
         <translation>Introduza a Palavra-passe</translation>
     </message>
     <message>
-        <location filename="../src/creds/tokencredentials.cpp" line="198"/>
+        <location filename="../src/creds/tokencredentials.cpp" line="185"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Por favor introduza %1 password para o utilizador &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -1975,12 +1975,12 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
         <source>Syncing %1 of %2 (%3 of %4)</source>
-        <translation type="unfinished"/>
+        <translation>A sincronizar %1 de %2 (%3 de %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="410"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="437"/>
@@ -2222,7 +2222,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/main.cpp" line="30"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>Barra de sistema indisponível</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="31"/>

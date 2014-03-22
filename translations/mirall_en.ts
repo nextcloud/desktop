@@ -1861,12 +1861,12 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::TokenCredentials</name>
     <message>
-        <location filename="../src/creds/tokencredentials.cpp" line="197"/>
+        <location filename="../src/creds/tokencredentials.cpp" line="184"/>
         <source>Enter Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/creds/tokencredentials.cpp" line="198"/>
+        <location filename="../src/creds/tokencredentials.cpp" line="185"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation type="unfinished"></translation>
     </message>
