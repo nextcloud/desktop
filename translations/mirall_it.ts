@@ -387,7 +387,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="168"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>È stato trovato un vecchio diario di sincronizzazione &apos;%1&apos;, ma non può essere rimosso. Assicurati che nessuna applicazione lo stia utilizzando.</translation>
+        <translation>È stato trovato un vecchio registro di sincronizzazione &apos;%1&apos;, ma non può essere rimosso. Assicurati che nessuna applicazione lo stia utilizzando.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="744"/>
@@ -1685,12 +1685,12 @@ Prova a sincronizzare nuovamente.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="93"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation>CSync non è riuscito a caricare o a creare il file journal. Assicurati di avere i permessi di lettura e scrittura nella cartella di sincronizzazione locale.</translation>
+        <translation>CSync non è riuscito a caricare o a creare il file di registro. Assicurati di avere i permessi di lettura e scrittura nella cartella di sincronizzazione locale.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="97"/>
         <source>CSync failed to write the journal file.</source>
-        <translation>CSync non è riuscito a scrivere il file journal.</translation>
+        <translation>CSync non è riuscito a scrivere il file di registro.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="100"/>
@@ -1826,7 +1826,7 @@ Prova a sincronizzare nuovamente.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;elemento non è sincronizzato a causa dell&apos;errore precedente: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="275"/>
