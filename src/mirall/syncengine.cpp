@@ -263,7 +263,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._originalFile = item._file;
     item._instruction = file->instruction;
     item._direction = SyncFileItem::None;
-    item._fileId = QString::fromUtf8(file->file_id);
+    item._fileId = file->file_id;
 
     // record the seen files to be able to clean the journal later
     _seenFiles[item._file] = QString();

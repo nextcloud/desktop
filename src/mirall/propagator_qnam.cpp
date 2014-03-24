@@ -240,7 +240,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
     _propagator->_activeJobs--;
 
     // the file id should only be empty for new files up- or downloaded
-    QString fid = QString::fromUtf8(job->reply()->rawHeader("OC-FileID"));
+    QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if( !fid.isEmpty() ) {
         if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
             qDebug() << "WARN: File ID changed!" << _item._fileId << fid;

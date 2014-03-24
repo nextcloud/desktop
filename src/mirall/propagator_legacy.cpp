@@ -122,7 +122,7 @@ void PropagateUploadFileLegacy::start()
         }
 
         // the file id should only be empty for new files up- or downloaded
-        QString fid = QString::fromUtf8( hbf_transfer_file_id( trans.data() ));
+        QByteArray fid = hbf_transfer_file_id( trans.data() );
         if( !fid.isEmpty() ) {
             if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
                 qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
@@ -246,12 +246,12 @@ void PropagateUploadFileLegacy::notify_status_cb(void* userdata, ne_session_stat
 
 
 
-static QString parseFileId(ne_request *req) {
-    QString fileId;
+static QByteArray parseFileId(ne_request *req) {
+    QByteArray fileId;
 
     const char *header = ne_get_response_header(req, "OC-FileId");
     if( header ) {
-        fileId = QString::fromUtf8(header);
+        fileId = header;
     }
     return fileId;
 }
@@ -284,7 +284,7 @@ bool PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
         return false;
     } else {
         _item._etag = parseEtag(ne_get_response_header(req.data(), "etag"));
-        QString fid = parseFileId(req.data());
+        QByteArray fid = parseFileId(req.data());
         if( _item._fileId.isEmpty() ) {
             _item._fileId = fid;
             qDebug() << "FileID was empty, set it to " << _item._fileId;
