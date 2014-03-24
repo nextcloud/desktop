@@ -343,7 +343,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="435"/>
         <source>Sync Activity</source>
-        <translation>Aktivita synchronizace</translation>
+        <translation>Průběh synchronizace</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="692"/>
@@ -1262,7 +1262,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="130"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation>Soubor by odebrán ze sdílení pouze pro čtení, ale jeho obnovení selhalo: %1</translation>
+        <translation>Soubor nebo adresář by odebrán ze sdílení pouze pro čtení, ale jeho obnovení selhalo: %1</translation>
     </message>
 </context>
 <context>
@@ -1286,7 +1286,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="129"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation>Soubor by odebrán ze sdílení pouze pro čtení. Soubor byl obnoven.</translation>
+        <translation>Soubor byl odebrán ze sdílení pouze pro čtení. Soubor byl obnoven.</translation>
     </message>
 </context>
 <context>
@@ -1323,7 +1323,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="158"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>Soubor zde byl editován, ale je součástí sdílení pouze pro čtení. Původní soubor byl obnoven a editovaná verze jje uložena v konfliktním souboru.</translation>
+        <translation>Soubor zde byl editován, ale je součástí sdílení pouze pro čtení. Původní soubor byl obnoven a editovaná verze je uložena v konfliktním souboru.</translation>
     </message>
 </context>
 <context>
@@ -1331,12 +1331,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="190"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>Soubor zde byl editován, ale je součástí sdílení pouze pro čtení. Původní soubor byl obnoven a editovaná verze jje uložena v konfliktním souboru.</translation>
+        <translation>Soubor zde byl editován, ale je součástí sdílení pouze pro čtení. Původní soubor byl obnoven a editovaná verze je uložena v konfliktním souboru.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="207"/>
         <source>Local file changed during sync.</source>
-        <translation>Lokální soubor byl změněn během synchronizace.</translation>
+        <translation>Místní soubor byl změněn během synchronizace.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="217"/>
@@ -1682,12 +1682,12 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
-        <translation>CSync nemůže vytvořit zámek.</translation>
+        <translation>CSync nemůže vytvořit soubor zámku.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="93"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation>CSync se nepodařilo načíst či vytvořit soubor žurnálu. Ujistěte se, že máte oprávnění pro čtení a zápis v lokální synchronizované složce.</translation>
+        <translation>CSync se nepodařilo načíst či vytvořit soubor žurnálu. Ujistěte se, že máte oprávnění pro čtení a zápis v místní synchronizované složce.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="97"/>
@@ -1697,12 +1697,12 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="100"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Modul %1 pro csync nelze načíst.&lt;br/&gt;Zkontrolujte prosím instalaci!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Plugin %1 pro csync nelze načíst.&lt;br/&gt;Zkontrolujte prosím instalaci!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="103"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>Systémový čas na klientovi je rozdílný od systémového času serveru. Použijte, prosím, službu synchronizace času (NTP) na serveru i klientu, aby byl čas na obou strojích stejný.</translation>
+        <translation>Systémový čas na klientovi je rozdílný od systémového času serveru. Použijte, prosím, službu synchronizace času (NTP) na serveru i klientovi, aby byl čas na obou strojích stejný.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="108"/>
@@ -1985,7 +1985,7 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
         <source>Syncing %1 of %2 (%3 of %4)</source>
-        <translation>Synchronizování %1 z %2 (%3 z %4)</translation>
+        <translation>Synchronizace %1 z %2 (%3 z %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="410"/>
@@ -2307,7 +2307,7 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>moving</source>
-        <translation>přesunování</translation>
+        <translation>přesouvání</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
