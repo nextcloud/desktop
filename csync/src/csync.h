@@ -207,6 +207,14 @@ struct csync_tree_walk_file_s {
     const char *rename_path;
     const char *etag;
     const char *file_id;
+    struct {
+        int64_t     size;
+        time_t      modtime;
+        const char *etag;
+        const char *file_id;
+        enum csync_instructions_e instruction;
+    } other;
+
     CSYNC_STATUS error_status;
 };
 typedef struct csync_tree_walk_file_s TREE_WALK_FILE;

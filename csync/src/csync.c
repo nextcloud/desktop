@@ -56,6 +56,8 @@
 
 #include "csync_log.h"
 #include "csync_rename.h"
+#include "c_jhash.h"
+
 
 // Breaking the abstraction for fun and profit.
 #include "csync_owncloud.h"
@@ -341,7 +343,7 @@ int csync_reconcile(CSYNC *ctx) {
       return -1;
   }
 
-  /* Reconciliation for local replica */
+  /* Reconciliation for remote replica */
   csync_gettime(&start);
 
   ctx->current = REMOTE_REPLICA;
@@ -377,12 +379,42 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
     c_rbtree_visit_func *visitor   = NULL;
     _csync_treewalk_context *twctx = NULL;
     TREE_WALK_FILE trav;
+    c_rbtree_t *other_tree = NULL;
+    c_rbnode_t *other_node = NULL;
 
     cur = (csync_file_stat_t *) obj;
     ctx = (CSYNC *) data;
 
     if (ctx == NULL) {
       return -1;
+    }
+
+    /* we need the opposite tree! */
+    switch (ctx->current) {
+    case LOCAL_REPLICA:
+        other_tree = ctx->remote.tree;
+        break;
+    case REMOTE_REPLICA:
+        other_tree = ctx->local.tree;
+        break;
+    default:
+        break;
+    }
+
+    other_node = c_rbtree_find(other_tree, &cur->phash);
+
+    if (!other_node) {
+        /* Check the renamed path as well. */
+        int len;
+        uint64_t h = 0;
+        char *renamed_path = csync_rename_adjust_path(ctx, cur->path);
+
+        if (!c_streq(renamed_path, cur->path)) {
+            len = strlen( renamed_path );
+            h = c_jhash64((uint8_t *) renamed_path, len, 0);
+            other_node = c_rbtree_find(other_tree, &h);
+        }
+        SAFE_FREE(renamed_path);
     }
 
     if (obj == NULL || data == NULL) {
@@ -419,12 +451,28 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.error_status = cur->error_status;
       trav.should_update_etag = cur->should_update_etag;
 
+      if( other_node ) {
+          csync_file_stat_t *other_stat = (csync_file_stat_t*)other_node->data;
+          trav.other.etag = c_strdup(other_stat->etag);
+          trav.other.file_id = c_strdup(other_stat->file_id);
+          trav.other.instruction = other_stat->instruction;
+          trav.other.modtime = other_stat->modtime;
+          trav.other.size = other_stat->size;
+      } else {
+          trav.other.etag = 0;
+          trav.other.file_id = 0;
+          trav.other.instruction = CSYNC_INSTRUCTION_NONE;
+          trav.other.modtime = 0;
+          trav.other.size = 0;
+      }
+
       rc = (*visitor)(&trav, twctx->userdata);
       cur->instruction = trav.instruction;
       if (trav.etag != cur->etag) {
           SAFE_FREE(cur->etag);
           cur->etag = c_strdup(trav.etag);
       }
+
       return rc;
     }
     ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
@@ -480,6 +528,7 @@ int csync_walk_remote_tree(CSYNC *ctx,  csync_treewalk_visit_func *visitor, int 
 
     if(ctx != NULL) {
         ctx->status_code = CSYNC_STATUS_OK;
+        ctx->current = REMOTE_REPLICA;
         tree = ctx->remote.tree;
     }
 
@@ -498,6 +547,7 @@ int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int fi
 
     if (ctx != NULL) {
         ctx->status_code = CSYNC_STATUS_OK;
+        ctx->current = LOCAL_REPLICA;
         tree = ctx->local.tree;
     }
 
