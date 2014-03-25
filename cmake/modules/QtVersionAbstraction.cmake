@@ -28,7 +28,9 @@ if( NOT BUILD_WITH_QT4 )
 
         include_directories(${Qt5Widgets_INCLUDES})
         add_definitions(${Qt5Widgets_DEFINITIONS})
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+        if (NOT WIN32) #implied on Win32
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+        endif(NOT WIN32)
 #        set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 
