@@ -95,9 +95,6 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="toolTip">
-            <string>Enter the URL of the server that you want to connect to (without http or https).</string>
-           </property>
            <property name="placeholderText">
             <string>https://...</string>
            </property>
