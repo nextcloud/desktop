@@ -17,7 +17,7 @@ if( NOT BUILD_WITH_QT4 )
         find_package(Qt5Location REQUIRED)
         find_package(Qt5WebKitWidgets REQUIRED)
 if(APPLE)
-        find_package(Qt5MacExtras REQUIRED))
+        find_package(Qt5MacExtras REQUIRED)
 endif()
 
         message(STATUS "Using Qt 5!")
