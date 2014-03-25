@@ -64,7 +64,7 @@ static const char optionsC[] =
 
 QString applicationTrPath()
 {
-#ifdef Q_OS_LINUX
+#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
     return QString::fromLatin1(DATADIR"/"APPLICATION_EXECUTABLE"/i18n/");
 #endif
 #ifdef Q_OS_MAC
