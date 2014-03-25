@@ -38,7 +38,11 @@ namespace Mirall {
 ownCloudGui::ownCloudGui(Application *parent) :
     QObject(parent),
     _tray(0),
+#if defined(Q_OS_MAC)
+    _settingsDialog(new SettingsDialogMac(this)),
+#else
     _settingsDialog(new SettingsDialog(this)),
+#endif
     _logBrowser(0),
     _contextMenu(0),
     _recentActionsMenu(0),
