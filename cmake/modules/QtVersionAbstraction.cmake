@@ -40,9 +40,9 @@ if( NOT BUILD_WITH_QT4 )
             qt5_add_resources(${ARGN})
         endmacro()
 
-#        find_package(Qt5LinguistTools REQUIRED)
+        find_package(Qt5LinguistTools REQUIRED)
         macro(qt_add_translation)
-#            qt5_add_translation(${ARGN})
+            qt5_add_translation(${ARGN})
         endmacro()
 
         macro(qt_add_dbus_interface)
