@@ -29,7 +29,7 @@
 #include "mirall/folderwatcher_win.h"
 #elif defined(Q_OS_MAC)
 #include "mirall/folderwatcher_mac.h"
-#elif defined(Q_OS_LINUX)
+#elif defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #include "mirall/folderwatcher_linux.h"
 #endif
 
