@@ -40,6 +40,13 @@ set(3rdparty_SRC
 3rdparty/QProgressIndicator/QProgressIndicator.cpp
 )
 
+if (APPLE)
+        list(APPEND 3rdparty_SRC
+        3rdparty/qtmacgoodies/src/macpreferenceswindow.mm
+        3rdparty/qtmacgoodies/src/macstandardicon.mm
+        )
+endif()
+
 set(3rdparty_HEADER
 3rdparty/qtsingleapplication/qtlocalpeer.h
 3rdparty/qtsingleapplication/qtsingleapplication.h
@@ -47,6 +54,15 @@ set(3rdparty_HEADER
 3rdparty/fancylineedit/fancylineedit.h
 3rdparty/QProgressIndicator/QProgressIndicator.h
 )
+
+if (APPLE)
+        list(APPEND 3rdparty_HEADER
+        3rdparty/qtmacgoodies/src/macpreferenceswindow.h
+        3rdparty/qtmacgoodies/src/macstandardicon.h
+        )
+endif()
+
+qt_wrap_cpp(3rdparty_MOC ${3rdparty_HEADER})
 
 if(NOT WIN32)
 	list(APPEND 3rdparty_SRC 3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
@@ -60,6 +76,7 @@ set(3rdparty_INC
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/QProgressIndicator
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/fancylineedit
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qjson
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qtmacgoodies/src
     )
 
 set(libsync_SRCS
@@ -112,8 +129,6 @@ if(TOKEN_AUTH_ONLY)
 	    	creds/shibboleth/authenticationdialog.cpp		
 	)	
 endif()
-
-
 
 IF( NOT WIN32 AND NOT APPLE )
     set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_linux.cpp)
@@ -305,6 +320,9 @@ set(updater_HEADERS
 IF( APPLE )
     list(APPEND mirall_SRCS mirall/cocoainitializer_mac.mm)
     list(APPEND mirall_HEADERS mirall/cocoainitializer.h)
+
+    list(APPEND mirall_SRCS mirall/settingsdialogmac.cpp)
+    list(APPEND mirall_HEADERS mirall/settingsdialogmac.h)
 
     if(SPARKLE_FOUND)
        # Define this, we need to check in updater.cpp
