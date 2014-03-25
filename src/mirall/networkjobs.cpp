@@ -46,8 +46,10 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
     , _reply(0)
     , _account(account)
     , _path(path)
-    , _timer(0)
 {
+    _timer.setSingleShot(true);
+    _timer.setInterval(10*1000); // default to 10 seconds.
+    connect(&_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
 }
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
@@ -61,21 +63,15 @@ void AbstractNetworkJob::setReply(QNetworkReply *reply)
 void AbstractNetworkJob::setTimeout(qint64 msec)
 {
     qDebug() << Q_FUNC_INFO << msec;
-    if (_timer)
-        _timer->deleteLater();
-    _timer = new QTimer(this);
-    _timer->setSingleShot(true);
-    connect(_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
-    _timer->start(msec);
+
+    _timer.start(msec);
 }
 
 void AbstractNetworkJob::resetTimeout()
 {
-    if( _timer ) {
-        qint64 interval = _timer->interval();
-        _timer->stop();
-        _timer->start(interval);
-    }
+    qint64 interval = _timer.interval();
+    _timer.stop();
+    _timer.start(interval);
 }
 
 void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
@@ -100,7 +96,7 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 
 QNetworkReply* AbstractNetworkJob::addTimer(QNetworkReply *reply)
 {
-    reply->setProperty("timer", QVariant::fromValue(_timer));
+    reply->setProperty("timer", QVariant::fromValue(&_timer));
     return reply;
 }
 
@@ -169,6 +165,9 @@ AbstractNetworkJob::~AbstractNetworkJob() {
 
 void AbstractNetworkJob::start()
 {
+    _timer.start();
+    _durationTimer.start();
+
     qDebug() << "!!!" << metaObject()->className() << "created for" << account()->url() << "querying" << path();
 }
 

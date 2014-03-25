@@ -20,9 +20,9 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QPointer>
+#include <QTimer>
 
 class QUrl;
-class QTimer;
 
 namespace Mirall {
 
@@ -94,7 +94,7 @@ private:
     QNetworkReply *_reply;
     Account *_account;
     QString _path;
-    QTimer *_timer;
+    QTimer _timer;
 };
 
 /**
