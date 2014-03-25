@@ -62,8 +62,6 @@ if (APPLE)
         )
 endif()
 
-qt_wrap_cpp(3rdparty_MOC ${3rdparty_HEADER})
-
 if(NOT WIN32)
 	list(APPEND 3rdparty_SRC 3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
 else()
