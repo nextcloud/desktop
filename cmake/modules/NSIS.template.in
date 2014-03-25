@@ -35,9 +35,10 @@
 !define BUILD_PATH "@CMAKE_BINARY_DIR@"
 !define SOURCE_PATH "@CMAKE_SOURCE_DIR@"
 !define QT_DLL_PATH "${MING_BIN}"
-!define ACCESSIBLE_DLL_PATH "${MING_LIB}/qt4/plugins/accessible"
-!define SQLITE_DLL_PATH "${MING_LIB}/qt4/plugins/sqldrivers"
-!define IMAGEFORMATS_DLL_PATH "${MING_LIB}/qt4/plugins/imageformats"
+!define ACCESSIBLE_DLL_PATH "${MING_LIB}/qt5/plugins/accessible"
+!define SQLITE_DLL_PATH "${MING_LIB}/qt5/plugins/sqldrivers"
+!define IMAGEFORMATS_DLL_PATH "${MING_LIB}/qt5/plugins/imageformats"
+!define PLATFORMS_DLL_PATH "${MING_LIB}/qt5/plugins/platforms"
 
 !define CSYNC_LIBRARY_DIR "@CSYNC_LIBRARY_DIR@"
 !define CSYNC_CONFIG_DIR "@CSYNC_CONFIG_DIR@"
@@ -369,19 +370,21 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 
    File "${BUILD_PATH}\src\mirall_*.qm"
    ; Make sure only to copy qt, not qt_help, etc
-   File "${MING_SHARE}\qt4\translations\qt_??.qm"
-   File "${MING_SHARE}\qt4\translations\qt_??_??.qm"
-   File "${MING_SHARE}\qt4\translations\qtkeychain_*.qm"
+   File "${MING_SHARE}\qt5\translations\qt_??.qm"
+   File "${MING_SHARE}\qt5\translations\qt_??_??.qm"
+   File "${MING_SHARE}\qt5\translations\qtkeychain_*.qm"
 
+   SetOutPath "$INSTDIR\platforms"
+   File "${PLATFORMS_DLL_PATH}\qwindows.dll"
    SetOutPath "$INSTDIR\accessible"
-   File "${ACCESSIBLE_DLL_PATH}\qtaccessiblewidgets4.dll"
+   File "${ACCESSIBLE_DLL_PATH}\qtaccessiblewidgets.dll"
    SetOutPath "$INSTDIR\imageformats"
-   File "${IMAGEFORMATS_DLL_PATH}\qgif4.dll"
-   File "${IMAGEFORMATS_DLL_PATH}\qjpeg4.dll"
-   File "${IMAGEFORMATS_DLL_PATH}\qico4.dll"
+   File "${IMAGEFORMATS_DLL_PATH}\qgif.dll"
+   File "${IMAGEFORMATS_DLL_PATH}\qjpeg.dll"
+   File "${IMAGEFORMATS_DLL_PATH}\qico.dll"
 
    SetOutPath "$INSTDIR\sqldrivers"
-   File "${SQLITE_DLL_PATH}\qsqlite4.dll"
+   File "${SQLITE_DLL_PATH}\qsqlite.dll"
 
    SetOutPath "$INSTDIR"
    ;License & release notes.
@@ -389,15 +392,38 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    ;File /oname=NOTES.txt ${NSI_PATH}\RELEASE_NOTES.txt
 
    ;Qt stuff:
-   File "${QT_DLL_PATH}\QtCore4.dll"
-   File "${QT_DLL_PATH}\QtGui4.dll"
-   File "${QT_DLL_PATH}\QtNetwork4.dll"
-   File "${QT_DLL_PATH}\QtSql4.dll"
-   File "${QT_DLL_PATH}\QtXml4.dll"
-   File "${QT_DLL_PATH}\QtWebKit4.dll"
+   File "${QT_DLL_PATH}\Qt5Core.dll"
+   File "${QT_DLL_PATH}\Qt5Gui.dll"
+   File "${QT_DLL_PATH}\Qt5Network.dll"
+   File "${QT_DLL_PATH}\Qt5OpenGL.dll"
+   File "${QT_DLL_PATH}\Qt5PrintSupport.dll"
+   File "${QT_DLL_PATH}\Qt5Qml.dll"
+   File "${QT_DLL_PATH}\Qt5Quick.dll"
+   File "${QT_DLL_PATH}\Qt5Sensors.dll"
+   File "${QT_DLL_PATH}\Qt5Sql.dll"
+   File "${QT_DLL_PATH}\Qt5WebKit.dll"
+   File "${QT_DLL_PATH}\Qt5WebKitWidgets.dll"
+   File "${QT_DLL_PATH}\Qt5Widgets.dll"
+   File "${QT_DLL_PATH}\Qt5Xml.dll"
 
    ;Qt deps
    File "${MING_BIN}\libpng15-15.dll"
+   File "${MING_BIN}\icudata51.dll"
+   File "${MING_BIN}\icui18n51.dll"
+   File "${MING_BIN}\icuuc51.dll"
+   File "${MING_BIN}\libEGL.dll"
+   File "${MING_BIN}\libGLESv2.dll"
+   File "${MING_BIN}\libjpeg-8.dll"
+   File "${MING_BIN}\libpcre16-0.dll"
+   File "${MING_BIN}\libpng15-15.dll"
+   File "${MING_BIN}\libproxy.dll"
+   File "${MING_BIN}\libqt5keychain.dll"
+   File "${MING_BIN}\libsqlite3-0.dll"
+   File "${MING_BIN}\libssl-10.dll"
+   File "${MING_BIN}\libstdc++-6.dll"
+   File "${MING_BIN}\libwebp-4.dll"
+   File "${MING_BIN}\libxslt-1.dll"
+   File "${MING_BIN}\zlib1.dll"
 
    ;QtSql and csync dep
    File "${MING_BIN}\libsqlite3-0.dll"
@@ -415,13 +441,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    ;MinGW stuff
    File "${MING_BIN}\libgcc_s_sjlj-1.dll"
    File "${MING_BIN}\libstdc++-6.dll"
-
-   ; Other
-   ;File "${MING_BIN}\libpng15-15.dll"
-   File "${MING_BIN}\libjpeg-8.dll"
-   File "${MING_BIN}\zlib1.dll"
-   File "${MING_BIN}\libcrypto-10.dll"
-   File "${MING_BIN}\libssl-10.dll"
 
    ; CSync configs
    File "${SOURCE_PATH}/sync-exclude.lst"
