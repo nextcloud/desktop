@@ -16,6 +16,7 @@
 
 #include <QVector>
 #include <QString>
+#include <QDateTime>
 #include <QMetaType>
 
 #include <csync.h>
@@ -49,7 +50,7 @@ public:
     };
 
     SyncFileItem() : _type(UnknownType), _should_update_etag(false), _blacklistedInDb(false),
-        _status(NoStatus), _httpErrorCode(0) {}
+        _status(NoStatus), _httpErrorCode(0), _requestDuration(0) {}
 
     friend bool operator==(const SyncFileItem& item1, const SyncFileItem& item2) {
         return item1._file == item2._file;
@@ -86,9 +87,19 @@ public:
     bool                 _blacklistedInDb;
 
     // Variables usefull to report to the user
-    Status              _status;
-    QString             _errorString; // Contains a string only in case of error
-    int                 _httpErrorCode;
+    Status               _status;
+    QString              _errorString; // Contains a string only in case of error
+    int                  _httpErrorCode;
+    QString              _responseTimeStamp;
+    quint64              _requestDuration;
+
+    struct {
+        quint64     _size;
+        time_t      _modtime;
+        QByteArray  _etag;
+        QByteArray  _fileId;
+        enum csync_instructions_e _instruction;
+    } other;
 };
 
 
