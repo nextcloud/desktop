@@ -93,7 +93,6 @@ static void check_csync_statedb_check(void **state)
 static void check_csync_statedb_load(void **state)
 {
     CSYNC *csync = *state;
-    csync_stat_t sb;
     int rc;
 
     rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
