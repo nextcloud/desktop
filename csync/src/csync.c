@@ -453,7 +453,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
 
       if( other_node ) {
           csync_file_stat_t *other_stat = (csync_file_stat_t*)other_node->data;
-          trav.other.etag = c_strdup(other_stat->etag);
+          trav.other.etag = other_stat->etag ? c_strdup(other_stat->etag) : NULL;
           trav.other.file_id = c_strdup(other_stat->file_id);
           trav.other.instruction = other_stat->instruction;
           trav.other.modtime = other_stat->modtime;
