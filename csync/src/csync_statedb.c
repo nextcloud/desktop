@@ -201,7 +201,6 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   int rc = -1;
   int check_rc = -1;
   c_strlist_t *result = NULL;
-  char *statedb_tmp = NULL;
   sqlite3 *db = NULL;
 
   if( !ctx ) {
@@ -219,30 +218,8 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
     goto out;
   }
 
-  /*
-   * We want a two phase commit for the jounal, so we create a temporary copy
-   * of the database.
-   * The intention is that if something goes wrong we will not loose the
-   * statedb.
-   */
-  rc = asprintf(&statedb_tmp, "%s.ctmp", statedb);
-  if (rc < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: could not create statedb name - bail out.");
-    rc = -1;
-    goto out;
-  }
-
-  if (c_copy(statedb, statedb_tmp, 0644) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: Failed to copy statedb -> statedb_tmp - bail out.");
-
-    rc = -1;
-    goto out;
-  }
-
-  _csync_win32_hide_file( statedb_tmp );
-
   /* Open or create the temporary database */
-  if (sqlite3_open(statedb_tmp, &db) != SQLITE_OK) {
+  if (sqlite3_open(statedb, &db) != SQLITE_OK) {
     const char *errmsg= sqlite3_errmsg(ctx->statedb.db);
     CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: Failed to sqlite3 open statedb - bail out: %s.",
               errmsg ? errmsg : "<no sqlite3 errormsg>");
@@ -250,7 +227,6 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
     rc = -1;
     goto out;
   }
-  SAFE_FREE(statedb_tmp);
 
   /* If check_rc == 1 the database is new and empty as a result. */
   if ((check_rc == 1) || _csync_statedb_is_empty(db)) {
@@ -274,15 +250,11 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   return 0;
 out:
   sqlite3_close(db);
-  SAFE_FREE(statedb_tmp);
   return rc;
 }
 
-int csync_statedb_close(CSYNC *ctx, int jwritten) {
-  char *statedb_tmp = NULL;
-  mbchar_t* wstatedb_tmp = NULL;
+int csync_statedb_close(CSYNC *ctx) {
   int rc = 0;
-  mbchar_t *mb_statedb = NULL;
 
   if (!ctx) {
       return -1;
@@ -304,54 +276,7 @@ int csync_statedb_close(CSYNC *ctx, int jwritten) {
       ctx->statedb.by_inode_stmt = NULL;
   }
 
-  /* close the temporary database */
   sqlite3_close(ctx->statedb.db);
-
-  /* If we successfully synchronized, overwrite the original statedb
-   *
-   * First check the integrity of the tmp db. If ok, overwrite the old
-   * database with the tmp db.
-   */
-  if (jwritten) {
-      if (!ctx->statedb.file || asprintf(&statedb_tmp, "%s.ctmp", ctx->statedb.file) < 0) {
-        return -1;
-      }
-      /* statedb check returns either
-       * 0  : database exists and is fine
-       * 1  : new database was set up
-       * -1 : error.
-       */
-      if (_csync_statedb_check(statedb_tmp) >= 0) {
-          /* New statedb is valid. */
-          mb_statedb = c_utf8_to_locale(ctx->statedb.file);
-
-          /* Move the tmp-db to the real one. */
-          if (c_rename(statedb_tmp, ctx->statedb.file) < 0) {
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-                        "Renaming tmp db to original db failed. (errno=%d)", errno);
-              rc = -1;
-          } else {
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-                        "Successfully moved tmp db to original db.");
-          }
-      } else {
-          mb_statedb = c_utf8_to_locale(statedb_tmp);
-          _tunlink(mb_statedb);
-
-          /* new statedb_tmp is not integer. */
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "  ## csync tmp statedb corrupt. Original one is not replaced. ");
-          rc = -1;
-      }
-      c_free_locale_string(mb_statedb);
-  }
-
-  wstatedb_tmp = c_utf8_to_locale(statedb_tmp);
-  if (wstatedb_tmp) {
-      _tunlink(wstatedb_tmp);
-      c_free_locale_string(wstatedb_tmp);
-  }
-
-  SAFE_FREE(statedb_tmp);
 
   return rc;
 }

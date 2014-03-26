@@ -37,11 +37,9 @@ private:
     } MY_CSYNC;
 
     MY_CSYNC _ctx;
-    int      _written;
 private slots:
     void initTestCase() {
         int rc;
-        _written = 0;
 
         memset(&_ctx, 0, sizeof(MY_CSYNC));
 
@@ -116,7 +114,7 @@ private slots:
 
     void cleanupTestCase() {
         SAFE_FREE(_ctx.statedb.file);
-        csync_statedb_close((CSYNC*)(&_ctx), _written);
+        csync_statedb_close((CSYNC*)(&_ctx));
     }
 
 };

@@ -563,7 +563,7 @@ int csync_commit(CSYNC *ctx) {
   ctx->status_code = CSYNC_STATUS_OK;
 
   if (ctx->statedb.db != NULL
-      && csync_statedb_close(ctx, 0) < 0) {
+      && csync_statedb_close(ctx) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: closing of statedb failed.");
     rc = -1;
   }
@@ -618,7 +618,7 @@ int csync_destroy(CSYNC *ctx) {
   ctx->status_code = CSYNC_STATUS_OK;
 
   if (ctx->statedb.db != NULL
-      && csync_statedb_close(ctx, 0) < 0) {
+      && csync_statedb_close(ctx) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: closing of statedb failed.");
     rc = -1;
   }

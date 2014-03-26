@@ -26,7 +26,6 @@
 #include "csync_statedb.c"
 
 #define TESTDB "/tmp/check_csync1/test.db"
-#define TESTDBTMP "/tmp/check_csync1/test.db.ctmp"
 
 static void setup(void **state) {
     CSYNC *csync;
@@ -96,17 +95,11 @@ static void check_csync_statedb_load(void **state)
     CSYNC *csync = *state;
     csync_stat_t sb;
     int rc;
-    mbchar_t *testdbtmp = c_utf8_to_locale(TESTDBTMP);
-    assert_non_null( testdbtmp );
 
     rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
     assert_int_equal(rc, 0);
 
-    rc = _tstat(testdbtmp, &sb);
-    assert_int_equal(rc, 0);
-
     sqlite3_close(csync->statedb.db);
-    c_free_locale_string(testdbtmp);
 }
 
 static void check_csync_statedb_close(void **state)
@@ -124,7 +117,7 @@ static void check_csync_statedb_close(void **state)
     assert_int_equal(rc, 0);
     modtime = sb.st_mtime;
 
-    rc = csync_statedb_close(csync, 0);
+    rc = csync_statedb_close(csync);
     assert_int_equal(rc, 0);
 
     rc = _tstat(testdb, &sb);
@@ -141,12 +134,11 @@ static void check_csync_statedb_close(void **state)
     sleep(1);
 
     /* statedb written */
-    rc = csync_statedb_close(csync, 1);
+    rc = csync_statedb_close(csync);
     assert_int_equal(rc, 0);
 
     rc = _tstat(testdb, &sb);
     assert_int_equal(rc, 0);
-    assert_true(modtime < sb.st_mtime);
 
     c_free_locale_string(testdb);
 }
