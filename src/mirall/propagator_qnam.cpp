@@ -93,6 +93,7 @@ void PropagateUploadFileQNAM::start()
     }
 
     _currentChunk = 0;
+    _duration.start();
 
     _propagator->_activeJobs++;
     emit progress(_item, 0);
@@ -250,13 +251,14 @@ void PropagateUploadFileQNAM::slotPutFinished()
 
     _item._etag = parseEtag(job->reply()->rawHeader("ETag"));
 
-
     if (job->reply()->rawHeader("X-OC-MTime") != "accepted") {
         //FIXME
 //             updateMTimeAndETag(uri.data(), _item._modtime);
         done(SyncFileItem::NormalError, tr("No X-OC-MTime extension,  ownCloud 5 is required"));
         return;
     }
+    _item._requestDuration = _duration.elapsed();
+    _item._responseTimeStamp = _job->responseTimestamp();
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
     // Remove from the progress database:
@@ -449,6 +451,9 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     }
 
     _item._etag = parseEtag(job->reply()->rawHeader("Etag"));
+    _item._requestDuration = job->duration();
+    _item._responseTimeStamp = job->responseTimestamp();
+
     _tmpFile.close();
     _tmpFile.flush();
     downloadFinished();

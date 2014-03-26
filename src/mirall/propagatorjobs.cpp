@@ -135,6 +135,10 @@ void PropagateRemoteRemove::start()
         return;
     }
 
+    //  Wed, 15 Nov 1995 06:25:24 GMT
+    QDateTime dt = QDateTime::currentDateTimeUtc();
+    _item._responseTimeStamp = dt.toString("ddd, dd MMM yyyy hh:mm:ss GMT");
+
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
     _propagator->_journal->commit("Remote Remove");
     done(SyncFileItem::Success);
@@ -152,9 +156,14 @@ void PropagateRemoteMkdir::start()
 
     /* Special for mkcol: it returns 405 if the directory already exists.
      * Ignore that error */
+    //  Wed, 15 Nov 1995 06:25:24 GMT
+    QDateTime dt = QDateTime::currentDateTimeUtc();
+    _item._responseTimeStamp = dt.toString("ddd, dd MMM yyyy hh:mm:ss GMT");
+
     if( updateErrorFromSession( rc , 0, 405 ) ) {
         return;
     }
+
     done(SyncFileItem::Success);
 }
 
@@ -237,6 +246,9 @@ void PropagateRemoteRename::start()
         if (!updateMTimeAndETag(uri2.data(), _item._modtime))
             return;
     }
+    //  Wed, 15 Nov 1995 06:25:24 GMT
+    QDateTime dt = QDateTime::currentDateTimeUtc();
+    _item._responseTimeStamp = dt.toString("ddd, dd MMM yyyy hh:mm:ss GMT");
 
     _propagator->_journal->deleteFileRecord(_item._originalFile);
     SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);

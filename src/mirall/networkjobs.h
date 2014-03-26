@@ -20,6 +20,8 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QPointer>
+#include <QElapsedTimer>
+#include <QDateTime>
 #include <QTimer>
 
 class QUrl;
@@ -66,6 +68,9 @@ public:
     void setIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
 
+    QString responseTimestamp();
+    quint64 duration();
+
 signals:
     void networkError(QNetworkReply *reply);
 protected:
@@ -83,6 +88,9 @@ protected:
 
     int maxRedirects() const { return 10; }
     virtual void finished() = 0;
+    QString       _responseTimestamp;
+    QElapsedTimer _durationTimer;
+    quint64       _duration;
 
 private slots:
     void slotFinished();

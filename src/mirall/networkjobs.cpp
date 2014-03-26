@@ -42,6 +42,7 @@ namespace Mirall {
 
 AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QObject *parent)
     : QObject(parent)
+    , _duration(0)
     , _ignoreCredentialFailure(false)
     , _reply(0)
     , _account(account)
@@ -133,6 +134,8 @@ QNetworkReply *AbstractNetworkJob::headRequest(const QUrl &url)
 
 void AbstractNetworkJob::slotFinished()
 {
+    _timer.stop();
+
     if( _reply->error() != QNetworkReply::NoError ) {
         qDebug() << Q_FUNC_INFO << _reply->error() << _reply->errorString();
         if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
@@ -140,6 +143,11 @@ void AbstractNetworkJob::slotFinished()
         }
         emit networkError(_reply);
     }
+
+    // get the Date timestamp from reply
+    _responseTimestamp = QString::fromAscii(_reply->rawHeader("Date"));
+    _duration = _durationTimer.elapsed();
+
     finished();
     AbstractCredentials *creds = _account->credentials();
     if (!creds->stillValid(_reply) &&! _ignoreCredentialFailure
@@ -159,6 +167,16 @@ void AbstractNetworkJob::slotFinished()
     deleteLater();
 }
 
+quint64 AbstractNetworkJob::duration()
+{
+    return _duration;
+}
+
+QString AbstractNetworkJob::responseTimestamp()
+{
+    return _responseTimestamp;
+}
+
 AbstractNetworkJob::~AbstractNetworkJob() {
     _reply->deleteLater();
 }
@@ -167,6 +185,7 @@ void AbstractNetworkJob::start()
 {
     _timer.start();
     _durationTimer.start();
+    _duration = 0;
 
     qDebug() << "!!!" << metaObject()->className() << "created for" << account()->url() << "querying" << path();
 }

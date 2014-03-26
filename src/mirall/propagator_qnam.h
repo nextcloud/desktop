@@ -80,6 +80,7 @@ class PropagateUploadFileQNAM : public PropagateItemJob {
     int _currentChunk;
     int _chunkCount;
     int _transferId;
+    QElapsedTimer _duration;
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0) {}
