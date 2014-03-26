@@ -26,6 +26,7 @@
 #include "mirall/utility.h"
 #include "mirall/clientproxy.h"
 #include "mirall/syncengine.h"
+#include "mirall/syncrunfilelog.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -307,11 +308,21 @@ void Folder::bubbleUpSyncResult()
     SyncFileItem firstItemRenamed;
     Logger *logger = Logger::instance();
 
+    SyncRunFileLog syncFileLog;
+
+    syncFileLog.start( _engine->stopWatch() );
+
+    QElapsedTimer timer;
+    timer.start();
+
     foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
+        // Log the item
+        syncFileLog.logItem( item );
+
+        // and process the item to the gui
         if( item._status == SyncFileItem::FatalError || item._status == SyncFileItem::NormalError ) {
             slotSyncError( tr("%1: %2").arg(item._file, item._errorString) );
             logger->postOptionalGuiLog(item._file, item._errorString);
-
         } else {
             // add new directories or remove gone away dirs to the watcher
             if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_NEW ) {
@@ -359,7 +370,9 @@ void Folder::bubbleUpSyncResult()
             }
         }
     }
+    syncFileLog.close();
 
+    qDebug() << "Processing result list and logging took " << timer.elapsed() << " Milliseconds.";
     _syncResult.setWarnCount(ignoredItems);
 
     createGuiLog( firstItemNew._file,     FILE_STATUS_NEW, newItems );
@@ -644,12 +657,14 @@ void Folder::slotCsyncUnavailable()
 void Folder::slotSyncFinished()
 {
     qDebug() << "-> CSync Finished slot with error " << _csyncError << "warn count" << _syncResult.warnCount();
+
+    bubbleUpSyncResult();
+
     _engine.reset(0);
     // _watcher->setEventsEnabledDelayed(2000);
     _pollTimer.start();
     _timeSinceLastSync.restart();
 
-    bubbleUpSyncResult();
 
     if (_csyncError) {
         _syncResult.setStatus(SyncResult::Error);
