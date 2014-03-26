@@ -27,6 +27,7 @@
 
 #include "mirall/syncfileitem.h"
 #include "mirall/progressdispatcher.h"
+#include "mirall/utility.h"
 
 class QProcess;
 
@@ -58,6 +59,8 @@ public:
 
     /* Abort the sync.  Called from the main thread */
     void abort();
+
+    Utility::StopWatch stopWatch() { return _stopWatch; }
 
 signals:
     void csyncError( const QString& );
@@ -91,8 +94,6 @@ private slots:
     void slotUpdateFinished(int updateResult);
 
 private:
-
-
     void handleSyncError(CSYNC *ctx, const char *state);
 
     static int treewalkLocal( TREE_WALK_FILE*, void *);
@@ -110,12 +111,13 @@ private:
     QString _remotePath;
     SyncJournalDb *_journal;
     QScopedPointer <OwncloudPropagator> _propagator;
-    QElapsedTimer _syncTime;
     QString _lastDeleted; // if the last item was a path and it has been deleted
     QHash <QString, QString> _seenFiles;
     QThread _thread;
 
     Progress::Info _progressInfo;
+
+    Utility::StopWatch _stopWatch;
 
     // maps the origin and the target of the folders that have been renamed
     QHash<QString, QString> _renamedFolders;
@@ -125,8 +127,6 @@ private:
 
     int _downloadLimit;
     int _uploadLimit;
-
-    friend struct CSyncRunScopeHelper;
 };
 
 

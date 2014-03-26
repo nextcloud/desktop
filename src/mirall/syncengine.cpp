@@ -368,6 +368,12 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
     _needsUpdate = true;
 
+    item.other._etag        = file->other.etag;
+    item.other._fileId      = file->other.file_id;
+    item.other._instruction = file->other.instruction;
+    item.other._modtime     = file->other.modtime;
+    item.other._size        = file->other.size;
+
     _syncedItems.append(item);
     emit syncItemDisconvered(item);
     return re;
@@ -479,8 +485,7 @@ void SyncEngine::startSync()
     csync_set_log_callback( csyncLogCatcher );
     //csync_set_log_level( 11 ); don't set the loglevel here, it shall be done by folder.cpp or owncloudcmd.cpp
 
-    _syncTime.start();
-
+    _stopWatch.start();
 
     qDebug() << "#### Update start #################################################### >>";
 
@@ -496,13 +501,13 @@ void SyncEngine::slotUpdateFinished(int updateResult)
         handleSyncError(_csync_ctx, "csync_update");
         return;
     }
-    qDebug() << "<<#### Update end #################################################### " << _syncTime.elapsed();
+    qDebug() << "<<#### Update end #################################################### " << _stopWatch.addLapTime(QLatin1String("Update Finished"));
 
     if( csync_reconcile(_csync_ctx) < 0 ) {
         handleSyncError(_csync_ctx, "csync_reconcile");
         return;
     }
-
+    _stopWatch.addLapTime(QLatin1String("Reconcile Finished"));
 
     _progressInfo = Progress::Info();
 
@@ -629,7 +634,9 @@ void SyncEngine::slotFinished()
 
     csync_commit(_csync_ctx);
 
-    qDebug() << "CSync run took " << _syncTime.elapsed() << " Milliseconds";
+    qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
+    _stopWatch.stop();
+
     emit finished();
     _propagator.reset(0);
     _syncMutex.unlock();
