@@ -265,14 +265,14 @@ QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)
 
 QString Account::_configFileName;
 
-QSettings *Account::settingsWithGroup(const QString& group)
+QSettings *Account::settingsWithGroup(const QString& group, QObject *parent)
 {
     if (_configFileName.isEmpty()) {
         // cache file name
         MirallConfigFile cfg;
         _configFileName = cfg.configFile();
     }
-    QSettings *settings = new QSettings(_configFileName, QSettings::IniFormat);
+    QSettings *settings = new QSettings(_configFileName, QSettings::IniFormat, parent);
     settings->beginGroup(group);
     return settings;
 }

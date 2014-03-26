@@ -128,7 +128,10 @@ public:
 
     // static helper function
     static QUrl concatUrlPath(const QUrl &url, const QString &concatPath);
-    static QSettings* settingsWithGroup(const QString &group);
+
+    /**  Returns a new settings pre-set in a specific group.  The Settings will be created
+         with the given parent. If no parents is specified, the caller must destroy the settings */
+    static QSettings* settingsWithGroup(const QString &group, QObject *parent = 0);
 
     // to be called by credentials only
     QVariant credentialSetting(const QString& key) const;

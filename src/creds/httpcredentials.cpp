@@ -209,6 +209,7 @@ void HttpCredentials::fetch(Account *account)
     }
 
     if (_ready) {
+        settings->deleteLater();
         Q_EMIT fetched();
     } else {
         ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());

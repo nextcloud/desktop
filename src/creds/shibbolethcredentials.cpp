@@ -204,7 +204,7 @@ void ShibbolethCredentials::fetch(Account *account)
             _url = account->url();
         }
         ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
-        job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+        job->setSettings(account->settingsWithGroup(Theme::instance()->appName(), job));
         job->setInsecureFallback(false);
         job->setKey(keychainKey(account->url().toString(), "shibAssertion"));
         job->setProperty("account", QVariant::fromValue(account));
@@ -277,7 +277,7 @@ void ShibbolethCredentials::invalidateAndFetch(Account* account)
     // delete the credentials, then in the slot fetch them again (which will trigger browser)
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
     job->setProperty("account", QVariant::fromValue(account));
-    job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+    job->setSettings(account->settingsWithGroup(Theme::instance()->appName(), job));
     connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotInvalidateAndFetchInvalidateDone(QKeychain::Job*)));
     job->setKey(keychainKey(account->url().toString(), "shibAssertion"));
     job->start();
@@ -314,7 +314,7 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
         if (cookies.count() > 0) {
             _shibCookie = cookies.first();
         }
-        job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+        job->setSettings(account->settingsWithGroup(Theme::instance()->appName(), job));
 
         _ready = true;
         _stillValid = true;
@@ -348,7 +348,7 @@ void ShibbolethCredentials::showLoginWindow(Account* account)
 void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie, Account *account)
 {
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
-    job->setSettings(account->settingsWithGroup(Theme::instance()->appName()));
+    job->setSettings(account->settingsWithGroup(Theme::instance()->appName(), job));
     // we don't really care if it works...
     //connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
     job->setKey(keychainKey(account->url().toString(), "shibAssertion"));
