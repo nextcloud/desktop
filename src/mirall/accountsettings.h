@@ -99,6 +99,7 @@ private:
     Account *_account;
 private slots:
     void slotFolderSyncStateChange();
+    void slotAccountChanged(Account*,Account*);
 };
 
 } // namespace Mirall

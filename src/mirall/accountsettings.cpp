@@ -106,17 +106,31 @@ AccountSettings::AccountSettings(QWidget *parent) :
 
     ui->connectLabel->setText(tr("No account configured."));
     ui->_buttonAdd->setEnabled(false);
+
+    connect(AccountManager::instance(), SIGNAL(accountChanged(Account*,Account*)), this, SLOT(slotAccountChanged(Account*,SAccount*)));
+    slotAccountChanged(AccountManager::instance()->account(), 0);
+
+    setFolderList(FolderMan::instance()->map());
+}
+
+void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccount)
+{
+    if (oldAccount) {
+        disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
+        disconnect(oldAccount->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
+                    this, SLOT(slotUpdateQuota(qint64,qint64)));
+    }
+
+    _account = newAccount;
     if (_account) {
         connect(_account, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
         slotAccountStateChanged(_account->state());
+
+        QuotaInfo *quotaInfo = _account->quotaInfo();
+        connect( quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
+                this, SLOT(slotUpdateQuota(qint64,qint64)));
+        slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
     }
-
-    QuotaInfo *quotaInfo = _account->quotaInfo();
-    connect( quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
-             this, SLOT(slotUpdateQuota(qint64,qint64)));
-    slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
-
-    setFolderList(FolderMan::instance()->map());
 }
 
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
