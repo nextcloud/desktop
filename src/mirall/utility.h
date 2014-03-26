@@ -18,6 +18,8 @@
 #include <QString>
 #include <QByteArray>
 #include <QDateTime>
+#include <QPair>
+#include <QElapsedTimer>
 
 class QWidget;
 
@@ -65,6 +67,22 @@ namespace Utility
     bool isMac();
     bool isUnix();
     bool isLinux(); // use with care
+
+    class StopWatch {
+    private:
+        QList<QPair<QString, quint64> > _lapTimes;
+        QDateTime _startTime;
+        QElapsedTimer _timer;
+    public:
+        void start();
+        void stop();
+        quint64 addLapTime( const QString& lapName );
+
+        // out helpers, return the masured times.
+        QDateTime startTime();
+        QDateTime timeOfLap( const QString& lapName );
+        quint64 durationOfLap( const QString& lapName );
+    };
 }
 
 }

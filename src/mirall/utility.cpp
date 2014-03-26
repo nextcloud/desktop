@@ -490,4 +490,58 @@ bool Utility::isLinux()
 #endif
 }
 
+# define STOPWATCH_END_TAG QLatin1String("_STOPWATCH_END")
+
+void Utility::StopWatch::start()
+{
+    _startTime = QDateTime::currentDateTime();
+    _timer.start();
+}
+
+void Utility::StopWatch::stop()
+{
+    addLapTime(QLatin1String(STOPWATCH_END_TAG));
+    _timer.invalidate();
+}
+
+quint64 Utility::StopWatch::addLapTime( const QString& lapName )
+{
+    if( !_timer.isValid() ) {
+        start();
+    }
+    quint64 re = _timer.elapsed();
+    QPair<QString, quint64> p(lapName, re);
+    _lapTimes.append(p);
+    return re;
+}
+
+QDateTime Utility::StopWatch::startTime()
+{
+    return _startTime;
+}
+
+QDateTime Utility::StopWatch::timeOfLap( const QString& lapName )
+{
+    quint64 t = durationOfLap(lapName);
+    if( t ) {
+        QDateTime re(_startTime);
+        return re.addMSecs(t);
+    }
+
+    return QDateTime();
+}
+
+quint64 Utility::StopWatch::durationOfLap( const QString& lapName )
+{
+    QPair<QString, quint64> lapPair;
+
+    foreach( lapPair, _lapTimes ) {
+        if( lapPair.first == lapName ) {
+            return lapPair.second;
+        }
+    }
+    return 0;
+}
+
+
 } // namespace Mirall
