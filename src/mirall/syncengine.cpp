@@ -601,6 +601,8 @@ void SyncEngine::slotJobCompleted(const SyncFileItem &item)
         _syncedItems[idx]._errorString = item._errorString;
         _syncedItems[idx]._status = item._status;
 
+        _syncedItems[idx]._requestDuration = item._requestDuration;
+        _syncedItems[idx]._responseTimeStamp = item._responseTimeStamp;
     } else {
         qWarning() << Q_FUNC_INFO << "Could not find index in synced items!";
 
