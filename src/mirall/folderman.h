@@ -89,6 +89,8 @@ signals:
       */
     void folderSyncStateChange( const QString & );
 
+    void folderListLoaded(const Folder::Map &);
+
 public slots:
     void slotRemoveFolder( const QString& );
     void slotEnableFolder( const QString&, bool );

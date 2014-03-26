@@ -154,6 +154,9 @@ int FolderMan::setupFolders()
         emit( folderSyncStateChange( f->alias() ) );
     }
   }
+
+  emit folderListLoaded(_folderMap);
+
   // return the number of valid folders.
   return _folderMap.size();
 }

@@ -48,7 +48,6 @@ public:
     explicit AccountSettings(QWidget *parent = 0);
     ~AccountSettings();
 
-    void setFolderList( const Folder::Map& );
 
 signals:
     void folderChanged();
@@ -70,6 +69,7 @@ public slots:
     void slotAccountStateChanged(int state);
 
     void setGeneralErrors( const QStringList& errors );
+    void setFolderList( const Folder::Map& );
 
 protected slots:
     void slotAddFolder();

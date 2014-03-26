@@ -111,7 +111,10 @@ AccountSettings::AccountSettings(QWidget *parent) :
             this, SLOT(slotAccountChanged(Account*,Account*)));
     slotAccountChanged(AccountManager::instance()->account(), 0);
 
+    connect(FolderMan::instance(), SIGNAL(folderListLoaded(Folder::Map)),
+            this, SLOT(setFolderList(Folder::Map)));
     setFolderList(FolderMan::instance()->map());
+
 }
 
 void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccount)
@@ -132,6 +135,7 @@ void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccoun
                 this, SLOT(slotUpdateQuota(qint64,qint64)));
         slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
     }
+
 }
 
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
