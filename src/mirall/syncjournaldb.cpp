@@ -91,6 +91,7 @@ bool SyncJournalDb::checkConnect()
     }
 
     if( _dbFile.isEmpty() || !QFile::exists(_dbFile) ) {
+        qDebug() << "Database " + _dbFile + " is empty or does not exist";
         return false;
     }
 
