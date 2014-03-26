@@ -524,6 +524,13 @@ void SyncEngine::slotUpdateFinished(int updateResult)
         it->_file = adjustRenamedPath(it->_file);
     }
 
+    // Sanity check
+    if (!_journal->checkConnect()) {
+        qDebug() << "Bailing out, DB failure";
+        QMetaObject::invokeMethod(this, "finished", Qt::QueuedConnection); // signal
+        return;
+    }
+
     // To announce the beginning of the sync
     emit transmissionProgress(_progressInfo);
 

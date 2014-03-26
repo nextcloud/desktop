@@ -75,6 +75,9 @@ public:
 
     void close();
 
+    bool checkConnect();
+
+
 
 signals:
 
@@ -89,7 +92,6 @@ private:
     void commitTransaction();
     QStringList tableColumns( const QString& table );
 
-    bool checkConnect();
     QSqlDatabase _db;
     QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
