@@ -381,11 +381,11 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
 
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s", file);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s]", file, fs->file_id);
       type = CSYNC_FTW_TYPE_FILE;
       break;
   case CSYNC_FTW_FLAG_DIR: /* enter directory */
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s", file);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s [file_id=%s]", file, fs->file_id);
       type = CSYNC_FTW_TYPE_DIR;
       break;
   case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
