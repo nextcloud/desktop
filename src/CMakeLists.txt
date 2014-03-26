@@ -102,6 +102,7 @@ set(libsync_SRCS
     mirall/account.cpp
     mirall/quotainfo.cpp
     mirall/clientproxy.cpp
+    mirall/syncrunfilelog.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialsfactory.cpp
