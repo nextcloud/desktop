@@ -26,7 +26,6 @@ public:
 
 public slots:
     void slotSyncStateChange(const QString& alias);
-    void slotRefreshResultList();
     void showActivityPage();
 
 private:

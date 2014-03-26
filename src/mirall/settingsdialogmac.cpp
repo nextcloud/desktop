@@ -49,14 +49,6 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
              this, SLOT(slotSyncStateChange(QString)));
 
-    QuotaInfo *quotaInfo = gui->quotaInfo();
-    connect( quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
-             _accountSettings, SLOT(slotUpdateQuota(qint64,qint64)));
-    _accountSettings->slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
-    connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
-    connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
-             gui, SLOT(slotFolderOpenAction(QString)));
-
     connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
              _accountSettings, SLOT(slotSetProgress(QString, Progress::Info)) );
     connect( ProgressDispatcher::instance(), SIGNAL(progressSyncProblem(QString,Progress::SyncProblem)),
@@ -96,13 +88,6 @@ void SettingsDialogMac::closeEvent(QCloseEvent *event)
     MirallConfigFile cfg;
     cfg.saveGeometry(this);
     MacPreferencesWindow::closeEvent(event);
-}
-
-void SettingsDialogMac::slotRefreshResultList()
-{
-    if( _protocolWidget ) {
-        _protocolWidget->initializeList();
-    }
 }
 
 void SettingsDialogMac::showActivityPage()
