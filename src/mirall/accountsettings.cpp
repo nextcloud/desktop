@@ -107,7 +107,8 @@ AccountSettings::AccountSettings(QWidget *parent) :
     ui->connectLabel->setText(tr("No account configured."));
     ui->_buttonAdd->setEnabled(false);
 
-    connect(AccountManager::instance(), SIGNAL(accountChanged(Account*,Account*)), this, SLOT(slotAccountChanged(Account*,SAccount*)));
+    connect(AccountManager::instance(), SIGNAL(accountChanged(Account*,Account*)),
+            this, SLOT(slotAccountChanged(Account*,Account*)));
     slotAccountChanged(AccountManager::instance()->account(), 0);
 
     setFolderList(FolderMan::instance()->map());
