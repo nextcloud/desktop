@@ -25,7 +25,7 @@
  * cannot include csync_private here because
  * that would cause circular inclusion
  */
-#include "c_private.h"
+#include "std/c_private.h"
 #include "csync.h"
 #include <sys/types.h>
 #include <sys/stat.h>

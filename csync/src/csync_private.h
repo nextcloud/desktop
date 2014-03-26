@@ -37,8 +37,8 @@
 #include <sqlite3.h>
 
 #include "config_csync.h"
-#include "c_lib.h"
-#include "c_private.h"
+#include "std/c_lib.h"
+#include "std/c_private.h"
 #include "csync.h"
 #include "csync_misc.h"
 #include "vio/csync_vio_file_stat.h"
