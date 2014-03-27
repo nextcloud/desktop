@@ -89,7 +89,7 @@
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
-        <location filename="../src/mirall/accountsettings.cpp" line="141"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="160"/>
         <source>Pause</source>
         <translation>Παύση</translation>
     </message>
@@ -119,59 +119,59 @@
         <translation>&lt;b&gt;Σημείωση:&lt;/b&gt; Κάποιοι φάκελοι, συμπεριλαμβανομένων των δικτυακών δίσκων ή των κοινόχρηστων φακέλων, μπορεί να έχουν διαφορετικά όρια. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="143"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="162"/>
         <source>Resume</source>
         <translation>Συνέχεια</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="294"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="313"/>
         <source>Confirm Folder Remove</source>
         <translation>Επιβεβαίωση αφαίρεσης φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="295"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="314"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Θέλετε στ&apos; αλήθεια να σταματήσετε το συγχρονισμό του φακέλου &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό δεν θα αφαιρέσει τα αρχεία από το δέκτη.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="331"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="350"/>
         <source>Confirm Folder Reset</source>
         <translation>Επιβεβαίωση Επαναφοράς Φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="332"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="351"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Θέλετε στ&apos; αλήθεια να επαναφέρετε το φάκελο &lt;i&gt;%1&lt;/i&gt; και να επαναδημιουργήσετε τη βάση δεδομένων του πελάτη;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτή η λειτουργία έχει σχεδιαστεί αποκλειστικά για λόγους συντήρησης. Κανένα αρχείο δεν θα αφαιρεθεί, αλλά αυτό μπορεί να προκαλέσει σημαντική κίνηση δεδομένων και να πάρει αρκετά λεπτά ή ώρες μέχρι να ολοκληρωθεί, ανάλογα με το μέγεθος του φακέλου. Χρησιμοποιείστε αυτή την επιλογή μόνο εάν έχετε συμβουλευτεί αναλόγως από το διαχειριστή σας.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="595"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="614"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 από %4)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="598"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="617"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="693"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="712"/>
         <source>%1 (%3%) of %2 server space in use.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="732"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="751"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="739"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="758"/>
         <source>No %1 connection configured.</source>
         <translation>Δεν υπάρχει σύνδεση με το %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="442"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="461"/>
         <source>Sync Running</source>
         <translation>Ο Συγχρονισμός Εκτελείται</translation>
     </message>
@@ -181,27 +181,27 @@
         <translation>Δεν ρυθμίστηκε λογαριασμός.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="443"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="462"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Η λειτουργία συγχρονισμού λειτουργεί.&lt;br/&gt; Θέλετε να την τερματίσετε;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="725"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="744"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Συνδεδεμένοι με &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="607"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="626"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 από %2, αρχείο %3 από %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="728"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="747"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Συνδεδεμένοι με &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; ως &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="697"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="716"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Προς το παρόν δεν υπάρχουν πληροφορίες χρήσης χώρου αποθήκευσης διαθέσιμες.</translation>
     </message>
@@ -260,100 +260,100 @@
 <context>
     <name>Mirall::Folder</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="99"/>
+        <location filename="../src/mirall/folder.cpp" line="100"/>
         <source>Unable to create csync-context</source>
         <translation>Αδυναμία δημιουργίας πλαισίου csync</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="157"/>
+        <location filename="../src/mirall/folder.cpp" line="158"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Δεν υπάρχει ο τοπικός φάκελος %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="160"/>
+        <location filename="../src/mirall/folder.cpp" line="161"/>
         <source>%1 should be a directory but is not.</source>
         <translation>%1 επρεπε να ειναι χωρος αποθηκευσης αλλα δεν ειναι.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="163"/>
+        <location filename="../src/mirall/folder.cpp" line="164"/>
         <source>%1 is not readable.</source>
         <translation> %1 δεν είναι αναγνώσιμο. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="312"/>
+        <location filename="../src/mirall/folder.cpp" line="324"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="397"/>
+        <location filename="../src/mirall/folder.cpp" line="410"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="399"/>
+        <location filename="../src/mirall/folder.cpp" line="412"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="404"/>
+        <location filename="../src/mirall/folder.cpp" line="417"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="406"/>
+        <location filename="../src/mirall/folder.cpp" line="419"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="411"/>
+        <location filename="../src/mirall/folder.cpp" line="424"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="413"/>
+        <location filename="../src/mirall/folder.cpp" line="426"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="418"/>
+        <location filename="../src/mirall/folder.cpp" line="431"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="420"/>
+        <location filename="../src/mirall/folder.cpp" line="433"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="425"/>
+        <location filename="../src/mirall/folder.cpp" line="438"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="427"/>
+        <location filename="../src/mirall/folder.cpp" line="440"/>
         <source>%1 has been moved to %2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="435"/>
+        <location filename="../src/mirall/folder.cpp" line="448"/>
         <source>Sync Activity</source>
         <translation>Δραστηριότητα Συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="692"/>
+        <location filename="../src/mirall/folder.cpp" line="707"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Αυτός ο συγχρονισμός θα αφαιρέσει όλα τα αρχεία στον τοπικό φάκελο συγχρονισμού &apos;%1&apos;.
 Εάν εσείς ή ο διαχειριστής σας επαναφέρατε τον λογαριασμό σας στο διακομιστή, επιλέξτε &quot;Διατήρηση αρχείων&quot;. Εάν θέλετε να αφαιρεθούν τα δεδομένα σας, επιλέξτε &quot;Αφαίρεση όλων των αρχείων&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="695"/>
+        <location filename="../src/mirall/folder.cpp" line="710"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -362,17 +362,17 @@ Are you sure you want to perform this operation?</source>
 Είστε σίγουροι ότι θέλετε να πραγματοποιήσετε αυτή εντολή;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="699"/>
+        <location filename="../src/mirall/folder.cpp" line="714"/>
         <source>Remove All Files?</source>
         <translation>Αφαίρεση Όλων των Αρχείων;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="701"/>
+        <location filename="../src/mirall/folder.cpp" line="716"/>
         <source>Remove all files</source>
         <translation>Αφαίρεση όλων των αρχείων</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="702"/>
+        <location filename="../src/mirall/folder.cpp" line="717"/>
         <source>Keep files</source>
         <translation>Διατήρηση αρχείων</translation>
     </message>
@@ -380,67 +380,67 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="167"/>
+        <location filename="../src/mirall/folderman.cpp" line="170"/>
         <source>Could not reset folder state</source>
         <translation>Δεν ήταν δυνατό να επαναφερθεί η κατάσταση του φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="168"/>
+        <location filename="../src/mirall/folderman.cpp" line="171"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Βρέθηκε ένα παλαιότερο αρχείο συγχρονισμού &apos;%1&apos;, αλλά δεν μπόρεσε να αφαιρεθεί. Παρακαλώ βεβαιωθείτε ότι καμμια εφαρμογή δεν το χρησιμοποιεί αυτή τη στιγμή.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="744"/>
+        <location filename="../src/mirall/folderman.cpp" line="747"/>
         <source>Undefined State.</source>
         <translation>Απροσδιόριστη κατάσταση.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="747"/>
+        <location filename="../src/mirall/folderman.cpp" line="750"/>
         <source>Waits to start syncing.</source>
         <translation>Αναμονή έναρξης συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="750"/>
+        <location filename="../src/mirall/folderman.cpp" line="753"/>
         <source>Preparing for sync.</source>
         <translation>Προετοιμασία για συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="753"/>
+        <location filename="../src/mirall/folderman.cpp" line="756"/>
         <source>Sync is running.</source>
         <translation>Ο συγχρονισμός εκτελείται.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="756"/>
+        <location filename="../src/mirall/folderman.cpp" line="759"/>
         <source>Server is currently not available.</source>
         <translation>Ο διακομιστής δεν είναι διαθέσιμος προς το παρόν.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="759"/>
+        <location filename="../src/mirall/folderman.cpp" line="762"/>
         <source>Last Sync was successful.</source>
         <translation>Ο τελευταίος συγχρονισμός ήταν επιτυχής.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="764"/>
+        <location filename="../src/mirall/folderman.cpp" line="767"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Ο τελευταίος συγχρονισμός ήταν επιτυχής, αλλά υπήρχαν προειδοποιήσεις σε συγκεκριμένα αρχεία.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="767"/>
+        <location filename="../src/mirall/folderman.cpp" line="770"/>
         <source>Setup Error.</source>
         <translation>Σφάλμα Ρύθμισης.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="770"/>
+        <location filename="../src/mirall/folderman.cpp" line="773"/>
         <source>User Abort.</source>
         <translation>Ματαίωση από Χρήστη.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="773"/>
+        <location filename="../src/mirall/folderman.cpp" line="776"/>
         <source>Sync is paused.</source>
         <translation>Ο Συγχρονισμός Παύθηκε</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="779"/>
+        <location filename="../src/mirall/folderman.cpp" line="782"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Παύση συγχρονισμούς)</translation>
     </message>
@@ -596,12 +596,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="304"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="314"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="310"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="320"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation type="unfinished"/>
     </message>
@@ -653,12 +653,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="273"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="274"/>
         <source>Enter Password</source>
         <translation>Εισάγετε Κωδικό Πρόσβασης</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="274"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="275"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Παρακαλώ εισάγετε τον κωδικό %1 για το χρήστη &apos;%2&apos;:</translation>
     </message>
@@ -1292,17 +1292,17 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="212"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="221"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Αυτός ο φάκελος δεν πρέπει να μετονομαστεί. Μετονομάζεται πίσω στο αρχικό του όνομα.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="214"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="223"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Αυτός ο φάκελος δεν πρέπει να μετονομαστεί. Παρακαλώ ονομάστε το  ξανά Κοινόχρηστος.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="229"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="238"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation type="unfinished"/>
     </message>
@@ -1329,22 +1329,22 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="190"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="191"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="207"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="216"/>
         <source>Local file changed during sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="217"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="226"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="249"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="257"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation type="unfinished"/>
     </message>
@@ -1472,27 +1472,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="30"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="34"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Λογαριασμός</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="38"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Δραστηριότητα</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="42"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Γενικά</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="46"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Δίκτυο</translation>
     </message>
 </context>
 <context>
@@ -1872,7 +1872,7 @@ It is not advisable to use it.</source>
         <translation>Το αρχείο περιέχει άκυρους χαρακτήρες που δεν μπορούν να συγχρονιστούν σε όλα τα συστήματα.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="436"/>
+        <location filename="../src/mirall/syncengine.cpp" line="442"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Αδυναμία προετοιμασίας αρχείου συγχρονισμού.</translation>
     </message>
