@@ -67,8 +67,10 @@ signals:
     void csyncWarning( const QString& );
     void csyncUnavailable();
 
-    // before actual syncing (after update+reconcile)
+    // before actual syncing (after update+reconcile) for each item
     void syncItemDiscovered(const SyncFileItem&);
+    // after the above signals. with the items that actually need propagating
+    void aboutToPropagate(const SyncFileItemVector&);
 
     // after each job (successful or not)
     void jobCompleted(const SyncFileItem&);

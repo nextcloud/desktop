@@ -537,6 +537,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     }
 
     // To announce the beginning of the sync
+    emit aboutToPropagate(_syncedItems);
     emit transmissionProgress(_progressInfo);
 
     if (!_hasFiles && !_syncedItems.isEmpty()) {
