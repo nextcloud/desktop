@@ -15,5 +15,6 @@ Contents
    building 
    architecture
    troubleshooting
+   faq
    glossary 
 
