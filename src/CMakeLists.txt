@@ -125,7 +125,8 @@ if(TOKEN_AUTH_ONLY)
 	    	creds/shibboleth/shibbolethwebview.cpp
 	    	creds/shibboleth/shibbolethrefresher.cpp
 	    	creds/shibboleth/shibbolethconfigfile.cpp
-	    	creds/shibboleth/authenticationdialog.cpp		
+	    	creds/shibboleth/authenticationdialog.cpp
+	    	creds/shibboleth/shibbolethuserjob.cpp
 	)	
 endif()
 

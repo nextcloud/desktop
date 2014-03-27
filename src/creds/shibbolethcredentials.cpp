@@ -15,12 +15,15 @@
 #include <QMutex>
 #include <QSettings>
 #include <QNetworkReply>
+#include <QMessageBox>
+#include <qdebug.h>
 
 #include "creds/shibbolethcredentials.h"
 #include "creds/shibboleth/shibbolethaccessmanager.h"
 #include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibboleth/shibbolethrefresher.h"
 #include "creds/shibboleth/shibbolethconfigfile.h"
+#include "shibboleth/shibbolethuserjob.h"
 #include "creds/credentialscommon.h"
 
 #include "mirall/account.h"
@@ -35,6 +38,8 @@ namespace Mirall
 
 namespace
 {
+
+const char userC[] = "user";
 
 int shibboleth_redirect_callback(CSYNC* csync_ctx,
                                  const char* uri)
@@ -157,10 +162,7 @@ QString ShibbolethCredentials::authType() const
 
 QString ShibbolethCredentials::user() const
 {
-    // ### TODO: If we had a way to extract the currently authenticated user
-    // somehow, we could return its id token (email) here (stored in REMOTE_USER)
-    // The server doesn't return it by default
-    return QString();
+    return _user;
 }
 
 QNetworkCookie ShibbolethCredentials::cookie() const
@@ -197,6 +199,9 @@ bool ShibbolethCredentials::ready() const
 
 void ShibbolethCredentials::fetch(Account *account)
 {
+    if (_user.isEmpty()) {
+        _user = account->credentialSetting(QLatin1String(userC)).toString();
+    }
     if (_ready) {
         Q_EMIT fetched();
     } else {
@@ -226,6 +231,8 @@ void ShibbolethCredentials::persist(Account* account)
     cfg.storeCookies(_otherCookies);
 
     storeShibCookie(_shibCookie, account);
+    if (!_user.isEmpty())
+        account->setCredentialSetting(QLatin1String(userC), _user);
 }
 
 // only used by Application::slotLogout(). Use invalidateAndFetch for normal usage
@@ -254,13 +261,48 @@ void ShibbolethCredentials::disposeBrowser()
 void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& cookie, Account* account)
 {
     disposeBrowser();
-    _ready = true;
-    _stillValid = true;
     _shibCookie = cookie;
     storeShibCookie(_shibCookie, account);
     Q_EMIT newCookie(_shibCookie);
+
+    // Now fetch the user...
+    // But we must first do a request to webdav so the session is enabled.
+    // (because for some reason we wan't access the API without that..  a bug in the server maybe?)
+    EntityExistsJob* job = new EntityExistsJob(account, account->davPath(), this);
+    connect(job, SIGNAL(exists(QNetworkReply*)), this, SLOT(slotFetchUser()));
+    job->setIgnoreCredentialFailure(true);
+    job->start();
+}
+
+void ShibbolethCredentials::slotFetchUser()
+{
+    AbstractNetworkJob* oldjob = qobject_cast<AbstractNetworkJob*>(sender());
+    Q_ASSERT(oldjob);
+    ShibbolethUserJob *job = new ShibbolethUserJob(oldjob->account(), this);
+    connect(job, SIGNAL(userFetched(QString)), this, SLOT(slotUserFetched(QString)));
+    job->start();
+}
+
+
+void ShibbolethCredentials::slotUserFetched(const QString &user)
+{
+    ShibbolethUserJob *job = qobject_cast<ShibbolethUserJob *>(sender());
+    Q_ASSERT(job);
+    if (_user.isEmpty()) {
+        _user = user;
+    } else if (user != _user) {
+        qDebug() << "Wrong user: " << user << "!=" << _user;
+        QMessageBox::warning(_browser, tr("Login Error"), tr("You must log with user %1").arg(_user));
+        invalidateToken(job->account());
+        showLoginWindow(job->account());
+        return;
+    }
+
+    _stillValid = true;
+    _ready = true;
     Q_EMIT fetched();
 }
+
 
 void ShibbolethCredentials::slotBrowserHidden()
 {
@@ -355,5 +397,6 @@ void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie, Accoun
     job->setTextData(QString::fromUtf8(cookie.toRawForm()));
     job->start();
 }
+
 
 } // ns Mirall

@@ -64,6 +64,8 @@ private Q_SLOTS:
     void slotReadJobDone(QKeychain::Job*);
     void slotInvalidateAndFetchInvalidateDone(QKeychain::Job*);
     void slotReplyFinished(QNetworkReply*);
+    void slotUserFetched(const QString& user);
+    void slotFetchUser();
 
 Q_SIGNALS:
     void newCookie(const QNetworkCookie& cookie);
@@ -80,6 +82,7 @@ private:
     bool _stillValid;
     ShibbolethWebView* _browser;
     QMap<QUrl, QList<QNetworkCookie> > _otherCookies;
+    QString _user;
 };
 
 } // ns Mirall
