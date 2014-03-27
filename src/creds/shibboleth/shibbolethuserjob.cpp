@@ -29,7 +29,7 @@ void ShibbolethUserJob::start()
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
     QUrl url = Account::concatUrlPath(account()->url(), path());
-    url.setQuery("format=json");
+    url.setQueryItems(QList<QPair<QString, QString> >() << qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
     setReply(davRequest("GET", url, req));
     setupConnections(reply());
     AbstractNetworkJob::start();

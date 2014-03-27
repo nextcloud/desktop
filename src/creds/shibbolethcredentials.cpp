@@ -292,7 +292,7 @@ void ShibbolethCredentials::slotUserFetched(const QString &user)
         _user = user;
     } else if (user != _user) {
         qDebug() << "Wrong user: " << user << "!=" << _user;
-        QMessageBox::warning(_browser, tr("Login Error"), tr("You must log with user %1").arg(_user));
+        QMessageBox::warning(_browser, tr("Login Error"), tr("You must sign in as user %1").arg(_user));
         invalidateToken(job->account());
         showLoginWindow(job->account());
         return;
