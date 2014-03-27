@@ -257,6 +257,10 @@ int csync_update(CSYNC *ctx) {
 
   csync_memstat_check();
 
+  if (!ctx->excludes) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "No exclude file loaded or defined!");
+  }
+
   /* update detection for local replica */
   oc_notify_progress(NULL, CSYNC_NOTIFY_START_LOCAL_UPDATE, 0, 0);
   csync_gettime(&start);
