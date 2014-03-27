@@ -68,7 +68,7 @@ signals:
     void csyncUnavailable();
 
     // before actual syncing (after update+reconcile)
-    void syncItemDisconvered(const SyncFileItem&);
+    void syncItemDiscovered(const SyncFileItem&);
 
     // after each job (successful or not)
     void jobCompleted(const SyncFileItem&);

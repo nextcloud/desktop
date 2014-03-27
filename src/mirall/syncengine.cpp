@@ -322,7 +322,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             // No need to do anything.
             _hasFiles = true;
 
-            emit syncItemDisconvered(item);
+            emit syncItemDiscovered(item);
             return re;
         }
         break;
@@ -375,7 +375,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item.other._size        = file->other.size;
 
     _syncedItems.append(item);
-    emit syncItemDisconvered(item);
+    emit syncItemDiscovered(item);
     return re;
 }
 
