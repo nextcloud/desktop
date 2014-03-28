@@ -92,8 +92,6 @@ void SyncRunFileLog::start( Utility::StopWatch stopWatch )
     _start = true;
 }
 
-#define L QLatin1String("|")
-
 void SyncRunFileLog::logItem( const SyncFileItem& item )
 {
     // don't log the directory items that are in the list
@@ -110,6 +108,7 @@ void SyncRunFileLog::logItem( const SyncFileItem& item )
         _start = false;
     }
 
+    const QChar L = QLatin1Char('|');
     _out << item._responseTimeStamp << L;
     _out << QString::number(item._requestDuration) << L;
     _out << item._file << L;
@@ -128,7 +127,6 @@ void SyncRunFileLog::logItem( const SyncFileItem& item )
     _out << instructionToStr(item.other._instruction) << L;
 
     _out << endl;
-
 }
 
 void SyncRunFileLog::close()
