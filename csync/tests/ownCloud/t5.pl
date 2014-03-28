@@ -37,7 +37,10 @@ initTesting();
 my $share_dir = "share_source";
 
 printInfo( "Create a share." );
-createShare( $share_dir, 31 );
+my $shareId = createShare( $share_dir, 31 );
+print "Created share with id <$shareId>\n";
+
+assert( $shareId > 0 );
 
 # put a couple of files into the shared directory in the sharer account
 glob_put( 'sharing/*', $share_dir, { user => configValue('share_user'),
@@ -56,6 +59,8 @@ createLocalFile( localDir(). $share_dir . "/foobar.txt", 8094 );
 csync( server()."Shared" );
 assertLocalAndRemoteDir( 'Shared', 0, server() );
 
+printInfo("Remove a Share.");
+removeShare($shareId, $share_dir);
 cleanup();
 
 # --

@@ -31,7 +31,7 @@ use Carp::Assert;
 use Digest::MD5;
 use Unicode::Normalize;
 use LWP::UserAgent;
-use HTTP::Request::Common;
+use HTTP::Request::Common qw( POST  DELETE );
 use File::Basename;
 
 use Encode qw(from_to);
@@ -63,7 +63,7 @@ our %config;
                   assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir 
                   putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
                   remoteCleanup server initLocalDir initRemoteDir moveRemoteFile
-                  printInfo remoteFileId createShare
+                  printInfo remoteFileId createShare removeShare
                   configValue testDirUrl);
 
 sub server
@@ -634,11 +634,54 @@ sub createShare($$)
     $req->authorization_basic($share_user, $share_passwd);
     my $response = $ua->request($req);
 
+    my $id = 0;
     if ($response->is_success()) {
       # print "OK: ", $response->content;
+	print $response->decoded_content;
+	if( $response->decoded_content =~ /<id>(\d+)<\/id>/m) {
+	    $id = $1;
+	}
     } else {
       die( "Create sharing failed: " . $response->as_string );
     }
+    return $id;
+}
+
+sub removeShare($$)
+{
+    my ($shareId, $dir) = @_;
+
+    my $dd = HTTP::DAV->new();
+
+    $dd->credentials( -url  => $owncloud, -realm=>"ownCloud",
+	              -user => $share_user,
+		      -pass => $share_passwd );
+    $dd->open( $owncloud);
+
+    my $ua  = LWP::UserAgent->new();
+    $ua->agent( "ownCloudTest_sharing");
+    # http://localhost/ocm/ocs/v1.php/apps/files_sharing/api/v1/shares
+    my $url = $ocs_url . "apps/files_sharing/api/v1/shares/" . $shareId;
+
+    my $req = DELETE $url;
+    $req->authorization_basic($share_user, $share_passwd);
+    my $response = $ua->request($req);
+
+    if ($response->is_success()) {
+      # print "OK: ", $response->content;
+	print $response->decoded_content;
+	if( $response->decoded_content =~ /<status_code>(\d+)<\/status_code>/m) {
+	    my $code = $1;
+	    assert( $code == 100 );
+	}
+    } else {
+      die( "Create sharing failed: " . $response->as_string );
+    }
+
+    # remove the share dir
+    my $req = DELETE $owncloud . $dir;
+    $req->authorization_basic($share_user, $share_passwd);
+    my $response = $ua->request($req);
 }
 
 #
