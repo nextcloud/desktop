@@ -14,6 +14,7 @@
 #include "mirall/syncrunfilelog.h"
 #include "mirall/utility.h"
 #include "mirall/mirallconfigfile.h"
+#include <qfileinfo.h>
 
 namespace Mirall {
 
@@ -78,8 +79,18 @@ QString SyncRunFileLog::instructionToStr( csync_instructions_e inst )
 
 void SyncRunFileLog::start( const Utility::StopWatch &stopWatch )
 {
+    const qint64 logfileMaxSize = 1024*1024; // 1MiB
     MirallConfigFile cfg;
-    _file.reset(new QFile(cfg.configPath() + QLatin1String("sync_log") ));
+    const QString filename = cfg.configPath() + QLatin1String("sync_log");
+
+    // When the file is too big, just rename it to an old name.
+    QFileInfo info(filename);
+    if (info.exists() && info.size() > logfileMaxSize) {
+        QString newFilename = filename + QLatin1String(".1");
+        QFile::remove(newFilename);
+        QFile::rename(filename, newFilename);
+    }
+    _file.reset(new QFile(filename));
 
     _file->open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
     _out.setDevice( _file.data() );
