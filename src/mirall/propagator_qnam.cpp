@@ -64,8 +64,16 @@ void PUTFileJob::start() {
     AbstractNetworkJob::start();
 }
 
-// FIXME:  increase and make configurable
-static const int CHUNKING_SIZE = (10*1024*1024);
+static uint chunkSize() {
+    static uint chunkSize;
+    if (!chunkSize) {
+        chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
+        if (chunkSize == 0) {
+            chunkSize = 10*1024*1024; // default to 10 MiB
+        }
+    }
+    return chunkSize;
+}
 
 void PropagateUploadFileQNAM::start()
 {
@@ -80,7 +88,7 @@ void PropagateUploadFileQNAM::start()
     }
 
     quint64 fileSize = _file->size();
-    _chunkCount = std::ceil(fileSize/double(CHUNKING_SIZE));
+    _chunkCount = std::ceil(fileSize/double(chunkSize()));
     _startChunk = 0;
     _transferId = qrand() ^ _item._modtime ^ (_item._size << 16);
 
@@ -116,7 +124,7 @@ struct ChunkDevice : QIODevice {
     }
 
     virtual qint64 readData(char* data, qint64 maxlen) {
-        maxlen = qMin(maxlen, CHUNKING_SIZE - _read);
+        maxlen = qMin(maxlen, chunkSize() - _read);
         if (maxlen == 0)
             return 0;
         qint64 ret = _file->read(data, maxlen);
@@ -125,7 +133,7 @@ struct ChunkDevice : QIODevice {
     }
 
     virtual bool atEnd() const {
-        return  _read >= CHUNKING_SIZE || _file->atEnd();
+        return  _read >= chunkSize() || _file->atEnd();
     }
 };
 
@@ -163,9 +171,11 @@ void PropagateUploadFileQNAM::startNextChunk()
     QIODevice *device;
     if (_chunkCount > 1) {
         int sendingChunk = (_currentChunk + _startChunk) % _chunkCount;
-        path +=  QString("-chunking-%1-%2-%3").arg(uint(_transferId)).arg(_chunkCount).arg(sendingChunk);
+        // XOR with chunk size to make sure everything goes well if chunk size change between runs
+        uint transid = _transferId ^ chunkSize();
+        path +=  QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
         headers["OC-Chunked"] = "1";
-        device = new ChunkDevice(_file, CHUNKING_SIZE * sendingChunk);
+        device = new ChunkDevice(_file, chunkSize() * sendingChunk);
     } else {
         device = _file;
     }
@@ -273,7 +283,7 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
     int progressChunk = _currentChunk + _startChunk;
     if (progressChunk >= _chunkCount)
         progressChunk = _currentChunk;
-    emit progress(_item, sent + _currentChunk * CHUNKING_SIZE);
+    emit progress(_item, sent + _currentChunk * chunkSize());
 }
 
 

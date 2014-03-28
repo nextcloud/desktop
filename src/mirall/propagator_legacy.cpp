@@ -71,11 +71,15 @@ void PropagateUploadFileLegacy::start()
     do {
         Hbf_State state = HBF_SUCCESS;
         QScopedPointer<hbf_transfer_t, ScopedPointerHelpers> trans(hbf_init_transfer(uri.data()));
+        Q_ASSERT(trans);
         trans->user_data = this;
         hbf_set_log_callback(trans.data(), _log_callback);
         hbf_set_abort_callback(trans.data(), _user_want_abort);
         trans.data()->chunk_finished_cb = chunk_finished_cb;
-        Q_ASSERT(trans);
+        static uint chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
+        if (chunkSize > 0)  {
+            trans->block_size = trans->threshold = chunkSize;
+        }
 
         state = hbf_splitlist(trans.data(), file.handle());
 
