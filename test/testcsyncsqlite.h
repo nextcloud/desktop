@@ -19,7 +19,6 @@ private:
     typedef struct {
         struct {
             csync_auth_callback auth_function;
-            csync_progress_callback progress_cb;
             void *userdata;
         } callbacks;
         c_strlist_t *excludes;
