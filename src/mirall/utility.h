@@ -18,7 +18,6 @@
 #include <QString>
 #include <QByteArray>
 #include <QDateTime>
-#include <QPair>
 #include <QElapsedTimer>
 
 class QWidget;
@@ -70,7 +69,7 @@ namespace Utility
 
     class StopWatch {
     private:
-        QList<QPair<QString, quint64> > _lapTimes;
+        QHash<QString, quint64> _lapTimes;
         QDateTime _startTime;
         QElapsedTimer _timer;
     public:

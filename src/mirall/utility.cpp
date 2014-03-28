@@ -490,7 +490,7 @@ bool Utility::isLinux()
 #endif
 }
 
-# define STOPWATCH_END_TAG QLatin1String("_STOPWATCH_END")
+static const char STOPWATCH_END_TAG[] = "_STOPWATCH_END";
 
 void Utility::StopWatch::start()
 {
@@ -510,8 +510,7 @@ quint64 Utility::StopWatch::addLapTime( const QString& lapName )
         start();
     }
     quint64 re = _timer.elapsed();
-    QPair<QString, quint64> p(lapName, re);
-    _lapTimes.append(p);
+    _lapTimes[lapName] = re;
     return re;
 }
 
@@ -533,14 +532,7 @@ QDateTime Utility::StopWatch::timeOfLap( const QString& lapName ) const
 
 quint64 Utility::StopWatch::durationOfLap( const QString& lapName ) const
 {
-    QPair<QString, quint64> lapPair;
-
-    foreach( lapPair, _lapTimes ) {
-        if( lapPair.first == lapName ) {
-            return lapPair.second;
-        }
-    }
-    return 0;
+    return _lapTimes.value(lapName, 0);
 }
 
 
