@@ -683,9 +683,6 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
                          req_status->reason_phrase);
             ret = NE_CONNECT;
             set_error_message(req_status->reason_phrase);
-            oc_notify_progress( uri, CSYNC_NOTIFY_ERROR,
-                                req_status->code,
-                                (intptr_t)(req_status->reason_phrase) );
         }
         DEBUG_WEBDAV("Simple propfind result code %d.", req_status->code);
     } else {
@@ -1035,9 +1032,6 @@ int owncloud_set_property(const char *key, void *data) {
     if( c_streq(key, "no_recursive_propfind")) {
         dav_session.no_recursive_propfind = *(bool*)(data);
         return 0;
-    }
-    if( c_streq(key, "overall_progress_data")) {
-      dav_session.overall_progress_data = (csync_overall_progress_t*)(data);
     }
     if( c_streq(key, "redirect_callback")) {
         if (data) {

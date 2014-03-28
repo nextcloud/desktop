@@ -262,7 +262,6 @@ int csync_update(CSYNC *ctx) {
   }
 
   /* update detection for local replica */
-  oc_notify_progress(NULL, CSYNC_NOTIFY_START_LOCAL_UPDATE, 0, 0);
   csync_gettime(&start);
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
@@ -275,7 +274,6 @@ int csync_update(CSYNC *ctx) {
   }
 
   csync_gettime(&finish);
-  oc_notify_progress(NULL, CSYNC_NOTIFY_FINISHED_LOCAL_UPDATE, 0, 0);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Update detection for local replica took %.2f seconds walking %zu files.",
@@ -289,7 +287,6 @@ int csync_update(CSYNC *ctx) {
 
   /* update detection for remote replica */
   if( ! ctx->options.local_only_mode ) {
-    oc_notify_progress(NULL, CSYNC_NOTIFY_START_REMOTE_UPDATE, 0, 0);
     csync_gettime(&start);
     ctx->current = REMOTE_REPLICA;
     ctx->replica = ctx->remote.type;
@@ -303,7 +300,6 @@ int csync_update(CSYNC *ctx) {
 
 
     csync_gettime(&finish);
-    oc_notify_progress(NULL, CSYNC_NOTIFY_FINISHED_REMOTE_UPDATE, 0, 0);
 
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
               "Update detection for remote replica took %.2f seconds "
@@ -647,11 +643,6 @@ int csync_commit(CSYNC *ctx) {
     goto out;
   }
 
-  /* reset the progress */
-  ctx->overall_progress.file_count = 0;
-  ctx->overall_progress.current_file_no = 0;
-  ctx->overall_progress.byte_sum = 0;
-  ctx->overall_progress.byte_current = 0;
 
   ctx->status = CSYNC_STATUS_INIT;
   SAFE_FREE(ctx->error_string);
@@ -932,27 +923,3 @@ int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
     return csync_vio_set_property(ctx, key, value);
 }
 
-int csync_set_progress_callback(CSYNC* ctx, csync_progress_callback cb)
-{
-  if (ctx == NULL) {
-    return -1;
-  }
-  if (cb == NULL ) {
-    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-    return -1;
-  }
-
-  ctx->callbacks.progress_cb = cb;
-  ctx->status_code = CSYNC_STATUS_OK;
-  return 0;
-
-}
-
-csync_progress_callback csync_get_progress_callback(CSYNC *ctx)
-{
-  if (ctx == NULL) {
-    return NULL;
-  }
-
-  return ctx->callbacks.progress_cb;
-}

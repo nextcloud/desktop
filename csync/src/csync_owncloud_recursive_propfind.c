@@ -273,7 +273,6 @@ void fetch_resource_list_recursive(const char *uri, const char *curi)
                          req_status->reason_phrase);
             ret = NE_CONNECT;
             set_error_message(req_status->reason_phrase);
-            oc_notify_progress(uri, CSYNC_NOTIFY_ERROR,  req_status->code, (intptr_t)(req_status->reason_phrase));
         }
         DEBUG_WEBDAV("Recursive propfind result code %d.", req_status ? req_status->code : 0);
     } else {

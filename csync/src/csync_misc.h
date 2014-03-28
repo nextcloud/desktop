@@ -49,14 +49,6 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags);
  */
 CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status);
 
-typedef struct {
-    int64_t file_count;
-    int64_t current_file_no;
-    int64_t byte_sum;
-    int64_t byte_current;
-} csync_overall_progress_t;
-
-
 char *csync_normalize_etag(const char *);
 
 #endif /* _CSYNC_MISC_H */

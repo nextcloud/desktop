@@ -161,23 +161,6 @@ enum csync_notify_type_e {
   CSYNC_NOTIFY_FINISHED_REMOTE_UPDATE
 };
 
-struct csync_progress_s {
-  enum csync_notify_type_e kind;
-
-  /* individual file progress information */
-  const char *path;
-  int64_t curr_bytes;
-  int64_t file_size;
-
-  /* overall progress */
-  int64_t overall_transmission_size;
-  int64_t current_overall_bytes;
-  int64_t overall_file_count;
-  int64_t current_file_no;
-
-};
-typedef struct csync_progress_s CSYNC_PROGRESS;
-
 /**
  * CSync File Traversal structure.
  *
@@ -586,25 +569,6 @@ int csync_set_iconv_codec(const char *from);
  * @return              0 on success, less than 0 if an error occured.
  */
 int csync_set_module_property(CSYNC *ctx, const char *key, void *value);
-
-/**
- * @brief Callback definition for file progress callback.
- *
- * @param progress  A struct containing progress information.
- *
- * @param userdata  User defined data for the callback.
- */
-typedef void (*csync_progress_callback)( CSYNC_PROGRESS *progress, void *userdata);
-
-/**
- * @brief Set a progress callback.
- *
- * This callback reports about up- or download progress of a individual file
- * as well as overall progress.
- */
-int csync_set_progress_callback( CSYNC *ctx, csync_progress_callback cb);
-
-csync_progress_callback csync_get_progress_callback(CSYNC *ctx);
 
 /**
  * @brief Aborts the current sync run as soon as possible. Can be called from another thread.

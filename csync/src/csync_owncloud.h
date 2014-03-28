@@ -139,7 +139,6 @@ struct dav_session_s {
 
     bool no_recursive_propfind;
 
-    csync_overall_progress_t *overall_progress_data;
     csync_owncloud_redirect_callback_t redir_callback;
 };
 extern struct dav_session_s dav_session;
@@ -166,8 +165,6 @@ char *_cleanPath( const char* uri );
 
 int _stat_perms( int type );
 csync_vio_file_stat_t *resourceToFileStat( struct resource *res );
-
-void oc_notify_progress(const char *file, enum csync_notify_type_e kind, int64_t current_size, int64_t full_size);
 
 // Public API from vio
 csync_vio_handle_t *owncloud_opendir(const char *uri);

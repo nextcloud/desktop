@@ -96,7 +96,6 @@ typedef struct csync_file_stat_s csync_file_stat_t;
 struct csync_s {
   struct {
       csync_auth_callback auth_function;
-      csync_progress_callback progress_cb;
       void *userdata;
   } callbacks;
   c_strlist_t *excludes;
@@ -143,10 +142,6 @@ struct csync_s {
     uid_t uid;
     uid_t euid;
   } pwd;
-
-  csync_overall_progress_t overall_progress;
-
-  struct csync_progressinfo_s *progress_info;
 
   /* replica we are currently walking */
   enum csync_replica_e current;
