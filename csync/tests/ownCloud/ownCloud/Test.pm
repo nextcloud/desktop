@@ -45,21 +45,26 @@ use open ':encoding(utf8)';
 use vars qw( @ISA @EXPORT @EXPORT_OK $d %config);
 
 our $owncloud   = "http://localhost/oc/remote.php/webdav/";
+our $owncloud_plain; # the server url without the uniq testing dir
 our $user       = "joe";
 our $passwd     = 'XXXXX'; # Mind to be secure.
 our $ld_libpath = "/home/joe/owncloud.com/buildcsync/modules";
 our $csync      = "/home/joe/owncloud.com/buildcsync/client/ocsync";
+our $ocs_url;
+our $share_user;
+our $share_passwd;
 our $remoteDir;
 our $localDir;
 our $infoCnt = 1;
-
+our %config;
 
 @ISA        = qw(Exporter);
 @EXPORT     = qw( initTesting createRemoteDir createLocalDir cleanup csync
                   assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir 
                   putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
                   remoteCleanup server initLocalDir initRemoteDir moveRemoteFile
-                  printInfo remoteFileId);
+                  printInfo remoteFileId createShare
+                  configValue testDirUrl);
 
 sub server
 {
@@ -86,15 +91,19 @@ sub initTesting(;$)
   $cfgFile = "/etc/ownCloud/t1.cfg" if( -r "/etc/ownCloud/t1.cfg" );
 
   if( -r "$cfgFile" ) {
-    my %config = do $cfgFile;
+    %config = do $cfgFile;
     warn "Could not parse t1.cfg: $!\n" unless %config;
     warn "Could not do t1.cfg: $@\n" if $@;
 
-    $user       = $config{user} if( $config{user} );
-    $passwd     = $config{passwd} if( $config{passwd} );
-    $owncloud   = $config{url}  if( $config{url} );
-    $ld_libpath = $config{ld_libpath} if( $config{ld_libpath} );
-    $csync      = $config{csync} if( $config{csync} );
+    $user         = $config{user} if( $config{user} );
+    $passwd       = $config{passwd} if( $config{passwd} );
+    $owncloud     = $config{url}  if( $config{url} );
+    $ld_libpath   = $config{ld_libpath} if( $config{ld_libpath} );
+    $csync        = $config{csync} if( $config{csync} );
+    $ocs_url      = $config{ocs_url} if( $config{ocs_url} );
+    $share_user   = $config{share_user} if( $config{share_user} );
+    $share_passwd = $config{share_passwd} if( $config{share_passwd} );
+
     print "Read config from $cfgFile: $config{url}\n";
   } else {
     print STDERR "Could not read a config file $cfgFile\n";
@@ -124,19 +133,38 @@ sub initTesting(;$)
   printf( "Test directory name is %s\n", $dir );
 }
 
+sub configValue($;$)
+{
+    my ($configName, $default) = @_;
+
+    if( $config{$configName} ) {
+	return $config{$configName} ;
+    } else {
+        return $default;
+    }
+}
+
+# Returns the full url to the testing dir, ie.
+# http://localhost/owncloud/remote.php/webdav/t1-0543
+sub testDirUrl()
+{
+    print "WARN: Remote dir still empty, first call initRemoteDir!\n" unless($remoteDir);
+    return $owncloud . $remoteDir;
+}
+
 # Call this first to create the unique test dir stored in
 # the global var $remoteDir;
 sub initRemoteDir
 {
   $d->open( $owncloud );
-  $owncloud .= $remoteDir;
-  
-  my $re = $d->mkcol( $owncloud );
+  my $url = testDirUrl();
+
+  my $re = $d->mkcol( $url );
   if( $re == 0 ) {
-    print "Failed to create test dir $owncloud\n";
+    print "Failed to create test dir $url\n";
     exit 1;
   }
-  # $owncloud .= $remoteDir;
+
 }
 
 sub initLocalDir
@@ -148,7 +176,7 @@ sub createRemoteDir(;$)
 {
     my ($dir) = @_;
 
-    my $url = $owncloud . $dir;
+    my $url = testDirUrl() . $dir;
 
     $d->open( $owncloud );
     print $d->message . "\n";
@@ -159,6 +187,7 @@ sub createRemoteDir(;$)
 	exit 1;
     }
     $d->open( $url );
+
     return $re;
 
 }
@@ -191,14 +220,15 @@ sub cleanup()
 sub remoteCleanup($)
 {
     my ($dir) = @_;
-    $d->open( -url => $owncloud . $dir );
+    my $url = testDirUrl().$dir;
+    $d->open( -url => $url );
 
     print "Cleaning Remote!\n";
 
-    my $re = $d->delete( $owncloud . $dir );
+    my $re = $d->delete( $url );
 
     if( $re == 0 ) {
-	print "Failed to clenup directory <$owncloud $dir>\n";
+	print "Failed to cleanup directory <$url>\n";
     }
     return $re;
 }
@@ -211,9 +241,15 @@ sub localCleanup($)
     system( "rm -rf $dir" );
 }
 
-sub csync(  )
+# parameter: An optional full url to the owncloud sync dir.
+sub csync( ;$ )
 {
-    my $url = $owncloud;
+    my ($aurl) = @_;
+
+    my $url = testDirUrl();
+    if( $aurl ) {
+	$url = $aurl;
+    }
     $url =~ s#^http://##;    # Remove the leading http://
     $url = "owncloud://$user:$passwd@". $url;
     print "CSync URL: $url\n";
@@ -290,14 +326,22 @@ sub registerSeen($$)
   $seenRef->{$file} = 1;
 }
 
-sub traverse( $$ )
+sub traverse( $$;$ )
 {
-    my ($remote, $acceptConflicts) = @_;
+    my ($remote, $acceptConflicts, $aurl) = @_;
     $remote .= '/' unless $remote =~ /(^|\/)$/;
-    printf("===============> $remote\n");
     
-    my $url = $owncloud . $remote;
+    my $url = testDirUrl() . $remote;
+    if( $aurl ) {
+	$url = $aurl . $remote;
+    }
+    printf("===============> $url\n");
     my %seen;
+
+
+    $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
+		    -user=> $user,
+		    -pass=> $passwd );
 
     if( my $r = $d->propfind( -url => $url, -depth => 1 ) ) {
 
@@ -309,12 +353,15 @@ sub traverse( $$ )
 		    # print "Checking " . $res-> get_uri()->as_string ."\n";
 		    print "Traversing into directory: $filename\n";
 		    my $dirname = $remote . $filename;
-		    traverse( $dirname, $acceptConflicts );
-		    registerSeen( \%seen, $localDir . $dirname );
+		    traverse( $dirname, $acceptConflicts, $aurl );
+		    my $localDirName = $localDir . $dirname;
+		    $localDirName =~ s/Shared\///g;
+		    registerSeen( \%seen, $localDirName); #  . $dirname
 		} else {
 		    # Check files here.
 		    print "Checking file: $remote$filename\n";
 		    my $localFile = $localDir . $remote . $filename;
+		    $localFile =~ s/Shared\///g;
 		    registerSeen( \%seen, $localFile );
 		    # $localFile =~ s/t1-\d+\//t1\//;
 
@@ -329,7 +376,8 @@ sub traverse( $$ )
     # Check the directory contents
     my $localpath = localDir();
     $localpath .= $remote if( $remote ne "/" );
-  print "#### localpath = " . $localpath . "\n";
+    $localpath =~ s/Shared\///g;
+    print "#### localpath = " . $localpath . "\n";
     opendir(my $dh, $localpath ) || die;
     # print Dumper( %seen );
     while( readdir $dh ) {
@@ -361,20 +409,19 @@ sub traverse( $$ )
     closedir $dh;
 }
 
-sub assertLocalAndRemoteDir( $$ )
+sub assertLocalAndRemoteDir( $$;$ )
 {
-    my ($remote, $acceptConflicts ) = @_;
-    # %seen = ();
-    traverse( $remote, $acceptConflicts );
+    my ($remote, $acceptConflicts, $aurl ) = @_;
+    traverse( $remote, $acceptConflicts, $aurl );
 }
 
-sub glob_put( $$ )
+#
+# the third parameter is an optional hash ref that can contain
+# the keys user, passwd and url for alternative connection settings
+#
+sub glob_put( $$;$ )
 {
-    my( $globber, $target ) = @_;
-
-    # $target = $owncloud . $target;
-    
-    $d->open( $target );
+    my( $globber, $target, $optionsRef ) = @_;
 
     my @puts = bsd_glob( $globber );
     foreach my $llfile( @puts ) {
@@ -389,7 +436,7 @@ sub glob_put( $$ )
 	    $puturl = $target;
 	      print "   *** Putting $lfile to $puturl\n";
 	      # putToDirLWP( $lfile, $puturl );
-	      put_to_dir($lfile, $puturl);
+	      put_to_dir($lfile, $puturl, $optionsRef);
 	      
 	      # if( ! $d->put( -local=>$lfile, -url=> $puturl ) ) {
 	      #print "   ### FAILED to put: ". $d->message . '\n';
@@ -400,16 +447,26 @@ sub glob_put( $$ )
     }
 }
 
-sub put_to_dir( $$ )
+sub put_to_dir( $$;$ )
 {
-    my ($file, $dir) = @_;
+    my ($file, $dir, $optionsRef) = @_;
 
     $dir .="/" unless $dir =~ /\/$/;
+    my $targetUrl = testDirUrl();
+
+    if( $optionsRef && $optionsRef->{user} && $optionsRef->{passwd} ) {
+	$d->credentials( -url=> $owncloud, -realm=>"ownCloud",
+			 -user=> $optionsRef->{user},
+			 -pass=> $optionsRef->{passwd} );
+	if( $optionsRef->{url} ) {
+	    $targetUrl = $optionsRef->{url};
+	}
+    }
     $d->open($dir);
 
     my $filename = $file;
     $filename =~ s/^.*\///;
-    my $puturl = $owncloud . $dir. $filename;
+    my $puturl = $targetUrl . $dir. $filename;
     print "put_to_dir puts to $puturl\n";
     unless ($d->put( -local => $file, -url => $puturl )) {
       print "  ### FAILED to put a single file!\n";
@@ -429,7 +486,7 @@ sub putToDirLWP($$)
     my $basename = basename $filename;
 
     $dir =~ s/^\.\///;
-    my $puturl = $owncloud . $dir. $basename;
+    my $puturl = testDirUrl() . $dir. $basename;
     # print "putToDir LWP puts $filename to $puturl\n";
     die("Could not open $filename: $!") unless( open FILE, "$filename" );
     binmode FILE,  ":utf8";;
@@ -494,8 +551,8 @@ sub moveRemoteFile($$)
 {
   my ($from, $to) = @_;
     
-  my $fromUrl = $owncloud . $from;
-  my $toUrl = $owncloud . $to;
+  my $fromUrl = testDirUrl(). $from;
+  my $toUrl = testDirUrl() . $to;
   
   $d->move($fromUrl, $toUrl);
   
@@ -518,7 +575,7 @@ sub printInfo($)
 sub remoteFileId($$)
 {
   my ($fromDir, $file) = @_;
-  my $fromUrl = $owncloud . $fromDir;
+  my $fromUrl = testDirUrl() . $fromDir;
   my $id;
 
   if( my $r = $d->propfind( -url => $fromUrl, -depth => 1 ) ) {
@@ -539,6 +596,49 @@ sub remoteFileId($$)
   }
   print "## ID of $file: $id\n";
   return $id;
+}
+
+# Creates a read write share from the config file user 'share_user' to the
+# config file user 'user'
+# readWrite: permission flag. 31 for all permissions (read/write/create etc)
+# and 1 for read only
+sub createShare($$)
+{
+    my ($dir, $readWrite) = @_;
+
+    my $dd = HTTP::DAV->new();
+
+    $dd->credentials( -url=> $owncloud, -realm=>"ownCloud",
+	             -user=> $share_user,
+		     -pass=> $share_passwd );
+    $dd->open( $owncloud);
+
+    # create a remote dir
+    my $url = $owncloud . $dir;
+
+    my $re = $dd->mkcol( $url );
+    if( $re == 0 ) {
+	print "Failed to create test dir $url\n";
+
+    }
+
+    my $ua  = LWP::UserAgent->new();
+    $ua->agent( "ownCloudTest_sharing");
+    # http://localhost/ocm/ocs/v1.php/apps/files_sharing/api/v1/shares
+    my $puturl = $ocs_url . "apps/files_sharing/api/v1/shares";
+
+    my $string = "path=$dir&shareType=0&shareWith=$user&publicUpload=false&permissions=$readWrite";
+    print ">>>>>>>>>> $string\n";
+
+    my $req = POST $puturl, Content => $string;
+    $req->authorization_basic($share_user, $share_passwd);
+    my $response = $ua->request($req);
+
+    if ($response->is_success()) {
+      # print "OK: ", $response->content;
+    } else {
+      die( "Create sharing failed: " . $response->as_string );
+    }
 }
 
 #
