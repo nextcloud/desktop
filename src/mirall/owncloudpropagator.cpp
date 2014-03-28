@@ -25,7 +25,13 @@
 namespace Mirall {
 
 /* The maximum number of active job in parallel  */
-static const int maximumActiveJob = 3;
+static int maximumActiveJob() {
+    static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
+    if (!max) {
+        max = 3; //default
+    }
+    return max;
+}
 
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
 {
@@ -288,7 +294,7 @@ void PropagateDirectory::slotSubJobReady()
         return; // Ignore the case when the _fistJob is ready and not yet finished
     if (_runningNow && _current >= 0 && _current < _subJobs.count()) {
         // there is a job running and the current one is not ready yet, we can't start new job
-        if (!_subJobs[_current]->_readySent || _propagator->_activeJobs >= maximumActiveJob)
+        if (!_subJobs[_current]->_readySent || _propagator->_activeJobs >= maximumActiveJob())
             return;
     }
 
