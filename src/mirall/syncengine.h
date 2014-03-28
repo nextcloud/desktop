@@ -60,7 +60,7 @@ public:
     /* Abort the sync.  Called from the main thread */
     void abort();
 
-    Utility::StopWatch stopWatch() { return _stopWatch; }
+    Utility::StopWatch &stopWatch() { return _stopWatch; }
 
 signals:
     void csyncError( const QString& );

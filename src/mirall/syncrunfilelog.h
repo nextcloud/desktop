@@ -28,7 +28,7 @@ class SyncRunFileLog
 {
 public:
     SyncRunFileLog();
-    void start( Utility::StopWatch stopWatch );
+    void start( const Utility::StopWatch &stopWatch );
     void logItem( const SyncFileItem& item );
     void close();
 

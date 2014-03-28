@@ -76,7 +76,7 @@ QString SyncRunFileLog::instructionToStr( csync_instructions_e inst )
 }
 
 
-void SyncRunFileLog::start( Utility::StopWatch stopWatch )
+void SyncRunFileLog::start( const Utility::StopWatch &stopWatch )
 {
     MirallConfigFile cfg;
     _file.reset(new QFile(cfg.configPath() + QLatin1String("sync_log") ));

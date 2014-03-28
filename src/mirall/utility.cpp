@@ -515,12 +515,12 @@ quint64 Utility::StopWatch::addLapTime( const QString& lapName )
     return re;
 }
 
-QDateTime Utility::StopWatch::startTime()
+QDateTime Utility::StopWatch::startTime() const
 {
     return _startTime;
 }
 
-QDateTime Utility::StopWatch::timeOfLap( const QString& lapName )
+QDateTime Utility::StopWatch::timeOfLap( const QString& lapName ) const
 {
     quint64 t = durationOfLap(lapName);
     if( t ) {
@@ -531,7 +531,7 @@ QDateTime Utility::StopWatch::timeOfLap( const QString& lapName )
     return QDateTime();
 }
 
-quint64 Utility::StopWatch::durationOfLap( const QString& lapName )
+quint64 Utility::StopWatch::durationOfLap( const QString& lapName ) const
 {
     QPair<QString, quint64> lapPair;
 

@@ -79,9 +79,9 @@ namespace Utility
         quint64 addLapTime( const QString& lapName );
 
         // out helpers, return the masured times.
-        QDateTime startTime();
-        QDateTime timeOfLap( const QString& lapName );
-        quint64 durationOfLap( const QString& lapName );
+        QDateTime startTime() const;
+        QDateTime timeOfLap( const QString& lapName ) const;
+        quint64 durationOfLap( const QString& lapName ) const;
     };
 }
 
