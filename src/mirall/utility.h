@@ -19,6 +19,7 @@
 #include <QByteArray>
 #include <QDateTime>
 #include <QElapsedTimer>
+#include <QHash>
 
 class QWidget;
 
