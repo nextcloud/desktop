@@ -181,10 +181,6 @@ private slots:
     void etagRetreived(const QString &);
     void slotNetworkUnavailable();
 
-    /**
-     * Triggered by a file system watcher on the local sync dir
-     */
-    void slotLocalPathChanged( const QString& );
     void slotThreadTreeWalkResult(const SyncFileItemVector& );
 
 private:

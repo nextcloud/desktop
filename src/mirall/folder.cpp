@@ -48,7 +48,6 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
 #include <QDebug>
 #include <QTimer>
 #include <QUrl>
-#include <QFileSystemWatcher>
 #include <QDir>
 #include <QMessageBox>
 #include <QPushButton>
@@ -72,9 +71,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     _timeSinceLastSync.start();
 
     MirallConfigFile cfg;
-
-    // QObject::connect(_watcher, SIGNAL(folderChanged(const QStringList &)),
-    //                 SLOT(slotChanged(const QStringList &)));
 
     _syncResult.setStatus( SyncResult::NotYetStarted );
 
@@ -164,14 +160,6 @@ void Folder::checkLocalPath()
             _syncResult.setErrorString(tr("%1 is not readable.").arg(_path));
             _syncResult.setStatus( SyncResult::SetupError );
         }
-    }
-
-    // if all is fine, connect a FileSystemWatcher
-    if( _syncResult.status() != SyncResult::SetupError ) {
-        _pathWatcher = new QFileSystemWatcher(this);
-        _pathWatcher->addPath( _path );
-        connect(_pathWatcher, SIGNAL(directoryChanged(QString)),
-                SLOT(slotLocalPathChanged(QString)));
     }
 }
 
@@ -460,26 +448,6 @@ int Folder::slotWipeBlacklist()
     return _journal.wipeBlacklist();
 }
 
-void Folder::slotLocalPathChanged( const QString& dir )
-{
-    QDir notifiedDir(dir);
-    QDir localPath( path() );
-
-    if( notifiedDir.absolutePath() == localPath.absolutePath() ) {
-        if( !localPath.exists() ) {
-            qDebug() << "XXXXXXX The sync folder root was removed!!";
-            if( isBusy() ) {
-                qDebug() << "CSync currently running, set wipe flag!!";
-            } else {
-                qDebug() << "CSync not running, wipe it now!!";
-                wipe();
-            }
-
-            qDebug() << "ALARM: The local path was DELETED!";
-        }
-    }
-}
-
 void Folder::setConfigFile( const QString& file )
 {
     _configFile = file;
@@ -515,10 +483,9 @@ void Folder::slotTerminateSync(bool block)
     setSyncEnabled(false);
 }
 
-// This removes the csync File database if the sync folder definition is removed
-// permanentely. This is needed to provide a clean startup again in case another
+// This removes the csync File database
+// This is needed to provide a clean startup again in case another
 // local folder is synced to the same ownCloud.
-// See http://bugs.owncloud.org/thebuggenie/owncloud/issues/oc-788
 void Folder::wipe()
 {
     QString stateDbFile = path()+QLatin1String(".csync_journal.db");
