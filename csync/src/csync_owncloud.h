@@ -137,15 +137,7 @@ struct dav_session_s {
 
     CSYNC *csync_ctx;
 
-    csync_hbf_info_t *chunk_info;
-
     bool no_recursive_propfind;
-    int64_t hbf_block_size;
-    int64_t hbf_threshold;
-
-    /* If 0, it is disabled.   If >0,  in Byte/seconds. If < 0,  in % of the available bandwidth*/
-    int bandwidth_limit_upload;
-    int bandwidth_limit_download;
 
     csync_overall_progress_t *overall_progress_data;
     csync_owncloud_redirect_callback_t redir_callback;

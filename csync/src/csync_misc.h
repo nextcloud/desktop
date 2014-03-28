@@ -49,12 +49,6 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags);
  */
 CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status);
 
-struct csync_hbf_info_s {
-    int start_id;
-    int transfer_id;
-};
-typedef struct csync_hbf_info_s csync_hbf_info_t;
-
 typedef struct {
     int64_t file_count;
     int64_t current_file_no;

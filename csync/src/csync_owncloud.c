@@ -1027,10 +1027,6 @@ int owncloud_set_property(const char *key, void *data) {
         dav_session.csync_ctx = data;
         return 0;
     }
-    if( c_streq(key, "hbf_info")) {
-        dav_session.chunk_info = (csync_hbf_info_t *)(data);
-        return 0;
-    }
     if( c_streq(key, "get_dav_session")) {
         /* Give the ne_session to the caller */
         *(ne_session**)data = dav_session.ctx;
@@ -1038,22 +1034,6 @@ int owncloud_set_property(const char *key, void *data) {
     }
     if( c_streq(key, "no_recursive_propfind")) {
         dav_session.no_recursive_propfind = *(bool*)(data);
-        return 0;
-    }
-    if( c_streq(key, "hbf_block_size")) {
-        dav_session.hbf_block_size = *(int64_t*)(data);
-        return 0;
-    }
-    if( c_streq(key, "hbf_threshold")) {
-        dav_session.hbf_threshold = *(int64_t*)(data);
-        return 0;
-    }
-    if( c_streq(key, "bandwidth_limit_upload")) {
-        dav_session.bandwidth_limit_upload = *(int*)(data);
-        return 0;
-    }
-    if( c_streq(key, "bandwidth_limit_download")) {
-        dav_session.bandwidth_limit_download = *(int*)(data);
         return 0;
     }
     if( c_streq(key, "overall_progress_data")) {
