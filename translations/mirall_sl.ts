@@ -1496,6 +1496,19 @@ Te je treba uskladiti znova.</translation>
     </message>
 </context>
 <context>
+    <name>Mirall::ShibbolethCredentials</name>
+    <message>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
+        <source>Login Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
+        <source>You must sign in as user %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="58"/>

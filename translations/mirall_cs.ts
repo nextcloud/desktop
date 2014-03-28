@@ -1497,6 +1497,19 @@ Zkuste provést novou synchronizaci.
     </message>
 </context>
 <context>
+    <name>Mirall::ShibbolethCredentials</name>
+    <message>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
+        <source>Login Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
+        <source>You must sign in as user %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="58"/>
@@ -1856,7 +1869,7 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>Položka nebyla synchronizována kvůli předchozí chybě: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="275"/>
@@ -2277,7 +2290,7 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Sestaveno z Git revize &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; %3, %4 pomocí Qt %5.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>

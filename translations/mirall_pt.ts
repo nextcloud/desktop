@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Seleccione a pasta de destino</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="751"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Sem ligação a %1 em &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="758"/>
@@ -945,7 +945,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nova actualização. Por favor clique &lt;a href=&apos;%1&apos;&gt;aqui&lt;/a&gt; para transferir.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
@@ -1259,7 +1259,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="130"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Um ficheiro ou um directório foi removido de uma partilha apenas de leitura, mas o restauro falhou: %1</translation>
     </message>
 </context>
 <context>
@@ -1283,7 +1283,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="129"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro havia sido removido de uma partilha apenas de leitura. Ficheiro restaurado. </translation>
     </message>
 </context>
 <context>
@@ -1493,6 +1493,19 @@ Por favor tente sincronizar novamente.</translation>
     </message>
 </context>
 <context>
+    <name>Mirall::ShibbolethCredentials</name>
+    <message>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
+        <source>Login Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
+        <source>You must sign in as user %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="58"/>
@@ -1601,7 +1614,8 @@ Por favor tente sincronizar novamente.</translation>
         <location filename="../src/mirall/sslbutton.cpp" line="177"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Esta ligação é encriptada a %1 bit %2.
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="180"/>
