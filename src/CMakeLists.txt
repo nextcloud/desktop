@@ -195,22 +195,28 @@ if(NEON_FOUND)
 endif()
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
-add_library(${synclib_NAME}_static STATIC ${libsync_SRCS} ${syncMoc})
-
 qt5_use_modules(${synclib_NAME} Widgets Network Xml WebKitWidgets Sql)
-qt5_use_modules(${synclib_NAME}_static Widgets Network Xml WebKitWidgets Sql)
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${MIRALL_VERSION}
 	SOVERSION ${MIRALL_SOVERSION}
 )
-set_target_properties( ${synclib_NAME}_static  PROPERTIES
-	VERSION ${MIRALL_VERSION}
-	SOVERSION ${MIRALL_SOVERSION}
-)
 
 target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )
-target_link_libraries(${synclib_NAME}_static ${libsync_LINK_TARGETS} )
+
+if(BUILD_LIBRARIES_ONLY)
+    add_library(${synclib_NAME}_static STATIC ${libsync_SRCS} ${syncMoc})
+    qt5_use_modules(${synclib_NAME}_static Widgets Network Xml WebKitWidgets Sql)
+
+    set_target_properties( ${synclib_NAME}_static  PROPERTIES
+        VERSION ${MIRALL_VERSION}
+        SOVERSION ${MIRALL_SOVERSION}
+    )
+
+    target_link_libraries(${synclib_NAME}_static ${libsync_LINK_TARGETS} )
+endif()
+
+
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS ${synclib_NAME}
