@@ -13,17 +13,17 @@ if (UNIX)
     CACHE PATH "Base directory for files which go to share/"
   )
   SET(DATA_INSTALL_PREFIX
-    "${SHARE_INSTALL_PREFIX}/${APPLICATION_SHORT_NAME}"
+    "${SHARE_INSTALL_PREFIX}/${APPLICATION_SHORTNAME}"
     CACHE PATH "The parent directory where applications can install their data")
 
   # The following are directories where stuff will be installed to
   SET(BIN_INSTALL_DIR
     "${CMAKE_INSTALL_BINDIR}"
-    CACHE PATH "The ${APPLICATION_SHORT_NAME} binary install dir (default prefix/bin)"
+    CACHE PATH "The ${APPLICATION_SHORTNAME} binary install dir (default prefix/bin)"
   )
   SET(SBIN_INSTALL_DIR
     "${EXEC_INSTALL_PREFIX}/sbin"
-    CACHE PATH "The ${APPLICATION_SHORT_NAME} sbin install dir (default prefix/sbin)"
+    CACHE PATH "The ${APPLICATION_SHORTNAME} sbin install dir (default prefix/sbin)"
   )
   SET(LIB_INSTALL_DIR
     "${CMAKE_INSTALL_LIBDIR}"
@@ -34,12 +34,12 @@ if (UNIX)
     CACHE PATH "The subdirectory relative to the install prefix where libraries will be installed (default is prefix/libexec)"
   )
   SET(LIB_PRIVATE_INSTALL_DIR
-	  "${LIB_INSTALL_DIR}/${APPLICATION_SHORT_NAME}"
+	  "${LIB_INSTALL_DIR}/${APPLICATION_SHORTNAME}"
 	  CACHE PATH "The subdirectory relative to the install prefix where private libs are installed"
 	  )
   SET(PLUGIN_INSTALL_DIR
-    "${LIB_INSTALL_DIR}/${APPLICATION_SHORT_NAME}"
-    CACHE PATH "The subdirectory relative to the install prefix where plugins will be installed (default is prefix/lib/${APPLICATION_SHORT_NAME})"
+    "${LIB_INSTALL_DIR}/${APPLICATION_SHORTNAME}"
+    CACHE PATH "The subdirectory relative to the install prefix where plugins will be installed (default is prefix/lib/${APPLICATION_SHORTNAME})"
   )
   SET(INCLUDE_INSTALL_DIR
     "${CMAKE_INSTALL_PREFIX}/include"
@@ -48,7 +48,7 @@ if (UNIX)
 
   SET(DATA_INSTALL_DIR
     "${DATA_INSTALL_PREFIX}"
-    CACHE PATH "The parent directory where applications can install their data (default prefix/share/${APPLICATION_SHORT_NAME})"
+    CACHE PATH "The parent directory where applications can install their data (default prefix/share/${APPLICATION_SHORTNAME})"
   )
   SET(HTML_INSTALL_DIR
     "${DATA_INSTALL_PREFIX}/doc/HTML"
@@ -83,15 +83,15 @@ if (UNIX)
 
   SET(SYSCONF_INSTALL_DIR
     "${SYSCONFDIR_INSTALL_PREFIX}/etc"
-    CACHE PATH "The ${APPLICATION_SHORT_NAME} sysconfig install dir (default prefix/etc)"
+    CACHE PATH "The ${APPLICATION_SHORTNAME} sysconfig install dir (default prefix/etc)"
   )
   SET(MAN_INSTALL_DIR
     "${SHARE_INSTALL_PREFIX}/man"
-    CACHE PATH "The ${APPLICATION_SHORT_NAME} man install dir (default prefix/man)"
+    CACHE PATH "The ${APPLICATION_SHORTNAME} man install dir (default prefix/man)"
   )
   SET(INFO_INSTALL_DIR
     "${SHARE_INSTALL_PREFIX}/info"
-    CACHE PATH "The ${APPLICATION_SHORT_NAME} info install dir (default prefix/info)"
+    CACHE PATH "The ${APPLICATION_SHORTNAME} info install dir (default prefix/info)"
   )
 endif (UNIX)
 
