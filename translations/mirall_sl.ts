@@ -147,18 +147,18 @@
         <location filename="../src/mirall/accountsettings.cpp" line="614"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 od %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="617"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="712"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) od %2 prostora strežnika je v uporabi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="751"/>
@@ -288,57 +288,57 @@
         <location filename="../src/mirall/folder.cpp" line="398"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 in %2 drugih datotek je odstranjenih.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je odstranjena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="405"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 in %2 drugih datotek je prejetih.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="407"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je prejeta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="412"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 in %2 drugih datotek je posodobljenih.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="414"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je posodobljena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="419"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je preimenovana v %2. Preimenovanih je bilo še %3 datotek.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="421"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je preimenovana v %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="426"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je premaknjena v %2. Premaknjenih je bilo še %3 datotek.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="428"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je premaknjena v %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="436"/>
@@ -1304,7 +1304,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="238"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka je preimenovana, vendar je označena za souporabo le za branje. Obnovljena je izvirna datoteka.</translation>
     </message>
 </context>
 <context>
@@ -1500,12 +1500,12 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Napaka prijave</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Prijaviti se je treba kot uporabnik %1</translation>
     </message>
 </context>
 <context>
@@ -1717,7 +1717,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="87"/>
         <source>Success.</source>
-        <translation>Uspešno vzpostavljeno.</translation>
+        <translation>Uspešno končano.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="90"/>
@@ -1737,7 +1737,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="100"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Vstavka %1 za CSync ni mogoče naložiti.&lt;br/&gt;Preveriti je treba namestitev!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Vstavka %1 za CSync ni mogoče naložiti.&lt;br/&gt;Preverite namestitev!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="103"/>
@@ -1868,7 +1868,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>Predmet ni usklajen zaradi predhodne napake: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="275"/>
@@ -2025,7 +2025,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="403"/>
         <source>Syncing %1 of %2 (%3 of %4)</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje %1 od %2 (%3 od %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="418"/>
@@ -2289,7 +2289,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Izgrajeno na osnovi predelave Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; na %3, %4 z uporabo Qt %5.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
@@ -2337,17 +2337,17 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>brisanje</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>premikanje</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
         <source>processing</source>
-        <translation type="unfinished"/>
+        <translation>obdelava</translation>
     </message>
 </context>
 <context>
