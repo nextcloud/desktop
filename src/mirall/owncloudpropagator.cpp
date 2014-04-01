@@ -45,7 +45,11 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         qDebug() << "Fatal Error condition" << _item._httpErrorCode << ", forbid retry!";
         retries = -1;
     } else {
-        retries = 3; // FIXME: good number of allowed retries?
+        static QAtomicInt defaultRetriesCount(qgetenv("OWNCLOUD_BLACKLIST_COUNT").toInt());
+        if (defaultRetriesCount.fetchAndAddAcquire(0) <= 0) {
+            defaultRetriesCount.fetchAndStoreRelease(3);
+        }
+        retries = defaultRetriesCount.fetchAndAddAcquire(0);
     }
     SyncJournalBlacklistRecord record(_item, retries);;
 
