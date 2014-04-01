@@ -31,6 +31,10 @@ Before it actually ends, it takes a four seconds break for you to
 interrupt with Ctrl-C. If you don't do that, it removes all its 
 traces...
 
+If SSL should be used, SSL must be available to LWP connections. To
+disable host checking for crappy SSL certs, do
+export PERL_LWP_SSL_VERIFY_HOSTNAME=0
+
 Have fun,
 Klaas Freitag <freitag@owncloud.com>
 

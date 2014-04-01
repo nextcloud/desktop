@@ -31,6 +31,7 @@ use Carp::Assert;
 use Digest::MD5;
 use Unicode::Normalize;
 use LWP::UserAgent;
+use LWP::Protocol::https;
 use HTTP::Request::Common qw( POST  DELETE );
 use File::Basename;
 
@@ -113,6 +114,12 @@ sub initTesting(;$)
   $owncloud .= "/" unless( $owncloud =~ /\/$/ );
 
   print "Connecting to ownCloud at ". $owncloud ."\n";
+
+  # For SSL set the environment variable needed by the LWP module for SSL
+  if( $owncloud =~ /^https/ ) {
+    $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME} = 0
+  }
+
   $d = HTTP::DAV->new();
 
   $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
@@ -259,11 +266,17 @@ sub csync( ;$ )
     if( $aurl ) {
 	$url = $aurl;
     }
-    $url =~ s#^http://##;    # Remove the leading http://
-    $url = "owncloud://$user:$passwd@". $url;
+    if( $url =~ /^https:/ ) {
+	$url =~ s#^https://##;    # Remove the leading http://
+	$url = "ownclouds://$user:$passwd@". $url;
+    } elsif( $url =~ /^http:/ ) {
+	$url =~ s#^http://##;
+	$url = "owncloud://$user:$passwd@". $url;
+    }
+
     print "CSync URL: $url\n";
 
-    my $args = ""; # "--exclude-file=exclude.cfg -c";
+    my $args = "--trust"; # Trust crappy SSL certificates
     my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $args $localDir $url";
     print "Starting: $cmd\n";
 
