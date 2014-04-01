@@ -819,5 +819,12 @@ SyncJournalDb::~SyncJournalDb()
     close();
 }
 
+bool SyncJournalDb::isConnected()
+{
+    QMutexLocker lock(&_mutex);
+    return checkConnect();
+}
+
+
 
 } // namespace Mirall

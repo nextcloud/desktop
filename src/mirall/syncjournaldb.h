@@ -25,6 +25,11 @@ namespace Mirall {
 class SyncJournalFileRecord;
 class SyncJournalBlacklistRecord;
 
+/**
+ * Class that handle the sync database
+ *
+ * This class is thread safe. All public function are locking the mutex.
+ */
 class SyncJournalDb : public QObject
 {
     Q_OBJECT
@@ -75,7 +80,11 @@ public:
 
     void close();
 
-    bool checkConnect();
+    /**
+     * return true if everything is correct
+     */
+    bool isConnected();
+
 
 
 
@@ -91,6 +100,7 @@ private:
     void startTransaction();
     void commitTransaction();
     QStringList tableColumns( const QString& table );
+    bool checkConnect();
 
     QSqlDatabase _db;
     QString _dbFile;

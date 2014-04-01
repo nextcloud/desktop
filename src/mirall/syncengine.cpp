@@ -530,9 +530,12 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     }
 
     // Sanity check
-    if (!_journal->checkConnect()) {
+    if (!_journal->isConnected()) {
         qDebug() << "Bailing out, DB failure";
-        QMetaObject::invokeMethod(this, "finished", Qt::QueuedConnection); // signal
+        emit csyncError(tr("Cannot open the sync journal"));
+        emit finished();
+        _syncMutex.unlock();
+        _thread.quit();
         return;
     }
 
@@ -546,6 +549,9 @@ void SyncEngine::slotUpdateFinished(int updateResult)
         emit aboutToRemoveAllFiles(_syncedItems.first()._direction, &cancel);
         if (cancel) {
             qDebug() << Q_FUNC_INFO << "Abort sync";
+            emit finished();
+            _syncMutex.unlock();
+            _thread.quit();
             return;
         }
     }
