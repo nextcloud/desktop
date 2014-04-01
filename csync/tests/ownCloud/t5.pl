@@ -42,10 +42,11 @@ print "Created share with id <$shareId>\n";
 
 assert( $shareId > 0 );
 
+my $sharee = { user => configValue('share_user'),
+               passwd => configValue('share_passwd'),
+	       url => server() };
 # put a couple of files into the shared directory in the sharer account
-glob_put( 'sharing/*', $share_dir, { user => configValue('share_user'),
-				     passwd => configValue('share_passwd'),
-				     url => server() });
+glob_put( 'sharing/*', $share_dir, $sharee);
 
 # now user kf has a new directory in shared.
 
@@ -54,10 +55,12 @@ printInfo("Initial sync, sync stuff down.");
 csync( server()."Shared" );
 assertLocalAndRemoteDir( 'Shared', 0, server() );
 
+# Local file to a read/write share should be synced up
 printInfo("Put a file into the share.");
 createLocalFile( localDir(). $share_dir . "/foobar.txt", 8094 );
 csync( server()."Shared" );
 assertLocalAndRemoteDir( 'Shared', 0, server() );
+
 
 printInfo("Remove a Share.");
 removeShare($shareId, $share_dir);
