@@ -462,7 +462,7 @@ if(KRAZY2_EXECUTABLE)
 endif()
 
 set(owncloudcmd_NAME ${APPLICATION_EXECUTABLE}cmd)
-set(OWNCLOUDCMD_SRC owncloudcmd/owncloudcmd.cpp)
+set(OWNCLOUDCMD_SRC owncloudcmd/simplesslerrorhandler.cpp owncloudcmd/owncloudcmd.cpp)
 if(NOT BUILD_LIBRARIES_ONLY)
    add_executable(${owncloudcmd_NAME}  ${OWNCLOUDCMD_SRC})
 	qt5_use_modules(${owncloudcmd_NAME} Network Sql)

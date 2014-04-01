@@ -22,13 +22,15 @@
 
 #include <neon/ne_socket.h>
 
-#include "syncengine.h"
-#include <syncjournaldb.h>
-#include "logger.h"
+#include "mirall/syncengine.h"
+#include "mirall/syncjournaldb.h"
+#include "mirall/logger.h"
 #include "csync.h"
 #include "mirall/clientproxy.h"
-#include "account.h"
-#include <creds/httpcredentials.h>
+#include "mirall/account.h"
+#include "creds/httpcredentials.h"
+
+#include "simplesslerrorhandler.h"
 
 using namespace Mirall;
 
@@ -143,8 +145,11 @@ int main(int argc, char **argv) {
     url.setScheme(url.scheme().replace("owncloud", "http"));
     QString folder = splitted.value(1);
 
+    SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
+
     account.setUrl(url);
     account.setCredentials(new HttpCredentials(url.userName(), url.password()));
+    account.setSslErrorHandler(sslErrorHandler);
     AccountManager::instance()->setAccount(&account);
 
 
