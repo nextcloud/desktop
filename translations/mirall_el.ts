@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="712"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>Χρησιμοποιούμενος χώρος στον διακομιστή: %1 (%3%) από %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="751"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν υπάρχει σύνδεση με %1 στο &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="758"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Εισάγετε όνομα χρήστη και συνθηματικό για τον &apos;%1&apos; στο %2.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
@@ -288,57 +288,57 @@
         <location filename="../src/mirall/folder.cpp" line="398"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Το %1 και άλλα %2 αρχεία διαγράφηκαν.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Το %1 έχει διαγραφεί.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="405"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 και άλλα %2 αρχεία έχουν μεταφορτωθεί.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="407"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 έχει μεταφορτωθεί.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="412"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 και %2 άλλα αρχεία έχουν ενημερωθεί.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="414"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 έχει ενημερωθεί.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="419"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 έχει μετονομαστεί σε %2 και άλλα %3 αρχεία έχουν μετονομαστεί.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="421"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 έχει μετονομαστεί σε %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="426"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 έχει μετακινηθεί στο %2 και %3 άλλα αρχεία έχουν μετακινηθεί.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="428"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 έχει μετακινηθεί στο %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="436"/>
@@ -598,12 +598,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="324"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ελήφθη E-Tag από τον διακομιστή, ελέγξτε τον διακομιστή μεσολάβησης/πύλη</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="330"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Ελήφθη διαφορετικό E-Tag για συνέχιση. Επανάληψη την επόμενη φορά.</translation>
     </message>
 </context>
 <context>
@@ -647,7 +647,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Επανεκκίνηση &amp;&amp; Ενημέρωση</translation>
     </message>
 </context>
 <context>
@@ -1249,12 +1249,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="395"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ελήφθη E-Tag από τον διακομιστή, ελέγξτε τον διακομιστή μεσολάβησης/πύλη</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="405"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Ελήφθη διαφορετικό E-Tag για συνέχιση. Επανάληψη την επόμενη φορά.</translation>
     </message>
 </context>
 <context>
@@ -1262,7 +1262,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="136"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ένα αρχείο ή ένας κατάλογος αφαιρέθηκε από ένα διαμοιρασμένο κατάλογο μόνο για ανάγνωση, αλλά η επαναφορά απέτυχε: %1</translation>
     </message>
 </context>
 <context>
@@ -1286,7 +1286,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="129"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο διαγράφηκε από ένα διαμοιρασμένο κατάλογο μόνο για ανάγνωση. Το αρχείο επαναφέρθηκε.</translation>
     </message>
 </context>
 <context>
@@ -1304,7 +1304,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="238"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο μετονομάστηκε αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Το αρχικό αρχείο επαναφέρθηκε.</translation>
     </message>
 </context>
 <context>
@@ -1323,7 +1323,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="162"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο υπέστη επεξεργασία τοπικά αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Επαναφέρθηκε και η επεξεργασία σας βρίσκεται στο αρχείο συγκρούσεων.</translation>
     </message>
 </context>
 <context>
@@ -1331,22 +1331,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="201"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο υπέστη επεξεργασία τοπικά αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Επαναφέρθηκε και η επεξεργασία σας βρίσκεται στο αρχείο συγκρούσεων.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="226"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Το τοπικό αρχείο τροποποιήθηκε κατά τον συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="236"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής δεν επιβεβαίωσε το τελευταίο τμήμα. (Δεν υπήρχε E-Tag)</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="267"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>Δεν υπάρχει η επέκταση X-OC-MTime, απαιτείται η έκδοση 5 του ownCloud</translation>
     </message>
 </context>
 <context>
@@ -1500,12 +1500,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα σύνδεσης</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Πρέπει να εισέλθετε σαν χρήστης %1</translation>
     </message>
 </context>
 <context>
@@ -1617,7 +1617,8 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/sslbutton.cpp" line="177"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Η σύνδεση είναι κρυπτογραφημένη με χρήση %1 bit %2
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="180"/>
@@ -1867,7 +1868,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>Το αντικείμενο δεν είναι συγχρονισμένο λόγω προηγούμενων σφαλμάτων: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="275"/>
@@ -1903,7 +1904,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="205"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Έκδοση %1 Για περισσότερες πληροφορίες, παρακαλώ επισκεφθείτε την ιστοσελίδα &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Πνευματική ιδιοκτησία ownCloud, Inc.&lt;p&gt;&lt;p&gt;Διανέμεται από %4 και αδειοδοτείται με την GNU General Public License (GPL) Έκδοση 2.0.&lt;br&gt;Το %5 και το λογότυπο %5 είναι σήμα κατατεθέν του %4 στις&lt;br&gt;Ηνωμένες Πολιτείες, άλλες χώρες ή όλες.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2024,7 +2025,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="403"/>
         <source>Syncing %1 of %2 (%3 of %4)</source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονισμός %1 από %2 (%3 από %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="418"/>
@@ -2288,7 +2289,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Δημιουργήθηκε από την διασκευή Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; στο %3, %4 χρησιμοποιώντας Qt %5.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
@@ -2358,17 +2359,17 @@ Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>διαγραφή</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>μετακίνηση</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
         <source>processing</source>
-        <translation type="unfinished"/>
+        <translation>επεξεργασία</translation>
     </message>
 </context>
 <context>

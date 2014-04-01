@@ -147,13 +147,13 @@
         <location filename="../src/mirall/accountsettings.cpp" line="614"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 of %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="617"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="712"/>
@@ -806,7 +806,7 @@ Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri ods
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Preskočiť túto verziu</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="272"/>
@@ -1498,7 +1498,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Chybné prihlásenie</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
@@ -1539,17 +1539,17 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Organizácia (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Organizačná jednotka (OU):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Štát/Provincia:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>

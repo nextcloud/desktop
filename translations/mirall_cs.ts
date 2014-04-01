@@ -1501,12 +1501,12 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba přihlášení</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Musíte se přihlásit jako uživatel %1</translation>
     </message>
 </context>
 <context>
