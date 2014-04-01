@@ -43,22 +43,32 @@ public slots:
     }
 };
 
-int getauth(const char* prompt, char* buf, size_t len, int, int, void*)
-{
-    std::cout << "** Authentication required: \n" << prompt << std::endl;
-    std::string s;
-    std::getline(std::cin, s);
-    strncpy( buf, s.c_str(), len );
-    return 0;
-}
-
 struct CmdOptions {
     QString source_dir;
     QString target_url;
     QString config_directory;
     QString proxy;
     bool silent;
+    bool trustSSL;
 };
+
+int getauth(const char* prompt, char* buf, size_t len, int a, int b, void *userdata)
+{
+    (void) a;
+    (void) b;
+
+    struct CmdOptions *opts = (struct CmdOptions*) userdata;
+
+    std::cout << "** Authentication required: \n" << prompt << std::endl;
+    std::string s;
+    if(opts && opts->trustSSL) {
+        s = "yes";
+    } else {
+        std::getline(std::cin, s);
+    }
+    strncpy( buf, s.c_str(), len );
+    return 0;
+}
 
 void help()
 {
@@ -74,6 +84,7 @@ void help()
     std::cout << "  --confdir = configdir: Read config from there." << std::endl;
     std::cout << "  --httpproxy = proxy:   Specify a http proxy to use." << std::endl;
     std::cout << "                         Proxy is http://server:port" << std::endl;
+    std::cout << "  --trust                Trust the SSL certification." << std::endl;
     std::cout << "" << std::endl;
     exit(1);
 
@@ -116,6 +127,8 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
             options->proxy = it.next();
         } else if( option == "--silent") {
             options->silent = true;
+        } else if( option == "--trust") {
+            options->trustSSL = true;
         } else {
             help();
         }
@@ -131,6 +144,7 @@ int main(int argc, char **argv) {
 
     CmdOptions options;
     options.silent = false;
+    options.trustSSL = false;
     ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
@@ -167,6 +181,7 @@ int main(int argc, char **argv) {
     csync_set_log_level(options.silent ? 1 : 11);
     Logger::instance()->setLogFile("-");
 
+    csync_set_userdata(_csync_ctx, &options);
     csync_set_auth_callback( _csync_ctx, getauth );
 
     if( csync_init( _csync_ctx ) < 0 ) {
