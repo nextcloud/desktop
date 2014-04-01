@@ -172,18 +172,27 @@ sub initLocalDir
   mkdir ($localDir, 0777 );
 }
 
-sub createRemoteDir(;$)
+sub createRemoteDir(;$$)
 {
-    my ($dir) = @_;
+    my ($dir, $optionsRef) = @_;
 
     my $url = testDirUrl() . $dir;
+
+    if( $optionsRef && $optionsRef->{user} && $optionsRef->{passwd} ) {
+	$d->credentials( -url=> $owncloud, -realm=>"ownCloud",
+			 -user=> $optionsRef->{user},
+			 -pass=> $optionsRef->{passwd} );
+	if( $optionsRef->{url} ) {
+	    $url = $optionsRef->{url} . $dir;
+	}
+    }
 
     $d->open( $owncloud );
     print $d->message . "\n";
 
     my $re = $d->mkcol( $url );
     if( $re == 0 ) {
-	print "Failed to create directory <$url>: $re\n";
+	print "Failed to create directory <$url>: $d->message() \n";
 	exit 1;
     }
     $d->open( $url );
