@@ -364,6 +364,7 @@ sub traverse( $$;$ )
     $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
 		    -user=> $user,
 		    -pass=> $passwd );
+    $d->open( $owncloud );
 
     if( my $r = $d->propfind( -url => $url, -depth => 1 ) ) {
 
