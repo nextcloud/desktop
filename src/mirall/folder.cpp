@@ -298,7 +298,7 @@ void Folder::bubbleUpSyncResult()
 
     SyncRunFileLog syncFileLog;
 
-    syncFileLog.start( _engine->stopWatch() );
+    syncFileLog.start(path(),  _engine->stopWatch() );
 
     QElapsedTimer timer;
     timer.start();

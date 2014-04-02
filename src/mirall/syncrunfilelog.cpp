@@ -14,6 +14,7 @@
 #include "mirall/syncrunfilelog.h"
 #include "mirall/utility.h"
 #include "mirall/mirallconfigfile.h"
+#include "filesystem.h"
 #include <qfileinfo.h>
 
 namespace Mirall {
@@ -77,11 +78,12 @@ QString SyncRunFileLog::instructionToStr( csync_instructions_e inst )
 }
 
 
-void SyncRunFileLog::start( const Utility::StopWatch &stopWatch )
+void SyncRunFileLog::start(const QString &folderPath,  const Utility::StopWatch &stopWatch )
 {
     const qint64 logfileMaxSize = 1024*1024; // 1MiB
-    MirallConfigFile cfg;
-    const QString filename = cfg.configPath() + QLatin1String("sync_log");
+
+    // Note; this name is ignored in csync_exclude.c
+    const QString filename = folderPath + QLatin1String(".owncloudsync.log");
 
     // When the file is too big, just rename it to an old name.
     QFileInfo info(filename);
@@ -106,6 +108,8 @@ void SyncRunFileLog::start( const Utility::StopWatch &stopWatch )
                 "size | fileId | status | errorString | http result code | "
                 "other size | other modtime | other etag | other fileId | "
                 "other instruction" << endl;
+
+        FileSystem::setFileHidden(filename, true);
     }
 
 
