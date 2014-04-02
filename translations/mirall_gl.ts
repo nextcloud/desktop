@@ -1260,7 +1260,7 @@ Recomendámoslle que non o use.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="136"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="140"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Foi retirado un ficheiro ou directorio desde unha compartición de só lectura, mais non foi posíbel a súa restauración: %1</translation>
     </message>
@@ -1889,6 +1889,11 @@ Tente sincronizalos de novo.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="442"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Non é posíbel iniciar un rexistro de sincronización.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="535"/>
+        <source>Cannot open the sync journal</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

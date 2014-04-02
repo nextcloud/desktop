@@ -1260,7 +1260,7 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="136"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="140"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Soubor nebo adresář by odebrán ze sdílení pouze pro čtení, ale jeho obnovení selhalo: %1</translation>
     </message>
@@ -1890,6 +1890,11 @@ Zkuste provést novou synchronizaci.
         <location filename="../src/mirall/syncengine.cpp" line="442"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nemohu inicializovat synchronizační žurnál.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="535"/>
+        <source>Cannot open the sync journal</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

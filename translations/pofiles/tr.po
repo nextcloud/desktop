@@ -1259,7 +1259,7 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="136"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="140"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Bir dosya veya dizin bir salt okunur paylaşımdan kaldırılmıştı, ancak geri yükleme başarısız oldu: %1</translation>
     </message>
@@ -1499,12 +1499,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Oturum Açma Hatası</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 kullanıcısı olarak oturum açmalısınız</translation>
     </message>
 </context>
 <context>
@@ -1540,12 +1540,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organization (O):</source>
-        <translation>Organizasyon (O):</translation>
+        <translation>Kurum (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>Organizational Unit (OU):</source>
-        <translation>Organizasyon Birimi (OU):</translation>
+        <translation>Kuruluş Birimi (OU):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
@@ -1671,7 +1671,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
         <location filename="../src/mirall/sslerrordialog.cpp" line="181"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="201"/>
         <source>Organization: %1</source>
-        <translation>Organizasyon: %1</translation>
+        <translation>Kurum: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="182"/>
@@ -1888,6 +1888,11 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="442"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Bir eşitleme günlüğü başlatılamadı.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="535"/>
+        <source>Cannot open the sync journal</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

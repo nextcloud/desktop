@@ -1255,7 +1255,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="136"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="140"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1882,6 +1882,11 @@ Saiatu horiek berriz sinkronizatzen.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="442"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Ezin izan da sinkronizazio egunerokoa hasieratu.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="535"/>
+        <source>Cannot open the sync journal</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

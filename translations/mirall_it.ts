@@ -1259,7 +1259,7 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="136"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="140"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Un file o una cartella è stato rimosso da una condivisione in sola lettura, ma il ripristino non è riuscito: %1</translation>
     </message>
@@ -1888,6 +1888,11 @@ Prova a sincronizzare nuovamente.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="442"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Impossibile inizializzare il registro di sincronizzazione.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="535"/>
+        <source>Cannot open the sync journal</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
