@@ -13,21 +13,14 @@
 #ifndef SIMPLESSLERRORHANDLER_H
 #define SIMPLESSLERRORHANDLER_H
 
-#include <QtCore>
-#include <QDialog>
-#include <QSslCertificate>
-#include <QList>
-
 #include "mirall/account.h"
 
 class QSslError;
 class QSslCertificate;
 
-using namespace Mirall;
-
-class SimpleSslErrorHandler : public AbstractSslErrorHandler {
+class SimpleSslErrorHandler : public Mirall::AbstractSslErrorHandler {
 public:
-    bool handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, Account*);
+    bool handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, Mirall::Account*);
 };
 
 #endif // SIMPLESSLERRORHANDLER_H
