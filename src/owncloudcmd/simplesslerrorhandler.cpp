@@ -17,17 +17,7 @@
 
 #include <QtGui>
 #include <QtNetwork>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-#include <QtWidgets>
-#endif
 
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-namespace Utility {
-    //  Used for QSSLCertificate::subjectInfo which returns a QStringList in Qt5, but a QString in Qt4
-    QString escape(const QStringList &l) { return escape(l.join(';')); }
-}
-#endif
 
 bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, Account *account)
 {
