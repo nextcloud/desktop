@@ -63,7 +63,6 @@ public:
 
 signals:
     void csyncError( const QString& );
-    void csyncWarning( const QString& );
     void csyncUnavailable();
 
     // before actual syncing (after update+reconcile) for each item
