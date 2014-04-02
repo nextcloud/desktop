@@ -40,7 +40,6 @@ private:
 
     QScopedPointer<QFile> _file;
     QTextStream _out;
-    bool        _start;
 
 };
 }

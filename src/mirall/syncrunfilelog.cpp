@@ -85,7 +85,9 @@ void SyncRunFileLog::start( const Utility::StopWatch &stopWatch )
 
     // When the file is too big, just rename it to an old name.
     QFileInfo info(filename);
-    if (info.exists() && info.size() > logfileMaxSize) {
+    bool exists = info.exists();
+    if (exists && info.size() > logfileMaxSize) {
+        exists = false;
         QString newFilename = filename + QLatin1String(".1");
         QFile::remove(newFilename);
         QFile::rename(filename, newFilename);
@@ -98,9 +100,17 @@ void SyncRunFileLog::start( const Utility::StopWatch &stopWatch )
     QDateTime dt = stopWatch.startTime();
     QDateTime de = stopWatch.timeOfLap(QLatin1String("Sync Finished"));
 
+    if (!exists) {
+        // We are creating a new file, add the note.
+        _out << "# timestamp | duration | file | instruction | modtime | etag | "
+                "size | fileId | status | errorString | http result code | "
+                "other size | other modtime | other etag | other fileId | "
+                "other instruction" << endl;
+    }
+
+
     _out << "#=#=#=# Syncrun started " << dateTimeStr(dt) << " until " << dateTimeStr(de) << " ("
             << stopWatch.durationOfLap(QLatin1String("Sync Finished")) << " msec)" << endl;
-    _start = true;
 }
 
 void SyncRunFileLog::logItem( const SyncFileItem& item )
@@ -108,15 +118,6 @@ void SyncRunFileLog::logItem( const SyncFileItem& item )
     // don't log the directory items that are in the list
     if( item._direction == SyncFileItem::None ) {
         return;
-    }
-
-    // log a list of fields if the log really adds lines.
-    if( _start ) {
-        _out << "# timestamp | duration | file | instruction | modtime | etag | "
-                "size | fileId | status | errorString | http result code | "
-                "other size | other modtime | other etag | other fileId | "
-                "other instruction" << endl;
-        _start = false;
     }
 
     const QChar L = QLatin1Char('|');
