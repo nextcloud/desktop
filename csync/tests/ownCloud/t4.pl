@@ -108,6 +108,12 @@ remoteCleanup('test_stat');
 system( "echo echo hello >> " . localDir() . 'echo.sh' );
 chmod 0751, localDir() . 'echo.sh';
 
+#and add a file in anotherdir for the next test
+mkdir( localDir() . 'anotherdir' );
+mkdir( localDir() . 'anotherdir/sub' );
+system( "echo foobar > " . localDir() . 'anotherdir/file1.txt' );
+system( "echo foobar > " . localDir() . 'anotherdir/sub/file2.txt' );
+
 csync();
 assertLocalAndRemoteDir( '', 0 );
 
@@ -126,6 +132,24 @@ open(my $fh, "<", localDir() . 'echo.sh');
 my $perm = (stat $fh)[2] & 07777;
 assert( $perm eq 0751, "permissions not kept" );
 
+printInfo("Remove a directory and make it a symlink instead\n");
+system( "rm -rf " . localDir() . 'anotherdir' );
+system( "ln -s /bin " . localDir() . 'anotherdir' );
+# remember the fileid of the file on the server
+my $oldfileid1 = remoteFileId( 'anotherdir/', 'file1.txt' );
+my $oldfileid2 = remoteFileId( 'anotherdir/sub', 'file2.txt' );
+csync();
+
+#check that the files in ignored directory has NOT been removed
+my $newfileid1 = remoteFileId( 'anotherdir/', 'file1.txt' );
+my $newfileid2 = remoteFileId( 'anotherdir/sub', 'file2.txt' );
+assert( $oldfileid1 eq $newfileid1, "File removed (file1.txt)" );
+assert( $oldfileid2 eq $newfileid2, "File removed (file2.txt)" );
+
+printInfo("Now remove the symlink\n");
+system( "rm -f " . localDir() . 'anotherdir' );
+csync();
+assertLocalAndRemoteDir( '', 0 );
 
 cleanup();
 

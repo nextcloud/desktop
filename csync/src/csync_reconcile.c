@@ -35,6 +35,39 @@
 #define ACCEPTED_TIME_DIFF 5
 #define ONE_HOUR 3600
 
+
+/* Check if a file is ignored because one parent is ignored.
+ * return the node of the ignored directoy if it's the case, or NULL if it is not ignored */
+static c_rbnode_t *_csync_check_ignored(c_rbtree_t *tree, const char *path, int pathlen) {
+    uint64_t h = 0;
+    c_rbnode_t *node = NULL;
+
+    /* compute the size of the parent directory */
+    int parentlen = pathlen - 1;
+    while (parentlen > 0 && path[parentlen] != '/') {
+        parentlen--;
+    }
+    if (parentlen <= 0) {
+        return NULL;
+    }
+
+    h = c_jhash64((uint8_t *) path, parentlen, 0);
+    node = c_rbtree_find(tree, &h);
+    if (node) {
+        csync_file_stat_t *n = (csync_file_stat_t*)node->data;
+        if (n->instruction == CSYNC_INSTRUCTION_IGNORE) {
+            /* Yes, we are ignored */
+            return node;
+        } else {
+            /* Not ignored */
+            return NULL;
+        }
+    } else {
+        /* Try if the parent itself is ignored */
+        return _csync_check_ignored(tree, path, parentlen);
+    }
+}
+
 /*
  * We merge replicas at the file level. The merged replica contains the
  * superset of files that are on the local machine and server copies of
@@ -85,6 +118,11 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             node = c_rbtree_find(tree, &h);
         }
         SAFE_FREE(renamed_path);
+    }
+    if (!node) {
+        /* Check if it is ignored */
+        node = _csync_check_ignored(tree, cur->path, cur->pathlen);
+        /* If it is ignored, other->instruction will be  IGNORE so this one will also be ignored */
     }
 
     /* file only found on current replica */
