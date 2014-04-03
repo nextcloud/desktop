@@ -24,7 +24,7 @@ package ownCloud::Test;
 use strict;
 use Exporter;
 
-use HTTP::DAV;
+use HTTP::DAV 0.47;
 use Data::Dumper;
 use File::Glob ':glob';
 use Carp::Assert;
