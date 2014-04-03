@@ -232,6 +232,8 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
     connect(_rootJob.data(), SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
 
+    qDebug() << (useLegacyJobs() ? "Using legacy libneon/HTTP sequential code path" : "Using QNAM/HTTP parallel code path");
+
     QMetaObject::invokeMethod(_rootJob.data(), "start", Qt::QueuedConnection);
 }
 
