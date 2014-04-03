@@ -1891,7 +1891,7 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="535"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Não é possível abrir o arquivo de sincronização</translation>
     </message>
 </context>
 <context>

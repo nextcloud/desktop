@@ -387,7 +387,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="171"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Atopouse un diario de sincronización antigo en «%1» máis non pode ser retirado. Asegúrese de que non o está a usar ningún aplicativo.</translation>
+        <translation>Atopouse un rexistro de sincronización antigo en «%1» máis non pode ser retirado. Asegúrese de que non o está a usar ningún aplicativo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="747"/>
@@ -1893,7 +1893,7 @@ Tente sincronizalos de novo.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="535"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel abrir o rexistro de sincronización</translation>
     </message>
 </context>
 <context>

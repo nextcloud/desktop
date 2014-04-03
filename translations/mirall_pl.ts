@@ -1893,7 +1893,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="535"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Nie można otworzyć dziennika synchronizacji</translation>
     </message>
 </context>
 <context>

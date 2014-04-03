@@ -1892,7 +1892,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="535"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme günlüğü açılamıyor</translation>
     </message>
 </context>
 <context>
