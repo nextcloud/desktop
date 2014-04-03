@@ -368,11 +368,17 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
     _needsUpdate = true;
 
-    item.other._etag        = file->other.etag;
-    item.other._fileId      = file->other.file_id;
-    item.other._instruction = file->other.instruction;
-    item.other._modtime     = file->other.modtime;
-    item.other._size        = file->other.size;
+    item.log._etag          = file->etag;
+    item.log._fileId        = file->file_id;
+    item.log._instruction   = file->instruction;
+    item.log._modtime       = file->modtime;
+    item.log._size          = file->size;
+
+    item.log._other_etag        = file->other.etag;
+    item.log._other_fileId      = file->other.file_id;
+    item.log._other_instruction = file->other.instruction;
+    item.log._other_modtime     = file->other.modtime;
+    item.log._other_size        = file->other.size;
 
     _syncedItems.append(item);
     emit syncItemDiscovered(item);

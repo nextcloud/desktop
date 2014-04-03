@@ -11,6 +11,8 @@
  * for more details.
  */
 
+#include <QRegExp>
+
 #include "mirall/syncrunfilelog.h"
 #include "mirall/utility.h"
 #include "mirall/mirallconfigfile.h"
@@ -26,6 +28,17 @@ SyncRunFileLog::SyncRunFileLog()
 QString SyncRunFileLog::dateTimeStr( const QDateTime& dt )
 {
     return dt.toString(Qt::ISODate);
+}
+
+QString SyncRunFileLog::directionToStr( SyncFileItem::Direction dir )
+{
+    QString re("N");
+    if( dir == SyncFileItem::Up ) {
+        re = QLatin1String("Up");
+    } else if( dir == SyncFileItem::Down ) {
+        re = QLatin1String("Down");
+    }
+    return re;
 }
 
 QString SyncRunFileLog::instructionToStr( csync_instructions_e inst )
@@ -104,7 +117,7 @@ void SyncRunFileLog::start(const QString &folderPath,  const Utility::StopWatch 
 
     if (!exists) {
         // We are creating a new file, add the note.
-        _out << "# timestamp | duration | file | instruction | modtime | etag | "
+        _out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
                 "size | fileId | status | errorString | http result code | "
                 "other size | other modtime | other etag | other fileId | "
                 "other instruction" << endl;
@@ -123,24 +136,32 @@ void SyncRunFileLog::logItem( const SyncFileItem& item )
     if( item._direction == SyncFileItem::None ) {
         return;
     }
+    QString ts = item._responseTimeStamp;
+    if( ts.length() > 6 ) {
+        QRegExp rx("(\\d\\d:\\d\\d:\\d\\d)");
+        if( ts.contains(rx) ) {
+            ts = rx.cap(0);
+        }
+    }
 
     const QChar L = QLatin1Char('|');
-    _out << item._responseTimeStamp << L;
+    _out << ts << L;
     _out << QString::number(item._requestDuration) << L;
     _out << item._file << L;
-    _out << instructionToStr( item._instruction ) << L;
-    _out << QString::number(item._modtime) << L;
-    _out << item._etag << L;
-    _out << QString::number(item._size) << L;
-    _out << item._fileId << L;
+    _out << instructionToStr( item.log._instruction ) << L;
+    _out << directionToStr( item._direction ) << L;
+    _out << QString::number(item.log._modtime) << L;
+    _out << item.log._etag << L;
+    _out << QString::number(item.log._size) << L;
+    _out << item.log._fileId << L;
     _out << item._status << L;
     _out << item._errorString << L;
     _out << QString::number(item._httpErrorCode) << L;
-    _out << QString::number(item.other._size) << L;
-    _out << QString::number(item.other._modtime) << L;
-    _out << item.other._etag << L;
-    _out << item.other._fileId << L;
-    _out << instructionToStr(item.other._instruction) << L;
+    _out << QString::number(item.log._other_size) << L;
+    _out << QString::number(item.log._other_modtime) << L;
+    _out << item.log._other_etag << L;
+    _out << item.log._other_fileId << L;
+    _out << instructionToStr(item.log._other_instruction) << L;
 
     _out << endl;
 }

@@ -99,7 +99,12 @@ public:
         QByteArray  _etag;
         QByteArray  _fileId;
         enum csync_instructions_e _instruction;
-    } other;
+        quint64     _other_size;
+        time_t      _other_modtime;
+        QByteArray  _other_etag;
+        QByteArray  _other_fileId;
+        enum csync_instructions_e _other_instruction;
+    } log;
 };
 
 

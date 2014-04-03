@@ -137,7 +137,7 @@ void PropagateRemoteRemove::start()
 
     //  Wed, 15 Nov 1995 06:25:24 GMT
     QDateTime dt = QDateTime::currentDateTimeUtc();
-    _item._responseTimeStamp = dt.toString("ddd, dd MMM yyyy hh:mm:ss GMT");
+    _item._responseTimeStamp = dt.toString("hh:mm:ss");
 
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
     _propagator->_journal->commit("Remote Remove");
@@ -158,7 +158,7 @@ void PropagateRemoteMkdir::start()
      * Ignore that error */
     //  Wed, 15 Nov 1995 06:25:24 GMT
     QDateTime dt = QDateTime::currentDateTimeUtc();
-    _item._responseTimeStamp = dt.toString("ddd, dd MMM yyyy hh:mm:ss GMT");
+    _item._responseTimeStamp = dt.toString("hh:mm:ss");
 
     if( updateErrorFromSession( rc , 0, 405 ) ) {
         return;
@@ -248,7 +248,7 @@ void PropagateRemoteRename::start()
     }
     //  Wed, 15 Nov 1995 06:25:24 GMT
     QDateTime dt = QDateTime::currentDateTimeUtc();
-    _item._responseTimeStamp = dt.toString("ddd, dd MMM yyyy hh:mm:ss GMT");
+    _item._responseTimeStamp = dt.toString("hh:mm:ss");
 
     _propagator->_journal->deleteFileRecord(_item._originalFile);
     SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
