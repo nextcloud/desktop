@@ -45,7 +45,7 @@ assert( $newMd5 eq $bigMd5 );
 
 # download
 my $ctrlFile = "/tmp/file.download";
-getToFileLWP( 'BIG.file', $ctrlFile );
+getToFileCurl( 'BIG.file', $ctrlFile );
 
 assert( -e $ctrlFile, "File does not exist!" );
 
@@ -53,6 +53,7 @@ assert( -e $ctrlFile, "File does not exist!" );
 my $dlMd5 = md5OfFile( $ctrlFile );
 assert( $dlMd5 eq $newMd5 );
 
+unlink( $ctrlFile );
 
 # ==================================================================
 

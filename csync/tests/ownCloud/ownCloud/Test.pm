@@ -65,7 +65,7 @@ our %config;
                   putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
                   remoteCleanup server initLocalDir initRemoteDir moveRemoteFile
                   printInfo remoteFileId createShare removeShare
-                  configValue testDirUrl getToFileLWP);
+                  configValue testDirUrl getToFileLWP getToFileCurl);
 
 sub server
 {
@@ -531,6 +531,19 @@ sub putToDirLWP($$)
 }
 
 # does a simple GET of a file in the testdir to a local file.
+
+sub getToFileCurl( $$ )
+{
+    my ($file, $localFile) = @_;
+    my $geturl = testDirUrl() . $file;
+    print "GETting $geturl to $localFile\n";
+
+    my @args = ("curl", "-u", "$user:$passwd", "$geturl", "-o", "$localFile");
+    system( @args );
+}
+
+# FIXME: This does not work because I can not get an authenticated GET request
+# that writes its content to a file. Strange.
 sub getToFileLWP( $$ )
 {
     my ($file, $localFile) = @_;
@@ -539,15 +552,16 @@ sub getToFileLWP( $$ )
 
     my $ua  = LWP::UserAgent->new();
     $ua->agent( "ownCloudTest_$localDir");
-    # my $req = $ua->get($geturl, ":content_file" => $localFile);
-    my $req = HTTP::Request->new( GET => $geturl );
-    $req->authorization_basic("$user", "$passwd");
-    my $response = $ua->request($req);
+    $ua->credentials( server(), "foo", $user, $passwd);
+    my $req = $ua->get($geturl, ":content_file" => $localFile);
+    # my $req = HTTP::Request->new( GET => $geturl, ':content_file' => $localFile);
+    # $req->authorization_basic("$user", "$passwd");
+    # my $response = $ua->request($req);
 
-    if ($response->is_success()) {
-      print "OK: ", $response->content;
+    if ($req->is_success()) {
+      print "OK: ", $req->content;
     } else {
-      die( "HTTP GET failed: " . $response->as_string );
+      die( "HTTP GET failed: " . $req->as_string );
     }
 }
 
