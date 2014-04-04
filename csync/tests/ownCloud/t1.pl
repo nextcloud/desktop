@@ -145,8 +145,6 @@ assertLocalAndRemoteDir( 'fromLocal1', 0);
 assert( -e localDir().'remoteToLocal1/rtlX' );
 assert( -e localDir().'remoteToLocal1/rtlX/rtl11/file.txt' );
 
-
-
 # ==================================================================
 
 cleanup();

@@ -32,7 +32,7 @@ use Digest::MD5;
 use Unicode::Normalize;
 use LWP::UserAgent;
 use LWP::Protocol::https;
-use HTTP::Request::Common qw( POST  DELETE );
+use HTTP::Request::Common qw( POST GET DELETE );
 use File::Basename;
 
 use Encode qw(from_to);
@@ -65,7 +65,7 @@ our %config;
                   putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
                   remoteCleanup server initLocalDir initRemoteDir moveRemoteFile
                   printInfo remoteFileId createShare removeShare
-                  configValue testDirUrl);
+                  configValue testDirUrl getToFileLWP);
 
 sub server
 {
@@ -527,6 +527,27 @@ sub putToDirLWP($$)
       # print "OK: ", $response->content;
     } else {
       die( "HTTP PUT failed: " . $response->as_string );
+    }
+}
+
+# does a simple GET of a file in the testdir to a local file.
+sub getToFileLWP( $$ )
+{
+    my ($file, $localFile) = @_;
+    my $geturl = testDirUrl() . $file;
+    print "GETting $geturl to $localFile\n";
+
+    my $ua  = LWP::UserAgent->new();
+    $ua->agent( "ownCloudTest_$localDir");
+    # my $req = $ua->get($geturl, ":content_file" => $localFile);
+    my $req = HTTP::Request->new( GET => $geturl );
+    $req->authorization_basic("$user", "$passwd");
+    my $response = $ua->request($req);
+
+    if ($response->is_success()) {
+      print "OK: ", $response->content;
+    } else {
+      die( "HTTP GET failed: " . $response->as_string );
     }
 }
 
