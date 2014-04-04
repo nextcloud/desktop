@@ -110,11 +110,15 @@ void PropagateUploadFileQNAM::start()
 }
 
 struct ChunkDevice : QIODevice {
+    Q_OBJECT
+public:
     QIODevice *_file;
     qint64 _read;
+    qint64 _size;
+    qint64 _start;
 
-    ChunkDevice(QIODevice *file,  qint64 start)
-            : QIODevice(file), _file(file), _read(0) {
+    ChunkDevice(QIODevice *file,  qint64 start, qint64 size)
+            : QIODevice(file), _file(file), _read(0), _size(size), _start(start) {
         _file->seek(start);
     }
 
@@ -135,7 +139,21 @@ struct ChunkDevice : QIODevice {
     virtual bool atEnd() const {
         return  _read >= chunkSize() || _file->atEnd();
     }
+
+    virtual qint64 size() const{
+        return _size;
+    }
+
+    // random access, we can seek
+    virtual bool isSequential() const{
+        return false;
+    }
+
+    virtual bool seek ( qint64 pos ) {
+        return _file->seek(pos + _start);
+    }
 };
+#include "propagator_qnam.moc"
 
 void PropagateUploadFileQNAM::startNextChunk()
 {
@@ -175,10 +193,15 @@ void PropagateUploadFileQNAM::startNextChunk()
         uint transid = _transferId ^ chunkSize();
         path +=  QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
         headers["OC-Chunked"] = "1";
-        device = new ChunkDevice(_file, chunkSize() * sendingChunk);
+        int currentChunkSize = chunkSize();
+        if (sendingChunk == _chunkCount - 1) // last chunk
+            currentChunkSize = (fileSize % chunkSize());
+        device = new ChunkDevice(_file, chunkSize() * sendingChunk, currentChunkSize);
     } else {
         device = _file;
     }
+    if (!device->isOpen())
+        device->open(QIODevice::ReadOnly);
 
     _job = new PUTFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + path, device, headers);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
@@ -191,7 +214,11 @@ void PropagateUploadFileQNAM::slotPutFinished()
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
     Q_ASSERT(job);
 
-    qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS" << job->reply()->error() << job->reply()->errorString();
+    qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
+             << job->reply()->error()
+             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString())
+             << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
+             << job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
