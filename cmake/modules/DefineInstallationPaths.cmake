@@ -13,7 +13,7 @@ if (UNIX)
     CACHE PATH "Base directory for files which go to share/"
   )
   SET(DATA_INSTALL_PREFIX
-    "${SHARE_INSTALL_PREFIX}/${APPLICATION_SHORTNAME}"
+    "${SHARE_INSTALL_PREFIX}"
     CACHE PATH "The parent directory where applications can install their data")
 
   # The following are directories where stuff will be installed to
@@ -34,11 +34,11 @@ if (UNIX)
     CACHE PATH "The subdirectory relative to the install prefix where libraries will be installed (default is prefix/libexec)"
   )
   SET(LIB_PRIVATE_INSTALL_DIR
-	  "${LIB_INSTALL_DIR}/${APPLICATION_SHORTNAME}"
+	  "${LIB_INSTALL_DIR}"
 	  CACHE PATH "The subdirectory relative to the install prefix where private libs are installed"
 	  )
   SET(PLUGIN_INSTALL_DIR
-    "${LIB_INSTALL_DIR}/${APPLICATION_SHORTNAME}"
+    "${LIB_INSTALL_DIR}"
     CACHE PATH "The subdirectory relative to the install prefix where plugins will be installed (default is prefix/lib/${APPLICATION_SHORTNAME})"
   )
   SET(INCLUDE_INSTALL_DIR
