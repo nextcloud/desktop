@@ -79,7 +79,7 @@ endif()
         add_definitions("-DQT_DISABLE_DEPRECATED_BEFORE=0")
     endif()
 endif()
-if( NOT Qt5Core_DIR )
+if( NOT WIN32 AND NOT APPLE AND NOT Qt5Core_DIR)
     message(STATUS "Could not find Qt5, searching for Qt4 instead...")
 
     set(NEEDED_QT4_COMPONENTS "QtCore" "QtXml" "QtNetwork" "QtGui" "QtWebkit")
@@ -88,7 +88,7 @@ if( NOT Qt5Core_DIR )
     endif()
 
     find_package(Qt4 4.7.0 COMPONENTS ${NEEDED_QT4_COMPONENTS} )
-    macro_log_feature(QT4_FOUND "Qt" "A cross-platform application and UI framework" "http://qt.nokia.com" TRUE "" "If you see this, although libqt4-devel is installed, check whether the \n     qtwebkit-devel package and whatever contains QtUiTools is installed too")
+    macro_log_feature(QT4_FOUND "Qt" "A cross-platform application and UI framework" "http://www.qt-project.org" TRUE "" "If you see this, although libqt4-devel is installed, check whether the \n     qtwebkit-devel package and whatever contains QtUiTools is installed too")
 
     macro(qt5_use_modules)
     endmacro()
@@ -131,6 +131,8 @@ if( NOT Qt5Core_DIR )
 
         include( ${QT_USE_FILE} )
     endmacro()
+else()
+    message(ERROR "Qt 5 not found, but application depends on Qt5 on Windows and Mac OS X")
 endif()
 
 if( Qt5Core_DIR )
