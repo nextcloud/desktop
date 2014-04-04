@@ -1,25 +1,25 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi_FI" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.0">
 <context>
     <name>FolderWizardSourcePage</name>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="14"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Valitse synkronoitava paikalliskansio tietokoneelta</translation>
+        <translation>Eşitlemek için bilgisayarınızdan yerel bir klasör seçin</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Valitse...</translation>
+        <translation>&amp;Seç...</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="55"/>
         <source>&amp;Directory alias name:</source>
-        <translation>&amp;Directory alias-nimi:</translation>
+        <translation>&amp;Dizin takma ismi:</translation>
     </message>
 </context>
 <context>
@@ -27,32 +27,32 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Bir uzak hedef klasörü seçin</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Add Folder</source>
-        <translation>Lisää kansio</translation>
+        <translation>Dizin Ekle</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
         <source>Refresh</source>
-        <translation>Päivitä</translation>
+        <translation>Yenile</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="174"/>
         <source>Folders</source>
-        <translation>Kansiot</translation>
+        <translation>Klasörler</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="107"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>MetinEtiketi</translation>
     </message>
 </context>
 <context>
@@ -60,88 +60,88 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="14"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="136"/>
         <source>Account Maintenance</source>
-        <translation>Tilin ylläpito</translation>
+        <translation>Hesap Bakımı</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="145"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Yoksayılan Dosyaları Düzenle</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="152"/>
         <source>Modify Account</source>
-        <translation>Muokkaa tiliä</translation>
+        <translation>Hesabı Düzenle</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account to Synchronize</source>
-        <translation>Synkronoitava tili</translation>
+        <translation>Eşitlenecek Hesaplar</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>Yhdistetty palvelimeen &lt;server&gt; käyttäen &lt;user&gt; tunnusta</translation>
+        <translation>&lt;server&gt; ile &lt;user&gt; olarak bağlantı kuruldu</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
         <location filename="../src/mirall/accountsettings.cpp" line="160"/>
         <source>Pause</source>
-        <translation>Keskeytä</translation>
+        <translation>Beklet</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="69"/>
         <source>Remove</source>
-        <translation>Poista</translation>
+        <translation>Sil</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="55"/>
         <source>Add Folder...</source>
-        <translation>Lisää kansio...</translation>
+        <translation>Klasör Ekle...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="94"/>
         <source>Storage Usage</source>
-        <translation>Tilan käyttö</translation>
+        <translation>Depolama Kullanımı</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="116"/>
         <source>Retrieving usage information...</source>
-        <translation>Noudetaan käyttötietoja...</translation>
+        <translation>Kullanım bilgisi alınıyor..</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="123"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Not:&lt;/b&gt; Ağa bağlanmış veya paylaşılan klasörler gibi klasörler, farklı sınırlara sahip olabilirler.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="162"/>
         <source>Resume</source>
-        <translation>Jatka</translation>
+        <translation>Devam et</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="313"/>
         <source>Confirm Folder Remove</source>
-        <translation>Vahvista kansion poisto</translation>
+        <translation>Klasör Kaldırma İşlemini Onayla</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="314"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Gerçekten &lt;i&gt;%1&lt;/i&gt; klasörünü eşitlemeyi durdurmak istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem dosyaları istemcinizden kaldırmayacaktır.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="350"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Klasör Sıfırlamayı Onayla</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="351"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Gerçekten &lt;i&gt;%1&lt;/i&gt; klasörünü sıfırlamak ve istemci veritabanını yeniden inşa etmek istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlev sadece bakım amaçlı tasarlandı. Hiçbir dosya kaldırılmayacaktır, fakat bu işlem büyük veri trafiğine sebep olabilir ve klasör boyutuna bağlı olarak tamamlanması birkaç dakikadan birkaç saate kadar sürebilir. Bu seçeneği sadece yöneticiniz tarafından istenmişse kullanın.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="614"/>
@@ -158,52 +158,52 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="712"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation>%1 (%3%) / %2 palvelimen tilasta käytössä.</translation>
+        <translation>Sunucu alanının %1 / %2 (%%3) kısmı kullanımda.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="751"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>%1 bağlantısı &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt; üzerinde yok.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="758"/>
         <source>No %1 connection configured.</source>
-        <translation>%1-yhteyttä ei ole määritelty.</translation>
+        <translation>Hiç %1 bağlantısı yapılandırılmamış.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="461"/>
         <source>Sync Running</source>
-        <translation>Synkronointi meneillään</translation>
+        <translation>Eşitleme Çalışıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="107"/>
         <source>No account configured.</source>
-        <translation>Tiliä ei ole määritelty.</translation>
+        <translation>Hiçbir hesap yapılandırılmamış.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="462"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Synkronointioperaatio on meneillään.&lt;br/&gt;Haluatko keskeyttää sen?</translation>
+        <translation>Eşitleme işlemi devam ediyor.&lt;br/&gt;Durdurmak istiyor musunuz?</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="744"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation>Muodosta yhteys - &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; ile bağlı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="626"/>
         <source>%1 of %2, file %3 of %4</source>
-        <translation>%1/%2, tiedosto %3/%4</translation>
+        <translation>%1/%2, %3/%4 dosya</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="747"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; bağlantısı &lt;i&gt;%3&lt;/i&gt; olarak yapıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="716"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>Şu anda depolama kullanım bilgisi mevcut değil.</translation>
     </message>
 </context>
 <context>
@@ -211,22 +211,22 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation>Tunnistautuminen vaaditaan</translation>
+        <translation>Yetkilendirme Gerekli</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen %2 üzerindek, &apos;%1&apos;  için kullanıcı adı ve parolayı girin.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation>K&amp;äyttäjä:</translation>
+        <translation>&amp;Kullanıcı:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Salasana:</translation>
+        <translation>&amp;Parola:</translation>
     </message>
 </context>
 <context>
@@ -234,27 +234,27 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="91"/>
         <source>No ownCloud account configured</source>
-        <translation>ownCloud-tiliä ei ole määritelty</translation>
+        <translation>Hiçbir ownCloud hesabı yapılanırılmamış</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>The configured server for this client is too old</source>
-        <translation>Määritelty palvelin on ohjelmistoversioltaan liian vanha tälle asiakasohjelmistolle</translation>
+        <translation>Yapılandırılmış sunucu, bu istemci için çok eski</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="107"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Päivitä uusimpaan palvelinversioon ja käynnistä asiakasohjelmisto uudelleen.</translation>
+        <translation>Lütfen en son sunucuya güncelleyin veya istemciyi yeniden başlatın</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="127"/>
         <source>Unable to connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 bağlantısı yapılamadı</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="157"/>
         <source>The provided credentials are not correct</source>
-        <translation>Annetut tilitiedot eivät ole oikein</translation>
+        <translation>Sağlanan kimlik bilgileri doğru değil</translation>
     </message>
 </context>
 <context>
@@ -262,22 +262,22 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="96"/>
         <source>Unable to create csync-context</source>
-        <translation type="unfinished"/>
+        <translation>csync-context oluşturma başarısız</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="154"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Paikallista kansiota %1 ei ole olemassa.</translation>
+        <translation>%1 yerel klasörü mevcut değil.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="157"/>
         <source>%1 should be a directory but is not.</source>
-        <translation>Kohteen %1 pitäisi olla kansio, mutta se ei kuitenkaan ole kansio.</translation>
+        <translation>%1 bir dizin olmalıdır ancak değil.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="160"/>
         <source>%1 is not readable.</source>
-        <translation>%1 ei ole luettavissa.</translation>
+        <translation>%1 okunabilir değil.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="312"/>
@@ -288,90 +288,93 @@
         <location filename="../src/mirall/folder.cpp" line="398"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ve diğer %2 dosya kaldırıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 on poistettu.</translation>
+        <translation>%1 kaldırıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="405"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ve diğer %2 dosya indirildi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="407"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 on ladattu.</translation>
+        <translation>%1 indirildi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="412"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ve diğer %2 dosya güncellendi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="414"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 on päivitetty.</translation>
+        <translation>%1 güncellendi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="419"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>%1, %2 olarak ve diğer %3 dosya adlandırıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="421"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation>%1 on nimetty uudeelleen muotoon %2.</translation>
+        <translation>%1, %2 olarak adlandırıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="426"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>%1, %2 konumuna ve diğer %3 dosya taşındı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="428"/>
         <source>%1 has been moved to %2.</source>
-        <translation>%1 on siirretty kohteeseen %2.</translation>
+        <translation>%1, %2 konumuna taşındı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="436"/>
         <source>Sync Activity</source>
-        <translation>Synkronointiaktiviteetti</translation>
+        <translation>Eşitleme Etkinliği</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="674"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Bu eşitleme, yerel eşitleme klasörü &apos;%1&apos; içindeki tüm dosyaları kaldıracak.
+Eğer siz veya yöneticiniz sunucudaki hesabınızı sıfırlamışsa, &quot;Dosyaları koru&quot; seçin. Eğer verinizin kaldırılmasını istiyorsanız, &quot;Tüm dosyaları kaldır&quot; seçin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="677"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Bu eşitleme, yerel eşitleme klasörü &apos;%1&apos; içindeki tüm dosyaları kaldıracak.
+Bu, klasörün sessizce yeniden yapılandırılması veya tüm dosyaların el ile kaldırılmış olmasından olabilir.
+Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="681"/>
         <source>Remove All Files?</source>
-        <translation>Poistetaanko kaikki tiedostot?</translation>
+        <translation>Tüm Dosyalar Kaldırılsın mı?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="683"/>
         <source>Remove all files</source>
-        <translation>Poista kaikki tiedostot</translation>
+        <translation>Tüm dosyaları kaldır</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="684"/>
         <source>Keep files</source>
-        <translation>Säilytä tiedostot</translation>
+        <translation>Dosyaları koru</translation>
     </message>
 </context>
 <context>
@@ -379,67 +382,67 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="170"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>Klasör durumu sıfırılanamadı</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="171"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Eski eşitleme günlüğü &apos;%1&apos; bulundu ancak kaldırılamadı. Başka bir uygulama tarafından kullanılmadığından emin olun.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="747"/>
         <source>Undefined State.</source>
-        <translation>Määrittelemätön tila.</translation>
+        <translation>Tanımlanmamış Durum</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="750"/>
         <source>Waits to start syncing.</source>
-        <translation>Odottaa synkronoinnin alkamista.</translation>
+        <translation>Eşitleme başlatmak için bekleniyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="753"/>
         <source>Preparing for sync.</source>
-        <translation>Valmistellaan synkronointia.</translation>
+        <translation>Eşitleme için hazırlanıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="756"/>
         <source>Sync is running.</source>
-        <translation>Synkronointi on meneillään.</translation>
+        <translation>Eşitleme çalışıyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="759"/>
         <source>Server is currently not available.</source>
-        <translation>Palvelin ei ole käytettävissä.</translation>
+        <translation>Sunucu şu an kullanılabilir değil.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="762"/>
         <source>Last Sync was successful.</source>
-        <translation>Viimeisin synkronointi suoritettiin onnistuneesti.</translation>
+        <translation>Son Eşitleme başarılı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="767"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation>Viimeisin synkronointi onnistui, mutta yksittäisten tiedostojen kanssa ilmeni varoituksia.</translation>
+        <translation>Son eşitleme başarılıydı, ancak bireysel dosyalarda uyarılar vardı</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="770"/>
         <source>Setup Error.</source>
-        <translation>Asetusvirhe.</translation>
+        <translation>Kurulum hatası.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="773"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı İptal Etti</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="776"/>
         <source>Sync is paused.</source>
-        <translation>Synkronointi on keskeytetty.</translation>
+        <translation>Eşitleme duraklatıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="782"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (Synkronointi on keskeytetty)</translation>
+        <translation>%1 (Eşitleme duraklatıldı)</translation>
     </message>
 </context>
 <context>
@@ -448,17 +451,17 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="95"/>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="250"/>
         <source>File</source>
-        <translation>Tiedosto</translation>
+        <translation>Dosya</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
         <source>Syncing all files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>Hesabınızdaki tüm dosyalar şununla eşitleniyor:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="207"/>
         <source>Remote path: %1</source>
-        <translation>Etäpolku: %1</translation>
+        <translation>Uzak yol: %1</translation>
     </message>
 </context>
 <context>
@@ -467,7 +470,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderwizard.cpp" line="442"/>
         <location filename="../src/mirall/folderwizard.cpp" line="444"/>
         <source>Add Folder</source>
-        <translation>Lisää kansio</translation>
+        <translation>Dizin Ekle</translation>
     </message>
 </context>
 <context>
@@ -475,67 +478,67 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="61"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Napsauta valitaksesi synkronoitavan paikalliskansion.</translation>
+        <translation>Eşitlemek için yerel bir klasör seçmek üzere tıklayın.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="65"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasörün yolunu girin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="69"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>Dizin sahte adı, bu eşitleme bağlantısı için tanımlayıcı bir addır.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Geçerli yerel klasör seçilmedi!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Sinulla ei ole kirjoitusoikeutta valittuun kansioon!</translation>
+        <translation>Seçilen klasöre yazma izniniz yok!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>%1 yerel yolu zaten bir yükleme klasörü. Lütfen farklı bir seçim yapın!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation>Tässä on jo olemassa asetettu kansio.</translation>
+        <translation>Bir arkiv zaten teskil etmis burda yazilis</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Seçilen klasör sembolik bir bağlantı. Bu bağlantının işaretlediği klasörde zaten yapılandırılmış bir klasör mevcut.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation>Jo aiemmin määritelty kansio sisältää nyt valitun kansion.</translation>
+        <translation>Zaten yapılandırılmış bir klasör içinde bulunulan klasörü içeriyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Seçilen klasör sembolik bir bağlantı. Zaten yapılandırılmış bir klasör, bu bağlantının işaret ettiği geçerli seçimdeki klasörü içeren üst klasörü.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation>Alias-nimi ei voi olla tyhjä. Anna kuvaava aliassana.</translation>
+        <translation>Alias bos olmali. Lutfen bir kelime saglamak onu uzeri yazmak icin </translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>Alias &lt;i&gt;%1&lt;/i&gt; on jo käytöss. Valitse toinen alias.</translation>
+        <translation>&lt;i&gt;%1&lt;/i&gt; takma adı zaten kullanımda. Lütfen farklı bir isim seçin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation>Valitse lähdekansio</translation>
+        <translation>Kaynak dizinini seçin</translation>
     </message>
 </context>
 <context>
@@ -543,42 +546,42 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="251"/>
         <source>Add Remote Folder</source>
-        <translation>Lisää etäkansio</translation>
+        <translation>Uzak Klasör Ekle</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="252"/>
         <source>Enter the name of the new folder:</source>
-        <translation>Anna uuden kansion nimi:</translation>
+        <translation>Yeni klasörün adını girin:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="274"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>Klasör %1 üzerinde başarıyla oluşturuldu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="282"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>%1 üzerinde klasör oluşturma başarısız. Lütfen elle denetleyin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="331"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Valitse tämä synkronoidaksesi koko tilin</translation>
+        <translation>Tüm hesabı eşitlemek için bunu seçin</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="386"/>
         <source>This folder is already being synced.</source>
-        <translation>Tätä kansiota synkronoidaan jo.</translation>
+        <translation>Bu klasör zaten eşitleniyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="388"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Synkronoit jo kansiota &lt;i&gt;%1&lt;/i&gt;, ja se on kansion &lt;i&gt;%2&lt;/i&gt; yläkansio.</translation>
+        <translation>&lt;i&gt;%1&lt;/i&gt; zaten eşitleniyor. Bu, &lt;i&gt;%2&lt;/i&gt; dizininin üst klasörü.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>Zaten tüm dosyalarınızı eşitliyorsunuz. Farklı bir klasör eşitlemek &lt;b&gt;desteklenmiyor&lt;/b&gt;. Eğer çoklu dizinleri eşitlemek isterseniz, lütfen şu anda yapılandırılmış kök klasör eşitlemesini kaldırın.</translation>
     </message>
 </context>
 <context>
@@ -587,7 +590,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderwizard.cpp" line="43"/>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; </source>
-        <translation>&lt;b&gt;Varoitus:&lt;/b&gt; </translation>
+        <translation>&lt;b&gt;Uyarı:&lt;/b&gt; </translation>
     </message>
 </context>
 <context>
@@ -595,12 +598,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="324"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan E-Etiket alınamadı, Vekil sunucu/Ağ geçidini denetleyin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="330"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Devam etmek üzere farklı bir E-Etiket altık. Sonraki işlemde yeniden denenecek.</translation>
     </message>
 </context>
 <context>
@@ -608,43 +611,43 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="14"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Setttings</source>
-        <translation>Yleiset asetukset</translation>
+        <translation>Genel Ayarlar</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation>Käynnistä järjestelmän käynnistyessä</translation>
+        <translation>Sistem Başlangıcında Çalıştır</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation>Näytä työpöytäilmoitukset</translation>
+        <translation>Masaüstü Bildirimlerini Göster</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
         <source>Use Monochrome Icons</source>
-        <translation>Käytä mustavalkoisia kuvakkeita</translation>
+        <translation>İki Renkli Simgeler Kullan</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="50"/>
         <location filename="../src/mirall/generalsettings.ui" line="56"/>
         <source>About</source>
-        <translation>Tietoja</translation>
+        <translation>Hakkında</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation>Päivitykset</translation>
+        <translation>Güncellemeler</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Käynnistä uudelleen &amp;&amp; päivitä</translation>
+        <translation>&amp;Yeniden Başlat ve Güncelle</translation>
     </message>
 </context>
 <context>
@@ -652,12 +655,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="274"/>
         <source>Enter Password</source>
-        <translation>Anna salasana</translation>
+        <translation>Parolayı Girin</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="275"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation>Anna käyttäjän &apos;%2&apos; %1-salasana:</translation>
+        <translation>Lütfen &apos;%2&apos; kullanıcısı için %1 parolasını girin:</translation>
     </message>
 </context>
 <context>
@@ -665,59 +668,61 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>Yoksayılan Dosya Düzenleyici</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="53"/>
         <source>Add</source>
-        <translation>Lisää</translation>
+        <translation>Ekle</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="63"/>
         <source>Remove</source>
-        <translation>Poista</translation>
+        <translation>Sil</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="35"/>
         <source>Files or directories matching a pattern will not be synchronized.
 
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Bir kalıpla eşleşen dosya ve dizinler eşitlenmeyecektir.
+
+İşaretli ögeler de bir dizinin kaldırılmasını engelliyorlarsa silineceklerdir. Bu üst veri için kullanışlıdır.</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <source>Could not open file</source>
-        <translation>Tiedoston avaaminen ei onnistunut</translation>
+        <translation>Dosya açılamadı</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="98"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Değişiklikler &apos;%1&apos; üzerine yazılamıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
         <source>Add Ignore Pattern</source>
-        <translation>Lisää ohituskaava</translation>
+        <translation>Yoksayma Deseni Ekle</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
         <source>Add a new ignore pattern:</source>
-        <translation>Lisää uusi ohituskaava:</translation>
+        <translation>Yeni bir yoksayma deseni ekle:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Yoksayma Desenini Düzenle</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Yoksayma desenini düzenle:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Bu girdi &apos;%1&apos; üzerinde sistem tarafından sağlandı ve bu görünümde değiştirilemez.</translation>
     </message>
 </context>
 <context>
@@ -725,52 +730,52 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="59"/>
         <source>Log Output</source>
-        <translation>Loki</translation>
+        <translation>Disari Gidek,</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="71"/>
         <source>&amp;Search: </source>
-        <translation>&amp;Haku:</translation>
+        <translation>&amp;Ara</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="79"/>
         <source>&amp;Find</source>
-        <translation>&amp;Etsi</translation>
+        <translation>&amp;Bul</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="97"/>
         <source>Clear</source>
-        <translation>Tyhjennä</translation>
+        <translation>Temizle</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="98"/>
         <source>Clear the log display.</source>
-        <translation>Tyhjennä lokinäyttö.</translation>
+        <translation>Günlük göstergesini temizle</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="104"/>
         <source>S&amp;ave</source>
-        <translation>&amp;Tallenna</translation>
+        <translation>K&amp;aydet</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="105"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>Tallenna loki tiedostoon virheenetsintää varten.</translation>
+        <translation>Hata ayıklama için günlük dosyasını kaydedin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="194"/>
         <source>Error</source>
-        <translation>Virhe</translation>
+        <translation>Hata</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="184"/>
         <source>Save log file</source>
-        <translation>Tallenna lokitiedosto</translation>
+        <translation>Dosya birlemis bellemek. </translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="194"/>
         <source>Could not write to log file </source>
-        <translation>Lokitiedostoon kirjoitus epäonnistui</translation>
+        <translation>log dosyasına yazılamadı</translation>
     </message>
 </context>
 <context>
@@ -778,12 +783,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logger.cpp" line="155"/>
         <source>Error</source>
-        <translation>Virhe</translation>
+        <translation>Hata</translation>
     </message>
     <message>
         <location filename="../src/mirall/logger.cpp" line="156"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Tiedostoa &apos;%1&apos;&lt;br/&gt;ei voida avata kirjoittamista varten.&lt;br/&gt;&lt;br/&gt;Lokitulostusta&lt;b&gt;ei&lt;/b&gt;pystytä tallentamaan!&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt; Dosya %1 &lt;br/&gt; acmak mumkun degil yazmak icin. &lt;br/&gt;&lt;br/&gt;. Dosya acik bellemek mumkun degil &lt;/nobr&gt;. </translation>
     </message>
 </context>
 <context>
@@ -791,27 +796,27 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="252"/>
         <source>New Version Available</source>
-        <translation>Uusi versio saatavilla</translation>
+        <translation>Yeni Sürüm Mevcut</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="258"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Uusi versio %1-asiakassovelluksesta on saatavilla.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; on valmiina ladattavaksi. Tällä hetkellä asennettu versio on %3.&lt;p&gt;</translation>
+        <translation>&lt;p&gt;%1 İstemcisi yeni sürümü mevcut.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; artık indirilebilir. Kurulu sürüm %3.&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
         <source>Skip this version</source>
-        <translation>Ohita tämä versio</translation>
+        <translation>Bu sürümü atla</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="272"/>
         <source>Skip this time</source>
-        <translation>Ohita tämän kerran</translation>
+        <translation>Bu kez atla</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="273"/>
         <source>Get update</source>
-        <translation>Päivitä</translation>
+        <translation>Güncellemeyi al</translation>
     </message>
 </context>
 <context>
@@ -819,32 +824,32 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="14"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation>Välityspalvelimen asetukset</translation>
+        <translation>Vekil Sunucu Ayarları</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>Ei välityspalvelinta</translation>
+        <translation>Vekil Sunucu Yok</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>Käytä järjestelmän välityspalvelinta</translation>
+        <translation>Sistem vekil sunucusunu kullan</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucusunu el ile şu şekilde belirle:</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation>Isäntä</translation>
+        <translation>Sunucu</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="100"/>
@@ -854,65 +859,65 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="134"/>
         <source>Proxy server requires authentication</source>
-        <translation>Välityspalvelin vaatii tunnistautumisen</translation>
+        <translation>Vekil sunucusu kimlik doğrulama gerektiriyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Latauskaista</translation>
+        <translation>İndirme Bant Genişliği</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="196"/>
         <location filename="../src/mirall/networksettings.ui" line="278"/>
         <source>Limit to</source>
-        <translation>Rajoita</translation>
+        <translation>Şuna sınırla</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="218"/>
         <location filename="../src/mirall/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation>kilotavua/s</translation>
+        <translation>KBayt/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="227"/>
         <location filename="../src/mirall/networksettings.ui" line="295"/>
         <source>No limit</source>
-        <translation>Ei rajoitusta</translation>
+        <translation>Sınır yok</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
-        <translation>Lähetyskaista</translation>
+        <translation>Gönderme Bant Genişliği</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation>Rajoita automaattisesti</translation>
+        <translation>Otomatik sınırla</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation>Välityspalvelinkoneen nimi</translation>
+        <translation>Vekil sunucu makine adı</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
-        <translation>Välityspalvelimen käyttäjätunnus</translation>
+        <translation>Vekil sunucu kullanıcı adı</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
-        <translation>Välityspalvelimen salasana</translation>
+        <translation>Vekil sunucu için parola</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
-        <translation>HTTP(S)-välityspalvelin</translation>
+        <translation>HTTP(S) vekil sunucusu</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
-        <translation>SOCKS5-välityspalvelin</translation>
+        <translation>SOCKS5 vekil sunucusu</translation>
     </message>
 </context>
 <context>
@@ -920,49 +925,48 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
-        <translation>Uusi päivitys valmiina</translation>
+        <translation>Yeni Güncelleme Hazır</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Uusi päivitys on valmiina asennettavaksi. Päivitysohjelma
-saattaa kysyä lisäoikeuksia toimenpiteen aikana.</translation>
+        <translation>Yeni bir güncelleme kurulmak üzere. Güncelleyici bu süreç sırasında ek yetki talebinde bulunabilir.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>Ladataan versiota %1. Odota hetki...</translation>
+        <translation>%1 sürümü indirilyor. Lütfen bekleyin...</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation>Versio %1 on saatavilla. Käynnistä sovellus uudelleen aloittaaksesi päivityksen.</translation>
+        <translation>%1 sürümü mevcut. Güncellemeyi başlatmak için uygulamayı yeniden başlatın.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Päivityksen lataaminen epäonnistui. Napsauta &lt;a href=&apos;%1&apos;&gt;tästä&lt;/a&gt; ladataksesi päivityksen manuaalisesti.</translation>
+        <translation>Güncelleme indirilemedi. Lütfen güncellemeyi elle indirmek için &lt;a href=&apos;%1&apos;&gt;buraya&lt;/a&gt; tıklayın.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation>Päivitysten tarkistus epäonnistui.</translation>
+        <translation>Yeni güncellemeler denetlenemedi.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation>Uusi versio %1 on saatavilla. Käytä järjestelmän päivitystyökalua asentaaksesi sen.</translation>
+        <translation>Yeni %1 sürüm mevcut. Lütfen kurulum için sistem güncelleştirme aracını kullanın.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
-        <translation>Tarkistetaan päivityspalvelinta...</translation>
+        <translation>Güncelleme sunucusu denetleniyor..</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>Päivityksiä ei ole saatavilla. Käytössäsi on uusin versio.</translation>
+        <translation>Güncelleme yok. Kurulumunuz son sürümde.</translation>
     </message>
 </context>
 <context>
@@ -970,47 +974,47 @@ saattaa kysyä lisäoikeuksia toimenpiteen aikana.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="48"/>
         <source>Connect to %1</source>
-        <translation>Muodosta yhteys - %1</translation>
+        <translation>%1 bağlantısını yap</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasör seçeneklerini ayarla</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
         <source>Connect...</source>
-        <translation>Yhdistä...</translation>
+        <translation>Bağlan...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="108"/>
         <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation>Koko tilisi synkronoidaan paikalliseen kansioon &apos;%1&apos;.</translation>
+        <translation>Tüm hesabınız yerel &apos;%1&apos; klasörü ile eşitlenecek.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="111"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1-kansio &apos;%2&apos; on synkronoitu paikalliseen kansioon &apos;%3&apos;</translation>
+        <translation>%1 klasörü &apos;%2&apos;, yerel &apos;%3&apos; klasörü ile eşitlendi</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="117"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uyarı:&lt;/strong&gt; Şu anda birden fazla yapılandırılmış klasörünüz var. Eğer geçerli ayarlarla devam ederseniz, klasör yapılandırmaları silinecek ve tek bir kök klasör eşitlemesi oluşturulacak!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="124"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Varoitus:&lt;/strong&gt; Paikallinen kansio ei ole tyhjä. Valitse ratkaisu!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uyarı:&lt;/strong&gt; Yerel dizin boş değil. Bir çözüm seçin!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="235"/>
         <source>Local Sync Folder</source>
-        <translation>Paikallinen synkronointikansio</translation>
+        <translation>Yerel Eşitleme Klasörü</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="248"/>
         <source>Update advanced setup</source>
-        <translation type="unfinished"/>
+        <translation>Gelişmiş kurulumu güncelle</translation>
     </message>
 </context>
 <context>
@@ -1018,17 +1022,17 @@ saattaa kysyä lisäoikeuksia toimenpiteen aikana.</translation>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="42"/>
         <source>Connect to %1</source>
-        <translation>Muodosta yhteys - %1</translation>
+        <translation>%1 bağlantısını yap</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="43"/>
         <source>Enter user credentials</source>
-        <translation>Anna käyttäjätunnus</translation>
+        <translation>Kullanıcı kimlik bilgilerini gir</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="159"/>
         <source>Update user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı kimlik bilgilerini güncelle</translation>
     </message>
 </context>
 <context>
@@ -1036,38 +1040,39 @@ saattaa kysyä lisäoikeuksia toimenpiteen aikana.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
         <source>Connect to %1</source>
-        <translation>Muodosta yhteys - %1</translation>
+        <translation>%1 bağlantısını yap</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>%1 sunucusunu ayarla</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Bu adres şifrelenmediğinden güvenli değil.
+Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
         <source>This url is secure. You can use it.</source>
-        <translation>Tämä osoite on turvallinen. Voit käyttää sitä.</translation>
+        <translation>Bu adres güvenli. Kullanabilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Güvenli olarak bağlanılamadı. Bunun yerine şifrelenmemiş bağlantı yapmak ister misiniz (önerilmez)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
         <source>Connection failed</source>
-        <translation>Yhteys epäonnistui</translation>
+        <translation>Bağlantı başarısız</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
         <source>Update %1 server</source>
-        <translation>Päivitä %1-palvelin</translation>
+        <translation>%1 sunucusunu güncelle</translation>
     </message>
 </context>
 <context>
@@ -1075,126 +1080,126 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="356"/>
         <source>Folder rename failed</source>
-        <translation>Kansion nimen muuttaminen epäonnistui</translation>
+        <translation>Klasör adlandırma başarısız</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program.Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Klasör veya içerisindeki bir dosya farklı bir program içerisinde açık olduğundan kaldırma ve yedekleme işlemi yapılamıyor. Lütfen klasör veya dosyayı kapatıp yeniden deneyin veya kurulumu iptal edin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Paikallinen synkronointikansio %1 luotu onnistuneesti!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;fontu renk&gt; yasik &gt;&gt;dosya yerli zaman. %1 basarle yarati!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="191"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation type="unfinished"/>
+        <translation>%2 üzerinde %1 bağlantısı deneniyor..</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="149"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Muodostettu yhteys onnistuneesti kohteeseen %1: %2 versio %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;%1 bağlantısı başarılı: %2 sürüm %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="214"/>
         <source>Error: Wrong credentials.</source>
-        <translation>Virhe: väärät tilitiedot.</translation>
+        <translation>Hata: Hatalı kimlik bilgileri.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="228"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Paikallinen kansio %1 on jo olemassa, asetetaan se synkronoitavaksi.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Yerel eşitleme klasörü %1 zaten mevcut, eşitlemek için ayarlanıyor.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="230"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Luodaan paikallista synkronointikansiota %1... </translation>
+        <translation>Arkiv simdiki yaratmak %1..</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="234"/>
         <source>ok</source>
-        <translation>ok</translation>
+        <translation>tamam</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="236"/>
         <source>failed.</source>
-        <translation>epäonnistui.</translation>
+        <translation>basarmadi </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="238"/>
         <source>Could not create local folder %1</source>
-        <translation>Paikalliskansion %1 luonti epäonnistui</translation>
+        <translation>%1 yerel klasörü oluşturulamadı</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="180"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>%1 bağlantısı %2 üzerinde yapılamadı:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
         <source>No remote folder specified!</source>
-        <translation>Etäkansiota ei määritelty!</translation>
+        <translation>Uzak klasör belirtilmemiş!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="269"/>
         <source>Error: %1</source>
-        <translation>Virhe: %1</translation>
+        <translation>Hata: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
         <source>creating folder on ownCloud: %1</source>
-        <translation>luodaan kansio ownCloudiin: %1</translation>
+        <translation>ownCloud üzerinde klasör oluşturuluyor: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="298"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Etäkansio %1 luotiin onnistuneesti.</translation>
+        <translation>Dosya ucali %!  basarla yapildi. </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="300"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Etäkansio %1 on jo olemassa. Otetaan siihen yhteyttä tiedostojen täsmäystä varten.</translation>
+        <translation>Dosya ucali % bile var mi. Bu baglamak synk. icin. </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="302"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="304"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Kansion luonti aiheutti HTTP-virhekoodin %1</translation>
+        <translation>Klasör oluşturma %1 HTTP hata kodu ile sonuçlandı</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="306"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Uzak klasör oluşturması, geçersiz kimlik bilgileri nedeniyle başarısız!&lt;br/&gt;Lütfen geri gidin ve bilgileri denetleyin.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Pilvipalvelun etäkansion luominen ei onnistunut , koska tunnistautumistietosi ovat todennäköisesti väärin.&lt;/font&gt;&lt;br/&gt;Palaa takaisin ja tarkista käyttäjätunnus ja salasana.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font renk=&apos;kirmizi&apos;&apos;&gt;. Yaratma dosyanin ucaklin belki basarmadi cinku deneyler saglamis hatali. &lt;/font&gt;&lt;b/&gt;. Lutfen geri git, ve deneye kontrol yapin. </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Etäkansion %1 luonti epäonnistui, virhe &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>Dosya ucakli hatale basarmadi &lt;tt%@&lt;/tt&gt;. </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="331"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Täsmäysyhteys kansiosta %1 etäkansioon %2 on asetettu.</translation>
+        <translation>%1 kaynaklı %2 uzak dizinine bir eşitleme bağlantısı ayarlandı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="336"/>
         <source>Successfully connected to %1!</source>
-        <translation>Yhteys kohteeseen %1 muodostettiin onnistuneesti!</translation>
+        <translation>%1 bağlantısı başarılı!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="343"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 bağlantısı kurulamadı. Lütfen tekrar denetleyin.</translation>
     </message>
 </context>
 <context>
@@ -1202,7 +1207,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizard.cpp" line="71"/>
         <source>%1 Connection Wizard</source>
-        <translation>%1-yhteysavustaja</translation>
+        <translation>%1 Bağlantı Sihirbazı</translation>
     </message>
 </context>
 <context>
@@ -1210,27 +1215,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1</source>
-        <translation>Avaa %1</translation>
+        <translation>%1 Aç</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="42"/>
         <source>Open Local Folder</source>
-        <translation>Avaa paikallinen kansio</translation>
+        <translation>Yerel Klasörü Aç</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="38"/>
         <source>Everything set up!</source>
-        <translation>Kaikki valmiina!</translation>
+        <translation>Her şey ayarlandı!</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
         <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Koko tilisi on synkronoitu paikalliseen kansioon &lt;i&gt;%1&lt;/i&gt;</translation>
+        <translation>Tüm hesabınız yerel &lt;i&gt;%1&lt;/i&gt; klasörüne eşitlendi</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
         <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 klasörü &lt;i&gt;%1&lt;/i&gt;, yerel &lt;i&gt;%2&lt;/i&gt; klasörü ile eşitlendi</translation>
     </message>
 </context>
 <context>
@@ -1238,17 +1243,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="340"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme kullanıcı tarafından iptal edildi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="395"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan E-Etiket alınamadı, Vekil sunucu/Ağ geçidini denetleyin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="405"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Devam etmek üzere farklı bir E-Etiket altık. Sonraki işlemde yeniden denenecek.</translation>
     </message>
 </context>
 <context>
@@ -1256,7 +1261,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="140"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Bir dosya veya dizin bir salt okunur paylaşımdan kaldırılmıştı, ancak geri yükleme başarısız oldu: %1</translation>
     </message>
 </context>
 <context>
@@ -1264,7 +1269,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="109"/>
         <source>could not create directory %1</source>
-        <translation>kansion %1 luominen epäonnistui</translation>
+        <translation>%1 dizini oluşturulamadı</translation>
     </message>
 </context>
 <context>
@@ -1272,7 +1277,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="86"/>
         <source>Could not remove directory %1</source>
-        <translation>Kansion %1 poistaminen epäonnistui</translation>
+        <translation>%1 dizini kaldırılamadı</translation>
     </message>
 </context>
 <context>
@@ -1280,7 +1285,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="129"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya salt okunur bir paylaşımdan kaldırılmıştı. Geri yüklendi.</translation>
     </message>
 </context>
 <context>
@@ -1288,17 +1293,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="221"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation>Tätä kansiota ei ole tule nimetä uudelleen. Muutetaan takaisin alkuperäinen nimi.</translation>
+        <translation>Bu klasörün adı değiştirilmemelidir. Özgün adına geri dönüştürüldü.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="223"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Bu klasörün adı değiştirilmemelidir. Lütfen Paylaşılan olarak geri adlandırın.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="238"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adlandırıldı ancak salt okunur paylaşımın bir parçası. Özgün dosya geri yüklendi.</translation>
     </message>
 </context>
 <context>
@@ -1307,17 +1312,17 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/propagator_legacy.cpp" line="153"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="212"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme sırasında yerel dosya değişti, tamamen ulaştıktan sonra bir kez eşitlenecek</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="156"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme kullanıcı tarafından iptal edildi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="162"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya yerel olarak düzenlendi ancak salt okunur paylaşımın bir parçası. Geri yüklendi ve düzenlemeniz çakışan dosyada.</translation>
     </message>
 </context>
 <context>
@@ -1325,22 +1330,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="201"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya yerel olarak düzenlendi ancak salt okunur paylaşımın bir parçası. Geri yüklendi ve düzenlemeniz çakışan dosyada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="226"/>
         <source>Local file changed during sync.</source>
-        <translation>Paikallinen tiedosto muuttui synkronoinnin aikana.</translation>
+        <translation>Eşitleme sırasında yerel dosya değişti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="236"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu son yığını onaylamadı. (Mevcut e-etiket bulunamadı)</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="267"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>X-OC-MTime uzantısı yok, ownCloud 5 gerekli</translation>
     </message>
 </context>
 <context>
@@ -1348,12 +1353,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation>Synkronointiaktiviteetti</translation>
+        <translation>Eşitleme Etkinliği</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
@@ -1368,63 +1373,64 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="47"/>
         <source>Time</source>
-        <translation>Aika</translation>
+        <translation>Zaman</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="48"/>
         <source>File</source>
-        <translation>Tiedosto</translation>
+        <translation>Dosya</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
         <source>Folder</source>
-        <translation>Kansio</translation>
+        <translation>Klasör</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
         <source>Action</source>
-        <translation>Toiminto</translation>
+        <translation>Eylem</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
         <source>Size</source>
-        <translation>Koko</translation>
+        <translation>Boyut</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="65"/>
         <source>Retry Sync</source>
-        <translation>Yritä uudelleen synkronointia</translation>
+        <translation>Eşitlemeyi Yeniden Dene</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="69"/>
         <source>Copy</source>
-        <translation>Kopioi</translation>
+        <translation>Kopyala</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="70"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Etkinlik listesini panoya kopyala.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="114"/>
         <source>Copied to clipboard</source>
-        <translation>Kopioitu leikepöydälle</translation>
+        <translation>Panoya kopyalandı</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="114"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation>Synkronointitila on kopioitu leikepöydälle.</translation>
+        <translation>Eşitleme durumu panoya kopyalandı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="229"/>
         <source>Currently no files are ignored because of previous errors.</source>
-        <translation type="unfinished"/>
+        <translation>Önceki hata koşullarından dolayı yoksayılmış dosya yok.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="231"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Önceki hata koşullarından dolayı %1 dosya yoksayıldı.
+Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     </message>
 </context>
 <context>
@@ -1432,7 +1438,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation>Asetukset</translation>
+        <translation>Ayarlar</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="51"/>
@@ -1442,22 +1448,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Activity</source>
-        <translation>Toimet</translation>
+        <translation>Etkinlik</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
         <source>General</source>
-        <translation>Yleiset</translation>
+        <translation>Genel</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="71"/>
         <source>Network</source>
-        <translation>Verkko</translation>
+        <translation>Ağ</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="54"/>
         <source>Account</source>
-        <translation>Tili</translation>
+        <translation>Hesap</translation>
     </message>
 </context>
 <context>
@@ -1470,22 +1476,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="34"/>
         <source>Account</source>
-        <translation>Tili</translation>
+        <translation>Hesap</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="38"/>
         <source>Activity</source>
-        <translation>Toimet</translation>
+        <translation>Etkinlik</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="42"/>
         <source>General</source>
-        <translation>Yleiset</translation>
+        <translation>Genel</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="46"/>
         <source>Network</source>
-        <translation>Verkko</translation>
+        <translation>Ağ</translation>
     </message>
 </context>
 <context>
@@ -1493,12 +1499,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>Login Error</source>
-        <translation>Kirjautumisvirhe</translation>
+        <translation>Oturum Açma Hatası</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>You must sign in as user %1</source>
-        <translation>Kirjaudu käyttäjänä %1</translation>
+        <translation>%1 kullanıcısı olarak oturum açmalısınız</translation>
     </message>
 </context>
 <context>
@@ -1506,7 +1512,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="58"/>
         <source>%1 - Authenticate</source>
-        <translation>%1 - Tunnistaudu</translation>
+        <translation>%1 - Kimlik Doğrulaması</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
@@ -1519,67 +1525,67 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="95"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Varmenteen tiedot&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Sertifika Ayrıntıları&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Ortam Ad (CN):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="99"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Konu Alternatif İsimleri:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organization (O):</source>
-        <translation>Organisaatio (O):</translation>
+        <translation>Kurum (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>Organizational Unit (OU):</source>
-        <translation>Organisaatioyksikkö (OU):</translation>
+        <translation>Kuruluş Birimi (OU):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Bölge/İlçe:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>Country:</source>
-        <translation>Maa:</translation>
+        <translation>Ülke:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="105"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Seri No:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="108"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Myöntäjä&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Yayıncı&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issuer:</source>
-        <translation>Myöntäjä:</translation>
+        <translation>Yayıncı:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Issued on:</source>
-        <translation>Myönnetty:</translation>
+        <translation>Yayınlanma:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
         <source>Expires on:</source>
-        <translation>Vanhenee:</translation>
+        <translation>Bitiş:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="116"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Sormenjäljet&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Parmak İzleri&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="119"/>
@@ -1594,12 +1600,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="124"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;Huomio:&lt;/b&gt; Tämä varmenne hyväksyttiin käsin&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu sertifika el ile onaylandı&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="144"/>
         <source>%1 (self-signed)</source>
-        <translation>%1 (allekirjoitettu itse)</translation>
+        <translation>%1 (kendinden imzalı)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="146"/>
@@ -1610,18 +1616,19 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/sslbutton.cpp" line="177"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Bu bağlantı %1 bit %2 kullanılarak şifrelenmiştir.
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="180"/>
         <source>Certificate information:</source>
-        <translation>Varmenteen tiedot:</translation>
+        <translation>Sertifika bilgisi:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="209"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation>Yhteys EI OLE turvallinen, koska sitä ei ole salattu.
+        <translation>Bu bağlantı şifrelenmediğinden güvenli DEĞİL.
 </translation>
     </message>
 </context>
@@ -1630,78 +1637,78 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation>Luota tähän varmisteeseen silti</translation>
+        <translation>Yine de bu sertifikaya güven</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="65"/>
         <source>SSL Connection</source>
-        <translation>SSL-yhteys</translation>
+        <translation>SSL Bağlantısı</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation>Varoitukset nykyisestä SSL-yhteydestä:</translation>
+        <translation>Geçerli SSL Bağlantısı hakkında uyarılar:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="170"/>
         <source>with Certificate %1</source>
-        <translation>varmenteella %1</translation>
+        <translation>Deneyle %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="178"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="179"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="180"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation>&amp;lt;ei määritelty&amp;gt;</translation>
+        <translation>&amp;lt;belirtilmemiş&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="181"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="201"/>
         <source>Organization: %1</source>
-        <translation>Organisaatio: %1</translation>
+        <translation>Kurum: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="182"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="202"/>
         <source>Unit: %1</source>
-        <translation>Yksikkö: %1</translation>
+        <translation>Birim: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="183"/>
         <location filename="../src/mirall/sslerrordialog.cpp" line="203"/>
         <source>Country: %1</source>
-        <translation>Maa: %1</translation>
+        <translation>Ülke: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="190"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Sormenjälki (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Parmak izi (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="191"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Sormenjälki (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Parmak izi (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="193"/>
         <source>Effective Date: %1</source>
-        <translation>Voimassa oleva päivämäärä: %1</translation>
+        <translation>Tarih Etkili :% 1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="194"/>
         <source>Expiry Date: %1</source>
-        <translation>Vanhenemispäivä: %1</translation>
+        <translation>Vazgecme Tarih :%1 </translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="198"/>
         <source>Issuer: %1</source>
-        <translation>Myöntäjä: %1</translation>
+        <translation>Cikaran :% 1</translation>
     </message>
 </context>
 <context>
@@ -1709,183 +1716,183 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="87"/>
         <source>Success.</source>
-        <translation>Onnistui.</translation>
+        <translation>Başarılı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
-        <translation>Csync ei onnistunut luomaan lukitustiedostoa.</translation>
+        <translation>CSynk arkiv kapi yampadi. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="93"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync, günlük dosyası yükleyemedi veya oluşturamadı. Lütfen yerel eşitleme dizininde okuma ve yazma izinleriniz olduğundan emin olun.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="97"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync günlük dosyasına yazamadı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="100"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;%1-liitännäistä csyncia varten ei voitu ladata.&lt;br/&gt;Varmista asennuksen toimivuus!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Csync için %1 eklentisi yüklenemedi.&lt;br/&gt;Lütfen kurulumu doğrulayın!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="103"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>Tämän koneen järjestelmäaika on erilainen verrattuna palvelimen aikaan. Käytä NTP-palvelua kummallakin koneella, jotta kellot pysyvät samassa ajassa. Muuten tiedostojen synkronointi ei toimi.</translation>
+        <translation>Bu istemci üzerinde sistem saati sunucudaki sistem saati ile farklıdır. Sunucu ve istemci makinelerde bir zaman eşitleme hizmeti (NTP) kullanırsanız zaman aynı kalır.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="108"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation>Csync-synkronointipalvelu ei kyennyt tunnistamaan tiedostojärjestelmän tyyppiä.</translation>
+        <translation>CSynk sistem arama arkivden olmadi. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="111"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation>Csync-synkronointipalvelussa tapahtui virhe sisäisten puurakenteiden prosessoinnissa.</translation>
+        <translation>Hata CSynkden icerli kategoriji islemeyi</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="114"/>
         <source>CSync failed to reserve memory.</source>
-        <translation>CSync ei onnistunut varaamaan muistia.</translation>
+        <translation>CSync bellek ayıramadı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="117"/>
         <source>CSync fatal parameter error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ölümcül parametre hatası</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="120"/>
         <source>CSync processing step update failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync güncelleme süreç adımı başarısız.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="123"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync uzlaştırma süreç adımı başarısız.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="126"/>
         <source>CSync processing step propagate failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync yayma süreç adımı başarısız.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="129"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Kohdekansiota ei ole olemassa.&lt;/p&gt;&lt;p&gt;Tarkasta synkronointiasetuksesi.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Hedef dizin mevcut değil.&lt;/p&gt;&lt;p&gt;Lütfen eşitleme ayarını denetleyin.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="133"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Etätiedostoa ei pystytä kirjoittamaan. Tarkista, että etäpääsy toimii.</translation>
+        <translation>Arkiv uzcakli yazilis olmali. Lutfen gecini uzakli test edin. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="137"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation>Paikalliseen tiedostojärjestelmään kirjoittaminen epäonnistui. Tarkista kansion oikeudet.</translation>
+        <translation>Yerel dosya sistemine yazılamıyor. Lütfen izinleri kontrol edin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="140"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation>CSync ei onnistunut muodostamaan yhteyttä välityspalvelimen välityksellä.</translation>
+        <translation>CSynz bir vekil sunucu aracılığıyla bağlanırken hata oluştu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="143"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync vekil sunucuda kimlik doğrulayamadı</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="146"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync bir vekil veya sunucu ararken başarısız oldu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="149"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync %1 sunucusunda kimlik doğrularken başarısız oldu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="152"/>
         <source>CSync failed to connect to the network.</source>
-        <translation>CSync ei onnistunut yhdistämään verkkoon.</translation>
+        <translation>CSync ağa bağlanamadı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="155"/>
         <source>A network connection timeout happend.</source>
-        <translation>Verkon aikakatkaisuvirhe.</translation>
+        <translation>Bir ağ zaman aşımı meydana geldi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="158"/>
         <source>A HTTP transmission error happened.</source>
-        <translation>Tapahtui HTTP-välitysvirhe.</translation>
+        <translation>Bir HTTP aktarım hatası oluştu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="161"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ele alınmayan izin reddinden dolayı başarısız.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="164"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>CSync erişemedi</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="167"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation>CSync yritti luoda olemassa olevan kansion.</translation>
+        <translation>CSync, zaten mevcut olan bir dizin oluşturmaya çalıştı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="170"/>
         <location filename="../src/mirall/syncengine.cpp" line="173"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation>CSync: %1-palvelimella ei ole tilaa vapaana.</translation>
+        <translation>CSync: %1 sunucusunda kullanılabilir alan yok.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="176"/>
         <source>CSync unspecified error.</source>
-        <translation>CSync - määrittämätön virhe.</translation>
+        <translation>CSync belirtilmemiş hata.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="179"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı tarafından iptal edildi</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happend.</source>
-        <translation>Tapahtui sisäinen virhe %1.</translation>
+        <translation>Hata iceri numarali %</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation>Kohdetta ei synkronoitu aiempien virheiden vuoksi: %1</translation>
+        <translation>Bu öge önceki hatalar koşullarından dolayı eşitlenemiyor: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="275"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>Symboliset linkit eivät ole tuettuja synkronoinnissa.</translation>
+        <translation>Sembolik bağlantılar eşitlemede desteklenmiyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="278"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya yoksayma listesinde.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="281"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya, çapraz platform arasında eşitlenemeyecek karakterler içeriyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="448"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Bir eşitleme günlüğü başlatılamadı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="541"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme günlüğü açılamıyor</translation>
     </message>
 </context>
 <context>
@@ -1901,7 +1908,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="205"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Sürüm %1 Daha fazla bilgi için lütfen &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;p&gt;&lt;p&gt;Dağıtım %4 ve GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır.&lt;br&gt;%5 ve %5 logoları &lt;br&gt;ABD ve/veya diğer ülkelerde %4 tescili markalarıdır.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1909,12 +1916,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="184"/>
         <source>Enter Password</source>
-        <translation>Anna salasana</translation>
+        <translation>Parolayı Girin</translation>
     </message>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="185"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation>Anna käyttäjän &apos;%2&apos; %1-salasana:</translation>
+        <translation>Lütfen &apos;%2&apos; kullanıcısı için %1 parolasını girin:</translation>
     </message>
 </context>
 <context>
@@ -1922,107 +1929,107 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
         <source>Please sign in</source>
-        <translation>Kirjaudu sisään</translation>
+        <translation>Lütfen oturum açın</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="203"/>
         <source>Folder %1: %2</source>
-        <translation>Kansio %1: %2</translation>
+        <translation>Klasör %1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="209"/>
         <source>No sync folders configured.</source>
-        <translation>Synkronointikansioita ei ole määritetty.</translation>
+        <translation>Eşitleme dizini yapılandırılmamış.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="234"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>Hiçbiri.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="238"/>
         <source>Recent Changes</source>
-        <translation>Viimeisimmät muutokset</translation>
+        <translation>Son Değişiklikler</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="255"/>
         <source>Open %1 folder</source>
-        <translation>Avaa %1-kansio</translation>
+        <translation>%1 dizinini aç</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="265"/>
         <source>Managed Folders:</source>
-        <translation>Hallitut kansiot:</translation>
+        <translation>Yönetilen dizinler:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="268"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation>Avaa kansio &apos;%1&apos;</translation>
+        <translation>&apos;%1&apos; klasörünü aç</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="341"/>
         <source>Open %1 in browser</source>
-        <translation>Avaa %1 selaimeen</translation>
+        <translation>%1&apos;ı tarayıcıda aç</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="343"/>
         <source>Calculating quota...</source>
-        <translation>Lasketaan kiintiötä...</translation>
+        <translation>Kota hesaplanıyor...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="345"/>
         <source>Unknown status</source>
-        <translation>Tuntematon tila</translation>
+        <translation>Bilinmeyen durum</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="347"/>
         <source>Settings...</source>
-        <translation>Asetukset...</translation>
+        <translation>Ayarlar...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="348"/>
         <source>Details...</source>
-        <translation>Tiedot...</translation>
+        <translation>Ayrıntılar...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="353"/>
         <source>Help</source>
-        <translation>Ohje</translation>
+        <translation>Yardım</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="355"/>
         <source>Quit %1</source>
-        <translation>Lopeta %1</translation>
+        <translation>%1&apos;tan Çık</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="358"/>
         <source>Sign in...</source>
-        <translation>Kirjaudu sisään...</translation>
+        <translation>Oturum aç...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="360"/>
         <source>Sign out</source>
-        <translation>Kirjaudu ulos</translation>
+        <translation>Oturumu kapat</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="368"/>
         <source>Quota n/a</source>
-        <translation type="unfinished"/>
+        <translation>Kota kullanılamıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="375"/>
         <source>%1% of %2 in use</source>
-        <translation>%1%/%2 käytössä</translation>
+        <translation>% %1 kullanılıyor. Toplam: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="387"/>
         <source>No items synced recently</source>
-        <translation>Kohteita ei ole synkronoitu äskettäin</translation>
+        <translation>Son zamanda eşitlenen öge yok</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="403"/>
         <source>Syncing %1 of %2 (%3 of %4)</source>
-        <translation>Synkronoidaan %1/%2 (%3/%4)</translation>
+        <translation>Eşitlenen %1/%2 (%3/%4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="418"/>
@@ -2032,7 +2039,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="445"/>
         <source>Up to date</source>
-        <translation>Ajan tasalla</translation>
+        <translation>Güncel</translation>
     </message>
 </context>
 <context>
@@ -2040,54 +2047,54 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="20"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="32"/>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="217"/>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="240"/>
         <source>TextLabel</source>
-        <translation>TekstiLeima</translation>
+        <translation>MetinEtiketi</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="69"/>
         <source>&amp;Local Folder</source>
-        <translation>&amp;Paikallinen kansio</translation>
+        <translation>&amp;Yerel Klasör</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="85"/>
         <source>pbSelectLocalFolder</source>
-        <translation type="unfinished"/>
+        <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="107"/>
         <source>&amp;Keep local data</source>
-        <translation>&amp;Säilytä paikallinen data</translation>
+        <translation>&amp;Yerel veriyi sakla</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="139"/>
         <source>&lt;small&gt;Syncs your existing data to new location.&lt;/small&gt;</source>
-        <translation>&lt;small&gt;Synkronoi olemassa olevan datan uuteen sijaintiin.&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Mevcut verinizi yeni konuma eşitler.&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="158"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eğer bu kutu işaretlenmişse, yerel dizindeki tüm içerik sunucudan temiz bir eşitleme yapılabilmesi için silinecektir.&lt;/p&gt;&lt;p&gt;Eğer yerel içeriğin sunucu dizininden güncellenmesini istemiyorsanız, bunu işaretlemeyin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
         <source>&amp;Start a clean sync</source>
-        <translation>&amp;Käynnistä puhdas synkronointi</translation>
+        <translation>&amp;Temiz bir eşitleme başlat</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="193"/>
         <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;Yeni ayarları kullanarak eşitleme yapmadan önce yerel klasördeki içerikleri siler.&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>Status message</source>
-        <translation>Tilaviesti</translation>
+        <translation>Durum iletisi</translation>
     </message>
 </context>
 <context>
@@ -2095,28 +2102,28 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="14"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
-        <translation>&amp;Käyttäjätunnus</translation>
+        <translation>&amp;Kullanıcı adı</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
-        <translation>&amp;Salasana</translation>
+        <translation>&amp;Parola</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>Hata Etiketi</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="109"/>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="122"/>
         <source>TextLabel</source>
-        <translation>TekstiLeima</translation>
+        <translation>MetinEtiketi</translation>
     </message>
 </context>
 <context>
@@ -2125,12 +2132,12 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="20"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation>Palvelimen &amp;osoite:</translation>
+        <translation>Sunucu &amp;adres:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -2139,47 +2146,47 @@ It is not advisable to use it.</source>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="184"/>
         <source>TextLabel</source>
-        <translation>TekstiLeima</translation>
+        <translation>MetinEtiketi</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="47"/>
         <source>Use &amp;secure connection</source>
-        <translation>Käytä salattua &amp;yhteyttä</translation>
+        <translation>&amp;Güvenli bağlantı kulla</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="60"/>
         <source>CheckBox</source>
-        <translation>Ruksauslaatikko</translation>
+        <translation>İşaret Kutusu</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="75"/>
         <source>&amp;Username:</source>
-        <translation>&amp;Käyttäjätunnus:</translation>
+        <translation>&amp;Kullanıcı adı:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="85"/>
         <source>Enter the ownCloud username.</source>
-        <translation>Anna ownCloudin käyttäjätunnus.</translation>
+        <translation>ownCloud kullanıcı adınızı giriniz.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="92"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Salasana:</translation>
+        <translation>&amp;Parola:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="102"/>
         <source>Enter the ownCloud password.</source>
-        <translation>Anna ownCloudin salasana.</translation>
+        <translation>ownCloud parolanızı giriniz.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="117"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation>Älä tallenna salasanaa paikallisesti, vaan kysy joka kerta kun ohjelma käynnistyy.</translation>
+        <translation>Parolaların yerel depolanmasına izin verme</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation>&amp;Älä tallenna salasanaa paikalliselle koneelle</translation>
+        <translation>&amp;Parolayı yerel makinede kaydetme</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
@@ -2189,12 +2196,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Anna sen ownCloudin verkko-osoite, johon haluat yhdistää (ilman http- tai https-etuliitettä).</translation>
+        <translation>Bağlanmak istediğiniz ownCloud adresini girin (http veya https olmaksızın).</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="83"/>
         <source>Server &amp;Address</source>
-        <translation>Palvelimen &amp;osoite</translation>
+        <translation>Sunucu &amp;Adresi</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="99"/>
@@ -2204,7 +2211,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="157"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>Hata Etiketi</translation>
     </message>
 </context>
 <context>
@@ -2212,23 +2219,23 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Lomake</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="20"/>
         <source>TextLabel</source>
-        <translation>TekstiLeima</translation>
+        <translation>MetinEtiketi</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="69"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>Koko tilisi on synkronoitu paikalliseen kansioon</translation>
+        <translation>Tüm hesabınız yerel klasör ile eşitlendi</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="103"/>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="119"/>
         <source>PushButton</source>
-        <translation type="unfinished"/>
+        <translation>BasılırDüğme</translation>
     </message>
 </context>
 <context>
@@ -2236,27 +2243,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/utility.cpp" line="114"/>
         <source>%L1 TB</source>
-        <translation>%L1 Tt</translation>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="117"/>
         <source>%L1 GB</source>
-        <translation>%L1 Gt</translation>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="120"/>
         <source>%L1 MB</source>
-        <translation>%L1 Mt</translation>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 kB</source>
-        <translation>%L1 kt</translation>
+        <translation>%L1 kB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 B</source>
-        <translation>%L1 t</translation>
+        <translation>%L1 B</translation>
     </message>
 </context>
 <context>
@@ -2264,12 +2271,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/main.cpp" line="30"/>
         <source>System Tray not available</source>
-        <translation>Ilmoitusaluetta ei ole saatavilla</translation>
+        <translation>Sistem Çekmecesi kullanılamıyor</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="31"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 vaatii toimivan ilmoitusalueen. Jos käytät XFCE:tä, seuraa &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;näitä ohjeita&lt;/a&gt;. Muussa tapauksessa asenna jokin ilmoitusalueen tarjoava sovellus, kuten &quot;trayer&quot; ja yritä uudelleen.</translation>
+        <translation>%1 çalışan bir sistem çekmecesi gerektirir. Eğer XFCE kullanıyorsanız lütfen &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;bu talimatları&lt;/a&gt; takip edin. Aksi halde &apos;trayer&apos; benzeri bir sistem çekmece uygulaması kurun ve yeniden deneyin.</translation>
     </message>
 </context>
 <context>
@@ -2278,7 +2285,7 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/owncloudtheme.cpp" line="89"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
-        <translation>Jos käytössäsi ei ole vielä ownCloud-palvelinta, lue lisätietoja osoitteessa &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt;.</translation>
+        <translation>Eğer hala bir ownCloud sunucunuz yoksa, daha fazla bilgi için &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; adresine bakın.</translation>
     </message>
 </context>
 <context>
@@ -2286,12 +2293,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Git gözden geçirme &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; ile %3 üzerinde, %4 ve Qt %5 kullanılarak derlendi.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation>&lt;p&gt;Versio %2. Lisätietoja osoitteessa &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Tehnyt Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Pohjautuu Duncan Mac-Vicar P:n Miralliin&lt;/small&gt;&lt;/p&gt;%7</translation>
+        <translation>&lt;p&gt;Sürüm %2. Daha fazla bilgi için &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt; sitesini ziyaret edin.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Anonim.&lt;br&gt;Duncan Mac-Vicar P tarafından yazılan Mirall tabanlıdır.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
 </context>
 <context>
@@ -2299,52 +2306,52 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation>Ladattu</translation>
+        <translation>İndirildi</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation>Lähetetty</translation>
+        <translation>Yüklendi</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="36"/>
         <source>Deleted</source>
-        <translation>Poistettu</translation>
+        <translation>Silindi</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="38"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 konumuna taşındı</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="41"/>
         <source>Unknown</source>
-        <translation>Tuntematon</translation>
+        <translation>Bilinmeyen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
         <source>downloading</source>
-        <translation>ladataan</translation>
+        <translation>indiriliyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="54"/>
         <source>uploading</source>
-        <translation>lähetetään</translation>
+        <translation>yükleniyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>deleting</source>
-        <translation>poistetaan</translation>
+        <translation>siliniyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>moving</source>
-        <translation>siirretään</translation>
+        <translation>taşınıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
         <source>processing</source>
-        <translation>käsitellään</translation>
+        <translation>işleniyor</translation>
     </message>
 </context>
 <context>
@@ -2352,57 +2359,57 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="48"/>
         <source>Status undefined</source>
-        <translation>Tila on määrittelemätön.</translation>
+        <translation>Tanımsız durum</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="51"/>
         <source>Waiting to start sync</source>
-        <translation>Odotetaan synkronoinnin käynnistymistä</translation>
+        <translation>Eşitlemenin başlanması bekleniyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Sync is running</source>
-        <translation>Synkronointi meneillään</translation>
+        <translation>Eşitleme çalışıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
         <source>Sync Success</source>
-        <translation>Synkronointi valmistui</translation>
+        <translation>Eşitleme başarılı</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>Synkronointi onnistui, jotkin tiedostot ohitettiin.</translation>
+        <translation>Eşitleme Başarılı, bazı dosyalar yoksayıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error</source>
-        <translation>Synkronointivirhe</translation>
+        <translation>Eşitleme Hatası</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
         <source>Setup Error</source>
-        <translation>Asetusvirhe.</translation>
+        <translation>Kurulum Hatası</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>The server is currently unavailable</source>
-        <translation>Palvelin ei ole juuri nyt tavoitettavissa</translation>
+        <translation>Sunucu şu anda kullanılamıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
         <source>Preparing to sync</source>
-        <translation>Valmistaudutaan synkronointiin</translation>
+        <translation>Eşitleme için hazırlanıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>İptal ediliyor...</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation>Synkronointi on keskeytetty</translation>
+        <translation>Eşitleme duraklatıldı</translation>
     </message>
 </context>
 </TS>

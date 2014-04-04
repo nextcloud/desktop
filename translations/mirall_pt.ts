@@ -1883,12 +1883,12 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
         <translation>O ficheiro contém caracteres inválidos que não podem ser sincronizados pelas várias plataformas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="442"/>
+        <location filename="../src/mirall/syncengine.cpp" line="448"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Impossível inicializar sincronização &apos;journal&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="535"/>
+        <location filename="../src/mirall/syncengine.cpp" line="541"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>

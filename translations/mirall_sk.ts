@@ -1882,12 +1882,12 @@ Nie je vhodné ju používať.</translation>
         <translation>Súbor obsahuje neplatné znaky, ktoré nemôžu byť synchronizované medzi platformami.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="442"/>
+        <location filename="../src/mirall/syncengine.cpp" line="448"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nemôžem inicializovať synchronizačný žurnál.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="535"/>
+        <location filename="../src/mirall/syncengine.cpp" line="541"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>
