@@ -1,5 +1,23 @@
 ChangeLog
 =========
+version 1.6.0 (release 2014-04- )
+ * Job-based change propagation, enables faster parallel up/downloads 
+   (right now only if no bandwidth limit is set and no proxy is used)
+ * Significantly reduced CPU load when checking for local and remote changes
+ * Speed up file stat code on Windows
+ * Enforce Qt5 for Windows and Mac OS X builds
+ * Improved owncloudcmd: SSL support, documentation
+ * Added advanced logging of operations (file .???.log in sync
+   directory)
+ * Avoid creating a temporary copy of the sync database (.ctmp)
+ * Enable support for TLS 1.2 negotiation on platforms that use
+   Qt 5.2 or later
+ * Forward server exception messages to client error messages
+ * Mac OS X: Support Notification Center in OS X 10.8+
+ * Mac OS X: Use native settings dialog 
+ * Mac OS X: Fix UI inconsistencies on Mavericks
+ * Shibboleth: Warn if authenticating with a different user
+ * Remove vio abstraction in csync
 
 version 1.5.3 (release 2014-03-10 )
   * Fix usage of proxies after first sync run (#1502, #1524, #1459, #1521)
