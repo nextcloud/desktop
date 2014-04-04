@@ -122,6 +122,10 @@ bool PropagateItemJob::checkForProblemsWithShared(const QString& msg)
             } else if (downloadItem._instruction == CSYNC_INSTRUCTION_SYNC) {
                 // we modified the file locally, jsut create a conflict then
                 downloadItem._instruction = CSYNC_INSTRUCTION_CONFLICT;
+
+                // HACK to avoid continuation: See task #1448:  We do not know the _modtime from the
+                //  server, at this point, so just set the current one. (rather than the one locally)
+                downloadItem._modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
             } else {
                 // the file was removed or renamed, just recover the old one
                 downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
