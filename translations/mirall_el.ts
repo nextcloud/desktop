@@ -596,12 +596,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="324"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Δεν ελήφθη E-Tag από τον διακομιστή, ελέγξτε τον διακομιστή μεσολάβησης/πύλη</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="330"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="357"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Ελήφθη διαφορετικό E-Tag για συνέχιση. Επανάληψη την επόμενη φορά.</translation>
     </message>
@@ -1260,7 +1260,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="140"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="145"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Ένα αρχείο ή ένας κατάλογος αφαιρέθηκε από ένα διαμοιρασμένο κατάλογο μόνο για ανάγνωση, αλλά η επαναφορά απέτυχε: %1</translation>
     </message>
@@ -1329,22 +1329,22 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="201"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="228"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Το αρχείο υπέστη επεξεργασία τοπικά αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Επαναφέρθηκε και η επεξεργασία σας βρίσκεται στο αρχείο συγκρούσεων.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="226"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="253"/>
         <source>Local file changed during sync.</source>
         <translation>Το τοπικό αρχείο τροποποιήθηκε κατά τον συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="236"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="263"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>Ο διακομιστής δεν επιβεβαίωσε το τελευταίο τμήμα. (Δεν υπήρχε E-Tag)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="267"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation>Δεν υπάρχει η επέκταση X-OC-MTime, απαιτείται η έκδοση 5 του ownCloud</translation>
     </message>

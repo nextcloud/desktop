@@ -596,12 +596,12 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="324"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ni prejete oznake s strežnika. Preveriti je treba podatke posredovalnega strežnika ali prehoda.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="330"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="357"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Prejeta je različna oznaka za nadaljevanje opravila. Ponovni poskus bo izveden kasneje.</translation>
     </message>
@@ -1260,7 +1260,7 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="140"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="145"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Datoteka ali mapa je bila odstranjena iz mesta v souporabi, ki je nastavljeno le za branje, obnavljanje pa je spodletelo: %1</translation>
     </message>
@@ -1329,22 +1329,22 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="201"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="228"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Datoteka je bila krajevno spremenjena, vendar pa je označena za souporabo le za branje. Izvorna datoteka je obnovljena, vaše spremembe pa so zabeležene v datoteki spora.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="226"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="253"/>
         <source>Local file changed during sync.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem spremenjena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="236"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="263"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>Ni prejetega odziva s strežnnika s potrdilom o prejemu zadnjega dela datoteke (ni prejete oznake).</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="267"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation>Ni razširitve X-OC-MTime, saj zahteva namestitev ownCloud 5.</translation>
     </message>

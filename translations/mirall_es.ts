@@ -596,12 +596,12 @@ Está seguro de que desea realizar esta operación?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="324"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>No se recibió ninguna e-tag del servidor, revisar el proxy/gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="330"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="357"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Se recibió una e-tag distinta para reanudar. Se intentará nuevamente.</translation>
     </message>
@@ -1260,7 +1260,7 @@ No se recomienda usarlo.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="140"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="145"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Un archivo o directorio fue eliminado de una carpeta compartida en modo de solo lectura, pero la recuperación falló: %1</translation>
     </message>
@@ -1329,22 +1329,22 @@ No se recomienda usarlo.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="201"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="228"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>El archivo fue modificado localmente, pero es parte de una carpeta compartida en modo de solo lectura. Ha sido recuperado y tu modificación está en el archivo de conflicto.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="226"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="253"/>
         <source>Local file changed during sync.</source>
         <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="236"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="263"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>El servidor no reconoció la última parte. (No había una e-tag presente.)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="267"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation>No hay una extensión X-OC-MTime, se requiere ownCloud 5</translation>
     </message>

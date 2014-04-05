@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Välj en fjärr målmapp</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -80,7 +80,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Konto att synkronisera</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="41"/>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="751"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ingen anslutning till %1 vid &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="758"/>
@@ -178,7 +178,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="107"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>Inget konto är konfigurerat.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="462"/>
@@ -198,7 +198,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="747"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ansluten till &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="716"/>
@@ -234,7 +234,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="91"/>
         <source>No ownCloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Inget ownCloud konto konfigurerat</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
@@ -282,7 +282,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="312"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="398"/>
@@ -343,7 +343,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="436"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Synk aktivitet</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="674"/>
@@ -478,22 +478,22 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="61"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka för att välja en lokal mapp att synka.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="65"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ange sökvägen till den lokala mappen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="69"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>Katalogens alias är ett beskrivande namn för denna synkroniseringsanslutning.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Ingen tillåten lokal mapp vald!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
@@ -503,7 +503,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Den lokala sökvägen %1 är redan en uppladdningsmapp. Välj en annan!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
@@ -513,17 +513,17 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Den markerade mappen är en symbolisk länk. En redan konfigurerad mapp finns i mappen länken pekar mot.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>En redan konfigurerad mapp innehåller den angivna mappen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Den angivna mappen är en symbolisk länk. En redan konfigurerad mapp är förälder till den valda och innehåller mappen länken pekar på.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
@@ -533,7 +533,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;i&gt;%1&lt;/i&gt; används redan. Välj ett annat alias.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
@@ -561,7 +561,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="282"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att skapa mappen på %1. Kontrollera manuellt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="331"/>
@@ -571,7 +571,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="386"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Denna mappen synkas redan.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="388"/>
@@ -581,7 +581,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>Du synkroniserar redan alla dina filer. Synkronisering av en annan mapp stöds &lt;b&gt;ej&lt;/b&gt;. Om du vill synka flera mappar, ta bort den för tillfället konfigurerade rotmappen från synk.</translation>
     </message>
 </context>
 <context>
@@ -590,20 +590,20 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
         <location filename="../src/mirall/folderwizard.cpp" line="43"/>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; </source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Varning:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="324"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Ingen e-tag mottogs från servern, kontrollera proxy/gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="330"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="357"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Vi mottog en helt annan e-tag för att återuppta. Försök igen nästa gång.</translation>
     </message>
 </context>
 <context>
@@ -616,7 +616,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Setttings</source>
-        <translation type="unfinished"/>
+        <translation>Allmänna inställningar</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -642,12 +642,12 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Uppdateringar</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>%Starta om &amp;&amp; Uppdatera</translation>
     </message>
 </context>
 <context>
@@ -655,12 +655,12 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="274"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Ange lösenord</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="275"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Vänligen ange %1 lösenord för användare &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -712,12 +712,12 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Ändra synk-filter</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Ändra synk-filter:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -806,7 +806,7 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Hoppa över denna version</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="272"/>
@@ -925,48 +925,49 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>En ny uppdatering är redo</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>En ny uppdatering är på väg att installeras. Uppdateraren kan komma att fråga
+efter ytterligare privilegier under processen.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Laddar ner version %1. Var god vänta...</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Version %1 tillgänglig. Starta om applikationen för att start uppdateringen.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte ladda ner uppdateringen. Klicka &lt;a href=&apos;%1&apos;&gt;här&lt;/a&gt; för att ladda ner uppdateringen manuellt.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte söka efter uppdateringar.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Ny version %1 tillgänglig. Använd systemets uppdateringsverktyg för att installera det.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollerar uppdateringsservern...</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Inga uppdateringar tillgängliga. Din installation är redan den senaste versionen.</translation>
     </message>
 </context>
 <context>
@@ -1051,7 +1052,8 @@ for additional privileges during the process.</source>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Denna URL är INTE säker eftersom den inte är krypterad.
+Det är inte lämpligt använda den.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
@@ -1061,12 +1063,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte ansluta säkert. Vill du ansluta okrypterat istället (rekommenderas ej)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Anslutningen misslyckades</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
@@ -1136,12 +1138,12 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="180"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>Misslyckades att ansluta till %1 vid %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Ingen fjärrmapp specificerad! </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="269"/>
@@ -1177,7 +1179,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Misslyckades skapa fjärrmappen, troligen p.g.a felaktiga inloggningsuppgifter.&lt;/font&gt;&lt;br/&gt;Vänligen kontrollera dina inloggningsuppgifter.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Misslyckades skapa fjärrmappen, troligen p.g.a felaktiga inloggningsuppgifter.&lt;/font&gt;&lt;br/&gt;Kontrollera dina inloggningsuppgifter.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
@@ -1242,25 +1244,25 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="340"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synkningen avbröts av användare.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="395"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Ingen e-tag mottogs från servern, kontrollera proxy/gateway</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="405"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Vi mottog en helt annan E-Tag för att återuppta. Försöker igen nästa gång.</translation>
     </message>
 </context>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="140"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="145"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>En fil eller katalog togs bort från en endast-läsbar utdelning, men återställning misslyckades: %1</translation>
     </message>
 </context>
 <context>
@@ -1268,7 +1270,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="109"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>kunde ej skapa katalogen %1</translation>
     </message>
 </context>
 <context>
@@ -1292,12 +1294,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="221"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation>Denna katalog får inte byta namn. Den kommer att döpas om till sitt original namn.</translation>
+        <translation>Denna mapp får inte byta namn. Den kommer att döpas om till sitt ursprungliga namn.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="223"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation>Denna katalog får ej döpas om. Snälla döp den till Delad</translation>
+        <translation>Denna mapp får ej döpas om. Vänligen döp den till Delad igen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="238"/>
@@ -1316,7 +1318,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="156"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synkningen avbröts av användare.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="162"/>
@@ -1327,22 +1329,22 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="201"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="228"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="226"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="253"/>
         <source>Local file changed during sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="236"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="263"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Servern erkände inte den sista biten. (Ingen e-tag var närvarande)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="267"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation type="unfinished"/>
     </message>
@@ -1357,7 +1359,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Synk aktivitet</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
@@ -1397,7 +1399,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="65"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>Försök synka igen</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="69"/>
@@ -1407,7 +1409,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="70"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera aktivitetslistan till urklipp.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="114"/>
@@ -1417,18 +1419,19 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="114"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringsstatus har kopierats till urklipp.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="229"/>
         <source>Currently no files are ignored because of previous errors.</source>
-        <translation type="unfinished"/>
+        <translation>För närvarande ignoreras inga filer på grund av föregående fel.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="231"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 filer ignoreras på grund av föregående fel.
+Försök att synka dessa igen.</translation>
     </message>
 </context>
 <context>
@@ -1510,12 +1513,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="58"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Autentisera</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="119"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
 </context>
 <context>
@@ -1523,27 +1526,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="95"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Certifikatdetaljer&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="98"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Common Name (CN):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="99"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Alternativnamn:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="101"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Organisation (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Organisationsenhet (OU):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
@@ -1558,52 +1561,52 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="105"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Serienummer:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="108"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Utfärdare&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="111"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Utfärdare:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Utfärdat den:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Upphör den:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="116"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Fingeravtryck&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="119"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="120"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="124"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Notera:&lt;/b&gt; Detta certifikat var manuellt godkänt.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="144"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (självsignerat certifikat)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="146"/>
@@ -1614,18 +1617,20 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/sslbutton.cpp" line="177"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Denna anslutningen är krypterad med %1 bit %2
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="180"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Certifikatinformation:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="209"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Denna anslutningen är INTE säker eftersom den inte är krypterad.
+</translation>
     </message>
 </context>
 <context>
@@ -1896,7 +1901,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/systray.cpp" line="49"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -1904,7 +1909,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="205"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %1 För mer information besök &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Upphovsrätt ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distribuerad av %4 och licensierad under GNU General Public License (GPL) version 2.0.&lt;br&gt;%5 och %5 logotypen är registrerade varumärken som tillhör %4 i &lt;br&gt;USA, andra länder, eller både och.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1912,12 +1917,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="184"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Ange lösenord</translation>
     </message>
     <message>
         <location filename="../src/creds/tokencredentials.cpp" line="185"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Vänligen ange %1 lösenord för användare &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -1925,7 +1930,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="171"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Vänliga logga in</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="203"/>
@@ -2000,12 +2005,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="358"/>
         <source>Sign in...</source>
-        <translation type="unfinished"/>
+        <translation>Logga in...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="360"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>Logga ut</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="368"/>
@@ -2317,7 +2322,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="38"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Flyttad till %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="41"/>
@@ -2375,12 +2380,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="60"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Synk lyckades, men vissa filer ignorerades.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>Synkfel</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
@@ -2405,7 +2410,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Synk är pausad</translation>
     </message>
 </context>
 </TS>
