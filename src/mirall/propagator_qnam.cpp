@@ -132,6 +132,8 @@ public:
         if (maxlen == 0)
             return 0;
         qint64 ret = _file->read(data, maxlen);
+        if (ret < 0)
+            return -1;
         _read += ret;
         return ret;
     }
@@ -144,12 +146,18 @@ public:
         return _size;
     }
 
+    qint64 bytesAvailable() const
+    {
+        return _size - _read + QIODevice::bytesAvailable();
+    }
+
     // random access, we can seek
     virtual bool isSequential() const{
         return false;
     }
 
     virtual bool seek ( qint64 pos ) {
+        _read = pos;
         return _file->seek(pos + _start);
     }
 };
@@ -316,8 +324,10 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
 
 void PropagateUploadFileQNAM::abort()
 {
-    if (_job &&  _job->reply())
+    if (_job &&  _job->reply()) {
+        qDebug() << Q_FUNC_INFO << this->_item._file;
         _job->reply()->abort();
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
