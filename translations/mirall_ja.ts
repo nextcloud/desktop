@@ -597,12 +597,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="361"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>サーバーからE-Tagを受信できません。プロキシ/ゲートウェイを確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="357"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="367"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>同期再開時に違う E-Tagを受信しました。次回リトライします。</translation>
     </message>
@@ -1328,22 +1328,22 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="228"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="236"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>ファイルがローカルで編集されましたが、読み込み専用の共有の一部です。ファイルは復元され、あなたの編集は競合するファイル内にあります。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="253"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="261"/>
         <source>Local file changed during sync.</source>
         <translation>ローカルのファイルが同期中に変更されました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="263"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="271"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>サーバーは最終チャンクを認識しませんでした。（e-tag が存在しませんでした）</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="302"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation>X-OC-MTime 拡張がありません、 ownCloud 5 が必要です。</translation>
     </message>

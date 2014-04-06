@@ -597,12 +597,12 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="361"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Kein E-Tag vom Server empfangen, bitte Proxy / Gateway überprüfen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="357"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="367"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Es wurde ein unterschiedlicher E-Tag zum Fortfahren empfangen. Bitte beim nächsten mal nochmal versuchen.</translation>
     </message>
@@ -1330,22 +1330,22 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="228"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="236"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Die Datei wurde von einer Nur-Lese-Freigabe lokal bearbeitet. Die Datei wurde wiederhergestellt und Ihre Bearbeitung ist in der Konflikte-Datei.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="253"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="261"/>
         <source>Local file changed during sync.</source>
         <translation>Eine lokale Datei wurde während der Synchronisation geändert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="263"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="271"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>Der Server hat den letzten Block nicht bestätigt. (Der E-Tag war nicht vorhanden)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="302"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation>Keine X-OC-MTime Erweiterung vorhanden, owncloud 5 ist erforderlich</translation>
     </message>

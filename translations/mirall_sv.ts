@@ -147,18 +147,18 @@
         <location filename="../src/mirall/accountsettings.cpp" line="614"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 av %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="617"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="712"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) av %2 server utrymme används.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="751"/>
@@ -211,17 +211,17 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Autentisering krävs</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Ange användarnamn och lösenord för &apos;%1&apos; i %2</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Användare:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
@@ -288,57 +288,57 @@
         <location filename="../src/mirall/folder.cpp" line="398"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 och %2 andra filer har tagits bort.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="400"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 har tagits bort.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="405"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 och %2 andra filer har laddats ner.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="407"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 har laddats ner.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="412"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 och %2 andra filer har uppdaterats.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="414"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 har uppdaterats.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="419"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>%1 har döpts om till %2 och %3 andra filer har bytt namn. </translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="421"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 har döpts om till %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="426"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>%1 har flyttats till %2 och %3 andra filer har tagits bort.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="428"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 har flyttats till %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="436"/>
@@ -596,12 +596,12 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="361"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ingen e-tag mottogs från servern, kontrollera proxy/gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="357"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="367"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Vi mottog en helt annan e-tag för att återuppta. Försök igen nästa gång.</translation>
     </message>
@@ -1262,7 +1262,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="145"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation>En fil eller katalog togs bort från en endast-läsbar utdelning, men återställning misslyckades: %1</translation>
+        <translation>En fil eller katalog togs bort från en endast-läsbar delning, men återställning misslyckades: %1</translation>
     </message>
 </context>
 <context>
@@ -1286,7 +1286,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="129"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Den här filen har tagits bort från en endast-läsbar delning. Den återställdes.</translation>
     </message>
 </context>
 <context>
@@ -1304,7 +1304,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="238"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>En fil döptes om men är en del av en endast-läsbar delning. Original filen återställdes.</translation>
     </message>
 </context>
 <context>
@@ -1323,28 +1323,28 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="162"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Filen ändrades lokalt men är en del av en endast-läsbar delning. Den återställs och din editering är i konflikt filen.</translation>
     </message>
 </context>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="228"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="236"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Filen ändrades lokalt men är en del av en endast-läsbar delning. Den återställdes och din editering är i konflikt filen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="253"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="261"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokal fil ändrades under synk.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="263"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="271"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>Servern erkände inte den sista biten. (Ingen e-tag var närvarande)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="302"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation type="unfinished"/>
     </message>
@@ -1500,12 +1500,12 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Login fel</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Du måste logga in som en användare %1</translation>
     </message>
 </context>
 <context>
@@ -1551,7 +1551,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Stat/Provins:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>
@@ -1727,12 +1727,12 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="93"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync misslyckades att skapa en journal fil. Se till att du har läs och skriv rättigheter i den lokala synk katalogen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="97"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>CSynk misslyckades att skriva till journal filen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="100"/>
@@ -1837,7 +1837,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="164"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>CSynk misslyckades att tillträda</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="167"/>
@@ -1873,17 +1873,17 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="275"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Symboliska länkar stöds ej i synkningen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="278"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Filen är listad i ignorerings listan.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="281"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>Filen innehåller ogiltiga tecken som inte kan synkas oberoende av plattform.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="448"/>
@@ -1893,7 +1893,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="541"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte öppna synk journalen</translation>
     </message>
 </context>
 <context>
@@ -2030,7 +2030,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="403"/>
         <source>Syncing %1 of %2 (%3 of %4)</source>
-        <translation type="unfinished"/>
+        <translation>Synkar %1 av %2 (%3 av %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="418"/>
@@ -2294,7 +2294,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Byggd från Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; den %3, %4 med Qt %5.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
@@ -2342,17 +2342,17 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="56"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>raderar</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="58"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>flyttar</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="61"/>
         <source>processing</source>
-        <translation type="unfinished"/>
+        <translation>bearbetar</translation>
     </message>
 </context>
 <context>
