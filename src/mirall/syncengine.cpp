@@ -39,7 +39,6 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QTime>
-#include <QApplication>
 #include <QUrl>
 #include <QSslCertificate>
 

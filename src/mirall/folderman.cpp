@@ -27,8 +27,10 @@
 #include <shlobj.h>
 #endif
 
-#include <QDesktopServices>
+#ifndef TOKEN_AUTH_ONLY
 #include <QMessageBox>
+#endif
+
 #include <QtCore>
 
 namespace Mirall {
@@ -163,7 +165,8 @@ int FolderMan::setupFolders()
 
 bool FolderMan::ensureJournalGone(const QString &localPath)
 {
-
+	// FIXME move this to UI, not libowncloudsync
+#ifndef TOKEN_AUTH_ONLY
     // remove old .csync_journal file
     QString stateDbFile = localPath+QLatin1String("/.csync_journal.db");
     while (QFile::exists(stateDbFile) && !QFile::remove(stateDbFile)) {
@@ -177,6 +180,7 @@ bool FolderMan::ensureJournalGone(const QString &localPath)
             return false;
         }
     }
+#endif
     return true;
 }
 

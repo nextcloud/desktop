@@ -27,9 +27,9 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
     )
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
 
-if(SPARKLE_FOUND)
+if(SPARKLE_FOUND AND NOT BUILD_LIBRARIES_ONLY)
     list (APPEND OS_SPECIFIC_LINK_LIBRARIES ${SPARKLE_LIBRARY})
-endif(SPARKLE_FOUND)
+endif()
 
 set(3rdparty_SRC
 3rdparty/qtsingleapplication/qtsingleapplication.cpp
@@ -195,7 +195,11 @@ if(NEON_FOUND)
 endif()
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
-qt5_use_modules(${synclib_NAME} Widgets Network Xml WebKitWidgets Sql)
+if(TOKEN_AUTH_ONLY)
+    qt5_use_modules(${synclib_NAME} Network Xml Sql)
+else()
+    qt5_use_modules(${synclib_NAME} Widgets Network Xml WebKitWidgets Sql)
+endif()
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${MIRALL_VERSION}
@@ -207,15 +211,15 @@ set_target_properties( ${synclib_NAME} PROPERTIES
 target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )
 
 if(BUILD_LIBRARIES_ONLY)
-    add_library(${synclib_NAME}_static STATIC ${libsync_SRCS} ${syncMoc})
-    qt5_use_modules(${synclib_NAME}_static Widgets Network Xml WebKitWidgets Sql)
+    #add_library(${synclib_NAME}_static STATIC ${libsync_SRCS} ${syncMoc})
+    #qt5_use_modules(${synclib_NAME}_static Widgets Network Xml Sql)
 
-    set_target_properties( ${synclib_NAME}_static  PROPERTIES
-        VERSION ${MIRALL_VERSION}
-        SOVERSION ${MIRALL_SOVERSION}
-    )
+    #set_target_properties( ${synclib_NAME}_static  PROPERTIES
+    #    VERSION ${MIRALL_VERSION}
+    #    SOVERSION ${MIRALL_SOVERSION}
+    #)
 
-    target_link_libraries(${synclib_NAME}_static ${libsync_LINK_TARGETS} )
+    #target_link_libraries(${synclib_NAME}_static ${libsync_LINK_TARGETS} )
 endif()
 
 
@@ -420,11 +424,11 @@ elseif(NOT BUILD_LIBRARIES_ONLY)
     install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
 endif()
 
-add_library(updater STATIC ${updater_SRCS} ${updaterMoc})
-target_link_libraries(updater ${synclib_NAME})
-qt5_use_modules(updater Widgets Network Xml)
-
 if(NOT BUILD_LIBRARIES_ONLY)
+  add_library(updater STATIC ${updater_SRCS} ${updaterMoc})
+  target_link_libraries(updater ${synclib_NAME})
+  qt5_use_modules(updater Widgets Network Xml)
+
   set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
           RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
   )

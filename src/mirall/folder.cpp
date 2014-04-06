@@ -49,8 +49,11 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
 #include <QTimer>
 #include <QUrl>
 #include <QDir>
+
+#ifndef TOKEN_AUTH_ONLY
 #include <QMessageBox>
 #include <QPushButton>
+#endif
 
 namespace Mirall {
 
@@ -672,6 +675,7 @@ void Folder::slotTransmissionProgress(const Progress::Info &pi)
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel)
 {
+#ifndef TOKEN_AUTH_ONLY
     QString msg = direction == SyncFileItem::Down ?
         tr("This sync would remove all the files in the local sync folder '%1'.\n"
            "If you or your administrator have reset your account on the server, choose "
@@ -692,6 +696,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *
     if (*cancel) {
         wipe();
     }
+#endif
 }
 
 SyncFileStatus Folder::fileStatus( const QString& fileName )

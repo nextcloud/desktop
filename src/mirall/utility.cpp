@@ -22,16 +22,19 @@
 #include <QDir>
 #include <QFile>
 #include <QUrl>
+#ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
+#endif
 #include <QDebug>
-#include <QDesktopServices>
 #include <QProcess>
 #include <QThread>
 #include <QDateTime>
 #include <QSysInfo>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#ifndef TOKEN_AUTH_ONLY
 #include <QDesktopServices>
+#endif
 #include <QTextDocument>
 #else
 #include <QStandardPaths>
@@ -165,6 +168,7 @@ QByteArray Utility::userAgentString()
 
 void Utility::raiseDialog( QWidget *raiseWidget )
 {
+#ifndef TOKEN_AUTH_ONLY
     // viel hilft viel ;-)
     if( raiseWidget ) {
 #if defined(Q_OS_WIN) || defined (Q_OS_MAC)
@@ -181,6 +185,7 @@ void Utility::raiseDialog( QWidget *raiseWidget )
         raiseWidget->raise();
         raiseWidget->activateWindow();
     }
+#endif
 }
 
 bool Utility::hasLaunchOnStartup(const QString &appName)
@@ -261,7 +266,11 @@ QString Utility::dataLocation()
 {
     //  Qt 5's QStandardPaths::writableLocation gives us wrong results (without /data/),
     //  so we'll have to use the deprecated version for now
+#ifndef TOKEN_AUTH_ONLY
     return QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+#else
+	return QString();
+#endif
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -435,7 +444,9 @@ void Utility::showInFileManager(const QString &localPath)
 
         if (app.isEmpty() || args.isEmpty() || !canHandleFile) {
             // fall back: open the default file manager, without ever selecting the file
+#ifndef TOKEN_AUTH_ONLY
             QDesktopServices::openUrl(QUrl::fromLocalFile(pathToOpen));
+#endif
         } else {
             QProcess::startDetached(app, args);
         }
