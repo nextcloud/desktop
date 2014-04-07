@@ -60,21 +60,31 @@ sub chunkFileTest( $$ )
     unlink( $ctrlFile );
 }
 
+printInfo("Big file that needs chunking with default chunk size");
 chunkFileTest( "BIG.file", 23251233 );
 
  # Set a custom chunk size in environment.
 my $ChunkSize = 1*1024*1024;
 $ENV{'OWNCLOUD_CHUNK_SIZE'} = $ChunkSize;
 
+printInfo("Big file exactly as big as one chunk size");
 chunkFileTest( "oneChunkSize.bin", $ChunkSize);
+
+printInfo("Big file exactly as big as one chunk size minus 1 byte");
 chunkFileTest( "oneChunkSizeminusone.bin", $ChunkSize-1);
+
+printInfo("Big file exactly as big as one chunk size plus 1 byte");
 chunkFileTest( "oneChunkSizeplusone.bin", $ChunkSize+1);
 
+printInfo("Big file exactly as big as 2*chunk size");
 chunkFileTest( "twoChunkSize.bin", 2*$ChunkSize);
+
+printInfo("Big file exactly as big as 2*chunk size minus 1 byte");
 chunkFileTest( "twoChunkSizeminusone.bin", 2*$ChunkSize-1);
+
+printInfo("Big file exactly as big as 2*chunk size plus 1 byte");
 chunkFileTest( "twoChunkSizeplusone.bin", 2*$ChunkSize+1);
 
-printInfo("Big file exactly as big as one chunk size");
 
 # ==================================================================
 
