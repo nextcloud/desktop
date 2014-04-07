@@ -202,8 +202,12 @@ void PropagateUploadFileQNAM::startNextChunk()
         path +=  QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
         headers["OC-Chunked"] = "1";
         int currentChunkSize = chunkSize();
-        if (sendingChunk == _chunkCount - 1) // last chunk
+        if (sendingChunk == _chunkCount - 1) { // last chunk
             currentChunkSize = (fileSize % chunkSize());
+            if( currentChunkSize == 0 ) { // if the last chunk pretents to be 0, its actually the full chunk size.
+                currentChunkSize = chunkSize();
+            }
+        }
         device = new ChunkDevice(_file, chunkSize() * sendingChunk, currentChunkSize);
     } else {
         device = _file;
