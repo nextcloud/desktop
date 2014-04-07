@@ -605,8 +605,11 @@ void SyncEngine::setNetworkLimits()
     }
     _propagator->_uploadLimit = uploadLimit;
 
-    if( _propagator->_downloadLimit + _propagator->_uploadLimit > 0 ) {
-        qDebug() << " N------N Network Limits (down/up) " << _propagator->_downloadLimit << _propagator->_uploadLimit;
+    int propDownloadLimit = _propagator->_downloadLimit.load();
+    int propUploadLimit = _propagator->_uploadLimit.load();
+
+    if( propDownloadLimit + propUploadLimit > 0 ) {
+        qDebug() << " N------N Network Limits (down/up) " << propDownloadLimit << propUploadLimit;
     }
 }
 
