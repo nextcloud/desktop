@@ -53,10 +53,10 @@ assert( -e $ctrlFile, "File does not exist!" );
 my $dlMd5 = md5OfFile( $ctrlFile );
 assert( $dlMd5 eq $newMd5 );
 
-unlink( $ctrlFile );
 
 # ==================================================================
 
 cleanup();
+unlink( $ctrlFile );
 
 # --
