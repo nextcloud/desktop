@@ -605,7 +605,9 @@ void SyncEngine::setNetworkLimits()
     }
     _propagator->_uploadLimit = uploadLimit;
 
-    qDebug() << " N------N Network Limits changed!";
+    if( _propagator->_downloadLimit + _propagator->_uploadLimit > 0 ) {
+        qDebug() << " N------N Network Limits (down/up) " << _propagator->_downloadLimit << _propagator->_uploadLimit;
+    }
 }
 
 void SyncEngine::slotJobCompleted(const SyncFileItem &item)
