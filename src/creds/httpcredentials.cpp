@@ -19,7 +19,11 @@
 #include <QSettings>
 #include <QInputDialog>
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <qt5keychain/keychain.h>
+#else
 #include <qtkeychain/keychain.h>
+#endif
 
 #include "mirall/account.h"
 #include "mirall/mirallaccessmanager.h"
