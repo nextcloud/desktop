@@ -23,7 +23,7 @@ find_library(QTKEYCHAIN_LIBRARY
 include(FindPackageHandleStandardArgs)
 # handle the QUIETLY and REQUIRED arguments and set QTKEYCHAIN_FOUND to TRUE
 # if all listed variables are TRUE
-find_package_handle_standard_args(QtKeychain  DEFAULT_MSG
+find_package_handle_standard_args(Qt5Keychain  DEFAULT_MSG
 	QTKEYCHAIN_LIBRARY QTKEYCHAIN_INCLUDE_DIR)
 
 mark_as_advanced(QTKEYCHAIN_INCLUDE_DIR QTKEYCHAIN_LIBRARY)
