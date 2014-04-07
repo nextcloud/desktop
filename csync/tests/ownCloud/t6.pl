@@ -33,30 +33,52 @@ print "Hello, this is t6, a tester for csync with ownCloud.\n";
 
 initTesting();
 
-# Big file chunking
-printInfo( "Do a big file that is chunked");
-createLocalFile( localDir().'BIG.file', 22272592 );
-assert( -e localDir().'BIG.file' );
-my $bigMd5 = md5OfFile( localDir().'BIG.file' );
+sub chunkFileTest( $$ ) 
+{
+    my ($name, $size) = @_;
 
-csync();
-my $newMd5 = md5OfFile( localDir().'BIG.file' );
-assert( $newMd5 eq $bigMd5 );
+    # Big file chunking
+    createLocalFile( localDir().$name, $size );
+    assert( -e localDir().$name );
+    
+    my $bigMd5 = md5OfFile( localDir().$name );
 
-# download
-my $ctrlFile = "/tmp/file.download";
-getToFileCurl( 'BIG.file', $ctrlFile );
+    csync();
+    my $newMd5 = md5OfFile( localDir().$name );
+    assert( $newMd5 eq $bigMd5, "Different MD5 sums!" );
 
-assert( -e $ctrlFile, "File does not exist!" );
+    # download
+    my $ctrlFile = "/tmp/file.download";
+    getToFileCurl( $name, $ctrlFile );
 
-# assert files
-my $dlMd5 = md5OfFile( $ctrlFile );
-assert( $dlMd5 eq $newMd5 );
+    assert( -e $ctrlFile, "File does not exist!" );
 
+    # assert files
+    my $dlMd5 = md5OfFile( $ctrlFile );
+    assert( $dlMd5 eq $newMd5, "Different MD5 sums 2" );
+
+    unlink( $ctrlFile );
+}
+
+chunkFileTest( "BIG.file", 23251233 );
+
+ # Set a custom chunk size in environment.
+my $ChunkSize = 1*1024*1024;
+$ENV{'OWNCLOUD_CHUNK_SIZE'} = $ChunkSize;
+
+chunkFileTest( "oneChunkSize.bin", $ChunkSize);
+chunkFileTest( "oneChunkSizeminusone.bin", $ChunkSize-1);
+chunkFileTest( "oneChunkSizeplusone.bin", $ChunkSize+1);
+
+chunkFileTest( "twoChunkSize.bin", 2*$ChunkSize);
+chunkFileTest( "twoChunkSizeminusone.bin", 2*$ChunkSize-1);
+chunkFileTest( "twoChunkSizeplusone.bin", 2*$ChunkSize+1);
+
+printInfo("Big file exactly as big as one chunk size");
 
 # ==================================================================
 
 cleanup();
-unlink( $ctrlFile );
+
 
 # --
