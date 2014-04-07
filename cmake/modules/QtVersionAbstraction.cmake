@@ -1,12 +1,12 @@
 include (MacroOptionalFindPackage)
 include (MacroLogFeature)
 
-
 option(BUILD_WITH_QT4 "Build with Qt4 no matter if Qt5 was found" OFF)
 
 if( NOT BUILD_WITH_QT4 )
-    find_package(Qt5Core QUIET)
-    if( Qt5Core_DIR )
+    find_package(Qt5Core REQUIRED)
+    if( Qt5Core_FOUND )
+        message("Found Qt5 core, checking for further deps")
         find_package(Qt5Widgets REQUIRED)
         find_package(Qt5Quick REQUIRED)
         find_package(Qt5PrintSupport REQUIRED)
@@ -15,71 +15,77 @@ if( NOT BUILD_WITH_QT4 )
         find_package(Qt5Sensors REQUIRED)
         find_package(Qt5Xml REQUIRED)
         find_package(Qt5WebKitWidgets REQUIRED)
-if(APPLE)
-        find_package(Qt5MacExtras REQUIRED)
-endif()
+        if(APPLE)
+            find_package(Qt5MacExtras REQUIRED)
+        endif(APPLE)
+    else( Qt5Core_FOUND )
+        if(WIN32 OR APPLE)
+            message(FATAL_ERROR "Qt 5 not found, but application depends on Qt5 on Windows and Mac OS X")
+        endif(WIN32 OR APPLE)
+    endif( Qt5Core_FOUND )
 
-        message(STATUS "Using Qt 5!")
 
-       # We need this to find the paths to qdbusxml2cpp and co
-        if (WITH_DBUS)
-            find_package(Qt5DBus REQUIRED)
-            include_directories(${Qt5DBus_INCLUDES})
-            add_definitions(${Qt5DBus_DEFINITIONS})
-        endif (WITH_DBUS)
+    message(STATUS "Using Qt 5!")
 
-        include_directories(${Qt5Widgets_INCLUDES})
-        add_definitions(${Qt5Widgets_DEFINITIONS})
-        if (NOT WIN32) #implied on Win32
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-        endif(NOT WIN32)
+   # We need this to find the paths to qdbusxml2cpp and co
+    if (WITH_DBUS)
+        find_package(Qt5DBus REQUIRED)
+        include_directories(${Qt5DBus_INCLUDES})
+        add_definitions(${Qt5DBus_DEFINITIONS})
+    endif (WITH_DBUS)
+
+    include_directories(${Qt5Widgets_INCLUDES})
+    add_definitions(${Qt5Widgets_DEFINITIONS})
+    if (NOT WIN32) #implied on Win32
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+    endif(NOT WIN32)
 #        set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
-if(APPLE)
+    if(APPLE)
         include_directories(${Qt5MacExtras_INCLUDE_DIRS})
         add_definitions(${Qt5MacExtras_DEFINITIONS})
         set (QT_LIBRARIES ${QT_LIBRARIES} ${Qt5MacExtras_LIBRARIES})
+    endif(APPLE)
+
+    macro(qt_wrap_ui)
+        qt5_wrap_ui(${ARGN})
+    endmacro()
+
+    macro(qt_add_resources)
+        qt5_add_resources(${ARGN})
+    endmacro()
+
+    find_package(Qt5LinguistTools REQUIRED)
+    macro(qt_add_translation)
+        qt5_add_translation(${ARGN})
+    endmacro()
+
+    macro(qt_add_dbus_interface)
+        qt5_add_dbus_interface(${ARGN})
+    endmacro()
+
+    macro(qt_add_dbus_adaptor)
+        qt5_add_dbus_adaptor(${ARGN})
+    endmacro()
+
+    macro(qt_wrap_cpp)
+        qt5_wrap_cpp(${ARGN})
+    endmacro()
+
+    macro(install_qt_executable)
+        install_qt5_executable(${ARGN})
+    endmacro()
+
+    macro(setup_qt)
+    endmacro()
+
+    set(QT_RCC_EXECUTABLE "${Qt5Core_RCC_EXECUTABLE}")
+
+    #Enable deprecated symbols
+    add_definitions("-DQT_DISABLE_DEPRECATED_BEFORE=0")
 endif()
 
-        macro(qt_wrap_ui)
-            qt5_wrap_ui(${ARGN})
-        endmacro()
-
-        macro(qt_add_resources)
-            qt5_add_resources(${ARGN})
-        endmacro()
-
-        find_package(Qt5LinguistTools REQUIRED)
-        macro(qt_add_translation)
-            qt5_add_translation(${ARGN})
-        endmacro()
-
-        macro(qt_add_dbus_interface)
-            qt5_add_dbus_interface(${ARGN})
-        endmacro()
-
-        macro(qt_add_dbus_adaptor)
-            qt5_add_dbus_adaptor(${ARGN})
-        endmacro()
-
-        macro(qt_wrap_cpp)
-            qt5_wrap_cpp(${ARGN})
-        endmacro()
-
-        macro(install_qt_executable)
-            install_qt5_executable(${ARGN})
-        endmacro()
-
-        macro(setup_qt)
-        endmacro()
-
-        set(QT_RCC_EXECUTABLE "${Qt5Core_RCC_EXECUTABLE}")
-
-        #Enable deprecated symbols
-        add_definitions("-DQT_DISABLE_DEPRECATED_BEFORE=0")
-    endif()
-endif()
-if( NOT WIN32 AND NOT APPLE AND NOT Qt5Core_DIR)
+if(NOT Qt5Core_FOUND)
     message(STATUS "Could not find Qt5, searching for Qt4 instead...")
 
     set(NEEDED_QT4_COMPONENTS "QtCore" "QtXml" "QtNetwork" "QtGui" "QtWebkit")
@@ -131,8 +137,6 @@ if( NOT WIN32 AND NOT APPLE AND NOT Qt5Core_DIR)
 
         include( ${QT_USE_FILE} )
     endmacro()
-else()
-    message(ERROR "Qt 5 not found, but application depends on Qt5 on Windows and Mac OS X")
 endif()
 
 if( Qt5Core_DIR )
