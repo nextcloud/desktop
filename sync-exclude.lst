@@ -7,6 +7,8 @@
 *csync_timedif.ctmp*
 .csync_journal.db
 .csync_journal.db.ctmp
+.owncloudsync.log
+
 .*.sw?
 .*.*sw?
 ].csync-progressdatabase
