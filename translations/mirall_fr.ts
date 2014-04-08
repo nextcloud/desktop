@@ -596,12 +596,12 @@ Voulez-vous réellement effectuer cette opération ?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="361"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="365"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Aucun E-Tag reçu du serveur, vérifiez le proxy / la passerelle</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="367"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="371"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Nous avons reçu un E-Tag différent pour reprendre le téléchargement. Nouvel essai la prochaine fois.</translation>
     </message>
@@ -653,12 +653,12 @@ Voulez-vous réellement effectuer cette opération ?</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="274"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="278"/>
         <source>Enter Password</source>
         <translation>Entrez le mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="275"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="279"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Veuillez entrer %1 mot de passe pour l&apos;utilisateur &apos;%2&apos;:</translation>
     </message>
@@ -1329,22 +1329,22 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="236"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="240"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Le fichier a été modifié localement mais appartient à un partage en lecture seule. Il a été restauré et vos modifications sont présentes dans le fichiers de confit.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="261"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="265"/>
         <source>Local file changed during sync.</source>
         <translation>Fichier local modifié pendant la synchronisation.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="271"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="275"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>Le serveur n&apos;a pas acquitté le dernier morceau (aucun e-tag n&apos;était présent).</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="302"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="306"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
         <translation>Aucune extension X-OC-MTime, ownCloud 5 est exigé</translation>
     </message>
@@ -1498,12 +1498,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="299"/>
         <source>Login Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="295"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="299"/>
         <source>You must sign in as user %1</source>
         <translation type="unfinished"/>
     </message>
