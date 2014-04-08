@@ -170,9 +170,10 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         // Note: The name of the changed file and stuff could be taken from
         // the event data structure. That does not happen yet.
         if (event->len > 0 && event->wd > -1) {
-            qDebug() << Q_FUNC_INFO << event->name;
-            if (QByteArray(event->name).startsWith(".csync")) {
-                qDebug() << "ignore journal";
+            // qDebug() << Q_FUNC_INFO << event->name;
+            if (QByteArray(event->name).startsWith(".csync") ||
+                    QByteArray(event->name) == ".owncloudsync.log") {
+                // qDebug() << "ignore journal";
             } else {
                 const QString p = _watches[event->wd];
                 _parent->changeDetected(p);
