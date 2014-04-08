@@ -538,7 +538,7 @@ sub getToFileCurl( $$ )
     my $geturl = testDirUrl() . $file;
     print "GETting $geturl to $localFile\n";
 
-    my @args = ("curl", "-u", "$user:$passwd", "$geturl", "-o", "$localFile");
+    my @args = ("curl", "-k", "-u", "$user:$passwd", "$geturl", "-o", "$localFile");
     system( @args );
 }
 
