@@ -80,7 +80,7 @@ bool Utility::writeRandomFile( const QString& fname, int size )
 
 }
 
-QString Utility::formatFingerprint( const QByteArray& fmhash )
+QString Utility::formatFingerprint( const QByteArray& fmhash, bool colonSeparated )
 {
     QByteArray hash;
     int steps = fmhash.length()/2;
@@ -91,7 +91,9 @@ QString Utility::formatFingerprint( const QByteArray& fmhash )
     }
 
     QString fp = QString::fromLatin1( hash.trimmed() );
-    fp.replace(QChar(' '), QChar(':'));
+    if (colonSeparated) {
+        fp.replace(QChar(' '), QChar(':'));
+    }
 
     return fp;
 }

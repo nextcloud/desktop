@@ -46,19 +46,12 @@ QString SslButton::protoToString(QSsl::SslProtocol proto)
     }
 }
 
-static QString addCertDetailsField(const QString &key, const QString &value, bool tt = false)
+static QString addCertDetailsField(const QString &key, const QString &value)
 {
     if (value.isEmpty())
         return QString();
 
-    QString row = QString::fromLatin1("<tr><td style=\"vertical-align: top;\"><b>%1</b></td><td style=\"vertical-align: bottom;\">%2</td></tr>").arg(key);
-
-    if (tt) {
-        row = row.arg(QString::fromLatin1("<tt style=\"font-size: small\">%1</tt>").arg(value));
-    } else {
-        row = row.arg(value);
-    }
-    return row;
+    return QString::fromLatin1("<tr><td style=\"vertical-align: top;\"><b>%1</b></td><td style=\"vertical-align: bottom;\">%2</td></tr>").arg(key).arg(value);
 }
 
 
@@ -80,8 +73,16 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
     QString issuer = QStringList(cert.issuerInfo(QSslCertificate::CommonName)).join(QChar(';'));
     if (issuer.isEmpty())
         issuer = QStringList(cert.issuerInfo(QSslCertificate::OrganizationalUnitName)).join(QChar(';'));
-    QString md5 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Md5).toHex());
-    QString sha1 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
+    QString sha1 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex(), false);
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    QString md5 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Md5).toHex(), false);
+#else
+    QByteArray sha265hash = cert.digest(QCryptographicHash::Sha256).toHex();
+    QString sha256escaped =
+            Utility::escape(Utility::formatFingerprint(sha265hash.left(sha265hash.length()/2), false)) +
+            QLatin1String("<br/>") +
+            Utility::escape(Utility::formatFingerprint(sha265hash.mid(sha265hash.length()/2), false));
+#endif
     QString serial = QString::fromUtf8(cert.serialNumber(), true);
     QString effectiveDate = cert.effectiveDate().date().toString();
     QString expiryDate = cert.expiryDate().date().toString();
@@ -102,7 +103,7 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
     stream << addCertDetailsField(tr("Organizational Unit (OU):"), Utility::escape(ou));
     stream << addCertDetailsField(tr("State/Province:"), Utility::escape(state));
     stream << addCertDetailsField(tr("Country:"), Utility::escape(country));
-    stream << addCertDetailsField(tr("Serial:"), Utility::escape(serial), true);
+    stream << addCertDetailsField(tr("Serial:"), Utility::escape(serial));
     stream << QLatin1String("</table>");
 
     stream << tr("<h3>Issuer</h3>");
@@ -116,8 +117,12 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
     stream << tr("<h3>Fingerprints</h3>");
 
     stream << QLatin1String("<table>");
-    stream << addCertDetailsField(tr("MD 5:"), Utility::escape(md5), true);
-    stream << addCertDetailsField(tr("SHA-1:"), Utility::escape(sha1), true);
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    stream << addCertDetailsField(tr("MD 5:"), Utility::escape(md5));
+#else
+    stream << addCertDetailsField(tr("SHA-256:"), sha256escaped);
+#endif
+    stream << addCertDetailsField(tr("SHA-1:"), Utility::escape(sha1));
     stream << QLatin1String("</table>");
 
     if (userApproved.contains(cert)) {

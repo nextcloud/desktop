@@ -29,7 +29,7 @@ namespace Utility
 {
     void sleep(int sec);
     void usleep(int usec);
-    QString formatFingerprint( const QByteArray& );
+    QString formatFingerprint( const QByteArray&, bool colonSeparated = true );
     void setupFavLink( const QString &folder );
     bool writeRandomFile( const QString& fname, int size = -1);
     QString octetsToString( qint64 octets );
