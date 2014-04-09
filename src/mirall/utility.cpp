@@ -259,11 +259,9 @@ QString Utility::escape(const QString &in)
 
 QString Utility::dataLocation()
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    //  Qt 5's QStandardPaths::writableLocation gives us wrong results (without /data/),
+    //  so we'll have to use the deprecated version for now
     return QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-#else
-    return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-#endif
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
