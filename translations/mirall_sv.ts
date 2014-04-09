@@ -1313,7 +1313,7 @@ Det är inte lämpligt använda den.</translation>
         <location filename="../src/mirall/propagator_legacy.cpp" line="153"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="212"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Lokal fil ändrades under synk, synkar när den har anlänt komplett</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="156"/>
@@ -1346,7 +1346,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="306"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>Inget X-OC-MTime tillägg, ownCloud 5 krävs</translation>
     </message>
 </context>
 <context>
@@ -1868,7 +1868,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>Objektet kunde inte synkas på grund av tidigare fel: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="275"/>
@@ -1888,7 +1888,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="448"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Kan inte initialisera en synk journal. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="541"/>
