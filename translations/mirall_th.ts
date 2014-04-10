@@ -1516,108 +1516,113 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::SslButton</name>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="95"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="96"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="98"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="99"/>
         <source>Common Name (CN):</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="99"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Subject Alternative Names:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="101"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>Organization (O):</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="102"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="103"/>
         <source>Organizational Unit (OU):</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="103"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>State/Province:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="104"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="105"/>
         <source>Country:</source>
         <translation>ประเทศ:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="105"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="106"/>
         <source>Serial:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="108"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="109"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="111"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Issuer:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="112"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="113"/>
         <source>Issued on:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="113"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="114"/>
         <source>Expires on:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="116"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="117"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="119"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="121"/>
         <source>MD 5:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="120"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="123"/>
+        <source>SHA-256:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/sslbutton.cpp" line="125"/>
         <source>SHA-1:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="124"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="129"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="144"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="149"/>
         <source>%1 (self-signed)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="146"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="151"/>
         <source>%1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="177"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="182"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="180"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="185"/>
         <source>Certificate information:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/sslbutton.cpp" line="209"/>
+        <location filename="../src/mirall/sslbutton.cpp" line="214"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
         <translation type="unfinished"/>
@@ -2232,27 +2237,27 @@ It is not advisable to use it.</source>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="114"/>
+        <location filename="../src/mirall/utility.cpp" line="116"/>
         <source>%L1 TB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="117"/>
+        <location filename="../src/mirall/utility.cpp" line="119"/>
         <source>%L1 GB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="120"/>
+        <location filename="../src/mirall/utility.cpp" line="122"/>
         <source>%L1 MB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="123"/>
+        <location filename="../src/mirall/utility.cpp" line="125"/>
         <source>%L1 kB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/utility.cpp" line="126"/>
+        <location filename="../src/mirall/utility.cpp" line="128"/>
         <source>%L1 B</source>
         <translation type="unfinished"/>
     </message>
