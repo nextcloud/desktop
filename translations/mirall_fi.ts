@@ -1041,13 +1041,14 @@ saattaa kysyä lisäoikeuksia toimenpiteen aikana.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>%1-palvelimen asetuksien määritys</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Tämä osoite ei ole turvallinen, koska sitä ei ole salattu.
+Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
@@ -1589,7 +1590,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>

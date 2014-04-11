@@ -1500,12 +1500,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="299"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Erreur de connexion</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="299"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Vous devez vous connecter en tant qu&apos;utilisateur %1</translation>
     </message>
 </context>
 <context>
@@ -1596,7 +1596,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256 :</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
@@ -1873,7 +1873,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>Cet élément n&apos;a pas été synchronisé en raison des erreurs précédentes : %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="275"/>
@@ -1898,7 +1898,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="541"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;ouvrir le journal de synchronisation</translation>
     </message>
 </context>
 <context>
@@ -2299,7 +2299,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Construit à partir de la révision Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; du %3, %4 en utilisant Qt %5.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
