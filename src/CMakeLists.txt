@@ -201,6 +201,8 @@ set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${MIRALL_VERSION}
 	SOVERSION ${MIRALL_SOVERSION}
 )
+set_target_properties( ${synclib_NAME} PROPERTIES
+	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
 
 target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )
 
@@ -426,6 +428,9 @@ if(NOT BUILD_LIBRARIES_ONLY)
   set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
           RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
   )
+  set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
+	  INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
+
   target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
   target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
   target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
@@ -464,10 +469,14 @@ endif()
 set(owncloudcmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 set(OWNCLOUDCMD_SRC owncloudcmd/simplesslerrorhandler.cpp owncloudcmd/owncloudcmd.cpp)
 if(NOT BUILD_LIBRARIES_ONLY)
+
    add_executable(${owncloudcmd_NAME}  ${OWNCLOUDCMD_SRC})
 	qt5_use_modules(${owncloudcmd_NAME} Network Sql)
 	set_target_properties(${owncloudcmd_NAME} PROPERTIES
-		        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+        set_target_properties(${owncloudcmd_NAME} PROPERTIES
+		INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
+
 	target_link_libraries(${owncloudcmd_NAME} ${synclib_NAME})
 endif()
 
