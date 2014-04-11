@@ -180,7 +180,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         break;
 
     default:
-        errStr = tr("An internal error number %1 happend.").arg( (int) err );
+        errStr = tr("An internal error number %1 happened.").arg( (int) err );
     }
 
     return errStr;
