@@ -1863,8 +1863,8 @@ Intente sincronizar estos nuevamente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
-        <source>An internal error number %1 happend.</source>
-        <translation>Error: ocurrió un error del tipo %1.</translation>
+        <source>An internal error number %1 happened.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>

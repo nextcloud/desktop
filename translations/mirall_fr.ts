@@ -1867,8 +1867,8 @@ Il est déconseillé de l&apos;utiliser.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
-        <source>An internal error number %1 happend.</source>
-        <translation>Une erreur interne numéro %1 est survenue.</translation>
+        <source>An internal error number %1 happened.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>

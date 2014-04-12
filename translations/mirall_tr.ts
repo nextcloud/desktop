@@ -508,7 +508,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation>Bir arkiv zaten teskil etmis burda yazilis</translation>
+        <translation>Zaten geçerli girdide yapılandırılmış bir klasör var.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
@@ -528,7 +528,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation>Alias bos olmali. Lutfen bir kelime saglamak onu uzeri yazmak icin </translation>
+        <translation>Takma isim boş olamaz. Lütfen açıklayıcı bir takma isim sağlayın.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
@@ -730,7 +730,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="59"/>
         <source>Log Output</source>
-        <translation>Disari Gidek,</translation>
+        <translation>Çıktıyı Günlüğe Yaz</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="71"/>
@@ -770,7 +770,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="184"/>
         <source>Save log file</source>
-        <translation>Dosya birlemis bellemek. </translation>
+        <translation>Günlük dosyasını kaydet</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="194"/>
@@ -788,7 +788,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logger.cpp" line="156"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt; Dosya %1 &lt;br/&gt; acmak mumkun degil yazmak icin. &lt;br/&gt;&lt;br/&gt;. Dosya acik bellemek mumkun degil &lt;/nobr&gt;. </translation>
+        <translation>&lt;nobr&gt;&apos;%1&apos; dosyası&lt;br/&gt;yazmak üzere açılamadı.&lt;br/&gt;&lt;br/&gt;Günlük çıktısı &lt;b&gt;kaydedilemez&lt;/b&gt;!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1091,7 +1091,7 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;fontu renk&gt; yasik &gt;&gt;dosya yerli zaman. %1 basarle yarati!</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Yerel eşitleme klasörü %1 başarıyla oluşturuldu!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="191"/>
@@ -1116,7 +1116,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="230"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Arkiv simdiki yaratmak %1..</translation>
+        <translation>Yerel eşitleme klasörü %1 oluşturuluyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="234"/>
@@ -1126,7 +1126,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="236"/>
         <source>failed.</source>
-        <translation>basarmadi </translation>
+        <translation>başarısız</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="238"/>
@@ -1157,12 +1157,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="298"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Dosya ucali %!  basarla yapildi. </translation>
+        <translation>%1 uzak klasörü başarıyla oluşturuldu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="300"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Dosya ucali % bile var mi. Bu baglamak synk. icin. </translation>
+        <translation>Uzak klasör %1 zaten mevcut. Eşitlemek için bağlanılıyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="302"/>
@@ -1178,13 +1178,13 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font renk=&apos;kirmizi&apos;&apos;&gt;. Yaratma dosyanin ucaklin belki basarmadi cinku deneyler saglamis hatali. &lt;/font&gt;&lt;b/&gt;. Lutfen geri git, ve deneye kontrol yapin. </translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Uzak klasör oluşturma muhtemelen hatalı kimlik bilgilerinden dolayı başarısız oldu.&lt;/font&gt;&lt;br/&gt;Lütfen geri gidip kimlik bilgilerini doğrulayın.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Dosya ucakli hatale basarmadi &lt;tt%@&lt;/tt&gt;. </translation>
+        <translation>Uzak klasör %1 oluşturma işlemi &lt;tt&gt;%2&lt;/tt&gt; hatası ile başarısız.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="331"/>
@@ -1663,7 +1663,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="170"/>
         <source>with Certificate %1</source>
-        <translation>Deneyle %1</translation>
+        <translation>%1 sertifikası ile</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="178"/>
@@ -1703,17 +1703,17 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="193"/>
         <source>Effective Date: %1</source>
-        <translation>Tarih Etkili :% 1</translation>
+        <translation>Etkili Tarih: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="194"/>
         <source>Expiry Date: %1</source>
-        <translation>Vazgecme Tarih :%1 </translation>
+        <translation>Son Kullanma Tarihi: %1 </translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="198"/>
         <source>Issuer: %1</source>
-        <translation>Cikaran :% 1</translation>
+        <translation>Oluşturan: %1</translation>
     </message>
 </context>
 <context>
@@ -1726,7 +1726,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="90"/>
         <source>CSync failed to create a lock file.</source>
-        <translation>CSynk arkiv kapi yampadi. </translation>
+        <translation>CSync bir kilit dosyası oluşturamadı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="93"/>
@@ -1751,12 +1751,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="108"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation>CSynk sistem arama arkivden olmadi. </translation>
+        <translation>CSync dosya sistemi türünü tespit edemedi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="111"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation>Hata CSynkden icerli kategoriji islemeyi</translation>
+        <translation>CSync dahili ağaçları işlerken bir hata ile karşılaştı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="114"/>
@@ -1791,7 +1791,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="133"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Arkiv uzcakli yazilis olmali. Lutfen gecini uzakli test edin. </translation>
+        <translation>Bir uzak dosya yazılamıyor. Lütfen uzak erişimi denetleyin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="137"/>
@@ -1866,8 +1866,8 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
-        <source>An internal error number %1 happend.</source>
-        <translation>Hata iceri numarali %</translation>
+        <source>An internal error number %1 happened.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
