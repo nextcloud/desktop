@@ -1868,7 +1868,7 @@ Tente sincronizalos de novo.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happened.</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro interno número %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>

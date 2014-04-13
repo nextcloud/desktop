@@ -1341,7 +1341,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="306"/>
         <source>No X-OC-MTime extension,  ownCloud 5 is required</source>
-        <translation type="unfinished"/>
+        <translation>Ei X-OC-MTime-laajennusta,  ownCloud 5 vaaditaan</translation>
     </message>
 </context>
 <context>
@@ -1616,7 +1616,8 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/mirall/sslbutton.cpp" line="182"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Yhteys on salattu, käytössä %1-bittinen %2.
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="185"/>
@@ -1861,7 +1862,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happened.</source>
-        <translation type="unfinished"/>
+        <translation>Ilmeni sisäinen virhe, jonka numero on %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>

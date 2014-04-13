@@ -1594,7 +1594,7 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
@@ -1866,7 +1866,7 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happened.</source>
-        <translation type="unfinished"/>
+        <translation>Um ocorreu um erro interno de número %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>

@@ -1867,7 +1867,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happened.</source>
-        <translation type="unfinished"/>
+        <translation>%1 numaralı bir hata oluştu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
