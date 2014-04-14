@@ -394,7 +394,7 @@ bool CheckServerJob::finished()
             resetTimeout();
             setReply(getRequest(redirectUrl));
             setupConnections(reply());
-            return true;
+            return false;
         }
     }
 
