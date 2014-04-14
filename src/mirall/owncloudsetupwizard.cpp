@@ -138,7 +138,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     CheckServerJob *job = new CheckServerJob(_ocWizard->account(), false, this);
     job->setIgnoreCredentialFailure(true);
     connect(job, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotOwnCloudFoundAuth(QUrl,QVariantMap)));
-    connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
+    connect(job, SIGNAL(instanceNotFound(QNetworkReply*)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
     connect(job, SIGNAL(timeout(const QUrl&)), SLOT(slotNoOwnCloudFoundAuthTimeout(const QUrl&)));
     job->setTimeout(10*1000);
     job->start();

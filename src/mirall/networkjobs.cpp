@@ -332,9 +332,15 @@ bool LsColJob::finished()
 
 /*********************************************************************************************/
 
+namespace {
+const char statusphpC[] = "status.php";
+const char owncloudDirC[] = "owncloud/";
+}
+
 CheckServerJob::CheckServerJob(Account *account, bool followRedirect, QObject *parent)
-    : AbstractNetworkJob(account, QLatin1String("status.php") , parent)
+    : AbstractNetworkJob(account, QLatin1String(statusphpC) , parent)
     , _followRedirects(followRedirect)
+    , _subdirFallback(false)
     , _redirectCount(0)
 {
     setIgnoreCredentialFailure(true);
@@ -392,6 +398,16 @@ bool CheckServerJob::finished()
         }
     }
 
+    // The serverInstalls to /owncloud. Let's try that if the file wasn't found
+    // at the original location
+    if ((reply()->error() == QNetworkReply::ContentNotFoundError) && (!_subdirFallback)) {
+        _subdirFallback = true;
+        setPath(QLatin1String(owncloudDirC)+QLatin1String(statusphpC));
+        start();
+        qDebug() << "Retrying with" << reply()->url();
+        return false;
+    }
+
     bool success = false;
     QVariantMap status = QtJson::parse(QString::fromUtf8(reply()->readAll()), success).toMap();
     // empty or invalid response
@@ -406,6 +422,7 @@ bool CheckServerJob::finished()
         emit instanceFound(reply()->url(), status);
     } else {
         qDebug() << "No proper answer on " << requestedUrl;
+        emit instanceNotFound(reply());
     }
     return true;
 }
