@@ -87,7 +87,7 @@ protected:
     QNetworkReply* headRequest(const QUrl &url);
 
     int maxRedirects() const { return 10; }
-    virtual void finished() = 0;
+    virtual bool finished() = 0;
     QString       _responseTimestamp;
     QElapsedTimer _durationTimer;
     quint64       _duration;
@@ -118,7 +118,7 @@ signals:
     void exists(QNetworkReply*);
 
 private slots:
-    virtual void finished();
+    virtual bool finished();
 };
 
 /**
@@ -134,7 +134,7 @@ signals:
     void directoryListing(const QStringList &items);
 
 private slots:
-    virtual void finished();
+    virtual bool finished();
 };
 
 /**
@@ -152,7 +152,7 @@ signals:
     void result(const QVariantMap &values);
 
 private slots:
-    virtual void finished();
+    virtual bool finished();
 
 private:
     QList<QByteArray> _properties;
@@ -171,7 +171,7 @@ signals:
     void finished(QNetworkReply::NetworkError);
 
 private slots:
-    virtual void finished();
+    virtual bool finished();
 };
 
 /**
@@ -189,14 +189,16 @@ public:
 
 signals:
     void instanceFound(const QUrl&url, const QVariantMap &info);
+    void instanceNotFound(QNetworkReply *reply);
     void timeout(const QUrl&url);
 
 private slots:
-    virtual void finished();
+    virtual bool finished();
     virtual void slotTimeout();
 
 private:
     bool _followRedirects;
+    bool _subdirFallback;
     int _redirectCount;
 };
 
@@ -214,7 +216,7 @@ signals:
     void etagRetreived(const QString &etag);
 
 private slots:
-    virtual void finished();
+    virtual bool finished();
 };
 
 /**
@@ -230,7 +232,8 @@ signals:
     void quotaRetrieved(qint64 totalBytes, qint64 availableBytes);
 
 private slots:
-    virtual void finished();
+    /** Return true if you want the job to be deleted after this slot has finished running. */
+    virtual bool finished();
 };
 
 } // namespace Mirall

@@ -35,7 +35,7 @@ void ShibbolethUserJob::start()
     AbstractNetworkJob::start();
 }
 
-void ShibbolethUserJob::finished()
+bool ShibbolethUserJob::finished()
 {
     bool success = false;
     QVariantMap json = QtJson::parse(QString::fromUtf8(reply()->readAll()), success).toMap();
@@ -43,12 +43,13 @@ void ShibbolethUserJob::finished()
     if (!success || json.isEmpty()) {
         qDebug() << "cloud/user: invalid JSON!";
         emit userFetched(QString());
-        return;
+        return true;
     }
 
     QString user =  json.value("ocs").toMap().value("data").toMap().value("id").toString();
     qDebug() << "cloud/user: " << json << "->" << user;
     emit userFetched(user);
+    return true;
 }
 
 

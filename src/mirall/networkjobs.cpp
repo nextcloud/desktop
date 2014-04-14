@@ -148,7 +148,7 @@ void AbstractNetworkJob::slotFinished()
     _responseTimestamp = QString::fromAscii(_reply->rawHeader("Date"));
     _duration = _durationTimer.elapsed();
 
-    finished();
+    bool discard = finished();
     AbstractCredentials *creds = _account->credentials();
     if (!creds->stillValid(_reply) &&! _ignoreCredentialFailure
             && _account->state() != Account::InvalidCredidential) {
@@ -164,7 +164,9 @@ void AbstractNetworkJob::slotFinished()
             creds->fetch(_account);
         }
     }
-    deleteLater();
+    if (discard) {
+        deleteLater();
+    }
 }
 
 quint64 AbstractNetworkJob::duration()
@@ -228,7 +230,7 @@ void RequestEtagJob::start()
     AbstractNetworkJob::start();
 }
 
-void RequestEtagJob::finished()
+bool RequestEtagJob::finished()
 {
     if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
         // Parse DAV response
@@ -247,6 +249,7 @@ void RequestEtagJob::finished()
         }
         emit etagRetreived(etag);
     }
+    return true;
 }
 
 /*********************************************************************************************/
@@ -265,9 +268,10 @@ void MkColJob::start()
    AbstractNetworkJob::start();
 }
 
-void MkColJob::finished()
+bool MkColJob::finished()
 {
     emit finished(reply()->error());
+    return true;
 }
 
 /*********************************************************************************************/
@@ -297,7 +301,7 @@ void LsColJob::start()
     AbstractNetworkJob::start();
 }
 
-void LsColJob::finished()
+bool LsColJob::finished()
 {
     if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
         // Parse DAV response
@@ -323,6 +327,7 @@ void LsColJob::finished()
         }
         emit directoryListing(folders);
     }
+    return true;
 }
 
 /*********************************************************************************************/
@@ -364,7 +369,7 @@ bool CheckServerJob::installed(const QVariantMap &info)
     return info.value(QLatin1String("installed")).toBool();
 }
 
-void CheckServerJob::finished()
+bool CheckServerJob::finished()
 {
     account()->setSslConfiguration(reply()->sslConfiguration());
 
@@ -383,7 +388,7 @@ void CheckServerJob::finished()
             resetTimeout();
             setReply(getRequest(redirectUrl));
             setupConnections(reply());
-            return;
+            return true;
         }
     }
 
@@ -402,6 +407,7 @@ void CheckServerJob::finished()
     } else {
         qDebug() << "No proper answer on " << requestedUrl;
     }
+    return true;
 }
 
 /*********************************************************************************************/
@@ -451,7 +457,7 @@ QList<QByteArray> PropfindJob::properties() const
     return _properties;
 }
 
-void PropfindJob::finished()
+bool PropfindJob::finished()
 {
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -486,6 +492,7 @@ void PropfindJob::finished()
         qDebug() << "Quota request *not* successful, http result code is" << http_result_code
                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString()  : QLatin1String(""));
     }
+    return true;
 }
 
 /*********************************************************************************************/
@@ -502,9 +509,10 @@ void EntityExistsJob::start()
     AbstractNetworkJob::start();
 }
 
-void EntityExistsJob::finished()
+bool EntityExistsJob::finished()
 {
     emit exists(reply());
+    return true;
 }
 
 /*********************************************************************************************/
@@ -535,7 +543,7 @@ void CheckQuotaJob::start()
     AbstractNetworkJob::start();
 }
 
-void CheckQuotaJob::finished()
+bool CheckQuotaJob::finished()
 {
     if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
         // Parse DAV response
@@ -560,6 +568,7 @@ void CheckQuotaJob::finished()
         qint64 total = quotaUsedBytes + quotaAvailableBytes;
         emit quotaRetrieved(total, quotaUsedBytes);
     }
+    return true;
 }
 
 NetworkJobTimeoutPauser::NetworkJobTimeoutPauser(QNetworkReply *reply)

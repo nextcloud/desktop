@@ -446,7 +446,7 @@ void DetermineAuthTypeJob::start()
     AbstractNetworkJob::start();
 }
 
-void DetermineAuthTypeJob::finished()
+bool DetermineAuthTypeJob::finished()
 {
     QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     qDebug() << Q_FUNC_INFO << redirection.toString();
@@ -472,6 +472,7 @@ void DetermineAuthTypeJob::finished()
             emit authType(WizardCommon::HttpCreds);
         }
     }
+    return true;
 }
 
 ValidateDavAuthJob::ValidateDavAuthJob(Account *account, QObject *parent)
@@ -487,9 +488,10 @@ void ValidateDavAuthJob::start()
     AbstractNetworkJob::start();
 }
 
-void ValidateDavAuthJob::finished()
+bool ValidateDavAuthJob::finished()
 {
     emit authResult(reply());
+    return true;
 }
 
 } // ns Mirall

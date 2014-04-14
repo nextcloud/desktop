@@ -39,7 +39,7 @@ public:
 signals:
     void authResult(QNetworkReply*);
 private slots:
-    void finished();
+    bool finished();
 };
 
 class DetermineAuthTypeJob : public AbstractNetworkJob {
@@ -50,7 +50,7 @@ public:
 signals:
     void authType(WizardCommon::AuthType);
 private slots:
-    void finished();
+    bool finished();
 private:
     int _redirects;
 };

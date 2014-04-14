@@ -36,7 +36,7 @@ signals:
     void tryAgain();
 
 private slots:
-    virtual void finished();
+    virtual bool finished();
 };
 
 

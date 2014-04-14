@@ -62,8 +62,9 @@ public:
 
     virtual void start();
 
-    virtual void finished() {
+    virtual bool finished() {
         emit finishedSignal();
+        return true;
     }
 
 signals:
@@ -110,8 +111,9 @@ public:
       _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume) {}
 
     virtual void start();
-    virtual void finished() {
+    virtual bool finished() {
         emit finishedSignal();
+        return true;
     }
 
     QString errorString() {
