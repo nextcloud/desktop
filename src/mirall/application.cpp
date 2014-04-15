@@ -226,8 +226,9 @@ void Application::slotCheckConnection()
         if (account->state() == Account::InvalidCredidential
                 || account->state() == Account::SignedOut) {
             //Do not try to connect if we are logged out
-            if (!_userTriggeredConnect)
+            if (!_userTriggeredConnect) {
                 return;
+            }
         }
 
         if (_conValidator)
