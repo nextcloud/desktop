@@ -298,7 +298,8 @@ void Folder::bubbleUpSyncResult()
 
     SyncRunFileLog syncFileLog;
 
-    syncFileLog.start(path(),  _engine->stopWatch() );
+    syncFileLog.start(path(), _stopWatch );
+    _stopWatch.reset();
 
     QElapsedTimer timer;
     timer.start();
@@ -626,6 +627,7 @@ void Folder::slotSyncFinished()
     qDebug() << "-> CSync Finished slot with error " << _csyncError << "warn count" << _syncResult.warnCount();
 
     bubbleUpSyncResult();
+    _stopWatch = _engine->stopWatch();
 
     _engine.reset(0);
     // _watcher->setEventsEnabledDelayed(2000);
