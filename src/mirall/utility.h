@@ -77,6 +77,7 @@ namespace Utility
         void start();
         void stop();
         quint64 addLapTime( const QString& lapName );
+        void reset();
 
         // out helpers, return the masured times.
         QDateTime startTime() const;

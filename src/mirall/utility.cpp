@@ -504,6 +504,13 @@ void Utility::StopWatch::stop()
     _timer.invalidate();
 }
 
+void Utility::StopWatch::reset()
+{
+    _timer.invalidate();
+    _startTime.setMSecsSinceEpoch(0);
+    _lapTimes.clear();
+}
+
 quint64 Utility::StopWatch::addLapTime( const QString& lapName )
 {
     if( !_timer.isValid() ) {
