@@ -152,7 +152,8 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantM
                                         .arg(CheckServerJob::versionString(info))
                                         .arg(CheckServerJob::version(info)));
 
-    if (url.path().endsWith("/status.php")) {
+    QString p = url.path();
+    if (p.endsWith("/status.php")) {
         // We might be redirected, update the account
         QUrl redirectedUrl = url;
         redirectedUrl.setPath(url.path().left(url.path().length() - 11));
