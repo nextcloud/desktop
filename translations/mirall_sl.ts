@@ -2347,12 +2347,12 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Napaka</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
         <source>Updated</source>
-        <translation type="unfinished"/>
+        <translation>Posodobljeno</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
@@ -2389,7 +2389,7 @@ Te je treba uskladiti znova.</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="79"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>napaka</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="81"/>

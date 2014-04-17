@@ -2344,12 +2344,12 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
         <source>Updated</source>
-        <translation type="unfinished"/>
+        <translation>Actualizado</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
@@ -2386,7 +2386,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="79"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>erro</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="81"/>

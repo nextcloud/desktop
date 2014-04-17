@@ -2340,12 +2340,12 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Errorea</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
         <source>Updated</source>
-        <translation type="unfinished"/>
+        <translation>Eguneratuta</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>

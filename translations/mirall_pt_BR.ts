@@ -1938,7 +1938,7 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="177"/>
         <source>Disconnected from server</source>
-        <translation type="unfinished"/>
+        <translation>Desconectado do servidor</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="209"/>
@@ -2335,22 +2335,22 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Ignorado</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="45"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao acesso do sistema de arquivos</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
         <source>Updated</source>
-        <translation type="unfinished"/>
+        <translation>Atualizado</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
@@ -2381,24 +2381,24 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="75"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>ignorando</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="79"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>erro</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="81"/>
         <source>updating</source>
-        <translation type="unfinished"/>
+        <translation>atualizando</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="84"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>desconhecido</translation>
     </message>
 </context>
 <context>

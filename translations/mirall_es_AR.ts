@@ -2344,12 +2344,12 @@ Intente sincronizar estos nuevamente.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
         <source>Updated</source>
-        <translation type="unfinished"/>
+        <translation>Actualizado</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
@@ -2386,7 +2386,7 @@ Intente sincronizar estos nuevamente.</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="79"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>error</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="81"/>

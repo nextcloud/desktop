@@ -1940,7 +1940,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="177"/>
         <source>Disconnected from server</source>
-        <translation type="unfinished"/>
+        <translation>Bortkopplad från servern</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="209"/>
@@ -2337,7 +2337,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Ignorerad</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="45"/>
@@ -2347,12 +2347,12 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Fel</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
         <source>Updated</source>
-        <translation type="unfinished"/>
+        <translation>Uppdaterad</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
@@ -2383,18 +2383,18 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="75"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>ignorerar</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="79"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>fel</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="81"/>
         <source>updating</source>
-        <translation type="unfinished"/>
+        <translation>uppdaterar</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="84"/>

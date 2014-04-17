@@ -1934,7 +1934,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="177"/>
         <source>Disconnected from server</source>
-        <translation type="unfinished"/>
+        <translation>Yhteys palvelimeen katkaistu</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="209"/>
@@ -2336,17 +2336,17 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="45"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostojärjestelmän käyttövirhe</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Virhe</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
         <source>Updated</source>
-        <translation type="unfinished"/>
+        <translation>Päivitetty</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
@@ -2383,18 +2383,18 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="79"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>virhe</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="81"/>
         <source>updating</source>
-        <translation type="unfinished"/>
+        <translation>päivitetään</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="84"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>tuntematon</translation>
     </message>
 </context>
 <context>
