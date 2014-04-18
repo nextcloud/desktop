@@ -181,7 +181,6 @@ void PropagateLocalRename::start()
         QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
     }
 
-    _item._instruction = CSYNC_INSTRUCTION_DELETED;
     _propagator->_journal->deleteFileRecord(_item._originalFile);
 
     // store the rename file name in the item.

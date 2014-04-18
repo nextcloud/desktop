@@ -79,12 +79,6 @@ QString SyncRunFileLog::instructionToStr( csync_instructions_e inst )
     case CSYNC_INSTRUCTION_ERROR:
         re = "INST_ERROR";
         break;
-    case CSYNC_INSTRUCTION_DELETED:
-        re = "INST_DELETED";
-        break;
-    case CSYNC_INSTRUCTION_UPDATED:
-        re = "INST_UPDATED";
-        break;
     }
 
     return re;

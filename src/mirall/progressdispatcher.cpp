@@ -33,7 +33,6 @@ QString Progress::asResultString( const SyncFileItem& item)
         } else {
             return QCoreApplication::translate( "progress", "Uploaded");
         }
-    case CSYNC_INSTRUCTION_DELETED:
     case CSYNC_INSTRUCTION_REMOVE:
         return QCoreApplication::translate( "progress", "Deleted");
     case CSYNC_INSTRUCTION_EVAL_RENAME:
@@ -45,8 +44,6 @@ QString Progress::asResultString( const SyncFileItem& item)
         return QCoreApplication::translate( "progress", "Filesystem access error");
     case CSYNC_INSTRUCTION_ERROR:
         return QCoreApplication::translate( "progress", "Error");
-    case CSYNC_INSTRUCTION_UPDATED:
-        return QCoreApplication::translate( "progress", "Updated");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         return QCoreApplication::translate( "progress", "Unknown");
@@ -66,7 +63,6 @@ QString Progress::asActionString( const SyncFileItem &item )
         else
             return QCoreApplication::translate( "progress", "uploading");
     case CSYNC_INSTRUCTION_REMOVE:
-    case CSYNC_INSTRUCTION_DELETED:
         return QCoreApplication::translate( "progress", "deleting");
     case CSYNC_INSTRUCTION_EVAL_RENAME:
     case CSYNC_INSTRUCTION_RENAME:
@@ -77,8 +73,6 @@ QString Progress::asActionString( const SyncFileItem &item )
         return QCoreApplication::translate( "progress", "error");
     case CSYNC_INSTRUCTION_ERROR:
         return QCoreApplication::translate( "progress", "error");
-    case CSYNC_INSTRUCTION_UPDATED:
-        return QCoreApplication::translate( "progress", "updating");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         return QCoreApplication::translate( "progress", "unknown");

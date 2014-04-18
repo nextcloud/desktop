@@ -237,9 +237,18 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         if (type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
                 && c_streq(fs->file_id, tmp->file_id)) {
             /* If both etag and file id are equal for a directory, read all contents from
-             * the database. */
+             * the database.
+             * The comparison of file id ensure that we fetch all the file id when upgrading from
+             * owncloud 5 to owncloud 6.
+             */
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", path);
             ctx->remote.read_from_db = true;
+        }
+
+        if (!c_streq(fs->file_id, tmp->file_id) && ctx->current == REMOTE_REPLICA) {
+            /* file id has changed. Which means we need to update the DB.
+             * (upgrade from owncloud 5 to owncloud 6 for instence) */
+            st->should_update_etag = true;
         }
         st->instruction = CSYNC_INSTRUCTION_NONE;
     } else {

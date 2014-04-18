@@ -97,11 +97,23 @@ csync();
 assertLocalAndRemoteDir( 'fromLocal1', 0);
 assert( ! -e localDir().'remoteToLocal1/rtlX' );
 
-# create a false conflict, only the mtimes are changed, by content are equal.
-printInfo( "Create a false conflict.");
-my $srcFile = 'toremote1/kernelcrash.txt';
-put_to_dir( $srcFile, 'remoteToLocal1' );
+# create twos false conflict, only the mtimes are changed, by content are equal.
+printInfo( "Create two false conflict.");
+put_to_dir( 'toremote1/kernelcrash.txt', 'remoteToLocal1' );
+put_to_dir( 'toremote1/kraft_logo.gif', 'remoteToLocal1' );
+# don't wait so mtime are likely the same on the client and the server.
+system( "touch " . localDir() . "remoteToLocal1/kraft_logo.gif" );
+# wait two second so the mtime are different
 system( "sleep 2 && touch " . localDir() . "remoteToLocal1/kernelcrash.txt" );
+
+
+csync( );
+assertLocalAndRemoteDir( 'fromLocal1', 0);
+
+# The previous sync should have updated the etags, and this should NOT be a conflict
+printInfo( "Update the file again");
+system("echo more data >> " .  localDir() . "remoteToLocal1/kernelcrash.txt");
+system("echo corruption >> " .  localDir() . "remoteToLocal1/kraft_logo.gif");
 csync( );
 assertLocalAndRemoteDir( 'fromLocal1', 0);
 

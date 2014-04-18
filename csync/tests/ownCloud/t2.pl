@@ -80,7 +80,6 @@ assert( $inode == $inode2, "Inode has changed!");
 
 printInfo("Move a file into a sub directory.");
 # now move the file into a sub directory
-$inode = getInode('remoteToLocal1/kernel.txt');
 moveRemoteFile( 'remoteToLocal1/kernel.txt', 'remoteToLocal1/rtl1/');
 
 csync();
@@ -174,6 +173,24 @@ createLocalFile( localDir(). 'remoteToLocal1/rtl2/newRemoteDir/donat.txt', 8021 
 
 csync();
 assertLocalAndRemoteDir( 'remoteToLocal1', 1);
+
+printInfo("simulate a owncloud 5 update by removing all the fileid");
+## simulate a owncloud 5 update by removing all the fileid
+system( "sqlite3 " . localDir() . ".csync_journal.db \"UPDATE metadata SET fileid='';\"");
+#refresh the ids
+csync();
+assertLocalAndRemoteDir( 'remoteToLocal1', 1);
+
+
+printInfo("Move a file from the server");
+$inode = getInode('remoteToLocal1/rtl2/kb1_local_gone.jpg');
+moveRemoteFile( 'remoteToLocal1/rtl2/kb1_local_gone.jpg', 'remoteToLocal1/rtl2/kb1_local_gone2.jpg');
+csync();
+assertLocalAndRemoteDir( 'remoteToLocal1', 1);
+$inode2 = getInode('remoteToLocal1/rtl2/kb1_local_gone2.jpg');
+assert( $inode == $inode2, "Inode has changed 3!");
+
+
 
 cleanup();
 

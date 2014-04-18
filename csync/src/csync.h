@@ -130,10 +130,7 @@ enum csync_instructions_e {
   CSYNC_INSTRUCTION_IGNORE     = 0x00000020,  /* The file is ignored (UPDATE|RECONCILE) */
   CSYNC_INSTRUCTION_SYNC       = 0x00000040,  /* The file need to be pushed to the other remote (RECONCILE) */
   CSYNC_INSTRUCTION_STAT_ERROR = 0x00000080,
-  CSYNC_INSTRUCTION_ERROR      = 0x00000100,
-  /* instructions for the propagator */
-  CSYNC_INSTRUCTION_DELETED    = 0x00000200,
-  CSYNC_INSTRUCTION_UPDATED    = 0x00000400
+  CSYNC_INSTRUCTION_ERROR      = 0x00000100
 };
 
 enum csync_ftw_type_e {

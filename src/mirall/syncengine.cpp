@@ -309,12 +309,12 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     int re = 0;
 
     switch(file->instruction) {
-    case CSYNC_INSTRUCTION_UPDATED:
-        // We need to update the database.
-        _journal->setFileRecord(SyncJournalFileRecord(item, _localPath + item._file));
-        item._instruction = CSYNC_INSTRUCTION_NONE;
-        // fall trough
     case CSYNC_INSTRUCTION_NONE:
+        if (file->should_update_etag && !item._isDirectory) {
+            // Update the database now already  (new fileid or etag)
+            _journal->setFileRecord(SyncJournalFileRecord(item, _localPath + item._file));
+            item._should_update_etag = false;
+        }
         if (item._isDirectory && remote) {
             // Because we want still to update etags of directories
             dir = SyncFileItem::None;
@@ -344,7 +344,6 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_STAT_ERROR:
-    case CSYNC_INSTRUCTION_DELETED:
     default:
         dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
