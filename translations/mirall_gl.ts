@@ -1292,17 +1292,17 @@ Recomendámoslle que non o use.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="221"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="220"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Non é posíbel renomear este cartafol. Non se lle cambiou o nome, mantense o orixinal.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="223"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="222"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Non é posíbel renomear este cartafol. Devólvalle o nome ao compartido.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="238"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="237"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>O ficheiro foi renomeado mais é parte dunha compartición de só lectura. O ficheiro orixinal foi restaurado.</translation>
     </message>
@@ -1891,12 +1891,12 @@ Tente sincronizalos de novo.</translation>
         <translation>O ficheiro conten caracteres incorrectos que non poden sincronizarse entre distintas plataformas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="448"/>
+        <location filename="../src/mirall/syncengine.cpp" line="447"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Non é posíbel iniciar un rexistro de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="541"/>
+        <location filename="../src/mirall/syncengine.cpp" line="540"/>
         <source>Cannot open the sync journal</source>
         <translation>Non foi posíbel abrir o rexistro de sincronización</translation>
     </message>
@@ -2325,80 +2325,70 @@ Tente sincronizalos de novo.</translation>
         <translation>Enviado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="38"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
         <source>Deleted</source>
         <translation>Eliminado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="41"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>Moved to %1</source>
         <translation>Movido a %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="42"/>
         <source>Ignored</source>
         <translation>Ignorado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="45"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="44"/>
         <source>Filesystem access error</source>
         <translation>Produciuse un erro de acceso ao sistema de ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="46"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
-        <source>Updated</source>
-        <translation>Actualizado</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="55"/>
         <source>Unknown</source>
         <translation>Descoñecido</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <source>downloading</source>
         <translation>descargando</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="67"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="64"/>
         <source>uploading</source>
         <translation>enviando</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="70"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="66"/>
         <source>deleting</source>
         <translation>eliminando</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="69"/>
         <source>moving</source>
         <translation>movendo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="75"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
         <source>ignoring</source>
         <translation>ignorando</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="79"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="75"/>
         <source>error</source>
         <translation>erro</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="81"/>
-        <source>updating</source>
-        <translation>actualizando</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="84"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="78"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>unknown</source>
         <translation>descoñecido</translation>
     </message>

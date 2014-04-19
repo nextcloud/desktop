@@ -1291,17 +1291,17 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="221"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="220"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Bu klasörün adı değiştirilmemelidir. Özgün adına geri dönüştürüldü.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="223"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="222"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Bu klasörün adı değiştirilmemelidir. Lütfen Paylaşılan olarak geri adlandırın.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="238"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="237"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Dosya adlandırıldı ancak salt okunur paylaşımın bir parçası. Özgün dosya geri yüklendi.</translation>
     </message>
@@ -1890,12 +1890,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
         <translation>Dosya, çapraz platform arasında eşitlenemeyecek karakterler içeriyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="448"/>
+        <location filename="../src/mirall/syncengine.cpp" line="447"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Bir eşitleme günlüğü başlatılamadı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="541"/>
+        <location filename="../src/mirall/syncengine.cpp" line="540"/>
         <source>Cannot open the sync journal</source>
         <translation>Eşitleme günlüğü açılamıyor</translation>
     </message>
@@ -2324,80 +2324,70 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
         <translation>Yüklendi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="38"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
         <source>Deleted</source>
         <translation>Silindi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="41"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>Moved to %1</source>
         <translation>%1 konumuna taşındı</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="43"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="42"/>
         <source>Ignored</source>
         <translation>Yoksayıldı</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="45"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="44"/>
         <source>Filesystem access error</source>
         <translation>Dosya sistemi erişim hatası</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="47"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="46"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="49"/>
-        <source>Updated</source>
-        <translation>Güncellendi</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="52"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="55"/>
         <source>Unknown</source>
         <translation>Bilinmeyen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="65"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <source>downloading</source>
         <translation>indiriliyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="67"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="64"/>
         <source>uploading</source>
         <translation>yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="70"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="66"/>
         <source>deleting</source>
         <translation>siliniyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="69"/>
         <source>moving</source>
         <translation>taşınıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="75"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
         <source>ignoring</source>
         <translation>yoksayılıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="77"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="79"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="75"/>
         <source>error</source>
         <translation>hata</translation>
     </message>
     <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="81"/>
-        <source>updating</source>
-        <translation>güncelleniyor</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="84"/>
-        <location filename="../src/mirall/progressdispatcher.cpp" line="86"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="78"/>
+        <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>unknown</source>
         <translation>bilinmiyor</translation>
     </message>
