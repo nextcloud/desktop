@@ -18,6 +18,7 @@
 #include <QApplication>
 #include <QPointer>
 #include <QQueue>
+#include <QTimer>
 
 #include "qtsingleapplication.h"
 
@@ -102,6 +103,8 @@ private:
     bool    _userTriggeredConnect;
 
     ClientProxy _proxy;
+
+    QTimer _checkConnectionTimer;
 
     friend class ownCloudGui; // for _startupNetworkError
 };

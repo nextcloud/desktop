@@ -139,6 +139,10 @@ Application::Application(int &argc, char **argv) :
             this, SLOT(slotAccountChanged(Account*,Account*)));
 
     // startup procedure.
+    connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
+    _checkConnectionTimer.setInterval(32 * 1000); // check for connection every 32 seconds.
+    _checkConnectionTimer.start();
+    // Also check immediatly
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
 
     if( cfg.skipUpdateCheck() ) {
@@ -270,6 +274,8 @@ void Application::slotToggleFolderman(int state)
         folderMan->slotScheduleAllFolders();
         break;
     case Account::Disconnected:
+        _checkConnectionTimer.start();
+        // fall through
     case Account::SignedOut:
     case Account::InvalidCredidential:
         folderMan->setSyncEnabled(false);
@@ -290,6 +296,7 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         folderMan->setSyncEnabled(true);
         // queue up the sync for all folders.
         folderMan->slotScheduleAllFolders();
+        _checkConnectionTimer.stop();
     } else {
         // if we have problems here, it's unlikely that syncing will work.
         FolderMan::instance()->setSyncEnabled(false);
@@ -299,7 +306,6 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
         if (_userTriggeredConnect) {
             _userTriggeredConnect = false;
         }
-        QTimer::singleShot(30*1000, this, SLOT(slotCheckConnection()));
     }
     _gui->startupConnected( (status == ConnectionValidator::Connected), startupFails);
 
