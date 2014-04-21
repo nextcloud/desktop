@@ -1084,11 +1084,6 @@ Recomendámoslle que non o use.</translation>
         <translation>Non foi posíbel renomear o cartafol</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
-        <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program.Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Non é posíbel retirar ou facer copias de seguranza do cartafol ou dun ficheiro que estea aberto noutro programa. Peche o cartafol ou o ficheiro e prema en tentar de novo ou cancele o proceso.</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
@@ -1201,6 +1196,11 @@ Recomendámoslle que non o use.</translation>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="343"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Non foi posíbel estabelecer a conexión con %1. Compróbeo de novo.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
+        <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

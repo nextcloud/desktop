@@ -1084,11 +1084,6 @@ Nedoporučuje se jí používat.</translation>
         <translation>Přejmenování složky selhalo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
-        <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program.Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Nedaří se přesunout a zazálohovat složku, protože složka nebo soubor v ní je právě používána jiným programem. Ukončete práci s touto složkou nebo souborem a zkuste to znovu nebo ukončete nastavení.</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
@@ -1201,6 +1196,11 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="343"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Spojení s %1 nelze navázat. Prosím zkuste to znovu.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
+        <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -1083,11 +1083,6 @@ Kullanmanız önerilmez.</translation>
         <translation>Klasör adlandırma başarısız</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
-        <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program.Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Klasör veya içerisindeki bir dosya farklı bir program içerisinde açık olduğundan kaldırma ve yedekleme işlemi yapılamıyor. Lütfen klasör veya dosyayı kapatıp yeniden deneyin veya kurulumu iptal edin.</translation>
-    </message>
-    <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
@@ -1116,7 +1111,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="230"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Yerel eşitleme klasörü %1 oluşturuluyor.</translation>
+        <translation>Yerel eşitleme klasörü %1 oluşturuluyor...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="234"/>
@@ -1126,7 +1121,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="236"/>
         <source>failed.</source>
-        <translation>başarısız</translation>
+        <translation>başarısız.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="238"/>
@@ -1200,6 +1195,11 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="343"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>%1 bağlantısı kurulamadı. Lütfen tekrar denetleyin.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
+        <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2009,7 +2009,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
         <source>Quit %1</source>
-        <translation>%1&apos;tan Çık</translation>
+        <translation>%1&apos;tan çık</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="364"/>
@@ -2029,7 +2029,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="381"/>
         <source>%1% of %2 in use</source>
-        <translation>%2&apos;ın %%1 kısmı kullanımda</translation>
+        <translation>%2&apos;ın %&amp;#8203;%1 kısmı kullanımda</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="393"/>
