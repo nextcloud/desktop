@@ -241,6 +241,10 @@ void AccountSettings::slotButtonsSetEnabled()
 void AccountSettings::setGeneralErrors( const QStringList& errors )
 {
     _generalErrors = errors;
+    if (_account) {
+        // this will update the message
+        slotAccountStateChanged(_account->state());
+    }
 }
 
 void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
@@ -380,6 +384,7 @@ void AccountSettings::showConnectionLabel( const QString& message, const QString
     if( _generalErrors.isEmpty() ) {
         ui->connectLabel->setText( message );
         ui->connectLabel->setToolTip(tooltip);
+        ui->connectLabel->setStyleSheet(QString());
     } else {
         const QString msg = _generalErrors.join(QLatin1String("\n"));
         ui->connectLabel->setText( msg );

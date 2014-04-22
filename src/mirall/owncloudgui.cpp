@@ -161,6 +161,8 @@ void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
     }
 
     _startupFails = fails; // store that for the settings dialog once it appears.
+    if( !_settingsDialog.isNull() )
+        _settingsDialog->setGeneralErrors( _startupFails );
 
 }
 
