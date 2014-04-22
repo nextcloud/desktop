@@ -101,6 +101,7 @@ class GETFileJob : public AbstractNetworkJob {
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
     QByteArray _expectedEtagForResume;
+    SyncFileItem::Status _errorStatus;
 public:
 
     // DOES NOT take owncership of the device.
@@ -108,7 +109,8 @@ public:
                         const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
                         QObject* parent = 0)
     : AbstractNetworkJob(account, path, parent),
-      _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume) {}
+      _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume),
+      _errorStatus(SyncFileItem::NoStatus) {}
 
     virtual void start();
     virtual bool finished() {
@@ -119,6 +121,8 @@ public:
     QString errorString() {
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;
     };
+
+    SyncFileItem::Status errorStatus() { return _errorStatus; }
 
 signals:
     void finishedSignal();

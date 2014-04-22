@@ -358,17 +358,25 @@ void GETFileJob::start() {
 
 void GETFileJob::slotMetaDataChanged()
 {
+    qDebug() << Q_FUNC_INFO << reply()->error() << reply()->errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    if (reply()->error() != QNetworkReply::NoError ) {
+        // We will handle the error when the job is finished.
+        return;
+    }
+
     QByteArray etag = parseEtag(reply()->rawHeader("Etag"));
 
     if (etag.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid";
         _errorString = tr("No E-Tag received from server, check Proxy/Gateway");
+        _errorStatus = SyncFileItem::NormalError;
         reply()->abort();
         return;
     } else if (!_expectedEtagForResume.isEmpty() && _expectedEtagForResume != etag) {
         qDebug() << Q_FUNC_INFO <<  "We received a different E-Tag for resuming!"
                 << _expectedEtagForResume << "vs" << etag;
         _errorString = tr("We received a different E-Tag for resuming. Retrying next time.");
+        _errorStatus = SyncFileItem::NormalError;
         reply()->abort();
         return;
     }
@@ -383,6 +391,7 @@ void GETFileJob::slotReadyRead()
         qint64 r = reply()->read(buffer.data(), bufferSize);
         if (r < 0) {
             _errorString = reply()->errorString();
+            _errorStatus = SyncFileItem::NormalError;
             qDebug() << "Error while reading from device: " << _errorString;
             reply()->abort();
             return;
@@ -391,6 +400,7 @@ void GETFileJob::slotReadyRead()
         qint64 w = _device->write(buffer.constData(), r);
         if (w != r) {
             _errorString = _device->errorString();
+            _errorStatus = SyncFileItem::NormalError;
             qDebug() << "Error while writing to file" << w << r <<  _errorString;
             reply()->abort();
             return;
@@ -497,7 +507,11 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         }
         _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         _propagator->_activeJobs--;
-        done(classifyError(err, _item._httpErrorCode), job->errorString());
+        SyncFileItem::Status status = job->errorStatus();
+        if (status == SyncFileItem::NoStatus) {
+            status = classifyError(err, _item._httpErrorCode);
+        }
+        done(status, job->errorString());
         return;
     }
 
