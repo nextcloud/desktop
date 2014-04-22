@@ -1200,7 +1200,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel retirar e facer copia de seguranza do cartafol, xa que o cartafol ou un ficheiro está aberto noutro programa Peche o cartafol ou o ficheiro e tenteo de novo, ou cancele a acción.</translation>
     </message>
 </context>
 <context>

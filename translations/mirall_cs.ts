@@ -1200,7 +1200,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Nelze odstranit a zazálohovat adresář protože adresář nebo soubor je otevřen v jiném programu. Prosím zavřete adresář nebo soubor a zkuste znovu nebo zrušte akci.</translation>
     </message>
 </context>
 <context>
@@ -1869,7 +1869,7 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happened.</source>
-        <translation type="unfinished"/>
+        <translation>Nastala vnitřní chyba číslo %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
@@ -1941,7 +1941,7 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="177"/>
         <source>Disconnected from server</source>
-        <translation type="unfinished"/>
+        <translation>Odpojen od serveru</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="209"/>
@@ -2338,12 +2338,12 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="42"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Ignorováno</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="44"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba přístupu k souborovému systému</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="46"/>
@@ -2379,7 +2379,7 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>ignoruji</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
@@ -2391,7 +2391,7 @@ Zkuste provést novou synchronizaci.
         <location filename="../src/mirall/progressdispatcher.cpp" line="78"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>neznámý</translation>
     </message>
 </context>
 <context>

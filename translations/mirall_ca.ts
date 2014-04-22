@@ -211,12 +211,12 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Es requereix autenticació</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Introduir nom d&apos;usuari i paraula de pas per &apos;%1&apos; a %2</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
@@ -288,36 +288,36 @@
         <location filename="../src/mirall/folder.cpp" line="399"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 i %2 altres fitxers s&apos;han esborrat</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="401"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha esborrat &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="406"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 i %2 altres fitxers s&apos;han descarregat.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="408"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha descarregat %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="413"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 i %2 altres fitxer(s) s&apos;han actualitzat.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="415"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha actualitzat %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="420"/>
@@ -1198,7 +1198,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>No es pot esborrar i restaurar la carpeta perquè una carpeta o un fitxer de dins està obert en un altre programa. Tanqueu la carpeta o el fitxer i intenteu-ho de nou o cancel·leu la configuració.</translation>
     </message>
 </context>
 <context>
@@ -1334,7 +1334,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="265"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer local ha canviat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="275"/>
@@ -1497,12 +1497,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="299"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Error d&apos;accés</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="299"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Cal identificar-se com a usuari %1</translation>
     </message>
 </context>
 <context>
@@ -1593,7 +1593,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
@@ -1864,12 +1864,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>An internal error number %1 happened.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït l&apos;error intern número %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="241"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;element no s&apos;ha sincronitzat degut a errors previs: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="275"/>
@@ -1894,7 +1894,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="540"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>No es pot obrir el diari de sincronització</translation>
     </message>
 </context>
 <context>
@@ -1936,7 +1936,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="177"/>
         <source>Disconnected from server</source>
-        <translation type="unfinished"/>
+        <translation>Desconnectat del servidor</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="209"/>
@@ -2333,12 +2333,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="42"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Ignorat</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="44"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Error d&apos;accés al sistema de fitxers</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="46"/>
@@ -2374,7 +2374,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>ignorant</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
@@ -2386,7 +2386,7 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="78"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>desconegut</translation>
     </message>
 </context>
 <context>

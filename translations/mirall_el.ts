@@ -1158,7 +1158,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="300"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Ο απομακρυσμένος φάκελος %1 υπάρχει, ήδη. Πραγματοποιείτε σύνδεση για ενημέρωση. </translation>
+        <translation>Ο απομακρυσμένος φάκελος %1 υπάρχει ήδη. Πραγματοποιείται σύνδεση για ενημέρωση. </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="302"/>
