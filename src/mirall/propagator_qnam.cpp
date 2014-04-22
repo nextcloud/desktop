@@ -524,6 +524,20 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     downloadFinished();
 }
 
+QString makeConflictFileName(QString &fn, QDateTime dt)
+{
+    QString conflictFileName(fn);
+    // Add _conflict-XXXX  before the extention.
+    int dotLocation = conflictFileName.lastIndexOf('.');
+    // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+    if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
+        dotLocation = conflictFileName.size();
+    }
+    QString timeString = dt.toString("yyyyMMdd-hhmmss");
+    conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+    return conflictFileName;
+}
+
 void PropagateDownloadFileQNAM::downloadFinished()
 {
 
@@ -535,15 +549,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
     //In case of conflict, make a backup of the old file
     if (isConflict) {
         QFile f(fn);
-        QString conflictFileName(fn);
-        // Add _conflict-XXXX  before the extention.
-        int dotLocation = conflictFileName.lastIndexOf('.');
-        // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-        if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
-            dotLocation = conflictFileName.size();
-        }
-        QString timeString = Utility::qDateTimeFromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss");
-        conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+        QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item._modtime));
         if (!f.rename(conflictFileName)) {
             //If the rename fails, don't replace it.
             done(SyncFileItem::NormalError, f.errorString());
