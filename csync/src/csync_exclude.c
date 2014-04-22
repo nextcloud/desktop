@@ -144,6 +144,7 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
   char *bname = NULL;
   char *dname = NULL;
   char *prev_dname = NULL;
+  char *conflict = NULL;
   int rc = -1;
   CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
   CSYNC_EXCLUDE_TYPE type  = CSYNC_NOT_EXCLUDED;
@@ -198,6 +199,19 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
       SAFE_FREE(bname);
       SAFE_FREE(dname);
       goto out;
+  }
+
+  if (getenv("CSYNC_CONFLICT_FILE_USERNAME")) {
+      asprintf(&conflict, "*_conflict_%s-*", getenv("CSYNC_CONFLICT_FILE_USERNAME"));
+      rc = csync_fnmatch(conflict, path, 0);
+      if (rc == 0) {
+          match = CSYNC_FILE_SILENTLY_EXCLUDED;
+          SAFE_FREE(conflict);
+          SAFE_FREE(bname);
+          SAFE_FREE(dname);
+          goto out;
+      }
+      SAFE_FREE(conflict);
   }
 
   SAFE_FREE(bname);
