@@ -47,7 +47,7 @@ QString ownCloudTheme::about() const
     const QString gitSha1(QLatin1String(GIT_SHA1));
     devString = QCoreApplication::translate("ownCloudTheme::about()",
                    "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
-                   " on %3, %4 using Qt %5.</small><p>")
+                   " on %3, %4 using Qt %5.</small></p>")
             .arg(githubPrefix+gitSha1).arg(gitSha1.left(6))
             .arg(__DATE__).arg(__TIME__)
             .arg(QT_VERSION_STR);
