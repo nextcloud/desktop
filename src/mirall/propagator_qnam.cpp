@@ -524,7 +524,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     downloadFinished();
 }
 
-QString makeConflictFileName(QString &fn, QDateTime dt)
+QString makeConflictFileName(const QString &fn, const QDateTime &dt)
 {
     QString conflictFileName(fn);
     // Add _conflict-XXXX  before the extention.

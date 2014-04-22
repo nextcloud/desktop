@@ -437,7 +437,7 @@ void PropagateDownloadFileLegacy::notify_status_cb(void* userdata, ne_session_st
     }
 }
 
-extern QString makeConflictFileName(QString &fn, QDateTime dt); // _qnam.cpp
+extern QString makeConflictFileName(const QString &fn, const QDateTime &dt); // _qnam.cpp
 
 void PropagateDownloadFileLegacy::start()
 {
