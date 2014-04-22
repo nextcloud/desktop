@@ -31,7 +31,7 @@ HINTS
 
 find_library(NEON_LIBRARIES
 NAMES
-    neon
+    neon neon-27
 HINTS
     ${_NEON_LIBDIR}
     ${CMAKE_INSTALL_LIBDIR}
