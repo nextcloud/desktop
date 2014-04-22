@@ -143,7 +143,8 @@ int FolderMan::setupFolders()
   unloadAllFolders();
 
   QDir dir( _folderConfigPath );
-  dir.setFilter(QDir::Files);
+  //We need to include hidden files just in case the alias starts with '.'
+  dir.setFilter(QDir::Files | QDir::Hidden);
   QStringList list = dir.entryList();
 
   foreach ( const QString& alias, list ) {
