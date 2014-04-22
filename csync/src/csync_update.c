@@ -269,7 +269,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
             if (tmp && tmp->inode == fs->inode && tmp_vio_type == fs->type
                     && (tmp->modtime == fs->mtime || fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)) {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "inodes: %" PRId64 " <-> %" PRId64, (uint64_t) tmp->inode, (uint64_t) fs->inode);
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
                 /* inode found so the file has been renamed */
                 st->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
