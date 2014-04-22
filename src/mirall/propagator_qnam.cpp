@@ -534,7 +534,14 @@ QString makeConflictFileName(QString &fn, QDateTime dt)
         dotLocation = conflictFileName.size();
     }
     QString timeString = dt.toString("yyyyMMdd-hhmmss");
-    conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+
+    // Additional marker
+    QByteArray conflictFileUserName = qgetenv("CSYNC_CONFLICT_FILE_USERNAME");
+    if (conflictFileUserName.isEmpty())
+        conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+    else
+        conflictFileName.insert(dotLocation, "_conflict_" + QString::fromUtf8(conflictFileUserName)  + "-" + timeString);
+
     return conflictFileName;
 }
 
