@@ -68,6 +68,7 @@ int getauth(const char *prompt,
 }
 
 const char userC[] = "user";
+const char authenticationFailedC[] = "owncloud-authentication-failed";
 
 } // ns
 
@@ -172,7 +173,8 @@ bool TokenCredentials::stillValid(QNetworkReply *reply)
 {
     return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
             // returned if user or password is incorrect
-            && (reply->error() != QNetworkReply::OperationCanceledError));
+            && (reply->error() != QNetworkReply::OperationCanceledError
+                || !reply->property(authenticationFailedC).toBool()));
 }
 
 QString TokenCredentials::queryPassword(bool *ok)
@@ -209,6 +211,7 @@ void TokenCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* 
     // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
     // those credentials were invalid and we terminate.
     qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
+    reply->setProperty(authenticationFailedC, true);
     reply->close();
 }
 
