@@ -24,6 +24,7 @@
 #include <QUrl>
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
+#include <QDesktopServices>
 #endif
 #include <QDebug>
 #include <QProcess>
@@ -32,9 +33,6 @@
 #include <QSysInfo>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#ifndef TOKEN_AUTH_ONLY
-#include <QDesktopServices>
-#endif
 #include <QTextDocument>
 #else
 #include <QStandardPaths>
