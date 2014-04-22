@@ -149,7 +149,6 @@ int FolderMan::setupFolders()
   foreach ( const QString& alias, list ) {
     Folder *f = setupFolderFromConfigFile( alias );
     if( f ) {
-        registerFolderMonitor(f);
         slotScheduleSync(alias);
         emit( folderSyncStateChange( f->alias() ) );
     }
@@ -307,6 +306,8 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
 
     _folderChangeSignalMapper->setMapping( folder, folder->alias() );
+
+    registerFolderMonitor(folder);
     return folder;
 }
 
