@@ -31,7 +31,7 @@ static void setupFavLink_private(const QString &folder) {
 // can be replaces for qt5 with QStandardPaths
 QString getUserAutostartDir_private()
 {
-    QString config = QLatin1String(qgetenv("XDG_CONFIG_HOME"));
+    QString config = QFile::decodeName(qgetenv("XDG_CONFIG_HOME"));
 
     if (config.isEmpty()) {
         config = QDir::homePath()+QLatin1String("/.config");
