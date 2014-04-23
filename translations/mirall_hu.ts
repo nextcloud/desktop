@@ -124,54 +124,54 @@
         <translation>Folytatás</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="313"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="317"/>
         <source>Confirm Folder Remove</source>
         <translation>Könyvtár törlésének megerősítése</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="314"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="318"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="350"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="354"/>
         <source>Confirm Folder Reset</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="351"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="355"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="614"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="619"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="617"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="622"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="712"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="717"/>
         <source>%1 (%3%) of %2 server space in use.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="751"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="756"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="758"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="763"/>
         <source>No %1 connection configured.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="461"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="466"/>
         <source>Sync Running</source>
         <translation>Szinkronizálás fut</translation>
     </message>
@@ -181,27 +181,27 @@
         <translation>Nincs beállított kapcsolat.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="462"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="467"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="744"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="749"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="626"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="631"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="747"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="752"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="716"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="721"/>
         <source>Currently there is no storage usage information available.</source>
         <translation type="unfinished"/>
     </message>
@@ -387,57 +387,57 @@ Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="747"/>
+        <location filename="../src/mirall/folderman.cpp" line="749"/>
         <source>Undefined State.</source>
         <translation>Ismeretlen állapot.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="750"/>
+        <location filename="../src/mirall/folderman.cpp" line="752"/>
         <source>Waits to start syncing.</source>
         <translation>Várakozás a szinkronizálás elindítására.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="753"/>
+        <location filename="../src/mirall/folderman.cpp" line="755"/>
         <source>Preparing for sync.</source>
         <translation>Előkészítés szinkronizációhoz.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="756"/>
+        <location filename="../src/mirall/folderman.cpp" line="758"/>
         <source>Sync is running.</source>
         <translation>Szinkronizálás fut.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="759"/>
+        <location filename="../src/mirall/folderman.cpp" line="761"/>
         <source>Server is currently not available.</source>
         <translation>A kiszolgáló jelenleg nem érhető el.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="762"/>
+        <location filename="../src/mirall/folderman.cpp" line="764"/>
         <source>Last Sync was successful.</source>
         <translation>Legutolsó szinkronizálás sikeres volt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="767"/>
+        <location filename="../src/mirall/folderman.cpp" line="769"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="770"/>
+        <location filename="../src/mirall/folderman.cpp" line="772"/>
         <source>Setup Error.</source>
         <translation>Beállítás hiba.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="773"/>
+        <location filename="../src/mirall/folderman.cpp" line="775"/>
         <source>User Abort.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="776"/>
+        <location filename="../src/mirall/folderman.cpp" line="778"/>
         <source>Sync is paused.</source>
         <translation>Szinkronizálás megállítva.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="782"/>
+        <location filename="../src/mirall/folderman.cpp" line="784"/>
         <source>%1 (Sync is paused)</source>
         <translation type="unfinished"/>
     </message>
@@ -1072,18 +1072,18 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="356"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
         <source>Folder rename failed</source>
         <translation>A mappa átnevezése nem sikerült</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="411"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="420"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="412"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="421"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Helyi %1 szinkronizációs mappa sikeresen létrehozva!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="191"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="192"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Próbál kapcsolódni az %1-hoz: %2...</translation>
     </message>
@@ -1093,105 +1093,105 @@ It is not advisable to use it.</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Sikeresen csatlakozott az %1-hoz: %2 verziószám %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="214"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="215"/>
         <source>Error: Wrong credentials.</source>
         <translation>Hiba: rossz azonosítási adatok</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="228"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="229"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>A helyi %1 mappa már létezik, állítsa be a szinkronizálódását.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="230"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="231"/>
         <source>Creating local sync folder %1... </source>
         <translation>Helyi %1 szinkronizációs mappa létrehozása...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="234"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="235"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="236"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="237"/>
         <source>failed.</source>
         <translation>  sikertelen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="238"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="239"/>
         <source>Could not create local folder %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="172"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="181"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="263"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="264"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="269"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="270"/>
         <source>Error: %1</source>
         <translation>Hiba: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="283"/>
         <source>creating folder on ownCloud: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="298"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="299"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>%1 távoli nappa sikeresen létrehozva.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="300"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="301"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>A %1 távoli mappa már létezik. Csatlakoztassa a szinkronizációhoz.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="302"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="304"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="303"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="305"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>A könyvtár létrehozásakor keletkezett HTTP hibakód %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="306"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="307"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="309"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="310"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;A távoli mappa létrehozása sikertelen, valószínűleg mivel hibásak a megdott hitelesítési adatok.&lt;/font&gt;&lt;br/&gt;Lépjen vissza és ellenőrizze a belépési adatokat.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="314"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="316"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>A távoli %1 mappa létrehozása nem sikerült. Hibaüzenet: &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="331"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="332"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>A szinkronizációs kapcsolat a %1 és a %2 távoli mappa között létrejött.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="336"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="337"/>
         <source>Successfully connected to %1!</source>
         <translation>Sikeresen csatlakozva: %1!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="343"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="344"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>A kapcsolat a %1 kiszolgálóhoz sikertelen. Ellenőrizze újra.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="357"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation type="unfinished"/>
     </message>
@@ -1923,122 +1923,122 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::ownCloudGui</name>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="172"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="174"/>
         <source>Please sign in</source>
         <translation>Belépés szükséges</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="177"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="179"/>
         <source>Disconnected from server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="209"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="211"/>
         <source>Folder %1: %2</source>
         <translation>Mappa %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="215"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="217"/>
         <source>No sync folders configured.</source>
         <translation>Nincsenek megadva szinkronizálandó mappák.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="240"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="242"/>
         <source>None.</source>
         <translation>Nincs</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="244"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="246"/>
         <source>Recent Changes</source>
         <translation>Legutóbbi változások</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="261"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="263"/>
         <source>Open %1 folder</source>
         <translation>%1 mappa megnyitása</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="271"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="273"/>
         <source>Managed Folders:</source>
         <translation>Kezelt mappák:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="274"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="276"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="347"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="349"/>
         <source>Open %1 in browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="349"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="351"/>
         <source>Calculating quota...</source>
         <translation>Kvóta kiszámítása...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="351"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="353"/>
         <source>Unknown status</source>
         <translation>Ismeretlen állapot</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="355"/>
         <source>Settings...</source>
         <translation>Beállítások...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="354"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="356"/>
         <source>Details...</source>
         <translation>Részletek...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="359"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
         <source>Help</source>
         <translation>Súgó</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
         <source>Quit %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="364"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="366"/>
         <source>Sign in...</source>
         <translation>Belépés...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="366"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="368"/>
         <source>Sign out</source>
         <translation>Kilépés</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="374"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="376"/>
         <source>Quota n/a</source>
         <translation>Kvóta n/a</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="381"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="383"/>
         <source>%1% of %2 in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="393"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
         <source>No items synced recently</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="411"/>
         <source>Syncing %1 of %2 (%3 of %4)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="424"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="426"/>
         <source>%1 (%2, %3)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="453"/>
         <source>Up to date</source>
         <translation>Frissítve</translation>
     </message>
@@ -2293,7 +2293,7 @@ It is not advisable to use it.</source>
     <name>ownCloudTheme::about()</name>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
-        <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;p&gt;</source>
+        <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
