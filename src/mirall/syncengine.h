@@ -39,7 +39,7 @@ class SyncJournalDb;
 
 class OwncloudPropagator;
 
-void csyncLogCatcher(int /*verbosity*/,
+void OWNCLOUDSYNC_EXPORT csyncLogCatcher(int /*verbosity*/,
                      const char */*function*/,
                      const char *buffer,
                      void */*userdata*/);
