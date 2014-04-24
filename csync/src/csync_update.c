@@ -79,6 +79,26 @@ static uint64_t _hash_of_file(CSYNC *ctx, const char *file) {
   return h;
 }
 
+#ifdef NO_RENAME_EXTENSION
+/* Return true if the two path have the same extension. false otherwise. */
+static bool _csync_sameextension(const char *p1, const char *p2) {
+    /* Find pointer to the extensions */
+    const char *e1 = strrchr(p1, '.');
+    const char *e2 = strrchr(p2, '.');
+
+    /* If the found extension contains a '/', it is because the . was in the folder name
+     *            => no extensions */
+    if (e1 && strchr(e1, '/')) e1 = NULL;
+    if (e2 && strchr(e2, '/')) e2 = NULL;
+
+    /* If none have extension, it is the same extension */
+    if (!e1 && !e2)
+        return true;
+
+    /* c_streq takes care of the rest */
+    return c_streq(e1, e2);
+}
+#endif
 
 static int _csync_detect_update(CSYNC *ctx, const char *file,
     const csync_vio_file_stat_t *fs, const int type) {
@@ -268,7 +288,11 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             }
 
             if (tmp && tmp->inode == fs->inode && tmp_vio_type == fs->type
-                    && (tmp->modtime == fs->mtime || fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)) {
+                    && (tmp->modtime == fs->mtime || fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)
+#ifdef NO_RENAME_EXTENSION
+                    && _csync_sameextension(tmp->path, path)
+#endif
+               ) {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
                 /* inode found so the file has been renamed */
                 st->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
