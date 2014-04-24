@@ -44,7 +44,7 @@ void csyncLogCatcher(int /*verbosity*/,
                      const char *buffer,
                      void */*userdata*/);
 
-class SyncEngine : public QObject
+class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:

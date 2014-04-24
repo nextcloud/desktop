@@ -21,6 +21,8 @@
 #include <QHash>
 #include <QSqlQuery>
 
+#include "utility.h"
+
 namespace Mirall {
 class SyncJournalFileRecord;
 class SyncJournalBlacklistRecord;
@@ -30,7 +32,7 @@ class SyncJournalBlacklistRecord;
  *
  * This class is thread safe. All public function are locking the mutex.
  */
-class SyncJournalDb : public QObject
+class OWNCLOUDSYNC_EXPORT SyncJournalDb : public QObject
 {
     Q_OBJECT
 public:

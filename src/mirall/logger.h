@@ -22,6 +22,8 @@
 #include <QTextStream>
 #include <qmutex.h>
 
+#include "utility.h"
+
 namespace Mirall {
 
 struct Log{
@@ -35,7 +37,7 @@ struct Log{
   QString message;
 };
 
-class Logger : public QObject
+class OWNCLOUDSYNC_EXPORT Logger : public QObject
 {
   Q_OBJECT
 public:
