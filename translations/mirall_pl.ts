@@ -1200,7 +1200,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Nie można usunąć i zarchiwizować folderu ponieważ znajdujący się w nim plik lub folder jest otwarty przez inny program. Proszę zamknąć folder lub plik albo kliknąć ponów lub anuluj setup.</translation>
     </message>
 </context>
 <context>
@@ -2305,7 +2305,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Zbudowane z rewizji Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; na %3, %4 przy użyciu Qt %5.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>

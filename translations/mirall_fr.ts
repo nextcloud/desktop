@@ -1200,7 +1200,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de supprimer et de sauvegarder le dossier parce que ce dossier ou un de ces fichiers est ouvert dans un autre programme. Veuillez fermer le dossier ou le fichier et cliquez sur ré-essayer ou annuler l&apos;installation.</translation>
     </message>
 </context>
 <context>
@@ -2304,7 +2304,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Construit à partir de la révision Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; du %3, %4 en utilisant Qt %5.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="55"/>
