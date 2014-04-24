@@ -452,6 +452,17 @@ qint64 Utility::qDateTimeToTime_t(const QDateTime& t)
     return t.toMSecsSinceEpoch() / 1000;
 }
 
+QString Utility::timeConversion(quint64 msecs)
+{
+	msecs = msecs / 1000;
+	int hours = msecs/(3600);
+	int minutes = (msecs-(hours*3600))/(60);
+	int seconds = (msecs-(minutes*60)-(hours*3600));
+	
+	return 	(hours > 0 ? QString("%1h ").arg(hours): QString())
+			.append(minutes > 0 ? QString("%1m ").arg(minutes, 2, 10, QChar('0'))  : QString())
+			.append(QString("%1s").arg(seconds, 2, 10, QChar('0')) );
+}
 
 
 bool Utility::isWindows()

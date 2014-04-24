@@ -616,7 +616,10 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
         QString s1 = Utility::octetsToString( curItemProgress );
         QString s2 = Utility::octetsToString( curItem._size );
         //: Example text: "uploading foobar.png (1MB of 2MB)"
-        fileProgressString = tr("%1 %2 (%3 of %4)").arg(kindString, itemFileName, s1, s2);
+		fileProgressString = tr("%1 %2 (%3 of %4) , Time left : %5 at a rate of %6/s")
+			.arg(kindString, itemFileName, s1, s2)
+			.arg( Utility::timeConversion(progress.etaEstimate()))
+			.arg(Utility::octetsToString(progress.getEstimatedBandwidth()) );
     } else {
         //: Example text: "uploading foobar.png"
         fileProgressString = tr("%1 %2").arg(kindString, itemFileName);

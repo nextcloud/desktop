@@ -36,12 +36,39 @@ namespace Progress
 
 
     struct Info {
-        Info() : _totalFileCount(0), _totalSize(0), _completedFileCount(0), _completedSize(0) {}
+		Info() : _totalFileCount(0), _totalSize(0), _completedFileCount(0), _completedSize(0), _etaEstimate()  {}
 
         quint64 _totalFileCount;
         quint64 _totalSize;
         quint64 _completedFileCount;
         quint64 _completedSize;
+		struct EtaEstimate {
+			EtaEstimate() :  _startedTime(QDateTime::currentMSecsSinceEpoch()), _agvEtaMSecs(0),_effectiveBandwidth(0) {}
+			
+			static const int AVG_DIVIDER=10;
+			
+			quint64	_startedTime ;
+			quint64	_agvEtaMSecs;
+			quint64 _effectiveBandwidth;
+			
+			/**
+			 * update the estimated eta time with more current data.
+			 * @param quint64 completed the amount the was completed.
+			 * @param quint64 total the total amout that should be completed.
+			 */
+			void updateTime(quint64 completed, quint64 total) {
+				if(total != 0) {
+					quint64 elapsedTime = QDateTime::currentMSecsSinceEpoch() -  this->_startedTime ;
+					// (elapsedTime-1) to avoid float "rounding" issue (ie. 0.99999999999999999999....)
+					_agvEtaMSecs = _agvEtaMSecs - (_agvEtaMSecs / AVG_DIVIDER) + (elapsedTime * ((float) total / completed ) - (elapsedTime-1) ); 
+				}
+			}
+			
+	       quint64 getEtaEstimate() const {
+			   return _agvEtaMSecs / AVG_DIVIDER;
+	       } 
+		};
+		EtaEstimate _etaEstimate;
 
         struct ProgressItem {
             ProgressItem() : _completedSize(0) {}
@@ -63,6 +90,7 @@ namespace Progress
             _currentItems[item._file]._item = item;
             _currentItems[item._file]._completedSize = size;
             _lastCompletedItem = SyncFileItem();
+			_etaEstimate.updateTime(this->completedSize(),this->_totalSize);
         }
 
         quint64 completedSize() const {
@@ -71,6 +99,22 @@ namespace Progress
                 r += i._completedSize;
             }
             return r;
+        }
+        
+        /**
+		 * Get the eta estimate in milliseconds 
+		 * @return quint64 the estimate amount of milliseconds to end the process.
+		 */
+        quint64 etaEstimate() const {
+			return _etaEstimate.getEtaEstimate();
+        }
+        
+        /**
+		 * Get the estimated average bandwidth usage.
+		 * @return quint64 the estimated bandwidth usage in bytes.
+		 */
+        quint64 getEstimatedBandwidth() const {
+			return ( this->_totalSize - this->completedSize() ) / (1+_etaEstimate.getEtaEstimate()/1000) ;
         }
     };
 
