@@ -56,13 +56,13 @@ assertLocalDirs( 'toremote1', localDir().'remoteToLocal1' );
 
 # Check if the synced files from ownCloud have the same timestamp as the local ones.
 print "\nNow assert remote 'toremote1' with local " . localDir() . " :\n";
-assertLocalAndRemoteDir( 'remoteToLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 
 # remove a local file.
 printInfo( "\nRemove a local file\n" );
-unlink( localDir() . 'remoteToLocal1/kernelcrash.txt' );
+unlink( localDir() . 'remoteToLocal1/rtl4/quitte.pdf' );
 csync();
-assertLocalAndRemoteDir( 'remoteToLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 
 # add local files to a new dir1
 printInfo( "Add some more files to local:");
@@ -76,25 +76,25 @@ foreach my $file ( <./tolocal1/*> ) {
 }
 csync( );
 print "\nAssert local and remote dirs.\n";
-assertLocalAndRemoteDir( 'fromLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 
 # move a local file
 printInfo( "Move a file locally." );
 move( "$locDir/kramer.jpg", "$locDir/oldtimer.jpg" );
 csync( );
-assertLocalAndRemoteDir( 'fromLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 
 # move a local directory.
 printInfo( "Move a local directory." );
 move( localDir() . 'remoteToLocal1/rtl1', localDir(). 'remoteToLocal1/rtlX');
 csync();
-assertLocalAndRemoteDir( 'fromLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 
 # remove a local dir
 printInfo( "Remove a local directory.");
 localCleanup( 'remoteToLocal1/rtlX' );
 csync();
-assertLocalAndRemoteDir( 'fromLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 assert( ! -e localDir().'remoteToLocal1/rtlX' );
 
 # create twos false conflict, only the mtimes are changed, by content are equal.
@@ -108,14 +108,14 @@ system( "sleep 2 && touch " . localDir() . "remoteToLocal1/kernelcrash.txt" );
 
 
 csync( );
-assertLocalAndRemoteDir( 'fromLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 
 # The previous sync should have updated the etags, and this should NOT be a conflict
 printInfo( "Update the file again");
 system("echo more data >> " .  localDir() . "remoteToLocal1/kernelcrash.txt");
 system("echo corruption >> " .  localDir() . "remoteToLocal1/kraft_logo.gif");
 csync( );
-assertLocalAndRemoteDir( 'fromLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 
 # create a true conflict.
 printInfo( "Create a conflict." );
@@ -123,13 +123,14 @@ system( "echo \"This is more stuff\" >> /tmp/kernelcrash.txt" );
 put_to_dir( '/tmp/kernelcrash.txt', 'remoteToLocal1' );
 system( "sleep 2 && touch " . localDir() . "remoteToLocal1/kernelcrash.txt" );
 csync();
-assertLocalAndRemoteDir( 'remoteToLocal1', 1);
+assertLocalAndRemoteDir( '', 1);
 
 my $localMD5 = md5OfFile( localDir().'remoteToLocal1/kernelcrash.txt' );
 my $realMD5 = md5OfFile( '/tmp/kernelcrash.txt' );
 print "MD5 compare $localMD5 <-> $realMD5\n";
 assert( $localMD5 eq $realMD5 );
 assert(  glob(localDir().'remoteToLocal1/kernelcrash_conflict-*.txt' ) );
+system("rm " . localDir().'remoteToLocal1/kernelcrash_conflict-*.txt' );
 
 
 # prepare test for issue 1329, rtlX need to be modified
@@ -137,13 +138,13 @@ assert(  glob(localDir().'remoteToLocal1/kernelcrash_conflict-*.txt' ) );
 printInfo( "Add a local directory");
 system("cp -r 'toremote1/rtl1/'  '" . localDir(). "remoteToLocal1/rtlX'");
 csync();
-assertLocalAndRemoteDir( 'fromLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 
 # remove a local dir (still for issue 1329)
 printInfo( "Remove that directory.");
 localCleanup( 'remoteToLocal1/rtlX' );
 csync();
-assertLocalAndRemoteDir( 'fromLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 assert( ! -e localDir().'remoteToLocal1/rtlX' );
 
 
@@ -153,7 +154,7 @@ system("cp -r 'toremote1/rtl1/'  '" . localDir(). "remoteToLocal1/rtlX'");
 assert( -e localDir().'remoteToLocal1/rtlX' );
 assert( -e localDir().'remoteToLocal1/rtlX/rtl11/file.txt' );
 csync();
-assertLocalAndRemoteDir( 'fromLocal1', 0);
+assertLocalAndRemoteDir( '', 0);
 assert( -e localDir().'remoteToLocal1/rtlX' );
 assert( -e localDir().'remoteToLocal1/rtlX/rtl11/file.txt' );
 
