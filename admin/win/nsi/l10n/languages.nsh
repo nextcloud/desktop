@@ -3,6 +3,7 @@
 !insertmacro MUI_LANGUAGE "Estonian"
 !insertmacro MUI_LANGUAGE "Turkish"
 !insertmacro MUI_LANGUAGE "Slovenian"
+!insertmacro MUI_LANGUAGE "SpanishInternational"
 !insertmacro MUI_LANGUAGE "Dutch"
 !insertmacro MUI_LANGUAGE "Hungarian"
 !insertmacro MUI_LANGUAGE "French"
