@@ -255,7 +255,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             goto out;
         }
         if (type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
-                && c_streq(fs->file_id, tmp->file_id)) {
+                && c_streq(fs->file_id, tmp->file_id) && !ctx->read_from_db_disabled) {
             /* If both etag and file id are equal for a directory, read all contents from
              * the database.
              * The comparison of file id ensure that we fetch all the file id when upgrading from

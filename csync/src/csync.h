@@ -588,6 +588,11 @@ void csync_resume(CSYNC *ctx);
  */
 int  csync_abort_requested(CSYNC *ctx);
 
+/**
+ * Specify if it is allowed to read the remote tree from the DB (default to enabled)
+ */
+int csync_set_read_from_db(CSYNC* ctx, int enabled);
+
 #ifdef __cplusplus
 }
 #endif

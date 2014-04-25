@@ -629,6 +629,8 @@ int csync_commit(CSYNC *ctx) {
   _csync_clean_ctx(ctx);
 
   ctx->remote.read_from_db = 0;
+  ctx->read_from_db_disabled = 0;
+
 
   /* Create new trees */
   rc = c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
@@ -921,5 +923,12 @@ void csync_file_stat_free(csync_file_stat_t *st)
 int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
 {
     return csync_vio_set_property(ctx, key, value);
+}
+
+
+int csync_set_read_from_db(CSYNC* ctx, int enabled)
+{
+    ctx->read_from_db_disabled = !enabled;
+    return 0;
 }
 

@@ -440,6 +440,7 @@ void SyncEngine::startSync()
         // csync_update also opens the database.
         int fileRecordCount = 0;
         fileRecordCount = _journal->getFileRecordCount();
+        bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
         _journal->close();
 
         if( fileRecordCount == -1 ) {
@@ -459,6 +460,12 @@ void SyncEngine::startSync()
             csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
         } else {
             qDebug() << "=====sync with existing DB";
+        }
+
+        if (fileRecordCount > 1 && isUpdateFrom_1_5) {
+            qDebug() << "detected update from 1.5";
+            // Disable the read from DB to be sure to re-read all the fileid and etags.
+            csync_set_read_from_db(_csync_ctx, false);
         }
     }
 

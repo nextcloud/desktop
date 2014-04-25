@@ -161,6 +161,7 @@ struct csync_s {
   int status;
   volatile int abort;
   void *rename_info;
+  int  read_from_db_disabled;
 };
 
 
