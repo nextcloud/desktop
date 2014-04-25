@@ -70,7 +70,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="145"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Muokkaa sivuutettuja tiedostoja</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="152"/>
@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="123"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Huomio:&lt;/b&gt; Joillakin kansioilla, mukaan lukien verkon yli liitetyt tai jaetut kansiot, voivat olla erilaisten rajoitusten piirissä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="162"/>
@@ -131,12 +131,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="318"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Haluatko varmasti lopettaa kansion &lt;i&gt;%i&lt;/i&gt; synkronoinnin?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Huomio:&lt;/b&gt; Tämä valinta ei poista tiedostoja asiakkaalta.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="354"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Vahvista kansion alustus</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="355"/>
@@ -379,7 +379,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="170"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>Kansion tilaa ei voitu alustaa</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="171"/>
@@ -1087,7 +1087,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="192"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation type="unfinished"/>
+        <translation>Yritetään yhdistetää palvelimeen %1 portissa %2...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="149"/>
@@ -1164,7 +1164,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="307"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Etäkansion luominen epäonnistui koska antamasi tunnus/salasana ei täsmää!&lt;br/&gt;Ole hyvä ja palaa tarkistamaan tunnus/salasana&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="310"/>
@@ -1190,7 +1190,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="344"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>Yhteyttä osoitteeseen %1 ei voitu muodostaa. Ole hyvä ja tarkista uudelleen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
