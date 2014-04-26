@@ -1891,12 +1891,12 @@ Försök att synka dessa igen.</translation>
         <translation>Filen innehåller ogiltiga tecken som inte kan synkas oberoende av plattform.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="447"/>
+        <location filename="../src/mirall/syncengine.cpp" line="448"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Kan inte initialisera en synk journal. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="540"/>
+        <location filename="../src/mirall/syncengine.cpp" line="547"/>
         <source>Cannot open the sync journal</source>
         <translation>Kunde inte öppna synk journalen</translation>
     </message>

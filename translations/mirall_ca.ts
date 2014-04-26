@@ -1887,12 +1887,12 @@ It is not advisable to use it.</source>
         <translation>El fitxer conté caràcters no vàlids que no es poden sincronitzar entre plataformes.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="447"/>
+        <location filename="../src/mirall/syncengine.cpp" line="448"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>No es pot inicialitzar un periòdic de sincronització</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="540"/>
+        <location filename="../src/mirall/syncengine.cpp" line="547"/>
         <source>Cannot open the sync journal</source>
         <translation>No es pot obrir el diari de sincronització</translation>
     </message>

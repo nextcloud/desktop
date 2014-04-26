@@ -1890,12 +1890,12 @@ It is not advisable to use it.</source>
         <translation>ファイルに無効な文字が含まれているため、クロスプラットフォーム環境での同期ができません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="447"/>
+        <location filename="../src/mirall/syncengine.cpp" line="448"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>同期ジャーナルの初期化ができません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="540"/>
+        <location filename="../src/mirall/syncengine.cpp" line="547"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>

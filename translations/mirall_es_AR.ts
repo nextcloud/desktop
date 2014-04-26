@@ -1887,12 +1887,12 @@ Intente sincronizar estos nuevamente.</translation>
         <translation>El archivo contiene caracteres inválidos que no pueden ser sincronizados entre plataforma.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="447"/>
+        <location filename="../src/mirall/syncengine.cpp" line="448"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Imposible inicializar un diario de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="540"/>
+        <location filename="../src/mirall/syncengine.cpp" line="547"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>

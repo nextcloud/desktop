@@ -1892,12 +1892,12 @@ Zkuste provést novou synchronizaci.
         <translation>Soubor obsahuje alespoň jeden neplatný znak, který narušuje synchronizaci v prostředí více platforem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="447"/>
+        <location filename="../src/mirall/syncengine.cpp" line="448"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nemohu inicializovat synchronizační žurnál.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="540"/>
+        <location filename="../src/mirall/syncengine.cpp" line="547"/>
         <source>Cannot open the sync journal</source>
         <translation>Nelze otevřít sync žurnál</translation>
     </message>
