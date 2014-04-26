@@ -110,7 +110,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   QFont errorFont = subFont;
   QFont progressFont = subFont;
 
-  progressFont.setPointSize( subFont.pointSize()-1);
+  progressFont.setPointSize( subFont.pointSize()-2);
   //font.setPixelSize(font.weight()+);
   aliasFont.setBold(true);
   aliasFont.setPointSize( subFont.pointSize()+2 );

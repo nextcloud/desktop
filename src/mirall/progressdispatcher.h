@@ -36,20 +36,28 @@ namespace Progress
 
 
     struct Info {
-		Info() : _totalFileCount(0), _totalSize(0), _completedFileCount(0), _completedSize(0), _etaEstimate()  {}
+		Info() : _totalFileCount(0), _totalSize(0), _completedFileCount(0), _completedSize(0), _totalEtaEstimate(),_currentEtaEstimate()  {}
 
         quint64 _totalFileCount;
         quint64 _totalSize;
         quint64 _completedFileCount;
         quint64 _completedSize;
 		struct EtaEstimate {
-			EtaEstimate() :  _startedTime(QDateTime::currentMSecsSinceEpoch()), _agvEtaMSecs(0),_effectiveBandwidth(0) {}
+			EtaEstimate() :  _startedTime(QDateTime::currentMSecsSinceEpoch()), _agvEtaMSecs(0),_effectivProgressPerSec(0) {}
 			
 			static const int AVG_DIVIDER=10;
 			
 			quint64	_startedTime ;
 			quint64	_agvEtaMSecs;
-			quint64 _effectiveBandwidth;
+			quint64 _effectivProgressPerSec;
+			
+			/**
+			 * reset the estiamte.
+			 */
+			void reset() {
+				_startedTime = QDateTime::currentMSecsSinceEpoch();
+				_effectivProgressPerSec = _agvEtaMSecs = 0;
+			}
 			
 			/**
 			 * update the estimated eta time with more current data.
@@ -60,15 +68,28 @@ namespace Progress
 				if(total != 0) {
 					quint64 elapsedTime = QDateTime::currentMSecsSinceEpoch() -  this->_startedTime ;
 					// (elapsedTime-1) to avoid float "rounding" issue (ie. 0.99999999999999999999....)
-					_agvEtaMSecs = _agvEtaMSecs - (_agvEtaMSecs / AVG_DIVIDER) + (elapsedTime * ((float) total / completed ) - (elapsedTime-1) ); 
+					_agvEtaMSecs = _agvEtaMSecs - (_agvEtaMSecs / AVG_DIVIDER) + (elapsedTime * ((float) total / completed ) - (elapsedTime-1) );
+					_effectivProgressPerSec = ( total - completed ) / (1+this->getEtaEstimate()/1000);
 				}
 			}
-			
-	       quint64 getEtaEstimate() const {
+			/**
+			 * Get the eta estimate in milliseconds 
+			 * @return quint64 the estimate amount of milliseconds to end the process.
+			 */
+			quint64 getEtaEstimate() const {
 			   return _agvEtaMSecs / AVG_DIVIDER;
-	       } 
+	       }
+	        
+           /**
+			* Get the estimated average bandwidth usage.
+			* @return quint64 the estimated bandwidth usage in bytes.
+			*/
+		   quint64 getEstimatedBandwidth() const {
+			   return _effectivProgressPerSec;
+		   }
 		};
-		EtaEstimate _etaEstimate;
+		EtaEstimate _totalEtaEstimate;
+		EtaEstimate _currentEtaEstimate;
 
         struct ProgressItem {
             ProgressItem() : _completedSize(0) {}
@@ -85,13 +106,16 @@ namespace Progress
             }
             _completedFileCount++;
             _lastCompletedItem = item;
+			_currentEtaEstimate.reset();
         }
         void setProgressItem(const SyncFileItem &item, quint64 size) {
             _currentItems[item._file]._item = item;
             _currentItems[item._file]._completedSize = size;
             _lastCompletedItem = SyncFileItem();
-			_etaEstimate.updateTime(this->completedSize(),this->_totalSize);
-        }
+
+			_totalEtaEstimate.updateTime(this->completedSize(),this->_totalSize);
+			_currentEtaEstimate.updateTime(size,item._size);
+		}
 
         quint64 completedSize() const {
             quint64 r = _completedSize;
@@ -102,20 +126,21 @@ namespace Progress
         }
         
         /**
-		 * Get the eta estimate in milliseconds 
-		 * @return quint64 the estimate amount of milliseconds to end the process.
+		 * Get the total completion estimate structure 
+		 * @return EtaEstimate a structure containing the total completion information.
 		 */
-        quint64 etaEstimate() const {
-			return _etaEstimate.getEtaEstimate();
+        EtaEstimate totalEstimate() const {
+			return _totalEtaEstimate;
         }
-        
+
         /**
-		 * Get the estimated average bandwidth usage.
-		 * @return quint64 the estimated bandwidth usage in bytes.
+		 * Get the current file completion estimate structure 
+		 * @return EtaEstimate a structure containing the current file completion information.
 		 */
-        quint64 getEstimatedBandwidth() const {
-			return ( this->_totalSize - this->completedSize() ) / (1+_etaEstimate.getEtaEstimate()/1000) ;
-        }
+        EtaEstimate currentFileEstimate() const {
+			return _currentEtaEstimate;
+        }               
+
     };
 
     QString asActionString( const SyncFileItem& item );
