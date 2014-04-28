@@ -177,9 +177,6 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_ABORTED:
         errStr = tr("Aborted by the user");
         break;
-    case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
-        errStr = "File locked"; // don't translate, internal use!
-        break;
 
     default:
         errStr = tr("An internal error number %1 happened.").arg( (int) err );
@@ -281,6 +278,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         break;
     case CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS:
         item._errorString = tr("File contains invalid characters that can not be synced cross platform.");
+        break;
+    case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
+        item._errorString = QLatin1String("File locked"); // don't translate, internal use!
         break;
 
     default:
