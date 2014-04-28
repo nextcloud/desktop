@@ -616,10 +616,10 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
         QString s1 = Utility::octetsToString( curItemProgress );
         QString s2 = Utility::octetsToString( curItem._size );
         //: Example text: "uploading foobar.png (1MB of 2MB)"
-		fileProgressString = tr("%1 %2 (%3 of %4) , Time left : %5 at a rate of %6/s")
-			.arg(kindString, itemFileName, s1, s2)
-			.arg( Utility::timeConversion(progress.currentFileEstimate().getEtaEstimate()) )
-			.arg( Utility::octetsToString(progress.currentFileEstimate().getEstimatedBandwidth()) );
+        fileProgressString = tr("%1 %2 (%3 of %4) , Time left : %5 at a rate of %6/s")
+            .arg(kindString, itemFileName, s1, s2,
+                 Utility::timeConversion(progress.getFileEstimate(curItem).getEtaEstimate()),
+                 Utility::octetsToString(progress.getFileEstimate(curItem).getEstimatedBandwidth()) );
     } else {
         //: Example text: "uploading foobar.png"
         fileProgressString = tr("%1 %2").arg(kindString, itemFileName);
@@ -632,10 +632,10 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     QString s1 = Utility::octetsToString( completedSize );
     QString s2 = Utility::octetsToString( progress._totalSize );
     QString overallSyncString = tr("%1 of %2, file %3 of %4\n%5")
-			.arg(s1, s2)
-            .arg(currentFile).arg(progress._totalFileCount)
-			.arg( Utility::timeConversion(progress.totalEstimate().getEtaEstimate()) );
-			//.arg( Utility::octetsToString(progress.totalEstimate().getEstimatedBandwidth()) );
+        .arg(s1, s2)
+        .arg(currentFile).arg(progress._totalFileCount)
+        .arg( Utility::timeConversion(progress.totalEstimate().getEtaEstimate()) );
+
     item->setData( overallSyncString, FolderStatusDelegate::SyncProgressOverallString );
 
     int overallPercent = 0;
