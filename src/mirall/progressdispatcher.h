@@ -69,11 +69,12 @@ namespace Progress
             void updateTime(quint64 completed, quint64 total) {
                 if(total != 0 && completed != 0) {
                     quint64 elapsedTime = QDateTime::currentMSecsSinceEpoch() -  this->_startedTime ;
-                    // (elapsedTime-1) to avoid float "rounding" issue (ie. 0.99999999999999999999....)
-                    _agvEtaMSecs = _agvEtaMSecs - (_agvEtaMSecs / AVG_DIVIDER) + ( ((total / completed) * elapsedTime) - (elapsedTime-1) );
+                    // (elapsedTime-1) is an hack to avoid float "rounding" issue (ie. 0.99999999999999999999....)
+                    _agvEtaMSecs = _agvEtaMSecs + (((static_cast<float>(total) / completed) * elapsedTime) - (elapsedTime-1)) - this->getEtaEstimate();
                     _effectivProgressPerSec = ( total - completed ) / (1+this->getEtaEstimate()/1000);
                 }
             }
+            
             /**
              * Get the eta estimate in milliseconds 
              * @return quint64 the estimate amount of milliseconds to end the process.

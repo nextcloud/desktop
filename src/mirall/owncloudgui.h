@@ -92,6 +92,7 @@ private:
     QAction *_actionSettings;
     QAction *_actionQuota;
     QAction *_actionStatus;
+    QAction *_actionEstimate;
     QAction *_actionRecent;
     QAction *_actionHelp;
     QAction *_actionQuit;

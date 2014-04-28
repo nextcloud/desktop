@@ -286,6 +286,7 @@ void ownCloudGui::setupContextMenu()
         _contextMenu->addAction(_actionQuota);
         _contextMenu->addSeparator();
         _contextMenu->addAction(_actionStatus);
+        _contextMenu->addAction(_actionEstimate);
         _contextMenu->addMenu(_recentActionsMenu);
         _contextMenu->addSeparator();
     }
@@ -352,6 +353,8 @@ void ownCloudGui::setupActions()
     _actionQuota->setEnabled( false );
     _actionStatus = new QAction(tr("Unknown status"), this);
     _actionStatus->setEnabled( false );
+    _actionEstimate = new QAction(tr("Calculating ETA ..."), this);
+    _actionEstimate->setEnabled( false );
     _actionSettings = new QAction(tr("Settings..."), this);
     _actionRecent = new QAction(tr("Details..."), this);
     _actionRecent->setEnabled( true );
@@ -408,11 +411,13 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
     QString s1 = Utility::octetsToString( completedSize );
     QString s2 = Utility::octetsToString( progress._totalSize );
 
-    _actionStatus->setText( tr("Syncing %1 of %2 (%3 of %4) \nETA : %5 , %6/s")
-        .arg(currentFile).arg(progress._totalFileCount).arg(s1, s2)
-        .arg( Utility::timeConversion(progress.totalEstimate().getEtaEstimate()),
+    _actionStatus->setText( tr("Syncing %1 of %2 (%3 of %4)")
+        .arg(currentFile).arg(progress._totalFileCount).arg(s1, s2));
+    
+    _actionEstimate->setVisible(true);
+    _actionEstimate->setText( tr("ETA : %5 , %6/s").arg( Utility::timeConversion(progress.totalEstimate().getEtaEstimate()),
               Utility::octetsToString(progress.totalEstimate().getEstimatedBandwidth())) );
-
+ 
     _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
 
     if (!progress._lastCompletedItem.isEmpty()) {
@@ -453,6 +458,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
 void ownCloudGui::slotDisplayIdle()
 {
     _actionStatus->setText(tr("Up to date"));
+    _actionEstimate->setVisible(false);
 }
 
 void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &message)
