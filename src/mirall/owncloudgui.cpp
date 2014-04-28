@@ -414,10 +414,11 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
     _actionStatus->setText( tr("Syncing %1 of %2 (%3 of %4)")
         .arg(currentFile).arg(progress._totalFileCount).arg(s1, s2));
     
-    _actionEstimate->setVisible(true);
+    _actionEstimate->setVisible(progress.completedSize() > 0);
     _actionEstimate->setText( tr("ETA : %5 , %6/s").arg( Utility::timeConversion(progress.totalEstimate().getEtaEstimate()),
-              Utility::octetsToString(progress.totalEstimate().getEstimatedBandwidth())) );
- 
+                                                             Utility::octetsToString(progress.totalEstimate().getEstimatedBandwidth())) );
+
+
     _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
 
     if (!progress._lastCompletedItem.isEmpty()) {
