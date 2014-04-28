@@ -180,3 +180,10 @@ csync_vio_file_stat_t *csync_vio_convert_file_stat(csync_file_stat_t *st) {
 
   return vfs;
 }
+
+bool (*csync_file_locked_or_open_ext) (const char*) = 0; // filled in by library user
+bool csync_file_locked_or_open( const char *file) {
+    if (!csync_file_locked_or_open_ext)
+        return false;
+    return csync_file_locked_or_open_ext(file);
+}
