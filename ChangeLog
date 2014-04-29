@@ -1,6 +1,18 @@
 ChangeLog
 =========
 version 1.6.0 (release 2014-04- )
+ * Minor GUI improvements
+ * Qt5 compile issues fixed
+ * Ignore sync log file in filewatcher
+ * Install libocsync to private library dir and use rpath to localize
+ * Fix reconnect after server disconnect
+ * Fix crashes
+ * Fix "unknown action" display in Activity window
+ * Fix memory leaks
+ * Respect XDG_CONFIG_HOME environment var
+ * Handle empty fileids in the journal correctly
+ * Add abilility to compile libowncloudsync without GUI dependendy
+
  * Job-based change propagation, enables faster parallel up/downloads 
    (right now only if no bandwidth limit is set and no proxy is used)
  * Significantly reduced CPU load when checking for local and remote changes
