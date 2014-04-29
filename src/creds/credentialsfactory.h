@@ -16,11 +16,11 @@
 
 #include "owncloudlib.h"
 
-class AbstractCredentials;
 class QString;
 
 namespace Mirall
 {
+class AbstractCredentials;
 
 namespace CredentialsFactory
 {
