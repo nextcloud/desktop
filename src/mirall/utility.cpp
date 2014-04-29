@@ -169,7 +169,7 @@ void Utility::raiseDialog( QWidget *raiseWidget )
 #ifndef TOKEN_AUTH_ONLY
     // viel hilft viel ;-)
     if( raiseWidget ) {
-#if #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0) && \
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0) && \
     (defined(Q_OS_WIN) || defined (Q_OS_MAC))
         Qt::WindowFlags eFlags = raiseWidget->windowFlags();
         if (!(eFlags & Qt::WindowStaysOnTopHint)) {
