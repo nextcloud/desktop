@@ -110,7 +110,7 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
         options->target_url.replace(0, 4, "owncloud");
     options->source_dir = args.takeLast();
     if( !QFile::exists( options->source_dir )) {
-        std::cerr << "Source dir does not exists.";
+        std::cerr << "Source dir does not exists." << std::endl;
         exit(1);
     }
 
