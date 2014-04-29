@@ -108,4 +108,13 @@ public:
 };
 
 
+// To support older owncloud in the
+class UpdateMTimeAndETagJob : public PropagateNeonJob{
+    Q_OBJECT
+public:
+    UpdateMTimeAndETagJob (OwncloudPropagator* propagator, const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
+    void start();
+};
+
+
 }

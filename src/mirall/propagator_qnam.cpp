@@ -19,6 +19,7 @@
 #include "syncjournalfilerecord.h"
 #include "utility.h"
 #include "filesystem.h"
+#include "propagatorjobs.h"
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <cmath>
@@ -299,15 +300,24 @@ void PropagateUploadFileQNAM::slotPutFinished()
     }
 
     _item._etag = parseEtag(job->reply()->rawHeader("ETag"));
+    _item._responseTimeStamp = job->responseTimestamp();
 
     if (job->reply()->rawHeader("X-OC-MTime") != "accepted") {
-        //FIXME
-//             updateMTimeAndETag(uri.data(), _item._modtime);
-        done(SyncFileItem::NormalError, tr("No X-OC-MTime extension,  ownCloud 5 is required"));
+        // X-OC-MTime is supported since owncloud 5.0.   But not when chunking.
+        // Normaly Owncloud 6 always put X-OC-MTime
+        qDebug() << "Server do not support X-OC-MTime";
+        PropagatorJob *newJob = new UpdateMTimeAndETagJob(_propagator, _item);
+        QObject::connect(newJob, SIGNAL(completed(SyncFileItem)), this, SLOT(finalize()));
+        QMetaObject::invokeMethod(newJob, "start");
         return;
     }
+    finalize();
+}
+
+
+void PropagateUploadFileQNAM::finalize()
+{
     _item._requestDuration = _duration.elapsed();
-    _item._responseTimeStamp = _job->responseTimestamp();
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
     // Remove from the progress database:
