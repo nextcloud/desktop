@@ -64,14 +64,12 @@ static const char optionsC[] =
 
 QString applicationTrPath()
 {
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
-    return QString::fromLatin1(DATADIR"/"APPLICATION_EXECUTABLE"/i18n/");
-#endif
-#ifdef Q_OS_MAC
-    return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.
-#endif
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
    return QApplication::applicationDirPath();
+#elif defined(Q_OS_MAC)
+    return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.
+#elif defined(Q_OS_UNIX)
+    return QString::fromLatin1(DATADIR"/"APPLICATION_EXECUTABLE"/i18n/");
 #endif
 }
 }
