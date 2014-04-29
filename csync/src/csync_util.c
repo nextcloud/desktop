@@ -183,13 +183,14 @@ csync_vio_file_stat_t *csync_vio_convert_file_stat(csync_file_stat_t *st) {
 
 bool (*csync_file_locked_or_open_ext) (const char*) = 0; // filled in by library user
 bool csync_file_locked_or_open( const char *dir, const char *fname) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "csync_file_locked_or_open %p %s/%s", csync_file_locked_or_open_ext, dir, fname);
+    char *tmp_uri = NULL;
+    bool ret;
     if (!csync_file_locked_or_open_ext) {
         return false;
     }
-    char *tmp_uri = NULL;
     asprintf(&tmp_uri, "%s/%s", dir, fname);
-    bool ret = csync_file_locked_or_open_ext(tmp_uri);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "csync_file_locked_or_open %s", tmp_uri);
+    ret = csync_file_locked_or_open_ext(tmp_uri);
     SAFE_FREE(tmp_uri);
     return ret;
 }
