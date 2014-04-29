@@ -39,12 +39,12 @@ class SyncJournalDb;
 
 class OwncloudPropagator;
 
-void csyncLogCatcher(int /*verbosity*/,
+void OWNCLOUDSYNC_EXPORT csyncLogCatcher(int /*verbosity*/,
                      const char */*function*/,
                      const char *buffer,
                      void */*userdata*/);
 
-class SyncEngine : public QObject
+class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:

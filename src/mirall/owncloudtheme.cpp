@@ -16,10 +16,13 @@
 
 #include <QString>
 #include <QVariant>
+#ifndef TOKEN_AUTH_ONLY
 #include <QPixmap>
 #include <QIcon>
 #include <QStyle>
 #include <QApplication>
+#endif
+#include <QCoreApplication>
 
 #include <QDebug>
 
@@ -66,6 +69,7 @@ QString ownCloudTheme::about() const
 
 }
 
+#ifndef TOKEN_AUTH_ONLY
 QIcon ownCloudTheme::trayFolderIcon( const QString& ) const
 {
     QPixmap fallback = qApp->style()->standardPixmap(QStyle::SP_FileDialogNewFolder);
@@ -82,6 +86,8 @@ QIcon ownCloudTheme::applicationIcon( ) const
 {
     return themeIcon( QLatin1String("owncloud-icon") );
 }
+
+#endif
 
 QVariant ownCloudTheme::customMedia(Theme::CustomMediaType type)
 {
@@ -100,6 +106,7 @@ QString ownCloudTheme::helpUrl() const
     return QString::fromLatin1("http://doc.owncloud.org/desktop/%1.%2/").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR);
 }
 
+#ifndef TOKEN_AUTH_ONLY
 QColor ownCloudTheme::wizardHeaderBackgroundColor() const
 {
     return QColor("#1d2d42");
@@ -114,7 +121,7 @@ QPixmap ownCloudTheme::wizardHeaderLogo() const
 {
     return QPixmap(":/mirall/theme/colored/wizard_logo.png");
 }
-
+#endif
 
 
 }

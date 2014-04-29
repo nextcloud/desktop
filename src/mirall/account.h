@@ -22,6 +22,7 @@
 #include <QSslCertificate>
 #include <QSslConfiguration>
 #include <QSslError>
+#include "utility.h"
 
 class QSettings;
 class QNetworkReply;
@@ -34,7 +35,7 @@ class AbstractCredentials;
 class Account;
 class QuotaInfo;
 
-class AccountManager : public QObject {
+class OWNCLOUDSYNC_EXPORT AccountManager : public QObject {
     Q_OBJECT
 public:
     static AccountManager *instance();
@@ -63,7 +64,7 @@ public:
 /**
  * @brief This class represents an account on an ownCloud Server
  */
-class Account : public QObject {
+class OWNCLOUDSYNC_EXPORT Account : public QObject {
     Q_OBJECT
 public:
     enum State { Disconnected = 0, /// no network connection

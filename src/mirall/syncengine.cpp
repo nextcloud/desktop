@@ -39,7 +39,6 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QTime>
-#include <QApplication>
 #include <QUrl>
 #include <QSslCertificate>
 
@@ -280,6 +279,10 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS:
         item._errorString = tr("File contains invalid characters that can not be synced cross platform.");
         break;
+    case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
+        item._errorString = QLatin1String("File locked"); // don't translate, internal use!
+        break;
+
     default:
         Q_ASSERT("Non handled error-status");
         /* No error string */

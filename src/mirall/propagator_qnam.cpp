@@ -358,17 +358,25 @@ void GETFileJob::start() {
 
 void GETFileJob::slotMetaDataChanged()
 {
+    qDebug() << Q_FUNC_INFO << reply()->error() << reply()->errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    if (reply()->error() != QNetworkReply::NoError ) {
+        // We will handle the error when the job is finished.
+        return;
+    }
+
     QByteArray etag = parseEtag(reply()->rawHeader("Etag"));
 
     if (etag.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid";
         _errorString = tr("No E-Tag received from server, check Proxy/Gateway");
+        _errorStatus = SyncFileItem::NormalError;
         reply()->abort();
         return;
     } else if (!_expectedEtagForResume.isEmpty() && _expectedEtagForResume != etag) {
         qDebug() << Q_FUNC_INFO <<  "We received a different E-Tag for resuming!"
                 << _expectedEtagForResume << "vs" << etag;
         _errorString = tr("We received a different E-Tag for resuming. Retrying next time.");
+        _errorStatus = SyncFileItem::NormalError;
         reply()->abort();
         return;
     }
@@ -383,6 +391,7 @@ void GETFileJob::slotReadyRead()
         qint64 r = reply()->read(buffer.data(), bufferSize);
         if (r < 0) {
             _errorString = reply()->errorString();
+            _errorStatus = SyncFileItem::NormalError;
             qDebug() << "Error while reading from device: " << _errorString;
             reply()->abort();
             return;
@@ -391,6 +400,7 @@ void GETFileJob::slotReadyRead()
         qint64 w = _device->write(buffer.constData(), r);
         if (w != r) {
             _errorString = _device->errorString();
+            _errorStatus = SyncFileItem::NormalError;
             qDebug() << "Error while writing to file" << w << r <<  _errorString;
             reply()->abort();
             return;
@@ -497,7 +507,11 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         }
         _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         _propagator->_activeJobs--;
-        done(classifyError(err, _item._httpErrorCode), job->errorString());
+        SyncFileItem::Status status = job->errorStatus();
+        if (status == SyncFileItem::NoStatus) {
+            status = classifyError(err, _item._httpErrorCode);
+        }
+        done(status, job->errorString());
         return;
     }
 
@@ -508,6 +522,27 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     _tmpFile.close();
     _tmpFile.flush();
     downloadFinished();
+}
+
+QString makeConflictFileName(const QString &fn, const QDateTime &dt)
+{
+    QString conflictFileName(fn);
+    // Add _conflict-XXXX  before the extention.
+    int dotLocation = conflictFileName.lastIndexOf('.');
+    // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+    if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
+        dotLocation = conflictFileName.size();
+    }
+    QString timeString = dt.toString("yyyyMMdd-hhmmss");
+
+    // Additional marker
+    QByteArray conflictFileUserName = qgetenv("CSYNC_CONFLICT_FILE_USERNAME");
+    if (conflictFileUserName.isEmpty())
+        conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+    else
+        conflictFileName.insert(dotLocation, "_conflict_" + QString::fromUtf8(conflictFileUserName)  + "-" + timeString);
+
+    return conflictFileName;
 }
 
 void PropagateDownloadFileQNAM::downloadFinished()
@@ -521,15 +556,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
     //In case of conflict, make a backup of the old file
     if (isConflict) {
         QFile f(fn);
-        QString conflictFileName(fn);
-        // Add _conflict-XXXX  before the extention.
-        int dotLocation = conflictFileName.lastIndexOf('.');
-        // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-        if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
-            dotLocation = conflictFileName.size();
-        }
-        QString timeString = Utility::qDateTimeFromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss");
-        conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+        QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item._modtime));
         if (!f.rename(conflictFileName)) {
             //If the rename fails, don't replace it.
             done(SyncFileItem::NormalError, f.errorString());

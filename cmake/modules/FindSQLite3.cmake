@@ -30,7 +30,7 @@ find_path(SQLITE3_INCLUDE_DIR
 
 find_library(SQLITE3_LIBRARY
     NAMES
-        sqlite3
+        sqlite3 sqlite3-0
     PATHS
         ${_SQLITE3_LIBDIR}
 )

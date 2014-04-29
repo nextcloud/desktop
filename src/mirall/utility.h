@@ -21,6 +21,12 @@
 #include <QElapsedTimer>
 #include <QHash>
 
+#ifdef owncloudsync_EXPORTS
+#define OWNCLOUDSYNC_EXPORT Q_DECL_EXPORT
+#else
+#define OWNCLOUDSYNC_EXPORT Q_DECL_IMPORT
+#endif
+
 class QWidget;
 
 namespace Mirall {

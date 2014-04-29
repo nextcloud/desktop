@@ -102,7 +102,8 @@ enum csync_status_codes_e {
     /* Codes for file individual status: */
     CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK,
     CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST,
-    CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS
+    CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS,
+    CYSNC_STATUS_FILE_LOCKED_OR_OPEN
 };
 
 typedef enum csync_status_codes_e CSYNC_STATUS;

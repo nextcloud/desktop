@@ -31,7 +31,7 @@ namespace Mirall
 {
 
 class TokenCredentialsAccessManager;
-class TokenCredentials : public AbstractCredentials
+class OWNCLOUDSYNC_EXPORT TokenCredentials : public AbstractCredentials
 {
     Q_OBJECT
 
