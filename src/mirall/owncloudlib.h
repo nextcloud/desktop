@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -11,24 +11,10 @@
  * for more details.
  */
 
-#ifndef MIRALL_CREDS_CREDENTIALS_FACTORY_H
-#define MIRALL_CREDS_CREDENTIALS_FACTORY_H
+#pragma once
 
-#include "owncloudlib.h"
-
-class AbstractCredentials;
-class QString;
-
-namespace Mirall
-{
-
-namespace CredentialsFactory
-{
-
-OWNCLOUDSYNC_EXPORT AbstractCredentials* create(const QString& type);
-
-} // ns CredentialsFactory
-
-} // ns Mirall
-
+#ifdef owncloudsync_EXPORTS
+#define OWNCLOUDSYNC_EXPORT Q_DECL_EXPORT
+#else
+#define OWNCLOUDSYNC_EXPORT Q_DECL_IMPORT
 #endif

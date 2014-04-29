@@ -28,7 +28,7 @@ namespace Mirall {
 
 class SyncResult;
 
-class Theme : public QObject
+class OWNCLOUDSYNC_EXPORT Theme : public QObject
 {
     Q_OBJECT
 public:

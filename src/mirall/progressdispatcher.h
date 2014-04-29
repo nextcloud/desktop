@@ -14,6 +14,7 @@
 #ifndef PROGRESSDISPATCHER_H
 #define PROGRESSDISPATCHER_H
 
+#include "owncloudlib.h"
 #include <QObject>
 #include <QHash>
 #include <QTime>
@@ -74,10 +75,10 @@ namespace Progress
         }
     };
 
-    QString asActionString( const SyncFileItem& item );
-    QString asResultString(  const SyncFileItem& item );
+    OWNCLOUDSYNC_EXPORT QString asActionString( const SyncFileItem& item );
+    OWNCLOUDSYNC_EXPORT QString asResultString(  const SyncFileItem& item );
 
-    bool isWarningKind( SyncFileItem::Status );
+    OWNCLOUDSYNC_EXPORT bool isWarningKind( SyncFileItem::Status );
 
 }
 
@@ -90,7 +91,7 @@ namespace Progress
  * or the overall sync progress.
  *
  */
-class ProgressDispatcher : public QObject
+class OWNCLOUDSYNC_EXPORT ProgressDispatcher : public QObject
 {
     Q_OBJECT
 

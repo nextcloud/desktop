@@ -15,6 +15,7 @@
 #ifndef MIRALLCONFIGFILE_H
 #define MIRALLCONFIGFILE_H
 
+#include "owncloudlib.h"
 #include <QSharedPointer>
 #include <QString>
 #include <QVariant>
@@ -26,7 +27,7 @@ namespace Mirall {
 
 class AbstractCredentials;
 
-class MirallConfigFile
+class OWNCLOUDSYNC_EXPORT MirallConfigFile
 {
 public:
     MirallConfigFile();

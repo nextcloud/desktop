@@ -17,7 +17,7 @@
 #include <QObject>
 
 #include <csync.h>
-#include "utility.h"
+#include "owncloudlib.h"
 
 
 class QNetworkAccessManager;

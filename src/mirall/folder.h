@@ -60,7 +60,7 @@ typedef enum SyncFileStatus_s {
 } SyncFileStatus;
 
 
-class Folder : public QObject
+class OWNCLOUDSYNC_EXPORT Folder : public QObject
 {
     Q_OBJECT
 

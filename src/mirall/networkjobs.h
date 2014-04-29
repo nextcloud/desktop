@@ -16,6 +16,7 @@
 #ifndef NETWORKJOBS_H
 #define NETWORKJOBS_H
 
+#include "owncloudlib.h"
 #include <QObject>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -46,7 +47,7 @@ private:
 /**
  * @brief The AbstractNetworkJob class
  */
-class AbstractNetworkJob : public QObject {
+class OWNCLOUDSYNC_EXPORT AbstractNetworkJob : public QObject {
     Q_OBJECT
 public:
     explicit AbstractNetworkJob(Account *account, const QString &path, QObject* parent = 0);
@@ -108,7 +109,7 @@ private:
 /**
  * @brief The EntityExistsJob class
  */
-class EntityExistsJob : public AbstractNetworkJob {
+class OWNCLOUDSYNC_EXPORT EntityExistsJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit EntityExistsJob(Account *account, const QString &path, QObject* parent = 0);
@@ -124,7 +125,7 @@ private slots:
 /**
  * @brief The LsColJob class
  */
-class LsColJob : public AbstractNetworkJob {
+class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit LsColJob(Account *account, const QString &path, QObject *parent = 0);
@@ -161,7 +162,7 @@ private:
 /**
  * @brief The MkColJob class
  */
-class MkColJob : public AbstractNetworkJob {
+class OWNCLOUDSYNC_EXPORT MkColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit MkColJob(Account *account, const QString &path, QObject *parent = 0);
@@ -177,7 +178,7 @@ private slots:
 /**
  * @brief The CheckServerJob class
  */
-class CheckServerJob : public AbstractNetworkJob {
+class OWNCLOUDSYNC_EXPORT CheckServerJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit CheckServerJob(Account *account, bool followRedirect = false, QObject *parent = 0);

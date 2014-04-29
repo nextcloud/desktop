@@ -30,7 +30,7 @@ class SyncResult;
 
 namespace Mirall {
 
-class FolderMan : public QObject
+class OWNCLOUDSYNC_EXPORT FolderMan : public QObject
 {
     Q_OBJECT
 public:

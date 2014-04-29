@@ -30,7 +30,7 @@ namespace Mirall
 
 class ShibbolethWebView;
 
-class ShibbolethCredentials : public AbstractCredentials
+class OWNCLOUDSYNC_EXPORT ShibbolethCredentials : public AbstractCredentials
 {
 Q_OBJECT
 

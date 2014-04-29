@@ -14,6 +14,7 @@
 #ifndef MIRALL_WIZARD_SHIBBOLETH_WEB_VIEW_H
 #define MIRALL_WIZARD_SHIBBOLETH_WEB_VIEW_H
 
+#include "owncloudlib.h"
 #include <QList>
 #include <QPointer>
 #include <QWebView>
@@ -27,7 +28,7 @@ namespace Mirall
 class ShibbolethCookieJar;
 class Account;
 
-class ShibbolethWebView : public QWebView
+class OWNCLOUDSYNC_EXPORT ShibbolethWebView : public QWebView
 {
   Q_OBJECT
 

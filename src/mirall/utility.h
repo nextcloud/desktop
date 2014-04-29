@@ -15,17 +15,12 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
+#include "owncloudlib.h"
 #include <QString>
 #include <QByteArray>
 #include <QDateTime>
 #include <QElapsedTimer>
 #include <QHash>
-
-#ifdef owncloudsync_EXPORTS
-#define OWNCLOUDSYNC_EXPORT Q_DECL_EXPORT
-#else
-#define OWNCLOUDSYNC_EXPORT Q_DECL_IMPORT
-#endif
 
 class QWidget;
 
@@ -33,20 +28,20 @@ namespace Mirall {
 
 namespace Utility
 {
-    void sleep(int sec);
-    void usleep(int usec);
-    QString formatFingerprint( const QByteArray&, bool colonSeparated = true );
-    void setupFavLink( const QString &folder );
-    bool writeRandomFile( const QString& fname, int size = -1);
-    QString octetsToString( qint64 octets );
-    QString platform();
-    QByteArray userAgentString();
-    void raiseDialog(QWidget *);
-    bool hasLaunchOnStartup(const QString &appName);
-    void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
-    qint64 freeDiskSpace(const QString &path, bool *ok = 0);
-    QString toCSyncScheme(const QString &urlStr);
-    void showInFileManager(const QString &localPath);
+    OWNCLOUDSYNC_EXPORT void sleep(int sec);
+    OWNCLOUDSYNC_EXPORT void usleep(int usec);
+    OWNCLOUDSYNC_EXPORT QString formatFingerprint( const QByteArray&, bool colonSeparated = true );
+    OWNCLOUDSYNC_EXPORT void setupFavLink( const QString &folder );
+    OWNCLOUDSYNC_EXPORT bool writeRandomFile( const QString& fname, int size = -1);
+    OWNCLOUDSYNC_EXPORT QString octetsToString( qint64 octets );
+    OWNCLOUDSYNC_EXPORT QString platform();
+    OWNCLOUDSYNC_EXPORT QByteArray userAgentString();
+    OWNCLOUDSYNC_EXPORT void raiseDialog(QWidget *);
+    OWNCLOUDSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
+    OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
+    OWNCLOUDSYNC_EXPORT qint64 freeDiskSpace(const QString &path, bool *ok = 0);
+    OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
+    OWNCLOUDSYNC_EXPORT void showInFileManager(const QString &localPath);
     /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
 
     /**
@@ -57,22 +52,22 @@ namespace Utility
      * @param unit an optional unit that is appended if present.
      * @return the formatted string.
      */
-    QString compactFormatDouble(double value, int prec, const QString& unit = QString::null);
+    OWNCLOUDSYNC_EXPORT QString compactFormatDouble(double value, int prec, const QString& unit = QString::null);
 
     // porting methods
-    QString escape(const QString&);
-    QString dataLocation();
+    OWNCLOUDSYNC_EXPORT QString escape(const QString&);
+    OWNCLOUDSYNC_EXPORT QString dataLocation();
 
     // conversion function QDateTime <-> time_t   (because the ones builtin work on only unsigned 32bit)
-    QDateTime qDateTimeFromTime_t(qint64 t);
-    qint64 qDateTimeToTime_t(const QDateTime &t);
+    OWNCLOUDSYNC_EXPORT QDateTime qDateTimeFromTime_t(qint64 t);
+    OWNCLOUDSYNC_EXPORT qint64 qDateTimeToTime_t(const QDateTime &t);
 
 
     // convinience OS detection methods
-    bool isWindows();
-    bool isMac();
-    bool isUnix();
-    bool isLinux(); // use with care
+    OWNCLOUDSYNC_EXPORT bool isWindows();
+    OWNCLOUDSYNC_EXPORT bool isMac();
+    OWNCLOUDSYNC_EXPORT bool isUnix();
+    OWNCLOUDSYNC_EXPORT bool isLinux(); // use with care
 
     class StopWatch {
     private:
