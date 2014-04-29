@@ -129,7 +129,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
             _restoreJob.reset(newJob);
             connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
                     this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
-            _restoreJob->start();
+            QMetaObject::invokeMethod(newJob, "start");
         }
         return true;
     }
