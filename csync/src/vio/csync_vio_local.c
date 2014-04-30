@@ -240,6 +240,9 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     /* printf("Index: %I64i\n", FileIndex.QuadPart); */
     buf->inode = FileIndex.QuadPart;
 
+    buf->size = (fileInfo.nFileSizeHigh * (int64_t)(MAXDWORD+1)) + fileInfo.nFileSizeLow;
+    buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+
     /* Get the file time with a win32 call rather than through stat. See
       * http://www.codeproject.com/Articles/1144/Beating-the-Daylight-Savings-Time-bug-and-getting
       * for deeper explanation.
