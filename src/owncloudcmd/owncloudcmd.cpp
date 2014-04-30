@@ -29,19 +29,10 @@
 #include "mirall/clientproxy.h"
 #include "mirall/account.h"
 #include "creds/httpcredentials.h"
-
+#include "owncloudcmd.h"
 #include "simplesslerrorhandler.h"
 
 using namespace Mirall;
-
-class OwncloudCmd : public QObject {
-    Q_OBJECT
-public:
-    OwncloudCmd() : QObject() { }
-public slots:
-    void transmissionProgressSlot() {
-    }
-};
 
 struct CmdOptions {
     QString source_dir;
@@ -244,6 +235,4 @@ int main(int argc, char **argv) {
 
     return 0;
 }
-
-#include "owncloudcmd.moc"
 
