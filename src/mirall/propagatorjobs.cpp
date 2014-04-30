@@ -324,9 +324,9 @@ bool PropagateNeonJob::updateErrorFromSession(int neon_code, ne_request* req, in
 
 void UpdateMTimeAndETagJob::start()
 {
-    QScopedPointer<char, QScopedPointerPodDeleter> uri2(
-        ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
-    if (!updateMTimeAndETag(uri2.data(), _item._modtime))
+    QScopedPointer<char, QScopedPointerPodDeleter> uri(
+        ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+    if (!updateMTimeAndETag(uri.data(), _item._modtime))
         return;
     done(SyncFileItem::Success);
 }

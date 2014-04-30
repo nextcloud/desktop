@@ -288,8 +288,6 @@ void PropagateUploadFileQNAM::slotPutFinished()
         return;
     }
 
-    _propagator->_activeJobs--;
-
     // the file id should only be empty for new files up- or downloaded
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if( !fid.isEmpty() ) {
@@ -307,16 +305,22 @@ void PropagateUploadFileQNAM::slotPutFinished()
         // Normaly Owncloud 6 always put X-OC-MTime
         qDebug() << "Server do not support X-OC-MTime";
         PropagatorJob *newJob = new UpdateMTimeAndETagJob(_propagator, _item);
-        QObject::connect(newJob, SIGNAL(completed(SyncFileItem)), this, SLOT(finalize()));
+        QObject::connect(newJob, SIGNAL(completed(SyncFileItem)), this, SLOT(finalize(SyncFileItem)));
         QMetaObject::invokeMethod(newJob, "start");
         return;
     }
-    finalize();
+    finalize(_item);
 }
 
-
-void PropagateUploadFileQNAM::finalize()
+void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
 {
+    // Normally, copy == _item,   but when it comes from the UpdateMTimeAndETagJob, we need to do
+    // some updates
+    _item._etag = copy._etag;
+    _item._fileId = copy._fileId;
+
+    _propagator->_activeJobs--;
+
     _item._requestDuration = _duration.elapsed();
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
