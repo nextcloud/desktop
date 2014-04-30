@@ -1,4 +1,5 @@
 set(CMAKE_AUTOMOC TRUE)
+include(GenerateExportHeader)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -195,6 +196,14 @@ if(NEON_FOUND)
 endif()
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
+GENERATE_EXPORT_HEADER( ${synclib_NAME}
+	BASE_NAME ${synclib_NAME}
+	EXPORT_MACRO_NAME OWNCLOUDSYNC_EXPORT
+        EXPORT_FILE_NAME owncloudlib.h
+	STATIC_DEFINE OWNCLOUD_BUILT_AS_STATIC
+)
+
+
 if(TOKEN_AUTH_ONLY)
     qt5_use_modules(${synclib_NAME} Network Xml Sql)
 else()
