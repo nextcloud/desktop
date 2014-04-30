@@ -509,7 +509,9 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     GETFileJob *job = qobject_cast<GETFileJob *>(sender());
     Q_ASSERT(job);
 
-    qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS" << job->reply()->error() << job->reply()->errorString();
+    qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
+             << job->reply()->error()
+             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString());
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
