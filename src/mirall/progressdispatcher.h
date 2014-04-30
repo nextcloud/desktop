@@ -54,10 +54,12 @@ namespace Progress
 
         void setProgressComplete(const SyncFileItem &item) {
             _currentItems.remove(item._file);
-            if (Progress::isSizeDependent(item._instruction)) {
-                _completedSize += item._size;
+            if (!item._isDirectory) {
+                _completedFileCount++;
+                if (Progress::isSizeDependent(item._instruction)) {
+                    _completedSize += item._size;
+                }
             }
-            _completedFileCount++;
             _lastCompletedItem = item;
         }
         void setProgressItem(const SyncFileItem &item, quint64 size) {
@@ -69,7 +71,8 @@ namespace Progress
         quint64 completedSize() const {
             quint64 r = _completedSize;
             foreach(const ProgressItem &i, _currentItems) {
-                r += i._completedSize;
+                if (!i._item._isDirectory)
+                    r += i._completedSize;
             }
             return r;
         }
