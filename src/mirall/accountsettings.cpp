@@ -633,8 +633,9 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     item->setData( overallSyncString, FolderStatusDelegate::SyncProgressOverallString );
 
     int overallPercent = 0;
-    if( progress._totalSize > 0 ) {
-        overallPercent = qRound(double(completedSize)/double(progress._totalSize) * 100.0);
+    if( progress._totalFileCount > 0 ) {
+        // Add one 'byte' for each files so the percentage is moving when deleting or renaming files
+        overallPercent = qRound(double(completedSize + currentFile)/double(progress._totalSize + progress._totalFileCount) * 100.0);
     }
     item->setData( overallPercent, FolderStatusDelegate::SyncProgressOverallPercent);
 }
