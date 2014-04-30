@@ -111,7 +111,6 @@ void PropagateUploadFileQNAM::start()
 }
 
 struct ChunkDevice : QIODevice {
-    Q_OBJECT
 public:
     QIODevice *_file;
     qint64 _read;
@@ -162,7 +161,6 @@ public:
         return _file->seek(pos + _start);
     }
 };
-#include "propagator_qnam.moc"
 
 void PropagateUploadFileQNAM::startNextChunk()
 {
