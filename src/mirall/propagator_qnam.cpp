@@ -26,6 +26,29 @@
 
 namespace Mirall {
 
+static uint chunkSize() {
+    static uint chunkSize;
+    if (!chunkSize) {
+        chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
+        if (chunkSize == 0) {
+            chunkSize = 10*1024*1024; // default to 10 MiB
+        }
+    }
+    return chunkSize;
+}
+
+static qint64 httpTimeout() {
+    static uint timeout;
+    if (!timeout) {
+        timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
+        if (timeout == 0) {
+            timeout = 30; // default to 30 secs
+        }
+    }
+    return timeout;
+}
+
+
 /**
  * Fiven an error from the network, map to a SyncFileItem::Status error
  */
@@ -61,19 +84,14 @@ void PUTFileJob::start() {
     }
 
     connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SIGNAL(uploadProgress(qint64,qint64)));
+    connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(resetTimeout()));
 
     AbstractNetworkJob::start();
 }
 
-static uint chunkSize() {
-    static uint chunkSize;
-    if (!chunkSize) {
-        chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
-        if (chunkSize == 0) {
-            chunkSize = 10*1024*1024; // default to 10 MiB
-        }
-    }
-    return chunkSize;
+void PUTFileJob::slotTimeout() {
+    _errorString =  tr("Connection Timeout");
+    reply()->abort();
 }
 
 void PropagateUploadFileQNAM::start()
@@ -215,6 +233,7 @@ void PropagateUploadFileQNAM::startNextChunk()
         device->open(QIODevice::ReadOnly);
 
     _job = new PUTFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + path, device, headers);
+    _job->setTimeout(httpTimeout() * 1000);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
     connect(_job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
     _job->start();
@@ -240,7 +259,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
                "It is restored and your edit is in the conflict file."))) {
             return;
         }
-        QString errorString = job->reply()->errorString();
+        QString errorString = job->errorString();
 
         QByteArray replyContent = job->reply()->readAll();
         qDebug() << replyContent; // display the XML error in the debug
@@ -418,6 +437,7 @@ void GETFileJob::slotReadyRead()
             return;
         }
     }
+    resetTimeout();
 }
 
 
@@ -493,6 +513,7 @@ void PropagateDownloadFileQNAM::start()
     _job = new GETFileJob(AccountManager::instance()->account(),
                           _propagator->_remoteFolder + _item._file,
                           &_tmpFile, headers, expectedEtagForResume);
+    _job->setTimeout(httpTimeout() * 1000);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
     connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
     _propagator->_activeJobs ++;
@@ -610,6 +631,14 @@ void PropagateDownloadFileQNAM::abort()
     if (_job &&  _job->reply())
         _job->reply()->abort();
 }
+
+void GETFileJob::slotTimeout()
+{
+    _errorString =  tr("Connection Timeout");
+    _errorStatus = SyncFileItem::FatalError;
+    reply()->abort();
+}
+
 
 
 }

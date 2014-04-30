@@ -63,8 +63,6 @@ public:
     void setReply(QNetworkReply *reply);
     QNetworkReply* reply() const { return _reply; }
 
-    void setTimeout(qint64 msec);
-    void resetTimeout();
 
     void setIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
@@ -72,6 +70,9 @@ public:
     QString responseTimestamp();
     quint64 duration();
 
+public slots:
+    void setTimeout(qint64 msec);
+    void resetTimeout();
 signals:
     void networkError(QNetworkReply *reply);
 protected:

@@ -53,6 +53,7 @@ class PUTFileJob : public AbstractNetworkJob {
     Q_OBJECT
     QIODevice* _device;
     QMap<QByteArray, QByteArray> _headers;
+    QString _errorString;
 
 public:
     // Takes ownership of the device
@@ -66,6 +67,13 @@ public:
         emit finishedSignal();
         return true;
     }
+
+    QString errorString() {
+        return _errorString.isEmpty() ? reply()->errorString() : _errorString;
+    };
+
+    virtual void slotTimeout();
+
 
 signals:
     void finishedSignal();
@@ -123,6 +131,9 @@ public:
     };
 
     SyncFileItem::Status errorStatus() { return _errorStatus; }
+
+    virtual void slotTimeout();
+
 
 signals:
     void finishedSignal();
