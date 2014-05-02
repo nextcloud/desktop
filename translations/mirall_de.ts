@@ -609,7 +609,7 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="637"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Zeitüberschreitung der Verbindung</translation>
     </message>
 </context>
 <context>
@@ -1250,7 +1250,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="93"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Zeitüberschreitung der Verbindung</translation>
     </message>
 </context>
 <context>
