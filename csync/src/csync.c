@@ -197,9 +197,6 @@ int csync_init(CSYNC *ctx) {
     ctx->remote.type = LOCAL_REPLICA;
   }
 
-  if (ctx->options.timeout)
-    csync_vio_set_property(ctx, "timeout", &ctx->options.timeout);
-
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
     ctx->status_code = CSYNC_STATUS_TREE_ERROR;
     rc = -1;

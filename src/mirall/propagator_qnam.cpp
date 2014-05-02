@@ -37,18 +37,6 @@ static uint chunkSize() {
     return chunkSize;
 }
 
-static qint64 httpTimeout() {
-    static uint timeout;
-    if (!timeout) {
-        timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
-        if (timeout == 0) {
-            timeout = 30; // default to 30 secs
-        }
-    }
-    return timeout;
-}
-
-
 /**
  * Fiven an error from the network, map to a SyncFileItem::Status error
  */
@@ -233,7 +221,7 @@ void PropagateUploadFileQNAM::startNextChunk()
         device->open(QIODevice::ReadOnly);
 
     _job = new PUTFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + path, device, headers);
-    _job->setTimeout(httpTimeout() * 1000);
+    _job->setTimeout(_propagator->httpTimeout() * 1000);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
     connect(_job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
     _job->start();
@@ -513,7 +501,7 @@ void PropagateDownloadFileQNAM::start()
     _job = new GETFileJob(AccountManager::instance()->account(),
                           _propagator->_remoteFolder + _item._file,
                           &_tmpFile, headers, expectedEtagForResume);
-    _job->setTimeout(httpTimeout() * 1000);
+    _job->setTimeout(_propagator->httpTimeout() * 1000);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
     connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
     _propagator->_activeJobs ++;

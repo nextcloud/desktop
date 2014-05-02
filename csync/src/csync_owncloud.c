@@ -508,10 +508,9 @@ static int dav_connect(const char *base_url) {
         goto out;
     }
 
-    if (dav_session.read_timeout == 0)
-        dav_session.read_timeout = 300;  // set 300 seconds as default.
-
-    ne_set_read_timeout(dav_session.ctx, dav_session.read_timeout);
+    if (dav_session.read_timeout != 0) {
+        ne_set_read_timeout(dav_session.ctx, dav_session.read_timeout);
+    }
 
     snprintf( uaBuf, sizeof(uaBuf), "Mozilla/5.0 (%s) csyncoC/%s",
               get_platform(), CSYNC_STRINGIFY( LIBCSYNC_VERSION ));

@@ -221,6 +221,9 @@ public:
         emit finished();
     }
 
+    // timeout in seconds
+    static int httpTimeout();
+
 
 signals:
     void completed(const SyncFileItem &);

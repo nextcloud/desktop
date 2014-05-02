@@ -337,5 +337,17 @@ void PropagateDirectory::slotSubJobReady()
     }
 }
 
+int OwncloudPropagator::httpTimeout()
+{
+    static int timeout;
+    if (!timeout) {
+        timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
+        if (timeout == 0) {
+            timeout = 30; // default to 30 secs
+        }
+    }
+    return timeout;
+}
+
 
 }
