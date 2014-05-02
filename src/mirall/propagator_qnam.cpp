@@ -377,8 +377,8 @@ void GETFileJob::start() {
 
 void GETFileJob::slotMetaDataChanged()
 {
-    qDebug() << Q_FUNC_INFO << reply()->error() << reply()->errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-    if (reply()->error() != QNetworkReply::NoError ) {
+    if (reply()->error() != QNetworkReply::NoError
+            || reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() / 100 != 2) {
         // We will handle the error when the job is finished.
         return;
     }
