@@ -243,19 +243,6 @@ static void check_csync_statedb_get_stat_by_hash_not_found(void **state)
     free(tmp);
 }
 
-static void check_csync_statedb_get_stat_by_inode(void **state)
-{
-    CSYNC *csync = *state;
-    csync_file_stat_t *tmp;
-
-    tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 23);
-    assert_non_null(tmp);
-
-    assert_int_equal(tmp->phash, 42);
-    assert_int_equal(tmp->inode, 23);
-
-    free(tmp);
-}
 
 static void check_csync_statedb_get_stat_by_inode_not_found(void **state)
 {
@@ -272,14 +259,10 @@ int torture_run_tests(void)
         unit_test_setup_teardown(check_csync_statedb_query_statement, setup, teardown),
         unit_test_setup_teardown(check_csync_statedb_create_error, setup, teardown),
         unit_test_setup_teardown(check_csync_statedb_insert_statement, setup, teardown),
-      /*  unit_test_setup_teardown(check_csync_statedb_is_empty, setup, teardown), */
-      /*  unit_test_setup_teardown(check_csync_statedb_create_tables, setup, teardown), */
         unit_test_setup_teardown(check_csync_statedb_drop_tables, setup, teardown),
         unit_test_setup_teardown(check_csync_statedb_insert_metadata, setup, teardown),
         unit_test_setup_teardown(check_csync_statedb_write, setup, teardown),
-     /*   unit_test_setup_teardown(check_csync_statedb_get_stat_by_hash, setup_db, teardown), */
         unit_test_setup_teardown(check_csync_statedb_get_stat_by_hash_not_found, setup_db, teardown),
-      /* unit_test_setup_teardown(check_csync_statedb_get_stat_by_inode, setup_db, teardown), */
         unit_test_setup_teardown(check_csync_statedb_get_stat_by_inode_not_found, setup_db, teardown),
     };
 
