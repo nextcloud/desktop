@@ -343,7 +343,7 @@ int OwncloudPropagator::httpTimeout()
     if (!timeout) {
         timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
         if (timeout == 0) {
-            timeout = 30; // default to 30 secs
+            timeout = 300; // default to 300 secs
         }
     }
     return timeout;

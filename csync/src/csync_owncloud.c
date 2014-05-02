@@ -510,6 +510,7 @@ static int dav_connect(const char *base_url) {
 
     if (dav_session.read_timeout != 0) {
         ne_set_read_timeout(dav_session.ctx, dav_session.read_timeout);
+        DEBUG_WEBDAV("Timeout set to %u seconds", dav_session.read_timeout );
     }
 
     snprintf( uaBuf, sizeof(uaBuf), "Mozilla/5.0 (%s) csyncoC/%s",
