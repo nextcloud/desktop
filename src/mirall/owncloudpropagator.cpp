@@ -45,11 +45,6 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     if( _item._httpErrorCode == 403 ||_item._httpErrorCode == 413 || _item._httpErrorCode == 415 ) {
         qDebug() << "Fatal Error condition" << _item._httpErrorCode << ", forbid retry!";
         retries = -1;
-#ifdef OWNCLOUD_5XX_NO_BLACKLIST
-    } else if (_item._httpErrorCode / 100 == 5) {
-        // In this configuration, never blacklist error 5xx
-        qDebug() << "Do not blacklist error " << _item._httpErrorCode;
-#endif
     } else {
         static QAtomicInt defaultRetriesCount(qgetenv("OWNCLOUD_BLACKLIST_COUNT").toInt());
         if (defaultRetriesCount.fetchAndAddAcquire(0) <= 0) {
@@ -65,6 +60,13 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         break;
     case SyncFileItem::FatalError:
     case SyncFileItem::NormalError:
+#ifdef OWNCLOUD_5XX_NO_BLACKLIST
+        if (_item._httpErrorCode / 100 == 5) {
+            // In this configuration, never blacklist error 5xx
+            qDebug() << "Do not blacklist error " << _item._httpErrorCode;
+            break;
+        }
+#endif
         _propagator->_journal->updateBlacklistEntry( record );
         break;
     case SyncFileItem::Success:
