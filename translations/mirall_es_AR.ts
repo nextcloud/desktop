@@ -596,17 +596,17 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="402"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="390"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="409"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="397"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="637"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="625"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"/>
     </message>
@@ -1245,7 +1245,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PUTFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="93"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="81"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"/>
     </message>
@@ -1271,7 +1271,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="150"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="152"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1340,17 +1340,17 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="258"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="246"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="283"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="271"/>
         <source>Local file changed during sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="293"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="281"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"/>
     </message>
@@ -1900,7 +1900,7 @@ Intente sincronizar estos nuevamente.</translation>
         <translation>Imposible inicializar un diario de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="550"/>
+        <location filename="../src/mirall/syncengine.cpp" line="553"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>

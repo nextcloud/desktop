@@ -596,17 +596,17 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="402"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="390"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ingen e-tag mottogs från servern, kontrollera proxy/gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="409"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="397"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Vi mottog en helt annan e-tag för att återuppta. Försök igen nästa gång.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="637"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="625"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"/>
     </message>
@@ -1247,7 +1247,7 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>Mirall::PUTFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="93"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="81"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"/>
     </message>
@@ -1273,7 +1273,7 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="150"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="152"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>En fil eller katalog togs bort från en endast-läsbar delning, men återställning misslyckades: %1</translation>
     </message>
@@ -1342,17 +1342,17 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="258"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="246"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Filen ändrades lokalt men är en del av en endast-läsbar delning. Den återställdes och din editering är i konflikt filen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="283"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="271"/>
         <source>Local file changed during sync.</source>
         <translation>Lokal fil ändrades under synk.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="293"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="281"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>Servern erkände inte den sista biten. (Ingen e-tag var närvarande)</translation>
     </message>
@@ -1904,7 +1904,7 @@ Försök att synka dessa igen.</translation>
         <translation>Kan inte initialisera en synk journal. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="550"/>
+        <location filename="../src/mirall/syncengine.cpp" line="553"/>
         <source>Cannot open the sync journal</source>
         <translation>Kunde inte öppna synk journalen</translation>
     </message>

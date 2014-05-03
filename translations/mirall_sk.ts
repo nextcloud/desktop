@@ -596,17 +596,17 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="402"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="390"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Zo servera nebol prijatý E-Tag, skontrolujte proxy/bránu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="409"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="397"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Prijali sme iný E-Tag pre pokračovanie. Skúsim to neskôr znovu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="637"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="625"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"/>
     </message>
@@ -1247,7 +1247,7 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::PUTFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="93"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="81"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"/>
     </message>
@@ -1273,7 +1273,7 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="150"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="152"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Súbor alebo priečinok bol odobratý zo zdieľania len na čítanie, ale jeho obnovenie zlyhalo: %1</translation>
     </message>
@@ -1342,17 +1342,17 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="258"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="246"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Súbor bol zmenený, ale je súčasťou zdieľania len na čítanie. Pôvodný súbor bol obnovený a upravená verzia je uložená v konfliktnom súbore.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="283"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="271"/>
         <source>Local file changed during sync.</source>
         <translation>Lokálny súbor bol zmenený počas synchronizácie.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="293"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="281"/>
         <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
         <translation>Server nepotvrdil poslednú časť dát. (Nebol nájdený e-tag)</translation>
     </message>
@@ -1903,7 +1903,7 @@ Nie je vhodné ju používať.</translation>
         <translation>Nemôžem inicializovať synchronizačný žurnál.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="550"/>
+        <location filename="../src/mirall/syncengine.cpp" line="553"/>
         <source>Cannot open the sync journal</source>
         <translation>Nemožno otvoriť sync žurnál</translation>
     </message>
