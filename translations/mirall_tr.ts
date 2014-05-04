@@ -608,7 +608,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="625"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı zamanaşımı</translation>
     </message>
 </context>
 <context>
@@ -1248,7 +1248,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="81"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı zamanaşımı</translation>
     </message>
 </context>
 <context>

@@ -608,7 +608,7 @@ Você tem certeza que quer executar esta operação?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="625"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Conexão Finalizada</translation>
     </message>
 </context>
 <context>
@@ -1247,7 +1247,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="81"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Conexão Finalizada</translation>
     </message>
 </context>
 <context>
