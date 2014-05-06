@@ -36,15 +36,20 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
       _type(item._type), _etag(item._etag), _fileId(item._fileId),
       _uid(0), _gid(0), _mode(0)
 {
+    // use the "old" inode coming with the item for the case where the
+    // filesystem stat fails. That can happen if the the file was removed
+    // or renamed meanwhile. For the rename case we still need the inode to
+    // detect the rename tough.
+    _inode = item._inode;
 
-    // Query the inode:
-    //   based on code from csync_vio_local.c (csync_vio_local_stat)
 #ifdef Q_OS_WIN
-    /* Get the Windows file id as an inode replacement. */
+    /* Query the inode:
+       based on code from csync_vio_local.c (csync_vio_local_stat)
+       Get the Windows file id as an inode replacement. */
     HANDLE h = CreateFileW( (wchar_t*)localFileName.utf16(), 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                      FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
+
     if( h == INVALID_HANDLE_VALUE ) {
-        _inode = 0;
         qWarning() << "Failed to query the 'inode' because CreateFileW failed for file " << localFileName;
     } else {
         BY_HANDLE_FILE_INFORMATION fileInfo;
@@ -60,7 +65,7 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
             _inode = FileIndex.QuadPart;
         } else {
             qWarning() << "Failed to query the 'inode' for file " << localFileName;
-            _inode = 0;
+
         }
         CloseHandle(h);
     }
@@ -68,7 +73,6 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
     struct stat sb;
     if( stat(QFile::encodeName(localFileName).constData(), &sb) < 0) {
         qWarning() << "Failed to query the 'inode' for file " << localFileName;
-        _inode = 0;
     } else {
         _inode = sb.st_ino;
     }

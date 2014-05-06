@@ -183,6 +183,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     if( !c_streq(cur->file_id, "") ) {
                         csync_vio_set_file_id( other->file_id, cur->file_id );
                     }
+                    other->inode = cur->inode;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                 } else if (other->instruction == CSYNC_INSTRUCTION_REMOVE) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
@@ -191,7 +192,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     if( !c_streq(cur->file_id, "") ) {
                         csync_vio_set_file_id( other->file_id, cur->file_id );
                     }
-
+                    other->inode = cur->inode;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                 } else if (other->instruction == CSYNC_INSTRUCTION_NEW) {
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "OOOO=> NEW detected in other tree!");

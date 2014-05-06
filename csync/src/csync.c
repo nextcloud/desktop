@@ -444,6 +444,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.rename_path  = cur->destpath;
       trav.etag         = cur->etag;
       trav.file_id      = cur->file_id;
+      trav.inode        = cur->inode;
 
       trav.error_status = cur->error_status;
       trav.should_update_etag = cur->should_update_etag;

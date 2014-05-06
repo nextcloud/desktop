@@ -83,6 +83,7 @@ public:
     time_t               _modtime;
     QByteArray           _etag;
     quint64              _size;
+    quint64              _inode;
     bool                 _should_update_etag;
     QByteArray           _fileId;
     bool                 _blacklistedInDb;

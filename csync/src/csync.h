@@ -170,6 +170,7 @@ enum csync_notify_type_e {
 struct csync_tree_walk_file_s {
     const char *path;
     int64_t     size;
+    int64_t     inode;
     time_t      modtime;
 #ifdef _WIN32
     uint32_t    uid;

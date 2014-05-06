@@ -276,6 +276,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
         /* check if it's a file and has been renamed */
         if (ctx->current == LOCAL_REPLICA) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
+
             tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
 
             /* translate the file type between the two stat types csync has. */

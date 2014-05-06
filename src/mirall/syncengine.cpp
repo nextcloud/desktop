@@ -292,6 +292,8 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._modtime = file->modtime;
     item._etag = file->etag;
     item._size = file->size;
+    item._inode = file->inode;
+
     item._should_update_etag = file->should_update_etag;
     switch( file->type ) {
     case CSYNC_FTW_TYPE_DIR:
