@@ -293,6 +293,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
         return;
     }
 
+    // the following code only happens after all chunks were uploaded.
+    //
     // the file id should only be empty for new files up- or downloaded
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if( !fid.isEmpty() ) {
