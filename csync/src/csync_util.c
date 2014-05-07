@@ -182,6 +182,7 @@ csync_vio_file_stat_t *csync_vio_convert_file_stat(csync_file_stat_t *st) {
 }
 
 bool (*csync_file_locked_or_open_ext) (const char*) = 0; // filled in by library user
+void set_csync_file_locked_or_open_ext(bool (*f) (const char*));
 void set_csync_file_locked_or_open_ext(bool (*f) (const char*)) {
     csync_file_locked_or_open_ext = f;
 }
