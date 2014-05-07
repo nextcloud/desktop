@@ -21,7 +21,6 @@
 #include "mirall/progressdispatcher.h"
 #include "mirall/syncjournaldb.h"
 #include "mirall/clientproxy.h"
-#include "mirall/utility.h"
 
 #include <csync.h>
 
@@ -187,6 +186,7 @@ private slots:
 private:
     bool init();
 
+
     void setIgnoredFiles();
 
     void bubbleUpSyncResult();
@@ -216,8 +216,6 @@ private:
     SyncJournalDb _journal;
 
     ClientProxy   _clientProxy;
-
-    Utility::StopWatch _stopWatch;
 
     CSYNC *_csync_ctx;
 };
