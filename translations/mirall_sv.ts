@@ -596,17 +596,17 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="390"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="392"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ingen e-tag mottogs från servern, kontrollera proxy/gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="397"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="399"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Vi mottog en helt annan e-tag för att återuppta. Försök igen nästa gång.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="625"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="627"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"/>
     </message>
@@ -1899,12 +1899,12 @@ Försök att synka dessa igen.</translation>
         <translation>Filen innehåller ogiltiga tecken som inte kan synkas oberoende av plattform.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="451"/>
+        <location filename="../src/mirall/syncengine.cpp" line="453"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Kan inte initialisera en synk journal. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="553"/>
+        <location filename="../src/mirall/syncengine.cpp" line="555"/>
         <source>Cannot open the sync journal</source>
         <translation>Kunde inte öppna synk journalen</translation>
     </message>

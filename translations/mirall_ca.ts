@@ -596,17 +596,17 @@ Esteu segur que voleu executar aquesta operació?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="390"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="392"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="397"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="399"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="625"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="627"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"/>
     </message>
@@ -1895,12 +1895,12 @@ It is not advisable to use it.</source>
         <translation>El fitxer conté caràcters no vàlids que no es poden sincronitzar entre plataformes.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="451"/>
+        <location filename="../src/mirall/syncengine.cpp" line="453"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>No es pot inicialitzar un periòdic de sincronització</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="553"/>
+        <location filename="../src/mirall/syncengine.cpp" line="555"/>
         <source>Cannot open the sync journal</source>
         <translation>No es pot obrir el diari de sincronització</translation>
     </message>

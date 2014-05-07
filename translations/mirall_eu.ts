@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Autentikazioa beharrezkoa</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
@@ -294,7 +294,7 @@
         <location filename="../src/mirall/folder.cpp" line="404"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ezabatua izan da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="409"/>
@@ -338,7 +338,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="432"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2-(e)ra mugitu da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="440"/>
@@ -593,17 +593,17 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="390"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="392"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ez da E-Tagik jaso zerbitzaritik, egiaztatu Proxy/Gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="397"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="399"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="625"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="627"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"/>
     </message>
@@ -1534,7 +1534,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="99"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Izen Arrunta (IA):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
@@ -1574,22 +1574,22 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Jaulkitzailea:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Jaulkitze-data:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="114"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Iraungitze-data:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="117"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Hatz-markak&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="121"/>
@@ -1599,7 +1599,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
@@ -1630,7 +1630,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="185"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Ziurtagiriaren informazioa:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="214"/>
@@ -1892,12 +1892,12 @@ Saiatu horiek berriz sinkronizatzen.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="451"/>
+        <location filename="../src/mirall/syncengine.cpp" line="453"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Ezin izan da sinkronizazio egunerokoa hasieratu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="553"/>
+        <location filename="../src/mirall/syncengine.cpp" line="555"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>
@@ -2033,7 +2033,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="426"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="453"/>
@@ -2356,12 +2356,12 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="66"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>ezabatzen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="69"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>mugitzen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>

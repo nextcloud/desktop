@@ -153,7 +153,7 @@
         <location filename="../src/mirall/accountsettings.cpp" line="622"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="718"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>需要认证</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>用户(&amp;U)：</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
@@ -282,7 +282,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="316"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="402"/>
@@ -294,7 +294,7 @@
         <location filename="../src/mirall/folder.cpp" line="404"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 已移除。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="409"/>
@@ -306,18 +306,18 @@
         <location filename="../src/mirall/folder.cpp" line="411"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 已下载。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="416"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 和 %2 个其它文件已更新。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="418"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 已更新。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="423"/>
@@ -343,7 +343,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="440"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>同步活动</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="680"/>
@@ -593,19 +593,19 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="390"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="392"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="397"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="399"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="625"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="627"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>连接超时</translation>
     </message>
 </context>
 <context>
@@ -1242,7 +1242,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="81"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>连接超时</translation>
     </message>
 </context>
 <context>
@@ -1360,7 +1360,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>同步活动</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
@@ -1444,7 +1444,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="51"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
@@ -1459,7 +1459,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="71"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>网络</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="54"/>
@@ -1472,7 +1472,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="30"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="34"/>
@@ -1492,7 +1492,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="46"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>网络</translation>
     </message>
 </context>
 <context>
@@ -1500,7 +1500,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="299"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>登录错误</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="299"/>
@@ -1616,7 +1616,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="151"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="182"/>
@@ -1861,7 +1861,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="178"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>用户撤销</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="182"/>
@@ -1889,14 +1889,14 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="451"/>
+        <location filename="../src/mirall/syncengine.cpp" line="453"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>无法初始化同步日志</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="553"/>
+        <location filename="../src/mirall/syncengine.cpp" line="555"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>无法打开同步日志</translation>
     </message>
 </context>
 <context>
@@ -1904,7 +1904,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/systray.cpp" line="49"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -2030,7 +2030,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="426"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="453"/>
@@ -2267,7 +2267,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/main.cpp" line="30"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>系统托盘不可用</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="31"/>
@@ -2353,12 +2353,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="66"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>删除</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="69"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>移动</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
