@@ -268,6 +268,10 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
                 // if the folder was disabled before, set the sync icon
                 item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
             }  // we keep the previous icon for the SyncPrepare state.
+        } else if( status == SyncResult::Undefined ) {
+            // startup, the sync was never done.
+            qDebug() << "XXX FIRST time sync, setting icon to sync running!";
+            item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
         } else {
             // kepp the previous icon for the prepare phase.
             if( status == SyncResult::Problem) {
