@@ -281,80 +281,80 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
         <translation>%1 ist nicht lesbar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="316"/>
+        <location filename="../src/mirall/folder.cpp" line="315"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="402"/>
+        <location filename="../src/mirall/folder.cpp" line="401"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 und %2 andere Dateien wurden gelöscht.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="404"/>
+        <location filename="../src/mirall/folder.cpp" line="403"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 wurde gelöscht.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="409"/>
+        <location filename="../src/mirall/folder.cpp" line="408"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 und %2 andere Dateien wurden heruntergeladen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="411"/>
+        <location filename="../src/mirall/folder.cpp" line="410"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 wurde heruntergeladen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="416"/>
+        <location filename="../src/mirall/folder.cpp" line="415"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 und %2 andere Dateien wurden aktualisiert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="418"/>
+        <location filename="../src/mirall/folder.cpp" line="417"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 wurde aktualisiert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="423"/>
+        <location filename="../src/mirall/folder.cpp" line="422"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 wurde in %2 umbenannt und %3 andere Dateien wurden umbenannt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="425"/>
+        <location filename="../src/mirall/folder.cpp" line="424"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 wurde in %2 umbenannt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="430"/>
+        <location filename="../src/mirall/folder.cpp" line="429"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 wurde in %2 verschoben und %3 andere Dateien wurden verschoben.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="432"/>
+        <location filename="../src/mirall/folder.cpp" line="431"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 wurde in %2 verschoben.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="440"/>
+        <location filename="../src/mirall/folder.cpp" line="439"/>
         <source>Sync Activity</source>
         <translation>Synchronisierungsaktivität</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="680"/>
+        <location filename="../src/mirall/folder.cpp" line="678"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Dieser Synchronisationsvorgang würde alle Dateien in dem lokalen Ordner &apos;%1&apos; entfernen.
 Wenn Sie oder Ihr Administrator Ihr Konto auf dem Server zurückgesetzt haben, wählen Sie &quot;Dateien behalten&quot;. Wenn Sie ihre Daten löschen wollen, wählen Sie &quot;Alle Dateien entfernen&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="683"/>
+        <location filename="../src/mirall/folder.cpp" line="681"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -363,17 +363,17 @@ Vielleicht wurde der Ordner neu konfiguriert, oder alle Dateien wurden händisch
 Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="687"/>
+        <location filename="../src/mirall/folder.cpp" line="685"/>
         <source>Remove All Files?</source>
         <translation>Alle Dateien löschen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="689"/>
+        <location filename="../src/mirall/folder.cpp" line="687"/>
         <source>Remove all files</source>
         <translation>Lösche alle Dateien</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="690"/>
+        <location filename="../src/mirall/folder.cpp" line="688"/>
         <source>Keep files</source>
         <translation>Dateien behalten</translation>
     </message>
