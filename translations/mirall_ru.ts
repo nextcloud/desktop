@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Пользователь:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
@@ -2299,7 +2299,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="51"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Собрано из исходников Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;  %3, %4 используя Qt %5.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="58"/>
@@ -2365,17 +2365,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="66"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>удаляется</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="69"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>перемещается</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>игнорируется</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
@@ -2387,7 +2387,7 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/progressdispatcher.cpp" line="78"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>неизвестно</translation>
     </message>
 </context>
 <context>

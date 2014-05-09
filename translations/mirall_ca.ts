@@ -533,7 +533,7 @@ Esteu segur que voleu executar aquesta operació?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;alies &lt;i&gt;%1%&lt;i&gt; ja està en ús. Si us plau, esculli un altre àlies.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
@@ -930,13 +930,14 @@ Els elements marcats també s&apos;eliminaran si prevenen l&apos;eliminació d&a
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Nova actualització a punt</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Una nova actualització és apunt d&apos;instal·lar-se. L&apos;actualització pot demanar privilegis addicionals durant el procés.
+</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="77"/>
@@ -956,22 +957,22 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut comprovar si hi ha actualitzacions.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>La nova versió %1 està disponible. Si us plau, utilitzeu l&apos;eina d&apos;actualització dels sistemes per instal·lar.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Comprovació d&apos;actualitzacions al servidor</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>No hi ha actualitzacions disponibles. La instal·lació ja es troba en la versió més recent.</translation>
     </message>
 </context>
 <context>
@@ -1056,7 +1057,8 @@ for additional privileges during the process.</source>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Aquesta adreça NO és segura i no és encriptada.
+No és aconsellada usar-la.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
@@ -1436,7 +1438,8 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/protocolwidget.cpp" line="231"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 fixers  són ignorats per errors previs.
+Proveu de sincronitzar-los de nou.</translation>
     </message>
 </context>
 <context>
@@ -1566,7 +1569,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="106"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Serial:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
@@ -1627,7 +1630,8 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/sslbutton.cpp" line="182"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Aquesta connexió és encriptada usant %1 bit %2.
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="185"/>
