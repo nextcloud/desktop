@@ -609,7 +609,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="627"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>接続タイムアウト</translation>
     </message>
 </context>
 <context>
@@ -1248,7 +1248,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="81"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>接続タイムアウト</translation>
     </message>
 </context>
 <context>
