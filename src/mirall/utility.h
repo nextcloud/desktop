@@ -66,7 +66,7 @@ namespace Utility
 	 * @param quint64 msecs the milliseconds to convert to string
 	 * @return an HMS representation of the milliseconds value.
 	 */
-	QString timeConversion(quint64 msecs);
+	QString timeToDescriptiveString(quint64 msecs);
 
     // convinience OS detection methods
     bool isWindows();
