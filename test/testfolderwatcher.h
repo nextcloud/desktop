@@ -95,6 +95,7 @@ private slots:
         QDir dir;
         dir.rmdir(_root+"/a1/b1/c2");
         _loop.processEvents();
+        QVERIFY(_checkMark.isEmpty()); // the slot clears the checkmark.
     }
 
     void testRemoveAFile() {
