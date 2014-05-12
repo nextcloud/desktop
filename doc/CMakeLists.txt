@@ -12,12 +12,15 @@ if(SPHINX_FOUND)
     # assets
     set(LATEX_LOGO          "${CMAKE_CURRENT_SOURCE_DIR}/logo-blue.pdf")
 
+    install(DIRECTORY ${SPHINX_HTML_DIR} DESTINATION ${CMAKE_INSTALL_DOCDIR} OPTIONAL)
+    install(DIRECTORY ${SPHINX_MAN_DIR} DESTINATION ${CMAKE_INSTALL_MANDIR} OPTIONAL)
+    install(DIRECTORY ${SPHINX_PDF_DIR} DESTINATION ${CMAKE_INSTALL_DOCDIR} OPTIONAL)
+    install(DIRECTORY ${SPHINX_QCH_DIR} DESTINATION ${CMAKE_INSTALL_DOCDIR} OPTIONAL)
+
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/conf.py.in" conf.py @ONLY)
 
     if(WITH_DOC)
        add_custom_target(doc ALL DEPENDS doc-html doc-man COMMENT "Building documentation...")
-       install(DIRECTORY ${SPHINX_HTML_DIR} DESTINATION ${CMAKE_INSTALL_DOCDIR})
-       install(DIRECTORY ${SPHINX_MAN_DIR} DESTINATION ${CMAKE_INSTALL_MANDIR})
     else(WITH_DOC)
        add_custom_target(doc DEPENDS doc-html doc-man COMMENT "Building documentation...")
     endif(WITH_DOC)
@@ -39,9 +42,6 @@ if(SPHINX_FOUND)
         add_custom_target(doc-pdf $(MAKE) -C ${SPHINX_PDF_DIR} all-pdf
 		                  DEPENDS doc-latex )
         add_dependencies(doc doc-pdf)
-        if (WITH_DOC)
-           install(DIRECTORY ${SPHINX_PDF_DIR} DESTINATION ${CMAKE_INSTALL_DOCDIR})
-        endif (WITH_DOC)
     endif(PDFLATEX_FOUND)
     if (EXISTS ${QT_QCOLLECTIONGENERATOR_EXECUTABLE})
         add_custom_target( doc-qch-sphinx ${SPHINX_EXECUTABLE}
@@ -53,9 +53,6 @@ if(SPHINX_FOUND)
 		                   ${SPHINX_QCH_DIR}/*.qhcp
 				   DEPENDS doc-qch-sphinx )
         add_dependencies(doc doc-qch)
-        if (WITH_DOC)
-            install(DIRECTORY ${SPHINX_QCH_DIR} DESTINATION ${CMAKE_INSTALL_DOCDIR})
-        endif (WITH_DOC)
     endif()
     add_custom_target( doc-html ${SPHINX_EXECUTABLE}
 	                        -q -c . -b html
