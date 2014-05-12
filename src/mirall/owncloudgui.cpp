@@ -403,14 +403,21 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
 {
     Q_UNUSED(folder);
 
-    quint64 completedSize = progress.completedSize();
-    quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();
-    QString s1 = Utility::octetsToString( completedSize );
-    QString s2 = Utility::octetsToString( progress._totalSize );
+     QString totalSizeStr = Utility::octetsToString( progress._totalSize );
+        if(progress._totalSize == 0 ) {
+            quint64 completedSize = progress.completedSize();
+            quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();
+            QString completedSizeStr = Utility::octetsToString( completedSize );
+            _actionStatus->setText( tr("Syncing %1 of %2  ( %3 of %4 )")
+                .arg( currentFile ).arg( progress._totalFileCount )
+                .arg( completedSizeStr, totalSizeStr ) );
+        } else {
+            _actionStatus->setText( tr("Syncing %1 ( %2 left )")
+                .arg( totalSizeStr )
+                .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate()) ) );
+        }
 
-    _actionStatus->setText( tr("Syncing %1 of %2 (%3 of %4) %5 left")
-        .arg(currentFile).arg(progress._totalFileCount).arg(s1, s2)
-        .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate()) ) );
+
 
 
     _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.

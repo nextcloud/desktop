@@ -454,15 +454,33 @@ qint64 Utility::qDateTimeToTime_t(const QDateTime& t)
 
 QString Utility::timeToDescriptiveString(quint64 msecs)
 {
-    msecs = msecs / 1000;
-    int hours = msecs/(3600);
-    int minutes = (msecs-(hours*3600))/(60);
-    int seconds = (msecs-(minutes*60)-(hours*3600));
-
-    QString units = (hours > 0 ?  " hours" : (minutes > 0 ? " minutes" : " seconds") );
-
-    return (hours > 0 ? QString("%1:").arg(hours): QString())
-           .append(minutes > 0 ? QString("%1").arg(minutes, 2, 10, QChar(hours > 0 ? '0' : ' ')) : QString("%1").arg(seconds, 2, 10, QChar('0')) ).append(units);
+    QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32> >();    
+    //timeMapping.append(QPair<QString,quint32>("years",86400*365));
+    //timeMapping.append(QPair<QString,quint32>("months",86400*30));
+    //timeMapping.append(QPair<QString,quint32>("days",86400));
+    timeMapping.append(QPair<QString,quint32>("hours",3600));
+    timeMapping.append(QPair<QString,quint32>("minutes",60));
+    timeMapping.append(QPair<QString,quint32>("seconds",1));
+    
+    quint64 secs = msecs / 1000;
+    QString units = "seconds";
+    qint64 minor =-1, major = -1;
+    
+   QList<QPair<QString,quint32> >::Iterator itr = timeMapping.begin();
+    for(; itr != timeMapping.end(); itr++) {
+        major = secs / itr->second;
+        secs -= (major * itr->second);
+        if(major > 0 ) {
+            units = itr->first;
+            break;
+        }
+        
+    }
+    if(itr < timeMapping.end() ) {
+        minor = secs / (++itr)->second;
+    }
+    
+    return (QString("%1").arg(major)).append(minor > -1 ?  QString(":%1").arg(minor, 2, 10, QChar('0')) : "" ).append(" ").append(units);
 }
 
 
