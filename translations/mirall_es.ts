@@ -608,7 +608,7 @@ Está seguro de que desea realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="627"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Tiempo de espera de conexión agotado</translation>
     </message>
 </context>
 <context>
@@ -1249,7 +1249,7 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="81"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Tiempo de espera de conexión agotado</translation>
     </message>
 </context>
 <context>
