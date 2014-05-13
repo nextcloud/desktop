@@ -353,9 +353,10 @@ void FolderMan::terminateSyncProcess( const QString& alias )
     if( ! folderAlias.isEmpty() && _folderMap.contains(folderAlias) ) {
         Folder *f = _folderMap[folderAlias];
         if( f ) {
-            f->slotTerminateSync(true);
-            if(_currentSyncFolder == folderAlias )
+            f->slotTerminateSync();
+            if(_currentSyncFolder == folderAlias ) {
                 _currentSyncFolder.clear();
+            }
         }
     }
 }

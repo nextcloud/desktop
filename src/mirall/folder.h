@@ -148,10 +148,8 @@ public slots:
 
      /**
        * terminate the current sync run
-       *
-       * If block is true, this will block synchroniously for the sync thread to finish.
        */
-     void slotTerminateSync(bool block);
+     void slotTerminateSync();
 
      void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool*);
 

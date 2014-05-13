@@ -210,20 +210,18 @@ public:
     /* The number of currently active jobs */
     int _activeJobs;
 
-
     bool isInSharedDirectory(const QString& file);
-
 
     void abort() {
         _abortRequested.fetchAndStoreOrdered(true);
-        if (_rootJob)
+        if (_rootJob) {
             _rootJob->abort();
+        }
         emit finished();
     }
 
     // timeout in seconds
     static int httpTimeout();
-
 
 signals:
     void completed(const SyncFileItem &);

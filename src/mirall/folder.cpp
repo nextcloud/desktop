@@ -466,7 +466,7 @@ void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
     _syncResult.setSyncFileItemVector(items);
 }
 
-void Folder::slotTerminateSync(bool block)
+void Folder::slotTerminateSync()
 {
     qDebug() << "folder " << alias() << " Terminating!";
 
@@ -476,14 +476,10 @@ void Folder::slotTerminateSync(bool block)
         // Do not display an error message, user knows his own actions.
         // _errors.append( tr("The CSync thread terminated.") );
         // _csyncError = true;
-        if (!block) {
-            setSyncState(SyncResult::SyncAbortRequested);
-            return;
-        }
-
-        slotSyncFinished();
+        setSyncEnabled(false);
+        setSyncState(SyncResult::SyncAbortRequested);
+        return;
     }
-    setSyncEnabled(false);
 }
 
 // This removes the csync File database
