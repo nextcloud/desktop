@@ -478,7 +478,6 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
 /* File tree walker */
 int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     unsigned int depth) {
-  char errbuf[256] = {0};
   char *filename = NULL;
   char *d_name = NULL;
   csync_vio_handle_t *dh = NULL;
@@ -522,10 +521,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
               CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
           }
       } else {
-          C_STRERROR(errno, errbuf, sizeof(errbuf));
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-                    "opendir failed for %s - %s (errno %d)",
-                    uri, errbuf, errno);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "opendir failed for %s - errno %d", uri, errno);
       }
       goto error;
   }

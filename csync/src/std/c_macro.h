@@ -55,9 +55,6 @@
 /** Get the size of an array */
 #define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))
 
-/** Macro to make strerror_r work with -Werror=unused-result */
-#define C_STRERROR(errno, buf, size) if(strerror_r(errno, buf, size)) {}
-
 /**
  * This is a hack to fix warnings. The idea is to use this everywhere that we
  * get the "discarding const" warning by the compiler. That doesn't actually
