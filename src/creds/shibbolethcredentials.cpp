@@ -43,7 +43,8 @@ namespace Mirall
 namespace
 {
 
-const char userC[] = "user";
+// Not "user" because it has a special meaning for http
+const char userC[] = "shib_user";
 
 int shibboleth_redirect_callback(CSYNC* csync_ctx,
                                  const char* uri)
