@@ -32,7 +32,6 @@ MirallAccessManager::MirallAccessManager(QObject* parent)
     setProxy(proxy);
 #endif
     setCookieJar(new CookieJar);
-    cookieJar()->setParent(0);
     QObject::connect(this, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
                      this, SLOT(slotProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
 }
