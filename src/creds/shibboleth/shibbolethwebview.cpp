@@ -20,9 +20,9 @@
 #include <QAuthenticator>
 #include <QNetworkReply>
 
-#include "creds/shibboleth/shibbolethcookiejar.h"
-#include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibboleth/authenticationdialog.h"
+#include "creds/shibboleth/shibbolethwebview.h"
+#include "creds/shibbolethcredentials.h"
 #include "mirall/account.h"
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/theme.h"
@@ -30,38 +30,27 @@
 namespace Mirall
 {
 
-void ShibbolethWebView::setup(Account *account, ShibbolethCookieJar* jar)
+ShibbolethWebView::ShibbolethWebView(Account* account, QWidget* parent)
+    : QWebView(parent)
+    , _account(account)
 {
-    _account = account;
-    MirallAccessManager* nm = new MirallAccessManager(this);
-    // we need our own QNAM, but the we offload the SSL error handling to
-    // the account object, which already can do this
-    connect(nm, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
-            account, SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
-    connect(nm, SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
-            SLOT(slotHandleAuthentication(QNetworkReply*,QAuthenticator*)));
-
+    // no minimize
+    setWindowFlags(Qt::Dialog);
+    setAttribute(Qt::WA_DeleteOnClose);
     QWebPage* page = new QWebPage(this);
-
-    jar->setParent(this);
-    connect(jar, SIGNAL (newCookiesForUrl (QList<QNetworkCookie>, QUrl)),
-            this, SLOT (onNewCookiesForUrl (QList<QNetworkCookie>, QUrl)));
+    page->setNetworkAccessManager(account->networkAccessManager());
     connect(page, SIGNAL(loadStarted()),
             this, SLOT(slotLoadStarted()));
     connect(page, SIGNAL(loadFinished(bool)),
             this, SLOT(slotLoadFinished(bool)));
 
-    nm->setCookieJar(jar);
-    page->setNetworkAccessManager(nm);
+
+    connect(page->networkAccessManager()->cookieJar(),
+            SIGNAL(newCookiesForUrl (QList<QNetworkCookie>, QUrl)),
+            this, SLOT(onNewCookiesForUrl (QList<QNetworkCookie>, QUrl)));
     page->mainFrame()->load(account->url());
     this->setPage(page);
     setWindowTitle(tr("%1 - Authenticate").arg(Theme::instance()->appNameGUI()));
-}
-
-ShibbolethWebView::ShibbolethWebView(Account* account, QWidget* parent)
-  : QWebView(parent)
-{
-    setup(account, new ShibbolethCookieJar(this));
 }
 
 ShibbolethWebView::~ShibbolethWebView()
@@ -69,41 +58,22 @@ ShibbolethWebView::~ShibbolethWebView()
     slotLoadFinished();
 }
 
-ShibbolethWebView::ShibbolethWebView(Account* account, ShibbolethCookieJar* jar, QWidget* parent)
-  : QWebView(parent)
-{
-    setup(account, jar);
-}
-
 void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& url)
 {
-  QList<QNetworkCookie> otherCookies;
-  QNetworkCookie shibCookie;
-
-  Q_FOREACH (const QNetworkCookie& cookie, cookieList) {
-    if (cookie.name().startsWith ("_shibsession_")) {
-      if (shibCookie.name().isEmpty()) {
-        shibCookie = cookie;
-      } else {
-        qWarning() << "Too many Shibboleth session cookies at once!";
-      }
-    } else {
-      otherCookies << cookie;
+    qDebug() << "Received cookies for URL" << url << ":" << cookieList << ". Account object has URL" << _account->url();
+    if (url.host() == _account->url().host()) {
+        QNetworkCookie shibCookie = ShibbolethCredentials::findShibCookie(_account, cookieList);
+        if (shibCookie != QNetworkCookie()) {
+            Q_EMIT shibbolethCookieReceived(shibCookie, _account);
+            close();
+        }
     }
-  }
-
-  if (!otherCookies.isEmpty()) {
-    Q_EMIT otherCookiesReceived(otherCookies, url);
-  }
-  if (!shibCookie.name().isEmpty()) {
-    Q_EMIT shibbolethCookieReceived(shibCookie, _account);
-  }
 }
 
-void ShibbolethWebView::hideEvent(QHideEvent* event)
+void ShibbolethWebView::closeEvent(QCloseEvent *event)
 {
     Q_EMIT viewHidden();
-    QWebView::hideEvent(event);
+    QWebView::closeEvent(event);
 }
 
 void ShibbolethWebView::slotLoadStarted()

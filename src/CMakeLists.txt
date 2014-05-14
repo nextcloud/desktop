@@ -104,6 +104,7 @@ set(libsync_SRCS
     mirall/quotainfo.cpp
     mirall/clientproxy.cpp
     mirall/syncrunfilelog.cpp
+    mirall/cookiejar.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialsfactory.cpp
@@ -121,11 +122,8 @@ else()
         ${libsync_SRCS}
         creds/httpcredentials.cpp
         creds/shibbolethcredentials.cpp
-        creds/shibboleth/shibbolethaccessmanager.cpp
-        creds/shibboleth/shibbolethcookiejar.cpp
         creds/shibboleth/shibbolethwebview.cpp
         creds/shibboleth/shibbolethrefresher.cpp
-        creds/shibboleth/shibbolethconfigfile.cpp
         creds/shibboleth/authenticationdialog.cpp
         creds/shibboleth/shibbolethuserjob.cpp
     )

@@ -34,6 +34,7 @@ namespace Mirall {
 class AbstractCredentials;
 class Account;
 class QuotaInfo;
+class MirallAccessManager;
 
 class OWNCLOUDSYNC_EXPORT AccountManager : public QObject {
     Q_OBJECT
@@ -142,6 +143,8 @@ public:
     void setState(int state);
 
     void clearCookieJar();
+
+    QNetworkAccessManager* networkAccessManager();
 
     QuotaInfo *quotaInfo();
 signals:

@@ -12,9 +12,11 @@
  */
 
 #include "mirall/account.h"
+#include "mirall/cookiejar.h"
 #include "mirall/theme.h"
 #include "mirall/networkjobs.h"
 #include "mirall/mirallconfigfile.h"
+#include "mirall/mirallaccessmanager.h"
 #include "mirall/quotainfo.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
@@ -75,6 +77,7 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
 
 Account::~Account()
 {
+    delete _am;
 }
 
 void Account::save()
@@ -161,7 +164,11 @@ AbstractCredentials *Account::credentials() const
 void Account::setCredentials(AbstractCredentials *cred)
 {
     // set active credential manager
+    QNetworkCookieJar *jar = 0;
     if (_am) {
+        jar = _am->cookieJar();
+        jar->setParent(0);
+
         _am->deleteLater();
     }
 
@@ -170,6 +177,9 @@ void Account::setCredentials(AbstractCredentials *cred)
     }
     _credentials = cred;
     _am = _credentials->getQNAM();
+    if (jar) {
+        _am->setCookieJar(jar);
+    }
     connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
 }
@@ -186,7 +196,12 @@ QList<QNetworkCookie> Account::lastAuthCookies() const
 
 void Account::clearCookieJar()
 {
-    _am->setCookieJar(new QNetworkCookieJar);
+    _am->setCookieJar(new CookieJar);
+}
+
+QNetworkAccessManager *Account::networkAccessManager()
+{
+    return _am;
 }
 
 QNetworkReply *Account::headRequest(const QString &relPath)

@@ -15,6 +15,7 @@
 #include <QNetworkProxy>
 #include <QAuthenticator>
 
+#include "mirall/cookiejar.h"
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/utility.h"
 
@@ -30,6 +31,8 @@ MirallAccessManager::MirallAccessManager(QObject* parent)
     proxy.setHostName(" ");
     setProxy(proxy);
 #endif
+    setCookieJar(new CookieJar);
+    cookieJar()->setParent(0);
     QObject::connect(this, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
                      this, SLOT(slotProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
 }

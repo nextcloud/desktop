@@ -159,6 +159,7 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
+    delete AccountManager::instance()->account();
     // qDebug() << "* Mirall shutdown";
 }
 
