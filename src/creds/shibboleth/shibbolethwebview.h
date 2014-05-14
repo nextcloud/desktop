@@ -37,13 +37,11 @@ public:
   ShibbolethWebView(Account *account, ShibbolethCookieJar* jar, QWidget* parent = 0);
   ~ShibbolethWebView();
 
-protected:
-  void hideEvent(QHideEvent* event);
+  void closeEvent(QCloseEvent *event);
 
 Q_SIGNALS:
-  void shibbolethCookieReceived(const QNetworkCookie& cookie, Account* account);
+  void shibbolethCookieReceived(const QNetworkCookie &cookie, Account *account);
   void viewHidden();
-  void otherCookiesReceived(const QList<QNetworkCookie>& cookieList, const QUrl& url);
 
 private Q_SLOTS:
   void onNewCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
