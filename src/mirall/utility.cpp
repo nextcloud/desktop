@@ -454,14 +454,17 @@ qint64 Utility::qDateTimeToTime_t(const QDateTime& t)
 
 QString Utility::timeToDescriptiveString(quint64 msecs) 
 {
-    QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32> >();    
-    timeMapping.append(QPair<QString,quint32>("years",86400*365));
-    timeMapping.append(QPair<QString,quint32>("months",86400*30));
-    timeMapping.append(QPair<QString,quint32>("days",86400));
-    timeMapping.append(QPair<QString,quint32>("hours",3600));
-    timeMapping.append(QPair<QString,quint32>("minutes",60));
-    timeMapping.append(QPair<QString,quint32>("seconds",1));
+    //TODO change to initializers list  when possible.
+   static QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32> >() <<
+                                                        QPair<QString,quint32>("years",86400*365) <<
+                                                        QPair<QString,quint32>("months",86400*30) <<
+                                                        QPair<QString,quint32>("days",86400) <<
+                                                        QPair<QString,quint32>("hours",3600) <<
+                                                        QPair<QString,quint32>("minutes",60) <<
+                                                        QPair<QString,quint32>("seconds",1);
+        
     
+
     return timeToDescriptiveString(timeMapping, msecs, 1);
 }
 

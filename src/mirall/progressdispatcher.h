@@ -47,13 +47,13 @@ namespace Progress
         struct EtaEstimate {
             EtaEstimate() :  _startedTime(QDateTime::currentMSecsSinceEpoch()), _agvEtaMSecs(0),_effectivProgressPerSec(0),_sampleCount(1) {}
             
-            static const int MAX_AVG_DIVIDER=120;
+            static const int MAX_AVG_DIVIDER=60;
             static const int INITAL_WAIT_TIME=5;
             
             quint64     _startedTime ;
             quint64     _agvEtaMSecs;
             quint64     _effectivProgressPerSec;
-            quint16      _sampleCount;
+            float      _sampleCount;
             
             /**
              * reset the estiamte.
@@ -73,7 +73,7 @@ namespace Progress
                 quint64 elapsedTime = QDateTime::currentMSecsSinceEpoch() -  this->_startedTime ;
                 //don't start until you have some good data to process, prevents jittring estiamtes at the start of the syncing process                    
                 if(total != 0 && completed != 0 && elapsedTime > INITAL_WAIT_TIME ) {
-                    if(_sampleCount < MAX_AVG_DIVIDER) { _sampleCount++; }
+                    if(_sampleCount < MAX_AVG_DIVIDER) { _sampleCount+=0.01f; }
                     // (elapsedTime-1) is an hack to avoid float "rounding" issue (ie. 0.99999999999999999999....)
                     _agvEtaMSecs = _agvEtaMSecs + (((static_cast<float>(total) / completed) * elapsedTime) - (elapsedTime-1)) - this->getEtaEstimate();
                     _effectivProgressPerSec = ( total - completed ) / (1+this->getEtaEstimate()/1000);
