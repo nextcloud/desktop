@@ -14,6 +14,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QNetworkCookie>
+#include <QNetworkCookieJar>
 #include <QWebFrame>
 #include <QWebPage>
 #include <QMessageBox>

@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QDateTime>
+#include <QNetworkCookie>
 
 namespace Mirall {
 
