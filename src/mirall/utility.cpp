@@ -452,35 +452,48 @@ qint64 Utility::qDateTimeToTime_t(const QDateTime& t)
     return t.toMSecsSinceEpoch() / 1000;
 }
 
-QString Utility::timeToDescriptiveString(quint64 msecs)
+QString Utility::timeToDescriptiveString(quint64 msecs) 
 {
     QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32> >();    
-    //timeMapping.append(QPair<QString,quint32>("years",86400*365));
-    //timeMapping.append(QPair<QString,quint32>("months",86400*30));
-    //timeMapping.append(QPair<QString,quint32>("days",86400));
+    timeMapping.append(QPair<QString,quint32>("years",86400*365));
+    timeMapping.append(QPair<QString,quint32>("months",86400*30));
+    timeMapping.append(QPair<QString,quint32>("days",86400));
     timeMapping.append(QPair<QString,quint32>("hours",3600));
     timeMapping.append(QPair<QString,quint32>("minutes",60));
     timeMapping.append(QPair<QString,quint32>("seconds",1));
     
+    return timeToDescriptiveString(timeMapping, msecs, 1);
+}
+
+QString Utility::timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision)
+{       
     quint64 secs = msecs / 1000;
-    QString units = "seconds";
-    qint64 minor =-1, major = -1;
+    QString retStr = "0 seconds"; // default value in case theres no actual time in msecs.
+    qint64 values[6];
+    int idx = 0;
+   
+    for(QList<QPair<QString,quint32> >::Iterator itr = timeMapping.begin(); itr != timeMapping.end() && idx <= precision; itr++) {
+        quint64 result = secs / itr->second;        
+        if(idx == 0) {
+            if(result == 0 ) {
+                continue;
+            } else {
+                retStr = itr->first;
+                retStr.prepend(" ");
+            }
+        }        
+        secs -= result * itr->second;
+        values[idx++] = result;
+    }
     
-   QList<QPair<QString,quint32> >::Iterator itr = timeMapping.begin();
-    for(; itr != timeMapping.end(); itr++) {
-        major = secs / itr->second;
-        secs -= (major * itr->second);
-        if(major > 0 ) {
-            units = itr->first;
-            break;
+    for(idx--; idx >= 0; idx--) {
+        retStr = retStr.prepend("%1").arg(values[idx], 2, 10, QChar('0'));
+        if(0 < idx) {
+            retStr.prepend(":");
         }
-        
-    }
-    if(itr < timeMapping.end() ) {
-        minor = secs / (++itr)->second;
     }
     
-    return (QString("%1").arg(major)).append(minor > -1 ?  QString(":%1").arg(minor, 2, 10, QChar('0')) : "" ).append(" ").append(units);
+    return retStr;
 }
 
 

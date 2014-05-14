@@ -61,12 +61,15 @@ namespace Utility
     QDateTime qDateTimeFromTime_t(qint64 t);
     qint64 qDateTimeToTime_t(const QDateTime &t);
 
-	/**
-	 * Convert milliseconds to HMS string.
-	 * @param quint64 msecs the milliseconds to convert to string
-	 * @return an HMS representation of the milliseconds value.
-	 */
-	QString timeToDescriptiveString(quint64 msecs);
+
+    QString timeToDescriptiveString(quint64 msecs);
+    /**
+     * @brief Convert milliseconds to HMS string.
+     * @param quint64 msecs the milliseconds to convert to string.
+     * @param uint precision the amount of sub dviving scale to include in the result.
+     * @return an HMS representation of the milliseconds value.
+     */
+    QString timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision);
 
     // convinience OS detection methods
     bool isWindows();

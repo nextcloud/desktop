@@ -45,20 +45,22 @@ namespace Progress
         
         // Should this be in a separate file?
         struct EtaEstimate {
-            EtaEstimate() :  _startedTime(QDateTime::currentMSecsSinceEpoch()), _agvEtaMSecs(0),_effectivProgressPerSec(0) {}
+            EtaEstimate() :  _startedTime(QDateTime::currentMSecsSinceEpoch()), _agvEtaMSecs(0),_effectivProgressPerSec(0),_sampleCount(1) {}
             
-            static const int AVG_DIVIDER=10;
+            static const int MAX_AVG_DIVIDER=120;
             static const int INITAL_WAIT_TIME=5;
             
-            quint64	_startedTime ;
-            quint64	_agvEtaMSecs;
-            quint64 _effectivProgressPerSec;
+            quint64     _startedTime ;
+            quint64     _agvEtaMSecs;
+            quint64     _effectivProgressPerSec;
+            quint16      _sampleCount;
             
             /**
              * reset the estiamte.
              */
             void reset() {
                 _startedTime = QDateTime::currentMSecsSinceEpoch();
+                _sampleCount =1;
                 _effectivProgressPerSec = _agvEtaMSecs = 0;
             }
             
@@ -70,7 +72,8 @@ namespace Progress
             void updateTime(quint64 completed, quint64 total) {
                 quint64 elapsedTime = QDateTime::currentMSecsSinceEpoch() -  this->_startedTime ;
                 //don't start until you have some good data to process, prevents jittring estiamtes at the start of the syncing process                    
-                if(total != 0 && completed != 0 && elapsedTime > INITAL_WAIT_TIME ) { 
+                if(total != 0 && completed != 0 && elapsedTime > INITAL_WAIT_TIME ) {
+                    if(_sampleCount < MAX_AVG_DIVIDER) { _sampleCount++; }
                     // (elapsedTime-1) is an hack to avoid float "rounding" issue (ie. 0.99999999999999999999....)
                     _agvEtaMSecs = _agvEtaMSecs + (((static_cast<float>(total) / completed) * elapsedTime) - (elapsedTime-1)) - this->getEtaEstimate();
                     _effectivProgressPerSec = ( total - completed ) / (1+this->getEtaEstimate()/1000);
@@ -82,7 +85,7 @@ namespace Progress
              * @return quint64 the estimate amount of milliseconds to end the process.
              */
             quint64 getEtaEstimate() const {
-               return _agvEtaMSecs / AVG_DIVIDER;
+               return _agvEtaMSecs / _sampleCount;
            }
             
            /**
@@ -113,15 +116,24 @@ namespace Progress
             }
             _completedFileCount++;
             _lastCompletedItem = item;            
+            this->updateEstimation();
         }
         
         void setProgressItem(const SyncFileItem &item, quint64 size) {
             _currentItems[item._file]._item = item;
             _currentItems[item._file]._completedSize = size;            
             _lastCompletedItem = SyncFileItem();
-
-            _totalEtaEstimate.updateTime(this->completedSize(),this->_totalSize);
+            
+            this->updateEstimation();
             _currentItems[item._file]._etaEstimate.updateTime(size,item._size);
+        }
+        
+        void updateEstimation() {
+            if(this->_totalSize > 0) {
+                _totalEtaEstimate.updateTime(this->completedSize(),this->_totalSize);
+            } else {
+                _totalEtaEstimate.updateTime(this->_completedFileCount,this->_totalFileCount);
+            }
         }
 
         quint64 completedSize() const {
