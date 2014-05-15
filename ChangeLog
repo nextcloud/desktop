@@ -6,13 +6,17 @@ version 1.6.0 (release 2014-04- )
  * Ignore sync log file in filewatcher
  * Install libocsync to private library dir and use rpath to localize
  * Fix reconnect after server disconnect
- * Fix crashes
  * Fix "unknown action" display in Activity window
  * Fix memory leaks
  * Respect XDG_CONFIG_HOME environment var
  * Handle empty fileids in the journal correctly
  * Add abilility to compile libowncloudsync without GUI dependendy
-
+ * Fix SSL error with previously-expired CAs on Windows
+ * Fix incorrect folder pause state after start
+ * Fix a couple of actual potential crashes
+ * Improve Cookie support (e.g. for cookie-based load-balancers)
+ * Introduce a general timeout of 300s for network operations
+ * Improve error handling, blacklisting
  * Job-based change propagation, enables faster parallel up/downloads 
    (right now only if no bandwidth limit is set and no proxy is used)
  * Significantly reduced CPU load when checking for local and remote changes
