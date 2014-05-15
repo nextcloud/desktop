@@ -406,11 +406,11 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
      QString totalSizeStr = Utility::octetsToString( progress._totalSize );
         if(progress._totalSize == 0 ) {
             quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();           
-            _actionStatus->setText( tr("Syncing %1 of %2  ( %3 left )")
+            _actionStatus->setText( tr("Syncing %1 of %2  (%3 left)")
                 .arg( currentFile ).arg( progress._totalFileCount )
                  .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate()) ) );
         } else {
-            _actionStatus->setText( tr("Syncing %1 ( %2 left )")
+            _actionStatus->setText( tr("Syncing %1 (%2 left)")
                 .arg( totalSizeStr )
                 .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate()) ) );
         }
