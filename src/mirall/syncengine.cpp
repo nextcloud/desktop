@@ -553,6 +553,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     if (!_journal->isConnected()) {
         qDebug() << "Bailing out, DB failure";
         emit csyncError(tr("Cannot open the sync journal"));
+        csync_commit(_csync_ctx);
         emit finished();
         _syncMutex.unlock();
         _thread.quit();
@@ -569,6 +570,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
         emit aboutToRemoveAllFiles(_syncedItems.first()._direction, &cancel);
         if (cancel) {
             qDebug() << Q_FUNC_INFO << "Abort sync";
+            csync_commit(_csync_ctx);
             emit finished();
             _syncMutex.unlock();
             _thread.quit();
