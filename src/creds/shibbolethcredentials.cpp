@@ -125,7 +125,11 @@ void ShibbolethCredentials::syncContextPreStart (CSYNC* ctx)
 
 bool ShibbolethCredentials::changed(AbstractCredentials* credentials) const
 {
-    ShibbolethCredentials* other(dynamic_cast< ShibbolethCredentials* >(credentials));
+    ShibbolethCredentials* other(qobject_cast< ShibbolethCredentials* >(credentials));
+
+    if (!other) {
+        return true;
+    }
 
     if (_shibCookie != other->_shibCookie || _user != other->_user) {
         return true;
