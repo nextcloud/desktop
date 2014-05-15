@@ -38,8 +38,8 @@ void OwncloudShibbolethCredsPage::setupBrowser()
     _browser = new ShibbolethWebView(ocWizard->account());
     connect(_browser, SIGNAL(shibbolethCookieReceived(const QNetworkCookie&, Account*)),
             this, SLOT(slotShibbolethCookieReceived()));
-    connect(_browser, SIGNAL(viewHidden()),
-            this, SLOT(slotViewHidden()));
+    connect(_browser, SIGNAL(rejected()),
+            this, SLOT(slotBrowserRejected()));
 
     _browser->move(ocWizard->x(), ocWizard->y());
     _browser->show();
@@ -89,7 +89,7 @@ void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived()
     emit connectToOCUrl(field("OCUrl").toString().simplified());
 }
 
-void OwncloudShibbolethCredsPage::slotViewHidden()
+void OwncloudShibbolethCredsPage::slotBrowserRejected()
 {
     wizard()->back();
     wizard()->show();

@@ -34,6 +34,7 @@ namespace Mirall
 ShibbolethWebView::ShibbolethWebView(Account* account, QWidget* parent)
     : QWebView(parent)
     , _account(account)
+    , _accepted(false)
 {
     // no minimize
     setWindowFlags(Qt::Dialog);
@@ -66,6 +67,7 @@ void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieL
         QNetworkCookie shibCookie = ShibbolethCredentials::findShibCookie(_account, cookieList);
         if (shibCookie != QNetworkCookie()) {
             Q_EMIT shibbolethCookieReceived(shibCookie, _account);
+            accept();
             close();
         }
     }
@@ -73,7 +75,9 @@ void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieL
 
 void ShibbolethWebView::closeEvent(QCloseEvent *event)
 {
-    Q_EMIT viewHidden();
+    if (!_accepted) {
+        Q_EMIT rejected();
+    }
     QWebView::closeEvent(event);
 }
 
@@ -111,6 +115,12 @@ void ShibbolethWebView::slotHandleAuthentication(QNetworkReply *reply, QAuthenti
         authenticator->setUser(dialog.user());
         authenticator->setPassword(dialog.password());
     }
+}
+
+void ShibbolethWebView::accept()
+{
+    _accepted = true;
+    Q_EMIT accepted();
 }
 
 } // ns Mirall

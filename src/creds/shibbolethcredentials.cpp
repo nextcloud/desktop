@@ -261,7 +261,7 @@ void ShibbolethCredentials::slotUserFetched(const QString &user)
 }
 
 
-void ShibbolethCredentials::slotBrowserHidden()
+void ShibbolethCredentials::slotBrowserAccepted()
 {
     _ready = false;
     Q_EMIT fetched();
@@ -333,8 +333,8 @@ void ShibbolethCredentials::showLoginWindow(Account* account)
     _browser = new ShibbolethWebView(account);
     connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
             this, SLOT(onShibbolethCookieReceived(QNetworkCookie, Account*)));
-    connect(_browser, SIGNAL(viewHidden()),
-            this, SLOT(slotBrowserHidden()));
+    connect(_browser, SIGNAL(accepted()),
+            this, SLOT(slotBrowserAccepted()));
     // FIXME If the browser was hidden (e.g. user closed it) without us logging in, the logic gets stuck
     // and can only be unstuck by restarting the app or pressing "Sign in" (we should switch to offline but we don't)
 

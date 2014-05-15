@@ -41,7 +41,8 @@ public:
 
 Q_SIGNALS:
   void shibbolethCookieReceived(const QNetworkCookie &cookie, Account *account);
-  void viewHidden();
+  void accepted();
+  void rejected();
 
 private Q_SLOTS:
   void onNewCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
@@ -49,9 +50,13 @@ private Q_SLOTS:
   void slotLoadFinished(bool success = true);
   void slotHandleAuthentication(QNetworkReply*,QAuthenticator*);
 
+protected:
+  void accept();
+
 private:
   void setup(Account *account, ShibbolethCookieJar* jar);
   QPointer<Account> _account;
+  bool _accepted;
 };
 
 } // ns Mirall

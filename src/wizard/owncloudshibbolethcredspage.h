@@ -47,7 +47,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
   void slotShibbolethCookieReceived();
-  void slotViewHidden();
+  void slotBrowserRejected();
 
 private:
   void setupBrowser();

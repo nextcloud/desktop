@@ -14,6 +14,7 @@
 #include <QNetworkRequest>
 #include <QNetworkProxy>
 #include <QAuthenticator>
+#include <QSslConfiguration>
 
 #include "mirall/cookiejar.h"
 #include "mirall/mirallaccessmanager.h"
