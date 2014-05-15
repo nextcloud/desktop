@@ -62,7 +62,6 @@ ShibbolethWebView::~ShibbolethWebView()
 
 void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& url)
 {
-    qDebug() << "Received cookies for URL" << url << ":" << cookieList << ". Account object has URL" << _account->url();
     if (url.host() == _account->url().host()) {
         QNetworkCookie shibCookie = ShibbolethCredentials::findShibCookie(_account, cookieList);
         if (shibCookie != QNetworkCookie()) {
