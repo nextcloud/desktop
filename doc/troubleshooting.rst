@@ -134,3 +134,25 @@ log line contains a lot of information of every request and it's result.
 More information about the apache logging can be found at
 ``http://httpd.apache.org/docs/current/logs.html``.
 
+Core Dumps
+----------
+
+In case of crashes of the client software, having a core dump helps to
+debug the issue tremendously. 
+
+The client is able to write a core dump in case of crashing on Linux and 
+MacOSX. To enable that, the environment variable ``OWNCLOUD_CORE_DUMP`` has
+to be defined.
+
+For example
+
+```
+OWNCLOUD_CORE_DUMP=1 owncloud
+```
+
+starts the client with core dumping enabled. Core dumps appear in the 
+current working directory, and since they can be fairly large, it is 
+important to have plenty of disk space when running with dumps enabled.
+
+If a core dump file should be transfered back to the developers it 
+should be compressed properly before.
