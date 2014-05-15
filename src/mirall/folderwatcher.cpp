@@ -115,7 +115,7 @@ void FolderWatcher::changeDetected( const QString& path )
 
 void FolderWatcher::changeDetected( const QStringList& paths )
 {
-    qDebug() << Q_FUNC_INFO << paths;
+    // qDebug() << Q_FUNC_INFO << paths;
 
     // TODO: this shortcut doesn't look very reliable:
     //   - why is the timeout only 1 second?
