@@ -301,6 +301,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[alias] = folder;
     if (paused) {
+        folder->setSyncEnabled(!paused);
         _disabledFolders.insert(folder);
     }
 
