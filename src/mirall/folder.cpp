@@ -689,6 +689,9 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *
     *cancel = msgBox.clickedButton() == keepBtn;
     if (*cancel) {
         wipe();
+        // speed up next sync
+        _lastEtag = QString();
+        QTimer::singleShot(50, this, SLOT(slotPollTimerTimeout()));
     }
 #endif
 }
