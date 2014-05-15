@@ -395,6 +395,10 @@ void FolderMan::slotScheduleSync( const QString& alias )
 {
     if( alias.isEmpty() ) return;
 
+    if( _currentSyncFolder == alias ) {
+        qDebug() << " the current folder is currently syncing.";
+        return;
+    }
     qDebug() << "Schedule folder " << alias << " to sync!";
 
     if( ! _scheduleQueue.contains(alias ) && _folderMap.contains(alias) ) {
