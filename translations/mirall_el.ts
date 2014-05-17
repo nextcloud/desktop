@@ -1281,7 +1281,12 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="109"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="112"/>
+        <source>Attention, possible case sensitivity clash with %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="117"/>
         <source>could not create directory %1</source>
         <translation>αδυναμία δημιουργίας καταλόγου %1</translation>
     </message>
@@ -1297,7 +1302,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateRemoteRemove</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="129"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="137"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation>Το αρχείο διαγράφηκε από ένα διαμοιρασμένο κατάλογο μόνο για ανάγνωση. Το αρχείο επαναφέρθηκε.</translation>
     </message>
@@ -1305,17 +1310,17 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="220"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="228"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Αυτός ο φάκελος δεν πρέπει να μετονομαστεί. Μετονομάζεται πίσω στο αρχικό του όνομα.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="222"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="230"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Αυτός ο φάκελος δεν πρέπει να μετονομαστεί. Παρακαλώ ονομάστε το  ξανά Κοινόχρηστος.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="237"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="245"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Το αρχείο μετονομάστηκε αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Το αρχικό αρχείο επαναφέρθηκε.</translation>
     </message>

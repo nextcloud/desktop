@@ -1281,7 +1281,12 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="109"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="112"/>
+        <source>Attention, possible case sensitivity clash with %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="117"/>
         <source>could not create directory %1</source>
         <translation>nie można utworzyć katalogu %1</translation>
     </message>
@@ -1297,7 +1302,7 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::PropagateRemoteRemove</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="129"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="137"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation>Plik został usunięty z zasobu z prawem tylko do odczytu. Został przywrócony.</translation>
     </message>
@@ -1305,17 +1310,17 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="220"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="228"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Folder ten nie może być zmieniony. Został zmieniony z powrotem do pierwotnej nazwy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="222"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="230"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Nie wolno zmieniać nazwy tego folderu. Proszę zmień nazwę z powrotem na Shared.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="237"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="245"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Plik był edytowany lokalnie ale jest częścią udziału z prawem tylko do odczytu. Przywrócono oryginalny plik</translation>
     </message>

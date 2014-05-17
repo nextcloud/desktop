@@ -1281,7 +1281,12 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="109"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="112"/>
+        <source>Attention, possible case sensitivity clash with %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="117"/>
         <source>could not create directory %1</source>
         <translation>kunde ej skapa katalogen %1</translation>
     </message>
@@ -1297,7 +1302,7 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>Mirall::PropagateRemoteRemove</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="129"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="137"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation>Den här filen har tagits bort från en endast-läsbar delning. Den återställdes.</translation>
     </message>
@@ -1305,17 +1310,17 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="220"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="228"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Denna mapp får inte byta namn. Den kommer att döpas om till sitt ursprungliga namn.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="222"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="230"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Denna mapp får ej döpas om. Vänligen döp den till Delad igen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="237"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="245"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>En fil döptes om men är en del av en endast-läsbar delning. Original filen återställdes.</translation>
     </message>
