@@ -605,7 +605,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="627"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Yhteys aikakatkaistiin</translation>
     </message>
 </context>
 <context>
@@ -1244,7 +1244,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="81"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Yhteys aikakatkaistiin</translation>
     </message>
 </context>
 <context>

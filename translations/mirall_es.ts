@@ -1283,7 +1283,7 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="112"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Atención, posible error de muyuscula/minisculas en %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="117"/>
