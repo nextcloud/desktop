@@ -114,7 +114,6 @@ AccountSettings::AccountSettings(QWidget *parent) :
     connect(FolderMan::instance(), SIGNAL(folderListLoaded(Folder::Map)),
             this, SLOT(setFolderList(Folder::Map)));
     setFolderList(FolderMan::instance()->map());
-
 }
 
 void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccount)
@@ -140,28 +139,28 @@ void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccoun
 
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
 {
-  bool state = indx.isValid();
+  bool isValid = indx.isValid();
 
   bool haveFolders = ui->_folderList->model()->rowCount() > 0;
 
-  ui->_buttonRemove->setEnabled(state);
+  ui->_buttonRemove->setEnabled(isValid);
   if( Theme::instance()->singleSyncFolder() ) {
       // only one folder synced folder allowed.
       ui->_buttonAdd->setVisible(!haveFolders);
   } else {
       ui->_buttonAdd->setVisible(true);
-      ui->_buttonAdd->setEnabled( true );
   }
-  ui->_buttonEnable->setEnabled( state );
+  ui->_buttonAdd->setEnabled(_account && _account->state() == Account::Connected);
+  ui->_buttonEnable->setEnabled( isValid );
 
-  if ( state ) {
+  if ( isValid ) {
     bool folderEnabled = _model->data( indx, FolderStatusDelegate::FolderSyncEnabled).toBool();
     if ( folderEnabled ) {
       ui->_buttonEnable->setText( tr( "Pause" ) );
     } else {
       ui->_buttonEnable->setText( tr( "Resume" ) );
     }
-    ui->_buttonEnable->setEnabled(_account && _account->state() == Account::Connected);
+    ui->_buttonEnable->setEnabled( _account && _account->state() == Account::Connected);
   }
 }
 
@@ -740,7 +739,7 @@ void AccountSettings::slotAccountStateChanged(int state)
         ui->sslButton->updateAccountInfo(_account);
         QUrl safeUrl(_account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
-        ui->_buttonAdd->setEnabled(state == Account::Connected);
+        slotButtonsSetEnabled();
         if (state == Account::Connected) {
             QString user;
             if (AbstractCredentials *cred = _account->credentials()) {
