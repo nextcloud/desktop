@@ -1281,7 +1281,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="112"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Atenção, possível caso de sensibilidade de minúscula/maiúscula, choque com 1%</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="117"/>

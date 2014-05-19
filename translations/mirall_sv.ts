@@ -608,7 +608,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="627"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Anslutningen avbröts på grund av timeout</translation>
     </message>
 </context>
 <context>
@@ -1249,7 +1249,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="81"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Anslutningen avbröts på grund av timeout</translation>
     </message>
 </context>
 <context>
@@ -1283,7 +1283,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="112"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Observera, eventuell skiftlägeskänslig konflikt med %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="117"/>
@@ -2207,7 +2207,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Skriv in webbadressen till den ownCloudserver du vill ansluta till (utan http eller https).</translation>
+        <translation>Skriv in webbadressen till den ownCloud-server du vill ansluta till (utan http eller https).</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="83"/>
