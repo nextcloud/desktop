@@ -77,7 +77,7 @@ QString applicationTrPath()
 // ----------------------------------------------------------------------------------
 
 Application::Application(int &argc, char **argv) :
-    SharedTools::QtSingleApplication(argc, argv),
+    SharedTools::QtSingleApplication(Theme::instance()->appName() ,argc, argv),
     _gui(0),
     _theme(Theme::instance()),
     _helpOnly(false),
@@ -97,7 +97,6 @@ Application::Application(int &argc, char **argv) :
     //no need to waste time;
     if ( _helpOnly ) return;
 
-    initialize();
     if (isRunning())
         return;
 

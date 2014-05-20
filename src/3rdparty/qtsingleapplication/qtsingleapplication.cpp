@@ -1,96 +1,123 @@
-/**************************************************************************
+/****************************************************************************
 **
-** This file is part of Qt Creator
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
-** Copyright (c) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** This file is part of Qt Creator.
 **
-** Contact: http://www.qt-project.org/
-**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU Lesser
+** General Public License version 2.1 as published by the Free Software
+** Foundation and appearing in the file LICENSE.LGPL included in the
+** packaging of this file.  Please review the following information to
+** ensure the GNU Lesser General Public License version 2.1 requirements
+** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** This file may be used under the terms of the GNU Lesser General Public
-** License version 2.1 as published by the Free Software Foundation and
-** appearing in the file LICENSE.LGPL included in the packaging of this file.
-** Please review the following information to ensure the GNU Lesser General
-** Public License version 2.1 requirements will be met:
-** http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
-**
-** In addition, as a special exception, Nokia gives you certain additional
-** rights. These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
-** Other Usage
-**
-** Alternatively, this file may be used in accordance with the terms and
-** conditions contained in a signed written agreement between you and Nokia.
-**
-**
-**************************************************************************/
+****************************************************************************/
 
 #include "qtsingleapplication.h"
 #include "qtlocalpeer.h"
 
-#include <QWidget>
+#include <qtlockedfile.h>
+
+#include <QDir>
 #include <QFileOpenEvent>
+#include <QSharedMemory>
+#include <QWidget>
 
 namespace SharedTools {
 
-void QtSingleApplication::sysInit(const QString &appId)
+static const int instancesSize = 1024;
+
+static QString instancesLockFilename(const QString &appSessionId)
 {
-    actWin = 0;
-    firstPeer = new QtLocalPeer(this, appId);
-    connect(firstPeer, SIGNAL(messageReceived(QString)), SIGNAL(messageReceived(QString)));
-    pidPeer = new QtLocalPeer(this, appId + QLatin1Char('-') + QString::number(QCoreApplication::applicationPid(), 10));
-    connect(pidPeer, SIGNAL(messageReceived(QString)), SIGNAL(messageReceived(QString)));
+    const QChar slash(QLatin1Char('/'));
+    QString res = QDir::tempPath();
+    if (!res.endsWith(slash))
+        res += slash;
+    return res + appSessionId + QLatin1String("-instances");
 }
-
-
-QtSingleApplication::QtSingleApplication(int &argc, char **argv, bool GUIenabled)
-    : QApplication(argc, argv, GUIenabled)
-{
-    sysInit();
-}
-
 
 QtSingleApplication::QtSingleApplication(const QString &appId, int &argc, char **argv)
-    : QApplication(argc, argv)
+    : QApplication(argc, argv),
+      firstPeer(-1),
+      pidPeer(0)
 {
     this->appId = appId;
-    sysInit(appId);
+
+    const QString appSessionId = QtLocalPeer::appSessionId(appId);
+
+    // This shared memory holds a zero-terminated array of active (or crashed) instances
+    instances = new QSharedMemory(appSessionId, this);
+    actWin = 0;
+    block = false;
+
+    // First instance creates the shared memory, later instances attach to it
+    const bool created = instances->create(instancesSize);
+    if (!created) {
+        if (!instances->attach()) {
+            qWarning() << "Failed to initialize instances shared memory: "
+                       << instances->errorString();
+            delete instances;
+            instances = 0;
+            return;
+        }
+    }
+
+    // QtLockedFile is used to workaround QTBUG-10364
+    QtLockedFile lockfile(instancesLockFilename(appSessionId));
+
+    lockfile.open(QtLockedFile::ReadWrite);
+    lockfile.lock(QtLockedFile::WriteLock);
+    qint64 *pids = static_cast<qint64 *>(instances->data());
+    if (!created) {
+        // Find the first instance that it still running
+        // The whole list needs to be iterated in order to append to it
+        for (; *pids; ++pids) {
+            if (firstPeer == -1 && isRunning(*pids))
+                firstPeer = *pids;
+        }
+    }
+    // Add current pid to list and terminate it
+    *pids++ = QCoreApplication::applicationPid();
+    *pids = 0;
+    pidPeer = new QtLocalPeer(this, appId + QLatin1Char('-') +
+                              QString::number(QCoreApplication::applicationPid()));
+    connect(pidPeer, SIGNAL(messageReceived(QString,QObject*)), SIGNAL(messageReceived(QString,QObject*)));
+    pidPeer->isClient();
+    lockfile.unlock();
 }
 
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-QtSingleApplication::QtSingleApplication(int &argc, char **argv, Type type)
-    : QApplication(argc, argv, type)
+QtSingleApplication::~QtSingleApplication()
 {
-    sysInit();
+    if (!instances)
+        return;
+    const qint64 appPid = QCoreApplication::applicationPid();
+    QtLockedFile lockfile(instancesLockFilename(QtLocalPeer::appSessionId(appId)));
+    lockfile.open(QtLockedFile::ReadWrite);
+    lockfile.lock(QtLockedFile::WriteLock);
+    // Rewrite array, removing current pid and previously crashed ones
+    qint64 *pids = static_cast<qint64 *>(instances->data());
+    qint64 *newpids = pids;
+    for (; *pids; ++pids) {
+        if (*pids != appPid && isRunning(*pids))
+            *newpids++ = *pids;
+    }
+    *newpids = 0;
+    lockfile.unlock();
 }
-#endif
-
-
-#if defined(Q_WS_X11)
-QtSingleApplication::QtSingleApplication(Display* dpy, Qt::HANDLE visual, Qt::HANDLE colormap)
-    : QApplication(dpy, visual, colormap)
-{
-    sysInit();
-}
-
-QtSingleApplication::QtSingleApplication(Display *dpy, int &argc, char **argv, Qt::HANDLE visual, Qt::HANDLE cmap)
-    : QApplication(dpy, argc, argv, visual, cmap)
-{
-    sysInit();
-}
-
-QtSingleApplication::QtSingleApplication(Display* dpy, const QString &appId,
-    int argc, char **argv, Qt::HANDLE visual, Qt::HANDLE colormap)
-    : QApplication(dpy, argc, argv, visual, colormap)
-{
-    this->appId = appId;
-    sysInit(appId);
-}
-#endif
 
 bool QtSingleApplication::event(QEvent *event)
 {
@@ -104,31 +131,26 @@ bool QtSingleApplication::event(QEvent *event)
 
 bool QtSingleApplication::isRunning(qint64 pid)
 {
-    if (pid == -1)
-        return firstPeer->isClient();
+    if (pid == -1) {
+        pid = firstPeer;
+        if (pid == -1)
+            return false;
+    }
 
     QtLocalPeer peer(this, appId + QLatin1Char('-') + QString::number(pid, 10));
     return peer.isClient();
 }
 
-void QtSingleApplication::initialize(bool)
-{
-    firstPeer->isClient();
-    pidPeer->isClient();
-}
-
 bool QtSingleApplication::sendMessage(const QString &message, int timeout, qint64 pid)
 {
-    if (pid == -1)
-        return firstPeer->sendMessage(message, timeout);
+    if (pid == -1) {
+        pid = firstPeer;
+        if (pid == -1)
+            return false;
+    }
 
     QtLocalPeer peer(this, appId + QLatin1Char('-') + QString::number(pid, 10));
-    return peer.sendMessage(message, timeout);
-}
-
-QString QtSingleApplication::id() const
-{
-    return firstPeer->applicationId();
+    return peer.sendMessage(message, timeout, block);
 }
 
 QString QtSingleApplication::applicationId() const
@@ -136,16 +158,20 @@ QString QtSingleApplication::applicationId() const
     return appId;
 }
 
+void QtSingleApplication::setBlock(bool value)
+{
+    block = value;
+}
+
 void QtSingleApplication::setActivationWindow(QWidget *aw, bool activateOnMessage)
 {
     actWin = aw;
-    if (activateOnMessage) {
-        connect(firstPeer, SIGNAL(messageReceived(QString)), this, SLOT(activateWindow()));
-        connect(pidPeer, SIGNAL(messageReceived(QString)), this, SLOT(activateWindow()));
-    } else {
-        disconnect(firstPeer, SIGNAL(messageReceived(QString)), this, SLOT(activateWindow()));
-        disconnect(pidPeer, SIGNAL(messageReceived(QString)), this, SLOT(activateWindow()));
-    }
+    if (!pidPeer)
+        return;
+    if (activateOnMessage)
+        connect(pidPeer, SIGNAL(messageReceived(QString,QObject*)), this, SLOT(activateWindow()));
+    else
+        disconnect(pidPeer, SIGNAL(messageReceived(QString,QObject*)), this, SLOT(activateWindow()));
 }
 
 
