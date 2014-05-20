@@ -465,33 +465,33 @@ QString Utility::timeToDescriptiveString(quint64 msecs)
         
     
 
-    return timeToDescriptiveString(timeMapping, msecs, 1);
+    return timeToDescriptiveString(timeMapping, msecs, 2);
 }
 
 QString Utility::timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision)
 {       
     quint64 secs = msecs / 1000;
     QString retStr = "0 seconds"; // default value in case theres no actual time in msecs.
-    qint64 values[6];
-    int idx = 0;
+    QList<quint64> values;
+    bool timeStartFound = false;
    
-    for(QList<QPair<QString,quint32> >::Iterator itr = timeMapping.begin(); itr != timeMapping.end() && idx <= precision; itr++) {
+    for(QList<QPair<QString,quint32> >::Iterator itr = timeMapping.begin(); itr != timeMapping.end() && precision > 0; itr++) {
         quint64 result = secs / itr->second;        
-        if(idx == 0) {
+        if(!timeStartFound) {
             if(result == 0 ) {
                 continue;
-            } else {
-                retStr = itr->first;
-                retStr.prepend(" ");
-            }
+            } 
+            retStr = QString(" ").append(itr->first);            
+            timeStartFound= true;        
         }        
         secs -= result * itr->second;
-        values[idx++] = result;
+        values.append(result);
+        precision--;
     }
     
-    for(idx--; idx >= 0; idx--) {
-        retStr = retStr.prepend("%1").arg(values[idx], 2, 10, QChar('0'));
-        if(0 < idx) {
+    for(QList<quint64>::Iterator itr = values.end()-1; itr >= values.begin(); itr--) {
+        retStr = retStr.prepend("%1").arg(itr.i->t(), 2, 10, QChar('0'));
+        if(itr > values.begin()) {
             retStr.prepend(":");
         }
     }
