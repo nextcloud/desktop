@@ -101,6 +101,9 @@ private:
     int treewalkFile( TREE_WALK_FILE*, bool );
     bool checkBlacklisting( SyncFileItem *item );
 
+    // cleanup and emit the finished signal
+    void finalize();
+
     static QMutex _syncMutex;
     SyncFileItemVector _syncedItems;
 

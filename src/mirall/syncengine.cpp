@@ -66,6 +66,7 @@ SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remo
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
     qRegisterMetaType<Progress::Info>("Progress::Info");
 
+    _thread.setObjectName("CSync_Neon_Thread");
     _thread.start();
 }
 
@@ -414,10 +415,7 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
     } else {
         emit csyncError(errStr);
     }
-    csync_commit(_csync_ctx);
-    emit finished();
-    _syncMutex.unlock();
-    _thread.quit();
+    finalize();
 }
 
 void SyncEngine::startSync()
@@ -451,12 +449,7 @@ void SyncEngine::startSync()
         if( fileRecordCount == -1 ) {
             qDebug() << "No way to create a sync journal!";
             emit csyncError(tr("Unable to initialize a sync journal."));
-
-            csync_commit(_csync_ctx);
-            emit finished();
-            _syncMutex.unlock();
-            _thread.quit();
-
+            finalize();
             return;
             // database creation error!
         } else if ( fileRecordCount < 50 ) {
@@ -553,10 +546,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     if (!_journal->isConnected()) {
         qDebug() << "Bailing out, DB failure";
         emit csyncError(tr("Cannot open the sync journal"));
-        csync_commit(_csync_ctx);
-        emit finished();
-        _syncMutex.unlock();
-        _thread.quit();
+        finalize();
         return;
     }
 
@@ -570,10 +560,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
         emit aboutToRemoveAllFiles(_syncedItems.first()._direction, &cancel);
         if (cancel) {
             qDebug() << Q_FUNC_INFO << "Abort sync";
-            csync_commit(_csync_ctx);
-            emit finished();
-            _syncMutex.unlock();
-            _thread.quit();
+            finalize();
             return;
         }
     }
@@ -673,16 +660,21 @@ void SyncEngine::slotFinished()
     }
     _journal->commit("All Finished.", false);
     emit treeWalkResult(_syncedItems);
+    finalize();
+}
 
+void SyncEngine::finalize()
+{
     csync_commit(_csync_ctx);
 
     qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
     _stopWatch.stop();
 
-    emit finished();
     _propagator.reset(0);
     _syncMutex.unlock();
     _thread.quit();
+    _thread.wait();
+    emit finished();
 }
 
 void SyncEngine::slotProgress(const SyncFileItem& item, quint64 current)
