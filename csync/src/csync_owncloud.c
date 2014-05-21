@@ -982,8 +982,10 @@ int owncloud_commit(void) {
 
   clean_caches();
 
-  if( dav_session.ctx )
-    ne_session_destroy( dav_session.ctx );
+  if( dav_session.ctx ) {
+      ne_forget_auth(dav_session.ctx);
+      ne_session_destroy( dav_session.ctx );
+  }
   /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
 
   dav_session.ctx = 0;
