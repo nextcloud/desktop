@@ -45,6 +45,8 @@
 #include <QMenu>
 #include <QMessageBox>
 
+class QSocket;
+
 namespace Mirall {
 
 namespace {
@@ -103,7 +105,7 @@ Application::Application(int &argc, char **argv) :
     setupLogging();
     setupTranslations();
 
-    connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
+    connect( this, SIGNAL(messageReceived(QString, QObject*)), SLOT(slotParseOptions(QString, QObject*)));
 
     Account *account = Account::restore();
     if (account) {
@@ -348,7 +350,7 @@ void Application::slotUseMonoIconsChanged(bool)
     _gui->slotComputeOverallSyncStatus();
 }
 
-void Application::slotParseOptions(const QString &opts)
+void Application::slotParseOptions(const QString &opts, QObject*)
 {
     QStringList options = opts.split(QLatin1Char('|'));
     parseOptions(options);
