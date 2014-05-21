@@ -131,6 +131,7 @@ public:
 
     /** colored, white or black */
     QString systrayIconFlavor(bool mono) const;
+    QString systrayIconFlavorSelected(bool mono) const;
 
 #ifndef TOKEN_AUTH_ONLY
     /**

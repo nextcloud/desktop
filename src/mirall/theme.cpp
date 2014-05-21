@@ -16,6 +16,8 @@
 #include "version.h"
 #include "config.h"
 
+#include "mirall/utility.h"
+
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
 #include <QtGui>
@@ -125,10 +127,10 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
         icon = QIcon::fromTheme( name );
     } else {
         QList<int> sizes;
-        sizes <<16 << 22 << 32 << 48 << 64 << 128;
+        sizes << 16 << 22 << 32 << 48 << 64 << 128;
         foreach (int size, sizes) {
-            QString pixmapName = QString::fromLatin1(":/mirall/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
-            if (QFile::exists(pixmapName)) {
+            QString pixmapName = QString::fromLatin1(":/mirall/theme/%3/%1-%2.png").arg(name).arg(size);
+            if (QFile::exists(pixmapName.arg(flavor))) {
                 QPixmap px(pixmapName);
                 // HACK, get rid of it by supporting FDO icon themes, this is really just emulating ubuntu-mono
                 if (qgetenv("DESKTOP_SESSION") == "ubuntu") {
@@ -138,6 +140,10 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
                     p.drawPixmap(px.rect(), mask, mask.rect());
                 }
                 icon.addPixmap(px);
+                if (Utility::isMac()) {
+                    QString selIcon = pixmapName.arg(systrayIconFlavorSelected(_mono));
+                    icon.addPixmap(QPixmap(selIcon), QIcon::Selected);
+                }
             }
         }
         if (icon.isNull()) {
@@ -178,11 +184,22 @@ QString Theme::systrayIconFlavor(bool mono) const
 {
     QString flavor;
     if (mono) {
-#ifdef Q_OS_MAC
-        flavor = QLatin1String("black");
-#else
+        if (Utility::isMac()) {
+            flavor = QLatin1String("black");
+        } else {
+            flavor = QLatin1String("white");
+        }
+    } else {
+        flavor = QLatin1String("colored");
+    }
+    return flavor;
+}
+
+QString Theme::systrayIconFlavorSelected(bool mono) const
+{
+    QString flavor;
+    if (mono) {
         flavor = QLatin1String("white");
-#endif
     } else {
         flavor = QLatin1String("colored");
     }
