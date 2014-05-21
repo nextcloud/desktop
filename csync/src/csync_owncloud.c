@@ -177,6 +177,49 @@ static int verify_sslcert(void *userdata, int failures,
 }
 
 /*
+ * Authentication callback. Is set by ne_set_server_auth to be called
+ * from the neon lib to authenticate a request.
+ */
+static int ne_auth( void *userdata, const char *realm, int attempt,
+                    char *username, char *password)
+{
+    char buf[NE_ABUFSIZ];
+
+    (void) userdata;
+    (void) realm;
+
+    /* DEBUG_WEBDAV( "Authentication required %s", realm ); */
+    if( username && password ) {
+        DEBUG_WEBDAV( "Authentication required %s", username );
+        if( dav_session.user ) {
+            /* allow user without password */
+            if( strlen( dav_session.user ) < NE_ABUFSIZ ) {
+                strcpy( username, dav_session.user );
+            }
+            if( dav_session.pwd && strlen( dav_session.pwd ) < NE_ABUFSIZ ) {
+                strcpy( password, dav_session.pwd );
+            }
+        } else if( _authcb != NULL ){
+            /* call the csync callback */
+            DEBUG_WEBDAV("Call the csync callback for %s", realm );
+            memset( buf, 0, NE_ABUFSIZ );
+            (*_authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, _userdata );
+            if( strlen(buf) < NE_ABUFSIZ ) {
+                strcpy( username, buf );
+            }
+            memset( buf, 0, NE_ABUFSIZ );
+            (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, _userdata );
+            if( strlen(buf) < NE_ABUFSIZ) {
+                strcpy( password, buf );
+            }
+        } else {
+            DEBUG_WEBDAV("I can not authenticate!");
+        }
+    }
+    return attempt;
+}
+
+/*
  * Authentication callback. Is set by ne_set_proxy_auth to be called
  * from the neon lib to authenticate against a proxy. The data to authenticate
  * against comes from mirall throught vio_module_init function.
@@ -422,7 +465,6 @@ static int dav_connect(const char *base_url) {
     char *path = NULL;
     char *scheme = NULL;
     char *host = NULL;
-    char *user, *pwd;
     unsigned int port = 0;
     int proxystate = -1;
 
@@ -430,7 +472,7 @@ static int dav_connect(const char *base_url) {
         return 0;
     }
 
-    rc = c_parse_uri( base_url, &scheme, &user, &pwd, &host, &port, &path );
+    rc = c_parse_uri( base_url, &scheme, &dav_session.user, &dav_session.pwd, &host, &port, &path );
     if( rc < 0 ) {
         DEBUG_WEBDAV("Failed to parse uri %s", base_url );
         goto out;
@@ -452,6 +494,8 @@ static int dav_connect(const char *base_url) {
         goto out;
     }
 
+    DEBUG_WEBDAV("* user %s", dav_session.user ? dav_session.user : "");
+
     if (port == 0) {
         port = ne_uri_defaultport(protocol);
     }
@@ -472,6 +516,7 @@ static int dav_connect(const char *base_url) {
     snprintf( uaBuf, sizeof(uaBuf), "Mozilla/5.0 (%s) csyncoC/%s",
               get_platform(), CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
     ne_set_useragent( dav_session.ctx, uaBuf);
+    ne_set_server_auth(dav_session.ctx, ne_auth, 0 );
 
     if( useSSL ) {
         if (!ne_has_support(NE_FEATURE_SSL)) {
@@ -948,6 +993,8 @@ int owncloud_commit(void) {
   // ne_sock_exit();
   _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
 
+  SAFE_FREE( dav_session.user );
+  SAFE_FREE( dav_session.pwd );
   SAFE_FREE( dav_session.session_key);
   SAFE_FREE( dav_session.error_string );
 

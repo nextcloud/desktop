@@ -120,6 +120,8 @@ typedef int (*csync_owncloud_redirect_callback_t)(CSYNC* ctx, const char* uri);
 /* Struct with the WebDAV session */
 struct dav_session_s {
     ne_session *ctx;
+    char *user;
+    char *pwd;
 
     char *proxy_type;
     char *proxy_host;
