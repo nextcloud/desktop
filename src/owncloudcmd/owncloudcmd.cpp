@@ -157,7 +157,6 @@ int main(int argc, char **argv) {
     account.setSslErrorHandler(sslErrorHandler);
     AccountManager::instance()->setAccount(&account);
 
-
     CSYNC *_csync_ctx;
     if( csync_create( &_csync_ctx, options.source_dir.toUtf8(),
                       options.target_url.toUtf8()) < 0 ) {

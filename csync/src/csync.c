@@ -191,7 +191,7 @@ int csync_init(CSYNC *ctx) {
   ctx->local.type = LOCAL_REPLICA;
 
   if ( !ctx->options.local_only_mode) {
-      owncloud_init(csync_get_auth_callback(ctx), csync_get_userdata(ctx));
+      owncloud_init(csync_get_userdata(ctx));
       ctx->remote.type = REMOTE_REPLICA;
   } else {
     ctx->remote.type = LOCAL_REPLICA;

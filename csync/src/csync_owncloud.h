@@ -173,7 +173,7 @@ int owncloud_closedir(csync_vio_handle_t *dhandle);
 int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf);
 int owncloud_commit(void);
 char *owncloud_error_string(void);
-void owncloud_init(csync_auth_callback cb, void *userdata);
+void owncloud_init(void *userdata);
 int owncloud_set_property(const char *key, void *data);
 
 #endif /* CSYNC_OWNCLOUD_H */

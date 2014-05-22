@@ -60,7 +60,7 @@ struct dav_session_s dav_session; /* The DAV Session, initialised in dav_connect
 int _connected = 0;                   /* flag to indicate if a connection exists, ie.
                                      the dav_session is valid */
 
-csync_auth_callback _authcb;
+
 void *_userdata;
 long long chunked_total_size = 0;
 long long chunked_done = 0;
@@ -123,6 +123,7 @@ static int verify_sslcert(void *userdata, int failures,
     char buf[MAX(NE_SSL_DIGESTLEN, NE_ABUFSIZ)];
     int ret = -1;
     const ne_ssl_certificate *cert = certificate;
+    csync_auth_callback authcb = NULL;
 
     (void) userdata;
     memset( problem, 0, LEN );
@@ -160,11 +161,14 @@ static int verify_sslcert(void *userdata, int failures,
     }
     addSSLWarning( problem, "Do you want to accept the certificate chain anyway?\nAnswer yes to do so and take the risk: ", LEN );
 
-    if( _authcb ){
+    if( dav_session.csync_ctx ) {
+        authcb = csync_get_auth_callback( dav_session.csync_ctx );
+    }
+    if( authcb ){
         /* call the csync callback */
         DEBUG_WEBDAV("Call the csync callback for SSL problems");
         memset( buf, 0, NE_ABUFSIZ );
-        (*_authcb) ( problem, buf, NE_ABUFSIZ-1, 1, 0, _userdata );
+        (*authcb) ( problem, buf, NE_ABUFSIZ-1, 1, 0, _userdata );
         if( buf[0] == 'y' || buf[0] == 'Y') {
             ret = 0;
         } else {
@@ -184,6 +188,8 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
                     char *username, char *password)
 {
     char buf[NE_ABUFSIZ];
+    csync_auth_callback authcb = NULL;
+    int re = attempt;
 
     (void) userdata;
     (void) realm;
@@ -199,24 +205,29 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
             if( dav_session.pwd && strlen( dav_session.pwd ) < NE_ABUFSIZ ) {
                 strcpy( password, dav_session.pwd );
             }
-        } else if( _authcb != NULL ){
-            /* call the csync callback */
-            DEBUG_WEBDAV("Call the csync callback for %s", realm );
-            memset( buf, 0, NE_ABUFSIZ );
-            (*_authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, _userdata );
-            if( strlen(buf) < NE_ABUFSIZ ) {
-                strcpy( username, buf );
-            }
-            memset( buf, 0, NE_ABUFSIZ );
-            (*_authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, _userdata );
-            if( strlen(buf) < NE_ABUFSIZ) {
-                strcpy( password, buf );
-            }
         } else {
-            DEBUG_WEBDAV("I can not authenticate!");
+            if( dav_session.csync_ctx ) {
+               authcb = csync_get_auth_callback( dav_session.csync_ctx );
+            }
+            if( authcb != NULL ){
+                /* call the csync callback */
+                DEBUG_WEBDAV("Call the csync callback for %s", realm );
+                memset( buf, 0, NE_ABUFSIZ );
+                (*authcb) ("Enter your username: ", buf, NE_ABUFSIZ-1, 1, 0, _userdata );
+                if( strlen(buf) < NE_ABUFSIZ ) {
+                    strcpy( username, buf );
+                }
+                memset( buf, 0, NE_ABUFSIZ );
+                (*authcb) ("Enter your password: ", buf, NE_ABUFSIZ-1, 0, 0, _userdata );
+                if( strlen(buf) < NE_ABUFSIZ) {
+                    strcpy( password, buf );
+                }
+            } else {
+                re = 1;
+            }
         }
     }
-    return attempt;
+    return re;
 }
 
 /*
@@ -1049,10 +1060,9 @@ int owncloud_set_property(const char *key, void *data) {
     return -1;
 }
 
-void owncloud_init(csync_auth_callback cb, void *userdata) {
+void owncloud_init(void *userdata) {
 
     _userdata = userdata;
-    _authcb = cb;
     _connected = 0;  /* triggers dav_connect to go through the whole neon setup */
 
     memset(&dav_session, 0, sizeof(dav_session));
