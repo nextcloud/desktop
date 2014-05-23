@@ -770,7 +770,15 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
         return;
     }
 
-    query.prepare("SELECT retrycount FROM blacklist WHERE path=:path");
+    QString sql("SELECT retrycount FROM blacklist WHERE path=:path");
+
+    if( Utility::fsCasePreserving() ) {
+        // if the file system is case preserving we have to check the blacklist
+        // case insensitively
+        sql += QLatin1String(" COLLATE NOCASE");
+    }
+
+    query.prepare(sql);
     query.bindValue(":path", item._file);
 
     if( !query.exec() ) {

@@ -132,7 +132,7 @@ void PropagateLocalMkdir::start()
 
     QDir newDir(_propagator->_localDir + _item._file);
     QString newDirStr = QDir::toNativeSeparators(newDir.path());
-    if(newDir.exists() && hasCaseClash(_propagator->_localDir + _item._file ) ) { // add a check on the file name
+    if( Utility::fsCasePreserving() && newDir.exists() && hasCaseClash(_propagator->_localDir + _item._file ) ) { // add a check on the file name
         qDebug() << "WARN: new directory to create locally already exists!";
         done( SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr) );
         return;
