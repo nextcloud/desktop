@@ -23,8 +23,6 @@ namespace Mirall {
 SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     : MacPreferencesWindow(parent)
 {
-    setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
-
     setObjectName("SettingsMac"); // required as group for saveGeometry call
 
     setWindowTitle(tr("%1").arg(Theme::instance()->appNameGUI()));
