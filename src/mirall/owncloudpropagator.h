@@ -211,6 +211,7 @@ public:
     int _activeJobs;
 
     bool isInSharedDirectory(const QString& file);
+    bool localFileNameClash(const QString& relfile);
 
     void abort() {
         _abortRequested.fetchAndStoreOrdered(true);

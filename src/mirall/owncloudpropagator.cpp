@@ -21,6 +21,11 @@
 #include "propagator_legacy.h"
 #include "mirall/utility.h"
 
+#ifdef Q_OS_WIN
+#include <windef.h>
+#include <winbase.h>
+#endif
+
 #include <QStack>
 
 namespace Mirall {
@@ -153,6 +158,8 @@ void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
     }
 }
 
+// ================================================================================
+
 PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
@@ -281,6 +288,45 @@ bool OwncloudPropagator::useLegacyJobs()
     return env=="true" || env =="1";
 }
 
+int OwncloudPropagator::httpTimeout()
+{
+    static int timeout;
+    if (!timeout) {
+        timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
+        if (timeout == 0) {
+            timeout = 300; // default to 300 secs
+        }
+    }
+    return timeout;
+}
+
+bool OwncloudPropagator::localFileNameClash( const QString& relFile )
+{
+    bool re = false;
+    const QString file( _localDir + relFile );
+    qDebug() << "CaseClashCheck for " << file;
+#ifdef Q_OS_WIN
+    WIN32_FIND_DATA FindFileData;
+    HANDLE hFind;
+
+    hFind = FindFirstFileW( (wchar_t*)file.utf16(), &FindFileData);
+    if (hFind == INVALID_HANDLE_VALUE) {
+        qDebug() << "FindFirstFile failed " << GetLastError();
+        // returns false.
+    } else {
+        QString realFileName = QString::fromWCharArray( FindFileData.cFileName );
+        qDebug() << Q_FUNC_INFO << "Real file name is " << realFileName;
+        FindClose(hFind);
+
+        if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
+            re = true;
+        }
+    }
+#endif
+    return re;
+}
+
+// ================================================================================
 
 void PropagateDirectory::start()
 {
@@ -338,18 +384,5 @@ void PropagateDirectory::slotSubJobReady()
         emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
     }
 }
-
-int OwncloudPropagator::httpTimeout()
-{
-    static int timeout;
-    if (!timeout) {
-        timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
-        if (timeout == 0) {
-            timeout = 300; // default to 300 secs
-        }
-    }
-    return timeout;
-}
-
 
 }

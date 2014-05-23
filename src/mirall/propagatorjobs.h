@@ -81,7 +81,7 @@ class PropagateLocalMkdir : public PropagateItemJob {
 public:
     PropagateLocalMkdir (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
     void start();
-    bool hasCaseClash( const QString& file );
+
 };
 class PropagateRemoteRemove : public PropagateNeonJob {
     Q_OBJECT
