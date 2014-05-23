@@ -22,6 +22,7 @@
 #include "propagatorjobs.h"
 #include <QNetworkAccessManager>
 #include <QFileInfo>
+#include <QDir>
 #include <cmath>
 
 namespace Mirall {
@@ -430,14 +431,19 @@ void GETFileJob::slotReadyRead()
     resetTimeout();
 }
 
-
-
 void PropagateDownloadFileQNAM::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
     qDebug() << Q_FUNC_INFO << _item._file << _propagator->_activeJobs;
+
+    // do a case clash check.
+    if( Utility::fsCasePreserving() && _propagator->localFileNameClash(_item._file) ) {
+        done( SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!")
+              .arg(QDir::toNativeSeparators(_item._file)) );
+        return;
+    }
 
     emit progress(_item, 0);
 
