@@ -44,11 +44,6 @@
 #include <neon/ne_compress.h>
 #include <neon/ne_redirect.h>
 
-#ifdef Q_OS_WIN
-#include <windef.h>
-#include <winbase.h>
-#endif
-
 #include <time.h>
 
 
@@ -99,32 +94,6 @@ void PropagateLocalRemove::start()
     done(SyncFileItem::Success);
 }
 
-bool PropagateLocalMkdir::hasCaseClash( const QString& file )
-{
-    bool re = false;
-
-    qDebug() << "CaseClashCheck for " << file;
-#ifdef Q_OS_WIN
-    WIN32_FIND_DATA FindFileData;
-    HANDLE hFind;
-
-    hFind = FindFirstFileW( (wchar_t*)file.utf16(), &FindFileData);
-    if (hFind == INVALID_HANDLE_VALUE) {
-       qDebug() << "FindFirstFile failed " << GetLastError();
-       // returns false.
-    } else {
-       QString realFileName = QString::fromWCharArray( FindFileData.cFileName );
-       qDebug() << Q_FUNC_INFO << "Real file name is " << realFileName;
-       FindClose(hFind);
-
-       if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
-           re = true;
-       }
-    }
-#endif
-    return re;
-}
-
 void PropagateLocalMkdir::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
@@ -132,7 +101,8 @@ void PropagateLocalMkdir::start()
 
     QDir newDir(_propagator->_localDir + _item._file);
     QString newDirStr = QDir::toNativeSeparators(newDir.path());
-    if( Utility::fsCasePreserving() && newDir.exists() && hasCaseClash(_propagator->_localDir + _item._file ) ) { // add a check on the file name
+    if( Utility::fsCasePreserving() && newDir.exists() &&
+            _propagator->localFileNameClash(_item._file ) ) {
         qDebug() << "WARN: new directory to create locally already exists!";
         done( SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr) );
         return;
