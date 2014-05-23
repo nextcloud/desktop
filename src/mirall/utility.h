@@ -69,6 +69,12 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT bool isUnix();
     OWNCLOUDSYNC_EXPORT bool isLinux(); // use with care
 
+    // Case preserving file system underneath?
+    // if this function returns true, the file system is case preserving,
+    // that means "test" means the same as "TEST" for filenames.
+    // if false, the two cases are two different files.
+    OWNCLOUDSYNC_EXPORT bool fsCasePreserving();
+
     class StopWatch {
     private:
         QHash<QString, quint64> _lapTimes;

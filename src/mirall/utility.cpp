@@ -348,6 +348,15 @@ static bool checkDolphinCanSelect()
     return p.readAll().contains("--select");
 }
 
+bool Utility::fsCasePreserving()
+{
+    bool re = false;
+    if( isWindows() || isMac() ) {
+        re = true;
+    }
+    return re;
+}
+
 // inspired by Qt Creator's showInGraphicalShell();
 void Utility::showInFileManager(const QString &localPath)
 {
