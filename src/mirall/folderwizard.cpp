@@ -136,7 +136,7 @@ bool FolderWizardLocalPath::isComplete() const
       QString absCleanUserFolder = QDir::cleanPath(QDir(userInput).canonicalPath())+'/';
       if( isOk && QDir::cleanPath(folderDir).startsWith(absCleanUserFolder) ) {
           qDebug() << "A already configured folder is child of the current selected";
-          warnStrings.append( tr("The selected folder is a symbolic link. An already configured"
+          warnStrings.append( tr("The selected folder is a symbolic link. An already configured "
                                 "folder is contained in the folder this link is pointing to."));
           isOk = false;
       }

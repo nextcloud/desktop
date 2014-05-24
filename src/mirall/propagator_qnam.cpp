@@ -279,7 +279,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
         _currentChunk++;
         if (_currentChunk >= _chunkCount) {
             _propagator->_activeJobs--;
-            done(SyncFileItem::NormalError, tr("The server did not aknoledge the last chunk. (No e-tag were present)"));
+            done(SyncFileItem::NormalError, tr("The server did not acknowledge the last chunk. (No e-tag were present)"));
             return;
         }
 
