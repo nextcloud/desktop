@@ -512,8 +512,8 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
-        <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation>El directorio seleccionado es un vínculo simbólico. Un directorio ya configurado está contenido en la carpeta que este vínculo apunta.</translation>
+        <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1364,7 +1364,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
-        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
+        <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"/>
     </message>
 </context>

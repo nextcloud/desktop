@@ -512,8 +512,8 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
-        <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation>Zaznaczony folder jest linkiem symbolicznym. Skonfigurowany już folder jest tym, na który wskazuje ten link.</translation>
+        <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1366,8 +1366,8 @@ Niezalecane jest jego użycie.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
-        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation>Serwer nie potwierdził ostatniego łańcucha danych. (Nie było żadnego e-tag-u)</translation>
+        <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

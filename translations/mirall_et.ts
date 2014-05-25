@@ -512,8 +512,8 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
-        <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation>Valitud kataloog on sümboolne link. Juba eelnevalt seadistatud kataloog sisaldub kataloogis, millele antud link viitab.</translation>
+        <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1366,8 +1366,8 @@ Selle kasutamine pole soovitatav.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
-        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation>Server ei tunnistanud viimast tükki. (E-silt puudus).</translation>
+        <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

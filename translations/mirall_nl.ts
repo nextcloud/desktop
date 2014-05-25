@@ -512,8 +512,8 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
-        <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation>De gekozen map is een symbolic link. De map waarnaar deze link verwijst bevat een reeds geconfigureerde map.</translation>
+        <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1366,8 +1366,8 @@ We adviseren deze site niet te gebruiken.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
-        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation>De server heeft het laatste deel niet bevestigd (er was geen e-tag aanwezig)</translation>
+        <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

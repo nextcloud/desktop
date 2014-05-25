@@ -512,8 +512,8 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
-        <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation>Den markerade mappen är en symbolisk länk. En redan konfigurerad mapp finns i mappen länken pekar mot.</translation>
+        <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1275,7 +1275,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="443"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Fil %1 kan inte laddas ner på grund av namnkonflikt med en lokal fil!</translation>
     </message>
 </context>
 <context>
@@ -1366,8 +1366,8 @@ Det är inte lämpligt använda den.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
-        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation>Servern erkände inte den sista biten. (Ingen e-tag var närvarande)</translation>
+        <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

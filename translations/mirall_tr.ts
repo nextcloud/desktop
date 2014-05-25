@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Add Folder</source>
-        <translation>Dizin Ekle</translation>
+        <translation>Klasör Ekle</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -91,12 +91,12 @@
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
         <location filename="../src/mirall/accountsettings.cpp" line="159"/>
         <source>Pause</source>
-        <translation>Beklet</translation>
+        <translation>Duraklat</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="69"/>
         <source>Remove</source>
-        <translation>Sil</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="55"/>
@@ -111,12 +111,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="116"/>
         <source>Retrieving usage information...</source>
-        <translation>Kullanım bilgisi alınıyor..</translation>
+        <translation>Kullanım bilgisi alınıyor...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="123"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>&lt;b&gt;Not:&lt;/b&gt; Ağa bağlanmış veya paylaşılan klasörler gibi klasörler, farklı sınırlara sahip olabilirler.</translation>
+        <translation>&lt;b&gt;Not:&lt;/b&gt; Ağa bağlanmış veya paylaşılan klasörler de dahil olmak üzere bazı klasörler, farklı sınırlara sahip olabilirler.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="161"/>
@@ -234,7 +234,7 @@
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="91"/>
         <source>No ownCloud account configured</source>
-        <translation>Hiçbir ownCloud hesabı yapılanırılmamış</translation>
+        <translation>Hiçbir ownCloud hesabı yapılandırılmamış</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
@@ -272,7 +272,7 @@
     <message>
         <location filename="../src/mirall/folder.cpp" line="160"/>
         <source>%1 should be a directory but is not.</source>
-        <translation>%1 bir dizin olmalıdır ancak değil.</translation>
+        <translation>%1 bir dizin olmalı, ancak değil.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="163"/>
@@ -392,7 +392,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="755"/>
         <source>Undefined State.</source>
-        <translation>Tanımlanmamış Durum</translation>
+        <translation>Tanımlanmamış Durum.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="758"/>
@@ -402,7 +402,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="761"/>
         <source>Preparing for sync.</source>
-        <translation>Eşitleme için hazırlanıyor</translation>
+        <translation>Eşitleme için hazırlanıyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="764"/>
@@ -417,22 +417,22 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="770"/>
         <source>Last Sync was successful.</source>
-        <translation>Son Eşitleme başarılı.</translation>
+        <translation>Son Eşitleme başarılı oldu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="775"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation>Son eşitleme başarılıydı, ancak bireysel dosyalarda uyarılar vardı</translation>
+        <translation>Son eşitleme başarılıydı, ancak tekil dosyalarda uyarılar vardı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="778"/>
         <source>Setup Error.</source>
-        <translation>Kurulum hatası.</translation>
+        <translation>Kurulum Hatası.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="781"/>
         <source>User Abort.</source>
-        <translation>Kullanıcı İptal Etti</translation>
+        <translation>Kullanıcı İptal Etti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="784"/>
@@ -456,7 +456,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
         <source>Syncing all files in your account with</source>
-        <translation>Hesabınızdaki tüm dosyalar şu klasörle eşitleniyor:</translation>
+        <translation>Hesabınızdaki tüm dosyaların eşitlendiği klasör:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="207"/>
@@ -470,7 +470,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
         <location filename="../src/mirall/folderwizard.cpp" line="442"/>
         <location filename="../src/mirall/folderwizard.cpp" line="444"/>
         <source>Add Folder</source>
-        <translation>Dizin Ekle</translation>
+        <translation>Klasör Ekle</translation>
     </message>
 </context>
 <context>
@@ -512,8 +512,8 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
-        <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation>Seçilen klasör sembolik bir bağlantı. Bu bağlantının işaretlediği klasörde zaten yapılandırılmış bir klasör mevcut.</translation>
+        <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -538,7 +538,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation>Kaynak dizinini seçin</translation>
+        <translation>Kaynak klasörünü seçin</translation>
     </message>
 </context>
 <context>
@@ -576,12 +576,12 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="388"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>&lt;i&gt;%1&lt;/i&gt; zaten eşitleniyor. Bu, &lt;i&gt;%2&lt;/i&gt; dizininin üst klasörü.</translation>
+        <translation>&lt;i&gt;%1&lt;/i&gt; zaten eşitleniyor. Bu, &lt;i&gt;%2&lt;/i&gt; klasörünün üst klasörü.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation>Zaten tüm dosyalarınızı eşitliyorsunuz. Farklı bir klasör eşitlemek &lt;b&gt;desteklenmiyor&lt;/b&gt;. Eğer çoklu dizinleri eşitlemek isterseniz, lütfen şu anda yapılandırılmış kök klasör eşitlemesini kaldırın.</translation>
+        <translation>Zaten tüm dosyalarınızı eşitliyorsunuz. Farklı bir klasör eşitlemek &lt;b&gt;desteklenmiyor&lt;/b&gt;. Eğer çoklu klasörleri eşitlemek isterseniz, lütfen şu anda yapılandırılmış kök klasör eşitlemesini kaldırın.</translation>
     </message>
 </context>
 <context>
@@ -603,12 +603,12 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="400"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Devam etmek üzere farklı bir E-Etiket altık. Sonraki işlemde yeniden denenecek.</translation>
+        <translation>Devam etmek üzere farklı bir E-Etiket aldık. Sonraki işlemde yeniden denenecek.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="633"/>
         <source>Connection Timeout</source>
-        <translation>Bağlantı zamanaşımı</translation>
+        <translation>Bağlantı Zaman Aşımı</translation>
     </message>
 </context>
 <context>
@@ -683,7 +683,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="63"/>
         <source>Remove</source>
-        <translation>Sil</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="35"/>
@@ -702,7 +702,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="98"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation>Değişiklikler &apos;%1&apos; üzerine yazılamıyor</translation>
+        <translation>Değişiklikler &apos;%1&apos; üzerine yazılamıyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
@@ -727,7 +727,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation>Bu girdi &apos;%1&apos; üzerinde sistem tarafından sağlandı ve bu görünümde değiştirilemez.</translation>
+        <translation>Bu girdi &apos;%1&apos; üzerinde sistem tarafından sağlanmaktadır ve bu görünümde değiştirilemez.</translation>
     </message>
 </context>
 <context>
@@ -740,7 +740,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="71"/>
         <source>&amp;Search: </source>
-        <translation>&amp;Ara</translation>
+        <translation>&amp;Ara:</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="79"/>
@@ -755,7 +755,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="98"/>
         <source>Clear the log display.</source>
-        <translation>Günlük göstergesini temizle</translation>
+        <translation>Günlük göstergesini temizle.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="104"/>
@@ -765,7 +765,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="105"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>Hata ayıklama için günlük dosyasını kaydedin.</translation>
+        <translation>Hata ayıklama için günlük dosyasını kaydet.</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="194"/>
@@ -780,7 +780,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="194"/>
         <source>Could not write to log file </source>
-        <translation>log dosyasına yazılamadı</translation>
+        <translation>Günlük dosyasına yazılamadı</translation>
     </message>
 </context>
 <context>
@@ -849,7 +849,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation>Vekil sunucusunu el ile şu şekilde belirle:</translation>
+        <translation>Vekil sunucusunu el belirle:</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="80"/>
@@ -936,7 +936,8 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Yeni bir güncelleme kurulmak üzere. Güncelleyici bu süreç sırasında ek yetki talebinde bulunabilir.</translation>
+        <translation>Yeni bir güncelleme kurulmak üzere. Güncelleyici 
+bu süreç sırasında ek yetki talebinde bulunabilir.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="77"/>
@@ -1009,7 +1010,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="124"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uyarı:&lt;/strong&gt; Yerel dizin boş değil. Bir çözüm seçin!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uyarı:&lt;/strong&gt; Yerel klasör boş değil. Bir çözüm seçin!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="235"/>
@@ -1056,7 +1057,7 @@ for additional privileges during the process.</source>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Bu adres şifrelenmediğinden güvenli değil.
+        <translation>Bu adres şifrelenmediğinden güvenli DEĞİL.
 Kullanmanız önerilmez.</translation>
     </message>
     <message>
@@ -1096,7 +1097,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="193"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>%2 üzerinde %1 bağlantısı deneniyor..</translation>
+        <translation>%2 üzerinde %1 bağlantısı deneniyor...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="149"/>
@@ -1248,7 +1249,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="82"/>
         <source>Connection Timeout</source>
-        <translation>Bağlantı zamanaşımı</translation>
+        <translation>Bağlantı Zaman Aşımı</translation>
     </message>
 </context>
 <context>
@@ -1266,7 +1267,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="405"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Devam etmek üzere farklı bir E-Etiket altık. Sonraki işlemde yeniden denenecek.</translation>
+        <translation>Devam etmek üzere farklı bir E-Etiket aldık. Sonraki işlemde yeniden denenecek.</translation>
     </message>
 </context>
 <context>
@@ -1274,7 +1275,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="443"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyası, yerel dosya adı çakışması nedeniyle indirilemiyor!</translation>
     </message>
 </context>
 <context>
@@ -1324,7 +1325,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="225"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation>Bu klasörün adı değiştirilmemelidir. Lütfen Paylaşılan olarak geri adlandırın.</translation>
+        <translation>Bu klasörün adı değiştirilmemelidir. Lütfen Shared olarak geri adlandırın.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="240"/>
@@ -1365,8 +1366,8 @@ Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
-        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation>Sunucu son yığını onaylamadı. (Mevcut e-etiket bulunamadı)</translation>
+        <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1551,7 +1552,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="99"/>
         <source>Common Name (CN):</source>
-        <translation>Ortam Ad (CN):</translation>
+        <translation>Ortak Ad (CN):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
@@ -1586,17 +1587,17 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Yayıncı&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Veren&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Issuer:</source>
-        <translation>Yayıncı:</translation>
+        <translation>Veren:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
         <source>Issued on:</source>
-        <translation>Yayınlanma:</translation>
+        <translation>Verilme:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="114"/>
@@ -1734,7 +1735,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="198"/>
         <source>Issuer: %1</source>
-        <translation>Oluşturan: %1</translation>
+        <translation>Veren: %1</translation>
     </message>
 </context>
 <context>
@@ -1767,7 +1768,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="103"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>Bu istemci üzerinde sistem saati sunucudaki sistem saati ile farklıdır. Sunucu ve istemci makinelerde bir zaman eşitleme hizmeti (NTP) kullanırsanız zaman aynı kalır.</translation>
+        <translation>Bu istemci üzerinde sistem saati sunucudaki sistem saati ile farklı. Sunucu ve istemci makinelerde bir zaman eşitleme hizmeti (NTP) kullanırsanız zaman aynı kalır.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="108"/>
@@ -1787,7 +1788,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="117"/>
         <source>CSync fatal parameter error.</source>
-        <translation>CSync ölümcül parametre hatası</translation>
+        <translation>CSync ölümcül parametre hatası.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="120"/>
@@ -1822,12 +1823,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="140"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation>CSynz bir vekil sunucu aracılığıyla bağlanırken hata oluştu.</translation>
+        <translation>CSync bir vekil sunucu aracılığıyla bağlanırken hata oluştu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="143"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation>CSync vekil sunucuda kimlik doğrulayamadı</translation>
+        <translation>CSync vekil sunucuda kimlik doğrulayamadı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="146"/>
@@ -1957,12 +1958,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="217"/>
         <source>No sync folders configured.</source>
-        <translation>Eşitleme dizini yapılandırılmamış.</translation>
+        <translation>Yapılandırılmış eşitleme klasörü yok.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="242"/>
         <source>None.</source>
-        <translation>Yok.</translation>
+        <translation>Hiçbir şey.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="246"/>
@@ -1972,12 +1973,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="263"/>
         <source>Open %1 folder</source>
-        <translation>%1 dizinini aç</translation>
+        <translation>%1 klasörünü aç</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="273"/>
         <source>Managed Folders:</source>
-        <translation>Yönetilen dizinler:</translation>
+        <translation>Yönetilen Klasörler:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="276"/>
@@ -2155,7 +2156,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation>Sunucu &amp;adres:</translation>
+        <translation>Sunucu &amp;adresi:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -2169,12 +2170,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="47"/>
         <source>Use &amp;secure connection</source>
-        <translation>&amp;Güvenli bağlantı kulla</translation>
+        <translation>&amp;Güvenli bağlantı kullan</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="60"/>
         <source>CheckBox</source>
-        <translation>İşaret Kutusu</translation>
+        <translation>İşaretKutusu</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="75"/>
@@ -2184,7 +2185,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="85"/>
         <source>Enter the ownCloud username.</source>
-        <translation>ownCloud kullanıcı adınızı giriniz.</translation>
+        <translation>ownCloud kullanıcı adınızı girin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="92"/>
@@ -2194,12 +2195,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="102"/>
         <source>Enter the ownCloud password.</source>
-        <translation>ownCloud parolanızı giriniz.</translation>
+        <translation>ownCloud parolanızı girin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="117"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation>Parolaların yerel depolanmasına izin verme</translation>
+        <translation>Parolaların yerel depolanmasına izin verme.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
@@ -2365,27 +2366,27 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <source>downloading</source>
-        <translation>indiriliyor</translation>
+        <translation>indirilen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="64"/>
         <source>uploading</source>
-        <translation>yükleniyor</translation>
+        <translation>yüklenen:</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="66"/>
         <source>deleting</source>
-        <translation>siliniyor</translation>
+        <translation>silinen</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="69"/>
         <source>moving</source>
-        <translation>taşınıyor</translation>
+        <translation>taşınan</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
         <source>ignoring</source>
-        <translation>yoksayılıyor</translation>
+        <translation>yoksayılan</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
@@ -2420,7 +2421,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="59"/>
         <source>Sync Success</source>
-        <translation>Eşitleme başarılı</translation>
+        <translation>Eşitleme Başarılı</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="62"/>

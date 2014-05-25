@@ -512,8 +512,8 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
-        <source>The selected folder is a symbolic link. An already configuredfolder is contained in the folder this link is pointing to.</source>
-        <translation>La cartella selezionata è un collegamento simbolico. Una cartella già configurata è contenuta nella cartella alla quale punta questo collegamento. </translation>
+        <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1274,7 +1274,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="443"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 non può essere scaricato a causa di un conflitto con un file locale.</translation>
     </message>
 </context>
 <context>
@@ -1365,8 +1365,8 @@ Non è consigliabile utilizzarlo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
-        <source>The server did not aknoledge the last chunk. (No e-tag were present)</source>
-        <translation>Il server non ha riconosciuto l&apos;ultimo pezzo. (Nessun e-tag era presente)</translation>
+        <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
