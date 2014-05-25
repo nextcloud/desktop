@@ -452,27 +452,27 @@ qint64 Utility::qDateTimeToTime_t(const QDateTime& t)
     return t.toMSecsSinceEpoch() / 1000;
 }
 
-QString Utility::timeToDescriptiveString(quint64 msecs) 
-{
-    //TODO change to initializers list  when possible.
-   static QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32> >() <<
-                                                        QPair<QString,quint32>("years",86400*365) <<
-                                                        QPair<QString,quint32>("months",86400*30) <<
-                                                        QPair<QString,quint32>("days",86400) <<
-                                                        QPair<QString,quint32>("hours",3600) <<
-                                                        QPair<QString,quint32>("minutes",60) <<
-                                                        QPair<QString,quint32>("seconds",1);
-        
-    
+//TODO change to initializers list  when possible.
+static QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32> >() <<
+                                                    QPair<QString,quint32>("years",86400*365) <<
+                                                    QPair<QString,quint32>("months",86400*30) <<
+                                                    QPair<QString,quint32>("days",86400) <<
+                                                    QPair<QString,quint32>("hours",3600) <<
+                                                    QPair<QString,quint32>("minutes",60) <<
+                                                    QPair<QString,quint32>("seconds",1);
 
-    return timeToDescriptiveString(timeMapping, msecs, 2);
+
+QString Utility::timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific) 
+{     
+    return timeToDescriptiveString(timeMapping, msecs, precision, separator, specific);
 }
 
-QString Utility::timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision)
+
+QString Utility::timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision, QString separator, bool specific)
 {       
     quint64 secs = msecs / 1000;
     QString retStr = "0 seconds"; // default value in case theres no actual time in msecs.
-    QList<quint64> values;
+    QList<QPair<QString,quint32> > values;
     bool timeStartFound = false;
    
     for(QList<QPair<QString,quint32> >::Iterator itr = timeMapping.begin(); itr != timeMapping.end() && precision > 0; itr++) {
@@ -480,20 +480,25 @@ QString Utility::timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMap
         if(!timeStartFound) {
             if(result == 0 ) {
                 continue;
-            } 
-            retStr = QString(" ").append(itr->first);            
+            }
+            retStr = "";
             timeStartFound= true;        
         }        
         secs -= result * itr->second;
-        values.append(result);
+        values.append(QPair<QString,quint32>(itr->first,result));
         precision--;
     }
     
-    for(QList<quint64>::Iterator itr = values.end()-1; itr >= values.begin(); itr--) {
-        retStr = retStr.prepend("%1").arg(itr.i->t(), 2, 10, QChar('0'));
-        if(itr > values.begin()) {
-            retStr.prepend(":");
+    for(QList<QPair<QString,quint32> >::Iterator itr = values.begin(); itr < values.end(); itr++) {
+        retStr = retStr.append("%1").arg(itr->second, 2, 10, QChar('0'));
+        if(specific || itr == values.end()-1) {
+            retStr.append(" ").append(itr->first);
         }
+        if(itr < values.end()-1) {
+            retStr.append(separator);
+        }
+        
+            
     }
     
     return retStr;
