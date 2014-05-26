@@ -77,6 +77,7 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
 
 Account::~Account()
 {
+    delete _credentials;
     delete _am;
 }
 
