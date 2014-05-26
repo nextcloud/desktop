@@ -76,9 +76,16 @@ void PropagateLocalRemove::start()
         return;
 
     QString filename = _propagator->_localDir +  _item._file;
+    if( _propagator->localFileNameClash(_item._file)) {
+        done(SyncFileItem::NormalError, tr("Could not remove %1 because of a local file name clash")
+             .arg(QDir::toNativeSeparators(filename)));
+        return;
+    }
+
     if (_item._isDirectory) {
         if (QDir(filename).exists() && !removeRecursively(filename)) {
-            done(SyncFileItem::NormalError, tr("Could not remove directory %1").arg(filename));
+            done(SyncFileItem::NormalError, tr("Could not remove directory %1")
+                 .arg(QDir::toNativeSeparators(filename)));
             return;
         }
     } else {
@@ -187,7 +194,7 @@ void PropagateLocalRename::start()
             // Fixme: the file that is the reason for the clash could be named here,
             // it would have to come out the localFileNameClash function
             done(SyncFileItem::NormalError, tr( "File %1 can not be renamed to %2 because of a local file name clash")
-                 .arg(_item._file).arg(_item._renameTarget) );
+                 .arg(QDir::toNativeSeparators(_item._file)).arg(QDir::toNativeSeparators(_item._renameTarget)) );
             return;
         }
         if (!file.rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget)) {
