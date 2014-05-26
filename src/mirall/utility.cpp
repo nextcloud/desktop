@@ -167,22 +167,11 @@ QByteArray Utility::userAgentString()
 void Utility::raiseDialog( QWidget *raiseWidget )
 {
 #ifndef TOKEN_AUTH_ONLY
-    // viel hilft viel ;-)
-    if( raiseWidget ) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0) && \
-    (defined(Q_OS_WIN) || defined (Q_OS_MAC))
-        Qt::WindowFlags eFlags = raiseWidget->windowFlags();
-        if (!(eFlags & Qt::WindowStaysOnTopHint)) {
-            eFlags |= Qt::WindowStaysOnTopHint;
-            raiseWidget->setWindowFlags(eFlags);
-            raiseWidget->show();
-            eFlags &= ~Qt::WindowStaysOnTopHint;
-            raiseWidget->setWindowFlags(eFlags);
-        }
-#endif
-        raiseWidget->show();
-        raiseWidget->raise();
-        raiseWidget->activateWindow();
+    if( raiseWidget && raiseWidget->parentWidget() == 0) {
+        raiseWidget->hide();
+        // Qt has a bug which causes parent-less dialogs to pop-under.
+        raiseWidget->setWindowFlags(raiseWidget->windowFlags() & ~Qt::Dialog);
+        raiseWidget->showNormal();
     }
 #endif
 }
