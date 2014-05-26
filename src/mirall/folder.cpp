@@ -91,6 +91,14 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
 bool Folder::init()
 {
+    Account *account = AccountManager::instance()->account();
+    if (!account) {
+        // Normaly this should not happen, but it could be that there is something
+        // wrong with the config and it is better not to crash.
+        qWarning() << "WRN: No account  configured, can't sync";
+        return false;
+    }
+
     QString url = Utility::toCSyncScheme(remoteUrl().toString());
     QString localpath = path();
 
