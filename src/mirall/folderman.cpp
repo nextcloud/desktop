@@ -41,13 +41,6 @@ FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
     _syncEnabled( true )
 {
-    // if QDir::mkpath would not be so stupid, I would not need to have this
-    // duplication of folderConfigPath() here
-    MirallConfigFile cfg;
-    QDir storageDir(cfg.configPath());
-    storageDir.mkpath(QLatin1String("folders"));
-    _folderConfigPath = cfg.configPath() + QLatin1String("folders");
-
     _folderChangeSignalMapper = new QSignalMapper(this);
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),
             this, SIGNAL(folderSyncStateChange(const QString &)));
@@ -55,15 +48,14 @@ FolderMan::FolderMan(QObject *parent) :
     _folderWatcherSignalMapper = new QSignalMapper(this);
     connect(_folderWatcherSignalMapper, SIGNAL(mapped(const QString&)),
             this, SLOT(slotScheduleSync(const QString&)));
+
+    ne_sock_init();
+    Q_ASSERT(!_instance);
+    _instance = this;
 }
 
 FolderMan *FolderMan::instance()
 {
-    if(!_instance) {
-        _instance = new FolderMan;
-        ne_sock_init();
-    }
-
     return _instance;
 }
 
@@ -71,6 +63,7 @@ FolderMan::~FolderMan()
 {
     qDeleteAll(_folderMap);
     ne_sock_exit();
+    _instance = 0;
 }
 
 Mirall::Folder::Map FolderMan::map()
@@ -143,6 +136,11 @@ int FolderMan::setupFolders()
   qDebug() << "* Setup folders from " << _folderConfigPath;
 
   unloadAllFolders();
+
+  MirallConfigFile cfg;
+  QDir storageDir(cfg.configPath());
+  storageDir.mkpath(QLatin1String("folders"));
+  _folderConfigPath = cfg.configPath() + QLatin1String("folders");
 
   QDir dir( _folderConfigPath );
   //We need to include hidden files just in case the alias starts with '.'

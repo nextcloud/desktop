@@ -30,12 +30,13 @@ class SyncResult;
 
 namespace Mirall {
 
+class Application;
+
 class OWNCLOUDSYNC_EXPORT FolderMan : public QObject
 {
     Q_OBJECT
 public:
     static FolderMan* instance();
-    ~FolderMan();
 
     int setupFolders();
 
@@ -144,10 +145,10 @@ private:
     QQueue<QString> _scheduleQueue;
     QMap<QString, FolderWatcher*> _folderWatchers;
 
-
-    explicit FolderMan(QObject *parent = 0);
     static FolderMan *_instance;
-
+    explicit FolderMan(QObject *parent = 0);
+    ~FolderMan();
+    friend class Mirall::Application;
 };
 
 } // namespace Mirall
