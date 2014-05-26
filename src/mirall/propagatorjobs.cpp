@@ -184,6 +184,7 @@ void PropagateLocalRename::start()
         QFile file(_propagator->_localDir + _item._file);
         if (!file.rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget)) {
             done(SyncFileItem::NormalError, file.errorString());
+            return;
         }
     }
 
