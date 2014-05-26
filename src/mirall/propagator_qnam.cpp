@@ -439,7 +439,7 @@ void PropagateDownloadFileQNAM::start()
     qDebug() << Q_FUNC_INFO << _item._file << _propagator->_activeJobs;
 
     // do a case clash check.
-    if( Utility::fsCasePreserving() && _propagator->localFileNameClash(_item._file) ) {
+    if( _propagator->localFileNameClash(_item._file) ) {
         done( SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!")
               .arg(QDir::toNativeSeparators(_item._file)) );
         return;
