@@ -168,10 +168,10 @@ void Utility::raiseDialog( QWidget *raiseWidget )
 {
 #ifndef TOKEN_AUTH_ONLY
     if( raiseWidget && raiseWidget->parentWidget() == 0) {
-        raiseWidget->hide();
         // Qt has a bug which causes parent-less dialogs to pop-under.
-        raiseWidget->setWindowFlags(raiseWidget->windowFlags() & ~Qt::Dialog);
         raiseWidget->showNormal();
+        raiseWidget->raise();
+        raiseWidget->activateWindow();
     }
 #endif
 }
