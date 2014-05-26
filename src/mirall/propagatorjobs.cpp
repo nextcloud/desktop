@@ -181,7 +181,10 @@ void PropagateLocalRename::start()
     if (_item._file != _item._renameTarget) {
         emit progress(_item, 0);
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
-        QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
+        QFile file(_propagator->_localDir + _item._file);
+        if (!file.rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget)) {
+            done(SyncFileItem::NormalError, file.errorString());
+        }
     }
 
     _propagator->_journal->deleteFileRecord(_item._originalFile);
