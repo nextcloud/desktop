@@ -16,6 +16,8 @@
 
 #include <QNetworkCookieJar>
 
+#include "owncloudlib.h"
+
 namespace Mirall {
 
 class OWNCLOUDSYNC_EXPORT CookieJar : public QNetworkCookieJar
