@@ -305,32 +305,36 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
 {
     bool re = false;
     const QString file( _localDir + relFile );
-    qDebug() << "CaseClashCheck for " << file;
-#ifdef Q_OS_OSX
-    QFileInfo fileInfo(file);
-    if (!fileInfo.exists())
-        re = false;
-    else
-        re = ( ! file.endsWith(fileInfo.canonicalFilePath(), Qt::CaseSensitive) );
+
+    if( !file.isEmpty() && Utility::fsCasePreserving() ) {
+#ifdef Q_OS_MAC
+        QFileInfo fileInfo(file);
+        if (!fileInfo.exists())
+            re = false;
+        else
+            re = ( ! file.endsWith(fileInfo.canonicalFilePath(), Qt::CaseSensitive) );
 
 #elif defined(Q_OS_WIN)
-    WIN32_FIND_DATA FindFileData;
-    HANDLE hFind;
+        const QString file( _localDir + relFile );
+        qDebug() << "CaseClashCheck for " << file;
+        WIN32_FIND_DATA FindFileData;
+        HANDLE hFind;
 
-    hFind = FindFirstFileW( (wchar_t*)file.utf16(), &FindFileData);
-    if (hFind == INVALID_HANDLE_VALUE) {
-        qDebug() << "FindFirstFile failed " << GetLastError();
-        // returns false.
-    } else {
-        QString realFileName = QString::fromWCharArray( FindFileData.cFileName );
-        qDebug() << Q_FUNC_INFO << "Real file name is " << realFileName;
-        FindClose(hFind);
+        hFind = FindFirstFileW( (wchar_t*)file.utf16(), &FindFileData);
+        if (hFind == INVALID_HANDLE_VALUE) {
+            qDebug() << "FindFirstFile failed " << GetLastError();
+            // returns false.
+        } else {
+            QString realFileName = QString::fromWCharArray( FindFileData.cFileName );
+            qDebug() << Q_FUNC_INFO << "Real file name is " << realFileName;
+            FindClose(hFind);
 
-        if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
-            re = true;
+            if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
+                re = true;
+            }
         }
-    }
 #endif
+    }
     return re;
 }
 
