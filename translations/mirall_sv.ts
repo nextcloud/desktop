@@ -1367,7 +1367,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Servern bekräftade inte det sista fil-fragmentet (Ingen e-tag fanns tillgänglig)</translation>
     </message>
 </context>
 <context>

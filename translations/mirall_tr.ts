@@ -513,7 +513,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Seçilen klasör sembolik bir bağlantı. Bu bağlantının işaretlediği klasörde zaten yapılandırılmış bir klasör mevcut.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1367,7 +1367,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu son yığını onaylamadı. (Mevcut e-etiket bulunamadı)</translation>
     </message>
 </context>
 <context>

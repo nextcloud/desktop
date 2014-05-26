@@ -513,7 +513,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>O cartafol seleccionado é unha ligazón simbólica. Xa hai un cartafol configurado no cartafol ao que apunta esta ligazón.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1367,7 +1367,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>O servidor non recoñeceu o último fragmento. (Non hai e-tag presente)</translation>
     </message>
 </context>
 <context>
