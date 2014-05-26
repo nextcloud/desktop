@@ -61,9 +61,9 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 
     switch( status ) {
     case SyncFileItem::SoftError:
-        // do not blacklist in case of soft error.
-        break;
     case SyncFileItem::FatalError:
+        // do not blacklist in case of soft error or fatal error.
+        break;
     case SyncFileItem::NormalError:
 #ifdef OWNCLOUD_5XX_NO_BLACKLIST
         if (_item._httpErrorCode / 100 == 5) {
