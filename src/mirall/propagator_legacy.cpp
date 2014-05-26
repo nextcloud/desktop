@@ -444,6 +444,13 @@ void PropagateDownloadFileLegacy::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
+    // do a case clash check.
+    if( _propagator->localFileNameClash(_item._file) ) {
+        done( SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!")
+              .arg(QDir::toNativeSeparators(_item._file)) );
+        return;
+    }
+
     emit progress(_item, 0);
 
     QString tmpFileName;
