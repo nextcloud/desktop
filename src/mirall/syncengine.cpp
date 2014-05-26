@@ -580,7 +580,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     connect(_propagator.data(), SIGNAL(progress(SyncFileItem,quint64)),
             this, SLOT(slotProgress(SyncFileItem,quint64)));
     connect(_propagator.data(), SIGNAL(adjustTotalTransmissionSize(qint64)), this, SLOT(slotAdjustTotalTransmissionSize(qint64)));
-    connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()));
+    connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()), Qt::QueuedConnection);
 
     setNetworkLimits();
 
