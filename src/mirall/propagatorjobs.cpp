@@ -182,6 +182,14 @@ void PropagateLocalRename::start()
         emit progress(_item, 0);
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
         QFile file(_propagator->_localDir + _item._file);
+
+        if (_propagator->localFileNameClash(_item._renameTarget)) {
+            // Fixme: the file that is the reason for the clash could be named here,
+            // it would have to come out the localFileNameClash function
+            done(SyncFileItem::NormalError, tr( "File %1 can not be renamed to %2 because of a local file name clash")
+                 .arg(_item._file).arg(_item._renameTarget) );
+            return;
+        }
         if (!file.rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget)) {
             done(SyncFileItem::NormalError, file.errorString());
             return;
