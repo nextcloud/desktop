@@ -27,6 +27,7 @@
 #endif
 
 #include <QStack>
+#include <QFileInfo>
 
 namespace Mirall {
 
@@ -305,7 +306,14 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
     bool re = false;
     const QString file( _localDir + relFile );
     qDebug() << "CaseClashCheck for " << file;
-#ifdef Q_OS_WIN
+#ifdef Q_OS_OSX
+    QFileInfo fileInfo(file);
+    if (!fileInfo.exists())
+        re = false;
+    else
+        re = ( ! file.endsWith(fileInfo.canonicalFilePath(), Qt::CaseSensitive) );
+
+#elif defined(Q_OS_WIN)
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind;
 
