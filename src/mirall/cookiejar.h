@@ -18,7 +18,7 @@
 
 namespace Mirall {
 
-class CookieJar : public QNetworkCookieJar
+class OWNCLOUDSYNC_EXPORT CookieJar : public QNetworkCookieJar
 {
     Q_OBJECT
 public:
