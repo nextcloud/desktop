@@ -15,6 +15,8 @@
 
 #include "wizard/owncloudshibbolethcredspage.h"
 #include "mirall/theme.h"
+#include "mirall/account.h"
+#include "mirall/cookiejar.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
 #include "creds/shibbolethcredentials.h"
@@ -35,7 +37,17 @@ void OwncloudShibbolethCredsPage::setupBrowser()
         return;
     }
     OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard*>(wizard());
-    _browser = new ShibbolethWebView(ocWizard->account());
+    Account *account = ocWizard->account();
+
+    // we need to reset the cookie jar to drop temporary cookies (like the shib cookie)
+    // i.e. if someone presses "back"
+    QNetworkAccessManager *qnam = account->networkAccessManager();
+    delete qnam->cookieJar();
+    CookieJar *jar = new CookieJar;
+    qnam->setCookieJar(jar);
+    jar->setParent(0);
+
+    _browser = new ShibbolethWebView(account);
     connect(_browser, SIGNAL(shibbolethCookieReceived(const QNetworkCookie&, Account*)),
             this, SLOT(slotShibbolethCookieReceived()));
     connect(_browser, SIGNAL(rejected()),
