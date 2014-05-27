@@ -655,8 +655,23 @@ void Folder::slotSyncFinished()
     }
 
     emit syncStateChange();
+
+    // The syncFinished result that is to be triggered here makes the folderman
+    // clearing the current running sync folder marker.
+    // Lets wait a bit to do that because, as long as this marker is not cleared,
+    // file system change notifications are ignored for that folder. And it takes
+    // some time under certain conditions to make the file system notifications
+    // all come in.
+    QTimer::singleShot(200, this, SLOT(slotEmitFinishedDelayed() ));
+
+}
+
+void Folder::slotEmitFinishedDelayed()
+{
     emit syncFinished( _syncResult );
 }
+
+
 
 // the progress comes without a folder and the valid path set. Add that here
 // and hand the result over to the progress dispatcher.

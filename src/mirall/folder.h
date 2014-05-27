@@ -181,6 +181,8 @@ private slots:
 
     void slotThreadTreeWalkResult(const SyncFileItemVector& );
 
+    void slotEmitFinishedDelayed();
+
 private:
     bool init();
 
