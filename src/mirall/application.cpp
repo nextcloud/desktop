@@ -245,6 +245,8 @@ void Application::slotCheckConnection()
     } else {
         // let gui open the setup wizard
         _gui->slotOpenSettingsDialog( true );
+
+        _checkConnectionTimer.stop(); // don't popup the wizard on interval;
     }
 }
 
@@ -323,6 +325,7 @@ void Application::slotownCloudWizardDone( int res )
     }
     folderMan->setSyncEnabled( true );
     if( res == QDialog::Accepted ) {
+        _checkConnectionTimer.start();
         slotCheckConnection();
     }
 
