@@ -346,14 +346,14 @@
         <translation>Δραστηριότητα Συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="682"/>
+        <location filename="../src/mirall/folder.cpp" line="697"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Αυτός ο συγχρονισμός θα αφαιρέσει όλα τα αρχεία στον τοπικό φάκελο συγχρονισμού &apos;%1&apos;.
 Εάν εσείς ή ο διαχειριστής σας επαναφέρατε τον λογαριασμό σας στο διακομιστή, επιλέξτε &quot;Διατήρηση αρχείων&quot;. Εάν θέλετε να αφαιρεθούν τα δεδομένα σας, επιλέξτε &quot;Αφαίρεση όλων των αρχείων&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="685"/>
+        <location filename="../src/mirall/folder.cpp" line="700"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -362,17 +362,17 @@ Are you sure you want to perform this operation?</source>
 Είστε σίγουροι ότι θέλετε να πραγματοποιήσετε αυτή εντολή;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="689"/>
+        <location filename="../src/mirall/folder.cpp" line="704"/>
         <source>Remove All Files?</source>
         <translation>Αφαίρεση Όλων των Αρχείων;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="691"/>
+        <location filename="../src/mirall/folder.cpp" line="706"/>
         <source>Remove all files</source>
         <translation>Αφαίρεση όλων των αρχείων</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="692"/>
+        <location filename="../src/mirall/folder.cpp" line="707"/>
         <source>Keep files</source>
         <translation>Διατήρηση αρχείων</translation>
     </message>
@@ -513,7 +513,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Ο επιλεγμένος φάκελος είναι ένας συμβολικός σύνδεσμος. Ένας ήδη ρυθμισμένος φάκελος περιέχεται στον φάκελο στον οποίο καταλήγει αυτός ο σύνδεσμος.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1272,7 +1272,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="449"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 δεν είναι δυνατό να μεταφορτωθεί λόγω διένεξης με το όνομα ενός τοπικού ονόματος αρχείου!</translation>
     </message>
 </context>
 <context>
@@ -1280,7 +1280,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="443"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 δεν είναι δυνατό να μεταφορτωθεί λόγω διένεξης με το όνομα ενός τοπικού ονόματος αρχείου!</translation>
     </message>
 </context>
 <context>
@@ -1296,7 +1296,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="114"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Προσοχή, πιθανή διένεξη κεφαλαίων-πεζών γραμάτων με το %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="119"/>
@@ -1309,7 +1309,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η διαγραφή του %1 λόγω διένεξης με ένα τοπικό όνομα αρχείου</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
@@ -1322,7 +1322,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="196"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 δεν είναι δυνατό να μετονομαστεί σε %2 λόγω μιας διένεξης με τοπικό όνομα αρχείου</translation>
     </message>
 </context>
 <context>
@@ -1385,7 +1385,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής δεν επιβεβαίωσε το τελευταίο τμήμα. (Δεν υπήρχε E-Tag)</translation>
     </message>
 </context>
 <context>
@@ -2438,7 +2438,7 @@ Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.
         <location filename="../src/mirall/progressdispatcher.cpp" line="78"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>άγνωστο</translation>
     </message>
 </context>
 <context>

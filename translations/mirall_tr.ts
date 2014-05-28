@@ -346,14 +346,14 @@
         <translation>Eşitleme Etkinliği</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="682"/>
+        <location filename="../src/mirall/folder.cpp" line="697"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Bu eşitleme, yerel eşitleme klasörü &apos;%1&apos; içindeki tüm dosyaları kaldıracak.
 Eğer siz veya yöneticiniz sunucudaki hesabınızı sıfırlamışsa, &quot;Dosyaları koru&quot; seçin. Eğer verinizin kaldırılmasını istiyorsanız, &quot;Tüm dosyaları kaldır&quot; seçin.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="685"/>
+        <location filename="../src/mirall/folder.cpp" line="700"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -362,17 +362,17 @@ Bu, klasörün sessizce yeniden yapılandırılması veya tüm dosyaların el il
 Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="689"/>
+        <location filename="../src/mirall/folder.cpp" line="704"/>
         <source>Remove All Files?</source>
         <translation>Tüm Dosyalar Kaldırılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="691"/>
+        <location filename="../src/mirall/folder.cpp" line="706"/>
         <source>Remove all files</source>
         <translation>Tüm dosyaları kaldır</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="692"/>
+        <location filename="../src/mirall/folder.cpp" line="707"/>
         <source>Keep files</source>
         <translation>Dosyaları koru</translation>
     </message>
@@ -875,7 +875,7 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/mirall/networksettings.ui" line="196"/>
         <location filename="../src/mirall/networksettings.ui" line="278"/>
         <source>Limit to</source>
-        <translation>Şuna sınırla</translation>
+        <translation>Şuna sınırla:</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="218"/>
@@ -912,7 +912,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
-        <translation>Vekil sunucu için parola</translation>
+        <translation>Vekil sunucu parolası</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="38"/>
@@ -1272,7 +1272,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="449"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyası, yerel dosya adı çakışması nedeniyle indirilemiyor!</translation>
     </message>
 </context>
 <context>
@@ -1309,7 +1309,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyası yerel bir dosya adı çakışması nedeniyle kaldırılamadı</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
@@ -1322,7 +1322,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="196"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Yerel bir dosya adı çakışması nedeniyle %1 dosyası %2 olarak adlandırılamadı</translation>
     </message>
 </context>
 <context>
@@ -1438,7 +1438,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="65"/>
         <source>Retry Sync</source>
-        <translation>Eşitlemeyi Yeniden Dene</translation>
+        <translation>Yeniden Eşitlemeyi Dene</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="69"/>
@@ -2384,7 +2384,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <source>downloading</source>
-        <translation>indirilen</translation>
+        <translation>indirilen:</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="64"/>
@@ -2394,12 +2394,12 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="66"/>
         <source>deleting</source>
-        <translation>silinen</translation>
+        <translation>silinen:</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="69"/>
         <source>moving</source>
-        <translation>taşınan</translation>
+        <translation>taşınan:</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
