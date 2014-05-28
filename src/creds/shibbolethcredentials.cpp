@@ -158,6 +158,10 @@ QNetworkAccessManager* ShibbolethCredentials::getQNAM() const
 
 void ShibbolethCredentials::slotReplyFinished(QNetworkReply* r)
 {
+    if (!_browser.isNull()) {
+        return;
+    }
+
     QVariant target = r->attribute(QNetworkRequest::RedirectionTargetAttribute);
     if (target.isValid()) {
         _stillValid = false;
