@@ -454,12 +454,12 @@ qint64 Utility::qDateTimeToTime_t(const QDateTime& t)
 
 //TODO change to initializers list  when possible.
 static QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32> >() <<
-                                                    QPair<QString,quint32>("years",86400*365) <<
-                                                    QPair<QString,quint32>("months",86400*30) <<
-                                                    QPair<QString,quint32>("days",86400) <<
-                                                    QPair<QString,quint32>("hours",3600) <<
-                                                    QPair<QString,quint32>("minutes",60) <<
-                                                    QPair<QString,quint32>("seconds",1);
+                                                    QPair<QString,quint32>("%1 years",86400*365) <<
+                                                    QPair<QString,quint32>("%1 months",86400*30) <<
+                                                    QPair<QString,quint32>("%1 days",86400) <<
+                                                    QPair<QString,quint32>("%1h",3600) <<
+                                                    QPair<QString,quint32>("%1m",60) <<
+                                                    QPair<QString,quint32>("%1s",1);
 
 
 QString Utility::timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific) 
@@ -471,7 +471,7 @@ QString Utility::timeToDescriptiveString(quint64 msecs, quint8 precision, QStrin
 QString Utility::timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision, QString separator, bool specific)
 {       
     quint64 secs = msecs / 1000;
-    QString retStr = "0 seconds"; // default value in case theres no actual time in msecs.
+    QString retStr = QString(timeMapping.last().first).arg(0); // default value in case theres no actual time in msecs.
     QList<QPair<QString,quint32> > values;
     bool timeStartFound = false;
    
@@ -490,10 +490,7 @@ QString Utility::timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMap
     }
     
     for(QList<QPair<QString,quint32> >::Iterator itr = values.begin(); itr < values.end(); itr++) {
-        retStr = retStr.append("%1").arg(itr->second, 2, 10, QChar('0'));
-        if(specific || itr == values.end()-1) {
-            retStr.append(" ").append(itr->first);
-        }
+        retStr = retStr.append((specific || itr == values.end()-1) ? itr->first : "%1").arg(itr->second, (itr == values.begin() ? 1 :2 ), 10, QChar('0'));        
         if(itr < values.end()-1) {
             retStr.append(separator);
         }
