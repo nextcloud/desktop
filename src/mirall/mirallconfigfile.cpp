@@ -47,6 +47,7 @@ static const char monoIconsC[] = "monoIcons";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char geometryC[] = "geometry";
+static const char timeoutC[] = "timeout";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -101,6 +102,12 @@ bool MirallConfigFile::optionalDesktopNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(optionalDesktopNoficationsC), true).toBool();
+}
+
+int MirallConfigFile::timeout() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(timeoutC), 300).toInt(); // default to 5 min
 }
 
 void MirallConfigFile::setOptionalDesktopNotifications(bool show)

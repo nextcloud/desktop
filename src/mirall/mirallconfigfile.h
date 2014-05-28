@@ -97,6 +97,8 @@ public:
     bool optionalDesktopNotifications() const;
     void setOptionalDesktopNotifications(bool show);
 
+    int timeout() const;
+
     void saveGeometry(QWidget *w);
     void restoreGeometry(QWidget *w);
 

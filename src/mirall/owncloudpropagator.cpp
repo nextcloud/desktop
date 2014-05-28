@@ -19,6 +19,7 @@
 #include "propagator_qnam.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
+#include "mirall/mirallconfigfile.h"
 #include "mirall/utility.h"
 
 #ifdef Q_OS_WIN
@@ -295,8 +296,10 @@ int OwncloudPropagator::httpTimeout()
     if (!timeout) {
         timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
         if (timeout == 0) {
-            timeout = 300; // default to 300 secs
+            MirallConfigFile cfg;
+            timeout = cfg.timeout();
         }
+
     }
     return timeout;
 }
