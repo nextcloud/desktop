@@ -83,7 +83,7 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
             QLatin1String("<br/>") +
             Utility::escape(Utility::formatFingerprint(sha265hash.mid(sha265hash.length()/2), false));
 #endif
-    QString serial = QString::fromUtf8(cert.serialNumber(), true);
+    QString serial = QString::fromUtf8(cert.serialNumber());
     QString effectiveDate = cert.effectiveDate().date().toString();
     QString expiryDate = cert.expiryDate().date().toString();
     QString sna = QStringList(cert.alternateSubjectNames().values()).join(" ");
