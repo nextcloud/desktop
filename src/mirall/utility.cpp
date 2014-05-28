@@ -442,6 +442,8 @@ void Utility::showInFileManager(const QString &localPath)
     }
 }
 
+
+
 QDateTime Utility::qDateTimeFromTime_t(qint64 t)
 {
     return QDateTime::fromMSecsSinceEpoch(t * 1000);
@@ -460,11 +462,11 @@ static QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32>
                                                     QPair<QString,quint32>("%1h",3600) <<
                                                     QPair<QString,quint32>("%1m",60) <<
                                                     QPair<QString,quint32>("%1s",1);
-
-
+                                                    
+                                                    
 QString Utility::timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific) 
 {     
-    return timeToDescriptiveString(timeMapping, msecs, precision, separator, specific);
+    return timeToDescriptiveString( timeMapping , msecs, precision, separator, specific);
 }
 
 
