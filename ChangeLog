@@ -34,6 +34,7 @@ version 1.6.0 (release 2014-04- )
  * Mac OS X: Fix UI inconsistencies on Mavericks
  * Shibboleth: Warn if authenticating with a different user
  * Remove vio abstraction in csync
+ * Avoid data loss when a client file system is not case sensitive
 
 version 1.5.3 (release 2014-03-10 )
   * Fix usage of proxies after first sync run (#1502, #1524, #1459, #1521)
