@@ -172,7 +172,6 @@ struct resource* resource_dup(struct resource* o);
 csync_vio_handle_t *owncloud_opendir(const char *uri);
 csync_vio_file_stat_t *owncloud_readdir(csync_vio_handle_t *dhandle);
 int owncloud_closedir(csync_vio_handle_t *dhandle);
-int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf);
 int owncloud_commit(void);
 char *owncloud_error_string(void);
 void owncloud_init(void *userdata);

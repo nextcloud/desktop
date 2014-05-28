@@ -584,11 +584,14 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         continue;
     }
 
-    /* == see if really stat has to be called. */
-    /* FIXME: No, this stat() is actually useless. This is the only place where we call it
-       and we get all info already thanks to csync_vio_readdir */
-    fs = csync_vio_file_stat_new();
-    res = csync_vio_stat(ctx, filename, fs);
+    /* Only for the local replica we have to stat(), for the remote one we have all data already */
+    if (ctx->replica == LOCAL_REPLICA) {
+        fs = csync_vio_file_stat_new();
+        res = csync_vio_stat(ctx, filename, fs);
+    } else {
+        fs = dirent;
+        res = 0;
+    }
 
     if( res == 0) {
       switch (fs->type) {
@@ -643,7 +646,10 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         previous_fs->child_modified = ctx->current_fs->child_modified;
     }
 
-    csync_vio_file_stat_destroy(fs);
+    /* Only for the local replica we have to destroy stat(), for the remote one it is a pointer to dirent */
+    if (ctx->replica == LOCAL_REPLICA) {
+        csync_vio_file_stat_destroy(fs);
+    }
 
     if (rc < 0) {
       if (CSYNC_STATUS_IS_OK(ctx->status_code)) {

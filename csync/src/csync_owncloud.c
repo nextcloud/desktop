@@ -62,36 +62,18 @@ int _connected = 0;                   /* flag to indicate if a connection exists
 
 
 void *_userdata;
-long long chunked_total_size = 0;
-long long chunked_done = 0;
 
 struct listdir_context *propfind_cache = 0;
 
 bool is_first_propfind = true;
-
-
-struct resource* _stat_cache = 0;
-/* id cache, cache the ETag: header of a GET request */
-struct { char *uri; char *id;  } _id_cache = { NULL, NULL };
 
 static void clean_caches() {
     clear_propfind_recursive_cache();
 
     free_fetchCtx(propfind_cache);
     propfind_cache = NULL;
-
-    resource_free(_stat_cache);
-    _stat_cache = NULL;
-
-    SAFE_FREE(_id_cache.uri);
-    SAFE_FREE(_id_cache.id);
 }
 
-
-
-#define PUT_BUFFER_SIZE 1024*5
-
-char _buffer[PUT_BUFFER_SIZE];
 
 /*
  * helper method to build up a user text for SSL problems, called from the
@@ -765,77 +747,6 @@ static struct listdir_context *fetch_resource_list_attempts(const char *uri, int
 
 
 /*
- * file functions
- */
-int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
-    /* get props:
-     *   modtime
-     *   creattime
-     *   size
-     */
-    struct listdir_context  *fetchCtx = NULL;
-    char *decodedUri = NULL;
-    int len = 0;
-    errno = 0;
-
-    ne_uri uri_parsed;
-    if (ne_uri_parse(uri, &uri_parsed) != NE_OK) {
-        return 1;
-    }
-
-    buf->name = c_basename(uri);
-
-    if( _stat_cache && _stat_cache->uri && strcmp( uri_parsed.path, _stat_cache->uri ) == 0 ) {
-        ne_uri_free(&uri_parsed);
-        resourceToFileStat(buf, _stat_cache );
-        return 0;
-    }
-    ne_uri_free(&uri_parsed);
-    DEBUG_WEBDAV("owncloud_stat => Could not find in stat cache %s", uri);
-
-    /* fetch data via a propfind call. */
-    /* fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE); */
-    fetchCtx = fetch_resource_list_attempts( uri, NE_DEPTH_ONE);
-    DEBUG_WEBDAV("=> Errno after fetch resource list for %s: %d", uri, errno);
-    if (!fetchCtx) {
-        return -1;
-    }
-
-    if( fetchCtx ) {
-        struct resource *res = fetchCtx->list;
-        while( res ) {
-            /* remove trailing slashes */
-            len = strlen(res->uri);
-            while( len > 0 && res->uri[len-1] == '/' ) --len;
-            decodedUri = ne_path_unescape( fetchCtx->target ); /* allocates memory */
-
-            /* Only do the comparaison of the part of the string without the trailing
-               slashes, and make sure decodedUri is not too large */
-            if( strncmp(res->uri, decodedUri, len ) == 0 && decodedUri[len] == '\0') {
-                SAFE_FREE( decodedUri );
-                break;
-            }
-            res = res->next;
-            SAFE_FREE( decodedUri );
-        }
-        if( res ) {
-            DEBUG_WEBDAV("Working on file %s", res->name );
-        } else {
-            DEBUG_WEBDAV("ERROR: Result struct not valid!");
-        }
-
-        // Fill user-provided buffer
-        resourceToFileStat(buf, res );
-
-        free_fetchCtx( fetchCtx );
-    }
-    DEBUG_WEBDAV("STAT result from propfind: %s, mtime: %llu", buf->name ? buf->name:"NULL",
-                    (unsigned long long) buf->mtime );
-
-    return 0;
-}
-
-/*
  * directory functions
  */
 csync_vio_handle_t *owncloud_opendir(const char *uri) {
@@ -918,16 +829,6 @@ csync_vio_file_stat_t *owncloud_readdir(csync_vio_handle_t *dhandle) {
             // Convert the resource for the caller
             csync_vio_file_stat_t* lfs = csync_vio_file_stat_new();
             resourceToFileStat(lfs, currResource);
-
-            // Save the current readdir result into our single item stat cache too so a call to stat()
-            // will return that item
-            if (_stat_cache) {
-                resource_free(_stat_cache);
-                _stat_cache = NULL;
-            }
-            _stat_cache = resource_dup(currResource);
-            _stat_cache->next = 0;
-
 
             SAFE_FREE( escaped_path );
             return lfs;

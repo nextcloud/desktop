@@ -106,7 +106,7 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
 
   switch(ctx->replica) {
     case REMOTE_REPLICA:
-      rc = owncloud_stat(uri, buf);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "ERROR: Cannot call remote stat, not implemented");
       break;
     case LOCAL_REPLICA:
       rc = csync_vio_local_stat(uri, buf);
