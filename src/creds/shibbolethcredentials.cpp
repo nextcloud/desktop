@@ -215,7 +215,8 @@ void ShibbolethCredentials::persist(Account* account)
 void ShibbolethCredentials::invalidateToken(Account *account)
 {
     CookieJar *jar = static_cast<CookieJar*>(account->networkAccessManager()->cookieJar());
-    jar->clearCookies();
+    jar->deleteCookie(_shibCookie);
+    jar->clearSessionCookies();
     removeShibCookie(account);
     _shibCookie = QNetworkCookie();
     // ### access to ctx missing, but might not be required at all

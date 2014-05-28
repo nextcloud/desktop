@@ -30,7 +30,7 @@ public:
     QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const;
 
     virtual bool deleteCookie(const QNetworkCookie & cookie);
-    void clearCookies();
+    void clearSessionCookies();
 
 signals:
     void newCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
