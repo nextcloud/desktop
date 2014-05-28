@@ -41,7 +41,6 @@ public:
 
 Q_SIGNALS:
   void shibbolethCookieReceived(const QNetworkCookie &cookie, Account *account);
-  void accepted();
   void rejected();
 
 private Q_SLOTS:

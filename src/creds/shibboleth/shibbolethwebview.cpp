@@ -119,7 +119,6 @@ void ShibbolethWebView::slotHandleAuthentication(QNetworkReply *reply, QAuthenti
 void ShibbolethWebView::accept()
 {
     _accepted = true;
-    Q_EMIT accepted();
 }
 
 } // ns Mirall

@@ -61,7 +61,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void onShibbolethCookieReceived(const QNetworkCookie&, Account*);
-    void slotBrowserAccepted();
+    void slotBrowserRejected();
     void onFetched();
     void slotReadJobDone(QKeychain::Job*);
     void slotInvalidateAndFetchInvalidateDone(QKeychain::Job*);
