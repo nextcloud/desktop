@@ -25,6 +25,7 @@
 #include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibbolethcredentials.h"
 #include "mirall/account.h"
+#include "mirall/logger.h"
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/theme.h"
 
@@ -53,6 +54,13 @@ ShibbolethWebView::ShibbolethWebView(Account* account, QWidget* parent)
     page->mainFrame()->load(account->url());
     this->setPage(page);
     setWindowTitle(tr("%1 - Authenticate").arg(Theme::instance()->appNameGUI()));
+
+    // If we have a valid cookie, it's most likely expired. We can use this as
+    // as a criteria to tell the user why the browser window pops up
+    QNetworkCookie shibCookie = ShibbolethCredentials::findShibCookie(_account, ShibbolethCredentials::accountCookies(_account));
+    if (shibCookie != QNetworkCookie()) {
+        Logger::instance()->postOptionalGuiLog(tr("Reauthentication required"), tr("Your session has expired. You need to re-login to continue to use the client."));
+    }
 }
 
 ShibbolethWebView::~ShibbolethWebView()
