@@ -164,7 +164,9 @@ time_t oc_httpdate_parse( const char *date );
 char *_cleanPath( const char* uri );
 
 int _stat_perms( int type );
-csync_vio_file_stat_t *resourceToFileStat( struct resource *res );
+void resourceToFileStat( csync_vio_file_stat_t *lfs, struct resource *res );
+void resource_free(struct resource* o);
+struct resource* resource_dup(struct resource* o);
 
 // Public API from vio
 csync_vio_handle_t *owncloud_opendir(const char *uri);

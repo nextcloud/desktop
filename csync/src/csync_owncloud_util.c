@@ -279,19 +279,9 @@ time_t oc_httpdate_parse( const char *date ) {
 /*
  * helper: convert a resource struct to file_stat struct.
  */
-csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
+void resourceToFileStat(csync_vio_file_stat_t *lfs, struct resource *res )
 {
-    csync_vio_file_stat_t *lfs = NULL;
-
-    if( ! res ) {
-        return NULL;
-    }
-
-    lfs = c_malloc(sizeof(csync_vio_file_stat_t));
-    if (lfs == NULL) {
-        errno = ENOMEM;
-        return NULL;
-    }
+    ZERO_STRUCTP(lfs);
 
     lfs->name = c_strdup( res->name );
 
@@ -306,17 +296,20 @@ csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
         DEBUG_WEBDAV("ERROR: Unknown resource type %d", res->type);
     }
 
+    // FIXME Those are defaults, we'll have to use the real ownCloud WebDAV permissions soon
+    lfs->mode   = _stat_perms( lfs->type );
+    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+
     lfs->mtime = res->modtime;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
     if( res->md5 ) {
         lfs->etag   = c_strdup(res->md5);
+        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
     }
-    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
-    csync_vio_file_stat_set_file_id(lfs, res->file_id);
 
-    return lfs;
+    csync_vio_file_stat_set_file_id(lfs, res->file_id);
 }
 
 /* WebDAV does not deliver permissions. Set a default here. */
@@ -339,3 +332,32 @@ int _stat_perms( int type ) {
     return ret;
 }
 
+struct resource* resource_dup(struct resource* o) {
+    struct resource *r = c_malloc (sizeof( struct resource ));
+    ZERO_STRUCTP(r);
+
+    r->uri = c_strdup(o->uri);
+    r->name = c_strdup(o->name);
+    r->type = o->type;
+    r->size = o->size;
+    r->modtime = o->modtime;
+    if( o->md5 ) {
+        r->md5 = c_strdup(o->md5);
+    }
+    r->next = o->next;
+    csync_vio_set_file_id(r->file_id, o->file_id);
+
+    return r;
+}
+void resource_free(struct resource* o) {
+    struct resource* old = NULL;
+    while (o)
+    {
+        old = o;
+        o = o->next;
+        SAFE_FREE(old->uri);
+        SAFE_FREE(old->name);
+        SAFE_FREE(old->md5);
+        SAFE_FREE(old);
+    }
+}

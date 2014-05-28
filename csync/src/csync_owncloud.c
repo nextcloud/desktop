@@ -70,7 +70,7 @@ struct listdir_context *propfind_cache = 0;
 bool is_first_propfind = true;
 
 
-csync_vio_file_stat_t _stat_cache;
+struct resource* _stat_cache = 0;
 /* id cache, cache the ETag: header of a GET request */
 struct { char *uri; char *id;  } _id_cache = { NULL, NULL };
 
@@ -80,9 +80,8 @@ static void clean_caches() {
     free_fetchCtx(propfind_cache);
     propfind_cache = NULL;
 
-    SAFE_FREE(_stat_cache.name);
-    SAFE_FREE(_stat_cache.etag );
-    memset( _stat_cache.file_id, 0, FILE_ID_BUF_SIZE+1 );
+    resource_free(_stat_cache);
+    _stat_cache = NULL;
 
     SAFE_FREE(_id_cache.uri);
     SAFE_FREE(_id_cache.id);
@@ -764,26 +763,6 @@ static struct listdir_context *fetch_resource_list_attempts(const char *uri, int
     return fetchCtx;
 }
 
-static void fill_stat_cache( csync_vio_file_stat_t *lfs ) {
-
-    if( _stat_cache.name ) SAFE_FREE(_stat_cache.name);
-    if( _stat_cache.etag  ) SAFE_FREE(_stat_cache.etag );
-
-    if( !lfs) return;
-
-    _stat_cache.name   = c_strdup(lfs->name);
-    _stat_cache.mtime  = lfs->mtime;
-    _stat_cache.fields = lfs->fields;
-    _stat_cache.type   = lfs->type;
-    _stat_cache.size   = lfs->size;
-    csync_vio_file_stat_set_file_id(&_stat_cache, lfs->file_id);
-
-    if( lfs->etag ) {
-        _stat_cache.etag    = c_strdup(lfs->etag);
-    }
-}
-
-
 
 /*
  * file functions
@@ -794,38 +773,24 @@ int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
      *   creattime
      *   size
      */
-    csync_vio_file_stat_t *lfs = NULL;
     struct listdir_context  *fetchCtx = NULL;
     char *decodedUri = NULL;
     int len = 0;
     errno = 0;
 
+    ne_uri uri_parsed;
+    if (ne_uri_parse(uri, &uri_parsed) != NE_OK) {
+        return 1;
+    }
+
     buf->name = c_basename(uri);
 
-    if (buf->name == NULL) {
-        errno = ENOMEM;
-        return -1;
-    }
-
-    if( _stat_cache.name && strcmp( buf->name, _stat_cache.name ) == 0 ) {
-        buf->fields  = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
-        buf->fields  = _stat_cache.fields;
-        buf->type    = _stat_cache.type;
-        buf->mtime   = _stat_cache.mtime;
-        buf->size    = _stat_cache.size;
-        buf->mode    = _stat_perms( _stat_cache.type );
-        buf->etag     = NULL;
-        if( _stat_cache.etag ) {
-            buf->etag    = c_strdup( _stat_cache.etag );
-            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
-        }
-        csync_vio_file_stat_set_file_id( buf, _stat_cache.file_id );
+    if( _stat_cache && _stat_cache->uri && strcmp( uri_parsed.path, _stat_cache->uri ) == 0 ) {
+        ne_uri_free(&uri_parsed);
+        resourceToFileStat(buf, _stat_cache );
         return 0;
     }
+    ne_uri_free(&uri_parsed);
     DEBUG_WEBDAV("owncloud_stat => Could not find in stat cache %s", uri);
 
     /* fetch data via a propfind call. */
@@ -859,29 +824,8 @@ int owncloud_stat(const char *uri, csync_vio_file_stat_t *buf) {
             DEBUG_WEBDAV("ERROR: Result struct not valid!");
         }
 
-        lfs = resourceToFileStat( res );
-        if( lfs ) {
-            buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
-            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
-            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
-            buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
-
-            buf->fields = lfs->fields;
-            buf->type   = lfs->type;
-            buf->mtime  = lfs->mtime;
-            buf->size   = lfs->size;
-            buf->mode   = _stat_perms( lfs->type );
-            buf->etag    = NULL;
-            if( lfs->etag ) {
-                buf->etag    = c_strdup( lfs->etag );
-            }
-            csync_vio_file_stat_set_file_id( buf, lfs->file_id );
-
-            /* fill the static stat buf as input for the stat function */
-            csync_vio_file_stat_destroy( lfs );
-        }
+        // Fill user-provided buffer
+        resourceToFileStat(buf, res );
 
         free_fetchCtx( fetchCtx );
     }
@@ -971,8 +915,20 @@ csync_vio_file_stat_t *owncloud_readdir(csync_vio_handle_t *dhandle) {
          */
         escaped_path = ne_path_escape( currResource->uri );
         if (ne_path_compare(fetchCtx->target, escaped_path) != 0) {
-            csync_vio_file_stat_t* lfs = resourceToFileStat(currResource);
-            fill_stat_cache(lfs);
+            // Convert the resource for the caller
+            csync_vio_file_stat_t* lfs = csync_vio_file_stat_new();
+            resourceToFileStat(lfs, currResource);
+
+            // Save the current readdir result into our single item stat cache too so a call to stat()
+            // will return that item
+            if (_stat_cache) {
+                resource_free(_stat_cache);
+                _stat_cache = NULL;
+            }
+            _stat_cache = resource_dup(currResource);
+            _stat_cache->next = 0;
+
+
             SAFE_FREE( escaped_path );
             return lfs;
         }

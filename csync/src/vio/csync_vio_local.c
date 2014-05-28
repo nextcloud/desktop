@@ -331,11 +331,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->inode = sb.st_ino;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
 
-  /* Both values are only initialized to zero as they are not used in csync */
-  /* They are deprecated and will be rmemoved later. */
-  buf->blksize  = 0;
-  buf->blkcount = 0;
-
   buf->atime = sb.st_atime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
 
@@ -347,12 +342,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
   buf->nlink = sb.st_nlink;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
-
-  buf->uid = sb.st_uid;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_UID;
-
-  buf->gid = sb.st_gid;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_GID;
 
   buf->size = sb.st_size;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;

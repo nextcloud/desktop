@@ -22,14 +22,8 @@
 #include "vio/csync_vio_file_stat.h"
 
 csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
-  csync_vio_file_stat_t *file_stat = NULL;
-
-  file_stat = (csync_vio_file_stat_t *) c_malloc(sizeof(csync_vio_file_stat_t));
-  if (file_stat == NULL) {
-    return NULL;
-  }
-  file_stat->etag = NULL;
-  memset(file_stat->file_id, 0, FILE_ID_BUF_SIZE+1);
+  csync_vio_file_stat_t *file_stat = (csync_vio_file_stat_t *) c_malloc(sizeof(csync_vio_file_stat_t));
+  ZERO_STRUCTP(file_stat);
   return file_stat;
 }
 
@@ -39,12 +33,6 @@ void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {
     return;
   }
 
-  if (file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME) {
-    SAFE_FREE(file_stat->u.symlink_name);
-  }
-  if (file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_CHECKSUM) {
-    SAFE_FREE(file_stat->u.checksum);
-  }
   if (file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_ETAG) {
     SAFE_FREE(file_stat->etag);
   }

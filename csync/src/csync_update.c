@@ -361,8 +361,6 @@ out:
   st->mode  = fs->mode;
   st->size  = fs->size;
   st->modtime = fs->mtime;
-  st->uid   = fs->uid;
-  st->gid   = fs->gid;
   st->nlink = fs->nlink;
   st->type  = type;
   st->etag   = NULL;
@@ -587,6 +585,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     /* == see if really stat has to be called. */
+    /* FIXME: No, this stat() is actually useless. This is the only place where we call it
+       and we get all info already thanks to csync_vio_readdir */
     fs = csync_vio_file_stat_new();
     res = csync_vio_stat(ctx, filename, fs);
 

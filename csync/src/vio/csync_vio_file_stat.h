@@ -62,42 +62,31 @@ enum csync_vio_file_stat_fields_e {
   CSYNC_VIO_FILE_STAT_FIELDS_INODE = 1 << 4,
   CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT = 1 << 5,
   CSYNC_VIO_FILE_STAT_FIELDS_SIZE = 1 << 6,
-  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT = 1 << 7, /* will be removed */
-  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE = 1 << 8,  /* will be removed */
+//  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT = 1 << 7, /* will be removed */
+//  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE = 1 << 8,  /* will be removed */
   CSYNC_VIO_FILE_STAT_FIELDS_ATIME = 1 << 9,
   CSYNC_VIO_FILE_STAT_FIELDS_MTIME = 1 << 10,
   CSYNC_VIO_FILE_STAT_FIELDS_CTIME = 1 << 11,
-  CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME = 1 << 12,
-  CSYNC_VIO_FILE_STAT_FIELDS_CHECKSUM = 1 << 13,
-  CSYNC_VIO_FILE_STAT_FIELDS_ACL = 1 << 14,
-  CSYNC_VIO_FILE_STAT_FIELDS_UID = 1 << 15,
-  CSYNC_VIO_FILE_STAT_FIELDS_GID = 1 << 16,
+//  CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME = 1 << 12,
+//  CSYNC_VIO_FILE_STAT_FIELDS_CHECKSUM = 1 << 13,
+//  CSYNC_VIO_FILE_STAT_FIELDS_ACL = 1 << 14,
+//  CSYNC_VIO_FILE_STAT_FIELDS_UID = 1 << 15,
+//  CSYNC_VIO_FILE_STAT_FIELDS_GID = 1 << 16,
   CSYNC_VIO_FILE_STAT_FIELDS_ETAG = 1 << 17,
   CSYNC_VIO_FILE_STAT_FIELDS_FILE_ID = 1 << 18
 };
 
 
 struct csync_vio_file_stat_s {
-  union {
-    char *symlink_name;
-    char *checksum;
-  } u;
-
-  void *acl;
   char *name;
   char *etag;
   char file_id[FILE_ID_BUF_SIZE+1];
-
-  uid_t uid;
-  gid_t gid;
 
   time_t atime;
   time_t mtime;
   time_t ctime;
 
   int64_t size;
-  int64_t blksize;         /* will be removed in future, not used in csync */
-  unsigned long blkcount;  /* will be removed in future, not used in csync */
 
   mode_t mode;
 
@@ -109,10 +98,6 @@ struct csync_vio_file_stat_s {
   enum csync_vio_file_type_e type;
 
   enum csync_vio_file_flags_e flags;
-
-  void *reserved1;
-  void *reserved2;
-  void *reserved3;
 };
 
 csync_vio_file_stat_t *csync_vio_file_stat_new(void);

@@ -27,35 +27,7 @@ int propfind_recursive_cache_file_count = 0;
 int propfind_recursive_cache_folder_count = 0;
 
 
-static struct resource* resource_dup(struct resource* o) {
-    struct resource *r = c_malloc (sizeof( struct resource ));
-    ZERO_STRUCTP(r);
 
-    r->uri = c_strdup(o->uri);
-    r->name = c_strdup(o->name);
-    r->type = o->type;
-    r->size = o->size;
-    r->modtime = o->modtime;
-    if( o->md5 ) {
-        r->md5 = c_strdup(o->md5);
-    }
-    r->next = o->next;
-    csync_vio_set_file_id(r->file_id, o->file_id);
-
-    return r;
-}
-static void resource_free(struct resource* o) {
-    struct resource* old = NULL;
-    while (o)
-    {
-        old = o;
-        o = o->next;
-        SAFE_FREE(old->uri);
-        SAFE_FREE(old->name);
-        SAFE_FREE(old->md5);
-        SAFE_FREE(old);
-    }
-}
 
 static void _tree_destructor(void *data) {
     propfind_recursive_element_t *element = data;
@@ -202,6 +174,7 @@ static void propfind_results_recursive(void *userdata,
         if (!element) {
             element = c_malloc(sizeof(propfind_recursive_element_t));
             element->self = resource_dup(newres);
+            element->self->next = 0;
             element->children = NULL;
             element->parent = NULL;
             c_rbtree_insert(propfind_recursive_cache, element);

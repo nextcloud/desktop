@@ -287,7 +287,6 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         Q_ASSERT("Non handled error-status");
         /* No error string */
     }
-
     item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
     item._modtime = file->modtime;
     item._etag = file->etag;
