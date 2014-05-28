@@ -214,10 +214,8 @@ void ShibbolethCredentials::persist(Account* account)
 // only used by Application::slotLogout(). Use invalidateAndFetch for normal usage
 void ShibbolethCredentials::invalidateToken(Account *account)
 {
-    Q_UNUSED(account)
-    if (!removeFromCookieJar(_shibCookie)) {
-        qDebug() << "invalidateToken() called but no shibCookie in in cookie jar!";
-    }
+    CookieJar *jar = static_cast<CookieJar*>(account->networkAccessManager()->cookieJar());
+    jar->clearCookies();
     removeShibCookie(account);
     _shibCookie = QNetworkCookie();
     // ### access to ctx missing, but might not be required at all
@@ -398,13 +396,6 @@ void ShibbolethCredentials::addToCookieJar(const QNetworkCookie &cookie)
     jar->blockSignals(true); // otherwise we'd call ourselves
     jar->setCookiesFromUrl(cookies, account->url());
     jar->blockSignals(false);
-}
-
-bool ShibbolethCredentials::removeFromCookieJar(const QNetworkCookie &cookie)
-{
-    Account *account = AccountManager::instance()->account();
-    CookieJar *jar = qobject_cast<CookieJar*>(account->networkAccessManager()->cookieJar());
-    return jar->deleteCookie(cookie);
 }
 
 

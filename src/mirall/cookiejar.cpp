@@ -106,6 +106,12 @@ bool CookieJar::deleteCookie(const QNetworkCookie &delCookie)
     return removeSucceeded;
 }
 
+void CookieJar::clearCookies()
+{
+    setAllCookies(QList<QNetworkCookie>());
+}
+
+
 void CookieJar::save()
 {
     QFile file;
