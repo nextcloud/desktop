@@ -101,7 +101,7 @@ private slots:
 private:
     QNetworkReply* addTimer(QNetworkReply *reply);
     bool _ignoreCredentialFailure;
-    QNetworkReply *_reply;
+    QPointer<QNetworkReply> _reply; // (QPointer because the NetworkManager may be destroyed before the jobs at exit)
     Account *_account;
     QString _path;
     QTimer _timer;
