@@ -61,18 +61,6 @@
  */
 #define MAX_DEPTH 50
 
-/**
- * Maximum time difference between two replicas in seconds
- */
-#define MAX_TIME_DIFFERENCE 10
-
-/**
- * Maximum size of a buffer for transfer
- */
-#ifndef MAX_XFER_BUF_SIZE
-#define MAX_XFER_BUF_SIZE (16 * 1024)
-#endif
-
 #define CSYNC_STATUS_INIT 1 << 0
 #define CSYNC_STATUS_UPDATE 1 << 1
 #define CSYNC_STATUS_RECONCILE 1 << 2
