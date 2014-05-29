@@ -617,7 +617,7 @@ int csync_commit(CSYNC *ctx) {
   }
   ctx->statedb.db = NULL;
 
-  rc = csync_vio_commit(ctx);
+  rc = owncloud_commit(ctx);
   if (rc < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "commit failed: %s",
               ctx->error_string ? ctx->error_string : "");
@@ -922,7 +922,7 @@ void csync_file_stat_free(csync_file_stat_t *st)
 
 int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
 {
-    return csync_vio_set_property(ctx, key, value);
+    return owncloud_set_property(ctx, key, value);
 }
 
 

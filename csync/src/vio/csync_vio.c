@@ -121,21 +121,9 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
   return rc;
 }
 
-
-
 char *csync_vio_get_status_string(CSYNC *ctx) {
   if(ctx->error_string) {
     return ctx->error_string;
   }
   return owncloud_error_string(ctx);
-}
-
-int csync_vio_set_property(CSYNC* ctx, const char* key, void* data) {
-  (void) ctx;
-  return owncloud_set_property(ctx, key, data);
-}
-
-int csync_vio_commit(CSYNC *ctx) {
-  (void) ctx;
-  return owncloud_commit(ctx);
 }
