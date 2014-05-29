@@ -191,7 +191,7 @@ int csync_init(CSYNC *ctx) {
   ctx->local.type = LOCAL_REPLICA;
 
   if ( !ctx->options.local_only_mode) {
-      owncloud_init(csync_get_userdata(ctx));
+      owncloud_init(ctx);
       ctx->remote.type = REMOTE_REPLICA;
   } else {
     ctx->remote.type = LOCAL_REPLICA;
@@ -678,6 +678,8 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->options.config_dir);
   SAFE_FREE(ctx->error_string);
+
+  owncloud_destroy(ctx);
 
 #ifdef WITH_ICONV
   c_close_iconv();

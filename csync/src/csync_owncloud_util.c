@@ -20,13 +20,15 @@
  */
 
 #include "csync_owncloud.h"
+#include "csync_owncloud_private.h"
+
 #include "csync_misc.h"
 
-void set_error_message( const char *msg )
+void set_error_message( csync_owncloud_ctx_t *ctx, const char *msg )
 {
-    SAFE_FREE(dav_session.error_string);
+    SAFE_FREE(ctx->dav_session.error_string);
     if( msg )
-        dav_session.error_string = c_strdup(msg);
+        ctx->dav_session.error_string = c_strdup(msg);
 }
 
 void set_errno_from_http_errcode( int err ) {
@@ -104,12 +106,12 @@ void set_errno_from_http_errcode( int err ) {
     errno = new_errno;
 }
 
-int http_result_code_from_session() {
-    const char *p = ne_get_error( dav_session.ctx );
+int http_result_code_from_session(csync_owncloud_ctx_t *ctx) {
+    const char *p = ne_get_error( ctx->dav_session.ctx );
     char *q;
     int err;
 
-    set_error_message(p); /* remember the error message */
+    set_error_message(ctx, p); /* remember the error message */
 
     err = strtol(p, &q, 10);
     if (p == q) {
@@ -118,8 +120,8 @@ int http_result_code_from_session() {
     return err;
 }
 
-void set_errno_from_session() {
-    int err = http_result_code_from_session();
+void set_errno_from_session(csync_owncloud_ctx_t *ctx) {
+    int err = http_result_code_from_session(ctx);
 
     if( err == EIO || err == ERRNO_ERROR_STRING) {
         errno = err;
@@ -128,7 +130,7 @@ void set_errno_from_session() {
     }
 }
 
-void set_errno_from_neon_errcode( int neon_code ) {
+void set_errno_from_neon_errcode(csync_owncloud_ctx_t *ctx, int neon_code ) {
 
     if( neon_code != NE_OK ) {
         DEBUG_WEBDAV("Neon error code was %d", neon_code);
@@ -137,7 +139,7 @@ void set_errno_from_neon_errcode( int neon_code ) {
     switch(neon_code) {
     case NE_OK:     /* Success, but still the possiblity of problems */
     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
-        set_errno_from_session(); /* Something wrong with http communication */
+        set_errno_from_session(ctx); /* Something wrong with http communication */
         break;
     case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
         errno = ERRNO_LOOKUP_ERROR;
@@ -360,4 +362,29 @@ void resource_free(struct resource* o) {
         SAFE_FREE(old->md5);
         SAFE_FREE(old);
     }
+}
+
+void free_fetchCtx( struct listdir_context *ctx )
+{
+    struct resource *newres, *res;
+    if( ! ctx ) return;
+    newres = ctx->list;
+    res = newres;
+
+    ctx->ref--;
+    if (ctx->ref > 0) return;
+
+    SAFE_FREE(ctx->target);
+
+    while( res ) {
+        SAFE_FREE(res->uri);
+        SAFE_FREE(res->name);
+        SAFE_FREE(res->md5);
+        memset( res->file_id, 0, FILE_ID_BUF_SIZE+1 );
+
+        newres = res->next;
+        SAFE_FREE(res);
+        res = newres;
+    }
+    SAFE_FREE(ctx);
 }

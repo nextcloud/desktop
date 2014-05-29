@@ -90,6 +90,8 @@ enum csync_replica_e {
 
 typedef struct csync_file_stat_s csync_file_stat_t;
 
+struct csync_owncloud_ctx_s; // csync_owncloud.c
+
 /**
  * @brief csync public structure
  */
@@ -162,6 +164,8 @@ struct csync_s {
   volatile int abort;
   void *rename_info;
   int  read_from_db_disabled;
+
+  struct csync_owncloud_ctx_s *owncloud_context;
 };
 
 

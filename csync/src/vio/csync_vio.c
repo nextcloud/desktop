@@ -44,7 +44,7 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
       if(ctx->remote.read_from_db) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Read from db flag is true, should not!" );
       }
-      return owncloud_opendir(name);
+      return owncloud_opendir(ctx, name);
       break;
     case LOCAL_REPLICA:
       return csync_vio_local_opendir(name);
@@ -69,7 +69,7 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
       if( ctx->remote.read_from_db ) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Remote ReadFromDb is true, should not!");
       }
-      rc = owncloud_closedir(dhandle);
+      rc = owncloud_closedir(ctx, dhandle);
       break;
   case LOCAL_REPLICA:
       rc = csync_vio_local_closedir(dhandle);
@@ -87,7 +87,7 @@ csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle
       if( ctx->remote.read_from_db ) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Remote readfromdb is true, should not!");
       }
-      return owncloud_readdir(dhandle);
+      return owncloud_readdir(ctx, dhandle);
       break;
     case LOCAL_REPLICA:
       return csync_vio_local_readdir(dhandle);
@@ -127,15 +127,15 @@ char *csync_vio_get_status_string(CSYNC *ctx) {
   if(ctx->error_string) {
     return ctx->error_string;
   }
-  return owncloud_error_string();
+  return owncloud_error_string(ctx);
 }
 
 int csync_vio_set_property(CSYNC* ctx, const char* key, void* data) {
   (void) ctx;
-  return owncloud_set_property(key, data);
+  return owncloud_set_property(ctx, key, data);
 }
 
 int csync_vio_commit(CSYNC *ctx) {
   (void) ctx;
-  return owncloud_commit();
+  return owncloud_commit(ctx);
 }
