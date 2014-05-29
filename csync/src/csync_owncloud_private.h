@@ -87,8 +87,6 @@ struct dav_session_s {
 
     int read_timeout;
 
-    CSYNC *csync_ctx;
-
     bool no_recursive_propfind;
 
     csync_owncloud_redirect_callback_t redir_callback;

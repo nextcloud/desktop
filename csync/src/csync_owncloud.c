@@ -137,9 +137,7 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
                 strcpy( password, ctx->dav_session.pwd );
             }
         } else {
-            if( ctx->dav_session.csync_ctx ) {
-               authcb = csync_get_auth_callback( ctx->dav_session.csync_ctx );
-            }
+               authcb = csync_get_auth_callback( ctx->csync_ctx );
             if( authcb != NULL ){
                 /* call the csync callback */
                 DEBUG_WEBDAV("Call the csync callback for %s", realm );
@@ -359,7 +357,7 @@ static int post_send_hook(ne_request *req, void *userdata,
     if( !location ) return NE_OK;
 
     if( ctx->dav_session.redir_callback ) {
-        if( ctx->dav_session.redir_callback( ctx->dav_session.csync_ctx, location ) ) {
+        if( ctx->dav_session.redir_callback( ctx->csync_ctx, location ) ) {
             return NE_REDIRECT;
         } else {
             return NE_RETRY;
@@ -856,10 +854,6 @@ int owncloud_set_property(CSYNC* ctx, const char *key, void *data) {
     }
     if (c_streq(key, "read_timeout") || c_streq(key, "timeout")) {
         ctx->owncloud_context->dav_session.read_timeout = *(int*)(data);
-        return 0;
-    }
-    if( c_streq(key, "csync_context")) {
-        ctx->owncloud_context->dav_session.csync_ctx = data;
         return 0;
     }
     if( c_streq(key, "get_dav_session")) {

@@ -463,7 +463,6 @@ void SyncEngine::startSync()
         }
     }
 
-    csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
     // TODO: This should be a part of this method, but we don't have
     // any way to get "session_key" module property from csync. Had we
