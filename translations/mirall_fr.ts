@@ -1286,7 +1286,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="158"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="159"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Un fichier ou un dossier a été supprimé du partage en lecture seule, mais la restauration à échoué : %1</translation>
     </message>
@@ -1537,12 +1537,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="256"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="259"/>
         <source>Login Error</source>
         <translation>Erreur de connexion</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="256"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="259"/>
         <source>You must sign in as user %1</source>
         <translation>Vous devez vous connecter en tant qu&apos;utilisateur %1</translation>
     </message>
@@ -1550,12 +1550,22 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="55"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="56"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - Authentifier</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
+        <source>Reauthentication required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
+        <source>Your session has expired. You need to re-login to continue to use the client.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
     </message>

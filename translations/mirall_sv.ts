@@ -513,7 +513,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Den valda mappen är en symbolisk länk. En redan konfigurerad mapp finns i mappen länken pekar på.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1286,7 +1286,7 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>Mirall::PropagateItemJob</name>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="158"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="159"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>En fil eller katalog togs bort från en endast-läsbar delning, men återställning misslyckades: %1</translation>
     </message>
@@ -1309,7 +1309,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att ta bort %1 på grund av ett lokalt filnamn</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
@@ -1322,7 +1322,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="196"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Filen %1 kan inte döpas om till %2 på grund av ett lokalt filnamn</translation>
     </message>
 </context>
 <context>
@@ -1537,12 +1537,12 @@ Försök att synka dessa igen.</translation>
 <context>
     <name>Mirall::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="256"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="259"/>
         <source>Login Error</source>
         <translation>Login fel</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="256"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="259"/>
         <source>You must sign in as user %1</source>
         <translation>Du måste logga in som en användare %1</translation>
     </message>
@@ -1550,12 +1550,22 @@ Försök att synka dessa igen.</translation>
 <context>
     <name>Mirall::ShibbolethWebView</name>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="55"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="56"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - Autentisera</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
+        <source>Reauthentication required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
+        <source>Your session has expired. You need to re-login to continue to use the client.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
     </message>
