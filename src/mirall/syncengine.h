@@ -104,7 +104,7 @@ private:
     // cleanup and emit the finished signal
     void finalize();
 
-    static QMutex _syncMutex;
+    static bool _syncRunning; //true when one sync is running somewhere (for debugging)
     SyncFileItemVector _syncedItems;
 
     CSYNC *_csync_ctx;

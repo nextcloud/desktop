@@ -52,8 +52,7 @@ void csyncLogCatcher(int /*verbosity*/,
   Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
 }
 
-/* static variables to hold the credentials */
-QMutex SyncEngine::_syncMutex;
+bool SyncEngine::_syncRunning = false;
 
 SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, Mirall::SyncJournalDb* journal)
 {
@@ -420,10 +419,8 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
 
 void SyncEngine::startSync()
 {
-    if (!_syncMutex.tryLock()) {
-        qDebug() << Q_FUNC_INFO << "WARNING: Another sync seems to be running. Not starting a new one.";
-        return;
-    }
+    Q_ASSERT(!_syncRunning);
+    _syncRunning = true;
 
     if( ! _csync_ctx ) {
         qDebug() << "XXXXXXXXXXXXXXXX FAIL: do not have csync_ctx!";
@@ -671,9 +668,9 @@ void SyncEngine::finalize()
     _stopWatch.stop();
 
     _propagator.reset(0);
-    _syncMutex.unlock();
     _thread.quit();
     _thread.wait();
+    _syncRunning = false;
     emit finished();
 }
 
