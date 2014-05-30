@@ -312,11 +312,11 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
     if( !file.isEmpty() && Utility::fsCasePreserving() ) {
 #ifdef Q_OS_MAC
         QFileInfo fileInfo(file);
-        if (!fileInfo.exists())
+        if (!fileInfo.exists()) {
             re = false;
-        else
-            re = ( ! file.endsWith(fileInfo.canonicalFilePath(), Qt::CaseSensitive) );
-
+        } else {
+            re = ( ! fileInfo.canonicalFilePath().endsWith(relFile, Qt::CaseSensitive) );
+        }
 #elif defined(Q_OS_WIN)
         const QString file( _localDir + relFile );
         qDebug() << "CaseClashCheck for " << file;
