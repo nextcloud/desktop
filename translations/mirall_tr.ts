@@ -1816,7 +1816,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="116"/>
         <source>CSync fatal parameter error.</source>
-        <translation>CSync ölümcül parametre hatası.</translation>
+        <translation>CSync ciddi parametre hatası.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="119"/>
