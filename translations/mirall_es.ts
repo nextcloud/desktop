@@ -735,7 +735,7 @@ Los elementos marcados también se eliminarán si impiden la eliminación de alg
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="59"/>
         <source>Log Output</source>
-        <translation>Registrar salida</translation>
+        <translation>Salida del sistema</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="71"/>
@@ -1117,7 +1117,7 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="234"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Creando la carpeta local %1...</translation>
+        <translation>Creando la carpeta de sincronización local %1...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="238"/>
@@ -1158,12 +1158,12 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="302"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Carpeta remota %1 creada correctamente.</translation>
+        <translation>Carpeta remota %1 creado correctamente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="304"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>La carpeta remota %1 ya existe. Conectándola para sincronizar.</translation>
+        <translation>La carpeta remota %1 ya existe. Conectándola para sincronizacion.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="306"/>
@@ -1557,12 +1557,12 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>Debe volver a autenticarse</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation type="unfinished"/>
+        <translation>Su sesión ha caducado. Necesita volver a iniciarla para continuar usando el cliente.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -1708,7 +1708,7 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation>Avisos de la conexión SSL actual:</translation>
+        <translation>Avisos Sobre la actual conexión SSL:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="170"/>
@@ -1748,7 +1748,7 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="191"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Huella (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Huella dactilar (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="193"/>
@@ -2184,7 +2184,7 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation>&amp;Dirección del servidor:</translation>
+        <translation>Uso servidor &amp;Dirección:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -2198,7 +2198,7 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="47"/>
         <source>Use &amp;secure connection</source>
-        <translation>Usar conexión &amp;segura</translation>
+        <translation>Uso &amp;conexión segura</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="60"/>
@@ -2271,7 +2271,7 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="20"/>
         <source>TextLabel</source>
-        <translation>Etiqueta</translation>
+        <translation>Texto Etiqueta</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="69"/>
