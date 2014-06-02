@@ -325,7 +325,7 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
 
         hFind = FindFirstFileW( (wchar_t*)file.utf16(), &FindFileData);
         if (hFind == INVALID_HANDLE_VALUE) {
-            qDebug() << "FindFirstFile failed " << GetLastError();
+            //qDebug() << "FindFirstFile failed " << GetLastError();
             // returns false.
         } else {
             QString realFileName = QString::fromWCharArray( FindFileData.cFileName );
