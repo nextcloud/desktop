@@ -108,7 +108,10 @@ if(NOT TOKEN_AUTH_ONLY)
     endif()
 endif()
 
-Find_package(Sparkle)
+if(APPLE)
+  find_package(Sparkle)
+endif(APPLE)
+
 if(UNIX)
   find_package(INotify REQUIRED)
 else()
