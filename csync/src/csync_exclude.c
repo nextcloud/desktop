@@ -217,7 +217,7 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
   SAFE_FREE(bname);
   SAFE_FREE(dname);
 
-  if (ctx->excludes == NULL) {
+  if (ctx == NULL || ctx->excludes == NULL) {
       goto out;
   }
 
