@@ -70,7 +70,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="145"/>
         <source>Edit Ignored Files</source>
-        <translation>Editar Arquivos Ignorados</translation>
+        <translation>Editar arquivos ignorados</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="152"/>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Senha</translation>
+        <translation>&amp;Senha:</translation>
     </message>
 </context>
 <context>
@@ -364,12 +364,12 @@ Você tem certeza que quer executar esta operação?</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="704"/>
         <source>Remove All Files?</source>
-        <translation>Remover Todos os Arquivos?</translation>
+        <translation>Deseja remover todos os arquivos?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="706"/>
         <source>Remove all files</source>
-        <translation>Remover Rodos os Arquivos</translation>
+        <translation>Remover todos os arquivos</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="707"/>
@@ -636,7 +636,7 @@ Você tem certeza que quer executar esta operação?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
         <source>Use Monochrome Icons</source>
-        <translation>Usar ícones Monocromáticos</translation>
+        <translation>Usar ícones monocromáticos</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="50"/>
@@ -961,7 +961,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation>Nova versão %1 disponível. Por favor use a ferramenta de atualização do sistema para atualizar.</translation>
+        <translation>Nova versão %1 disponível. Por favor, use a ferramenta de atualização do sistema para atualizar.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1076,7 +1076,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="261"/>
         <source>Update %1 server</source>
-        <translation>Atualizar servidor %1</translation>
+        <translation>Atualizar o servidor %1</translation>
     </message>
 </context>
 <context>
@@ -1172,7 +1172,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="310"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>A criação da pasta remota falhou porque as credenciais fornecidas estão erradas! &lt;br/&gt;Por favor volte e verifique suas credenciais.&lt;/p&gt;</translation>
+        <translation>A criação da pasta remota falhou porque as credenciais fornecidas estão erradas!&lt;br/&gt;Por favor, volte e verifique suas credenciais.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
@@ -1198,7 +1198,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>Conexão à %1 não foi estabelecida. Por favor verifique novamente.</translation>
+        <translation>Conexão à %1 não foi estabelecida. Por favor, verifique novamente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="361"/>
@@ -1211,7 +1211,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizard.cpp" line="71"/>
         <source>%1 Connection Wizard</source>
-        <translation>%1 Assistente de conexões</translation>
+        <translation>Assistente de Conexões do %1</translation>
     </message>
 </context>
 <context>
@@ -2216,7 +2216,7 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="92"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Senha</translation>
+        <translation>&amp;Senha:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="102"/>
@@ -2316,12 +2316,12 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/main.cpp" line="38"/>
         <source>System Tray not available</source>
-        <translation>Bandeja do Sistema não disponível</translation>
+        <translation>Área de notificação não disponível</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 requer em uma bandeja do sistema de trabalho. Se você estiver executando o XFCE, siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; estas instruções &lt;/a&gt;. Caso contrário, instale uma aplicação da bandeja do sistema, como &apos;trayer&apos; e tente novamente.</translation>
+        <translation>%1 requer uma área de notificação em funcionamento. Se você estiver executando o XFCE, siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; estas instruções&lt;/a&gt;. Caso contrário, instale um aplicativo de área de notificação, como o &apos;trayer&apos; e tente novamente.</translation>
     </message>
 </context>
 <context>
@@ -2330,7 +2330,7 @@ Tente sincronizar novamente.</translation>
         <location filename="../src/mirall/owncloudtheme.cpp" line="95"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
-        <translation>Se você ainda não tem um servidor ownCloud, acesse &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</translation>
+        <translation>Se você ainda não tem um servidor ownCloud, acesse &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; para obter mais informações.</translation>
     </message>
 </context>
 <context>

@@ -1645,7 +1645,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
