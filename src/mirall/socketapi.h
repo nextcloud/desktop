@@ -34,10 +34,10 @@ public:
     virtual ~SocketApi();
 
 private slots:
-    void onNewConnection();
+    void slotNewConnection();
     void onLostConnection();
-    void onReadyRead();
-    void onSyncStateChanged(const QString&);
+    void slotReadSocket();
+    void slotSyncStateChanged(const QString&);
 
 private:
     void sendMessage(QLocalSocket* socket, const QString& message);

@@ -26,6 +26,7 @@
 #include <QLocalServer>
 #include <QMetaObject>
 #include <QStringList>
+#include <QScopedPointer>
 #include <QFile>
 #include <QDir>
 #include <QApplication>
@@ -51,14 +52,15 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
     // setup socket
     _localServer = new QLocalServer(this);
     QLocalServer::removeServer(socketPath);
-    if(!_localServer->listen(socketPath))
+    if(!_localServer->listen(socketPath)) {
         DEBUG << "can't start server" << socketPath;
-    else
+    } else {
         DEBUG << "server started" << socketPath;
-    connect(_localServer, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
+    }
+    connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), SLOT(onSyncStateChanged(QString)));
+    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), SLOT(slotSyncStateChanged(QString)));
 }
 
 SocketApi::~SocketApi()
@@ -67,11 +69,14 @@ SocketApi::~SocketApi()
     _localServer->close();
 }
 
-void SocketApi::onNewConnection()
+void SocketApi::slotNewConnection()
 {
     QLocalSocket* socket = _localServer->nextPendingConnection();
+    if( ! socket ) {
+        return;
+    }
     DEBUG << "New connection " << socket;
-    connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadSocket()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
     Q_ASSERT(socket->readAll().isEmpty());
 
@@ -87,13 +92,12 @@ void SocketApi::onLostConnection()
 }
 
 
-void SocketApi::onReadyRead()
+void SocketApi::slotReadSocket()
 {
     QLocalSocket* socket = qobject_cast<QLocalSocket*>(sender());
     Q_ASSERT(socket);
 
-    while(socket->canReadLine())
-    {
+    while(socket->canReadLine()) {
         QString line = QString::fromUtf8(socket->readLine()).trimmed();
         QString command = line.split(":").first();
         QString function = QString(QLatin1String("command_")).append(command);
@@ -102,18 +106,15 @@ void SocketApi::onReadyRead()
         int indexOfMethod = this->metaObject()->indexOfMethod(functionWithArguments.toAscii());
 
         QString argument = line.remove(0, command.length()+1).trimmed();
-        if(indexOfMethod != -1)
-        {
+        if(indexOfMethod != -1) {
             QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(QLocalSocket*, socket));
-        }
-        else
-        {
+        } else {
             DEBUG << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
         }
     }
 }
 
-void SocketApi::onSyncStateChanged(const QString&)
+void SocketApi::slotSyncStateChanged(const QString&)
 {
     broadcastMessage("UPDATE_VIEW");
 }
@@ -137,66 +138,94 @@ void SocketApi::broadcastMessage(const QString& message)
 
 void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket)
 {
+    bool checkForSyncDirsOnly = false;
     qDebug() << Q_FUNC_INFO << argument;
     //TODO: do security checks?!
     Folder* folder = FolderMan::instance()->folderForPath( argument );
     // this can happen in offline mode e.g.: nothing to worry about
-    if(!folder)
-    {
+    if (!folder) {
         DEBUG << "folder offline or not watched:" << argument;
-        return;
+        checkForSyncDirsOnly = true;
     }
 
     QDir dir(argument);
-    foreach(QString entry, dir.entryList(QDir::AllEntries|QDir::NoDotAndDotDot))
-    {
+    QStringList dirEntries;
+
+    if( checkForSyncDirsOnly ) {
+        dirEntries = dir.entryList(QDir::Dirs);
+    } else {
+        dirEntries = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot );
+    }
+
+    foreach(const QString entry, dirEntries) {
         QString absoluteFilePath = dir.absoluteFilePath(entry);
         QString statusString;
-        SyncFileStatus fileStatus = folder->fileStatus(absoluteFilePath.mid(folder->path().length()));
-        switch(fileStatus)
-        {
+
+        if( checkForSyncDirsOnly ) {
+            Folder *f = FolderMan::instance()->folderForPath(absoluteFilePath);
+
+            if( f ) {
+                statusString = QLatin1String("SYNCDIR");
+                SyncFileStatus sfs = f->recursiveFolderStatus("");
+                if (sfs == FILE_STATUS_ERROR) {
+                    statusString.append(QLatin1String("_ERR"));
+                } else if( sfs == FILE_STATUS_EVAL ) {
+                    statusString.append(QLatin1String("_EVAL"));
+                } else if( sfs == FILE_STATUS_SYNC ) {
+                    // all cool.
+                } else {
+                    qDebug() << "Unexpected directory status!";
+                }
+            }
+        } else {
+            SyncFileStatus fileStatus = folder->fileStatus(absoluteFilePath.mid(folder->path().length()));
+            switch(fileStatus)
+            {
             case FILE_STATUS_NONE:
-                statusString = QLatin1String("STATUS_NONE");
+                statusString = QLatin1String("NONE");
                 break;
             case FILE_STATUS_EVAL:
-                statusString = QLatin1String("STATUS_EVAL");
+                statusString = QLatin1String("EVAL");
                 break;
             case FILE_STATUS_REMOVE:
-                statusString = QLatin1String("STATUS_REMOVE");
+                statusString = QLatin1String("REMOVE");
                 break;
             case FILE_STATUS_RENAME:
-                statusString = QLatin1String("STATUS_RENAME");
+                statusString = QLatin1String("RENAME");
                 break;
             case FILE_STATUS_NEW:
-                statusString = QLatin1String("STATUS_NEW");
+                statusString = QLatin1String("NEW");
                 break;
             case FILE_STATUS_CONFLICT:
-                statusString = QLatin1String("STATUS_CONFLICT");
+                statusString = QLatin1String("CONFLICT");
                 break;
             case FILE_STATUS_IGNORE:
-                statusString = QLatin1String("STATUS_IGNORE");
+                statusString = QLatin1String("IGNORE");
                 break;
             case FILE_STATUS_SYNC:
-                statusString = QLatin1String("STATUS_SYNC");
+                statusString = QLatin1String("SYNC");
                 break;
             case FILE_STATUS_STAT_ERROR:
-                statusString = QLatin1String("STATUS_STAT_ERROR");
+                statusString = QLatin1String("STAT_ERROR");
                 break;
             case FILE_STATUS_ERROR:
-                statusString = QLatin1String("STATUS_ERROR");
+                statusString = QLatin1String("ERROR");
                 break;
             case FILE_STATUS_UPDATED:
-                statusString = QLatin1String("STATUS_UPDATED");
+                statusString = QLatin1String("UPDATED");
                 break;
             default:
                 qWarning() << "not all SyncFileStatus items checked!";
                 Q_ASSERT(false);
-                statusString = QLatin1String("STATUS_NONE");
+                statusString = QLatin1String("NONE");
 
+            }
         }
-        QString message("%1:%2:%3");
-        message = message.arg("STATUS").arg(statusString).arg(absoluteFilePath);
-        sendMessage(socket, message);
+        if( ! statusString.isEmpty() ) {
+            QString message("%1:%2:%3");
+            message = message.arg("STATUS").arg(statusString).arg(absoluteFilePath);
+            sendMessage(socket, message);
+        }
     }
 }
 
