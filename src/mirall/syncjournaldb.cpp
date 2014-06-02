@@ -485,7 +485,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             _getFileRecordQuery->finish();
         } else {
             QString err = _getFileRecordQuery->lastError().text();
-            qDebug() << "Can not query " << _getFileRecordQuery->lastQuery() << ", Error:" << err;
+	    qDebug() << "No journal entry found for " << filename;
         }
     }
     return rec;
