@@ -719,6 +719,38 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *
 #endif
 }
 
+// compute the file status of a directory recursively. It returns either
+// "all in sync" or "needs update" or "error", no more details.
+SyncFileStatus Folder::recursiveFolderStatus( const QString& fileName )
+{
+    QDir dir(path() + fileName);
+
+    const QStringList dirEntries = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot );
+
+    foreach( const QString entry, dirEntries ) {
+        QFileInfo fi(entry);
+        SyncFileStatus sfs;
+        if( fi.isDir() ) {
+            sfs = recursiveFolderStatus( fileName + QLatin1Char('/') + entry );
+        } else {
+            QString fs( fileName + QLatin1Char('/') + entry );
+            if( fileName.isEmpty() ) {
+                // toplevel, no slash etc. needed.
+                fs = entry;
+            }
+            sfs = fileStatus( fs );
+        }
+
+        if( sfs == FILE_STATUS_STAT_ERROR || sfs == FILE_STATUS_ERROR ) {
+            return FILE_STATUS_ERROR;
+        }
+        if( sfs != FILE_STATUS_SYNC) {
+            return FILE_STATUS_EVAL;
+        }
+    }
+    return FILE_STATUS_SYNC;
+}
+
 SyncFileStatus Folder::fileStatus( const QString& fileName )
 {
     /*
@@ -738,7 +770,11 @@ SyncFileStatus Folder::fileStatus( const QString& fileName )
     // FIXME: Find a way for STATUS_ERROR
     SyncFileStatus stat = FILE_STATUS_NONE;
 
-    QString file = path() + fileName;
+    QString file = fileName;
+    if( path() != QLatin1String("/") ) {
+        file = path() + fileName;
+    }
+
     QFileInfo fi(file);
 
     if( !fi.exists() ) {
@@ -762,20 +798,25 @@ SyncFileStatus Folder::fileStatus( const QString& fileName )
         }
     }
 
-    SyncJournalFileRecord rec = _journal.getFileRecord(fileName);
-    if( stat == FILE_STATUS_NONE && !rec.isValid() ) {
-        stat = FILE_STATUS_NEW;
-    }
+    if( type == CSYNC_FTW_TYPE_DIR ) {
+        // compute recursive status of the directory
+        stat = recursiveFolderStatus( fileName );
+    } else {
+        if( stat == FILE_STATUS_NONE ) {
+            SyncJournalFileRecord rec = _journal.getFileRecord(fileName);
+            if( !rec.isValid() ) {
+                stat = FILE_STATUS_NEW;
+            }
 
-    // file was locally modified.
-    if( stat == FILE_STATUS_NONE && fi.lastModified() != rec._modtime ) {
-        stat = FILE_STATUS_EVAL;
+            // file was locally modified.
+            if( stat == FILE_STATUS_NONE && fi.lastModified() != rec._modtime ) {
+                stat = FILE_STATUS_EVAL;
+            }
+        }
+        if( stat == FILE_STATUS_NONE ) {
+            stat = FILE_STATUS_SYNC;
+        }
     }
-
-    if( stat == FILE_STATUS_NONE ) {
-        stat = FILE_STATUS_SYNC;
-    }
-
     return stat;
 }
 

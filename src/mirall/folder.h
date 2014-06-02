@@ -77,6 +77,17 @@ public:
     SyncFileStatus fileStatus( const QString& );
 
     /**
+     * @brief recursiveFolderStatus
+     * @param fileName - the relative file name to examine
+     * @return the resulting status
+     *
+     * The resulting status can only be either SYNC which means all files
+     * are in sync, ERROR if an error occured, or EVAL if something needs
+     * to be synced underneath this dir.
+     */
+    SyncFileStatus recursiveFolderStatus( const QString& fileName );
+
+    /**
      * alias or nickname
      */
     QString alias() const;
@@ -185,7 +196,6 @@ private slots:
 
 private:
     bool init();
-
 
     void setIgnoredFiles();
 
