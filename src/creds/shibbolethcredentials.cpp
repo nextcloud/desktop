@@ -88,6 +88,7 @@ ShibbolethCredentials::ShibbolethCredentials()
       _url(),
       _ready(false),
       _stillValid(false),
+      _fetchJobInProgress(false),
       _browser(0)
 {}
 
@@ -178,10 +179,16 @@ bool ShibbolethCredentials::ready() const
 
 void ShibbolethCredentials::fetch(Account *account)
 {
+
+    if(_fetchJobInProgress) {
+        return;
+    }
+
     if (_user.isEmpty()) {
         _user = account->credentialSetting(QLatin1String(userC)).toString();
     }
     if (_ready) {
+        _fetchJobInProgress = false;
         Q_EMIT fetched();
     } else {
         if (account) {
@@ -194,6 +201,7 @@ void ShibbolethCredentials::fetch(Account *account)
         job->setProperty("account", QVariant::fromValue(account));
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
         job->start();
+        _fetchJobInProgress = true;
     }
 }
 
@@ -264,6 +272,7 @@ void ShibbolethCredentials::slotUserFetched(const QString &user)
 
     _stillValid = true;
     _ready = true;
+    _fetchJobInProgress = false;
     Q_EMIT fetched();
 }
 
@@ -271,12 +280,14 @@ void ShibbolethCredentials::slotUserFetched(const QString &user)
 void ShibbolethCredentials::slotBrowserRejected()
 {
     _ready = false;
+    _fetchJobInProgress = false;
     Q_EMIT fetched();
 }
 
 void ShibbolethCredentials::invalidateAndFetch(Account* account)
 {
     _ready = false;
+    _fetchJobInProgress = true;
 
     // delete the credentials, then in the slot fetch them again (which will trigger browser)
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
@@ -293,6 +304,7 @@ void ShibbolethCredentials::slotInvalidateAndFetchInvalidateDone(QKeychain::Job*
 
     connect (this, SIGNAL(fetched()),
              this, SLOT(onFetched()));
+    _fetchJobInProgress = false;
     // small hack to support the ShibbolethRefresher hack
     // we already rand fetch() with a valid account object,
     // and hence know the url on refresh
@@ -323,6 +335,7 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
 
         _ready = true;
         _stillValid = true;
+        _fetchJobInProgress = false;
         Q_EMIT fetched();
     } else {
         showLoginWindow(account);
