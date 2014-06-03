@@ -99,10 +99,21 @@ bool Folder::init()
         return false;
     }
 
-    QString url = Utility::toCSyncScheme(remoteUrl().toString());
+    // We need to reconstruct the url because the path need to be fully decoded, as csync will  re-encode the path:
+    //  Remember that csync will just append the filename to the path and pass it to the vio plugin.
+    //  csync_owncloud will then re-encode everything.
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QUrl url = remoteUrl();
+    QString url_string = url.scheme() + QLatin1String("://") + url.authority(QUrl::EncodeDelimiters) + url.path(QUrl::FullyDecoded);
+#else
+    // Qt4 was broken anyway as it did not encode the '#' as it should have done  (it was actually a provlem when parsing the path from QUrl::setPath
+    QString url_string = remoteUrl().toString();
+#endif
+    url_string = Utility::toCSyncScheme(url_string);
+
     QString localpath = path();
 
-    if( csync_create( &_csync_ctx, localpath.toUtf8().data(), url.toUtf8().data() ) < 0 ) {
+    if( csync_create( &_csync_ctx, localpath.toUtf8().data(), url_string.toUtf8().data() ) < 0 ) {
         qDebug() << "Unable to create csync-context!";
         slotSyncError(tr("Unable to create csync-context"));
         _csync_ctx = 0;

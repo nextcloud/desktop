@@ -73,6 +73,12 @@ public:
     SyncJournalBlacklistRecord blacklistEntry( const QString& );
     void avoidRenamesOnNextSync(const QString &path);
 
+    /**
+     * Make sure that on the next sync, filName is not read from the DB but use the PROPFIND to
+     * get the info from the server
+     */
+    void avoidReadFromDbOnNextSync(const QString& fileName);
+
     bool postSyncCleanup( const QHash<QString, QString>& items );
 
     /* Because sqlite transactions is really slow, we encapsulate everything in big transactions
