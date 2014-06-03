@@ -257,6 +257,12 @@ void PropagateUploadFileQNAM::slotPutFinished()
             errorString += QLatin1String(" (") + rx.cap(1) + QLatin1Char(')');
         }
 
+        if (_item._httpErrorCode == 412) {
+            // Precondition Failed:   Maybe the bad etag is in the database, we need to clear the
+            // parent folder etag so we won't read from DB next sync.
+            _propagator->_journal->avoidReadFromDbOnNextSync(_item._file);
+        }
+
         done(classifyError(err, _item._httpErrorCode), errorString);
         return;
     }
