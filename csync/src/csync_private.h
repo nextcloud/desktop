@@ -61,18 +61,6 @@
  */
 #define MAX_DEPTH 50
 
-/**
- * Maximum time difference between two replicas in seconds
- */
-#define MAX_TIME_DIFFERENCE 10
-
-/**
- * Maximum size of a buffer for transfer
- */
-#ifndef MAX_XFER_BUF_SIZE
-#define MAX_XFER_BUF_SIZE (16 * 1024)
-#endif
-
 #define CSYNC_STATUS_INIT 1 << 0
 #define CSYNC_STATUS_UPDATE 1 << 1
 #define CSYNC_STATUS_RECONCILE 1 << 2
@@ -89,6 +77,8 @@ enum csync_replica_e {
 };
 
 typedef struct csync_file_stat_s csync_file_stat_t;
+
+struct csync_owncloud_ctx_s; // csync_owncloud.c
 
 /**
  * @brief csync public structure
@@ -162,6 +152,8 @@ struct csync_s {
   volatile int abort;
   void *rename_info;
   int  read_from_db_disabled;
+
+  struct csync_owncloud_ctx_s *owncloud_context;
 };
 
 
@@ -185,6 +177,9 @@ struct csync_file_stat_s {
   char *destpath;   /* for renames */
   const char *etag;
   char file_id[FILE_ID_BUF_SIZE+1];  /* the ownCloud file id is fixed width of 21 byte. */
+  char *directDownloadUrl;
+  char *directDownloadCookies;
+
   CSYNC_STATUS error_status;
 
   enum csync_instructions_e instruction; /* u32 */

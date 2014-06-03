@@ -494,6 +494,10 @@ void PropagateDownloadFileLegacy::start()
         _propagator->_journal->commit("download file start");
     }
 
+    if (!_item._directDownloadUrl.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "Direct download URL" << _item._directDownloadUrl << "not supported with legacy propagator, will go via ownCloud server";
+    }
+
     /* actually do the request */
     int retry = 0;
 

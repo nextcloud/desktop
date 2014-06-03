@@ -263,6 +263,12 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._instruction = file->instruction;
     item._direction = SyncFileItem::None;
     item._fileId = file->file_id;
+    if (file->directDownloadUrl) {
+        item._directDownloadUrl = QString::fromUtf8( file->directDownloadUrl );
+    }
+    if (file->directDownloadCookies) {
+        item._directDownloadCookies = QString::fromUtf8( file->directDownloadCookies );
+    }
 
     // record the seen files to be able to clean the journal later
     _seenFiles[item._file] = QString();
@@ -287,7 +293,6 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         Q_ASSERT("Non handled error-status");
         /* No error string */
     }
-
     item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
     item._modtime = file->modtime;
     item._etag = file->etag;
@@ -464,7 +469,6 @@ void SyncEngine::startSync()
         }
     }
 
-    csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
     // TODO: This should be a part of this method, but we don't have
     // any way to get "session_key" module property from csync. Had we

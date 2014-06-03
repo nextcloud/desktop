@@ -191,7 +191,7 @@ int csync_init(CSYNC *ctx) {
   ctx->local.type = LOCAL_REPLICA;
 
   if ( !ctx->options.local_only_mode) {
-      owncloud_init(csync_get_userdata(ctx));
+      owncloud_init(ctx);
       ctx->remote.type = REMOTE_REPLICA;
   } else {
     ctx->remote.type = LOCAL_REPLICA;
@@ -210,8 +210,6 @@ int csync_init(CSYNC *ctx) {
   }
 
   ctx->status = CSYNC_STATUS_INIT;
-
-  csync_set_module_property(ctx, "csync_context", ctx);
 
   /* initialize random generator */
   srand(time(NULL));
@@ -444,6 +442,8 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.rename_path  = cur->destpath;
       trav.etag         = cur->etag;
       trav.file_id      = cur->file_id;
+      trav.directDownloadUrl = cur->directDownloadUrl;
+      trav.directDownloadCookies = cur->directDownloadCookies;
       trav.inode        = cur->inode;
 
       trav.error_status = cur->error_status;
@@ -466,7 +466,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
 
       rc = (*visitor)(&trav, twctx->userdata);
       cur->instruction = trav.instruction;
-      if (trav.etag != cur->etag) {
+      if (trav.etag != cur->etag) { // FIXME It would be nice to have this documented
           SAFE_FREE(cur->etag);
           cur->etag = c_strdup(trav.etag);
       }
@@ -617,7 +617,7 @@ int csync_commit(CSYNC *ctx) {
   }
   ctx->statedb.db = NULL;
 
-  rc = csync_vio_commit(ctx);
+  rc = owncloud_commit(ctx);
   if (rc < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "commit failed: %s",
               ctx->error_string ? ctx->error_string : "");
@@ -678,6 +678,8 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->options.config_dir);
   SAFE_FREE(ctx->error_string);
+
+  owncloud_destroy(ctx);
 
 #ifdef WITH_ICONV
   c_close_iconv();
@@ -912,6 +914,8 @@ int  csync_abort_requested(CSYNC *ctx)
 void csync_file_stat_free(csync_file_stat_t *st)
 {
   if (st) {
+    SAFE_FREE(st->directDownloadUrl);
+    SAFE_FREE(st->directDownloadCookies);
     SAFE_FREE(st->etag);
     SAFE_FREE(st->destpath);
     SAFE_FREE(st);
@@ -920,7 +924,7 @@ void csync_file_stat_free(csync_file_stat_t *st)
 
 int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
 {
-    return csync_vio_set_property(ctx, key, value);
+    return owncloud_set_property(ctx, key, value);
 }
 
 

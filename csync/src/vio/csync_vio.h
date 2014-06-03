@@ -39,10 +39,7 @@ csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle
 
 int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf);
 
-int csync_vio_set_property(CSYNC *ctx, const char *key, void *data);
-
 char *csync_vio_get_status_string(CSYNC *ctx);
 
-int csync_vio_commit(CSYNC *ctx);
 
 #endif /* _CSYNC_VIO_H */
