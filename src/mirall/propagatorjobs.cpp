@@ -226,16 +226,7 @@ void PropagateRemoteRename::start()
         return;
 
     if (_item._file == _item._renameTarget) {
-        if (!_item._isDirectory) {
-            // The parents has been renamed already so there is nothing more to do.
-            // But we still need to fetch the new ETAG
-            // FIXME   maybe do a recusrsive propfind after having moved the parent.
-            // Note: we also update the mtime because the server do not keep the mtime when moving files
-            QScopedPointer<char, QScopedPointerPodDeleter> uri2(
-                ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
-            if (!updateMTimeAndETag(uri2.data(), _item._modtime))
-                return;
-        }
+        // The parents has been renamed already so there is nothing more to do.
     } else if (_item._file == QLatin1String("Shared") ) {
         // Check if it is the toplevel Shared folder and do not propagate it.
         if( QFile::rename(  _propagator->_localDir + _item._renameTarget, _propagator->_localDir + QLatin1String("Shared")) ) {
