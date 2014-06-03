@@ -46,6 +46,7 @@ glob_put( 'toremote1/rtl1/rtl11/*',  "remoteToLocal1/rtl1/rtl11/" );
 glob_put( 'toremote1/rtl2/*', "remoteToLocal1/rtl2/" );
 glob_put( 'toremote1/rtl4/*', "remoteToLocal1/rtl4/" );
 
+
 # call csync, sync local t1 to remote t1
 csync();
 
@@ -74,9 +75,19 @@ foreach my $file ( <./tolocal1/*> ) {
     print "Copying $file to $locDir\n";
     copy( $file, $locDir );
 }
+
+# Also add a file with symbols
+my $symbolName = "a\%b#c\$d-e";
+system( "echo \"my symbols\" >>  $locDir/$symbolName" );
+
+#Also on the server
+put_to_dir( "$locDir/$symbolName", 'remoteToLocal1' );
+
+
 csync( );
 print "\nAssert local and remote dirs.\n";
 assertLocalAndRemoteDir( '', 0);
+assert( ! -e localDir().$symbolName );
 
 # move a local file
 printInfo( "Move a file locally." );
