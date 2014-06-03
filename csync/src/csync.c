@@ -129,7 +129,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   }
 
   ctx->status_code = CSYNC_STATUS_OK;
-  ctx->options.local_only_mode = false;
 
   ctx->pwd.uid = getuid();
   ctx->pwd.euid = geteuid();
@@ -190,12 +189,8 @@ int csync_init(CSYNC *ctx) {
 
   ctx->local.type = LOCAL_REPLICA;
 
-  if ( !ctx->options.local_only_mode) {
-      owncloud_init(ctx);
-      ctx->remote.type = REMOTE_REPLICA;
-  } else {
-    ctx->remote.type = LOCAL_REPLICA;
-  }
+  owncloud_init(ctx);
+  ctx->remote.type = REMOTE_REPLICA;
 
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
     ctx->status_code = CSYNC_STATUS_TREE_ERROR;
@@ -281,27 +276,25 @@ int csync_update(CSYNC *ctx) {
   }
 
   /* update detection for remote replica */
-  if( ! ctx->options.local_only_mode ) {
-    csync_gettime(&start);
-    ctx->current = REMOTE_REPLICA;
-    ctx->replica = ctx->remote.type;
+  csync_gettime(&start);
+  ctx->current = REMOTE_REPLICA;
+  ctx->replica = ctx->remote.type;
 
-    rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
-    if (rc < 0) {
-        if(ctx->status_code == CSYNC_STATUS_OK)
-            ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
-        return -1;
-    }
-
-
-    csync_gettime(&finish);
-
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-              "Update detection for remote replica took %.2f seconds "
-              "walking %zu files.",
-              c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
-    csync_memstat_check();
+  rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
+  if (rc < 0) {
+      if(ctx->status_code == CSYNC_STATUS_OK)
+          ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
+      return -1;
   }
+
+  csync_gettime(&finish);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Update detection for remote replica took %.2f seconds "
+            "walking %zu files.",
+            c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
+  csync_memstat_check();
+
   ctx->status |= CSYNC_STATUS_UPDATE;
 
   return 0;
@@ -841,33 +834,6 @@ CSYNC_STATUS csync_get_status(CSYNC *ctx) {
   }
 
   return ctx->status_code;
-}
-
-int csync_set_local_only(CSYNC *ctx, bool local_only) {
-    if (ctx == NULL) {
-        return -1;
-    }
-
-    ctx->status_code = CSYNC_STATUS_OK;
-
-    if (ctx->status & CSYNC_STATUS_INIT) {
-        fprintf(stderr, "csync_set_local_only: This function must be called before initialization.");
-        ctx->status_code = CSYNC_STATUS_CSYNC_STATUS_ERROR;
-        return -1;
-    }
-
-    ctx->options.local_only_mode=local_only;
-
-    return 0;
-}
-
-bool csync_get_local_only(CSYNC *ctx) {
-    if (ctx == NULL) {
-        return -1;
-    }
-    ctx->status_code = CSYNC_STATUS_OK;
-
-    return ctx->options.local_only_mode;
 }
 
 const char *csync_get_status_string(CSYNC *ctx)

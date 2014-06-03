@@ -492,22 +492,6 @@ int csync_set_log_userdata(void *data);
  */
 const char *csync_get_statedb_file(CSYNC *ctx);
 
-/**
-  * @brief Flag to tell csync that only a local run is intended. Call before csync_init
-  *
-  * @param local_only   Bool flag to indicate local only mode.
-  *
-  * @return             0 on success, less than 0 if an error occured.
-  */
-int csync_set_local_only( CSYNC *ctx, bool local_only );
-
-/**
-  * @brief Retrieve the flag to tell csync that only a local run is intended.
-  *
-  * @return             1: stay local only, 0: local and remote mode
-  */
-bool csync_get_local_only( CSYNC *ctx );
-
 /* Used for special modes or debugging */
 CSYNC_STATUS csync_get_status(CSYNC *ctx);
 

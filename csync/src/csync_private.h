@@ -121,7 +121,6 @@ struct csync_s {
   struct {
     int sync_symbolic_links;
     char *config_dir;
-    bool local_only_mode;
     int timeout;
 #if defined(HAVE_ICONV) && defined(WITH_ICONV)
     iconv_t iconv_cd;
