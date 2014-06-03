@@ -57,29 +57,6 @@ int csync_get_statedb_exists(CSYNC *ctx) {
   return ctx->statedb.exists;
 }
 
-/* Set the hide attribute in win32. That makes it invisible in normal explorers */
-static void _csync_win32_hide_file( const char *file ) {
-#ifdef _WIN32
-  mbchar_t *fileName;
-  DWORD dwAttrs;
-
-  if( !file ) return;
-
-  fileName = c_utf8_to_locale( file );
-  dwAttrs = GetFileAttributesW(fileName);
-
-  if (dwAttrs==INVALID_FILE_ATTRIBUTES) return;
-
-  if (!(dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
-     SetFileAttributesW(fileName, dwAttrs | FILE_ATTRIBUTE_HIDDEN );
-  }
-
-  c_free_locale_string(fileName);
-#else
-    (void) file;
-#endif
-}
-
 static int _csync_check_db_integrity(sqlite3 *db) {
     c_strlist_t *result = NULL;
     int rc = -1;
@@ -166,7 +143,7 @@ static int _csync_statedb_check(const char *statedb) {
   rc = sqlite3_open(statedb, &db);
   if (rc == SQLITE_OK) {
     sqlite3_close(db);
-    _csync_win32_hide_file(statedb);
+    csync_win32_set_file_hidden(statedb, true);
     return 1;
   }
   sqlite3_close(db);
