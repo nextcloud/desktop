@@ -47,7 +47,7 @@ static void addSSLWarning( char *ptr, const char *warn, int len )
  * it to the csync callback to ask the user.
  */
 #define LEN 4096
-static int verify_sslcert(void *userdata, int failures,
+static int ssl_callback_by_neon(void *userdata, int failures,
                           const ne_ssl_certificate *certificate)
 {
     char problem[LEN];
@@ -115,7 +115,7 @@ static int verify_sslcert(void *userdata, int failures,
  * Authentication callback. Is set by ne_set_server_auth to be called
  * from the neon lib to authenticate a request.
  */
-static int ne_auth( void *userdata, const char *realm, int attempt,
+static int authentication_callback_by_neon( void *userdata, const char *realm, int attempt,
                     char *username, char *password)
 {
     char buf[NE_ABUFSIZ];
@@ -164,7 +164,7 @@ static int ne_auth( void *userdata, const char *realm, int attempt,
  * from the neon lib to authenticate against a proxy. The data to authenticate
  * against comes from mirall throught vio_module_init function.
  */
-static int ne_proxy_auth( void *userdata, const char *realm, int attempt,
+static int proxy_authentication_callback_by_neon( void *userdata, const char *realm, int attempt,
                           char *username, char *password)
 {
     csync_owncloud_ctx_t *ctx = (csync_owncloud_ctx_t*) userdata;
@@ -367,31 +367,6 @@ static int post_send_hook(ne_request *req, void *userdata,
     return NE_REDIRECT;
 }
 
-// as per http://sourceforge.net/p/predef/wiki/OperatingSystems/
-// extend as required
-static const char* get_platform() {
-#if defined (_WIN32)
-    return "Windows";
-#elif defined(__APPLE__)
-    return "Macintosh";
-#elif defined(__gnu_linux__)
-    return "Linux";
-#elif defined(__DragonFly__)
-    /* might also define __FreeBSD__ */
-    return "DragonFlyBSD";
-#elif defined(__FreeBSD__)
-    return "FreeBSD";
-#elif defined(__NetBSD__)
-    return "NetBSD";
-#elif defined(__OpenBSD__)
-    return "OpenBSD";
-#elif defined(sun) || defined(__sun)
-    return "Solaris";
-#else
-    return "Unknown OS";
-#endif
-}
-
 /*
  * Connect to a DAV server
  * This function sets the flag _connected if the connection is established
@@ -457,9 +432,9 @@ static int dav_connect(csync_owncloud_ctx_t *ctx,  const char *base_url) {
     }
 
     snprintf( uaBuf, sizeof(uaBuf), "Mozilla/5.0 (%s) csyncoC/%s",
-              get_platform(), CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
+              csync_owncloud_get_platform(), CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
     ne_set_useragent( ctx->dav_session.ctx, uaBuf);
-    ne_set_server_auth(ctx->dav_session.ctx, ne_auth, ctx);
+    ne_set_server_auth(ctx->dav_session.ctx, authentication_callback_by_neon, ctx);
 
     if( useSSL ) {
         if (!ne_has_support(NE_FEATURE_SSL)) {
@@ -469,7 +444,7 @@ static int dav_connect(csync_owncloud_ctx_t *ctx,  const char *base_url) {
         }
 
         ne_ssl_trust_default_ca( ctx->dav_session.ctx );
-        ne_ssl_set_verify( ctx->dav_session.ctx, verify_sslcert, ctx);
+        ne_ssl_set_verify( ctx->dav_session.ctx, ssl_callback_by_neon, ctx);
     }
 
     /* Hook called when a request is created. It sets the proxy connection header. */
@@ -486,7 +461,7 @@ static int dav_connect(csync_owncloud_ctx_t *ctx,  const char *base_url) {
     if( proxystate < 0 ) {
         DEBUG_WEBDAV("Error: Proxy-Configuration failed.");
     } else if( proxystate > 0 ) {
-        ne_set_proxy_auth( ctx->dav_session.ctx, ne_proxy_auth, 0 );
+        ne_set_proxy_auth( ctx->dav_session.ctx, proxy_authentication_callback_by_neon, 0 );
     }
 
     ctx->_connected = 1;
@@ -505,7 +480,7 @@ out:
  * and fills a resource struct and stores it to the result list which
  * is stored in the listdir_context.
  */
-static void results(void *userdata,
+static void propfind_results_callback(void *userdata,
                     const ne_uri *uri,
                     const ne_prop_result_set *set)
 {
@@ -624,7 +599,7 @@ static struct listdir_context *fetch_resource_list(csync_owncloud_ctx_t *ctx, co
     hdl = ne_propfind_create(ctx->dav_session.ctx, curi, depth);
 
     if(hdl) {
-        ret = ne_propfind_named(hdl, ls_props, results, fetchCtx);
+        ret = ne_propfind_named(hdl, ls_props, propfind_results_callback, fetchCtx);
         request = ne_propfind_get_request( hdl );
         req_status = ne_get_status( request );
     }

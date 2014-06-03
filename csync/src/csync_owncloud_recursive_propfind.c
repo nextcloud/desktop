@@ -93,7 +93,7 @@ static int _data_cmp(const void *a, const void *b) {
     const propfind_recursive_element_t *elementB = b;
     return ne_path_compare(elementA->self->uri, elementB->self->uri);
 }
-static void propfind_results_recursive(void *userdata,
+static void propfind_results_recursive_callback(void *userdata,
                     const ne_uri *uri,
                     const ne_prop_result_set *set)
 {
@@ -237,7 +237,7 @@ void fetch_resource_list_recursive(csync_owncloud_ctx_t *ctx, const char *uri, c
     hdl = ne_propfind_create(ctx->dav_session.ctx, curi, depth);
 
     if(hdl) {
-        ret = ne_propfind_named(hdl, ls_props, propfind_results_recursive, ctx);
+        ret = ne_propfind_named(hdl, ls_props, propfind_results_recursive_callback, ctx);
         request = ne_propfind_get_request( hdl );
         req_status = ne_get_status( request );
     }

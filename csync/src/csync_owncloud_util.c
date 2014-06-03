@@ -407,3 +407,29 @@ void free_fetchCtx( struct listdir_context *ctx )
     }
     SAFE_FREE(ctx);
 }
+
+
+// as per http://sourceforge.net/p/predef/wiki/OperatingSystems/
+// extend as required
+const char* csync_owncloud_get_platform() {
+#if defined (_WIN32)
+    return "Windows";
+#elif defined(__APPLE__)
+    return "Macintosh";
+#elif defined(__gnu_linux__)
+    return "Linux";
+#elif defined(__DragonFly__)
+    /* might also define __FreeBSD__ */
+    return "DragonFlyBSD";
+#elif defined(__FreeBSD__)
+    return "FreeBSD";
+#elif defined(__NetBSD__)
+    return "NetBSD";
+#elif defined(__OpenBSD__)
+    return "OpenBSD";
+#elif defined(sun) || defined(__sun)
+    return "Solaris";
+#else
+    return "Unknown OS";
+#endif
+}

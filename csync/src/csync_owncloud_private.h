@@ -192,6 +192,6 @@ void resource_free(struct resource* o);
 struct resource* resource_dup(struct resource* o);
 void free_fetchCtx( struct listdir_context *ctx );
 
-
+const char* csync_owncloud_get_platform(void);
 
 #endif // CSYNC_OWNCLOUD_PRIVATE_H
