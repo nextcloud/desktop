@@ -249,8 +249,12 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
 
-                    if( !cur->etag && other->etag ) cur->etag = c_strdup(other->etag);
-                    cur->should_update_etag = true; /* update DB */
+                    /* update DB with new etag from remote */
+                    if (ctx->current == LOCAL_REPLICA) {
+                        other->should_update_etag = true;
+                    } else {
+                        cur->should_update_etag = true;
+                    }
                 } else if(ctx->current == REMOTE_REPLICA) {
                         cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
                         other->instruction = CSYNC_INSTRUCTION_NONE;
