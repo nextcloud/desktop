@@ -146,17 +146,6 @@ static csync_vio_file_stat_t* create_fstat(const char *name,
     }
     fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
 
-    fs->uid = 1000;
-    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_UID;
-
-    fs->gid = 1000;
-    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_GID;
-
-    fs->blkcount = 312;
-    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT;
-
-    fs->blksize = 4096;
-    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE;
 
     if (mtime == 0) {
         fs->atime = fs->ctime = fs->mtime = time(&t);
