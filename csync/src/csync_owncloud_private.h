@@ -125,6 +125,8 @@ static const ne_propname ls_props[] = {
     { "DAV:", "resourcetype" },
     { "DAV:", "getetag"},
     { "http://owncloud.org/ns", "id"},
+    { "http://owncloud.org/ns", "directDownloadUrl"},
+    { "http://owncloud.org/ns", "directDownloadCookies"},
     { NULL, NULL }
 };
 
@@ -140,6 +142,10 @@ typedef struct resource {
     time_t             modtime;
     char*              md5;
     char               file_id[FILE_ID_BUF_SIZE+1];
+    // Those two are optional from the server. We can use those URL to download the file directly
+    // without going through the ownCloud instance.
+    char *directDownloadUrl;
+    char *directDownloadCookies;
 
     struct resource    *next;
 } resource;

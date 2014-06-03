@@ -36,6 +36,8 @@ void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {
   if (file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_ETAG) {
     SAFE_FREE(file_stat->etag);
   }
+  SAFE_FREE(file_stat->directDownloadUrl);
+  SAFE_FREE(file_stat->directDownloadCookies);
   SAFE_FREE(file_stat->name);
   SAFE_FREE(file_stat);
 }

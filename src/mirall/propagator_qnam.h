@@ -110,15 +110,18 @@ class GETFileJob : public AbstractNetworkJob {
     QString _errorString;
     QByteArray _expectedEtagForResume;
     SyncFileItem::Status _errorStatus;
+    QUrl _directDownloadUrl;
+    QByteArray _etag;
 public:
 
     // DOES NOT take owncership of the device.
     explicit GETFileJob(Account* account, const QString& path, QIODevice *device,
                         const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
-                        QObject* parent = 0)
-    : AbstractNetworkJob(account, path, parent),
-      _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume),
-      _errorStatus(SyncFileItem::NoStatus) {}
+                        QObject* parent = 0);
+    // For directDownloadUrl:
+    explicit GETFileJob(Account* account, const QUrl& url, QIODevice *device,
+                        const QMap<QByteArray, QByteArray> &headers,
+                        QObject* parent = 0);
 
     virtual void start();
     virtual bool finished() {
@@ -133,6 +136,8 @@ public:
     SyncFileItem::Status errorStatus() { return _errorStatus; }
 
     virtual void slotTimeout();
+
+    QByteArray &etag() { return _etag; }
 
 
 signals:

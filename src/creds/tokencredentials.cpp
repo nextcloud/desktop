@@ -83,7 +83,12 @@ protected:
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
         //qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
-        req.setRawHeader(QByteArray("Cookie"), _cred->_token.toLocal8Bit());
+
+        // Append token cookie
+        QList<QNetworkCookie> cookies = request.header(QNetworkRequest::CookieHeader).value<QList<QNetworkCookie> >();
+        cookies.append(QNetworkCookie::parseCookies(_cred->_token.toUtf8()));
+        req.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookies));
+
         return MirallAccessManager::createRequest(op, req, outgoingData);
     }
 private:
@@ -112,7 +117,7 @@ void TokenCredentials::syncContextPreInit (CSYNC* ctx)
 
 void TokenCredentials::syncContextPreStart (CSYNC* ctx)
 {
-    csync_set_module_property(ctx, "session_key", _token.toLocal8Bit().data());
+    csync_set_module_property(ctx, "session_key", _token.toUtf8().data());
 }
 
 bool TokenCredentials::changed(AbstractCredentials* credentials) const

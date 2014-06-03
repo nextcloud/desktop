@@ -86,6 +86,8 @@ public:
     quint64              _inode;
     bool                 _should_update_etag;
     QByteArray           _fileId;
+    QString              _directDownloadUrl;
+    QString              _directDownloadCookies;
     bool                 _blacklistedInDb;
 
     // Variables usefull to report to the user

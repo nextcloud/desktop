@@ -99,6 +99,8 @@ static void propfind_results_recursive(void *userdata,
 {
     struct resource *newres = 0;
     const char *clength, *modtime, *file_id = NULL;
+    const char *directDownloadUrl = NULL;
+    const char *directDownloadCookies = NULL;
     const char *resourcetype = NULL;
     const char *md5sum = NULL;
     const ne_status *status = NULL;
@@ -108,6 +110,7 @@ static void propfind_results_recursive(void *userdata,
     propfind_recursive_element_t *pElement = NULL;
     int depth = 0;
     csync_owncloud_ctx_t *ctx = (csync_owncloud_ctx_t*) userdata;
+
 
     (void) status;
 
@@ -127,6 +130,8 @@ static void propfind_results_recursive(void *userdata,
     resourcetype = ne_propset_value( set, &ls_props[2] );
     md5sum       = ne_propset_value( set, &ls_props[3] );
     file_id      = ne_propset_value( set, &ls_props[4] );
+    directDownloadUrl = ne_propset_value( set, &ls_props[5] );
+    directDownloadCookies = ne_propset_value( set, &ls_props[6] );
 
     newres->type = resr_normal;
     if( resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
@@ -156,6 +161,13 @@ static void propfind_results_recursive(void *userdata,
     /*
     DEBUG_WEBDAV("propfind_results_recursive %s [%s] %s", newres->uri, newres->type == resr_collection ? "collection" : "file", newres->md5);
     */
+
+    if (directDownloadUrl) {
+        newres->directDownloadUrl = c_strdup(directDownloadUrl);
+    }
+    if (directDownloadCookies) {
+        newres->directDownloadCookies = c_strdup(directDownloadCookies);
+    }
 
     /* Create new item in rb tree */
     if (newres->type == resr_collection) {

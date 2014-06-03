@@ -312,6 +312,15 @@ void resourceToFileStat(csync_vio_file_stat_t *lfs, struct resource *res )
     }
 
     csync_vio_file_stat_set_file_id(lfs, res->file_id);
+
+    if (res->directDownloadUrl) {
+        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADURL;
+        lfs->directDownloadUrl = c_strdup(res->directDownloadUrl);
+    }
+    if (res->directDownloadCookies) {
+        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES;
+        lfs->directDownloadCookies = c_strdup(res->directDownloadCookies);
+    }
 }
 
 /* WebDAV does not deliver permissions. Set a default here. */
@@ -346,6 +355,12 @@ struct resource* resource_dup(struct resource* o) {
     if( o->md5 ) {
         r->md5 = c_strdup(o->md5);
     }
+    if (o->directDownloadUrl) {
+        r->directDownloadUrl = c_strdup(o->directDownloadUrl);
+    }
+    if (o->directDownloadCookies) {
+        r->directDownloadCookies = c_strdup(o->directDownloadCookies);
+    }
     r->next = o->next;
     csync_vio_set_file_id(r->file_id, o->file_id);
 
@@ -360,6 +375,8 @@ void resource_free(struct resource* o) {
         SAFE_FREE(old->uri);
         SAFE_FREE(old->name);
         SAFE_FREE(old->md5);
+        SAFE_FREE(old->directDownloadUrl);
+        SAFE_FREE(old->directDownloadCookies);
         SAFE_FREE(old);
     }
 }
@@ -381,6 +398,8 @@ void free_fetchCtx( struct listdir_context *ctx )
         SAFE_FREE(res->name);
         SAFE_FREE(res->md5);
         memset( res->file_id, 0, FILE_ID_BUF_SIZE+1 );
+        SAFE_FREE(res->directDownloadUrl);
+        SAFE_FREE(res->directDownloadCookies);
 
         newres = res->next;
         SAFE_FREE(res);

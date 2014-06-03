@@ -369,6 +369,15 @@ out:
       st->etag  = c_strdup(fs->etag);
   }
   csync_vio_set_file_id(st->file_id, fs->file_id);
+  if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADURL) {
+      SAFE_FREE(st->directDownloadUrl);
+      st->directDownloadUrl = c_strdup(fs->directDownloadUrl);
+  }
+  if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES) {
+      SAFE_FREE(st->directDownloadCookies);
+      st->directDownloadCookies = c_strdup(fs->directDownloadCookies);
+  }
+
 
 fastout:  /* target if the file information is read from database into st */
   st->phash = h;

@@ -24,6 +24,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include "csync_private.h"
 #include "csync_util.h"
@@ -107,6 +108,7 @@ int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
   switch(ctx->replica) {
     case REMOTE_REPLICA:
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "ERROR: Cannot call remote stat, not implemented");
+      assert(ctx->replica != REMOTE_REPLICA);
       break;
     case LOCAL_REPLICA:
       rc = csync_vio_local_stat(uri, buf);

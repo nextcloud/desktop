@@ -515,6 +515,8 @@ static void results(void *userdata,
     const char *resourcetype = NULL;
     const char *md5sum = NULL;
     const char *file_id = NULL;
+    const char *directDownloadUrl = NULL;
+    const char *directDownloadCookies = NULL;
     const ne_status *status = NULL;
     char *path = ne_path_unescape( uri->path );
 
@@ -540,6 +542,8 @@ static void results(void *userdata,
     resourcetype = ne_propset_value( set, &ls_props[2] );
     md5sum       = ne_propset_value( set, &ls_props[3] );
     file_id      = ne_propset_value( set, &ls_props[4] );
+    directDownloadUrl = ne_propset_value( set, &ls_props[5] );
+    directDownloadCookies = ne_propset_value( set, &ls_props[6] );
 
     newres->type = resr_normal;
     if( clength == NULL && resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
@@ -562,6 +566,13 @@ static void results(void *userdata,
     }
 
     csync_vio_set_file_id(newres->file_id, file_id);
+
+    if (directDownloadUrl) {
+        newres->directDownloadUrl = c_strdup(directDownloadUrl);
+    }
+    if (directDownloadCookies) {
+        newres->directDownloadCookies = c_strdup(directDownloadCookies);
+    }
 
     /* prepend the new resource to the result list */
     newres->next   = fetchCtx->list;

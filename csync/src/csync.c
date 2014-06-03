@@ -442,6 +442,8 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.rename_path  = cur->destpath;
       trav.etag         = cur->etag;
       trav.file_id      = cur->file_id;
+      trav.directDownloadUrl = cur->directDownloadUrl;
+      trav.directDownloadCookies = cur->directDownloadCookies;
       trav.inode        = cur->inode;
 
       trav.error_status = cur->error_status;
@@ -464,7 +466,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
 
       rc = (*visitor)(&trav, twctx->userdata);
       cur->instruction = trav.instruction;
-      if (trav.etag != cur->etag) {
+      if (trav.etag != cur->etag) { // FIXME It would be nice to have this documented
           SAFE_FREE(cur->etag);
           cur->etag = c_strdup(trav.etag);
       }
@@ -912,6 +914,8 @@ int  csync_abort_requested(CSYNC *ctx)
 void csync_file_stat_free(csync_file_stat_t *st)
 {
   if (st) {
+    SAFE_FREE(st->directDownloadUrl);
+    SAFE_FREE(st->directDownloadCookies);
     SAFE_FREE(st->etag);
     SAFE_FREE(st->destpath);
     SAFE_FREE(st);

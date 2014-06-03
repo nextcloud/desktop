@@ -73,7 +73,9 @@ enum csync_vio_file_stat_fields_e {
 //  CSYNC_VIO_FILE_STAT_FIELDS_UID = 1 << 15,
 //  CSYNC_VIO_FILE_STAT_FIELDS_GID = 1 << 16,
   CSYNC_VIO_FILE_STAT_FIELDS_ETAG = 1 << 17,
-  CSYNC_VIO_FILE_STAT_FIELDS_FILE_ID = 1 << 18
+  CSYNC_VIO_FILE_STAT_FIELDS_FILE_ID = 1 << 18,
+  CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADURL = 1 << 19,
+  CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES = 1 << 20
 };
 
 
@@ -81,6 +83,8 @@ struct csync_vio_file_stat_s {
   char *name;
   char *etag;
   char file_id[FILE_ID_BUF_SIZE+1];
+  char *directDownloadUrl;
+  char *directDownloadCookies;
 
   time_t atime;
   time_t mtime;
