@@ -233,11 +233,21 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
             PropagateDirectory *dir = new PropagateDirectory(this, item);
             dir->_firstJob.reset(createJob(item));
             if (item._instruction == CSYNC_INSTRUCTION_REMOVE) {
-                //We do the removal of directories at the end
+                //We do the removal of directories at the end, because there might be moves from
+                // this directories that will happen later.
                 directoriesToRemove.append(dir);
                 removedDirectory = item._file + "/";
+
+                // We should not update the etag of parent directories of the removed directory
+                // since it would be done before the actual remove (issue #1845)
+                // NOTE: Currently this means that we don't update those etag at all in this sync,
+                //       but it should not be a problem, they will be updated in the next sync.
+                for (int i = 0; i < directories.size(); ++i) {
+                    directories[i].second->_item._should_update_etag = false;
+                }
             } else {
-                directories.top().second->append(dir);
+                PropagateDirectory* currentDirJob = directories.top().second;
+                currentDirJob->append(dir);
             }
             directories.push(qMakePair(item.destination() + "/" , dir));
         } else if (PropagateItemJob* current = createJob(item)) {
