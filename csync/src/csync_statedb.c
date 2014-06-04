@@ -298,8 +298,6 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
             name = (const char*) sqlite3_column_text(stmt, 2);
             memcpy((*st)->path, (len ? name : ""), len + 1);
             (*st)->inode = sqlite3_column_int64(stmt,3);
-            (*st)->uid = sqlite3_column_int(stmt, 4);
-            (*st)->gid = sqlite3_column_int(stmt, 5);
             (*st)->mode = sqlite3_column_int(stmt, 6);
             (*st)->modtime = strtoul((char*)sqlite3_column_text(stmt, 7), NULL, 10);
 

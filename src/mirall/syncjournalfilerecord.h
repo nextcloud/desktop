@@ -39,8 +39,6 @@ public:
     int       _type;
     QString   _etag;
     QString   _fileId;
-    int       _uid;
-    int       _gid;
     int       _mode;
 };
 

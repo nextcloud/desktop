@@ -94,7 +94,6 @@ struct csync_s {
     char *file;
     sqlite3 *db;
     int exists;
-    int disabled;
 
     sqlite3_stmt* by_hash_stmt;
     sqlite3_stmt* by_fileid_stmt;
@@ -119,17 +118,10 @@ struct csync_s {
   } remote;
 
   struct {
-    int sync_symbolic_links;
-    int timeout;
 #if defined(HAVE_ICONV) && defined(WITH_ICONV)
     iconv_t iconv_cd;
 #endif
   } options;
-
-  struct {
-    uid_t uid;
-    uid_t euid;
-  } pwd;
 
   /* replica we are currently walking */
   enum csync_replica_e current;
@@ -164,8 +156,6 @@ struct csync_file_stat_s {
   int64_t size;       /* u64 */
   size_t pathlen;   /* u64 */
   uint64_t inode;   /* u64 */
-  uid_t uid;        /* u32 */
-  gid_t gid;        /* u32 */
   mode_t mode;      /* u32 */
   int nlink;        /* u32 */
   int type;         /* u32 */

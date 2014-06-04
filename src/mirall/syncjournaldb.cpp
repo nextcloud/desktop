@@ -383,8 +383,8 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
         _setFileRecordQuery->bindValue(1, plen);
         _setFileRecordQuery->bindValue(2, record._path );
         _setFileRecordQuery->bindValue(3, record._inode );
-        _setFileRecordQuery->bindValue(4, record._uid );
-        _setFileRecordQuery->bindValue(5, record._gid );
+        _setFileRecordQuery->bindValue(4, 0 ); // uid Not used
+        _setFileRecordQuery->bindValue(5, 0 ); // gid Not used
         _setFileRecordQuery->bindValue(6, record._mode );
         _setFileRecordQuery->bindValue(7, QString::number(Utility::qDateTimeToTime_t(record._modtime)));
         _setFileRecordQuery->bindValue(8, QString::number(record._type) );
@@ -398,7 +398,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
         }
 
         qDebug() <<  _setFileRecordQuery->lastQuery() << phash << plen << record._path << record._inode
-                 << record._uid << record._gid << record._mode
+                 << record._mode
                  << QString::number(Utility::qDateTimeToTime_t(record._modtime)) << QString::number(record._type)
                  << record._etag << record._fileId;
         _setFileRecordQuery->finish();
@@ -474,8 +474,8 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             bool ok;
             rec._path    = _getFileRecordQuery->value(0).toString();
             rec._inode   = _getFileRecordQuery->value(1).toInt(&ok);
-            rec._uid     = _getFileRecordQuery->value(2).toInt(&ok);
-            rec._gid     = _getFileRecordQuery->value(3).toInt(&ok);
+            //rec._uid     = _getFileRecordQuery->value(2).toInt(&ok); Not Used
+            //rec._gid     = _getFileRecordQuery->value(3).toInt(&ok); Not Used
             rec._mode    = _getFileRecordQuery->value(4).toInt(&ok);
             rec._modtime = Utility::qDateTimeFromTime_t(_getFileRecordQuery->value(5).toLongLong(&ok));
             rec._type    = _getFileRecordQuery->value(6).toInt(&ok);
