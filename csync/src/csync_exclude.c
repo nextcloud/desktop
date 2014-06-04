@@ -26,6 +26,7 @@
 #include <unistd.h>
 
 #include "c_lib.h"
+#include "c_private.h"
 
 #include "csync_private.h"
 #include "csync_exclude.h"
