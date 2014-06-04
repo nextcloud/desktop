@@ -239,69 +239,6 @@ void c_strlist_destroy(c_strlist_t *strlist) {
   SAFE_FREE(strlist);
 }
 
-char *c_strreplace(char *src, const char *pattern, const char *repl) {
-  char *p = NULL;
-
-  while ((p = strstr(src, pattern)) != NULL) {
-     size_t of = p - src;
-     size_t l  = strlen(src);
-     size_t pl = strlen(pattern);
-     size_t rl = strlen(repl);
-
-     if (rl > pl) {
-        src = (char *) c_realloc(src, strlen(src) + rl - pl + 1);
-     }
-
-     if (rl != pl) {
-        memmove(src + of + rl, src + of + pl, l - of - pl + 1);
-     }
-
-     strncpy(src + of, repl, rl);
-  }
-
-  return src;
-}
-
-char *c_uppercase(const char* str) {
-  char *new;
-  char *p;
-
-  if (str == NULL) {
-    return NULL;
-  }
-
-  new = c_strdup(str);
-  if (new == NULL) {
-    return NULL;
-  }
-
-  for (p = new; *p; p++) {
-    *p = toupper(*p);
-  }
-
-  return new;
-}
-
-char *c_lowercase(const char* str) {
-  char *new;
-  char *p;
-
-  if (str == NULL) {
-    return NULL;
-  }
-
-  new = c_strdup(str);
-  if (new == NULL) {
-    return NULL;
-  }
-
-  for (p = new; *p; p++) {
-    *p = tolower(*p);
-  }
-
-  return new;
-}
-
 /* Convert a wide multibyte String to UTF8 */
 char* c_utf8_from_locale(const mbchar_t *wstr)
 {
