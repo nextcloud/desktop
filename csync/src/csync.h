@@ -336,35 +336,6 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path);
 void csync_clear_exclude_list(CSYNC *ctx);
 
 /**
- * @brief Get the config directory.
- *
- * @param ctx          The csync context.
- *
- * @return             The path of the config directory or NULL on error.
- */
-const char *csync_get_config_dir(CSYNC *ctx);
-
-/**
- * @brief Change the config directory.
- *
- * @param ctx           The csync context.
- *
- * @param path          The path to the new config directory.
- *
- * @return              0 on success, less than 0 if an error occured.
- */
-int csync_set_config_dir(CSYNC *ctx, const char *path);
-
-/**
- * @brief Remove the complete config directory.
- *
- * @param ctx           The csync context.
- *
- * @return              0 on success, less than 0 if an error occured.
- */
-int csync_remove_config_dir(CSYNC *ctx);
-
-/**
  * @brief Enable the usage of the statedb. It is enabled by default.
  *
  * @param ctx           The csync context.
