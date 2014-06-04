@@ -343,6 +343,56 @@ int _stat_perms( int type ) {
     return ret;
 }
 
+void fill_webdav_properties_into_resource(struct resource* newres, const ne_prop_result_set *set)
+{
+    const char *clength, *modtime, *file_id = NULL;
+    const char *directDownloadUrl = NULL;
+    const char *directDownloadCookies = NULL;
+    const char *resourcetype = NULL;
+    const char *etag = NULL;
+
+    modtime      = ne_propset_value( set, &ls_props[0] );
+    clength      = ne_propset_value( set, &ls_props[1] );
+    resourcetype = ne_propset_value( set, &ls_props[2] );
+    etag       = ne_propset_value( set, &ls_props[3] );
+    file_id      = ne_propset_value( set, &ls_props[4] );
+    directDownloadUrl = ne_propset_value( set, &ls_props[5] );
+    directDownloadCookies = ne_propset_value( set, &ls_props[6] );
+
+    if( resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
+        newres->type = resr_collection;
+    } else {
+        newres->type = resr_normal;
+    }
+
+    if (modtime) {
+        newres->modtime = oc_httpdate_parse(modtime);
+    }
+
+    /* DEBUG_WEBDAV("Parsing Modtime: %s -> %llu", modtime, (unsigned long long) newres->modtime ); */
+    newres->size = 0;
+    if (clength) {
+        newres->size = atoll(clength);
+        /* DEBUG_WEBDAV("Parsed File size for %s from %s: %lld", newres->name, clength, (long long)newres->size ); */
+    }
+
+    if( etag ) {
+        newres->md5 = csync_normalize_etag(etag);
+    }
+
+    csync_vio_set_file_id(newres->file_id, file_id);
+    /*
+    DEBUG_WEBDAV("propfind_results_recursive %s [%s] %s", newres->uri, newres->type == resr_collection ? "collection" : "file", newres->md5);
+    */
+
+    if (directDownloadUrl) {
+        newres->directDownloadUrl = c_strdup(directDownloadUrl);
+    }
+    if (directDownloadCookies) {
+        newres->directDownloadCookies = c_strdup(directDownloadCookies);
+    }
+}
+
 struct resource* resource_dup(struct resource* o) {
     struct resource *r = c_malloc (sizeof( struct resource ));
     ZERO_STRUCTP(r);

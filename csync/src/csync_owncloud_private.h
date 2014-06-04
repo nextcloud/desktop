@@ -187,6 +187,8 @@ time_t oc_httpdate_parse( const char *date );
 char *_cleanPath( const char* uri );
 
 int _stat_perms( int type );
+void fill_webdav_properties_into_resource(struct resource* newres, const ne_prop_result_set *set);
+
 void resourceToFileStat( csync_vio_file_stat_t *lfs, struct resource *res );
 void resource_free(struct resource* o);
 struct resource* resource_dup(struct resource* o);

@@ -98,11 +98,7 @@ static void propfind_results_recursive_callback(void *userdata,
                     const ne_prop_result_set *set)
 {
     struct resource *newres = 0;
-    const char *clength, *modtime, *file_id = NULL;
-    const char *directDownloadUrl = NULL;
-    const char *directDownloadCookies = NULL;
-    const char *resourcetype = NULL;
-    const char *md5sum = NULL;
+
     const ne_status *status = NULL;
     char *path = ne_path_unescape( uri->path );
     char *parentPath;
@@ -120,53 +116,15 @@ static void propfind_results_recursive_callback(void *userdata,
 
     /* Fill the resource structure with the data about the file */
     newres = c_malloc(sizeof(struct resource));
-    ZERO_STRUCTP(newres);
 
     newres->uri =  path; /* no need to strdup because ne_path_unescape already allocates */
     newres->name = c_basename( path );
+    fill_webdav_properties_into_resource(newres, set);
 
-    modtime      = ne_propset_value( set, &ls_props[0] );
-    clength      = ne_propset_value( set, &ls_props[1] );
-    resourcetype = ne_propset_value( set, &ls_props[2] );
-    md5sum       = ne_propset_value( set, &ls_props[3] );
-    file_id      = ne_propset_value( set, &ls_props[4] );
-    directDownloadUrl = ne_propset_value( set, &ls_props[5] );
-    directDownloadCookies = ne_propset_value( set, &ls_props[6] );
-
-    newres->type = resr_normal;
-    if( resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
-        newres->type = resr_collection;
+    if( newres->type == resr_collection) {
         ctx->propfind_recursive_cache_folder_count++;
     } else {
-        /* DEBUG_WEBDAV("propfind_results_recursive %s [%d]", newres->uri, newres->type); */
         ctx->propfind_recursive_cache_file_count++;
-    }
-
-    if (modtime) {
-        newres->modtime = oc_httpdate_parse(modtime);
-    }
-
-    /* DEBUG_WEBDAV("Parsing Modtime: %s -> %llu", modtime, (unsigned long long) newres->modtime ); */
-    newres->size = 0;
-    if (clength) {
-        newres->size = atoll(clength);
-        /* DEBUG_WEBDAV("Parsed File size for %s from %s: %lld", newres->name, clength, (long long)newres->size ); */
-    }
-
-    if( md5sum ) {
-        newres->md5 = csync_normalize_etag(md5sum);
-    }
-
-    csync_vio_set_file_id(newres->file_id, file_id);
-    /*
-    DEBUG_WEBDAV("propfind_results_recursive %s [%s] %s", newres->uri, newres->type == resr_collection ? "collection" : "file", newres->md5);
-    */
-
-    if (directDownloadUrl) {
-        newres->directDownloadUrl = c_strdup(directDownloadUrl);
-    }
-    if (directDownloadCookies) {
-        newres->directDownloadCookies = c_strdup(directDownloadCookies);
     }
 
     /* Create new item in rb tree */
