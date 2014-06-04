@@ -133,27 +133,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->pwd.uid = getuid();
   ctx->pwd.euid = geteuid();
 
-  home = csync_get_user_home_dir();
-  if (home == NULL) {
-    SAFE_FREE(ctx->local.uri);
-    SAFE_FREE(ctx->remote.uri);
-    SAFE_FREE(ctx);
-    errno = ENOMEM;
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    return -1;
-  }
-
-  rc = asprintf(&ctx->options.config_dir, "%s/%s", home, CSYNC_CONF_DIR);
-  SAFE_FREE(home);
-  if (rc < 0) {
-    SAFE_FREE(ctx->local.uri);
-    SAFE_FREE(ctx->remote.uri);
-    SAFE_FREE(ctx);
-    errno = ENOMEM;
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    return -1;
-  }
-
   ctx->local.list     = 0;
   ctx->remote.list    = 0;
   ctx->current_fs = NULL;
@@ -166,7 +145,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
 int csync_init(CSYNC *ctx) {
   int rc;
-  char *config = NULL;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -212,7 +190,6 @@ int csync_init(CSYNC *ctx) {
   rc = 0;
 
 out:
-  SAFE_FREE(config);
   return rc;
 }
 
@@ -227,7 +204,6 @@ int csync_update(CSYNC *ctx) {
   ctx->status_code = CSYNC_STATUS_OK;
 
   /* create/load statedb */
-  if (! csync_is_statedb_disabled(ctx)) {
     rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
                   ctx->local.uri);
     if (rc < 0) {
@@ -241,7 +217,6 @@ int csync_update(CSYNC *ctx) {
       rc = -1;
       return rc;
     }
-  }
 
   ctx->status_code = CSYNC_STATUS_OK;
 
@@ -669,7 +644,6 @@ int csync_destroy(CSYNC *ctx) {
 
   SAFE_FREE(ctx->local.uri);
   SAFE_FREE(ctx->remote.uri);
-  SAFE_FREE(ctx->options.config_dir);
   SAFE_FREE(ctx->error_string);
 
   owncloud_destroy(ctx);
@@ -705,70 +679,6 @@ void csync_clear_exclude_list(CSYNC *ctx)
     csync_exclude_clear(ctx);
 }
 
-const char *csync_get_config_dir(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return NULL;
-  }
-
-  return ctx->options.config_dir;
-}
-
-int csync_set_config_dir(CSYNC *ctx, const char *path) {
-  if (ctx == NULL || path == NULL) {
-    return -1;
-  }
-
-  SAFE_FREE(ctx->options.config_dir);
-  ctx->options.config_dir = c_strdup(path);
-  if (ctx->options.config_dir == NULL) {
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    return -1;
-  }
-
-  return 0;
-}
-
-int csync_enable_statedb(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return -1;
-  }
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "This function must be called before initialization.");
-    ctx->status_code = CSYNC_STATUS_CSYNC_STATUS_ERROR;
-    return -1;
-  }
-
-  ctx->statedb.disabled = 0;
-
-  return 0;
-}
-
-int csync_disable_statedb(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return -1;
-  }
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "This function must be called before initialization.");
-    ctx->status_code = CSYNC_STATUS_CSYNC_STATUS_ERROR;
-    return -1;
-  }
-
-  ctx->statedb.disabled = 1;
-
-  return 0;
-}
-
-int csync_is_statedb_disabled(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return -1;
-  }
-  return ctx->statedb.disabled;
-}
-
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   if (ctx == NULL || cb == NULL) {
     return -1;
@@ -782,15 +692,6 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   ctx->callbacks.auth_function = cb;
 
   return 0;
-}
-
-const char *csync_get_statedb_file(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return NULL;
-  }
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  return c_strdup(ctx->statedb.file);
 }
 
 void *csync_get_userdata(CSYNC *ctx) {

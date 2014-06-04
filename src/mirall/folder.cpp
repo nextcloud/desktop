@@ -122,7 +122,6 @@ bool Folder::init()
         csync_set_log_level( 11 );
 
         MirallConfigFile cfgFile;
-        csync_set_config_dir( _csync_ctx, cfgFile.configPath().toUtf8() );
 
         setIgnoredFiles();
         if (Account *account = AccountManager::instance()->account()) {

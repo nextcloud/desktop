@@ -67,19 +67,6 @@ char *c_dirname(const char *path);
 char *c_basename (const char *path);
 
 /**
- * @brief Make a temporary filename.
- *
- * @param templ  The template to replace. If the template contains six X like
- *               'XXXXXX', these are replaced by a random string. If not, the
- *               templ is interpreted as a path, and a name to a hidden file
- *               with six random is returned.
- *               The caller has to free the memory.
- *
- * @return a poitner to the random hidden filename or NULL.
- */
-char *c_tmpname(const char *templ);
-
-/**
  * @brief parse a uri and split it into components.
  *
  * parse_uri parses an uri in the format
@@ -119,15 +106,6 @@ typedef struct
     char * filename;
     char * extension;
 } C_PATHINFO;
-
-/**
- * @brief Extracting directory, filename and extension from a path.
- *
- * @param pathSrc The path to parse.
- *
- * @return Returns a C_PATHINFO structure that should be freed using SAFE_FREE().
- */
-C_PATHINFO * c_split_path(const char* pathSrc);
 
 
 /**
