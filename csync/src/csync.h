@@ -44,13 +44,6 @@
 extern "C" {
 #endif
 
-/*
- * csync file declarations
- */
-#define CSYNC_CONF_DIR ".ocsync"
-#define CSYNC_CONF_FILE "ocsync.conf"
-#define CSYNC_EXCLUDE_FILE "ocsync_exclude.conf"
-
 /**
   * Instruction enum. In the file traversal structure, it describes
   * the csync state of a file.
@@ -59,7 +52,7 @@ enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
 
   CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
-                                     just use in csync_status_ok */
+                                     */
   CSYNC_STATUS_UNSUCCESSFUL,
   CSYNC_STATUS_NO_LOCK, /* OBSOLETE  does not happen anymore */
   CSYNC_STATUS_STATEDB_LOAD_ERROR,
@@ -216,14 +209,6 @@ typedef void (*csync_log_callback) (int verbosity,
                                     const char *buffer,
                                     void *userdata);
 
-/**
- * @brief Check internal csync status.
- *
- * @param csync  The context to check.
- *
- * @return  true if status is error free, false for error states.
- */
-bool csync_status_ok(CSYNC *ctx);
 
 /**
  * @brief Allocate a csync context.

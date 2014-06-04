@@ -47,52 +47,6 @@
 #include "csync_macros.h"
 #include "csync_log.h"
 
-#ifdef _WIN32
-char *csync_get_user_home_dir(void) {
-    wchar_t tmp[MAX_PATH];
-    char *szPath = NULL;
-
-    if( SHGetFolderPathW( NULL,
-                          CSIDL_PROFILE|CSIDL_FLAG_CREATE,
-                          NULL,
-                          0,
-                          tmp) == S_OK ) {
-        szPath = c_utf8_from_locale(tmp);
-        return szPath;
-    }
-
-    return NULL;
-}
-
-#else /* ************* !WIN32 ************ */
-
-#ifndef NSS_BUFLEN_PASSWD
-#define NSS_BUFLEN_PASSWD 4096
-#endif /* NSS_BUFLEN_PASSWD */
-
-char *csync_get_user_home_dir(void) {
-    const char *envp;
-    struct passwd pwd;
-    struct passwd *pwdbuf;
-    char buf[NSS_BUFLEN_PASSWD];
-    int rc;
-
-    envp = getenv("HOME");
-    if (envp != NULL && envp[0] != '\0') {
-        return c_strdup(envp);
-    }
-
-    /* Still nothing found, read the password file */
-    rc = getpwuid_r(getuid(), &pwd, buf, NSS_BUFLEN_PASSWD, &pwdbuf);
-    if (rc != 0) {
-        return c_strdup(pwd.pw_dir);
-    }
-
-    return NULL;
-}
-
-#endif /* ************* WIN32 ************ */
-
 #ifdef HAVE_FNMATCH
 #include <fnmatch.h>
 
