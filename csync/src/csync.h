@@ -336,33 +336,6 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path);
 void csync_clear_exclude_list(CSYNC *ctx);
 
 /**
- * @brief Enable the usage of the statedb. It is enabled by default.
- *
- * @param ctx           The csync context.
- *
- * @return              0 on success, less than 0 if an error occured.
- */
-int csync_enable_statedb(CSYNC *ctx);
-
-/**
- * @brief Disable the usage of the statedb. It is enabled by default.
- *
- * @param ctx           The csync context.
- *
- * @return              0 on success, less than 0 if an error occured.
- */
-int csync_disable_statedb(CSYNC *ctx);
-
-/**
- * @brief Check if the statedb usage is enabled.
- *
- * @param ctx           The csync context.
- *
- * @return              1 if it is enabled, 0 if it is disabled.
- */
-int csync_is_statedb_disabled(CSYNC *ctx);
-
-/**
  * @brief Get the userdata saved in the context.
  *
  * @param ctx           The csync context.
@@ -453,15 +426,6 @@ void *csync_get_log_userdata(void);
  * @return              0 on success, less than 0 if an error occured.
  */
 int csync_set_log_userdata(void *data);
-
-/**
- * @brief Get the path of the statedb file used.
- *
- * @param ctx           The csync context.
- *
- * @return              The path to the statedb file, NULL if an error occured.
- */
-const char *csync_get_statedb_file(CSYNC *ctx);
 
 /* Used for special modes or debugging */
 CSYNC_STATUS csync_get_status(CSYNC *ctx);
