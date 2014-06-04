@@ -260,100 +260,100 @@
 <context>
     <name>Mirall::Folder</name>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="107"/>
+        <location filename="../src/mirall/folder.cpp" line="118"/>
         <source>Unable to create csync-context</source>
         <translation>Nemožno vytvoriť &quot;csync-kontext&quot;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="165"/>
+        <location filename="../src/mirall/folder.cpp" line="176"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Lokálny priečinok %1 neexistuje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="168"/>
+        <location filename="../src/mirall/folder.cpp" line="179"/>
         <source>%1 should be a directory but is not.</source>
         <translation>%1 by mal byť priečinok, avšak nie je.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="171"/>
+        <location filename="../src/mirall/folder.cpp" line="182"/>
         <source>%1 is not readable.</source>
         <translation>%1 nie je čitateľný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="323"/>
+        <location filename="../src/mirall/folder.cpp" line="334"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="409"/>
+        <location filename="../src/mirall/folder.cpp" line="420"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 a %2 ďalších súborov bolo zmazaných.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="411"/>
+        <location filename="../src/mirall/folder.cpp" line="422"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 bol zmazaný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="416"/>
+        <location filename="../src/mirall/folder.cpp" line="427"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 a %2 ďalších súborov bolo stiahnutých.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="418"/>
+        <location filename="../src/mirall/folder.cpp" line="429"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 bol stiahnutý.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="423"/>
+        <location filename="../src/mirall/folder.cpp" line="434"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 a %2 ďalších súborov bolo aktualizovaných.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="425"/>
+        <location filename="../src/mirall/folder.cpp" line="436"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 bol aktualizovaný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="430"/>
+        <location filename="../src/mirall/folder.cpp" line="441"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 bol premenovaný na %2 a %3 ďalších súborov bolo premenovaných.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="432"/>
+        <location filename="../src/mirall/folder.cpp" line="443"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 bol premenovaný na %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="437"/>
+        <location filename="../src/mirall/folder.cpp" line="448"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 bol presunutý do %2 a %3 ďalších súborov bolo presunutých.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="439"/>
+        <location filename="../src/mirall/folder.cpp" line="450"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 bol presunutý do %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="447"/>
+        <location filename="../src/mirall/folder.cpp" line="458"/>
         <source>Sync Activity</source>
         <translation>Aktivita synchronizácie</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="697"/>
+        <location filename="../src/mirall/folder.cpp" line="708"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Táto synchronizácia odstráni všetky súbory v lokálnom synchronizačnom priečinku &apos;%1&apos;.
 Pokiaľ vy alebo váš správca zresetoval váš účet na serveri, vyberte možnosť &quot;Ponechať súbory&quot;. Pokiaľ chcete odstrániť vaše dáta, vyberte možnosť &quot;Odstrániť všetky súbory&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="700"/>
+        <location filename="../src/mirall/folder.cpp" line="711"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -362,17 +362,17 @@ Toto môže byť kvôli tichej rekonfigurácii priečinka, prípadne boli všetk
 Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="704"/>
+        <location filename="../src/mirall/folder.cpp" line="715"/>
         <source>Remove All Files?</source>
         <translation>Odstrániť všetky súbory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="706"/>
+        <location filename="../src/mirall/folder.cpp" line="717"/>
         <source>Remove all files</source>
         <translation>Odstrániť všetky súbory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="707"/>
+        <location filename="../src/mirall/folder.cpp" line="718"/>
         <source>Keep files</source>
         <translation>Ponechať súbory</translation>
     </message>
@@ -596,17 +596,17 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="393"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="428"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Zo servera nebol prijatý E-Tag, skontrolujte proxy/bránu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="400"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="435"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Prijali sme iný E-Tag pre pokračovanie. Skúsim to neskôr znovu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="633"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="471"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"/>
     </message>
@@ -1278,7 +1278,7 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="443"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="485"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
@@ -1336,17 +1336,17 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="242"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="233"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Tento priečinok nemôže byť premenovaný. Prosím, vráťte mu pôvodné meno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="244"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="235"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Tento priečinok nemôže byť premenovaný. Prosím, vráťte mu meno Shared.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="259"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="250"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Súbor bol premenovaný, ale je súčasťou zdieľania len na čítanie. Pôvodný súbor bol obnovený.</translation>
     </message>
@@ -1378,12 +1378,12 @@ Nie je vhodné ju používať.</translation>
         <translation>Súbor bol zmenený, ale je súčasťou zdieľania len na čítanie. Pôvodný súbor bol obnovený a upravená verzia je uložená v konfliktnom súbore.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="272"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="278"/>
         <source>Local file changed during sync.</source>
         <translation>Lokálny súbor bol zmenený počas synchronizácie.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="282"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="288"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"/>
     </message>
@@ -1536,12 +1536,12 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="259"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="267"/>
         <source>Login Error</source>
         <translation>Chybné prihlásenie</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="259"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="267"/>
         <source>You must sign in as user %1</source>
         <translation>Musíte sa prihlásiť ako používateľ %1</translation>
     </message>
@@ -1924,27 +1924,27 @@ Nie je vhodné ju používať.</translation>
         <translation>Položka nebola synchronizovaná kvôli predchádzajúcej chybe: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="274"/>
+        <location filename="../src/mirall/syncengine.cpp" line="280"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symbolické odkazy nie sú podporované v synchronizácii.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="277"/>
+        <location filename="../src/mirall/syncengine.cpp" line="283"/>
         <source>File is listed on the ignore list.</source>
         <translation>Súbor je zapísaný na zozname ignorovaných.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="280"/>
+        <location filename="../src/mirall/syncengine.cpp" line="286"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Súbor obsahuje neplatné znaky, ktoré nemôžu byť synchronizované medzi platformami.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="448"/>
+        <location filename="../src/mirall/syncengine.cpp" line="453"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nemôžem inicializovať synchronizačný žurnál.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="545"/>
+        <location filename="../src/mirall/syncengine.cpp" line="549"/>
         <source>Cannot open the sync journal</source>
         <translation>Nemožno otvoriť sync žurnál</translation>
     </message>
