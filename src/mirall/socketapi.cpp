@@ -19,6 +19,7 @@
 #include "mirall/folderman.h"
 #include "mirall/folder.h"
 #include "mirall/utility.h"
+#include "mirall/theme.h"
 
 #include <QDebug>
 #include <QUrl>
@@ -31,8 +32,6 @@
 #include <QDir>
 #include <QApplication>
 
-#include "mirall/utility.h"
-
 namespace Mirall {
 
 #define DEBUG qDebug() << "SocketApi: "
@@ -43,7 +42,8 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
 {
     QString socketPath;
     if (Utility::isWindows()) {
-        socketPath = QLatin1String("\\\\.\\pipe\\");
+        socketPath = QLatin1String("\\\\.\\pipe\\")
+                + Theme::instance()->appName();
     } else {
         socketPath = localFile.toLocalFile();
 
@@ -55,7 +55,7 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
     if(!_localServer->listen(socketPath)) {
         DEBUG << "can't start server" << socketPath;
     } else {
-        DEBUG << "server started" << socketPath;
+        DEBUG << "server started, listening at " << socketPath;
     }
     connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
