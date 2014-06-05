@@ -151,6 +151,12 @@ UninstPage custom un.UnPageUserAppData un.UnPageUserAppDataLeave
 !include ${source_path}/admin/win/nsi/l10n/languages.nsh
 !include ${source_path}/admin/win/nsi/l10n/declarations.nsh
 
+; Set version strings with english locale
+VIProductVersion "${VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${APPLICATION_NAME}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${APPLICATION_VENDOR}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
+
 !macro SETLANG un
    Function ${un}SetLang
       # load the selected language file
