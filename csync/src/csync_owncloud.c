@@ -728,18 +728,15 @@ csync_vio_handle_t *owncloud_opendir(CSYNC *ctx, const char *uri) {
 }
 
 int owncloud_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
-    (void)ctx;
-
     struct listdir_context *fetchCtx = dhandle;
-
     free_fetchCtx(fetchCtx);
-
+    (void)ctx;
     return 0;
 }
 
 csync_vio_file_stat_t *owncloud_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
-    (void)ctx;
     struct listdir_context *fetchCtx = dhandle;
+    (void)ctx;
 
 //    DEBUG_WEBDAV("owncloud_readdir" );
 //    DEBUG_WEBDAV("owncloud_readdir %s ", fetchCtx->target);
