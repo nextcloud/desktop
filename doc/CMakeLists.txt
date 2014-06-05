@@ -4,7 +4,7 @@ if(SPHINX_FOUND)
     set(SPHINX_CACHE_DIR "${CMAKE_CURRENT_BINARY_DIR}/_doctrees")
     # HTML output directory
     set(SPHINX_HTML_DIR     "${CMAKE_CURRENT_BINARY_DIR}/html")
-    set(SPHINX_MAN_DIR      "${CMAKE_CURRENT_BINARY_DIR}/man")
+    set(SPHINX_MAN_DIR      "${CMAKE_CURRENT_BINARY_DIR}/man1")
     set(SPHINX_PDF_DIR      "${CMAKE_CURRENT_BINARY_DIR}/latex")
     set(SPHINX_QCH_DIR      "${CMAKE_CURRENT_BINARY_DIR}/qthelp")
     set(SPHINX_HTMLHELP_DIR "${CMAKE_CURRENT_BINARY_DIR}/htmlhelp")
