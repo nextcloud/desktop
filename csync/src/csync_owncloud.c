@@ -786,6 +786,10 @@ char *owncloud_error_string(CSYNC* ctx)
 }
 
 int owncloud_commit(CSYNC* ctx) {
+    if (!ctx->owncloud_context) {
+        return 0;
+    }
+
     clear_propfind_recursive_cache(ctx->owncloud_context);
 
     free_fetchCtx(ctx->owncloud_context->propfind_cache);
