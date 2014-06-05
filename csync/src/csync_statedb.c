@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <inttypes.h>
 
 #include "c_lib.h"
 #include "csync_private.h"
@@ -506,7 +507,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     if( rc != SQLITE_DONE ) {
         ctx->status_code = CSYNC_STATUS_TREE_ERROR;
     } else {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "%ld entries read below path %s from db.", cnt, path);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "%" PRId64 " entries read below path %s from db.", cnt, path);
     }
     sqlite3_finalize(stmt);
     SAFE_FREE(likepath);
