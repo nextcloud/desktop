@@ -96,8 +96,6 @@ static int _data_cmp(const void *key, const void *data) {
 int csync_create(CSYNC **csync, const char *local, const char *remote) {
   CSYNC *ctx;
   size_t len = 0;
-  char *home;
-  int rc;
 
   ctx = c_malloc(sizeof(CSYNC));
   if (ctx == NULL) {
