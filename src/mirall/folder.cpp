@@ -123,7 +123,6 @@ bool Folder::init()
 
         MirallConfigFile cfgFile;
 
-        setIgnoredFiles();
         if (Account *account = AccountManager::instance()->account()) {
             account->credentials()->syncContextPreInit(_csync_ctx);
         } else {
