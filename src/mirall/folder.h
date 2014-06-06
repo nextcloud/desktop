@@ -185,6 +185,7 @@ private slots:
     void slotSyncFinished();
 
     void slotTransmissionProgress(const Progress::Info& pi);
+    void slotJobCompleted(const SyncFileItem&);
 
     void slotPollTimerTimeout();
     void etagRetreived(const QString &);

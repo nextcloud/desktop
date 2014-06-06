@@ -61,6 +61,7 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
 
     // folder watcher
     connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), SLOT(slotSyncStateChanged(QString)));
+    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem)), SLOT(slotJobCompleted(QString,SyncFileItem)));
 }
 
 SocketApi::~SocketApi()
@@ -118,6 +119,23 @@ void SocketApi::slotSyncStateChanged(const QString&)
 {
     broadcastMessage("UPDATE_VIEW");
 }
+
+void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item)
+{
+    Folder *f = FolderMan::instance()->folder(folder);
+    if (!f)
+        return;
+
+    const QString path = f->path() + item.destination();
+
+    QString command = QLatin1String("OK");
+    if (Progress::isWarningKind(item._status)) {
+        command = QLatin1String("ERROR");
+    }
+
+    broadcastMessage(QLatin1String("BROADCAST:") + command + QLatin1Char(':') + path);
+}
+
 
 
 void SocketApi::sendMessage(QLocalSocket* socket, const QString& message)

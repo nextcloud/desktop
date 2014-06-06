@@ -25,6 +25,8 @@ class QStringList;
 
 namespace Mirall {
 
+class SyncFileItem;
+
 class SocketApi : public QObject
 {
 Q_OBJECT
@@ -38,6 +40,7 @@ private slots:
     void onLostConnection();
     void slotReadSocket();
     void slotSyncStateChanged(const QString&);
+    void slotJobCompleted(const QString &, const SyncFileItem &);
 
 private:
     void sendMessage(QLocalSocket* socket, const QString& message);

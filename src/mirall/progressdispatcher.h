@@ -103,6 +103,7 @@ public:
     static ProgressDispatcher* instance();
     ~ProgressDispatcher();
 
+
 signals:
     /**
       @brief Signals the progress of data transmission.
@@ -112,6 +113,11 @@ signals:
 
      */
     void progressInfo( const QString& folder, const Progress::Info& progress );
+
+    /**
+     * @brief: the item's job is completed
+     */
+    void jobCompleted(const QString &folder, const SyncFileItem & item);
 
 protected:
     void setProgressInfo(const QString& folder, const Progress::Info& progress);

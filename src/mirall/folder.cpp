@@ -603,6 +603,7 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)));
     connect(_engine.data(), SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
+    connect(_engine.data(), SIGNAL(jobCompleted(SyncFileItem)), this, SLOT(slotJobCompleted(SyncFileItem)));
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
@@ -686,18 +687,23 @@ void Folder::slotEmitFinishedDelayed()
 // and hand the result over to the progress dispatcher.
 void Folder::slotTransmissionProgress(const Progress::Info &pi)
 {
-    if (!pi._lastCompletedItem.isEmpty()
-            && Progress::isWarningKind(pi._lastCompletedItem._status)) {
-        // Count all error conditions.
-        _syncResult.setWarnCount(_syncResult.warnCount()+1);
-    }
-
-    // remember problems happening to set the correct Sync status in slot slotCSyncFinished.
     if( pi._completedFileCount ) {
+        // No job completed yet, this is the beginning of a sync, set the warning level to 0
         _syncResult.setWarnCount(0);
     }
     ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
 }
+
+// a job is completed: count the errors and forward to the ProgressDispatcher
+void Folder::slotJobCompleted(const SyncFileItem &item)
+{
+    if (Progress::isWarningKind(item._status)) {
+        // Count all error conditions.
+        _syncResult.setWarnCount(_syncResult.warnCount()+1);
+    }
+    emit ProgressDispatcher::instance()->jobCompleted(alias(), item);
+}
+
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel)
 {
