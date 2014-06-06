@@ -403,6 +403,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.rename_path  = cur->destpath;
       trav.etag         = cur->etag;
       trav.file_id      = cur->file_id;
+      trav.remotePerm = cur->remotePerm;
       trav.directDownloadUrl = cur->directDownloadUrl;
       trav.directDownloadCookies = cur->directDownloadCookies;
       trav.inode        = cur->inode;

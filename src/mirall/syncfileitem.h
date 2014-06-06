@@ -86,6 +86,7 @@ public:
     quint64              _inode;
     bool                 _should_update_etag;
     QByteArray           _fileId;
+    QByteArray           _remotePerm;
     QString              _directDownloadUrl;
     QString              _directDownloadCookies;
     bool                 _blacklistedInDb;
@@ -107,6 +108,7 @@ public:
         time_t      _other_modtime;
         QByteArray  _other_etag;
         QByteArray  _other_fileId;
+        QByteArray  _other_remotePerm;
         enum csync_instructions_e _other_instruction;
     } log;
 };

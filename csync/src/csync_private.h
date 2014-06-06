@@ -167,6 +167,7 @@ struct csync_file_stat_s {
   char file_id[FILE_ID_BUF_SIZE+1];  /* the ownCloud file id is fixed width of 21 byte. */
   char *directDownloadUrl;
   char *directDownloadCookies;
+  char remotePerm[REMOTE_PERM_BUF_SIZE+1];
 
   CSYNC_STATUS error_status;
 

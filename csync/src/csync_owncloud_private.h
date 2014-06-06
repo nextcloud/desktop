@@ -127,6 +127,7 @@ static const ne_propname ls_props[] = {
     { "http://owncloud.org/ns", "id"},
     { "http://owncloud.org/ns", "dDU"},
     { "http://owncloud.org/ns", "dDC"},
+    { "http://owncloud.org/ns", "perm"},
     { NULL, NULL }
 };
 
@@ -146,6 +147,8 @@ typedef struct resource {
     // without going through the ownCloud instance.
     char *directDownloadUrl;
     char *directDownloadCookies;
+    // See https://github.com/owncloud/core/issues/8322
+    char remotePerm[REMOTE_PERM_BUF_SIZE+1];
 
     struct resource    *next;
 } resource;
@@ -186,7 +189,6 @@ time_t oc_httpdate_parse( const char *date );
 
 char *_cleanPath( const char* uri );
 
-int _stat_perms( int type );
 void fill_webdav_properties_into_resource(struct resource* newres, const ne_prop_result_set *set);
 
 void resourceToFileStat( csync_vio_file_stat_t *lfs, struct resource *res );

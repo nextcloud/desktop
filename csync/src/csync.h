@@ -175,6 +175,7 @@ struct csync_tree_walk_file_s {
     const char *rename_path;
     const char *etag;
     const char *file_id;
+    const char *remotePerm;
     char *directDownloadUrl;
     char *directDownloadCookies;
     struct {

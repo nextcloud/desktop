@@ -298,10 +298,6 @@ void resourceToFileStat(csync_vio_file_stat_t *lfs, struct resource *res )
         DEBUG_WEBDAV("ERROR: Unknown resource type %d", res->type);
     }
 
-    // FIXME Those are defaults, we'll have to use the real ownCloud WebDAV permissions soon
-    lfs->mode   = _stat_perms( lfs->type );
-    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
-
     lfs->mtime = res->modtime;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
@@ -321,26 +317,10 @@ void resourceToFileStat(csync_vio_file_stat_t *lfs, struct resource *res )
         lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES;
         lfs->directDownloadCookies = c_strdup(res->directDownloadCookies);
     }
-}
-
-/* WebDAV does not deliver permissions. Set a default here. */
-int _stat_perms( int type ) {
-    int ret = 0;
-
-    if( type == CSYNC_VIO_FILE_TYPE_DIRECTORY ) {
-        /* DEBUG_WEBDAV("Setting mode in stat (dir)"); */
-        /* directory permissions */
-        ret = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR /* directory, rwx for user */
-                | S_IRGRP | S_IXGRP                       /* rx for group */
-                | S_IROTH | S_IXOTH;                      /* rx for others */
-    } else {
-        /* regualar file permissions */
-        /* DEBUG_WEBDAV("Setting mode in stat (file)"); */
-        ret = S_IFREG | S_IRUSR | S_IWUSR /* regular file, user read & write */
-                | S_IRGRP                         /* group read perm */
-                | S_IROTH;                        /* others read perm */
+    if (strlen(res->remotePerm) > 0) {
+        lfs->fields = CSYNC_VIO_FILE_STAT_FIELDS_PERM;
+        strncpy(lfs->remotePerm, res->remotePerm, sizeof(lfs->remotePerm));
     }
-    return ret;
 }
 
 void fill_webdav_properties_into_resource(struct resource* newres, const ne_prop_result_set *set)
@@ -350,6 +330,7 @@ void fill_webdav_properties_into_resource(struct resource* newres, const ne_prop
     const char *directDownloadCookies = NULL;
     const char *resourcetype = NULL;
     const char *etag = NULL;
+    const char *perm = NULL;
 
     modtime      = ne_propset_value( set, &ls_props[0] );
     clength      = ne_propset_value( set, &ls_props[1] );
@@ -358,6 +339,7 @@ void fill_webdav_properties_into_resource(struct resource* newres, const ne_prop
     file_id      = ne_propset_value( set, &ls_props[4] );
     directDownloadUrl = ne_propset_value( set, &ls_props[5] );
     directDownloadCookies = ne_propset_value( set, &ls_props[6] );
+    perm = ne_propset_value( set, &ls_props[7] );
 
     if( resourcetype && strncmp( resourcetype, "<DAV:collection>", 16 ) == 0) {
         newres->type = resr_collection;
@@ -391,6 +373,9 @@ void fill_webdav_properties_into_resource(struct resource* newres, const ne_prop
     if (directDownloadCookies) {
         newres->directDownloadCookies = c_strdup(directDownloadCookies);
     }
+    if (perm && strlen(perm) < sizeof(newres->remotePerm)) {
+        strncpy(newres->remotePerm, perm, sizeof(newres->remotePerm));
+    }
 }
 
 struct resource* resource_dup(struct resource* o) {
@@ -410,6 +395,9 @@ struct resource* resource_dup(struct resource* o) {
     }
     if (o->directDownloadCookies) {
         r->directDownloadCookies = c_strdup(o->directDownloadCookies);
+    }
+    if (o->remotePerm) {
+        strncpy(r->remotePerm, o->remotePerm, sizeof(r->remotePerm));
     }
     r->next = o->next;
     csync_vio_set_file_id(r->file_id, o->file_id);
