@@ -14,6 +14,7 @@
 #ifndef CONNECTIONVALIDATOR_H
 #define CONNECTIONVALIDATOR_H
 
+#include "owncloudlib.h"
 #include <QObject>
 #include <QStringList>
 #include <QVariantMap>
@@ -23,7 +24,7 @@ namespace Mirall {
 
 class Account;
 
-class ConnectionValidator : public QObject
+class OWNCLOUDSYNC_EXPORT ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:

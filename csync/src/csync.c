@@ -96,8 +96,6 @@ static int _data_cmp(const void *key, const void *data) {
 int csync_create(CSYNC **csync, const char *local, const char *remote) {
   CSYNC *ctx;
   size_t len = 0;
-  char *home;
-  int rc;
 
   ctx = c_malloc(sizeof(CSYNC));
   if (ctx == NULL) {
@@ -129,31 +127,9 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   }
 
   ctx->status_code = CSYNC_STATUS_OK;
-  ctx->options.local_only_mode = false;
 
   ctx->pwd.uid = getuid();
   ctx->pwd.euid = geteuid();
-
-  home = csync_get_user_home_dir();
-  if (home == NULL) {
-    SAFE_FREE(ctx->local.uri);
-    SAFE_FREE(ctx->remote.uri);
-    SAFE_FREE(ctx);
-    errno = ENOMEM;
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    return -1;
-  }
-
-  rc = asprintf(&ctx->options.config_dir, "%s/%s", home, CSYNC_CONF_DIR);
-  SAFE_FREE(home);
-  if (rc < 0) {
-    SAFE_FREE(ctx->local.uri);
-    SAFE_FREE(ctx->remote.uri);
-    SAFE_FREE(ctx);
-    errno = ENOMEM;
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    return -1;
-  }
 
   ctx->local.list     = 0;
   ctx->remote.list    = 0;
@@ -167,7 +143,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
 int csync_init(CSYNC *ctx) {
   int rc;
-  char *config = NULL;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -190,15 +165,8 @@ int csync_init(CSYNC *ctx) {
 
   ctx->local.type = LOCAL_REPLICA;
 
-  if ( !ctx->options.local_only_mode) {
-      owncloud_init(csync_get_auth_callback(ctx), csync_get_userdata(ctx));
-      ctx->remote.type = REMOTE_REPLICA;
-  } else {
-    ctx->remote.type = LOCAL_REPLICA;
-  }
-
-  if (ctx->options.timeout)
-    csync_vio_set_property(ctx, "timeout", &ctx->options.timeout);
+  owncloud_init(ctx);
+  ctx->remote.type = REMOTE_REPLICA;
 
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
     ctx->status_code = CSYNC_STATUS_TREE_ERROR;
@@ -214,15 +182,12 @@ int csync_init(CSYNC *ctx) {
 
   ctx->status = CSYNC_STATUS_INIT;
 
-  csync_set_module_property(ctx, "csync_context", ctx);
-
   /* initialize random generator */
   srand(time(NULL));
 
   rc = 0;
 
 out:
-  SAFE_FREE(config);
   return rc;
 }
 
@@ -237,7 +202,6 @@ int csync_update(CSYNC *ctx) {
   ctx->status_code = CSYNC_STATUS_OK;
 
   /* create/load statedb */
-  if (! csync_is_statedb_disabled(ctx)) {
     rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
                   ctx->local.uri);
     if (rc < 0) {
@@ -251,7 +215,6 @@ int csync_update(CSYNC *ctx) {
       rc = -1;
       return rc;
     }
-  }
 
   ctx->status_code = CSYNC_STATUS_OK;
 
@@ -286,27 +249,25 @@ int csync_update(CSYNC *ctx) {
   }
 
   /* update detection for remote replica */
-  if( ! ctx->options.local_only_mode ) {
-    csync_gettime(&start);
-    ctx->current = REMOTE_REPLICA;
-    ctx->replica = ctx->remote.type;
+  csync_gettime(&start);
+  ctx->current = REMOTE_REPLICA;
+  ctx->replica = ctx->remote.type;
 
-    rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
-    if (rc < 0) {
-        if(ctx->status_code == CSYNC_STATUS_OK)
-            ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
-        return -1;
-    }
-
-
-    csync_gettime(&finish);
-
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-              "Update detection for remote replica took %.2f seconds "
-              "walking %zu files.",
-              c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
-    csync_memstat_check();
+  rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
+  if (rc < 0) {
+      if(ctx->status_code == CSYNC_STATUS_OK)
+          ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
+      return -1;
   }
+
+  csync_gettime(&finish);
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            "Update detection for remote replica took %.2f seconds "
+            "walking %zu files.",
+            c_secdiff(finish, start), c_rbtree_size(ctx->remote.tree));
+  csync_memstat_check();
+
   ctx->status |= CSYNC_STATUS_UPDATE;
 
   return 0;
@@ -447,6 +408,9 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.rename_path  = cur->destpath;
       trav.etag         = cur->etag;
       trav.file_id      = cur->file_id;
+      trav.directDownloadUrl = cur->directDownloadUrl;
+      trav.directDownloadCookies = cur->directDownloadCookies;
+      trav.inode        = cur->inode;
 
       trav.error_status = cur->error_status;
       trav.should_update_etag = cur->should_update_etag;
@@ -468,7 +432,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
 
       rc = (*visitor)(&trav, twctx->userdata);
       cur->instruction = trav.instruction;
-      if (trav.etag != cur->etag) {
+      if (trav.etag != cur->etag) { // FIXME It would be nice to have this documented
           SAFE_FREE(cur->etag);
           cur->etag = c_strdup(trav.etag);
       }
@@ -619,7 +583,7 @@ int csync_commit(CSYNC *ctx) {
   }
   ctx->statedb.db = NULL;
 
-  rc = csync_vio_commit(ctx);
+  rc = owncloud_commit(ctx);
   if (rc < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "commit failed: %s",
               ctx->error_string ? ctx->error_string : "");
@@ -629,6 +593,8 @@ int csync_commit(CSYNC *ctx) {
   _csync_clean_ctx(ctx);
 
   ctx->remote.read_from_db = 0;
+  ctx->read_from_db_disabled = 0;
+
 
   /* Create new trees */
   rc = c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
@@ -676,8 +642,9 @@ int csync_destroy(CSYNC *ctx) {
 
   SAFE_FREE(ctx->local.uri);
   SAFE_FREE(ctx->remote.uri);
-  SAFE_FREE(ctx->options.config_dir);
   SAFE_FREE(ctx->error_string);
+
+  owncloud_destroy(ctx);
 
 #ifdef WITH_ICONV
   c_close_iconv();
@@ -710,70 +677,6 @@ void csync_clear_exclude_list(CSYNC *ctx)
     csync_exclude_clear(ctx);
 }
 
-const char *csync_get_config_dir(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return NULL;
-  }
-
-  return ctx->options.config_dir;
-}
-
-int csync_set_config_dir(CSYNC *ctx, const char *path) {
-  if (ctx == NULL || path == NULL) {
-    return -1;
-  }
-
-  SAFE_FREE(ctx->options.config_dir);
-  ctx->options.config_dir = c_strdup(path);
-  if (ctx->options.config_dir == NULL) {
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    return -1;
-  }
-
-  return 0;
-}
-
-int csync_enable_statedb(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return -1;
-  }
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "This function must be called before initialization.");
-    ctx->status_code = CSYNC_STATUS_CSYNC_STATUS_ERROR;
-    return -1;
-  }
-
-  ctx->statedb.disabled = 0;
-
-  return 0;
-}
-
-int csync_disable_statedb(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return -1;
-  }
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  if (ctx->status & CSYNC_STATUS_INIT) {
-    fprintf(stderr, "This function must be called before initialization.");
-    ctx->status_code = CSYNC_STATUS_CSYNC_STATUS_ERROR;
-    return -1;
-  }
-
-  ctx->statedb.disabled = 1;
-
-  return 0;
-}
-
-int csync_is_statedb_disabled(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return -1;
-  }
-  return ctx->statedb.disabled;
-}
-
 int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   if (ctx == NULL || cb == NULL) {
     return -1;
@@ -787,15 +690,6 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
   ctx->callbacks.auth_function = cb;
 
   return 0;
-}
-
-const char *csync_get_statedb_file(CSYNC *ctx) {
-  if (ctx == NULL) {
-    return NULL;
-  }
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  return c_strdup(ctx->statedb.file);
 }
 
 void *csync_get_userdata(CSYNC *ctx) {
@@ -839,33 +733,6 @@ CSYNC_STATUS csync_get_status(CSYNC *ctx) {
   }
 
   return ctx->status_code;
-}
-
-int csync_set_local_only(CSYNC *ctx, bool local_only) {
-    if (ctx == NULL) {
-        return -1;
-    }
-
-    ctx->status_code = CSYNC_STATUS_OK;
-
-    if (ctx->status & CSYNC_STATUS_INIT) {
-        fprintf(stderr, "csync_set_local_only: This function must be called before initialization.");
-        ctx->status_code = CSYNC_STATUS_CSYNC_STATUS_ERROR;
-        return -1;
-    }
-
-    ctx->options.local_only_mode=local_only;
-
-    return 0;
-}
-
-bool csync_get_local_only(CSYNC *ctx) {
-    if (ctx == NULL) {
-        return -1;
-    }
-    ctx->status_code = CSYNC_STATUS_OK;
-
-    return ctx->options.local_only_mode;
 }
 
 const char *csync_get_status_string(CSYNC *ctx)
@@ -912,6 +779,8 @@ int  csync_abort_requested(CSYNC *ctx)
 void csync_file_stat_free(csync_file_stat_t *st)
 {
   if (st) {
+    SAFE_FREE(st->directDownloadUrl);
+    SAFE_FREE(st->directDownloadCookies);
     SAFE_FREE(st->etag);
     SAFE_FREE(st->destpath);
     SAFE_FREE(st);
@@ -920,6 +789,13 @@ void csync_file_stat_free(csync_file_stat_t *st)
 
 int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
 {
-    return csync_vio_set_property(ctx, key, value);
+    return owncloud_set_property(ctx, key, value);
+}
+
+
+int csync_set_read_from_db(CSYNC* ctx, int enabled)
+{
+    ctx->read_from_db_disabled = !enabled;
+    return 0;
 }
 

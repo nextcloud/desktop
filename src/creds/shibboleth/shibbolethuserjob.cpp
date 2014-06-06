@@ -47,7 +47,7 @@ bool ShibbolethUserJob::finished()
     }
 
     QString user =  json.value("ocs").toMap().value("data").toMap().value("id").toString();
-    qDebug() << "cloud/user: " << json << "->" << user;
+    //qDebug() << "cloud/user: " << json << "->" << user;
     emit userFetched(user);
     return true;
 }

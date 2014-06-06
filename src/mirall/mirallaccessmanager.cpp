@@ -14,7 +14,9 @@
 #include <QNetworkRequest>
 #include <QNetworkProxy>
 #include <QAuthenticator>
+#include <QSslConfiguration>
 
+#include "mirall/cookiejar.h"
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/utility.h"
 
@@ -24,12 +26,13 @@ namespace Mirall
 MirallAccessManager::MirallAccessManager(QObject* parent)
     : QNetworkAccessManager (parent)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && defined(Q_OS_MAC)
     // FIXME Workaround http://stackoverflow.com/a/15707366/2941 https://bugreports.qt-project.org/browse/QTBUG-30434
     QNetworkProxy proxy = this->proxy();
     proxy.setHostName(" ");
     setProxy(proxy);
 #endif
+    setCookieJar(new CookieJar);
     QObject::connect(this, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
                      this, SLOT(slotProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
 }

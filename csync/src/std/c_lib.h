@@ -23,45 +23,9 @@
 
 #include "c_macro.h"
 #include "c_alloc.h"
-#include "c_dir.h"
-#include "c_file.h"
 #include "c_list.h"
 #include "c_path.h"
 #include "c_rbtree.h"
 #include "c_string.h"
 #include "c_time.h"
 #include "c_private.h"
-
-#ifndef UNIT_TESTING
-#ifdef malloc
-#undef malloc
-#endif
-#define malloc(x) DO_NOT_CALL_MALLOC__USE_C_MALLOC_INSTEAD
-
-#ifdef calloc
-#undef calloc
-#endif
-#define calloc(x,y) DO_NOT_CALL_CALLOC__USE_C_CALLOC_INSTEAD
-
-#endif
-
-#ifdef realloc
-#undef realloc
-#endif
-#define realloc(x,y) DO_NOT_CALL_REALLOC__USE_C_REALLOC_INSTEAD
-
-#ifdef dirname
-#undef dirname
-#endif
-#define dirname(x) DO_NOT_CALL_MALLOC__USE_C_DIRNAME_INSTEAD
-
-#ifdef basename
-#undef basename
-#endif
-#define basename(x) DO_NOT_CALL_MALLOC__USE_C_BASENAME_INSTEAD
-
-#ifdef strdup
-#undef strdup
-#endif
-#define strdup(x) DO_NOT_CALL_STRDUP__USE_C_STRDUP_INSTEAD
-

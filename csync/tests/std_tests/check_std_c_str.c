@@ -113,85 +113,6 @@ static void check_c_strlist_expand(void **state)
     c_strlist_destroy(strlist);
 }
 
-static void check_c_strreplace(void **state)
-{
-    char *str = strdup("/home/%(USER)");
-
-    (void) state; /* unused */
-
-    str = c_strreplace(str, "%(USER)", "csync");
-    assert_string_equal(str,  "/home/csync");
-
-    free(str);
-}
-
-static void check_c_lowercase(void **state)
-{
-    char *str;
-
-    (void) state; /* unused */
-
-    str = c_lowercase("LoWeRcASE");
-    assert_string_equal(str,  "lowercase");
-
-    free(str);
-}
-
-static void check_c_lowercase_empty(void **state)
-{
-    char *str;
-
-    (void) state; /* unused */
-
-    str = c_lowercase("");
-    assert_string_equal(str,  "");
-
-    free(str);
-}
-
-static void check_c_lowercase_null(void **state)
-{
-    char *str;
-
-    (void) state; /* unused */
-
-    str = c_lowercase(NULL);
-    assert_null(str);
-}
-
-static void check_c_uppercase(void **state)
-{
-    char *str;
-
-    (void) state; /* unused */
-
-    str = c_uppercase("upperCASE");
-    assert_string_equal(str,  "UPPERCASE");
-
-    free(str);
-}
-
-static void check_c_uppercase_empty(void **state)
-{
-    char *str;
-
-    (void) state; /* unused */
-
-    str = c_uppercase("");
-    assert_string_equal(str,  "");
-
-    free(str);
-}
-
-static void check_c_uppercase_null(void **state)
-{
-    char *str;
-
-    (void) state; /* unused */
-
-    str = c_uppercase(NULL);
-    assert_null(str);
-}
 
 
 int torture_run_tests(void)
@@ -203,13 +124,6 @@ int torture_run_tests(void)
         unit_test(check_c_strlist_new),
         unit_test(check_c_strlist_add),
         unit_test(check_c_strlist_expand),
-        unit_test(check_c_strreplace),
-        unit_test(check_c_lowercase),
-        unit_test(check_c_lowercase_empty),
-        unit_test(check_c_lowercase_null),
-        unit_test(check_c_uppercase),
-        unit_test(check_c_uppercase_empty),
-        unit_test(check_c_uppercase_null),
     };
 
     return run_tests(tests);

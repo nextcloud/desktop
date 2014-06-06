@@ -17,8 +17,6 @@
 #include <QDebug>
 #include <QNetworkReply>
 #include <QSettings>
-#include <QInputDialog>
-
 
 #include "mirall/account.h"
 #include "mirall/mirallaccessmanager.h"
@@ -70,6 +68,7 @@ int getauth(const char *prompt,
 }
 
 const char userC[] = "user";
+const char authenticationFailedC[] = "owncloud-authentication-failed";
 
 } // ns
 
@@ -84,7 +83,12 @@ protected:
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
         //qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
-        req.setRawHeader(QByteArray("Cookie"), _cred->_token.toLocal8Bit());
+
+        // Append token cookie
+        QList<QNetworkCookie> cookies = request.header(QNetworkRequest::CookieHeader).value<QList<QNetworkCookie> >();
+        cookies.append(QNetworkCookie::parseCookies(_cred->_token.toUtf8()));
+        req.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookies));
+
         return MirallAccessManager::createRequest(op, req, outgoingData);
     }
 private:
@@ -113,7 +117,7 @@ void TokenCredentials::syncContextPreInit (CSYNC* ctx)
 
 void TokenCredentials::syncContextPreStart (CSYNC* ctx)
 {
-    csync_set_module_property(ctx, "session_key", _token.toLocal8Bit().data());
+    csync_set_module_property(ctx, "session_key", _token.toUtf8().data());
 }
 
 bool TokenCredentials::changed(AbstractCredentials* credentials) const
@@ -174,22 +178,13 @@ bool TokenCredentials::stillValid(QNetworkReply *reply)
 {
     return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
             // returned if user or password is incorrect
-            && (reply->error() != QNetworkReply::OperationCanceledError));
+            && (reply->error() != QNetworkReply::OperationCanceledError
+                || !reply->property(authenticationFailedC).toBool()));
 }
 
 QString TokenCredentials::queryPassword(bool *ok)
 {
-    qDebug() << AccountManager::instance()->account()->state();
-    if (ok) {
-        QString str = QInputDialog::getText(0, tr("Enter Password"),
-                                     tr("Please enter %1 password for user '%2':")
-                                     .arg(Theme::instance()->appNameGUI(), _user),
-                                     QLineEdit::Password, QString(), ok);
-        qDebug() << AccountManager::instance()->account()->state();
-        return str;
-    } else {
-        return QString();
-    }
+    return QString();
 }
 
 void TokenCredentials::invalidateToken(Account *account)
@@ -221,6 +216,7 @@ void TokenCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* 
     // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
     // those credentials were invalid and we terminate.
     qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
+    reply->setProperty(authenticationFailedC, true);
     reply->close();
 }
 

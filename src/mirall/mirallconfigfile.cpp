@@ -22,7 +22,11 @@
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
 
+#ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
+#include <QHeaderView>
+#endif
+
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
@@ -30,7 +34,6 @@
 #include <QSettings>
 #include <QDebug>
 #include <QNetworkProxy>
-#include <QHeaderView>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000
@@ -44,6 +47,7 @@ static const char monoIconsC[] = "monoIcons";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char geometryC[] = "geometry";
+static const char timeoutC[] = "timeout";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -100,6 +104,12 @@ bool MirallConfigFile::optionalDesktopNotifications() const
     return settings.value(QLatin1String(optionalDesktopNoficationsC), true).toBool();
 }
 
+int MirallConfigFile::timeout() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(timeoutC), 300).toInt(); // default to 5 min
+}
+
 void MirallConfigFile::setOptionalDesktopNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -109,20 +119,25 @@ void MirallConfigFile::setOptionalDesktopNotifications(bool show)
 
 void MirallConfigFile::saveGeometry(QWidget *w)
 {
+#ifndef TOKEN_AUTH_ONLY
     Q_ASSERT(!w->objectName().isNull());
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(w->objectName());
     settings.setValue(QLatin1String(geometryC), w->saveGeometry());
     settings.sync();
+#endif
 }
 
 void MirallConfigFile::restoreGeometry(QWidget *w)
 {
+#ifndef TOKEN_AUTH_ONLY
     w->restoreGeometry(getValue(geometryC, w->objectName()).toByteArray());
+#endif
 }
 
 void MirallConfigFile::saveGeometryHeader(QHeaderView *header)
 {
+#ifndef TOKEN_AUTH_ONLY
     if(!header) return;
     Q_ASSERT(!header->objectName().isNull());
 
@@ -130,16 +145,19 @@ void MirallConfigFile::saveGeometryHeader(QHeaderView *header)
     settings.beginGroup(header->objectName());
     settings.setValue(QLatin1String(geometryC), header->saveState());
     settings.sync();
+#endif
 }
 
 void MirallConfigFile::restoreGeometryHeader(QHeaderView *header)
 {
+#ifndef TOKEN_AUTH_ONLY
     if(!header) return;
     Q_ASSERT(!header->objectName().isNull());
 
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(header->objectName());
     header->restoreState(getValue(geometryC, header->objectName()).toByteArray());
+#endif
 }
 
 QVariant MirallConfigFile::getPolicySetting(const QString &setting, const QVariant& defaultValue) const

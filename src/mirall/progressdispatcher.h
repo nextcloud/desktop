@@ -14,6 +14,7 @@
 #ifndef PROGRESSDISPATCHER_H
 #define PROGRESSDISPATCHER_H
 
+#include "owncloudlib.h"
 #include <QObject>
 #include <QHash>
 #include <QTime>
@@ -42,7 +43,6 @@ namespace Progress
         quint64 _totalSize;
         quint64 _completedFileCount;
         quint64 _completedSize;
-        
         // Should this be in a separate file?
         struct EtaEstimate {
             EtaEstimate() :  _startedTime(QDateTime::currentMSecsSinceEpoch()), _agvEtaMSecs(0),_effectivProgressPerSec(0),_sampleCount(1) {}
@@ -97,33 +97,31 @@ namespace Progress
            }
         };
         EtaEstimate _totalEtaEstimate;
-        
 
         struct ProgressItem {
             ProgressItem() : _completedSize(0) {}
             SyncFileItem _item;
             quint64 _completedSize;
             EtaEstimate _etaEstimate;
-            
         };
         QHash<QString, ProgressItem> _currentItems;
         SyncFileItem _lastCompletedItem;
 
         void setProgressComplete(const SyncFileItem &item) {
             _currentItems.remove(item._file);
-            if (Progress::isSizeDependent(item._instruction)) {
-                _completedSize += item._size;
+            if (!item._isDirectory) {
+                _completedFileCount++;
+		        if (Progress::isSizeDependent(item._instruction)) {
+		            _completedSize += item._size;
+		        }
             }
-            _completedFileCount++;
-            _lastCompletedItem = item;            
+            _lastCompletedItem = item;
             this->updateEstimation();
         }
-        
         void setProgressItem(const SyncFileItem &item, quint64 size) {
             _currentItems[item._file]._item = item;
-            _currentItems[item._file]._completedSize = size;            
+            _currentItems[item._file]._completedSize = size;
             _lastCompletedItem = SyncFileItem();
-            
             this->updateEstimation();
             _currentItems[item._file]._etaEstimate.updateTime(size,item._size);
         }
@@ -139,11 +137,11 @@ namespace Progress
         quint64 completedSize() const {
             quint64 r = _completedSize;
             foreach(const ProgressItem &i, _currentItems) {
-                r += i._completedSize;
+                if (!i._item._isDirectory)
+                    r += i._completedSize;
             }
             return r;
         }
-        
         /**
          * Get the total completion estimate structure 
          * @return EtaEstimate a structure containing the total completion information.
@@ -159,13 +157,12 @@ namespace Progress
         EtaEstimate getFileEstimate(const SyncFileItem &item) const {
             return _currentItems[item._file]._etaEstimate;
         }               
-
     };
 
-    QString asActionString( const SyncFileItem& item );
-    QString asResultString(  const SyncFileItem& item );
+    OWNCLOUDSYNC_EXPORT QString asActionString( const SyncFileItem& item );
+    OWNCLOUDSYNC_EXPORT QString asResultString(  const SyncFileItem& item );
 
-    bool isWarningKind( SyncFileItem::Status );
+    OWNCLOUDSYNC_EXPORT bool isWarningKind( SyncFileItem::Status );
 
 }
 
@@ -178,7 +175,7 @@ namespace Progress
  * or the overall sync progress.
  *
  */
-class ProgressDispatcher : public QObject
+class OWNCLOUDSYNC_EXPORT ProgressDispatcher : public QObject
 {
     Q_OBJECT
 
@@ -196,6 +193,10 @@ signals:
 
      */
     void progressInfo( const QString& folder, const Progress::Info& progress );
+    /**
+     * @brief: the item's job is completed
+     */
+    void jobCompleted(const QString &folder, const SyncFileItem & item);
 
 protected:
     void setProgressInfo(const QString& folder, const Progress::Info& progress);

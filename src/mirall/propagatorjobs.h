@@ -81,6 +81,7 @@ class PropagateLocalMkdir : public PropagateItemJob {
 public:
     PropagateLocalMkdir (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
     void start();
+
 };
 class PropagateRemoteRemove : public PropagateNeonJob {
     Q_OBJECT
@@ -104,6 +105,15 @@ class PropagateRemoteRename : public PropagateNeonJob {
     Q_OBJECT
 public:
     PropagateRemoteRename (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
+    void start();
+};
+
+
+// To support older owncloud in the
+class UpdateMTimeAndETagJob : public PropagateNeonJob{
+    Q_OBJECT
+public:
+    UpdateMTimeAndETagJob (OwncloudPropagator* propagator, const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
     void start();
 };
 

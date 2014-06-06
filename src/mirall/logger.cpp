@@ -27,6 +27,9 @@ static void mirallLogCatcher(QtMsgType type, const char *msg)
   // qDebug() exports to local8Bit, which is not always UTF-8
   Logger::instance()->mirallLog( QString::fromLocal8Bit(msg) );
 }
+static void qInstallMessageHandler(QtMsgHandler h) {
+    qInstallMsgHandler(h);
+}
 #else
 static void mirallLogCatcher(QtMsgType, const QMessageLogContext &ctx, const QString &message) {
     Q_UNUSED(ctx);
@@ -38,34 +41,22 @@ static void mirallLogCatcher(QtMsgType, const QMessageLogContext &ctx, const QSt
 }
 #endif
 
-Logger* Logger::_instance=0;
-
-Logger::Logger( QObject* parent)
-: QObject(parent),
-  _showTime(true), _doLogging(false), _doFileFlush(false), _logExpire(0)
-{
-}
-
 Logger *Logger::instance()
 {
-    if( !Logger::_instance ) {
-        Logger::_instance = new Logger;
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qInstallMsgHandler( mirallLogCatcher );
-#else
-        qInstallMessageHandler(mirallLogCatcher);
-#endif
-    }
-    return Logger::_instance;
+    static Logger log;
+    return &log;
 }
 
-void Logger::destroy()
+Logger::Logger( QObject* parent) : QObject(parent),
+  _showTime(true), _doLogging(false), _doFileFlush(false), _logExpire(0)
 {
-    if( Logger::_instance ) {
-        delete Logger::_instance;
-        Logger::_instance = 0;
-    }
+    qInstallMessageHandler(mirallLogCatcher);
 }
+
+Logger::~Logger() {
+    qInstallMessageHandler(0);
+}
+
 
 void Logger::postGuiLog(const QString &title, const QString &message)
 {

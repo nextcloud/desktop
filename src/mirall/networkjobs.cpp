@@ -34,7 +34,6 @@
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
-#include "creds/shibbolethcredentials.h"
 
 Q_DECLARE_METATYPE(QTimer*)
 

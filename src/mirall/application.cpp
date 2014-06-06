@@ -45,6 +45,8 @@
 #include <QMenu>
 #include <QMessageBox>
 
+class QSocket;
+
 namespace Mirall {
 
 namespace {
@@ -64,14 +66,12 @@ static const char optionsC[] =
 
 QString applicationTrPath()
 {
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
-    return QString::fromLatin1(DATADIR"/"APPLICATION_EXECUTABLE"/i18n/");
-#endif
-#ifdef Q_OS_MAC
-    return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.
-#endif
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
    return QApplication::applicationDirPath();
+#elif defined(Q_OS_MAC)
+    return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.
+#elif defined(Q_OS_UNIX)
+    return QString::fromLatin1(DATADIR"/"APPLICATION_EXECUTABLE"/i18n/");
 #endif
 }
 }
@@ -79,7 +79,7 @@ QString applicationTrPath()
 // ----------------------------------------------------------------------------------
 
 Application::Application(int &argc, char **argv) :
-    SharedTools::QtSingleApplication(argc, argv),
+    SharedTools::QtSingleApplication(Theme::instance()->appName() ,argc, argv),
     _gui(0),
     _theme(Theme::instance()),
     _helpOnly(false),
@@ -99,14 +99,13 @@ Application::Application(int &argc, char **argv) :
     //no need to waste time;
     if ( _helpOnly ) return;
 
-    initialize();
     if (isRunning())
         return;
 
     setupLogging();
     setupTranslations();
 
-    connect( this, SIGNAL(messageReceived(QString)), SLOT(slotParseOptions(QString)));
+    connect( this, SIGNAL(messageReceived(QString, QObject*)), SLOT(slotParseOptions(QString, QObject*)));
 
     Account *account = Account::restore();
     if (account) {
@@ -159,6 +158,7 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
+    delete AccountManager::instance()->account();
     // qDebug() << "* Mirall shutdown";
 }
 
@@ -245,6 +245,8 @@ void Application::slotCheckConnection()
     } else {
         // let gui open the setup wizard
         _gui->slotOpenSettingsDialog( true );
+
+        _checkConnectionTimer.stop(); // don't popup the wizard on interval;
     }
 }
 
@@ -323,6 +325,7 @@ void Application::slotownCloudWizardDone( int res )
     }
     folderMan->setSyncEnabled( true );
     if( res == QDialog::Accepted ) {
+        _checkConnectionTimer.start();
         slotCheckConnection();
     }
 
@@ -350,7 +353,7 @@ void Application::slotUseMonoIconsChanged(bool)
     _gui->slotComputeOverallSyncStatus();
 }
 
-void Application::slotParseOptions(const QString &opts)
+void Application::slotParseOptions(const QString &opts, QObject*)
 {
     QStringList options = opts.split(QLatin1Char('|'));
     parseOptions(options);

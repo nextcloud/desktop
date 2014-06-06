@@ -22,6 +22,8 @@
 #include <QTextStream>
 #include <qmutex.h>
 
+#include "utility.h"
+
 namespace Mirall {
 
 struct Log{
@@ -35,10 +37,11 @@ struct Log{
   QString message;
 };
 
-class Logger : public QObject
+class OWNCLOUDSYNC_EXPORT Logger : public QObject
 {
   Q_OBJECT
 public:
+
   void log(Log log);
 
   static void csyncLog( const QString& message );
@@ -47,7 +50,6 @@ public:
   const QList<Log>& logs() const {return _logs;}
 
   static Logger* instance();
-  static void destroy();
 
   void postGuiLog(const QString& title, const QString& message);
   void postOptionalGuiLog(const QString& title, const QString& message);
@@ -67,14 +69,12 @@ signals:
 public slots:
   void enterNextLogFile();
 
-protected:
+private:
   Logger(QObject* parent=0);
+  ~Logger();
   QList<Log> _logs;
   bool       _showTime;
   bool       _doLogging;
-
-  static Logger* _instance;
-
   QFile       _logFile;
   bool        _doFileFlush;
   int         _logExpire;

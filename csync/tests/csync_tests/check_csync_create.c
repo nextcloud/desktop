@@ -46,9 +46,6 @@ static void check_csync_create(void **state)
     rc = csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
     assert_int_equal(rc, 0);
 
-    snprintf(confdir, sizeof(confdir), "%s/%s", getenv("HOME"), CSYNC_CONF_DIR);
-    assert_string_equal(csync->options.config_dir, confdir);
-
     rc = csync_destroy(csync);
     assert_int_equal(rc, 0);
 }

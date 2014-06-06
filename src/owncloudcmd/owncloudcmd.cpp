@@ -29,19 +29,10 @@
 #include "mirall/clientproxy.h"
 #include "mirall/account.h"
 #include "creds/httpcredentials.h"
-
+#include "owncloudcmd.h"
 #include "simplesslerrorhandler.h"
 
 using namespace Mirall;
-
-class OwncloudCmd : public QObject {
-    Q_OBJECT
-public:
-    OwncloudCmd() : QObject() { }
-public slots:
-    void transmissionProgressSlot() {
-    }
-};
 
 struct CmdOptions {
     QString source_dir;
@@ -110,7 +101,7 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
         options->target_url.replace(0, 4, "owncloud");
     options->source_dir = args.takeLast();
     if( !QFile::exists( options->source_dir )) {
-        std::cerr << "Source dir does not exists.";
+        std::cerr << "Source dir does not exists." << std::endl;
         exit(1);
     }
 
@@ -165,7 +156,6 @@ int main(int argc, char **argv) {
     account.setCredentials(new HttpCredentials(url.userName(), url.password()));
     account.setSslErrorHandler(sslErrorHandler);
     AccountManager::instance()->setAccount(&account);
-
 
     CSYNC *_csync_ctx;
     if( csync_create( &_csync_ctx, options.source_dir.toUtf8(),
@@ -244,6 +234,4 @@ int main(int argc, char **argv) {
 
     return 0;
 }
-
-#include "owncloudcmd.moc"
 

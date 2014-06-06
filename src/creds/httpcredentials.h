@@ -30,7 +30,7 @@ class Job;
 namespace Mirall
 {
 
-class HttpCredentials : public AbstractCredentials
+class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
 {
     Q_OBJECT
 

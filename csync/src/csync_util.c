@@ -128,55 +128,21 @@ void csync_win32_set_file_hidden( const char *file, bool h ) {
 #endif
 }
 
-csync_vio_file_stat_t *csync_vio_convert_file_stat(csync_file_stat_t *st) {
-  csync_vio_file_stat_t *vfs = NULL;
+bool (*csync_file_locked_or_open_ext) (const char*) = 0; // filled in by library user
+void set_csync_file_locked_or_open_ext(bool (*f) (const char*));
+void set_csync_file_locked_or_open_ext(bool (*f) (const char*)) {
+    csync_file_locked_or_open_ext = f;
+}
 
-  if (st == NULL) {
-    return NULL;
-  }
-
-  vfs = csync_vio_file_stat_new();
-  if (vfs == NULL) {
-    return NULL;
-  }
-  vfs->acl = NULL;
-  if (st->pathlen > 0) {
-    vfs->name = c_strdup(st->path);
-  }
-  vfs->uid   = st->uid;
-  vfs->gid   = st->gid;
-
-  vfs->atime = 0;
-  vfs->mtime = st->modtime;
-  vfs->ctime = 0;
-
-  vfs->size  = st->size;
-  vfs->blksize  = 0;  /* Depricated. */
-  vfs->blkcount = 0;
-
-  vfs->mode  = st->mode;
-  vfs->device = 0;
-  vfs->inode = st->inode;
-  vfs->nlink = st->nlink;
-
-  /* fields. */
-  vfs->fields = CSYNC_VIO_FILE_STAT_FIELDS_TYPE
-      + CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS
-      + CSYNC_VIO_FILE_STAT_FIELDS_INODE
-      + CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT
-      + CSYNC_VIO_FILE_STAT_FIELDS_SIZE
-      + CSYNC_VIO_FILE_STAT_FIELDS_MTIME
-      + CSYNC_VIO_FILE_STAT_FIELDS_UID
-      + CSYNC_VIO_FILE_STAT_FIELDS_GID;
-
-  if (st->type == CSYNC_FTW_TYPE_DIR)
-    vfs->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
-  else if (st->type == CSYNC_FTW_TYPE_FILE)
-    vfs->type = CSYNC_VIO_FILE_TYPE_REGULAR;
-  else if (st->type == CSYNC_FTW_TYPE_SLINK)
-    vfs->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
-  else
-    vfs->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
-
-  return vfs;
+bool csync_file_locked_or_open( const char *dir, const char *fname) {
+    char *tmp_uri = NULL;
+    bool ret;
+    if (!csync_file_locked_or_open_ext) {
+        return false;
+    }
+    asprintf(&tmp_uri, "%s/%s", dir, fname);
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "csync_file_locked_or_open %s", tmp_uri);
+    ret = csync_file_locked_or_open_ext(tmp_uri);
+    SAFE_FREE(tmp_uri);
+    return ret;
 }

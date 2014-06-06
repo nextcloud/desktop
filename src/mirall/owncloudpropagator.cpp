@@ -19,9 +19,16 @@
 #include "propagator_qnam.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
+#include "mirall/mirallconfigfile.h"
 #include "mirall/utility.h"
 
+#ifdef Q_OS_WIN
+#include <windef.h>
+#include <winbase.h>
+#endif
+
 #include <QStack>
+#include <QFileInfo>
 
 namespace Mirall {
 
@@ -56,10 +63,17 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 
     switch( status ) {
     case SyncFileItem::SoftError:
-        // do not blacklist in case of soft error.
-        break;
     case SyncFileItem::FatalError:
+        // do not blacklist in case of soft error or fatal error.
+        break;
     case SyncFileItem::NormalError:
+#ifdef OWNCLOUD_5XX_NO_BLACKLIST
+        if (_item._httpErrorCode / 100 == 5) {
+            // In this configuration, never blacklist error 5xx
+            qDebug() << "Do not blacklist error " << _item._httpErrorCode;
+            break;
+        }
+#endif
         _propagator->_journal->updateBlacklistEntry( record );
         break;
     case SyncFileItem::Success:
@@ -124,7 +138,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
             _restoreJob.reset(newJob);
             connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
                     this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
-            _restoreJob->start();
+            QMetaObject::invokeMethod(newJob, "start");
         }
         return true;
     }
@@ -145,6 +159,8 @@ void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
         done( item._status, tr("A file or directory was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
     }
 }
+
+// ================================================================================
 
 PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
     switch(item._instruction) {
@@ -203,10 +219,23 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
     QVector<PropagatorJob*> directoriesToRemove;
     QString removedDirectory;
     foreach(const SyncFileItem &item, items) {
-        if (item._instruction == CSYNC_INSTRUCTION_REMOVE
-            && !removedDirectory.isEmpty() && item._file.startsWith(removedDirectory)) {
-            //already taken care of.  (by the removal of the parent directory)
-            continue;
+
+        if (!removedDirectory.isEmpty() && item._file.startsWith(removedDirectory)) {
+            // this is an item in a directory which is going to be removed.
+            if (item._instruction == CSYNC_INSTRUCTION_REMOVE) {
+                //already taken care of.  (by the removal of the parent directory)
+                continue;
+            } else if (item._instruction == CSYNC_INSTRUCTION_NEW && item._isDirectory) {
+                // create a new directory within a deleted directory? That can happen if the directory
+                // etag were not fetched properly on the previous sync because the sync was aborted
+                // while uploading this directory (which is now removed).  We can ignore it.
+                continue;
+            } else if (item._instruction == CSYNC_INSTRUCTION_IGNORE) {
+                continue;
+            }
+
+            qWarning() << "WARNING:  Job within a removed directory?  This should not happen!"
+                       << item._file << item._instruction;
         }
 
         while (!item.destination().startsWith(directories.top().first)) {
@@ -217,11 +246,21 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
             PropagateDirectory *dir = new PropagateDirectory(this, item);
             dir->_firstJob.reset(createJob(item));
             if (item._instruction == CSYNC_INSTRUCTION_REMOVE) {
-                //We do the removal of directories at the end
+                //We do the removal of directories at the end, because there might be moves from
+                // this directories that will happen later.
                 directoriesToRemove.append(dir);
                 removedDirectory = item._file + "/";
+
+                // We should not update the etag of parent directories of the removed directory
+                // since it would be done before the actual remove (issue #1845)
+                // NOTE: Currently this means that we don't update those etag at all in this sync,
+                //       but it should not be a problem, they will be updated in the next sync.
+                for (int i = 0; i < directories.size(); ++i) {
+                    directories[i].second->_item._should_update_etag = false;
+                }
             } else {
-                directories.top().second->append(dir);
+                PropagateDirectory* currentDirJob = directories.top().second;
+                currentDirJob->append(dir);
             }
             directories.push(qMakePair(item.destination() + "/" , dir));
         } else if (PropagateItemJob* current = createJob(item)) {
@@ -235,7 +274,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
 
     connect(_rootJob.data(), SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
     connect(_rootJob.data(), SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
-    connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SIGNAL(finished()));
+    connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished()));
 
     qDebug() << (useLegacyJobs() ? "Using legacy libneon/HTTP sequential code path" : "Using QNAM/HTTP parallel code path");
 
@@ -274,6 +313,58 @@ bool OwncloudPropagator::useLegacyJobs()
     return env=="true" || env =="1";
 }
 
+int OwncloudPropagator::httpTimeout()
+{
+    static int timeout;
+    if (!timeout) {
+        timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
+        if (timeout == 0) {
+            MirallConfigFile cfg;
+            timeout = cfg.timeout();
+        }
+
+    }
+    return timeout;
+}
+
+bool OwncloudPropagator::localFileNameClash( const QString& relFile )
+{
+    bool re = false;
+    const QString file( _localDir + relFile );
+
+    if( !file.isEmpty() && Utility::fsCasePreserving() ) {
+#ifdef Q_OS_MAC
+        QFileInfo fileInfo(file);
+        if (!fileInfo.exists()) {
+            re = false;
+        } else {
+            re = ( ! fileInfo.canonicalFilePath().endsWith(relFile, Qt::CaseSensitive) );
+        }
+#elif defined(Q_OS_WIN)
+        const QString file( _localDir + relFile );
+        qDebug() << "CaseClashCheck for " << file;
+        WIN32_FIND_DATA FindFileData;
+        HANDLE hFind;
+
+        hFind = FindFirstFileW( (wchar_t*)file.utf16(), &FindFileData);
+        if (hFind == INVALID_HANDLE_VALUE) {
+            //qDebug() << "FindFirstFile failed " << GetLastError();
+            // returns false.
+        } else {
+            QString realFileName = QString::fromWCharArray( FindFileData.cFileName );
+            qDebug() << Q_FUNC_INFO << "Real file name is " << realFileName;
+            FindClose(hFind);
+
+            if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
+                re = true;
+            }
+        }
+#endif
+    }
+    return re;
+}
+
+// ================================================================================
 
 void PropagateDirectory::start()
 {
@@ -331,6 +422,5 @@ void PropagateDirectory::slotSubJobReady()
         emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
     }
 }
-
 
 }

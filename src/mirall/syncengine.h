@@ -39,12 +39,12 @@ class SyncJournalDb;
 
 class OwncloudPropagator;
 
-void csyncLogCatcher(int /*verbosity*/,
+void OWNCLOUDSYNC_EXPORT csyncLogCatcher(int /*verbosity*/,
                      const char */*function*/,
                      const char *buffer,
                      void */*userdata*/);
 
-class SyncEngine : public QObject
+class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
@@ -101,7 +101,10 @@ private:
     int treewalkFile( TREE_WALK_FILE*, bool );
     bool checkBlacklisting( SyncFileItem *item );
 
-    static QMutex _syncMutex;
+    // cleanup and emit the finished signal
+    void finalize();
+
+    static bool _syncRunning; //true when one sync is running somewhere (for debugging)
     SyncFileItemVector _syncedItems;
 
     CSYNC *_csync_ctx;

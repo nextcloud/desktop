@@ -28,7 +28,7 @@ namespace Mirall {
 
 class SyncResult;
 
-class Theme : public QObject
+class OWNCLOUDSYNC_EXPORT Theme : public QObject
 {
     Q_OBJECT
 public:
@@ -79,6 +79,7 @@ public:
      */
     virtual QString configFileName() const = 0;
 
+#ifndef TOKEN_AUTH_ONLY
     /**
       * the icon that is shown in the tray context menu left of the folder name
       */
@@ -91,6 +92,7 @@ public:
 
     virtual QIcon   folderDisabledIcon() const = 0;
     virtual QIcon   applicationIcon() const = 0;
+#endif
 
     virtual QString statusHeaderText( SyncResult::Status ) const;
     virtual QString version() const;
@@ -130,6 +132,7 @@ public:
     /** colored, white or black */
     QString systrayIconFlavor(bool mono) const;
 
+#ifndef TOKEN_AUTH_ONLY
     /**
      * Override to use a string or a custom image name.
      * The default implementation will try to look up
@@ -154,6 +157,7 @@ public:
      * @return banner for the setup wizard.
      */
     virtual QPixmap wizardHeaderBanner() const;
+#endif
 
     /**
      * About dialog contents

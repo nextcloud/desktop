@@ -53,6 +53,7 @@ class PUTFileJob : public AbstractNetworkJob {
     Q_OBJECT
     QIODevice* _device;
     QMap<QByteArray, QByteArray> _headers;
+    QString _errorString;
 
 public:
     // Takes ownership of the device
@@ -66,6 +67,13 @@ public:
         emit finishedSignal();
         return true;
     }
+
+    QString errorString() {
+        return _errorString.isEmpty() ? reply()->errorString() : _errorString;
+    };
+
+    virtual void slotTimeout();
+
 
 signals:
     void finishedSignal();
@@ -91,7 +99,7 @@ private slots:
     void slotUploadProgress(qint64,qint64);
     void abort();
     void startNextChunk();
-
+    void finalize(const Mirall::SyncFileItem&);
 };
 
 
@@ -101,14 +109,19 @@ class GETFileJob : public AbstractNetworkJob {
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
     QByteArray _expectedEtagForResume;
+    SyncFileItem::Status _errorStatus;
+    QUrl _directDownloadUrl;
+    QByteArray _etag;
 public:
 
     // DOES NOT take owncership of the device.
     explicit GETFileJob(Account* account, const QString& path, QIODevice *device,
                         const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
-                        QObject* parent = 0)
-    : AbstractNetworkJob(account, path, parent),
-      _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume) {}
+                        QObject* parent = 0);
+    // For directDownloadUrl:
+    explicit GETFileJob(Account* account, const QUrl& url, QIODevice *device,
+                        const QMap<QByteArray, QByteArray> &headers,
+                        QObject* parent = 0);
 
     virtual void start();
     virtual bool finished() {
@@ -119,6 +132,13 @@ public:
     QString errorString() {
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;
     };
+
+    SyncFileItem::Status errorStatus() { return _errorStatus; }
+
+    virtual void slotTimeout();
+
+    QByteArray &etag() { return _etag; }
+
 
 signals:
     void finishedSignal();

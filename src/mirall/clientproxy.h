@@ -18,12 +18,13 @@
 #include <QNetworkProxy>
 
 #include <csync.h>
+#include "utility.h"
 
 namespace Mirall {
 
 class MirallConfigFile;
 
-class ClientProxy : public QObject
+class OWNCLOUDSYNC_EXPORT ClientProxy : public QObject
 {
     Q_OBJECT
 public:

@@ -14,16 +14,18 @@
 #ifndef MIRALL_CREDS_CREDENTIALS_FACTORY_H
 #define MIRALL_CREDS_CREDENTIALS_FACTORY_H
 
-class AbstractCredentials;
+#include "owncloudlib.h"
+
 class QString;
 
 namespace Mirall
 {
+class AbstractCredentials;
 
 namespace CredentialsFactory
 {
 
-AbstractCredentials* create(const QString& type);
+OWNCLOUDSYNC_EXPORT AbstractCredentials* create(const QString& type);
 
 } // ns CredentialsFactory
 

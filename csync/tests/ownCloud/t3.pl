@@ -67,6 +67,13 @@ system( "rm -rf " . localDir() . 'remoteToLocal1' );
 system( "echo \"my file\" >> /tmp/myfile.txt" );
 put_to_dir( '/tmp/myfile.txt', 'remoteToLocal1/rtl1/rtl11' );
 
+# Also add a file with symbols
+my $symbolName = "a\%b#c\$d-e";
+
+system( "echo \"my symbols\" >> /tmp/$symbolName" );
+put_to_dir( "/tmp/$symbolName", 'remoteToLocal1/rtl1/rtl11' );
+
+
 my $fileid = remoteFileId( 'remoteToLocal1/rtl1/', 'rtl11' );
 my $fid2 =   remoteFileId( 'remoteToLocal1/rtl1/', 'La ced' );
 assert($fid2 eq "" or $fileid ne $fid2, "File IDs are equal" );
@@ -89,6 +96,9 @@ assert( ! -e localDir().'remoteToLocal1' );
 printInfo("Move file and create another one with the same name.");
 move( localDir() . 'newdir/myfile.txt', localDir() . 'newdir/oldfile.txt' );
 system( "echo \"super new\" >> " . localDir() . 'newdir/myfile.txt' );
+
+#Move a file with symbols as well
+move( localDir() . "newdir/$symbolName", localDir() . "newdir/$symbolName.new" );
 
 #Add some files for the next test.
 system( "echo \"un\" > " . localDir() . '1.txt' );

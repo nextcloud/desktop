@@ -32,10 +32,6 @@ static void setup(void **state) {
     rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
     assert_int_equal(rc, 0);
 
-    free(csync->options.config_dir);
-    csync->options.config_dir = c_strdup("/tmp/check_csync1/");
-    assert_non_null(csync->options.config_dir);
-
     *state = csync;
 }
 
@@ -45,10 +41,6 @@ static void setup_init(void **state) {
 
     rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
     assert_int_equal(rc, 0);
-
-    free(csync->options.config_dir);
-    csync->options.config_dir = c_strdup("/tmp/check_csync1/");
-    assert_non_null(csync->options.config_dir);
 
     rc = csync_exclude_load(csync, SOURCEDIR "/../sync-exclude.lst");
     assert_int_equal(rc, 0);

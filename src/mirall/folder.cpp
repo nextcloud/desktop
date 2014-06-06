@@ -49,8 +49,11 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
 #include <QTimer>
 #include <QUrl>
 #include <QDir>
+
+#ifndef TOKEN_AUTH_ONLY
 #include <QMessageBox>
 #include <QPushButton>
+#endif
 
 namespace Mirall {
 
@@ -88,10 +91,29 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
 bool Folder::init()
 {
-    QString url = Utility::toCSyncScheme(remoteUrl().toString());
+    Account *account = AccountManager::instance()->account();
+    if (!account) {
+        // Normaly this should not happen, but it could be that there is something
+        // wrong with the config and it is better not to crash.
+        qWarning() << "WRN: No account  configured, can't sync";
+        return false;
+    }
+
+    // We need to reconstruct the url because the path need to be fully decoded, as csync will  re-encode the path:
+    //  Remember that csync will just append the filename to the path and pass it to the vio plugin.
+    //  csync_owncloud will then re-encode everything.
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QUrl url = remoteUrl();
+    QString url_string = url.scheme() + QLatin1String("://") + url.authority(QUrl::EncodeDelimiters) + url.path(QUrl::FullyDecoded);
+#else
+    // Qt4 was broken anyway as it did not encode the '#' as it should have done  (it was actually a provlem when parsing the path from QUrl::setPath
+    QString url_string = remoteUrl().toString();
+#endif
+    url_string = Utility::toCSyncScheme(url_string);
+
     QString localpath = path();
 
-    if( csync_create( &_csync_ctx, localpath.toUtf8().data(), url.toUtf8().data() ) < 0 ) {
+    if( csync_create( &_csync_ctx, localpath.toUtf8().data(), url_string.toUtf8().data() ) < 0 ) {
         qDebug() << "Unable to create csync-context!";
         slotSyncError(tr("Unable to create csync-context"));
         _csync_ctx = 0;
@@ -100,9 +122,7 @@ bool Folder::init()
         csync_set_log_level( 11 );
 
         MirallConfigFile cfgFile;
-        csync_set_config_dir( _csync_ctx, cfgFile.configPath().toUtf8() );
 
-        setIgnoredFiles();
         if (Account *account = AccountManager::instance()->account()) {
             account->credentials()->syncContextPreInit(_csync_ctx);
         } else {
@@ -298,8 +318,7 @@ void Folder::bubbleUpSyncResult()
 
     SyncRunFileLog syncFileLog;
 
-    syncFileLog.start(path(), _stopWatch );
-    _stopWatch.reset();
+    syncFileLog.start(path(), _engine ? _engine->stopWatch() : Utility::StopWatch() );
 
     QElapsedTimer timer;
     timer.start();
@@ -464,7 +483,7 @@ void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
     _syncResult.setSyncFileItemVector(items);
 }
 
-void Folder::slotTerminateSync(bool block)
+void Folder::slotTerminateSync()
 {
     qDebug() << "folder " << alias() << " Terminating!";
 
@@ -474,14 +493,10 @@ void Folder::slotTerminateSync(bool block)
         // Do not display an error message, user knows his own actions.
         // _errors.append( tr("The CSync thread terminated.") );
         // _csyncError = true;
-        if (!block) {
-            setSyncState(SyncResult::SyncAbortRequested);
-            return;
-        }
-
-        slotSyncFinished();
+        setSyncEnabled(false);
+        setSyncState(SyncResult::SyncAbortRequested);
+        return;
     }
-    setSyncEnabled(false);
 }
 
 // This removes the csync File database
@@ -588,6 +603,7 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)));
     connect(_engine.data(), SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
+    connect(_engine.data(), SIGNAL(jobCompleted(SyncFileItem)), this, SLOT(slotJobCompleted(SyncFileItem)));
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
@@ -627,7 +643,6 @@ void Folder::slotSyncFinished()
     qDebug() << "-> CSync Finished slot with error " << _csyncError << "warn count" << _syncResult.warnCount();
 
     bubbleUpSyncResult();
-    _stopWatch = _engine->stopWatch();
 
     _engine.reset(0);
     // _watcher->setEventsEnabledDelayed(2000);
@@ -650,28 +665,49 @@ void Folder::slotSyncFinished()
     }
 
     emit syncStateChange();
+
+    // The syncFinished result that is to be triggered here makes the folderman
+    // clearing the current running sync folder marker.
+    // Lets wait a bit to do that because, as long as this marker is not cleared,
+    // file system change notifications are ignored for that folder. And it takes
+    // some time under certain conditions to make the file system notifications
+    // all come in.
+    QTimer::singleShot(200, this, SLOT(slotEmitFinishedDelayed() ));
+
+}
+
+void Folder::slotEmitFinishedDelayed()
+{
     emit syncFinished( _syncResult );
 }
+
+
 
 // the progress comes without a folder and the valid path set. Add that here
 // and hand the result over to the progress dispatcher.
 void Folder::slotTransmissionProgress(const Progress::Info &pi)
 {
-    if (!pi._lastCompletedItem.isEmpty()
-            && Progress::isWarningKind(pi._lastCompletedItem._status)) {
-        // Count all error conditions.
-        _syncResult.setWarnCount(_syncResult.warnCount()+1);
-    }
-
-    // remember problems happening to set the correct Sync status in slot slotCSyncFinished.
     if( pi._completedFileCount ) {
+        // No job completed yet, this is the beginning of a sync, set the warning level to 0
         _syncResult.setWarnCount(0);
     }
     ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
 }
 
+// a job is completed: count the errors and forward to the ProgressDispatcher
+void Folder::slotJobCompleted(const SyncFileItem &item)
+{
+    if (Progress::isWarningKind(item._status)) {
+        // Count all error conditions.
+        _syncResult.setWarnCount(_syncResult.warnCount()+1);
+    }
+    emit ProgressDispatcher::instance()->jobCompleted(alias(), item);
+}
+
+
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel)
 {
+#ifndef TOKEN_AUTH_ONLY
     QString msg = direction == SyncFileItem::Down ?
         tr("This sync would remove all the files in the local sync folder '%1'.\n"
            "If you or your administrator have reset your account on the server, choose "
@@ -691,7 +727,43 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *
     *cancel = msgBox.clickedButton() == keepBtn;
     if (*cancel) {
         wipe();
+        // speed up next sync
+        _lastEtag = QString();
+        QTimer::singleShot(50, this, SLOT(slotPollTimerTimeout()));
     }
+#endif
+}
+
+// compute the file status of a directory recursively. It returns either
+// "all in sync" or "needs update" or "error", no more details.
+SyncFileStatus Folder::recursiveFolderStatus( const QString& fileName )
+{
+    QDir dir(path() + fileName);
+
+    const QStringList dirEntries = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot );
+
+    foreach( const QString entry, dirEntries ) {
+        QFileInfo fi(entry);
+        SyncFileStatus sfs;
+        if( fi.isDir() ) {
+            sfs = recursiveFolderStatus( fileName + QLatin1Char('/') + entry );
+        } else {
+            QString fs( fileName + QLatin1Char('/') + entry );
+            if( fileName.isEmpty() ) {
+                // toplevel, no slash etc. needed.
+                fs = entry;
+            }
+            sfs = fileStatus( fs );
+        }
+
+        if( sfs == FILE_STATUS_STAT_ERROR || sfs == FILE_STATUS_ERROR ) {
+            return FILE_STATUS_ERROR;
+        }
+        if( sfs != FILE_STATUS_SYNC) {
+            return FILE_STATUS_EVAL;
+        }
+    }
+    return FILE_STATUS_SYNC;
 }
 
 SyncFileStatus Folder::fileStatus( const QString& fileName )
@@ -713,7 +785,11 @@ SyncFileStatus Folder::fileStatus( const QString& fileName )
     // FIXME: Find a way for STATUS_ERROR
     SyncFileStatus stat = FILE_STATUS_NONE;
 
-    QString file = path() + fileName;
+    QString file = fileName;
+    if( path() != QLatin1String("/") ) {
+        file = path() + fileName;
+    }
+
     QFileInfo fi(file);
 
     if( !fi.exists() ) {
@@ -737,20 +813,25 @@ SyncFileStatus Folder::fileStatus( const QString& fileName )
         }
     }
 
-    SyncJournalFileRecord rec = _journal.getFileRecord(fileName);
-    if( stat == FILE_STATUS_NONE && !rec.isValid() ) {
-        stat = FILE_STATUS_NEW;
-    }
+    if( type == CSYNC_FTW_TYPE_DIR ) {
+        // compute recursive status of the directory
+        stat = recursiveFolderStatus( fileName );
+    } else {
+        if( stat == FILE_STATUS_NONE ) {
+            SyncJournalFileRecord rec = _journal.getFileRecord(fileName);
+            if( !rec.isValid() ) {
+                stat = FILE_STATUS_NEW;
+            }
 
-    // file was locally modified.
-    if( stat == FILE_STATUS_NONE && fi.lastModified() != rec._modtime ) {
-        stat = FILE_STATUS_EVAL;
+            // file was locally modified.
+            if( stat == FILE_STATUS_NONE && fi.lastModified() != rec._modtime ) {
+                stat = FILE_STATUS_EVAL;
+            }
+        }
+        if( stat == FILE_STATUS_NONE ) {
+            stat = FILE_STATUS_SYNC;
+        }
     }
-
-    if( stat == FILE_STATUS_NONE ) {
-        stat = FILE_STATUS_SYNC;
-    }
-
     return stat;
 }
 

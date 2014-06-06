@@ -1,4 +1,5 @@
 /*
+ *
  * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -11,7 +12,14 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+#include <QtGlobal>
+
 #include <signal.h>
+
+#ifdef Q_OS_UNIX
+#include <sys/time.h>
+#include <sys/resource.h>
+#endif
 
 #include "mirall/application.h"
 #include "mirall/theme.h"
@@ -51,6 +59,20 @@ int main(int argc, char **argv)
         return 0;
     }
 
+    // check a environment variable for core dumps
+#ifdef Q_OS_UNIX
+    if( !qgetenv("OWNCLOUD_CORE_DUMP").isEmpty() ) {
+        struct rlimit core_limit;
+        core_limit.rlim_cur = RLIM_INFINITY;
+        core_limit.rlim_max = RLIM_INFINITY;
+
+        if (setrlimit(RLIMIT_CORE, &core_limit) < 0) {
+            fprintf(stderr, "Unable to set core dump limit\n");
+        } else {
+            qDebug() << "Core dumps enabled";
+        }
+    }
+#endif
     // if handleStartup returns true, main()
     // needs to terminate here, e.g. because
     // the updater is triggered

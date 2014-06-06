@@ -23,8 +23,6 @@ namespace Mirall {
 SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     : MacPreferencesWindow(parent)
 {
-    setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
-
     setObjectName("SettingsMac"); // required as group for saveGeometry call
 
     setWindowTitle(tr("%1").arg(Theme::instance()->appNameGUI()));
@@ -51,8 +49,6 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
 
     connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
              _accountSettings, SLOT(slotSetProgress(QString, Progress::Info)) );
-    connect( ProgressDispatcher::instance(), SIGNAL(progressSyncProblem(QString,Progress::SyncProblem)),
-             _accountSettings, SLOT(slotProgressProblem(QString,Progress::SyncProblem)) );
 
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
