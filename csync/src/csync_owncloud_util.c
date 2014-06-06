@@ -375,6 +375,13 @@ void fill_webdav_properties_into_resource(struct resource* newres, const ne_prop
     }
     if (perm && strlen(perm) < sizeof(newres->remotePerm)) {
         strncpy(newres->remotePerm, perm, sizeof(newres->remotePerm));
+    } else if (perm && strlen(perm) == 0) {
+        // special meaning for our code: server returned permissions but are empty
+        // meaning only reading is allowed for this resource
+        newres->remotePerm[0] = ' ';
+        // see _csync_detect_update()
+    } else {
+        // old server, keep NULL in newres->remotePerm
     }
 }
 

@@ -324,7 +324,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
         if (file->should_update_etag && !item._isDirectory) {
-            // Update the database now already  (new fileid or etag)
+            // Update the database now already  (new fileid or etag or remotePerm)
             _journal->setFileRecord(SyncJournalFileRecord(item, _localPath + item._file));
             item._should_update_etag = false;
         }

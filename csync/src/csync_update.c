@@ -264,7 +264,19 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", path);
             ctx->remote.read_from_db = true;
         }
+        if (ctx->current == REMOTE_REPLICA
+                // DB perm; true for NULL or empty (on update)
+                && strlen(tmp->remotePerm) == 0
+                // remote perm (even if remote perm empty it will be ' ' see fill_webdav_properties_into_resource
+                && strlen(fs->remotePerm) > 0)
+        {
+            /* remotePerm received from server but none in DB.
+             * Which means we need to update the DB.
+             * (upgrade from owncloud x to owncloud 7 for instence) */
+            st->should_update_etag = true; // write to DB after PROPFIND
+            ctx->remote.read_from_db = false; // get dirs via PROPFIND
 
+        }
         if (!c_streq(fs->file_id, tmp->file_id) && ctx->current == REMOTE_REPLICA) {
             /* file id has changed. Which means we need to update the DB.
              * (upgrade from owncloud 5 to owncloud 6 for instence) */

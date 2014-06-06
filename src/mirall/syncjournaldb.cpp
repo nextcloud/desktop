@@ -385,7 +385,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
         QString fileId( record._fileId);
         if( fileId.isEmpty() ) fileId = "";
         QString remotePerm (record._remotePerm);
-        if (remotePerm.isEmpty()) remotePerm = "";
+        if (remotePerm.isEmpty()) remotePerm = QString(); // have NULL in DB (vs empty)
 
         _setFileRecordQuery->bindValue(0, QString::number(phash));
         _setFileRecordQuery->bindValue(1, plen);
