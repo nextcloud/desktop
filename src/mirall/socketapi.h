@@ -44,6 +44,7 @@ private:
     void broadcastMessage(const QString& message);
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket);
+    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket);
 
 private:
     QLocalServer* _localServer;

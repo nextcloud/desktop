@@ -138,95 +138,96 @@ void SocketApi::broadcastMessage(const QString& message)
 
 void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket)
 {
-    bool checkForSyncDirsOnly = false;
     qDebug() << Q_FUNC_INFO << argument;
-    //TODO: do security checks?!
+    QString statusString;
+
+    if( !socket ) {
+        qDebug() << "No valid socket object.";
+        return;
+    }
+
     Folder* folder = FolderMan::instance()->folderForPath( argument );
     // this can happen in offline mode e.g.: nothing to worry about
     if (!folder) {
         DEBUG << "folder offline or not watched:" << argument;
-        checkForSyncDirsOnly = true;
+        statusString = QLatin1String("NOP");
     }
 
     QDir dir(argument);
-    QStringList dirEntries;
-
-    if( checkForSyncDirsOnly ) {
-        dirEntries = dir.entryList(QDir::Dirs);
-    } else {
-        dirEntries = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot );
-    }
-
-    foreach(const QString entry, dirEntries) {
-        QString absoluteFilePath = dir.absoluteFilePath(entry);
-        QString statusString;
-
-        if( checkForSyncDirsOnly ) {
-            Folder *f = FolderMan::instance()->folderForPath(absoluteFilePath);
-
-            if( f ) {
-                statusString = QLatin1String("SYNCDIR");
-                SyncFileStatus sfs = f->recursiveFolderStatus("");
-                if (sfs == FILE_STATUS_ERROR) {
-                    statusString.append(QLatin1String("_ERR"));
-                } else if( sfs == FILE_STATUS_EVAL ) {
-                    statusString.append(QLatin1String("_EVAL"));
-                } else if( sfs == FILE_STATUS_SYNC ) {
-                    // all cool.
-                } else {
-                    qDebug() << "Unexpected directory status!";
-                }
+    if( statusString.isEmpty() ) {
+        const QStringList fileEntries = dir.entryList( QDir::Files );
+        foreach(const QString file, fileEntries) {
+            const QString absoluteFilePath = dir.absoluteFilePath(file);
+            SyncFileStatus fileStatus = folder->fileStatus( absoluteFilePath.mid(folder->path().length()) );
+            if( fileStatus == FILE_STATUS_STAT_ERROR ) {
+                qDebug() << "XXXXXXXXXXXX FileStatus is STAT ERROR for " << absoluteFilePath;
             }
-        } else {
-            SyncFileStatus fileStatus = folder->fileStatus(absoluteFilePath.mid(folder->path().length()));
-            switch(fileStatus)
-            {
-            case FILE_STATUS_NONE:
-                statusString = QLatin1String("NONE");
+            if( fileStatus != FILE_STATUS_SYNC ) {
+                qDebug() << "SyncFileStatus for " << absoluteFilePath << " is " << fileStatus;
+                // we found something that is not in sync
+                statusString = QLatin1String("NEED_SYNC");
                 break;
-            case FILE_STATUS_EVAL:
-                statusString = QLatin1String("EVAL");
-                break;
-            case FILE_STATUS_REMOVE:
-                statusString = QLatin1String("REMOVE");
-                break;
-            case FILE_STATUS_RENAME:
-                statusString = QLatin1String("RENAME");
-                break;
-            case FILE_STATUS_NEW:
-                statusString = QLatin1String("NEW");
-                break;
-            case FILE_STATUS_CONFLICT:
-                statusString = QLatin1String("CONFLICT");
-                break;
-            case FILE_STATUS_IGNORE:
-                statusString = QLatin1String("IGNORE");
-                break;
-            case FILE_STATUS_SYNC:
-                statusString = QLatin1String("SYNC");
-                break;
-            case FILE_STATUS_STAT_ERROR:
-                statusString = QLatin1String("STAT_ERROR");
-                break;
-            case FILE_STATUS_ERROR:
-                statusString = QLatin1String("ERROR");
-                break;
-            case FILE_STATUS_UPDATED:
-                statusString = QLatin1String("UPDATED");
-                break;
-            default:
-                qWarning() << "not all SyncFileStatus items checked!";
-                Q_ASSERT(false);
-                statusString = QLatin1String("NONE");
-
             }
         }
-        if( ! statusString.isEmpty() ) {
-            QString message("%1:%2:%3");
-            message = message.arg("STATUS").arg(statusString).arg(absoluteFilePath);
-            sendMessage(socket, message);
+    }
+
+    if( statusString.isEmpty() ) { // if  it is still empty, we check the dirs recursively.
+        const QStringList dirEntries = dir.entryList( QDir::AllDirs | QDir::NoDotAndDotDot );
+
+        foreach(const QString entry, dirEntries) {
+            QString absoluteFilePath = dir.absoluteFilePath(entry);
+            SyncFileStatus sfs = folder->recursiveFolderStatus( absoluteFilePath.mid(folder->path().length()) );
+            if( sfs != FILE_STATUS_SYNC ) {
+                statusString = QLatin1String("NEED_SYNC");
+                break;
+            }
         }
     }
+
+    if( statusString.isEmpty() ) {
+        statusString = QLatin1String("OK");
+    }
+
+    QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')+argument;
+    sendMessage(socket, message);
+}
+
+void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket)
+{
+    if( !socket ) {
+        qDebug() << "No valid socket object.";
+        return;
+    }
+
+    qDebug() << Q_FUNC_INFO << argument;
+
+    QString statusString;
+
+    Folder* folder = FolderMan::instance()->folderForPath( argument );
+    // this can happen in offline mode e.g.: nothing to worry about
+    if (!folder) {
+        DEBUG << "folder offline or not watched:" << argument;
+        statusString = QLatin1String("NOP");
+    }
+
+    if( statusString.isEmpty() ) {
+        SyncFileStatus fileStatus = folder->fileStatus( argument.mid(folder->path().length()) );
+        if( fileStatus == FILE_STATUS_STAT_ERROR ) {
+            qDebug() << "XXXXXXXXXXXX FileStatus is STAT ERROR for " << argument;
+        }
+        if( fileStatus != FILE_STATUS_SYNC ) {
+            qDebug() << "SyncFileStatus for " << argument << " is " << fileStatus;
+            // we found something that is not in sync
+            statusString = QLatin1String("NEED_SYNC");
+        }
+    }
+
+    if( statusString.isEmpty() ) {
+        statusString = QLatin1String("OK");
+    }
+
+    QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')+argument;
+    sendMessage(socket, message);
 }
 
 } // namespace Mirall
