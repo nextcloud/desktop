@@ -15,7 +15,6 @@
 
 #include "mirall/syncengine.h"
 #include "mirall/account.h"
-#include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
 #include "mirall/logger.h"
 #include "owncloudpropagator.h"
@@ -55,6 +54,7 @@ void csyncLogCatcher(int /*verbosity*/,
 bool SyncEngine::_syncRunning = false;
 
 SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, Mirall::SyncJournalDb* journal)
+    : _uploadLimit(0), _downloadLimit(0)
 {
     _localPath = localPath;
     _remotePath = remotePath;
@@ -586,31 +586,21 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     connect(_propagator.data(), SIGNAL(adjustTotalTransmissionSize(qint64)), this, SLOT(slotAdjustTotalTransmissionSize(qint64)));
     connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()), Qt::QueuedConnection);
 
-    setNetworkLimits();
+    // apply the network limits to the propagator
+    setNetworkLimits(_uploadLimit, _downloadLimit);
 
     _propagator->start(_syncedItems);
 }
 
-void SyncEngine::setNetworkLimits()
+void SyncEngine::setNetworkLimits(int upload, int download)
 {
-    MirallConfigFile cfg;
+    _uploadLimit = upload;
+    _downloadLimit = download;
 
     if( !_propagator ) return;
 
-    int downloadLimit = 0;
-    if (cfg.useDownloadLimit()) {
-        downloadLimit = cfg.downloadLimit() * 1000;
-    }
-    _propagator->_downloadLimit = downloadLimit;
-
-    int uploadLimit = -75; // 75%
-    int useUpLimit = cfg.useUploadLimit();
-    if ( useUpLimit >= 1) {
-        uploadLimit = cfg.uploadLimit() * 1000;
-    } else if (useUpLimit == 0) {
-        uploadLimit = 0;
-    }
-    _propagator->_uploadLimit = uploadLimit;
+    _propagator->_uploadLimit = upload;
+    _propagator->_downloadLimit = download;
 
     int propDownloadLimit = _propagator->_downloadLimit
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
