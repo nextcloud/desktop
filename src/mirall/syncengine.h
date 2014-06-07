@@ -128,8 +128,8 @@ private:
 
     bool _hasFiles; // true if there is at least one file that is not ignored or removed
 
-    int _downloadLimit;
     int _uploadLimit;
+    int _downloadLimit;
 };
 
 
