@@ -51,7 +51,7 @@ public:
 
     SyncFileItem() : _type(UnknownType),  _direction(None), _instruction(CSYNC_INSTRUCTION_NONE),
         _size(0), _should_update_etag(false), _blacklistedInDb(false),
-        _status(NoStatus), _httpErrorCode(0), _requestDuration(0) {}
+        _status(NoStatus), _httpErrorCode(0), _requestDuration(0), _isRestoration(false) {}
 
     friend bool operator==(const SyncFileItem& item1, const SyncFileItem& item2) {
         return item1._file == item2._file;
@@ -97,6 +97,7 @@ public:
     int                  _httpErrorCode;
     QString              _responseTimeStamp;
     quint64              _requestDuration;
+    bool                 _isRestoration; // The original operation was forbidden, and this is a restoration
 
     struct {
         quint64     _size;

@@ -126,6 +126,13 @@ private:
     QHash<QString, QString> _renamedFolders;
     QString adjustRenamedPath(const QString &original);
 
+    /**
+     * check if we are allowed to propagate everything, and if we are not, adjust the instructions
+     * to recover
+     */
+    void checkForPermission();
+    QByteArray getPermissions(const QString& file);
+
     bool _hasFiles; // true if there is at least one file that is not ignored or removed
 
     int _uploadLimit;
