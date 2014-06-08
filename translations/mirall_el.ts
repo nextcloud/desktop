@@ -2111,7 +2111,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="85"/>
         <source>pbSelectLocalFolder</source>
-        <translation type="unfinished"/>
+        <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="107"/>
@@ -2395,7 +2395,7 @@ Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="42"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Αγνοήθηκε</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="44"/>
@@ -2436,7 +2436,7 @@ Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>αγνοείται</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
