@@ -65,12 +65,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="136"/>
         <source>Account Maintenance</source>
-        <translation>アカウント編集</translation>
+        <translation>アカウントの管理</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="145"/>
         <source>Edit Ignored Files</source>
-        <translation>対象外ファイルを編集</translation>
+        <translation>除外ファイルリストを編集</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="152"/>
@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="123"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>&lt;b&gt;注:&lt;/b&gt; 外部ネットワークストレージ、共有フォルダーを含んだフォルダーの場合は、上限値が異なることがあります。</translation>
+        <translation>&lt;b&gt;注:&lt;/b&gt; 外部ネットワークストレージや共有フォルダーを含むフォルダーの場合は、容量の上限値が異なる可能性があります。</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="161"/>
@@ -566,7 +566,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="331"/>
         <source>Choose this to sync the entire account</source>
-        <translation>アカウント全体を同期するには、こちらを選択</translation>
+        <translation>アカウント全体を同期する場合はこちらを選択</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="386"/>
@@ -673,7 +673,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>対象外ファイルを編集</translation>
+        <translation>除外ファイルリストを編集</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="53"/>
@@ -707,22 +707,22 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
         <source>Add Ignore Pattern</source>
-        <translation>対象外ファイルパターンを追加</translation>
+        <translation>除外するファイルパターンを追加</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
         <source>Add a new ignore pattern:</source>
-        <translation>新しい対象外ファイルパターンを追加:</translation>
+        <translation>除外するファイルパターンを新しく追加:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation>対象外ファイルパターンを編集</translation>
+        <translation>除外するファイルパターンを編集</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation>対象外ファイルパターンを編集</translation>
+        <translation>除外するファイルパターンを編集</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -1461,14 +1461,14 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="229"/>
         <source>Currently no files are ignored because of previous errors.</source>
-        <translation>前にエラーが発生したため、無視するファイルはありません</translation>
+        <translation>処理前にエラーが発生したため、ファイルは何も除外されていません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="231"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation>以前のエラーが発生したため、%1 のファイルが無視されていました。
-もう一度同期を実行してください。</translation>
+        <translation>処理前にエラーが発生したため、%1 個のファイルが除外されました。
+これらの同期をもう一度実行してください。</translation>
     </message>
 </context>
 <context>
@@ -1930,7 +1930,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="283"/>
         <source>File is listed on the ignore list.</source>
-        <translation>対象ファイルは無視した一覧に登録しています</translation>
+        <translation>ファイルは除外リストに登録されています。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="286"/>
@@ -2371,7 +2371,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="42"/>
         <source>Ignored</source>
-        <translation>無視しました</translation>
+        <translation>除外しました</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="44"/>
@@ -2452,7 +2452,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="62"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>同期が完了しました。一部のファイルを無視しました。</translation>
+        <translation>同期が完了しました。一部のファイルが除外されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="65"/>
