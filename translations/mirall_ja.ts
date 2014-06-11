@@ -971,7 +971,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="91"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>現在利用可能なアップデートはありません。最新版がインストールされています。</translation>
+        <translation>利用可能なアップデートはありません。最新版がインストールされています。</translation>
     </message>
 </context>
 <context>
@@ -1706,7 +1706,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation>現在のSSL接続に対する警告:</translation>
+        <translation>今回のSSL接続に対する警告:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="170"/>
@@ -2412,7 +2412,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
         <source>ignoring</source>
-        <translation>無視しています</translation>
+        <translation>除外:</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>

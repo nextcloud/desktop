@@ -608,7 +608,7 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="471"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Spojenie vypršalo</translation>
     </message>
 </context>
 <context>
@@ -1249,7 +1249,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="82"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Spojenie vypršalo</translation>
     </message>
 </context>
 <context>
