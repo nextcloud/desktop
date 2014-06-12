@@ -72,6 +72,7 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     , _treatSslErrorsAsFailure(false)
     , _state(Account::Disconnected)
     , _davPath("remote.php/webdav/")
+    , _wasMigrated(false)
 {
     qRegisterMetaType<Account*>("Account*");
 }
@@ -373,6 +374,16 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
             return;
         }
     }
+}
+
+bool Account::wasMigrated()
+{
+    return _wasMigrated;
+}
+
+void Account::setMigrated(bool mig)
+{
+    _wasMigrated = mig;
 }
 
 } // namespace Mirall
