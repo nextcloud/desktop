@@ -185,12 +185,34 @@ assertLocalAndRemoteDir( 'remoteToLocal1', 1);
 printInfo("Move a file from the server");
 $inode = getInode('remoteToLocal1/rtl2/kb1_local_gone.jpg');
 moveRemoteFile( 'remoteToLocal1/rtl2/kb1_local_gone.jpg', 'remoteToLocal1/rtl2/kb1_local_gone2.jpg');
+
+#also create a new directory localy for the next test
+mkdir( localDir().'superNewDir' );
+createLocalFile(localDir().  'superNewDir/f1', 1234 );
+createLocalFile(localDir().  'superNewDir/f2', 1324 );
+my $superNewDirInode = getInode('superNewDir');
+
+
 csync();
-assertLocalAndRemoteDir( 'remoteToLocal1', 1);
+assertLocalAndRemoteDir( '', 1);
 $inode2 = getInode('remoteToLocal1/rtl2/kb1_local_gone2.jpg');
 assert( $inode == $inode2, "Inode has changed 3!");
 
 
+printInfo("Move a newly created directory");
+moveRemoteFile('superNewDir', 'superNewDirRenamed');
+#also add new files in new directory
+createLocalFile(localDir().  'superNewDir/f3' , 2456 );
+$inode = getInode('superNewDir/f3');
+
+csync();
+assertLocalAndRemoteDir( '', 1);
+assert( ! -e localDir().'superNewDir' );
+
+$inode2 = getInode('superNewDir/f3');
+assert( $inode == $inode2, "Inode of f3 changed");
+$inode2 = getInode('superNewDir');
+assert( $superNewDirInode == $inode2, "Inode of superNewDir changed");
 
 cleanup();
 

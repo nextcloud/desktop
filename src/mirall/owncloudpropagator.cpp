@@ -427,6 +427,12 @@ void PropagateDirectory::slotSubJobReady()
             }
 
             if (_item._should_update_etag && _item._instruction != CSYNC_INSTRUCTION_REMOVE) {
+                if (PropagateRemoteMkdir* mkdir = qobject_cast<PropagateRemoteMkdir*>(_firstJob.data())) {
+                    // special case from MKDIR, get the fileId from the job there
+                    if (_item._fileId.isEmpty() && !mkdir->_item._fileId.isEmpty()) {
+                        _item._fileId = mkdir->_item._fileId;
+                    }
+                }
                 SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
                 _propagator->_journal->setFileRecord(record);
             }
