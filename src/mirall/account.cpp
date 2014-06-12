@@ -18,6 +18,7 @@
 #include "mirall/mirallconfigfile.h"
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/quotainfo.h"
+#include "mirall/owncloudtheme.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
 
@@ -113,9 +114,19 @@ void Account::save()
 Account* Account::restore()
 {
     QScopedPointer<QSettings> settings(settingsWithGroup(Theme::instance()->appName()));
+    QScopedPointer<ownCloudTheme> ocTheme(new ownCloudTheme);
+
+    Account *acc = 0;
+    MirallConfigFile cfg;
+
+    if( settings->childKeys().isEmpty() ) {
+        // Now try to open the original ownCloud settings to see if they exist.
+        cfg.setTheme(ocTheme.data());
+    }
+
     if (!settings->childKeys().isEmpty()) {
-        Account *acc = new Account;
-        MirallConfigFile cfg;
+        acc = new Account;
+
         acc->setApprovedCerts(QSslCertificate::fromData(cfg.caCerts()));
         acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
         acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
