@@ -25,6 +25,8 @@ class QStringList;
 
 namespace Mirall {
 
+class SyncFileItem;
+
 class SocketApi : public QObject
 {
 Q_OBJECT
@@ -34,16 +36,18 @@ public:
     virtual ~SocketApi();
 
 private slots:
-    void onNewConnection();
+    void slotNewConnection();
     void onLostConnection();
-    void onReadyRead();
-    void onSyncStateChanged(const QString&);
+    void slotReadSocket();
+    void slotSyncStateChanged(const QString&);
+    void slotJobCompleted(const QString &, const SyncFileItem &);
 
 private:
     void sendMessage(QLocalSocket* socket, const QString& message);
     void broadcastMessage(const QString& message);
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket);
+    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket);
 
 private:
     QLocalServer* _localServer;

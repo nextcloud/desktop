@@ -36,8 +36,6 @@ static void setup(void **state)
     assert_int_equal(rc, 0);
     rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
     assert_int_equal(rc, 0);
-    rc = csync_set_config_dir(csync, "/tmp/check_csync");
-    assert_int_equal(rc, 0);
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
     rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
@@ -59,8 +57,6 @@ static void setup_ftw(void **state)
     rc = system("mkdir -p /tmp/check_csync2");
     assert_int_equal(rc, 0);
     rc = csync_create(&csync, "/tmp", "/tmp");
-    assert_int_equal(rc, 0);
-    rc = csync_set_config_dir(csync, "/tmp/check_csync");
     assert_int_equal(rc, 0);
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
@@ -146,17 +142,6 @@ static csync_vio_file_stat_t* create_fstat(const char *name,
     }
     fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
 
-    fs->uid = 1000;
-    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_UID;
-
-    fs->gid = 1000;
-    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_GID;
-
-    fs->blkcount = 312;
-    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT;
-
-    fs->blksize = 4096;
-    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE;
 
     if (mtime == 0) {
         fs->atime = fs->ctime = fs->mtime = time(&t);

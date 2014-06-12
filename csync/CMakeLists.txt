@@ -27,10 +27,6 @@ include(MacroCopyFile)
 if (NOT WIN32)
     find_package(Iconv)
 endif (NOT WIN32)
-find_package(CMocka)
-if (CMOCKA_FOUND AND UNIT_TESTING)
-    include(AddCMockaTest)
-endif (CMOCKA_FOUND AND UNIT_TESTING)
 
 include(ConfigureChecks.cmake)
 
@@ -47,9 +43,13 @@ endif (MEM_NULL_TESTS)
 
 add_subdirectory(src)
 
-if (CMOCKA_FOUND AND UNIT_TESTING)
-    add_subdirectory(tests)
-endif (CMOCKA_FOUND AND UNIT_TESTING)
+if (UNIT_TESTING)
+    find_package(CMocka)
+    if (CMOCKA_FOUND)
+        include(AddCMockaTest)
+        add_subdirectory(tests)
+    endif (CMOCKA_FOUND)
+endif (UNIT_TESTING)
 
 configure_file(config_csync.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config_csync.h)
 configure_file(config_test.h.cmake  ${CMAKE_CURRENT_BINARY_DIR}/config_test.h)

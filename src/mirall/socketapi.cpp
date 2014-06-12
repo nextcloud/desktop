@@ -19,6 +19,7 @@
 #include "mirall/folderman.h"
 #include "mirall/folder.h"
 #include "mirall/utility.h"
+#include "mirall/theme.h"
 
 #include <QDebug>
 #include <QUrl>
@@ -26,11 +27,10 @@
 #include <QLocalServer>
 #include <QMetaObject>
 #include <QStringList>
+#include <QScopedPointer>
 #include <QFile>
 #include <QDir>
 #include <QApplication>
-
-#include "mirall/utility.h"
 
 namespace Mirall {
 
@@ -42,7 +42,8 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
 {
     QString socketPath;
     if (Utility::isWindows()) {
-        socketPath = QLatin1String("\\\\.\\pipe\\");
+        socketPath = QLatin1String("\\\\.\\pipe\\")
+                + Theme::instance()->appName();
     } else {
         socketPath = localFile.toLocalFile();
 
@@ -51,14 +52,16 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
     // setup socket
     _localServer = new QLocalServer(this);
     QLocalServer::removeServer(socketPath);
-    if(!_localServer->listen(socketPath))
+    if(!_localServer->listen(socketPath)) {
         DEBUG << "can't start server" << socketPath;
-    else
-        DEBUG << "server started" << socketPath;
-    connect(_localServer, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
+    } else {
+        DEBUG << "server started, listening at " << socketPath;
+    }
+    connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), SLOT(onSyncStateChanged(QString)));
+    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), SLOT(slotSyncStateChanged(QString)));
+    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem)), SLOT(slotJobCompleted(QString,SyncFileItem)));
 }
 
 SocketApi::~SocketApi()
@@ -67,11 +70,14 @@ SocketApi::~SocketApi()
     _localServer->close();
 }
 
-void SocketApi::onNewConnection()
+void SocketApi::slotNewConnection()
 {
     QLocalSocket* socket = _localServer->nextPendingConnection();
+    if( ! socket ) {
+        return;
+    }
     DEBUG << "New connection " << socket;
-    connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadSocket()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
     Q_ASSERT(socket->readAll().isEmpty());
 
@@ -87,13 +93,12 @@ void SocketApi::onLostConnection()
 }
 
 
-void SocketApi::onReadyRead()
+void SocketApi::slotReadSocket()
 {
     QLocalSocket* socket = qobject_cast<QLocalSocket*>(sender());
     Q_ASSERT(socket);
 
-    while(socket->canReadLine())
-    {
+    while(socket->canReadLine()) {
         QString line = QString::fromUtf8(socket->readLine()).trimmed();
         QString command = line.split(":").first();
         QString function = QString(QLatin1String("command_")).append(command);
@@ -102,21 +107,35 @@ void SocketApi::onReadyRead()
         int indexOfMethod = this->metaObject()->indexOfMethod(functionWithArguments.toAscii());
 
         QString argument = line.remove(0, command.length()+1).trimmed();
-        if(indexOfMethod != -1)
-        {
+        if(indexOfMethod != -1) {
             QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(QLocalSocket*, socket));
-        }
-        else
-        {
+        } else {
             DEBUG << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
         }
     }
 }
 
-void SocketApi::onSyncStateChanged(const QString&)
+void SocketApi::slotSyncStateChanged(const QString&)
 {
     broadcastMessage("UPDATE_VIEW");
 }
+
+void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item)
+{
+    Folder *f = FolderMan::instance()->folder(folder);
+    if (!f)
+        return;
+
+    const QString path = f->path() + item.destination();
+
+    QString command = QLatin1String("OK");
+    if (Progress::isWarningKind(item._status)) {
+        command = QLatin1String("ERROR");
+    }
+
+    broadcastMessage(QLatin1String("BROADCAST:") + command + QLatin1Char(':') + path);
+}
+
 
 
 void SocketApi::sendMessage(QLocalSocket* socket, const QString& message)
@@ -138,66 +157,95 @@ void SocketApi::broadcastMessage(const QString& message)
 void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket)
 {
     qDebug() << Q_FUNC_INFO << argument;
-    //TODO: do security checks?!
-    Folder* folder = FolderMan::instance()->folderForPath( argument );
-    // this can happen in offline mode e.g.: nothing to worry about
-    if(!folder)
-    {
-        DEBUG << "folder offline or not watched:" << argument;
+    QString statusString;
+
+    if( !socket ) {
+        qDebug() << "No valid socket object.";
         return;
     }
 
-    QDir dir(argument);
-    foreach(QString entry, dir.entryList(QDir::AllEntries|QDir::NoDotAndDotDot))
-    {
-        QString absoluteFilePath = dir.absoluteFilePath(entry);
-        QString statusString;
-        SyncFileStatus fileStatus = folder->fileStatus(absoluteFilePath.mid(folder->path().length()));
-        switch(fileStatus)
-        {
-            case FILE_STATUS_NONE:
-                statusString = QLatin1String("STATUS_NONE");
-                break;
-            case FILE_STATUS_EVAL:
-                statusString = QLatin1String("STATUS_EVAL");
-                break;
-            case FILE_STATUS_REMOVE:
-                statusString = QLatin1String("STATUS_REMOVE");
-                break;
-            case FILE_STATUS_RENAME:
-                statusString = QLatin1String("STATUS_RENAME");
-                break;
-            case FILE_STATUS_NEW:
-                statusString = QLatin1String("STATUS_NEW");
-                break;
-            case FILE_STATUS_CONFLICT:
-                statusString = QLatin1String("STATUS_CONFLICT");
-                break;
-            case FILE_STATUS_IGNORE:
-                statusString = QLatin1String("STATUS_IGNORE");
-                break;
-            case FILE_STATUS_SYNC:
-                statusString = QLatin1String("STATUS_SYNC");
-                break;
-            case FILE_STATUS_STAT_ERROR:
-                statusString = QLatin1String("STATUS_STAT_ERROR");
-                break;
-            case FILE_STATUS_ERROR:
-                statusString = QLatin1String("STATUS_ERROR");
-                break;
-            case FILE_STATUS_UPDATED:
-                statusString = QLatin1String("STATUS_UPDATED");
-                break;
-            default:
-                qWarning() << "not all SyncFileStatus items checked!";
-                Q_ASSERT(false);
-                statusString = QLatin1String("STATUS_NONE");
-
-        }
-        QString message("%1:%2:%3");
-        message = message.arg("STATUS").arg(statusString).arg(absoluteFilePath);
-        sendMessage(socket, message);
+    Folder* folder = FolderMan::instance()->folderForPath( argument );
+    // this can happen in offline mode e.g.: nothing to worry about
+    if (!folder) {
+        DEBUG << "folder offline or not watched:" << argument;
+        statusString = QLatin1String("NOP");
     }
+
+    QDir dir(argument);
+    if( statusString.isEmpty() ) {
+        const QStringList fileEntries = dir.entryList( QDir::Files );
+        foreach(const QString file, fileEntries) {
+            const QString absoluteFilePath = dir.absoluteFilePath(file);
+            SyncFileStatus fileStatus = folder->fileStatus( absoluteFilePath.mid(folder->path().length()) );
+            if( fileStatus == FILE_STATUS_STAT_ERROR ) {
+                qDebug() << "XXXXXXXXXXXX FileStatus is STAT ERROR for " << absoluteFilePath;
+            }
+            if( fileStatus != FILE_STATUS_SYNC ) {
+                qDebug() << "SyncFileStatus for " << absoluteFilePath << " is " << fileStatus;
+                // we found something that is not in sync
+                statusString = QLatin1String("NEED_SYNC");
+                break;
+            }
+        }
+    }
+
+    if( statusString.isEmpty() ) { // if  it is still empty, we check the dirs recursively.
+        const QStringList dirEntries = dir.entryList( QDir::AllDirs | QDir::NoDotAndDotDot );
+
+        foreach(const QString entry, dirEntries) {
+            QString absoluteFilePath = dir.absoluteFilePath(entry);
+            SyncFileStatus sfs = folder->recursiveFolderStatus( absoluteFilePath.mid(folder->path().length()) );
+            if( sfs != FILE_STATUS_SYNC ) {
+                statusString = QLatin1String("NEED_SYNC");
+                break;
+            }
+        }
+    }
+
+    if( statusString.isEmpty() ) {
+        statusString = QLatin1String("OK");
+    }
+
+    QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')+argument;
+    sendMessage(socket, message);
+}
+
+void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket)
+{
+    if( !socket ) {
+        qDebug() << "No valid socket object.";
+        return;
+    }
+
+    qDebug() << Q_FUNC_INFO << argument;
+
+    QString statusString;
+
+    Folder* folder = FolderMan::instance()->folderForPath( argument );
+    // this can happen in offline mode e.g.: nothing to worry about
+    if (!folder) {
+        DEBUG << "folder offline or not watched:" << argument;
+        statusString = QLatin1String("NOP");
+    }
+
+    if( statusString.isEmpty() ) {
+        SyncFileStatus fileStatus = folder->fileStatus( argument.mid(folder->path().length()) );
+        if( fileStatus == FILE_STATUS_STAT_ERROR ) {
+            qDebug() << "XXXXXXXXXXXX FileStatus is STAT ERROR for " << argument;
+        }
+        if( fileStatus != FILE_STATUS_SYNC ) {
+            qDebug() << "SyncFileStatus for " << argument << " is " << fileStatus;
+            // we found something that is not in sync
+            statusString = QLatin1String("NEED_SYNC");
+        }
+    }
+
+    if( statusString.isEmpty() ) {
+        statusString = QLatin1String("OK");
+    }
+
+    QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')+argument;
+    sendMessage(socket, message);
 }
 
 } // namespace Mirall

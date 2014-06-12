@@ -44,13 +44,6 @@
 extern "C" {
 #endif
 
-/*
- * csync file declarations
- */
-#define CSYNC_CONF_DIR ".ocsync"
-#define CSYNC_CONF_FILE "ocsync.conf"
-#define CSYNC_EXCLUDE_FILE "ocsync_exclude.conf"
-
 /**
   * Instruction enum. In the file traversal structure, it describes
   * the csync state of a file.
@@ -59,7 +52,7 @@ enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
 
   CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
-                                     just use in csync_status_ok */
+                                     */
   CSYNC_STATUS_UNSUCCESSFUL,
   CSYNC_STATUS_NO_LOCK, /* OBSOLETE  does not happen anymore */
   CSYNC_STATUS_STATEDB_LOAD_ERROR,
@@ -102,7 +95,8 @@ enum csync_status_codes_e {
     /* Codes for file individual status: */
     CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK,
     CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST,
-    CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS
+    CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS,
+    CYSNC_STATUS_FILE_LOCKED_OR_OPEN
 };
 
 typedef enum csync_status_codes_e CSYNC_STATUS;
@@ -169,6 +163,7 @@ enum csync_notify_type_e {
 struct csync_tree_walk_file_s {
     const char *path;
     int64_t     size;
+    int64_t     inode;
     time_t      modtime;
 #ifdef _WIN32
     uint32_t    uid;
@@ -187,6 +182,8 @@ struct csync_tree_walk_file_s {
     const char *rename_path;
     const char *etag;
     const char *file_id;
+    char *directDownloadUrl;
+    char *directDownloadCookies;
     struct {
         int64_t     size;
         time_t      modtime;
@@ -212,14 +209,6 @@ typedef void (*csync_log_callback) (int verbosity,
                                     const char *buffer,
                                     void *userdata);
 
-/**
- * @brief Check internal csync status.
- *
- * @param csync  The context to check.
- *
- * @return  true if status is error free, false for error states.
- */
-bool csync_status_ok(CSYNC *ctx);
 
 /**
  * @brief Allocate a csync context.
@@ -332,62 +321,6 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path);
 void csync_clear_exclude_list(CSYNC *ctx);
 
 /**
- * @brief Get the config directory.
- *
- * @param ctx          The csync context.
- *
- * @return             The path of the config directory or NULL on error.
- */
-const char *csync_get_config_dir(CSYNC *ctx);
-
-/**
- * @brief Change the config directory.
- *
- * @param ctx           The csync context.
- *
- * @param path          The path to the new config directory.
- *
- * @return              0 on success, less than 0 if an error occured.
- */
-int csync_set_config_dir(CSYNC *ctx, const char *path);
-
-/**
- * @brief Remove the complete config directory.
- *
- * @param ctx           The csync context.
- *
- * @return              0 on success, less than 0 if an error occured.
- */
-int csync_remove_config_dir(CSYNC *ctx);
-
-/**
- * @brief Enable the usage of the statedb. It is enabled by default.
- *
- * @param ctx           The csync context.
- *
- * @return              0 on success, less than 0 if an error occured.
- */
-int csync_enable_statedb(CSYNC *ctx);
-
-/**
- * @brief Disable the usage of the statedb. It is enabled by default.
- *
- * @param ctx           The csync context.
- *
- * @return              0 on success, less than 0 if an error occured.
- */
-int csync_disable_statedb(CSYNC *ctx);
-
-/**
- * @brief Check if the statedb usage is enabled.
- *
- * @param ctx           The csync context.
- *
- * @return              1 if it is enabled, 0 if it is disabled.
- */
-int csync_is_statedb_disabled(CSYNC *ctx);
-
-/**
  * @brief Get the userdata saved in the context.
  *
  * @param ctx           The csync context.
@@ -479,31 +412,6 @@ void *csync_get_log_userdata(void);
  */
 int csync_set_log_userdata(void *data);
 
-/**
- * @brief Get the path of the statedb file used.
- *
- * @param ctx           The csync context.
- *
- * @return              The path to the statedb file, NULL if an error occured.
- */
-const char *csync_get_statedb_file(CSYNC *ctx);
-
-/**
-  * @brief Flag to tell csync that only a local run is intended. Call before csync_init
-  *
-  * @param local_only   Bool flag to indicate local only mode.
-  *
-  * @return             0 on success, less than 0 if an error occured.
-  */
-int csync_set_local_only( CSYNC *ctx, bool local_only );
-
-/**
-  * @brief Retrieve the flag to tell csync that only a local run is intended.
-  *
-  * @return             1: stay local only, 0: local and remote mode
-  */
-bool csync_get_local_only( CSYNC *ctx );
-
 /* Used for special modes or debugging */
 CSYNC_STATUS csync_get_status(CSYNC *ctx);
 
@@ -587,6 +495,11 @@ void csync_resume(CSYNC *ctx);
  * @param ctx           The csync context.
  */
 int  csync_abort_requested(CSYNC *ctx);
+
+/**
+ * Specify if it is allowed to read the remote tree from the DB (default to enabled)
+ */
+int csync_set_read_from_db(CSYNC* ctx, int enabled);
 
 #ifdef __cplusplus
 }

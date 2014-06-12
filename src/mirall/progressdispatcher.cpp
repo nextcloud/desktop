@@ -108,7 +108,9 @@ ProgressDispatcher::~ProgressDispatcher()
 
 void ProgressDispatcher::setProgressInfo(const QString& folder, const Progress::Info& progress)
 {
-    if( folder.isEmpty() ) {
+    if( folder.isEmpty() ||
+            (progress._currentItems.size() == 0
+             && progress._totalFileCount == 0) ) {
         return;
     }
     emit progressInfo( folder, progress );

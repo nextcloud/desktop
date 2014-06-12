@@ -39,7 +39,6 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QTime>
-#include <QApplication>
 #include <QUrl>
 #include <QSslCertificate>
 
@@ -53,8 +52,7 @@ void csyncLogCatcher(int /*verbosity*/,
   Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
 }
 
-/* static variables to hold the credentials */
-QMutex SyncEngine::_syncMutex;
+bool SyncEngine::_syncRunning = false;
 
 SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, Mirall::SyncJournalDb* journal)
 {
@@ -67,6 +65,7 @@ SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remo
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
     qRegisterMetaType<Progress::Info>("Progress::Info");
 
+    _thread.setObjectName("CSync_Neon_Thread");
     _thread.start();
 }
 
@@ -264,6 +263,12 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._instruction = file->instruction;
     item._direction = SyncFileItem::None;
     item._fileId = file->file_id;
+    if (file->directDownloadUrl) {
+        item._directDownloadUrl = QString::fromUtf8( file->directDownloadUrl );
+    }
+    if (file->directDownloadCookies) {
+        item._directDownloadCookies = QString::fromUtf8( file->directDownloadCookies );
+    }
 
     // record the seen files to be able to clean the journal later
     _seenFiles[item._file] = QString();
@@ -280,15 +285,20 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS:
         item._errorString = tr("File contains invalid characters that can not be synced cross platform.");
         break;
+    case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
+        item._errorString = QLatin1String("File locked"); // don't translate, internal use!
+        break;
+
     default:
         Q_ASSERT("Non handled error-status");
         /* No error string */
     }
-
     item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
     item._modtime = file->modtime;
     item._etag = file->etag;
     item._size = file->size;
+    item._inode = file->inode;
+
     item._should_update_etag = file->should_update_etag;
     switch( file->type ) {
     case CSYNC_FTW_TYPE_DIR:
@@ -409,18 +419,13 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
     } else {
         emit csyncError(errStr);
     }
-    csync_commit(_csync_ctx);
-    emit finished();
-    _syncMutex.unlock();
-    _thread.quit();
+    finalize();
 }
 
 void SyncEngine::startSync()
 {
-    if (!_syncMutex.tryLock()) {
-        qDebug() << Q_FUNC_INFO << "WARNING: Another sync seems to be running. Not starting a new one.";
-        return;
-    }
+    Q_ASSERT(!_syncRunning);
+    _syncRunning = true;
 
     if( ! _csync_ctx ) {
         qDebug() << "XXXXXXXXXXXXXXXX FAIL: do not have csync_ctx!";
@@ -440,17 +445,13 @@ void SyncEngine::startSync()
         // csync_update also opens the database.
         int fileRecordCount = 0;
         fileRecordCount = _journal->getFileRecordCount();
+        bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
         _journal->close();
 
         if( fileRecordCount == -1 ) {
             qDebug() << "No way to create a sync journal!";
             emit csyncError(tr("Unable to initialize a sync journal."));
-
-            csync_commit(_csync_ctx);
-            emit finished();
-            _syncMutex.unlock();
-            _thread.quit();
-
+            finalize();
             return;
             // database creation error!
         } else if ( fileRecordCount < 50 ) {
@@ -460,9 +461,14 @@ void SyncEngine::startSync()
         } else {
             qDebug() << "=====sync with existing DB";
         }
+
+        if (fileRecordCount > 1 && isUpdateFrom_1_5) {
+            qDebug() << "detected update from 1.5";
+            // Disable the read from DB to be sure to re-read all the fileid and etags.
+            csync_set_read_from_db(_csync_ctx, false);
+        }
     }
 
-    csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     csync_set_userdata(_csync_ctx, this);
     // TODO: This should be a part of this method, but we don't have
     // any way to get "session_key" module property from csync. Had we
@@ -489,6 +495,9 @@ void SyncEngine::startSync()
     // csync_set_auth_callback( _csync_ctx, getauth );
     csync_set_log_callback( csyncLogCatcher );
     //csync_set_log_level( 11 ); don't set the loglevel here, it shall be done by folder.cpp or owncloudcmd.cpp
+    int timeout = OwncloudPropagator::httpTimeout();
+    csync_set_module_property(_csync_ctx, "timeout", &timeout);
+
 
     _stopWatch.start();
 
@@ -538,9 +547,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     if (!_journal->isConnected()) {
         qDebug() << "Bailing out, DB failure";
         emit csyncError(tr("Cannot open the sync journal"));
-        emit finished();
-        _syncMutex.unlock();
-        _thread.quit();
+        finalize();
         return;
     }
 
@@ -554,9 +561,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
         emit aboutToRemoveAllFiles(_syncedItems.first()._direction, &cancel);
         if (cancel) {
             qDebug() << Q_FUNC_INFO << "Abort sync";
-            emit finished();
-            _syncMutex.unlock();
-            _thread.quit();
+            finalize();
             return;
         }
     }
@@ -576,7 +581,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     connect(_propagator.data(), SIGNAL(progress(SyncFileItem,quint64)),
             this, SLOT(slotProgress(SyncFileItem,quint64)));
     connect(_propagator.data(), SIGNAL(adjustTotalTransmissionSize(qint64)), this, SLOT(slotAdjustTotalTransmissionSize(qint64)));
-    connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()));
+    connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()), Qt::QueuedConnection);
 
     setNetworkLimits();
 
@@ -656,16 +661,21 @@ void SyncEngine::slotFinished()
     }
     _journal->commit("All Finished.", false);
     emit treeWalkResult(_syncedItems);
+    finalize();
+}
 
+void SyncEngine::finalize()
+{
     csync_commit(_csync_ctx);
 
     qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
     _stopWatch.stop();
 
-    emit finished();
     _propagator.reset(0);
-    _syncMutex.unlock();
     _thread.quit();
+    _thread.wait();
+    _syncRunning = false;
+    emit finished();
 }
 
 void SyncEngine::slotProgress(const SyncFileItem& item, quint64 current)

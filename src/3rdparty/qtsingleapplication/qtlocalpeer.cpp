@@ -1,32 +1,31 @@
-/**************************************************************************
+/****************************************************************************
 **
-** This file is part of Qt Creator
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
-** Copyright (c) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** This file is part of Qt Creator.
 **
-** Contact: http://www.qt-project.org/
-**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and Digia.  For licensing terms and
+** conditions see http://qt.digia.com/licensing.  For further information
+** use the contact form at http://qt.digia.com/contact-us.
 **
 ** GNU Lesser General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU Lesser
+** General Public License version 2.1 as published by the Free Software
+** Foundation and appearing in the file LICENSE.LGPL included in the
+** packaging of this file.  Please review the following information to
+** ensure the GNU Lesser General Public License version 2.1 requirements
+** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** This file may be used under the terms of the GNU Lesser General Public
-** License version 2.1 as published by the Free Software Foundation and
-** appearing in the file LICENSE.LGPL included in the packaging of this file.
-** Please review the following information to ensure the GNU Lesser General
-** Public License version 2.1 requirements will be met:
-** http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
-**
-** In addition, as a special exception, Nokia gives you certain additional
-** rights. These rights are described in the Nokia Qt LGPL Exception
+** In addition, as a special exception, Digia gives you certain additional
+** rights.  These rights are described in the Digia Qt LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
-** Other Usage
-**
-** Alternatively, this file may be used in accordance with the terms and
-** conditions contained in a signed written agreement between you and Nokia.
-**
-**
-**************************************************************************/
+****************************************************************************/
 
 #include "qtlocalpeer.h"
 
@@ -47,7 +46,31 @@ static PProcessIdToSessionId pProcessIdToSessionId = 0;
 
 namespace SharedTools {
 
-const char *QtLocalPeer::ack = "ack";
+static const char ack[] = "ack";
+
+QString QtLocalPeer::appSessionId(const QString &appId)
+{
+    QByteArray idc = appId.toUtf8();
+    quint16 idNum = qChecksum(idc.constData(), idc.size());
+    //### could do: two 16bit checksums over separate halves of id, for a 32bit result - improved uniqeness probability. Every-other-char split would be best.
+
+    QString res = QLatin1String("qtsingleapplication-")
+                 + QString::number(idNum, 16);
+#if defined(Q_OS_WIN)
+    if (!pProcessIdToSessionId) {
+        QLibrary lib(QLatin1String("kernel32"));
+        pProcessIdToSessionId = (PProcessIdToSessionId)lib.resolve("ProcessIdToSessionId");
+    }
+    if (pProcessIdToSessionId) {
+        DWORD sessionId = 0;
+        pProcessIdToSessionId(GetCurrentProcessId(), &sessionId);
+        res += QLatin1Char('-') + QString::number(sessionId, 16);
+    }
+#else
+    res += QLatin1Char('-') + QString::number(::getuid(), 16);
+#endif
+    return res;
+}
 
 QtLocalPeer::QtLocalPeer(QObject *parent, const QString &appId)
     : QObject(parent), id(appId)
@@ -55,26 +78,7 @@ QtLocalPeer::QtLocalPeer(QObject *parent, const QString &appId)
     if (id.isEmpty())
         id = QCoreApplication::applicationFilePath();  //### On win, check if this returns .../argv[0] without casefolding; .\MYAPP == .\myapp on Win
 
-    QByteArray idc = id.toUtf8();
-    quint16 idNum = qChecksum(idc.constData(), idc.size());
-    //### could do: two 16bit checksums over separate halves of id, for a 32bit result - improved uniqeness probability. Every-other-char split would be best.
-
-    socketName = QLatin1String("qtsingleapplication-")
-                 + QString::number(idNum, 16);
-#if defined(Q_OS_WIN)
-    if (!pProcessIdToSessionId) {
-        QLibrary lib("kernel32");
-        pProcessIdToSessionId = (PProcessIdToSessionId)lib.resolve("ProcessIdToSessionId");
-    }
-    if (pProcessIdToSessionId) {
-        DWORD sessionId = 0;
-        pProcessIdToSessionId(GetCurrentProcessId(), &sessionId);
-        socketName += QLatin1Char('-') + QString::number(sessionId, 16);
-    }
-#else
-    socketName += QLatin1Char('-') + QString::number(::getuid(), 16);
-#endif
-
+    socketName = appSessionId(id);
     server = new QLocalServer(this);
     QString lockName = QDir(QDir::tempPath()).absolutePath()
                        + QLatin1Char('/') + socketName
@@ -100,7 +104,7 @@ bool QtLocalPeer::isClient()
     return false;
 }
 
-bool QtLocalPeer::sendMessage(const QString &message, int timeout)
+bool QtLocalPeer::sendMessage(const QString &message, int timeout, bool block)
 {
     if (!isClient())
         return false;
@@ -130,6 +134,8 @@ bool QtLocalPeer::sendMessage(const QString &message, int timeout)
     bool res = socket.waitForBytesWritten(timeout);
     res &= socket.waitForReadyRead(timeout); // wait for ack
     res &= (socket.read(qstrlen(ack)) == ack);
+    if (block) // block until peer disconnects
+        socket.waitForDisconnected(-1);
     return res;
 }
 
@@ -140,8 +146,11 @@ void QtLocalPeer::receiveConnection()
         return;
 
     // Why doesn't Qt have a blocking stream that takes care of this shait???
-    while (socket->bytesAvailable() < static_cast<int>(sizeof(quint32)))
-        socket->waitForReadyRead();
+    while (socket->bytesAvailable() < static_cast<int>(sizeof(quint32))) {
+        if (!socket->isValid()) // stale request
+            return;
+        socket->waitForReadyRead(1000);
+    }
     QDataStream ds(socket);
     QByteArray uMsg;
     quint32 remaining;
@@ -166,8 +175,7 @@ void QtLocalPeer::receiveConnection()
     QString message = QString::fromUtf8(uMsg.constData(), uMsg.size());
     socket->write(ack, qstrlen(ack));
     socket->waitForBytesWritten(1000);
-    delete socket;
-    emit messageReceived(message); // ##(might take a long time to return)
+    emit messageReceived(message, socket); // ##(might take a long time to return)
 }
 
 } // namespace SharedTools

@@ -22,16 +22,17 @@
 #include <QDir>
 #include <QFile>
 #include <QUrl>
+#ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
-#include <QDebug>
 #include <QDesktopServices>
+#endif
+#include <QDebug>
 #include <QProcess>
 #include <QThread>
 #include <QDateTime>
 #include <QSysInfo>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#include <QDesktopServices>
 #include <QTextDocument>
 #else
 #include <QStandardPaths>
@@ -142,7 +143,7 @@ QString Utility::platform()
     return QLatin1String("Linux");
 #elif defined(__DragonFly__) // Q_OS_FREEBSD also defined
     return QLatin1String("DragonFlyBSD");
-#elif defined(Q_OS_FREEBSD)
+#elif defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL)
     return QLatin1String("FreeBSD");
 #elif defined(Q_OS_NETBSD)
     return QLatin1String("NetBSD");
@@ -165,22 +166,14 @@ QByteArray Utility::userAgentString()
 
 void Utility::raiseDialog( QWidget *raiseWidget )
 {
-    // viel hilft viel ;-)
-    if( raiseWidget ) {
-#if defined(Q_OS_WIN) || defined (Q_OS_MAC)
-        Qt::WindowFlags eFlags = raiseWidget->windowFlags();
-        if (!(eFlags & Qt::WindowStaysOnTopHint)) {
-            eFlags |= Qt::WindowStaysOnTopHint;
-            raiseWidget->setWindowFlags(eFlags);
-            raiseWidget->show();
-            eFlags &= ~Qt::WindowStaysOnTopHint;
-            raiseWidget->setWindowFlags(eFlags);
-        }
-#endif
-        raiseWidget->show();
+#ifndef TOKEN_AUTH_ONLY
+    if( raiseWidget && raiseWidget->parentWidget() == 0) {
+        // Qt has a bug which causes parent-less dialogs to pop-under.
+        raiseWidget->showNormal();
         raiseWidget->raise();
         raiseWidget->activateWindow();
     }
+#endif
 }
 
 bool Utility::hasLaunchOnStartup(const QString &appName)
@@ -195,7 +188,7 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName,
 
 qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
 {
-#if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD)
+#if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL)
     struct statvfs stat;
     statvfs(path.toUtf8().data(), &stat);
     return (qint64) stat.f_bavail * stat.f_frsize;
@@ -261,7 +254,11 @@ QString Utility::dataLocation()
 {
     //  Qt 5's QStandardPaths::writableLocation gives us wrong results (without /data/),
     //  so we'll have to use the deprecated version for now
+#ifndef TOKEN_AUTH_ONLY
     return QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+#else
+	return QString();
+#endif
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -338,6 +335,15 @@ static bool checkDolphinCanSelect()
     p.start("dolphin", QStringList() << "--help", QFile::ReadOnly);
     p.waitForFinished();
     return p.readAll().contains("--select");
+}
+
+bool Utility::fsCasePreserving()
+{
+    bool re = false;
+    if( isWindows() || isMac() ) {
+        re = true;
+    }
+    return re;
 }
 
 // inspired by Qt Creator's showInGraphicalShell();
@@ -435,7 +441,9 @@ void Utility::showInFileManager(const QString &localPath)
 
         if (app.isEmpty() || args.isEmpty() || !canHandleFile) {
             // fall back: open the default file manager, without ever selecting the file
+#ifndef TOKEN_AUTH_ONLY
             QDesktopServices::openUrl(QUrl::fromLocalFile(pathToOpen));
+#endif
         } else {
             QProcess::startDetached(app, args);
         }

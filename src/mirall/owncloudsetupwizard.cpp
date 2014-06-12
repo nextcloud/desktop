@@ -187,7 +187,8 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuthTimeout(const QUrl&url)
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
 {
     qDebug() << "Connect to url: " << url;
-    _ocWizard->account()->setCredentials(_ocWizard->getCredentials());
+    AbstractCredentials *creds = _ocWizard->getCredentials();
+    _ocWizard->account()->setCredentials(creds);
     _ocWizard->setField(QLatin1String("OCUrl"), url );
     _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2...")
                                         .arg( Theme::instance()->appNameGUI() ).arg(url) );
@@ -197,7 +198,9 @@ void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
 
 void OwncloudSetupWizard::testOwnCloudConnect()
 {
-    ValidateDavAuthJob *job = new ValidateDavAuthJob(_ocWizard->account(), this);
+    Account *account = _ocWizard->account();
+
+    ValidateDavAuthJob *job = new ValidateDavAuthJob(account, this);
     job->setIgnoreCredentialFailure(true);
     connect(job, SIGNAL(authResult(QNetworkReply*)), SLOT(slotConnectionCheck(QNetworkReply*)));
     job->start();
@@ -483,7 +486,8 @@ ValidateDavAuthJob::ValidateDavAuthJob(Account *account, QObject *parent)
 
 void ValidateDavAuthJob::start()
 {
-    QNetworkReply *reply = getRequest(account()->davPath());
+    QString p = account()->davPath();
+    QNetworkReply *reply = getRequest(p);
     setReply(reply);
     setupConnections(reply);
     AbstractNetworkJob::start();

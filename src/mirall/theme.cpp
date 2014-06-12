@@ -17,7 +17,9 @@
 #include "config.h"
 
 #include <QtCore>
+#ifndef TOKEN_AUTH_ONLY
 #include <QtGui>
+#endif
 
 #include "mirall/owncloudtheme.h"
 
@@ -96,6 +98,8 @@ QString Theme::version() const
     return QString::fromLocal8Bit( MIRALL_STRINGIFY( MIRALL_VERSION ));
 }
 
+#ifndef TOKEN_AUTH_ONLY
+
 QIcon Theme::trayFolderIcon( const QString& backend ) const
 {
     Q_UNUSED(backend)
@@ -147,6 +151,7 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
     }
     return icon;
 }
+#endif
 
 // if this option return true, the client only supports one folder to sync.
 // The Add-Button is removed accoringly.
@@ -207,10 +212,11 @@ QString Theme::about() const
               "<p>Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.<br>"
               "%5 and the %5 logo are registered trademarks of %4 in the<br>"
               "United States, other countries, or both.</p>")
-            .arg(MIRALL_VERSION_STRING).arg("http://"MIRALL_STRINGIFY(APPLICATION_DOMAIN))
+            .arg(MIRALL_VERSION_MAJOR).arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
             .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN)).arg(APPLICATION_VENDOR).arg(APPLICATION_NAME);
 }
 
+#ifndef TOKEN_AUTH_ONLY
 QVariant Theme::customMedia( CustomMediaType type )
 {
     QVariant re;
@@ -305,6 +311,7 @@ QPixmap Theme::wizardHeaderBanner() const
     pix.fill(wizardHeaderBackgroundColor());
     return pix;
 }
+#endif
 
 } // end namespace mirall
 

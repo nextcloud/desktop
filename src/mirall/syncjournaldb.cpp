@@ -22,6 +22,7 @@
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 #include "utility.h"
+#include "version.h"
 
 #include "../../csync/src/std/c_jhash.h"
 
@@ -30,7 +31,7 @@
 namespace Mirall {
 
 SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
-    QObject(parent), _transaction(0)
+    QObject(parent), _transaction(0), _possibleUpgradeFromMirall_1_5(false)
 {
 
     _dbFile = path;
@@ -192,6 +193,35 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table blacklist", createQuery);
     }
 
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS version("
+                               "major INTEGER(8),"
+                               "minor INTEGER(8),"
+                               "patch INTEGER(8),"
+                               "custom VARCHAR(256)"
+                               ");");
+    if (!createQuery.exec()) {
+        return sqlFail("Create table blacklist", createQuery);
+    }
+
+    QSqlQuery versionQuery("SELECT major, minor FROM version;", _db);
+    if (!versionQuery.next()) {
+        // If there was no entry in the table, it means we are likely upgrading from 1.5
+        _possibleUpgradeFromMirall_1_5 = true;
+    } else {
+        // Delete the existing entry so we can replace it by the new one
+        createQuery.prepare("DELETE FROM version;");
+        if (!createQuery.exec()) {
+            return sqlFail("Remove version", createQuery);
+        }
+    }
+    createQuery.prepare("INSERT INTO version (major, minor, patch) VALUES ( ? , ? , ? );");
+    createQuery.bindValue(0, MIRALL_VERSION_MAJOR);
+    createQuery.bindValue(1, MIRALL_VERSION_MINOR);
+    createQuery.bindValue(2, MIRALL_VERSION_PATCH);
+    if (!createQuery.exec()) {
+        return sqlFail("Insert Version", createQuery);
+    }
+
     commitInternal("checkConnect");
 
     bool rc = updateDatabaseStructure();
@@ -260,6 +290,7 @@ void SyncJournalDb::close()
     _deleteFileRecordPhash.reset(0);
     _deleteFileRecordRecursively.reset(0);
     _blacklistQuery.reset(0);
+    _possibleUpgradeFromMirall_1_5 = false;
 
     _db.close();
     _db = QSqlDatabase(); // avoid the warning QSqlDatabasePrivate::removeDatabase: connection [...] still in use
@@ -454,7 +485,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             _getFileRecordQuery->finish();
         } else {
             QString err = _getFileRecordQuery->lastError().text();
-            qDebug() << "Can not query " << _getFileRecordQuery->lastQuery() << ", Error:" << err;
+	    qDebug() << "No journal entry found for " << filename;
         }
     }
     return rec;
@@ -739,7 +770,15 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
         return;
     }
 
-    query.prepare("SELECT retrycount FROM blacklist WHERE path=:path");
+    QString sql("SELECT retrycount FROM blacklist WHERE path=:path");
+
+    if( Utility::fsCasePreserving() ) {
+        // if the file system is case preserving we have to check the blacklist
+        // case insensitively
+        sql += QLatin1String(" COLLATE NOCASE");
+    }
+
+    query.prepare(sql);
     query.bindValue(":path", item._file);
 
     if( !query.exec() ) {
@@ -796,6 +835,28 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QString& path)
     }
 }
 
+void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
+{
+    //Make sure that on the next sync, filName is not read from the DB but use the PROPFIND to
+    //get the info from the server
+    // We achieve that by clearing the etag of the parents directory recursively
+
+    QMutexLocker locker(&_mutex);
+
+    if( !checkConnect() ) {
+        return;
+    }
+
+    QSqlQuery query(_db);
+    // This query will match entries for whitch the path is a prefix of fileName
+    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ? LIKE(path||'/%') AND type == 2"); // CSYNC_FTW_TYPE_DIR == 2
+    query.bindValue(0, fileName);
+    if( !query.exec() ) {
+        qDebug() << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
+    } else {
+        qDebug() << query.executedQuery()  << fileName;
+    }
+}
 
 void SyncJournalDb::commit(const QString& context, bool startTrans)
 {
@@ -823,6 +884,13 @@ bool SyncJournalDb::isConnected()
 {
     QMutexLocker lock(&_mutex);
     return checkConnect();
+}
+
+bool SyncJournalDb::isUpdateFrom_1_5()
+{
+    QMutexLocker lock(&_mutex);
+    checkConnect();
+    return _possibleUpgradeFromMirall_1_5;
 }
 
 

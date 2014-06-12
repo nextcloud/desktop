@@ -44,11 +44,6 @@
 #include <neon/ne_compress.h>
 #include <neon/ne_redirect.h>
 
-#ifdef Q_OS_WIN
-#include <windef.h>
-#include <winbase.h>
-#endif
-
 #include <time.h>
 
 
@@ -81,9 +76,16 @@ void PropagateLocalRemove::start()
         return;
 
     QString filename = _propagator->_localDir +  _item._file;
+    if( _propagator->localFileNameClash(_item._file)) {
+        done(SyncFileItem::NormalError, tr("Could not remove %1 because of a local file name clash")
+             .arg(QDir::toNativeSeparators(filename)));
+        return;
+    }
+
     if (_item._isDirectory) {
         if (QDir(filename).exists() && !removeRecursively(filename)) {
-            done(SyncFileItem::NormalError, tr("Could not remove directory %1").arg(filename));
+            done(SyncFileItem::NormalError, tr("Could not remove directory %1")
+                 .arg(QDir::toNativeSeparators(filename)));
             return;
         }
     } else {
@@ -104,9 +106,17 @@ void PropagateLocalMkdir::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    QDir d;
-    if (!d.mkpath(_propagator->_localDir +  _item._file)) {
-        done(SyncFileItem::NormalError, tr("could not create directory %1").arg(_propagator->_localDir +  _item._file));
+    QDir newDir(_propagator->_localDir + _item._file);
+    QString newDirStr = QDir::toNativeSeparators(newDir.path());
+    if( Utility::fsCasePreserving() && newDir.exists() &&
+            _propagator->localFileNameClash(_item._file ) ) {
+        qDebug() << "WARN: new directory to create locally already exists!";
+        done( SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr) );
+        return;
+    }
+    QDir localDir(_propagator->_localDir);
+    if (!localDir.mkpath(_item._file)) {
+        done( SyncFileItem::NormalError, tr("could not create directory %1").arg(newDirStr) );
         return;
     }
     done(SyncFileItem::Success);
@@ -178,7 +188,19 @@ void PropagateLocalRename::start()
     if (_item._file != _item._renameTarget) {
         emit progress(_item, 0);
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
-        QFile::rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget);
+        QFile file(_propagator->_localDir + _item._file);
+
+        if (_propagator->localFileNameClash(_item._renameTarget)) {
+            // Fixme: the file that is the reason for the clash could be named here,
+            // it would have to come out the localFileNameClash function
+            done(SyncFileItem::NormalError, tr( "File %1 can not be renamed to %2 because of a local file name clash")
+                 .arg(QDir::toNativeSeparators(_item._file)).arg(QDir::toNativeSeparators(_item._renameTarget)) );
+            return;
+        }
+        if (!file.rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget)) {
+            done(SyncFileItem::NormalError, file.errorString());
+            return;
+        }
     }
 
     _propagator->_journal->deleteFileRecord(_item._originalFile);
@@ -204,16 +226,7 @@ void PropagateRemoteRename::start()
         return;
 
     if (_item._file == _item._renameTarget) {
-        if (!_item._isDirectory) {
-            // The parents has been renamed already so there is nothing more to do.
-            // But we still need to fetch the new ETAG
-            // FIXME   maybe do a recusrsive propfind after having moved the parent.
-            // Note: we also update the mtime because the server do not keep the mtime when moving files
-            QScopedPointer<char, QScopedPointerPodDeleter> uri2(
-                ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
-            if (!updateMTimeAndETag(uri2.data(), _item._modtime))
-                return;
-        }
+        // The parents has been renamed already so there is nothing more to do.
     } else if (_item._file == QLatin1String("Shared") ) {
         // Check if it is the toplevel Shared folder and do not propagate it.
         if( QFile::rename(  _propagator->_localDir + _item._renameTarget, _propagator->_localDir + QLatin1String("Shared")) ) {
@@ -321,6 +334,16 @@ bool PropagateNeonJob::updateErrorFromSession(int neon_code, ne_request* req, in
     }
     return false;
 }
+
+void UpdateMTimeAndETagJob::start()
+{
+    QScopedPointer<char, QScopedPointerPodDeleter> uri(
+        ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+    if (!updateMTimeAndETag(uri.data(), _item._modtime))
+        return;
+    done(SyncFileItem::Success);
+}
+
 
 
 }

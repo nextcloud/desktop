@@ -120,37 +120,6 @@ void c_strlist_clear(c_strlist_t *strlist);
 void c_strlist_destroy(c_strlist_t *strlist);
 
 /**
- * @breif Replace a string with another string in a source string.
- *
- * @param src      String to search for pattern.
- *
- * @param pattern  Pattern to search for in the source string.
- *
- * @param repl     The string which which should replace pattern if found.
- *
- * @return  Return a pointer to the source string.
- */
-char *c_strreplace(char *src, const char *pattern, const char *repl);
-
-/**
- * @brief Uppercase a string.
- *
- * @param  str     The String to uppercase.
- *
- * @return The malloced uppered string or NULL on error.
- */
-char *c_uppercase(const char* str);
-
-/**
- * @brief Lowercase a string.
- *
- * @param  str     The String to lowercase.
- *
- * @return The malloced lowered string or NULL on error.
- */
-char *c_lowercase(const char* str);
-
-/**
  * @brief Convert a platform locale string to utf8.
  *
  * This function is part of the multi platform abstraction of basic file

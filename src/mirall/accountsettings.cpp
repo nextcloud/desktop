@@ -114,7 +114,6 @@ AccountSettings::AccountSettings(QWidget *parent) :
     connect(FolderMan::instance(), SIGNAL(folderListLoaded(Folder::Map)),
             this, SLOT(setFolderList(Folder::Map)));
     setFolderList(FolderMan::instance()->map());
-
 }
 
 void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccount)
@@ -140,28 +139,28 @@ void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccoun
 
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
 {
-  bool state = indx.isValid();
+  bool isValid = indx.isValid();
 
   bool haveFolders = ui->_folderList->model()->rowCount() > 0;
 
-  ui->_buttonRemove->setEnabled(state);
+  ui->_buttonRemove->setEnabled(isValid);
   if( Theme::instance()->singleSyncFolder() ) {
       // only one folder synced folder allowed.
       ui->_buttonAdd->setVisible(!haveFolders);
   } else {
       ui->_buttonAdd->setVisible(true);
-      ui->_buttonAdd->setEnabled( true );
   }
-  ui->_buttonEnable->setEnabled( state );
+  ui->_buttonAdd->setEnabled(_account && _account->state() == Account::Connected);
+  ui->_buttonEnable->setEnabled( isValid );
 
-  if ( state ) {
+  if ( isValid ) {
     bool folderEnabled = _model->data( indx, FolderStatusDelegate::FolderSyncEnabled).toBool();
     if ( folderEnabled ) {
       ui->_buttonEnable->setText( tr( "Pause" ) );
     } else {
       ui->_buttonEnable->setText( tr( "Resume" ) );
     }
-    ui->_buttonEnable->setEnabled(_account && _account->state() == Account::Connected);
+    ui->_buttonEnable->setEnabled( _account && _account->state() == Account::Connected);
   }
 }
 
@@ -269,6 +268,10 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
                 // if the folder was disabled before, set the sync icon
                 item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
             }  // we keep the previous icon for the SyncPrepare state.
+        } else if( status == SyncResult::Undefined ) {
+            // startup, the sync was never done.
+            qDebug() << "XXX FIRST time sync, setting icon to sync running!";
+            item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
         } else {
             // kepp the previous icon for the prepare phase.
             if( status == SyncResult::Problem) {
@@ -361,7 +364,7 @@ void AccountSettings::slotResetCurrentFolder()
         if( ret == QMessageBox::Yes ) {
             FolderMan *folderMan = FolderMan::instance();
             Folder *f = folderMan->folder(alias);
-            f->slotTerminateSync(true);
+            f->slotTerminateSync();
             f->wipe();
             folderMan->slotScheduleAllFolders();
         }
@@ -478,7 +481,7 @@ void AccountSettings::slotEnableCurrentFolder()
             // message box can return at any time while the thread keeps running,
             // so better check again after the user has responded.
             if ( f->isBusy() && terminate ) {
-                f->slotTerminateSync(false);
+                f->slotTerminateSync();
             }
 
             folderMan->slotEnableFolder( alias, !folderEnabled );
@@ -639,8 +642,9 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     item->setData( overallSyncString, FolderStatusDelegate::SyncProgressOverallString );
 
     int overallPercent = 0;
-    if( progress._totalSize > 0 ) {
-        overallPercent = qRound(double(completedSize)/double(progress._totalSize) * 100.0);
+    if( progress._totalFileCount > 0 ) {
+        // Add one 'byte' for each files so the percentage is moving when deleting or renaming files
+        overallPercent = qRound(double(completedSize + progress._completedFileCount)/double(progress._totalSize + progress._totalFileCount) * 100.0);
     }
     item->setData( overallPercent, FolderStatusDelegate::SyncProgressOverallPercent);
 }
@@ -745,7 +749,7 @@ void AccountSettings::slotAccountStateChanged(int state)
         ui->sslButton->updateAccountInfo(_account);
         QUrl safeUrl(_account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
-        ui->_buttonAdd->setEnabled(state == Account::Connected);
+        slotButtonsSetEnabled();
         if (state == Account::Connected) {
             QString user;
             if (AbstractCredentials *cred = _account->credentials()) {

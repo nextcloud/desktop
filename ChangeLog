@@ -1,6 +1,22 @@
 ChangeLog
 =========
-version 1.6.0 (release 2014-04- )
+version 1.6.0 (release 2014-05-30 )
+ * Minor GUI improvements
+ * Qt5 compile issues fixed
+ * Ignore sync log file in filewatcher
+ * Install libocsync to private library dir and use rpath to localize
+ * Fix reconnect after server disconnect
+ * Fix "unknown action" display in Activity window
+ * Fix memory leaks
+ * Respect XDG_CONFIG_HOME environment var
+ * Handle empty fileids in the journal correctly
+ * Add abilility to compile libowncloudsync without GUI dependendy
+ * Fix SSL error with previously-expired CAs on Windows
+ * Fix incorrect folder pause state after start
+ * Fix a couple of actual potential crashes
+ * Improve Cookie support (e.g. for cookie-based load-balancers)
+ * Introduce a general timeout of 300s for network operations
+ * Improve error handling, blacklisting
  * Job-based change propagation, enables faster parallel up/downloads 
    (right now only if no bandwidth limit is set and no proxy is used)
  * Significantly reduced CPU load when checking for local and remote changes
@@ -18,6 +34,7 @@ version 1.6.0 (release 2014-04- )
  * Mac OS X: Fix UI inconsistencies on Mavericks
  * Shibboleth: Warn if authenticating with a different user
  * Remove vio abstraction in csync
+ * Avoid data loss when a client file system is not case sensitive
 
 version 1.5.3 (release 2014-03-10 )
   * Fix usage of proxies after first sync run (#1502, #1524, #1459, #1521)

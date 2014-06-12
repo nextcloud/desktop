@@ -28,9 +28,11 @@
 #include "mirall/connectionvalidator.h"
 #include "mirall/progressdispatcher.h"
 #include "mirall/clientproxy.h"
+#include "mirall/folderman.h"
 
 class QMessageBox;
 class QSystemTrayIcon;
+class QSocket;
 
 namespace Mirall {
 class Theme;
@@ -69,7 +71,7 @@ signals:
     void folderStateChanged(Folder*);
 
 protected slots:
-    void slotParseOptions( const QString& );
+    void slotParseOptions( const QString&, QObject* );
     void slotCheckConnection();
     void slotConnectionValidatorResult(ConnectionValidator::Status);
     void slotStartUpdateDetector();
@@ -105,6 +107,8 @@ private:
     ClientProxy _proxy;
 
     QTimer _checkConnectionTimer;
+
+    FolderMan folderManager;
 
     friend class ownCloudGui; // for _startupNetworkError
 };

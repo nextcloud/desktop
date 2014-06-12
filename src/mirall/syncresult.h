@@ -19,12 +19,13 @@
 #include <QHash>
 #include <QDateTime>
 
+#include "owncloudlib.h"
 #include "mirall/syncfileitem.h"
 
 namespace Mirall
 {
 
-class SyncResult
+class OWNCLOUDSYNC_EXPORT SyncResult
 {
 public:
     enum Status

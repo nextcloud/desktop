@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <inttypes.h>
 
 #include "c_lib.h"
 #include "csync_private.h"
@@ -55,29 +56,6 @@ void csync_set_statedb_exists(CSYNC *ctx, int val) {
 
 int csync_get_statedb_exists(CSYNC *ctx) {
   return ctx->statedb.exists;
-}
-
-/* Set the hide attribute in win32. That makes it invisible in normal explorers */
-static void _csync_win32_hide_file( const char *file ) {
-#ifdef _WIN32
-  mbchar_t *fileName;
-  DWORD dwAttrs;
-
-  if( !file ) return;
-
-  fileName = c_utf8_to_locale( file );
-  dwAttrs = GetFileAttributesW(fileName);
-
-  if (dwAttrs==INVALID_FILE_ATTRIBUTES) return;
-
-  if (!(dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
-     SetFileAttributesW(fileName, dwAttrs | FILE_ATTRIBUTE_HIDDEN );
-  }
-
-  c_free_locale_string(fileName);
-#else
-    (void) file;
-#endif
 }
 
 static int _csync_check_db_integrity(sqlite3 *db) {
@@ -166,7 +144,7 @@ static int _csync_statedb_check(const char *statedb) {
   rc = sqlite3_open(statedb, &db);
   if (rc == SQLITE_OK) {
     sqlite3_close(db);
-    _csync_win32_hide_file(statedb);
+    csync_win32_set_file_hidden(statedb, true);
     return 1;
   }
   sqlite3_close(db);
@@ -529,7 +507,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     if( rc != SQLITE_DONE ) {
         ctx->status_code = CSYNC_STATUS_TREE_ERROR;
     } else {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "%ld entries read below path %s from db.", cnt, path);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "%" PRId64 " entries read below path %s from db.", cnt, path);
     }
     sqlite3_finalize(stmt);
     SAFE_FREE(likepath);

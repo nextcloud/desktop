@@ -13,6 +13,7 @@
 
 #include <QString>
 
+#include "creds/credentialsfactory.h"
 #ifdef TOKEN_AUTH_ONLY
 #include "creds/tokencredentials.h"
 #else

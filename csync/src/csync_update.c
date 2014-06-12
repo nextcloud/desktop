@@ -255,7 +255,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             goto out;
         }
         if (type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
-                && c_streq(fs->file_id, tmp->file_id)) {
+                && c_streq(fs->file_id, tmp->file_id) && !ctx->read_from_db_disabled) {
             /* If both etag and file id are equal for a directory, read all contents from
              * the database.
              * The comparison of file id ensure that we fetch all the file id when upgrading from
@@ -276,6 +276,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
         /* check if it's a file and has been renamed */
         if (ctx->current == LOCAL_REPLICA) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
+
             tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
 
             /* translate the file type between the two stat types csync has. */
@@ -359,8 +361,6 @@ out:
   st->mode  = fs->mode;
   st->size  = fs->size;
   st->modtime = fs->mtime;
-  st->uid   = fs->uid;
-  st->gid   = fs->gid;
   st->nlink = fs->nlink;
   st->type  = type;
   st->etag   = NULL;
@@ -369,6 +369,15 @@ out:
       st->etag  = c_strdup(fs->etag);
   }
   csync_vio_set_file_id(st->file_id, fs->file_id);
+  if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADURL) {
+      SAFE_FREE(st->directDownloadUrl);
+      st->directDownloadUrl = c_strdup(fs->directDownloadUrl);
+  }
+  if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES) {
+      SAFE_FREE(st->directDownloadCookies);
+      st->directDownloadCookies = c_strdup(fs->directDownloadCookies);
+  }
+
 
 fastout:  /* target if the file information is read from database into st */
   st->phash = h;
@@ -476,7 +485,6 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
 /* File tree walker */
 int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     unsigned int depth) {
-  char errbuf[256] = {0};
   char *filename = NULL;
   char *d_name = NULL;
   csync_vio_handle_t *dh = NULL;
@@ -520,10 +528,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
               CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
           }
       } else {
-          C_STRERROR(errno, errbuf, sizeof(errbuf));
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR,
-                    "opendir failed for %s - %s (errno %d)",
-                    uri, errbuf, errno);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "opendir failed for %s - errno %d", uri, errno);
       }
       goto error;
   }
@@ -588,9 +593,14 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         continue;
     }
 
-    /* == see if really stat has to be called. */
-    fs = csync_vio_file_stat_new();
-    res = csync_vio_stat(ctx, filename, fs);
+    /* Only for the local replica we have to stat(), for the remote one we have all data already */
+    if (ctx->replica == LOCAL_REPLICA) {
+        fs = csync_vio_file_stat_new();
+        res = csync_vio_stat(ctx, filename, fs);
+    } else {
+        fs = dirent;
+        res = 0;
+    }
 
     if( res == 0) {
       switch (fs->type) {
@@ -645,7 +655,10 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         previous_fs->child_modified = ctx->current_fs->child_modified;
     }
 
-    csync_vio_file_stat_destroy(fs);
+    /* Only for the local replica we have to destroy stat(), for the remote one it is a pointer to dirent */
+    if (ctx->replica == LOCAL_REPLICA) {
+        csync_vio_file_stat_destroy(fs);
+    }
 
     if (rc < 0) {
       if (CSYNC_STATUS_IS_OK(ctx->status_code)) {
@@ -671,7 +684,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       }
     }
 
-    if (ctx->current_fs && (ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL ||
+    if (flag == CSYNC_FTW_FLAG_DIR && ctx->current_fs
+        && (ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL ||
             ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW ||
             ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL_RENAME)) {
         ctx->current_fs->should_update_etag = true;

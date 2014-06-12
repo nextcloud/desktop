@@ -183,6 +183,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     if( !c_streq(cur->file_id, "") ) {
                         csync_vio_set_file_id( other->file_id, cur->file_id );
                     }
+                    other->inode = cur->inode;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                 } else if (other->instruction == CSYNC_INSTRUCTION_REMOVE) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
@@ -191,7 +192,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     if( !c_streq(cur->file_id, "") ) {
                         csync_vio_set_file_id( other->file_id, cur->file_id );
                     }
-
+                    other->inode = cur->inode;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                 } else if (other->instruction == CSYNC_INSTRUCTION_NEW) {
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "OOOO=> NEW detected in other tree!");
@@ -223,6 +224,16 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         /* file on current replica is changed or new */
         case CSYNC_INSTRUCTION_EVAL:
         case CSYNC_INSTRUCTION_NEW:
+            // This operation is usually a no-op and will by default return false
+            if (csync_file_locked_or_open(ctx->local.uri, cur->path)) {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "[Reconciler] IGNORING file %s/%s since it is locked / open", ctx->local.uri, cur->path);
+                cur->instruction = CSYNC_INSTRUCTION_ERROR;
+                if (cur->error_status == CSYNC_STATUS_OK) // don't overwrite error
+                    cur->error_status = CYSNC_STATUS_FILE_LOCKED_OR_OPEN;
+                break;
+            } else {
+                //CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "[Reconciler] not ignoring file %s/%s", ctx->local.uri, cur->path);
+            }
             switch (other->instruction) {
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
@@ -238,8 +249,12 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
 
-                    if( !cur->etag && other->etag ) cur->etag = c_strdup(other->etag);
-                    cur->should_update_etag = true; /* update DB */
+                    /* update DB with new etag from remote */
+                    if (ctx->current == LOCAL_REPLICA) {
+                        other->should_update_etag = true;
+                    } else {
+                        cur->should_update_etag = true;
+                    }
                 } else if(ctx->current == REMOTE_REPLICA) {
                         cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
                         other->instruction = CSYNC_INSTRUCTION_NONE;

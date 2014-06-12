@@ -35,8 +35,6 @@
 #define FNM_PATHNAME    (1 << 0) /* No wildcard can ever match `/'.  */
 #endif
 
-char *csync_get_user_home_dir(void);
-
 int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags);
 
 /**

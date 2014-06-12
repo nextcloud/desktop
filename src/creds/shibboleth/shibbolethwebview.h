@@ -14,6 +14,7 @@
 #ifndef MIRALL_WIZARD_SHIBBOLETH_WEB_VIEW_H
 #define MIRALL_WIZARD_SHIBBOLETH_WEB_VIEW_H
 
+#include "owncloudlib.h"
 #include <QList>
 #include <QPointer>
 #include <QWebView>
@@ -27,7 +28,7 @@ namespace Mirall
 class ShibbolethCookieJar;
 class Account;
 
-class ShibbolethWebView : public QWebView
+class OWNCLOUDSYNC_EXPORT ShibbolethWebView : public QWebView
 {
   Q_OBJECT
 
@@ -36,13 +37,11 @@ public:
   ShibbolethWebView(Account *account, ShibbolethCookieJar* jar, QWidget* parent = 0);
   ~ShibbolethWebView();
 
-protected:
-  void hideEvent(QHideEvent* event);
+  void closeEvent(QCloseEvent *event);
 
 Q_SIGNALS:
-  void shibbolethCookieReceived(const QNetworkCookie& cookie, Account* account);
-  void viewHidden();
-  void otherCookiesReceived(const QList<QNetworkCookie>& cookieList, const QUrl& url);
+  void shibbolethCookieReceived(const QNetworkCookie &cookie, Account *account);
+  void rejected();
 
 private Q_SLOTS:
   void onNewCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
@@ -50,9 +49,13 @@ private Q_SLOTS:
   void slotLoadFinished(bool success = true);
   void slotHandleAuthentication(QNetworkReply*,QAuthenticator*);
 
+protected:
+  void accept();
+
 private:
   void setup(Account *account, ShibbolethCookieJar* jar);
   QPointer<Account> _account;
+  bool _accepted;
 };
 
 } // ns Mirall

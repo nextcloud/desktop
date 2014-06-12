@@ -130,32 +130,6 @@ static void check_c_dirname_uri(void **state)
     free(dname);
 }
 
-static void check_c_tmpname(void **state)
-{
-    char tmpl[22]={0};
-    char prev[22]={0};
-    char *tmp;
-    int i = 0;
-
-    (void) state; /* unused */
-
-    srand((unsigned)time(NULL));
-
-    /* remember the last random value and compare the new one against.
-     * They may never be the same. */
-    for(i = 0; i < 100; i++){
-        strcpy(tmpl, "check_tmpname.XXXXXX");
-        tmp = c_tmpname(tmpl);
-        assert_non_null(tmp);
-
-        if (strlen(prev)) {
-            assert_string_not_equal(tmp, prev);
-        }
-        strcpy(prev, tmp);
-        SAFE_FREE(tmp);
-    }
-}
-
 static void check_c_parse_uri(void **state)
 {
     const char *test_scheme = "git+ssh";
@@ -204,7 +178,6 @@ int torture_run_tests(void)
       unit_test(check_c_dirname),
       unit_test(check_c_dirname_uri),
       unit_test(check_c_parse_uri),
-      unit_test(check_c_tmpname),
   };
 
   return run_tests(tests);

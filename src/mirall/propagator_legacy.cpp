@@ -437,10 +437,19 @@ void PropagateDownloadFileLegacy::notify_status_cb(void* userdata, ne_session_st
     }
 }
 
+extern QString makeConflictFileName(const QString &fn, const QDateTime &dt); // _qnam.cpp
+
 void PropagateDownloadFileLegacy::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
+
+    // do a case clash check.
+    if( _propagator->localFileNameClash(_item._file) ) {
+        done( SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!")
+              .arg(QDir::toNativeSeparators(_item._file)) );
+        return;
+    }
 
     emit progress(_item, 0);
 
@@ -483,6 +492,10 @@ void PropagateDownloadFileLegacy::start()
         pi._valid = true;
         _propagator->_journal->setDownloadInfo(_item._file, pi);
         _propagator->_journal->commit("download file start");
+    }
+
+    if (!_item._directDownloadUrl.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "Direct download URL" << _item._directDownloadUrl << "not supported with legacy propagator, will go via ownCloud server";
     }
 
     /* actually do the request */
@@ -564,15 +577,7 @@ void PropagateDownloadFileLegacy::start()
     //In case of conflict, make a backup of the old file
     if (isConflict) {
         QFile f(fn);
-        QString conflictFileName(fn);
-        // Add _conflict-XXXX  before the extention.
-        int dotLocation = conflictFileName.lastIndexOf('.');
-        // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-        if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
-            dotLocation = conflictFileName.size();
-        }
-        QString timeString = Utility::qDateTimeFromTime_t(_item._modtime).toString("yyyyMMdd-hhmmss");
-        conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+        QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item._modtime));
         if (!f.rename(conflictFileName)) {
             //If the rename fails, don't replace it.
             done(SyncFileItem::NormalError, f.errorString());

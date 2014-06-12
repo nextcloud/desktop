@@ -21,7 +21,6 @@
 #include "mirall/progressdispatcher.h"
 #include "mirall/syncjournaldb.h"
 #include "mirall/clientproxy.h"
-#include "mirall/utility.h"
 
 #include <csync.h>
 
@@ -60,7 +59,7 @@ typedef enum SyncFileStatus_s {
 } SyncFileStatus;
 
 
-class Folder : public QObject
+class OWNCLOUDSYNC_EXPORT Folder : public QObject
 {
     Q_OBJECT
 
@@ -76,6 +75,17 @@ public:
      * Get status about a single file.
      */
     SyncFileStatus fileStatus( const QString& );
+
+    /**
+     * @brief recursiveFolderStatus
+     * @param fileName - the relative file name to examine
+     * @return the resulting status
+     *
+     * The resulting status can only be either SYNC which means all files
+     * are in sync, ERROR if an error occured, or EVAL if something needs
+     * to be synced underneath this dir.
+     */
+    SyncFileStatus recursiveFolderStatus( const QString& fileName );
 
     /**
      * alias or nickname
@@ -149,10 +159,8 @@ public slots:
 
      /**
        * terminate the current sync run
-       *
-       * If block is true, this will block synchroniously for the sync thread to finish.
        */
-     void slotTerminateSync(bool block);
+     void slotTerminateSync();
 
      void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool*);
 
@@ -177,12 +185,15 @@ private slots:
     void slotSyncFinished();
 
     void slotTransmissionProgress(const Progress::Info& pi);
+    void slotJobCompleted(const SyncFileItem&);
 
     void slotPollTimerTimeout();
     void etagRetreived(const QString &);
     void slotNetworkUnavailable();
 
     void slotThreadTreeWalkResult(const SyncFileItemVector& );
+
+    void slotEmitFinishedDelayed();
 
 private:
     bool init();
@@ -216,8 +227,6 @@ private:
     SyncJournalDb _journal;
 
     ClientProxy   _clientProxy;
-
-    Utility::StopWatch _stopWatch;
 
     CSYNC *_csync_ctx;
 };

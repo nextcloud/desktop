@@ -14,12 +14,13 @@
 #ifndef MIRALL_ACCESS_MANAGER_H
 #define MIRALL_ACCESS_MANAGER_H
 
+#include "owncloudlib.h"
 #include <QNetworkAccessManager>
 
 namespace Mirall
 {
 
-class MirallAccessManager : public QNetworkAccessManager
+class OWNCLOUDSYNC_EXPORT MirallAccessManager : public QNetworkAccessManager
 {
     Q_OBJECT
 

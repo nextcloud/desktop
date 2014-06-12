@@ -187,6 +187,7 @@ public:
     const QString _remoteFolder; // folder. (same as remoteDir but without remote.php/webdav)
 
     SyncJournalDb * const _journal;
+    bool _finishedEmited; // used to ensure that finished is only emit once
 
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir, const QString &remoteFolder,
@@ -197,6 +198,7 @@ public:
             , _remoteDir((remoteDir.endsWith(QChar('/'))) ? remoteDir : remoteDir+'/' )
             , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder+'/' )
             , _journal(progressDb)
+            , _finishedEmited(false)
             , _activeJobs(0)
     { }
 
@@ -210,17 +212,28 @@ public:
     /* The number of currently active jobs */
     int _activeJobs;
 
-
     bool isInSharedDirectory(const QString& file);
-
+    bool localFileNameClash(const QString& relfile);
 
     void abort() {
         _abortRequested.fetchAndStoreOrdered(true);
-        if (_rootJob)
+        if (_rootJob) {
             _rootJob->abort();
-        emit finished();
+        }
+        emitFinished();
     }
 
+    // timeout in seconds
+    static int httpTimeout();
+
+private slots:
+
+    /** Emit the finished signal and make sure it is only emit once */
+    void emitFinished() {
+        if (!_finishedEmited)
+            emit finished();
+        _finishedEmited = true;
+    }
 
 signals:
     void completed(const SyncFileItem &);

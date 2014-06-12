@@ -18,6 +18,7 @@
 #include <QMap>
 #include <QNetworkCookie>
 #include <QUrl>
+#include <QPointer>
 
 #include "creds/abstractcredentials.h"
 
@@ -30,13 +31,12 @@ namespace Mirall
 
 class ShibbolethWebView;
 
-class ShibbolethCredentials : public AbstractCredentials
+class OWNCLOUDSYNC_EXPORT ShibbolethCredentials : public AbstractCredentials
 {
 Q_OBJECT
 
 public:
     ShibbolethCredentials();
-    ShibbolethCredentials(const QNetworkCookie& cookie, const QMap<QUrl, QList<QNetworkCookie> >& otherCookies);
 
     void syncContextPreInit(CSYNC* ctx);
     void syncContextPreStart(CSYNC* ctx);
@@ -50,16 +50,18 @@ public:
     void persist(Account *account);
     void invalidateToken(Account *account);
 
-    QNetworkCookie cookie() const;
-
     void showLoginWindow(Account*);
+
+    static QList<QNetworkCookie> accountCookies(Account*);
+    static QNetworkCookie findShibCookie(Account*, QList<QNetworkCookie> cookies = QList<QNetworkCookie>());
+    static QByteArray shibCookieName();
 
 public Q_SLOTS:
     void invalidateAndFetch(Account *account);
 
 private Q_SLOTS:
-    void onShibbolethCookieReceived(const QNetworkCookie& cookie, Account*);
-    void slotBrowserHidden();
+    void onShibbolethCookieReceived(const QNetworkCookie&, Account*);
+    void slotBrowserRejected();
     void onFetched();
     void slotReadJobDone(QKeychain::Job*);
     void slotInvalidateAndFetchInvalidateDone(QKeychain::Job*);
@@ -73,15 +75,16 @@ Q_SIGNALS:
 
 private:
     void storeShibCookie(const QNetworkCookie &cookie, Account *account);
+    void removeShibCookie(Account *account);
+    void addToCookieJar(const QNetworkCookie &cookie);
     QUrl _url;
     QByteArray prepareCookieData() const;
-    void disposeBrowser();
 
-    QNetworkCookie _shibCookie;
     bool _ready;
     bool _stillValid;
-    ShibbolethWebView* _browser;
-    QMap<QUrl, QList<QNetworkCookie> > _otherCookies;
+    bool _fetchJobInProgress;
+    QPointer<ShibbolethWebView> _browser;
+    QNetworkCookie _shibCookie;
     QString _user;
 };
 

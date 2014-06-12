@@ -17,6 +17,8 @@
 #include <QObject>
 
 #include <csync.h>
+#include "owncloudlib.h"
+
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -24,7 +26,7 @@ namespace Mirall
 {
 class Account;
 
-class AbstractCredentials : public QObject
+class OWNCLOUDSYNC_EXPORT AbstractCredentials : public QObject
 {
     Q_OBJECT
 

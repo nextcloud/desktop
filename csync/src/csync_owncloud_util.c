@@ -20,13 +20,15 @@
  */
 
 #include "csync_owncloud.h"
+#include "csync_owncloud_private.h"
+
 #include "csync_misc.h"
 
-void set_error_message( const char *msg )
+void set_error_message( csync_owncloud_ctx_t *ctx, const char *msg )
 {
-    SAFE_FREE(dav_session.error_string);
+    SAFE_FREE(ctx->dav_session.error_string);
     if( msg )
-        dav_session.error_string = c_strdup(msg);
+        ctx->dav_session.error_string = c_strdup(msg);
 }
 
 void set_errno_from_http_errcode( int err ) {
@@ -104,12 +106,12 @@ void set_errno_from_http_errcode( int err ) {
     errno = new_errno;
 }
 
-int http_result_code_from_session() {
-    const char *p = ne_get_error( dav_session.ctx );
+int http_result_code_from_session(csync_owncloud_ctx_t *ctx) {
+    const char *p = ne_get_error( ctx->dav_session.ctx );
     char *q;
     int err;
 
-    set_error_message(p); /* remember the error message */
+    set_error_message(ctx, p); /* remember the error message */
 
     err = strtol(p, &q, 10);
     if (p == q) {
@@ -118,8 +120,8 @@ int http_result_code_from_session() {
     return err;
 }
 
-void set_errno_from_session() {
-    int err = http_result_code_from_session();
+void set_errno_from_session(csync_owncloud_ctx_t *ctx) {
+    int err = http_result_code_from_session(ctx);
 
     if( err == EIO || err == ERRNO_ERROR_STRING) {
         errno = err;
@@ -128,7 +130,7 @@ void set_errno_from_session() {
     }
 }
 
-void set_errno_from_neon_errcode( int neon_code ) {
+void set_errno_from_neon_errcode(csync_owncloud_ctx_t *ctx, int neon_code ) {
 
     if( neon_code != NE_OK ) {
         DEBUG_WEBDAV("Neon error code was %d", neon_code);
@@ -137,7 +139,7 @@ void set_errno_from_neon_errcode( int neon_code ) {
     switch(neon_code) {
     case NE_OK:     /* Success, but still the possiblity of problems */
     case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
-        set_errno_from_session(); /* Something wrong with http communication */
+        set_errno_from_session(ctx); /* Something wrong with http communication */
         break;
     case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
         errno = ERRNO_LOOKUP_ERROR;
@@ -279,19 +281,9 @@ time_t oc_httpdate_parse( const char *date ) {
 /*
  * helper: convert a resource struct to file_stat struct.
  */
-csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
+void resourceToFileStat(csync_vio_file_stat_t *lfs, struct resource *res )
 {
-    csync_vio_file_stat_t *lfs = NULL;
-
-    if( ! res ) {
-        return NULL;
-    }
-
-    lfs = c_malloc(sizeof(csync_vio_file_stat_t));
-    if (lfs == NULL) {
-        errno = ENOMEM;
-        return NULL;
-    }
+    ZERO_STRUCTP(lfs);
 
     lfs->name = c_strdup( res->name );
 
@@ -306,17 +298,29 @@ csync_vio_file_stat_t *resourceToFileStat( struct resource *res )
         DEBUG_WEBDAV("ERROR: Unknown resource type %d", res->type);
     }
 
+    // FIXME Those are defaults, we'll have to use the real ownCloud WebDAV permissions soon
+    lfs->mode   = _stat_perms( lfs->type );
+    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+
     lfs->mtime = res->modtime;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
     lfs->size  = res->size;
     lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
     if( res->md5 ) {
         lfs->etag   = c_strdup(res->md5);
+        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
     }
-    lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
+
     csync_vio_file_stat_set_file_id(lfs, res->file_id);
 
-    return lfs;
+    if (res->directDownloadUrl) {
+        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADURL;
+        lfs->directDownloadUrl = c_strdup(res->directDownloadUrl);
+    }
+    if (res->directDownloadCookies) {
+        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES;
+        lfs->directDownloadCookies = c_strdup(res->directDownloadCookies);
+    }
 }
 
 /* WebDAV does not deliver permissions. Set a default here. */
@@ -339,3 +343,93 @@ int _stat_perms( int type ) {
     return ret;
 }
 
+struct resource* resource_dup(struct resource* o) {
+    struct resource *r = c_malloc (sizeof( struct resource ));
+    ZERO_STRUCTP(r);
+
+    r->uri = c_strdup(o->uri);
+    r->name = c_strdup(o->name);
+    r->type = o->type;
+    r->size = o->size;
+    r->modtime = o->modtime;
+    if( o->md5 ) {
+        r->md5 = c_strdup(o->md5);
+    }
+    if (o->directDownloadUrl) {
+        r->directDownloadUrl = c_strdup(o->directDownloadUrl);
+    }
+    if (o->directDownloadCookies) {
+        r->directDownloadCookies = c_strdup(o->directDownloadCookies);
+    }
+    r->next = o->next;
+    csync_vio_set_file_id(r->file_id, o->file_id);
+
+    return r;
+}
+void resource_free(struct resource* o) {
+    struct resource* old = NULL;
+    while (o)
+    {
+        old = o;
+        o = o->next;
+        SAFE_FREE(old->uri);
+        SAFE_FREE(old->name);
+        SAFE_FREE(old->md5);
+        SAFE_FREE(old->directDownloadUrl);
+        SAFE_FREE(old->directDownloadCookies);
+        SAFE_FREE(old);
+    }
+}
+
+void free_fetchCtx( struct listdir_context *ctx )
+{
+    struct resource *newres, *res;
+    if( ! ctx ) return;
+    newres = ctx->list;
+    res = newres;
+
+    ctx->ref--;
+    if (ctx->ref > 0) return;
+
+    SAFE_FREE(ctx->target);
+
+    while( res ) {
+        SAFE_FREE(res->uri);
+        SAFE_FREE(res->name);
+        SAFE_FREE(res->md5);
+        memset( res->file_id, 0, FILE_ID_BUF_SIZE+1 );
+        SAFE_FREE(res->directDownloadUrl);
+        SAFE_FREE(res->directDownloadCookies);
+
+        newres = res->next;
+        SAFE_FREE(res);
+        res = newres;
+    }
+    SAFE_FREE(ctx);
+}
+
+
+// as per http://sourceforge.net/p/predef/wiki/OperatingSystems/
+// extend as required
+const char* csync_owncloud_get_platform() {
+#if defined (_WIN32)
+    return "Windows";
+#elif defined(__APPLE__)
+    return "Macintosh";
+#elif defined(__gnu_linux__)
+    return "Linux";
+#elif defined(__DragonFly__)
+    /* might also define __FreeBSD__ */
+    return "DragonFlyBSD";
+#elif defined(__FreeBSD__)
+    return "FreeBSD";
+#elif defined(__NetBSD__)
+    return "NetBSD";
+#elif defined(__OpenBSD__)
+    return "OpenBSD";
+#elif defined(sun) || defined(__sun)
+    return "Solaris";
+#else
+    return "Unknown OS";
+#endif
+}
