@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Vyberte lokálny priečinok počítača pre synchronizáciu</translation>
+        <translation>Vyberte lokálny priečinok v počítači pre synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="44"/>
@@ -178,7 +178,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="107"/>
         <source>No account configured.</source>
-        <translation>Nenastavený žiaden účet.</translation>
+        <translation>Žiadny účet nie je nastavený.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="470"/>
@@ -432,7 +432,7 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="779"/>
         <source>User Abort.</source>
-        <translation>Zrušenie používateľom</translation>
+        <translation>Zrušené používateľom.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="782"/>
@@ -442,7 +442,7 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="788"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (Synchronizácia zapauzovaná)</translation>
+        <translation>%1 (Synchronizácia je pozastavená)</translation>
     </message>
 </context>
 <context>
@@ -513,7 +513,7 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Zvolený priečinok je symbolický odkaz. Cieľový priečinok tohoto odkazu už obsahuje nastavený priečinok.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -690,7 +690,7 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
         <source>Files or directories matching a pattern will not be synchronized.
 
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Súbory alebo priečinky spĺňajúce daný vzor nebudú synchronizované.
+        <translation>Súbory alebo priečinky spĺňajúce daný vzor nebudú zosynchronizované.
 
 Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri odstraňovaní. Toto je užitočné pre metadáta.</translation>
     </message>
@@ -985,7 +985,7 @@ si počas procesu aktualizácie môže vyžiadať dodatočné práva.</translati
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Setup local folder options</source>
-        <translation>Nastaviť možnosti lokálneho priečinku</translation>
+        <translation>Nastaviť možnosti lokálneho priečinka</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
@@ -995,12 +995,12 @@ si počas procesu aktualizácie môže vyžiadať dodatočné práva.</translati
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="108"/>
         <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation>Váš celý účet bude zosynchronizovaný do lokálneho priečinka &apos;%1&apos;.</translation>
+        <translation>Celý váš účet bude zosynchronizovaný do lokálneho priečinka &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="111"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 priečinok &apos;%2&apos; je synchronizovaný do lokálneho priečinka &apos;%3&apos;</translation>
+        <translation>%1 priečinok &apos;%2&apos; je zosynchronizovaný do lokálneho priečinka &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="117"/>
@@ -1028,7 +1028,7 @@ si počas procesu aktualizácie môže vyžiadať dodatočné práva.</translati
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="42"/>
         <source>Connect to %1</source>
-        <translation>Pripojiť k %1</translation>
+        <translation>Pripojiť sa k %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="43"/>
@@ -1046,7 +1046,7 @@ si počas procesu aktualizácie môže vyžiadať dodatočné práva.</translati
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
         <source>Connect to %1</source>
-        <translation>Pripojiť k %1</translation>
+        <translation>Pripojiť sa k %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
@@ -1132,7 +1132,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="242"/>
         <source>Could not create local folder %1</source>
-        <translation>Nemožno vytvoriť miestny priečinok %1</translation>
+        <translation>Nemožno vytvoriť lokálny priečinok %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
@@ -1143,7 +1143,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="267"/>
         <source>No remote folder specified!</source>
-        <translation>Nenastavený vzdialený priečinok!</translation>
+        <translation>Vzdialený priečinok nie je nastavený!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="273"/>
@@ -1236,7 +1236,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
         <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Váš celý účet bol synchronizovaný z lokálnym priečinkom &lt;i&gt;%1&lt;/i&gt;</translation>
+        <translation>Celý váš účet bol zosynchronizovaný s lokálnym priečinkom &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
@@ -1272,7 +1272,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="449"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Súbor %1 nie je možné stiahnuť, pretože súbor s rovnakým menom už existuje!</translation>
     </message>
 </context>
 <context>
@@ -1280,7 +1280,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="485"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Súbor %1 nie je možné stiahnuť, pretože súbor s rovnakým menom už existuje!</translation>
     </message>
 </context>
 <context>
@@ -1322,7 +1322,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="196"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Súbor %1 nemôže byť premenovaný na %2 z dôvodu, že tento názov je už použitý</translation>
     </message>
 </context>
 <context>
@@ -1438,7 +1438,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="65"/>
         <source>Retry Sync</source>
-        <translation>Opakovať synchronizáciu</translation>
+        <translation>Zopakovať synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="69"/>
@@ -1453,7 +1453,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="114"/>
         <source>Copied to clipboard</source>
-        <translation>Skopírované do &quot;clipboard&quot;</translation>
+        <translation>Skopírované do schránky</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="114"/>
@@ -1556,12 +1556,12 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>Vyžaduje sa opätovné overenie</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation type="unfinished"/>
+        <translation>Platnosť relácie uplynula. Musíte sa znovu prihlásiť, ak chcete pokračovať v používaní klienta.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -2035,7 +2035,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="356"/>
         <source>Details...</source>
-        <translation>Detaily...</translation>
+        <translation>Podrobnosti...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
@@ -2050,7 +2050,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="366"/>
         <source>Sign in...</source>
-        <translation>Prihlásiť</translation>
+        <translation>Prihlásiť do...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="368"/>
@@ -2140,7 +2140,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>Status message</source>
-        <translation>Stavová správa</translation>
+        <translation>Správa o stave</translation>
     </message>
 </context>
 <context>
@@ -2275,7 +2275,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="69"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>Váš celý účet bol synchronizovaný z lokálnym priečinkom</translation>
+        <translation>Celý váš účet bol zosynchronizovaný z lokálnym priečinkom</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="103"/>
