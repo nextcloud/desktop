@@ -28,6 +28,7 @@
 #include <QNetworkAccessManager>
 #include <QSslSocket>
 #include <QNetworkCookieJar>
+#include <QFileInfo>
 
 #include <QDebug>
 
