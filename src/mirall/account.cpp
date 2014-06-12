@@ -114,21 +114,46 @@ void Account::save()
 
 Account* Account::restore()
 {
+    // try to open the correctly themed settings
     QScopedPointer<QSettings> settings(settingsWithGroup(Theme::instance()->appName()));
-    QScopedPointer<ownCloudTheme> ocTheme(new ownCloudTheme);
 
     Account *acc = 0;
-    MirallConfigFile cfg;
+    bool migratedCreds = false;
 
+    // if the settings file could not be opened, the childKeys list is empty
     if( settings->childKeys().isEmpty() ) {
         // Now try to open the original ownCloud settings to see if they exist.
-        cfg.setTheme(ocTheme.data());
+        QString oCCfgFile = settings->fileName();
+        // replace the last two segments with ownCloud/owncloud.cfg
+        oCCfgFile = oCCfgFile.left( oCCfgFile.lastIndexOf('/'));
+        oCCfgFile = oCCfgFile.left( oCCfgFile.lastIndexOf('/'));
+        oCCfgFile += QLatin1String("/ownCloud/owncloud.cfg");
+
+        QFileInfo fi( oCCfgFile );
+        if( fi.isReadable() ) {
+            QSettings *oCSettings = new QSettings(oCCfgFile, QSettings::IniFormat);
+            oCSettings->beginGroup(QLatin1String("ownCloud"));
+
+            // Check the theme url to see if it is the same url that the oC config was for
+            QString overrideUrl = Theme::instance()->overrideServerUrl();
+            if( !overrideUrl.isEmpty() ) {
+                QString oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
+
+                // in case the urls are equal reset the settings object to read from
+                // the ownCloud settings object
+                if( oCUrl == overrideUrl ) {
+                    migratedCreds = true;
+                    settings.reset( oCSettings );
+                } else {
+                    delete oCSettings;
+                }
+            }
+        }
     }
 
     if (!settings->childKeys().isEmpty()) {
         acc = new Account;
 
-        acc->setApprovedCerts(QSslCertificate::fromData(cfg.caCerts()));
         acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
         acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
 
@@ -140,6 +165,11 @@ Account* Account::restore()
                 continue;
             acc->_settingsMap.insert(key, settings->value(key));
         }
+
+        // now the cert, it is in the general group
+        settings->beginGroup(QLatin1String("General"));
+        acc->setApprovedCerts(QSslCertificate::fromData(settings->value(QLatin1String("CaCertificates")).toByteArray()));
+        acc->setMigrated(migratedCreds);
         return acc;
     }
     return 0;
