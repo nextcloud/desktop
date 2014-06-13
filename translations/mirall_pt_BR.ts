@@ -740,12 +740,12 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="71"/>
         <source>&amp;Search: </source>
-        <translation>Bu&amp;scar</translation>
+        <translation>&amp;Pesquisar</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="79"/>
         <source>&amp;Find</source>
-        <translation>Localizar (&amp;F)</translation>
+        <translation>&amp;Localizar</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="97"/>
@@ -760,7 +760,7 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="104"/>
         <source>S&amp;ave</source>
-        <translation>S&amp;alvar</translation>
+        <translation>&amp;Salvar</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="105"/>
@@ -780,7 +780,7 @@ Itens marcados também serão excluídos se estiverem impedindo a remoção de u
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="194"/>
         <source>Could not write to log file </source>
-        <translation>Incapaz de gravar arquivo de log</translation>
+        <translation>Incapaz de gravar no arquivo de log</translation>
     </message>
 </context>
 <context>
@@ -2182,7 +2182,7 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation>Endereço do servidor (&amp;A)</translation>
+        <translation>&amp;Endereço do servidor:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
