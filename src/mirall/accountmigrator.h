@@ -14,15 +14,14 @@
 #ifndef ACCOUNTMIGRATOR_H
 #define ACCOUNTMIGRATOR_H
 
-#include <QObject>
+#include <QStringList>
 
 namespace Mirall {
 
-class AccountMigrator : public QObject
-{
-    Q_OBJECT
+class AccountMigrator {
+
 public:
-    explicit AccountMigrator(QObject *parent = 0);
+    explicit AccountMigrator();
 
     /**
      * @brief migrateFolderDefinitons - migrate the folder definition files

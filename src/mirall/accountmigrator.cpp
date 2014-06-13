@@ -31,8 +31,7 @@ namespace Mirall {
 // branded client first, it should automatically pick the information
 // from the already configured account.
 
-AccountMigrator::AccountMigrator(QObject *parent) :
-    QObject(parent)
+AccountMigrator::AccountMigrator()
 {
 
 }
