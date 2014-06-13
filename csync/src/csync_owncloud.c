@@ -461,7 +461,7 @@ static int dav_connect(csync_owncloud_ctx_t *ctx,  const char *base_url) {
     if( proxystate < 0 ) {
         DEBUG_WEBDAV("Error: Proxy-Configuration failed.");
     } else if( proxystate > 0 ) {
-        ne_set_proxy_auth( ctx->dav_session.ctx, proxy_authentication_callback_by_neon, 0 );
+        ne_set_proxy_auth( ctx->dav_session.ctx, proxy_authentication_callback_by_neon, ctx );
     }
 
     ctx->_connected = 1;
