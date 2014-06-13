@@ -236,7 +236,8 @@ bool SyncEngine::checkBlacklisting( SyncFileItem *item )
 
         if( re ) {
             qDebug() << "Item is on blacklist: " << entry._file << "retries:" << entry._retryCount;
-            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            item->_instruction = CSYNC_INSTRUCTION_ERROR;
+            item->_status = SyncFileItem::FileIgnored;
             item->_errorString = tr("The item is not synced because of previous errors: %1").arg(entry._errorString);
         }
     }
@@ -368,7 +369,8 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     checkBlacklisting( &item );
 
     if (file->instruction != CSYNC_INSTRUCTION_IGNORE
-        && file->instruction != CSYNC_INSTRUCTION_REMOVE) {
+        && file->instruction != CSYNC_INSTRUCTION_REMOVE
+        && file->instruction != CSYNC_INSTRUCTION_ERROR) {
       _hasFiles = true;
     }
 
