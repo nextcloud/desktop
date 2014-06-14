@@ -124,54 +124,54 @@
         <translation>继续</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="320"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="318"/>
         <source>Confirm Folder Remove</source>
         <translation>确认移除文件夹</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="321"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="319"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;你真的要停止 &lt;i&gt;%1%&lt;/i&gt; 文件夹的同步吗？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注释：&lt;/b&gt;这不会删除你客户端中的文件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="357"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="355"/>
         <source>Confirm Folder Reset</source>
         <translation>确认文件夹重置</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="358"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="356"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="622"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="620"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB)&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="625"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="623"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="721"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="719"/>
         <source>%1 (%3%) of %2 server space in use.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="760"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="758"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="767"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="765"/>
         <source>No %1 connection configured.</source>
         <translation>没有 %1 连接配置。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="469"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="467"/>
         <source>Sync Running</source>
         <translation>同步正在运行</translation>
     </message>
@@ -181,27 +181,27 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="470"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="468"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>正在执行同步。&lt;br /&gt;您确定要关闭它吗？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="753"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="751"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="634"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="632"/>
         <source>%1 of %2, file %3 of %4</source>
         <translation>%1 of %2, file %3 of %4</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="756"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="754"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="725"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="723"/>
         <source>Currently there is no storage usage information available.</source>
         <translation type="unfinished"/>
     </message>
