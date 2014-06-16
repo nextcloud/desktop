@@ -605,6 +605,8 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
     connect(_engine.data(), SIGNAL(jobCompleted(SyncFileItem)), this, SLOT(slotJobCompleted(SyncFileItem)));
 
+    setDirtyNetworkLimits();
+
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
     // disable events until syncing is done
@@ -616,7 +618,21 @@ void Folder::startSync(const QStringList &pathList)
 void Folder::setDirtyNetworkLimits()
 {
     if (_engine) {
-        _engine->setNetworkLimits();
+
+        MirallConfigFile cfg;
+        int downloadLimit = 0;
+        if (cfg.useDownloadLimit()) {
+            downloadLimit = cfg.downloadLimit() * 1000;
+        }
+        int uploadLimit = -75; // 75%
+        int useUpLimit = cfg.useUploadLimit();
+        if ( useUpLimit >= 1) {
+            uploadLimit = cfg.uploadLimit() * 1000;
+        } else if (useUpLimit == 0) {
+            uploadLimit = 0;
+        }
+
+        _engine->setNetworkLimits(uploadLimit, downloadLimit);
     }
 }
 

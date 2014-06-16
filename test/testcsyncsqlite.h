@@ -55,8 +55,6 @@ private slots:
         QCOMPARE( QString::number(st->pathlen), QString::number(13));
         QCOMPARE( QString::fromUtf8(st->path), QLatin1String("test2/zu/zuzu") );
         QCOMPARE( QString::number(st->inode), QString::number(1709554));
-        QCOMPARE( QString::number(st->uid), QString::number(0));
-        QCOMPARE( QString::number(st->gid), QString::number(0));
         QCOMPARE( QString::number(st->mode), QString::number(0));
         QCOMPARE( QString::number(st->modtime), QString::number(1384415006));
         QCOMPARE( QString::number(st->type), QString::number(2));

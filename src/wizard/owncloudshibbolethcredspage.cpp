@@ -48,7 +48,7 @@ void OwncloudShibbolethCredsPage::setupBrowser()
 
     _browser = new ShibbolethWebView(account);
     connect(_browser, SIGNAL(shibbolethCookieReceived(const QNetworkCookie&, Account*)),
-            this, SLOT(slotShibbolethCookieReceived()));
+            this, SLOT(slotShibbolethCookieReceived()), Qt::QueuedConnection);
     connect(_browser, SIGNAL(rejected()),
             this, SLOT(slotBrowserRejected()));
 

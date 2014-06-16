@@ -165,13 +165,6 @@ struct csync_tree_walk_file_s {
     int64_t     size;
     int64_t     inode;
     time_t      modtime;
-#ifdef _WIN32
-    uint32_t    uid;
-    uint32_t    gid;
-#else
-    uid_t       uid;
-    gid_t       gid;
-#endif
     mode_t      mode;
     enum csync_ftw_type_e     type;
     enum csync_instructions_e instruction;
@@ -182,6 +175,7 @@ struct csync_tree_walk_file_s {
     const char *rename_path;
     const char *etag;
     const char *file_id;
+    const char *remotePerm;
     char *directDownloadUrl;
     char *directDownloadCookies;
     struct {

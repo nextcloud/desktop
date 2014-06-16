@@ -198,6 +198,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
                 return new PropagateLocalRename(this, item);
             }
         case CSYNC_INSTRUCTION_IGNORE:
+        case CSYNC_INSTRUCTION_ERROR:
             return new PropagateIgnoreJob(this, item);
         default:
             return 0;

@@ -34,6 +34,9 @@
 
 #define FILE_ID_BUF_SIZE 21
 
+// currently specified at https://github.com/owncloud/core/issues/8322 are 9 to 10
+#define REMOTE_PERM_BUF_SIZE 15
+
 typedef struct csync_vio_file_stat_s csync_vio_file_stat_t;
 
 enum csync_vio_file_flags_e {
@@ -56,7 +59,7 @@ enum csync_vio_file_type_e {
 enum csync_vio_file_stat_fields_e {
   CSYNC_VIO_FILE_STAT_FIELDS_NONE = 0,
   CSYNC_VIO_FILE_STAT_FIELDS_TYPE = 1 << 0,
-  CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS = 1 << 1,
+  CSYNC_VIO_FILE_STAT_FIELDS_MODE = 1 << 1, // local POSIX mode
   CSYNC_VIO_FILE_STAT_FIELDS_FLAGS = 1 << 2,
   CSYNC_VIO_FILE_STAT_FIELDS_DEVICE = 1 << 3,
   CSYNC_VIO_FILE_STAT_FIELDS_INODE = 1 << 4,
@@ -75,16 +78,19 @@ enum csync_vio_file_stat_fields_e {
   CSYNC_VIO_FILE_STAT_FIELDS_ETAG = 1 << 17,
   CSYNC_VIO_FILE_STAT_FIELDS_FILE_ID = 1 << 18,
   CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADURL = 1 << 19,
-  CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES = 1 << 20
+  CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES = 1 << 20,
+  CSYNC_VIO_FILE_STAT_FIELDS_PERM = 1 << 21 // remote oC perm
+
 };
 
 
 struct csync_vio_file_stat_s {
   char *name;
-  char *etag;
+  char *etag; // FIXME: Should this be inlined like file_id and perm?
   char file_id[FILE_ID_BUF_SIZE+1];
   char *directDownloadUrl;
   char *directDownloadCookies;
+  char remotePerm[REMOTE_PERM_BUF_SIZE+1];
 
   time_t atime;
   time_t mtime;

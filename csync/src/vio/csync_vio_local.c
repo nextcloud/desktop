@@ -315,7 +315,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
 
   buf->mode = sb.st_mode;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
+  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MODE;
 
   if (buf->type == CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK) {
     /* FIXME: handle symlink */

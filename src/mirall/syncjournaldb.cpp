@@ -146,6 +146,8 @@ bool SyncJournalDb::checkConnect()
                          "modtime INTEGER(8),"
                          "type INTEGER,"
                          "md5 VARCHAR(32)," /* This is the etag.  Called md5 for compatibility */
+                        // updateDatabaseStructure() will add a fileid column
+                        // updateDatabaseStructure() will add a remotePerm column
                          "PRIMARY KEY(phash)"
                          ");");
 
@@ -227,13 +229,13 @@ bool SyncJournalDb::checkConnect()
     bool rc = updateDatabaseStructure();
     if( rc ) {
         _getFileRecordQuery.reset(new QSqlQuery(_db));
-        _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid FROM "
+        _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm FROM "
                                      "metadata WHERE phash=:ph" );
 
         _setFileRecordQuery.reset(new QSqlQuery(_db) );
         _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
-                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid) "
-                                     "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ?, ? )" );
+                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm) "
+                                     "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ?, ?, ? )" );
 
         _getDownloadInfoQuery.reset(new QSqlQuery(_db) );
         _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
@@ -318,6 +320,13 @@ bool SyncJournalDb::updateDatabaseStructure()
 
         commitInternal("update database structure");
     }
+    if( columns.indexOf(QLatin1String("remotePerm")) == -1 ) {
+
+        QSqlQuery query(_db);
+        query.prepare("ALTER TABLE metadata ADD COLUMN remotePerm VARCHAR(128);");
+        re = query.exec();
+        commitInternal("update database structure (remotePerm");
+    }
 
     return re;
 }
@@ -371,25 +380,25 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
         QByteArray arr = record._path.toUtf8();
         int plen = arr.length();
 
-        // _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
-        //                            "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid) "
-        //                            "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ?, ? )" );
         QString etag( record._etag );
         if( etag.isEmpty() ) etag = "";
         QString fileId( record._fileId);
         if( fileId.isEmpty() ) fileId = "";
+        QString remotePerm (record._remotePerm);
+        if (remotePerm.isEmpty()) remotePerm = QString(); // have NULL in DB (vs empty)
 
         _setFileRecordQuery->bindValue(0, QString::number(phash));
         _setFileRecordQuery->bindValue(1, plen);
         _setFileRecordQuery->bindValue(2, record._path );
         _setFileRecordQuery->bindValue(3, record._inode );
-        _setFileRecordQuery->bindValue(4, record._uid );
-        _setFileRecordQuery->bindValue(5, record._gid );
+        _setFileRecordQuery->bindValue(4, 0 ); // uid Not used
+        _setFileRecordQuery->bindValue(5, 0 ); // gid Not used
         _setFileRecordQuery->bindValue(6, record._mode );
         _setFileRecordQuery->bindValue(7, QString::number(Utility::qDateTimeToTime_t(record._modtime)));
         _setFileRecordQuery->bindValue(8, QString::number(record._type) );
         _setFileRecordQuery->bindValue(9, etag );
         _setFileRecordQuery->bindValue(10, fileId );
+        _setFileRecordQuery->bindValue(11, remotePerm );
 
         if( !_setFileRecordQuery->exec() ) {
             qWarning() << "Error SQL statement setFileRecord: " << _setFileRecordQuery->lastQuery() <<  " :"
@@ -398,9 +407,9 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
         }
 
         qDebug() <<  _setFileRecordQuery->lastQuery() << phash << plen << record._path << record._inode
-                 << record._uid << record._gid << record._mode
+                 << record._mode
                  << QString::number(Utility::qDateTimeToTime_t(record._modtime)) << QString::number(record._type)
-                 << record._etag << record._fileId;
+                 << record._etag << record._fileId << record._remotePerm;
         _setFileRecordQuery->finish();
 
         return true;
@@ -455,12 +464,6 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
     qlonglong phash = getPHash( filename );
     SyncJournalFileRecord rec;
 
-    /*
-    CREATE TABLE "metadata"(phash INTEGER(8),pathlen INTEGER,path VARCHAR(4096),inode INTEGER,uid INTEGER,gid INTEGER,mode INTEGER,modtime INTEGER(8),type INTEGER,md5 VARCHAR(32),PRIMARY KEY(phash));
-    CREATE INDEX metadata_inode ON metadata(inode);
-    CREATE INDEX metadata_phash ON metadata(phash);
-    */
-
     if( checkConnect() ) {
         _getFileRecordQuery->bindValue(":ph", QString::number(phash));
 
@@ -474,13 +477,14 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             bool ok;
             rec._path    = _getFileRecordQuery->value(0).toString();
             rec._inode   = _getFileRecordQuery->value(1).toInt(&ok);
-            rec._uid     = _getFileRecordQuery->value(2).toInt(&ok);
-            rec._gid     = _getFileRecordQuery->value(3).toInt(&ok);
+            //rec._uid     = _getFileRecordQuery->value(2).toInt(&ok); Not Used
+            //rec._gid     = _getFileRecordQuery->value(3).toInt(&ok); Not Used
             rec._mode    = _getFileRecordQuery->value(4).toInt(&ok);
             rec._modtime = Utility::qDateTimeFromTime_t(_getFileRecordQuery->value(5).toLongLong(&ok));
             rec._type    = _getFileRecordQuery->value(6).toInt(&ok);
             rec._etag    = _getFileRecordQuery->value(7).toString();
             rec._fileId  = _getFileRecordQuery->value(8).toString();
+            rec._remotePerm = _getFileRecordQuery->value(9).toByteArray();
 
             _getFileRecordQuery->finish();
         } else {

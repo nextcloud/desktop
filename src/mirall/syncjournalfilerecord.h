@@ -31,16 +31,13 @@ public:
         return !_path.isEmpty();
     }
 
-    // query("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM metadata WHERE phash=:phash");
-
     QString   _path;
     quint64   _inode;
     QDateTime _modtime;
     int       _type;
-    QString   _etag;
-    QString   _fileId;
-    int       _uid;
-    int       _gid;
+    QString   _etag; // FIXME Why not QByteArray?
+    QString   _fileId; // FIXME Why not QByteArray?
+    QByteArray _remotePerm;
     int       _mode;
 };
 

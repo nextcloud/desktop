@@ -27,14 +27,14 @@
 namespace Mirall {
 
 SyncJournalFileRecord::SyncJournalFileRecord()
-    :_inode(0), _type(0), _uid(0), _gid(0), _mode(0)
+    :_inode(0), _type(0), _mode(0)
 {
 }
 
 SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QString &localFileName)
     : _path(item._file), _modtime(Utility::qDateTimeFromTime_t(item._modtime)),
-      _type(item._type), _etag(item._etag), _fileId(item._fileId),
-      _uid(0), _gid(0), _mode(0)
+      _type(item._type), _etag(item._etag), _fileId(item._fileId), _remotePerm(item._remotePerm),
+      _mode(0)
 {
     // use the "old" inode coming with the item for the case where the
     // filesystem stat fails. That can happen if the the file was removed

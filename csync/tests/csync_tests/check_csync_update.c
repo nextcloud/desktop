@@ -120,8 +120,6 @@ static csync_vio_file_stat_t* create_fstat(const char *name,
     fs->type = CSYNC_VIO_FILE_TYPE_REGULAR;
     fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
 
-    fs->mode = 0644;
-    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERMISSIONS;
 
     if (inode == 0) {
         fs->inode = 619070;

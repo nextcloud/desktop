@@ -128,9 +128,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->status_code = CSYNC_STATUS_OK;
 
-  ctx->pwd.uid = getuid();
-  ctx->pwd.euid = geteuid();
-
   ctx->local.list     = 0;
   ctx->remote.list    = 0;
   ctx->current_fs = NULL;
@@ -400,14 +397,13 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.path         = cur->path;
       trav.size         = cur->size;
       trav.modtime      = cur->modtime;
-      trav.uid          = cur->uid;
-      trav.gid          = cur->gid;
       trav.mode         = cur->mode;
       trav.type         = cur->type;
       trav.instruction  = cur->instruction;
       trav.rename_path  = cur->destpath;
       trav.etag         = cur->etag;
       trav.file_id      = cur->file_id;
+      trav.remotePerm = cur->remotePerm;
       trav.directDownloadUrl = cur->directDownloadUrl;
       trav.directDownloadCookies = cur->directDownloadCookies;
       trav.inode        = cur->inode;
