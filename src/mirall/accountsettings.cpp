@@ -172,8 +172,6 @@ void AccountSettings::slotAddFolder()
     folderMan->setSyncEnabled(false); // do not start more syncs.
 
     FolderWizard *folderWizard = new FolderWizard(this);
-    Folder::Map folderMap = folderMan->map();
-    folderWizard->setFolderMap( folderMap );
 
     connect(folderWizard, SIGNAL(accepted()), SLOT(slotFolderWizardAccepted()));
     connect(folderWizard, SIGNAL(rejected()), SLOT(slotFolderWizardRejected()));

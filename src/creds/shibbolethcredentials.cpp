@@ -352,7 +352,7 @@ void ShibbolethCredentials::showLoginWindow(Account* account)
     }
     _browser = new ShibbolethWebView(account);
     connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
-            this, SLOT(onShibbolethCookieReceived(QNetworkCookie, Account*)));
+            this, SLOT(onShibbolethCookieReceived(QNetworkCookie, Account*)), Qt::QueuedConnection);
     connect(_browser, SIGNAL(rejected()), this, SLOT(slotBrowserRejected()));
 
     _browser->show();

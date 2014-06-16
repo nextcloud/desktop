@@ -65,7 +65,6 @@ ShibbolethWebView::ShibbolethWebView(Account* account, QWidget* parent)
 
 ShibbolethWebView::~ShibbolethWebView()
 {
-    slotLoadFinished();
 }
 
 void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& url)

@@ -200,7 +200,7 @@ void PropagateUploadFileQNAM::startNextChunk()
     }
 
     QString path = _item._file;
-    QIODevice *device;
+    QIODevice *device = 0;
     if (_chunkCount > 1) {
         int sendingChunk = (_currentChunk + _startChunk) % _chunkCount;
         // XOR with chunk size to make sure everything goes well if chunk size change between runs
@@ -218,14 +218,25 @@ void PropagateUploadFileQNAM::startNextChunk()
     } else {
         device = _file;
     }
-    if (!device->isOpen())
-        device->open(QIODevice::ReadOnly);
 
-    _job = new PUTFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + path, device, headers);
-    _job->setTimeout(_propagator->httpTimeout() * 1000);
-    connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
-    connect(_job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
-    _job->start();
+    bool isOpen = true;
+    if (!device->isOpen()) {
+        isOpen = device->open(QIODevice::ReadOnly);
+    }
+
+    if( isOpen ) {
+        _job = new PUTFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + path, device, headers);
+        _job->setTimeout(_propagator->httpTimeout() * 1000);
+        connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
+        connect(_job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
+        _job->start();
+    } else {
+        delete device;
+
+        qDebug() << "ERR: Could not open upload file: " << device->errorString();
+        done( SyncFileItem::NormalError, device->errorString() );
+        return;
+    }
 }
 
 void PropagateUploadFileQNAM::slotPutFinished()
@@ -270,9 +281,14 @@ void PropagateUploadFileQNAM::slotPutFinished()
     bool finished = job->reply()->hasRawHeader("ETag");
 
     if (!finished) {
+        QFileInfo fi(_propagator->_localDir + _item._file);
+        if( !fi.exists() ) {
+            _propagator->_activeJobs--;
+            done(SyncFileItem::SoftError, tr("The local file was removed during sync."));
+            return;
+        }
 
-        if (Utility::qDateTimeToTime_t(QFileInfo(_propagator->_localDir + _item._file).lastModified())
-                != _item._modtime) {
+        if (Utility::qDateTimeToTime_t(fi.lastModified()) != _item._modtime) {
             /* Uh oh:  The local file has changed during upload */
             _propagator->_activeJobs--;
             done(SyncFileItem::SoftError, tr("Local file changed during sync."));

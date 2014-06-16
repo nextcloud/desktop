@@ -104,7 +104,7 @@ bool FolderWizardLocalPath::isComplete() const
   }
 
   // check if the local directory isn't used yet in another ownCloud sync
-  Folder::Map map = _folderMap;
+  Folder::Map map = FolderMan::instance()->map();
 
   if( isOk ) {
     Folder::Map::const_iterator i = map.constBegin();
@@ -374,7 +374,7 @@ bool FolderWizardRemotePath::isComplete() const
     }
     wizard()->setProperty("targetPath", dir);
 
-    Folder::Map map = _folderMap;
+    Folder::Map map = FolderMan::instance()->map();
     Folder::Map::const_iterator i = map.constBegin();
     for(i = map.constBegin();i != map.constEnd(); i++ ) {
         Folder *f = static_cast<Folder*>(i.value());
@@ -448,13 +448,6 @@ FolderWizard::~FolderWizard()
 {
 }
 
-void FolderWizard::setFolderMap( const Folder::Map& fm)
-{
-    _folderWizardSourcePage->setFolderMap( fm );
-    if (!Theme::instance()->singleSyncFolder()) {
-       _folderWizardTargetPage->setFolderMap( fm );
-    }
-}
 
 } // end namespace
 

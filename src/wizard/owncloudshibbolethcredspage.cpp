@@ -42,14 +42,13 @@ void OwncloudShibbolethCredsPage::setupBrowser()
     // we need to reset the cookie jar to drop temporary cookies (like the shib cookie)
     // i.e. if someone presses "back"
     QNetworkAccessManager *qnam = account->networkAccessManager();
-    delete qnam->cookieJar();
     CookieJar *jar = new CookieJar;
+    // Implicitly deletes the old cookie jar, and reparents the jar
     qnam->setCookieJar(jar);
-    jar->setParent(0);
 
     _browser = new ShibbolethWebView(account);
     connect(_browser, SIGNAL(shibbolethCookieReceived(const QNetworkCookie&, Account*)),
-            this, SLOT(slotShibbolethCookieReceived()));
+            this, SLOT(slotShibbolethCookieReceived()), Qt::QueuedConnection);
     connect(_browser, SIGNAL(rejected()),
             this, SLOT(slotBrowserRejected()));
 
