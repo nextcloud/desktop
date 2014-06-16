@@ -270,9 +270,14 @@ void PropagateUploadFileQNAM::slotPutFinished()
     bool finished = job->reply()->hasRawHeader("ETag");
 
     if (!finished) {
+        QFileInfo fi(_propagator->_localDir + _item._file);
+        if( !fi.exists() ) {
+            _propagator->_activeJobs--;
+            done(SyncFileItem::SoftError, tr("The local file was removed during sync."));
+            return;
+        }
 
-        if (Utility::qDateTimeToTime_t(QFileInfo(_propagator->_localDir + _item._file).lastModified())
-                != _item._modtime) {
+        if (Utility::qDateTimeToTime_t(fi.lastModified()) != _item._modtime) {
             /* Uh oh:  The local file has changed during upload */
             _propagator->_activeJobs--;
             done(SyncFileItem::SoftError, tr("Local file changed during sync."));
