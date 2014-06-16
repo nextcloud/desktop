@@ -1296,7 +1296,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="114"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Pozor, možná kolize z důvodu velikosti písmen s %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="119"/>

@@ -1296,7 +1296,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="114"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Pozor, možná kolízia z dôvodu veľkosti písmen s %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="119"/>
@@ -1309,7 +1309,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Nemožno odstrániť %1 z dôvodu kolízie názvu súboru s lokálnym súborom</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
