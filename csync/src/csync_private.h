@@ -117,11 +117,11 @@ struct csync_s {
     c_list_t *ignored_cleanup;
   } remote;
 
-  struct {
 #if defined(HAVE_ICONV) && defined(WITH_ICONV)
+  struct {
     iconv_t iconv_cd;
-#endif
   } options;
+#endif
 
   /* replica we are currently walking */
   enum csync_replica_e current;
