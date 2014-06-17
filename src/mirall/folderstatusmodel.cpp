@@ -110,7 +110,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   QFont errorFont = subFont;
   QFont progressFont = subFont;
 
-  progressFont.setPointSize( subFont.pointSize()-1);
+  progressFont.setPointSize( subFont.pointSize()-2);
   //font.setPixelSize(font.weight()+);
   aliasFont.setBold(true);
   aliasFont.setPointSize( subFont.pointSize()+2 );
@@ -248,7 +248,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   // Sync File Progress Bar: Show it if syncFile is not empty.
   if( !overallString.isEmpty()) {
       int fileNameTextHeight = subFm.boundingRect(tr("File")).height();
-      int barHeight = qMax(fileNameTextHeight, aliasFm.height()+2); ;
+      int barHeight = qMax(fileNameTextHeight, aliasFm.height()+4); ;
       int overallWidth = option.rect.width()-2*aliasMargin;
 
       painter->save();

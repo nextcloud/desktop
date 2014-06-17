@@ -63,6 +63,16 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT qint64 qDateTimeToTime_t(const QDateTime &t);
 
 
+
+    /**
+     * @brief Convert milliseconds to HMS string.
+     * @param quint64 msecs the milliseconds to convert to string.
+     * @param uint precision the amount of sub dviving scale to include in the result.
+     * @return an HMS representation of the milliseconds value.
+     */
+    QString timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision, QString separator, bool specific);
+    QString timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific);
+    
     // convinience OS detection methods
     OWNCLOUDSYNC_EXPORT bool isWindows();
     OWNCLOUDSYNC_EXPORT bool isMac();

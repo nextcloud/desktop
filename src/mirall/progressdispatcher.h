@@ -43,11 +43,66 @@ namespace Progress
         quint64 _totalSize;
         quint64 _completedFileCount;
         quint64 _completedSize;
+        // Should this be in a separate file?
+        struct EtaEstimate {
+            EtaEstimate() :  _startedTime(QDateTime::currentMSecsSinceEpoch()), _agvEtaMSecs(0),_effectivProgressPerSec(0),_sampleCount(1) {}
+            
+            static const int MAX_AVG_DIVIDER=60;
+            static const int INITAL_WAIT_TIME=5;
+            
+            quint64     _startedTime ;
+            quint64     _agvEtaMSecs;
+            quint64     _effectivProgressPerSec;
+            float      _sampleCount;
+            
+            /**
+             * reset the estiamte.
+             */
+            void reset() {
+                _startedTime = QDateTime::currentMSecsSinceEpoch();
+                _sampleCount =1;
+                _effectivProgressPerSec = _agvEtaMSecs = 0;
+            }
+            
+            /**
+             * update the estimated eta time with more current data.
+             * @param quint64 completed the amount the was completed.
+             * @param quint64 total the total amout that should be completed.
+             */
+            void updateTime(quint64 completed, quint64 total) {
+                quint64 elapsedTime = QDateTime::currentMSecsSinceEpoch() -  this->_startedTime ;
+                //don't start until you have some good data to process, prevents jittring estiamtes at the start of the syncing process                    
+                if(total != 0 && completed != 0 && elapsedTime > INITAL_WAIT_TIME ) {
+                    if(_sampleCount < MAX_AVG_DIVIDER) { _sampleCount+=0.01f; }
+                    // (elapsedTime-1) is an hack to avoid float "rounding" issue (ie. 0.99999999999999999999....)
+                    _agvEtaMSecs = _agvEtaMSecs + (((static_cast<float>(total) / completed) * elapsedTime) - (elapsedTime-1)) - this->getEtaEstimate();
+                    _effectivProgressPerSec = ( total - completed ) / (1+this->getEtaEstimate()/1000);
+                }
+            }
+            
+            /**
+             * Get the eta estimate in milliseconds 
+             * @return quint64 the estimate amount of milliseconds to end the process.
+             */
+            quint64 getEtaEstimate() const {
+               return _agvEtaMSecs / _sampleCount;
+           }
+            
+           /**
+            * Get the estimated average bandwidth usage.
+            * @return quint64 the estimated bandwidth usage in bytes.
+            */
+           quint64 getEstimatedBandwidth() const {
+               return _effectivProgressPerSec;
+           }
+        };
+        EtaEstimate _totalEtaEstimate;
 
         struct ProgressItem {
             ProgressItem() : _completedSize(0) {}
             SyncFileItem _item;
             quint64 _completedSize;
+            EtaEstimate _etaEstimate;
         };
         QHash<QString, ProgressItem> _currentItems;
         SyncFileItem _lastCompletedItem;
@@ -56,16 +111,27 @@ namespace Progress
             _currentItems.remove(item._file);
             if (!item._isDirectory) {
                 _completedFileCount++;
-                if (Progress::isSizeDependent(item._instruction)) {
-                    _completedSize += item._size;
-                }
+		        if (Progress::isSizeDependent(item._instruction)) {
+		            _completedSize += item._size;
+		        }
             }
             _lastCompletedItem = item;
+            this->updateEstimation();
         }
         void setProgressItem(const SyncFileItem &item, quint64 size) {
             _currentItems[item._file]._item = item;
             _currentItems[item._file]._completedSize = size;
             _lastCompletedItem = SyncFileItem();
+            this->updateEstimation();
+            _currentItems[item._file]._etaEstimate.updateTime(size,item._size);
+        }
+        
+        void updateEstimation() {
+            if(this->_totalSize > 0) {
+                _totalEtaEstimate.updateTime(this->completedSize(),this->_totalSize);
+            } else {
+                _totalEtaEstimate.updateTime(this->_completedFileCount,this->_totalFileCount);
+            }
         }
 
         quint64 completedSize() const {
@@ -76,6 +142,21 @@ namespace Progress
             }
             return r;
         }
+        /**
+         * Get the total completion estimate structure 
+         * @return EtaEstimate a structure containing the total completion information.
+         */
+        EtaEstimate totalEstimate() const {
+            return _totalEtaEstimate;
+        }
+
+        /**
+         * Get the current file completion estimate structure 
+         * @return EtaEstimate a structure containing the current file completion information.
+         */
+        EtaEstimate getFileEstimate(const SyncFileItem &item) const {
+            return _currentItems[item._file]._etaEstimate;
+        }               
     };
 
     OWNCLOUDSYNC_EXPORT QString asActionString( const SyncFileItem& item );
@@ -103,7 +184,6 @@ public:
     static ProgressDispatcher* instance();
     ~ProgressDispatcher();
 
-
 signals:
     /**
       @brief Signals the progress of data transmission.
@@ -113,7 +193,6 @@ signals:
 
      */
     void progressInfo( const QString& folder, const Progress::Info& progress );
-
     /**
      * @brief: the item's job is completed
      */
