@@ -265,7 +265,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._fileId = file->file_id;
 
     // record the seen files to be able to clean the journal later
-    _seenFiles[item._file] = QString();
+    _seenFiles.insert(item._file);
 
     switch(file->error_status) {
     case CSYNC_STATUS_OK:
@@ -655,6 +655,7 @@ void SyncEngine::slotFinished()
     if( ! _journal->postSyncCleanup( _seenFiles ) ) {
         qDebug() << "Cleaning of synced ";
     }
+
     _journal->commit("All Finished.", false);
     emit treeWalkResult(_syncedItems);
     finalize();

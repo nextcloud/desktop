@@ -491,7 +491,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
     return rec;
 }
 
-bool SyncJournalDb::postSyncCleanup(const QHash<QString, QString> &items )
+bool SyncJournalDb::postSyncCleanup(const QSet<QString> &items )
 {
     QMutexLocker locker(&_mutex);
 

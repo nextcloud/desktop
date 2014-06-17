@@ -21,6 +21,7 @@
 #include <QMutex>
 #include <QThread>
 #include <QString>
+#include <QSet>
 #include <qelapsedtimer.h>
 
 #include <csync.h>
@@ -115,7 +116,7 @@ private:
     SyncJournalDb *_journal;
     QScopedPointer <OwncloudPropagator> _propagator;
     QString _lastDeleted; // if the last item was a path and it has been deleted
-    QHash <QString, QString> _seenFiles;
+    QSet<QString> _seenFiles;
     QThread _thread;
 
     Progress::Info _progressInfo;
