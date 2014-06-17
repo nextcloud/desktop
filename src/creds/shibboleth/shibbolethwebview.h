@@ -47,7 +47,6 @@ private Q_SLOTS:
   void onNewCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
   void slotLoadStarted();
   void slotLoadFinished(bool success);
-  void slotHandleAuthentication(QNetworkReply*,QAuthenticator*);
 
 protected:
   void accept();
