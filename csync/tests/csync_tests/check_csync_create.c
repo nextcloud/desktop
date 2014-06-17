@@ -38,7 +38,6 @@ static void check_csync_destroy_null(void **state)
 static void check_csync_create(void **state)
 {
     CSYNC *csync;
-    char confdir[1024] = {0};
     int rc;
 
     (void) state; /* unused */
