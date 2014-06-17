@@ -395,6 +395,11 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item.log._other_size        = file->other.size;
 
     _syncedItems.append(item);
+
+    if (remote && file->remotePerm) {
+        _remotePerms[item._file] = file->remotePerm;
+    }
+
     emit syncItemDiscovered(item);
     return re;
 }
@@ -867,19 +872,17 @@ void SyncEngine::checkForPermission()
     }
 }
 
-QByteArray SyncEngine::getPermissions(const QString& file)
+QByteArray SyncEngine::getPermissions(const QString& file) const
 {
     //FIXME;
     static bool isTest = qgetenv("OWNCLOUD_TEST_PERMISSIONS").toInt();
     if (isTest) {
         QRegExp rx("_PERM_([^_]*)_[^/]*$");
         if (rx.indexIn(file) != -1) {
-            qDebug() << Q_FUNC_INFO << file << rx.cap(1);
             return rx.cap(1).toLatin1();
         }
     }
-    qDebug() << Q_FUNC_INFO << file << "*" << isTest;
-    return QByteArray();
+    return _remotePerms.value(file);
 }
 
 

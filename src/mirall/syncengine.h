@@ -131,12 +131,15 @@ private:
      * to recover
      */
     void checkForPermission();
-    QByteArray getPermissions(const QString& file);
+    QByteArray getPermissions(const QString& file) const;
 
     bool _hasFiles; // true if there is at least one file that is not ignored or removed
 
     int _uploadLimit;
     int _downloadLimit;
+
+    // hash containing the permissions on the remote directory
+    QHash<QString, QByteArray> _remotePerms;
 };
 
 
