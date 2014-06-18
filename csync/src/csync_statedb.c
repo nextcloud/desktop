@@ -316,8 +316,6 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
                         (char*) sqlite3_column_text(stmt, 11),
                         sizeof((*st)->remotePerm));
             }
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "%s %s",sqlite3_column_text(stmt, 10),sqlite3_column_text(stmt, 11) );
-
         }
     }
     return rc;
