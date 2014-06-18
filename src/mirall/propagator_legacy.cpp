@@ -305,6 +305,11 @@ bool PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
 
 void PropagateNeonJob::limitBandwidth(qint64 progress, qint64 bandwidth_limit)
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
+        // Do not limit bandwidth when aborting to speed up the current transfer
+        return;
+    }
+
     if (bandwidth_limit > 0) {
         int64_t diff = _lastTime.nsecsElapsed() / 1000;
         int64_t len = progress - _lastProgress;
