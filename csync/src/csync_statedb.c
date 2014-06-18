@@ -314,7 +314,7 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
             if(column_count > 11 && sqlite3_column_text(stmt,11)) {
                 strncpy((*st)->remotePerm,
                         (char*) sqlite3_column_text(stmt, 11),
-                        sizeof((*st)->remotePerm));
+                        REMOTE_PERM_BUF_SIZE);
             }
         }
     }

@@ -390,7 +390,7 @@ out:
       st->directDownloadCookies = c_strdup(fs->directDownloadCookies);
   }
   if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_PERM) {
-      strncpy(st->remotePerm, fs->remotePerm, sizeof(st->remotePerm));
+      strncpy(st->remotePerm, fs->remotePerm, REMOTE_PERM_BUF_SIZE);
   }
 
 fastout:  /* target if the file information is read from database into st */
