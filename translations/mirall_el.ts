@@ -1381,7 +1381,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="287"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Το τοπικό αρχείο διαγράφηκε κατά τον συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>
