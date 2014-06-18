@@ -663,14 +663,14 @@ void SyncEngine::slotFinished()
 
 void SyncEngine::finalize()
 {
+    _thread.quit();
+    _thread.wait();
     csync_commit(_csync_ctx);
 
     qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
     _stopWatch.stop();
 
     _propagator.reset(0);
-    _thread.quit();
-    _thread.wait();
     _syncRunning = false;
     emit finished();
 }
