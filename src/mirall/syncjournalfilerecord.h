@@ -35,8 +35,8 @@ public:
     quint64   _inode;
     QDateTime _modtime;
     int       _type;
-    QString   _etag; // FIXME Why not QByteArray?
-    QString   _fileId; // FIXME Why not QByteArray?
+    QByteArray _etag;
+    QByteArray _fileId;
     QByteArray _remotePerm;
     int       _mode;
 };

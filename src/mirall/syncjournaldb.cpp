@@ -482,8 +482,8 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._mode    = _getFileRecordQuery->value(4).toInt(&ok);
             rec._modtime = Utility::qDateTimeFromTime_t(_getFileRecordQuery->value(5).toLongLong(&ok));
             rec._type    = _getFileRecordQuery->value(6).toInt(&ok);
-            rec._etag    = _getFileRecordQuery->value(7).toString();
-            rec._fileId  = _getFileRecordQuery->value(8).toString();
+            rec._etag    = _getFileRecordQuery->value(7).toByteArray();
+            rec._fileId  = _getFileRecordQuery->value(8).toByteArray();
             rec._remotePerm = _getFileRecordQuery->value(9).toByteArray();
 
             _getFileRecordQuery->finish();
