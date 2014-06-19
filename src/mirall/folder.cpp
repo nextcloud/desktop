@@ -30,21 +30,6 @@
 
 #include "creds/abstractcredentials.h"
 
-extern "C" {
-
-enum csync_exclude_type_e {
-  CSYNC_NOT_EXCLUDED   = 0,
-  CSYNC_FILE_SILENTLY_EXCLUDED,
-  CSYNC_FILE_EXCLUDE_AND_REMOVE,
-  CSYNC_FILE_EXCLUDE_LIST,
-  CSYNC_FILE_EXCLUDE_INVALID_CHAR
-};
-typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
-
-CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
-
-}
-
 #include <QDebug>
 #include <QTimer>
 #include <QUrl>
@@ -749,107 +734,5 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *
     }
 #endif
 }
-
-// compute the file status of a directory recursively. It returns either
-// "all in sync" or "needs update" or "error", no more details.
-SyncFileStatus Folder::recursiveFolderStatus( const QString& fileName )
-{
-    QDir dir(path() + fileName);
-
-    const QStringList dirEntries = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot );
-
-    foreach( const QString entry, dirEntries ) {
-        QFileInfo fi(entry);
-        SyncFileStatus sfs;
-        if( fi.isDir() ) {
-            sfs = recursiveFolderStatus( fileName + QLatin1Char('/') + entry );
-        } else {
-            QString fs( fileName + QLatin1Char('/') + entry );
-            if( fileName.isEmpty() ) {
-                // toplevel, no slash etc. needed.
-                fs = entry;
-            }
-            sfs = fileStatus( fs );
-        }
-
-        if( sfs == FILE_STATUS_STAT_ERROR || sfs == FILE_STATUS_ERROR ) {
-            return FILE_STATUS_ERROR;
-        }
-        if( sfs != FILE_STATUS_SYNC) {
-            return FILE_STATUS_EVAL;
-        }
-    }
-    return FILE_STATUS_SYNC;
-}
-
-SyncFileStatus Folder::fileStatus( const QString& fileName )
-{
-    /*
-    STATUS_NONE,
-    + STATUS_EVAL,
-    STATUS_REMOVE, (invalid for this case because it asks for local files)
-    STATUS_RENAME,
-    + STATUS_NEW,
-    STATUS_CONFLICT,(probably also invalid as we know the conflict only with server involvement)
-    + STATUS_IGNORE,
-    + STATUS_SYNC,
-    + STATUS_STAT_ERROR,
-    STATUS_ERROR,
-    STATUS_UPDATED
-    */
-
-    // FIXME: Find a way for STATUS_ERROR
-    SyncFileStatus stat = FILE_STATUS_NONE;
-
-    QString file = fileName;
-    if( path() != QLatin1String("/") ) {
-        file = path() + fileName;
-    }
-
-    QFileInfo fi(file);
-
-    if( !fi.exists() ) {
-        stat = FILE_STATUS_STAT_ERROR; // not really possible.
-    }
-
-    // file is ignored?
-    if( fi.isSymLink() ) {
-        stat = FILE_STATUS_IGNORE;
-    }
-    int type = CSYNC_FTW_TYPE_FILE;
-    if( fi.isDir() ) {
-        type = CSYNC_FTW_TYPE_DIR;
-    }
-
-    if( stat == FILE_STATUS_NONE ) {
-        CSYNC_EXCLUDE_TYPE excl = csync_excluded(_csync_ctx, file.toUtf8(), type);
-
-        if( excl != CSYNC_NOT_EXCLUDED ) {
-            stat = FILE_STATUS_IGNORE;
-        }
-    }
-
-    if( type == CSYNC_FTW_TYPE_DIR ) {
-        // compute recursive status of the directory
-        stat = recursiveFolderStatus( fileName );
-    } else {
-        if( stat == FILE_STATUS_NONE ) {
-            SyncJournalFileRecord rec = _journal.getFileRecord(fileName);
-            if( !rec.isValid() ) {
-                stat = FILE_STATUS_NEW;
-            }
-
-            // file was locally modified.
-            if( stat == FILE_STATUS_NONE && fi.lastModified() != rec._modtime ) {
-                stat = FILE_STATUS_EVAL;
-            }
-        }
-        if( stat == FILE_STATUS_NONE ) {
-            stat = FILE_STATUS_SYNC;
-        }
-    }
-    return stat;
-}
-
 } // namespace Mirall
 

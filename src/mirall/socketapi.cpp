@@ -12,7 +12,6 @@
  * for more details.
  */
 
-
 #include "socketapi.h"
 
 #include "mirall/mirallconfigfile.h"
@@ -20,6 +19,7 @@
 #include "mirall/folder.h"
 #include "mirall/utility.h"
 #include "mirall/theme.h"
+#include "syncjournalfilerecord.h"
 
 #include <QDebug>
 #include <QUrl>
@@ -32,9 +32,145 @@
 #include <QDir>
 #include <QApplication>
 
+extern "C" {
+
+enum csync_exclude_type_e {
+  CSYNC_NOT_EXCLUDED   = 0,
+  CSYNC_FILE_SILENTLY_EXCLUDED,
+  CSYNC_FILE_EXCLUDE_AND_REMOVE,
+  CSYNC_FILE_EXCLUDE_LIST,
+  CSYNC_FILE_EXCLUDE_INVALID_CHAR
+};
+typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
+
+CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
+
+}
+
 namespace Mirall {
 
 #define DEBUG qDebug() << "SocketApi: "
+
+namespace SocketApiHelper {
+
+SyncFileStatus fileStatus(Folder *folder, const QString& fileName );
+
+/**
+ * @brief recursiveFolderStatus
+ * @param fileName - the relative file name to examine
+ * @return the resulting status
+ *
+ * The resulting status can only be either SYNC which means all files
+ * are in sync, ERROR if an error occured, or EVAL if something needs
+ * to be synced underneath this dir.
+ */
+// compute the file status of a directory recursively. It returns either
+// "all in sync" or "needs update" or "error", no more details.
+SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
+{
+    QDir dir(folder->path() + fileName);
+
+    const QStringList dirEntries = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot );
+
+    foreach( const QString entry, dirEntries ) {
+        QFileInfo fi(entry);
+        SyncFileStatus sfs;
+        if( fi.isDir() ) {
+            sfs = recursiveFolderStatus(folder, fileName + QLatin1Char('/') + entry );
+        } else {
+            QString fs( fileName + QLatin1Char('/') + entry );
+            if( fileName.isEmpty() ) {
+                // toplevel, no slash etc. needed.
+                fs = entry;
+            }
+            sfs = fileStatus(folder, fs );
+        }
+
+        if( sfs == FILE_STATUS_STAT_ERROR || sfs == FILE_STATUS_ERROR ) {
+            return FILE_STATUS_ERROR;
+        }
+        if( sfs != FILE_STATUS_SYNC) {
+            return FILE_STATUS_EVAL;
+        }
+    }
+    return FILE_STATUS_SYNC;
+}
+
+/**
+ * Get status about a single file.
+ */
+SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
+{
+    /*
+    STATUS_NONE,
+    + STATUS_EVAL,
+    STATUS_REMOVE, (invalid for this case because it asks for local files)
+    STATUS_RENAME,
+    + STATUS_NEW,
+    STATUS_CONFLICT,(probably also invalid as we know the conflict only with server involvement)
+    + STATUS_IGNORE,
+    + STATUS_SYNC,
+    + STATUS_STAT_ERROR,
+    STATUS_ERROR,
+    STATUS_UPDATED
+    */
+
+    // FIXME: Find a way for STATUS_ERROR
+    SyncFileStatus stat = FILE_STATUS_NONE;
+
+    QString file = fileName;
+    if( folder->path() != QLatin1String("/") ) {
+        file = folder->path() + fileName;
+    }
+
+    QFileInfo fi(file);
+
+    if( !fi.exists() ) {
+        stat = FILE_STATUS_STAT_ERROR; // not really possible.
+    }
+
+    // file is ignored?
+    if( fi.isSymLink() ) {
+        stat = FILE_STATUS_IGNORE;
+    }
+    int type = CSYNC_FTW_TYPE_FILE;
+    if( fi.isDir() ) {
+        type = CSYNC_FTW_TYPE_DIR;
+    }
+
+    if( stat == FILE_STATUS_NONE ) {
+        CSYNC_EXCLUDE_TYPE excl = csync_excluded(folder->csyncContext(), file.toUtf8(), type);
+
+        if( excl != CSYNC_NOT_EXCLUDED ) {
+            stat = FILE_STATUS_IGNORE;
+        }
+    }
+
+    if( type == CSYNC_FTW_TYPE_DIR ) {
+        // compute recursive status of the directory
+        stat = recursiveFolderStatus( folder, fileName );
+    } else {
+        if( stat == FILE_STATUS_NONE ) {
+            SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(fileName);
+            if( !rec.isValid() ) {
+                stat = FILE_STATUS_NEW;
+            }
+
+            // file was locally modified.
+            if( stat == FILE_STATUS_NONE && fi.lastModified() != rec._modtime ) {
+                stat = FILE_STATUS_EVAL;
+            }
+        }
+        if( stat == FILE_STATUS_NONE ) {
+            stat = FILE_STATUS_SYNC;
+        }
+    }
+    return stat;
+}
+
+
+}
+
 
 SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
     : QObject(parent)
@@ -176,7 +312,7 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSo
         const QStringList fileEntries = dir.entryList( QDir::Files );
         foreach(const QString file, fileEntries) {
             const QString absoluteFilePath = dir.absoluteFilePath(file);
-            SyncFileStatus fileStatus = folder->fileStatus( absoluteFilePath.mid(folder->path().length()) );
+            SyncFileStatus fileStatus = SocketApiHelper::fileStatus(folder, absoluteFilePath.mid(folder->path().length()) );
             if( fileStatus == FILE_STATUS_STAT_ERROR ) {
                 qDebug() << "XXXXXXXXXXXX FileStatus is STAT ERROR for " << absoluteFilePath;
             }
@@ -194,7 +330,7 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSo
 
         foreach(const QString entry, dirEntries) {
             QString absoluteFilePath = dir.absoluteFilePath(entry);
-            SyncFileStatus sfs = folder->recursiveFolderStatus( absoluteFilePath.mid(folder->path().length()) );
+            SyncFileStatus sfs = SocketApiHelper::recursiveFolderStatus(folder, absoluteFilePath.mid(folder->path().length()) );
             if( sfs != FILE_STATUS_SYNC ) {
                 statusString = QLatin1String("NEED_SYNC");
                 break;
@@ -229,7 +365,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSock
     }
 
     if( statusString.isEmpty() ) {
-        SyncFileStatus fileStatus = folder->fileStatus( argument.mid(folder->path().length()) );
+        SyncFileStatus fileStatus = SocketApiHelper::fileStatus(folder, argument.mid(folder->path().length()) );
         if( fileStatus == FILE_STATUS_STAT_ERROR ) {
             qDebug() << "XXXXXXXXXXXX FileStatus is STAT ERROR for " << argument;
         }

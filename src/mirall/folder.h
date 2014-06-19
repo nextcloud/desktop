@@ -42,8 +42,7 @@ class SyncEngine;
 
 class FolderWatcher;
 
-
-typedef enum SyncFileStatus_s {
+enum SyncFileStatus {
     FILE_STATUS_NONE,
     FILE_STATUS_EVAL,
     FILE_STATUS_REMOVE,
@@ -56,8 +55,7 @@ typedef enum SyncFileStatus_s {
     FILE_STATUS_STAT_ERROR,
     FILE_STATUS_ERROR,
     FILE_STATUS_UPDATED
-} SyncFileStatus;
-
+};
 
 class OWNCLOUDSYNC_EXPORT Folder : public QObject
 {
@@ -70,22 +68,6 @@ public:
 
     typedef QHash<QString, Folder*> Map;
     typedef QHashIterator<QString, Folder*> MapIterator;
-
-    /**
-     * Get status about a single file.
-     */
-    SyncFileStatus fileStatus( const QString& );
-
-    /**
-     * @brief recursiveFolderStatus
-     * @param fileName - the relative file name to examine
-     * @return the resulting status
-     *
-     * The resulting status can only be either SYNC which means all files
-     * are in sync, ERROR if an error occured, or EVAL if something needs
-     * to be synced underneath this dir.
-     */
-    SyncFileStatus recursiveFolderStatus( const QString& fileName );
 
     /**
      * alias or nickname
@@ -148,6 +130,11 @@ public:
      void setSyncState(SyncResult::Status state);
 
      void setDirtyNetworkLimits();
+
+     // Used by the Socket API
+     SyncJournalDb *journalDb() { return &_journal; }
+     CSYNC *csyncContext() { return _csync_ctx; }
+
 
 signals:
     void syncStateChange();
