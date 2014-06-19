@@ -72,6 +72,8 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
 
     const QStringList dirEntries = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot );
 
+    SyncFileStatus result = FILE_STATUS_SYNC;
+
     foreach( const QString entry, dirEntries ) {
         QFileInfo fi(entry);
         SyncFileStatus sfs;
@@ -88,12 +90,11 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
 
         if( sfs == FILE_STATUS_STAT_ERROR || sfs == FILE_STATUS_ERROR ) {
             return FILE_STATUS_ERROR;
-        }
-        if( sfs != FILE_STATUS_SYNC) {
-            return FILE_STATUS_EVAL;
+        } else if( sfs == FILE_STATUS_EVAL || sfs == FILE_STATUS_NEW) {
+            result = FILE_STATUS_EVAL;
         }
     }
-    return FILE_STATUS_SYNC;
+    return result;
 }
 
 /**
@@ -154,15 +155,12 @@ SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
             SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(fileName);
             if( !rec.isValid() ) {
                 stat = FILE_STATUS_NEW;
-            }
-
-            // file was locally modified.
-            if( stat == FILE_STATUS_NONE && fi.lastModified() != rec._modtime ) {
+            } else if( stat == FILE_STATUS_NONE && fi.lastModified() != rec._modtime ) {
+                // file was locally modified.
                 stat = FILE_STATUS_EVAL;
+            } else {
+                stat = FILE_STATUS_SYNC;
             }
-        }
-        if( stat == FILE_STATUS_NONE ) {
-            stat = FILE_STATUS_SYNC;
         }
     }
     return stat;
