@@ -292,58 +292,10 @@ void SocketApi::broadcastMessage(const QString& message)
 
 void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket)
 {
+    // This command is the same as RETRIEVE_FILE_STATUS
+
     qDebug() << Q_FUNC_INFO << argument;
-    QString statusString;
-
-    if( !socket ) {
-        qDebug() << "No valid socket object.";
-        return;
-    }
-
-    Folder* folder = FolderMan::instance()->folderForPath( QUrl::fromLocalFile(argument) );
-    // this can happen in offline mode e.g.: nothing to worry about
-    if (!folder) {
-        DEBUG << "folder offline or not watched:" << argument;
-        statusString = QLatin1String("NOP");
-    }
-
-    QDir dir(argument);
-    if( statusString.isEmpty() ) {
-        const QStringList fileEntries = dir.entryList( QDir::Files );
-        foreach(const QString file, fileEntries) {
-            const QString absoluteFilePath = dir.absoluteFilePath(file);
-            SyncFileStatus fileStatus = SocketApiHelper::fileStatus(folder, absoluteFilePath.mid(folder->path().length()) );
-            if( fileStatus == FILE_STATUS_STAT_ERROR ) {
-                qDebug() << "XXXXXXXXXXXX FileStatus is STAT ERROR for " << absoluteFilePath;
-            }
-            if( fileStatus != FILE_STATUS_SYNC ) {
-                qDebug() << "SyncFileStatus for " << absoluteFilePath << " is " << fileStatus;
-                // we found something that is not in sync
-                statusString = QLatin1String("NEED_SYNC");
-                break;
-            }
-        }
-    }
-
-    if( statusString.isEmpty() ) { // if  it is still empty, we check the dirs recursively.
-        const QStringList dirEntries = dir.entryList( QDir::AllDirs | QDir::NoDotAndDotDot );
-
-        foreach(const QString entry, dirEntries) {
-            QString absoluteFilePath = dir.absoluteFilePath(entry);
-            SyncFileStatus sfs = SocketApiHelper::recursiveFolderStatus(folder, absoluteFilePath.mid(folder->path().length()) );
-            if( sfs != FILE_STATUS_SYNC ) {
-                statusString = QLatin1String("NEED_SYNC");
-                break;
-            }
-        }
-    }
-
-    if( statusString.isEmpty() ) {
-        statusString = QLatin1String("OK");
-    }
-
-    QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')+argument;
-    sendMessage(socket, message);
+    command_RETRIEVE_FILE_STATUS(argument, socket);
 }
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket)
