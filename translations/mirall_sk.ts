@@ -1381,7 +1381,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="287"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny súbor bol odstránený počas synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>

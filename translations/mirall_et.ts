@@ -183,13 +183,14 @@
         <location filename="../src/mirall/accountsettings.cpp" line="620"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 of %4) %5 jäänud kiirusel  %6/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="635"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 of %2, fail %3 of %4
+Aega kokku jäänud %5</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="757"/>
@@ -514,7 +515,7 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Valitud kataloog on sümboolne link. Juba eelnevalt seadistatud kataloog sisaldub kataloogis, millele antud link viitab.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -1273,7 +1274,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="449"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Faili %1 ei saa alla laadida kuna on konflikt kohaliku faili nimega.</translation>
     </message>
 </context>
 <context>
@@ -1281,7 +1282,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="501"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Faili %1 ei saa alla laadida kuna on konflikt kohaliku faili nimega.</translation>
     </message>
 </context>
 <context>
@@ -1297,7 +1298,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="114"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Tähelepanu, võimalik tõusutundliku nime konflikt %1-ga</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="119"/>
@@ -1310,7 +1311,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Ei saa eemaldada %1 kuna on konflikt kohaliku faili nimega</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
@@ -1323,7 +1324,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="196"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Faili %1 ei saa ümber nimetada %2-ks, kuna on konflikt kohaliku faili nimega</translation>
     </message>
 </context>
 <context>
@@ -1381,7 +1382,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="287"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik fail on eemaldatud sünkroniseeringu käigus.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>
@@ -1391,7 +1392,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="304"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Server ei tunnistanud viimast tükki. (E-silt puudus).</translation>
     </message>
 </context>
 <context>
@@ -2082,12 +2083,12 @@ Proovi neid uuesti sünkroniseerida.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin %1 %2-st (%3 veel)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin %1 (%2 veel)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="433"/>

@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Seleccioneu una carpeta de destinació remota</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -147,17 +147,17 @@
         <location filename="../src/mirall/accountsettings.cpp" line="626"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="725"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) de %2 l&apos;espai del servidor en ús.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="764"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>No hi ha connexió amb %1 a &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="771"/>
@@ -183,13 +183,14 @@
         <location filename="../src/mirall/accountsettings.cpp" line="620"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 de %4) %5 pendents a un ràtio de %6/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="635"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2, fitxer %3 de %4
+Temps restant total %5</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="757"/>
@@ -222,7 +223,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Usuari:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
@@ -323,23 +324,23 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="439"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>%1 s&apos;ha reanomenat a %2 i %3 altres fitxers s&apos;han reanomenat.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="441"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 s&apos;ha reanomenat a %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="446"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>%1 s&apos;ha reanomenat a %2 i %3 altres fitxers s&apos;han eliminat.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="448"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 s&apos;ha mogut a %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="456"/>
@@ -514,7 +515,7 @@ Esteu segur que voleu executar aquesta operació?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer seleccionat és un enllaç simbòlic. Aquest enllaç apunta a una carpeta ja configurada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -524,7 +525,7 @@ Esteu segur que voleu executar aquesta operació?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>El directori seleccionat és un enllaç simbòlic. Ja heu configurat una carpeta que apunta als pares de la carpeta que apunta aquest enllaç.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
@@ -582,7 +583,7 @@ Esteu segur que voleu executar aquesta operació?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>Ja esteu sincronitzant tots els vostres fitxers. Sincronitzar una altra carpeta &lt;b&gt;no&lt;/b&gt; està permes. Si voleu sincronitzar múltiples carpetes, elimineu la configuració de sincronització de la carpeta arrel.</translation>
     </message>
 </context>
 <context>
@@ -599,17 +600,17 @@ Esteu segur que voleu executar aquesta operació?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="444"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha rebut cap E-Tag del servidor, comproveu el Proxy/Gateway</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="451"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Hem rebut un E-Tag diferent en la represa. Es comprovarà la pròxima vegada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="487"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Temps de connexió excedit</translation>
     </message>
 </context>
 <context>
@@ -718,12 +719,12 @@ Els elements marcats també s&apos;eliminaran si prevenen l&apos;eliminació d&a
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Edita el partó d&apos;ignorats</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Edita el patró d&apos;ignorats:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
@@ -1069,7 +1070,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut connectar de forma segura. Voleu connectar sense encriptació (no recomanat)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -1250,7 +1251,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="82"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Temps de connexió excedit</translation>
     </message>
 </context>
 <context>
@@ -1263,17 +1264,17 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="395"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha rebut cap E-Tag del servidor, comproveu el Proxy/Gateway</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="405"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>hem rebut un E-Tag diferent en la represa. Es comprovarà la pròxima vegada.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="449"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer %1 no es pot baixar perquè hi ha un xoc amb el nom d&apos;un fitxer local!</translation>
     </message>
 </context>
 <context>
@@ -1281,7 +1282,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="501"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer %1 no es pot baixar perquè hi ha un xoc amb el nom d&apos;un fitxer local!</translation>
     </message>
 </context>
 <context>
@@ -1289,7 +1290,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="159"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha eliminat un fitxer o carpeta de la compartició nómés de lectura, però la restauració ha fallat: %1</translation>
     </message>
 </context>
 <context>
@@ -1297,7 +1298,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="114"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Atenció, possible xoc entre majúscules i minúscules amb %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="119"/>
@@ -1310,7 +1311,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>No es pot eliminar %1 perquè hi ha un xoc amb el nom d&apos;un fitxer local</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
@@ -1323,7 +1324,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="196"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer %1 no es pot reanomenar a %2 perquè hi ha un xoc amb el nom d&apos;un fitxer local</translation>
     </message>
 </context>
 <context>
@@ -1331,7 +1332,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="139"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer s&apos;ha eliminat d&apos;una compartició només de lectura. S&apos;ha restaurat.</translation>
     </message>
 </context>
 <context>
@@ -1349,7 +1350,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="250"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer s&apos;ha reanomenat però és part d&apos;una compartició només de lectura. El fixter original s&apos;ha restaurat.</translation>
     </message>
 </context>
 <context>
@@ -1368,7 +1369,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="162"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer s&apos;ha editat localment però és part d&apos;una compartició només de lectura. S&apos;ha restaurat i la vostra edició és en el fitxer conflictiu.</translation>
     </message>
 </context>
 <context>
@@ -1376,12 +1377,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="258"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer s&apos;ha editat localment però és part d&apos;una compartició només de lectura. S&apos;ha restaurat i la vostra edició és en el fitxer en conflicte.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="287"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer local s&apos;ha eliminat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="294"/>
@@ -1391,7 +1392,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="304"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>El servidor no ha reconegut l&apos;últim fragment. (No hi havia e-Tag)</translation>
     </message>
 </context>
 <context>
@@ -1563,12 +1564,12 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>Es requereix nova acreditació</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation type="unfinished"/>
+        <translation>La vostra sessió ha vençut. Heu d&apos;acreditar-vos de nou per continuar usant el client.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="100"/>
@@ -1591,7 +1592,7 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Noms alternatius de concepte:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
@@ -1621,7 +1622,7 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Emissor&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
@@ -1641,7 +1642,7 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="117"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Empremtes&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="121"/>
@@ -1661,12 +1662,12 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="129"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Aquest certificat es va aprovar manualment&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="149"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (auto-signat)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="151"/>
@@ -1787,12 +1788,12 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="92"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ha fallat en carregar o crear el fitxer de revista. Assegureu-vos que yeniu permisos de lectura i escriptura en la carpeta local de sincronització.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="96"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ha fallat en escriure el fitxer de revista</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="99"/>
@@ -1969,7 +1970,7 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="210"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versió %1 Per més informació visiteu &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distribuït per %4 i amb Llicència Pública General GNU (GPL) Versió 2.0.&lt;br&gt;%5 i el %5 logo són marques registrades de %4 als&lt;br&gt;Estats Units, altres països, o ambdós.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2082,12 +2083,12 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronitzant %1 de %2  (%3 pendents)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronitzant %1 (%2 pendents)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
@@ -2351,7 +2352,7 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="51"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Construit de la revisió Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; a %3, %4 usant Qt %5.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="58"/>
@@ -2415,12 +2416,12 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="66"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>esborrant</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="69"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>movent</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
