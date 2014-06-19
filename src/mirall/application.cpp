@@ -152,7 +152,7 @@ Application::Application(int &argc, char **argv) :
 
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
 
-    _socketApi = new SocketApi(this, cfg.configPathWithAppName().append(QLatin1String("socket")));
+    _socketApi = new SocketApi(this, QUrl::fromLocalFile(cfg.configPathWithAppName().append(QLatin1String("socket"))));
 
 }
 
