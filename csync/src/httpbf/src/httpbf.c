@@ -204,9 +204,9 @@ void hbf_free_transfer( hbf_transfer_t *transfer ) {
 
     for( cnt = 0; cnt < transfer->block_cnt; cnt++ ) {
         hbf_block_t *block = transfer->block_arr[cnt];
+        if( !block ) continue;
         if( block->http_error_msg ) free( block->http_error_msg );
         if( block->etag ) free( block->etag );
-        if( block ) free(block);
     }
     free( transfer->block_arr );
     free( transfer->url );
