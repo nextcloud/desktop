@@ -432,7 +432,11 @@ void AccountSettings::slotEnableCurrentFolder()
 
             // this sets the folder status to disabled but does not interrupt it.
             Folder *f = folderMan->folder( alias );
-            if( f && folderEnabled ) {
+            if (!f) {
+                return;
+            }
+
+            if( folderEnabled ) {
                 // check if a sync is still running and if so, ask if we should terminate.
                 if( f->isBusy() ) { // its still running
 #if defined(Q_OS_MAC)
