@@ -328,7 +328,7 @@ void ownCloudGui::slotFolderOpenAction( const QString& alias )
     Folder *f = FolderMan::instance()->folder(alias);
     if( f ) {
         qDebug() << "opening local url " << f->path();
-        QUrl url = QUrl::fromLocalFile(f->path);
+        QUrl url = QUrl::fromLocalFile(f->path());
 
 #ifdef Q_OS_WIN
         // work around a bug in QDesktopServices on Win32, see i-net
