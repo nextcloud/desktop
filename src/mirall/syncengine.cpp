@@ -55,12 +55,17 @@ void csyncLogCatcher(int /*verbosity*/,
 bool SyncEngine::_syncRunning = false;
 
 SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, Mirall::SyncJournalDb* journal)
+  : _csync_ctx(ctx)
+  , _needsUpdate(false)
+  , _localPath(localPath)
+  , _remoteUrl(remoteURL)
+  , _remotePath(remotePath)
+  , _journal(journal)
+  , _hasFiles(false)
+  , _downloadLimit(0)
+  , _uploadLimit(0)
+
 {
-    _localPath = localPath;
-    _remotePath = remotePath;
-    _remoteUrl = remoteURL;
-    _csync_ctx = ctx;
-    _journal = journal;
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
     qRegisterMetaType<Progress::Info>("Progress::Info");
