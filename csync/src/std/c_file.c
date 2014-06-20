@@ -260,3 +260,87 @@ int c_rename( const char *src, const char *dst ) {
 
     return rc;
 }
+
+int c_compare_file( const char *f1, const char *f2 ) {
+  mbchar_t *wf1, *wf2;
+  int fd1 = -1, fd2 = -1;
+  size_t size1, size2;
+  char buffer1[BUFFER_SIZE];
+  char buffer2[BUFFER_SIZE];
+  csync_stat_t stat1;
+  csync_stat_t stat2;
+
+  int rc = -1;
+
+  if(f1 == NULL || f2 == NULL) return -1;
+
+  wf1 = c_utf8_to_locale(f1);
+  if(wf1 == NULL) {
+    return -1;
+  }
+
+  wf2 = c_utf8_to_locale(f2);
+  if(wf2 == NULL) {
+    c_free_locale_string(wf1);
+    return -1;
+  }
+
+#ifdef _WIN32
+  _fmode = _O_BINARY;
+#endif
+
+  fd1 = _topen(wf1, O_RDONLY);
+  if(fd1 < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  fd2 = _topen(wf2, O_RDONLY);
+  if(fd2 < 0) {
+    rc = -1;
+    goto out;
+  }
+
+  /* compare size first. */
+  rc = _tfstat(fd1, &stat1);
+  if (rc < 0) {
+    goto out;
+  }
+
+  rc = _tfstat(fd2, &stat2);
+  if (rc < 0) {
+    goto out;
+  }
+
+  /* if sizes are different, the files can not be equal. */
+  if (stat1.st_size != stat2.st_size) {
+    rc = 0;
+    goto out;
+  }
+
+  while( (size1 = read(fd1, buffer1, BUFFER_SIZE)) > 0 ) {
+    size2 = read( fd2, buffer2, BUFFER_SIZE );
+
+    if( size1 != size2 ) {
+      rc = 0;
+      goto out;
+    }
+    if(memcmp(buffer1, buffer2, size1) != 0) {
+      /* buffers are different */
+      rc = 0;
+      goto out;
+    }
+  }
+
+  rc = 1;
+
+out:
+
+  if(fd1 > -1) close(fd1);
+  if(fd2 > -1) close(fd2);
+
+  c_free_locale_string( wf1 );
+  c_free_locale_string( wf2 );
+  return rc;
+
+}

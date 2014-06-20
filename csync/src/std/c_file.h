@@ -76,6 +76,16 @@ int c_isfile(const char *path);
 int c_copy(const char *src, const char *dst, mode_t mode);
 
 /**
+ * @brief Compare the content of two files byte by byte.
+ * @param f1     Path of file 1
+ * @param f2     Path of file 2
+ *
+ * @return       0 if the files differ, 1 if the files are equal or -1 on
+ *               error with errno set.
+ */
+int c_compare_file( const char *f1, const char *f2 );
+
+/**
  * @brief move a file from source to destination.
  *
  * @param src    Path to the source file
