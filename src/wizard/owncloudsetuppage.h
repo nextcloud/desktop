@@ -68,12 +68,9 @@ private:
   QString _ocUser;
   bool    _authTypeKnown;
   bool    _checking;
-  bool    _configExists;
-  bool    _multipleFoldersExist;
   WizardCommon::AuthType _authType;
 
   QProgressIndicator* _progressIndi;
-  QButtonGroup* _selectiveSyncButtons;
   QString _remoteFolder;
 };
 

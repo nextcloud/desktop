@@ -86,8 +86,6 @@ protected slots:
 private:
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     Ui_FolderWizardTargetPage _ui;
-    ownCloudInfo *_ownCloudDirCheck;
-    bool _dirChecked;
     bool _warnWasVisible;
 
 };
