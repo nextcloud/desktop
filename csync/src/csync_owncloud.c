@@ -696,7 +696,7 @@ static struct listdir_context *fetch_resource_list(const char *uri, int depth)
             ret = NE_CONNECT;
             set_error_message(req_status->reason_phrase);
         }
-        DEBUG_WEBDAV("Simple propfind result code %d.", req_status->code);
+        DEBUG_WEBDAV("Simple propfind result code %d.", req_status ? req_status->code : -1);
     } else {
         if( ret == NE_ERROR && req_status->code == 404) {
             errno = ENOENT;
