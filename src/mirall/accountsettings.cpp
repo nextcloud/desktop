@@ -416,28 +416,6 @@ void AccountSettings::setFolderList( const Folder::Map &folders )
 
 }
 
-// move from Application
-void AccountSettings::slotFolderOpenAction( const QString& alias )
-{
-    Folder *f = FolderMan::instance()->folder(alias);
-    qDebug() << "opening local url " << f->path();
-    if( f ) {
-        QUrl url(f->path(), QUrl::TolerantMode);
-        url.setScheme( QLatin1String("file") );
-
-#ifdef Q_OS_WIN
-        // work around a bug in QDesktopServices on Win32, see i-net
-        QString filePath = f->path();
-
-        if (filePath.startsWith(QLatin1String("\\\\")) || filePath.startsWith(QLatin1String("//")))
-            url.setUrl(QDir::toNativeSeparators(filePath));
-        else
-            url = QUrl::fromLocalFile(filePath);
-#endif
-        QDesktopServices::openUrl(url);
-    }
-}
-
 void AccountSettings::slotEnableCurrentFolder()
 {
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
