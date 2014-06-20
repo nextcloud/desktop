@@ -238,8 +238,8 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_EVAL:
-                if (other->type == CSYNC_VIO_FILE_TYPE_DIRECTORY &&
-                        cur->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
+                if (other->type == CSYNC_FTW_TYPE_DIR &&
+                        cur->type == CSYNC_FTW_TYPE_DIR) {
                     is_equal_files = (other->modtime == cur->modtime);
                 } else {
                     is_equal_files = ((other->size == cur->size) && (other->modtime == cur->modtime));
