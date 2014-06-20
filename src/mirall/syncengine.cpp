@@ -432,9 +432,7 @@ void SyncEngine::startSync()
     Q_ASSERT(!_syncRunning);
     _syncRunning = true;
 
-    if( ! _csync_ctx ) {
-        qDebug() << "XXXXXXXXXXXXXXXX FAIL: do not have csync_ctx!";
-    }
+    Q_ASSERT(_csync_ctx);
 
     _syncedItems.clear();
     _needsUpdate = false;
