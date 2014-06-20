@@ -28,6 +28,13 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint |
                    Qt::WindowCloseButtonHint | Qt::WindowMaximizeButtonHint);
 
+
+    // Emulate dialog behavior: Escape means close
+    QAction *closeWindowAction = new QAction(this);
+    closeWindowAction->setShortcut(QKeySequence(Qt::Key_Escape));
+    connect(closeWindowAction, SIGNAL(triggered()), SLOT(close()));
+    addAction(closeWindowAction);
+
     setObjectName("SettingsMac"); // required as group for saveGeometry call
 
     setWindowTitle(tr("%1").arg(Theme::instance()->appNameGUI()));
