@@ -113,12 +113,12 @@ void csync_win32_set_file_hidden( const char *file, bool h ) {
   fileName = c_utf8_to_locale( file );
   dwAttrs = GetFileAttributesW(fileName);
 
-  if (dwAttrs==INVALID_FILE_ATTRIBUTES) return;
-
-  if (h && !(dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
-     SetFileAttributesW(fileName, dwAttrs | FILE_ATTRIBUTE_HIDDEN );
-  } else if (!h && (dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
-     SetFileAttributesW(fileName, dwAttrs & ~FILE_ATTRIBUTE_HIDDEN );
+  if (dwAttrs != INVALID_FILE_ATTRIBUTES) {
+      if (h && !(dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
+          SetFileAttributesW(fileName, dwAttrs | FILE_ATTRIBUTE_HIDDEN );
+      } else if (!h && (dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
+          SetFileAttributesW(fileName, dwAttrs & ~FILE_ATTRIBUTE_HIDDEN );
+      }
   }
 
   c_free_locale_string(fileName);
