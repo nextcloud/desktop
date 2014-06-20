@@ -536,8 +536,8 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
             } else {
                 state = HBF_MEMORY_FAIL;
             }
-            free( transfer_url );
         }
+        free( transfer_url );
     }
 
     /* do the source file validation finally (again). */
