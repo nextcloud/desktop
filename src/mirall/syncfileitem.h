@@ -49,8 +49,9 @@ public:
         FileIgnored ///< The file is in the ignored list
     };
 
-    SyncFileItem() : _type(UnknownType),  _direction(None), _instruction(CSYNC_INSTRUCTION_NONE),
-        _size(0), _should_update_etag(false), _blacklistedInDb(false),
+    SyncFileItem() : _type(UnknownType),  _direction(None), _isDirectory(false),
+        _instruction(CSYNC_INSTRUCTION_NONE), _modtime(0),
+        _size(0), _inode(0), _should_update_etag(false), _blacklistedInDb(false),
         _status(NoStatus), _httpErrorCode(0), _requestDuration(0) {}
 
     friend bool operator==(const SyncFileItem& item1, const SyncFileItem& item2) {
