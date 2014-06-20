@@ -236,13 +236,12 @@ static void propfind_results_recursive(void *userdata,
             }
 
             /* DEBUG_WEBDAV("results_recursive Added child %s to collection %s", newres->uri, element->self->uri); */
-        } else {
-            /* DEBUG_WEBDAV("results_recursive No parent %s found for child %s", parentPath, newres->uri); */
-            resource_free(newres);
-            newres = NULL;
+            return;
         }
     }
 
+    resource_free(newres);
+    newres = NULL;
 }
 
 void fetch_resource_list_recursive(const char *uri, const char *curi)
