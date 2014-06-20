@@ -66,19 +66,17 @@ via YaST or ``zypper ar`` (adjust when using openSUSE 12.2 or 13.1)::
   zypper ar http://download.opensuse.org/repositories/windows:/mingw/openSUSE_13.1/windows:mingw.repo
 
 Next, install the cross-compiler packages and the cross-compiled dependencies::
-
   zypper install cmake make mingw32-cross-binutils mingw32-cross-cpp mingw32-cross-gcc \
                  mingw32-cross-gcc-c++ mingw32-cross-pkg-config mingw32-filesystem \
                  mingw32-headers mingw32-runtime site-config mingw32-libqt4-sql \
-                 mingw32-libqt4-sql-sqlite mingw32-sqlite mingw32-libsqlite-devel \
-                 mingw32-dlfcn-devel mingw32-libssh2-devel kdewin-png2ico \
-                 mingw32-libqt4 mingw32-libqt4-devel mingw32-libgcrypt \
-                 mingw32-libgnutls mingw32-libneon-openssl mingw32-libneon-devel \
-                 mingw32-libbeecrypt mingw32-libopenssl mingw32-openssl \
-                 mingw32-libpng-devel mingw32-libsqlite mingw32-qtkeychain \
-                 mingw32-qtkeychain-devel mingw32-dlfcn mingw32-libintl-devel \
-                 mingw32-libneon-devel mingw32-libopenssl-devel mingw32-libproxy-devel \
-                 mingw32-libxml2-devel mingw32-zlib-devel
+                 mingw32-libqt4-sql-sqlite mingw32-sqlite mingw32-sqlite-devel \
+                 mingw32-libssh2-devel kdewin-png2ico mingw32-libqt4 mingw32-libqt4-devel \
+                 mingw32-libgcrypt mingw32-libgnutls mingw32-libneon-openssl \
+                 mingw32-libneon-devel mingw32-libbeecrypt mingw32-libopenssl mingw32-openssl \
+                 mingw32-libpng-devel mingw32-libsqlite3-0 mingw32-qtkeychain \
+                 mingw32-qtkeychain-devel mingw32-libintl-devel mingw32-libneon-devel \
+                 mingw32-libopenssl-devel mingw32-libproxy-devel mingw32-libxml2-devel \
+                 mingw32-zlib-devel
 
 For the installer, the NSIS installer package is also required::
 
