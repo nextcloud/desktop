@@ -224,7 +224,10 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
 // =================================================================================
 FolderWizardRemotePath::FolderWizardRemotePath()
     : FormatWarningsWizardPage()
+    , _ownCloudDirCheck(0)
+    , _dirChecked(false)
     ,_warnWasVisible(false)
+
 {
     _ui.setupUi(this);
     _ui.warnFrame->hide();
