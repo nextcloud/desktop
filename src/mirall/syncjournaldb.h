@@ -57,7 +57,7 @@ public:
         bool _valid;
     };
     struct UploadInfo {
-        UploadInfo() : _chunk(0), _transferid(0), _errorCount(0), _valid(false) {}
+        UploadInfo() : _chunk(0), _transferid(0), _size(0), _errorCount(0), _valid(false) {}
         int _chunk;
         int _transferid;
         quint64 _size; //currently unused
