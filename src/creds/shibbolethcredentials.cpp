@@ -371,6 +371,13 @@ void ShibbolethCredentials::showLoginWindow(Account* account)
         // FIXME On OS X this does not raise properly
         return;
     }
+
+    CookieJar *jar = static_cast<CookieJar*>(account->networkAccessManager()->cookieJar());
+    // When opening a new window clear all the session cookie that might keep the user from logging in
+    // (or the session may already be open in the server, and there will not be redirect asking for the
+    // real long term cookie we want to store)
+    jar->clearSessionCookies();
+
     _browser = new ShibbolethWebView(account);
     connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
             this, SLOT(onShibbolethCookieReceived(QNetworkCookie, Account*)), Qt::QueuedConnection);
