@@ -200,7 +200,6 @@ private:
     QString   _remotePath;
     QString   _alias;
     QString   _configFile;
-    QFileSystemWatcher *_pathWatcher;
     bool       _enabled;
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
