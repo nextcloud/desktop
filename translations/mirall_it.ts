@@ -183,13 +183,14 @@
         <location filename="../src/mirall/accountsettings.cpp" line="620"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation>%1 in corso di %2 (%3 di %4). Tempo rimanente: %5 ad una velocità di %6/s</translation>
+        <translation>%1 %2 (%3 di %4). %5 rimanenti a una velocità di %6/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="635"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 di %2, file %3 di %4
+Totale tempo rimanente %5</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="757"/>
@@ -2081,12 +2082,12 @@ Prova a sincronizzare nuovamente.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione di %1 di %2  (%3 rimanenti)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione di %1 (%2 rimanenti)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="433"/>

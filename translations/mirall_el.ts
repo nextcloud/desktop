@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>Συνδεδεμένοι με το &lt;διακομιστή&gt; ως &lt;χρήστης&gt;</translation>
+        <translation>Συνδεδεμένοι με το &lt;server&gt; ως &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
@@ -126,7 +126,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="318"/>
         <source>Confirm Folder Remove</source>
-        <translation>Επιβεβαίωση αφαίρεσης φακέλου</translation>
+        <translation>Επιβεβαίωση Αφαίρεσης Φακέλου</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="319"/>
@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="356"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Θέλετε στ&apos; αλήθεια να επαναφέρετε το φάκελο &lt;i&gt;%1&lt;/i&gt; και να επαναδημιουργήσετε τη βάση δεδομένων του πελάτη;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτή η λειτουργία έχει σχεδιαστεί αποκλειστικά για λόγους συντήρησης. Κανένα αρχείο δεν θα αφαιρεθεί, αλλά αυτό μπορεί να προκαλέσει σημαντική κίνηση δεδομένων και να πάρει αρκετά λεπτά ή ώρες μέχρι να ολοκληρωθεί, ανάλογα με το μέγεθος του φακέλου. Χρησιμοποιείστε αυτή την επιλογή μόνο εάν έχετε συμβουλευτεί αναλόγως από το διαχειριστή σας.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Θέλετε στ&apos; αλήθεια να επαναφέρετε το φάκελο &lt;i&gt;%1&lt;/i&gt; και να επαναδημιουργήσετε τη βάση δεδομένων του δέκτη;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτή η λειτουργία έχει σχεδιαστεί αποκλειστικά για λόγους συντήρησης. Κανένα αρχείο δεν θα αφαιρεθεί, αλλά αυτό μπορεί να προκαλέσει σημαντική κίνηση δεδομένων και να πάρει αρκετά λεπτά ή ώρες μέχρι να ολοκληρωθεί, ανάλογα με το μέγεθος του φακέλου. Χρησιμοποιείστε αυτή την επιλογή μόνο εάν έχετε συμβουλευτεί αναλόγως από το διαχειριστή σας.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="626"/>
@@ -162,12 +162,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="771"/>
         <source>No %1 connection configured.</source>
-        <translation>Δεν υπάρχει σύνδεση με το %1.</translation>
+        <translation>Δεν έχει ρυθμιστεί σύνδεση με το %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="467"/>
         <source>Sync Running</source>
-        <translation>Ο Συγχρονισμός Εκτελείται</translation>
+        <translation>Εκτελείται Συγχρονισμός </translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="107"/>
@@ -177,19 +177,21 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="468"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Η λειτουργία συγχρονισμού λειτουργεί.&lt;br/&gt; Θέλετε να την τερματίσετε;</translation>
+        <translation>Η λειτουργία συγχρονισμού εκτελείται.&lt;br/&gt; Θέλετε να την τερματίσετε;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="620"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 από %4) %5 απομένουν με ταχύτητα %6/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="635"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 από %2, αρχείο %3 από%4
+
+Συνολικός χρόνος που απομένει %5</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="757"/>
@@ -240,12 +242,12 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>The configured server for this client is too old</source>
-        <translation>Ο ρυθμισμένος διακομιστής για αυτόν το δέκτη είναι πολύ παλιός</translation>
+        <translation>Ο ρυθμισμένος διακομιστής για αυτό το δέκτη είναι πολύ παλιός</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="107"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Παρακαλώ ενημερώστε στον τελευταίο διακομιστή και επανεκκινήστε το δέκτη.</translation>
+        <translation>Παρακαλώ ενημερώστε το διακομιστή στη νεώτερη έκδοση και επανεκκινήστε το δέκτη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="127"/>
@@ -263,7 +265,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="103"/>
         <source>Unable to create csync-context</source>
-        <translation>Αδυναμία δημιουργίας πλαισίου csync</translation>
+        <translation>Αδυναμία δημιουργίας csync-context</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="159"/>
@@ -273,12 +275,12 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="162"/>
         <source>%1 should be a directory but is not.</source>
-        <translation>%1 επρεπε να ειναι χωρος αποθηκευσης αλλα δεν ειναι.</translation>
+        <translation>Ο %1 θα έπρεπε να είναι κατάλογος αρχείων αλλά δεν είναι.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="165"/>
         <source>%1 is not readable.</source>
-        <translation> %1 δεν είναι αναγνώσιμο. </translation>
+        <translation> Το %1 δεν είναι αναγνώσιμο. </translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="317"/>
@@ -351,16 +353,16 @@ Total time left %5</source>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
         <translation>Αυτός ο συγχρονισμός θα αφαιρέσει όλα τα αρχεία στον τοπικό φάκελο συγχρονισμού &apos;%1&apos;.
-Εάν εσείς ή ο διαχειριστής σας επαναφέρατε τον λογαριασμό σας στο διακομιστή, επιλέξτε &quot;Διατήρηση αρχείων&quot;. Εάν θέλετε να αφαιρεθούν τα δεδομένα σας, επιλέξτε &quot;Αφαίρεση όλων των αρχείων&quot;.</translation>
+Εάν εσείς ή ο διαχειριστής σας επαναφέρατε το λογαριασμό σας στο διακομιστή, επιλέξτε &quot;Διατήρηση αρχείων&quot;. Εάν θέλετε να αφαιρεθούν τα δεδομένα σας, επιλέξτε &quot;Αφαίρεση όλων των αρχείων&quot;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="716"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation>Αυτός ο συγχρονισμός θα αφαιρέσει όλα τα αρχεία από τον φάκελο συγχρονισμού &apos;%1&apos;.
+        <translation>Αυτός ο συγχρονισμός θα αφαιρέσει όλα τα αρχεία από το φάκελο συγχρονισμού &apos;%1&apos;.
 Αυτό μπορεί να συμβεί επειδή ο φάκελος επαναρυθμίστηκε σιωπηλά, ή επειδή όλα τα αρχεία αφαιρέθηκαν χειροκίνητα.
-Είστε σίγουροι ότι θέλετε να πραγματοποιήσετε αυτή εντολή;</translation>
+Είστε σίγουροι ότι θέλετε να εκτελέσετε αυτή τη λειτουργία;</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="720"/>
@@ -388,12 +390,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="172"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Βρέθηκε ένα παλαιότερο αρχείο συγχρονισμού &apos;%1&apos;, αλλά δεν μπόρεσε να αφαιρεθεί. Παρακαλώ βεβαιωθείτε ότι καμμια εφαρμογή δεν το χρησιμοποιεί αυτή τη στιγμή.</translation>
+        <translation>Βρέθηκε ένα παλαιότερο αρχείο συγχρονισμού &apos;%1&apos;, αλλά δεν μπόρεσε να αφαιρεθεί. Παρακαλώ βεβαιωθείτε ότι καμμία εφαρμογή δεν το χρησιμοποιεί αυτή τη στιγμή.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="753"/>
         <source>Undefined State.</source>
-        <translation>Απροσδιόριστη κατάσταση.</translation>
+        <translation>Απροσδιόριστη Κατάσταση.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="756"/>
@@ -443,7 +445,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="788"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (Παύση συγχρονισμούς)</translation>
+        <translation>%1 (Παύση συγχρονισμού)</translation>
     </message>
 </context>
 <context>
@@ -627,12 +629,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation>Εκκίνηση κατά την Έναρξη</translation>
+        <translation>Εκκίνηση κατά την Έναρξη του Συστήματος</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation>Εμφάνιση Ειδοποιήσεων</translation>
+        <translation>Εμφάνιση Ειδοποιήσεων Επιφάνειας Εργασίας</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
@@ -693,7 +695,7 @@ Are you sure you want to perform this operation?</source>
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Αρχεία ή κατάλογοι αρχείων που ακολουθούν αυτό το πρότυπο δεν θα συγχρονιστούν.
 
-Τα επιλεγμένα στοιχεία θα διαγράφονται εάν εμποδίζουν τη διαγραφή ενός καταλόγου αρχείων. Αυτό είναι χρήσιμο για μετα-δεδομένα.</translation>
+Τα επιλεγμένα στοιχεία επίσης θα διαγράφονται εάν εμποδίζουν την αφαίρεση ενός καταλόγου αρχείων. Αυτό είναι χρήσιμο για μετα-δεδομένα.</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
@@ -703,7 +705,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="98"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation>Αδυναμία αποθήκευσης αλλαγών στο &apos;%1&apos;.</translation>
+        <translation>Αδυναμία εγγραφής αλλαγών στο &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
@@ -736,7 +738,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="59"/>
         <source>Log Output</source>
-        <translation>Καταγραφή εξόδου</translation>
+        <translation>Καταγραφή Εξόδου</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="71"/>
@@ -746,7 +748,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="79"/>
         <source>&amp;Find</source>
-        <translation>&amp;Εύρεση</translation>
+        <translation>&amp;Αναζήτηση</translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="97"/>
@@ -766,7 +768,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="105"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>Αποθήκευση του αρχείου καταγραφών στον δίσκο, για αποσφαλμάτωση. </translation>
+        <translation>Αποθήκευση του αρχείου καταγραφών στο δίσκο για αποσφαλμάτωση. </translation>
     </message>
     <message>
         <location filename="../src/mirall/logbrowser.cpp" line="194"/>
@@ -794,7 +796,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/logger.cpp" line="147"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Το αρχειο &apos;%1&apos;&lt;br/&gt;δεν μπορει να ανοιχθει για το γραψιμο.&lt;br/&gt;&lt;br/&gt;Το αρχείο καταγραφής δεν &lt;b&gt;μπορεί&lt;/b&gt; να αποθηκευτεί!&lt;/nobr&gt; </translation>
+        <translation>&lt;nobr&gt;Το αρχείο &apos;%1&apos;&lt;br/&gt;δεν μπορεί να ανοιχθεί για εγγραφή.&lt;br/&gt;&lt;br/&gt;Το αρχείο καταγραφής &lt;b&gt;δεν&lt;/b&gt; μπορεί να αποθηκευτεί!&lt;/nobr&gt; </translation>
     </message>
 </context>
 <context>
@@ -835,17 +837,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation>Ρυθμίσεις Διαμεσολαβητή</translation>
+        <translation>Ρυθμίσεις Ενδιάμεσου Διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>Κανένας Διαμεσολαβητής</translation>
+        <translation>Χωρίς Ενδιάμεσο Διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>Χρήση διαμεσολαβητή συστήματος</translation>
+        <translation>Χρήση ενδιάμεσου διακομιστή συστήματος</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="52"/>
@@ -888,12 +890,12 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/mirall/networksettings.ui" line="227"/>
         <location filename="../src/mirall/networksettings.ui" line="295"/>
         <source>No limit</source>
-        <translation>Χωρίς Όριο</translation>
+        <translation>Χωρίς όριο</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
-        <translation>Ταχύτητα μεταφόρτωσης</translation>
+        <translation>Ταχύτητα Μεταφόρτωσης</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="285"/>
@@ -903,17 +905,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation>Όνομα συστήματος του διακομιστή διαμεσολάβησης</translation>
+        <translation>Όνομα συστήματος του ενδιάμεσου διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
-        <translation>Όνομα χρήστη για τον διακομιστή διαμεσολάβησης</translation>
+        <translation>Όνομα χρήστη για τον ενδιάμεσο διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
-        <translation>Συνθηματικό για τον διακομιστή διαμεσολάβησης</translation>
+        <translation>Κωδικός πρόσβασης για τον ενδιάμεσο διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="38"/>
@@ -1001,12 +1003,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="111"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>Ο φάκελος %1 &apos;%2&apos; είναι συγχρονισμένος με τον τοπικό φάκελο &apos;%3&apos;</translation>
+        <translation>Ο %1 φάκελος &apos;%2&apos; είναι συγχρονισμένος με τον τοπικό φάκελο &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="117"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Προειδοποίηση:&lt;/strong&gt; Επί του παρόντος έχετε ρυθμισμένους πολλαπλούς φακέλους. Εάν συνεχίσετε με τις παρούσες ρυθμίσεις σας, οι ρυθμίσεις φακέλων θα απορριφθούν και ένας μοναδικός φάκελος συγχρονισμού θα δημιουργηθεί!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Προειδοποίηση:&lt;/strong&gt; Επί του παρόντος έχετε ρυθμισμένους πολλαπλούς φακέλους. Εάν συνεχίσετε με τις παρούσες ρυθμίσεις, οι ρυθμίσεις φακέλων θα απορριφθούν και ένας μοναδικός φάκελος ρίζας για συγχρονισμό θα δημιουργηθεί!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="124"/>
@@ -1064,7 +1066,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
         <source>This url is secure. You can use it.</source>
-        <translation>Αυτό το url είναι ασφαλές. Μπορείτε να το χρησιμοποιήσετε. </translation>
+        <translation>Αυτή η url είναι ασφαλές. Μπορείτε να τη χρησιμοποιήσετε. </translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
@@ -1093,12 +1095,12 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="415"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="424"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Επιτυχής δημιουργία τοπικού καταλόγου %1 για συγχρονισμό!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Επιτυχής δημιουργία τοπικού φακέλου %1 για συγχρονισμό!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="193"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>Προσπαθεια συνδεσης στο %1 για %2...</translation>
+        <translation>Προσπάθεια σύνδεσης στο %1 για %2...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="149"/>
@@ -1113,12 +1115,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="232"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Υπάρχει ήδη ο τοπικός κατάλογος %1 για συγχρονισμό, ρυθμίστε τον για συγχρονισμό.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Ο τοπικός φάκελος συγχρονισμού %1 υπάρχει ήδη, ρύθμιση για συγχρονισμό.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="234"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Δημιουργία τοπικού καταλόγου %1 για συγχρονισμό... </translation>
+        <translation>Δημιουργία τοπικού φακέλου %1 για συγχρονισμό... </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="238"/>
@@ -1133,7 +1135,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="242"/>
         <source>Could not create local folder %1</source>
-        <translation>Δεν μπόρεσε να δημιουργήσει τοπικό φάκελλο %1 </translation>
+        <translation>Αδυναμία δημιουργίας τοπικού φακέλου %1 </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
@@ -1149,12 +1151,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="273"/>
         <source>Error: %1</source>
-        <translation>Σφάλμα %1 </translation>
+        <translation>Σφάλμα: %1 </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="286"/>
         <source>creating folder on ownCloud: %1</source>
-        <translation>δημιουργία φακέλλου στο ownCloud % 1</translation>
+        <translation>δημιουργία φακέλου στο ownCloud: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="302"/>
@@ -1164,7 +1166,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="304"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Ο απομακρυσμένος φάκελος %1 υπάρχει ήδη. Πραγματοποιείται σύνδεση για ενημέρωση. </translation>
+        <translation>Ο απομακρυσμένος φάκελος %1 υπάρχει ήδη. Θα συνδεθεί για συγχρονισμό. </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="306"/>
@@ -1175,28 +1177,28 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="310"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Η δημιουργία απομακρυσμένου φακέλλου απέτυχε επειδή τα διαπιστευτήρια  είναι λάθος! &lt;br/&gt; Παρακαλώ επιστρέψετε και ελέγξετε τα διαπιστευτήρια. </translation>
+        <translation>Η δημιουργία απομακρυσμένου φακέλλου απέτυχε επειδή τα διαπιστευτήρια είναι λάθος!&lt;br/&gt;Παρακαλώ επιστρέψετε και ελέγξετε τα διαπιστευτήριά σας.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Η απομακρυσμένη δημιουργία φακέλου απέτυχε, επειδή πιθανώς τα διαπιστευτήρια που δόθηκαν είναι λάθος.&lt;/font&gt;&lt;br/&gt;Παρακαλώ επιστρέψτε πίσω και ελέγξτε τα διαπιστευτήρια σας.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Η δημιουργία απομακρυσμένου φακέλου απέτυχε, πιθανώς επειδή τα διαπιστευτήρια που δόθηκαν είναι λάθος.&lt;/font&gt;&lt;br/&gt;Παρακαλώ επιστρέψτε πίσω και ελέγξτε τα διαπιστευτήρια σας.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="318"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Η απομακρυσμένη δημιουργία φακέλου %1 απέτυχε με σφάλμα &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>Η δημιουργία απομακρυσμένου φακέλου %1 απέτυχε με σφάλμα &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="335"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Μια σύνδεση συγχρονισμού από τον κατάλογο %1 σε %2 έχει συσταθεί. </translation>
+        <translation>Μια σύνδεση συγχρονισμού από τον απομακρυσμένο κατάλογο %1 σε %2 έχει ρυθμιστεί. </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="340"/>
         <source>Successfully connected to %1!</source>
-        <translation>Η συνδεση πετυχε με %1!</translation>
+        <translation>Επιτυχής σύνδεση με %1!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
@@ -1222,12 +1224,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1</source>
-        <translation>Ανοικτό %1</translation>
+        <translation>Άνοιγμα %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="42"/>
         <source>Open Local Folder</source>
-        <translation>Ανοίξτε το Τοπικό Φάκελλο</translation>
+        <translation>Άνοιγμα τοπικού φακέλου</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="38"/>
@@ -1237,7 +1239,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
         <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Ολος ο λογαριασμός σας έει συγχρονιστεί με τον τοπικό φάκελλο.</translation>
+        <translation>Ολόκληρος ο λογαριασμός σας έχει συγχρονιστεί με τον τοπικό φάκελλο &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
@@ -1459,7 +1461,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="114"/>
         <source>Copied to clipboard</source>
-        <translation>Αντιγραφθηκε στο clipboard</translation>
+        <translation>Αντιγράφηκε στο πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="114"/>
@@ -1703,7 +1705,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation>Εμπιστευθειτε αυτο το πιστοποιητικο</translation>
+        <translation>Προσθήκη αυτού του πιστοποιητικού στα έμπιστα παρ&apos;όλα αυτά</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="44"/>
@@ -1719,7 +1721,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="170"/>
         <source>with Certificate %1</source>
-        <translation>με πιστοποιητικό: %1</translation>
+        <translation>με Πιστοποιητικό: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="178"/>
@@ -2012,12 +2014,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="273"/>
         <source>Managed Folders:</source>
-        <translation>Διαχείριση αρχείων:</translation>
+        <translation>Φάκελοι υπό Διαχείριση:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="276"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation>Άνοιγμα καταλόγου &apos;%1&apos;</translation>
+        <translation>Άνοιγμα φακέλου &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="349"/>
@@ -2067,7 +2069,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="376"/>
         <source>Quota n/a</source>
-        <translation>Μερίδιο χώρου αποθήκευσης δεν είναι διαθέσιμο</translation>
+        <translation>Μερίδιο χώρου αποθήκευσης μ/δ</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="383"/>
@@ -2082,12 +2084,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονισμός %1 από %2 (%3 απομένουν)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονισμός %1 (%2 απομένουν)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
@@ -2147,7 +2149,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="193"/>
         <source>&lt;small&gt;Erases the contents of the local folder before syncing using the new settings.&lt;/small&gt;</source>
-        <translation>&lt;small&gt;Διαγράφει τα περιεχόμενα του τοπικού φακέλου πριν το συγχρονισμό με τις νέες ρυθμίσεις.&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Διαγράφει τα περιεχόμενα του τοπικού φακέλου πριν το συγχρονισμό υπό τις νέες ρυθμίσεις.&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="224"/>
@@ -2170,12 +2172,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
-        <translation>&amp;Συνθηματικό</translation>
+        <translation>&amp;Κωδικός Πρόσβασης</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation>Εσφαλμένη Ετικέτα</translation>
+        <translation>Ετικέτα Σφάλματος</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="109"/>
@@ -2195,7 +2197,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation>&amp;Διεύθυνση εξυπηρετητή: </translation>
+        <translation>&amp;Διεύθυνση διακομιστή: </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -2219,7 +2221,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="75"/>
         <source>&amp;Username:</source>
-        <translation>Όνομα &amp;Χρήστη</translation>
+        <translation>&amp;Όνομα Χρήστη</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="85"/>
@@ -2229,22 +2231,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="92"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Συνθηματικό:</translation>
+        <translation>&amp;Κωδικός Πρόσβασης:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="102"/>
         <source>Enter the ownCloud password.</source>
-        <translation>Εισάγετε το συνθηματικό του ownCloud.</translation>
+        <translation>Εισάγετε τον κωδικό πρόσβασης του ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="117"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation>Να μην επιτρέπεται η τοπική αποθήκευση του συνθηματικού.</translation>
+        <translation>Να μην επιτρέπεται η τοπική αποθήκευση του κωδικού πρόσβασης.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation>&amp;Μην αποθηκεύετε το συνθηματικό στον τοπικό υπολογιστή</translation>
+        <translation>&amp;Να μην γίνει αποθήκευση του κωδικού πρόσβασης στον τοπικό υπολογιστή</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
@@ -2259,17 +2261,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="83"/>
         <source>Server &amp;Address</source>
-        <translation>Διακομιστής και Διεύθυνση </translation>
+        <translation>Διακομιστής και &amp;Διεύθυνση </translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="99"/>
         <source>https://...</source>
-        <translation>https://..</translation>
+        <translation>https://...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="157"/>
         <source>Error Label</source>
-        <translation>Εσφαλμένη Ετικέτα</translation>
+        <translation>Ετικέτα Σφάλματος</translation>
     </message>
 </context>
 <context>
@@ -2287,13 +2289,13 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="69"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>Ολος ο λογαριασμός συγχρονίζεται στον τοπικό φάκελλο. </translation>
+        <translation>Ολόκληρος ο λογαριασμός σας έχει συγχρονιστεί με τον τοπικό φάκελο</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="103"/>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="119"/>
         <source>PushButton</source>
-        <translation>Πάτημα Κουμπιού </translation>
+        <translation>PushButton</translation>
     </message>
 </context>
 <context>
@@ -2334,7 +2336,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>Το %1 απαιτεί μια μπάρα συστήματος σε λειτουργία. Εάν χρησιμοποιείτε XFCE, παρακαλώ ακολουθείστε &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;αυτές τις οδηγίες&lt;/a&gt;. Διαφορετικά, παρακαλώ εγκαταστείστε μια εφαρμογή μπάρας συστήματος όπως η &apos;trayer&apos; και δοκιμάστε ξανά.</translation>
+        <translation>Το %1 απαιτεί μια μπάρα συστήματος σε λειτουργία. Εάν χρησιμοποιείτε το XFCE, παρακαλώ ακολουθείστε &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;αυτές τις οδηγίες&lt;/a&gt;. Διαφορετικά, παρακαλώ εγκαταστείστε μια εφαρμογή μπάρας συστήματος όπως η &apos;trayer&apos; και δοκιμάστε ξανά.</translation>
     </message>
 </context>
 <context>
@@ -2343,7 +2345,7 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/owncloudtheme.cpp" line="95"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
-        <translation>Εάν δεν έχετε ένα διακομιστή ownCloud, δείτε στην διεύθυνση &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; για περισσότερες πληροφορίες.</translation>
+        <translation>Εάν δεν έχετε ένα διακομιστή ownCloud ακόμα, δείτε στην διεύθυνση &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; για περισσότερες πληροφορίες.</translation>
     </message>
 </context>
 <context>
@@ -2356,29 +2358,8 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="58"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation>&lt;p&gt;
-
-Έκδοση %2. Για περισσότερες πληροφορίες επισκεφθείτε
-&lt;a href=&quot;%3&quot;&gt;
-
-%4
-&lt;/a&gt;
-
-&lt;/p&gt;
-
-&lt;p&gt;
-
-&lt;small&gt;
-
-Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.
-&lt;br&gt;
-
-Βασισμένη στο Mirall από τον Duncan Mac-Vicar P.
-&lt;/small&gt;
-
-&lt;/p&gt;
-
-%7</translation>
+        <translation>&lt;p&gt;Έκδοση %2. Για περισσότερες πληροφορίες επισκεφθείτε&lt;a href=&quot;%3&quot;&gt;
+%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Βασισμένη στο Mirall από τον Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
 </context>
 <context>
@@ -2477,7 +2458,7 @@ Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.
     <message>
         <location filename="../src/mirall/theme.cpp" line="56"/>
         <source>Sync is running</source>
-        <translation>Ο Συγχρονισμός Εκτελείται</translation>
+        <translation>Ο συγχρονισμός εκτελείται</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="59"/>
@@ -2502,7 +2483,7 @@ Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.
     <message>
         <location filename="../src/mirall/theme.cpp" line="71"/>
         <source>The server is currently unavailable</source>
-        <translation>Ο διακομιστής δεν είναι διαθέσιμος προς το παρόν.</translation>
+        <translation>Ο διακομιστής δεν είναι διαθέσιμος προς το παρόν</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="74"/>
