@@ -181,7 +181,7 @@ public:
 
 protected:
     QIcon themeIcon(const QString& name, bool sysTray = false) const;
-    Theme() {}
+    Theme();
 
 signals:
     void systrayUseMonoIconsChanged(bool);

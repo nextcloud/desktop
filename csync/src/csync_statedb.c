@@ -133,6 +133,8 @@ static int _csync_statedb_check(const char *statedb) {
                     }
                 }
             }
+        } else {
+            close(fd);
         }
         /* if it comes here, the database is broken and should be recreated. */
         _tunlink(wstatedb);

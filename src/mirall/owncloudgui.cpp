@@ -326,10 +326,9 @@ void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QStrin
 void ownCloudGui::slotFolderOpenAction( const QString& alias )
 {
     Folder *f = FolderMan::instance()->folder(alias);
-    qDebug() << "opening local url " << f->path();
     if( f ) {
-        QUrl url(f->path(), QUrl::TolerantMode);
-        url.setScheme( QLatin1String("file") );
+        qDebug() << "opening local url " << f->path();
+        QUrl url = QUrl::fromLocalFile(f->path());
 
 #ifdef Q_OS_WIN
         // work around a bug in QDesktopServices on Win32, see i-net

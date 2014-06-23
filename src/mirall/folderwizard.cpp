@@ -170,8 +170,8 @@ bool FolderWizardLocalPath::isComplete() const
   bool goon = true;
   while( goon && i != map.constEnd() ) {
     Folder *f = i.value();
-    qDebug() << "Checking local alias: " << f->alias();
     if( f ) {
+      qDebug() << "Checking local alias: " << f->alias();
       if( f->alias() == alias ) {
         warnStrings.append( tr("The alias <i>%1</i> is already in use. Please pick another alias.").arg(alias) );
         isOk = false;
@@ -224,7 +224,10 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
 // =================================================================================
 FolderWizardRemotePath::FolderWizardRemotePath()
     : FormatWarningsWizardPage()
+    , _ownCloudDirCheck(0)
+    , _dirChecked(false)
     ,_warnWasVisible(false)
+
 {
     _ui.setupUi(this);
     _ui.warnFrame->hide();

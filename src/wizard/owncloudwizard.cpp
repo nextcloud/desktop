@@ -36,6 +36,7 @@ namespace Mirall
 
 OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent),
+      _account(0),
       _setupPage(new OwncloudSetupPage),
       _httpCredsPage(new OwncloudHttpCredsPage),
       _shibbolethCredsPage(new OwncloudShibbolethCredsPage),

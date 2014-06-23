@@ -36,6 +36,7 @@ Theme* Theme::_instance = 0;
 Theme* Theme::instance() {
     if (!_instance) {
         _instance = new THEME_CLASS;
+        // some themes may not call the base ctor
         _instance->_mono = false;
     }
     return _instance;
@@ -150,6 +151,13 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
         }
     }
     return icon;
+}
+
+Theme::Theme() :
+    QObject(0)
+    ,_mono(false)
+{
+
 }
 #endif
 

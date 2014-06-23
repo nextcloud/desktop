@@ -16,9 +16,11 @@
 #include <QSettings>
 #include <QNetworkReply>
 #include <QMessageBox>
+#include <QAuthenticator>
 #include <QDebug>
 
 #include "creds/shibbolethcredentials.h"
+#include "creds/shibboleth/authenticationdialog.h"
 #include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibboleth/shibbolethrefresher.h"
 #include "creds/shibbolethcredentials.h"
@@ -154,6 +156,8 @@ QNetworkAccessManager* ShibbolethCredentials::getQNAM() const
     QNetworkAccessManager* qnam(new MirallAccessManager);
     connect(qnam, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(slotReplyFinished(QNetworkReply*)));
+    connect(qnam, SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
+            SLOT(slotHandleAuthentication(QNetworkReply*,QAuthenticator*)));
     return qnam;
 }
 
@@ -298,6 +302,23 @@ void ShibbolethCredentials::invalidateAndFetch(Account* account)
     job->start();
 }
 
+void ShibbolethCredentials::slotHandleAuthentication(QNetworkReply *reply, QAuthenticator *authenticator)
+{
+    Q_UNUSED(reply)
+    QUrl url = reply->url();
+    // show only scheme, host and port
+    QUrl reducedUrl;
+    reducedUrl.setScheme(url.scheme());
+    reducedUrl.setHost(url.host());
+    reducedUrl.setPort(url.port());
+
+    AuthenticationDialog dialog(authenticator->realm(), reducedUrl.toString());
+    if (dialog.exec() == QDialog::Accepted) {
+        authenticator->setUser(dialog.user());
+        authenticator->setPassword(dialog.password());
+    }
+}
+
 void ShibbolethCredentials::slotInvalidateAndFetchInvalidateDone(QKeychain::Job* job)
 {
     Account *account = qvariant_cast<Account*>(job->property("account"));
@@ -350,6 +371,13 @@ void ShibbolethCredentials::showLoginWindow(Account* account)
         // FIXME On OS X this does not raise properly
         return;
     }
+
+    CookieJar *jar = static_cast<CookieJar*>(account->networkAccessManager()->cookieJar());
+    // When opening a new window clear all the session cookie that might keep the user from logging in
+    // (or the session may already be open in the server, and there will not be redirect asking for the
+    // real long term cookie we want to store)
+    jar->clearSessionCookies();
+
     _browser = new ShibbolethWebView(account);
     connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, Account*)),
             this, SLOT(onShibbolethCookieReceived(QNetworkCookie, Account*)), Qt::QueuedConnection);

@@ -57,7 +57,7 @@ public:
         bool _valid;
     };
     struct UploadInfo {
-        UploadInfo() : _chunk(0), _transferid(0), _errorCount(0), _valid(false) {}
+        UploadInfo() : _chunk(0), _transferid(0), _size(0), _errorCount(0), _valid(false) {}
         int _chunk;
         int _transferid;
         quint64 _size; //currently unused
@@ -79,7 +79,7 @@ public:
      */
     void avoidReadFromDbOnNextSync(const QString& fileName);
 
-    bool postSyncCleanup( const QHash<QString, QString>& items );
+    bool postSyncCleanup( const QSet<QString>& items );
 
     /* Because sqlite transactions is really slow, we encapsulate everything in big transactions
      * Commit will actually commit the transaction and create a new one.

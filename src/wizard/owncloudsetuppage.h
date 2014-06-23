@@ -73,7 +73,6 @@ private:
   WizardCommon::AuthType _authType;
 
   QProgressIndicator* _progressIndi;
-  QButtonGroup* _selectiveSyncButtons;
   QString _remoteFolder;
 };
 

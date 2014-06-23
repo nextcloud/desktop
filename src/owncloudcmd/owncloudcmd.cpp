@@ -177,7 +177,6 @@ int main(int argc, char **argv) {
     if( csync_init( _csync_ctx ) < 0 ) {
         qFatal("Could not initialize csync!");
         return EXIT_FAILURE;
-        _csync_ctx = 0;
     }
 
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);

@@ -56,9 +56,6 @@ class FolderStatusDelegate : public QStyledItemDelegate
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;
     bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
                       const QModelIndex& index );
-
-private:
-    bool _addProgressSpace;
 };
 
 } // namespace Mirall
