@@ -280,6 +280,10 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     // record the seen files to be able to clean the journal later
     _seenFiles.insert(item._file);
 
+    if (remote && file->remotePerm) {
+        _remotePerms[item._file] = file->remotePerm;
+    }
+
     switch(file->error_status) {
     case CSYNC_STATUS_OK:
         break;
@@ -398,10 +402,6 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item.log._other_size        = file->other.size;
 
     _syncedItems.append(item);
-
-    if (remote && file->remotePerm) {
-        _remotePerms[item._file] = file->remotePerm;
-    }
 
     emit syncItemDiscovered(item);
     return re;
@@ -882,7 +882,6 @@ void SyncEngine::checkForPermission()
 
 QByteArray SyncEngine::getPermissions(const QString& file) const
 {
-    //FIXME;
     static bool isTest = qgetenv("OWNCLOUD_TEST_PERMISSIONS").toInt();
     if (isTest) {
         QRegExp rx("_PERM_([^_]*)_[^/]*$");
