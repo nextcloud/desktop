@@ -1,5 +1,26 @@
 ChangeLog
 =========
+version 1.6.1 (release 2014-06-26 )
+ * Fix 'precondition failed' bug with broken upload
+ * Fix openSSL problems for windows deployment
+ * Fix syncing a folder with '#' in the name
+ * Fix #1845: do not update parent directory etag before sub
+   directories are removed
+ * Fix reappearing directories if dirs are removed during its
+   upload
+ * Fix app version in settings dialog, General tab
+ * Fix crash in FolderWizard when going offline
+ * Shibboleth fixes
+ * More specific error messages (file remove during upload, open
+   local sync file)
+ * Use QSet rather than QHash in SyncEngine (save memory)
+ * Fix some memory leaks
+ * Fix some thread race problems, ie. wait for neon thread to finish
+   before the propagator is shut down
+ * Fix a lot of issues and warnings found by Coverity
+ * Fix Mac some settings dialog problems
+
+
 version 1.6.0 (release 2014-05-30 )
  * Minor GUI improvements
  * Qt5 compile issues fixed
