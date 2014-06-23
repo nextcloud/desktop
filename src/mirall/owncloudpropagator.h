@@ -139,11 +139,15 @@ protected:
      * set a custom restore job message that is used if the restore job succeeded.
      * It is displayed in the activity view.
      */
-    QString restoreJobMsg() const { return _restoreJobMsg; }
-    void setRestoreJobMsg( const QString& msg = QString() ) { _restoreJobMsg = msg; }
+    QString restoreJobMsg() const {
+        return _item._isRestoration ? _item._errorString : QString();
+    }
+    void setRestoreJobMsg( const QString& msg = QString() ) {
+        _item._isRestoration = true;
+        _item._errorString = msg;
+    }
 
     SyncFileItem  _item;
-    QString       _restoreJobMsg;
 
 protected slots:
     void slotRestoreJobCompleted(const SyncFileItem& );

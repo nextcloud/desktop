@@ -54,13 +54,16 @@ void csyncLogCatcher(int /*verbosity*/,
 bool SyncEngine::_syncRunning = false;
 
 SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, Mirall::SyncJournalDb* journal)
-    : _uploadLimit(0), _downloadLimit(0)
+  : _csync_ctx(ctx)
+  , _needsUpdate(false)
+  , _localPath(localPath)
+  , _remoteUrl(remoteURL)
+  , _remotePath(remotePath)
+  , _journal(journal)
+  , _hasFiles(false)
+  , _uploadLimit(0)
+  , _downloadLimit(0)
 {
-    _localPath = localPath;
-    _remotePath = remotePath;
-    _remoteUrl = remoteURL;
-    _csync_ctx = ctx;
-    _journal = journal;
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
     qRegisterMetaType<Progress::Info>("Progress::Info");
@@ -275,7 +278,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
 
     // record the seen files to be able to clean the journal later
-    _seenFiles[item._file] = QString();
+    _seenFiles.insert(item._file);
 
     switch(file->error_status) {
     case CSYNC_STATUS_OK:
@@ -395,6 +398,11 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item.log._other_size        = file->other.size;
 
     _syncedItems.append(item);
+
+    if (remote && file->remotePerm) {
+        _remotePerms[item._file] = file->remotePerm;
+    }
+
     emit syncItemDiscovered(item);
     return re;
 }
@@ -524,6 +532,7 @@ void SyncEngine::slotUpdateFinished(int updateResult)
         handleSyncError(_csync_ctx, "csync_reconcile");
         return;
     }
+
     _stopWatch.addLapTime(QLatin1String("Reconcile Finished"));
 
     _progressInfo = Progress::Info();
@@ -545,6 +554,9 @@ void SyncEngine::slotUpdateFinished(int updateResult)
             it != _syncedItems.end(); ++it) {
         it->_file = adjustRenamedPath(it->_file);
     }
+
+    // make sure everything is allowed
+    checkForPermission();
 
     // Sanity check
     if (!_journal->isConnected()) {
@@ -652,6 +664,7 @@ void SyncEngine::slotFinished()
     if( ! _journal->postSyncCleanup( _seenFiles ) ) {
         qDebug() << "Cleaning of synced ";
     }
+
     _journal->commit("All Finished.", false);
     emit treeWalkResult(_syncedItems);
     finalize();
@@ -659,14 +672,14 @@ void SyncEngine::slotFinished()
 
 void SyncEngine::finalize()
 {
+    _thread.quit();
+    _thread.wait();
     csync_commit(_csync_ctx);
 
     qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
     _stopWatch.stop();
 
     _propagator.reset(0);
-    _thread.quit();
-    _thread.wait();
     _syncRunning = false;
     emit finished();
 }
@@ -695,6 +708,189 @@ QString SyncEngine::adjustRenamedPath(const QString& original)
     }
     return original;
 }
+
+void SyncEngine::checkForPermission()
+{
+    for (SyncFileItemVector::iterator it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
+
+        if (it->_direction != SyncFileItem::Up) {
+            // Currently we only check server-side permissions
+            continue;
+        }
+
+        switch(it->_instruction) {
+            case CSYNC_INSTRUCTION_NEW: {
+                int slashPos = it->_file.lastIndexOf('/');
+                QString parentDir = slashPos <= 0 ? "" : it->_file.mid(0, slashPos);
+                const QByteArray perms = getPermissions(parentDir);
+                if (perms.isNull()) {
+                    // No permissions set
+                    break;
+                } else if (it->_isDirectory && !perms.contains("K")) {
+                    qDebug() << "checkForPermission: ERROR" << it->_file;
+                    it->_instruction = CSYNC_INSTRUCTION_ERROR;
+                    it->_status = SyncFileItem::NormalError;
+                    it->_errorString = tr("Not allowed because you don't have permission to add sub-directories in that directory");
+
+                    const QString path = it->_file + QLatin1Char('/');
+                    for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
+                        it = it_next;
+                        it->_instruction = CSYNC_INSTRUCTION_ERROR;
+                        it->_status = SyncFileItem::NormalError;
+                        it->_errorString = tr("Not allowed because you don't have permission to add parent directory");
+                    }
+
+                } else if (!it->_isDirectory && !perms.contains("C")) {
+                    qDebug() << "checkForPermission: ERROR" << it->_file;
+                    it->_instruction = CSYNC_INSTRUCTION_ERROR;
+                    it->_status = SyncFileItem::NormalError;
+                    it->_errorString = tr("Not allowed because you don't have permission to add files in that directory");
+                }
+                break;
+            }
+            case CSYNC_INSTRUCTION_SYNC: {
+                const QByteArray perms = getPermissions(it->_file);
+                if (perms.isNull()) {
+                    // No permissions set
+                    break;
+                } if (!it->_isDirectory && !perms.contains("W")) {
+                    qDebug() << "checkForPermission: RESTORING" << it->_file;
+                    it->_instruction = CSYNC_INSTRUCTION_CONFLICT;
+                    it->_direction = SyncFileItem::Down;
+                    it->_isRestoration = true;
+                    // take the things to write to the db from the "other" node (i.e: info from server)
+                    it->_modtime = it->log._other_modtime;
+                    it->_fileId = it->log._other_fileId;
+                    it->_etag = it->log._other_etag;
+                    it->_errorString = tr("Not allowed to upload this file because it is read-only on the server, restoring");
+                    continue;
+                }
+                break;
+            }
+            case CSYNC_INSTRUCTION_REMOVE: {
+                const QByteArray perms = getPermissions(it->_file);
+                if (perms.isNull()) {
+                    // No permissions set
+                    break;
+                } if (!perms.contains("D")) {
+                    qDebug() << "checkForPermission: RESTORING" << it->_file;
+                    it->_instruction = CSYNC_INSTRUCTION_NEW;
+                    it->_direction = SyncFileItem::Down;
+                    it->_isRestoration = true;
+                    it->_errorString = tr("Not allowed to remove, restoring");
+
+                    if (it->_isDirectory) {
+                        // restore all sub items
+                        const QString path = it->_file + QLatin1Char('/');
+                        for (SyncFileItemVector::iterator it_next = it + 1;
+                             it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
+                            it = it_next;
+
+                            if (it->_instruction != CSYNC_INSTRUCTION_REMOVE) {
+                                qWarning() << "non-removed job within a removed directory"
+                                           << it->_file << it->_instruction;
+                                continue;
+                            }
+
+                            qDebug() << "checkForPermission: RESTORING" << it->_file;
+
+                            it->_instruction = CSYNC_INSTRUCTION_NEW;
+                            it->_direction = SyncFileItem::Down;
+                            it->_isRestoration = true;
+                            it->_errorString = tr("Not allowed to remove, restoring");
+                        }
+                    }
+                }
+                break;
+            }
+
+            case CSYNC_INSTRUCTION_RENAME: {
+
+                int slashPos = it->_renameTarget.lastIndexOf('/');
+                const QString parentDir = slashPos <= 0 ? "" : it->_renameTarget.mid(0, slashPos-1);
+                const QByteArray destPerms = getPermissions(parentDir);
+                const QByteArray filePerms = getPermissions(it->_file);
+
+                //true when it is just a rename in the same directory. (not a move)
+                bool isRename = it->_file.startsWith(parentDir) && it->_file.lastIndexOf('/') == slashPos;
+
+
+                // Check if we are allowed to move to the destination.
+                bool destinationOK = true;
+                if (isRename || destPerms.isNull()) {
+                    // no need to check for the destination dir permission
+                    destinationOK = true;
+                } else if (it->_isDirectory && !destPerms.contains("K")) {
+                    destinationOK = false;
+                } else if (!it->_isDirectory && !destPerms.contains("C")) {
+                    destinationOK = false;
+                }
+
+                // check if we are allowed to move from the source
+                bool sourceOK = true;
+                if (!filePerms.isNull()
+                    &&  ((isRename && !filePerms.contains("N"))
+                         || (!isRename && !filePerms.contains("M")))) {
+
+                    // We are not allowed to move or rename this file
+                    sourceOK = false;
+
+                    if (filePerms.contains("D") && destinationOK) {
+                        // but we are allowed to delete it
+                        // TODO!  simulate delete & upload
+                    }
+                }
+
+                if (!sourceOK && !destinationOK) {
+                    // Both the source and the destination won't allow move.  Move back to the original
+                    std::swap(it->_file, it->_renameTarget);
+                    it->_direction = SyncFileItem::Down;
+                    it->_errorString = tr("Move not allowed, item restored");
+                    it->_isRestoration = true;
+                    qDebug() << "checkForPermission: MOVING BACK" << it->_file;
+                } else if (!sourceOK || !destinationOK) {
+                    // One of them is not possible, just throw an error
+                    it->_instruction = CSYNC_INSTRUCTION_ERROR;
+                    it->_status = SyncFileItem::NormalError;
+                    const QString errorString = tr("Move not allowed because %1 is read-only").arg(
+                        sourceOK ? tr("the destination") : tr("the source"));
+                    it->_errorString = errorString;
+
+                    qDebug() << "checkForPermission: ERROR MOVING" << it->_file << errorString;
+
+                    if (it->_isDirectory) {
+                        const QString path = it->_file + QLatin1Char('/');
+                        for (SyncFileItemVector::iterator it_next = it + 1;
+                             it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
+                            it = it_next;
+                            it->_instruction = CSYNC_INSTRUCTION_ERROR;
+                            it->_status = SyncFileItem::NormalError;
+                            it->_errorString = errorString;
+                            qDebug() << "checkForPermission: ERROR MOVING" << it->_file;
+                        }
+                    }
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
+QByteArray SyncEngine::getPermissions(const QString& file) const
+{
+    //FIXME;
+    static bool isTest = qgetenv("OWNCLOUD_TEST_PERMISSIONS").toInt();
+    if (isTest) {
+        QRegExp rx("_PERM_([^_]*)_[^/]*$");
+        if (rx.indexIn(file) != -1) {
+            return rx.cap(1).toLatin1();
+        }
+    }
+    return _remotePerms.value(file);
+}
+
 
 void SyncEngine::abort()
 {

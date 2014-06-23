@@ -43,7 +43,15 @@ static int maximumActiveJob() {
 
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
 {
-    _item._errorString = errorString;
+    if (_item._isRestoration) {
+        if( status == SyncFileItem::Success || status == SyncFileItem::Conflict) {
+            status = SyncFileItem::SoftError;
+        } else {
+            _item._errorString += tr("; Restoration Failed: ") + errorString;
+        }
+    } else {
+        _item._errorString = errorString;
+    }
     _item._status = status;
 
     // Blacklisting

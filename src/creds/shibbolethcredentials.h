@@ -26,6 +26,8 @@ namespace QKeychain {
     class Job;
 }
 
+class QAuthenticator;
+
 namespace Mirall
 {
 
@@ -58,6 +60,7 @@ public:
 
 public Q_SLOTS:
     void invalidateAndFetch(Account *account);
+    void slotHandleAuthentication(QNetworkReply*,QAuthenticator*);
 
 private Q_SLOTS:
     void onShibbolethCookieReceived(const QNetworkCookie&, Account*);

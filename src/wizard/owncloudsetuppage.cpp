@@ -35,6 +35,8 @@ OwncloudSetupPage::OwncloudSetupPage()
     _ocUser(),
     _authTypeKnown(false),
     _checking(false),
+    _configExists(false),
+    _multipleFoldersExist(false),
     _authType(WizardCommon::HttpCreds),
     _progressIndi(new QProgressIndicator (this))
 {

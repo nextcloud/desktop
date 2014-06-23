@@ -21,6 +21,7 @@
 #include <QMutex>
 #include <QThread>
 #include <QString>
+#include <QSet>
 #include <qelapsedtimer.h>
 
 #include <csync.h>
@@ -115,7 +116,7 @@ private:
     SyncJournalDb *_journal;
     QScopedPointer <OwncloudPropagator> _propagator;
     QString _lastDeleted; // if the last item was a path and it has been deleted
-    QHash <QString, QString> _seenFiles;
+    QSet<QString> _seenFiles;
     QThread _thread;
 
     Progress::Info _progressInfo;
@@ -126,10 +127,20 @@ private:
     QHash<QString, QString> _renamedFolders;
     QString adjustRenamedPath(const QString &original);
 
+    /**
+     * check if we are allowed to propagate everything, and if we are not, adjust the instructions
+     * to recover
+     */
+    void checkForPermission();
+    QByteArray getPermissions(const QString& file) const;
+
     bool _hasFiles; // true if there is at least one file that is not ignored or removed
 
     int _uploadLimit;
     int _downloadLimit;
+
+    // hash containing the permissions on the remote directory
+    QHash<QString, QByteArray> _remotePerms;
 };
 
 

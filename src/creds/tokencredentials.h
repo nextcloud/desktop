@@ -53,7 +53,6 @@ public:
     QString password() const;
     QString queryPassword(bool *ok);
     void invalidateToken(Account *account);
-    QString fetchUser(Account *account);
 
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply*, QAuthenticator*);
@@ -61,7 +60,7 @@ private Q_SLOTS:
 private:
     QString _user;
     QString _password;
-    QString _token;
+    QString _token; // the cookies
     bool _ready;
 };
 

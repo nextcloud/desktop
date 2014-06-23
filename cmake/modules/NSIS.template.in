@@ -413,7 +413,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${QT_DLL_PATH}\Qt5Xml.dll"
 
    ;Qt deps
-   File "${MING_BIN}\libpng15-15.dll"
+   File "${MING_BIN}\libpng16-16.dll"
    File "${MING_BIN}\icudata51.dll"
    File "${MING_BIN}\icui18n51.dll"
    File "${MING_BIN}\icuuc51.dll"
@@ -421,7 +421,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${MING_BIN}\libGLESv2.dll"
    File "${MING_BIN}\libjpeg-8.dll"
    File "${MING_BIN}\libpcre16-0.dll"
-   File "${MING_BIN}\libpng15-15.dll"
    File "${MING_BIN}\libproxy.dll"
    File "${MING_BIN}\libqt5keychain.dll"
    File "${MING_BIN}\libsqlite3-0.dll"
@@ -448,6 +447,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    ;MinGW stuff
    File "${MING_BIN}\libgcc_s_sjlj-1.dll"
    File "${MING_BIN}\libstdc++-6.dll"
+   File "${MING_BIN}\libwinpthread-1.dll"
 
    ; CSync configs
    File "${SOURCE_PATH}/sync-exclude.lst"

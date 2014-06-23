@@ -135,7 +135,8 @@ int c_utimes(const char *uri, const struct timeval *times) {
     if(!SetFileTime(hFile, NULL, &LastAccessTime, &LastModificationTime)) {
         //can this happen?
         errno=ENOENT;
-	CloseHandle(hFile);
+        CloseHandle(hFile);
+        c_free_locale_string(wuri);
         return -1;
     }
 

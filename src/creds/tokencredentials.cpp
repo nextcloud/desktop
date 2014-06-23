@@ -79,15 +79,16 @@ public:
         : MirallAccessManager(parent), _cred(cred) {}
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) {
-        QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
-        QNetworkRequest req(request);
-        req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
-        //qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
+        if (_cred->user().isEmpty() || _cred->password().isEmpty() || _cred->_token.isEmpty()) {
+            qWarning() << Q_FUNC_INFO << "Empty user/password/token provided!";
+        }
 
-        // Append token cookie
-        QList<QNetworkCookie> cookies = request.header(QNetworkRequest::CookieHeader).value<QList<QNetworkCookie> >();
-        cookies.append(QNetworkCookie::parseCookies(_cred->_token.toUtf8()));
-        req.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookies));
+        QNetworkRequest req(request);
+
+        QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
+        req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
+
+        req.setRawHeader("Cookie", _cred->_token.toUtf8()); // analogous to neon in syncContextPreStart
 
         return MirallAccessManager::createRequest(op, req, outgoingData);
     }
@@ -161,12 +162,6 @@ bool TokenCredentials::ready() const
     return _ready;
 }
 
-QString TokenCredentials::fetchUser(Account* account)
-{
-    _user = account->credentialSetting(QLatin1String(userC)).toString();
-    return _user;
-}
-
 void TokenCredentials::fetch(Account *account)
 {
     if( !account ) {
@@ -174,10 +169,11 @@ void TokenCredentials::fetch(Account *account)
     }
     Q_EMIT fetched();
 }
+
 bool TokenCredentials::stillValid(QNetworkReply *reply)
 {
     return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
-            // returned if user or password is incorrect
+            // returned if user/password or token are incorrect
             && (reply->error() != QNetworkReply::OperationCanceledError
                 || !reply->property(authenticationFailedC).toBool()));
 }
@@ -189,19 +185,12 @@ QString TokenCredentials::queryPassword(bool *ok)
 
 void TokenCredentials::invalidateToken(Account *account)
 {
-    _password = QString();
+    qDebug() << Q_FUNC_INFO;
     _ready = false;
-
-    // User must be fetched from config file to generate a valid key
-    fetchUser(account);
-
-    const QString kck = keychainKey(account->url().toString(), _user);
-    if( kck.isEmpty() ) {
-        qDebug() << "InvalidateToken: User is empty, bailing out!";
-        return;
-    }
-
     account->clearCookieJar();
+    _token = QString();
+    _user = QString();
+    _password = QString();
 }
 
 void TokenCredentials::persist(Account *account)

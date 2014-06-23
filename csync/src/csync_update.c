@@ -286,6 +286,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     } else {
         enum csync_vio_file_type_e tmp_vio_type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
 
+        /* tmp might point to malloc mem, so free it here before reusing tmp  */
+        SAFE_FREE(tmp);
+
         /* check if it's a file and has been renamed */
         if (ctx->current == LOCAL_REPLICA) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
@@ -390,7 +393,7 @@ out:
       st->directDownloadCookies = c_strdup(fs->directDownloadCookies);
   }
   if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_PERM) {
-      strncpy(st->remotePerm, fs->remotePerm, sizeof(st->remotePerm));
+      strncpy(st->remotePerm, fs->remotePerm, REMOTE_PERM_BUF_SIZE);
   }
 
 fastout:  /* target if the file information is read from database into st */

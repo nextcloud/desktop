@@ -235,6 +235,7 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
 
       type = CSYNC_FILE_EXCLUDE_LIST;
       if (strlen(pattern) < 1) {
+	  SAFE_FREE(pattern_stored);
           continue;
       }
       /* Ecludes starting with ']' means it can be cleanup */
@@ -270,6 +271,9 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
 
           if (bname == NULL || dname == NULL) {
               match = CSYNC_NOT_EXCLUDED;
+	      SAFE_FREE(bname);
+	      SAFE_FREE(dname);
+              SAFE_FREE(pattern_stored);
               goto out;
           }
 

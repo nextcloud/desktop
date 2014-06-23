@@ -133,6 +133,8 @@ static int _csync_statedb_check(const char *statedb) {
                     }
                 }
             }
+        } else {
+            close(fd);
         }
         /* if it comes here, the database is broken and should be recreated. */
         _tunlink(wstatedb);
@@ -314,10 +316,8 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
             if(column_count > 11 && sqlite3_column_text(stmt,11)) {
                 strncpy((*st)->remotePerm,
                         (char*) sqlite3_column_text(stmt, 11),
-                        sizeof((*st)->remotePerm));
+                        REMOTE_PERM_BUF_SIZE);
             }
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "%s %s",sqlite3_column_text(stmt, 10),sqlite3_column_text(stmt, 11) );
-
         }
     }
     return rc;

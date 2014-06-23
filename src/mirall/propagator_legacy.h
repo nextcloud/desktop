@@ -23,7 +23,8 @@ class PropagateUploadFileLegacy: public PropagateNeonJob {
     Q_OBJECT
 public:
     explicit PropagateUploadFileLegacy(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateNeonJob(propagator, item), _previousFileSize(0) {}
+        : PropagateNeonJob(propagator, item)
+        , _chunked_done(0), _chunked_total_size(0), _previousFileSize(0) {}
     void start();
 private:
     // Log callback for httpbf

@@ -18,10 +18,8 @@
 #include <QWebFrame>
 #include <QWebPage>
 #include <QMessageBox>
-#include <QAuthenticator>
 #include <QNetworkReply>
 
-#include "creds/shibboleth/authenticationdialog.h"
 #include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibbolethcredentials.h"
 #include "mirall/account.h"
@@ -103,23 +101,6 @@ void ShibbolethWebView::slotLoadFinished(bool success)
     if (!success) {
         qDebug() << Q_FUNC_INFO << "Could not load Shibboleth login page to log you in.";
 
-    }
-}
-
-void ShibbolethWebView::slotHandleAuthentication(QNetworkReply *reply, QAuthenticator *authenticator)
-{
-    Q_UNUSED(reply)
-    QUrl url = reply->url();
-    // show only scheme, host and port
-    QUrl reducedUrl;
-    reducedUrl.setScheme(url.scheme());
-    reducedUrl.setHost(url.host());
-    reducedUrl.setPort(url.port());
-
-    AuthenticationDialog dialog(authenticator->realm(), reducedUrl.toString(), this);
-    if (dialog.exec() == QDialog::Accepted) {
-        authenticator->setUser(dialog.user());
-        authenticator->setPassword(dialog.password());
     }
 }
 

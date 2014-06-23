@@ -231,10 +231,9 @@ void PropagateUploadFileQNAM::startNextChunk()
         connect(_job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
         _job->start();
     } else {
-        delete device;
-
         qDebug() << "ERR: Could not open upload file: " << device->errorString();
         done( SyncFileItem::NormalError, device->errorString() );
+        delete device;
         return;
     }
 }
