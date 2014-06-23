@@ -273,14 +273,14 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     if (file->directDownloadCookies) {
         item._directDownloadCookies = QString::fromUtf8( file->directDownloadCookies );
     }
-    if (file->remotePerm) {
+    if (file->remotePerm && file->remotePerm[0]) {
         item._remotePerm = QByteArray(file->remotePerm);
     }
 
     // record the seen files to be able to clean the journal later
     _seenFiles.insert(item._file);
 
-    if (remote && file->remotePerm) {
+    if (remote && file->remotePerm && file->remotePerm[0]) {
         _remotePerms[item._file] = file->remotePerm;
     }
 
