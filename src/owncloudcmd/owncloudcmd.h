@@ -18,14 +18,44 @@
 
 #include <QObject>
 
+#include "csync.h"
+
+#include "mirall/connectionvalidator.h"
+#include "mirall/clientproxy.h"
+#include "mirall/account.h"
+
+using namespace Mirall;
+
+struct CmdOptions {
+    QString source_dir;
+    QString target_url;
+    QString config_directory;
+    QString proxy;
+    bool silent;
+    bool trustSSL;
+};
 
 class OwncloudCmd : public QObject {
     Q_OBJECT
 public:
-    OwncloudCmd() : QObject() { }
+    OwncloudCmd(CmdOptions options);
+    bool runSync();
+    void destroy();
+
 public slots:
-    void transmissionProgressSlot() {
-    }
+    void slotConnectionValidatorResult(ConnectionValidator::Status stat);
+    void transmissionProgressSlot();
+
+signals:
+    void finished();
+
+private:
+    CmdOptions _options;
+    ConnectionValidator *_conValidator;
+    CSYNC *_csync_ctx;
+    Account *_account;
+    ClientProxy _clientProxy;
+    QString _folder;
 };
 
 #endif
