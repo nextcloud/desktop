@@ -45,7 +45,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 {
     if (_item._isRestoration) {
         if( status == SyncFileItem::Success || status == SyncFileItem::Conflict) {
-            status = SyncFileItem::SoftError;
+            status = SyncFileItem::Restoration;
         } else {
             _item._errorString += tr("; Restoration Failed: ") + errorString;
         }
@@ -85,6 +85,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         _propagator->_journal->updateBlacklistEntry( record );
         break;
     case SyncFileItem::Success:
+    case SyncFileItem::Restoration:
         if( _item._blacklistedInDb ) {
             // wipe blacklist entry.
             _propagator->_journal->wipeBlacklistEntry(_item._file);
@@ -161,7 +162,8 @@ void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
         _restoreJob->setRestoreJobMsg();
     }
 
-    if( item._status == SyncFileItem::Success ||  item._status == SyncFileItem::Conflict) {
+    if( item._status == SyncFileItem::Success ||  item._status == SyncFileItem::Conflict
+            || item._status == SyncFileItem::Restoration) {
         done( SyncFileItem::SoftError, msg);
     } else {
         done( item._status, tr("A file or directory was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
@@ -388,7 +390,8 @@ void PropagateDirectory::start()
 
 void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 {
-    if (status == SyncFileItem::FatalError || (_current == -1 && status != SyncFileItem::Success)) {
+    if (status == SyncFileItem::FatalError ||
+            (_current == -1 && status != SyncFileItem::Success && status != SyncFileItem::Restoration)) {
         abort();
         emit finished(status);
         return;

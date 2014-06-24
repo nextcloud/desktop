@@ -46,7 +46,8 @@ public:
 
         Success, ///< The file was properly synced
         Conflict, ///< The file was properly synced, but a conflict was created
-        FileIgnored ///< The file is in the ignored list
+        FileIgnored, ///< The file is in the ignored list
+        Restoration ///< The file was restored because what should have been done was not allowed
     };
 
     SyncFileItem() : _type(UnknownType),  _direction(None), _isDirectory(false),
