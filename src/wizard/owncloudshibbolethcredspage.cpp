@@ -48,7 +48,7 @@ void OwncloudShibbolethCredsPage::setupBrowser()
 
     _browser = new ShibbolethWebView(account);
     connect(_browser, SIGNAL(shibbolethCookieReceived(const QNetworkCookie&, Account*)),
-            this, SLOT(slotShibbolethCookieReceived()), Qt::QueuedConnection);
+            this, SLOT(slotShibbolethCookieReceived(const QNetworkCookie&, Account*)), Qt::QueuedConnection);
     connect(_browser, SIGNAL(rejected()),
             this, SLOT(slotBrowserRejected()));
 
@@ -92,11 +92,15 @@ void OwncloudShibbolethCredsPage::setConnected()
 
 AbstractCredentials* OwncloudShibbolethCredsPage::getCredentials() const
 {
-    return new ShibbolethCredentials;
+    const OwncloudWizard *ocWizard = static_cast<const OwncloudWizard*>(wizard());
+    Account *account = ocWizard->account();
+
+    return new ShibbolethCredentials(_cookie, account);
 }
 
-void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived()
+void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived(const QNetworkCookie &cookie, Account*)
 {
+    _cookie = cookie;
     emit connectToOCUrl(field("OCUrl").toString().simplified());
 }
 

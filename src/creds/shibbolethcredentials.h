@@ -40,6 +40,9 @@ Q_OBJECT
 public:
     ShibbolethCredentials();
 
+    /* create a credidentials for an already connected account */
+    ShibbolethCredentials(const QNetworkCookie &cookie, Account *acc);
+
     void syncContextPreInit(CSYNC* ctx);
     void syncContextPreStart(CSYNC* ctx);
     bool changed(AbstractCredentials* credentials) const;

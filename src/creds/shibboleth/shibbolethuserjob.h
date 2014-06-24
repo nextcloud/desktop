@@ -26,14 +26,12 @@ class ShibbolethUserJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit ShibbolethUserJob(Account *account, QObject* parent = 0);
+public slots:
     void start();
 
 signals:
     // is always emitted when the job is finished.  user is empty in case of error.
     void userFetched(const QString &user);
-
-    // Another job need to be created
-    void tryAgain();
 
 private slots:
     virtual bool finished();
