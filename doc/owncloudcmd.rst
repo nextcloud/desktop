@@ -1,44 +1,43 @@
-The ownCloud Client packages come with a command line client which
-can be used to synchronize ownCloud files to client machines. The
-command line client is called ``owncloudcmd``.
+The ownCloud Client packages contain a command line client that can be used to
+synchronize ownCloud files to client machines. The command line client is
+called ``owncloudcmd``.
 
-owncloudcmd performs a single sync run and then exits.
-That means that it processes the differences between client- and
-server directory and propagates the files to get both repositories
-on the same status. Contrary to the GUI based client, it does not
-repeat syncs on its own. It does also not monitor for file system
-changes.
+owncloudcmd performs a single *sync run* and then exits the synchronization
+process. In this manner, owncloudcmd processes the differences between client
+and server directories and propagates the files to bring both repositories to
+the same state. Contrary to the GUI-based client, owncloudcmd does not repeat
+synchronizations on its own. It also does not monitor for file system changes.
 
-To invoke the command line client, the user has to provide the local
-and the remote repository urls::
+To invoke the owncloudcmd, you must provide the local and the remote repository
+urls using the following command::
 
   owncloudcmd [OPTIONS...] sourcedir owncloudurl
 
 where ``sourcedir`` is the local directory and ``owncloudurl`` is
-the server url.
+the server URL.
 
-.. note:: Prior to 1.6, the tool only accepted ``owncloud://`` or
-          ``ownclouds://`` in place of ``http://`` and ``https://``
-          as a scheme. See ``Examples`` for details.
+.. note:: Prior to the 1.6 version of owncloudcmd, the tool only accepted
+   ``owncloud://`` or ``ownclouds://`` in place of ``http://`` and ``https://`` as
+   a scheme. See ``Examples`` for details.
 
-These are other comand line switches supported by owncloudcmd:
+Other comand line switches supported by owncloudcmd include the following:
 
-``--silent``
-      Don't give verbose log output
+- ``--silent``
+      Supresses verbose log output.
 
-``--confdir`` `PATH`
-      Fetch or store configuration in this custom config directory
+- ``--confdir`` `PATH`
+      Fetches or stores configuration in the specified configuration directory.
 
-``--httpproxy  http://[user@pass:]<server>:<port>``
-      Use ``server`` as HTTP proxy
+- ``--httpproxy  http://[user@pass:]<server>:<port>``
+      Uses the specified ``server`` as the HTTP proxy.
 
 Credential Handling
 ~~~~~~~~~~~~~~~~~~~
 
 By default, owncloudcmd reads the client configuration and uses the credentials
-of the GUI sync client. If no client was configured or to use a different user
-to sync, the user password setting can be specified with the usual URL pattern,
-for example::
+of the GUI syncrhonization client. If no client is configured, or if you choose
+to use a different user to synchronize, you can specify the user password
+setting with the usual URL pattern.  For example::
 
   https://user:secret@192.168.178.2/remote.php/webdav
 
@@ -46,16 +45,16 @@ for example::
 Example
 ~~~~~~~
 
-To sync the ownCloud directory ``Music`` to the local directory ``media/music``
-through a proxy listening on port ``8080`` on the gateway machine ``192.168.178.1``,
-the command line would be::
+To synchronize the ownCloud directory ``Music`` to the local directory
+``media/music`, through a proxy listening on port ``8080``, and on a gateway
+machine using IP address ``192.168.178.1``, the command line would be::
 
   $ owncloudcmd --httpproxy http://192.168.178.1:8080 \
                 $HOME/media/music \
                 https://server/owncloud/remote.php/webdav/Music
 
 
-Using the legacy scheme, it would look like this::
+Using the legacy scheme, the command line would be::
 
   $ owncloudcmd --httpproxy http://192.168.178.1:8080 \
                 $HOME/media/music \
