@@ -183,13 +183,14 @@
         <location filename="../src/mirall/accountsettings.cpp" line="602"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 of %4) %5 over bij een snelheid van %6/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="617"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 van %2, file %3 van %4
+Totaal resterende tijd %5</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="739"/>
@@ -1289,10 +1290,10 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="50"/>
         <source>; Restoration Failed: </source>
-        <translation type="unfinished"/>
+        <translation>; Herstel mislukte: </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="167"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="169"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Er is een bestand of map verwijderd van een alleen-lezen share, maar herstellen is mislukt: %1</translation>
     </message>
@@ -1386,7 +1387,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="286"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Het lokale bestand werd verwijderd tijdens sync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="293"/>
@@ -1936,17 +1937,17 @@ Probeer opnieuw te synchroniseren.</translation>
         <translation>Dit onderwerp is niet gesynchroniseerd door eerdere fouten: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="287"/>
+        <location filename="../src/mirall/syncengine.cpp" line="291"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symbolic links worden niet ondersteund bij het synchroniseren.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="290"/>
+        <location filename="../src/mirall/syncengine.cpp" line="294"/>
         <source>File is listed on the ignore list.</source>
         <translation>De file is opgenomen op de negeerlijst.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="293"/>
+        <location filename="../src/mirall/syncengine.cpp" line="297"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Bestand bevat ongeldige karakters die niet tussen platformen gesynchroniseerd kunnen worden.</translation>
     </message>
@@ -1963,48 +1964,48 @@ Probeer opnieuw te synchroniseren.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="733"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan, omdat u geen rechten hebt om sub-directories aan te maken in die directory</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="740"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan, omdat u geen rechten hebt om een bovenliggende directories toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="747"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan, omdat u geen rechten hebt om bestanden in die directory toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="765"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan om dit bestand te uploaden, omdat het alleen-lezen is op de server, herstellen</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="780"/>
         <location filename="../src/mirall/syncengine.cpp" line="800"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan te verwijderen, herstellen</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="848"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Verplaatsen niet toegestaan, object hersteld</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="855"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>Verplaatsen niet toegestaan omdat %1 alleen-lezen is</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="856"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>bestemming</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="856"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>bron</translation>
     </message>
 </context>
 <context>
@@ -2133,12 +2134,12 @@ Probeer opnieuw te synchroniseren.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="408"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sync %1 van %2  (%3 over)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="412"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sync %1 (%2 over)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="432"/>

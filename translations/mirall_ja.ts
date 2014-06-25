@@ -1291,7 +1291,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="167"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="169"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>ファイルまたはディレクトリが読み込み専用の共有から削除されましたが、復元に失敗しました: %1</translation>
     </message>
@@ -1935,17 +1935,17 @@ It is not advisable to use it.</source>
         <translation>このアイテムは、以前にエラーが発生していたため同期させません: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="287"/>
+        <location filename="../src/mirall/syncengine.cpp" line="291"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>同期の際にシンボリックリンクはサポートしていません</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="290"/>
+        <location filename="../src/mirall/syncengine.cpp" line="294"/>
         <source>File is listed on the ignore list.</source>
         <translation>ファイルは除外リストに登録されています。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="293"/>
+        <location filename="../src/mirall/syncengine.cpp" line="297"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>ファイルに無効な文字が含まれているため、クロスプラットフォーム環境での同期ができません。</translation>
     </message>

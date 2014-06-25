@@ -157,7 +157,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="746"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ei yhteyttä %1iin osoitteessa &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="753"/>
@@ -200,7 +200,7 @@ Aikaa jäljellä yhteensä %5</translation>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="742"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Yhdistetty kohteeseen &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; käyttäjänä &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="711"/>
@@ -290,7 +290,7 @@ Aikaa jäljellä yhteensä %5</translation>
         <location filename="../src/mirall/folder.cpp" line="403"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ja %2 muuta tiedostoa on poistettu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="405"/>
@@ -302,7 +302,7 @@ Aikaa jäljellä yhteensä %5</translation>
         <location filename="../src/mirall/folder.cpp" line="410"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ja %2 muuta tiedostoa on ladattu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="412"/>
@@ -313,7 +313,7 @@ Aikaa jäljellä yhteensä %5</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="417"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ja %2 muuta tiedostoa on päivitetty.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="419"/>
@@ -1254,7 +1254,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="345"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronointi peruttiin käyttäjän toimesta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="400"/>
@@ -1288,7 +1288,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="167"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="169"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1364,7 +1364,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="156"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronointi peruttiin käyttäjän toimesta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="162"/>
@@ -1931,17 +1931,17 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>Kohdetta ei synkronoitu aiempien virheiden vuoksi: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="287"/>
+        <location filename="../src/mirall/syncengine.cpp" line="291"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symboliset linkit eivät ole tuettuja synkronoinnissa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="290"/>
+        <location filename="../src/mirall/syncengine.cpp" line="294"/>
         <source>File is listed on the ignore list.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="293"/>
+        <location filename="../src/mirall/syncengine.cpp" line="297"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation type="unfinished"/>
     </message>
@@ -1989,17 +1989,17 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="855"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>Siirto ei ole sallittu, koska %1 on &quot;vain luku&quot;-tilassa</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="856"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>kohde</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="856"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>lähde</translation>
     </message>
 </context>
 <context>

@@ -1290,10 +1290,10 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="50"/>
         <source>; Restoration Failed: </source>
-        <translation type="unfinished"/>
+        <translation>; Falló la restauración:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="167"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="169"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Un archivo o directorio fue eliminado de una carpeta compartida en modo de solo lectura, pero la recuperación falló: %1</translation>
     </message>
@@ -1937,17 +1937,17 @@ Intente sincronizar los archivos nuevamente.</translation>
         <translation>El elemento no está sincronizado por errores previos: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="287"/>
+        <location filename="../src/mirall/syncengine.cpp" line="291"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Los enlaces simbolicos no estan sopertados.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="290"/>
+        <location filename="../src/mirall/syncengine.cpp" line="294"/>
         <source>File is listed on the ignore list.</source>
         <translation>El fichero está en la lista de ignorados</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="293"/>
+        <location filename="../src/mirall/syncengine.cpp" line="297"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>El fichero contiene caracteres inválidos que no pueden ser sincronizados con la plataforma.</translation>
     </message>
@@ -1964,48 +1964,48 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="733"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation type="unfinished"/>
+        <translation>No está permitido, porque no tiene permisos para añadir subcarpetas en este directorio.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="740"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
-        <translation type="unfinished"/>
+        <translation>No está permitido porque no tiene permisos para añadir un directorio</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="747"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
-        <translation type="unfinished"/>
+        <translation>No está permitido, porque no tiene permisos para crear archivos en este directorio</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="765"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>No está permitido subir este archivo porque es de solo lectura en el servidor, restaurando.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="780"/>
         <location filename="../src/mirall/syncengine.cpp" line="800"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>No está permitido borrar, restaurando.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="848"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>No está permitido mover, elemento restaurado.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="855"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>No está permitido mover, porque %1 es solo lectura.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="856"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>destino</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="856"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>origen</translation>
     </message>
 </context>
 <context>

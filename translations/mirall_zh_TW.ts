@@ -47,7 +47,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="174"/>
         <source>Folders</source>
-        <translation type="unfinished"/>
+        <translation>資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="107"/>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="55"/>
         <source>Add Folder...</source>
-        <translation type="unfinished"/>
+        <translation>新增資料夾…</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="94"/>
@@ -250,7 +250,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="127"/>
         <source>Unable to connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>無法連線到 %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="157"/>
@@ -283,7 +283,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="317"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="403"/>
@@ -344,7 +344,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="441"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>同步啟用</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="713"/>
@@ -362,17 +362,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="720"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>移除所有檔案?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="722"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>移除所有檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="723"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>保留檔案</translation>
     </message>
 </context>
 <context>
@@ -400,7 +400,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="759"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>正在準備同步。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="762"/>
@@ -430,7 +430,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="779"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>使用者中斷。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="782"/>
@@ -440,7 +440,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="788"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (同步暫停)</translation>
     </message>
 </context>
 <context>
@@ -449,7 +449,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="95"/>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="250"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
@@ -544,7 +544,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="252"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>新增遠端資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="253"/>
@@ -588,7 +588,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderwizard.cpp" line="43"/>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; </source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;警告:&lt;/b&gt; </translation>
     </message>
 </context>
 <context>
@@ -619,22 +619,22 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Setttings</source>
-        <translation type="unfinished"/>
+        <translation>一般設定</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>當系統開機時啟用</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>顯示桌面通知</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
         <source>Use Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>使用單色圖示</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="50"/>
@@ -645,12 +645,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>重新啟動並更新</translation>
     </message>
 </context>
 <context>
@@ -658,12 +658,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="282"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>輸入密碼</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="283"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>請輸入使用者 %2 的密碼 %1 :</translation>
     </message>
 </context>
 <context>
@@ -693,12 +693,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>無法開啟檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="98"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>%1 無法寫入變更。</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
@@ -807,7 +807,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>跳過這個版本</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="272"/>
@@ -855,7 +855,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="100"/>
         <source>:</source>
-        <translation type="unfinished"/>
+        <translation>:</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="134"/>
@@ -865,35 +865,35 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>下載頻寬</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="196"/>
         <location filename="../src/mirall/networksettings.ui" line="278"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>限制到</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="218"/>
         <location filename="../src/mirall/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>KBytes/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="227"/>
         <location filename="../src/mirall/networksettings.ui" line="295"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>沒有限制</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>上傳頻寬</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>自動限制</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="34"/>
@@ -913,12 +913,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) 代理伺服器</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 代理伺服器</translation>
     </message>
 </context>
 <context>
@@ -975,17 +975,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="48"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>連線到 %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>設定本地資料夾選項</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>連線中...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="108"/>
@@ -1010,12 +1010,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="235"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>本地同步資料夾</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="248"/>
         <source>Update advanced setup</source>
-        <translation type="unfinished"/>
+        <translation>更新進階設定</translation>
     </message>
 </context>
 <context>
@@ -1023,17 +1023,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="42"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>連線到 %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="43"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>請輸入使用者憑證</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="159"/>
         <source>Update user credentials</source>
-        <translation type="unfinished"/>
+        <translation>更新使用者憑證</translation>
     </message>
 </context>
 <context>
@@ -1041,12 +1041,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="44"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>連線到 %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>設定 %1 伺服器</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
@@ -1072,7 +1072,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="259"/>
         <source>Update %1 server</source>
-        <translation type="unfinished"/>
+        <translation>更新 %1 伺服器</translation>
     </message>
 </context>
 <context>
@@ -1101,7 +1101,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="218"/>
         <source>Error: Wrong credentials.</source>
-        <translation type="unfinished"/>
+        <translation>錯誤: 錯誤的憑證。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="232"/>
@@ -1285,7 +1285,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="167"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="169"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1402,17 +1402,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>同步啟用</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="54"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="47"/>
@@ -1422,7 +1422,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="48"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>檔案</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
@@ -1432,7 +1432,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>動作</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
@@ -1442,7 +1442,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="65"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>重試同步</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="69"/>
@@ -1486,7 +1486,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="51"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
@@ -1501,7 +1501,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="71"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>網路</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="54"/>
@@ -1514,7 +1514,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="40"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="44"/>
@@ -1534,7 +1534,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="56"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>網路</translation>
     </message>
 </context>
 <context>
@@ -1570,7 +1570,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="98"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
 </context>
 <context>
@@ -1603,7 +1603,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>州或省:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="105"/>
@@ -1613,7 +1613,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="106"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>序號:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
@@ -1633,7 +1633,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="114"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>過期於:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="117"/>
@@ -1643,7 +1643,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="121"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
@@ -1653,7 +1653,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="129"/>
@@ -1668,7 +1668,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="151"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="182"/>
@@ -1679,7 +1679,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="185"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>憑證資訊:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="214"/>
@@ -1926,17 +1926,17 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="287"/>
+        <location filename="../src/mirall/syncengine.cpp" line="291"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="290"/>
+        <location filename="../src/mirall/syncengine.cpp" line="294"/>
         <source>File is listed on the ignore list.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="293"/>
+        <location filename="../src/mirall/syncengine.cpp" line="297"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation type="unfinished"/>
     </message>
@@ -2002,7 +2002,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/systray.cpp" line="49"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -2018,7 +2018,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="174"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>請登入</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="179"/>
@@ -2038,7 +2038,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="242"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>無。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="246"/>
@@ -2058,12 +2058,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="276"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>開啟 %1 資料夾</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="348"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>瀏覽器中開啟 %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="350"/>
@@ -2073,17 +2073,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="352"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>未知狀態</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="354"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>設定…</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="355"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>細節…</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="360"/>
@@ -2093,22 +2093,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="362"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>離開 %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="365"/>
         <source>Sign in...</source>
-        <translation type="unfinished"/>
+        <translation>登入中...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="367"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>登出</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="375"/>
         <source>Quota n/a</source>
-        <translation type="unfinished"/>
+        <translation>無配額</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="382"/>
@@ -2158,7 +2158,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="69"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>本地資料夾(&amp;L)</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="85"/>
@@ -2168,12 +2168,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="107"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>保留本地資料(&amp;K)</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="139"/>
         <source>&lt;small&gt;Syncs your existing data to new location.&lt;/small&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;small&gt;將現有的資料同步至新地點。&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="158"/>
@@ -2183,7 +2183,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="161"/>
         <source>&amp;Start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>開始一個全新的同步 </translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="193"/>
@@ -2193,7 +2193,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>狀態訊息</translation>
     </message>
 </context>
 <context>
@@ -2206,17 +2206,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>使用者名稱</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>密碼</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>錯誤標籤</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="109"/>
@@ -2342,27 +2342,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/utility.cpp" line="117"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="120"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="123"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="126"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 kB</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="129"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
 </context>
 <context>
@@ -2420,7 +2420,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>搬移到 %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="42"/>
@@ -2446,12 +2446,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>下載中</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="64"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>上傳中</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="66"/>
@@ -2511,7 +2511,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>同步失敗</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
@@ -2521,22 +2521,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
         <source>The server is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>伺服器目前無法使用。</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>正在準備同步。</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>中斷中…</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="81"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>同步已暫停</translation>
     </message>
 </context>
 </TS>
