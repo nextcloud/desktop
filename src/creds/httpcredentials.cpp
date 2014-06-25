@@ -48,8 +48,9 @@ int getauth(const char *prompt,
             void *userdata)
 {
     int re = 0;
-    QMutex mutex;
-    // ### safe?
+
+    // ### safe?  Not really.  If the wizard is run in the main thread, the caccount could change during the sync.
+    // Ideally, http_credentials could be use userdata,   but userdata is the SyncEngine.
     HttpCredentials* http_credentials = qobject_cast<HttpCredentials*>(AccountManager::instance()->account()->credentials());
 
     if (!http_credentials) {
@@ -63,10 +64,8 @@ int getauth(const char *prompt,
 
     if( qPrompt == QLatin1String("Enter your username:") ) {
         // qDebug() << "OOO Username requested!";
-        QMutexLocker locker( &mutex );
         qstrncpy( buf, user.toUtf8().constData(), len );
     } else if( qPrompt == QLatin1String("Enter your password:") ) {
-        QMutexLocker locker( &mutex );
         // qDebug() << "OOO Password requested!";
         qstrncpy( buf, pwd.toUtf8().constData(), len );
     } else {
