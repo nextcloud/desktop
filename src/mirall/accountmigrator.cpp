@@ -21,6 +21,7 @@
 #include <QStringList>
 #include <QDir>
 #include <QFileInfo>
+#include <QDebug>
 
 namespace Mirall {
 
@@ -55,7 +56,10 @@ QStringList AccountMigrator::migrateFolderDefinitons()
     oCPath = oCPath.left( oCPath.lastIndexOf('/'));
 
     themePath += QLatin1String( "folders");
-    oCPath += QLatin1String( "ownCloud/folders" );
+    oCPath += QLatin1String( "/ownCloud/folders" );
+
+    qDebug() << "Migrator: theme-path: " << themePath;
+    qDebug() << "Migrator: ownCloud path: " << oCPath;
 
     // get a dir listing of the ownCloud folder definitions and copy
     // them over to the theme dir
@@ -69,6 +73,7 @@ QStringList AccountMigrator::migrateFolderDefinitons()
         QString oCFile = oCPath+QDir::separator()+file;
         if( QFile::copy( oCFile, themeFile ) ) {
             re.append(file);
+            qDebug() << "Migrator: Folder definition migrated: " << file;
 
             // fix the connection entry of the folder definition
             QSettings settings(themeFile, QSettings::IniFormat);
@@ -79,7 +84,6 @@ QStringList AccountMigrator::migrateFolderDefinitons()
     }
 
     return re;
-
 }
 
 }

@@ -29,6 +29,7 @@
 #include <QSslSocket>
 #include <QNetworkCookieJar>
 #include <QFileInfo>
+#include <QDir>
 
 #include <QDebug>
 
@@ -124,11 +125,13 @@ Account* Account::restore()
     // if the settings file could not be opened, the childKeys list is empty
     if( settings->childKeys().isEmpty() ) {
         // Now try to open the original ownCloud settings to see if they exist.
-        QString oCCfgFile = settings->fileName();
+        QString oCCfgFile = QDir::fromNativeSeparators( settings->fileName() );
         // replace the last two segments with ownCloud/owncloud.cfg
         oCCfgFile = oCCfgFile.left( oCCfgFile.lastIndexOf('/'));
         oCCfgFile = oCCfgFile.left( oCCfgFile.lastIndexOf('/'));
         oCCfgFile += QLatin1String("/ownCloud/owncloud.cfg");
+
+        qDebug() << "Migrate: checking old config " << oCCfgFile;
 
         QFileInfo fi( oCCfgFile );
         if( fi.isReadable() ) {
@@ -142,7 +145,9 @@ Account* Account::restore()
 
                 // in case the urls are equal reset the settings object to read from
                 // the ownCloud settings object
-                if( oCUrl == overrideUrl ) {
+                qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
+                         << (QUrl(oCUrl) == QUrl(overrideUrl) ? "Yes" : "No");
+                if( QUrl(oCUrl) == QUrl(overrideUrl) ) {
                     migratedCreds = true;
                     settings.reset( oCSettings );
                 } else {
