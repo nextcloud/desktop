@@ -25,151 +25,41 @@
 #include "mirall/syncengine.h"
 #include "mirall/syncjournaldb.h"
 #include "mirall/logger.h"
-
+#include "csync.h"
+#include "mirall/clientproxy.h"
+#include "mirall/account.h"
 #include "creds/httpcredentials.h"
 #include "owncloudcmd.h"
 #include "simplesslerrorhandler.h"
 
+using namespace Mirall;
 
-OwncloudCmd::OwncloudCmd(CmdOptions options)
- : QObject(), _options(options)
+struct CmdOptions {
+    QString source_dir;
+    QString target_url;
+    QString config_directory;
+    QString proxy;
+    bool silent;
+    bool trustSSL;
+};
+
+int getauth(const char* prompt, char* buf, size_t len, int a, int b, void *userdata)
 {
+    (void) a;
+    (void) b;
 
-}
+    struct CmdOptions *opts = (struct CmdOptions*) userdata;
 
-void OwncloudCmd::slotConnectionValidatorResult(ConnectionValidator::Status stat)
-{
-    // call csync_create even if the connect fails, since csync_destroy is
-    // called later in any case, and that needs a proper initialized csync_ctx.
-    if( csync_create( &_csync_ctx, _options.source_dir.toUtf8(),
-                      _options.target_url.toUtf8()) < 0 ) {
-        qCritical("Unable to create csync-context!");
-        emit( finished() );
-        return;
-    }
-
-    if( stat != ConnectionValidator::Connected ) {
-        qCritical("Connection cound not be established!");
-        emit( finished() );
-        return;
-
-    }
-
-    int rc = ne_sock_init();
-    if (rc < 0) {
-        qCritical("ne_sock_init failed!");
-        emit( finished() );
-        return;
-    }
-
-    csync_set_userdata(_csync_ctx, &_options);
-
-    if( csync_init( _csync_ctx ) < 0 ) {
-        qCritical("Could not initialize csync!");
-        _csync_ctx = 0;
-        emit( finished() );
-        return;
-    }
-
-    csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
-    if( !_options.proxy.isNull() ) {
-        QString host;
-        int port = 0;
-        bool ok;
-        // Set as default and let overwrite later
-        csync_set_module_property(_csync_ctx, "proxy_type", (void*) "NoProxy");
-
-        QStringList pList = _options.proxy.split(':');
-        if(pList.count() == 3) {
-            // http: //192.168.178.23 : 8080
-            //  0            1            2
-            host = pList.at(1);
-            if( host.startsWith("//") ) host.remove(0, 2);
-
-            port = pList.at(2).toInt(&ok);
-
-            if( !host.isNull() ) {
-                csync_set_module_property(_csync_ctx, "proxy_type", (void*) "HttpProxy");
-                csync_set_module_property(_csync_ctx, "proxy_host", host.toUtf8().data());
-                if( ok && port ) {
-                    csync_set_module_property(_csync_ctx, "proxy_port", (void*) &port);
-                }
-            }
-        }
+    std::cout << "** Authentication required: \n" << prompt << std::endl;
+    std::string s;
+    if(opts && opts->trustSSL) {
+        s = "yes";
     } else {
-        _clientProxy.setupQtProxyFromConfig();
-        QString url( _options.target_url );
-        if( url.startsWith("owncloud")) {
-            url.remove(0, 8);
-            url = QString("http%1").arg(url);
-        }
-        _clientProxy.setCSyncProxy(QUrl(url), _csync_ctx);
+        std::getline(std::cin, s);
     }
-
-    SyncJournalDb *db = new SyncJournalDb(_options.source_dir);
-    SyncEngine *engine = new SyncEngine(_csync_ctx, _options.source_dir, QUrl(_options.target_url).path(), _folder, db);
-    connect( engine, SIGNAL(finished()), this, SIGNAL(finished()) );
-    QObject::connect(engine, SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(transmissionProgressSlot()));
-
-    // Have to be done async, else, an error before exec() does not terminate the event loop.
-    QMetaObject::invokeMethod(engine, "startSync", Qt::QueuedConnection);
-
+    strncpy( buf, s.c_str(), len );
+    return 0;
 }
-
-bool OwncloudCmd::runSync()
-{
-    QUrl url(_options.target_url.toUtf8());
-
-    _account = new Account;
-
-    // Find the folder and the original owncloud url
-    QStringList splitted = url.path().split(_account->davPath());
-    url.setPath(splitted.value(0));
-    url.setScheme(url.scheme().replace("owncloud", "http"));
-    _folder = splitted.value(1);
-
-    SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
-
-    csync_set_log_level(_options.silent ? 1 : 11);
-    Logger::instance()->setLogFile("-");
-
-    if( url.userInfo().isEmpty() ) {
-        // If there was no credentials coming in commandline url
-        // than restore the credentials from a configured client
-        delete _account;
-        _account = Account::restore();
-    } else {
-        // set the commandline credentials
-        _account->setCredentials(new HttpCredentials(url.userName(), url.password()));
-    }
-
-    if (_account) {
-        _account->setUrl(url);
-        _account->setSslErrorHandler(sslErrorHandler);
-        AccountManager::instance()->setAccount(_account);
-
-        _conValidator = new ConnectionValidator(_account);
-        connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
-                 this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
-        _conValidator->checkConnection();
-    } else {
-        // no account found
-        return false;
-    }
-
-    return true;
-}
-
-void OwncloudCmd::destroy()
-{
-    csync_destroy(_csync_ctx);
-}
-
-void OwncloudCmd::transmissionProgressSlot()
-{
-    // do something nice here.
-}
-
 
 void help()
 {
@@ -246,20 +136,98 @@ int main(int argc, char **argv) {
     CmdOptions options;
     options.silent = false;
     options.trustSSL = false;
+    ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
 
 
-    OwncloudCmd owncloudCmd(options);
+    QUrl url(options.target_url.toUtf8());
+    Account account;
 
-    QObject::connect(&owncloudCmd, SIGNAL(finished()), &app, SLOT(quit()));
-    if( !owncloudCmd.runSync() ) {
-        return 1;
+    // Find the folder and the original owncloud url
+    QStringList splitted = url.path().split(account.davPath());
+    url.setPath(splitted.value(0));
+    url.setScheme(url.scheme().replace("owncloud", "http"));
+    QString folder = splitted.value(1);
+
+    SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
+
+    account.setUrl(url);
+    account.setCredentials(new HttpCredentials(url.userName(), url.password()));
+    account.setSslErrorHandler(sslErrorHandler);
+    AccountManager::instance()->setAccount(&account);
+
+    CSYNC *_csync_ctx;
+    if( csync_create( &_csync_ctx, options.source_dir.toUtf8(),
+                      options.target_url.toUtf8()) < 0 ) {
+        qFatal("Unable to create csync-context!");
+        return EXIT_FAILURE;
     }
+    int rc = ne_sock_init();
+    if (rc < 0) {
+        qFatal("ne_sock_init failed!");
+    }
+
+    csync_set_log_level(options.silent ? 1 : 11);
+    Logger::instance()->setLogFile("-");
+
+    csync_set_userdata(_csync_ctx, &options);
+    csync_set_auth_callback( _csync_ctx, getauth );
+
+    if( csync_init( _csync_ctx ) < 0 ) {
+        qFatal("Could not initialize csync!");
+        return EXIT_FAILURE;
+    }
+
+    csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
+    if( !options.proxy.isNull() ) {
+        QString host;
+        int port = 0;
+        bool ok;
+
+        // Set as default and let overwrite later
+        csync_set_module_property(_csync_ctx, "proxy_type", (void*) "NoProxy");
+
+        QStringList pList = options.proxy.split(':');
+        if(pList.count() == 3) {
+            // http: //192.168.178.23 : 8080
+            //  0            1            2
+            host = pList.at(1);
+            if( host.startsWith("//") ) host.remove(0, 2);
+
+            port = pList.at(2).toInt(&ok);
+
+            if( !host.isNull() ) {
+                csync_set_module_property(_csync_ctx, "proxy_type", (void*) "HttpProxy");
+                csync_set_module_property(_csync_ctx, "proxy_host", host.toUtf8().data());
+                if( ok && port ) {
+                    csync_set_module_property(_csync_ctx, "proxy_port", (void*) &port);
+                }
+            }
+        }
+    } else {
+        clientProxy.setupQtProxyFromConfig();
+        QString url( options.target_url );
+        if( url.startsWith("owncloud")) {
+            url.remove(0, 8);
+            url = QString("http%1").arg(url);
+        }
+        clientProxy.setCSyncProxy(QUrl(url), _csync_ctx);
+    }
+
+    OwncloudCmd owncloudCmd;
+
+    SyncJournalDb db(options.source_dir);
+    SyncEngine engine(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
+    QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
+    QObject::connect(&engine, SIGNAL(transmissionProgress(Progress::Info)), &owncloudCmd, SLOT(transmissionProgressSlot()));
+
+    // Have to be done async, else, an error before exec() does not terminate the event loop.
+    QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);
 
     app.exec();
 
-    owncloudCmd.destroy();
+    csync_destroy(_csync_ctx);
 
     ne_sock_exit();
 
