@@ -610,7 +610,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="486"/>
         <source>Connection Timeout</source>
-        <translation>Spojení Vypršelo</translation>
+        <translation>Spojení vypršelo</translation>
     </message>
 </context>
 <context>
@@ -1251,7 +1251,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="82"/>
         <source>Connection Timeout</source>
-        <translation>Spojení Vypršelo</translation>
+        <translation>Spojení vypršelo</translation>
     </message>
 </context>
 <context>
@@ -1290,7 +1290,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="50"/>
         <source>; Restoration Failed: </source>
-        <translation>; Obnovení Selhalo:</translation>
+        <translation>; Obnovení selhalo:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="169"/>

@@ -47,7 +47,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="174"/>
         <source>Folders</source>
-        <translation type="unfinished"/>
+        <translation>Теки</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="107"/>
@@ -65,17 +65,17 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="136"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>Управління обліковим записом</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="145"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Ігноровані файли</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="152"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>Редагувати запис</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
@@ -106,12 +106,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="94"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>Використання сховища</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="116"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>Отримання інформації по використання...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="123"/>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="319"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Дійсно бажаєте зупинити синхронізацію теки &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примітка:&lt;/b&gt; Файли у вашому клієнті не будуть видалені.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="355"/>
@@ -350,29 +350,32 @@ Total time left %5</source>
         <location filename="../src/mirall/folder.cpp" line="713"/>
         <source>This sync would remove all the files in the local sync folder '%1'.
 If you or your administrator have reset your account on the server, choose &quot;Keep files&quot;. If you want your data to be removed, choose &quot;Remove all files&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Ця синхронізація видалить усі файли з вашої локальної теки синхронізації &apos;%1&apos;.
+Якщо ви або ваш адміністратор скинув ваш запис на цьому сервері, оберіть &quot;Зберегти файли&quot;. Якщо бажаєте видалити дані, оберіть &quot;Видалити усі файли&quot;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="716"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Ця синхронізація видалить усі файли з теки синхронізації &apos;%1&apos;.
+Це може бути через те, що тека була переналаштована або усі файли були видалені з неї вручну.
+Ви дійсно бажаєте продовжити цю операцію?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="720"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Видалити усі файли?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="722"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Видалити усі файли</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="723"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Зберегти файли</translation>
     </message>
 </context>
 <context>
@@ -380,7 +383,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="171"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося скинути стан теки</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="172"/>
@@ -400,7 +403,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="759"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Підготовка до синхронізації</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="762"/>
@@ -410,7 +413,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="765"/>
         <source>Server is currently not available.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер наразі недоступний.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="768"/>
@@ -449,12 +452,12 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="95"/>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="250"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Файл</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
         <source>Syncing all files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація усіх ваших файлів з </translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="207"/>
@@ -624,17 +627,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>Запускати при старті системи</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Показувати сповіщення</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="40"/>
         <source>Use Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Монохромні значки</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="50"/>
@@ -671,7 +674,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>Редактор ігнорованих файлів</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="53"/>
@@ -693,22 +696,22 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося відкрити файл</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="98"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо запиасати зміни до &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="105"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Додати шаблон ігнорування</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="106"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Додати новий шаблон ігнорування:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
@@ -845,7 +848,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>Вказати проксі вручну</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="80"/>
@@ -855,17 +858,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="100"/>
         <source>:</source>
-        <translation type="unfinished"/>
+        <translation>:</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="134"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Проксі-сервер вимагає пароль</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Швидкість завантаження</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="196"/>
@@ -913,12 +916,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) проксі</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 проксі</translation>
     </message>
 </context>
 <context>
@@ -1057,7 +1060,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
         <source>This url is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Ця адреса безпечна. Її можна використовувати.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="223"/>
@@ -1080,7 +1083,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="360"/>
         <source>Folder rename failed</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося перейменувати теку</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="415"/>
@@ -1126,7 +1129,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="242"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося створити локальну теку $1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
@@ -1142,12 +1145,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="273"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Помилка: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="286"/>
         <source>creating folder on ownCloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>створення теки на ownCloud: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="302"/>
@@ -1168,7 +1171,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="310"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Створити віддалену теку не вдалося через невірно вказані облікові дані.&lt;br/&gt;Поверніться назад та перевірте облікові дані.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
@@ -1215,22 +1218,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="42"/>
         <source>Open Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити локальну теку</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="38"/>
         <source>Everything set up!</source>
-        <translation type="unfinished"/>
+        <translation>Усе налаштовано!</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
         <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ваш запис цілком синхронізовано із локальною текою &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
@@ -1422,7 +1425,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="48"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Файл</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="49"/>
@@ -1501,12 +1504,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="71"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Мережа</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="54"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Обліковий запис</translation>
     </message>
 </context>
 <context>
@@ -1519,7 +1522,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="44"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Обліковий запис</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="48"/>
@@ -1534,7 +1537,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="56"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Мережа</translation>
     </message>
 </context>
 <context>
@@ -2043,7 +2046,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="246"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>Недавні зміни</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="263"/>
@@ -2300,12 +2303,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="83"/>
         <source>Server &amp;Address</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Адреса сервера</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="99"/>
         <source>https://...</source>
-        <translation type="unfinished"/>
+        <translation>https://...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="157"/>
@@ -2328,7 +2331,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="69"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation type="unfinished"/>
+        <translation>Ваш запис цілком синхронізовано із локальною текою</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="103"/>
@@ -2384,7 +2387,7 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/owncloudtheme.cpp" line="96"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
-        <translation type="unfinished"/>
+        <translation>Якщо ви ще не маєте власного сервера ownCloud, подивіться &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; з цього приводу.</translation>
     </message>
 </context>
 <context>
