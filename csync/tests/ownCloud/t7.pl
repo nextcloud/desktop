@@ -46,6 +46,7 @@ printInfo( "Init" );
 #create some files localy
 my $tmpdir = "/tmp/t7/";
 mkdir($tmpdir);
+createLocalFile( $tmpdir . "normalFile_PERM_WVND_.data", 100 );
 createLocalFile( $tmpdir . "cannotBeRemoved_PERM_WVN_.data", 101 );
 createLocalFile( $tmpdir . "canBeRemoved_PERM_D_.data", 102 );
 my $md5CanotBeModified = createLocalFile( $tmpdir . "canotBeModified_PERM_DVN_.data", 103 );
@@ -56,6 +57,10 @@ createRemoteDir( "normalDirectory_PERM_CKDNV_" );
 glob_put( "$tmpdir/*", "normalDirectory_PERM_CKDNV_" );
 createRemoteDir( "readonlyDirectory_PERM_M_" );
 glob_put( "$tmpdir/*", "readonlyDirectory_PERM_M_" );
+createRemoteDir( "readonlyDirectory_PERM_M_/subdir_PERM_CKDNV_" );
+createRemoteDir( "readonlyDirectory_PERM_M_/subdir_PERM_CKDNV_/subsubdir_PERM_CKDNV_" );
+glob_put( "$tmpdir/normalFile_PERM_WVND_.data", "readonlyDirectory_PERM_M_/subdir_PERM_CKDNV_/subsubdir_PERM_CKDNV_" );
+
 
 csync();
 assertLocalAndRemoteDir( '', 0);
@@ -136,6 +141,17 @@ assert( -e localDir() . "normalDirectory_PERM_CKDNV_/newFile_PERM_WDNV_.data" );
 ### Both side should still be the same
 assertLocalAndRemoteDir( '', 0);
 
+
+
+
+#######################################################################
+printInfo( "remove the read only directory" );
+# -> It must be recovered
+system("rm -r " . localDir().'readonlyDirectory_PERM_M_' );
+csync();
+assert( -e localDir(). 'readonlyDirectory_PERM_M_/cannotBeRemoved_PERM_WVN_.data' );
+assert( -e localDir(). 'readonlyDirectory_PERM_M_/subdir_PERM_CKDNV_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data' );
+assertLocalAndRemoteDir( '', 0);
 
 
 
