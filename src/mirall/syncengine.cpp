@@ -557,6 +557,9 @@ void SyncEngine::slotUpdateFinished(int updateResult)
         it->_file = adjustRenamedPath(it->_file);
     }
 
+    // Sort items per destination
+    std::sort(_syncedItems.begin(), _syncedItems.end());
+
     // make sure everything is allowed
     checkForPermission();
 
