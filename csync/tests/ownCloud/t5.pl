@@ -30,7 +30,6 @@ use ownCloud::Test;
 use strict;
 
 print "Hello, this is t5, a tester for syncing of files in Shares\n";
-# stat error occours on windsows when the file is busy for example
 
 initTesting();
 
