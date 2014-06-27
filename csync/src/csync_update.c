@@ -254,8 +254,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
-        bool metadata_differ = ctx->current == REMOTE_REPLICA && (!c_streq(fs->file_id, tmp->file_id)
-                                                            || !c_streq(fs->remotePerm, tmp->remotePerm));
+        bool metadata_differ = (ctx->current == REMOTE_REPLICA && (!c_streq(fs->file_id, tmp->file_id)
+                                                            || !c_streq(fs->remotePerm, tmp->remotePerm)))
+                             || (ctx->current == LOCAL_REPLICA && fs->inode != tmp->inode);
         if (type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
                 && !metadata_differ && !ctx->read_from_db_disabled) {
             /* If both etag and file id are equal for a directory, read all contents from
@@ -691,8 +692,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     if (flag == CSYNC_FTW_FLAG_DIR && ctx->current_fs
         && (ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL ||
-            ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW ||
-            ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL_RENAME)) {
+            ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW)) {
         ctx->current_fs->should_update_etag = true;
     }
 

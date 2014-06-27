@@ -57,9 +57,9 @@ createRemoteDir( "normalDirectory_PERM_CKDNV_" );
 glob_put( "$tmpdir/*", "normalDirectory_PERM_CKDNV_" );
 createRemoteDir( "readonlyDirectory_PERM_M_" );
 glob_put( "$tmpdir/*", "readonlyDirectory_PERM_M_" );
-createRemoteDir( "readonlyDirectory_PERM_M_/subdir_PERM_CKDNV_" );
-createRemoteDir( "readonlyDirectory_PERM_M_/subdir_PERM_CKDNV_/subsubdir_PERM_CKDNV_" );
-glob_put( "$tmpdir/normalFile_PERM_WVND_.data", "readonlyDirectory_PERM_M_/subdir_PERM_CKDNV_/subsubdir_PERM_CKDNV_" );
+createRemoteDir( "readonlyDirectory_PERM_M_/subdir_PERM_CK_" );
+createRemoteDir( "readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_" );
+glob_put( "$tmpdir/normalFile_PERM_WVND_.data", "readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_" );
 
 
 csync();
@@ -150,11 +150,72 @@ printInfo( "remove the read only directory" );
 system("rm -r " . localDir().'readonlyDirectory_PERM_M_' );
 csync();
 assert( -e localDir(). 'readonlyDirectory_PERM_M_/cannotBeRemoved_PERM_WVN_.data' );
-assert( -e localDir(). 'readonlyDirectory_PERM_M_/subdir_PERM_CKDNV_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data' );
+assert( -e localDir(). 'readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data' );
+assertLocalAndRemoteDir( '', 0);
+
+
+#######################################################################
+printInfo( "move a directory in a outside read only folder" );
+#Missing directory should be restored
+#new directory should be uploaded
+system("mv " . localDir().'readonlyDirectory_PERM_M_/subdir_PERM_CK_ ' . localDir().'normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_'  );
+
+# two syncs may be necessary for now
+csync();
+csync();
+
+# old name restored
+assert( -e localDir(). 'readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data' );
+
+# new still exist
+assert( -e localDir(). 'normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data' );
+
 assertLocalAndRemoteDir( '', 0);
 
 
 
+
+
+#######################################################################
+printInfo( "rename a directory in a read only folder and move a directory to a read-only" );
+
+# do a sync to update the database
+csync();
+
+#1. rename a directory in a read only folder
+#Missing directory should be restored
+#new directory should stay but not be uploaded
+system("mv " . localDir().'readonlyDirectory_PERM_M_/subdir_PERM_CK_ ' . localDir().'readonlyDirectory_PERM_M_/newname_PERM_CK_'  );
+
+#2. move a directory from read to read only  (move the directory from previous step)
+system("mv " . localDir().'normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_ ' . localDir().'readonlyDirectory_PERM_M_/moved_PERM_CK_'  );
+
+# two syncs may be necessary for now
+csync();
+csync();
+
+#1.
+# old name restored
+assert( -e localDir(). 'readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data' );
+
+# new still exist
+assert( -e localDir(). 'readonlyDirectory_PERM_M_/newname_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data' );
+# but is not on server: so remove for assertLocalAndRemoteDir
+system("rm -r " . localDir(). "readonlyDirectory_PERM_M_/newname_PERM_CK_");
+
+#2.
+# old removed
+assert( ! -e localDir(). 'normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_/' );
+# new still there
+assert( -e localDir(). 'readonlyDirectory_PERM_M_/moved_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data' );
+#but not on server
+system("rm -r " . localDir(). "readonlyDirectory_PERM_M_/moved_PERM_CK_");
+
+assertLocalAndRemoteDir( '', 0);
+
+
+
+cleanup();
 
 
 

@@ -336,7 +336,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             _journal->setFileRecord(SyncJournalFileRecord(item, _localPath + item._file));
             item._should_update_etag = false;
         }
-        if (item._isDirectory && remote) {
+        if (item._isDirectory && (remote || file->should_update_etag)) {
             // Because we want still to update etags of directories
             dir = SyncFileItem::None;
         } else {
@@ -846,6 +846,8 @@ void SyncEngine::checkForPermission()
                     }
                 }
 
+#if 0 /* We don't like the idea of renaming behind user's back, as the user may be working with the files */
+
                 if (!sourceOK && !destinationOK) {
                     // Both the source and the destination won't allow move.  Move back to the original
                     std::swap(it->_file, it->_renameTarget);
@@ -853,7 +855,9 @@ void SyncEngine::checkForPermission()
                     it->_errorString = tr("Move not allowed, item restored");
                     it->_isRestoration = true;
                     qDebug() << "checkForPermission: MOVING BACK" << it->_file;
-                } else if (!sourceOK || !destinationOK) {
+                } else
+#endif
+                if (!sourceOK || !destinationOK) {
                     // One of them is not possible, just throw an error
                     it->_instruction = CSYNC_INSTRUCTION_ERROR;
                     it->_status = SyncFileItem::NormalError;
@@ -863,10 +867,17 @@ void SyncEngine::checkForPermission()
 
                     qDebug() << "checkForPermission: ERROR MOVING" << it->_file << errorString;
 
+                    // Avoid a rename on next sync:
+                    // TODO:  do the resolution now already so we don't need two sync
+                    //  At this point we would need to go back to the propagate phase on both remote to take
+                    //  the decision.
+                    _journal->avoidRenamesOnNextSync(it->_file);
+
+
                     if (it->_isDirectory) {
-                        const QString path = it->_file + QLatin1Char('/');
+                        const QString path = it->_renameTarget + QLatin1Char('/');
                         for (SyncFileItemVector::iterator it_next = it + 1;
-                             it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
+                             it_next != _syncedItems.end() && it_next->destination().startsWith(path); ++it_next) {
                             it = it_next;
                             it->_instruction = CSYNC_INSTRUCTION_ERROR;
                             it->_status = SyncFileItem::NormalError;
