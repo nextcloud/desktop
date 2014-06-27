@@ -1,81 +1,126 @@
 The Automatic Updater
 =====================
 
-To ensure you're always using the latest version of ownCloud Client, an
-auto-update mechanism has been added in Version 1.5.1. It will ensure
-that will automatically profit from the latest features and bugfixes.
+To ensure that you are always using the latest version of the ownCloud client,
+an auto-update mechanism has been added in Version 1.5.1. The Automatic Updater
+ensures that you automatically profit from the latest features and bugfixes.
 
-The updater works differently depending on the operating system.
+.. note:: The Automatic Updater functions differently, depending on the operating system.
 
 Basic Workflow
 --------------
 
+The following sections describe how to use the Automatic Updater on different operating systems:
+
 Windows
 ^^^^^^^
 
-ownCloud client will check for updates and download the update if one
-is available. You can view the status under ``Settings -> General -> Updates``.
-If an update is available and has been successfully downloaded, ownCloud
-Client will start a silent update prior to its next launch and then start itself.
-If the silent update fails, the client offers a manual download.
+The ownCloud client checks for updates and downloads them when available. You
+can view the update status under ``Settings -> General -> Updates`` in the
+ownCloud client.
 
-.. note:: The user needs to be able to attain administrative privileges
-          to successfully perform the update.
+If an update is available, and has been successfully downloaded, the ownCloud
+client starts a silent update prior to its next launch and then restarts
+itself. Should the silent update fail, the client offers a manual download.
+
+.. note:: Administrative privileges are required to perform the update.
 
 Mac OS X
 ^^^^^^^^
 
-If a new update is available, ownCloud client will ask the user to update
-to the latest version using a pop-up dialog. This is the default for Mac
-OS X applications which use the Sparkle framework.
+If a new update is available, the ownCloud client initializes a pop-up dialog
+to alert you of the update and requesting that you update to the latest
+version. Due to their use of the Sparkle frameworks, this is the default
+process for Mac OS X applications.
 
 Linux
 ^^^^^
 
-Since distributions provide their own update tool, ownCloud Client on Linux
-will not perform any updates on its own. It will, however, check for the
-latest version and passively notify the user (``Settings -> General -> Updates``)
-if an update is available.
+Linux distributions provide their own update tool, so ownCloud clients that use
+the Linux operating system do not perform any updates on their own. Linux
+operating systems do, however, check for the latest version of the ownCloud
+client and passively notify the user (``Settings -> General -> Updates``) when
+an update is available.
 
 
-Preventing Auto Updates
------------------------
+Preventing Automatic Updates
+----------------------------
 
-In controlled environment such as companies or universities, the auto-update
-mechanism might not be desired as it interferes with controlled deployment
-tools and policies. In this case, it is possible to disable the auto-updater
-entirely:
+In controlled environments, such as companies or universities, you might not
+want to enable the auto-update mechanism, as it interferes with controlled
+deployment tools and policies. To address this case, it is possible to disable
+the auto-updater entirely.  The following sections describe how to disable the
+auto-update mechanism for different operating systems.
 
-Windows
-^^^^^^^
+Preventing Automatic Updates in Windows Environents
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-There are two alternative approaches:
+You can prevent automatic updates from occuring in Windows environments using
+one of two methods.  The first method allows users to override the automatic
+update check mechanism whereas the second method prevents any manual overrides.
 
-1. In ``HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud``, add a key ``skipUpdateCheck`` (of type DWORD) with the value 1 to the machine. This key
-   can be manually overrideen by the same value in ``HKEY_CURRENT_USER``.
+To prevent automatic updates, but allow manual overrides:
 
-2. In ``HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud``, add a key
-   ``skipUpdateCheck`` (of type DWORD) with the value 1 to the machine.
-   Setting the value here cannot be overridden by the user and is the preferred
-   way to control the updater behavior via Group Policies.
+1. Migrate to the following directory::
 
-Mac OS X
-^^^^^^^^
+	HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud
 
-You can disable the update check via a system-wide ``.plist`` file located
-at ``/Library/Preferences/com.owncloud.desktopclient.plist``. Add a new root
-level item of type bool and the name ``skipUpdateCheck`` and set it to ``true``.
-You can also just copy the file
-``owncloud.app/Contents/Resources/deny_autoupdate_com.owncloud.desktopclient.plist```
+2. Add the key ``skipUpdateCheck`` (of type DWORD).
+
+3. Specify a value of ``1`` to the machine.
+
+To manually override this key, use the same value in ``HKEY_CURRENT_USER``.
+
+To prevent automatic updates and disallow manual overrides:
+
+.. note::This is the preferred method of controlling the updater behavior using Group Policies.
+
+1. Migrate to the following directory::
+
+	HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud
+
+2. Add the key ``skipUpdateCheck`` (of type DWORD).
+
+3. Specify a value of ``1`` to the machine.
+
+
+Preventing Automatic Updates in Mac OS X Environments
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can disable the automatic update mechanism in MAC OS X operating systems
+using the system-wide ``.plist`` file.  To access this file:
+
+1. Using the Windows explorer, migrate to the following location::
+
+ 	/Library/Preferences/
+
+ 2. Locate and open the following file::
+
+ 	com.owncloud.desktopclient.plist
+
+3. Add a new root level item of type ``bool``.
+
+4. Name the item ``skipUpdateCheck``.
+
+5. Set the item to ``true``.
+
+Alternatively, you can copy the file
+``owncloud.app/Contents/Resources/deny_autoupdate_com.owncloud.desktopclient.plist``
 to ``/Library/Preferences/com.owncloud.desktopclient.plist``.
 
-Linux
-^^^^^
+Preventing Automatic Updates in Linux Environments
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Since there is no updating functionality, there is no need to remove the check.
-If you want to disable the check nontheless, open a file called
-``/etc/ownCloud/ownCloud.conf`` and add the following content::
+Because Linux does not provide automatic updating functionality, there is no
+need to remove the automatic-update check.  However, if you want to disable
+this check:
 
- [General]
- skipUpdateCheck=true
+1. Locate and open the following file::
+
+	/etc/ownCloud/ownCloud.conf
+
+2. Add the following content to the file::
+
+ 	[General]
+	skipUpdateCheck=true
 

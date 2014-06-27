@@ -1,26 +1,24 @@
-ownCloud Client reads a configuration file.
+The ownCloud Client reads a configuration file.  You can locate this configuration files as follows:
 
-On Linux it can be found in:
+- On Linux distributions:
         ``$HOME/.local/share/data/ownCloud/owncloud.cfg``
 
-On Windows it can be found in:
+- In Microsoft Windows systems:
         ``%LOCALAPPDATA%\ownCloud\owncloud.cfg``
 
-On Mac it can be found in:
+- In MAC OS X systems:
         ``$HOME/Library/Application Support/ownCloud``
 
 
-It contains settings in the ini file format known from Windows. 
+The configuration file contains settings using the Microsoft Windows .ini file
+format. You can overwrite changes using the ownCloud configuration dialog.
 
-.. note:: Changes here should be done carefully as wrong settings can cause disfunctionality.
+.. note:: Use caution when making changes to the ownCloud Client configuration
+   file.  Incorrect settings can produce unintended results.
 
-.. note:: Changes may be overwritten by using ownCloud's configuration dialog.
+You can change the following configuration settings:
 
-These are config settings that may be changed:
+- ``remotePollInterval`` (default: ``30000``) -- Specifies the poll time for the remote repository in milliseconds.
 
-``remotePollInterval`` (default: ``30000``)
-        Poll time for the remote repository in milliseconds
-
-``maxLogLines`` (default:  ``20000``)
-        Maximum count of log lines shown in the log window
+- ``maxLogLines`` (default:  ``20000``) -- Specifies the maximum number of log lines displayed in the log window.
 

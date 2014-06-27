@@ -4,11 +4,12 @@ Contents
 ========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    introduction
+   installing
    accountsetup
-   visualtour
+   navigating
    advancedusage
    autoupdate
 

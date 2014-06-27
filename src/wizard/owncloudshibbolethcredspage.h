@@ -46,7 +46,7 @@ public Q_SLOTS:
   void setVisible(bool visible);
 
 private Q_SLOTS:
-  void slotShibbolethCookieReceived();
+  void slotShibbolethCookieReceived(const QNetworkCookie&, Account*);
   void slotBrowserRejected();
 
 private:
@@ -54,6 +54,7 @@ private:
 
   QPointer<ShibbolethWebView> _browser;
   bool _afterInitialSetup;
+  QNetworkCookie _cookie;
 };
 
 } // ns Mirall
