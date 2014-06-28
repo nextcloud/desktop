@@ -1550,12 +1550,12 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
 <context>
     <name>Mirall::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="271"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="288"/>
         <source>Login Error</source>
         <translation>Log-In Fehler</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="271"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="288"/>
         <source>You must sign in as user %1</source>
         <translation>Sie müssen sich als %1 einloggen</translation>
     </message>
