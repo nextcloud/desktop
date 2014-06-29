@@ -152,7 +152,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="707"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation>Χρησιμοποιούμενος χώρος στον διακομιστή: %1 (%3%) από %2</translation>
+        <translation>%1 (%3%) από %2 αποθηκευτικός χώρος διακομιστή σε χρήση.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="746"/>
@@ -183,7 +183,7 @@
         <location filename="../src/mirall/accountsettings.cpp" line="602"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation>%1 %2 (%3 από %4) %5 απομένουν με ταχύτητα %6/s</translation>
+        <translation>%1 %2 (%3 από %4) %5 απομένουν με ταχύτητα %6/δευτ</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="617"/>
@@ -214,22 +214,22 @@ Total time left %5</source>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation>Απαιτείται πιστοποίηση</translation>
+        <translation>Απαιτείται Πιστοποίηση</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation>Εισάγετε όνομα χρήστη και συνθηματικό για τον &apos;%1&apos; στο %2.</translation>
+        <translation>Εισάγετε όνομα χρήστη και κωδικό πρόσβασης για το &apos;%1&apos; στο %2.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation>@Χρήστης:</translation>
+        <translation>&amp;Χρήστης:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Συνθηματικό:</translation>
+        <translation>&amp;Κωδικός Πρόσβασης:</translation>
     </message>
 </context>
 <context>
@@ -291,25 +291,25 @@ Total time left %5</source>
         <location filename="../src/mirall/folder.cpp" line="403"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation>Το %1 και άλλα %2 αρχεία διαγράφηκαν.</translation>
+        <translation>Το %1 και άλλα %2 αρχεία αφαιρέθηκαν.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="405"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation>Το %1 έχει διαγραφεί.</translation>
+        <translation>Το %1 αφαιρέθηκε.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="410"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation>Το αρχείο %1 και άλλα %2 αρχεία έχουν μεταφορτωθεί.</translation>
+        <translation>Το αρχείο %1 και άλλα %2 αρχεία έχουν ληφθεί.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="412"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation>Το αρχείο %1 έχει μεταφορτωθεί.</translation>
+        <translation>Το %1 έχει ληφθεί.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="417"/>
@@ -320,7 +320,7 @@ Total time left %5</source>
         <location filename="../src/mirall/folder.cpp" line="419"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation>Το αρχείο %1 έχει ενημερωθεί.</translation>
+        <translation>Το %1 έχει ενημερωθεί.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="424"/>
@@ -331,7 +331,7 @@ Total time left %5</source>
         <location filename="../src/mirall/folder.cpp" line="426"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation>Το αρχείο %1 έχει μετονομαστεί σε %2</translation>
+        <translation>Το %1 έχει μετονομαστεί σε %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="431"/>
@@ -341,7 +341,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="433"/>
         <source>%1 has been moved to %2.</source>
-        <translation>Το αρχείο %1 έχει μετακινηθεί στο %2.</translation>
+        <translation>Το %1 έχει μετακινηθεί στο %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="441"/>
@@ -440,7 +440,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="782"/>
         <source>Sync is paused.</source>
-        <translation>Ο Συγχρονισμός Παύθηκε</translation>
+        <translation>Παύση συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="788"/>
@@ -506,7 +506,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation>Το τοπικό μονοπάτι %1 είναι ήδη φάκελος φόρτωσης. Παρακαλώ επιλέξτε κάποιον άλλο!</translation>
+        <translation>Η τοπική διαδρομή %1 είναι ήδη ένας φάκελος μεταφόρτωσης. Παρακαλώ επιλέξτε κάποιον άλλο!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
@@ -516,7 +516,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation>Ο επιλεγμένος φάκελος είναι ένας συμβολικός σύνδεσμος. Ένας ήδη ρυθμισμένος φάκελος περιέχεται στον φάκελο στον οποίο καταλήγει αυτός ο σύνδεσμος.</translation>
+        <translation>Ο επιλεγμένος φάκελος είναι ένας συμβολικός σύνδεσμος. Ένας ήδη ρυθμισμένος φάκελος περιέχεται στο φάκελο στον οποίο καταλήγει αυτός ο σύνδεσμος.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -541,7 +541,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
         <source>Select the source folder</source>
-        <translation>Επέλεξε το φάκελο πηγής</translation>
+        <translation>Επιλογή του φακέλου προέλευσης</translation>
     </message>
 </context>
 <context>
@@ -559,7 +559,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="275"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Επιτυχής δημιουργία καταλόγου στο %1.</translation>
+        <translation>Επιτυχής δημιουργία φακέλου στο %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="283"/>
@@ -579,12 +579,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="389"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Ο φάκελος &lt;i&gt;%1&lt;/i&gt; συγχρονίζεται ήδη, ο οποίος είναι γονικός φάκελος του &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Ο φάκελος &lt;i&gt;%1&lt;/i&gt;, ο οποίος είναι γονεϊκός φάκελος του &lt;i&gt;%2&lt;/i&gt;, συγχρονίζεται ήδη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="393"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation>Συγχρονίζετε ήδη όλα σας τα αρχεία. Ο συγχρονισμός ενός ακόμα φακέλου &lt;b&gt;δεν&lt;/b&gt; υποστηρίζεται. Εάν θέλετε να συγχρονίσετε πολλαπλούς φακέλους, παρακαλώ αφαιρέστε την τρέχουσα ρύθμιση συχρονισμού του φακέλου ρίζας.</translation>
+        <translation>Συγχρονίζετε ήδη όλα σας τα αρχεία. Ο συγχρονισμός ενός ακόμα φακέλου &lt;b&gt;δεν&lt;/b&gt; υποστηρίζεται. Εάν θέλετε να συγχρονίσετε πολλαπλούς φακέλους, παρακαλώ αφαιρέστε την τρέχουσα ρύθμιση συχρονισμού του βασικού φακέλου.</translation>
     </message>
 </context>
 <context>
@@ -601,7 +601,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="443"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Δεν ελήφθη E-Tag από τον διακομιστή, ελέγξτε τον διακομιστή μεσολάβησης/πύλη</translation>
+        <translation>Δεν ελήφθη E-Tag από το διακομιστή, ελέγξτε το διακομιστή μεσολάβησης/πύλη</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="450"/>
@@ -611,7 +611,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="486"/>
         <source>Connection Timeout</source>
-        <translation>Χρονικό όριο σύνδεσης</translation>
+        <translation>Λήξη Χρόνου Αναμονής Σύνδεσης</translation>
     </message>
 </context>
 <context>
@@ -804,12 +804,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="252"/>
         <source>New Version Available</source>
-        <translation>Νέα Εκδοχή Διαθέσιμη </translation>
+        <translation>Νέα Έκδοση Διαθέσιμη </translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="258"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>Μια νέα εκδοχή του Δέκτη %1 είναι διαθέσιμη. &lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;είναι διαθέσιμη για άνοιγμα. Η εγκατεστημένη εκδοχή είναι %3,&lt;p&gt;. </translation>
+        <translation>&lt;p&gt;Μια νέα έκδοση του Δέκτη %1 είναι διαθέσιμη. &lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;είναι διαθέσιμη για άνοιγμα. Η εγκατεστημένη έκδοση είναι %3.&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
@@ -824,7 +824,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="273"/>
         <source>Get update</source>
-        <translation>Λάβετε την ενημέρωση </translation>
+        <translation>Λήψη ενημέρωσης</translation>
     </message>
 </context>
 <context>
@@ -933,7 +933,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
-        <translation>Νέα ενημέρωση διαθέσιμη</translation>
+        <translation>Νέα Ενημέρωση Διαθέσιμη</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="56"/>
@@ -1146,7 +1146,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="267"/>
         <source>No remote folder specified!</source>
-        <translation>Κανένας απομακρυσμένος φάκελος δεν προσδιορίστηκε!</translation>
+        <translation>Δεν προσδιορίστηκε κανένας απομακρυσμένος φάκελος!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="273"/>
@@ -1208,7 +1208,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="361"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Αδυναμία αφαίρεσης και δημιουργίας αντιγράφου ασφαλείας φακέλου διότι ο φάκελος ή ένα αρχείο του είναι ανοικτό από άλλο πρόγραμμα. Παρακαλώ κλείστε τον φάκελο ή το αρχείο και πατήστε επανάληψη ή ακυρώστε την ρύθμιση.</translation>
+        <translation>Αδυναμία αφαίρεσης και δημιουργίας αντιγράφου ασφαλείας του φακέλου διότι ο φάκελος ή ένα αρχείο του είναι ανοικτό από άλλο πρόγραμμα. Παρακαλώ κλείστε τον φάκελο ή το αρχείο και πατήστε επανάληψη ή ακυρώστε την ρύθμιση.</translation>
     </message>
 </context>
 <context>
@@ -1252,7 +1252,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="82"/>
         <source>Connection Timeout</source>
-        <translation>Χρονικό όριο σύνδεσης</translation>
+        <translation>Λήξη Χρόνου Αναμονής Σύνδεσης</translation>
     </message>
 </context>
 <context>
@@ -1260,7 +1260,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="345"/>
         <source>Sync was aborted by user.</source>
-        <translation>Ο συγχρονισμός ματαιώθηκε από το χρήστη.</translation>
+        <translation>Ο συγχρονισμός ματαιώθηκε από τον χρήστη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="400"/>
@@ -1275,7 +1275,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="454"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Το αρχείο %1 δεν είναι δυνατό να μεταφορτωθεί λόγω διένεξης με το όνομα ενός τοπικού ονόματος αρχείου!</translation>
+        <translation>Το αρχείο %1 δεν είναι δυνατό να ληφθεί λόγω διένεξης με το όνομα ενός τοπικού αρχείου!</translation>
     </message>
 </context>
 <context>
@@ -1283,7 +1283,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="500"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Το αρχείο %1 δεν είναι δυνατό να μεταφορτωθεί λόγω διένεξης με το όνομα ενός τοπικού ονόματος αρχείου!</translation>
+        <translation>Το αρχείο %1 δεν είναι δυνατό να ληφθεί λόγω διένεξης με το όνομα ενός τοπικού αρχείου!</translation>
     </message>
 </context>
 <context>
@@ -1291,7 +1291,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="50"/>
         <source>; Restoration Failed: </source>
-        <translation type="unfinished"/>
+        <translation> - Η αποκατάσταση Απέτυχε:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="169"/>
@@ -1317,7 +1317,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Δεν ήταν δυνατή η διαγραφή του %1 λόγω διένεξης με ένα τοπικό όνομα αρχείου</translation>
+        <translation>Δεν ήταν δυνατή η αφαίρεση του %1 λόγω διένεξης με το όνομα ενός τοπικού αρχείου</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
@@ -1330,7 +1330,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="196"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation>Το αρχείο %1 δεν είναι δυνατό να μετονομαστεί σε %2 λόγω μιας διένεξης με τοπικό όνομα αρχείου</translation>
+        <translation>Το αρχείο %1 δεν είναι δυνατό να μετονομαστεί σε %2 λόγω μιας διένεξης με το όνομα ενός τοπικού αρχείου</translation>
     </message>
 </context>
 <context>
@@ -1338,7 +1338,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="139"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation>Το αρχείο διαγράφηκε από ένα διαμοιρασμένο κατάλογο μόνο για ανάγνωση. Το αρχείο επαναφέρθηκε.</translation>
+        <translation>Το αρχείο αφαιρέθηκε από ένα διαμοιρασμένο κατάλογο μόνο για ανάγνωση. Το αρχείο επαναφέρθηκε.</translation>
     </message>
 </context>
 <context>
@@ -1351,7 +1351,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="235"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation>Αυτός ο φάκελος δεν πρέπει να μετονομαστεί. Παρακαλώ ονομάστε το  ξανά Κοινόχρηστος.</translation>
+        <translation>Αυτός ο φάκελος δεν πρέπει να μετονομαστεί. Παρακαλώ ονομάστε τον  ξανά Κοινόχρηστος.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="250"/>
@@ -1370,12 +1370,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="156"/>
         <source>Sync was aborted by user.</source>
-        <translation>Ο συγχρονισμός ματαιώθηκε από το χρήστη.</translation>
+        <translation>Ο συγχρονισμός ματαιώθηκε από τον χρήστη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="162"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>Το αρχείο υπέστη επεξεργασία τοπικά αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Επαναφέρθηκε και η επεξεργασία σας βρίσκεται στο αρχείο συγκρούσεων.</translation>
+        <translation>Το αρχείο υπέστη επεξεργασία τοπικά αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Επαναφέρθηκε και το επεξεργασμένο βρίσκεται στο αρχείο συγκρούσεων.</translation>
     </message>
 </context>
 <context>
@@ -1383,12 +1383,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="257"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>Το αρχείο υπέστη επεξεργασία τοπικά αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Επαναφέρθηκε και η επεξεργασία σας βρίσκεται στο αρχείο συγκρούσεων.</translation>
+        <translation>Το αρχείο υπέστη επεξεργασία τοπικά αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Επαναφέρθηκε και το επεξεργασμένο βρίσκεται στο αρχείο συγκρούσεων.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="286"/>
         <source>The local file was removed during sync.</source>
-        <translation>Το τοπικό αρχείο διαγράφηκε κατά τον συγχρονισμό.</translation>
+        <translation>Το τοπικό αρχείο αφαιρέθηκε κατά το συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="293"/>
@@ -1398,7 +1398,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="303"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation>Ο διακομιστής δεν επιβεβαίωσε το τελευταίο τμήμα. (Δεν υπήρχε E-Tag)</translation>
+        <translation>Ο διακομιστής δεν αναγνώρισε το τελευταίο τμήμα. (Δεν υπήρχε e-tag)</translation>
     </message>
 </context>
 <context>
@@ -1552,7 +1552,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="288"/>
         <source>Login Error</source>
-        <translation>Σφάλμα σύνδεσης</translation>
+        <translation>Σφάλμα Σύνδεσης</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="288"/>
@@ -1593,7 +1593,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="99"/>
         <source>Common Name (CN):</source>
-        <translation>Κοινό Όνομα (ΚΝ):</translation>
+        <translation>Κοινό Όνομα (ΚΟ):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
@@ -1613,7 +1613,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>State/Province:</source>
-        <translation>Νομός ή περιφέρεια:</translation>
+        <translation>Νομός/Περιφέρεια:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="105"/>
@@ -1684,7 +1684,7 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/sslbutton.cpp" line="182"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation>Η σύνδεση είναι κρυπτογραφημένη με χρήση %1 bit %2
+        <translation>Η σύνδεση είναι κρυπτογραφημένη με %1 bit %2
 </translation>
     </message>
     <message>
@@ -1804,17 +1804,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="102"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>Το πρόσθετο του %1 για το csync δεν μπόρεσε να φορτωθεί.&lt;br/&gt;Παρακαλούμε επαληθεύσετε την εγκατάσταση!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Το πρόσθετο του %1 για το csync δεν μπόρεσε να φορτωθεί.&lt;br/&gt;Παρακαλούμε επαληθεύσετε την εγκατάσταση!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="105"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>Η ώρα του συστήματος μεταξύ του τοπικού υπολογιστή και του διακομιστή διαφέρει πάρα πολύ. Παρακαλούμε χρησιμοποιήστε μια υπηρεσία συγχρονισμός του χρόνου (NTP) και στους δύο υπολογιστές.</translation>
+        <translation>Η ώρα του συστήματος στον τοπικό υπολογιστή διαφέρει από την ώρα του συστήματος στο διακομιστή. Παρακαλούμε χρησιμοποιήστε μια υπηρεσία χρονικού συγχρονισμού (NTP) στο διακομιστή και στον τοπικό υπολογιστή ώστε η ώρα να παραμένει η ίδια.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="110"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation>To CSync δεν μπορούσε να ανιχνεύσει τον τύπο του αρχείου συστήματος.</translation>
+        <translation>To CSync δεν μπορούσε να ανιχνεύσει τον τύπο του συστήματος αρχείων.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="113"/>
@@ -1824,17 +1824,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="116"/>
         <source>CSync failed to reserve memory.</source>
-        <translation>Το CSync απέτυχε να διατηρήσει τη μνήμη.</translation>
+        <translation>Το CSync απέτυχε να δεσμεύσει μνήμη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="119"/>
         <source>CSync fatal parameter error.</source>
-        <translation>CSync μοιραίο σφαλμα παράμετρου.</translation>
+        <translation>Μοιραίο σφάλμα παράμετρου CSync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="122"/>
         <source>CSync processing step update failed.</source>
-        <translation>CSync ενημέρωση στάδιο επεξεργασίας απέτυχε. </translation>
+        <translation>Η ενημέρωση του βήματος επεξεργασίας του CSync απέτυχε.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="125"/>
@@ -1844,42 +1844,42 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="128"/>
         <source>CSync processing step propagate failed.</source>
-        <translation>Η προώθηση του CSync απέτυχε.</translation>
+        <translation>Η μετάδοση του βήματος επεξεργασίας του CSync απέτυχε.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="131"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ο στοχευμένος κατάλογος δεν υπάρχει.&lt;/p&gt;&lt;p&gt;Παρακαλώ ελέγξτε τις ρυθμίσεις συγχρονισμού.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Ο κατάλογος προορισμού δεν υπάρχει.&lt;/p&gt;&lt;p&gt;Παρακαλώ ελέγξτε τις ρυθμίσεις συγχρονισμού.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="135"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Ένα απομακρυσμένο αρχείο δεν μπόρεσε να επεξεργαστεί. Παρακαλούμε ελέγξτε την απομακρυσμένη πρόσβαση.</translation>
+        <translation>Ένα απομακρυσμένο αρχείο δεν μπορεί να εγγραφεί. Παρακαλούμε ελέγξτε την απομακρυσμένη πρόσβαση.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="139"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
-        <translation>Το τοπικό σύστημα αρχείων δεν μπορεί να εγγράψει. Παρακαλούμε ελέγξτε τα δικαιώματα.</translation>
+        <translation>Το τοπικό σύστημα αρχείων δεν είναι εγγράψιμο. Παρακαλούμε ελέγξτε τα δικαιώματα.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="142"/>
         <source>CSync failed to connect through a proxy.</source>
-        <translation>Το CSync απέτυχε να συνδεθεί μέσω ενός proxy. </translation>
+        <translation>Το CSync απέτυχε να συνδεθεί μέσω ενός διαμεσολαβητή. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="145"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation>CSync αδυναμία ελέγχου ταυτότητας στο διακομιστή μεσολάβησης.</translation>
+        <translation>Το CSync δεν μπόρεσε να πιστοποιηθεί στο διακομιστή μεσολάβησης.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="148"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation>CSync απέτυχε να lookup μεσολάβησης ή διακομιστή. </translation>
+        <translation>Το CSync απέτυχε να διερευνήσει το διαμεσολαβητή ή το διακομιστή.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="151"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation>CSync απέτυχε τον έλεγχο ταυτότητας στο 1% διακομιστή. </translation>
+        <translation>Το CSync απέτυχε να πιστοποιηθεί στο διακομιστή 1%. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="154"/>
@@ -1889,7 +1889,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="157"/>
         <source>A network connection timeout happend.</source>
-        <translation>Συνέβη ένα χρονικό όριο σύνδεσης δικτύου. </translation>
+        <translation>Λήξη χρόνου αναμονής προέκυψε για μια σύνδεση δικτύου. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="160"/>
@@ -1899,7 +1899,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="163"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation>CSync απέτυχε λόγω μη γίνεται deniend άδεια. </translation>
+        <translation>Το CSync απέτυχε λόγω απόρριψης μη-διαχειρίσιμων δικαιωμάτων.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="166"/>
@@ -1909,18 +1909,18 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="169"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation>Το CSync προσπαθησε να δημιουργησει εναν χωρο αποθηκευσης που υπηρχε ηδη.</translation>
+        <translation>Το CSync προσπάθησε να δημιουργήσει ένα κατάλογο που υπάρχει ήδη.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="172"/>
         <location filename="../src/mirall/syncengine.cpp" line="175"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation>CSync: Δεν υπαρχει διαθεσιμος χωρος στον %1 διακομιστη.</translation>
+        <translation>CSync: Δεν υπάρχει διαθέσιμος χώρος στο διακομιστή 1%.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="178"/>
         <source>CSync unspecified error.</source>
-        <translation>CSync αγνωστο σφαλμα.</translation>
+        <translation>Άγνωστο σφάλμα CSync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="181"/>
@@ -1960,53 +1960,53 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="564"/>
         <source>Cannot open the sync journal</source>
-        <translation>Αποτυχία ανοίγματος του ημερολογίου συγχρονισμού.</translation>
+        <translation>Αδυναμία ανοίγματος του αρχείου συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="733"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε υπο-καταλόγους σε αυτό τον κατάλογο</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="740"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
-        <translation type="unfinished"/>
+        <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε στο γονεϊκό κατάλογο</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="747"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Δεν επιτρέπεται επειδή δεν έχεται δικαιώματα να προσθέσετε αρχεία σε αυτόν τον κατάλογο</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="765"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Δεν επιτρέπεται να μεταφορτώσετε αυτό το αρχείο επειδή είναι μόνο για ανάγνωση στο διακομιστή, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="780"/>
         <location filename="../src/mirall/syncengine.cpp" line="800"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Δεν επιτρέπεται η αφαίρεση, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="848"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Η μετακίνηση δεν επιτρέπεται, το αντικείμενο αποκαταστάθηκε</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="855"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>Η μετακίνηση δεν επιτρέπεται επειδή το %1 είναι μόνο για ανάγνωση</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="856"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>ο προορισμός</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="856"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>η προέλευση</translation>
     </message>
 </context>
 <context>
@@ -2022,7 +2022,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="218"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Έκδοση %1 Για περισσότερες πληροφορίες, παρακαλώ επισκεφθείτε την ιστοσελίδα &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Πνευματική ιδιοκτησία ownCloud, Inc.&lt;p&gt;&lt;p&gt;Διανέμεται από %4 και αδειοδοτείται με την GNU General Public License (GPL) Έκδοση 2.0.&lt;br&gt;Το %5 και το λογότυπο %5 είναι σήμα κατατεθέν του %4 στις&lt;br&gt;Ηνωμένες Πολιτείες, άλλες χώρες ή όλες.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Έκδοση %1 Για περισσότερες πληροφορίες, παρακαλώ επισκεφθείτε την ιστοσελίδα &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Πνευματική ιδιοκτησία ownCloud, Inc.&lt;p&gt;&lt;p&gt;Διανέμεται από %4 και αδειοδοτείται με την GNU General Public License (GPL) Έκδοση 2.0.&lt;br&gt;Το %5 και το λογότυπο %5 είναι σήμα κατατεθέν του %4 στις&lt;br&gt;Ηνωμένες Πολιτείες, άλλες χώρες ή και τα δυο.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2035,7 +2035,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="179"/>
         <source>Disconnected from server</source>
-        <translation>Αποσύνδεση από τον διακομιστή</translation>
+        <translation>Αποσύνδεση από το διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="211"/>
@@ -2418,17 +2418,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation>Λυφθηκε</translation>
+        <translation>Ελήφθη</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation>Καταχωρήθηκε </translation>
+        <translation>Μεταφορτώθηκε</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
         <source>Deleted</source>
-        <translation>Διαγραμμένα</translation>
+        <translation>Διεγράφη</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
