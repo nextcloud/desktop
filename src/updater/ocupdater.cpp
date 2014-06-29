@@ -256,7 +256,7 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
     ico->setPixmap(infoIcon.pixmap(iconSize));
     QLabel *lbl = new QLabel;
     QString txt = tr("<p>A new version of the %1 Client is available.</p>"
-                     "<p><b>%2</b> is available for download. The installed version is %3.<p>")
+                     "<p><b>%2</b> is available for download. The installed version is %3.</p>")
             .arg(Theme::instance()->appNameGUI()).arg(info.versionString()).arg(clientVersion());
 
     lbl->setText(txt);
