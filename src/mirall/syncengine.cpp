@@ -154,7 +154,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("CSync failed to connect to the network.");
         break;
     case CSYNC_STATUS_TIMEOUT:
-        errStr = tr("A network connection timeout happend.");
+        errStr = tr("A network connection timeout happened.");
         break;
     case CSYNC_STATUS_HTTP_ERROR:
         errStr = tr("A HTTP transmission error happened.");
