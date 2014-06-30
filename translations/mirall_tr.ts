@@ -964,7 +964,7 @@ bu süreç sırasında ek yetki talebinde bulunabilir.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation>Yeni %1 sürüm mevcut. Lütfen kurulum için sistem güncelleştirme aracını kullanın.</translation>
+        <translation>Yeni sürüm %1 mevcut. Lütfen kurulum için sistem güncelleştirme aracını kullanın.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
