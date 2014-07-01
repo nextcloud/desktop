@@ -254,32 +254,21 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
+        bool metadata_differ = (ctx->current == REMOTE_REPLICA && (!c_streq(fs->file_id, tmp->file_id)
+                                                            || !c_streq(fs->remotePerm, tmp->remotePerm)))
+                             || (ctx->current == LOCAL_REPLICA && fs->inode != tmp->inode);
         if (type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
-                && c_streq(fs->file_id, tmp->file_id) && !ctx->read_from_db_disabled) {
+                && !metadata_differ && !ctx->read_from_db_disabled) {
             /* If both etag and file id are equal for a directory, read all contents from
              * the database.
-             * The comparison of file id ensure that we fetch all the file id when upgrading from
-             * owncloud 5 to owncloud 6.
+             * The metadata comparison ensure that we fetch all the file id or permission when
+             * upgrading owncloud
              */
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", path);
             ctx->remote.read_from_db = true;
         }
-        if (ctx->current == REMOTE_REPLICA
-                // DB perm; true for NULL or empty (on update)
-                && strlen(tmp->remotePerm) == 0
-                // remote perm (even if remote perm empty it will be ' ' see fill_webdav_properties_into_resource
-                && strlen(fs->remotePerm) > 0)
-        {
-            /* remotePerm received from server but none in DB.
-             * Which means we need to update the DB.
-             * (upgrade from owncloud x to owncloud 7 for instence) */
-            st->should_update_etag = true; // write to DB after PROPFIND
-            ctx->remote.read_from_db = false; // get dirs via PROPFIND
-
-        }
-        if (!c_streq(fs->file_id, tmp->file_id) && ctx->current == REMOTE_REPLICA) {
-            /* file id has changed. Which means we need to update the DB.
-             * (upgrade from owncloud 5 to owncloud 6 for instence) */
+        if (metadata_differ) {
+            /* file id or permissions has changed. Which means we need to update them in the DB. */
             st->should_update_etag = true;
         }
         st->instruction = CSYNC_INSTRUCTION_NONE;
@@ -703,8 +692,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     if (flag == CSYNC_FTW_FLAG_DIR && ctx->current_fs
         && (ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL ||
-            ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW ||
-            ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL_RENAME)) {
+            ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW)) {
         ctx->current_fs->should_update_etag = true;
     }
 

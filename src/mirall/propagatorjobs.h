@@ -94,6 +94,9 @@ class PropagateRemoteMkdir : public PropagateNeonJob {
 public:
     PropagateRemoteMkdir (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
     void start();
+private:
+    static void propfind_results(void *userdata, const ne_uri *uri, const ne_prop_result_set *set);
+    friend class PropagateDirectory; // So it can access the _item;
 };
 class PropagateLocalRename : public PropagateItemJob {
     Q_OBJECT

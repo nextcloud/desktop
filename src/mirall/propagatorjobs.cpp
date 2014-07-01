@@ -154,6 +154,35 @@ void PropagateRemoteRemove::start()
     done(SyncFileItem::Success);
 }
 
+/* The list of properties that is fetched in PropFind after a MKCOL */
+static const ne_propname ls_props[] = {
+    { "DAV:", "getetag"},
+    { "http://owncloud.org/ns", "id"},
+    { NULL, NULL }
+};
+
+/*
+ * Parse the PROPFIND result after a MKCOL
+ */
+void PropagateRemoteMkdir::propfind_results(void *userdata,
+                    const ne_uri *uri,
+                    const ne_prop_result_set *set)
+{
+    PropagateRemoteMkdir *job = static_cast<PropagateRemoteMkdir *>(userdata);
+
+    job->_item._etag = parseEtag(ne_propset_value( set, &ls_props[0] ));
+
+    const char* fileId = ne_propset_value( set, &ls_props[1] );
+    if (fileId) {
+        job->_item._fileId = fileId;
+        qDebug() << "MKCOL: " << uri << " FileID set it to " << fileId;
+
+        // save the file id already so we can detect rename
+        SyncJournalFileRecord record(job->_item, job->_propagator->_localDir + job->_item._renameTarget);
+        job->_propagator->_journal->setFileRecord(record);
+    }
+}
+
 void PropagateRemoteMkdir::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
@@ -173,6 +202,16 @@ void PropagateRemoteMkdir::start()
     if( updateErrorFromSession( rc , 0, 405 ) ) {
         return;
     }
+
+    // Get the fileid
+    // This is required so that wa can detect moves even if the folder is renamed on the server
+    // while files are still uploading
+    // TODO: Now we have to do a propfind because the server does not give the file id in the request
+    // https://github.com/owncloud/core/issues/9000
+
+    ne_propfind_handler *hdl = ne_propfind_create(_propagator->_session, uri.data(), 0);
+    ne_propfind_named(hdl, ls_props, propfind_results, this);
+    ne_propfind_destroy(hdl);
 
     done(SyncFileItem::Success);
 }

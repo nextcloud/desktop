@@ -216,14 +216,13 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
     return 0;
 }
 
-void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
+void OwncloudPropagator::start(const SyncFileItemVector& items)
 {
     /* This builds all the job needed for the propagation.
      * Each directories is a PropagateDirectory job, which contains the files in it.
-     * In order to do that we sort the items by destination. and loop over it. When we enter a
-     * directory, we can create the directory job and push it on the stack. */
-    SyncFileItemVector items = _syncedItems;
-    std::sort(items.begin(), items.end());
+     * In order to do that we loop over the items. (which are sorted by destination)
+     * When we enter adirectory, we can create the directory job and push it on the stack. */
+
     _rootJob.reset(new PropagateDirectory(this));
     QStack<QPair<QString /* directory name */, PropagateDirectory* /* job */> > directories;
     directories.push(qMakePair(QString(), _rootJob.data()));
@@ -427,6 +426,12 @@ void PropagateDirectory::slotSubJobReady()
             }
 
             if (_item._should_update_etag && _item._instruction != CSYNC_INSTRUCTION_REMOVE) {
+                if (PropagateRemoteMkdir* mkdir = qobject_cast<PropagateRemoteMkdir*>(_firstJob.data())) {
+                    // special case from MKDIR, get the fileId from the job there
+                    if (_item._fileId.isEmpty() && !mkdir->_item._fileId.isEmpty()) {
+                        _item._fileId = mkdir->_item._fileId;
+                    }
+                }
                 SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
                 _propagator->_journal->setFileRecord(record);
             }
