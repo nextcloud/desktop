@@ -294,7 +294,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSock
 
     QString statusString;
 
-    Folder* folder = FolderMan::instance()->folderForPath( QUrl::fromLocalFile(argument) );
+    Folder* folder = FolderMan::instance()->folderForPath( argument );
     // this can happen in offline mode e.g.: nothing to worry about
     if (!folder) {
         DEBUG << "folder offline or not watched:" << argument;

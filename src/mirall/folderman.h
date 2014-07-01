@@ -52,7 +52,7 @@ public:
     void addFolderDefinition(const QString&, const QString&, const QString& );
 
     /** Returns the folder which the file or directory stored in path is in */
-    Folder* folderForPath(const QUrl& path);
+    Folder* folderForPath(const QString& path);
 
     /** Returns the folder by alias or NULL if no folder with the alias exists. */
     Folder *folder( const QString& );
