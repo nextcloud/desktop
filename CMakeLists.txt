@@ -140,6 +140,7 @@ set(TRANSLATIONS ${TRANS_FILES})
 
 add_subdirectory(csync)
 add_subdirectory(src)
+add_subdirectory(shell_integration)
 add_subdirectory(doc)
 
 if(UNIT_TESTING)
