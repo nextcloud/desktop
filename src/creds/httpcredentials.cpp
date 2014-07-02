@@ -101,7 +101,8 @@ HttpCredentials::HttpCredentials()
     : _user(),
       _password(),
       _ready(false),
-      _fetchJobInProgress(false)
+      _fetchJobInProgress(false),
+      _readPwdFromDeprecatedPlace(false)
 {
 }
 
@@ -230,6 +231,7 @@ void HttpCredentials::fetch(Account *account)
         job->setProperty("account", QVariant::fromValue(account));
         job->start();
         _fetchJobInProgress = true;
+        _readPwdFromDeprecatedPlace = true;
     }
 }
 bool HttpCredentials::stillValid(QNetworkReply *reply)
@@ -261,18 +263,38 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
         _ready = true;
         emit fetched();
     } else {
-        if( error != NoError ) {
+
+        if( _password.isEmpty() || error == EntryNotFound ) {
+            if( _readPwdFromDeprecatedPlace ) {
+                // there simply was not a password. Lets restart a read job without
+                // a settings object as we did it in older client releases.
+                ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+
+                const QString kck = keychainKey(account->url().toString(), _user);
+                job->setKey(kck);
+
+                connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
+                job->setProperty("account", QVariant::fromValue(account));
+                job->start();
+                _readPwdFromDeprecatedPlace = false; // do  try that only once.
+                _fetchJobInProgress = true;
+                // Note: if this read job succeeds, the value from the old place is still
+                // NOT persisted into the new account.
+            } else {
+
+                bool ok;
+                QString pwd = queryPassword(&ok);
+                _fetchJobInProgress = false;
+                if (ok) {
+                    _password = pwd;
+                    _ready = true;
+                    persist(account);
+                }
+                emit fetched();
+            }
+        } else {
             qDebug() << "Error while reading password" << job->errorString();
         }
-        bool ok;
-        QString pwd = queryPassword(&ok);
-        _fetchJobInProgress = false;
-        if (ok) {
-            _password = pwd;
-            _ready = true;
-            persist(account);
-        }
-        emit fetched();
     }
 }
 
