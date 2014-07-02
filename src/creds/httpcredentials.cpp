@@ -263,37 +263,39 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
         _ready = true;
         emit fetched();
     } else {
+        // we come here if the password is empty or any other keychain
+        // error happend.
+        // In all error conditions it should
+        // ask the user for the password interactively now.
+        if( _readPwdFromDeprecatedPlace ) {
+            // there simply was not a password. Lets restart a read job without
+            // a settings object as we did it in older client releases.
+            ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
 
-        if( _password.isEmpty() || error == EntryNotFound ) {
-            if( _readPwdFromDeprecatedPlace ) {
-                // there simply was not a password. Lets restart a read job without
-                // a settings object as we did it in older client releases.
-                ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+            const QString kck = keychainKey(account->url().toString(), _user);
+            job->setKey(kck);
 
-                const QString kck = keychainKey(account->url().toString(), _user);
-                job->setKey(kck);
-
-                connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
-                job->setProperty("account", QVariant::fromValue(account));
-                job->start();
-                _readPwdFromDeprecatedPlace = false; // do  try that only once.
-                _fetchJobInProgress = true;
-                // Note: if this read job succeeds, the value from the old place is still
-                // NOT persisted into the new account.
-            } else {
-
-                bool ok;
-                QString pwd = queryPassword(&ok);
-                _fetchJobInProgress = false;
-                if (ok) {
-                    _password = pwd;
-                    _ready = true;
-                    persist(account);
-                }
-                emit fetched();
-            }
+            connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
+            job->setProperty("account", QVariant::fromValue(account));
+            job->start();
+            _readPwdFromDeprecatedPlace = false; // do  try that only once.
+            _fetchJobInProgress = true;
+            // Note: if this read job succeeds, the value from the old place is still
+            // NOT persisted into the new account.
         } else {
-            qDebug() << "Error while reading password" << job->errorString();
+            // interactive password dialog starts here
+            bool ok;
+            QString pwd = queryPassword(&ok);
+            _fetchJobInProgress = false;
+            if (ok) {
+                _password = pwd;
+                _ready = true;
+                persist(account);
+            } else {
+                _password = QString::null;
+                _ready = false;
+            }
+            emit fetched();
         }
     }
 }
