@@ -391,57 +391,57 @@ Are you sure you want to perform this operation?</source>
         <translation>Найден старый журнал синхронизации &apos;%1&apos;, и он не может быть удалён. Пожалуйста убедитесь что он не открыт в каком-либо приложении.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="753"/>
+        <location filename="../src/mirall/folderman.cpp" line="752"/>
         <source>Undefined State.</source>
         <translation>Неопределенное состояние.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="756"/>
+        <location filename="../src/mirall/folderman.cpp" line="755"/>
         <source>Waits to start syncing.</source>
         <translation>Ожидает, чтобы начать синхронизацию.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="759"/>
+        <location filename="../src/mirall/folderman.cpp" line="758"/>
         <source>Preparing for sync.</source>
         <translation>Подготовка к синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="762"/>
+        <location filename="../src/mirall/folderman.cpp" line="761"/>
         <source>Sync is running.</source>
         <translation>Идет синхронизация.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="765"/>
+        <location filename="../src/mirall/folderman.cpp" line="764"/>
         <source>Server is currently not available.</source>
         <translation>Сервер недоступен.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="768"/>
+        <location filename="../src/mirall/folderman.cpp" line="767"/>
         <source>Last Sync was successful.</source>
         <translation>Последняя синхронизация прошла успешно.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="773"/>
+        <location filename="../src/mirall/folderman.cpp" line="772"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Последняя синхронизация прошла успешно, но были предупреждения о нескольких файлах.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="776"/>
+        <location filename="../src/mirall/folderman.cpp" line="775"/>
         <source>Setup Error.</source>
         <translation>Ошибка установки.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="779"/>
+        <location filename="../src/mirall/folderman.cpp" line="778"/>
         <source>User Abort.</source>
         <translation>Отмена пользователем.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="782"/>
+        <location filename="../src/mirall/folderman.cpp" line="781"/>
         <source>Sync is paused.</source>
         <translation>Синхронизация приостановлена.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="788"/>
+        <location filename="../src/mirall/folderman.cpp" line="787"/>
         <source>%1 (Sync is paused)</source>
         <translation>%! (синхронизация приостановлена)</translation>
     </message>
@@ -621,8 +621,8 @@ Are you sure you want to perform this operation?</source>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
-        <source>General Setttings</source>
-        <translation>Общие настройки</translation>
+        <source>General Settings</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -659,12 +659,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="282"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="281"/>
         <source>Enter Password</source>
         <translation>Введите пароль</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="283"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="282"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Пожалуйста введите пароль от  %1 для пользователя &apos;%2&apos;:</translation>
     </message>
@@ -806,8 +806,8 @@ Checked items will also be deleted if they prevent a directory from being remove
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="258"/>
-        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Новая версия программы-клиента %1 доступна.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; доступна для скачивания. Установленная версия %3.&lt;p&gt;</translation>
+        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
@@ -962,8 +962,8 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
-        <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation>Доступна новая версия %1. Для её установки перейдите в раздел обновления системы.</translation>
+        <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1326,7 +1326,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateLocalRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="196"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="235"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation type="unfinished"/>
     </message>
@@ -1342,17 +1342,17 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="233"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="272"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Эта папка не должна переименовываться. Ей будет присвоено изначальное имя. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="235"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="274"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Эта папка не должна переименовываться. Пожалуйста, верните ей имя Shared</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="250"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="289"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation type="unfinished"/>
     </message>
@@ -1886,8 +1886,8 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="157"/>
-        <source>A network connection timeout happend.</source>
-        <translation>Произошёл таймаут соединения сети.</translation>
+        <source>A network connection timeout happened.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="160"/>
@@ -1956,53 +1956,53 @@ It is not advisable to use it.</source>
         <translation>Не удалось инициализировать журнал синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="564"/>
+        <location filename="../src/mirall/syncengine.cpp" line="567"/>
         <source>Cannot open the sync journal</source>
         <translation>Не удаётся открыть журнал синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="733"/>
+        <location filename="../src/mirall/syncengine.cpp" line="736"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="740"/>
+        <location filename="../src/mirall/syncengine.cpp" line="743"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="747"/>
+        <location filename="../src/mirall/syncengine.cpp" line="750"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="765"/>
+        <location filename="../src/mirall/syncengine.cpp" line="768"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="780"/>
-        <location filename="../src/mirall/syncengine.cpp" line="800"/>
+        <location filename="../src/mirall/syncengine.cpp" line="783"/>
+        <location filename="../src/mirall/syncengine.cpp" line="803"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="848"/>
+        <location filename="../src/mirall/syncengine.cpp" line="853"/>
         <source>Move not allowed, item restored</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="855"/>
+        <location filename="../src/mirall/syncengine.cpp" line="862"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="856"/>
+        <location filename="../src/mirall/syncengine.cpp" line="863"/>
         <source>the destination</source>
         <translation> Назначение</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="856"/>
+        <location filename="../src/mirall/syncengine.cpp" line="863"/>
         <source>the source</source>
         <translation>Источник</translation>
     </message>

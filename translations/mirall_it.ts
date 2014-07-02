@@ -392,57 +392,57 @@ Sei sicuro di voler eseguire questa operazione?</translation>
         <translation>È stato trovato un vecchio registro di sincronizzazione &apos;%1&apos;, ma non può essere rimosso. Assicurati che nessuna applicazione lo stia utilizzando.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="753"/>
+        <location filename="../src/mirall/folderman.cpp" line="752"/>
         <source>Undefined State.</source>
         <translation>Stato non definito.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="756"/>
+        <location filename="../src/mirall/folderman.cpp" line="755"/>
         <source>Waits to start syncing.</source>
         <translation>Attende l&apos;inizio della sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="759"/>
+        <location filename="../src/mirall/folderman.cpp" line="758"/>
         <source>Preparing for sync.</source>
         <translation>Preparazione della sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="762"/>
+        <location filename="../src/mirall/folderman.cpp" line="761"/>
         <source>Sync is running.</source>
         <translation>La sincronizzazione è in corso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="765"/>
+        <location filename="../src/mirall/folderman.cpp" line="764"/>
         <source>Server is currently not available.</source>
         <translation>Il server è attualmente non disponibile.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="768"/>
+        <location filename="../src/mirall/folderman.cpp" line="767"/>
         <source>Last Sync was successful.</source>
         <translation>L&apos;ultima sincronizzazione è stato completata correttamente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="773"/>
+        <location filename="../src/mirall/folderman.cpp" line="772"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Ultima sincronizzazione avvenuta, ma con avvisi relativi a singoli file.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="776"/>
+        <location filename="../src/mirall/folderman.cpp" line="775"/>
         <source>Setup Error.</source>
         <translation>Errore di configurazione.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="779"/>
+        <location filename="../src/mirall/folderman.cpp" line="778"/>
         <source>User Abort.</source>
         <translation>Interrotto dall&apos;utente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="782"/>
+        <location filename="../src/mirall/folderman.cpp" line="781"/>
         <source>Sync is paused.</source>
         <translation>La sincronizzazione è sospesa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="788"/>
+        <location filename="../src/mirall/folderman.cpp" line="787"/>
         <source>%1 (Sync is paused)</source>
         <translation> %1 (La sincronizzazione è sospesa)</translation>
     </message>
@@ -622,8 +622,8 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
-        <source>General Setttings</source>
-        <translation>Impostazioni generali</translation>
+        <source>General Settings</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -660,12 +660,12 @@ Sei sicuro di voler eseguire questa operazione?</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="282"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="281"/>
         <source>Enter Password</source>
         <translation>Digita la password</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="283"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="282"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Digita la password di %1 per l&apos;utente &apos;%2&apos;:</translation>
     </message>
@@ -807,8 +807,8 @@ Gli elementi marcati saranno inoltre eliminati se impediscono la rimozione di un
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="258"/>
-        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Una nuova versione del client %1 è disponibile.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; è disponibile per lo scaricamento. La versione installata è %3.&lt;p&gt;</translation>
+        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
@@ -962,8 +962,8 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
-        <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation>La nuova versione %1 è disponibile. Utilizza lo strumento di aggiornamento di sistema per installarlo.</translation>
+        <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1326,7 +1326,7 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Mirall::PropagateLocalRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="196"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="235"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Il file %1 non può essere rinominato in %2 a causa di un conflitto con il nome di un file locale</translation>
     </message>
@@ -1342,17 +1342,17 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="233"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="272"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Questa cartella non può essere rinominata. Il nome originale è stato ripristinato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="235"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="274"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Questa cartella non può essere rinominata. Ripristina il nome Shared.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="250"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="289"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Il file è stato rinominato, ma è parte di una condivisione in sola lettura. Il file originale è stato ripristinato.</translation>
     </message>
@@ -1886,8 +1886,8 @@ Prova a sincronizzare nuovamente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="157"/>
-        <source>A network connection timeout happend.</source>
-        <translation>Si è verificato un timeout sulla connessione alla rete.</translation>
+        <source>A network connection timeout happened.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="160"/>
@@ -1956,53 +1956,53 @@ Prova a sincronizzare nuovamente.</translation>
         <translation>Impossibile inizializzare il registro di sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="564"/>
+        <location filename="../src/mirall/syncengine.cpp" line="567"/>
         <source>Cannot open the sync journal</source>
         <translation>Impossibile aprire il registro di sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="733"/>
+        <location filename="../src/mirall/syncengine.cpp" line="736"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Non consentito poiché non disponi dei permessi per aggiungere sottocartelle in quella cartella</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="740"/>
+        <location filename="../src/mirall/syncengine.cpp" line="743"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Non consentito poiché non disponi dei permessi per aggiungere la cartella superiore</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="747"/>
+        <location filename="../src/mirall/syncengine.cpp" line="750"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Non consentito poiché non disponi dei permessi per aggiungere file in quella cartella</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="765"/>
+        <location filename="../src/mirall/syncengine.cpp" line="768"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Il caricamento di questo file non è consentito poiché è in sola lettura sul server, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="780"/>
-        <location filename="../src/mirall/syncengine.cpp" line="800"/>
+        <location filename="../src/mirall/syncengine.cpp" line="783"/>
+        <location filename="../src/mirall/syncengine.cpp" line="803"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Rimozione non consentita, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="848"/>
+        <location filename="../src/mirall/syncengine.cpp" line="853"/>
         <source>Move not allowed, item restored</source>
         <translation>Spostamento non consentito, elemento ripristinato</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="855"/>
+        <location filename="../src/mirall/syncengine.cpp" line="862"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Spostamento non consentito poiché %1 è in sola lettura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="856"/>
+        <location filename="../src/mirall/syncengine.cpp" line="863"/>
         <source>the destination</source>
         <translation>la destinazione</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="856"/>
+        <location filename="../src/mirall/syncengine.cpp" line="863"/>
         <source>the source</source>
         <translation>l&apos;origine</translation>
     </message>

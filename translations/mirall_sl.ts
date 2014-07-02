@@ -391,57 +391,57 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
         <translation>Obstaja starejši dnevnik usklajevanja &apos;%1&apos;, vendar ga ni mogoče odstraniti. Preverite, da datoteka ni v uporabi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="753"/>
+        <location filename="../src/mirall/folderman.cpp" line="752"/>
         <source>Undefined State.</source>
         <translation>Nedoločeno stanje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="756"/>
+        <location filename="../src/mirall/folderman.cpp" line="755"/>
         <source>Waits to start syncing.</source>
         <translation>V čakanju na začetek usklajevanja.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="759"/>
+        <location filename="../src/mirall/folderman.cpp" line="758"/>
         <source>Preparing for sync.</source>
         <translation>Poteka priprava za usklajevanje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="762"/>
+        <location filename="../src/mirall/folderman.cpp" line="761"/>
         <source>Sync is running.</source>
         <translation>Usklajevanje je v teku.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="765"/>
+        <location filename="../src/mirall/folderman.cpp" line="764"/>
         <source>Server is currently not available.</source>
         <translation>Strežnik trenutno ni na voljo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="768"/>
+        <location filename="../src/mirall/folderman.cpp" line="767"/>
         <source>Last Sync was successful.</source>
         <translation>Zadnje usklajevanje je bilo uspešno končano.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="773"/>
+        <location filename="../src/mirall/folderman.cpp" line="772"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Zadnje usklajevanje je bilo sicer uspešno, vendar z opozorili za posamezne datoteke.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="776"/>
+        <location filename="../src/mirall/folderman.cpp" line="775"/>
         <source>Setup Error.</source>
         <translation>Napaka nastavitve.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="779"/>
+        <location filename="../src/mirall/folderman.cpp" line="778"/>
         <source>User Abort.</source>
         <translation>Uporabniška prekinitev.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="782"/>
+        <location filename="../src/mirall/folderman.cpp" line="781"/>
         <source>Sync is paused.</source>
         <translation>Usklajevanje je začasno v premoru.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="788"/>
+        <location filename="../src/mirall/folderman.cpp" line="787"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (usklajevanje je v premoru)</translation>
     </message>
@@ -621,8 +621,8 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
-        <source>General Setttings</source>
-        <translation>Splošne nastavitve</translation>
+        <source>General Settings</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -659,12 +659,12 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
 <context>
     <name>Mirall::HttpCredentials</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="282"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="281"/>
         <source>Enter Password</source>
         <translation>Vnos gesla</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="283"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="282"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Vpisati je treba geslo %1 za uporabnika &apos;%2&apos;:</translation>
     </message>
@@ -806,8 +806,8 @@ Izbrani predmeti bodo tudi izbrisani, v kolikor bi sicer onemogočali brisanje m
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="258"/>
-        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;p&gt;</source>
-        <translation>&lt;p&gt;Na voljo je nova različica odjemalca %1.&lt;/p&gt;&lt;p&gt;Datoteka &lt;b&gt;%2&lt;/b&gt; je na voljo za prejem. Trenutno je nameščena različica %3.&lt;p&gt;</translation>
+        <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
@@ -962,8 +962,8 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
-        <source>New version %1 available. Please use the systems update tool to install it.</source>
-        <translation>Na voljo je nova različica %1. Priporočeno je uporabiti sistemsko orodje za nameščanje. </translation>
+        <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1206,7 +1206,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="361"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Mape ni mogoče odstraniti in ustvariti njeno varnostno kopijo, saj je mapa oziroma dokument v njej odprt v drugem programu. Zaprite mapo/dokument ali prekinite namestitev.</translation>
+        <translation>Mape ni mogoče odstraniti niti ni mogoče ustvariti varnostne kopije, saj je mapa oziroma dokument v njej odprt v z drugim programom. Zaprite mapo/dokument ali prekinite namestitev.</translation>
     </message>
 </context>
 <context>
@@ -1326,7 +1326,7 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>Mirall::PropagateLocalRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="196"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="235"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Datoteko %1 ne morete preimenovati v %2 zaradin nesoglasja s krajevnim imenom datoteke</translation>
     </message>
@@ -1342,17 +1342,17 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="233"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="272"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Te mape ni dovoljeno preimenovati, zato bo samodejno preimenovana v izvorno ime.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="235"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="274"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Mape ni dovoljeno preimenovati. Preimenujte jo nazaj na privzeto vrednost.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="250"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="289"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Datoteka je preimenovana, vendar je označena za souporabo le za branje. Obnovljena je izvirna datoteka.</translation>
     </message>
@@ -1568,12 +1568,12 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="60"/>
         <source>Reauthentication required</source>
-        <translation>Zahtevano je vnovično preverjanje pristnosti</translation>
+        <translation>Zahtevano je vnovično overjanje istovetnosti</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="60"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation>Vaša seja je potekla.Ponovno se prijavite za nadaljevanje z uporabo odjemalca.</translation>
+        <translation>Seja je potekla. Ponovno se je treba prijaviti in nadaljevati z uporabo odjemalca.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="98"/>
@@ -1886,8 +1886,8 @@ Te je treba uskladiti znova.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="157"/>
-        <source>A network connection timeout happend.</source>
-        <translation>Poskus vzpostavitve povezave je časovno potekel.</translation>
+        <source>A network connection timeout happened.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="160"/>
@@ -1956,55 +1956,55 @@ Te je treba uskladiti znova.</translation>
         <translation>Dnevnika usklajevanja ni mogoče začeti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="564"/>
+        <location filename="../src/mirall/syncengine.cpp" line="567"/>
         <source>Cannot open the sync journal</source>
         <translation>Ni mogoče odpreti dnevnika usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="733"/>
+        <location filename="../src/mirall/syncengine.cpp" line="736"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="740"/>
+        <location filename="../src/mirall/syncengine.cpp" line="743"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="747"/>
+        <location filename="../src/mirall/syncengine.cpp" line="750"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="765"/>
+        <location filename="../src/mirall/syncengine.cpp" line="768"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="780"/>
-        <location filename="../src/mirall/syncengine.cpp" line="800"/>
+        <location filename="../src/mirall/syncengine.cpp" line="783"/>
+        <location filename="../src/mirall/syncengine.cpp" line="803"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="848"/>
+        <location filename="../src/mirall/syncengine.cpp" line="853"/>
         <source>Move not allowed, item restored</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="855"/>
+        <location filename="../src/mirall/syncengine.cpp" line="862"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="856"/>
+        <location filename="../src/mirall/syncengine.cpp" line="863"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>cilj</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="856"/>
+        <location filename="../src/mirall/syncengine.cpp" line="863"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>vir</translation>
     </message>
 </context>
 <context>
@@ -2402,7 +2402,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="52"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Zgrajeno s pomočjo Git revizije &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; na %3, %4 uporablja Qt %5.&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Zgrajeno s predelavo Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; na %3, %4 s podporo Qt %5.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="59"/>
