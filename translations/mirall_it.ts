@@ -623,7 +623,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation type="unfinished"/>
+        <translation>Impostazioni generali</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -808,7 +808,7 @@ Gli elementi marcati saranno inoltre eliminati se impediscono la rimozione di un
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="258"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Una nuova versione del client %1 è disponibile.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; è disponibile per lo scaricamento. La versione installata è %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
@@ -963,7 +963,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nuova versione %1 disponibile. Utilizza lo strumento di aggiornamento di sistema per installarla.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1887,7 +1887,7 @@ Prova a sincronizzare nuovamente.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="157"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>Si è verificato un timeout della connessione di rete.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="160"/>

@@ -623,7 +623,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation type="unfinished"/>
+        <translation>Generella Inställningar</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -808,7 +808,7 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="258"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;En ny version av %1 klienten är tillgänglig.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; är tillgänglig för nedladdning. Den installerade versionen är %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
@@ -964,7 +964,7 @@ efter ytterligare privilegier under processen.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Ny version %1 är tillgänglig. Vänligen använd systemets uppdateringverktyg för att installera den.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1387,7 +1387,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="286"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Den lokala filen togs bort under synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="293"/>
@@ -1888,7 +1888,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="157"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>En timeout på nätverksanslutningen har inträffat.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="160"/>

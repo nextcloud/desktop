@@ -514,7 +514,7 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation>Označena mapa je simbolična povezava. Že vnaprej nastavljena mapa v mapi vsebuje povezavo do nje.</translation>
+        <translation>Označena mapa je simbolična povezava. V mapi je povezava do že nastavljene mape s povezavo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
@@ -609,7 +609,7 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="486"/>
         <source>Connection Timeout</source>
-        <translation>Povezava prekinjena</translation>
+        <translation>Povezava časovno pretekla</translation>
     </message>
 </context>
 <context>
@@ -1250,7 +1250,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="82"/>
         <source>Connection Timeout</source>
-        <translation>Povezava  je prekinjena</translation>
+        <translation>Povezava časovno pretekla</translation>
     </message>
 </context>
 <context>
@@ -1273,7 +1273,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="454"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Datoteke %1 ni možno prenesti zaradi nesoglasja z imenom lokalne datoteke!</translation>
+        <translation>Datoteke %1 ni možno prejeti, zaradi neskladja z imenom krajevne datoteke!</translation>
     </message>
 </context>
 <context>
@@ -1281,7 +1281,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="500"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Datoteke %1 ni možno prenesti zaradi nesoglasja z imenom lokalne datoteke!</translation>
+        <translation>Datoteke %1 ni mogoče prejeti zaradi neskladja z imenom krajevne datoteke!</translation>
     </message>
 </context>
 <context>
@@ -1289,7 +1289,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="50"/>
         <source>; Restoration Failed: </source>
-        <translation type="unfinished"/>
+        <translation>; obnovitev je spodletela: </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="169"/>
@@ -1302,7 +1302,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="114"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation>Pozor, možno nesoglasje z %1 v razlikovanju med velikimi in malimi črkami</translation>
+        <translation>Pozor, mogoče je neskladje v velikosti črk imena %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="119"/>
@@ -1315,7 +1315,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Ne morem odstraniti %1 zaradin nesoglasja s krajevnim imenom datoteke</translation>
+        <translation>Ni mogoče odstraniti %1 zaradi neskladja s krajevnim imenom datoteke</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
@@ -1328,7 +1328,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="235"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation>Datoteko %1 ne morete preimenovati v %2 zaradin nesoglasja s krajevnim imenom datoteke</translation>
+        <translation>Datoteke %1 ni mogoče preimenovati v %2 zaradi že obstoječe datoteke s tem imenom.</translation>
     </message>
 </context>
 <context>
@@ -1396,7 +1396,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="303"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation>Strežnik ni prepoznal zadnjega niza besed. (Ni bilo prisotnih e-značk)</translation>
+        <translation>Strežnik ni prepoznal zadnjega niza besed. (ni določenih e-oznak)</translation>
     </message>
 </context>
 <context>
@@ -2133,7 +2133,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="408"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje %1 od %2  (preostaja %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="412"/>
