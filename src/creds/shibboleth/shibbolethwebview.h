@@ -55,6 +55,7 @@ private:
   void setup(Account *account, ShibbolethCookieJar* jar);
   QPointer<Account> _account;
   bool _accepted;
+  bool _cursorOverriden;
 };
 
 } // ns Mirall
