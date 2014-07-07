@@ -79,9 +79,6 @@ set(3rdparty_INC
     )
 
 set(libsync_SRCS
-    mirall/folderman.cpp
-    mirall/folder.cpp
-    mirall/folderwatcher.cpp
     mirall/syncresult.cpp
     mirall/mirallconfigfile.cpp
     mirall/syncengine.cpp
@@ -129,24 +126,10 @@ else()
     )
 endif()
 
-IF( NOT WIN32 AND NOT APPLE )
-    set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_linux.cpp)
-ENDIF()
-IF( WIN32 )
-    set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_win.cpp)
-ENDIF()
-IF( APPLE )
-    list(APPEND libsync_SRCS mirall/folderwatcher_mac.cpp)
-ENDIF()
-
-
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS
     mirall/account.h
     mirall/syncengine.h
-    mirall/folder.h
-    mirall/folderman.h
-    mirall/folderwatcher.h
     mirall/mirallconfigfile.h
     mirall/networkjobs.h
     mirall/progressdispatcher.h
@@ -272,6 +255,9 @@ qt_wrap_ui(mirall_UI_SRCS ${mirall_UI})
 set(mirall_SRCS
     mirall/application.cpp
     mirall/systray.cpp
+    mirall/folderman.cpp
+    mirall/folder.cpp
+    mirall/folderwatcher.cpp
     mirall/folderwizard.cpp
     mirall/folderstatusmodel.cpp
     mirall/protocolwidget.cpp
@@ -313,6 +299,9 @@ set(mirall_HEADERS
     wizard/owncloudwizardcommon.h
     wizard/owncloudshibbolethcredspage.h
     wizard/owncloudadvancedsetuppage.h
+    mirall/folder.h
+    mirall/folderman.h
+    mirall/folderwatcher.h
     mirall/folderstatusmodel.h
     mirall/sslerrordialog.h
     mirall/logbrowser.h
@@ -339,7 +328,7 @@ set(updater_HEADERS
 )
 
 IF( APPLE )
-    list(APPEND mirall_SRCS mirall/cocoainitializer_mac.mm)
+    list(APPEND mirall_SRCSmirall_SRCS mirall/cocoainitializer_mac.mm)
     list(APPEND mirall_HEADERS mirall/cocoainitializer.h)
 
     list(APPEND mirall_SRCS mirall/settingsdialogmac.cpp)
@@ -351,6 +340,16 @@ IF( APPLE )
        list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
        list(APPEND updater_HEADERS updater/sparkleupdater.h)
    endif()
+ENDIF()
+
+IF( NOT WIN32 AND NOT APPLE )
+set(mirall_SRCS ${mirall_SRCS} mirall/folderwatcher_linux.cpp)
+ENDIF()
+IF( WIN32 )
+set(mirall_SRCS ${mirall_SRCS} mirall/folderwatcher_win.cpp)
+ENDIF()
+IF( APPLE )
+list(APPEND mirall_SRCS mirall/folderwatcher_mac.cpp)
 ENDIF()
 
 # csync is required.

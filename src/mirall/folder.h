@@ -58,7 +58,7 @@ enum SyncFileStatus {
     FILE_STATUS_SHARED
 };
 
-class OWNCLOUDSYNC_EXPORT Folder : public QObject
+class Folder : public QObject
 {
     Q_OBJECT
 

@@ -4,13 +4,27 @@ include_directories(${CMAKE_SOURCE_DIR}/csync/src/std)
 
 include(owncloud_add_test.cmake)
 
-owncloud_add_test(OwncloudPropagator)
-owncloud_add_test(Utility)
-owncloud_add_test(Updater)
-owncloud_add_test(FolderWatcher)
-owncloud_add_test(CSyncSqlite)
+owncloud_add_test(OwncloudPropagator "")
+owncloud_add_test(Utility "")
+owncloud_add_test(Updater "")
 
+SET(FolderWatcher_SRC ../src/mirall/folderwatcher.cpp)
+
+IF( NOT WIN32 AND NOT APPLE )
+list(APPEND FolderWatcher_SRC  ../src/mirall/folderwatcher_linux.cpp)
+ENDIF()
+IF( WIN32 )
+list(APPEND  FolderWatcher_SRC ../src/mirall/folderwatcher_win.cpp)
+ENDIF()
+IF( APPLE )
+list(APPEND FolderWatcher_SRC ../src/mirall/folderwatcher_mac.cpp)
+ENDIF()
+
+owncloud_add_test(FolderWatcher "${FolderWatcher_SRC}")
 if( UNIX AND NOT APPLE )
-	owncloud_add_test(InotifyWatcher)
+    owncloud_add_test(InotifyWatcher "${FolderWatcher_SRC}")
 endif(UNIX AND NOT APPLE)
+
+owncloud_add_test(CSyncSqlite "")
+
 

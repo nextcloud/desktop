@@ -32,7 +32,7 @@ namespace Mirall {
 
 class Application;
 
-class OWNCLOUDSYNC_EXPORT FolderMan : public QObject
+class FolderMan : public QObject
 {
     Q_OBJECT
 public:
