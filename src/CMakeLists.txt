@@ -275,6 +275,7 @@ set(mirall_SRCS
     mirall/folderwizard.cpp
     mirall/folderstatusmodel.cpp
     mirall/protocolwidget.cpp
+    mirall/openfilemanager.cpp
     wizard/owncloudwizard.cpp
     wizard/owncloudsetuppage.cpp
     wizard/owncloudhttpcredspage.cpp
@@ -303,6 +304,7 @@ set(mirall_HEADERS
     mirall/systray.h
     mirall/folderwizard.h
     mirall/owncloudsetupwizard.h
+    mirall/openfilemanager.h
     wizard/owncloudwizard.h
     wizard/owncloudsetuppage.h
     wizard/owncloudhttpcredspage.h

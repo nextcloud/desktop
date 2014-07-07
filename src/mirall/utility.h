@@ -40,7 +40,6 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
     OWNCLOUDSYNC_EXPORT qint64 freeDiskSpace(const QString &path, bool *ok = 0);
     OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
-    OWNCLOUDSYNC_EXPORT void showInFileManager(const QString &localPath);
     /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
 
     /**

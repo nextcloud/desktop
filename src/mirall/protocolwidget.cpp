@@ -25,6 +25,7 @@
 #include "mirall/folderman.h"
 #include "mirall/syncfileitem.h"
 #include "mirall/folder.h"
+#include "openfilemanager.h"
 
 #include "ui_protocolwidget.h"
 
@@ -169,7 +170,7 @@ void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
         // folder->path() always comes back with trailing path
         QString fullPath = folder->path() + fileName;
         if (QFile(fullPath).exists()) {
-            Utility::showInFileManager(fullPath);
+            showInFileManager(fullPath);
         }
     }
 }

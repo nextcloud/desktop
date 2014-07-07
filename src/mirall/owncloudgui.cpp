@@ -27,6 +27,7 @@
 #include "mirall/logger.h"
 #include "mirall/logbrowser.h"
 #include "mirall/account.h"
+#include "openfilemanager.h"
 #include "creds/abstractcredentials.h"
 
 #include <QDesktopServices>
@@ -140,7 +141,7 @@ void ownCloudGui::slotFoldersChanged()
 
 void ownCloudGui::slotOpenPath(const QString &path)
 {
-    Utility::showInFileManager(path);
+    showInFileManager(path);
 }
 
 void ownCloudGui::slotAccountStateChanged()
