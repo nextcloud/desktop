@@ -48,21 +48,6 @@ if (APPLE)
         )
 endif()
 
-set(3rdparty_HEADER
-3rdparty/qtsingleapplication/qtlocalpeer.h
-3rdparty/qtsingleapplication/qtsingleapplication.h
-3rdparty/qtsingleapplication/qtsinglecoreapplication.h
-3rdparty/fancylineedit/fancylineedit.h
-3rdparty/QProgressIndicator/QProgressIndicator.h
-)
-
-if (APPLE)
-        list(APPEND 3rdparty_HEADER
-        3rdparty/qtmacgoodies/src/macpreferenceswindow.h
-        3rdparty/qtmacgoodies/src/macstandardicon.h
-        )
-endif()
-
 if(NOT WIN32)
 	list(APPEND 3rdparty_SRC 3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
 else()
@@ -284,61 +269,21 @@ set(mirall_SRCS
 )
 
 
-
-set(mirall_HEADERS
-    mirall/application.h
-    mirall/systray.h
-    mirall/folderwizard.h
-    mirall/owncloudsetupwizard.h
-    mirall/openfilemanager.h
-    wizard/owncloudwizard.h
-    wizard/owncloudsetuppage.h
-    wizard/owncloudhttpcredspage.h
-    wizard/abstractcredswizardpage.h
-    wizard/owncloudwizardresultpage.h
-    wizard/owncloudwizardcommon.h
-    wizard/owncloudshibbolethcredspage.h
-    wizard/owncloudadvancedsetuppage.h
-    mirall/folder.h
-    mirall/folderman.h
-    mirall/folderwatcher.h
-    mirall/folderstatusmodel.h
-    mirall/sslerrordialog.h
-    mirall/logbrowser.h
-    mirall/settingsdialog.h
-    mirall/generalsettings.h
-    mirall/networksettings.h
-    mirall/accountsettings.h
-    mirall/ignorelisteditor.h
-    mirall/protocolwidget.h
-    mirall/owncloudgui.h
-    mirall/socketapi.h
-    mirall/sslbutton.h
-)
-
 set(updater_SRCS
     updater/updateinfo.cpp
     updater/updater.cpp
     updater/ocupdater.cpp
 )
 
-set(updater_HEADERS
-    updater/updater.h
-    updater/ocupdater.h
-)
-
 IF( APPLE )
     list(APPEND mirall_SRCSmirall_SRCS mirall/cocoainitializer_mac.mm)
-    list(APPEND mirall_HEADERS mirall/cocoainitializer.h)
 
     list(APPEND mirall_SRCS mirall/settingsdialogmac.cpp)
-    list(APPEND mirall_HEADERS mirall/settingsdialogmac.h)
 
     if(SPARKLE_FOUND)
        # Define this, we need to check in updater.cpp
        add_definitions( -DHAVE_SPARKLE )
        list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
-       list(APPEND updater_HEADERS updater/sparkleupdater.h)
    endif()
 ENDIF()
 
@@ -359,12 +304,10 @@ include_directories(${3rdparty_INC})
 qt_add_translation(mirall_I18N ${TRANSLATIONS})
 
 set( final_src
-    ${mirall_HEADERS}
     ${MIRALL_RC_SRC}
     ${mirall_SRCS}
     ${mirall_UI_SRCS}
     ${mirallMoc}
-    ${mirall_HEADERS}
     ${mirall_I18N}
     ${3rdparty_SRC}
     ${3rdparty_MOC}
