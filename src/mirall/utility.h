@@ -36,7 +36,6 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT QString octetsToString( qint64 octets );
     OWNCLOUDSYNC_EXPORT QString platform();
     OWNCLOUDSYNC_EXPORT QByteArray userAgentString();
-    OWNCLOUDSYNC_EXPORT void raiseDialog(QWidget *);
     OWNCLOUDSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
     OWNCLOUDSYNC_EXPORT qint64 freeDiskSpace(const QString &path, bool *ok = 0);

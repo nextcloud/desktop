@@ -23,7 +23,6 @@
 #include <QFile>
 #include <QUrl>
 #ifndef TOKEN_AUTH_ONLY
-#include <QWidget>
 #include <QDesktopServices>
 #endif
 #include <QDebug>
@@ -162,18 +161,6 @@ QByteArray Utility::userAgentString()
             .arg(Utility::platform())
             .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION)))
             .toLatin1();
-}
-
-void Utility::raiseDialog( QWidget *raiseWidget )
-{
-#ifndef TOKEN_AUTH_ONLY
-    if( raiseWidget && raiseWidget->parentWidget() == 0) {
-        // Qt has a bug which causes parent-less dialogs to pop-under.
-        raiseWidget->showNormal();
-        raiseWidget->raise();
-        raiseWidget->activateWindow();
-    }
-#endif
 }
 
 bool Utility::hasLaunchOnStartup(const QString &appName)
