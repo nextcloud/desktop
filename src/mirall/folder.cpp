@@ -106,8 +106,6 @@ bool Folder::init()
         csync_set_log_callback( csyncLogCatcher );
         csync_set_log_level( 11 );
 
-        MirallConfigFile cfgFile;
-
         if (Account *account = AccountManager::instance()->account()) {
             account->credentials()->syncContextPreInit(_csync_ctx);
         } else {

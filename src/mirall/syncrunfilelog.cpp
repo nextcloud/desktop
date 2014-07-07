@@ -15,7 +15,6 @@
 
 #include "mirall/syncrunfilelog.h"
 #include "mirall/utility.h"
-#include "mirall/mirallconfigfile.h"
 #include "filesystem.h"
 #include <qfileinfo.h>
 
