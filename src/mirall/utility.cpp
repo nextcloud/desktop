@@ -342,6 +342,9 @@ bool Utility::fsCasePreserving()
     bool re = false;
     if( isWindows() || isMac() ) {
         re = true;
+    } else {
+        static bool isTest = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING").toInt();
+        re = isTest;
     }
     return re;
 }

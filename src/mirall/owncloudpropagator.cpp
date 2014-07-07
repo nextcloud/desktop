@@ -29,6 +29,7 @@
 
 #include <QStack>
 #include <QFileInfo>
+#include <QDir>
 
 namespace Mirall {
 
@@ -368,6 +369,15 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
             if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
                 re = true;
             }
+        }
+#else
+        // On Linux, the file system is case sensitive, but this code is usefull for testing.
+        // Just check that there is no other file with the same name and different casing.
+        QFileInfo fileInfo(file);
+        const QString fn = fileInfo.fileName();
+        QStringList list = fileInfo.dir().entryList(QStringList() << fn);
+        if (list.count() > 1 || (list.count() == 1 && list[0] != fn)) {
+            re = true;
         }
 #endif
     }
