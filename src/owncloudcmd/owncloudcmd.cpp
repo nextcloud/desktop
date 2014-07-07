@@ -24,7 +24,6 @@
 
 #include "mirall/syncengine.h"
 #include "mirall/syncjournaldb.h"
-#include "mirall/logger.h"
 #include "csync.h"
 #include "mirall/clientproxy.h"
 #include "mirall/account.h"
@@ -169,7 +168,6 @@ int main(int argc, char **argv) {
     }
 
     csync_set_log_level(options.silent ? 1 : 11);
-    Logger::instance()->setLogFile("-");
 
     csync_set_userdata(_csync_ctx, &options);
     csync_set_auth_callback( _csync_ctx, getauth );

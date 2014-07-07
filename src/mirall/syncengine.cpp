@@ -16,7 +16,6 @@
 #include "mirall/syncengine.h"
 #include "mirall/account.h"
 #include "mirall/theme.h"
-#include "mirall/logger.h"
 #include "owncloudpropagator.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
@@ -42,14 +41,6 @@
 #include <QSslCertificate>
 
 namespace Mirall {
-
-void csyncLogCatcher(int /*verbosity*/,
-                     const char */*function*/,
-                     const char *buffer,
-                     void */*userdata*/)
-{
-  Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
-}
 
 bool SyncEngine::_syncRunning = false;
 
@@ -504,7 +495,6 @@ void SyncEngine::startSync()
     // }
 
     // csync_set_auth_callback( _csync_ctx, getauth );
-    csync_set_log_callback( csyncLogCatcher );
     //csync_set_log_level( 11 ); don't set the loglevel here, it shall be done by folder.cpp or owncloudcmd.cpp
     int timeout = OwncloudPropagator::httpTimeout();
     csync_set_module_property(_csync_ctx, "timeout", &timeout);

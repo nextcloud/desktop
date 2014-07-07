@@ -40,11 +40,6 @@ class SyncJournalDb;
 
 class OwncloudPropagator;
 
-void OWNCLOUDSYNC_EXPORT csyncLogCatcher(int /*verbosity*/,
-                     const char */*function*/,
-                     const char *buffer,
-                     void */*userdata*/);
-
 class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT

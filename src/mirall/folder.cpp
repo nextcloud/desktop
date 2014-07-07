@@ -42,6 +42,15 @@
 
 namespace Mirall {
 
+static void csyncLogCatcher(int /*verbosity*/,
+                        const char */*function*/,
+                        const char *buffer,
+                        void */*userdata*/)
+{
+    Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
+}
+
+
 Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
     : QObject(parent)
       , _path(path)
