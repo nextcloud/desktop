@@ -55,7 +55,6 @@ namespace Utility
 
     // porting methods
     OWNCLOUDSYNC_EXPORT QString escape(const QString&);
-    OWNCLOUDSYNC_EXPORT QString dataLocation();
 
     // conversion function QDateTime <-> time_t   (because the ones builtin work on only unsigned 32bit)
     OWNCLOUDSYNC_EXPORT QDateTime qDateTimeFromTime_t(qint64 t);

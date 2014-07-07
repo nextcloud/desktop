@@ -237,17 +237,6 @@ QString Utility::escape(const QString &in)
 #endif
 }
 
-QString Utility::dataLocation()
-{
-    //  Qt 5's QStandardPaths::writableLocation gives us wrong results (without /data/),
-    //  so we'll have to use the deprecated version for now
-#ifndef TOKEN_AUTH_ONLY
-    return QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-#else
-	return QString();
-#endif
-}
-
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 // In Qt 4,  QThread::sleep functions are protected.
 // This is a hack to make them visible in this namespace.
