@@ -427,7 +427,7 @@ void GETFileJob::slotMetaDataChanged()
 
 void GETFileJob::slotReadyRead()
 {
-    int bufferSize = qMax(1024*8ll , reply()->bytesAvailable());
+    int bufferSize = qMin(1024*8ll , reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
 
     while(reply()->bytesAvailable() > 0) {
