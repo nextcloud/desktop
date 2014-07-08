@@ -35,10 +35,8 @@
 #include <QUrl>
 #include <QDir>
 
-#ifndef TOKEN_AUTH_ONLY
 #include <QMessageBox>
 #include <QPushButton>
-#endif
 
 namespace Mirall {
 
@@ -715,7 +713,6 @@ void Folder::slotJobCompleted(const SyncFileItem &item)
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel)
 {
-#ifndef TOKEN_AUTH_ONLY
     QString msg = direction == SyncFileItem::Down ?
         tr("This sync would remove all the files in the local sync folder '%1'.\n"
            "If you or your administrator have reset your account on the server, choose "
@@ -739,7 +736,6 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *
         _lastEtag = QString();
         QTimer::singleShot(50, this, SLOT(slotPollTimerTimeout()));
     }
-#endif
 }
 } // namespace Mirall
 
