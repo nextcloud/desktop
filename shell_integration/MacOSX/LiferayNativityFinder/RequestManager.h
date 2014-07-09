@@ -39,8 +39,8 @@
 
 + (RequestManager*)sharedInstance;
 
-- (void)askOnSocket:(NSString*)path;
-- (void)askForIcon:(NSString*)path;
+- (void)askOnSocket:(NSString*)path query:(NSString*)verb;
+- (void)askForIcon:(NSString*)path isDirectory:(NSNumber*)isDir;
 - (void)menuItemClicked:(NSDictionary*)actionDictionary;
 - (NSArray*)menuItemsForFiles:(NSArray*)files;
 - (void)start;

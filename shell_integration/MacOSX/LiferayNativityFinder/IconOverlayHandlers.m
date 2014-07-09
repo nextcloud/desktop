@@ -26,9 +26,16 @@
 
 	NSURL* url = [[NSClassFromString(@"FINode") nodeFromNodeRef:[(TIconAndTextCell*)self node]->fNodeRef] previewItemURL];
 
-	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path]];
+	NSError *error;
+    NSNumber *isDir = nil;
+    if (! [url getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:&error]) {
+        // handle error
+		[isDir initWithBool:NO]; // lets assume its a file.
+    }
+	
+	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
 
-	NSLog(@"The icon index is %d", [imageIndex intValue]);
+	NSLog(@"1 The icon index is %d", [imageIndex intValue]);
 	if ([imageIndex intValue] > 0)
 	{
 		NSImage* image = [[IconCache sharedInstance] getIcon:imageIndex];
@@ -63,8 +70,15 @@
 
 	NSURL* url = [node previewItemURL];
 
-	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path]];
-	NSLog(@"The icon index is %d", [imageIndex intValue]);
+	NSError *error;
+    NSNumber *isDir = nil;
+    if (! [url getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:&error]) {
+        // handle error
+		[isDir initWithBool:NO]; // lets assume its a file.
+    }
+	
+	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
+	NSLog(@"2 The icon index is %d", [imageIndex intValue]);
 
 	if ([imageIndex intValue] > 0)
 	{
@@ -113,6 +127,13 @@
 
 		NSURL *url;
 
+		NSError *error;
+		NSNumber *isDir = nil;
+		if (! [url getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:&error]) {
+			// handle error
+			[isDir initWithBool:NO]; // lets assume its a file.
+		}
+		
 		if ([fiNode respondsToSelector:@selector(previewItemURL)])
 		{
 			url = [fiNode previewItemURL];
@@ -121,8 +142,8 @@
 			return;
 		}
 
-		NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path]];
-		NSLog(@"The icon index is %d", [imageIndex intValue]);
+		NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
+		NSLog(@"3 The icon index is %d", [imageIndex intValue]);
 
 		if ([imageIndex intValue] > 0)
 		{

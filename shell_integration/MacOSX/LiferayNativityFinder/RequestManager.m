@@ -14,7 +14,6 @@
 
 #import "ContentManager.h"
 #import "IconCache.h"
-#import "JSONKit.h"
 #import "RequestManager.h"
 
 #define READ_TAG 2422
@@ -46,12 +45,6 @@ static RequestManager* sharedInstance = nil;
 	[_socket disconnect];
 	[_socket release];
 
-	// dispatch_release(_listenQueue);
-
-	// [_callbackMsgs release];
-
-	// [_filterFolder release];
-
 	sharedInstance = nil;
 
 	[super dealloc];
@@ -71,10 +64,12 @@ static RequestManager* sharedInstance = nil;
 }
 
 
-- (void)askOnSocket:(NSString*)path
+- (void)askOnSocket:(NSString*)path query:(NSString*)verb
 {
-	NSLog(@"XX on Socket for %@", path);
-	NSData* data = [[NSString stringWithFormat:@"RETRIEVE_FILE_STATUS:%@\n", path] dataUsingEncoding:NSUTF8StringEncoding];
+	NSString *query = [NSString stringWithFormat:@"%@:%@\n", verb,path];
+	NSLog(@"Query: %@", query);
+	
+	NSData* data = [query dataUsingEncoding:NSUTF8StringEncoding];
 	[_socket writeData:data withTimeout:5 tag:4711];
 	
 	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
@@ -82,10 +77,15 @@ static RequestManager* sharedInstance = nil;
 }
 
 
-- (void)askForIcon:(NSString*)path
+- (void)askForIcon:(NSString*)path isDirectory:(NSNumber*)isDir
 {
+	NSString *verb = @"RETRIEVE_FILE_STATUS";
 	if( _isConnected ) {
-		[self askOnSocket:path];
+		if( [isDir boolValue] ) {
+			verb = @"RETRIEVE_FOLDER_STATUS";
+		}
+		
+		[self askOnSocket:path query:verb];
 	} else {
 		[_requestQueue addObject:path];
 	}
@@ -112,19 +112,23 @@ static RequestManager* sharedInstance = nil;
 {
 	
 	if( tag == READ_TAG) {
-	NSString* a1 = [NSString stringWithUTF8String:[data bytes]];
-	
-	NSString *answer = [a1 stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    NSLog(@"READ from socket (%ld): AA%@OO", tag, answer);
-	
-	if( answer != nil ) {
-		NSArray *chunks = [answer componentsSeparatedByString: @":"];
-		// FIXME: Check if chunks[0] equals "STATUS"
-		if( [chunks count] > 0 && [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
-			ContentManager *contentman = [ContentManager sharedInstance];
-			[contentman setResultForPath:[chunks objectAtIndex:2] result:[chunks objectAtIndex:1]];
+		NSString *answer = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		
+		// Cut the trailing newline.
+		if ([answer length] > 0) {
+			answer = [answer substringToIndex:[answer length] - 1];
 		}
-	}
+		
+		NSLog(@"READ from socket (%ld): <%@>", tag, answer);
+	
+		if( answer != nil ) {
+			NSArray *chunks = [answer componentsSeparatedByString: @":"];
+			
+			if( [chunks count] > 0 && [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
+				ContentManager *contentman = [ContentManager sharedInstance];
+				[contentman setResultForPath:[chunks objectAtIndex:2] result:[chunks objectAtIndex:1]];
+			}
+		}
 	}
 }
 

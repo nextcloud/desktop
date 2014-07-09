@@ -32,11 +32,11 @@ static ContentManager* sharedInstance = nil;
 		_fileNamesCache = [[NSMutableDictionary alloc] init];
 		_fileIconsEnabled = TRUE;
 		
-		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/128x128/OK_128.png"];
-		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/128x128/Sync_128.png"];
-		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/128x128/Warning_128.png"];
-		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/128x128/Error_128.png"];
-		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/128x128/OK_Shared_128.png"];
+		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/ok.icns"];
+		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/sync.icns"];
+		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/sync.icns"];
+		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/sync.icns"];
+		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/sync.icns"];
 		
 	}
 
@@ -97,7 +97,7 @@ static ContentManager* sharedInstance = nil;
 	[self repaintAllWindows];
 }
 
-- (NSNumber*)iconByPath:(NSString*)path
+- (NSNumber*)iconByPath:(NSString*)path isDirectory:(NSNumber*)isDir
 {
 	if (!_fileIconsEnabled)
 	{
@@ -105,21 +105,26 @@ static ContentManager* sharedInstance = nil;
 		// return nil;
 	}
 
+	if( path == nil ) {
+		NSNumber *res = [NSNumber numberWithInt:0];
+		return res;
+	}
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
-
+	
 	NSNumber* result = [_fileNamesCache objectForKey:normalizedPath];
 	NSLog(@"XXXXXXX Asking for icon for path %@ = %d",path, [result intValue]);
 	
-	if( result != nil ) {
-		NSLog(@"Found icon index %d", [result intValue]);
-		// there is a proper icon index
-	} else {
-		NSLog(@"Need to query for icon");
+	if( result == nil ) {
 		// start the async call
-		NSNumber *minusOne = -1;
+		NSNumber* minusOne = [[NSNumber alloc] initWithInt:-1];
 		[_fileNamesCache setObject:minusOne forKey:normalizedPath];
-		[[RequestManager sharedInstance] askForIcon:normalizedPath];
+		[[RequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
 		result = [NSNumber numberWithInt:0];
+	} else if( [result intValue] == -1 ) {
+		// the socket call is underways.
+		result = [NSNumber numberWithInt:0];
+	} else {
+		// there is a proper icon index
 	}
     NSLog(@"iconByPath return value %d", [result intValue]);
 	
