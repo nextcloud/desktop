@@ -33,17 +33,17 @@ class OwncloudShibbolethCredsPage : public AbstractCredentialsWizardPage
 public:
   OwncloudShibbolethCredsPage();
 
-  AbstractCredentials* getCredentials() const;
+  AbstractCredentials* getCredentials() const Q_DECL_OVERRIDE;
 
-  void initializePage();
-  int nextId() const;
+  void initializePage() Q_DECL_OVERRIDE;
+  int nextId() const Q_DECL_OVERRIDE;
   void setConnected();
 
 Q_SIGNALS:
   void connectToOCUrl(const QString&);
 
 public Q_SLOTS:
-  void setVisible(bool visible);
+  void setVisible(bool visible) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
   void slotShibbolethCookieReceived(const QNetworkCookie&, Account*);

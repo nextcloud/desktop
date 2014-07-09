@@ -24,7 +24,7 @@ class AbstractCredentials;
 class AbstractCredentialsWizardPage : public QWizardPage
 {
 public:
-    void cleanupPage();
+    void cleanupPage() Q_DECL_OVERRIDE;
     virtual AbstractCredentials* getCredentials() const = 0;
 };
 

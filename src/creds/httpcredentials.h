@@ -38,19 +38,19 @@ public:
     HttpCredentials();
     HttpCredentials(const QString& user, const QString& password);
 
-    void syncContextPreInit(CSYNC* ctx);
-    void syncContextPreStart(CSYNC* ctx);
-    bool changed(AbstractCredentials* credentials) const;
-    QString authType() const;
-    QNetworkAccessManager* getQNAM() const;
-    bool ready() const;
-    void fetch(Account *account);
-    bool stillValid(QNetworkReply *reply);
-    void persist(Account *account);
-    QString user() const;
+    void syncContextPreInit(CSYNC* ctx) Q_DECL_OVERRIDE;
+    void syncContextPreStart(CSYNC* ctx) Q_DECL_OVERRIDE;
+    bool changed(AbstractCredentials* credentials) const Q_DECL_OVERRIDE;
+    QString authType() const Q_DECL_OVERRIDE;
+    QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
+    bool ready() const Q_DECL_OVERRIDE;
+    void fetch(Account *account) Q_DECL_OVERRIDE;
+    bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
+    void persist(Account *account) Q_DECL_OVERRIDE;
+    QString user() const Q_DECL_OVERRIDE;
     QString password() const;
     QString queryPassword(bool *ok);
-    void invalidateToken(Account *account);
+    void invalidateToken(Account *account) Q_DECL_OVERRIDE;
     QString fetchUser(Account *account);
 
 private Q_SLOTS:

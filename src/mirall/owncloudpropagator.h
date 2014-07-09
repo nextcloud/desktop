@@ -102,8 +102,8 @@ public:
         _subJobs.append(subJob);
     }
 
-    virtual void start();
-    virtual void abort() {
+    virtual void start() Q_DECL_OVERRIDE;
+    virtual void abort() Q_DECL_OVERRIDE {
         if (_firstJob)
             _firstJob->abort();
         foreach (PropagatorJob *j, _subJobs)
@@ -168,7 +168,7 @@ class PropagateIgnoreJob : public PropagateItemJob {
 public:
     PropagateIgnoreJob(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateItemJob(propagator, item) {}
-    void start() {
+    void start() Q_DECL_OVERRIDE {
         SyncFileItem::Status status = _item._status;
         done(status == SyncFileItem::NoStatus ? SyncFileItem::FileIgnored : status, _item._errorString);
     }

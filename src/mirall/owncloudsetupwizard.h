@@ -35,22 +35,22 @@ class ValidateDavAuthJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     ValidateDavAuthJob(Account* account, QObject *parent = 0);
-    void start();
+    void start() Q_DECL_OVERRIDE;
 signals:
     void authResult(QNetworkReply*);
 private slots:
-    bool finished();
+    bool finished() Q_DECL_OVERRIDE;
 };
 
 class DetermineAuthTypeJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit DetermineAuthTypeJob(Account *account, QObject *parent = 0);
-    void start();
+    void start() Q_DECL_OVERRIDE;
 signals:
     void authType(WizardCommon::AuthType);
 private slots:
-    bool finished();
+    bool finished() Q_DECL_OVERRIDE;
 private:
     int _redirects;
 };

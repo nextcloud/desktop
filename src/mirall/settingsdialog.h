@@ -49,8 +49,8 @@ public slots:
     void showActivityPage();
 
 protected:
-    void reject();
-    void accept();
+    void reject() Q_DECL_OVERRIDE;
+    void accept() Q_DECL_OVERRIDE;
 
 private:
     Ui::SettingsDialog *_ui;

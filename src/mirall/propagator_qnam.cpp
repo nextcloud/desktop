@@ -129,12 +129,12 @@ public:
         _file->seek(start);
     }
 
-    virtual qint64 writeData(const char* , qint64 ) {
+    virtual qint64 writeData(const char* , qint64 ) Q_DECL_OVERRIDE {
         Q_ASSERT(!"write to read only device");
         return 0;
     }
 
-    virtual qint64 readData(char* data, qint64 maxlen) {
+    virtual qint64 readData(char* data, qint64 maxlen) Q_DECL_OVERRIDE {
         maxlen = qMin(maxlen, chunkSize() - _read);
         if (maxlen == 0)
             return 0;
@@ -145,25 +145,25 @@ public:
         return ret;
     }
 
-    virtual bool atEnd() const {
+    virtual bool atEnd() const Q_DECL_OVERRIDE {
         return  _read >= chunkSize() || _file->atEnd();
     }
 
-    virtual qint64 size() const{
+    virtual qint64 size() const Q_DECL_OVERRIDE{
         return _size;
     }
 
-    qint64 bytesAvailable() const
+    qint64 bytesAvailable() const Q_DECL_OVERRIDE
     {
         return _size - _read + QIODevice::bytesAvailable();
     }
 
     // random access, we can seek
-    virtual bool isSequential() const{
+    virtual bool isSequential() const Q_DECL_OVERRIDE{
         return false;
     }
 
-    virtual bool seek ( qint64 pos ) {
+    virtual bool seek ( qint64 pos ) Q_DECL_OVERRIDE {
         _read = pos;
         return _file->seek(pos + _start);
     }

@@ -26,9 +26,9 @@ public:
     ~SparkleUpdater();
 
     // unused in this updater
-    void checkForUpdate();
-    void backgroundCheckForUpdate();
-    bool handleStartup() { return false; }
+    void checkForUpdate() Q_DECL_OVERRIDE;
+    void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
+    bool handleStartup() Q_DECL_OVERRIDE { return false; }
 private:
     class Private;
     Private *d;

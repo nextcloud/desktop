@@ -37,7 +37,7 @@ public:
   ShibbolethWebView(Account *account, ShibbolethCookieJar* jar, QWidget* parent = 0);
   ~ShibbolethWebView();
 
-  void closeEvent(QCloseEvent *event);
+  void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 Q_SIGNALS:
   void shibbolethCookieReceived(const QNetworkCookie &cookie, Account *account);

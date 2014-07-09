@@ -40,8 +40,8 @@ public:
 
     bool performUpdate();
 
-    void checkForUpdate();
-    void backgroundCheckForUpdate();
+    void checkForUpdate() Q_DECL_OVERRIDE;
+    void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
 
     QString statusString() const;
     int downloadState() const;
@@ -77,7 +77,7 @@ class NSISUpdater : public OCUpdater {
 public:
     enum UpdateState { NoUpdate = 0, UpdateAvailable, UpdateFailed };
     explicit NSISUpdater(const QUrl &url, QObject *parent = 0);
-    bool handleStartup();
+    bool handleStartup() Q_DECL_OVERRIDE;
 private slots:
     void slotSetSeenVersion();
     void slotDownloadFinished();
@@ -85,7 +85,7 @@ private slots:
 private:
     NSISUpdater::UpdateState updateStateOnStart();
     void showDialog(const UpdateInfo &info);
-    void versionInfoArrived(const UpdateInfo &info);
+    void versionInfoArrived(const UpdateInfo &info) Q_DECL_OVERRIDE;
     QScopedPointer<QTemporaryFile> _file;
     QString _targetFile;
     bool _showFallbackMessage;
@@ -98,10 +98,10 @@ class PassiveUpdateNotifier : public OCUpdater {
     Q_OBJECT
 public:
     explicit PassiveUpdateNotifier(const QUrl &url, QObject *parent = 0);
-    bool handleStartup() { return false; }
+    bool handleStartup() Q_DECL_OVERRIDE { return false; }
 
 private:
-    void versionInfoArrived(const UpdateInfo &info);
+    void versionInfoArrived(const UpdateInfo &info) Q_DECL_OVERRIDE;
 };
 
 

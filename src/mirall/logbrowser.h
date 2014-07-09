@@ -48,7 +48,7 @@ public:
     void setLogFile(const QString& , bool );
 
 protected:
-    void closeEvent(QCloseEvent *);
+    void closeEvent(QCloseEvent *) Q_DECL_OVERRIDE;
 
 protected slots:
     void slotNewLog( const QString &msg );

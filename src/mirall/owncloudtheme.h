@@ -25,21 +25,21 @@ class ownCloudTheme : public Theme
 public:
     ownCloudTheme();
 
-    QString configFileName() const;
-    QString about() const;
+    QString configFileName() const Q_DECL_OVERRIDE;
+    QString about() const Q_DECL_OVERRIDE;
     QPixmap splashScreen() const;
 
     QIcon   folderIcon( const QString& ) const;
-    QIcon   trayFolderIcon( const QString& ) const;
-    QIcon   folderDisabledIcon() const;
-    QIcon   applicationIcon() const;
+    QIcon   trayFolderIcon( const QString& ) const Q_DECL_OVERRIDE;
+    QIcon   folderDisabledIcon() const Q_DECL_OVERRIDE;
+    QIcon   applicationIcon() const Q_DECL_OVERRIDE;
 
-    QVariant customMedia(CustomMediaType type);
-    QString helpUrl() const;
+    QVariant customMedia(CustomMediaType type) Q_DECL_OVERRIDE;
+    QString helpUrl() const Q_DECL_OVERRIDE;
 
-    QColor  wizardHeaderBackgroundColor() const;
-    QColor  wizardHeaderTitleColor() const;
-    QPixmap wizardHeaderLogo() const;
+    QColor  wizardHeaderBackgroundColor() const Q_DECL_OVERRIDE;
+    QColor  wizardHeaderTitleColor() const Q_DECL_OVERRIDE;
+    QPixmap wizardHeaderLogo() const Q_DECL_OVERRIDE;
 private:
 
 

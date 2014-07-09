@@ -114,13 +114,13 @@ class OWNCLOUDSYNC_EXPORT EntityExistsJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit EntityExistsJob(Account *account, const QString &path, QObject* parent = 0);
-    void start();
+    void start() Q_DECL_OVERRIDE;
 
 signals:
     void exists(QNetworkReply*);
 
 private slots:
-    virtual bool finished();
+    virtual bool finished() Q_DECL_OVERRIDE;
 };
 
 /**
@@ -130,13 +130,13 @@ class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit LsColJob(Account *account, const QString &path, QObject *parent = 0);
-    void start();
+    void start() Q_DECL_OVERRIDE;
 
 signals:
     void directoryListing(const QStringList &items);
 
 private slots:
-    virtual bool finished();
+    virtual bool finished() Q_DECL_OVERRIDE;
 };
 
 /**
@@ -146,7 +146,7 @@ class PropfindJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit PropfindJob(Account *account, const QString &path, QObject *parent = 0);
-    void start();
+    void start() Q_DECL_OVERRIDE;
     void setProperties(QList<QByteArray> properties);
     QList<QByteArray> properties() const;
 
@@ -154,7 +154,7 @@ signals:
     void result(const QVariantMap &values);
 
 private slots:
-    virtual bool finished();
+    virtual bool finished() Q_DECL_OVERRIDE;
 
 private:
     QList<QByteArray> _properties;
@@ -167,13 +167,13 @@ class OWNCLOUDSYNC_EXPORT MkColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit MkColJob(Account *account, const QString &path, QObject *parent = 0);
-    void start();
+    void start() Q_DECL_OVERRIDE;
 
 signals:
     void finished(QNetworkReply::NetworkError);
 
 private slots:
-    virtual bool finished();
+    virtual bool finished() Q_DECL_OVERRIDE;
 };
 
 /**
@@ -183,7 +183,7 @@ class OWNCLOUDSYNC_EXPORT CheckServerJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit CheckServerJob(Account *account, bool followRedirect = false, QObject *parent = 0);
-    void start();
+    void start() Q_DECL_OVERRIDE;
 
     static QString version(const QVariantMap &info);
     static QString versionString(const QVariantMap &info);
@@ -195,8 +195,8 @@ signals:
     void timeout(const QUrl&url);
 
 private slots:
-    virtual bool finished();
-    virtual void slotTimeout();
+    virtual bool finished() Q_DECL_OVERRIDE;
+    virtual void slotTimeout() Q_DECL_OVERRIDE;
 
 private:
     bool _followRedirects;
@@ -212,13 +212,13 @@ class RequestEtagJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit RequestEtagJob(Account *account, const QString &path, QObject *parent = 0);
-    void start();
+    void start() Q_DECL_OVERRIDE;
 
 signals:
     void etagRetreived(const QString &etag);
 
 private slots:
-    virtual bool finished();
+    virtual bool finished() Q_DECL_OVERRIDE;
 };
 
 /**
@@ -228,14 +228,14 @@ class CheckQuotaJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit CheckQuotaJob(Account *account, const QString &path, QObject *parent = 0);
-    void start();
+    void start() Q_DECL_OVERRIDE;
 
 signals:
     void quotaRetrieved(qint64 totalBytes, qint64 availableBytes);
 
 private slots:
     /** Return true if you want the job to be deleted after this slot has finished running. */
-    virtual bool finished();
+    virtual bool finished() Q_DECL_OVERRIDE;
 };
 
 } // namespace Mirall

@@ -26,10 +26,10 @@ class OWNCLOUDSYNC_EXPORT CookieJar : public QNetworkCookieJar
 public:
     explicit CookieJar(QObject *parent = 0);
     ~CookieJar();
-    bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url);
-    QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const;
+    bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url) Q_DECL_OVERRIDE;
+    QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const Q_DECL_OVERRIDE;
 
-    virtual bool deleteCookie(const QNetworkCookie & cookie);
+    virtual bool deleteCookie(const QNetworkCookie & cookie) Q_DECL_OVERRIDE;
     void clearSessionCookies();
 
 signals:

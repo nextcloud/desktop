@@ -27,17 +27,17 @@ public:
 
     QString _user;
     QString _password;
-    void syncContextPreInit(CSYNC* ctx);
-    void syncContextPreStart(CSYNC* ctx);
-    bool changed(AbstractCredentials* credentials) const;
-    QString authType() const;
-    QString user() const;
-    QNetworkAccessManager* getQNAM() const;
-    bool ready() const;
-    bool stillValid(QNetworkReply *reply);
-    void fetch(Account*);
-    void persist(Account*);
-    void invalidateToken(Account *) {}
+    void syncContextPreInit(CSYNC* ctx) Q_DECL_OVERRIDE;
+    void syncContextPreStart(CSYNC* ctx) Q_DECL_OVERRIDE;
+    bool changed(AbstractCredentials* credentials) const Q_DECL_OVERRIDE;
+    QString authType() const Q_DECL_OVERRIDE;
+    QString user() const Q_DECL_OVERRIDE;
+    QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
+    bool ready() const Q_DECL_OVERRIDE;
+    bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
+    void fetch(Account*) Q_DECL_OVERRIDE;
+    void persist(Account*) Q_DECL_OVERRIDE;
+    void invalidateToken(Account *) Q_DECL_OVERRIDE {}
 };
 
 } // ns Mirall

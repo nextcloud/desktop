@@ -99,7 +99,7 @@ class FancyLineEditPrivate : public QObject
 public:
     explicit FancyLineEditPrivate(FancyLineEdit *parent);
 
-    virtual bool eventFilter(QObject *obj, QEvent *event);
+    virtual bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
 
     FancyLineEdit  *m_lineEdit;
     QPixmap m_pixmap[2];

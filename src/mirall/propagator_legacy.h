@@ -25,7 +25,7 @@ public:
     explicit PropagateUploadFileLegacy(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateNeonJob(propagator, item)
         , _chunked_done(0), _chunked_total_size(0), _previousFileSize(0) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
 private:
     // Log callback for httpbf
     static void _log_callback(const char *func, const char *text, void*)
@@ -54,7 +54,7 @@ class PropagateDownloadFileLegacy: public PropagateNeonJob {
 public:
     explicit PropagateDownloadFileLegacy(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateNeonJob(propagator, item), _file(0) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
 private:
     QFile *_file;
     QScopedPointer<ne_decompress, ScopedPointerHelpers> _decompress;

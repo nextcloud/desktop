@@ -30,12 +30,12 @@ class OwncloudHttpCredsPage : public AbstractCredentialsWizardPage
 public:
   OwncloudHttpCredsPage();
 
-  AbstractCredentials* getCredentials() const;
+  AbstractCredentials* getCredentials() const Q_DECL_OVERRIDE;
 
-  void initializePage();
-  void cleanupPage();
-  bool validatePage();
-  int nextId() const;
+  void initializePage() Q_DECL_OVERRIDE;
+  void cleanupPage() Q_DECL_OVERRIDE;
+  bool validatePage() Q_DECL_OVERRIDE;
+  int nextId() const Q_DECL_OVERRIDE;
   void setConnected(bool connected);
   void setErrorString( const QString& err );
   void setConfigExists(bool config);

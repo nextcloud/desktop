@@ -43,17 +43,17 @@ public:
     /* create a credidentials for an already connected account */
     ShibbolethCredentials(const QNetworkCookie &cookie, Account *acc);
 
-    void syncContextPreInit(CSYNC* ctx);
-    void syncContextPreStart(CSYNC* ctx);
-    bool changed(AbstractCredentials* credentials) const;
-    QString authType() const;
-    QString user() const;
-    QNetworkAccessManager* getQNAM() const;
-    bool ready() const;
-    void fetch(Account *account);
-    bool stillValid(QNetworkReply *reply);
-    void persist(Account *account);
-    void invalidateToken(Account *account);
+    void syncContextPreInit(CSYNC* ctx) Q_DECL_OVERRIDE;
+    void syncContextPreStart(CSYNC* ctx) Q_DECL_OVERRIDE;
+    bool changed(AbstractCredentials* credentials) const Q_DECL_OVERRIDE;
+    QString authType() const Q_DECL_OVERRIDE;
+    QString user() const Q_DECL_OVERRIDE;
+    QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
+    bool ready() const Q_DECL_OVERRIDE;
+    void fetch(Account *account) Q_DECL_OVERRIDE;
+    bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
+    void persist(Account *account) Q_DECL_OVERRIDE;
+    void invalidateToken(Account *account) Q_DECL_OVERRIDE;
 
     void showLoginWindow(Account*);
 
@@ -62,7 +62,7 @@ public:
     static QByteArray shibCookieName();
 
 public Q_SLOTS:
-    void invalidateAndFetch(Account *account);
+    void invalidateAndFetch(Account *account) Q_DECL_OVERRIDE;
     void slotHandleAuthentication(QNetworkReply*,QAuthenticator*);
 
 private Q_SLOTS:
