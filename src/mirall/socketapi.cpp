@@ -12,19 +12,18 @@
  * for more details.
  */
 
-#include "socketapi.h"
+#include "mirall/socketapi.h"
 
 #include "mirall/mirallconfigfile.h"
 #include "mirall/folderman.h"
 #include "mirall/folder.h"
 #include "mirall/utility.h"
 #include "mirall/theme.h"
-#include "syncjournalfilerecord.h"
+#include "mirall/syncjournalfilerecord.h"
+#include "mirall/syncfileitem.h"
 
 #include <QDebug>
 #include <QUrl>
-#include <QLocalSocket>
-#include <QLocalServer>
 #include <QMetaObject>
 #include <QStringList>
 #include <QScopedPointer>
@@ -171,13 +170,8 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
     }
 
     // setup socket
-    _localServer = new QLocalServer(this);
-    QLocalServer::removeServer(socketPath);
-    if(!_localServer->listen(socketPath)) {
-        DEBUG << "can't start server" << socketPath;
-    } else {
-        DEBUG << "server started, listening at " << socketPath;
-    }
+    _localServer = new QTcpServer(this);
+    _localServer->listen( QHostAddress::LocalHost, 33001);
     connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
@@ -193,7 +187,8 @@ SocketApi::~SocketApi()
 
 void SocketApi::slotNewConnection()
 {
-    QLocalSocket* socket = _localServer->nextPendingConnection();
+    QTcpSocket* socket = _localServer->nextPendingConnection();
+
     if( ! socket ) {
         return;
     }
@@ -209,14 +204,14 @@ void SocketApi::onLostConnection()
 {
     DEBUG << "Lost connection " << sender();
 
-    QLocalSocket* socket = qobject_cast< QLocalSocket* >(sender());
+    QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
     _listeners.removeAll(socket);
 }
 
 
 void SocketApi::slotReadSocket()
 {
-    QLocalSocket* socket = qobject_cast<QLocalSocket*>(sender());
+    QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
     Q_ASSERT(socket);
 
     while(socket->canReadLine()) {
@@ -224,12 +219,12 @@ void SocketApi::slotReadSocket()
         QString command = line.split(":").first();
         QString function = QString(QLatin1String("command_")).append(command);
 
-        QString functionWithArguments = function + QLatin1String("(QString,QLocalSocket*)");
+        QString functionWithArguments = function + QLatin1String("(QString,QTcpSocket*)");
         int indexOfMethod = this->metaObject()->indexOfMethod(functionWithArguments.toAscii());
 
         QString argument = line.remove(0, command.length()+1).trimmed();
         if(indexOfMethod != -1) {
-            QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(QLocalSocket*, socket));
+            QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(QTcpSocket*, socket));
         } else {
             DEBUG << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
         }
@@ -259,7 +254,7 @@ void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item
 
 
 
-void SocketApi::sendMessage(QLocalSocket* socket, const QString& message)
+void SocketApi::sendMessage(QTcpSocket *socket, const QString& message)
 {
     DEBUG << "Sending message: " << message;
     QString localMessage = message;
@@ -269,13 +264,12 @@ void SocketApi::sendMessage(QLocalSocket* socket, const QString& message)
 void SocketApi::broadcastMessage(const QString& message)
 {
     DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << message;
-    foreach(QLocalSocket* current, _listeners)
-    {
+    foreach(QTcpSocket* current, _listeners) {
         sendMessage(current, message);
     }
 }
 
-void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket)
+void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QTcpSocket* socket)
 {
     // This command is the same as RETRIEVE_FILE_STATUS
 
@@ -283,7 +277,7 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSo
     command_RETRIEVE_FILE_STATUS(argument, socket);
 }
 
-void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket)
+void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket* socket)
 {
     if( !socket ) {
         qDebug() << "No valid socket object.";
