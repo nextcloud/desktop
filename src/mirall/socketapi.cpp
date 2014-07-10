@@ -160,15 +160,6 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
     : QObject(parent)
     , _localServer(0)
 {
-    QString socketPath;
-    if (Utility::isWindows()) {
-        socketPath = QLatin1String("\\\\.\\pipe\\")
-                + Theme::instance()->appName();
-    } else {
-        socketPath = localFile.toLocalFile();
-
-    }
-
     // setup socket
     _localServer = new QTcpServer(this);
     _localServer->listen( QHostAddress::LocalHost, 33001);
