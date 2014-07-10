@@ -9,7 +9,7 @@
 
 #include <QtTest>
 
-#include "mirall/utility.h"
+#include "utility.h"
 
 using namespace Mirall::Utility;
 

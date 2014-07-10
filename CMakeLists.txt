@@ -18,7 +18,6 @@ if (NOT DEFINED APPLICATION_SHORTNAME)
 endif()
 
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
-configure_file( ${CMAKE_SOURCE_DIR}/src/mirall/version.h.in "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/version.h" )
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
 
 #####

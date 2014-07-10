@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -10,13 +10,17 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include "../../../src/utility.h"
+#ifndef SIMPLESSLERRORHANDLER_H
+#define SIMPLESSLERRORHANDLER_H
 
-#include <QDir>
+#include "account.h"
 
-int main(int argc, char* argv[])
-{
-   QString dir="/tmp/linktest/";
-   QDir().mkpath(dir);
-   Mirall::Utility::setupFavLink(dir);
-}
+class QSslError;
+class QSslCertificate;
+
+class SimpleSslErrorHandler : public Mirall::AbstractSslErrorHandler {
+public:
+    bool handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, Mirall::Account*) Q_DECL_OVERRIDE;
+};
+
+#endif // SIMPLESSLERRORHANDLER_H
