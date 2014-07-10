@@ -87,6 +87,7 @@ set(libsync_SRCS
     mirall/clientproxy.cpp
     mirall/syncrunfilelog.cpp
     mirall/cookiejar.cpp
+    mirall/syncfilestatus.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialsfactory.cpp

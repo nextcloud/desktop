@@ -72,7 +72,7 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
 
     const QStringList dirEntries = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot );
 
-    SyncFileStatus result = FILE_STATUS_SYNC;
+    SyncFileStatus result(SyncFileStatus::STATUS_SYNC);
 
     foreach( const QString entry, dirEntries ) {
         QFileInfo fi(entry);
@@ -88,10 +88,10 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
             sfs = fileStatus(folder, fs );
         }
 
-        if( sfs == FILE_STATUS_STAT_ERROR || sfs == FILE_STATUS_ERROR ) {
-            return FILE_STATUS_ERROR;
-        } else if( sfs == FILE_STATUS_EVAL || sfs == FILE_STATUS_NEW) {
-            result = FILE_STATUS_EVAL;
+        if( sfs.tag() == SyncFileStatus::STATUS_STAT_ERROR || sfs.tag() == SyncFileStatus::STATUS_ERROR ) {
+            return SyncFileStatus::STATUS_ERROR;
+        } else if( sfs.tag() == SyncFileStatus::STATUS_EVAL || sfs.tag() == SyncFileStatus::STATUS_NEW) {
+            result.set(SyncFileStatus::STATUS_EVAL);
         }
     }
     return result;
@@ -112,12 +112,12 @@ SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
     QFileInfo fi(file);
 
     if( !fi.exists() ) {
-        return FILE_STATUS_STAT_ERROR;
+        return SyncFileStatus(SyncFileStatus::STATUS_STAT_ERROR);
     }
 
     // file is ignored?
     if( fi.isSymLink() ) {
-        return FILE_STATUS_IGNORE;
+        return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
     int type = CSYNC_FTW_TYPE_FILE;
     if( fi.isDir() ) {
@@ -126,28 +126,28 @@ SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
 
     CSYNC_EXCLUDE_TYPE excl = csync_excluded(folder->csyncContext(), file.toUtf8(), type);
     if( excl != CSYNC_NOT_EXCLUDED ) {
-        return FILE_STATUS_IGNORE;
+        return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 
-    SyncFileStatus stat = FILE_STATUS_NONE;
     SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(fileName);
     if( !rec.isValid() ) {
-        return FILE_STATUS_NEW;
+        return SyncFileStatus(SyncFileStatus::STATUS_NEW);
     }
 
+    SyncFileStatus stat(SyncFileStatus::STATUS_NONE);
     if( type == CSYNC_FTW_TYPE_DIR ) {
         // compute recursive status of the directory
         stat = recursiveFolderStatus( folder, fileName );
     } else if(fi.lastModified() != rec._modtime ) {
         // file was locally modified.
-        stat = FILE_STATUS_EVAL;
+        stat.set(SyncFileStatus::STATUS_EVAL);
     } else {
-        stat = FILE_STATUS_SYNC;
+        stat.set(SyncFileStatus::STATUS_SYNC);
     }
 
     if (rec._remotePerm.contains("S")) {
         // FIXME!  that should be an additional flag
-        stat = FILE_STATUS_SHARED;
+       stat.setSharedWithMe(true);
     }
 
     return stat;
@@ -294,44 +294,16 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSock
 
     QString statusString;
 
-    Folder* folder = FolderMan::instance()->folderForPath( argument );
-    // this can happen in offline mode e.g.: nothing to worry about
-    if (!folder) {
+    Folder* syncFolder = FolderMan::instance()->folderForPath( argument );
+    if (!syncFolder) {
+        // this can happen in offline mode e.g.: nothing to worry about
         DEBUG << "folder offline or not watched:" << argument;
         statusString = QLatin1String("NOP");
-    }
+    } else {
+        const QString file = argument.mid(syncFolder->path().length());
+        SyncFileStatus fileStatus = SocketApiHelper::fileStatus(syncFolder, file);
 
-    if( statusString.isEmpty() ) {
-        SyncFileStatus fileStatus = SocketApiHelper::fileStatus(folder, argument.mid(folder->path().length()) );
-
-        switch(fileStatus)
-        {
-        case FILE_STATUS_NONE:
-            statusString = QLatin1String("NONE");
-            break;
-        case FILE_STATUS_EVAL:
-        case FILE_STATUS_NEW:
-            statusString = QLatin1String("NEED_SYNC");
-            break;
-        case FILE_STATUS_IGNORE:
-            statusString = QLatin1String("IGNORE");
-            break;
-        case FILE_STATUS_SYNC:
-        case FILE_STATUS_UPDATED:
-            statusString = QLatin1String("OK");
-            break;
-        case FILE_STATUS_STAT_ERROR:
-        case FILE_STATUS_ERROR:
-            statusString = QLatin1String("ERROR");
-            break;
-        case FILE_STATUS_SHARED:
-            statusString = QLatin1String("SHARED");
-            break;
-        default:
-            qWarning() << "This status should not be there" << fileStatus;
-            Q_ASSERT(false);
-            statusString = QLatin1String("NONE");
-        }
+        statusString = fileStatus.toSocketAPIString();
     }
 
     QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')+argument;
