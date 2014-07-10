@@ -277,7 +277,7 @@ set(updater_SRCS
 )
 
 IF( APPLE )
-    list(APPEND mirall_SRCSmirall_SRCS mirall/cocoainitializer_mac.mm)
+    list(APPEND mirall_SRCS mirall/cocoainitializer_mac.mm)
 
     list(APPEND mirall_SRCS mirall/settingsdialogmac.cpp)
 
