@@ -82,7 +82,7 @@ namespace Utility
     // if false, the two cases are two different files.
     OWNCLOUDSYNC_EXPORT bool fsCasePreserving();
 
-    class StopWatch {
+    class OWNCLOUDSYNC_EXPORT StopWatch {
     private:
         QHash<QString, quint64> _lapTimes;
         QDateTime _startTime;

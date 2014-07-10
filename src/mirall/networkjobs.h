@@ -208,7 +208,7 @@ private:
 /**
  * @brief The RequestEtagJob class
  */
-class RequestEtagJob : public AbstractNetworkJob {
+class OWNCLOUDSYNC_EXPORT RequestEtagJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit RequestEtagJob(Account *account, const QString &path, QObject *parent = 0);

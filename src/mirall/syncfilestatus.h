@@ -16,9 +16,11 @@
 
 #include <QString>
 
+#include "owncloudlib.h"
+
 namespace Mirall {
 
-class SyncFileStatus
+class OWNCLOUDSYNC_EXPORT SyncFileStatus
 {
 public:
     enum SyncFileStatusTag {

@@ -43,7 +43,7 @@ class SyncEngine;
 
 class FolderWatcher;
 
-class OWNCLOUDSYNC_EXPORT Folder : public QObject
+class Folder : public QObject
 {
     Q_OBJECT
 

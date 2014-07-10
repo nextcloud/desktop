@@ -85,7 +85,6 @@ set(libsync_SRCS
     mirall/account.cpp
     mirall/quotainfo.cpp
     mirall/clientproxy.cpp
-    mirall/syncrunfilelog.cpp
     mirall/cookiejar.cpp
     mirall/syncfilestatus.cpp
     creds/dummycredentials.cpp
@@ -267,6 +266,7 @@ set(mirall_SRCS
     mirall/owncloudgui.cpp
     mirall/socketapi.cpp
     mirall/sslbutton.cpp
+    mirall/syncrunfilelog.cpp
 )
 
 

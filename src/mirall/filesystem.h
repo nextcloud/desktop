@@ -16,6 +16,8 @@
 #include <QString>
 #include <ctime>
 
+#include <owncloudlib.h>
+
 namespace Mirall {
 
 /**
@@ -28,7 +30,7 @@ namespace FileSystem {
 bool fileEquals(const QString &fn1, const QString &fn2);
 
 /** Mark the file as hidden  (only has effects on windows) */
-void setFileHidden(const QString& filename, bool hidden);
+void OWNCLOUDSYNC_EXPORT setFileHidden(const QString& filename, bool hidden);
 
 void setModTime(const QString &filename, time_t modTime);
 
