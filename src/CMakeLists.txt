@@ -4,8 +4,10 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
 
 add_subdirectory(libsync)
-add_subdirectory(gui)
-add_subdirectory(cmd)
+if (NOT BUILD_LIBRARIES_ONLY)
+    add_subdirectory(gui)
+    add_subdirectory(cmd)
+endif(NOT BUILD_LIBRARIES_ONLY)
 
 find_program(KRAZY2_EXECUTABLE krazy2)
 if(KRAZY2_EXECUTABLE)

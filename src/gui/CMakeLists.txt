@@ -171,7 +171,7 @@ if (WITH_DBUS)
     set(ADDITIONAL_APP_MODULES DBus)
 endif(WITH_DBUS)
 
-if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
+if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 
     if(NOT WIN32)
         file( GLOB _icons "${theme_dir}/colored/${ICON_APP_NAME}-icon-*.png" )
@@ -189,7 +189,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
     qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql ${ADDITIONAL_APP_MODULES})
-elseif(NOT BUILD_LIBRARIES_ONLY)
+elseif()
     if (Qt5Core_FOUND)
         include(DeployQt5)
     else(Qt5Core_FOUND)
@@ -211,35 +211,33 @@ elseif(NOT BUILD_LIBRARIES_ONLY)
     install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
 endif()
 
-if(NOT BUILD_LIBRARIES_ONLY)
-  add_library(updater STATIC ${updater_SRCS} ${updaterMoc})
-  target_link_libraries(updater ${synclib_NAME})
-  qt5_use_modules(updater Widgets Network Xml)
+add_library(updater STATIC ${updater_SRCS} ${updaterMoc})
+target_link_libraries(updater ${synclib_NAME})
+qt5_use_modules(updater Widgets Network Xml)
 
-  set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
-          RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
-  )
-  set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
+set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
+)
+set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 	  INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
 
-  target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
-  target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
-  target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
-  target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
+target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
+target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
+target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
+target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
 
-  install(TARGETS ${APPLICATION_EXECUTABLE}
-          RUNTIME DESTINATION bin
-          LIBRARY DESTINATION lib
-          ARCHIVE DESTINATION lib
-          BUNDLE  DESTINATION "."
+install(TARGETS ${APPLICATION_EXECUTABLE}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        BUNDLE  DESTINATION "."
  )
-endif()
 
 
 #FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary
 # currently it needs to be done because the code right above needs to be executed no matter
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
-if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
+if(BUILD_OWNCLOUD_OSX_BUNDLE)
     if(Qt5Core_FOUND)
         install_qt5_executable(${OWNCLOUD_OSX_BUNDLE} "qtaccessiblewidgets;qsqlite;qcocoa")
     else(Qt5Core_FOUND)
