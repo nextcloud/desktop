@@ -131,6 +131,8 @@ include_directories(${CMAKE_SOURCE_DIR}/csync/src
                     ${CMAKE_BINARY_DIR}/csync
                     ${CMAKE_BINARY_DIR}/csync/src
                    )
+include_directories(${NEON_INCLUDE_DIRS})
+
 include_directories(../libsync ${CMAKE_CURRENT_BINARY_DIR}/../libsync)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_BINARY_DIR}

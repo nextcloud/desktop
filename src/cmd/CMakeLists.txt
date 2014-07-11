@@ -16,9 +16,9 @@ include_directories(${CMAKE_SOURCE_DIR}/csync/src
                     ${CMAKE_BINARY_DIR}/csync
                     ${CMAKE_BINARY_DIR}/csync/src
                    )
+include_directories(${NEON_INCLUDE_DIRS})
 
 if(NOT BUILD_LIBRARIES_ONLY)
-
    add_executable(${cmd_NAME}  ${cmd_SRC})
 	qt5_use_modules(${cmd_NAME} Network Sql)
 	set_target_properties(${cmd_NAME} PROPERTIES
