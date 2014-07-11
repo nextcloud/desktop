@@ -92,10 +92,43 @@ static RequestManager* sharedInstance = nil;
 }
 
 
+- (void)socket:(GCDAsyncSocket*)socket didReadData:(NSData*)data withTag:(long)tag
+{
+	NSArray *chunks;
+	NSString *answer = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	if (answer != nil && [answer length] > 0) {
+		// cut a trailing newline
+		answer = [answer substringToIndex:[answer length] - 1];
+		chunks = [answer componentsSeparatedByString: @":"];
+	}
+	NSLog(@"READ from socket (%ld): <%@>", tag, answer);
+	ContentManager *contentman = [ContentManager sharedInstance];
+
+	if( [chunks count] > 0 && tag == READ_TAG ) {
+		if( [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
+			[contentman setResultForPath:[chunks objectAtIndex:2] result:[chunks objectAtIndex:1]];
+		} else if( [[chunks objectAtIndex:0] isEqualToString:@"UPDATE_VIEW"] ) {
+			[contentman clearFileNameCacheForPath:[chunks objectAtIndex:1]]; // Fixme: index1 can be empty
+		} else {
+			NSLog(@"Unknown command %@", [chunks objectAtIndex:0]);
+		}
+	} else {
+		NSLog(@"Received unknown tag %ld", tag);
+	}
+	// Read on and on
+	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
+	[_socket readDataToData:stop withTimeout:-1 tag:READ_TAG];
+
+}
+
+- (NSTimeInterval)socket:(GCDAsyncSocket*)socket shouldTimeoutReadWithTag:(long)tag elapsed:(NSTimeInterval)elapsed bytesDone:(NSUInteger)length
+{
+	// Called if a read operation has reached its timeout without completing.
+	return 0.0;
+}
+
 - (void)socket:(GCDAsyncSocket*)socket didConnectToHost:(NSString*)host port:(UInt16)port
 {
-	// [socket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1 tag:0];
-	
 	NSLog( @"Connected to host successfully!");
 	_isConnected = YES;
 	
@@ -105,41 +138,17 @@ static RequestManager* sharedInstance = nil;
 			[self askOnSocket:path];
 		}
 	}
-}
-
-
-- (void)socket:(GCDAsyncSocket*)socket didReadData:(NSData*)data withTag:(long)tag
-{
 	
-	if( tag == READ_TAG) {
-		NSString *answer = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		
-		// Cut the trailing newline.
-		if ([answer length] > 0) {
-			answer = [answer substringToIndex:[answer length] - 1];
-		}
-		
-		NSLog(@"READ from socket (%ld): <%@>", tag, answer);
+	// Read for the UPDATE_VIEW requests
+	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
+	[_socket readDataToData:stop withTimeout:-1 tag:READ_TAG];
 	
-		if( answer != nil ) {
-			NSArray *chunks = [answer componentsSeparatedByString: @":"];
-			
-			if( [chunks count] > 0 && [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
-				ContentManager *contentman = [ContentManager sharedInstance];
-				[contentman setResultForPath:[chunks objectAtIndex:2] result:[chunks objectAtIndex:1]];
-			}
-		}
-	}
-}
-
-- (NSTimeInterval)socket:(GCDAsyncSocket*)socket shouldTimeoutReadWithTag:(long)tag elapsed:(NSTimeInterval)elapsed bytesDone:(NSUInteger)length
-{
-	// Called if a read operation has reached its timeout without completing.
-	return 0.0;
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket*)socket withError:(NSError*)err
 {
+	NSLog(@"Socket DISconnected!");
+
 	if ([_connectedListenSockets containsObject:socket])
 	{
 		[_connectedListenSockets removeObject:socket];
@@ -165,7 +174,6 @@ static RequestManager* sharedInstance = nil;
 			// If there was an error, it's likely something like "already connected" or "no delegate set"
 			NSLog(@"I goofed: %@", err);
 		}
-		NSLog(@"Socket Connected!");
 		
 		 _isRunning = YES;
 	}

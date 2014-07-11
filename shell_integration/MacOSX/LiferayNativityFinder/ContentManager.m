@@ -77,7 +77,7 @@ static ContentManager* sharedInstance = nil;
 	int res = 0; // NOP
 	if( [result isEqualToString:@"OK"] ) {
 		res = 1;
-	} else if( [result isEqualToString:@"NEED_SYNC"]) {
+	} else if( [result isEqualToString:@"SYNC"] || [result isEqualToString:@"NEW"] ) {
 		res = 2;
 	} else if( [result isEqualToString:@"IGNORE"]) {
 		res = 3;
@@ -112,7 +112,7 @@ static ContentManager* sharedInstance = nil;
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
 	
 	NSNumber* result = [_fileNamesCache objectForKey:normalizedPath];
-	NSLog(@"XXXXXXX Asking for icon for path %@ = %d",path, [result intValue]);
+	// NSLog(@"XXXXXXX Asking for icon for path %@ = %d",path, [result intValue]);
 	
 	if( result == nil ) {
 		// start the async call
@@ -126,9 +126,32 @@ static ContentManager* sharedInstance = nil;
 	} else {
 		// there is a proper icon index
 	}
-    NSLog(@"iconByPath return value %d", [result intValue]);
+    // NSLog(@"iconByPath return value %d", [result intValue]);
 	
 	return result;
+}
+
+// called as a result of an UPDATE_VIEW message.
+// it clears the entries from the hash to make it call again home to mirall.
+- (void)clearFileNameCacheForPath:(NSString*)path
+{
+	NSMutableArray *keysToDelete = [NSMutableArray array];
+	NSLog(@"Clearing the cache for %@", path);
+	
+	for (id path in [_fileNamesCache keyEnumerator]) {
+		//do stuff with obj
+		if ( [path hasPrefix:path] ) {
+			[keysToDelete addObject:path];
+		}
+	}
+	
+	if( [keysToDelete count] > 0 ) {
+		NSLog( @"Entries to delete: %d", [keysToDelete count]);
+		[_fileNamesCache removeObjectsForKeys:keysToDelete];
+	
+		[self repaintAllWindows];
+
+	}
 }
 
 - (void)removeAllIcons
