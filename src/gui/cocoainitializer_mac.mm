@@ -11,7 +11,7 @@
  * for more details.
  */
 
-#include "mirall/cocoainitializer.h"
+#include "cocoainitializer.h"
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <AppKit/NSApplication.h>

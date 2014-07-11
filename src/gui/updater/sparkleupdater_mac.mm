@@ -19,7 +19,8 @@
 
 #include "updater/sparkleupdater.h"
 
-#include "mirall/utility.h"
+#include "utility.h"
+
 #include <QDebug>
 
 // Does not work yet
