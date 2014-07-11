@@ -222,9 +222,17 @@ void SocketApi::slotReadSocket()
     }
 }
 
-void SocketApi::slotSyncStateChanged(const QString&)
+void SocketApi::slotSyncStateChanged(const QString& alias)
 {
-    broadcastMessage("UPDATE_VIEW");
+    QString msg = QLatin1String("UPDATE_VIEW");
+
+    Folder *f = FolderMan::instance()->folder(alias);
+    if (f) {
+        msg.append(QLatin1String(":"));
+        msg.append(QDir::cleanPath(f->path()));
+    }
+
+    broadcastMessage(msg);
 }
 
 void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item)
