@@ -18,6 +18,15 @@
 {
 	NSMutableDictionary* _fileNamesCache;
 	BOOL _fileIconsEnabled;
+	
+	NSNumber *_icnOk;
+	NSNumber *_icnSync;
+	NSNumber *_icnWarn;
+	NSNumber *_icnErr;
+	NSNumber *_icnOkSwm;
+	NSNumber *_icnSyncSwm;
+	NSNumber *_icnWarnSwm;
+	NSNumber *_icnErrSwm;
 }
 
 + (ContentManager*)sharedInstance;

@@ -32,12 +32,19 @@ static ContentManager* sharedInstance = nil;
 		_fileNamesCache = [[NSMutableDictionary alloc] init];
 		_fileIconsEnabled = TRUE;
 		
-		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/ok.icns"];
-		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/sync.icns"];
-		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/sync.icns"];
-		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/sync.icns"];
-		[[IconCache sharedInstance] registerIcon:@"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/sync.icns"];
+		// FIXME: Proper path here!
+		NSString *base = @"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/";
 		
+		_icnOk   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok.icns"]];
+		_icnSync = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync.icns"]];
+		_icnWarn = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning.icns"]];
+		_icnErr  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error.icns"]];
+		_icnOkSwm   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok_swm.icns"]];
+		_icnSyncSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync_swm.icns"]];
+		_icnWarnSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning_swm.icns"]];
+		_icnErrSwm  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error_swm.icns"]];
+		
+		NSLog(@"Icon ok identifier: %d", [_icnOk intValue]);
 	}
 
 	return self;
@@ -74,25 +81,35 @@ static ContentManager* sharedInstance = nil;
 
 - (void)setResultForPath:(NSString*)path result:(NSString*)result
 {
-	int res = 0; // NOP
+
+	NSNumber *res;
+	res = [NSNumber numberWithInt:0];
+
 	if( [result isEqualToString:@"OK"] ) {
-		res = 1;
+		res = _icnOk;
 	} else if( [result isEqualToString:@"SYNC"] || [result isEqualToString:@"NEW"] ) {
-		res = 2;
+		res = _icnSync;
 	} else if( [result isEqualToString:@"IGNORE"]) {
-		res = 3;
+		res = _icnWarn;
 	} else if( [result isEqualToString:@"ERROR"]) {
-		res = 4;
-	}else if( [result isEqualToString:@"SHARED"]) {
-		res = 5;
+		res = _icnErr;
+	} else if( [result isEqualToString:@"OK+SWM"] ) {
+		res = _icnOkSwm;
+	} else if( [result isEqualToString:@"SYNC+SWM"] || [result isEqualToString:@"NEW+SWM"] ) {
+		res = _icnSyncSwm;
+	} else if( [result isEqualToString:@"IGNORE+SWM"]) {
+		res = _icnWarnSwm;
+	} else if( [result isEqualToString:@"ERROR+SWM"]) {
+		res = _icnErrSwm;
 	}else if( [result isEqualToString:@"NOP"]) {
 		// Nothing.
 	} else {
 		NSLog(@"Unknown status code %@", result);
 	}
+	
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
-	[_fileNamesCache setObject:[NSNumber numberWithInt:res] forKey:normalizedPath];
-	NSLog(@"SET value %d", res);
+	[_fileNamesCache setObject:res forKey:normalizedPath];
+	NSLog(@"SET value %d", [res intValue]);
 	
 	[self repaintAllWindows];
 }
