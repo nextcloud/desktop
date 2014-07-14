@@ -160,15 +160,6 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
     : QObject(parent)
     , _localServer(0)
 {
-    QString socketPath;
-    if (Utility::isWindows()) {
-        socketPath = QLatin1String("\\\\.\\pipe\\")
-                + Theme::instance()->appName();
-    } else {
-        socketPath = localFile.toLocalFile();
-
-    }
-
     // setup socket
     _localServer = new QTcpServer(this);
     _localServer->listen( QHostAddress::LocalHost, 33001);
@@ -231,9 +222,17 @@ void SocketApi::slotReadSocket()
     }
 }
 
-void SocketApi::slotSyncStateChanged(const QString&)
+void SocketApi::slotSyncStateChanged(const QString& alias)
 {
-    broadcastMessage("UPDATE_VIEW");
+    QString msg = QLatin1String("UPDATE_VIEW");
+
+    Folder *f = FolderMan::instance()->folder(alias);
+    if (f) {
+        msg.append(QLatin1String(":"));
+        msg.append(QDir::cleanPath(f->path()));
+    }
+
+    broadcastMessage(msg);
 }
 
 void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item)
