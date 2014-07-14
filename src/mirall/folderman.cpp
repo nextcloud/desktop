@@ -517,12 +517,12 @@ void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceF
 
 Folder *FolderMan::folderForPath(const QString &path)
 {
-    QString absolutePath = QDir::cleanPath(path+QLatin1Char('/'));
+    QString absolutePath = QDir::cleanPath(path)+QLatin1Char('/');
 
-    foreach(Folder* folder, map().values())
-    {
-        if(absolutePath.startsWith(QDir::cleanPath(folder->path())))
-        {
+    foreach(Folder* folder, this->map().values()) {
+        const QString folderPath = QDir::cleanPath(folder->path())+QLatin1Char('/');
+
+        if(absolutePath.startsWith(folderPath)) {
             qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
             return folder;
         }
