@@ -149,6 +149,9 @@ static RequestManager* sharedInstance = nil;
 {
 	NSLog(@"Socket DISconnected!");
 
+	if( err ) {
+		NSLog(@"ERROR: %@", [err localizedDescription]);
+	}
 	if ([_connectedListenSockets containsObject:socket])
 	{
 		[_connectedListenSockets removeObject:socket];
