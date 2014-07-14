@@ -48,6 +48,9 @@ FolderMan::FolderMan(QObject *parent) :
     connect(_folderWatcherSignalMapper, SIGNAL(mapped(const QString&)),
             this, SLOT(slotScheduleSync(const QString&)));
 
+    MirallConfigFile cfg;
+    _socketApi = new SocketApi(this, QUrl::fromLocalFile(cfg.configPathWithAppName().append(QLatin1String("socket"))));
+
     ne_sock_init();
     Q_ASSERT(!_instance);
     _instance = this;
