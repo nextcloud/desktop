@@ -1,5 +1,6 @@
 /*
  * Copyright (C) by Dominik Schmidt <dev@dominik-schmidt.de>
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -182,7 +183,7 @@ SocketApi::SocketApi(QObject* parent)
     connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), this, SLOT(slotUpdateFolderView(QString)));
+    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), SLOT(slotSyncStateChanged(QString)));
     connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem)),
             SLOT(slotJobCompleted(QString,SyncFileItem)));
 }
