@@ -1354,7 +1354,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="288"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Этот файл был переименован но является частью распространения только для чтения. Оригинальный файл был восстановлен.</translation>
     </message>
 </context>
 <context>
