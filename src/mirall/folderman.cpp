@@ -17,6 +17,7 @@
 #include "mirall/folder.h"
 #include "mirall/syncresult.h"
 #include "mirall/theme.h"
+#include "mirall/socketapi.h"
 
 #include <neon/ne_socket.h>
 
@@ -28,7 +29,7 @@
 #endif
 
 #include <QMessageBox>
-
+#include <QPointer>
 #include <QtCore>
 
 namespace Mirall {
@@ -46,6 +47,9 @@ FolderMan::FolderMan(QObject *parent) :
     _folderWatcherSignalMapper = new QSignalMapper(this);
     connect(_folderWatcherSignalMapper, SIGNAL(mapped(const QString&)),
             this, SLOT(slotScheduleSync(const QString&)));
+
+    MirallConfigFile cfg;
+    _socketApi = new SocketApi(this, QUrl::fromLocalFile(cfg.configPathWithAppName().append(QLatin1String("socket"))));
 
     ne_sock_init();
     Q_ASSERT(!_instance);

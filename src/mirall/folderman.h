@@ -19,6 +19,7 @@
 #include <QObject>
 #include <QQueue>
 #include <QList>
+#include <QPointer>
 
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
@@ -26,11 +27,11 @@
 
 class QSignalMapper;
 
-class SyncResult;
-
 namespace Mirall {
 
 class Application;
+class SyncResult;
+class SocketApi;
 
 class FolderMan : public QObject
 {
@@ -146,6 +147,7 @@ private:
     bool           _syncEnabled;
     QQueue<QString> _scheduleQueue;
     QMap<QString, FolderWatcher*> _folderWatchers;
+    QPointer<SocketApi> _socketApi;
 
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = 0);
