@@ -13,8 +13,13 @@ find_program(KRAZY2_EXECUTABLE krazy2)
 if(KRAZY2_EXECUTABLE)
     # s/y k/y ALL k/ for building this target always
     add_custom_target( krazy krazy2 --check-sets c++,qt4,foss
-                       ${PROJECT_SOURCE_DIR}/src/mirall/*.ui
-                       ${PROJECT_SOURCE_DIR}/src/mirall/*.h
-                       ${PROJECT_SOURCE_DIR}/src/mirall/*.cpp
+                       ${PROJECT_SOURCE_DIR}/src/libsync/*.ui
+                       ${PROJECT_SOURCE_DIR}/src/libsync/*.h
+                       ${PROJECT_SOURCE_DIR}/src/libsync/*.cpp
+                       ${PROJECT_SOURCE_DIR}/src/gui/*.ui
+                       ${PROJECT_SOURCE_DIR}/src/gui/*.h
+                       ${PROJECT_SOURCE_DIR}/src/gui/*.cpp
+                       ${PROJECT_SOURCE_DIR}/src/cmd/*.h
+                       ${PROJECT_SOURCE_DIR}/src/cmd/*.cpp
 )
 endif()
