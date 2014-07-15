@@ -189,6 +189,10 @@ void SocketApi::slotNewConnection()
     Q_ASSERT(socket->readAll().isEmpty());
 
     _listeners.append(socket);
+
+    foreach( QString alias, FolderMan::instance()->map().keys() ) {
+       slotUpdateFolderView(alias);
+    }
 }
 
 void SocketApi::onLostConnection()
