@@ -49,11 +49,12 @@ FolderMan::FolderMan(QObject *parent) :
             this, SLOT(slotScheduleSync(const QString&)));
 
     MirallConfigFile cfg;
-    _socketApi = new SocketApi(this, QUrl::fromLocalFile(cfg.configPathWithAppName().append(QLatin1String("socket"))));
 
     ne_sock_init();
     Q_ASSERT(!_instance);
     _instance = this;
+
+    _socketApi = new SocketApi(this, QUrl::fromLocalFile(cfg.configPathWithAppName().append(QLatin1String("socket"))));
 }
 
 FolderMan *FolderMan::instance()
@@ -429,6 +430,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
                 f->prepareToSync();
             } else {
                 qDebug() << "Folder is not enabled, not scheduled!";
+                _socketApi->slotUpdateFolderView(f->alias());
                 return;
             }
         }
