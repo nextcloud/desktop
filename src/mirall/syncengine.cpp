@@ -61,7 +61,8 @@ SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remo
   , _remoteUrl(remoteURL)
   , _remotePath(remotePath)
   , _journal(journal)
-  , _hasFiles(false)
+  , _hasNoneFiles(false)
+  , _hasRemoveFile(false)
   , _downloadLimit(0)
   , _uploadLimit(0)
 
@@ -330,7 +331,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             dir = SyncFileItem::None;
         } else {
             // No need to do anything.
-            _hasFiles = true;
+            _hasNoneFiles = true;
 
             emit syncItemDiscovered(item);
             return re;
@@ -343,8 +344,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             _renamedFolders.insert(item._file, item._renameTarget);
         break;
     case CSYNC_INSTRUCTION_REMOVE:
+        _hasRemoveFile = true;
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
-                break;
+        break;
     case CSYNC_INSTRUCTION_CONFLICT:
     case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
@@ -356,6 +358,11 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_STAT_ERROR:
     default:
         dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
+        if (!remote && file->instruction == CSYNC_INSTRUCTION_SYNC) {
+            // An upload of an existing file means that the file was left unchanged on the server
+            // This count as a NONE for detecting if all the file on the server were changed
+            _hasNoneFiles = true;
+        }
         break;
     }
 
@@ -363,11 +370,6 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     // check for blacklisting of this item.
     // if the item is on blacklist, the instruction was set to IGNORE
     checkBlacklisting( &item );
-
-    if (file->instruction != CSYNC_INSTRUCTION_IGNORE
-        && file->instruction != CSYNC_INSTRUCTION_REMOVE) {
-      _hasFiles = true;
-    }
 
     if (!item._isDirectory) {
         _progressInfo._totalFileCount++;
@@ -526,7 +528,8 @@ void SyncEngine::slotUpdateFinished(int updateResult)
 
     _progressInfo = Progress::Info();
 
-    _hasFiles = false;
+    _hasNoneFiles = false;
+    _hasRemoveFile = false;
     bool walkOk = true;
     _seenFiles.clear();
 
@@ -556,8 +559,8 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     emit aboutToPropagate(_syncedItems);
     emit transmissionProgress(_progressInfo);
 
-    if (!_hasFiles && !_syncedItems.isEmpty()) {
-        qDebug() << Q_FUNC_INFO << "All the files are going to be removed, asking the user";
+    if (!_hasNoneFiles && _hasRemoveFile) {
+        qDebug() << Q_FUNC_INFO << "All the files are going to be changed, asking the user";
         bool cancel = false;
         emit aboutToRemoveAllFiles(_syncedItems.first()._direction, &cancel);
         if (cancel) {
