@@ -155,10 +155,10 @@ static ContentManager* sharedInstance = nil;
 	NSMutableArray *keysToDelete = [NSMutableArray array];
 	NSLog(@"Clearing the cache for %@", path);
 	
-	for (id path in [_fileNamesCache keyEnumerator]) {
+	for (id p in [_fileNamesCache keyEnumerator]) {
 		//do stuff with obj
-		if ( [path hasPrefix:path] ) {
-			[keysToDelete addObject:path];
+		if ( [p hasPrefix:path] ) {
+			[keysToDelete addObject:p];
 		}
 	}
 	
