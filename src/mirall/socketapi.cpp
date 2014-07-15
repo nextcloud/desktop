@@ -183,7 +183,7 @@ SocketApi::SocketApi(QObject* parent)
     connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), SLOT(slotSyncStateChanged(QString)));
+    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), this, SLOT(slotUpdateFolderView(QString)));
     connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem)),
             SLOT(slotJobCompleted(QString,SyncFileItem)));
 }
