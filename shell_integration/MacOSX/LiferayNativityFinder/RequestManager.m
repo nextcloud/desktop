@@ -86,6 +86,7 @@ static RequestManager* sharedInstance = nil;
 		[self askOnSocket:path query:verb];
 	} else {
 		[_requestQueue addObject:path];
+		[self start]; // try again to connect
 	}
 }
 
