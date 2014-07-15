@@ -27,8 +27,6 @@ static RequestManager* sharedInstance = nil;
 	if ((self = [super init]))
 	{
 		_socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-		
-		_filterFolder = nil;
 
 		_isRunning = NO;
 		_isConnected = NO;
@@ -67,7 +65,7 @@ static RequestManager* sharedInstance = nil;
 - (void)askOnSocket:(NSString*)path query:(NSString*)verb
 {
 	NSString *query = [NSString stringWithFormat:@"%@:%@\n", verb,path];
-	NSLog(@"Query: %@", query);
+	// NSLog(@"Query: %@", query);
 	
 	NSData* data = [query dataUsingEncoding:NSUTF8StringEncoding];
 	[_socket writeData:data withTimeout:5 tag:4711];
@@ -131,6 +129,7 @@ static RequestManager* sharedInstance = nil;
 {
 	NSLog( @"Connected to host successfully!");
 	_isConnected = YES;
+	_isRunning = NO;
 	
 	if( [_requestQueue count] > 0 ) {
 		NSLog( @"We have to empty the queue");
@@ -149,19 +148,10 @@ static RequestManager* sharedInstance = nil;
 {
 	NSLog(@"Socket DISconnected!");
 
+	_isConnected = NO;
+	_isRunning = NO;
 	if( err ) {
 		NSLog(@"ERROR: %@", [err localizedDescription]);
-	}
-	if ([_connectedListenSockets containsObject:socket])
-	{
-		[_connectedListenSockets removeObject:socket];
-
-		[[ContentManager sharedInstance] enableFileIcons:false];
-	}
-
-	if ([_connectedCallbackSockets containsObject:socket])
-	{
-		[_connectedCallbackSockets removeObject:socket];
 	}
 }
 
@@ -172,7 +162,7 @@ static RequestManager* sharedInstance = nil;
 	{
 		NSLog(@"Connect Socket!");
 		NSError *err = nil;
-		if (![_socket connectToHost:@"localhost" onPort:33001 error:&err]) // Asynchronous!
+		if (![_socket connectToHost:@"localhost" onPort:33001 withTimeout:5 error:&err]) // Asynchronous!
 		{
 			// If there was an error, it's likely something like "already connected" or "no delegate set"
 			NSLog(@"I goofed: %@", err);
