@@ -101,6 +101,8 @@ public slots:
 
     void terminateSyncProcess( const QString& alias = QString::null );
 
+    /* unload and delete on folder object */
+    void unloadFolder( const QString& alias );
     /* delete all folder objects */
     int unloadAllFolders();
 
