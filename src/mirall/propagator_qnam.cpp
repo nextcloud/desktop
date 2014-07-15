@@ -208,7 +208,9 @@ void PropagateUploadFileQNAM::startNextChunk()
     headers["OC-Total-Length"] = QByteArray::number(fileSize);
     headers["Content-Type"] = "application/octet-stream";
     headers["X-OC-Mtime"] = QByteArray::number(qint64(_item._modtime));
-    if (!_item._etag.isEmpty() && _item._etag != "empty_etag") {
+    if (!_item._etag.isEmpty() && _item._etag != "empty_etag" &&
+            _item._instruction != CSYNC_INSTRUCTION_NEW  // On new files never send a If-Match
+            ) {
         // We add quotes because the owncloud server always add quotes around the etag, and
         //  csync_owncloud.c's owncloud_file_id always strip the quotes.
         headers["If-Match"] = '"' + _item._etag + '"';
