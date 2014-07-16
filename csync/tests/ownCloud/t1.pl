@@ -123,10 +123,8 @@ assertLocalAndRemoteDir( '', 0);
 
 # The previous sync should have updated the etags, and this should NOT be a conflict
 printInfo( "Update the file again");
-my $cmd = "sleep 2 && echo more data >> ". localDir() . "remoteToLocal1/kernelcrash.txt";
-$cmd .= " && echo corruption >> " . localDir(). "remoteToLocal1/kraft_logo.gif";
-
-system($cmd);
+createLocalFile( localDir() . "remoteToLocal1/kernelcrash.txt", 2134 );
+createLocalFile( localDir() . "remoteToLocal1/kraft_logo.gif", 2332 );
 csync( );
 assertLocalAndRemoteDir( '', 0);
 
