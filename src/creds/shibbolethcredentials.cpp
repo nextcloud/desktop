@@ -94,6 +94,23 @@ ShibbolethCredentials::ShibbolethCredentials()
       _browser(0)
 {}
 
+ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie& cookie, Account* account)
+  : _ready(true),
+    _stillValid(true),
+    _fetchJobInProgress(false),
+    _browser(0),
+    _shibCookie(cookie)
+{
+    if (account) {
+        /* The _user has not yet been fetched, so fetch it now */
+        ShibbolethUserJob *job = new ShibbolethUserJob(account, this);
+        connect(job, SIGNAL(userFetched(QString)), this, SLOT(slotUserFetched(QString)));
+        QTimer::singleShot(1234, job, SLOT(start()));
+
+    }
+}
+
+
 void ShibbolethCredentials::syncContextPreInit(CSYNC* ctx)
 {
     csync_set_auth_callback (ctx, handleNeonSSLProblems);

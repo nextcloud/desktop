@@ -131,6 +131,13 @@ void ProtocolWidget::slotClearBlacklist()
 void ProtocolWidget::cleanIgnoreItems(const QString& folder)
 {
     int itemCnt = _ui->_treeWidget->topLevelItemCount();
+
+    // Limit the number of items
+    while(itemCnt > 2000) {
+        delete _ui->_treeWidget->takeTopLevelItem(itemCnt - 1);
+        itemCnt--;
+    }
+
     for( int cnt = itemCnt-1; cnt >=0 ; cnt-- ) {
         QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(cnt);
         bool isErrorItem = item->data(0, IgnoredIndicatorRole).toBool();

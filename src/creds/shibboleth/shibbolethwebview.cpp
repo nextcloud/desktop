@@ -34,6 +34,7 @@ ShibbolethWebView::ShibbolethWebView(Account* account, QWidget* parent)
     : QWebView(parent)
     , _account(account)
     , _accepted(false)
+    , _cursorOverriden(false)
 {
     // no minimize
     setWindowFlags(Qt::Dialog);
@@ -79,6 +80,10 @@ void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieL
 
 void ShibbolethWebView::closeEvent(QCloseEvent *event)
 {
+    if (_cursorOverriden) {
+        QApplication::restoreOverrideCursor();
+    }
+
     if (!_accepted) {
         Q_EMIT rejected();
     }
@@ -87,12 +92,17 @@ void ShibbolethWebView::closeEvent(QCloseEvent *event)
 
 void ShibbolethWebView::slotLoadStarted()
 {
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    if (!_cursorOverriden) {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        _cursorOverriden = true;
+    }
 }
 
 void ShibbolethWebView::slotLoadFinished(bool success)
 {
-    QApplication::restoreOverrideCursor();
+    if (_cursorOverriden) {
+        QApplication::restoreOverrideCursor();
+    }
 
     if (!title().isNull()) {
         setWindowTitle(tr("%1 - %2").arg(Theme::instance()->appNameGUI(), title()));
