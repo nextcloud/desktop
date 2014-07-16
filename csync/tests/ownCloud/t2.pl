@@ -207,7 +207,8 @@ $inode = getInode('superNewDir/f3');
 
 csync();
 assertLocalAndRemoteDir( '', 1);
-assert( ! -e localDir().'superNewDir' );
+my $file = localDir() . 'superNewDir';
+assert( -e $file );
 
 $inode2 = getInode('superNewDir/f3');
 assert( $inode == $inode2, "Inode of f3 changed");
