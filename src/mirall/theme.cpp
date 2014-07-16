@@ -153,13 +153,14 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
     return icon;
 }
 
+#endif
+
 Theme::Theme() :
     QObject(0)
     ,_mono(false)
 {
 
 }
-#endif
 
 // if this option return true, the client only supports one folder to sync.
 // The Add-Button is removed accoringly.

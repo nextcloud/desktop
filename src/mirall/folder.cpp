@@ -713,10 +713,7 @@ void Folder::slotJobCompleted(const SyncFileItem &item)
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel)
 {
-    QString msg = direction == SyncFileItem::Down ?
-        tr("This sync would remove all the files in the local sync folder '%1'.\n"
-           "If you or your administrator have reset your account on the server, choose "
-           "\"Keep files\". If you want your data to be removed, choose \"Remove all files\".") :
+    QString msg =
         tr("This sync would remove all the files in the sync folder '%1'.\n"
            "This might be because the folder was silently reconfigured, or that all "
            "the file were manually removed.\n"

@@ -119,14 +119,15 @@ void PropagateUploadFileQNAM::start()
 
 struct ChunkDevice : QIODevice {
 public:
-    QIODevice *_file;
+    QPointer<QIODevice> _file;
     qint64 _read;
     qint64 _size;
     qint64 _start;
 
     ChunkDevice(QIODevice *file,  qint64 start, qint64 size)
             : QIODevice(file), _file(file), _read(0), _size(size), _start(start) {
-        _file->seek(start);
+        _file = QPointer<QIODevice>(file);
+        _file.data()->seek(start);
     }
 
     virtual qint64 writeData(const char* , qint64 ) Q_DECL_OVERRIDE {
@@ -135,10 +136,15 @@ public:
     }
 
     virtual qint64 readData(char* data, qint64 maxlen) Q_DECL_OVERRIDE {
+        if (_file.isNull()) {
+            qDebug() << Q_FUNC_INFO << "Upload file object deleted during upload";
+            close();
+            return -1;
+        }
         maxlen = qMin(maxlen, chunkSize() - _read);
         if (maxlen == 0)
             return 0;
-        qint64 ret = _file->read(data, maxlen);
+        qint64 ret = _file.data()->read(data, maxlen);
         if (ret < 0)
             return -1;
         _read += ret;
@@ -146,7 +152,11 @@ public:
     }
 
     virtual bool atEnd() const Q_DECL_OVERRIDE {
-        return  _read >= chunkSize() || _file->atEnd();
+        if (_file.isNull()) {
+            qDebug() << Q_FUNC_INFO << "Upload file object deleted during upload";
+            return true;
+        }
+        return  _read >= chunkSize() || _file.data()->atEnd();
     }
 
     virtual qint64 size() const Q_DECL_OVERRIDE{
@@ -164,8 +174,13 @@ public:
     }
 
     virtual bool seek ( qint64 pos ) Q_DECL_OVERRIDE {
+        if (_file.isNull()) {
+            qDebug() << Q_FUNC_INFO << "Upload file object deleted during upload";
+            close();
+            return false;
+        }
         _read = pos;
-        return _file->seek(pos + _start);
+        return _file.data()->seek(pos + _start);
     }
 };
 
@@ -456,7 +471,7 @@ void GETFileJob::slotMetaDataChanged()
 
 void GETFileJob::slotReadyRead()
 {
-    int bufferSize = qMax(1024*8ll , reply()->bytesAvailable());
+    int bufferSize = qMin(1024*8ll , reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
 
     while(reply()->bytesAvailable() > 0) {

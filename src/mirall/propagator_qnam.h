@@ -99,7 +99,7 @@ private slots:
     void slotUploadProgress(qint64,qint64);
     void abort() Q_DECL_OVERRIDE;
     void startNextChunk();
-    void finalize(const Mirall::SyncFileItem&);
+    void finalize(const SyncFileItem&);
 };
 
 
