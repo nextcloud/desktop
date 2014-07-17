@@ -38,7 +38,6 @@ namespace Mirall {
 class Theme;
 class Folder;
 class SslErrorDialog;
-class SocketApi;
 
 class Application : public SharedTools::QtSingleApplication
 {

@@ -155,13 +155,11 @@ SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
 
 }
 
-SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
+SocketApi::SocketApi(QObject* parent)
     : QObject(parent)
-    , _localServer(0)
+    , _localServer(new QTcpServer(this))
 {
     // setup socket
-    _localServer = new QTcpServer(this);
-    _localServer->listen( QHostAddress::LocalHost, 33001);
     connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
@@ -183,7 +181,7 @@ void SocketApi::slotNewConnection()
     if( ! socket ) {
         return;
     }
-    DEBUG << "New connection " << socket;
+    DEBUG << "New connection" << socket;
     connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadSocket()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
     Q_ASSERT(socket->readAll().isEmpty());

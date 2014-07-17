@@ -33,7 +33,7 @@ class SocketApi : public QObject
 Q_OBJECT
 
 public:
-    SocketApi(QObject* parent, const QUrl& localFile);
+    SocketApi(QObject* parent);
     virtual ~SocketApi();
 
 public slots:
