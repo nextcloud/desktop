@@ -127,6 +127,11 @@ SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
         type = CSYNC_FTW_TYPE_DIR;
     }
 
+    // on windows, there might be a colon in the file name.
+    QRegExp rx( "^[a-zA-Z]\\:[\\\\/]+");
+    if( file.contains(rx) ) {
+        file.remove(0, 2);
+    }
     CSYNC_EXCLUDE_TYPE excl = csync_excluded(folder->csyncContext(), file.toUtf8(), type);
     if( excl != CSYNC_NOT_EXCLUDED ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
