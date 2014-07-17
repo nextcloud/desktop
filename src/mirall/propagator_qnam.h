@@ -131,7 +131,7 @@ public:
 
     QString errorString() {
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;
-    };
+    }
 
     SyncFileItem::Status errorStatus() { return _errorStatus; }
 
