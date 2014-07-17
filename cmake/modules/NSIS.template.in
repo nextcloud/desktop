@@ -415,9 +415,9 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 
    ;Qt deps
    File "${MING_BIN}\libpng16-16.dll"
-   File "${MING_BIN}\icudata51.dll"
-   File "${MING_BIN}\icui18n51.dll"
-   File "${MING_BIN}\icuuc51.dll"
+   File "${MING_BIN}\icudata53.dll"
+   File "${MING_BIN}\icui18n53.dll"
+   File "${MING_BIN}\icuuc53.dll"
    File "${MING_BIN}\libEGL.dll"
    File "${MING_BIN}\libGLESv2.dll"
    File "${MING_BIN}\libjpeg-8.dll"
