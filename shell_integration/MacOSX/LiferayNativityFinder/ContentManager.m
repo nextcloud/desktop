@@ -31,7 +31,7 @@ static ContentManager* sharedInstance = nil;
 	{
 		_fileNamesCache = [[NSMutableDictionary alloc] init];
 		_fileIconsEnabled = TRUE;
-		
+
 		// FIXME: Proper path here!
 		NSString *base = @"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/";
 		
@@ -133,9 +133,9 @@ static ContentManager* sharedInstance = nil;
 	
 	if( result == nil ) {
 		// start the async call
-		NSNumber* minusOne = [[NSNumber alloc] initWithInt:-1];
-		[_fileNamesCache setObject:minusOne forKey:normalizedPath];
-		[[RequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
+		NSNumber *askState = [[RequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
+		[_fileNamesCache setObject:askState forKey:normalizedPath];
+
 		result = [NSNumber numberWithInt:0];
 	} else if( [result intValue] == -1 ) {
 		// the socket call is underways.
@@ -144,7 +144,7 @@ static ContentManager* sharedInstance = nil;
 		// there is a proper icon index
 	}
     // NSLog(@"iconByPath return value %d", [result intValue]);
-	
+
 	return result;
 }
 
@@ -155,11 +155,18 @@ static ContentManager* sharedInstance = nil;
 	NSMutableArray *keysToDelete = [NSMutableArray array];
 	NSLog(@"Clearing the cache for %@", path);
 	
-	for (id p in [_fileNamesCache keyEnumerator]) {
-		//do stuff with obj
-		if ( [p hasPrefix:path] ) {
-			[keysToDelete addObject:p];
+	if( path != nil ) {
+		for (id p in [_fileNamesCache keyEnumerator]) {
+			//do stuff with obj
+			if ( [p hasPrefix:path] ) {
+				[keysToDelete addObject:p];
+			}
 		}
+	} else {
+		// clear the entire fileNameCache
+		[_fileNamesCache release];
+		_fileNamesCache = [[NSMutableDictionary alloc] init];
+		return;
 	}
 	
 	if( [keysToDelete count] > 0 ) {

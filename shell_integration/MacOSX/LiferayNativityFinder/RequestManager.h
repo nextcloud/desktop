@@ -21,6 +21,7 @@
 	GCDAsyncSocket* _socket;
 
 	NSMutableArray* _requestQueue;
+	NSMutableDictionary* _registeredPathes;
 	
 	BOOL _isRunning;
 	BOOL _isConnected;
@@ -30,8 +31,9 @@
 
 + (RequestManager*)sharedInstance;
 
+- (BOOL)isRegisteredPath:(NSString*)path;
 - (void)askOnSocket:(NSString*)path query:(NSString*)verb;
-- (void)askForIcon:(NSString*)path isDirectory:(NSNumber*)isDir;
+- (NSNumber*)askForIcon:(NSString*)path isDirectory:(NSNumber*)isDir;
 - (void)menuItemClicked:(NSDictionary*)actionDictionary;
 - (NSArray*)menuItemsForFiles:(NSArray*)files;
 - (void)start;

@@ -31,6 +31,8 @@ static RequestManager* sharedInstance = nil;
 		_isRunning = NO;
 		_isConnected = NO;
 
+		_registeredPathes = [[NSMutableDictionary alloc] init];
+
 		[self start];
 	}
 
@@ -75,19 +77,45 @@ static RequestManager* sharedInstance = nil;
 }
 
 
-- (void)askForIcon:(NSString*)path isDirectory:(NSNumber*)isDir
+- (BOOL)isRegisteredPath:(NSString*)path
+{
+	// check if the file in question is underneath a registered directory
+	NSArray *regPathes = [_registeredPathes allKeys];
+	BOOL registered = NO;
+
+	for( NSString *regPath in regPathes ) {
+		if( [path hasPrefix:regPath]) {
+			// the path was registered
+			registered = YES;
+			break;
+		}
+	}
+
+	return registered;
+}
+
+- (NSNumber*)askForIcon:(NSString*)path isDirectory:(NSNumber*)isDir
 {
 	NSString *verb = @"RETRIEVE_FILE_STATUS";
-	if( _isConnected ) {
-		if( [isDir boolValue] ) {
-			verb = @"RETRIEVE_FOLDER_STATUS";
+	NSNumber *res = [NSNumber numberWithInt:0];
+
+	if( [self isRegisteredPath:path] ) {
+		if( _isConnected ) {
+			if( [isDir boolValue] ) {
+				verb = @"RETRIEVE_FOLDER_STATUS";
+			}
+
+			[self askOnSocket:path query:verb];
+
+			NSNumber *res_minus_one = [NSNumber numberWithInt:0];
+
+			return res_minus_one;
+		} else {
+			[_requestQueue addObject:path];
+			[self start]; // try again to connect
 		}
-		
-		[self askOnSocket:path query:verb];
-	} else {
-		[_requestQueue addObject:path];
-		[self start]; // try again to connect
 	}
+	return res;
 }
 
 
@@ -107,7 +135,11 @@ static RequestManager* sharedInstance = nil;
 		if( [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
 			[contentman setResultForPath:[chunks objectAtIndex:2] result:[chunks objectAtIndex:1]];
 		} else if( [[chunks objectAtIndex:0] isEqualToString:@"UPDATE_VIEW"] ) {
-			[contentman clearFileNameCacheForPath:[chunks objectAtIndex:1]]; // Fixme: index1 can be empty
+			NSString *path = [chunks objectAtIndex:1];
+			NSNumber *one = [NSNumber numberWithInt:1];
+			[_registeredPathes setObject:one forKey:path];
+
+			[contentman clearFileNameCacheForPath:path]; // Fixme: index1 can be empty
 		} else {
 			NSLog(@"Unknown command %@", [chunks objectAtIndex:0]);
 		}
@@ -131,7 +163,7 @@ static RequestManager* sharedInstance = nil;
 	NSLog( @"Connected to host successfully!");
 	_isConnected = YES;
 	_isRunning = NO;
-	
+
 	if( [_requestQueue count] > 0 ) {
 		NSLog( @"We have to empty the queue");
 		for( NSString *path in _requestQueue ) {
@@ -154,6 +186,14 @@ static RequestManager* sharedInstance = nil;
 	if( err ) {
 		NSLog(@"ERROR: %@", [err localizedDescription]);
 	}
+
+	// clear the registered pathes.
+	[_registeredPathes release];
+	_registeredPathes = [[NSMutableDictionary alloc] init];
+
+    // clear the caches in conent manager
+	ContentManager *contentman = [ContentManager sharedInstance];
+	[contentman clearFileNameCacheForPath:nil];
 }
 
 
