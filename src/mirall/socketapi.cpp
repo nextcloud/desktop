@@ -239,7 +239,7 @@ void SocketApi::slotUpdateFolderView(const QString& alias)
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         msg.append(QLatin1String(":"));
-        msg.append(QDir::cleanPath(f->path()));
+        msg.append(QDir::toNativeSeparators(QDir::cleanPath(f->path())));
     }
 
     broadcastMessage(msg);
@@ -258,7 +258,8 @@ void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item
         command = QLatin1String("ERROR");
     }
 
-    broadcastMessage(QLatin1String("BROADCAST:") + command + QLatin1Char(':') + path);
+    broadcastMessage(QLatin1String("BROADCAST:") + command + QLatin1Char(':')
+                     + QDir::toNativeSeparators(path));
 }
 
 
@@ -309,7 +310,8 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket
         statusString = fileStatus.toSocketAPIString();
     }
 
-    QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')+argument;
+    QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')
+            +QDir::toNativeSeparators(argument);
     sendMessage(socket, message);
 }
 
