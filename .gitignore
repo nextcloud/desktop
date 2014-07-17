@@ -16,3 +16,5 @@ build*
 cscope.*
 tags
 t1.cfg
+shell_integration/MacOSX/LiferayNativity.xcworkspace/xcuserdata/
+**/.DS_Store
