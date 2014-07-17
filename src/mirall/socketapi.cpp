@@ -107,14 +107,18 @@ SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
 {
     // FIXME: Find a way for STATUS_ERROR
 
-    QString file = fileName;
-    if( folder->path() != QLatin1String("/") ) {
+    QString file = folder->path();
+
+    bool isSyncRootFolder = true;
+    if( fileName != QLatin1String("/") && !fileName.isEmpty() ) {
         file = folder->path() + fileName;
+        isSyncRootFolder = false;
     }
 
     QFileInfo fi(file);
 
     if( !fi.exists() ) {
+        qDebug() << "OO File " << file << " is not existing";
         return SyncFileStatus(SyncFileStatus::STATUS_STAT_ERROR);
     }
 
@@ -137,28 +141,30 @@ SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 
+    // Problem: for the sync dir itself we do not have a record in the sync journal
+    // so the next check must not be used for the sync root folder.
     SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(fileName);
-    if( !rec.isValid() ) {
+    if( !isSyncRootFolder && !rec.isValid() ) {
         return SyncFileStatus(SyncFileStatus::STATUS_NEW);
     }
 
-    SyncFileStatus stat(SyncFileStatus::STATUS_NONE);
+    SyncFileStatus status(SyncFileStatus::STATUS_NONE);
     if( type == CSYNC_FTW_TYPE_DIR ) {
         // compute recursive status of the directory
-        stat = recursiveFolderStatus( folder, fileName );
+        status = recursiveFolderStatus( folder, fileName );
     } else if(fi.lastModified() != rec._modtime ) {
         // file was locally modified.
-        stat.set(SyncFileStatus::STATUS_EVAL);
+        status.set(SyncFileStatus::STATUS_EVAL);
     } else {
-        stat.set(SyncFileStatus::STATUS_SYNC);
+        status.set(SyncFileStatus::STATUS_SYNC);
     }
 
     if (rec._remotePerm.contains("S")) {
         // FIXME!  that should be an additional flag
-       stat.setSharedWithMe(true);
+       status.setSharedWithMe(true);
     }
 
-    return stat;
+    return status;
 }
 
 
