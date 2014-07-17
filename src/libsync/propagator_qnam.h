@@ -99,7 +99,7 @@ private slots:
     void slotUploadProgress(qint64,qint64);
     void abort() Q_DECL_OVERRIDE;
     void startNextChunk();
-    void finalize(const Mirall::SyncFileItem&);
+    void finalize(const SyncFileItem&);
 };
 
 
@@ -131,7 +131,7 @@ public:
 
     QString errorString() {
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;
-    };
+    }
 
     SyncFileItem::Status errorStatus() { return _errorStatus; }
 

@@ -87,7 +87,6 @@ private:
     void setHelp();
 
     QPointer<ownCloudGui> _gui;
-    QPointer<SocketApi> _socketApi;
 
     QPointer<ConnectionValidator> _conValidator;
 

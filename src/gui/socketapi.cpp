@@ -155,7 +155,6 @@ SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
 
 }
 
-
 SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
     : QObject(parent)
     , _localServer(0)
@@ -166,8 +165,9 @@ SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
     connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), SLOT(slotSyncStateChanged(QString)));
-    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem)), SLOT(slotJobCompleted(QString,SyncFileItem)));
+    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), this, SLOT(slotUpdateFolderView(QString)));
+    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem)),
+            SLOT(slotJobCompleted(QString,SyncFileItem)));
 }
 
 SocketApi::~SocketApi()
@@ -189,6 +189,10 @@ void SocketApi::slotNewConnection()
     Q_ASSERT(socket->readAll().isEmpty());
 
     _listeners.append(socket);
+
+    foreach( QString alias, FolderMan::instance()->map().keys() ) {
+       slotUpdateFolderView(alias);
+    }
 }
 
 void SocketApi::onLostConnection()
@@ -222,7 +226,7 @@ void SocketApi::slotReadSocket()
     }
 }
 
-void SocketApi::slotSyncStateChanged(const QString& alias)
+void SocketApi::slotUpdateFolderView(const QString& alias)
 {
     QString msg = QLatin1String("UPDATE_VIEW");
 

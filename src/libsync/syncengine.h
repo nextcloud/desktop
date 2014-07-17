@@ -129,7 +129,8 @@ private:
     void checkForPermission();
     QByteArray getPermissions(const QString& file) const;
 
-    bool _hasFiles; // true if there is at least one file that is not ignored or removed
+    bool _hasNoneFiles; // true if there is at least one file with instruction NONE
+    bool _hasRemoveFile; // true if there is at leasr one file with instruction REMOVE
 
     int _uploadLimit;
     int _downloadLimit;

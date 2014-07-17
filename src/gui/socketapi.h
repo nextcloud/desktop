@@ -36,11 +36,13 @@ public:
     SocketApi(QObject* parent, const QUrl& localFile);
     virtual ~SocketApi();
 
+public slots:
+    void slotUpdateFolderView(const QString&);
+
 private slots:
     void slotNewConnection();
     void onLostConnection();
     void slotReadSocket();
-    void slotSyncStateChanged(const QString&);
     void slotJobCompleted(const QString &, const SyncFileItem &);
 
 private:

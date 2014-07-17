@@ -17,6 +17,7 @@
 #include "folder.h"
 #include "syncresult.h"
 #include "theme.h"
+#include "socketapi.h"
 
 #include <neon/ne_socket.h>
 
@@ -28,7 +29,7 @@
 #endif
 
 #include <QMessageBox>
-
+#include <QPointer>
 #include <QtCore>
 
 namespace Mirall {
@@ -47,9 +48,13 @@ FolderMan::FolderMan(QObject *parent) :
     connect(_folderWatcherSignalMapper, SIGNAL(mapped(const QString&)),
             this, SLOT(slotScheduleSync(const QString&)));
 
+    MirallConfigFile cfg;
+
     ne_sock_init();
     Q_ASSERT(!_instance);
     _instance = this;
+
+    _socketApi = new SocketApi(this, QUrl::fromLocalFile(cfg.configPathWithAppName().append(QLatin1String("socket"))));
 }
 
 FolderMan *FolderMan::instance()
@@ -69,6 +74,27 @@ Mirall::Folder::Map FolderMan::map()
     return _folderMap;
 }
 
+// Attention: this function deletes the folder object to which
+// the alias refers. Do NOT USE the folder pointer any more after
+// having this called.
+void FolderMan::unloadFolder( const QString& alias )
+{
+    Folder *f = 0;
+    if( _folderMap.contains(alias)) {
+        f = _folderMap[alias];
+    }
+    if( f ) {
+        _folderChangeSignalMapper->removeMappings(f);
+        if( _folderWatchers.contains(alias)) {
+            FolderWatcher *fw = _folderWatchers[alias];
+            _folderWatcherSignalMapper->removeMappings(fw);
+            _folderWatchers.remove(alias);
+        }
+        _folderMap.remove( alias );
+        delete f;
+    }
+}
+
 int FolderMan::unloadAllFolders()
 {
     int cnt = 0;
@@ -77,11 +103,13 @@ int FolderMan::unloadAllFolders()
     Folder::MapIterator i(_folderMap);
     while (i.hasNext()) {
         i.next();
-        delete _folderMap.take( i.key() );
+        unloadFolder(i.key());
         cnt++;
     }
     _currentSyncFolder.clear();
     _scheduleQueue.clear();
+
+    Q_ASSERT(_folderMap.count() == 0);
     return cnt;
 }
 
@@ -390,7 +418,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
     if( alias.isEmpty() ) return;
 
     if( _currentSyncFolder == alias ) {
-        qDebug() << " the current folder is currently syncing.";
+        qDebug() << "folder " << alias << " is currently syncing. NOT scheduling.";
         return;
     }
     qDebug() << "Schedule folder " << alias << " to sync!";
@@ -402,6 +430,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
                 f->prepareToSync();
             } else {
                 qDebug() << "Folder is not enabled, not scheduled!";
+                _socketApi->slotUpdateFolderView(f->alias());
                 return;
             }
         }
@@ -494,12 +523,12 @@ void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceF
 
 Folder *FolderMan::folderForPath(const QString &path)
 {
-    QString absolutePath = QDir::cleanPath(path+QLatin1Char('/'));
+    QString absolutePath = QDir::cleanPath(path)+QLatin1Char('/');
 
-    foreach(Folder* folder, map().values())
-    {
-        if(absolutePath.startsWith(QDir::cleanPath(folder->path())))
-        {
+    foreach(Folder* folder, this->map().values()) {
+        const QString folderPath = QDir::cleanPath(folder->path())+QLatin1Char('/');
+
+        if(absolutePath.startsWith(folderPath)) {
             qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
             return folder;
         }
@@ -557,6 +586,9 @@ void FolderMan::removeFolder( const QString& alias )
             qDebug() << "Remove folder config file " << file.fileName();
             file.remove();
         }
+
+        unloadFolder( alias ); // now the folder object is gone.
+
         // FIXME: this is a temporar dirty fix against a crash happening because
         // the csync owncloud module still has static components. Activate the
         // delete once the module is fixed.
