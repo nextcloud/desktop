@@ -105,21 +105,22 @@ private slots:
 
 class GETFileJob : public AbstractNetworkJob {
     Q_OBJECT
-    QIODevice* _device;
+    QFile* _device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
     QByteArray _expectedEtagForResume;
+    quint64 _resumeStart;
     SyncFileItem::Status _errorStatus;
     QUrl _directDownloadUrl;
     QByteArray _etag;
 public:
 
     // DOES NOT take owncership of the device.
-    explicit GETFileJob(Account* account, const QString& path, QIODevice *device,
+    explicit GETFileJob(Account* account, const QString& path, QFile *device,
                         const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
-                        QObject* parent = 0);
+                        quint64 resumeStart, QObject* parent = 0);
     // For directDownloadUrl:
-    explicit GETFileJob(Account* account, const QUrl& url, QIODevice *device,
+    explicit GETFileJob(Account* account, const QUrl& url, QFile *device,
                         const QMap<QByteArray, QByteArray> &headers,
                         QObject* parent = 0);
 
