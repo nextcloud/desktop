@@ -203,6 +203,9 @@ static RequestManager* sharedInstance = nil;
     // clear the caches in conent manager
 	ContentManager *contentman = [ContentManager sharedInstance];
 	[contentman clearFileNameCacheForPath:nil];
+
+	[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(start) userInfo:nil repeats:NO];
+
 }
 
 
