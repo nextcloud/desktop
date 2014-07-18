@@ -438,6 +438,34 @@ void GETFileJob::slotMetaDataChanged()
         reply()->abort();
         return;
     }
+
+    quint64 start = 0;
+    QByteArray ranges = parseEtag(reply()->rawHeader("Content-Range"));
+    if (!ranges.isEmpty()) {
+        QRegExp rx("bytes (\\d+)-");
+        if (rx.indexIn(ranges) >= 0) {
+            start = rx.cap(1).toULongLong();
+        }
+    }
+    if (start != _resumeStart) {
+        qDebug() << Q_FUNC_INFO <<  "Wrong content-range: "<< ranges << " while expecting start was" << _resumeStart;
+        if (start == 0) {
+            // device don't support range, just stry again from scratch
+            _device->close();
+            if (!_device->open(QIODevice::WriteOnly)) {
+                _errorString = _device->errorString();
+                _errorStatus = SyncFileItem::NormalError;
+                reply()->abort();
+                return;
+            }
+        } else {
+            _errorString = tr("Server returned wrong content-range");
+            _errorStatus = SyncFileItem::NormalError;
+            reply()->abort();
+            return;
+        }
+    }
+
 }
 
 void GETFileJob::slotReadyRead()
@@ -544,7 +572,7 @@ void PropagateDownloadFileQNAM::start()
 
     _job = new GETFileJob(AccountManager::instance()->account(),
                           _propagator->_remoteFolder + _item._file,
-                          &_tmpFile, headers, expectedEtagForResume);
+                          &_tmpFile, headers, expectedEtagForResume, _startSize);
     _job->setTimeout(_propagator->httpTimeout() * 1000);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
     connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
