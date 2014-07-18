@@ -328,8 +328,7 @@ void PropagateNeonJob::limitBandwidth(qint64 progress, qint64 bandwidth_limit)
             // -bandwidth_limit is the % of bandwidth
             int64_t wait_time = -diff * (1 + 100.0 / bandwidth_limit);
             if (wait_time > 0) {
-                Mirall::Utility::usleep(wait_time);
-
+                Mirall::Utility::usleep(qMin(wait_time, int64_t(1000000*10)));
             }
         }
         _lastTime.start();
