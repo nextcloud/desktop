@@ -109,7 +109,7 @@ static ContentManager* sharedInstance = nil;
 	
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
 	[_fileNamesCache setObject:res forKey:normalizedPath];
-	NSLog(@"SET value %d", [res intValue]);
+	// NSLog(@"SET value %d", [res intValue]);
 	
 	[self repaintAllWindows];
 }
@@ -153,7 +153,6 @@ static ContentManager* sharedInstance = nil;
 - (void)clearFileNameCacheForPath:(NSString*)path
 {
 	NSMutableArray *keysToDelete = [NSMutableArray array];
-	NSLog(@"Clearing the cache for %@", path);
 	
 	if( path != nil ) {
 		for (id p in [_fileNamesCache keyEnumerator]) {
