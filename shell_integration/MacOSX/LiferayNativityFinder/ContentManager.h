@@ -38,5 +38,6 @@
 - (void)setIcons:(NSDictionary*)iconDictionary filterByFolder:(NSString*)filterFolder;
 - (void)setResultForPath:(NSString*)path result:(NSString*)result;
 - (void)clearFileNameCacheForPath:(NSString*)path;
+- (void)repaintAllWindows;
 
 @end
