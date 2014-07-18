@@ -397,20 +397,20 @@ void PropagateUploadFileQNAM::abort()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // DOES NOT take owncership of the device.
-GETFileJob::GETFileJob(Account* account, const QString& path, QIODevice *device,
+GETFileJob::GETFileJob(Account* account, const QString& path, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
-                    QObject* parent)
+                    quint64 _resumeStart,  QObject* parent)
 : AbstractNetworkJob(account, path, parent),
   _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume),
-  _errorStatus(SyncFileItem::NoStatus)
+  _resumeStart(_resumeStart) , _errorStatus(SyncFileItem::NoStatus)
 {
 }
 
-GETFileJob::GETFileJob(Account* account, const QUrl& url, QIODevice *device,
+GETFileJob::GETFileJob(Account* account, const QUrl& url, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers,
                     QObject* parent)
 : AbstractNetworkJob(account, url.toEncoded(), parent),
-  _device(device), _headers(headers),
+  _device(device), _headers(headers), _resumeStart(0),
   _errorStatus(SyncFileItem::NoStatus), _directDownloadUrl(url)
 {
 }
@@ -469,6 +469,34 @@ void GETFileJob::slotMetaDataChanged()
         reply()->abort();
         return;
     }
+
+    quint64 start = 0;
+    QByteArray ranges = parseEtag(reply()->rawHeader("Content-Range"));
+    if (!ranges.isEmpty()) {
+        QRegExp rx("bytes (\\d+)-");
+        if (rx.indexIn(ranges) >= 0) {
+            start = rx.cap(1).toULongLong();
+        }
+    }
+    if (start != _resumeStart) {
+        qDebug() << Q_FUNC_INFO <<  "Wrong content-range: "<< ranges << " while expecting start was" << _resumeStart;
+        if (start == 0) {
+            // device don't support range, just stry again from scratch
+            _device->close();
+            if (!_device->open(QIODevice::WriteOnly)) {
+                _errorString = _device->errorString();
+                _errorStatus = SyncFileItem::NormalError;
+                reply()->abort();
+                return;
+            }
+        } else {
+            _errorString = tr("Server returned wrong content-range");
+            _errorStatus = SyncFileItem::NormalError;
+            reply()->abort();
+            return;
+        }
+    }
+
 }
 
 void GETFileJob::slotReadyRead()
@@ -581,8 +609,8 @@ void PropagateDownloadFileQNAM::start()
     if (_item._directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
         _job = new GETFileJob(AccountManager::instance()->account(),
-                              _propagator->_remoteFolder + _item._file,
-                              &_tmpFile, headers, expectedEtagForResume);
+                            _propagator->_remoteFolder + _item._file,
+                            &_tmpFile, headers, expectedEtagForResume, _startSize);
     } else {
         // We were provided a direct URL, use that one
         if (!_item._directDownloadCookies.isEmpty()) {

@@ -53,13 +53,14 @@ class PropagateDownloadFileLegacy: public PropagateNeonJob {
     Q_OBJECT
 public:
     explicit PropagateDownloadFileLegacy(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateNeonJob(propagator, item), _file(0) {}
+        : PropagateNeonJob(propagator, item), _file(0), _resumeStart(0) {}
     void start() Q_DECL_OVERRIDE;
 private:
     QFile *_file;
     QScopedPointer<ne_decompress, ScopedPointerHelpers> _decompress;
     QString errorString;
     QByteArray _expectedEtagForResume;
+    quint64 _resumeStart;
 
     static int do_not_accept (void *userdata, ne_request *req, const ne_status *st)
     {
@@ -78,6 +79,9 @@ private:
     static void install_content_reader( ne_request *req, void *userdata, const ne_status *status );
     static void notify_status_cb(void* userdata, ne_session_status status,
                                     const ne_session_status_info* info);
+
+    /** To be called from install_content_reader if we want to abort the transfer */
+    void abortTransfer(ne_request *req, const QString &error);
 };
 
 }

@@ -111,6 +111,15 @@ void OwncloudSetupWizard::startWizard()
     }
 
     _ocWizard->setProperty("localFolder", localFolder);
+
+    // remember the local folder to compare later if it changed, but clean first
+    QString lf = QDir::fromNativeSeparators(localFolder);
+    if( !lf.endsWith(QLatin1Char('/'))) {
+        lf.append(QLatin1Char('/'));
+    }
+
+    _initLocalFolder = lf;
+
     _ocWizard->setRemoteFolder(_remoteFolder);
 
     _ocWizard->setStartId(WizardCommon::Page_ServerSetup);
@@ -392,10 +401,17 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
 
         Account *newAccount = _ocWizard->account();
         Account *origAccount = AccountManager::instance()->account();
-        const QString localFolder = _ocWizard->localFolder();
+
+        QString localFolder = QDir::fromNativeSeparators(_ocWizard->localFolder());
+        if( !localFolder.endsWith(QLatin1Char('/'))) {
+            localFolder.append(QLatin1Char('/'));
+        }
 
         bool isInitialSetup = (origAccount == 0);
-        bool reinitRequired = newAccount->changed(origAccount, true /* ignoreProtocol, allows http->https */);
+
+        // check if either the account or the local folder changed, than reinit
+        bool reinitRequired = _initLocalFolder != localFolder ||
+                newAccount->changed(origAccount, true /* ignoreProtocol, allows http->https */);
         bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
 
         // This distinguishes three possibilities:

@@ -94,6 +94,7 @@ private:
 
     Account* _account;
     OwncloudWizard* _ocWizard;
+    QString _initLocalFolder;
     QString _remoteFolder;
 
 };
