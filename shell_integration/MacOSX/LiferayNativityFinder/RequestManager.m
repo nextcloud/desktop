@@ -135,11 +135,20 @@ static RequestManager* sharedInstance = nil;
 		if( [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
 			[contentman setResultForPath:[chunks objectAtIndex:2] result:[chunks objectAtIndex:1]];
 		} else if( [[chunks objectAtIndex:0] isEqualToString:@"UPDATE_VIEW"] ) {
+			BOOL redraw = NO;
+			if( [_registeredPathes count] == 0 ) {
+				redraw = YES;
+			}
+
 			NSString *path = [chunks objectAtIndex:1];
 			NSNumber *one = [NSNumber numberWithInt:1];
 			[_registeredPathes setObject:one forKey:path];
 
-			[contentman clearFileNameCacheForPath:path]; // Fixme: index1 can be empty
+			[contentman clearFileNameCacheForPath:path];
+
+			if( redraw ) {
+				[contentman repaintAllWindows];
+			}
 		} else {
 			NSLog(@"Unknown command %@", [chunks objectAtIndex:0]);
 		}
