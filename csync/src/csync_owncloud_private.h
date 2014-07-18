@@ -127,7 +127,7 @@ static const ne_propname ls_props[] = {
     { "http://owncloud.org/ns", "id"},
     { "http://owncloud.org/ns", "dDU"},
     { "http://owncloud.org/ns", "dDC"},
-    { "http://owncloud.org/ns", "perm"},
+    { "http://owncloud.org/ns", "permissions"},
     { NULL, NULL }
 };
 
