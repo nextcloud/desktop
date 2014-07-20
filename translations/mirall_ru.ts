@@ -673,7 +673,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Редактор игнорирующихся файлов</translation>
+        <translation>Редактор игнорированных файлов</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="53"/>
@@ -869,7 +869,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Пропускная способность загрузки</translation>
+        <translation>Скорость загрузки с сервера</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="196"/>
@@ -892,7 +892,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
-        <translation>Пропускная способность закачки</translation>
+        <translation>Скорость закачки на сервер</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="285"/>
@@ -1503,7 +1503,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>Activity</source>
-        <translation>Действие</translation>
+        <translation>Действия</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
@@ -1536,7 +1536,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="48"/>
         <source>Activity</source>
-        <translation>Действие</translation>
+        <translation>Действия</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="52"/>
@@ -2107,7 +2107,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
         <source>Quit %1</source>
-        <translation>Выход %1</translation>
+        <translation>Закрыть %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="366"/>
@@ -2411,9 +2411,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="59"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</source>
-        <translation>&lt;p&gt;Версия %2. Дополнительная информация:  &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Создано Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;За основу взато ПО Mirall. Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7
-
-</translation>
+        <translation>&lt;p&gt;Версия %2. Дополнительная информация:  &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Авторы: Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, ownCloud Inc.&lt;br&gt;Основано на Mirall, автор Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;%7</translation>
     </message>
 </context>
 <context>
