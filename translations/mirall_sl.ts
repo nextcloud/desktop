@@ -620,7 +620,7 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation type="unfinished"/>
+        <translation>Splošne nastavitve</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -2141,7 +2141,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje %1 (%2 do konca)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
