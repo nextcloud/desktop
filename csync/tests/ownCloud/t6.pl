@@ -33,6 +33,34 @@ print "Hello, this is t6, a tester for csync with ownCloud.\n";
 
 initTesting();
 
+sub createPostUpdateScript()
+{
+    my $srcFile = localDir()."BIG.file";
+    my $cred = configValue("user") . ":" . configValue("passwd");
+    my $cmd = "curl -T $srcFile -u $cred " . testDirUrl();
+    my $script = "/tmp/post_update_script.sh";
+    open SC, ">$script" || die("Can not create script file");
+    print SC "#!/bin/bash\n";
+    print SC "$cmd\n";
+    close SC;
+    chmod 0755, $script;
+
+    return $script;
+}
+
+sub getETagFromJournal($)
+{
+    my ($num) = @_;
+    
+    my $sql = "sqlite3 " . localDir() . ".csync_journal.db \"SELECT md5 FROM metadata WHERE path='BIG.file';\"";
+    open(my $fh, '-|', $sql) or die $!;
+    my $etag  = <$fh>;
+    close $fh;
+    print "$num etag: $etag";
+
+    return $etag;
+}
+
 sub chunkFileTest( $$ ) 
 {
     my ($name, $size) = @_;
@@ -63,10 +91,27 @@ sub chunkFileTest( $$ )
 printInfo("Big file that needs chunking with default chunk size");
 chunkFileTest( "BIG.file", 23251233 );
 
+printInfo("Update the existing file and trigger reupload");
 # change the existing file again -> update
 chunkFileTest( "BIG.file", 21762122 );
 
- # Set a custom chunk size in environment.
+printInfo("Cause a precondition failed error");
+# Now overwrite the existing file to change it
+createLocalFile( localDir()."BIG.file", 21832199 );
+# and create a post update script
+my $script = createPostUpdateScript();
+$ENV{'OWNCLOUD_POST_UPDATE_SCRIPT'} = $script;
+
+# Save the etag before the sync
+my $firstETag = getETagFromJournal('First');
+csync(); # Sync, which ends in a precondition failed error 
+# get the etag again. It has to be unchanged because of the error.
+my $secondETag = getETagFromJournal('Second');
+assert( $firstETag eq $secondETag, "Different ETags, no precondition error." );
+
+unlink($script);
+
+# Set a custom chunk size in environment.
 my $ChunkSize = 1*1024*1024;
 $ENV{'OWNCLOUD_CHUNK_SIZE'} = $ChunkSize;
 
