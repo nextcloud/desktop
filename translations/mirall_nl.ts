@@ -603,7 +603,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="493"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Server retourneerde verkeerde content-bandbreedte</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="531"/>
@@ -1272,7 +1272,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="427"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Server retourneerde verkeerde content-bandbreedte</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="478"/>

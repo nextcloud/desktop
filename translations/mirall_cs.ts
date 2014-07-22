@@ -603,7 +603,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="493"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Server odpověděl chybným rozsahem obsahu</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="531"/>
@@ -1272,7 +1272,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="427"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Server odpověděl chybným rozsahem obsahu</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="478"/>

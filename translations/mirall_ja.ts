@@ -603,7 +603,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="493"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>サーバーが間違ったcontent-rangeを返しました</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="531"/>
@@ -1270,7 +1270,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="427"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>サーバーが間違ったcontent-rangeを返しました</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="478"/>
