@@ -63,6 +63,9 @@ sub chunkFileTest( $$ )
 printInfo("Big file that needs chunking with default chunk size");
 chunkFileTest( "BIG.file", 23251233 );
 
+# change the existing file again -> update
+chunkFileTest( "BIG.file", 21762122 );
+
  # Set a custom chunk size in environment.
 my $ChunkSize = 1*1024*1024;
 $ENV{'OWNCLOUD_CHUNK_SIZE'} = $ChunkSize;
