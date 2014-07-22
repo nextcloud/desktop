@@ -39,6 +39,7 @@
 #include <QTime>
 #include <QUrl>
 #include <QSslCertificate>
+#include <QProcess>
 
 namespace Mirall {
 
@@ -584,6 +585,15 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
     Q_ASSERT(session);
 
+    // post update phase script: allow to tweak stuff by a custom script in debug mode.
+#ifndef NDEBUG
+    if( !qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT").isEmpty() ) {
+        QString script = qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT");
+
+        qDebug() << "OOO => Post Update Script: " << script;
+        QProcess::execute(script.toUtf8());
+    }
+#endif
     _propagator.reset(new OwncloudPropagator (session, _localPath, _remoteUrl, _remotePath,
                                               _journal, &_thread));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
