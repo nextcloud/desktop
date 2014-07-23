@@ -27,6 +27,7 @@
 #include "mirall/logger.h"
 #include "mirall/logbrowser.h"
 #include "mirall/account.h"
+#include "openfilemanager.h"
 #include "creds/abstractcredentials.h"
 
 #include <QDesktopServices>
@@ -140,7 +141,7 @@ void ownCloudGui::slotFoldersChanged()
 
 void ownCloudGui::slotOpenPath(const QString &path)
 {
-    Utility::showInFileManager(path);
+    showInFileManager(path);
 }
 
 void ownCloudGui::slotAccountStateChanged()
@@ -326,10 +327,9 @@ void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QStrin
 void ownCloudGui::slotFolderOpenAction( const QString& alias )
 {
     Folder *f = FolderMan::instance()->folder(alias);
-    qDebug() << "opening local url " << f->path();
     if( f ) {
-        QUrl url(f->path(), QUrl::TolerantMode);
-        url.setScheme( QLatin1String("file") );
+        qDebug() << "opening local url " << f->path();
+        QUrl url = QUrl::fromLocalFile(f->path());
 
 #ifdef Q_OS_WIN
         // work around a bug in QDesktopServices on Win32, see i-net
@@ -483,7 +483,7 @@ void ownCloudGui::slotShowSettings()
         _settingsDialog->show();
     }
     _settingsDialog->setGeneralErrors( _startupFails );
-    Utility::raiseDialog(_settingsDialog.data());
+    raiseDialog(_settingsDialog.data());
 }
 
 void ownCloudGui::slotShowSyncProtocol()
@@ -511,7 +511,7 @@ void ownCloudGui::slotToggleLogBrowser()
     if (_logBrowser->isVisible() ) {
         _logBrowser->hide();
     } else {
-        Utility::raiseDialog(_logBrowser);
+        raiseDialog(_logBrowser);
     }
 }
 
@@ -525,6 +525,16 @@ void ownCloudGui::slotOpenOwnCloud()
 void ownCloudGui::slotHelp()
 {
     QDesktopServices::openUrl(QUrl(Theme::instance()->helpUrl()));
+}
+
+void ownCloudGui::raiseDialog( QWidget *raiseWidget )
+{
+    if( raiseWidget && raiseWidget->parentWidget() == 0) {
+        // Qt has a bug which causes parent-less dialogs to pop-under.
+        raiseWidget->showNormal();
+        raiseWidget->raise();
+        raiseWidget->activateWindow();
+    }
 }
 
 

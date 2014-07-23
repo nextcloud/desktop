@@ -21,6 +21,7 @@
 #include "mirall/progressdispatcher.h"
 #include "mirall/syncjournaldb.h"
 #include "mirall/clientproxy.h"
+#include "mirall/syncfilestatus.h"
 
 #include <csync.h>
 
@@ -42,22 +43,7 @@ class SyncEngine;
 
 class FolderWatcher;
 
-enum SyncFileStatus {
-    FILE_STATUS_NONE,
-    FILE_STATUS_EVAL,
-    FILE_STATUS_REMOVE,
-    FILE_STATUS_RENAME,
-    FILE_STATUS_MOVE,
-    FILE_STATUS_NEW,
-    FILE_STATUS_CONFLICT,
-    FILE_STATUS_IGNORE,
-    FILE_STATUS_SYNC,
-    FILE_STATUS_STAT_ERROR,
-    FILE_STATUS_ERROR,
-    FILE_STATUS_UPDATED
-};
-
-class OWNCLOUDSYNC_EXPORT Folder : public QObject
+class Folder : public QObject
 {
     Q_OBJECT
 
@@ -198,7 +184,6 @@ private:
     QString   _remotePath;
     QString   _alias;
     QString   _configFile;
-    QFileSystemWatcher *_pathWatcher;
     bool       _enabled;
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;

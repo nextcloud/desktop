@@ -29,6 +29,7 @@
 
 #include <QStack>
 #include <QFileInfo>
+#include <QDir>
 
 namespace Mirall {
 
@@ -43,7 +44,15 @@ static int maximumActiveJob() {
 
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
 {
-    _item._errorString = errorString;
+    if (_item._isRestoration) {
+        if( status == SyncFileItem::Success || status == SyncFileItem::Conflict) {
+            status = SyncFileItem::Restoration;
+        } else {
+            _item._errorString += tr("; Restoration Failed: ") + errorString;
+        }
+    } else {
+        _item._errorString = errorString;
+    }
     _item._status = status;
 
     // Blacklisting
@@ -77,6 +86,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         _propagator->_journal->updateBlacklistEntry( record );
         break;
     case SyncFileItem::Success:
+    case SyncFileItem::Restoration:
         if( _item._blacklistedInDb ) {
             // wipe blacklist entry.
             _propagator->_journal->wipeBlacklistEntry(_item._file);
@@ -153,7 +163,8 @@ void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
         _restoreJob->setRestoreJobMsg();
     }
 
-    if( item._status == SyncFileItem::Success ||  item._status == SyncFileItem::Conflict) {
+    if( item._status == SyncFileItem::Success ||  item._status == SyncFileItem::Conflict
+            || item._status == SyncFileItem::Restoration) {
         done( SyncFileItem::SoftError, msg);
     } else {
         done( item._status, tr("A file or directory was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
@@ -206,14 +217,13 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
     return 0;
 }
 
-void OwncloudPropagator::start(const SyncFileItemVector& _syncedItems)
+void OwncloudPropagator::start(const SyncFileItemVector& items)
 {
     /* This builds all the job needed for the propagation.
      * Each directories is a PropagateDirectory job, which contains the files in it.
-     * In order to do that we sort the items by destination. and loop over it. When we enter a
-     * directory, we can create the directory job and push it on the stack. */
-    SyncFileItemVector items = _syncedItems;
-    std::sort(items.begin(), items.end());
+     * In order to do that we loop over the items. (which are sorted by destination)
+     * When we enter adirectory, we can create the directory job and push it on the stack. */
+
     _rootJob.reset(new PropagateDirectory(this));
     QStack<QPair<QString /* directory name */, PropagateDirectory* /* job */> > directories;
     directories.push(qMakePair(QString(), _rootJob.data()));
@@ -360,6 +370,15 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
                 re = true;
             }
         }
+#else
+        // On Linux, the file system is case sensitive, but this code is usefull for testing.
+        // Just check that there is no other file with the same name and different casing.
+        QFileInfo fileInfo(file);
+        const QString fn = fileInfo.fileName();
+        QStringList list = fileInfo.dir().entryList(QStringList() << fn);
+        if (list.count() > 1 || (list.count() == 1 && list[0] != fn)) {
+            re = true;
+        }
 #endif
     }
     return re;
@@ -380,7 +399,8 @@ void PropagateDirectory::start()
 
 void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 {
-    if (status == SyncFileItem::FatalError || (_current == -1 && status != SyncFileItem::Success)) {
+    if (status == SyncFileItem::FatalError ||
+            (_current == -1 && status != SyncFileItem::Success && status != SyncFileItem::Restoration)) {
         abort();
         emit finished(status);
         return;
@@ -416,6 +436,12 @@ void PropagateDirectory::slotSubJobReady()
             }
 
             if (_item._should_update_etag && _item._instruction != CSYNC_INSTRUCTION_REMOVE) {
+                if (PropagateRemoteMkdir* mkdir = qobject_cast<PropagateRemoteMkdir*>(_firstJob.data())) {
+                    // special case from MKDIR, get the fileId from the job there
+                    if (_item._fileId.isEmpty() && !mkdir->_item._fileId.isEmpty()) {
+                        _item._fileId = mkdir->_item._fileId;
+                    }
+                }
                 SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
                 _propagator->_journal->setFileRecord(record);
             }

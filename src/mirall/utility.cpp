@@ -22,10 +22,6 @@
 #include <QDir>
 #include <QFile>
 #include <QUrl>
-#ifndef TOKEN_AUTH_ONLY
-#include <QWidget>
-#include <QDesktopServices>
-#endif
 #include <QDebug>
 #include <QProcess>
 #include <QThread>
@@ -164,18 +160,6 @@ QByteArray Utility::userAgentString()
             .toLatin1();
 }
 
-void Utility::raiseDialog( QWidget *raiseWidget )
-{
-#ifndef TOKEN_AUTH_ONLY
-    if( raiseWidget && raiseWidget->parentWidget() == 0) {
-        // Qt has a bug which causes parent-less dialogs to pop-under.
-        raiseWidget->showNormal();
-        raiseWidget->raise();
-        raiseWidget->activateWindow();
-    }
-#endif
-}
-
 bool Utility::hasLaunchOnStartup(const QString &appName)
 {
     return hasLaunchOnStartup_private(appName);
@@ -250,17 +234,6 @@ QString Utility::escape(const QString &in)
 #endif
 }
 
-QString Utility::dataLocation()
-{
-    //  Qt 5's QStandardPaths::writableLocation gives us wrong results (without /data/),
-    //  so we'll have to use the deprecated version for now
-#ifndef TOKEN_AUTH_ONLY
-    return QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-#else
-	return QString();
-#endif
-}
-
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 // In Qt 4,  QThread::sleep functions are protected.
 // This is a hack to make them visible in this namespace.
@@ -280,177 +253,17 @@ void Utility::usleep(int usec)
     QThread::usleep(usec);
 }
 
-// ### helper functions for showInFileManager() ###
-
-// according to the QStandardDir impl from Qt5
-static QStringList xdgDataDirs()
-{
-    QStringList dirs;
-    // http://standards.freedesktop.org/basedir-spec/latest/
-    QString xdgDataDirsEnv = QFile::decodeName(qgetenv("XDG_DATA_DIRS"));
-    if (xdgDataDirsEnv.isEmpty()) {
-        dirs.append(QString::fromLatin1("/usr/local/share"));
-        dirs.append(QString::fromLatin1("/usr/share"));
-    } else {
-        dirs = xdgDataDirsEnv.split(QLatin1Char(':'));
-    }
-    // local location
-    QString xdgDataHome = QFile::decodeName(qgetenv("XDG_DATA_HOME"));
-    if (xdgDataHome.isEmpty()) {
-        xdgDataHome = QDir::homePath()+"/.local/share";
-    }
-    dirs.prepend(xdgDataHome);
-    return dirs;
-}
-
-// Linux impl only, make sure to process %u and %U which might be returned
-static QString findDefaultFileManager()
-{
-    QProcess p;
-    p.start("xdg-mime", QStringList() << "query" << "default" << "inode/directory", QFile::ReadOnly);
-    p.waitForFinished();
-    QString fileName = QString::fromUtf8(p.readAll().trimmed());
-    if (fileName.isEmpty())
-        return QString();
-
-    QFileInfo fi;
-    QStringList dirs = xdgDataDirs();
-    QStringList subdirs;
-    subdirs << "/applications/" << "/applications/kde4/";
-    foreach(QString dir, dirs) {
-        foreach(QString subdir, subdirs) {
-            fi.setFile(dir + subdir + fileName);
-            if (fi.exists()) {
-                return fi.absoluteFilePath();
-            }
-        }
-    }
-    return QString();
-}
-
-// early dolphin versions did not have --select
-static bool checkDolphinCanSelect()
-{
-    QProcess p;
-    p.start("dolphin", QStringList() << "--help", QFile::ReadOnly);
-    p.waitForFinished();
-    return p.readAll().contains("--select");
-}
-
 bool Utility::fsCasePreserving()
 {
     bool re = false;
     if( isWindows() || isMac() ) {
         re = true;
+    } else {
+        static bool isTest = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING").toInt();
+        re = isTest;
     }
     return re;
 }
-
-// inspired by Qt Creator's showInGraphicalShell();
-void Utility::showInFileManager(const QString &localPath)
-{
-    if (isWindows()) {
-#ifdef Q_OS_WIN
-        if (QSysInfo::windowsVersion() <= QSysInfo::WV_2003) {
-            return;
-        }
-#endif
-        QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
-
-        if (!QFileInfo(localPath).isDir()) {
-            explorer += QLatin1String("/select,");
-        }
-        explorer += QLatin1Char('"');
-        explorer += QDir::toNativeSeparators(localPath);
-        explorer += QLatin1Char('"');
-
-        qDebug() << "OO Open explorer commandline:" << explorer;
-        QProcess p;
-        p.start(explorer);
-        p.waitForFinished(5000);
-    } else if (isMac()) {
-        QStringList scriptArgs;
-        scriptArgs << QLatin1String("-e")
-                   << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
-                      .arg(localPath);
-        QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
-        scriptArgs.clear();
-        scriptArgs << QLatin1String("-e")
-                   << QLatin1String("tell application \"Finder\" to activate");
-        QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
-    } else {
-        QString app;
-        QStringList args;
-
-        static QString defaultManager = findDefaultFileManager();
-        QSettings desktopFile(defaultManager, QSettings::IniFormat);
-        QString exec = desktopFile.value("Desktop Entry/Exec").toString();
-
-        QString fileToOpen = QFileInfo(localPath).absoluteFilePath();
-        QString pathToOpen = QFileInfo(localPath).absolutePath();
-        bool canHandleFile = false; // assume dumb fm
-
-        args = exec.split(' ');
-        if (args.count() > 0) app = args.takeFirst();
-
-        QString kdeSelectParam("--select");
-
-        if (app.contains("konqueror") && !args.contains(kdeSelectParam)) {
-            // konq needs '--select' in order not to launch the file
-            args.prepend(kdeSelectParam);
-            canHandleFile = true;
-        }
-
-        if (app.contains("dolphin"))
-        {
-            static bool dolphinCanSelect = checkDolphinCanSelect();
-            if (dolphinCanSelect && !args.contains(kdeSelectParam)) {
-                args.prepend(kdeSelectParam);
-                canHandleFile = true;
-            }
-        }
-
-        // whitelist
-        if (app.contains("nautilus") || app.contains("nemo")) {
-            canHandleFile = true;
-        }
-
-        static QString name;
-        if (name.isEmpty()) {
-            name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name[%1]").arg(qApp->property("ui_lang").toString())).toString();
-            if (name.isEmpty()) {
-                name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name")).toString();
-            }
-        }
-
-        std::replace(args.begin(), args.end(), QString::fromLatin1("%c"), name);
-        std::replace(args.begin(), args.end(), QString::fromLatin1("%u"), fileToOpen);
-        std::replace(args.begin(), args.end(), QString::fromLatin1("%U"), fileToOpen);
-        std::replace(args.begin(), args.end(), QString::fromLatin1("%f"), fileToOpen);
-        std::replace(args.begin(), args.end(), QString::fromLatin1("%F"), fileToOpen);
-
-        // fixme: needs to append --icon, according to http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#exec-variables
-        QStringList::iterator it = std::find(args.begin(), args.end(), QString::fromLatin1("%i"));
-        if (it != args.end()) {
-            (*it) = desktopFile.value("Desktop Entry/Icon").toString();
-            args.insert(it, QString::fromLatin1("--icon")); // before
-        }
-
-
-        if (args.count() == 0) args << fileToOpen;
-
-        if (app.isEmpty() || args.isEmpty() || !canHandleFile) {
-            // fall back: open the default file manager, without ever selecting the file
-#ifndef TOKEN_AUTH_ONLY
-            QDesktopServices::openUrl(QUrl::fromLocalFile(pathToOpen));
-#endif
-        } else {
-            QProcess::startDetached(app, args);
-        }
-    }
-}
-
-
 
 QDateTime Utility::qDateTimeFromTime_t(qint64 t)
 {

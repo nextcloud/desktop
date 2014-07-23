@@ -305,6 +305,11 @@ bool PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
 
 void PropagateNeonJob::limitBandwidth(qint64 progress, qint64 bandwidth_limit)
 {
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
+        // Do not limit bandwidth when aborting to speed up the current transfer
+        return;
+    }
+
     if (bandwidth_limit > 0) {
         int64_t diff = _lastTime.nsecsElapsed() / 1000;
         int64_t len = progress - _lastProgress;
@@ -323,8 +328,7 @@ void PropagateNeonJob::limitBandwidth(qint64 progress, qint64 bandwidth_limit)
             // -bandwidth_limit is the % of bandwidth
             int64_t wait_time = -diff * (1 + 100.0 / bandwidth_limit);
             if (wait_time > 0) {
-                Mirall::Utility::usleep(wait_time);
-
+                Mirall::Utility::usleep(qMin(wait_time, int64_t(1000000*10)));
             }
         }
         _lastTime.start();
@@ -392,22 +396,37 @@ void PropagateDownloadFileLegacy::install_content_reader( ne_request *req, void 
 
     if (etag.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
-        that->errorString = tr("No E-Tag received from server, check Proxy/Gateway");
-        ne_set_error(that->_propagator->_session, "%s", that->errorString.toUtf8().data());
-        ne_add_response_body_reader( req, do_not_accept,
-                                     do_not_download_content_reader,
-                                     (void*) that );
+        that->abortTransfer(req, tr("No E-Tag received from server, check Proxy/Gateway"));
         return;
     } else if (!that->_expectedEtagForResume.isEmpty() && that->_expectedEtagForResume != etag) {
         qDebug() << Q_FUNC_INFO <<  "We received a different E-Tag for resuming!"
         << QString::fromLatin1(that->_expectedEtagForResume.data()) << "vs"
         << QString::fromLatin1(etag.data());
-        that->errorString = tr("We received a different E-Tag for resuming. Retrying next time.");
-        ne_set_error(that->_propagator->_session, "%s", that->errorString.toUtf8().data());
-        ne_add_response_body_reader( req, do_not_accept,
-                                     do_not_download_content_reader,
-                                     (void*) that );
+        that->abortTransfer(req, tr("We received a different E-Tag for resuming. Retrying next time."));
         return;
+    }
+
+    quint64 start = 0;
+    QByteArray ranges = ne_get_response_header(req, "content-range");
+    if (!ranges.isEmpty()) {
+        QRegExp rx("bytes (\\d+)-");
+        if (rx.indexIn(ranges) >= 0) {
+            start = rx.cap(1).toULongLong();
+        }
+    }
+    if (start != that->_resumeStart) {
+        qDebug() << Q_FUNC_INFO <<  "Wrong content-range: "<< ranges << " while expecting start was" << that->_resumeStart;
+        if (start == 0) {
+            // device don't support range, just stry again from scratch
+            that->_file->close();
+            if (!that->_file->open(QIODevice::WriteOnly)) {
+                that->abortTransfer(req, that->_file->errorString());
+                return;
+            }
+        } else {
+            that->abortTransfer(req, tr("Server returned wrong content-range"));
+            return;
+        }
     }
 
 
@@ -425,6 +444,16 @@ void PropagateDownloadFileLegacy::install_content_reader( ne_request *req, void 
                                      (void*) that );
     }
 }
+
+void PropagateDownloadFileLegacy::abortTransfer(ne_request* req, const QString& error)
+{
+    errorString = error;
+    ne_set_error(_propagator->_session, "%s", errorString.toUtf8().data());
+    ne_add_response_body_reader( req, do_not_accept,
+                                 do_not_download_content_reader,
+                                 this);
+}
+
 
 void PropagateDownloadFileLegacy::notify_status_cb(void* userdata, ne_session_status status,
                                              const ne_session_status_info* info)
@@ -520,6 +549,7 @@ void PropagateDownloadFileLegacy::start()
             ne_add_request_header(req.data(), "Range", rangeRequest.constData());
             ne_add_request_header(req.data(), "Accept-Ranges", "bytes");
             qDebug() << "Retry with range " << rangeRequest;
+            _resumeStart = done;
         }
 
         /* hook called before the content is parsed to set the correct reader,

@@ -24,8 +24,8 @@ class FolderStatusModel : public QStandardItemModel
 {
 public:
     FolderStatusModel();
-    virtual Qt::ItemFlags flags( const QModelIndex& ) const;
-    QVariant data(const QModelIndex &index, int role) const;
+    virtual Qt::ItemFlags flags( const QModelIndex& ) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
 };
 
@@ -52,13 +52,10 @@ class FolderStatusDelegate : public QStyledItemDelegate
                     WarningCount,
                     SyncRunning
                   };
-    void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
-    QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;
+    void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
+    QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
     bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
-                      const QModelIndex& index );
-
-private:
-    bool _addProgressSpace;
+                      const QModelIndex& index ) Q_DECL_OVERRIDE;
 };
 
 } // namespace Mirall

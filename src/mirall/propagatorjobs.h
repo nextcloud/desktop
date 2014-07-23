@@ -74,38 +74,41 @@ class PropagateLocalRemove : public PropagateItemJob {
     Q_OBJECT
 public:
     PropagateLocalRemove (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
 };
 class PropagateLocalMkdir : public PropagateItemJob {
     Q_OBJECT
 public:
     PropagateLocalMkdir (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
 
 };
 class PropagateRemoteRemove : public PropagateNeonJob {
     Q_OBJECT
 public:
     PropagateRemoteRemove (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
 };
 class PropagateRemoteMkdir : public PropagateNeonJob {
     Q_OBJECT
 public:
     PropagateRemoteMkdir (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
+private:
+    static void propfind_results(void *userdata, const ne_uri *uri, const ne_prop_result_set *set);
+    friend class PropagateDirectory; // So it can access the _item;
 };
 class PropagateLocalRename : public PropagateItemJob {
     Q_OBJECT
 public:
     PropagateLocalRename (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
 };
 class PropagateRemoteRename : public PropagateNeonJob {
     Q_OBJECT
 public:
     PropagateRemoteRename (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
 };
 
 
@@ -114,7 +117,7 @@ class UpdateMTimeAndETagJob : public PropagateNeonJob{
     Q_OBJECT
 public:
     UpdateMTimeAndETagJob (OwncloudPropagator* propagator, const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
 };
 
 

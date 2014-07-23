@@ -48,8 +48,9 @@ int getauth(const char *prompt,
             void *userdata)
 {
     int re = 0;
-    QMutex mutex;
-    // ### safe?
+
+    // ### safe?  Not really.  If the wizard is run in the main thread, the caccount could change during the sync.
+    // Ideally, http_credentials could be use userdata,   but userdata is the SyncEngine.
     HttpCredentials* http_credentials = qobject_cast<HttpCredentials*>(AccountManager::instance()->account()->credentials());
 
     if (!http_credentials) {
@@ -63,10 +64,8 @@ int getauth(const char *prompt,
 
     if( qPrompt == QLatin1String("Enter your username:") ) {
         // qDebug() << "OOO Username requested!";
-        QMutexLocker locker( &mutex );
         qstrncpy( buf, user.toUtf8().constData(), len );
     } else if( qPrompt == QLatin1String("Enter your password:") ) {
-        QMutexLocker locker( &mutex );
         // qDebug() << "OOO Password requested!";
         qstrncpy( buf, pwd.toUtf8().constData(), len );
     } else {
@@ -86,7 +85,7 @@ public:
     HttpCredentialsAccessManager(const HttpCredentials *cred, QObject* parent = 0)
         : MirallAccessManager(parent), _cred(cred) {}
 protected:
-    QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) {
+    QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) Q_DECL_OVERRIDE {
         QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
@@ -101,7 +100,8 @@ HttpCredentials::HttpCredentials()
     : _user(),
       _password(),
       _ready(false),
-      _fetchJobInProgress(false)
+      _fetchJobInProgress(false),
+      _readPwdFromDeprecatedPlace(false)
 {
 }
 
@@ -230,6 +230,7 @@ void HttpCredentials::fetch(Account *account)
         job->setProperty("account", QVariant::fromValue(account));
         job->start();
         _fetchJobInProgress = true;
+        _readPwdFromDeprecatedPlace = true;
     }
 }
 bool HttpCredentials::stillValid(QNetworkReply *reply)
@@ -261,18 +262,40 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
         _ready = true;
         emit fetched();
     } else {
-        if( error != NoError ) {
-            qDebug() << "Error while reading password" << job->errorString();
+        // we come here if the password is empty or any other keychain
+        // error happend.
+        // In all error conditions it should
+        // ask the user for the password interactively now.
+        if( _readPwdFromDeprecatedPlace ) {
+            // there simply was not a password. Lets restart a read job without
+            // a settings object as we did it in older client releases.
+            ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+
+            const QString kck = keychainKey(account->url().toString(), _user);
+            job->setKey(kck);
+
+            connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
+            job->setProperty("account", QVariant::fromValue(account));
+            job->start();
+            _readPwdFromDeprecatedPlace = false; // do  try that only once.
+            _fetchJobInProgress = true;
+            // Note: if this read job succeeds, the value from the old place is still
+            // NOT persisted into the new account.
+        } else {
+            // interactive password dialog starts here
+            bool ok;
+            QString pwd = queryPassword(&ok);
+            _fetchJobInProgress = false;
+            if (ok) {
+                _password = pwd;
+                _ready = true;
+                persist(account);
+            } else {
+                _password = QString::null;
+                _ready = false;
+            }
+            emit fetched();
         }
-        bool ok;
-        QString pwd = queryPassword(&ok);
-        _fetchJobInProgress = false;
-        if (ok) {
-            _password = pwd;
-            _ready = true;
-            persist(account);
-        }
-        emit fetched();
     }
 }
 

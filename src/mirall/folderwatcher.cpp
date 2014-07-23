@@ -13,7 +13,6 @@
 
 // event masks
 #include "mirall/folderwatcher.h"
-#include "mirall/folder.h"
 
 #include <stdint.h>
 

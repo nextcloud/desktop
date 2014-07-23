@@ -37,7 +37,7 @@ public:
   ShibbolethWebView(Account *account, ShibbolethCookieJar* jar, QWidget* parent = 0);
   ~ShibbolethWebView();
 
-  void closeEvent(QCloseEvent *event);
+  void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 Q_SIGNALS:
   void shibbolethCookieReceived(const QNetworkCookie &cookie, Account *account);
@@ -47,7 +47,6 @@ private Q_SLOTS:
   void onNewCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
   void slotLoadStarted();
   void slotLoadFinished(bool success);
-  void slotHandleAuthentication(QNetworkReply*,QAuthenticator*);
 
 protected:
   void accept();
@@ -56,6 +55,7 @@ private:
   void setup(Account *account, ShibbolethCookieJar* jar);
   QPointer<Account> _account;
   bool _accepted;
+  bool _cursorOverriden;
 };
 
 } // ns Mirall

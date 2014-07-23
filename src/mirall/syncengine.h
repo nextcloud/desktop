@@ -21,6 +21,7 @@
 #include <QMutex>
 #include <QThread>
 #include <QString>
+#include <QSet>
 #include <qelapsedtimer.h>
 
 #include <csync.h>
@@ -38,11 +39,6 @@ class SyncJournalFileRecord;
 class SyncJournalDb;
 
 class OwncloudPropagator;
-
-void OWNCLOUDSYNC_EXPORT csyncLogCatcher(int /*verbosity*/,
-                     const char */*function*/,
-                     const char *buffer,
-                     void */*userdata*/);
 
 class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
@@ -115,7 +111,7 @@ private:
     SyncJournalDb *_journal;
     QScopedPointer <OwncloudPropagator> _propagator;
     QString _lastDeleted; // if the last item was a path and it has been deleted
-    QHash <QString, QString> _seenFiles;
+    QSet<QString> _seenFiles;
     QThread _thread;
 
     Progress::Info _progressInfo;
@@ -126,10 +122,21 @@ private:
     QHash<QString, QString> _renamedFolders;
     QString adjustRenamedPath(const QString &original);
 
-    bool _hasFiles; // true if there is at least one file that is not ignored or removed
+    /**
+     * check if we are allowed to propagate everything, and if we are not, adjust the instructions
+     * to recover
+     */
+    void checkForPermission();
+    QByteArray getPermissions(const QString& file) const;
+
+    bool _hasNoneFiles; // true if there is at least one file with instruction NONE
+    bool _hasRemoveFile; // true if there is at leasr one file with instruction REMOVE
 
     int _uploadLimit;
     int _downloadLimit;
+
+    // hash containing the permissions on the remote directory
+    QHash<QString, QByteArray> _remotePerms;
 };
 
 

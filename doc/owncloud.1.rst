@@ -10,13 +10,9 @@ SYNOPSIS
 
 DESCRIPTION
 ===========
-ownCloud is a file synchronisation desktop utility based on mirall.
-It synchronizes files on your local machine with an ownCloud Server. If you
-make a change to the files on one computer, it will flow across the others
-using this desktop sync clients.
+The ownCloud Client is a file synchronization desktop utility based on mirall. It synchronizes files on your local computer, tablet, or handheld device with an ownCloud Server. If you make a change to the files on one device, the change is propagated to all other syncrhonized devices using the desktop synchronization clients.
 
-Normally you start the client by click on the desktop icon or start from the
-application menu. After starting an ownCloud icon appears in the system tray.
+Normally, you start the client by clicking on the desktop icon or by starting it from the client application menu. After starting, an ownCloud icon appears in the computer system tray or on your tablet or handheld device.
 
 Options
 =======

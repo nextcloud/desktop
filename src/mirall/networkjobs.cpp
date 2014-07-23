@@ -408,20 +408,25 @@ bool CheckServerJob::finished()
     }
 
     bool success = false;
-    QVariantMap status = QtJson::parse(QString::fromUtf8(reply()->readAll()), success).toMap();
-    // empty or invalid response
-    if (!success || status.isEmpty()) {
-        qDebug() << "status.php from server is not valid JSON!";
-    }
-
-    qDebug() << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
-    if( status.contains("installed")
-            && status.contains("version")
-            && status.contains("versionstring") ) {
-        emit instanceFound(reply()->url(), status);
-    } else {
-        qDebug() << "No proper answer on " << requestedUrl;
+    QByteArray body = reply()->readAll();
+    if( body.isEmpty() ) {
         emit instanceNotFound(reply());
+    } else {
+        QVariantMap status = QtJson::parse(QString::fromUtf8(body), success).toMap();
+        // empty or invalid response
+        if (!success || status.isEmpty()) {
+            qDebug() << "status.php from server is not valid JSON!";
+        }
+
+        qDebug() << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
+        if( status.contains("installed")
+                && status.contains("version")
+                && status.contains("versionstring") ) {
+            emit instanceFound(reply()->url(), status);
+        } else {
+            qDebug() << "No proper answer on " << requestedUrl;
+            emit instanceNotFound(reply());
+        }
     }
     return true;
 }

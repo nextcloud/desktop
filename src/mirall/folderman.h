@@ -19,6 +19,7 @@
 #include <QObject>
 #include <QQueue>
 #include <QList>
+#include <QPointer>
 
 #include "mirall/folder.h"
 #include "mirall/folderwatcher.h"
@@ -26,13 +27,13 @@
 
 class QSignalMapper;
 
-class SyncResult;
-
 namespace Mirall {
 
 class Application;
+class SyncResult;
+class SocketApi;
 
-class OWNCLOUDSYNC_EXPORT FolderMan : public QObject
+class FolderMan : public QObject
 {
     Q_OBJECT
 public:
@@ -52,7 +53,7 @@ public:
     void addFolderDefinition(const QString&, const QString&, const QString& );
 
     /** Returns the folder which the file or directory stored in path is in */
-    Folder* folderForPath(const QUrl& path);
+    Folder* folderForPath(const QString& path);
 
     /** Returns the folder by alias or NULL if no folder with the alias exists. */
     Folder *folder( const QString& );
@@ -101,6 +102,8 @@ public slots:
 
     void terminateSyncProcess( const QString& alias = QString::null );
 
+    /* unload and delete on folder object */
+    void unloadFolder( const QString& alias );
     /* delete all folder objects */
     int unloadAllFolders();
 
@@ -144,6 +147,7 @@ private:
     bool           _syncEnabled;
     QQueue<QString> _scheduleQueue;
     QMap<QString, FolderWatcher*> _folderWatchers;
+    QPointer<SocketApi> _socketApi;
 
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = 0);

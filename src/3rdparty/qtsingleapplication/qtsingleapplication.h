@@ -50,7 +50,7 @@ public:
 
     void setActivationWindow(QWidget* aw, bool activateOnMessage = true);
     QWidget* activationWindow() const;
-    bool event(QEvent *event);
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
 
     QString applicationId() const;
     void setBlock(bool value);

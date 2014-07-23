@@ -31,7 +31,8 @@
 
 namespace Mirall {
 
-ownCloudTheme::ownCloudTheme()
+ownCloudTheme::ownCloudTheme() :
+    Theme()
 {
     // qDebug() << " ** running ownCloud theme!";
 }

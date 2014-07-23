@@ -34,6 +34,7 @@ use LWP::UserAgent;
 use LWP::Protocol::https;
 use HTTP::Request::Common qw( POST GET DELETE );
 use File::Basename;
+use IO::Handle;
 
 use Encode qw(from_to);
 use utf8;
@@ -577,7 +578,7 @@ sub createLocalFile( $$ )
   my $minimum = 32;
   my $range = 96;
 
-  for (my $bytes = 0; $bytes < $size; $bytes += 4) {
+  for (my $bytes = 0; $bytes < $size-1; $bytes += 4) {
     my $rand = int(rand($range ** 4));
     my $string = '';
     for (1..4) {
@@ -587,6 +588,9 @@ sub createLocalFile( $$ )
     print FILE $string;
     $md5->add($string);
   }
+  my $s = "\n";
+  print FILE $s;
+  $md5->add($s);
   close FILE;
   return $md5->hexdigest; 
 }

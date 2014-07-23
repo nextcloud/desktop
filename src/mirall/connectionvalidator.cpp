@@ -15,7 +15,6 @@
 #include <QNetworkReply>
 
 #include "mirall/connectionvalidator.h"
-#include "mirall/mirallconfigfile.h"
 #include "mirall/theme.h"
 #include "mirall/account.h"
 #include "mirall/networkjobs.h"

@@ -24,7 +24,6 @@
 
 #include "mirall/syncengine.h"
 #include "mirall/syncjournaldb.h"
-#include "mirall/logger.h"
 #include "csync.h"
 #include "mirall/clientproxy.h"
 #include "mirall/account.h"
@@ -43,12 +42,13 @@ struct CmdOptions {
     bool trustSSL;
 };
 
+// we can't use csync_set_userdata because the SyncEngine sets it already.
+// So we have to use a global variable
+CmdOptions *opts = 0;
+
 int getauth(const char* prompt, char* buf, size_t len, int a, int b, void *userdata)
 {
-    (void) a;
-    (void) b;
-
-    struct CmdOptions *opts = (struct CmdOptions*) userdata;
+    Q_UNUSED(a) Q_UNUSED(b) Q_UNUSED(userdata)
 
     std::cout << "** Authentication required: \n" << prompt << std::endl;
     std::string s;
@@ -169,15 +169,13 @@ int main(int argc, char **argv) {
     }
 
     csync_set_log_level(options.silent ? 1 : 11);
-    Logger::instance()->setLogFile("-");
 
-    csync_set_userdata(_csync_ctx, &options);
+    opts = &options;
     csync_set_auth_callback( _csync_ctx, getauth );
 
     if( csync_init( _csync_ctx ) < 0 ) {
         qFatal("Could not initialize csync!");
         return EXIT_FAILURE;
-        _csync_ctx = 0;
     }
 
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);

@@ -43,9 +43,9 @@ public:
     FolderWizardLocalPath();
     ~FolderWizardLocalPath();
 
-    virtual bool isComplete() const;
-    void initializePage();
-    void cleanupPage();
+    virtual bool isComplete() const Q_DECL_OVERRIDE;
+    void initializePage() Q_DECL_OVERRIDE;
+    void cleanupPage() Q_DECL_OVERRIDE;
 
     void setFolderMap( const Folder::Map &fm ) { _folderMap = fm; }
 protected slots:
@@ -68,10 +68,10 @@ public:
     FolderWizardRemotePath();
     ~FolderWizardRemotePath();
 
-    virtual bool isComplete() const;
+    virtual bool isComplete() const Q_DECL_OVERRIDE;
 
-    virtual void initializePage();
-    virtual void cleanupPage();
+    virtual void initializePage() Q_DECL_OVERRIDE;
+    virtual void cleanupPage() Q_DECL_OVERRIDE;
 
 protected slots:
 
@@ -86,8 +86,6 @@ protected slots:
 private:
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     Ui_FolderWizardTargetPage _ui;
-    ownCloudInfo *_ownCloudDirCheck;
-    bool _dirChecked;
     bool _warnWasVisible;
 
 };

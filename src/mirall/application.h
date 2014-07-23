@@ -38,7 +38,6 @@ namespace Mirall {
 class Theme;
 class Folder;
 class SslErrorDialog;
-class SocketApi;
 
 class Application : public SharedTools::QtSingleApplication
 {
@@ -87,7 +86,6 @@ private:
     void setHelp();
 
     QPointer<ownCloudGui> _gui;
-    QPointer<SocketApi> _socketApi;
 
     QPointer<ConnectionValidator> _conValidator;
 

@@ -61,9 +61,9 @@ public:
                         const QMap<QByteArray, QByteArray> &headers, QObject* parent = 0)
     : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers) {}
 
-    virtual void start();
+    virtual void start() Q_DECL_OVERRIDE;
 
-    virtual bool finished() {
+    virtual bool finished() Q_DECL_OVERRIDE {
         emit finishedSignal();
         return true;
     }
@@ -72,7 +72,7 @@ public:
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;
     };
 
-    virtual void slotTimeout();
+    virtual void slotTimeout() Q_DECL_OVERRIDE;
 
 
 signals:
@@ -93,49 +93,50 @@ class PropagateUploadFileQNAM : public PropagateItemJob {
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
 private slots:
     void slotPutFinished();
     void slotUploadProgress(qint64,qint64);
-    void abort();
+    void abort() Q_DECL_OVERRIDE;
     void startNextChunk();
-    void finalize(const Mirall::SyncFileItem&);
+    void finalize(const SyncFileItem&);
 };
 
 
 class GETFileJob : public AbstractNetworkJob {
     Q_OBJECT
-    QIODevice* _device;
+    QFile* _device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
     QByteArray _expectedEtagForResume;
+    quint64 _resumeStart;
     SyncFileItem::Status _errorStatus;
     QUrl _directDownloadUrl;
     QByteArray _etag;
 public:
 
     // DOES NOT take owncership of the device.
-    explicit GETFileJob(Account* account, const QString& path, QIODevice *device,
+    explicit GETFileJob(Account* account, const QString& path, QFile *device,
                         const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
-                        QObject* parent = 0);
+                        quint64 resumeStart, QObject* parent = 0);
     // For directDownloadUrl:
-    explicit GETFileJob(Account* account, const QUrl& url, QIODevice *device,
+    explicit GETFileJob(Account* account, const QUrl& url, QFile *device,
                         const QMap<QByteArray, QByteArray> &headers,
                         QObject* parent = 0);
 
-    virtual void start();
-    virtual bool finished() {
+    virtual void start() Q_DECL_OVERRIDE;
+    virtual bool finished() Q_DECL_OVERRIDE {
         emit finishedSignal();
         return true;
     }
 
     QString errorString() {
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;
-    };
+    }
 
     SyncFileItem::Status errorStatus() { return _errorStatus; }
 
-    virtual void slotTimeout();
+    virtual void slotTimeout() Q_DECL_OVERRIDE;
 
     QByteArray &etag() { return _etag; }
 
@@ -159,10 +160,10 @@ class PropagateDownloadFileQNAM : public PropagateItemJob {
 public:
     PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateItemJob(propagator, item), _startSize(0) {}
-    void start();
+    void start() Q_DECL_OVERRIDE;
 private slots:
     void slotGetFinished();
-    void abort();
+    void abort() Q_DECL_OVERRIDE;
     void downloadFinished();
     void slotDownloadProgress(qint64,qint64);
 

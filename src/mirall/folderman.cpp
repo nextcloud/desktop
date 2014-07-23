@@ -17,6 +17,7 @@
 #include "mirall/folder.h"
 #include "mirall/syncresult.h"
 #include "mirall/theme.h"
+#include "mirall/socketapi.h"
 
 #include <neon/ne_socket.h>
 
@@ -27,10 +28,8 @@
 #include <shlobj.h>
 #endif
 
-#ifndef TOKEN_AUTH_ONLY
 #include <QMessageBox>
-#endif
-
+#include <QPointer>
 #include <QtCore>
 
 namespace Mirall {
@@ -52,6 +51,8 @@ FolderMan::FolderMan(QObject *parent) :
     ne_sock_init();
     Q_ASSERT(!_instance);
     _instance = this;
+
+    _socketApi = new SocketApi(this);
 }
 
 FolderMan *FolderMan::instance()
@@ -71,6 +72,27 @@ Mirall::Folder::Map FolderMan::map()
     return _folderMap;
 }
 
+// Attention: this function deletes the folder object to which
+// the alias refers. Do NOT USE the folder pointer any more after
+// having this called.
+void FolderMan::unloadFolder( const QString& alias )
+{
+    Folder *f = 0;
+    if( _folderMap.contains(alias)) {
+        f = _folderMap[alias];
+    }
+    if( f ) {
+        _folderChangeSignalMapper->removeMappings(f);
+        if( _folderWatchers.contains(alias)) {
+            FolderWatcher *fw = _folderWatchers[alias];
+            _folderWatcherSignalMapper->removeMappings(fw);
+            _folderWatchers.remove(alias);
+        }
+        _folderMap.remove( alias );
+        delete f;
+    }
+}
+
 int FolderMan::unloadAllFolders()
 {
     int cnt = 0;
@@ -79,11 +101,13 @@ int FolderMan::unloadAllFolders()
     Folder::MapIterator i(_folderMap);
     while (i.hasNext()) {
         i.next();
-        delete _folderMap.take( i.key() );
+        unloadFolder(i.key());
         cnt++;
     }
     _currentSyncFolder.clear();
     _scheduleQueue.clear();
+
+    Q_ASSERT(_folderMap.count() == 0);
     return cnt;
 }
 
@@ -164,7 +188,6 @@ int FolderMan::setupFolders()
 bool FolderMan::ensureJournalGone(const QString &localPath)
 {
 	// FIXME move this to UI, not libowncloudsync
-#ifndef TOKEN_AUTH_ONLY
     // remove old .csync_journal file
     QString stateDbFile = localPath+QLatin1String("/.csync_journal.db");
     while (QFile::exists(stateDbFile) && !QFile::remove(stateDbFile)) {
@@ -178,7 +201,6 @@ bool FolderMan::ensureJournalGone(const QString &localPath)
             return false;
         }
     }
-#endif
     return true;
 }
 
@@ -394,7 +416,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
     if( alias.isEmpty() ) return;
 
     if( _currentSyncFolder == alias ) {
-        qDebug() << " the current folder is currently syncing.";
+        qDebug() << "folder " << alias << " is currently syncing. NOT scheduling.";
         return;
     }
     qDebug() << "Schedule folder " << alias << " to sync!";
@@ -406,6 +428,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
                 f->prepareToSync();
             } else {
                 qDebug() << "Folder is not enabled, not scheduled!";
+                _socketApi->slotUpdateFolderView(f->alias());
                 return;
             }
         }
@@ -496,15 +519,14 @@ void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceF
     settings.sync();
 }
 
-Folder *FolderMan::folderForPath(const QUrl &path)
+Folder *FolderMan::folderForPath(const QString &path)
 {
-    QString absolutePath = path.toLocalFile();
-    absolutePath.append("/");
+    QString absolutePath = QDir::cleanPath(path)+QLatin1Char('/');
 
-    foreach(Folder* folder, map().values())
-    {
-        if(absolutePath.startsWith(folder->path()))
-        {
+    foreach(Folder* folder, this->map().values()) {
+        const QString folderPath = QDir::cleanPath(folder->path())+QLatin1Char('/');
+
+        if(absolutePath.startsWith(folderPath)) {
             qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
             return folder;
         }
@@ -562,6 +584,9 @@ void FolderMan::removeFolder( const QString& alias )
             qDebug() << "Remove folder config file " << file.fileName();
             file.remove();
         }
+
+        unloadFolder( alias ); // now the folder object is gone.
+
         // FIXME: this is a temporar dirty fix against a crash happening because
         // the csync owncloud module still has static components. Activate the
         // delete once the module is fixed.

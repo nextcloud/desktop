@@ -17,41 +17,44 @@
 #define SOCKETAPI_H
 
 #include <QWeakPointer>
+#include <QTcpSocket>
+#include <QTcpServer>
+
+#include "mirall/syncfileitem.h"
 
 class QUrl;
 class QLocalSocket;
-class QLocalServer;
 class QStringList;
 
 namespace Mirall {
-
-class SyncFileItem;
 
 class SocketApi : public QObject
 {
 Q_OBJECT
 
 public:
-    SocketApi(QObject* parent, const QUrl& localFile);
+    SocketApi(QObject* parent);
     virtual ~SocketApi();
+
+public slots:
+    void slotUpdateFolderView(const QString&);
 
 private slots:
     void slotNewConnection();
     void onLostConnection();
     void slotReadSocket();
-    void slotSyncStateChanged(const QString&);
     void slotJobCompleted(const QString &, const SyncFileItem &);
 
 private:
-    void sendMessage(QLocalSocket* socket, const QString& message);
+    void sendMessage(QTcpSocket* socket, const QString& message);
     void broadcastMessage(const QString& message);
 
-    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket);
-    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket);
+    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QTcpSocket* socket);
+    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket* socket);
 
 private:
-    QLocalServer* _localServer;
-    QList< QLocalSocket* > _listeners;
+    QTcpServer *_localServer;
+    QList<QTcpSocket*> _listeners;
 };
 
 }

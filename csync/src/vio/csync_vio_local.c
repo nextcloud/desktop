@@ -257,6 +257,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
     }
 
+    c_free_locale_string(wuri);
     CloseHandle(h);
 
     return 0;

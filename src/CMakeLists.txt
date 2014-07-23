@@ -48,21 +48,6 @@ if (APPLE)
         )
 endif()
 
-set(3rdparty_HEADER
-3rdparty/qtsingleapplication/qtlocalpeer.h
-3rdparty/qtsingleapplication/qtsingleapplication.h
-3rdparty/qtsingleapplication/qtsinglecoreapplication.h
-3rdparty/fancylineedit/fancylineedit.h
-3rdparty/QProgressIndicator/QProgressIndicator.h
-)
-
-if (APPLE)
-        list(APPEND 3rdparty_HEADER
-        3rdparty/qtmacgoodies/src/macpreferenceswindow.h
-        3rdparty/qtmacgoodies/src/macstandardicon.h
-        )
-endif()
-
 if(NOT WIN32)
 	list(APPEND 3rdparty_SRC 3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
 else()
@@ -79,9 +64,6 @@ set(3rdparty_INC
     )
 
 set(libsync_SRCS
-    mirall/folderman.cpp
-    mirall/folder.cpp
-    mirall/folderwatcher.cpp
     mirall/syncresult.cpp
     mirall/mirallconfigfile.cpp
     mirall/syncengine.cpp
@@ -103,8 +85,8 @@ set(libsync_SRCS
     mirall/account.cpp
     mirall/quotainfo.cpp
     mirall/clientproxy.cpp
-    mirall/syncrunfilelog.cpp
     mirall/cookiejar.cpp
+    mirall/syncfilestatus.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialsfactory.cpp
@@ -129,24 +111,10 @@ else()
     )
 endif()
 
-IF( NOT WIN32 AND NOT APPLE )
-    set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_linux.cpp)
-ENDIF()
-IF( WIN32 )
-    set(libsync_SRCS ${libsync_SRCS} mirall/folderwatcher_win.cpp)
-ENDIF()
-IF( APPLE )
-    list(APPEND libsync_SRCS mirall/folderwatcher_mac.cpp)
-ENDIF()
-
-
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS
     mirall/account.h
     mirall/syncengine.h
-    mirall/folder.h
-    mirall/folderman.h
-    mirall/folderwatcher.h
     mirall/mirallconfigfile.h
     mirall/networkjobs.h
     mirall/progressdispatcher.h
@@ -272,9 +240,13 @@ qt_wrap_ui(mirall_UI_SRCS ${mirall_UI})
 set(mirall_SRCS
     mirall/application.cpp
     mirall/systray.cpp
+    mirall/folderman.cpp
+    mirall/folder.cpp
+    mirall/folderwatcher.cpp
     mirall/folderwizard.cpp
     mirall/folderstatusmodel.cpp
     mirall/protocolwidget.cpp
+    mirall/openfilemanager.cpp
     wizard/owncloudwizard.cpp
     wizard/owncloudsetuppage.cpp
     wizard/owncloudhttpcredspage.cpp
@@ -294,36 +266,9 @@ set(mirall_SRCS
     mirall/owncloudgui.cpp
     mirall/socketapi.cpp
     mirall/sslbutton.cpp
+    mirall/syncrunfilelog.cpp
 )
 
-
-
-set(mirall_HEADERS
-    mirall/application.h
-    mirall/systray.h
-    mirall/folderwizard.h
-    mirall/owncloudsetupwizard.h
-    wizard/owncloudwizard.h
-    wizard/owncloudsetuppage.h
-    wizard/owncloudhttpcredspage.h
-    wizard/abstractcredswizardpage.h
-    wizard/owncloudwizardresultpage.h
-    wizard/owncloudwizardcommon.h
-    wizard/owncloudshibbolethcredspage.h
-    wizard/owncloudadvancedsetuppage.h
-    mirall/folderstatusmodel.h
-    mirall/sslerrordialog.h
-    mirall/logbrowser.h
-    mirall/settingsdialog.h
-    mirall/generalsettings.h
-    mirall/networksettings.h
-    mirall/accountsettings.h
-    mirall/ignorelisteditor.h
-    mirall/protocolwidget.h
-    mirall/owncloudgui.h
-    mirall/socketapi.h
-    mirall/sslbutton.h
-)
 
 set(updater_SRCS
     updater/updateinfo.cpp
@@ -331,24 +276,26 @@ set(updater_SRCS
     updater/ocupdater.cpp
 )
 
-set(updater_HEADERS
-    updater/updater.h
-    updater/ocupdater.h
-)
-
 IF( APPLE )
     list(APPEND mirall_SRCS mirall/cocoainitializer_mac.mm)
-    list(APPEND mirall_HEADERS mirall/cocoainitializer.h)
 
     list(APPEND mirall_SRCS mirall/settingsdialogmac.cpp)
-    list(APPEND mirall_HEADERS mirall/settingsdialogmac.h)
 
     if(SPARKLE_FOUND)
        # Define this, we need to check in updater.cpp
        add_definitions( -DHAVE_SPARKLE )
        list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
-       list(APPEND updater_HEADERS updater/sparkleupdater.h)
    endif()
+ENDIF()
+
+IF( NOT WIN32 AND NOT APPLE )
+set(mirall_SRCS ${mirall_SRCS} mirall/folderwatcher_linux.cpp)
+ENDIF()
+IF( WIN32 )
+set(mirall_SRCS ${mirall_SRCS} mirall/folderwatcher_win.cpp)
+ENDIF()
+IF( APPLE )
+list(APPEND mirall_SRCS mirall/folderwatcher_mac.cpp)
 ENDIF()
 
 # csync is required.
@@ -358,12 +305,10 @@ include_directories(${3rdparty_INC})
 qt_add_translation(mirall_I18N ${TRANSLATIONS})
 
 set( final_src
-    ${mirall_HEADERS}
     ${MIRALL_RC_SRC}
     ${mirall_SRCS}
     ${mirall_UI_SRCS}
     ${mirallMoc}
-    ${mirall_HEADERS}
     ${mirall_I18N}
     ${3rdparty_SRC}
     ${3rdparty_MOC}

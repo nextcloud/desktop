@@ -119,53 +119,68 @@ void PropagateUploadFileQNAM::start()
 
 struct ChunkDevice : QIODevice {
 public:
-    QIODevice *_file;
+    QPointer<QIODevice> _file;
     qint64 _read;
     qint64 _size;
     qint64 _start;
 
     ChunkDevice(QIODevice *file,  qint64 start, qint64 size)
             : QIODevice(file), _file(file), _read(0), _size(size), _start(start) {
-        _file->seek(start);
+        _file = QPointer<QIODevice>(file);
+        _file.data()->seek(start);
     }
 
-    virtual qint64 writeData(const char* , qint64 ) {
+    virtual qint64 writeData(const char* , qint64 ) Q_DECL_OVERRIDE {
         Q_ASSERT(!"write to read only device");
         return 0;
     }
 
-    virtual qint64 readData(char* data, qint64 maxlen) {
+    virtual qint64 readData(char* data, qint64 maxlen) Q_DECL_OVERRIDE {
+        if (_file.isNull()) {
+            qDebug() << Q_FUNC_INFO << "Upload file object deleted during upload";
+            close();
+            return -1;
+        }
         maxlen = qMin(maxlen, chunkSize() - _read);
         if (maxlen == 0)
             return 0;
-        qint64 ret = _file->read(data, maxlen);
+        qint64 ret = _file.data()->read(data, maxlen);
         if (ret < 0)
             return -1;
         _read += ret;
         return ret;
     }
 
-    virtual bool atEnd() const {
-        return  _read >= chunkSize() || _file->atEnd();
+    virtual bool atEnd() const Q_DECL_OVERRIDE {
+        if (_file.isNull()) {
+            qDebug() << Q_FUNC_INFO << "Upload file object deleted during upload";
+            return true;
+        }
+        return  _read >= chunkSize() || _file.data()->atEnd();
     }
 
-    virtual qint64 size() const{
+    virtual qint64 size() const Q_DECL_OVERRIDE{
         return _size;
     }
 
-    qint64 bytesAvailable() const
+    qint64 bytesAvailable() const Q_DECL_OVERRIDE
     {
         return _size - _read + QIODevice::bytesAvailable();
     }
 
     // random access, we can seek
-    virtual bool isSequential() const{
+    virtual bool isSequential() const Q_DECL_OVERRIDE{
         return false;
     }
 
-    virtual bool seek ( qint64 pos ) {
+    virtual bool seek ( qint64 pos ) Q_DECL_OVERRIDE {
+        if (_file.isNull()) {
+            qDebug() << Q_FUNC_INFO << "Upload file object deleted during upload";
+            close();
+            return false;
+        }
         _read = pos;
-        return _file->seek(pos + _start);
+        return _file.data()->seek(pos + _start);
     }
 };
 
@@ -193,7 +208,9 @@ void PropagateUploadFileQNAM::startNextChunk()
     headers["OC-Total-Length"] = QByteArray::number(fileSize);
     headers["Content-Type"] = "application/octet-stream";
     headers["X-OC-Mtime"] = QByteArray::number(qint64(_item._modtime));
-    if (!_item._etag.isEmpty() && _item._etag != "empty_etag") {
+    if (!_item._etag.isEmpty() && _item._etag != "empty_etag" &&
+            _item._instruction != CSYNC_INSTRUCTION_NEW  // On new files never send a If-Match
+            ) {
         // We add quotes because the owncloud server always add quotes around the etag, and
         //  csync_owncloud.c's owncloud_file_id always strip the quotes.
         headers["If-Match"] = '"' + _item._etag + '"';
@@ -231,10 +248,9 @@ void PropagateUploadFileQNAM::startNextChunk()
         connect(_job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
         _job->start();
     } else {
-        delete device;
-
         qDebug() << "ERR: Could not open upload file: " << device->errorString();
         done( SyncFileItem::NormalError, device->errorString() );
+        delete device;
         return;
     }
 }
@@ -381,20 +397,20 @@ void PropagateUploadFileQNAM::abort()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // DOES NOT take owncership of the device.
-GETFileJob::GETFileJob(Account* account, const QString& path, QIODevice *device,
+GETFileJob::GETFileJob(Account* account, const QString& path, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
-                    QObject* parent)
+                    quint64 _resumeStart,  QObject* parent)
 : AbstractNetworkJob(account, path, parent),
   _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume),
-  _errorStatus(SyncFileItem::NoStatus)
+  _resumeStart(_resumeStart) , _errorStatus(SyncFileItem::NoStatus)
 {
 }
 
-GETFileJob::GETFileJob(Account* account, const QUrl& url, QIODevice *device,
+GETFileJob::GETFileJob(Account* account, const QUrl& url, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers,
                     QObject* parent)
 : AbstractNetworkJob(account, url.toEncoded(), parent),
-  _device(device), _headers(headers),
+  _device(device), _headers(headers), _resumeStart(0),
   _errorStatus(SyncFileItem::NoStatus), _directDownloadUrl(url)
 {
 }
@@ -453,11 +469,39 @@ void GETFileJob::slotMetaDataChanged()
         reply()->abort();
         return;
     }
+
+    quint64 start = 0;
+    QByteArray ranges = parseEtag(reply()->rawHeader("Content-Range"));
+    if (!ranges.isEmpty()) {
+        QRegExp rx("bytes (\\d+)-");
+        if (rx.indexIn(ranges) >= 0) {
+            start = rx.cap(1).toULongLong();
+        }
+    }
+    if (start != _resumeStart) {
+        qDebug() << Q_FUNC_INFO <<  "Wrong content-range: "<< ranges << " while expecting start was" << _resumeStart;
+        if (start == 0) {
+            // device don't support range, just stry again from scratch
+            _device->close();
+            if (!_device->open(QIODevice::WriteOnly)) {
+                _errorString = _device->errorString();
+                _errorStatus = SyncFileItem::NormalError;
+                reply()->abort();
+                return;
+            }
+        } else {
+            _errorString = tr("Server returned wrong content-range");
+            _errorStatus = SyncFileItem::NormalError;
+            reply()->abort();
+            return;
+        }
+    }
+
 }
 
 void GETFileJob::slotReadyRead()
 {
-    int bufferSize = qMax(1024*8ll , reply()->bytesAvailable());
+    int bufferSize = qMin(1024*8ll , reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
 
     while(reply()->bytesAvailable() > 0) {
@@ -565,8 +609,8 @@ void PropagateDownloadFileQNAM::start()
     if (_item._directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
         _job = new GETFileJob(AccountManager::instance()->account(),
-                              _propagator->_remoteFolder + _item._file,
-                              &_tmpFile, headers, expectedEtagForResume);
+                            _propagator->_remoteFolder + _item._file,
+                            &_tmpFile, headers, expectedEtagForResume, _startSize);
     } else {
         // We were provided a direct URL, use that one
         if (!_item._directDownloadCookies.isEmpty()) {

@@ -240,11 +240,6 @@ int csync_update(CSYNC *ctx) {
             c_secdiff(finish, start), c_rbtree_size(ctx->local.tree));
   csync_memstat_check();
 
-  if (rc < 0) {
-    ctx->status_code = CSYNC_STATUS_TREE_ERROR;
-    return -1;
-  }
-
   /* update detection for remote replica */
   csync_gettime(&start);
   ctx->current = REMOTE_REPLICA;

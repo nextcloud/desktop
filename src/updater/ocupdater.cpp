@@ -82,7 +82,7 @@ QString OCUpdater::statusString() const
     case DownloadTimedOut:
         return tr("Could not check for new updates.");
     case UpdateOnlyAvailableThroughSystem:
-        return tr("New version %1 available. Please use the systems update tool to install it.").arg(updateVersion);
+        return tr("New version %1 available. Please use the system's update tool to install it.").arg(updateVersion);
     case Unknown:
         return tr("Checking update server...");
     case UpToDate:
@@ -256,7 +256,7 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
     ico->setPixmap(infoIcon.pixmap(iconSize));
     QLabel *lbl = new QLabel;
     QString txt = tr("<p>A new version of the %1 Client is available.</p>"
-                     "<p><b>%2</b> is available for download. The installed version is %3.<p>")
+                     "<p><b>%2</b> is available for download. The installed version is %3.</p>")
             .arg(Theme::instance()->appNameGUI()).arg(info.versionString()).arg(clientVersion());
 
     lbl->setText(txt);

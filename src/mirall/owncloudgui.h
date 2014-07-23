@@ -43,6 +43,8 @@ public:
 
     bool checkAccountExists(bool openSettings);
 
+    static void raiseDialog(QWidget *raiseWidget);
+
 signals:
     void setupProxy();
 

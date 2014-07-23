@@ -99,7 +99,7 @@ class FancyLineEditPrivate : public QObject
 public:
     explicit FancyLineEditPrivate(FancyLineEdit *parent);
 
-    virtual bool eventFilter(QObject *obj, QEvent *event);
+    virtual bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
 
     FancyLineEdit  *m_lineEdit;
     QPixmap m_pixmap[2];
@@ -317,7 +317,7 @@ void FancyLineEdit::setButtonFocusPolicy(Side side, Qt::FocusPolicy policy)
 // IconButton - helper class to represent a clickable icon
 
 IconButton::IconButton(QWidget *parent)
-    : QAbstractButton(parent), m_autoHide(false)
+    : QAbstractButton(parent), m_iconOpacity(0), m_autoHide(false)
 {
     setCursor(Qt::ArrowCursor);
     setFocusPolicy(Qt::NoFocus);

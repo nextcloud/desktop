@@ -36,12 +36,10 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT QString octetsToString( qint64 octets );
     OWNCLOUDSYNC_EXPORT QString platform();
     OWNCLOUDSYNC_EXPORT QByteArray userAgentString();
-    OWNCLOUDSYNC_EXPORT void raiseDialog(QWidget *);
     OWNCLOUDSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
     OWNCLOUDSYNC_EXPORT qint64 freeDiskSpace(const QString &path, bool *ok = 0);
     OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
-    OWNCLOUDSYNC_EXPORT void showInFileManager(const QString &localPath);
     /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
 
     /**
@@ -56,7 +54,6 @@ namespace Utility
 
     // porting methods
     OWNCLOUDSYNC_EXPORT QString escape(const QString&);
-    OWNCLOUDSYNC_EXPORT QString dataLocation();
 
     // conversion function QDateTime <-> time_t   (because the ones builtin work on only unsigned 32bit)
     OWNCLOUDSYNC_EXPORT QDateTime qDateTimeFromTime_t(qint64 t);
@@ -70,8 +67,8 @@ namespace Utility
      * @param uint precision the amount of sub dviving scale to include in the result.
      * @return an HMS representation of the milliseconds value.
      */
-    QString timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision, QString separator, bool specific);
-    QString timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific);
+    OWNCLOUDSYNC_EXPORT QString timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision, QString separator, bool specific);
+    OWNCLOUDSYNC_EXPORT QString timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific);
     
     // convinience OS detection methods
     OWNCLOUDSYNC_EXPORT bool isWindows();
@@ -85,7 +82,7 @@ namespace Utility
     // if false, the two cases are two different files.
     OWNCLOUDSYNC_EXPORT bool fsCasePreserving();
 
-    class StopWatch {
+    class OWNCLOUDSYNC_EXPORT StopWatch {
     private:
         QHash<QString, quint64> _lapTimes;
         QDateTime _startTime;

@@ -25,6 +25,7 @@
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
 #include <QHeaderView>
+#include <QDesktopServices>
 #endif
 
 #include <QCoreApplication>
@@ -183,9 +184,13 @@ QVariant MirallConfigFile::getPolicySetting(const QString &setting, const QVaria
 
 QString MirallConfigFile::configPath() const
 {
+    #ifndef TOKEN_AUTH_ONLY
     if( _confDir.isEmpty() ) {
-        _confDir = Utility::dataLocation();
+        //  Qt 5's QStandardPaths::writableLocation gives us wrong results (without /data/),
+        //  so we'll have to use the deprecated version for now
+        _confDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
     }
+    #endif
     QString dir = _confDir;
 
     if( !dir.endsWith(QLatin1Char('/')) ) dir.append(QLatin1Char('/'));

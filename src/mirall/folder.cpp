@@ -35,12 +35,19 @@
 #include <QUrl>
 #include <QDir>
 
-#ifndef TOKEN_AUTH_ONLY
 #include <QMessageBox>
 #include <QPushButton>
-#endif
 
 namespace Mirall {
+
+static void csyncLogCatcher(int /*verbosity*/,
+                        const char */*function*/,
+                        const char *buffer,
+                        void */*userdata*/)
+{
+    Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
+}
+
 
 Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
     : QObject(parent)
@@ -105,8 +112,6 @@ bool Folder::init()
     } else {
         csync_set_log_callback( csyncLogCatcher );
         csync_set_log_level( 11 );
-
-        MirallConfigFile cfgFile;
 
         if (Account *account = AccountManager::instance()->account()) {
             account->credentials()->syncContextPreInit(_csync_ctx);
@@ -368,17 +373,17 @@ void Folder::bubbleUpSyncResult()
     qDebug() << "Processing result list and logging took " << timer.elapsed() << " Milliseconds.";
     _syncResult.setWarnCount(ignoredItems);
 
-    createGuiLog( firstItemNew._file,     FILE_STATUS_NEW, newItems );
-    createGuiLog( firstItemDeleted._file, FILE_STATUS_REMOVE, removedItems );
-    createGuiLog( firstItemUpdated._file, FILE_STATUS_UPDATED, updatedItems );
+    createGuiLog( firstItemNew._file,     SyncFileStatus(SyncFileStatus::STATUS_NEW), newItems );
+    createGuiLog( firstItemDeleted._file, SyncFileStatus(SyncFileStatus::STATUS_REMOVE), removedItems );
+    createGuiLog( firstItemUpdated._file, SyncFileStatus(SyncFileStatus::STATUS_UPDATED), updatedItems );
 
     if( !firstItemRenamed.isEmpty() ) {
-        SyncFileStatus status = FILE_STATUS_RENAME;
+        SyncFileStatus status(SyncFileStatus::STATUS_RENAME);
         // if the path changes it's rather a move
         QDir renTarget = QFileInfo(firstItemRenamed._renameTarget).dir();
         QDir renSource = QFileInfo(firstItemRenamed._file).dir();
         if(renTarget != renSource) {
-            status = FILE_STATUS_MOVE;
+            status.set(SyncFileStatus::STATUS_MOVE);
         }
         createGuiLog( firstItemRenamed._file, status, renamedItems, firstItemRenamed._renameTarget );
     }
@@ -397,36 +402,36 @@ void Folder::createGuiLog( const QString& filename, SyncFileStatus status, int c
 
         // not all possible values of status are evaluated here because the others
         // are not used in the calling function. Please check there.
-        switch (status) {
-        case FILE_STATUS_REMOVE:
+        switch (status.tag()) {
+        case SyncFileStatus::STATUS_REMOVE:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files have been removed.", "%1 names a file.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 has been removed.", "%1 names a file.").arg(file);
             }
             break;
-        case FILE_STATUS_NEW:
+        case SyncFileStatus::STATUS_NEW:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files have been downloaded.", "%1 names a file.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 has been downloaded.", "%1 names a file.").arg(file);
             }
             break;
-        case FILE_STATUS_UPDATED:
+        case SyncFileStatus::STATUS_UPDATED:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files have been updated.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 has been updated.", "%1 names a file.").arg(file);
             }
             break;
-        case FILE_STATUS_RENAME:
+        case SyncFileStatus::STATUS_RENAME:
             if( count > 1 ) {
                 text = tr("%1 has been renamed to %2 and %3 other files have been renamed.").arg(file).arg(renameTarget).arg(count-1);
             } else {
                 text = tr("%1 has been renamed to %2.", "%1 and %2 name files.").arg(file).arg(renameTarget);
             }
             break;
-        case FILE_STATUS_MOVE:
+        case SyncFileStatus::STATUS_MOVE:
             if( count > 1 ) {
                 text = tr("%1 has been moved to %2 and %3 other files have been moved.").arg(file).arg(renameTarget).arg(count-1);
             } else {
@@ -708,11 +713,7 @@ void Folder::slotJobCompleted(const SyncFileItem &item)
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel)
 {
-#ifndef TOKEN_AUTH_ONLY
-    QString msg = direction == SyncFileItem::Down ?
-        tr("This sync would remove all the files in the local sync folder '%1'.\n"
-           "If you or your administrator have reset your account on the server, choose "
-           "\"Keep files\". If you want your data to be removed, choose \"Remove all files\".") :
+    QString msg =
         tr("This sync would remove all the files in the sync folder '%1'.\n"
            "This might be because the folder was silently reconfigured, or that all "
            "the file were manually removed.\n"
@@ -732,7 +733,6 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *
         _lastEtag = QString();
         QTimer::singleShot(50, this, SLOT(slotPollTimerTimeout()));
     }
-#endif
 }
 } // namespace Mirall
 

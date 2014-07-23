@@ -148,6 +148,8 @@ if(NOT Qt5Core_FOUND)
 
         include( ${QT_USE_FILE} )
     endmacro()
+
+    add_definitions("-DQ_DECL_OVERRIDE=override")
 endif()
 
 if( Qt5Core_DIR )

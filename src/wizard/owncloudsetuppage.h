@@ -33,12 +33,12 @@ class OwncloudSetupPage: public QWizardPage
 public:
   OwncloudSetupPage();
 
-  virtual bool isComplete() const;
-  virtual void initializePage();
-  virtual int nextId() const;
+  virtual bool isComplete() const Q_DECL_OVERRIDE;
+  virtual void initializePage() Q_DECL_OVERRIDE;
+  virtual int nextId() const Q_DECL_OVERRIDE;
   void setServerUrl( const QString& );
   void setAllowPasswordStorage( bool );
-  bool validatePage();
+  bool validatePage() Q_DECL_OVERRIDE;
   QString url() const;
   QString localFolder() const;
   void setRemoteFolder( const QString& remoteFolder);
@@ -68,12 +68,9 @@ private:
   QString _ocUser;
   bool    _authTypeKnown;
   bool    _checking;
-  bool    _configExists;
-  bool    _multipleFoldersExist;
   WizardCommon::AuthType _authType;
 
   QProgressIndicator* _progressIndi;
-  QButtonGroup* _selectiveSyncButtons;
   QString _remoteFolder;
 };
 
