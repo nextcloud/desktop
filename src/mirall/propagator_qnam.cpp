@@ -402,6 +402,7 @@ void GETFileJob::start() {
 
     setReply(davRequest("GET", path(), req));
     setupConnections(reply());
+    reply()->setReadBufferSize(128 * 1024);
 
     if( reply()->error() != QNetworkReply::NoError ) {
         qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
