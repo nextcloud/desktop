@@ -602,7 +602,7 @@ Se você, ou o seu administrador, reiniciou  a sua conta no servidor, escolha &q
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="493"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>O servidor retornou o alcance-conteúdo errado</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="531"/>
@@ -1269,7 +1269,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="427"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>O servidor retornou o alcance-conteúdo errado</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="478"/>
