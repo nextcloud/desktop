@@ -80,6 +80,30 @@ signals:
     void uploadProgress(qint64,qint64);
 };
 
+class PollJob : public AbstractNetworkJob {
+    Q_OBJECT
+public:
+    // Takes ownership of the device
+    explicit PollJob(Account* account, const QString &path, QObject *parent)
+        : AbstractNetworkJob(account, path, parent) {}
+
+    virtual void start();
+
+    virtual bool finished() {
+        emit finishedSignal(true);
+        return true;
+    }
+
+    virtual void slotTimeout() {
+//      emit finishedSignal(false);
+//      deleteLater();
+        reply()->abort();
+    }
+
+signals:
+    void finishedSignal(bool success);
+};
+
 
 class PropagateUploadFileQNAM : public PropagateItemJob {
     Q_OBJECT
@@ -96,10 +120,13 @@ public:
     void start();
 private slots:
     void slotPutFinished();
+    void slotPollFinished(bool success);
     void slotUploadProgress(qint64,qint64);
     void abort();
     void startNextChunk();
     void finalize(const SyncFileItem&);
+private:
+    void startPollJob(const QString& path);
 };
 
 

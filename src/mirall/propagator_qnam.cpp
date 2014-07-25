@@ -20,6 +20,7 @@
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
+#include <json.h>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
@@ -82,6 +83,14 @@ void PUTFileJob::slotTimeout() {
     _errorString =  tr("Connection Timeout");
     reply()->abort();
 }
+
+void PollJob::start()
+{
+    setReply(davRequest("GET", path()));
+    connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(resetTimeout()));
+    AbstractNetworkJob::start();
+}
+
 
 void PropagateUploadFileQNAM::start()
 {
@@ -206,6 +215,7 @@ void PropagateUploadFileQNAM::startNextChunk()
     quint64 fileSize = _item._size;
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Total-Length"] = QByteArray::number(fileSize);
+    headers["OC-Async"] = "1";
     headers["Content-Type"] = "application/octet-stream";
     headers["X-OC-Mtime"] = QByteArray::number(qint64(_item._modtime));
     if (!_item._etag.isEmpty() && _item._etag != "empty_etag") {
@@ -289,6 +299,19 @@ void PropagateUploadFileQNAM::slotPutFinished()
         }
 
         done(classifyError(err, _item._httpErrorCode), errorString);
+        return;
+    }
+
+    _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    // The server needs some time to process the request and provide with a poll URL
+    if (_item._httpErrorCode == 202) {
+        QString path =  QString::fromUtf8(QByteArray::fromPercentEncoding(job->reply()->rawHeader("OC-Finish-Poll")));
+        if (path.isEmpty()) {
+            _propagator->_activeJobs--;
+            done(SyncFileItem::NormalError, tr("Poll URL missing"));
+            return;
+        }
+        startPollJob(path);
         return;
     }
 
@@ -383,6 +406,51 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
     emit progress(_item, sent + _currentChunk * chunkSize());
 }
 
+void PropagateUploadFileQNAM::startPollJob(const QString& path)
+{
+    PollJob* job = new PollJob(AccountManager::instance()->account(), path, this);
+    job->setTimeout(_propagator->httpTimeout() * 10000);
+    connect(job, SIGNAL(finishedSignal(bool)), SLOT(slotPollFinished(bool)));
+}
+
+void PropagateUploadFileQNAM::slotPollFinished(bool success)
+{
+    PollJob *job = qobject_cast<PollJob *>(sender());
+    Q_ASSERT(job);
+    qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
+            << job->reply()->error()
+            << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString())
+            << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
+            << job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+    QNetworkReply::NetworkError err = job->reply()->error();
+    if (!success || err != QNetworkReply::NoError) {
+        startPollJob(job->path());
+        return;
+    }
+
+    bool ok = false;
+    QVariantMap status = QtJson::parse(QString::fromUtf8(job->reply()->readAll()), ok).toMap();
+    if (!ok || status.isEmpty()) {
+        _propagator->_activeJobs--;
+        done(SyncFileItem::NormalError, tr("Invalid json reply from the poll URL"));
+        // FIXME: retry?
+        return;
+    }
+
+    // the following code only happens after all chunks were uploaded.
+    // the file id should only be empty for new files up- or downloaded
+    QByteArray fid = status["fileid"].toByteArray();
+    if( !fid.isEmpty() ) {
+        if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
+            qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
+        }
+        _item._fileId = fid;
+    }
+
+    _item._etag = status["etag"].toByteArray();
+    _item._responseTimeStamp = job->responseTimestamp();
+    finalize(_item);
+}
 
 void PropagateUploadFileQNAM::abort()
 {
