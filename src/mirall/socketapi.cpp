@@ -208,7 +208,7 @@ void SocketApi::slotNewConnection()
     _listeners.append(socket);
 
     foreach( QString alias, FolderMan::instance()->map().keys() ) {
-       slotUpdateFolderView(alias);
+       slotRegisterPath(alias);
     }
 }
 
@@ -243,17 +243,35 @@ void SocketApi::slotReadSocket()
     }
 }
 
-void SocketApi::slotUpdateFolderView(const QString& alias)
+void SocketApi::slotRegisterPath( const QString& alias )
 {
-    QString msg = QLatin1String("UPDATE_VIEW");
-
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
-        msg.append(QLatin1String(":"));
-        msg.append(QDir::toNativeSeparators(QDir::cleanPath(f->path())));
+        broadcastMessage(QLatin1String("REGISTER_PATH"), f->path() );
     }
+}
 
-    broadcastMessage(msg);
+void SocketApi::slotUnregisterPath( const QString& alias )
+{
+    Folder *f = FolderMan::instance()->folder(alias);
+    if (f) {
+        broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path() );
+    }
+}
+
+void SocketApi::slotUpdateFolderView(const QString& alias)
+{
+    Folder *f = FolderMan::instance()->folder(alias);
+    if (f) {
+        // do only send UPDATE_VIEW for a couple of status
+        if( f->syncResult().status() == SyncResult::SyncPrepare ||
+                f->syncResult().status() == SyncResult::Success ||
+                f->syncResult().status() == SyncResult::Problem ||
+                f->syncResult().status() == SyncResult::Error   ||
+                f->syncResult().status() == SyncResult::SetupError ) {
+            broadcastMessage(QLatin1String("UPDATE_VIEW"), f->path() );
+        }
+    }
 }
 
 void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item)
@@ -269,8 +287,7 @@ void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item
         command = QLatin1String("ERROR");
     }
 
-    broadcastMessage(QLatin1String("BROADCAST:") + command + QLatin1Char(':')
-                     + QDir::toNativeSeparators(path));
+    broadcastMessage(QLatin1String("BROADCAST:"), path, command);
 }
 
 
@@ -279,14 +296,32 @@ void SocketApi::sendMessage(QTcpSocket *socket, const QString& message)
 {
     DEBUG << "Sending message: " << message;
     QString localMessage = message;
-    socket->write(localMessage.append("\n").toUtf8());
+    if( ! localMessage.endsWith(QLatin1Char('\n'))) {
+        localMessage.append(QLatin1Char('\n'));
+    }
+    qint64 sent = socket->write(localMessage.toUtf8());
+    if( sent != localMessage.toUtf8().length() ) {
+        qDebug() << "WARN: Could not send all data on socket for " << localMessage;
+    }
+
 }
 
-void SocketApi::broadcastMessage(const QString& message)
+void SocketApi::broadcastMessage( const QString& verb, const QString& path, const QString& status )
 {
-    DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << message;
-    foreach(QTcpSocket* current, _listeners) {
-        sendMessage(current, message);
+    QString msg(verb);
+
+    if( !status.isEmpty() ) {
+        msg.append(QLatin1Char(':'));
+        msg.append(status);
+    }
+    if( !path.isEmpty() ) {
+        msg.append(QLatin1Char(':'));
+        msg.append(QDir::toNativeSeparators(path));
+    }
+
+    DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << msg;
+    foreach(QTcpSocket *socket, _listeners) {
+        sendMessage(socket, msg);
     }
 }
 
