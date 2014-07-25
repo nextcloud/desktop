@@ -38,14 +38,14 @@ public:
 
 public slots:
     void slotUpdateFolderView(const QString&);
+    void slotUnregisterPath( const QString& alias );
+    void slotRegisterPath( const QString& alias );
 
 private slots:
     void slotNewConnection();
     void onLostConnection();
     void slotReadSocket();
     void slotJobCompleted(const QString &, const SyncFileItem &);
-    void slotUnregisterPath( const QString& alias );
-    void slotRegisterPath( const QString& alias );
 
 private:
     void sendMessage(QTcpSocket* socket, const QString& message);
