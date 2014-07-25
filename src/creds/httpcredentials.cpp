@@ -365,6 +365,8 @@ void HttpCredentials::slotWriteJobDone(QKeychain::Job *job)
     default:
         qDebug() << "Error while writing password" << job->errorString();
     }
+    WritePasswordJob *wjob = qobject_cast<WritePasswordJob*>(job);
+    wjob->deleteLater();
 }
 
 void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* authenticator)
