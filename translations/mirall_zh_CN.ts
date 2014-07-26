@@ -374,67 +374,67 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="194"/>
+        <location filename="../src/mirall/folderman.cpp" line="203"/>
         <source>Could not reset folder state</source>
         <translation>不能重置文件夹状态</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="195"/>
+        <location filename="../src/mirall/folderman.cpp" line="204"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>一个旧的同步日志 &apos;%1&apos; 被找到，但是不能被移除。请确定没有应用程序正在使用它。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="778"/>
+        <location filename="../src/mirall/folderman.cpp" line="787"/>
         <source>Undefined State.</source>
         <translation>未知状态。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="781"/>
+        <location filename="../src/mirall/folderman.cpp" line="790"/>
         <source>Waits to start syncing.</source>
         <translation>等待启动同步。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="784"/>
+        <location filename="../src/mirall/folderman.cpp" line="793"/>
         <source>Preparing for sync.</source>
         <translation>准备同步。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="796"/>
         <source>Sync is running.</source>
         <translation>同步正在运行。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="799"/>
         <source>Server is currently not available.</source>
         <translation>服务器当前是不可用的。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="802"/>
         <source>Last Sync was successful.</source>
         <translation>最后一次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="798"/>
+        <location filename="../src/mirall/folderman.cpp" line="807"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>上次同步已成功，不过一些文件出现了警告。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="801"/>
+        <location filename="../src/mirall/folderman.cpp" line="810"/>
         <source>Setup Error.</source>
         <translation>安装失败</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="804"/>
+        <location filename="../src/mirall/folderman.cpp" line="813"/>
         <source>User Abort.</source>
         <translation>用户撤销。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="816"/>
         <source>Sync is paused.</source>
         <translation>同步已暂停。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="822"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (同步已暂停)</translation>
     </message>

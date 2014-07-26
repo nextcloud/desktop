@@ -375,67 +375,67 @@ Está seguro de que desea realizar esta operación?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="194"/>
+        <location filename="../src/mirall/folderman.cpp" line="203"/>
         <source>Could not reset folder state</source>
         <translation>No se ha podido restablecer el estado de la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="195"/>
+        <location filename="../src/mirall/folderman.cpp" line="204"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Un antiguo registro (journal) de sincronización &apos;%1&apos; se ha encontrado, pero no se ha podido eliminar. Por favor asegúrese que ninguna aplicación la está utilizando.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="778"/>
+        <location filename="../src/mirall/folderman.cpp" line="787"/>
         <source>Undefined State.</source>
         <translation>Estado no definido.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="781"/>
+        <location filename="../src/mirall/folderman.cpp" line="790"/>
         <source>Waits to start syncing.</source>
         <translation>Esperando el inicio de la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="784"/>
+        <location filename="../src/mirall/folderman.cpp" line="793"/>
         <source>Preparing for sync.</source>
         <translation>Preparándose para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="796"/>
         <source>Sync is running.</source>
         <translation>Sincronización en funcionamiento.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="799"/>
         <source>Server is currently not available.</source>
         <translation>El servidor no está disponible en el momento</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="802"/>
         <source>Last Sync was successful.</source>
         <translation>La última sincronización fue exitosa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="798"/>
+        <location filename="../src/mirall/folderman.cpp" line="807"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>La última sincronización fue exitosa pero con advertencias para archivos individuales.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="801"/>
+        <location filename="../src/mirall/folderman.cpp" line="810"/>
         <source>Setup Error.</source>
         <translation>Error de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="804"/>
+        <location filename="../src/mirall/folderman.cpp" line="813"/>
         <source>User Abort.</source>
         <translation>Interrumpir.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="816"/>
         <source>Sync is paused.</source>
         <translation>La sincronización está en pausa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="822"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sincronización en pausa)</translation>
     </message>

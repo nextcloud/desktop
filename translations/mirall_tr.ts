@@ -375,67 +375,67 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="194"/>
+        <location filename="../src/mirall/folderman.cpp" line="203"/>
         <source>Could not reset folder state</source>
         <translation>Klasör durumu sıfırılanamadı</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="195"/>
+        <location filename="../src/mirall/folderman.cpp" line="204"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Eski eşitleme günlüğü &apos;%1&apos; bulundu ancak kaldırılamadı. Başka bir uygulama tarafından kullanılmadığından emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="778"/>
+        <location filename="../src/mirall/folderman.cpp" line="787"/>
         <source>Undefined State.</source>
         <translation>Tanımlanmamış Durum.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="781"/>
+        <location filename="../src/mirall/folderman.cpp" line="790"/>
         <source>Waits to start syncing.</source>
         <translation>Eşitleme başlatmak için bekleniyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="784"/>
+        <location filename="../src/mirall/folderman.cpp" line="793"/>
         <source>Preparing for sync.</source>
         <translation>Eşitleme için hazırlanıyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="796"/>
         <source>Sync is running.</source>
         <translation>Eşitleme çalışıyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="799"/>
         <source>Server is currently not available.</source>
         <translation>Sunucu şu an kullanılabilir değil.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="802"/>
         <source>Last Sync was successful.</source>
         <translation>Son Eşitleme başarılı oldu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="798"/>
+        <location filename="../src/mirall/folderman.cpp" line="807"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Son eşitleme başarılıydı, ancak tekil dosyalarda uyarılar vardı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="801"/>
+        <location filename="../src/mirall/folderman.cpp" line="810"/>
         <source>Setup Error.</source>
         <translation>Kurulum Hatası.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="804"/>
+        <location filename="../src/mirall/folderman.cpp" line="813"/>
         <source>User Abort.</source>
         <translation>Kullanıcı İptal Etti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="816"/>
         <source>Sync is paused.</source>
         <translation>Eşitleme duraklatıldı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="822"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Eşitleme duraklatıldı)</translation>
     </message>

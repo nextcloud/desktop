@@ -374,67 +374,67 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="194"/>
+        <location filename="../src/mirall/folderman.cpp" line="203"/>
         <source>Could not reset folder state</source>
         <translation>Не вдалося скинути стан теки</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="195"/>
+        <location filename="../src/mirall/folderman.cpp" line="204"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="778"/>
+        <location filename="../src/mirall/folderman.cpp" line="787"/>
         <source>Undefined State.</source>
         <translation>Невизначений стан.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="781"/>
+        <location filename="../src/mirall/folderman.cpp" line="790"/>
         <source>Waits to start syncing.</source>
         <translation>Очікування початку синхронізації.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="784"/>
+        <location filename="../src/mirall/folderman.cpp" line="793"/>
         <source>Preparing for sync.</source>
         <translation>Підготовка до синхронізації</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="796"/>
         <source>Sync is running.</source>
         <translation>Синхронізація запущена.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="799"/>
         <source>Server is currently not available.</source>
         <translation>Сервер наразі недоступний.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="802"/>
         <source>Last Sync was successful.</source>
         <translation>Остання синхронізація була успішною.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="798"/>
+        <location filename="../src/mirall/folderman.cpp" line="807"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="801"/>
+        <location filename="../src/mirall/folderman.cpp" line="810"/>
         <source>Setup Error.</source>
         <translation>Помилка установки.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="804"/>
+        <location filename="../src/mirall/folderman.cpp" line="813"/>
         <source>User Abort.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="816"/>
         <source>Sync is paused.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="822"/>
         <source>%1 (Sync is paused)</source>
         <translation type="unfinished"/>
     </message>

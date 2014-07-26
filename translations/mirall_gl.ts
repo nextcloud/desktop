@@ -375,67 +375,67 @@ Confirma que quere realizar esta operación?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="194"/>
+        <location filename="../src/mirall/folderman.cpp" line="203"/>
         <source>Could not reset folder state</source>
         <translation>Non foi posíbel restabelecer o estado do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="195"/>
+        <location filename="../src/mirall/folderman.cpp" line="204"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Atopouse un rexistro de sincronización antigo en «%1» máis non pode ser retirado. Asegúrese de que non o está a usar ningún aplicativo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="778"/>
+        <location filename="../src/mirall/folderman.cpp" line="787"/>
         <source>Undefined State.</source>
         <translation>Estado sen definir.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="781"/>
+        <location filename="../src/mirall/folderman.cpp" line="790"/>
         <source>Waits to start syncing.</source>
         <translation>Agardando polo comezo da sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="784"/>
+        <location filename="../src/mirall/folderman.cpp" line="793"/>
         <source>Preparing for sync.</source>
         <translation>Preparando para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="796"/>
         <source>Sync is running.</source>
         <translation>Estase sincronizando.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="799"/>
         <source>Server is currently not available.</source>
         <translation>O servidor non está dispoñíbel actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="802"/>
         <source>Last Sync was successful.</source>
         <translation>A última sincronización fíxose correctamente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="798"/>
+        <location filename="../src/mirall/folderman.cpp" line="807"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>A última sincronización fíxose correctamente, mais con algún aviso en ficheiros individuais.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="801"/>
+        <location filename="../src/mirall/folderman.cpp" line="810"/>
         <source>Setup Error.</source>
         <translation>Erro de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="804"/>
+        <location filename="../src/mirall/folderman.cpp" line="813"/>
         <source>User Abort.</source>
         <translation>Interrompido polo usuario.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="816"/>
         <source>Sync is paused.</source>
         <translation>Sincronización en pausa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="822"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (sincronización en pausa)</translation>
     </message>
@@ -603,7 +603,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="493"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>O servidor devolveu un intervalo de contidos estragado</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="531"/>
@@ -1272,7 +1272,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="427"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>O servidor devolveu un intervalo de contidos estragado</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="478"/>
