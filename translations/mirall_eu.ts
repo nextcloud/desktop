@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="33"/>
@@ -27,7 +27,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="136"/>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="319"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Bentan nahi duzu karpetaren sinkronizazioa gelditu? &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt;Honek ez du fitxategiak zure bezerotik ezabatuko.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="355"/>
@@ -147,17 +147,17 @@
         <location filename="../src/mirall/accountsettings.cpp" line="608"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="707"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) tik %2 zerbitzariko lekua erabilia</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="746"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago %1-ra konexiorik hemendik &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="753"/>
@@ -189,7 +189,8 @@
         <location filename="../src/mirall/accountsettings.cpp" line="617"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 of %2, fitxategia %3 of %4
+Geratzen den denbora %5</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="739"/>
@@ -217,12 +218,12 @@ Total time left %5</source>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Sartu erabiltzaile izena eta pasahitza &apos;%1&apos;-rentzat hemen: %2.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Erabiltzailea:</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/authenticationdialog.cpp" line="36"/>
@@ -263,7 +264,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="110"/>
         <source>Unable to create csync-context</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da csync-context sortu</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="164"/>
@@ -289,7 +290,7 @@ Total time left %5</source>
         <location filename="../src/mirall/folder.cpp" line="408"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 eta  beste %2 fitxategi ezabatu dira.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="410"/>
@@ -301,40 +302,40 @@ Total time left %5</source>
         <location filename="../src/mirall/folder.cpp" line="415"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 eta  beste %2 fitxategi deskargatu dira.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="417"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 deskargatu da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="422"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 eta  beste %2 fitxategi kargatu dira.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="424"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 kargatu da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="429"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>%1  %2-(e)ra berrizendatu da eta beste %3 fitxategi berrizendatu dira.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="431"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1  %2-(e)ra berrizendatu da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="436"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>%1  %2-(e)ra berrizendatu da eta beste %3 fitxategi mugitu dira.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="438"/>
@@ -351,7 +352,9 @@ Total time left %5</source>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazioak &apos;%1&apos;  sinkronizazio karpetako fitxategi guztiak ezabatuko ditu.
+Izan daiteke karpeta isilpean birkonfiguratu delako edo fitxategi guztiak eskuz ezabatu direlako.
+Ziur zaude eragiketa hau egin nahi duzula?</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="721"/>
@@ -379,7 +382,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="204"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Aurkitu da &apos;%1&apos; sinkronizazio erregistro zaharra, baina ezin da ezabatu. Ziurtatu aplikaziorik ez dela erabiltzen ari.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="787"/>
@@ -424,7 +427,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="813"/>
         <source>User Abort.</source>
-        <translation>Erabiltzaileak Bertan Behera Utzi.</translation>
+        <translation>Erabiltzaileak bertan behera utzi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="816"/>
@@ -448,7 +451,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="204"/>
         <source>Syncing all files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi guztiak sinkronizatzen zure kontuan honekin</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="207"/>
@@ -480,7 +483,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="69"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>Direktorioaren ezizena sinkronizazio konexioaren izen deskriptiboa da.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="98"/>
@@ -490,12 +493,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="103"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Ez daukazu hautatutako karpetan idazteko baimenik!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="127"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>%1 sarbidean badago kargatzeko karpeta bat. Hautatu beste bat!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="132"/>
@@ -505,17 +508,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="139"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Hautatutako karpeta esteka sinboliko bat da. Eta konfituratutako karpeta dagoeneko badago esteka apuntatzen duen karpetan.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="146"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Karpeta batek dagoeneko barnean du orain sartutako karpeta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="152"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Hautatutako karpeta esteka sinboliko bat da. Eta konfiguratutako karpeta estekak apuntatzen  duen karpetaren gurasoa da. </translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="165"/>
@@ -525,7 +528,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="176"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation> &lt;i&gt;%1&lt;/i&gt; ezizena dagoeneko erabiltzen ari da. Hautatu beste ezizen bat.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="209"/>
@@ -553,7 +556,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="283"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Huts egin du %1-(e)an karpeta sortzen. Egiaztatu eskuz.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="332"/>
@@ -568,12 +571,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="389"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Dagoeneko  &lt;i&gt;%1&lt;/i&gt; sinkronizatzen ari zara, &lt;i&gt;%2&lt;/i&gt;-ren guraso karpeta dena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="393"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>Dagoeneko fitxategi guztiak sinkronizatzen ari zara. &lt;b&gt;Ezin&lt;b&gt; da sinkronizatu beste karpeta bat. Hainbat karpeta batera sinkronizatu nahi baduzu ezaba ezazu orain konfiguratuta duzun sinkronizazio karpeta nagusia.</translation>
     </message>
 </context>
 <context>
@@ -605,7 +608,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="531"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Konexioa denboraz kanpo</translation>
     </message>
 </context>
 <context>
@@ -613,12 +616,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ezarpen orokorrak</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -826,7 +829,7 @@ Markatutakoak ezabatuko dira karpeta bat ezabatzeko beharrezkoa bada. Hau meta d
     <message>
         <location filename="../src/mirall/networksettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="23"/>
@@ -1244,7 +1247,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="82"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Konexioa denboraz kanpo</translation>
     </message>
 </context>
 <context>
@@ -1403,7 +1406,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
@@ -1700,7 +1703,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.ui" line="25"/>
@@ -2153,7 +2156,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="32"/>
@@ -2208,7 +2211,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="38"/>
@@ -2238,7 +2241,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="14"/>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
@@ -2325,7 +2328,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularioa</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="20"/>

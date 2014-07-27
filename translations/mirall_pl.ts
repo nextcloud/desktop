@@ -621,7 +621,7 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia ogólne</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -962,7 +962,7 @@ poprosić o dodatkowe uprawnienia podczas tego procesu.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nowa wersja %1 jest dostępna. Aby ją zainstalować, użyj systemowego narzędzia do aktualizacji.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1293,7 +1293,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="51"/>
         <source>; Restoration Failed: </source>
-        <translation type="unfinished"/>
+        <translation>; Przywracanie nie powiodło się:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="170"/>
@@ -1390,7 +1390,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="303"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Pliki lokalny został usunięty podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="310"/>
@@ -1891,7 +1891,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="150"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>Upłynął limit czasu połączenia.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="153"/>
@@ -1967,38 +1967,38 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="738"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Nie masz uprawnień do dodawania podkatalogów w tym katalogu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="745"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
-        <translation type="unfinished"/>
+        <translation>Nie masz uprawnień by dodać katalog nadrzędny</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="752"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Nie masz uprawnień by dodać pliki w tym katalogu</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="770"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Wgrywanie niedozwolone, ponieważ plik jest tylko do odczytu na serwerze, przywracanie</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="785"/>
         <location filename="../src/mirall/syncengine.cpp" line="805"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Brak uprawnień by usunąć, przywracanie</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="855"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Przenoszenie niedozwolone, obiekt przywrócony</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="864"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>Przenoszenie niedozwolone, ponieważ %1 jest tylko do odczytu</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="865"/>
