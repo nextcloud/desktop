@@ -405,7 +405,7 @@ void ShibbolethCredentials::showLoginWindow(Account* account)
 
 QList<QNetworkCookie> ShibbolethCredentials::accountCookies(Account *account)
 {
-    return account->networkAccessManager()->cookieJar()->cookiesForUrl(account->url());
+    return account->networkAccessManager()->cookieJar()->cookiesForUrl(account->davUrl());
 }
 
 QNetworkCookie ShibbolethCredentials::findShibCookie(Account *account, QList<QNetworkCookie> cookies)
