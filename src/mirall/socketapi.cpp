@@ -57,7 +57,7 @@ namespace Mirall {
 
 namespace SocketApiHelper {
 
-SyncFileStatus fileStatus(Folder *folder, const QString& fileName );
+SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName );
 
 /**
  * @brief recursiveFolderStatus
@@ -79,15 +79,17 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
     SyncFileStatus result(SyncFileStatus::STATUS_SYNC);
 
     foreach( const QString entry, dirEntries ) {
+        QString normalizedFile = QString(fileName + QLatin1Char('/') + entry).normalized(QString::NormalizationForm_C);
         QFileInfo fi(entry);
         SyncFileStatus sfs;
+
         if( fi.isDir() ) {
-            sfs = recursiveFolderStatus(folder, fileName + QLatin1Char('/') + entry );
+            sfs = recursiveFolderStatus(folder, normalizedFile );
         } else {
-            QString fs( fileName + QLatin1Char('/') + entry );
+            QString fs( normalizedFile );
             if( fileName.isEmpty() ) {
                 // toplevel, no slash etc. needed.
-                fs = entry;
+                fs = entry.normalized(QString::NormalizationForm_C);
             }
             sfs = fileStatus(folder, fs );
         }
@@ -104,11 +106,12 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
 /**
  * Get status about a single file.
  */
-SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
+SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName )
 {
     // FIXME: Find a way for STATUS_ERROR
 
     QString file = folder->path();
+    QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
 
     bool isSyncRootFolder = true;
     if( fileName != QLatin1String("/") && !fileName.isEmpty() ) {
