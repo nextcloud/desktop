@@ -2482,7 +2482,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="75"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>errorea</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="78"/>
