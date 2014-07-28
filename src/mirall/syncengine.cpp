@@ -438,6 +438,18 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
 
 void SyncEngine::startSync()
 {
+    if (_journal->exists()) {
+        QVector< SyncJournalDb::PollInfo > pollInfos = _journal->getPollInfos();
+        if (!pollInfos.isEmpty()) {
+            qDebug() << "Finish Poll jobs before starting a sync";
+            CleanupPollsJob *job = new CleanupPollsJob(pollInfos, AccountManager::instance()->account(),
+                                                       _journal, _localPath, this);
+            connect(job, SIGNAL(finished()), this, SLOT(startSync()));
+            job->start();
+            return;
+        }
+    }
+
     Q_ASSERT(!_syncRunning);
     _syncRunning = true;
 

@@ -82,26 +82,26 @@ signals:
 
 class PollJob : public AbstractNetworkJob {
     Q_OBJECT
+    SyncJournalDb *_journal;
+    QString _localPath;
 public:
+    SyncFileItem _item;
+    const QString _error;
     // Takes ownership of the device
-    explicit PollJob(Account* account, const QString &path, QObject *parent)
-        : AbstractNetworkJob(account, path, parent) {}
+    explicit PollJob(Account* account, const QString &path, SyncFileItem item,
+                     SyncJournalDb *journal, const QString &localPath, QObject *parent)
+        : AbstractNetworkJob(account, path, parent), _journal(journal), _localPath(localPath), _item(item) {}
 
-    virtual void start();
-
-    virtual bool finished() {
-        emit finishedSignal(true);
-        return true;
-    }
-
-    virtual void slotTimeout() {
+    void start() Q_DECL_OVERRIDE;
+    bool finished() Q_DECL_OVERRIDE;
+    void slotTimeout() Q_DECL_OVERRIDE {
 //      emit finishedSignal(false);
 //      deleteLater();
         reply()->abort();
     }
 
 signals:
-    void finishedSignal(bool success);
+    void finishedSignal();
 };
 
 
@@ -120,7 +120,7 @@ public:
     void start();
 private slots:
     void slotPutFinished();
-    void slotPollFinished(bool success);
+    void slotPollFinished();
     void slotUploadProgress(qint64,qint64);
     void abort();
     void startNextChunk();
@@ -193,8 +193,6 @@ private slots:
     void abort();
     void downloadFinished();
     void slotDownloadProgress(qint64,qint64);
-
-
 };
 
 

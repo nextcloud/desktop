@@ -66,12 +66,20 @@ public:
         bool _valid;
     };
 
+    struct PollInfo {
+        QString _file;
+        QString _url;
+        time_t _modtime;
+    };
+
     DownloadInfo getDownloadInfo(const QString &file);
     void setDownloadInfo(const QString &file, const DownloadInfo &i);
     UploadInfo getUploadInfo(const QString &file);
     void setUploadInfo(const QString &file, const UploadInfo &i);
     SyncJournalBlacklistRecord blacklistEntry( const QString& );
     void avoidRenamesOnNextSync(const QString &path);
+    void setPollInfo(const PollInfo &);
+    QVector<PollInfo> getPollInfos();
 
     /**
      * Make sure that on the next sync, filName is not read from the DB but use the PROPFIND to

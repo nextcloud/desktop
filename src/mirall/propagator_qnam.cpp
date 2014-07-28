@@ -86,9 +86,48 @@ void PUTFileJob::slotTimeout() {
 
 void PollJob::start()
 {
+    setTimeout(30 * 1000);
     setReply(davRequest("GET", path()));
     connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(resetTimeout()));
     AbstractNetworkJob::start();
+}
+
+bool PollJob::finished()
+{
+    QNetworkReply::NetworkError err = reply()->error();
+    if (err != QNetworkReply::NoError) {
+        return false;
+    }
+
+    bool ok = false;
+    QVariantMap status = QtJson::parse(QString::fromUtf8(reply()->readAll()), ok).toMap();
+    if (!ok || status.isEmpty()) {
+        qDebug() << "Invalid json reply from the poll URL";
+        emit finishedSignal();
+        // FIXME: retry?
+        return true;
+    }
+
+    // the following code only happens after all chunks were uploaded.
+    // the file id should only be empty for new files up- or downloaded
+    QByteArray fid = status["fileid"].toByteArray();
+    if( !fid.isEmpty() ) {
+        if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
+            qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
+        }
+        _item._fileId = fid;
+    }
+
+    _item._etag = status["etag"].toByteArray();
+    _item._responseTimeStamp = responseTimestamp();
+
+    SyncJournalDb::PollInfo info;
+    info._file = _item._file;
+    // no info._url removes it from the database
+    _journal->setPollInfo(info);
+
+    emit finishedSignal();
+    return true;
 }
 
 
@@ -408,48 +447,27 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
 
 void PropagateUploadFileQNAM::startPollJob(const QString& path)
 {
-    PollJob* job = new PollJob(AccountManager::instance()->account(), path, this);
-    job->setTimeout(_propagator->httpTimeout() * 10000);
-    connect(job, SIGNAL(finishedSignal(bool)), SLOT(slotPollFinished(bool)));
+    PollJob* job = new PollJob(AccountManager::instance()->account(), path, _item,
+                               _propagator->_journal, _propagator->_localDir, this);
+    connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
+    SyncJournalDb::PollInfo info;
+    info._file = _item._file;
+    info._url = path;
+    info._modtime = _item._modtime;
+    _propagator->_journal->setPollInfo(info);
 }
 
-void PropagateUploadFileQNAM::slotPollFinished(bool success)
+void PropagateUploadFileQNAM::slotPollFinished()
 {
     PollJob *job = qobject_cast<PollJob *>(sender());
     Q_ASSERT(job);
-    qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
-            << job->reply()->error()
-            << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString())
-            << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
-            << job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
-    QNetworkReply::NetworkError err = job->reply()->error();
-    if (!success || err != QNetworkReply::NoError) {
-        startPollJob(job->path());
+
+    if (!job->_error.isEmpty()) {
+        done(SyncFileItem::NormalError, job->_error);
         return;
     }
 
-    bool ok = false;
-    QVariantMap status = QtJson::parse(QString::fromUtf8(job->reply()->readAll()), ok).toMap();
-    if (!ok || status.isEmpty()) {
-        _propagator->_activeJobs--;
-        done(SyncFileItem::NormalError, tr("Invalid json reply from the poll URL"));
-        // FIXME: retry?
-        return;
-    }
-
-    // the following code only happens after all chunks were uploaded.
-    // the file id should only be empty for new files up- or downloaded
-    QByteArray fid = status["fileid"].toByteArray();
-    if( !fid.isEmpty() ) {
-        if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
-            qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
-        }
-        _item._fileId = fid;
-    }
-
-    _item._etag = status["etag"].toByteArray();
-    _item._responseTimeStamp = job->responseTimestamp();
-    finalize(_item);
+    finalize(job->_item);
 }
 
 void PropagateUploadFileQNAM::abort()

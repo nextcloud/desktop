@@ -21,6 +21,7 @@
 #include "propagator_legacy.h"
 #include "mirall/mirallconfigfile.h"
 #include "mirall/utility.h"
+#include <json.h>
 
 #ifdef Q_OS_WIN
 #include <windef.h>
@@ -438,6 +439,37 @@ void PropagateDirectory::slotSubJobReady()
         }
         emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
     }
+}
+
+void CleanupPollsJob::start()
+{
+    if (_pollInfos.empty()) {
+        emit finished();
+        deleteLater();
+        return;
+    }
+
+    auto info = _pollInfos.takeFirst();
+    SyncFileItem item;
+    item._file = info._file;
+    item._modtime = info._modtime;
+    PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
+    connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
+    job->start();
+}
+
+void CleanupPollsJob::slotPollFinished()
+{
+    PollJob *job = qobject_cast<PollJob *>(sender());
+    Q_ASSERT(job);
+    if (!job->_error.isEmpty()) {
+        qDebug() << "There was an error with file " << job->_item._file << job->_error ;
+    } else {
+        _journal->setFileRecord(SyncJournalFileRecord(job->_item, _localPath + job->_item._file));
+    }
+
+    // Continue with the next entry, or finish
+    start();
 }
 
 }
