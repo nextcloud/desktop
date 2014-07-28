@@ -1,4 +1,5 @@
 # Auto-generated - do not modify
+StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Erakutsi bertsio-berritze oharrak"
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "kill prozesua ez da aurkitu!"
 StrCpy $PageReinstall_NEW_Field_2 "Desinstalatu instalatu baino lehen"
 StrCpy $PageReinstall_NEW_Field_3 "Ez desinstalatu"
@@ -29,7 +30,6 @@ StrCpy $INIT_INSTALLER_RUNNING "Instalatzailea dagoeneko martxan da."
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Desinstalatzaile honek administratzaile baimenak behar ditu, saiatu berriro"
 StrCpy $INIT_UNINSTALLER_RUNNING "Desinstalatzailea dagoeneko martxan da."
 StrCpy $SectionGroup_Shortcuts "Lasterbideak"
-StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Show release notes"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Found ${APPLICATION_EXECUTABLE} process(s) which need to be stopped.$\nDo you want the installer to stop these for you?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Killing ${APPLICATION_EXECUTABLE} processes."
 StrCpy $PageReinstall_NEW_Field_1 "An older version of ${APPLICATION_NAME} is installed on your system. It is recommended that you uninstall the current version before installing. Select the operation you want to perform and click Next to continue."
