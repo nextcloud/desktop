@@ -96,6 +96,7 @@ public:
     void slotTimeout() Q_DECL_OVERRIDE {
 //      emit finishedSignal(false);
 //      deleteLater();
+        qDebug() << Q_FUNC_INFO;
         reply()->abort();
     }
 

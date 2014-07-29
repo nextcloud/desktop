@@ -834,10 +834,10 @@ QVector< SyncJournalDb::PollInfo > SyncJournalDb::getPollInfos()
 
     QVector< SyncJournalDb::PollInfo > res;
 
-    if( checkConnect() )
+    if( !checkConnect() )
         return res;
 
-    QSqlQuery query("SELECT path, mtime, pollpath FROM poll",_db);
+    QSqlQuery query("SELECT path, modtime, pollpath FROM poll",_db);
 
     if (!query.exec()) {
         QString err = query.lastError().text();
@@ -851,7 +851,11 @@ QVector< SyncJournalDb::PollInfo > SyncJournalDb::getPollInfos()
         info._modtime = query.value(1).toLongLong();
         info._url = query.value(2).toString();
         res.append(info);
+        qDebug() << "§§§§§§§§§§§§§§§§" << info._file << info._url;
     }
+
+    qDebug() << "§§§§§§§§§-*-*-*§§§§§§§" << res.count();
+
     query.finish();
     return res;
 }
@@ -863,7 +867,7 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo& info)
         return;
     }
 
-    if (info._file.isEmpty()) {
+    if (info._url.isEmpty()) {
         QSqlQuery query("DELETE FROM poll WHERE path=?", _db);
         query.bindValue(0, info._file);
         if( !query.exec() ) {
@@ -872,7 +876,7 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo& info)
             qDebug() << query.executedQuery()  << info._file;
         }
     } else {
-        QSqlQuery query("INSERT OR REPLACE INTO poll (path, mtime, pollpath) VALUES( ? , ? , ? )", _db);
+        QSqlQuery query("INSERT OR REPLACE INTO poll (path, modtime, pollpath) VALUES( ? , ? , ? )", _db);
         query.bindValue(0, info._file);
         query.bindValue(1, QString::number(info._modtime));
         query.bindValue(2, info._url);

@@ -87,7 +87,11 @@ void PUTFileJob::slotTimeout() {
 void PollJob::start()
 {
     setTimeout(30 * 1000);
-    setReply(davRequest("GET", path()));
+    QUrl accountUrl = account()->url();
+    QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QLatin1String("://") +  accountUrl.authority()
+        + (path().startsWith('/') ? QLatin1String("") : QLatin1Literal("/")) + path());
+    setReply(getRequest(finalUrl));
+    setupConnections(reply());
     connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(resetTimeout()));
     AbstractNetworkJob::start();
 }
@@ -99,7 +103,14 @@ bool PollJob::finished()
         _item._httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         _item._status = classifyError(err, _item._httpErrorCode);
         _item._errorString = reply()->errorString();
-        if (_item._status == SyncFileItem::FatalError || int(_item._httpErrorCode / 100) == 4) {
+        if (_item._status == SyncFileItem::FatalError || _item._httpErrorCode >= 400) {
+            if (_item._status != SyncFileItem::FatalError) {
+                SyncJournalDb::PollInfo info;
+                info._file = _item._file;
+                // no info._url removes it from the database
+                _journal->setPollInfo(info);
+
+            }
             emit finishedSignal();
             return true;
         }
@@ -122,7 +133,7 @@ bool PollJob::finished()
     }
 
     _item._errorString = status["error"].toString();
-    _item._status = _item._errorString.isEmpty() ? SyncFileItem::NormalError : SyncFileItem::Success;
+    _item._status = _item._errorString.isEmpty() ? SyncFileItem::Success : SyncFileItem::NormalError;
     _item._fileId = status["fileid"].toByteArray();
     _item._etag = status["etag"].toByteArray();
     _item._responseTimeStamp = responseTimestamp();
@@ -350,7 +361,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
     _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     // The server needs some time to process the request and provide with a poll URL
     if (_item._httpErrorCode == 202) {
-        QString path =  QString::fromUtf8(QByteArray::fromPercentEncoding(job->reply()->rawHeader("OC-Finish-Poll")));
+        QString path =  QString::fromUtf8(job->reply()->rawHeader("OC-Finish-Poll"));
         if (path.isEmpty()) {
             _propagator->_activeJobs--;
             done(SyncFileItem::NormalError, tr("Poll URL missing"));
@@ -461,6 +472,7 @@ void PropagateUploadFileQNAM::startPollJob(const QString& path)
     info._url = path;
     info._modtime = _item._modtime;
     _propagator->_journal->setPollInfo(info);
+    job->start();
 }
 
 void PropagateUploadFileQNAM::slotPollFinished()
