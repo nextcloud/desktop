@@ -208,11 +208,11 @@ $inode = getInode('superNewDir/f3');
 csync();
 assertLocalAndRemoteDir( '', 1);
 my $file = localDir() . 'superNewDir';
-assert( -e $file );
+assert( ! -e $file );
 
-$inode2 = getInode('superNewDir/f3');
+$inode2 = getInode('superNewDirRenamed/f3');
 assert( $inode == $inode2, "Inode of f3 changed");
-$inode2 = getInode('superNewDir');
+$inode2 = getInode('superNewDirRenamed');
 assert( $superNewDirInode == $inode2, "Inode of superNewDir changed");
 
 cleanup();
