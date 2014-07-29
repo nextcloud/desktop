@@ -462,12 +462,14 @@ void CleanupPollsJob::slotPollFinished()
 {
     PollJob *job = qobject_cast<PollJob *>(sender());
     Q_ASSERT(job);
-    if (!job->_error.isEmpty()) {
-        qDebug() << "There was an error with file " << job->_item._file << job->_error ;
+    if (job->_item._status == SyncFileItem::FatalError) {
+        emit aborted(job->_item._errorString);
+        return;
+    } else if (job->_item._status != SyncFileItem::Success) {
+        qDebug() << "There was an error with file " << job->_item._file << job->_item._errorString;
     } else {
         _journal->setFileRecord(SyncJournalFileRecord(job->_item, _localPath + job->_item._file));
     }
-
     // Continue with the next entry, or finish
     start();
 }

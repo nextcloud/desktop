@@ -271,6 +271,7 @@ public:
     void start();
 signals:
     void finished();
+    void aborted(const QString &error);
 private slots:
     void slotPollFinished();
 };

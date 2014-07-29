@@ -204,7 +204,7 @@ bool SyncJournalDb::checkConnect()
     }
 
     createQuery.prepare("CREATE TABLE IF NOT EXISTS version("
-                               "major VARCHAR(4096),"
+                               "major INTEGER(8),"
                                "minor INTEGER(8),"
                                "patch INTEGER(8),"
                                "custom VARCHAR(256)"

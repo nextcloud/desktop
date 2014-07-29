@@ -445,6 +445,7 @@ void SyncEngine::startSync()
             CleanupPollsJob *job = new CleanupPollsJob(pollInfos, AccountManager::instance()->account(),
                                                        _journal, _localPath, this);
             connect(job, SIGNAL(finished()), this, SLOT(startSync()));
+            connect(job, SIGNAL(aborted(QString)), this, SLOT(slotCleanPollsJobAborted(QString)));
             job->start();
             return;
         }
@@ -621,6 +622,12 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     setNetworkLimits(_uploadLimit, _downloadLimit);
 
     _propagator->start(_syncedItems);
+}
+
+void SyncEngine::slotCleanPollsJobAborted(const QString &error)
+{
+    csyncError(error);
+    finalize();
 }
 
 void SyncEngine::setNetworkLimits(int upload, int download)

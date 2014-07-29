@@ -96,28 +96,34 @@ bool PollJob::finished()
 {
     QNetworkReply::NetworkError err = reply()->error();
     if (err != QNetworkReply::NoError) {
+        _item._httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        _item._status = classifyError(err, _item._httpErrorCode);
+        _item._errorString = reply()->errorString();
+        if (_item._status == SyncFileItem::FatalError || int(_item._httpErrorCode / 100) == 4) {
+            emit finishedSignal();
+            return true;
+        }
+        start();
         return false;
     }
 
     bool ok = false;
     QVariantMap status = QtJson::parse(QString::fromUtf8(reply()->readAll()), ok).toMap();
     if (!ok || status.isEmpty()) {
-        qDebug() << "Invalid json reply from the poll URL";
+        _item._errorString = tr("Invalid json reply from the poll URL");
+        _item._status = SyncFileItem::NormalError;
         emit finishedSignal();
-        // FIXME: retry?
         return true;
     }
 
-    // the following code only happens after all chunks were uploaded.
-    // the file id should only be empty for new files up- or downloaded
-    QByteArray fid = status["fileid"].toByteArray();
-    if( !fid.isEmpty() ) {
-        if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
-            qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
-        }
-        _item._fileId = fid;
+    if (status["unfinished"].isValid()) {
+        start();
+        return false;
     }
 
+    _item._errorString = status["error"].toString();
+    _item._status = _item._errorString.isEmpty() ? SyncFileItem::NormalError : SyncFileItem::Success;
+    _item._fileId = status["fileid"].toByteArray();
     _item._etag = status["etag"].toByteArray();
     _item._responseTimeStamp = responseTimestamp();
 
@@ -462,8 +468,8 @@ void PropagateUploadFileQNAM::slotPollFinished()
     PollJob *job = qobject_cast<PollJob *>(sender());
     Q_ASSERT(job);
 
-    if (!job->_error.isEmpty()) {
-        done(SyncFileItem::NormalError, job->_error);
+    if (job->_item._status != SyncFileItem::Success) {
+        done(job->_item._status, job->_item._errorString);
         return;
     }
 
