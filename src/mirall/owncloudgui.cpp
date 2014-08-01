@@ -84,6 +84,45 @@ ownCloudGui::ownCloudGui(Application *parent) :
              SLOT(slotShowOptionalTrayMessage(QString,QString)));
     connect( Logger::instance(), SIGNAL(guiMessage(QString,QString)),
              SLOT(slotShowGuiMessage(QString,QString)));
+
+    setupOverlayIcons();
+}
+
+// Use this to do platform specific code to make overlay icons appear
+// in the gui
+// MacOSX: perform a AppleScript code peace to load the Finder Plugin.
+
+// "tell application \"Finder\" \
+// try \
+//   «event NVTYload» \
+// end try \
+// end tell";
+
+
+void ownCloudGui::setupOverlayIcons()
+{
+
+    if( Utility::isMac() && QFile::exists("/Library/ScriptingAdditions/LiferayNativity.osax") ) {
+        QString aScript = QString::fromUtf8("tell application \"Finder\"\n"
+                                            "  try\n"
+                                            "    «event NVTYload»\n"
+                                            "  end try\n"
+                                            "end tell\n");
+
+          QString osascript = "/usr/bin/osascript";
+          QStringList processArguments;
+          // processArguments << "-l" << "AppleScript";
+
+          QProcess p;
+          p.start(osascript, processArguments);
+          p.write(aScript.toUtf8());
+          p.closeWriteChannel();
+          p.waitForReadyRead(-1);
+          QByteArray result = p.readAll();
+          QString resultAsString(result); // if appropriate
+          qDebug() << "Laod Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
+                   << (p.exitCode() != 0 ? p.errorString() : QString::null);
+    }
 }
 
 // This should rather be in application.... or rather in MirallConfigFile?
@@ -164,7 +203,6 @@ void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
     _startupFails = fails; // store that for the settings dialog once it appears.
     if( !_settingsDialog.isNull() )
         _settingsDialog->setGeneralErrors( _startupFails );
-
 }
 
 void ownCloudGui::slotComputeOverallSyncStatus()

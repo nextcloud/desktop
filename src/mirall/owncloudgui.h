@@ -44,6 +44,7 @@ public:
     bool checkAccountExists(bool openSettings);
 
     static void raiseDialog(QWidget *raiseWidget);
+    void setupOverlayIcons();
 
 signals:
     void setupProxy();
