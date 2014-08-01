@@ -32,8 +32,7 @@ static ContentManager* sharedInstance = nil;
 		_fileNamesCache = [[NSMutableDictionary alloc] init];
 		_fileIconsEnabled = TRUE;
 
-		// FIXME: Proper path here!
-		NSString *base = @"/Users/mackie/owncloud.com/mirall/shell_integration/icons/icns/";
+		NSString *base = @"/Applications/owncloud.app/Contents/Resources/icons/";
 		
 		_icnOk   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok.icns"]];
 		_icnSync = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync.icns"]];
