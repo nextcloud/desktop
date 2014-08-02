@@ -373,67 +373,67 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="203"/>
+        <location filename="../src/mirall/folderman.cpp" line="205"/>
         <source>Could not reset folder state</source>
         <translation>Kansion tilaa ei voitu alustaa</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="204"/>
+        <location filename="../src/mirall/folderman.cpp" line="206"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="789"/>
         <source>Undefined State.</source>
         <translation>Määrittelemätön tila.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="792"/>
         <source>Waits to start syncing.</source>
         <translation>Odottaa synkronoinnin alkamista.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="795"/>
         <source>Preparing for sync.</source>
         <translation>Valmistellaan synkronointia.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="796"/>
+        <location filename="../src/mirall/folderman.cpp" line="798"/>
         <source>Sync is running.</source>
         <translation>Synkronointi on meneillään.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="799"/>
+        <location filename="../src/mirall/folderman.cpp" line="801"/>
         <source>Server is currently not available.</source>
         <translation>Palvelin ei ole käytettävissä.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="802"/>
+        <location filename="../src/mirall/folderman.cpp" line="804"/>
         <source>Last Sync was successful.</source>
         <translation>Viimeisin synkronointi suoritettiin onnistuneesti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="809"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Viimeisin synkronointi onnistui, mutta yksittäisten tiedostojen kanssa ilmeni varoituksia.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="810"/>
+        <location filename="../src/mirall/folderman.cpp" line="812"/>
         <source>Setup Error.</source>
         <translation>Asetusvirhe.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="815"/>
         <source>User Abort.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="816"/>
+        <location filename="../src/mirall/folderman.cpp" line="818"/>
         <source>Sync is paused.</source>
         <translation>Synkronointi on keskeytetty.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="822"/>
+        <location filename="../src/mirall/folderman.cpp" line="824"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synkronointi on keskeytetty)</translation>
     </message>
@@ -2025,127 +2025,127 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>Mirall::ownCloudGui</name>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="175"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="213"/>
         <source>Please sign in</source>
         <translation>Kirjaudu sisään</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
         <source>Disconnected from server</source>
         <translation>Yhteys palvelimeen katkaistu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="250"/>
         <source>Folder %1: %2</source>
         <translation>Kansio %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="256"/>
         <source>No sync folders configured.</source>
         <translation>Synkronointikansioita ei ole määritetty.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="243"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="281"/>
         <source>None.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="285"/>
         <source>Recent Changes</source>
         <translation>Viimeisimmät muutokset</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="264"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="302"/>
         <source>Open %1 folder</source>
         <translation>Avaa %1-kansio</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="274"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="312"/>
         <source>Managed Folders:</source>
         <translation>Hallitut kansiot:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="277"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="315"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Avaa kansio &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="349"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="387"/>
         <source>Open %1 in browser</source>
         <translation>Avaa %1 selaimeen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="351"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="389"/>
         <source>Calculating quota...</source>
         <translation>Lasketaan kiintiötä...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="391"/>
         <source>Unknown status</source>
         <translation>Tuntematon tila</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="355"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="393"/>
         <source>Settings...</source>
         <translation>Asetukset...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="356"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="394"/>
         <source>Details...</source>
         <translation>Tiedot...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="399"/>
         <source>Help</source>
         <translation>Ohje</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="401"/>
         <source>Quit %1</source>
         <translation>Lopeta %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="366"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="404"/>
         <source>Sign in...</source>
         <translation>Kirjaudu sisään...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="406"/>
         <source>Sign out</source>
         <translation>Kirjaudu ulos</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="376"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="414"/>
         <source>Quota n/a</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="383"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="421"/>
         <source>%1% of %2 in use</source>
         <translation>%1%/%2 käytössä</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
         <source>No items synced recently</source>
         <translation>Kohteita ei ole synkronoitu äskettäin</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="447"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Synkronoidaan %1/%2  (%3 jäljellä)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="451"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synkronoidaan %1 (%2 jäljellä)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="471"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="460"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="498"/>
         <source>Up to date</source>
         <translation>Ajan tasalla</translation>
     </message>

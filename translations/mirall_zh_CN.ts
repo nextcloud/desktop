@@ -374,67 +374,67 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="203"/>
+        <location filename="../src/mirall/folderman.cpp" line="205"/>
         <source>Could not reset folder state</source>
         <translation>不能重置文件夹状态</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="204"/>
+        <location filename="../src/mirall/folderman.cpp" line="206"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>一个旧的同步日志 &apos;%1&apos; 被找到，但是不能被移除。请确定没有应用程序正在使用它。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="789"/>
         <source>Undefined State.</source>
         <translation>未知状态。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="792"/>
         <source>Waits to start syncing.</source>
         <translation>等待启动同步。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="795"/>
         <source>Preparing for sync.</source>
         <translation>准备同步。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="796"/>
+        <location filename="../src/mirall/folderman.cpp" line="798"/>
         <source>Sync is running.</source>
         <translation>同步正在运行。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="799"/>
+        <location filename="../src/mirall/folderman.cpp" line="801"/>
         <source>Server is currently not available.</source>
         <translation>服务器当前是不可用的。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="802"/>
+        <location filename="../src/mirall/folderman.cpp" line="804"/>
         <source>Last Sync was successful.</source>
         <translation>最后一次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="809"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>上次同步已成功，不过一些文件出现了警告。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="810"/>
+        <location filename="../src/mirall/folderman.cpp" line="812"/>
         <source>Setup Error.</source>
         <translation>安装失败</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="815"/>
         <source>User Abort.</source>
         <translation>用户撤销。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="816"/>
+        <location filename="../src/mirall/folderman.cpp" line="818"/>
         <source>Sync is paused.</source>
         <translation>同步已暂停。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="822"/>
+        <location filename="../src/mirall/folderman.cpp" line="824"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (同步已暂停)</translation>
     </message>
@@ -2026,127 +2026,127 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::ownCloudGui</name>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="175"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="213"/>
         <source>Please sign in</source>
         <translation>请登录</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
         <source>Disconnected from server</source>
         <translation>已从服务器断开</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="250"/>
         <source>Folder %1: %2</source>
         <translation>文件夹 %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="256"/>
         <source>No sync folders configured.</source>
         <translation>没有已配置的同步文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="243"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="281"/>
         <source>None.</source>
         <translation>无。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="285"/>
         <source>Recent Changes</source>
         <translation>最近修改</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="264"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="302"/>
         <source>Open %1 folder</source>
         <translation>打开 %1 目录</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="274"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="312"/>
         <source>Managed Folders:</source>
         <translation>管理的文件夹：</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="277"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="315"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>打开文件夹“%1”</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="349"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="387"/>
         <source>Open %1 in browser</source>
         <translation>在浏览器中打开%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="351"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="389"/>
         <source>Calculating quota...</source>
         <translation>计算配额....</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="391"/>
         <source>Unknown status</source>
         <translation>未知状态</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="355"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="393"/>
         <source>Settings...</source>
         <translation>设置...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="356"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="394"/>
         <source>Details...</source>
         <translation>细节...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="399"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="401"/>
         <source>Quit %1</source>
         <translation>退出 %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="366"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="404"/>
         <source>Sign in...</source>
         <translation>登录...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="406"/>
         <source>Sign out</source>
         <translation>注销</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="376"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="414"/>
         <source>Quota n/a</source>
         <translation>配额无限制</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="383"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="421"/>
         <source>%1% of %2 in use</source>
         <translation>已使用 %2，总计 %1%</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
         <source>No items synced recently</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="447"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="451"/>
         <source>Syncing %1 (%2 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="471"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="460"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="498"/>
         <source>Up to date</source>
         <translation>更新</translation>
     </message>

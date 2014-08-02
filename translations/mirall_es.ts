@@ -375,67 +375,67 @@ Está seguro de que desea realizar esta operación?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="203"/>
+        <location filename="../src/mirall/folderman.cpp" line="205"/>
         <source>Could not reset folder state</source>
         <translation>No se ha podido restablecer el estado de la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="204"/>
+        <location filename="../src/mirall/folderman.cpp" line="206"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Un antiguo registro (journal) de sincronización &apos;%1&apos; se ha encontrado, pero no se ha podido eliminar. Por favor asegúrese que ninguna aplicación la está utilizando.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="789"/>
         <source>Undefined State.</source>
         <translation>Estado no definido.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="792"/>
         <source>Waits to start syncing.</source>
         <translation>Esperando el inicio de la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="795"/>
         <source>Preparing for sync.</source>
         <translation>Preparándose para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="796"/>
+        <location filename="../src/mirall/folderman.cpp" line="798"/>
         <source>Sync is running.</source>
         <translation>Sincronización en funcionamiento.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="799"/>
+        <location filename="../src/mirall/folderman.cpp" line="801"/>
         <source>Server is currently not available.</source>
         <translation>El servidor no está disponible en el momento</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="802"/>
+        <location filename="../src/mirall/folderman.cpp" line="804"/>
         <source>Last Sync was successful.</source>
         <translation>La última sincronización fue exitosa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="809"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>La última sincronización fue exitosa pero con advertencias para archivos individuales.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="810"/>
+        <location filename="../src/mirall/folderman.cpp" line="812"/>
         <source>Setup Error.</source>
         <translation>Error de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="815"/>
         <source>User Abort.</source>
         <translation>Interrumpir.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="816"/>
+        <location filename="../src/mirall/folderman.cpp" line="818"/>
         <source>Sync is paused.</source>
         <translation>La sincronización está en pausa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="822"/>
+        <location filename="../src/mirall/folderman.cpp" line="824"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sincronización en pausa)</translation>
     </message>
@@ -2030,127 +2030,127 @@ Intente sincronizar los archivos nuevamente.</translation>
 <context>
     <name>Mirall::ownCloudGui</name>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="175"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="213"/>
         <source>Please sign in</source>
         <translation>Por favor Registrese</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
         <source>Disconnected from server</source>
         <translation>Desconectado del servidor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="250"/>
         <source>Folder %1: %2</source>
         <translation>Archivo %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="256"/>
         <source>No sync folders configured.</source>
         <translation>No hay carpetas de sincronización configuradas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="243"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="281"/>
         <source>None.</source>
         <translation>Ninguno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="285"/>
         <source>Recent Changes</source>
         <translation>Cambios recientes</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="264"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="302"/>
         <source>Open %1 folder</source>
         <translation>Abrir carpeta %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="274"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="312"/>
         <source>Managed Folders:</source>
         <translation>Carpetas administradas:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="277"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="315"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Abrir carpeta &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="349"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="387"/>
         <source>Open %1 in browser</source>
         <translation>Abrir %1 en el navegador</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="351"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="389"/>
         <source>Calculating quota...</source>
         <translation>Calculando cuota...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="391"/>
         <source>Unknown status</source>
         <translation>Estado desconocido</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="355"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="393"/>
         <source>Settings...</source>
         <translation>Configuraciones...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="356"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="394"/>
         <source>Details...</source>
         <translation>Detalles...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="399"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="401"/>
         <source>Quit %1</source>
         <translation>Salir de %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="366"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="404"/>
         <source>Sign in...</source>
         <translation>Registrarse...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="406"/>
         <source>Sign out</source>
         <translation>Salir</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="376"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="414"/>
         <source>Quota n/a</source>
         <translation>Cuota no disponible</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="383"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="421"/>
         <source>%1% of %2 in use</source>
         <translation>%1% de %2 en uso</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
         <source>No items synced recently</source>
         <translation>No se han sincronizado elementos recientemente</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="447"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Sincronizando %1 de %2  (quedan %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="451"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sincronizando %1 (quedan %2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="471"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="460"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="498"/>
         <source>Up to date</source>
         <translation>Actualizado</translation>
     </message>

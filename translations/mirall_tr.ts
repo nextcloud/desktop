@@ -375,67 +375,67 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="203"/>
+        <location filename="../src/mirall/folderman.cpp" line="205"/>
         <source>Could not reset folder state</source>
         <translation>Klasör durumu sıfırılanamadı</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="204"/>
+        <location filename="../src/mirall/folderman.cpp" line="206"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Eski eşitleme günlüğü &apos;%1&apos; bulundu ancak kaldırılamadı. Başka bir uygulama tarafından kullanılmadığından emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="789"/>
         <source>Undefined State.</source>
         <translation>Tanımlanmamış Durum.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="792"/>
         <source>Waits to start syncing.</source>
         <translation>Eşitleme başlatmak için bekleniyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="795"/>
         <source>Preparing for sync.</source>
         <translation>Eşitleme için hazırlanıyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="796"/>
+        <location filename="../src/mirall/folderman.cpp" line="798"/>
         <source>Sync is running.</source>
         <translation>Eşitleme çalışıyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="799"/>
+        <location filename="../src/mirall/folderman.cpp" line="801"/>
         <source>Server is currently not available.</source>
         <translation>Sunucu şu an kullanılabilir değil.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="802"/>
+        <location filename="../src/mirall/folderman.cpp" line="804"/>
         <source>Last Sync was successful.</source>
         <translation>Son Eşitleme başarılı oldu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="809"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Son eşitleme başarılıydı, ancak tekil dosyalarda uyarılar vardı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="810"/>
+        <location filename="../src/mirall/folderman.cpp" line="812"/>
         <source>Setup Error.</source>
         <translation>Kurulum Hatası.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="815"/>
         <source>User Abort.</source>
         <translation>Kullanıcı İptal Etti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="816"/>
+        <location filename="../src/mirall/folderman.cpp" line="818"/>
         <source>Sync is paused.</source>
         <translation>Eşitleme duraklatıldı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="822"/>
+        <location filename="../src/mirall/folderman.cpp" line="824"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Eşitleme duraklatıldı)</translation>
     </message>
@@ -2030,127 +2030,127 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
 <context>
     <name>Mirall::ownCloudGui</name>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="175"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="213"/>
         <source>Please sign in</source>
         <translation>Lütfen oturum açın</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
         <source>Disconnected from server</source>
         <translation>Sunucu bağlantısı kesildi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="250"/>
         <source>Folder %1: %2</source>
         <translation>Klasör %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="256"/>
         <source>No sync folders configured.</source>
         <translation>Yapılandırılmış eşitleme klasörü yok.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="243"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="281"/>
         <source>None.</source>
         <translation>Hiçbir şey.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="285"/>
         <source>Recent Changes</source>
         <translation>Son Değişiklikler</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="264"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="302"/>
         <source>Open %1 folder</source>
         <translation>%1 klasörünü aç</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="274"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="312"/>
         <source>Managed Folders:</source>
         <translation>Yönetilen Klasörler:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="277"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="315"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; klasörünü aç</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="349"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="387"/>
         <source>Open %1 in browser</source>
         <translation>%1&apos;ı tarayıcıda aç</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="351"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="389"/>
         <source>Calculating quota...</source>
         <translation>Kota hesaplanıyor...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="391"/>
         <source>Unknown status</source>
         <translation>Bilinmeyen durum</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="355"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="393"/>
         <source>Settings...</source>
         <translation>Ayarlar...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="356"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="394"/>
         <source>Details...</source>
         <translation>Ayrıntılar...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="399"/>
         <source>Help</source>
         <translation>Yardım</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="401"/>
         <source>Quit %1</source>
         <translation>%1&apos;tan çık</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="366"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="404"/>
         <source>Sign in...</source>
         <translation>Oturum aç...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="406"/>
         <source>Sign out</source>
         <translation>Oturumu kapat</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="376"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="414"/>
         <source>Quota n/a</source>
         <translation>Kota kullanılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="383"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="421"/>
         <source>%1% of %2 in use</source>
         <translation>%2&apos;ın % %1 kısmı kullanımda</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
         <source>No items synced recently</source>
         <translation>Yakın zamanda eşitlenen öge yok</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="447"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Eşitlenen %1/%2  (%3 kaldı)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="451"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Eşitlenen %1 (%2 kaldı)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="471"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="460"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="498"/>
         <source>Up to date</source>
         <translation>Güncel</translation>
     </message>

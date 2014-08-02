@@ -374,67 +374,67 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="203"/>
+        <location filename="../src/mirall/folderman.cpp" line="205"/>
         <source>Could not reset folder state</source>
         <translation>Nemožno resetovať stav priečinka</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="204"/>
+        <location filename="../src/mirall/folderman.cpp" line="206"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Starý synchronizačný žurnál &apos;%1&apos; nájdený, avšak neodstrániteľný. Prosím uistite sa, že žiadna aplikácia ho práve nevyužíva.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="789"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="792"/>
         <source>Waits to start syncing.</source>
         <translation>Čakanie na štart synchronizácie.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="795"/>
         <source>Preparing for sync.</source>
         <translation>Príprava na synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="796"/>
+        <location filename="../src/mirall/folderman.cpp" line="798"/>
         <source>Sync is running.</source>
         <translation>Synchronizácia prebieha.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="799"/>
+        <location filename="../src/mirall/folderman.cpp" line="801"/>
         <source>Server is currently not available.</source>
         <translation>Sever momentálne nie je prístupný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="802"/>
+        <location filename="../src/mirall/folderman.cpp" line="804"/>
         <source>Last Sync was successful.</source>
         <translation>Posledná synchronizácia sa úspešne skončila.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="809"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Posledná synchronizácia bola úspešná, ale z varovaniami pre individuálne súbory.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="810"/>
+        <location filename="../src/mirall/folderman.cpp" line="812"/>
         <source>Setup Error.</source>
         <translation>Chyba pri inštalácii.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="815"/>
         <source>User Abort.</source>
         <translation>Zrušené používateľom.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="816"/>
+        <location filename="../src/mirall/folderman.cpp" line="818"/>
         <source>Sync is paused.</source>
         <translation>Synchronizácia je pozastavená.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="822"/>
+        <location filename="../src/mirall/folderman.cpp" line="824"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizácia je pozastavená)</translation>
     </message>
@@ -2028,127 +2028,127 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::ownCloudGui</name>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="175"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="213"/>
         <source>Please sign in</source>
         <translation>Prihláste sa prosím</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
         <source>Disconnected from server</source>
         <translation>Odpojený od servera</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="250"/>
         <source>Folder %1: %2</source>
         <translation>Priečinok %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="256"/>
         <source>No sync folders configured.</source>
         <translation>Nie sú nastavené žiadne synchronizačné priečinky.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="243"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="281"/>
         <source>None.</source>
         <translation>Žiaden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="285"/>
         <source>Recent Changes</source>
         <translation>Nedávne zmeny</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="264"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="302"/>
         <source>Open %1 folder</source>
         <translation>Otvoriť %1 priečinok</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="274"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="312"/>
         <source>Managed Folders:</source>
         <translation>Spravované priečinky:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="277"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="315"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Otvoriť priečinok &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="349"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="387"/>
         <source>Open %1 in browser</source>
         <translation>Otvoriť %1 v prehliadači</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="351"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="389"/>
         <source>Calculating quota...</source>
         <translation>Počítanie kvóty...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="391"/>
         <source>Unknown status</source>
         <translation>Neznámy stav</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="355"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="393"/>
         <source>Settings...</source>
         <translation>Nastavenia...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="356"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="394"/>
         <source>Details...</source>
         <translation>Podrobnosti...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="399"/>
         <source>Help</source>
         <translation>Pomoc</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="401"/>
         <source>Quit %1</source>
         <translation>Ukončiť %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="366"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="404"/>
         <source>Sign in...</source>
         <translation>Prihlásiť do...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="406"/>
         <source>Sign out</source>
         <translation>Odhlásiť</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="376"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="414"/>
         <source>Quota n/a</source>
         <translation>Kvóta n/a</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="383"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="421"/>
         <source>%1% of %2 in use</source>
         <translation>%1% z %2 sa používa</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
         <source>No items synced recently</source>
         <translation>Žiadne nedávno synchronizované položky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="447"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="451"/>
         <source>Syncing %1 (%2 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="471"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="460"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="498"/>
         <source>Up to date</source>
         <translation>Až do dnešného dňa</translation>
     </message>
