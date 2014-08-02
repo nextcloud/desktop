@@ -191,7 +191,7 @@ QString SslErrorDialog::certDiv( QSslCertificate cert ) const
     msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
     msg += QL("<br/>");
     msg += tr("Effective Date: %1").arg( cert.effectiveDate().toString()) + QL("<br/>");
-    msg += tr("Expiry Date: %1").arg( cert.expiryDate().toString()) + QL("</p>");
+    msg += tr("Expiration Date: %1").arg( cert.expiryDate().toString()) + QL("</p>");
 
     msg += QL("</div>" );
 
