@@ -119,6 +119,11 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName )
         isSyncRootFolder = false;
     }
 
+    if( fileName.endsWith(QLatin1Char('/')) ) {
+        fileName.truncate(fileName.length()-1);
+        qDebug() << "Removed trailing slash: " << fileName;
+    }
+
     QFileInfo fi(file);
 
     if( !fi.exists() ) {
