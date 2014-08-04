@@ -37,7 +37,7 @@ RemotePathChecker::RemotePathChecker(int port)
 {
 }
 
-bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, bool isDir)
+bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)
 {
 	wstring request;
 	wstring response;
@@ -45,11 +45,7 @@ bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, bool isDir)
 
 	CommunicationSocket socket(_port);
 	socket.Connect();
-	if (isDir) {
-		request = L"RETRIEVE_FOLDER_STATUS:";
-	} else {
-		request = L"RETRIEVE_FILE_STATUS:";
-	}
+	request = L"RETRIEVE_FILE_STATUS:";
 	request += filePath;
 	request += L'\n';
 
@@ -76,8 +72,11 @@ bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, bool isDir)
 	wstring responseStatus = response.substr(statusBegin+1, statusEnd - statusBegin-1);
 	wstring responsePath = response.substr(statusEnd+1);
 	if (responsePath == filePath) {
-		int status = _StrToFileState(responseStatus);
-		if (status == StateNone) {
+		if (!state) {
+			return false;
+		}
+		*state = _StrToFileState(responseStatus);
+		if (*state == StateNone) {
 			return false;
 		}
 		needed = true;

@@ -25,7 +25,7 @@ class OCOverlay : public IShellIconOverlayIdentifier
 
 {
 public:
-	OCOverlay();
+	OCOverlay(int state);
 
 	IFACEMETHODIMP_(ULONG) AddRef();
 	IFACEMETHODIMP GetOverlayInfo(PWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags);
@@ -44,6 +44,7 @@ private:
     long _referenceCount;
 	CommunicationSocket* _communicationSocket;
 	RemotePathChecker* _checker;
+	int _state;
 };
 
 #endif

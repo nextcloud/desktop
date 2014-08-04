@@ -33,10 +33,11 @@ extern HINSTANCE instanceHandle;
 #define IDM_DISPLAY 0  
 #define IDB_OK 101
 
-OCOverlay::OCOverlay() 
+OCOverlay::OCOverlay(int state) 
 	: _communicationSocket(0)
 	, _referenceCount(1)
 	, _checker(new RemotePathChecker(PORT))
+	, _state(state)
 
 {
 }
@@ -98,20 +99,18 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
 	//	return MAKE_HRESULT(S_FALSE, 0, 0);
 	//}
 
-	bool isDir = dwAttrib & FILE_ATTRIBUTE_DIRECTORY;
-	
-	if (!_checker->IsMonitoredPath(pwszPath, isDir)) {
+	int state = 0;
+	if (!_checker->IsMonitoredPath(pwszPath, &state)) {
 		return MAKE_HRESULT(S_FALSE, 0, 0);
 	}
-
-	return MAKE_HRESULT(S_OK, 0, 0);
+	return MAKE_HRESULT(state == _state ? S_OK : S_FALSE, 0, 0);
 }
 
 IFACEMETHODIMP OCOverlay::GetOverlayInfo(PWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags)
 {
 	*pIndex = 0;
 	*pdwFlags = ISIOI_ICONFILE | ISIOI_ICONINDEX;
-	*pIndex = 2;
+	*pIndex = _state;
 
 	if (GetModuleFileName(instanceHandle, pwszIconFile, cchMax) == 0) {	
 		HRESULT hResult = HRESULT_FROM_WIN32(GetLastError());

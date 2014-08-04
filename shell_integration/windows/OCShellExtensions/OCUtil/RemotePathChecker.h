@@ -29,7 +29,7 @@ public:
 		StateNone
 	};
 	RemotePathChecker(int port);
-	bool IsMonitoredPath(const wchar_t* filePath, bool isDir);
+	bool IsMonitoredPath(const wchar_t* filePath, int* state);
 
 private:
 	int _StrToFileState(const std::wstring &str);

@@ -19,10 +19,17 @@
 
 #include "stdafx.h"
 
+enum State {
+	State_Error = 0, State_ErrorShared,
+	State_OK, State_OKShared,
+	State_Sync, State_SyncShared,
+	State_Warning, State_WarningShared
+};
+
 class OCOverlayFactory : public IClassFactory
 {
 public:
-	OCOverlayFactory(wchar_t* path);
+	OCOverlayFactory(int state);
 
 	IFACEMETHODIMP_(ULONG) AddRef();
     IFACEMETHODIMP CreateInstance(IUnknown *pUnkOuter, REFIID riid, void **ppv);
@@ -35,7 +42,7 @@ protected:
 
 private:
     long _referenceCount;
-	wchar_t* _path;
+	int _state;
 };
 
 #endif

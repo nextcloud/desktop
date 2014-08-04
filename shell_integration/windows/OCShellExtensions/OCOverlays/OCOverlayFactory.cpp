@@ -17,8 +17,8 @@
 
 extern long dllReferenceCount;
 
-OCOverlayFactory::OCOverlayFactory(wchar_t* path)
-	: _referenceCount(1)
+OCOverlayFactory::OCOverlayFactory(int state)
+	: _referenceCount(1), _state(state)
 {
     InterlockedIncrement(&dllReferenceCount);
 }
@@ -68,23 +68,13 @@ IFACEMETHODIMP OCOverlayFactory::CreateInstance(
 {
 	HRESULT hResult = CLASS_E_NOAGGREGATION;
 
-    if (pUnkOuter != NULL)
-    {
-		return hResult;
-	}
+    if (pUnkOuter != NULL) { return hResult; }
 
 	hResult = E_OUTOFMEMORY;
-
-    OCOverlay *lrOverlay = 
-		new (std::nothrow) OCOverlay();
-
-	if (!lrOverlay)
-    {
-		return hResult;
-	}
+    OCOverlay *lrOverlay = new (std::nothrow) OCOverlay(_state);
+	if (!lrOverlay) { return hResult; }
 
     hResult = lrOverlay->QueryInterface(riid, ppv);
-	
 	lrOverlay->Release();
 
 	return hResult;
@@ -92,12 +82,9 @@ IFACEMETHODIMP OCOverlayFactory::CreateInstance(
 
 IFACEMETHODIMP OCOverlayFactory::LockServer(BOOL fLock)
 {
-    if (fLock)
-    {
+    if (fLock) {
         InterlockedIncrement(&dllReferenceCount);
-    }
-    else
-    {
+    } else {
         InterlockedDecrement(&dllReferenceCount);
     }
     return S_OK;

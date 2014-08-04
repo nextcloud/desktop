@@ -20,7 +20,7 @@
 
 using namespace std;
 
-HRESULT OCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PWSTR friendlyName)
+HRESULT OCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PCWSTR friendlyName)
 {
 	HRESULT hResult;
 	HKEY shellOverlayKey = NULL;
@@ -50,7 +50,7 @@ HRESULT OCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PW
 	return hResult;
 }
 
-HRESULT OCOverlayRegistrationHandler::RemoveRegistryEntries(PWSTR friendlyName)
+HRESULT OCOverlayRegistrationHandler::RemoveRegistryEntries(PCWSTR friendlyName)
 {
 	HRESULT hResult;
 	HKEY shellOverlayKey = NULL;
