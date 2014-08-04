@@ -73,7 +73,11 @@ static MenuManager* sharedInstance = nil;
 
 - (void)addItemsToMenu:(TContextMenu*)menu forFiles:(NSArray*)files
 {
-	NSArray* menuItemsArray = [[RequestManager sharedInstance] menuItemsForFiles:files];
+	// no menu items for now:
+	return;
+
+	// NSArray* menuItemsArray = [[RequestManager sharedInstance] menuItemsForFiles:files];
+	NSArray* menuItemsArray;
 
 	if (menuItemsArray == nil)
 	{

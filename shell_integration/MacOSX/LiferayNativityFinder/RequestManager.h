@@ -35,7 +35,6 @@
 - (void)askOnSocket:(NSString*)path query:(NSString*)verb;
 - (NSNumber*)askForIcon:(NSString*)path isDirectory:(NSNumber*)isDir;
 - (void)menuItemClicked:(NSDictionary*)actionDictionary;
-- (NSArray*)menuItemsForFiles:(NSArray*)files;
 - (void)start;
 
 @end
