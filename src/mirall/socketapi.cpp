@@ -290,8 +290,9 @@ void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item
     if (Progress::isWarningKind(item._status)) {
         command = QLatin1String("ERROR");
     }
-
-    broadcastMessage(QLatin1String("BROADCAST:"), path, command);
+    if( Utility::isLinux() ) {
+        broadcastMessage(QLatin1String("BROADCAST:"), path, command);
+    }
 }
 
 
