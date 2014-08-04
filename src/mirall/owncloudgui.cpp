@@ -92,12 +92,6 @@ ownCloudGui::ownCloudGui(Application *parent) :
 // in the gui
 // MacOSX: perform a AppleScript code peace to load the Finder Plugin.
 
-// "tell application \"Finder\" \
-// try \
-//   «event NVTYload» \
-// end try \
-// end tell";
-
 
 void ownCloudGui::setupOverlayIcons()
 {
