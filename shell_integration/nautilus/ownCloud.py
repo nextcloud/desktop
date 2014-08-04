@@ -40,18 +40,18 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
 
     # Handles a single line of server respoonse and sets the emblem
     def handle_server_response(self, l):
-        Emblems = { 'OK'        : 'dialog-ok',
-		    'SYNC'      : 'view-refresh',
-		    'NEW'       : 'view-refresh',
-		    'IGNORE'    : '',
-		    'ERROR'     : '',
-		    'OK+SWM'    : '',
-		    'SYNC+SWM'  : '',
-		    'NEW+SWM'   : '',
-		    'IGNORE+SWM': '',
-		    'ERROR+SWM' : '',
-		    'NOP' : ''
-			}
+        Emblems = { 'OK'        : 'oC_ok',
+		    'SYNC'      : 'oC_sync',
+		    'NEW'       : 'oC_sync',
+		    'IGNORE'    : 'oC_warn',
+		    'ERROR'     : 'oC_error',
+		    'OK+SWM'    : 'oC_ok_shared',
+		    'SYNC+SWM'  : 'oC_sync_shared',
+		    'NEW+SWM'   : 'oC_sync_shared',
+		    'IGNORE+SWM': 'oC_warn_shared',
+		    'ERROR+SWM' : 'oC_error_shared',
+		    'NOP'       : 'oC_error'
+		  }
 
         print "Server response: "+l
         parts = l.split(':')
@@ -104,11 +104,7 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
     def get_local_path(self, path):
         return path.replace("file://", "")
 
-    def get_columns(self):
-        return Nautilus.Column(name="NautilusPython::share_state_column",
-                               attribute="share_state",
-                               label="Share State",
-                               description="The ownCloud Share State"),
+   
 
     def update_file_info(self, item):
         if item.get_uri_scheme() != 'file':
