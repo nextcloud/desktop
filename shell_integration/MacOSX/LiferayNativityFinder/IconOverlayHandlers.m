@@ -26,13 +26,12 @@
 
 	NSURL* url = [[NSClassFromString(@"FINode") nodeFromNodeRef:[(TIconAndTextCell*)self node]->fNodeRef] previewItemURL];
 
-	NSError *error;
-    NSNumber *isDir = nil;
-    if (! [url getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:&error]) {
-        // handle error
-		[isDir initWithBool:NO]; // lets assume its a file.
-    }
-	
+    BOOL isDir;
+	if ([[NSFileManager defaultManager] fileExistsAtPath: [url path] isDirectory:&isDir] == NO) {
+		NSLog(@"ERROR: Could not determine file type of %@", [url path]);
+		isDir = NO;
+	}
+
 	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
 
 	NSLog(@"1 The icon index is %d", [imageIndex intValue]);
@@ -71,12 +70,12 @@
 	NSURL* url = [node previewItemURL];
 
 	NSError *error;
-    NSNumber *isDir = nil;
-    if (! [url getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:&error]) {
-        // handle error
-		[isDir initWithBool:NO]; // lets assume its a file.
-    }
-	
+	BOOL isDir;
+	if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] == NO) {
+		NSLog(@"ERROR: Could not determine file type of %@", [url path]);
+		isDir = NO;
+	}
+
 	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
 	// NSLog(@"2 The icon index is %d", [imageIndex intValue]);
 
@@ -127,13 +126,6 @@
 
 		NSURL *url;
 
-		NSError *error;
-		NSNumber *isDir = nil;
-		if (! [url getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:&error]) {
-			// handle error
-			[isDir initWithBool:NO]; // lets assume its a file.
-		}
-		
 		if ([fiNode respondsToSelector:@selector(previewItemURL)])
 		{
 			url = [fiNode previewItemURL];
@@ -141,7 +133,13 @@
 		else {
 			return;
 		}
-
+		
+		BOOL isDir;
+		if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory: &isDir] == NO) {
+			NSLog(@"ERROR: Could not determine file type of %@", [url path]);
+			isDir = NO;
+		}
+		
 		NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
 		NSLog(@"3 The icon index is %d", [imageIndex intValue]);
 

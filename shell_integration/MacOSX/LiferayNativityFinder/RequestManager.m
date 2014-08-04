@@ -94,14 +94,14 @@ static RequestManager* sharedInstance = nil;
 	return registered;
 }
 
-- (NSNumber*)askForIcon:(NSString*)path isDirectory:(NSNumber*)isDir
+- (NSNumber*)askForIcon:(NSString*)path isDirectory:(BOOL)isDir
 {
 	NSString *verb = @"RETRIEVE_FILE_STATUS";
 	NSNumber *res = [NSNumber numberWithInt:0];
 
 	if( [self isRegisteredPath:path] ) {
 		if( _isConnected ) {
-			if( [isDir boolValue] ) {
+			if(isDir) {
 				verb = @"RETRIEVE_FOLDER_STATUS";
 			}
 

@@ -113,7 +113,7 @@ static ContentManager* sharedInstance = nil;
 	[self repaintAllWindows];
 }
 
-- (NSNumber*)iconByPath:(NSString*)path isDirectory:(NSNumber*)isDir
+- (NSNumber*)iconByPath:(NSString*)path isDirectory:(BOOL)isDir
 {
 	if (!_fileIconsEnabled)
 	{
