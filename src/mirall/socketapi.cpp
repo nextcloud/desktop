@@ -140,14 +140,16 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName )
         type = CSYNC_FTW_TYPE_DIR;
     }
 
-    CSYNC_EXCLUDE_TYPE excl = csync_excluded(folder->csyncContext(), fileName.toUtf8(), type);
+    // '\' is ignored, so convert to unix path before passing the path in.
+    QString unixFileName = QDir::fromNativeSeparators(fileName);
+    CSYNC_EXCLUDE_TYPE excl = csync_excluded(folder->csyncContext(), unixFileName.toUtf8(), type);
     if( excl != CSYNC_NOT_EXCLUDED ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 
     // Problem: for the sync dir itself we do not have a record in the sync journal
     // so the next check must not be used for the sync root folder.
-    SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(fileName);
+    SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(unixFileName);
     if( !isSyncRootFolder && !rec.isValid() ) {
         return SyncFileStatus(SyncFileStatus::STATUS_NEW);
     }
