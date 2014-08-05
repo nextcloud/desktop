@@ -22,6 +22,14 @@ class __declspec(dllexport) StringUtil {
 public:
 	static char*    toUtf8(const wchar_t* utf16, int len = -1);
 	static wchar_t* toUtf16(const char* utf8, int len = -1);
+
+
+	template<class T>
+	static bool begins_with(const T& input, const T& match)
+	{
+		return input.size() >= match.size()
+			&& equal(match.begin(), match.end(), input.begin());
+	}
 };
 
 #endif // STRINGUTIL_H

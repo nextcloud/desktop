@@ -45,6 +45,8 @@ private:
 	CommunicationSocket* _communicationSocket;
 	RemotePathChecker* _checker;
 	int _state;
+
+	std::vector<std::wstring> _watchedDirectories;
 };
 
 #endif

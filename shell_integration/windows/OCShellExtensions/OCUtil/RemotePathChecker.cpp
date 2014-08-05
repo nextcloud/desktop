@@ -14,27 +14,43 @@
 #include "CommunicationSocket.h"
 
 #include "RemotePathChecker.h"
+#include "StringUtil.h"
 
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <iterator>
-#include <vector>
 
 using namespace std;
-
-namespace {
-	template<class TContainer>
-	bool begins_with(const TContainer& input, const TContainer& match)
-	{
-		return input.size() >= match.size()
-			&& equal(match.begin(), match.end(), input.begin());
-	}
-}
 
 RemotePathChecker::RemotePathChecker(int port)
 	: _port(port)
 {
+}
+
+vector<wstring> RemotePathChecker::WatchedDirectories()
+{
+	vector<wstring> watchedDirectories;
+	wstring response;
+	bool needed = false;
+
+	CommunicationSocket socket(_port);
+	socket.Connect();
+
+	while (socket.ReadLine(&response)) {
+		if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
+			size_t pathBegin = response.find(L':', 0);
+			if (pathBegin == -1) {
+				continue;
+			}
+
+			// chop trailing '\n'
+			wstring responsePath = response.substr(pathBegin + 1, response.length()-1);
+			watchedDirectories.push_back(responsePath);
+		}
+	}
+
+	return watchedDirectories;
 }
 
 bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)
@@ -53,9 +69,9 @@ bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)
 		return false;
 	}
 
-	while ((socket.ReadLine(&response))) {
+	while (socket.ReadLine(&response)) {
 		// discard broadcast messages
-		if (begins_with(response, wstring(L"STATUS:"))) {
+		if (StringUtil::begins_with(response, wstring(L"STATUS:"))) {
 			break;
 		}
 	}

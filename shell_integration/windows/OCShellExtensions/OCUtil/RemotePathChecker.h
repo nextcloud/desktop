@@ -15,6 +15,7 @@
 #define PATHCHECKER_H
 
 #include <string>
+#include <vector>
 
 #pragma once    
 
@@ -29,11 +30,11 @@ public:
 		StateNone
 	};
 	RemotePathChecker(int port);
+	std::vector<std::wstring> WatchedDirectories();
 	bool IsMonitoredPath(const wchar_t* filePath, int* state);
 
 private:
 	int _StrToFileState(const std::wstring &str);
-
 	int _port;
 
 };

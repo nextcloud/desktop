@@ -15,6 +15,8 @@
 #include "OCOverlay.h"
 
 #include "RegistryUtil.h"
+#include "StringUtil.h"
+
 #include "UtilConstants.h"
 #include "RemotePathChecker.h"
 
@@ -40,6 +42,8 @@ OCOverlay::OCOverlay(int state)
 	, _state(state)
 
 {
+	// FIXME: Use Registry instead
+	_watchedDirectories = _checker->WatchedDirectories();
 }
 
 OCOverlay::~OCOverlay(void)
@@ -99,6 +103,20 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
 	//	return MAKE_HRESULT(S_FALSE, 0, 0);
 	//}
 
+	wstring wpath(pwszPath);
+	wpath.append(L"\\");
+	vector<wstring>::iterator it;
+	bool watched = false;
+	for (it = _watchedDirectories.begin(); it != _watchedDirectories.end(); ++it) {
+		if (StringUtil::begins_with(wpath, *it)) {
+			watched = true;
+		}
+	}
+
+	if (!watched) {
+		return MAKE_HRESULT(S_FALSE, 0, 0);
+	}
+
 	int state = 0;
 	if (!_checker->IsMonitoredPath(pwszPath, &state)) {
 		return MAKE_HRESULT(S_FALSE, 0, 0);
@@ -127,9 +145,6 @@ bool OCOverlay::_IsOverlaysEnabled()
 	//int enable;
 	bool success = false;
 	
-	
-
-
 	//if(RegistryUtil::ReadRegistry(REGISTRY_ROOT_KEY, REGISTRY_ENABLE_OVERLAY, &enable))
 	//{
 	//	if(enable) {

@@ -76,6 +76,8 @@ bool CommunicationSocket::Connect()
 	clientService.sin_port = htons(_port);
 
 	iResult = connect(_clientSocket, (SOCKADDR*)&clientService, sizeof(clientService));
+	DWORD timeout = 500; // ms
+	setsockopt(_clientSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*) &timeout, sizeof(DWORD));
 
 	if (iResult == SOCKET_ERROR) {
 		//int error = WSAGetLastError();
