@@ -1764,7 +1764,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="194"/>
-        <source>Expiry Date: %1</source>
+        <source>Expiration Date: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

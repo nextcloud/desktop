@@ -1773,8 +1773,8 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="194"/>
-        <source>Expiry Date: %1</source>
-        <translation>Auslaufdatum: %1</translation>
+        <source>Expiration Date: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="198"/>

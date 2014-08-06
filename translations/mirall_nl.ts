@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation>Selecteer een externe bestemmingsmap</translation>
+        <translation>Selecteer een externe doelmap</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -91,7 +91,7 @@
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
         <location filename="../src/mirall/accountsettings.cpp" line="159"/>
         <source>Pause</source>
-        <translation>Pause</translation>
+        <translation>Pauze</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="69"/>
@@ -1772,8 +1772,8 @@ Probeer opnieuw te synchroniseren.</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="194"/>
-        <source>Expiry Date: %1</source>
-        <translation>Vervaldatum: %1</translation>
+        <source>Expiration Date: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="198"/>
@@ -2550,7 +2550,7 @@ Probeer opnieuw te synchroniseren.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="81"/>
         <source>Sync is paused</source>
-        <translation>Sync is gepauzeerd</translation>
+        <translation>Synchronisatie is gepauzeerd</translation>
     </message>
 </context>
 </TS>
