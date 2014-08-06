@@ -125,6 +125,7 @@ assertLocalAndRemoteDir( '', 0);
 printInfo( "Update the file again");
 createLocalFile( localDir() . "remoteToLocal1/kernelcrash.txt", 2136 );
 createLocalFile( localDir() . "remoteToLocal1/kraft_logo.gif", 2332 );
+system( "sleep 2 && touch " . localDir() . "remoteToLocal1/kernelcrash.txt" );
 csync( );
 assertLocalAndRemoteDir( '', 0);
 
