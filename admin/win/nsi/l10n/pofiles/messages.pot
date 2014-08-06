@@ -85,6 +85,14 @@ msgstr "Choose the maintenance option to perform."
 msgid "Installing ${APPLICATION_NAME} essentials."
 msgstr "Installing ${APPLICATION_NAME} essentials."
 
+#. OPTION_SECTION_SC_SHELL_EXT_SECTION
+msgid "Status icons for Windows Explorer"
+msgstr "Status icons for Windows Explorer"
+
+#. OPTION_SECTION_SC_SHELL_EXT_DetailPrint
+msgid "Installing status icons for Windows Explorer"
+msgstr "Installing status icons for Windows Explorer"
+
 #. OPTION_SECTION_SC_START_MENU_SECTION
 msgid "Start Menu Program Shortcut"
 msgstr "Start Menu Program Shortcut"

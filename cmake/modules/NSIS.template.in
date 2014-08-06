@@ -16,6 +16,7 @@
   !define OPTION_LICENSE_AGREEMENT
 !endif
 !define OPTION_UAC_PLUGIN_ENHANCED
+!define OPTION_SECTION_SC_SHELL_EXT
 !define OPTION_SECTION_SC_START_MENU
 !define OPTION_SECTION_SC_DESKTOP
 !define OPTION_SECTION_SC_QUICK_LAUNCH
@@ -94,6 +95,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !include WordFunc.nsh  ;Used by VersionCompare macro function.
 !include FileFunc.nsh  ;Used to read out parameters
 !include UAC.nsh ;Used by the UAC elevation to install as user or admin.
+!include x64.nsh ;Used to determine the right arch for the shell extensions
 
 ;-----------------------------------------------------------------------------
 ; Memento selections stored in registry.
@@ -374,7 +376,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${BUILD_PATH}\src\lib${APPLICATION_SHORTNAME}sync.dll"
    File "${BUILD_PATH}\csync\src\libocsync.dll"
 
-
    File "${BUILD_PATH}\src\mirall_*.qm"
    ; Make sure only to copy qt, not qt_help, etc
    File "${MING_SHARE}\qt5\translations\qt_??.qm"
@@ -455,6 +456,22 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 SectionEnd
 
 SectionGroup $SectionGroup_Shortcuts
+
+!ifdef OPTION_SECTION_SC_SHELL_EXT
+   ${MementoSection} $OPTION_SECTION_SC_SHELL_EXT_SECTION SEC_SHELL_EXT
+      SectionIn 1 2
+      SetDetailsPrint textonly
+      DetailPrint $OPTION_SECTION_SC_SHELL_EXT_DetailPrint
+      SetOutPath "$INSTDIR/shellext"
+      ${If} ${RunningX64}
+         ExecWait '"${BUILD_PATH}/vcredist_x64.exe" /qn'
+         File ${SOURCE_PATH}\*_x64.dll
+      ${Else}
+         ExecWait '"${BUILD_PATH}/vcredist_x86.exe" /qn'
+         File ${SOURCE_PATH}\*_x86.dll
+      ${EndIf}
+   ${MementoSectionEnd}
+!endif
 
 !ifdef OPTION_SECTION_SC_START_MENU
    ${MementoSection} $OPTION_SECTION_SC_START_MENU_SECTION SEC_START_MENU
