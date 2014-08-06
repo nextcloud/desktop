@@ -98,6 +98,8 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
 
 	    for l in data.split('\n'):
 	        self.handle_server_response( l )
+        else:
+            return False
 
 	return True # run again
 	    
