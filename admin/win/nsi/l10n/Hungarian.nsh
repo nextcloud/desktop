@@ -24,6 +24,8 @@ StrCpy $PageReinstall_OLD_Field_1 "A newer version of ${APPLICATION_NAME} is alr
 StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} is already installed.\r\nSelect the operation you want to perform and click Next to continue."
 StrCpy $PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE "Choose the maintenance option to perform."
 StrCpy $SEC_APPLICATION_DETAILS "Installing ${APPLICATION_NAME} essentials."
+StrCpy $OPTION_SECTION_SC_SHELL_EXT_SECTION "Status icons for Windows Explorer"
+StrCpy $OPTION_SECTION_SC_SHELL_EXT_DetailPrint "Installing status icons for Windows Explorer"
 StrCpy $OPTION_SECTION_SC_START_MENU_SECTION "Start Menu Program Shortcut"
 StrCpy $OPTION_SECTION_SC_START_MENU_DetailPrint "Adding shortcut for ${APPLICATION_NAME} to the Start Menu."
 StrCpy $OPTION_SECTION_SC_DESKTOP_SECTION "Desktop Shortcut"

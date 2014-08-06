@@ -42,3 +42,5 @@ StrCpy $INIT_INSTALLER_RUNNING "Il programma di installazione è già in esecuzion
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Il programma di disinstallazione necessita delle credenziali di amministrazione, riprova"
 StrCpy $INIT_UNINSTALLER_RUNNING "Il programma di disinstallazione è già in esecuzione."
 StrCpy $SectionGroup_Shortcuts "Scorciatoie"
+StrCpy $OPTION_SECTION_SC_SHELL_EXT_SECTION "Status icons for Windows Explorer"
+StrCpy $OPTION_SECTION_SC_SHELL_EXT_DetailPrint "Installing status icons for Windows Explorer"

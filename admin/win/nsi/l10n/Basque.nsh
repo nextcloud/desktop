@@ -37,6 +37,8 @@ StrCpy $PageReinstall_OLD_Field_1 "A newer version of ${APPLICATION_NAME} is alr
 StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} is already installed.\r\nSelect the operation you want to perform and click Next to continue."
 StrCpy $PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE "Choose the maintenance option to perform."
 StrCpy $SEC_APPLICATION_DETAILS "Installing ${APPLICATION_NAME} essentials."
+StrCpy $OPTION_SECTION_SC_SHELL_EXT_SECTION "Status icons for Windows Explorer"
+StrCpy $OPTION_SECTION_SC_SHELL_EXT_DetailPrint "Installing status icons for Windows Explorer"
 StrCpy $OPTION_SECTION_SC_APPLICATION_Desc "${APPLICATION_NAME} essentials."
 StrCpy $UNINSTALLER_APPDATA_LABEL_2 "Leave unchecked to keep the data folder for later use or check to delete the data folder."
 StrCpy $UNINSTALL_MESSAGEBOX "It does not appear that ${APPLICATION_NAME} is installed in the directory '$INSTDIR'.$\r$\nContinue anyway (not recommended)?"

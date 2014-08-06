@@ -42,3 +42,5 @@ StrCpy $INIT_INSTALLER_RUNNING "Das Installationsprogramm wird bereits ausgeführ
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Das Deinstallationsprogramm erfordert Administrator-Rechte. Bitte erneut versuchen."
 StrCpy $INIT_UNINSTALLER_RUNNING "Das Deinstallationsprogramm wird bereits ausgeführt."
 StrCpy $SectionGroup_Shortcuts "Verknüpfungen"
+StrCpy $OPTION_SECTION_SC_SHELL_EXT_SECTION "Status icons for Windows Explorer"
+StrCpy $OPTION_SECTION_SC_SHELL_EXT_DetailPrint "Installing status icons for Windows Explorer"
