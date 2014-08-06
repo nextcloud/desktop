@@ -33,6 +33,9 @@ print "Hello, this is t5, a tester for syncing of files in Shares\n";
 
 initTesting();
 
+# Create empty test dirs.
+csync();
+
 my $share_dir = "share_source";
 
 printInfo( "Create a share." );
@@ -47,18 +50,22 @@ my $sharee = { user => configValue('share_user'),
 # put a couple of files into the shared directory in the sharer account
 glob_put( 'sharing/*', $share_dir, $sharee);
 
-# now user kf has a new directory in shared.
+# Move the shared dir remotely into the test dir, otherwise the script
+# has a hard time to find it.
+moveRemoteFile( server() . $share_dir, localDir(), 1 ); 
 
 # call csync, sync local t1 to remote t1
 printInfo("Initial sync, sync stuff down.");
-csync( server()."Shared" );
-assertLocalAndRemoteDir( 'Shared', 0, server() );
+csync();
+
+
+assertLocalAndRemoteDir( '', 0 );
 
 # Local file to a read/write share should be synced up
 printInfo("Put a file into the share.");
-createLocalFile( localDir(). $share_dir . "/foobar.txt", 8094 );
-csync( server()."Shared" );
-assertLocalAndRemoteDir( 'Shared', 0, server() );
+createLocalFile(localDir() . "$share_dir/foobar.txt", 8094 );
+csync( );
+assertLocalAndRemoteDir( '', 0 );
 
 
 printInfo("Remove a Share.");

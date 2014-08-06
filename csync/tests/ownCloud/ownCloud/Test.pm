@@ -609,12 +609,21 @@ sub md5OfFile( $ )
   return $hash;
 }
 
-sub moveRemoteFile($$)
+sub moveRemoteFile($$;$)
 {
-  my ($from, $to) = @_;
-    
+  my ($from, $to, $no_testdir) = @_;
+
+  $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
+		      -user=> $user,
+		  -pass=> $passwd );
+
   my $fromUrl = testDirUrl(). $from;
   my $toUrl = testDirUrl() . $to;
+  
+  if( $no_testdir ) {
+     $fromUrl = $from;
+     $toUrl = $to;
+  }
   
   $d->move($fromUrl, $toUrl);
   
