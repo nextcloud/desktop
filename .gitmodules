@@ -4,3 +4,6 @@
 [submodule "src/3rdparty/qtmacgoodies"]
 	path = src/3rdparty/qtmacgoodies
 	url = git://github.com/shadone/qtmacgoodies.git
+[submodule "binary"]
+	path = binary
+	url = git://github.com/owncloud/owncloud-client-binary.git
