@@ -846,7 +846,7 @@ void SyncEngine::checkForPermission()
             case CSYNC_INSTRUCTION_RENAME: {
 
                 int slashPos = it->_renameTarget.lastIndexOf('/');
-                const QString parentDir = slashPos <= 0 ? "" : it->_renameTarget.mid(0, slashPos-1);
+                const QString parentDir = slashPos <= 0 ? "" : it->_renameTarget.mid(0, slashPos);
                 const QByteArray destPerms = getPermissions(parentDir);
                 const QByteArray filePerms = getPermissions(it->_file);
 
@@ -869,7 +869,7 @@ void SyncEngine::checkForPermission()
                 bool sourceOK = true;
                 if (!filePerms.isNull()
                     &&  ((isRename && !filePerms.contains("N"))
-                         || (!isRename && !filePerms.contains("M")))) {
+                         || (!isRename && !filePerms.contains("V")))) {
 
                     // We are not allowed to move or rename this file
                     sourceOK = false;
