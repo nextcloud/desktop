@@ -297,6 +297,7 @@ void SyncJournalDb::close()
     _db.close();
     _db = QSqlDatabase(); // avoid the warning QSqlDatabasePrivate::removeDatabase: connection [...] still in use
     QSqlDatabase::removeDatabase(_dbFile);
+    _avoidReadFromDbOnNextSyncFilter.clear();
 }
 
 
@@ -372,9 +373,23 @@ qint64 SyncJournalDb::getPHash(const QString& file) const
     return h;
 }
 
-bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
+bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
 {
+    SyncJournalFileRecord record = _record;
     QMutexLocker locker(&_mutex);
+
+    if (!_avoidReadFromDbOnNextSyncFilter.isEmpty()) {
+        // If we are a directory that should not be read from db next time, don't write the etag
+        QString prefix = record._path + "/";
+        foreach(const QString &it, _avoidReadFromDbOnNextSyncFilter) {
+            if (it.startsWith(prefix)) {
+                qDebug() << "Filtered writing the etag of" << prefix << "because it is a prefix of" << it;
+                record._etag = "_invalid_";
+                break;
+            }
+        }
+    }
+
     qlonglong phash = getPHash(record._path);
     if( checkConnect() ) {
         QByteArray arr = record._path.toUtf8();
@@ -865,6 +880,9 @@ void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
     } else {
         qDebug() << Q_FUNC_INFO << query.executedQuery()  << fileName << "(" << query.numRowsAffected() << " rows)";
     }
+
+    // Prevent future overwrite of the etag for this sync
+    _avoidReadFromDbOnNextSyncFilter.append(fileName);
 }
 
 void SyncJournalDb::commit(const QString& context, bool startTrans)
