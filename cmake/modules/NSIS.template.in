@@ -277,8 +277,58 @@ FunctionEnd
    no_process_${processName}_to_end:
 !macroend
 
+!macro StartExplorerAsUserMacro un
+   Function ${un}StartExplorerAsUser
+      Exec "$WINDIR\explorer.exe"
+   FunctionEnd
+!macroend
+
+!insertmacro StartExplorerAsUserMacro ""
+!insertmacro StartExplorerAsUserMacro "un."
+
+!macro StartExplorer un
+   DetailPrint "Starting Explorer..."
+   ${UAC.CallFunctionAsUser} ${un}StartExplorerAsUser
+!macroend
+
+!macro StopExplorer
+   DetailPrint "Terminated Explorer..."
+   FindWindow $R0 "Shell_TrayWnd"
+   SendMessage $R0 0x5B4 0 0
+   #Processes::KillProcess explorer.exe
+   Sleep 1500
+   DetailPrint "Continuing..."
+!macroend
+
 Function EnsureOwncloudShutdown
    !insertmacro CheckAndConfirmEndProcess "${APPLICATION_EXECUTABLE}"
+FunctionEnd
+
+Function RegisterShellExt
+   SetOutPath "$INSTDIR\shellext"
+   ${If} ${RunningX64}
+      ExecWait '"$SYSDIR\regsvr32.exe" /s "$OUTDIR\OCOverlays_x64.dll"'
+   ${Else}
+      ExecWait '"$SYSDIR\regsvr32.exe" /s "$OUTDIR\OCOverlays_x86.dll"'
+   ${EndIf}
+FunctionEnd
+
+Function Un.RegisterShellExt
+   ${If} ${RunningX64}
+      ExecWait '"$SYSDIR\regsvr32.exe" /u /s "$INSTDIR\shellext\OCOverlays_x64.dll"'
+   ${Else}
+      ExecWait '"$SYSDIR\regsvr32.exe" /u /s "$INSTDIR\shellext\OCOverlays_x86.dll"'
+   ${EndIf}
+FunctionEnd
+
+Function InstallRedistributables
+   ${If} ${RunningX64}
+      ExecWait '"$OUTDIR\vcredist_x64.exe" /install /quiet'
+   ${Else}
+      ExecWait '"$OUTDIR\vcredist_x86.exe" /install /quiet'
+   ${EndIf}
+   Delete "$OUTDIR\vcredist_x86.exe"
+   Delete "$OUTDIR\vcredist_x64.exe"
 FunctionEnd
 
 ##############################################################################
@@ -438,7 +488,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    ;QtKeyChain stuff
    File "${MING_BIN}\libqt5keychain.dll"
 
-   ; ownCloud plugin
+   ;ownCloud plugin
    File "${MING_BIN}\libintl-8.dll"
    File "${MING_BIN}\libneon-27.dll"
    File "${MING_BIN}\libproxy.dll"
@@ -450,28 +500,31 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${MING_BIN}\libstdc++-6.dll"
    File "${MING_BIN}\libwinpthread-1.dll"
 
-   ; CSync configs
+   ;CSync configs
    File "${SOURCE_PATH}/sync-exclude.lst"
 
 SectionEnd
-
-SectionGroup $SectionGroup_Shortcuts
 
 !ifdef OPTION_SECTION_SC_SHELL_EXT
    ${MementoSection} $OPTION_SECTION_SC_SHELL_EXT_SECTION SEC_SHELL_EXT
       SectionIn 1 2
       SetDetailsPrint textonly
       DetailPrint $OPTION_SECTION_SC_SHELL_EXT_DetailPrint
-      SetOutPath "$INSTDIR/shellext"
-      ${If} ${RunningX64}
-         ExecWait '"${BUILD_PATH}/vcredist_x64.exe" /qn'
-         File ${SOURCE_PATH}\*_x64.dll
-      ${Else}
-         ExecWait '"${BUILD_PATH}/vcredist_x86.exe" /qn'
-         File ${SOURCE_PATH}\*_x86.dll
-      ${EndIf}
+      SetOutPath "$INSTDIR\shellext"
+      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCUtil_x64.dll"
+      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCOverlays_x64.dll"
+      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCUtil_x86.dll"
+      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCOverlays_x86.dll"
+      File "${BUILD_PATH}\vcredist_x86.exe"
+      File "${BUILD_PATH}\vcredist_x64.exe"
+      Call InstallRedistributables
+      Call RegisterShellExt
+      !insertMacro StopExplorer
+      !insertMacro StartExplorer ""
    ${MementoSectionEnd}
 !endif
+
+SectionGroup $SectionGroup_Shortcuts
 
 !ifdef OPTION_SECTION_SC_START_MENU
    ${MementoSection} $OPTION_SECTION_SC_START_MENU_SECTION SEC_START_MENU
@@ -617,6 +670,15 @@ Section Uninstall
    DeleteRegKey HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}"
 
    DeleteRegKey HKCR "${APPLICATION_NAME}"
+
+   ;Shell extension
+   !ifdef OPTION_SECTION_SC_SHELL_EXT
+      ${If} ${HasSection} SEC_SHELL_EXT
+         !insertmacro StopExplorer
+         Call Un.RegisterShellExt
+         !insertmacro StartExplorer "Un."
+      ${EndIf}
+   !endif
 
    ;Start menu shortcut
    !ifdef OPTION_SECTION_SC_START_MENU
