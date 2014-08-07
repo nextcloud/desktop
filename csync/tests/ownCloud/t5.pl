@@ -44,9 +44,9 @@ print "Created share with id <$shareId>\n";
 
 assert( $shareId > 0 );
 
-my $sharee = { user => configValue('share_user'),
+my $sharee = { user   => configValue('share_user'),
                passwd => configValue('share_passwd'),
-	       url => server() };
+	       url    => server() };
 # put a couple of files into the shared directory in the sharer account
 glob_put( 'sharing/*', $share_dir, $sharee);
 
@@ -66,6 +66,34 @@ printInfo("Put a file into the share.");
 createLocalFile(localDir() . "$share_dir/foobar.txt", 8094 );
 csync( );
 assertLocalAndRemoteDir( '', 0 );
+
+# now move the file locally and sync
+printInfo("Move the file locally and sync.");
+my $cmd = "mv " . localDir() . "$share_dir/foobar.txt ". localDir() . "$share_dir/moved_file.txt";
+system( $cmd );
+csync( );
+assertLocalAndRemoteDir( '', 0 );
+
+# now create aother directory and redo
+printInfo("Create another directory and file");
+my $cmd = "mkdir ". localDir() . "$share_dir/newDir";
+system( $cmd );
+createLocalFile( localDir() . "$share_dir/newDir/a_file.bin", 5321 );
+csync( );
+assertLocalAndRemoteDir( '', 0 );
+
+# Remove the local file again
+printInfo("Remove the local file again.");
+unlink( localDir() . "$share_dir/newDir/a_file.bin" );
+csync( );
+assertLocalAndRemoteDir( '', 0 );
+
+# Remove the local directory again
+printInfo("Remove the local directory again.");
+rmdir( localDir() . "$share_dir/newDir" );
+csync( );
+assertLocalAndRemoteDir( '', 0 );
+
 
 
 printInfo("Remove a Share.");
