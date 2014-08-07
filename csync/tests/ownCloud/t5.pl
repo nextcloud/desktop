@@ -37,6 +37,13 @@ initTesting();
 csync();
 
 my $share_dir = "share_source";
+my $sharee = { user   => configValue('share_user'),
+               passwd => configValue('share_passwd'),
+	       url    => server() };
+
+# first remove a possibly left over share dir.
+printInfo( "Remove possibly left over share dir" );
+removeRemoteDir( $share_dir, $sharee );
 
 printInfo( "Create a share." );
 my $shareId = createShare( $share_dir, 31 );
@@ -44,9 +51,6 @@ print "Created share with id <$shareId>\n";
 
 assert( $shareId > 0 );
 
-my $sharee = { user   => configValue('share_user'),
-               passwd => configValue('share_passwd'),
-	       url    => server() };
 # put a couple of files into the shared directory in the sharer account
 glob_put( 'sharing/*', $share_dir, $sharee);
 
