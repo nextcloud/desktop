@@ -276,7 +276,11 @@ void SocketApi::slotUpdateFolderView(const QString& alias)
                 f->syncResult().status() == SyncResult::Problem ||
                 f->syncResult().status() == SyncResult::Error   ||
                 f->syncResult().status() == SyncResult::SetupError ) {
-            broadcastMessage(QLatin1String("UPDATE_VIEW"), f->path() );
+            if( Utility::isWindows() ) {
+                Utility::winShellChangeNotify( f->path() );
+            } else {
+                broadcastMessage(QLatin1String("UPDATE_VIEW"), f->path() );
+            }
         }
     }
 }
