@@ -833,10 +833,15 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QString& path)
     query.bindValue(0, path);
     query.bindValue(1, path);
     if( !query.exec() ) {
-        qDebug() << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
+        qDebug() << Q_FUNC_INFO << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
     } else {
-        qDebug() << query.executedQuery()  << path;
+        qDebug() << Q_FUNC_INFO << query.executedQuery()  << path << "(" << query.numRowsAffected() << " rows)";
     }
+
+    // We also need to remove the ETags so the update phase refreshes the directory paths
+    // on the next sync
+    locker.unlock();
+    avoidReadFromDbOnNextSync(path);
 }
 
 void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
@@ -856,9 +861,9 @@ void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
     query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ? LIKE(path||'/%') AND type == 2"); // CSYNC_FTW_TYPE_DIR == 2
     query.bindValue(0, fileName);
     if( !query.exec() ) {
-        qDebug() << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
+        qDebug() << Q_FUNC_INFO << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
     } else {
-        qDebug() << query.executedQuery()  << fileName;
+        qDebug() << Q_FUNC_INFO << query.executedQuery()  << fileName << "(" << query.numRowsAffected() << " rows)";
     }
 }
 

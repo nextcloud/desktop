@@ -21,6 +21,7 @@
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
+#include "csync_util.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -262,12 +263,26 @@ int SyncEngine::treewalkRemote( TREE_WALK_FILE* file, void *data )
 int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 {
     if( ! file ) return -1;
-    SyncFileItem item;
-    item._file = QString::fromUtf8( file->path );
+
+    QString fileUtf8 = QString::fromUtf8( file->path );
+
+    // Gets a default-contructed SyncFileItem or the one from the first walk (=local walk)
+    SyncFileItem item = _syncItemMap.value(fileUtf8);
+    item._file = fileUtf8;
     item._originalFile = item._file;
-    item._instruction = file->instruction;
-    item._direction = SyncFileItem::None;
-    item._fileId = file->file_id;
+
+    if (item._instruction == CSYNC_INSTRUCTION_NONE) {
+        item._instruction = file->instruction;
+        item._modtime = file->modtime;
+    } else {
+        if (file->instruction != CSYNC_INSTRUCTION_NONE) {
+            Q_ASSERT(!"Instructions are both unequal NONE");
+        }
+    }
+
+    if (file->file_id && strlen(file->file_id) > 0) {
+        item._fileId = file->file_id;
+    }
     if (file->directDownloadUrl) {
         item._directDownloadUrl = QString::fromUtf8( file->directDownloadUrl );
     }
@@ -277,6 +292,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     if (file->remotePerm && file->remotePerm[0]) {
         item._remotePerm = QByteArray(file->remotePerm);
     }
+    item._should_update_etag = item._should_update_etag || file->should_update_etag;
 
     // record the seen files to be able to clean the journal later
     _seenFiles.insert(item._file);
@@ -306,12 +322,16 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         /* No error string */
     }
     item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
-    item._modtime = file->modtime;
+
+    // The etag is already set in the previous sync phases somewhere. Maybe we should remove it there
+    // and do it here so we have a consistent state about which tree stores information from which source.
     item._etag = file->etag;
     item._size = file->size;
-    item._inode = file->inode;
 
-    item._should_update_etag = file->should_update_etag;
+    if (!remote) {
+        item._inode = file->inode;
+    }
+
     switch( file->type ) {
     case CSYNC_FTW_TYPE_DIR:
         item._type = SyncFileItem::Directory;
@@ -329,11 +349,15 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     SyncFileItem::Direction dir;
 
     int re = 0;
-
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
         if (file->should_update_etag && !item._isDirectory) {
             // Update the database now already  (new fileid or etag or remotePerm)
+            // Those are files that were detected as "resolved conflict".
+            // They should have been a conflict because they both were new, or both
+            // had their local mtime or remote etag modified, but the size and mtime
+            // is the same on the server.  This typically happen when the database is removed.
+            // Nothing will be done for those file, but we still need to update the database.
             _journal->setFileRecord(SyncJournalFileRecord(item, _localPath + item._file));
             item._should_update_etag = false;
         }
@@ -402,7 +426,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item.log._other_modtime     = file->other.modtime;
     item.log._other_size        = file->other.size;
 
-    _syncedItems.append(item);
+    _syncItemMap.insert(fileUtf8, item);
 
     emit syncItemDiscovered(item);
     return re;
@@ -446,6 +470,7 @@ void SyncEngine::startSync()
     }
 
     _syncedItems.clear();
+    _syncItemMap.clear();
     _needsUpdate = false;
 
     csync_resume(_csync_ctx);
@@ -552,6 +577,9 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     if( walkOk && csync_walk_remote_tree(_csync_ctx, &treewalkRemote, 0) < 0 ) {
         qDebug() << "Error in remote treewalk.";
     }
+
+    // The map was used for merging trees, convert it to a list:
+    _syncedItems = _syncItemMap.values().toVector();
 
     // Adjust the paths for the renames.
     for (SyncFileItemVector::iterator it = _syncedItems.begin();
@@ -762,10 +790,12 @@ void SyncEngine::checkForPermission()
                     break;
                 } if (!it->_isDirectory && !perms.contains("W")) {
                     qDebug() << "checkForPermission: RESTORING" << it->_file;
+                    it->_should_update_etag = true;
                     it->_instruction = CSYNC_INSTRUCTION_CONFLICT;
                     it->_direction = SyncFileItem::Down;
                     it->_isRestoration = true;
                     // take the things to write to the db from the "other" node (i.e: info from server)
+                    // ^^ FIXME This might not be needed anymore since we merge the info in treewalkFile
                     it->_modtime = it->log._other_modtime;
                     it->_fileId = it->log._other_fileId;
                     it->_etag = it->log._other_etag;
@@ -781,6 +811,7 @@ void SyncEngine::checkForPermission()
                     break;
                 } if (!perms.contains("D")) {
                     qDebug() << "checkForPermission: RESTORING" << it->_file;
+                    it->_should_update_etag = true;
                     it->_instruction = CSYNC_INSTRUCTION_NEW;
                     it->_direction = SyncFileItem::Down;
                     it->_isRestoration = true;
@@ -800,6 +831,7 @@ void SyncEngine::checkForPermission()
                             }
 
                             qDebug() << "checkForPermission: RESTORING" << it->_file;
+                            it->_should_update_etag = true;
 
                             it->_instruction = CSYNC_INSTRUCTION_NEW;
                             it->_direction = SyncFileItem::Down;

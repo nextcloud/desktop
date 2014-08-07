@@ -22,6 +22,7 @@
 #include <QThread>
 #include <QString>
 #include <QSet>
+#include <QMap>
 #include <qelapsedtimer.h>
 
 #include <csync.h>
@@ -106,6 +107,7 @@ private:
     void finalize();
 
     static bool _syncRunning; //true when one sync is running somewhere (for debugging)
+    QMap<QString, SyncFileItem> _syncItemMap;
     SyncFileItemVector _syncedItems;
 
     CSYNC *_csync_ctx;
