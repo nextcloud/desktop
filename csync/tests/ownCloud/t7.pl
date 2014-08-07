@@ -31,6 +31,17 @@ use strict;
 
 print "Hello, this is t7, a tester for syncing of files in read only directory\n";
 
+# Check if the expected rows in the DB are non-empty. Note that in some cases they might be, then we cannot use this function
+# https://github.com/owncloud/mirall/issues/2038
+sub assertCsyncJournalOk {
+	my $path = $_[0];
+
+    # FIXME: should test also remoteperm but it's not working with owncloud6
+    #     my $cmd = 'sqlite3 ' . $path . '.csync_journal.db "SELECT count(*) from metadata where length(remotePerm) == 0 or length(fileId) == 0"';
+    my $cmd = 'sqlite3 ' . $path . '.csync_journal.db "SELECT count(*) from metadata where length(fileId) == 0"';
+	my $result = `$cmd`;
+	assert($result == "0");
+}
 
 # IMPORTANT NOTE :
 print "This test use the OWNCLOUD_TEST_PERMISSIONS environement variable and _PERM_xxx_ on filenames to set the permission. ";
@@ -63,6 +74,7 @@ glob_put( "$tmpdir/normalFile_PERM_WVND_.data", "readonlyDirectory_PERM_M_/subdi
 
 
 csync();
+assertCsyncJournalOk(localDir());
 assertLocalAndRemoteDir( '', 0);
 
 system("sleep 1"); #make sure changes have different mtime
@@ -99,6 +111,7 @@ createLocalFile( localDir() . "normalDirectory_PERM_CKDNV_/newFile_PERM_WDNV_.da
 
 #do the sync
 csync();
+assertCsyncJournalOk(localDir());
 
 
 #1.
@@ -149,6 +162,7 @@ printInfo( "remove the read only directory" );
 # -> It must be recovered
 system("rm -r " . localDir().'readonlyDirectory_PERM_M_' );
 csync();
+assertCsyncJournalOk(localDir());
 assert( -e localDir(). 'readonlyDirectory_PERM_M_/cannotBeRemoved_PERM_WVN_.data' );
 assert( -e localDir(). 'readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data' );
 assertLocalAndRemoteDir( '', 0);
@@ -156,15 +170,20 @@ assertLocalAndRemoteDir( '', 0);
 
 #######################################################################
 printInfo( "move a directory in a outside read only folder" );
+system("sqlite3 " . localDir().'.csync_journal.db .dump');
+
 #Missing directory should be restored
 #new directory should be uploaded
 system("mv " . localDir().'readonlyDirectory_PERM_M_/subdir_PERM_CK_ ' . localDir().'normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_'  );
 
-# two syncs may be necessary for now
+# two syncs may be necessary for now: https://github.com/owncloud/mirall/issues/2038
 csync();
 csync();
+system("sqlite3 " . localDir().'.csync_journal.db .dump');
+assertCsyncJournalOk(localDir());
 
 # old name restored
+assert( -e localDir(). 'readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/' );
 assert( -e localDir(). 'readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data' );
 
 # new still exist
@@ -190,9 +209,10 @@ system("mv " . localDir().'readonlyDirectory_PERM_M_/subdir_PERM_CK_ ' . localDi
 #2. move a directory from read to read only  (move the directory from previous step)
 system("mv " . localDir().'normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_ ' . localDir().'readonlyDirectory_PERM_M_/moved_PERM_CK_'  );
 
-# two syncs may be necessary for now
+# two syncs may be necessary for now: https://github.com/owncloud/mirall/issues/2038
 csync();
 csync();
+assertCsyncJournalOk(localDir());
 
 #1.
 # old name restored
@@ -213,6 +233,7 @@ system("rm -r " . localDir(). "readonlyDirectory_PERM_M_/moved_PERM_CK_");
 
 assertLocalAndRemoteDir( '', 0);
 
+system("sqlite3 " . localDir().'.csync_journal.db .dump');
 
 
 cleanup();

@@ -305,7 +305,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
         }
 
         if (Utility::qDateTimeToTime_t(fi.lastModified()) != _item._modtime) {
-            /* Uh oh:  The local file has changed during upload */
+            qDebug() << "The local file has changed during upload:" << _item._modtime << "!=" << Utility::qDateTimeToTime_t(fi.lastModified())  << fi.lastModified();
             _propagator->_activeJobs--;
             done(SyncFileItem::SoftError, tr("Local file changed during sync."));
             // FIXME:  the legacy code was retrying for a few seconds.
@@ -429,6 +429,7 @@ void GETFileJob::start() {
         setReply(davRequest("GET", _directDownloadUrl, req));
     }
     setupConnections(reply());
+    reply()->setReadBufferSize(128 * 1024);
 
     if( reply()->error() != QNetworkReply::NoError ) {
         qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
