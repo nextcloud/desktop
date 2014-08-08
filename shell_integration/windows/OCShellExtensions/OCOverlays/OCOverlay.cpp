@@ -14,6 +14,7 @@
 
 #include "OCOverlay.h"
 
+#include "OCOverlayFactory.h"
 #include "RegistryUtil.h"
 #include "StringUtil.h"
 
@@ -35,6 +36,10 @@ extern HINSTANCE instanceHandle;
 #define IDM_DISPLAY 0  
 #define IDB_OK 101
 
+namespace {
+	static std::vector<std::wstring> s_watchedDirectories;
+}
+
 OCOverlay::OCOverlay(int state) 
 	: _communicationSocket(0)
 	, _referenceCount(1)
@@ -42,8 +47,6 @@ OCOverlay::OCOverlay(int state)
 	, _state(state)
 
 {
-	// FIXME: Use Registry instead
-	_watchedDirectories = _checker->WatchedDirectories();
 }
 
 OCOverlay::~OCOverlay(void)
@@ -90,7 +93,28 @@ IFACEMETHODIMP_(ULONG) OCOverlay::Release()
 
 IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
 {
-	pPriority = 0;
+	// this defines which handler has prededence, so
+	// we order this in terms of likelyhood
+	switch (_state) {
+	case State_OK:
+		*pPriority = 0;
+	case State_OKShared:
+		*pPriority = 1;
+	case State_Warning:
+		*pPriority = 2;
+	case State_WarningShared:
+		*pPriority = 3;
+	case State_Sync:
+		*pPriority = 4;
+	case State_SyncShared:
+		*pPriority = 5;
+	case State_Error:
+		*pPriority = 6;
+	case State_ErrorShared:
+		*pPriority = 7;
+	default:
+		*pPriority = 8;
+	}
 
 	return S_OK;
 }
@@ -103,11 +127,17 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
 	//	return MAKE_HRESULT(S_FALSE, 0, 0);
 	//}
 
+	// FIXME: Use Registry instead, this will only trigger once
+	// and now follow any user changes in the client
+	if (s_watchedDirectories.empty()) {
+		s_watchedDirectories = _checker->WatchedDirectories();
+	}
+
 	wstring wpath(pwszPath);
 	wpath.append(L"\\");
 	vector<wstring>::iterator it;
 	bool watched = false;
-	for (it = _watchedDirectories.begin(); it != _watchedDirectories.end(); ++it) {
+	for (it = s_watchedDirectories.begin(); it != s_watchedDirectories.end(); ++it) {
 		if (StringUtil::begins_with(wpath, *it)) {
 			watched = true;
 		}
