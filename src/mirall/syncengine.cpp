@@ -462,6 +462,19 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
 
 void SyncEngine::startSync()
 {
+    if (_journal->exists()) {
+        QVector< SyncJournalDb::PollInfo > pollInfos = _journal->getPollInfos();
+        if (!pollInfos.isEmpty()) {
+            qDebug() << "Finish Poll jobs before starting a sync";
+            CleanupPollsJob *job = new CleanupPollsJob(pollInfos, AccountManager::instance()->account(),
+                                                       _journal, _localPath, this);
+            connect(job, SIGNAL(finished()), this, SLOT(startSync()));
+            connect(job, SIGNAL(aborted(QString)), this, SLOT(slotCleanPollsJobAborted(QString)));
+            job->start();
+            return;
+        }
+    }
+
     Q_ASSERT(!_syncRunning);
     _syncRunning = true;
 
@@ -637,6 +650,12 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     setNetworkLimits(_uploadLimit, _downloadLimit);
 
     _propagator->start(_syncedItems);
+}
+
+void SyncEngine::slotCleanPollsJobAborted(const QString &error)
+{
+    csyncError(error);
+    finalize();
 }
 
 void SyncEngine::setNetworkLimits(int upload, int download)

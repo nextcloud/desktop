@@ -21,6 +21,7 @@
 #include <qelapsedtimer.h>
 
 #include "syncfileitem.h"
+#include "syncjournaldb.h"
 
 struct hbf_transfer_s;
 struct ne_session_s;
@@ -28,6 +29,8 @@ struct ne_decompress_s;
 typedef struct ne_prop_result_set_s ne_prop_result_set;
 
 namespace Mirall {
+
+class Account;
 
 class SyncJournalDb;
 class OwncloudPropagator;
@@ -251,6 +254,26 @@ signals:
      */
     void adjustTotalTransmissionSize( qint64 adjust );
 
+};
+
+// Job that wait for all the poll jobs to be completed
+class CleanupPollsJob : public QObject {
+    Q_OBJECT
+    QVector< SyncJournalDb::PollInfo > _pollInfos;
+    Account *_account;
+    SyncJournalDb *_journal;
+    QString _localPath;
+public:
+    explicit CleanupPollsJob(const QVector< SyncJournalDb::PollInfo > &pollInfos, Account *account,
+                             SyncJournalDb *journal, const QString &localPath, QObject* parent = 0)
+        : QObject(parent), _pollInfos(pollInfos), _account(account), _journal(journal), _localPath(localPath) {}
+
+    void start();
+signals:
+    void finished();
+    void aborted(const QString &error);
+private slots:
+    void slotPollFinished();
 };
 
 }

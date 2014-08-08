@@ -355,7 +355,9 @@ ENDIF()
 include_directories(../csync/src ../csync/src/httpbf/src ${CMAKE_CURRENT_BINARY_DIR}/../csync ${CMAKE_CURRENT_BINARY_DIR}/../csync/src )
 include_directories(${3rdparty_INC})
 
+if(NOT TOKEN_AUTH_ONLY)
 qt_add_translation(mirall_I18N ${TRANSLATIONS})
+endif()
 
 set( final_src
     ${mirall_HEADERS}

@@ -20,6 +20,7 @@
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
+#include <json.h>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
@@ -82,6 +83,70 @@ void PUTFileJob::slotTimeout() {
     _errorString =  tr("Connection Timeout");
     reply()->abort();
 }
+
+void PollJob::start()
+{
+    setTimeout(30 * 1000);
+    QUrl accountUrl = account()->url();
+    QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QLatin1String("://") +  accountUrl.authority()
+        + (path().startsWith('/') ? QLatin1String("") : QLatin1Literal("/")) + path());
+    setReply(getRequest(finalUrl));
+    setupConnections(reply());
+    connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(resetTimeout()));
+    AbstractNetworkJob::start();
+}
+
+bool PollJob::finished()
+{
+    QNetworkReply::NetworkError err = reply()->error();
+    if (err != QNetworkReply::NoError) {
+        _item._httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        _item._status = classifyError(err, _item._httpErrorCode);
+        _item._errorString = reply()->errorString();
+        if (_item._status == SyncFileItem::FatalError || _item._httpErrorCode >= 400) {
+            if (_item._status != SyncFileItem::FatalError) {
+                SyncJournalDb::PollInfo info;
+                info._file = _item._file;
+                // no info._url removes it from the database
+                _journal->setPollInfo(info);
+
+            }
+            emit finishedSignal();
+            return true;
+        }
+        start();
+        return false;
+    }
+
+    bool ok = false;
+    QVariantMap status = QtJson::parse(QString::fromUtf8(reply()->readAll()), ok).toMap();
+    if (!ok || status.isEmpty()) {
+        _item._errorString = tr("Invalid json reply from the poll URL");
+        _item._status = SyncFileItem::NormalError;
+        emit finishedSignal();
+        return true;
+    }
+
+    if (status["unfinished"].isValid()) {
+        start();
+        return false;
+    }
+
+    _item._errorString = status["error"].toString();
+    _item._status = _item._errorString.isEmpty() ? SyncFileItem::Success : SyncFileItem::NormalError;
+    _item._fileId = status["fileid"].toByteArray();
+    _item._etag = status["etag"].toByteArray();
+    _item._responseTimeStamp = responseTimestamp();
+
+    SyncJournalDb::PollInfo info;
+    info._file = _item._file;
+    // no info._url removes it from the database
+    _journal->setPollInfo(info);
+
+    emit finishedSignal();
+    return true;
+}
+
 
 void PropagateUploadFileQNAM::start()
 {
@@ -206,6 +271,7 @@ void PropagateUploadFileQNAM::startNextChunk()
     quint64 fileSize = _item._size;
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Total-Length"] = QByteArray::number(fileSize);
+    headers["OC-Async"] = "1";
     headers["Content-Type"] = "application/octet-stream";
     headers["X-OC-Mtime"] = QByteArray::number(qint64(_item._modtime));
     if (!_item._etag.isEmpty() && _item._etag != "empty_etag") {
@@ -289,6 +355,19 @@ void PropagateUploadFileQNAM::slotPutFinished()
         }
 
         done(classifyError(err, _item._httpErrorCode), errorString);
+        return;
+    }
+
+    _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    // The server needs some time to process the request and provide with a poll URL
+    if (_item._httpErrorCode == 202) {
+        QString path =  QString::fromUtf8(job->reply()->rawHeader("OC-Finish-Poll"));
+        if (path.isEmpty()) {
+            _propagator->_activeJobs--;
+            done(SyncFileItem::NormalError, tr("Poll URL missing"));
+            return;
+        }
+        startPollJob(path);
         return;
     }
 
@@ -383,6 +462,31 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
     emit progress(_item, sent + _currentChunk * chunkSize());
 }
 
+void PropagateUploadFileQNAM::startPollJob(const QString& path)
+{
+    PollJob* job = new PollJob(AccountManager::instance()->account(), path, _item,
+                               _propagator->_journal, _propagator->_localDir, this);
+    connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
+    SyncJournalDb::PollInfo info;
+    info._file = _item._file;
+    info._url = path;
+    info._modtime = _item._modtime;
+    _propagator->_journal->setPollInfo(info);
+    job->start();
+}
+
+void PropagateUploadFileQNAM::slotPollFinished()
+{
+    PollJob *job = qobject_cast<PollJob *>(sender());
+    Q_ASSERT(job);
+
+    if (job->_item._status != SyncFileItem::Success) {
+        done(job->_item._status, job->_item._errorString);
+        return;
+    }
+
+    finalize(job->_item);
+}
 
 void PropagateUploadFileQNAM::abort()
 {

@@ -66,10 +66,12 @@ endif()
 	qt5_add_resources(${ARGN})
     endmacro()
 
+if(NOT TOKEN_AUTH_ONLY)
     find_package(Qt5LinguistTools REQUIRED)
     macro(qt_add_translation)
 	qt5_add_translation(${ARGN})
     endmacro()
+endif()
 
     macro(qt_add_dbus_interface)
 	qt5_add_dbus_interface(${ARGN})
