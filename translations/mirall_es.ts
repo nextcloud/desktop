@@ -2117,7 +2117,7 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="400"/>
         <source>Sign out</source>
-        <translation>Salir</translation>
+        <translation>Cerrar sesión</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="408"/>
