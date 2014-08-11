@@ -67,9 +67,10 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     _clearBlacklistBtn->setEnabled(false);
     connect(_clearBlacklistBtn, SIGNAL(clicked()), SLOT(slotClearBlacklist()));
 
-    QPushButton *copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
-    copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
-    connect(copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
+    _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
+    _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
+    _copyBtn->setEnabled(false);
+    connect(_copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
 
     MirallConfigFile cfg;
     cfg.restoreGeometryHeader(_ui->_treeWidget->header());
@@ -260,6 +261,9 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::In
     QTreeWidgetItem *item = createCompletedTreewidgetItem(folder, last);
     if(item) {
         _ui->_treeWidget->insertTopLevelItem(0, item);
+        if (!_copyBtn->isEnabled()) {
+            _copyBtn->setEnabled(true);
+        }
     }
 }
 
