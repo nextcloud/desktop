@@ -24,6 +24,7 @@
 #include <QSet>
 #include <QMap>
 #include <qelapsedtimer.h>
+#include <QStringList>
 
 #include <csync.h>
 
@@ -57,6 +58,9 @@ public:
     void abort();
 
     Utility::StopWatch &stopWatch() { return _stopWatch; }
+
+    void setSelectiveSyncWhiteList(const QStringList &list)
+    { _selectiveSyncWhiteList = list; }
 
 signals:
     void csyncError( const QString& );
@@ -139,6 +143,8 @@ private:
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
+
+    QStringList _selectiveSyncWhiteList;
 };
 
 

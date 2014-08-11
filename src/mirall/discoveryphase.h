@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QObject>
+#include <QStringList>
 #include <csync.h>
 
 /**
@@ -29,7 +30,14 @@ class DiscoveryJob : public QObject {
     csync_log_callback _log_callback;
     int _log_level;
     void* _log_userdata;
-    Q_INVOKABLE void start();
+
+    /**
+     * return true if the given path should be synced,
+     * false if the path should be ignored
+     */
+    bool isInWhiteList(const QString &path) const;
+    static int isInWhiteListCallBack(void *, const char *);
+
 public:
     explicit DiscoveryJob(CSYNC *ctx, QObject* parent = 0)
             : QObject(parent), _csync_ctx(ctx) {
@@ -39,6 +47,9 @@ public:
         _log_level = csync_get_log_level();
         _log_userdata = csync_get_log_userdata();
     }
+
+    QStringList _selectiveSyncWhiteList;
+    Q_INVOKABLE void start();
 signals:
     void finished(int result);
 };

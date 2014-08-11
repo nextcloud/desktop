@@ -310,6 +310,12 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
       SAFE_FREE(dname);
   }
 
+  if (match == CSYNC_NOT_EXCLUDED && ctx->checkWhiteListHook) {
+      if (ctx->checkWhiteListHook(ctx->checkWhiteListData, path)) {
+          match = CSYNC_FILE_SILENTLY_EXCLUDED;
+      }
+  }
+
 out:
 
   return match;

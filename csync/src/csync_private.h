@@ -144,6 +144,10 @@ struct csync_s {
   int  read_from_db_disabled;
 
   struct csync_owncloud_ctx_s *owncloud_context;
+
+  /* hooks for checking the white list */
+  void *checkWhiteListData;
+  int (*checkWhiteListHook)(void*, const char*);
 };
 
 

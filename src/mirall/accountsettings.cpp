@@ -381,7 +381,7 @@ void AccountSettings::slotSelectiveSync()
         FolderMan *folderMan = FolderMan::instance();
         Folder *f = folderMan->folder(alias);
         if (f) {
-            (new SelectiveSyncDialog(f, this))->show();
+            (new SelectiveSyncDialog(f, this))->open();
         }
     }
 
