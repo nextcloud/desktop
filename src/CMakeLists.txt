@@ -267,6 +267,7 @@ set(mirall_SRCS
     mirall/socketapi.cpp
     mirall/sslbutton.cpp
     mirall/syncrunfilelog.cpp
+    mirall/selectivesyncdialog.cpp
 )
 
 

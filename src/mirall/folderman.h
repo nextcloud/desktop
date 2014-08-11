@@ -84,6 +84,10 @@ public:
     void removeMonitorPath( const QString& alias, const QString& path );
     void addMonitorPath( const QString& alias, const QString& path );
 
+    // Escaping of the alias which is used in QSettings AND the file
+    // system, thus need to be escaped.
+    static QString escapeAlias( const QString& );
+
 signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.
@@ -131,9 +135,6 @@ private:
     QString getBackupName( const QString& ) const;
     void registerFolderMonitor( Folder *folder );
 
-    // Escaping of the alias which is used in QSettings AND the file
-    // system, thus need to be escaped.
-    QString escapeAlias( const QString& ) const;
     QString unescapeAlias( const QString& ) const;
 
     void removeFolder( const QString& );

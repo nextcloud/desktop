@@ -71,6 +71,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="_buttonSelectiveSync">
+          <property name="text">
+           <string>Selective Sync...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="verticalSpacer_3">
           <property name="orientation">
            <enum>Qt::Vertical</enum>

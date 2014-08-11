@@ -50,7 +50,7 @@ Logger *Logger::instance()
 Logger::Logger( QObject* parent) : QObject(parent),
   _showTime(true), _doLogging(false), _doFileFlush(false), _logExpire(0)
 {
-    qInstallMessageHandler(mirallLogCatcher);
+//    qInstallMessageHandler(mirallLogCatcher);
 }
 
 Logger::~Logger() {

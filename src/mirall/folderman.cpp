@@ -234,7 +234,7 @@ void FolderMan::terminateCurrentSync()
 #define PAR_O_TAG   QLatin1String("__PAR_OPEN__")
 #define PAR_C_TAG   QLatin1String("__PAR_CLOSE__")
 
-QString FolderMan::escapeAlias( const QString& alias ) const
+QString FolderMan::escapeAlias( const QString& alias )
 {
     QString a(alias);
 
@@ -312,6 +312,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     QString backend = settings.value(QLatin1String("backend")).toString();
     QString targetPath = settings.value( QLatin1String("targetPath")).toString();
     bool paused = settings.value( QLatin1String("paused"), false).toBool();
+    QStringList whiteList = settings.value( QLatin1String("whiteList")).toStringList();
     // QString connection = settings.value( QLatin1String("connection") ).toString();
     QString alias = unescapeAlias( escapedAlias );
 
@@ -326,7 +327,8 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     }
 
     folder = new Folder( alias, path, targetPath, this );
-    folder->setConfigFile(file);
+    folder->setConfigFile(cfgFile.absoluteFilePath());
+    folder->setSelectiveSyncList(whiteList);
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[alias] = folder;
     if (paused) {
@@ -359,7 +361,7 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
         slotScheduleSync(alias);
 
         // FIXME: Use MirallConfigFile
-        QSettings settings(_folderConfigPath + QLatin1Char('/') + f->configFile(), QSettings::IniFormat);
+        QSettings settings(f->configFile(), QSettings::IniFormat);
         settings.beginGroup(escapeAlias(f->alias()));
         if (enable) {
             settings.remove("paused");
@@ -588,7 +590,7 @@ void FolderMan::removeFolder( const QString& alias )
         f->setSyncEnabled(false);
 
         // remove the folder configuration
-        QFile file( _folderConfigPath + QLatin1Char('/') + f->configFile() );
+        QFile file(f->configFile() );
         if( file.exists() ) {
             qDebug() << "Remove folder config file " << file.fileName();
             file.remove();

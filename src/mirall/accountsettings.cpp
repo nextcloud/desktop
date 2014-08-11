@@ -26,6 +26,7 @@
 #include "mirall/ignorelisteditor.h"
 #include "mirall/account.h"
 #include "mirall/quotainfo.h"
+#include "selectivesyncdialog.h"
 #include "creds/abstractcredentials.h"
 
 #include <math.h>
@@ -77,6 +78,7 @@ AccountSettings::AccountSettings(QWidget *parent) :
 
     ui->_buttonRemove->setEnabled(false);
     ui->_buttonEnable->setEnabled(false);
+    ui->_buttonSelectiveSync->setEnabled(false);
     ui->_buttonAdd->setEnabled(true);
 
     QAction *resetFolderAction = new QAction(this);
@@ -92,6 +94,7 @@ AccountSettings::AccountSettings(QWidget *parent) :
     connect(ui->_buttonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveCurrentFolder()));
     connect(ui->_buttonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
     connect(ui->_buttonAdd,    SIGNAL(clicked()), this, SLOT(slotAddFolder()));
+    connect(ui->_buttonSelectiveSync, SIGNAL(clicked()), this, SLOT(slotSelectiveSync()));
     connect(ui->modifyAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
     connect(ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));;
 
@@ -152,6 +155,7 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
   }
   ui->_buttonAdd->setEnabled(_account && _account->state() == Account::Connected);
   ui->_buttonEnable->setEnabled( isValid );
+  ui->_buttonSelectiveSync->setEnabled( isValid );
 
   if ( isValid ) {
     bool folderEnabled = _model->data( indx, FolderStatusDelegate::FolderSyncEnabled).toBool();
@@ -367,6 +371,20 @@ void AccountSettings::slotResetCurrentFolder()
             folderMan->slotScheduleAllFolders();
         }
     }
+}
+
+void AccountSettings::slotSelectiveSync()
+{
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if( selected.isValid() ) {
+        QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
+        FolderMan *folderMan = FolderMan::instance();
+        Folder *f = folderMan->folder(alias);
+        if (f) {
+            (new SelectiveSyncDialog(f, this))->show();
+        }
+    }
+
 }
 
 void AccountSettings::slotDoubleClicked( const QModelIndex& indx )
