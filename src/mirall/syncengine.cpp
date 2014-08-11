@@ -19,6 +19,7 @@
 #include "owncloudpropagator.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
+#include "discoveryphase.h"
 #include "creds/abstractcredentials.h"
 #include "csync_util.h"
 
@@ -529,21 +530,21 @@ void SyncEngine::startSync()
 
     _stopWatch.start();
 
-    qDebug() << "#### Update start #################################################### >>";
+    qDebug() << "#### Discovery start #################################################### >>";
 
-    UpdateJob *job = new UpdateJob(_csync_ctx);
+    DiscoveryJob *job = new DiscoveryJob(_csync_ctx);
     job->moveToThread(&_thread);
-    connect(job, SIGNAL(finished(int)), this, SLOT(slotUpdateFinished(int)));
+    connect(job, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
     QMetaObject::invokeMethod(job, "start", Qt::QueuedConnection);
 }
 
-void SyncEngine::slotUpdateFinished(int updateResult)
+void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 {
-    if (updateResult < 0 ) {
+    if (discoveryResult < 0 ) {
         handleSyncError(_csync_ctx, "csync_update");
         return;
     }
-    qDebug() << "<<#### Update end #################################################### " << _stopWatch.addLapTime(QLatin1String("Update Finished"));
+    qDebug() << "<<#### Discovery end #################################################### " << _stopWatch.addLapTime(QLatin1String("Discovery Finished"));
 
     if( csync_reconcile(_csync_ctx) < 0 ) {
         handleSyncError(_csync_ctx, "csync_reconcile");
