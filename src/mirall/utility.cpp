@@ -50,7 +50,6 @@
 #include "mirall/utility_win.cpp"
 #elif defined(Q_OS_MAC)
 #include "mirall/utility_mac.cpp"
-#include "macwindow.h" // qtmacgoodies
 #else
 #include "mirall/utility_unix.cpp"
 #endif
@@ -163,22 +162,6 @@ QByteArray Utility::userAgentString()
             .arg(Utility::platform())
             .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION)))
             .toLatin1();
-}
-
-void Utility::raiseDialog( QWidget *raiseWidget )
-{
-#ifndef TOKEN_AUTH_ONLY
-    if( raiseWidget && raiseWidget->parentWidget() == 0) {
-        // Qt has a bug which causes parent-less dialogs to pop-under.
-        raiseWidget->showNormal();
-        raiseWidget->raise();
-        raiseWidget->activateWindow();
-    }
-#if defined(Q_OS_MAC)
-    // viel hilft viel ;-)
-    MacWindow::bringToFront(raiseWidget);
-#endif
-#endif
 }
 
 bool Utility::hasLaunchOnStartup(const QString &appName)

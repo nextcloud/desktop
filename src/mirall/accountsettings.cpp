@@ -713,7 +713,7 @@ void AccountSettings::slotIgnoreFilesEditor()
         _ignoreEditor->setAttribute( Qt::WA_DeleteOnClose, true );
         _ignoreEditor->open();
     } else {
-        Utility::raiseDialog(_ignoreEditor);
+        ownCloudGui::raiseDialog(_ignoreEditor);
     }
 }
 

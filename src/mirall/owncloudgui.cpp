@@ -21,6 +21,7 @@
 #include "mirall/owncloudsetupwizard.h"
 #if defined(Q_OS_MAC)
 #    include "mirall/settingsdialogmac.h"
+#    include "macwindow.h" // qtmacgoodies
 #else
 #    include "mirall/settingsdialog.h"
 #endif
@@ -483,7 +484,7 @@ void ownCloudGui::slotShowSettings()
         _settingsDialog->show();
     }
     _settingsDialog->setGeneralErrors( _startupFails );
-    Utility::raiseDialog(_settingsDialog.data());
+    ownCloudGui::raiseDialog(_settingsDialog.data());
 }
 
 void ownCloudGui::slotShowSyncProtocol()
@@ -511,7 +512,7 @@ void ownCloudGui::slotToggleLogBrowser()
     if (_logBrowser->isVisible() ) {
         _logBrowser->hide();
     } else {
-        Utility::raiseDialog(_logBrowser);
+        ownCloudGui::raiseDialog(_logBrowser);
     }
 }
 
@@ -525,6 +526,20 @@ void ownCloudGui::slotOpenOwnCloud()
 void ownCloudGui::slotHelp()
 {
     QDesktopServices::openUrl(QUrl(Theme::instance()->helpUrl()));
+}
+
+void ownCloudGui::raiseDialog( QWidget *raiseWidget )
+{
+    if( raiseWidget && raiseWidget->parentWidget() == 0) {
+        // Qt has a bug which causes parent-less dialogs to pop-under.
+        raiseWidget->showNormal();
+        raiseWidget->raise();
+        raiseWidget->activateWindow();
+    }
+#if defined(Q_OS_MAC)
+    // viel hilft viel ;-)
+    MacWindow::bringToFront(raiseWidget);
+#endif
 }
 
 
