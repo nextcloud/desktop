@@ -54,6 +54,7 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject* parent) :
     connect( _ocWizard, SIGNAL(basicSetupFinished(int)),
              this, SLOT(slotAssistantFinished(int)), Qt::QueuedConnection);
     connect( _ocWizard, SIGNAL(finished(int)), SLOT(deleteLater()));
+    connect( _ocWizard, SIGNAL(skipFolderConfiguration()), SLOT(slotSkipFolderConfigruation()));
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -453,6 +454,16 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
     // notify others.
     emit ownCloudWizardDone( result );
 }
+
+void OwncloudSetupWizard::slotSkipFolderConfigruation()
+{
+    replaceDefaultAccountWith(_ocWizard->account());
+    _ocWizard->blockSignals(true);
+    _ocWizard->close();
+    _ocWizard->blockSignals(false);
+    emit ownCloudWizardDone( QDialog::Accepted );
+}
+
 
 DetermineAuthTypeJob::DetermineAuthTypeJob(Account *account, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
