@@ -34,6 +34,7 @@ use LWP::UserAgent;
 use LWP::Protocol::https;
 use HTTP::Request::Common qw( POST GET DELETE );
 use File::Basename;
+use POSIX qw/strftime/;
 
 use Encode qw(from_to);
 use utf8;
@@ -128,8 +129,9 @@ sub initTesting(;$)
   # $d->DebugLevel(3);
   $prefix = "t1" unless( defined $prefix );
   
-  my $dirId = sprintf("%#.3o", rand(1000));
-  my $dir = sprintf( "%s-%s/", $prefix, $dirId );
+  my $dirId = sprintf("%02d", rand(100));
+  my $dateTime = strftime('%Y%m%d%H%M%S',localtime);
+  my $dir = sprintf( "%s-%s-%s/", $prefix, $dateTime, $dirId );
   
   $localDir = $dir;
   $localDir .= "/" unless( $localDir =~ /\/$/ );
