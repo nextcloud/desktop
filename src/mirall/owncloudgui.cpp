@@ -29,6 +29,7 @@
 #include "mirall/account.h"
 #include "openfilemanager.h"
 #include "creds/abstractcredentials.h"
+#include "macwindow.h" // qtmacgoodies
 
 #include <QDesktopServices>
 #include <QMessageBox>
@@ -144,6 +145,14 @@ void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 #if !defined Q_OS_MAC
     if( reason == QSystemTrayIcon::Trigger ) {
         slotOpenSettingsDialog(true); // start settings if config is existing.
+    }
+#else
+    // On Mac, if the settings dialog is already visible but hidden
+    // by other applications, this will bring it to the front.
+    if( reason == QSystemTrayIcon::Trigger ) {
+        if (!_settingsDialog.isNull() && _settingsDialog->isVisible()) {
+            slotShowSettings();
+        }
     }
 #endif
 }
@@ -504,6 +513,7 @@ void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &messag
 
 void ownCloudGui::slotShowSettings()
 {
+    qDebug() << Q_FUNC_INFO;
     if (_settingsDialog.isNull()) {
         _settingsDialog =
 #if defined(Q_OS_MAC)
@@ -566,6 +576,11 @@ void ownCloudGui::raiseDialog( QWidget *raiseWidget )
         raiseWidget->showNormal();
         raiseWidget->raise();
         raiseWidget->activateWindow();
+
+#if defined(Q_OS_MAC)
+        // viel hilft viel ;-)
+        MacWindow::bringToFront(raiseWidget);
+#endif
     }
 }
 

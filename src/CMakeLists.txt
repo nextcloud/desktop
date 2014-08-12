@@ -45,6 +45,7 @@ if (APPLE)
         list(APPEND 3rdparty_SRC
         3rdparty/qtmacgoodies/src/macpreferenceswindow.mm
         3rdparty/qtmacgoodies/src/macstandardicon.mm
+        3rdparty/qtmacgoodies/src/macwindow.mm
         )
 endif()
 
