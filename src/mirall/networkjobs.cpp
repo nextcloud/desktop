@@ -179,7 +179,8 @@ QString AbstractNetworkJob::responseTimestamp()
 }
 
 AbstractNetworkJob::~AbstractNetworkJob() {
-    _reply->deleteLater();
+    if (_reply)
+        _reply->deleteLater();
 }
 
 void AbstractNetworkJob::start()
