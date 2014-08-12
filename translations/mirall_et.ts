@@ -1466,22 +1466,22 @@ Selle kasutamine pole soovitatav.</translation>
         <translation>Kopeeri tegevuste nimistu puhvrisse.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>Copied to clipboard</source>
         <translation>Kopeeritud lõikepuhvrisse</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>The sync status has been copied to the clipboard.</source>
         <translation>Sünkroniseeringu staatus on kopeeritud lõikepuhvrisse.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="237"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="238"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Hetkel ei ignoreerita ühtegi faili eelnenud vigade tõttu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="239"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 faili on ignoreeritud eelnenud vigade tõttu.

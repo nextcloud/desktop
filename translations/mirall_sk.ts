@@ -1465,22 +1465,22 @@ Nie je vhodné ju používať.</translation>
         <translation>Skopírovať zoznam aktivít do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>Copied to clipboard</source>
         <translation>Skopírované do schránky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>The sync status has been copied to the clipboard.</source>
         <translation>Stav synchronizácie bol nakopírovaný do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="237"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="238"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>V súčastnosti nie sú na čiernej listine žiadne súbory kvôli predchádzajúcim chybovým stavom.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="239"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 súborov je na čiernej listine kvôli predchádzajúcim chybovým stavom.</translation>

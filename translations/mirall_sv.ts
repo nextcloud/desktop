@@ -1466,22 +1466,22 @@ Det är inte lämpligt använda den.</translation>
         <translation>Kopiera aktivitetslistan till urklipp.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>Copied to clipboard</source>
         <translation>Kopierat till urklipp</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>The sync status has been copied to the clipboard.</source>
         <translation>Synkroniseringsstatus har kopierats till urklipp.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="237"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="238"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>För närvarande ignoreras inga filer på grund av föregående fel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="239"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 filer ignoreras på grund av föregående fel.

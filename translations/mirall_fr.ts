@@ -1466,22 +1466,22 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Copier la liste d&apos;activités dans le presse papiers.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>Copied to clipboard</source>
         <translation>Copié dans le presse-papiers</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>The sync status has been copied to the clipboard.</source>
         <translation>Le statu de synchronisation a été copié dans le presse-papier.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="237"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="238"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Actuellement aucun fichier n&apos;a été ignoré en raison d&apos;erreurs précédentes.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="239"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 fichiers ont été ignorés en raison des erreurs précédentes.

@@ -1463,22 +1463,22 @@ It is not advisable to use it.</source>
         <translation>Copiar la lista de actividades al portapapeles.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>Copied to clipboard</source>
         <translation>Copiado al portapapeles</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>The sync status has been copied to the clipboard.</source>
         <translation>El estado de sincronización ha sido copiado al portapapeles</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="237"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="238"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Actualmente ningún archivo es ignorado por errores previos.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="239"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 archivos fueron ignorados por errores previos.

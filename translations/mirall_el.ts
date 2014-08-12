@@ -1467,22 +1467,22 @@ It is not advisable to use it.</source>
         <translation>Αντιγραφή της λίστας δραστηριότητας στο πρόχειρο.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>Copied to clipboard</source>
         <translation>Αντιγράφηκε στο πρόχειρο</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>The sync status has been copied to the clipboard.</source>
         <translation>Η κατάσταση συγχρονισμού αντιγράφηκε στο πρόχειρο.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="237"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="238"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Προς το παρόν κανένα αρχείο δεν θα αγνοηθεί λόγω προηγούμενων σφαλμάτων.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="239"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 αρχεία θα ανγοηθούν λόγω προηγούμενων σφαλμάτων.
