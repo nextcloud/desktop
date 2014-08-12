@@ -57,6 +57,7 @@ void AbstractNetworkJob::setReply(QNetworkReply *reply)
     if (_reply) {
         _reply->deleteLater();
     }
+    reply->setProperty("doNotHandleAuth", true);
     _reply = reply;
 }
 
