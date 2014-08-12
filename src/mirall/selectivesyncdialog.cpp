@@ -229,8 +229,17 @@ QStringList SelectiveSyncDialog::createWhiteList(QTreeWidgetItem* root) const
     }
 
     QStringList result;
-    for (int i = 0; i < root->childCount(); ++i) {
-        result += createWhiteList(root->child(i));
+    if (root->childCount()) {
+        for (int i = 0; i < root->childCount(); ++i) {
+            result += createWhiteList(root->child(i));
+        }
+    } else {
+        // We did not load from the server so we re-use the one from the old white list
+        QString path = root->data(0, Qt::UserRole).toString();
+        foreach (const QString & it, _folder->selectiveSyncList()) {
+            if (it.startsWith(path))
+                result += it;
+        }
     }
     return result;
 }
