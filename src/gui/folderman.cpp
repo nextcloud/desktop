@@ -48,13 +48,11 @@ FolderMan::FolderMan(QObject *parent) :
     connect(_folderWatcherSignalMapper, SIGNAL(mapped(const QString&)),
             this, SLOT(slotScheduleSync(const QString&)));
 
-    MirallConfigFile cfg;
-
     ne_sock_init();
     Q_ASSERT(!_instance);
     _instance = this;
 
-    _socketApi = new SocketApi(this, QUrl::fromLocalFile(cfg.configPathWithAppName().append(QLatin1String("socket"))));
+    _socketApi = new SocketApi(this);
 }
 
 FolderMan *FolderMan::instance()
@@ -84,6 +82,10 @@ void FolderMan::unloadFolder( const QString& alias )
         f = _folderMap[alias];
     }
     if( f ) {
+        if( _socketApi ) {
+            _socketApi->slotUnregisterPath(alias);
+        }
+
         _folderChangeSignalMapper->removeMappings(f);
         if( _folderWatchers.contains(alias)) {
             FolderWatcher *fw = _folderWatchers[alias];
@@ -132,6 +134,11 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         connect(fw, SIGNAL(folderChanged(QString)), _folderWatcherSignalMapper, SLOT(map()));
         _folderWatcherSignalMapper->setMapping(fw, folder->alias());
         _folderWatchers.insert(folder->alias(), fw);
+    }
+
+    // register the folder with the socket API
+    if( _socketApi ) {
+        _socketApi->slotRegisterPath(folder->alias());
     }
 }
 

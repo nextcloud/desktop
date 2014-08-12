@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="356"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;您真希望重置文件夹 &lt;i&gt;%1&lt;/i&gt; 并重新构建您的客户端数据库吗？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt;此功能设计仅用作维护操作。没有文件将被移除，但这将导致大量的数据传输。根据文件夹的大小，这一过程将持续几分钟到几小时。请仅在管理员指导的情况下使用此功能。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="608"/>
@@ -172,7 +172,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="107"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>没有配置的帐号。</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="450"/>
@@ -194,17 +194,17 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="739"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>已连接到&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;。</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="742"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>已作为 &lt;i&gt;%3&lt;/i&gt; 连接到 &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;。</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="711"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>目前没有储存使用量信息可用。</translation>
     </message>
 </context>
 <context>
@@ -235,27 +235,27 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="90"/>
         <source>No ownCloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>没有已经配置的 ownCloud 帐号</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="105"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>此客户端连接到的服务器版本过旧</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>请更新到最新的服务器版本然后重启客户端。</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="126"/>
         <source>Unable to connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>无法连接到 %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="156"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>提供的证书不正确</translation>
     </message>
 </context>
 <context>
@@ -374,67 +374,67 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="191"/>
+        <location filename="../src/mirall/folderman.cpp" line="203"/>
         <source>Could not reset folder state</source>
         <translation>不能重置文件夹状态</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="192"/>
+        <location filename="../src/mirall/folderman.cpp" line="204"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>一个旧的同步日志 &apos;%1&apos; 被找到，但是不能被移除。请确定没有应用程序正在使用它。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="774"/>
+        <location filename="../src/mirall/folderman.cpp" line="787"/>
         <source>Undefined State.</source>
         <translation>未知状态。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="777"/>
+        <location filename="../src/mirall/folderman.cpp" line="790"/>
         <source>Waits to start syncing.</source>
         <translation>等待启动同步。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="780"/>
+        <location filename="../src/mirall/folderman.cpp" line="793"/>
         <source>Preparing for sync.</source>
         <translation>准备同步。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="783"/>
+        <location filename="../src/mirall/folderman.cpp" line="796"/>
         <source>Sync is running.</source>
         <translation>同步正在运行。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="786"/>
+        <location filename="../src/mirall/folderman.cpp" line="799"/>
         <source>Server is currently not available.</source>
         <translation>服务器当前是不可用的。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="789"/>
+        <location filename="../src/mirall/folderman.cpp" line="802"/>
         <source>Last Sync was successful.</source>
         <translation>最后一次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="794"/>
+        <location filename="../src/mirall/folderman.cpp" line="807"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>上次同步已成功，不过一些文件出现了警告。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="797"/>
+        <location filename="../src/mirall/folderman.cpp" line="810"/>
         <source>Setup Error.</source>
         <translation>安装失败</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="800"/>
+        <location filename="../src/mirall/folderman.cpp" line="813"/>
         <source>User Abort.</source>
         <translation>用户撤销。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="803"/>
+        <location filename="../src/mirall/folderman.cpp" line="816"/>
         <source>Sync is paused.</source>
         <translation>同步已暂停。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="809"/>
+        <location filename="../src/mirall/folderman.cpp" line="822"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (同步已暂停)</translation>
     </message>
@@ -590,17 +590,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="458"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="461"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>未能收到来自服务器的 E-Tag，请检查代理/网关</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="465"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="468"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>我们收到了不同的恢复 E-Tag，将在下次尝试。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="501"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="494"/>
+        <source>Server returned wrong content-range</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="532"/>
         <source>Connection Timeout</source>
         <translation>连接超时</translation>
     </message>
@@ -615,7 +620,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation type="unfinished"/>
+        <translation>常规设置</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -800,7 +805,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="258"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;新版本的 %1 客户端可用。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; 已经开放下载。已安装的版本是 %3。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="271"/>
@@ -955,7 +960,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>新版本 %1 已经可用，使用系统更新工具升级。</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1070,132 +1075,132 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="259"/>
         <source>Update %1 server</source>
-        <translation type="unfinished"/>
+        <translation>更新 %1 服务器</translation>
     </message>
 </context>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="360"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="371"/>
         <source>Folder rename failed</source>
         <translation>文件夹更名失败</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="415"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="424"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="433"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;本地同步目录 %1 已成功创建&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="193"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="204"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>尝试连接位于 %2 的 %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="149"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="160"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;成功连接到 %1：%2 版本 %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="218"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="229"/>
         <source>Error: Wrong credentials.</source>
         <translation>错误：密码错误。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="232"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="243"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>本地同步文件夹 %1 已存在，将使用它来同步。&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="234"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="245"/>
         <source>Creating local sync folder %1... </source>
         <translation>正在创建本地同步文件夹 %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="238"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="249"/>
         <source>ok</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="240"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="251"/>
         <source>failed.</source>
         <translation>失败</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="242"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
         <source>Could not create local folder %1</source>
         <translation>不能创建本地文件夹 %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="173"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="181"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="184"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="192"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="267"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="278"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="273"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="284"/>
         <source>Error: %1</source>
         <translation>错误：%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="286"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="297"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>在 ownCloud 创建文件夹：%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="302"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>远程目录%1成功创建。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="304"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>远程文件夹 %1 已存在。连接它以供同步。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="306"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="308"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>创建文件夹出现 HTTP 错误代码 %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="310"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>远程文件夹创建失败，因为提供的凭证有误！&lt;br/&gt;请返回并检查您的凭证。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="313"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="324"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;远程文件夹创建失败，可能是由于提供的用户名密码不正确。&lt;/font&gt;&lt;br/&gt;请返回并检查它们。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="318"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="329"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="330"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>创建远程文件夹 %1 失败，错误为 &lt;tt&gt;%2&lt;/tt&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="335"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="346"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>已经设置了一个 %1 到远程文件夹 %2 的同步连接</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="340"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="351"/>
         <source>Successfully connected to %1!</source>
         <translation>成功连接到了 %1！</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="347"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="358"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>无法建立到 %1的链接，请稍后重试</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="361"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="372"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation type="unfinished"/>
     </message>
@@ -1233,7 +1238,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
         <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 文件夹 &lt;i&gt;%1&lt;/i&gt; 已同步到本地文件夹 &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
@@ -1247,22 +1252,27 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateDownloadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="345"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="344"/>
         <source>Sync was aborted by user.</source>
         <translation>同步被用户撤销。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="400"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="399"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>未能收到来自服务器的 E-Tag，请检查代理/网关</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="410"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="405"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>我们收到了不同的恢复 E-Tag，将在下次尝试。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="454"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="427"/>
+        <source>Server returned wrong content-range</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="478"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
@@ -1270,7 +1280,7 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="515"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="546"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
@@ -1370,22 +1380,22 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="272"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="274"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="301"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="303"/>
         <source>The local file was removed during sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="308"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="310"/>
         <source>Local file changed during sync.</source>
         <translation>本地文件在同步时已修改。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="318"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="320"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"/>
     </message>
@@ -1430,7 +1440,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="51"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>动作</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="52"/>
@@ -1453,22 +1463,22 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>Copied to clipboard</source>
         <translation>复制到剪贴板</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="115"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="116"/>
         <source>The sync status has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="237"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="238"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="239"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation type="unfinished"/>
@@ -1758,8 +1768,8 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="194"/>
-        <source>Expiry Date: %1</source>
-        <translation>过期日期：%1</translation>
+        <source>Expiration Date: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="198"/>
@@ -1770,229 +1780,229 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::SyncEngine</name>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="81"/>
+        <location filename="../src/mirall/syncengine.cpp" line="83"/>
         <source>Success.</source>
         <translation>成功。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="84"/>
+        <location filename="../src/mirall/syncengine.cpp" line="86"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync 无法创建文件锁。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="87"/>
+        <location filename="../src/mirall/syncengine.cpp" line="89"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
         <translation>Csync同步失败，请确定是否有本地同步目录的读写权</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="91"/>
+        <location filename="../src/mirall/syncengine.cpp" line="93"/>
         <source>CSync failed to write the journal file.</source>
         <translation>CSync写日志文件失败</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="94"/>
+        <location filename="../src/mirall/syncengine.cpp" line="96"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;csync 的 %1 插件不能加载。&lt;br/&gt;请校验安装！&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="97"/>
+        <location filename="../src/mirall/syncengine.cpp" line="99"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>本客户端的系统时间和服务器的系统时间不一致。请在服务器和客户机上使用时间同步服务 (NTP)以让时间一致。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="102"/>
+        <location filename="../src/mirall/syncengine.cpp" line="104"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync 无法检测文件系统类型。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="105"/>
+        <location filename="../src/mirall/syncengine.cpp" line="107"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync 在处理内部文件树时出错。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="108"/>
+        <location filename="../src/mirall/syncengine.cpp" line="110"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync 失败，内存不足。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="111"/>
+        <location filename="../src/mirall/syncengine.cpp" line="113"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync 致命参数错误。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="114"/>
+        <location filename="../src/mirall/syncengine.cpp" line="116"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync 处理步骤更新失败。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="117"/>
+        <location filename="../src/mirall/syncengine.cpp" line="119"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync 处理步骤调和失败。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="120"/>
+        <location filename="../src/mirall/syncengine.cpp" line="122"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync 处理步骤传播失败。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="123"/>
+        <location filename="../src/mirall/syncengine.cpp" line="125"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;目标目录不存在。&lt;/p&gt;&lt;p&gt;请检查同步设置。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="127"/>
+        <location filename="../src/mirall/syncengine.cpp" line="129"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>远程文件不可写，请检查远程权限。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="131"/>
+        <location filename="../src/mirall/syncengine.cpp" line="133"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>本地文件系统不可写。请检查权限。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="134"/>
+        <location filename="../src/mirall/syncengine.cpp" line="136"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync 未能通过代理连接。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="137"/>
+        <location filename="../src/mirall/syncengine.cpp" line="139"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="140"/>
+        <location filename="../src/mirall/syncengine.cpp" line="142"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync 无法查询代理或服务器。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="143"/>
+        <location filename="../src/mirall/syncengine.cpp" line="145"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync 于 %1 服务器认证失败。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="146"/>
+        <location filename="../src/mirall/syncengine.cpp" line="148"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync 联网失败。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="149"/>
+        <location filename="../src/mirall/syncengine.cpp" line="151"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>网络连接超时。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="152"/>
+        <location filename="../src/mirall/syncengine.cpp" line="154"/>
         <source>A HTTP transmission error happened.</source>
         <translation>HTTP 传输错误。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="155"/>
+        <location filename="../src/mirall/syncengine.cpp" line="157"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>出于未处理的权限拒绝，CSync 失败。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="158"/>
+        <location filename="../src/mirall/syncengine.cpp" line="160"/>
         <source>CSync failed to access </source>
         <translation>访问 CSync 失败</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="161"/>
+        <location filename="../src/mirall/syncengine.cpp" line="163"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>CSync 尝试创建了已有的文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="164"/>
-        <location filename="../src/mirall/syncengine.cpp" line="167"/>
+        <location filename="../src/mirall/syncengine.cpp" line="166"/>
+        <location filename="../src/mirall/syncengine.cpp" line="169"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync：%1 服务器空间已满。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="170"/>
+        <location filename="../src/mirall/syncengine.cpp" line="172"/>
         <source>CSync unspecified error.</source>
         <translation>CSync 未定义错误。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="173"/>
+        <location filename="../src/mirall/syncengine.cpp" line="175"/>
         <source>Aborted by the user</source>
         <translation>用户撤销</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="177"/>
+        <location filename="../src/mirall/syncengine.cpp" line="179"/>
         <source>An internal error number %1 happened.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="236"/>
+        <location filename="../src/mirall/syncengine.cpp" line="238"/>
         <source>The item is not synced because of previous errors: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="283"/>
+        <location filename="../src/mirall/syncengine.cpp" line="300"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>符号链接不被同步支持。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="286"/>
+        <location filename="../src/mirall/syncengine.cpp" line="303"/>
         <source>File is listed on the ignore list.</source>
         <translation>文件在忽略列表中。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="289"/>
+        <location filename="../src/mirall/syncengine.cpp" line="306"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="456"/>
+        <location filename="../src/mirall/syncengine.cpp" line="482"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>无法初始化同步日志</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="559"/>
+        <location filename="../src/mirall/syncengine.cpp" line="588"/>
         <source>Cannot open the sync journal</source>
         <translation>无法打开同步日志</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="728"/>
+        <location filename="../src/mirall/syncengine.cpp" line="766"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="735"/>
+        <location filename="../src/mirall/syncengine.cpp" line="773"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="742"/>
+        <location filename="../src/mirall/syncengine.cpp" line="780"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="760"/>
+        <location filename="../src/mirall/syncengine.cpp" line="800"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="775"/>
-        <location filename="../src/mirall/syncengine.cpp" line="795"/>
+        <location filename="../src/mirall/syncengine.cpp" line="816"/>
+        <location filename="../src/mirall/syncengine.cpp" line="837"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="845"/>
+        <location filename="../src/mirall/syncengine.cpp" line="887"/>
         <source>Move not allowed, item restored</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="854"/>
+        <location filename="../src/mirall/syncengine.cpp" line="896"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="855"/>
+        <location filename="../src/mirall/syncengine.cpp" line="897"/>
         <source>the destination</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="855"/>
+        <location filename="../src/mirall/syncengine.cpp" line="897"/>
         <source>the source</source>
         <translation type="unfinished"/>
     </message>
@@ -2016,127 +2026,127 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::ownCloudGui</name>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="175"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="207"/>
         <source>Please sign in</source>
         <translation>请登录</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="212"/>
         <source>Disconnected from server</source>
         <translation>已从服务器断开</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="212"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="244"/>
         <source>Folder %1: %2</source>
         <translation>文件夹 %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="218"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="250"/>
         <source>No sync folders configured.</source>
         <translation>没有已配置的同步文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="243"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="275"/>
         <source>None.</source>
         <translation>无。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="279"/>
         <source>Recent Changes</source>
         <translation>最近修改</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="264"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="296"/>
         <source>Open %1 folder</source>
         <translation>打开 %1 目录</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="274"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="306"/>
         <source>Managed Folders:</source>
         <translation>管理的文件夹：</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="277"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="309"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>打开文件夹“%1”</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="349"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="381"/>
         <source>Open %1 in browser</source>
         <translation>在浏览器中打开%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="351"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="383"/>
         <source>Calculating quota...</source>
-        <translation type="unfinished"/>
+        <translation>计算配额....</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="385"/>
         <source>Unknown status</source>
         <translation>未知状态</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="355"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="387"/>
         <source>Settings...</source>
         <translation>设置...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="356"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="388"/>
         <source>Details...</source>
         <translation>细节...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="361"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="393"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="363"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
         <source>Quit %1</source>
         <translation>退出 %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="366"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="398"/>
         <source>Sign in...</source>
         <translation>登录...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="368"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="400"/>
         <source>Sign out</source>
         <translation>注销</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="376"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="408"/>
         <source>Quota n/a</source>
         <translation>配额无限制</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="383"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="415"/>
         <source>%1% of %2 in use</source>
         <translation>已使用 %2，总计 %1%</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="395"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="427"/>
         <source>No items synced recently</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="409"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="441"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="445"/>
         <source>Syncing %1 (%2 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="433"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="465"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="460"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="492"/>
         <source>Up to date</source>
         <translation>更新</translation>
     </message>
@@ -2521,7 +2531,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
         <source>The server is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>服务器当前不可用</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>

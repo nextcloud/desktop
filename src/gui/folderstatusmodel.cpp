@@ -254,7 +254,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
       painter->save();
 
       // Sizes-Text
-      QRect octetRect = progressFm.boundingRect( overallString );
+      QRect octetRect = progressFm.boundingRect(QRect(), 0, overallString );
       int progressTextWidth = octetRect.width() + 2;
 
       // Overall Progress Bar.

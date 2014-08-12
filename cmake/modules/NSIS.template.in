@@ -16,6 +16,7 @@
   !define OPTION_LICENSE_AGREEMENT
 !endif
 !define OPTION_UAC_PLUGIN_ENHANCED
+!define OPTION_SECTION_SC_SHELL_EXT
 !define OPTION_SECTION_SC_START_MENU
 !define OPTION_SECTION_SC_DESKTOP
 !define OPTION_SECTION_SC_QUICK_LAUNCH
@@ -94,6 +95,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !include WordFunc.nsh  ;Used by VersionCompare macro function.
 !include FileFunc.nsh  ;Used to read out parameters
 !include UAC.nsh ;Used by the UAC elevation to install as user or admin.
+!include x64.nsh ;Used to determine the right arch for the shell extensions
 
 ;-----------------------------------------------------------------------------
 ; Memento selections stored in registry.
@@ -111,8 +113,8 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP  ${WIN_SETUP_BITMAP_PATH}/page_header.bmp
 !define MUI_COMPONENTSPAGE_SMALLDESC
-!define MUI_FINISHPAGE_LINK "www.${APPLICATION_DOMAIN}"
-!define MUI_FINISHPAGE_LINK_LOCATION "http://www.${APPLICATION_DOMAIN}"
+!define MUI_FINISHPAGE_LINK "${APPLICATION_DOMAIN}"
+!define MUI_FINISHPAGE_LINK_LOCATION "http://${APPLICATION_DOMAIN}"
 !define MUI_FINISHPAGE_NOREBOOTSUPPORT
 !ifdef OPTION_FINISHPAGE_RELEASE_NOTES
    !define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
@@ -275,8 +277,58 @@ FunctionEnd
    no_process_${processName}_to_end:
 !macroend
 
+!macro StartExplorerAsUserMacro un
+   Function ${un}StartExplorerAsUser
+      Exec "$WINDIR\explorer.exe"
+   FunctionEnd
+!macroend
+
+!insertmacro StartExplorerAsUserMacro ""
+!insertmacro StartExplorerAsUserMacro "un."
+
+!macro StartExplorer un
+   DetailPrint "Starting Explorer..."
+   ${UAC.CallFunctionAsUser} ${un}StartExplorerAsUser
+!macroend
+
+!macro StopExplorer
+   DetailPrint "Terminated Explorer..."
+   FindWindow $R0 "Shell_TrayWnd"
+   SendMessage $R0 0x5B4 0 0
+   #Processes::KillProcess explorer.exe
+   Sleep 1500
+   DetailPrint "Continuing..."
+!macroend
+
 Function EnsureOwncloudShutdown
    !insertmacro CheckAndConfirmEndProcess "${APPLICATION_EXECUTABLE}"
+FunctionEnd
+
+Function RegisterShellExt
+   SetOutPath "$INSTDIR\shellext"
+   ${If} ${RunningX64}
+      ExecWait '"$SYSDIR\regsvr32.exe" /s "$OUTDIR\OCOverlays_x64.dll"'
+   ${Else}
+      ExecWait '"$SYSDIR\regsvr32.exe" /s "$OUTDIR\OCOverlays_x86.dll"'
+   ${EndIf}
+FunctionEnd
+
+Function Un.RegisterShellExt
+   ${If} ${RunningX64}
+      ExecWait '"$SYSDIR\regsvr32.exe" /u /s "$INSTDIR\shellext\OCOverlays_x64.dll"'
+   ${Else}
+      ExecWait '"$SYSDIR\regsvr32.exe" /u /s "$INSTDIR\shellext\OCOverlays_x86.dll"'
+   ${EndIf}
+FunctionEnd
+
+Function InstallRedistributables
+   ${If} ${RunningX64}
+      ExecWait '"$OUTDIR\vcredist_x64.exe" /install /quiet'
+   ${Else}
+      ExecWait '"$OUTDIR\vcredist_x86.exe" /install /quiet'
+   ${EndIf}
+   Delete "$OUTDIR\vcredist_x86.exe"
+   Delete "$OUTDIR\vcredist_x64.exe"
 FunctionEnd
 
 ##############################################################################
@@ -374,7 +426,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${BUILD_PATH}\src\libsync\lib${APPLICATION_SHORTNAME}sync.dll"
    File "${BUILD_PATH}\csync\src\libocsync.dll"
 
-
    File "${BUILD_PATH}\src\gui\mirall_*.qm"
    ; Make sure only to copy qt, not qt_help, etc
    File "${MING_SHARE}\qt5\translations\qt_??.qm"
@@ -415,15 +466,14 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 
    ;Qt deps
    File "${MING_BIN}\libpng16-16.dll"
-   File "${MING_BIN}\icudata51.dll"
-   File "${MING_BIN}\icui18n51.dll"
-   File "${MING_BIN}\icuuc51.dll"
+   File "${MING_BIN}\icudata53.dll"
+   File "${MING_BIN}\icui18n53.dll"
+   File "${MING_BIN}\icuuc53.dll"
    File "${MING_BIN}\libEGL.dll"
    File "${MING_BIN}\libGLESv2.dll"
    File "${MING_BIN}\libjpeg-8.dll"
    File "${MING_BIN}\libpcre16-0.dll"
    File "${MING_BIN}\libproxy.dll"
-   File "${MING_BIN}\libqt5keychain.dll"
    File "${MING_BIN}\libsqlite3-0.dll"
    File "${MING_BIN}\libcrypto-10.dll"
    File "${MING_BIN}\libssl-10.dll"
@@ -436,9 +486,9 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${MING_BIN}\libsqlite3-0.dll"
 
    ;QtKeyChain stuff
-   File "${MING_BIN}\libqtkeychain.dll"
+   File "${MING_BIN}\libqt5keychain.dll"
 
-   ; ownCloud plugin
+   ;ownCloud plugin
    File "${MING_BIN}\libintl-8.dll"
    File "${MING_BIN}\libneon-27.dll"
    File "${MING_BIN}\libproxy.dll"
@@ -450,10 +500,29 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${MING_BIN}\libstdc++-6.dll"
    File "${MING_BIN}\libwinpthread-1.dll"
 
-   ; CSync configs
+   ;CSync configs
    File "${SOURCE_PATH}/sync-exclude.lst"
 
 SectionEnd
+
+!ifdef OPTION_SECTION_SC_SHELL_EXT
+   ${MementoSection} $OPTION_SECTION_SC_SHELL_EXT_SECTION SEC_SHELL_EXT
+      SectionIn 1 2
+      SetDetailsPrint textonly
+      DetailPrint $OPTION_SECTION_SC_SHELL_EXT_DetailPrint
+      SetOutPath "$INSTDIR\shellext"
+      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCUtil_x64.dll"
+      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCOverlays_x64.dll"
+      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCUtil_x86.dll"
+      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCOverlays_x86.dll"
+      File "${BUILD_PATH}\vcredist_x86.exe"
+      File "${BUILD_PATH}\vcredist_x64.exe"
+      Call InstallRedistributables
+      Call RegisterShellExt
+      !insertMacro StopExplorer
+      !insertMacro StartExplorer ""
+   ${MementoSectionEnd}
+!endif
 
 SectionGroup $SectionGroup_Shortcuts
 
@@ -601,6 +670,15 @@ Section Uninstall
    DeleteRegKey HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}"
 
    DeleteRegKey HKCR "${APPLICATION_NAME}"
+
+   ;Shell extension
+   !ifdef OPTION_SECTION_SC_SHELL_EXT
+      ${If} ${HasSection} SEC_SHELL_EXT
+         !insertmacro StopExplorer
+         Call Un.RegisterShellExt
+         !insertmacro StartExplorer "Un."
+      ${EndIf}
+   !endif
 
    ;Start menu shortcut
    !ifdef OPTION_SECTION_SC_START_MENU

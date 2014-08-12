@@ -80,6 +80,7 @@ private slots:
     void slotAuthCheckReply(QNetworkReply*);
     void slotCreateRemoteFolderFinished(QNetworkReply::NetworkError);
     void slotAssistantFinished( int );
+    void slotSkipFolderConfigruation();
 
 private:
     explicit OwncloudSetupWizard(QObject *parent = 0 );
@@ -94,6 +95,7 @@ private:
 
     Account* _account;
     OwncloudWizard* _ocWizard;
+    QString _initLocalFolder;
     QString _remoteFolder;
 
 };

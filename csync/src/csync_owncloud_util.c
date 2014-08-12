@@ -318,7 +318,7 @@ void resourceToFileStat(csync_vio_file_stat_t *lfs, struct resource *res )
         lfs->directDownloadCookies = c_strdup(res->directDownloadCookies);
     }
     if (strlen(res->remotePerm) > 0) {
-        lfs->fields = CSYNC_VIO_FILE_STAT_FIELDS_PERM;
+        lfs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERM;
         strncpy(lfs->remotePerm, res->remotePerm, sizeof(lfs->remotePerm));
     }
 }

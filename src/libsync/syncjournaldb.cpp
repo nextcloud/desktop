@@ -297,6 +297,7 @@ void SyncJournalDb::close()
     _db.close();
     _db = QSqlDatabase(); // avoid the warning QSqlDatabasePrivate::removeDatabase: connection [...] still in use
     QSqlDatabase::removeDatabase(_dbFile);
+    _avoidReadFromDbOnNextSyncFilter.clear();
 }
 
 
@@ -372,9 +373,23 @@ qint64 SyncJournalDb::getPHash(const QString& file) const
     return h;
 }
 
-bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& record )
+bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
 {
+    SyncJournalFileRecord record = _record;
     QMutexLocker locker(&_mutex);
+
+    if (!_avoidReadFromDbOnNextSyncFilter.isEmpty()) {
+        // If we are a directory that should not be read from db next time, don't write the etag
+        QString prefix = record._path + "/";
+        foreach(const QString &it, _avoidReadFromDbOnNextSyncFilter) {
+            if (it.startsWith(prefix)) {
+                qDebug() << "Filtered writing the etag of" << prefix << "because it is a prefix of" << it;
+                record._etag = "_invalid_";
+                break;
+            }
+        }
+    }
+
     qlonglong phash = getPHash(record._path);
     if( checkConnect() ) {
         QByteArray arr = record._path.toUtf8();
@@ -833,10 +848,15 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QString& path)
     query.bindValue(0, path);
     query.bindValue(1, path);
     if( !query.exec() ) {
-        qDebug() << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
+        qDebug() << Q_FUNC_INFO << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
     } else {
-        qDebug() << query.executedQuery()  << path;
+        qDebug() << Q_FUNC_INFO << query.executedQuery()  << path << "(" << query.numRowsAffected() << " rows)";
     }
+
+    // We also need to remove the ETags so the update phase refreshes the directory paths
+    // on the next sync
+    locker.unlock();
+    avoidReadFromDbOnNextSync(path);
 }
 
 void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
@@ -856,10 +876,13 @@ void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
     query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ? LIKE(path||'/%') AND type == 2"); // CSYNC_FTW_TYPE_DIR == 2
     query.bindValue(0, fileName);
     if( !query.exec() ) {
-        qDebug() << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
+        qDebug() << Q_FUNC_INFO << "SQL error in avoidRenamesOnNextSync: "<< query.lastError().text();
     } else {
-        qDebug() << query.executedQuery()  << fileName;
+        qDebug() << Q_FUNC_INFO << query.executedQuery()  << fileName << "(" << query.numRowsAffected() << " rows)";
     }
+
+    // Prevent future overwrite of the etag for this sync
+    _avoidReadFromDbOnNextSyncFilter.append(fileName);
 }
 
 void SyncJournalDb::commit(const QString& context, bool startTrans)

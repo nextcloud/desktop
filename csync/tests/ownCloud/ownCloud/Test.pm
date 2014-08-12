@@ -34,6 +34,8 @@ use LWP::UserAgent;
 use LWP::Protocol::https;
 use HTTP::Request::Common qw( POST GET DELETE );
 use File::Basename;
+use IO::Handle;
+use POSIX qw/strftime/;
 
 use Encode qw(from_to);
 use utf8;
@@ -60,7 +62,7 @@ our $infoCnt = 1;
 our %config;
 
 @ISA        = qw(Exporter);
-@EXPORT     = qw( initTesting createRemoteDir createLocalDir cleanup csync
+@EXPORT     = qw( initTesting createRemoteDir removeRemoteDir createLocalDir cleanup csync
                   assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir 
                   putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
                   remoteCleanup server initLocalDir initRemoteDir moveRemoteFile
@@ -128,8 +130,9 @@ sub initTesting(;$)
   # $d->DebugLevel(3);
   $prefix = "t1" unless( defined $prefix );
   
-  my $dirId = sprintf("%#.3o", rand(1000));
-  my $dir = sprintf( "%s-%s/", $prefix, $dirId );
+  my $dirId = sprintf("%02d", rand(100));
+  my $dateTime = strftime('%Y%m%d%H%M%S',localtime);
+  my $dir = sprintf( "%s-%s-%s/", $prefix, $dateTime, $dirId );
   
   $localDir = $dir;
   $localDir .= "/" unless( $localDir =~ /\/$/ );
@@ -179,6 +182,32 @@ sub initLocalDir
   mkdir ($localDir, 0777 );
 }
 
+sub removeRemoteDir($;$)
+{
+    my ($dir, $optionsRef) = @_;
+
+    my $url = testDirUrl() . $dir;
+
+    if( $optionsRef && $optionsRef->{user} && $optionsRef->{passwd} ) {
+	$d->credentials( -url=> $owncloud, -realm=>"ownCloud",
+			 -user=> $optionsRef->{user},
+			 -pass=> $optionsRef->{passwd} );
+	if( $optionsRef->{url} ) {
+	    $url = $optionsRef->{url} . $dir;
+	}
+    }
+
+    $d->open( $owncloud );
+    print $d->message . "\n";
+
+    my $re = $d->delete( $url );
+    if( $re == 0 ) {
+	print "Failed to remove directory <$url>:" . $d->message() ."\n";
+    }
+  
+    return $re;
+}
+
 sub createRemoteDir(;$$)
 {
     my ($dir, $optionsRef) = @_;
@@ -199,7 +228,7 @@ sub createRemoteDir(;$$)
 
     my $re = $d->mkcol( $url );
     if( $re == 0 ) {
-	print "Failed to create directory <$url>: $d->message() \n";
+	print "Failed to create directory <$url>: " . $d->message() ."\n";
 	exit 1;
     }
     $d->open( $url );
@@ -577,7 +606,7 @@ sub createLocalFile( $$ )
   my $minimum = 32;
   my $range = 96;
 
-  for (my $bytes = 0; $bytes < $size; $bytes += 4) {
+  for (my $bytes = 0; $bytes < $size-1; $bytes += 4) {
     my $rand = int(rand($range ** 4));
     my $string = '';
     for (1..4) {
@@ -587,6 +616,9 @@ sub createLocalFile( $$ )
     print FILE $string;
     $md5->add($string);
   }
+  my $s = "\n";
+  print FILE $s;
+  $md5->add($s);
   close FILE;
   return $md5->hexdigest; 
 }
@@ -605,12 +637,21 @@ sub md5OfFile( $ )
   return $hash;
 }
 
-sub moveRemoteFile($$)
+sub moveRemoteFile($$;$)
 {
-  my ($from, $to) = @_;
-    
+  my ($from, $to, $no_testdir) = @_;
+
+  $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
+		      -user=> $user,
+		  -pass=> $passwd );
+
   my $fromUrl = testDirUrl(). $from;
   my $toUrl = testDirUrl() . $to;
+  
+  if( $no_testdir ) {
+     $fromUrl = $from;
+     $toUrl = $to;
+  }
   
   $d->move($fromUrl, $toUrl);
   

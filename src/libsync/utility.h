@@ -59,7 +59,7 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT QDateTime qDateTimeFromTime_t(qint64 t);
     OWNCLOUDSYNC_EXPORT qint64 qDateTimeToTime_t(const QDateTime &t);
 
-
+    OWNCLOUDSYNC_EXPORT void winShellChangeNotify( const QString& path );
 
     /**
      * @brief Convert milliseconds to HMS string.

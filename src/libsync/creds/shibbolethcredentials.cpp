@@ -20,7 +20,6 @@
 #include <QDebug>
 
 #include "creds/shibbolethcredentials.h"
-#include "creds/shibboleth/authenticationdialog.h"
 #include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibboleth/shibbolethrefresher.h"
 #include "creds/shibbolethcredentials.h"
@@ -173,8 +172,6 @@ QNetworkAccessManager* ShibbolethCredentials::getQNAM() const
     QNetworkAccessManager* qnam(new MirallAccessManager);
     connect(qnam, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(slotReplyFinished(QNetworkReply*)));
-    connect(qnam, SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
-            SLOT(slotHandleAuthentication(QNetworkReply*,QAuthenticator*)));
     return qnam;
 }
 
@@ -317,23 +314,6 @@ void ShibbolethCredentials::invalidateAndFetch(Account* account)
     connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotInvalidateAndFetchInvalidateDone(QKeychain::Job*)));
     job->setKey(keychainKey(account->url().toString(), "shibAssertion"));
     job->start();
-}
-
-void ShibbolethCredentials::slotHandleAuthentication(QNetworkReply *reply, QAuthenticator *authenticator)
-{
-    Q_UNUSED(reply)
-    QUrl url = reply->url();
-    // show only scheme, host and port
-    QUrl reducedUrl;
-    reducedUrl.setScheme(url.scheme());
-    reducedUrl.setHost(url.host());
-    reducedUrl.setPort(url.port());
-
-    AuthenticationDialog dialog(authenticator->realm(), reducedUrl.toString());
-    if (dialog.exec() == QDialog::Accepted) {
-        authenticator->setUser(dialog.user());
-        authenticator->setPassword(dialog.password());
-    }
 }
 
 void ShibbolethCredentials::slotInvalidateAndFetchInvalidateDone(QKeychain::Job* job)

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) by Dominik Schmidt <dev@dominik-schmidt.de>
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,13 +47,17 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
 
 }
 
+namespace {
+    const int PORT = 33001;
+}
+
 namespace Mirall {
 
 #define DEBUG qDebug() << "SocketApi: "
 
 namespace SocketApiHelper {
 
-SyncFileStatus fileStatus(Folder *folder, const QString& fileName );
+SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName );
 
 /**
  * @brief recursiveFolderStatus
@@ -74,15 +79,17 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
     SyncFileStatus result(SyncFileStatus::STATUS_SYNC);
 
     foreach( const QString entry, dirEntries ) {
+        QString normalizedFile = QString(fileName + QLatin1Char('/') + entry).normalized(QString::NormalizationForm_C);
         QFileInfo fi(entry);
         SyncFileStatus sfs;
+
         if( fi.isDir() ) {
-            sfs = recursiveFolderStatus(folder, fileName + QLatin1Char('/') + entry );
+            sfs = recursiveFolderStatus(folder, normalizedFile );
         } else {
-            QString fs( fileName + QLatin1Char('/') + entry );
+            QString fs( normalizedFile );
             if( fileName.isEmpty() ) {
                 // toplevel, no slash etc. needed.
-                fs = entry;
+                fs = entry.normalized(QString::NormalizationForm_C);
             }
             sfs = fileStatus(folder, fs );
         }
@@ -99,18 +106,28 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
 /**
  * Get status about a single file.
  */
-SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
+SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName )
 {
     // FIXME: Find a way for STATUS_ERROR
 
-    QString file = fileName;
-    if( folder->path() != QLatin1String("/") ) {
+    QString file = folder->path();
+    QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
+
+    bool isSyncRootFolder = true;
+    if( fileName != QLatin1String("/") && !fileName.isEmpty() ) {
         file = folder->path() + fileName;
+        isSyncRootFolder = false;
+    }
+
+    if( fileName.endsWith(QLatin1Char('/')) ) {
+        fileName.truncate(fileName.length()-1);
+        qDebug() << "Removed trailing slash: " << fileName;
     }
 
     QFileInfo fi(file);
 
     if( !fi.exists() ) {
+        qDebug() << "OO File " << file << " is not existing";
         return SyncFileStatus(SyncFileStatus::STATUS_STAT_ERROR);
     }
 
@@ -123,45 +140,51 @@ SyncFileStatus fileStatus(Folder *folder, const QString& fileName )
         type = CSYNC_FTW_TYPE_DIR;
     }
 
-    CSYNC_EXCLUDE_TYPE excl = csync_excluded(folder->csyncContext(), file.toUtf8(), type);
+    // '\' is ignored, so convert to unix path before passing the path in.
+    QString unixFileName = QDir::fromNativeSeparators(fileName);
+    CSYNC_EXCLUDE_TYPE excl = csync_excluded(folder->csyncContext(), unixFileName.toUtf8(), type);
     if( excl != CSYNC_NOT_EXCLUDED ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 
-    SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(fileName);
-    if( !rec.isValid() ) {
+    // Problem: for the sync dir itself we do not have a record in the sync journal
+    // so the next check must not be used for the sync root folder.
+    SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(unixFileName);
+    if( !isSyncRootFolder && !rec.isValid() ) {
         return SyncFileStatus(SyncFileStatus::STATUS_NEW);
     }
 
-    SyncFileStatus stat(SyncFileStatus::STATUS_NONE);
+    SyncFileStatus status(SyncFileStatus::STATUS_NONE);
     if( type == CSYNC_FTW_TYPE_DIR ) {
         // compute recursive status of the directory
-        stat = recursiveFolderStatus( folder, fileName );
+        status = recursiveFolderStatus( folder, fileName );
     } else if(fi.lastModified() != rec._modtime ) {
         // file was locally modified.
-        stat.set(SyncFileStatus::STATUS_EVAL);
+        status.set(SyncFileStatus::STATUS_EVAL);
     } else {
-        stat.set(SyncFileStatus::STATUS_SYNC);
+        status.set(SyncFileStatus::STATUS_SYNC);
     }
 
     if (rec._remotePerm.contains("S")) {
         // FIXME!  that should be an additional flag
-       stat.setSharedWithMe(true);
+       status.setSharedWithMe(true);
     }
 
-    return stat;
+    return status;
 }
 
 
 }
 
-SocketApi::SocketApi(QObject* parent, const QUrl& localFile)
+SocketApi::SocketApi(QObject* parent)
     : QObject(parent)
-    , _localServer(0)
+    , _localServer(new QTcpServer(this))
 {
     // setup socket
-    _localServer = new QTcpServer(this);
-    _localServer->listen( QHostAddress::LocalHost, 33001);
+    DEBUG << "Establishing SocketAPI server at" << PORT;
+    if (!_localServer->listen(QHostAddress::LocalHost, PORT)) {
+        DEBUG << "Failed to bind to port" << PORT;
+    }
     connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
@@ -183,7 +206,7 @@ void SocketApi::slotNewConnection()
     if( ! socket ) {
         return;
     }
-    DEBUG << "New connection " << socket;
+    DEBUG << "New connection" << socket;
     connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadSocket()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
     Q_ASSERT(socket->readAll().isEmpty());
@@ -191,7 +214,7 @@ void SocketApi::slotNewConnection()
     _listeners.append(socket);
 
     foreach( QString alias, FolderMan::instance()->map().keys() ) {
-       slotUpdateFolderView(alias);
+       slotRegisterPath(alias);
     }
 }
 
@@ -226,17 +249,40 @@ void SocketApi::slotReadSocket()
     }
 }
 
-void SocketApi::slotUpdateFolderView(const QString& alias)
+void SocketApi::slotRegisterPath( const QString& alias )
 {
-    QString msg = QLatin1String("UPDATE_VIEW");
-
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
-        msg.append(QLatin1String(":"));
-        msg.append(QDir::cleanPath(f->path()));
+        broadcastMessage(QLatin1String("REGISTER_PATH"), f->path() );
     }
+}
 
-    broadcastMessage(msg);
+void SocketApi::slotUnregisterPath( const QString& alias )
+{
+    Folder *f = FolderMan::instance()->folder(alias);
+    if (f) {
+        broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path() );
+    }
+}
+
+void SocketApi::slotUpdateFolderView(const QString& alias)
+{
+    Folder *f = FolderMan::instance()->folder(alias);
+    if (f) {
+        // do only send UPDATE_VIEW for a couple of status
+        if( f->syncResult().status() == SyncResult::SyncPrepare ||
+                f->syncResult().status() == SyncResult::Success ||
+                f->syncResult().status() == SyncResult::Paused  ||
+                f->syncResult().status() == SyncResult::Problem ||
+                f->syncResult().status() == SyncResult::Error   ||
+                f->syncResult().status() == SyncResult::SetupError ) {
+            if( Utility::isWindows() ) {
+                Utility::winShellChangeNotify( f->path() );
+            } else {
+                broadcastMessage(QLatin1String("UPDATE_VIEW"), f->path() );
+            }
+        }
+    }
 }
 
 void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item)
@@ -251,8 +297,9 @@ void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item
     if (Progress::isWarningKind(item._status)) {
         command = QLatin1String("ERROR");
     }
-
-    broadcastMessage(QLatin1String("BROADCAST:") + command + QLatin1Char(':') + path);
+    if( Utility::isLinux() ) {
+        broadcastMessage(QLatin1String("BROADCAST:"), path, command);
+    }
 }
 
 
@@ -261,14 +308,32 @@ void SocketApi::sendMessage(QTcpSocket *socket, const QString& message)
 {
     DEBUG << "Sending message: " << message;
     QString localMessage = message;
-    socket->write(localMessage.append("\n").toUtf8());
+    if( ! localMessage.endsWith(QLatin1Char('\n'))) {
+        localMessage.append(QLatin1Char('\n'));
+    }
+    qint64 sent = socket->write(localMessage.toUtf8());
+    if( sent != localMessage.toUtf8().length() ) {
+        qDebug() << "WARN: Could not send all data on socket for " << localMessage;
+    }
+
 }
 
-void SocketApi::broadcastMessage(const QString& message)
+void SocketApi::broadcastMessage( const QString& verb, const QString& path, const QString& status )
 {
-    DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << message;
-    foreach(QTcpSocket* current, _listeners) {
-        sendMessage(current, message);
+    QString msg(verb);
+
+    if( !status.isEmpty() ) {
+        msg.append(QLatin1Char(':'));
+        msg.append(status);
+    }
+    if( !path.isEmpty() ) {
+        msg.append(QLatin1Char(':'));
+        msg.append(QDir::toNativeSeparators(path));
+    }
+
+    DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << msg;
+    foreach(QTcpSocket *socket, _listeners) {
+        sendMessage(socket, msg);
     }
 }
 
@@ -303,7 +368,8 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket
         statusString = fileStatus.toSocketAPIString();
     }
 
-    QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')+argument;
+    QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')
+            +QDir::toNativeSeparators(argument);
     sendMessage(socket, message);
 }
 

@@ -31,6 +31,8 @@ protected:
     QNetworkReply* createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData = 0) Q_DECL_OVERRIDE;
 protected slots:
     void slotProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator);
+    void slotAuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator);
+
 };
 
 } // ns Mirall

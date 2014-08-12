@@ -68,6 +68,9 @@ bool    MirallConfigFile::_askedUser = false;
 
 MirallConfigFile::MirallConfigFile()
 {
+    // QDesktopServices uses the application name to create a config path
+    qApp->setApplicationName( Theme::instance()->appNameGUI() );
+
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
     const QString config = configFile();
@@ -76,7 +79,7 @@ MirallConfigFile::MirallConfigFile()
     QSettings settings(config, QSettings::IniFormat);
     settings.beginGroup( defaultConnection() );
 
-    // qDebug() << "Loading config: " << config << " (URL is " << settings.value("url").toString() << ")";
+    // qDebug() << Q_FUNC_INFO << "Loading config: " << config << " (URL is " << settings.value("url").toString() << ")";
 }
 
 void MirallConfigFile::setConfDir(const QString &value)
@@ -242,9 +245,6 @@ QString MirallConfigFile::excludeFile(Scope scope) const
 
 QString MirallConfigFile::configFile() const
 {
-    if( qApp->applicationName().isEmpty() ) {
-        qApp->setApplicationName( Theme::instance()->appNameGUI() );
-    }
     return configPath() + Theme::instance()->configFileName();
 }
 

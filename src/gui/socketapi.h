@@ -33,11 +33,13 @@ class SocketApi : public QObject
 Q_OBJECT
 
 public:
-    SocketApi(QObject* parent, const QUrl& localFile);
+    SocketApi(QObject* parent);
     virtual ~SocketApi();
 
 public slots:
     void slotUpdateFolderView(const QString&);
+    void slotUnregisterPath( const QString& alias );
+    void slotRegisterPath( const QString& alias );
 
 private slots:
     void slotNewConnection();
@@ -47,7 +49,7 @@ private slots:
 
 private:
     void sendMessage(QTcpSocket* socket, const QString& message);
-    void broadcastMessage(const QString& message);
+    void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null);
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QTcpSocket* socket);
     Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket* socket);

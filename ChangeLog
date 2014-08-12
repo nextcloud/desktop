@@ -1,5 +1,19 @@
 ChangeLog
 =========
+version 1.6.2 (release 2014-07-x )
+ * Another small mem leak fixed in HTTP Credentials.
+ * Fix local file name clash detection for MacOSX.
+ * Limit maximum wait time to ten seconds in network limiting.
+ * Fix data corruption while trying to resume and the server does
+   not support it.
+ * HTTP Credentials: Read password from legacy place if not found.
+ * Shibboleth: Fix the waiting curser that would not disapear (#1915)
+ * Limit memory usage to avoid mem wasting and crashes
+ * Propagator: Fix crash when logging out during upload (#1957)
+ * Propagator_qnam: Fix signal slot connection (#1963)
+ * Use more elaborated way to detect that the server was reconfigured (#1948)
+ * Setup Wizard: Reconfigure Server also if local path was changed (#1948)
+
 version 1.6.1 (release 2014-06-26 )
  * Fix 'precondition failed' bug with broken upload
  * Fix openSSL problems for windows deployment

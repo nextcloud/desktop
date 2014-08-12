@@ -77,6 +77,7 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
         _inode = sb.st_ino;
     }
 #endif
+    qDebug() << Q_FUNC_INFO << localFileName << "Retrieved inode " << _inode << "(previous item inode: " << item._inode << ")";
 
 }
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
+<dictionary title="LiferayNativityInjector Terminology">
+    <suite name="LiferayNativityInjector Suite" code="NVTY" description="LiferayNativity Injector commands">
+        <command name="install LiferayNativity" code="NVTYload" description="Loads LiferayNativity into the Finder process"/>
+        <command name="uninstall LiferayNativity" code="NVTYunld" description="Unloads LiferayNativity from the Finder process"/>
+        <command name="check LiferayNativity" code="NVTYlded" description="Checks if LiferayNativity is loaded in Finder process"/>
+    </suite>
+</dictionary>

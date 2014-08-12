@@ -348,8 +348,15 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
         QFileInfo fileInfo(file);
         if (!fileInfo.exists()) {
             re = false;
+            qDebug() << Q_FUNC_INFO << "No valid fileinfo";
         } else {
-            re = ( ! fileInfo.canonicalFilePath().endsWith(relFile, Qt::CaseSensitive) );
+            // Need to normalize to composited form because of
+            // https://bugreports.qt-project.org/browse/QTBUG-39622
+            const QString cName = fileInfo.canonicalFilePath().normalized(QString::NormalizationForm_C);
+            // qDebug() << Q_FUNC_INFO << "comparing " << cName << " with " << file;
+            bool equal = (file == cName);
+            re = (!equal && ! cName.endsWith(relFile, Qt::CaseSensitive) );
+            // qDebug() << Q_FUNC_INFO << "Returning for localFileNameClash: " << re;
         }
 #elif defined(Q_OS_WIN)
         const QString file( _localDir + relFile );

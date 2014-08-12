@@ -99,13 +99,6 @@ public:
      */
     bool isUpdateFrom_1_5();
 
-
-
-
-signals:
-
-public slots:
-
 private:
     qint64 getPHash(const QString& ) const;
     bool updateDatabaseStructure();
@@ -132,6 +125,12 @@ private:
     QScopedPointer<QSqlQuery> _deleteFileRecordPhash;
     QScopedPointer<QSqlQuery> _deleteFileRecordRecursively;
     QScopedPointer<QSqlQuery> _blacklistQuery;
+
+    /* This is the list of paths we called avoidReadFromDbOnNextSync on.
+     * It means that they should not be written to the DB in any case since doing
+     * that would write the etag and would void the purpose of avoidReadFromDbOnNextSync
+     */
+    QList<QString> _avoidReadFromDbOnNextSyncFilter;
 };
 
 }  // namespace Mirall
