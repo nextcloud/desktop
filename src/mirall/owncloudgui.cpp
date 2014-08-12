@@ -21,6 +21,7 @@
 #include "mirall/owncloudsetupwizard.h"
 #if defined(Q_OS_MAC)
 #    include "mirall/settingsdialogmac.h"
+#    include "macwindow.h" // qtmacgoodies
 #else
 #    include "mirall/settingsdialog.h"
 #endif
@@ -29,7 +30,6 @@
 #include "mirall/account.h"
 #include "openfilemanager.h"
 #include "creds/abstractcredentials.h"
-#include "macwindow.h" // qtmacgoodies
 
 #include <QDesktopServices>
 #include <QMessageBox>
