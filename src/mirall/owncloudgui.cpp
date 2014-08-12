@@ -111,6 +111,14 @@ void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
     if( reason == QSystemTrayIcon::Trigger ) {
         slotOpenSettingsDialog(true); // start settings if config is existing.
     }
+#else
+    // On Mac, if the settings dialog is already visible but hidden
+    // by other applications, this will bring it to the front.
+    if( reason == QSystemTrayIcon::Trigger ) {
+        if (!_settingsDialog.isNull() && _settingsDialog->isVisible()) {
+            slotShowSettings();
+        }
+    }
 #endif
 }
 

@@ -50,6 +50,7 @@
 #include "mirall/utility_win.cpp"
 #elif defined(Q_OS_MAC)
 #include "mirall/utility_mac.cpp"
+#include "macwindow.h" // qtmacgoodies
 #else
 #include "mirall/utility_unix.cpp"
 #endif
@@ -173,6 +174,10 @@ void Utility::raiseDialog( QWidget *raiseWidget )
         raiseWidget->raise();
         raiseWidget->activateWindow();
     }
+#if defined(Q_OS_MAC)
+    // viel hilft viel ;-)
+    MacWindow::bringToFront(raiseWidget);
+#endif
 #endif
 }
 
