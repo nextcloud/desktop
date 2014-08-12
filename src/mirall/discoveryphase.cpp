@@ -14,8 +14,9 @@
 
 #include "discoveryphase.h"
 #include <csync_private.h>
+#include <qdebug.h>
 
-bool DiscoveryJob::isInWhiteList(const QString& path_) const
+bool DiscoveryJob::isInWhiteList(const QString& path) const
 {
     if (_selectiveSyncWhiteList.isEmpty()) {
         // If there is no white list, everything is allowed
@@ -32,10 +33,10 @@ bool DiscoveryJob::isInWhiteList(const QString& path_) const
     // equal, or right after in the lexical order.
     // If an item has the path as a prefix, it will be right before in the lexicographic order.
 
-    QString path = path_ + QLatin1Char('/');
+    QString pathSlash = path + QLatin1Char('/');
 
-    auto it = std::lower_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), path);
-    if (it != _selectiveSyncWhiteList.end() && path.startsWith(*it)) {
+    auto it = std::lower_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), pathSlash);
+    if (it != _selectiveSyncWhiteList.end() && (*it + QLatin1Char('/')).startsWith(pathSlash)) {
         // If the path is a prefix of something in the white list, we need to sync the contents
         return true;
     }
@@ -45,10 +46,9 @@ bool DiscoveryJob::isInWhiteList(const QString& path_) const
         return false;
     }
     --it;
-    if ((*it).startsWith(path)) {
+    if (pathSlash.startsWith(*it + QLatin1Char('/'))) {
         return true;
     }
-
     return false;
 }
 
