@@ -63,7 +63,6 @@ public:
 
 public Q_SLOTS:
     void invalidateAndFetch(Account *account) Q_DECL_OVERRIDE;
-    void slotHandleAuthentication(QNetworkReply*,QAuthenticator*);
 
 private Q_SLOTS:
     void onShibbolethCookieReceived(const QNetworkCookie&, Account*);

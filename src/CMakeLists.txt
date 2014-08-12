@@ -65,6 +65,7 @@ set(3rdparty_INC
     )
 
 set(libsync_SRCS
+    mirall/authenticationdialog.cpp
     mirall/syncresult.cpp
     mirall/mirallconfigfile.cpp
     mirall/syncengine.cpp
@@ -107,7 +108,6 @@ else()
         creds/shibbolethcredentials.cpp
         creds/shibboleth/shibbolethwebview.cpp
         creds/shibboleth/shibbolethrefresher.cpp
-        creds/shibboleth/authenticationdialog.cpp
         creds/shibboleth/shibbolethuserjob.cpp
     )
 endif()
