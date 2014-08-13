@@ -222,6 +222,9 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   result = csync_statedb_query(db, "PRAGMA case_sensitive_like = ON;");
   c_strlist_destroy(result);
 
+  /* set a busy handler with 5 seconds timeout */
+  sqlite3_busy_timeout(db, 5000);
+
 #ifndef NDEBUG
   sqlite3_profile(db, sqlite_profile, 0 );
 #endif
