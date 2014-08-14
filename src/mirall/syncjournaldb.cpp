@@ -53,7 +53,7 @@ void SyncJournalDb::startTransaction()
 {
     if( _transaction == 0 ) {
         if( !_db.transaction() ) {
-            qDebug() << "ERROR committing to the database: " << _db.lastError().text();
+            qDebug() << "ERROR starting transaction: " << _db.lastError().text();
             return;
         }
         _transaction = 1;
