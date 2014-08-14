@@ -28,7 +28,6 @@
 #include "mirall/connectionvalidator.h"
 #include "mirall/progressdispatcher.h"
 #include "mirall/clientproxy.h"
-#include "mirall/folderman.h"
 
 class QMessageBox;
 class QSystemTrayIcon;
@@ -105,8 +104,6 @@ private:
     ClientProxy _proxy;
 
     QTimer _checkConnectionTimer;
-
-    FolderMan folderManager;
 
     friend class ownCloudGui; // for _startupNetworkError
 };

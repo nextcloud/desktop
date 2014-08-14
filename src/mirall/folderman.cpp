@@ -49,14 +49,21 @@ FolderMan::FolderMan(QObject *parent) :
             this, SLOT(slotScheduleSync(const QString&)));
 
     ne_sock_init();
-    Q_ASSERT(!_instance);
-    _instance = this;
 
     _socketApi = new SocketApi(this);
 }
 
 FolderMan *FolderMan::instance()
 {
+    static QMutex mutex;
+    if (!_instance)
+    {
+        QMutexLocker lock(&mutex);
+        if (!_instance) {
+            _instance = new FolderMan;
+        }
+    }
+
     return _instance;
 }
 
