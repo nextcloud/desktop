@@ -467,7 +467,7 @@ char *csync_statedb_get_etag( CSYNC *ctx, uint64_t jHash ) {
     return ret;
 }
 
-#define BELOW_PATH_QUERY "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm FROM metadata WHERE path LIKE(?)"
+#define BELOW_PATH_QUERY "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm FROM metadata WHERE pathlen>? AND path LIKE(?)"
 
 int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     int rc;
@@ -475,6 +475,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     int64_t cnt = 0;
     char *likepath;
     int asp;
+    int min_path_len;
 
     if( !path ) {
         return -1;
@@ -486,7 +487,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
     rc = sqlite3_prepare_v2(ctx->statedb.db, BELOW_PATH_QUERY, -1, &stmt, NULL);
     if( rc != SQLITE_OK ) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for hash query.");
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for below path query.");
       return -1;
     }
 
@@ -500,7 +501,9 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
         return -1;
     }
 
-    sqlite3_bind_text(stmt, 1, likepath, -1, SQLITE_STATIC);
+    min_path_len = strlen(path);
+    sqlite3_bind_int(stmt, 1, min_path_len);
+    sqlite3_bind_text(stmt, 2, likepath, -1, SQLITE_STATIC);
 
     cnt = 0;
 

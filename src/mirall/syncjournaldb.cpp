@@ -331,10 +331,19 @@ bool SyncJournalDb::updateDatabaseStructure()
 
     if( 1 ) {
         QSqlQuery query(_db);
-        query.prepare("CREATE UNIQUE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
+        query.prepare("CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
         re = re && query.exec();
 
         commitInternal("update database structure: add inode index");
+
+    }
+
+    if( 1 ) {
+        QSqlQuery query(_db);
+        query.prepare("CREATE INDEX IF NOT EXISTS metadata_pathlen ON metadata(pathlen);");
+        re = re && query.exec();
+
+        commitInternal("update database structure: add pathlen index");
 
     }
     return re;
