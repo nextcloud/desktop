@@ -319,16 +319,24 @@ bool SyncJournalDb::updateDatabaseStructure()
         query.prepare("CREATE INDEX metadata_file_id ON metadata(fileid);");
         re = re && query.exec();
 
-        commitInternal("update database structure");
+        commitInternal("update database structure: add fileid col");
     }
     if( columns.indexOf(QLatin1String("remotePerm")) == -1 ) {
 
         QSqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN remotePerm VARCHAR(128);");
-        re = query.exec();
+        re = re && query.exec();
         commitInternal("update database structure (remotePerm");
     }
 
+    if( 1 ) {
+        QSqlQuery query(_db);
+        query.prepare("CREATE UNIQUE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
+        re = re && query.exec();
+
+        commitInternal("update database structure: add inode index");
+
+    }
     return re;
 }
 
