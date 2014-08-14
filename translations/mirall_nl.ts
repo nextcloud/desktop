@@ -1218,7 +1218,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizard.cpp" line="83"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Sla configuratie van mappen over</translation>
     </message>
 </context>
 <context>

@@ -1218,7 +1218,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizard.cpp" line="83"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Klasör yapılandırmasını atla</translation>
     </message>
 </context>
 <context>

@@ -1218,7 +1218,7 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizard.cpp" line="83"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Omitir la configuración de carpetas</translation>
     </message>
 </context>
 <context>
