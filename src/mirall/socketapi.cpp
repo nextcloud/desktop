@@ -187,6 +187,10 @@ SocketApi::SocketApi(QObject* parent)
     }
     connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
+    // folder watcher
+    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), this, SLOT(slotUpdateFolderView(QString)));
+    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem)),
+            SLOT(slotJobCompleted(QString,SyncFileItem)));
 }
 
 SocketApi::~SocketApi()
@@ -202,11 +206,6 @@ void SocketApi::slotNewConnection()
     if( ! socket ) {
         return;
     }
-    // folder watcher
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), this, SLOT(slotUpdateFolderView(QString)));
-    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem)),
-            SLOT(slotJobCompleted(QString,SyncFileItem)));
-
     DEBUG << "New connection" << socket;
     connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadSocket()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
