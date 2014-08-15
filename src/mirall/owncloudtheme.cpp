@@ -63,7 +63,7 @@ QString ownCloudTheme::about() const
                "Based on Mirall by Duncan Mac-Vicar P.</small></p>"
                "<p>Copyright ownCloud, Inc.</p>"
                "<p>Licensed under the GNU Public License (GPL) Version 2.0<br/>"
-               "ownCloud and the ownCloud Logo is a registered trademark of ownCloud,"
+               "ownCloud and the ownCloud Logo are registered trademarks of ownCloud,"
                "Inc. in the United States, other countries, or both</p>"
                "%7"
                )
