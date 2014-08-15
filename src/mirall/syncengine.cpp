@@ -457,15 +457,17 @@ void UpdateJob::update_job_update_callback (bool local,
                                     const char *dirUrl,
                                     void *userdata)
 {
-    // Don't wanna overload the UI
-    static QElapsedTimer throttleTimer;
-    if (throttleTimer.elapsed() < 200) {
-        return;
-    }
-    throttleTimer.restart();
-
     UpdateJob *updateJob = static_cast<Mirall::UpdateJob*>(userdata);
     if (updateJob) {
+        // Don't wanna overload the UI
+        if (!updateJob->lastUpdateProgressCallbackCall.isValid()) {
+            updateJob->lastUpdateProgressCallbackCall.restart(); // first call
+        } else if (updateJob->lastUpdateProgressCallbackCall.elapsed() < 200) {
+            return;
+        } else {
+            updateJob->lastUpdateProgressCallbackCall.restart();
+        }
+
         QString path = QString::fromUtf8(dirUrl).section('/', -1);
         emit updateJob->folderDiscovered(local, path);
     }

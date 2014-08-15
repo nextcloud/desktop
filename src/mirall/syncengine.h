@@ -23,7 +23,7 @@
 #include <QString>
 #include <QSet>
 #include <QMap>
-#include <qelapsedtimer.h>
+#include <QElapsedTimer>
 
 #include <csync.h>
 
@@ -153,12 +153,14 @@ class UpdateJob : public QObject {
     csync_log_callback _log_callback;
     int _log_level;
     void* _log_userdata;
+    QElapsedTimer lastUpdateProgressCallbackCall;
     Q_INVOKABLE void start() {
         csync_set_log_callback(_log_callback);
         csync_set_log_level(_log_level);
         csync_set_log_userdata(_log_userdata);
         _csync_ctx->callbacks.update_callback = update_job_update_callback;
         _csync_ctx->callbacks.update_callback_userdata = this;
+        lastUpdateProgressCallbackCall.invalidate();
         emit finished(csync_update(_csync_ctx));
         deleteLater();
     }
