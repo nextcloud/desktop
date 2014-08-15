@@ -22,6 +22,7 @@
 #include <QTreeWidget>
 #include <qpushbutton.h>
 #include <QFileIconProvider>
+#include <QHeaderView>
 #include <QDebug>
 #include <QSettings>
 #include <QScopedValueRollback>
@@ -33,6 +34,7 @@ SelectiveSyncTreeView::SelectiveSyncTreeView(QWidget* parent)
 {
     connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(slotItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(slotItemChanged(QTreeWidgetItem*,int)));
+    header()->hide();
 }
 
 void SelectiveSyncTreeView::refreshFolders()
