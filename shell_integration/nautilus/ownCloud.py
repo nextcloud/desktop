@@ -20,11 +20,14 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
           # try again in 5 seconds - attention, logic inverted!
           GObject.timeout_add(5000, self.connectToOwnCloud)
 
+    def port(self):
+	return 34001 # Fixme, read from config file.
+
     def connectToOwnCloud(self):
 	try:
           self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-          self.sock.connect(("localhost", 33001))
+          self.sock.connect(("localhost", self.port()))
           self.sock.settimeout(5)
           self.connected = True
           self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
