@@ -453,7 +453,7 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
     finalize();
 }
 
-void update_job_update_callback (bool local,
+void UpdateJob::update_job_update_callback (bool local,
                                     const char *dirUrl,
                                     void *userdata)
 {

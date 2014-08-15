@@ -147,10 +147,6 @@ private:
     QHash<QString, QByteArray> _remotePerms;
 };
 
-void update_job_update_callback (bool local,
-                                    const char *dirname,
-                                    void *userdata);
-
 class UpdateJob : public QObject {
     Q_OBJECT
     CSYNC *_csync_ctx;
@@ -166,6 +162,9 @@ class UpdateJob : public QObject {
         emit finished(csync_update(_csync_ctx));
         deleteLater();
     }
+    static void update_job_update_callback (bool local,
+                                        const char *dirname,
+                                        void *userdata);
 public:
     explicit UpdateJob(CSYNC *ctx, QObject* parent = 0)
             : QObject(parent), _csync_ctx(ctx) {
