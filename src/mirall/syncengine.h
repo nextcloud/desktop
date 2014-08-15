@@ -27,6 +27,9 @@
 
 #include <csync.h>
 
+// when do we go away with this private/public separation?
+#include <csync_private.h>
+
 #include "mirall/syncfileitem.h"
 #include "mirall/progressdispatcher.h"
 #include "mirall/utility.h"
@@ -61,6 +64,9 @@ public:
 signals:
     void csyncError( const QString& );
     void csyncUnavailable();
+
+    // During update, before reconcile
+    void folderDiscovered(bool local, QString folderUrl);
 
     // before actual syncing (after update+reconcile) for each item
     void syncItemDiscovered(const SyncFileItem&);
@@ -141,6 +147,9 @@ private:
     QHash<QString, QByteArray> _remotePerms;
 };
 
+void update_job_update_callback (bool local,
+                                    const char *dirname,
+                                    void *userdata);
 
 class UpdateJob : public QObject {
     Q_OBJECT
@@ -152,6 +161,8 @@ class UpdateJob : public QObject {
         csync_set_log_callback(_log_callback);
         csync_set_log_level(_log_level);
         csync_set_log_userdata(_log_userdata);
+        _csync_ctx->callbacks.update_callback = update_job_update_callback;
+        _csync_ctx->callbacks.update_callback_userdata = this;
         emit finished(csync_update(_csync_ctx));
         deleteLater();
     }
@@ -165,6 +176,7 @@ public:
         _log_userdata = csync_get_log_userdata();
     }
 signals:
+    void folderDiscovered(bool local, QString folderUrl);
     void finished(int result);
 };
 

@@ -591,6 +591,7 @@ void Folder::startSync(const QStringList &pathList)
     //direct connection so the message box is blocking the sync.
     connect(_engine.data(), SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)));
+    connect(_engine.data(), SIGNAL(folderDiscovered(bool,QString)), this, SLOT(slotFolderDiscovered(bool,QString)));
     connect(_engine.data(), SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
     connect(_engine.data(), SIGNAL(jobCompleted(SyncFileItem)), this, SLOT(slotJobCompleted(SyncFileItem)));
 
@@ -687,6 +688,13 @@ void Folder::slotEmitFinishedDelayed()
     emit syncFinished( _syncResult );
 }
 
+
+void Folder::slotFolderDiscovered(bool local, QString folderName)
+{
+    Progress::Info pi;
+    pi._currentDiscoveredFolder = folderName;
+    ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
+}
 
 
 // the progress comes without a folder and the valid path set. Add that here

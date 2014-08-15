@@ -39,6 +39,9 @@ namespace Progress
     struct Info {
         Info() : _totalFileCount(0), _totalSize(0), _completedFileCount(0), _completedSize(0) {}
 
+        // Used during local and remote update phase
+        QString _currentDiscoveredFolder;
+
         quint64 _totalFileCount;
         quint64 _totalSize;
         quint64 _completedFileCount;

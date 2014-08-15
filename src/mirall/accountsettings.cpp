@@ -573,6 +573,14 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     QStandardItem *item = itemForFolder( folder );
     if( !item ) return;
 
+    // switch on extra space.
+    item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+
+    if (!progress._currentDiscoveredFolder.isEmpty()) {
+        item->setData( tr("Discovering %1").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
+        return;
+    }
+
     if(!progress._lastCompletedItem.isEmpty()
             && Progress::isWarningKind(progress._lastCompletedItem._status)) {
         int warnCount = item->data(FolderStatusDelegate::WarningCount).toInt();
@@ -600,8 +608,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     QString itemFileName = shortenFilename(folder, curItem._file);
     QString kindString = Progress::asActionString(curItem);
 
-    // switch on extra space.
-    item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+
 
     QString fileProgressString;
     if (Progress::isSizeDependent(curItem._instruction)) {

@@ -24,6 +24,8 @@
 
 #include <inttypes.h>
 
+#include "csync_private.h"
+
 
 /*
  * helper method to build up a user text for SSL problems, called from the
@@ -536,6 +538,8 @@ static struct listdir_context *fetch_resource_list(csync_owncloud_ctx_t *ctx, co
             return ctx->propfind_cache;
         }
     }
+
+    ctx->csync_ctx->callbacks.update_callback(false, curi, ctx->csync_ctx->callbacks.update_callback_userdata);
 
     fetchCtx = c_malloc( sizeof( struct listdir_context ));
     if (!fetchCtx) {

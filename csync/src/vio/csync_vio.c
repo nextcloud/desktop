@@ -48,6 +48,7 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
       return owncloud_opendir(ctx, name);
       break;
     case LOCAL_REPLICA:
+      ctx->callbacks.update_callback(ctx->replica, name, ctx->callbacks.update_callback_userdata);
       return csync_vio_local_opendir(name);
       break;
     default:

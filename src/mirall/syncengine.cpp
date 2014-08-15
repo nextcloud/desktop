@@ -41,6 +41,7 @@
 #include <QUrl>
 #include <QSslCertificate>
 #include <QProcess>
+#include <QElapsedTimer>
 
 namespace Mirall {
 
@@ -452,6 +453,24 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
     finalize();
 }
 
+void update_job_update_callback (bool local,
+                                    const char *dirUrl,
+                                    void *userdata)
+{
+    // Don't wanna overload the UI
+    static QElapsedTimer throttleTimer;
+    if (throttleTimer.elapsed() < 200) {
+        return;
+    }
+    throttleTimer.restart();
+
+    UpdateJob *updateJob = static_cast<Mirall::UpdateJob*>(userdata);
+    if (updateJob) {
+        QString path = QString::fromUtf8(dirUrl).section('/', -1);
+        emit updateJob->folderDiscovered(local, path);
+    }
+}
+
 void SyncEngine::startSync()
 {
     Q_ASSERT(!_syncRunning);
@@ -534,11 +553,16 @@ void SyncEngine::startSync()
     UpdateJob *job = new UpdateJob(_csync_ctx);
     job->moveToThread(&_thread);
     connect(job, SIGNAL(finished(int)), this, SLOT(slotUpdateFinished(int)));
+    connect(job, SIGNAL(folderDiscovered(bool,QString)),
+            this, SIGNAL(folderDiscovered(bool,QString)));
     QMetaObject::invokeMethod(job, "start", Qt::QueuedConnection);
 }
 
 void SyncEngine::slotUpdateFinished(int updateResult)
 {
+    // To clean the progress info
+    emit folderDiscovered(false, QString());
+
     if (updateResult < 0 ) {
         handleSyncError(_csync_ctx, "csync_update");
         return;

@@ -87,6 +87,8 @@ struct csync_s {
   struct {
       csync_auth_callback auth_function;
       void *userdata;
+      csync_update_callback update_callback;
+      void *update_callback_userdata;
   } callbacks;
   c_strlist_t *excludes;
 
