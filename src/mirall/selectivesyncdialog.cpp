@@ -28,36 +28,21 @@
 
 namespace Mirall {
 
-SelectiveSyncDialog::SelectiveSyncDialog(Folder* folder, QWidget* parent, Qt::WindowFlags f)
-    :   QDialog(parent, f), _folder(folder)
+SelectiveSyncTreeView::SelectiveSyncTreeView(const QString& folderPath, const QString &rootName,
+                                             const QStringList &oldBlackList, QWidget* parent)
+    : QTreeWidget(parent), _folderPath(folderPath), _rootName(rootName), _oldBlackList(oldBlackList)
 {
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    _treeView = new QTreeWidget;
-    connect(_treeView, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(slotItemExpanded(QTreeWidgetItem*)));
-    connect(_treeView, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(slotItemChanged(QTreeWidgetItem*,int)));
-    layout->addWidget(_treeView);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
-    QPushButton *button;
-    button = buttonBox->addButton(QDialogButtonBox::Ok);
-    connect(button, SIGNAL(clicked()), this, SLOT(accept()));
-    button = buttonBox->addButton(QDialogButtonBox::Cancel);
-    connect(button, SIGNAL(clicked()), this, SLOT(reject()));
-    layout->addWidget(buttonBox);
-
-    // Make sure we don't get crashes if the folder is destroyed while we are still open
-    connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
-
-    refreshFolders();
+    connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(slotItemExpanded(QTreeWidgetItem*)));
+    connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(slotItemChanged(QTreeWidgetItem*,int)));
 }
 
-void SelectiveSyncDialog::refreshFolders()
+void SelectiveSyncTreeView::refreshFolders()
 {
-    LsColJob *job = new LsColJob(AccountManager::instance()->account(), _folder->remotePath(), this);
+    LsColJob *job = new LsColJob(AccountManager::instance()->account(), _folderPath, this);
     connect(job, SIGNAL(directoryListing(QStringList)),
             this, SLOT(slotUpdateDirectories(QStringList)));
     job->start();
-    _treeView->clear();
-
+    clear();
 }
 
 static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)
@@ -71,8 +56,7 @@ static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& t
     return 0;
 }
 
-void SelectiveSyncDialog::recursiveInsert(QTreeWidgetItem* parent, QStringList pathTrail,
-                                                  QString path)
+void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList pathTrail, QString path)
 {
     QFileIconProvider prov;
     QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
@@ -92,7 +76,7 @@ void SelectiveSyncDialog::recursiveInsert(QTreeWidgetItem* parent, QStringList p
                 item->setCheckState(0, Qt::Unchecked);
             } else {
                 item->setCheckState(0, Qt::Checked);
-                foreach(const QString &str , _folder->selectiveSyncBlackList()) {
+                foreach(const QString &str , _oldBlackList) {
                     if (str + "/" == path) {
                         item->setCheckState(0, Qt::Unchecked);
                         break;
@@ -112,34 +96,45 @@ void SelectiveSyncDialog::recursiveInsert(QTreeWidgetItem* parent, QStringList p
     }
 }
 
-void SelectiveSyncDialog::slotUpdateDirectories(const QStringList &list)
+void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
 {
     QScopedValueRollback<bool> isInserting(_inserting);
     _inserting = true;
 
-    QTreeWidgetItem *root = _treeView->topLevelItem(0);
+    QTreeWidgetItem *root = topLevelItem(0);
     if (!root) {
-        root = new QTreeWidgetItem(_treeView);
-        root->setText(0, _folder->alias());
+        root = new QTreeWidgetItem(this);
+        root->setText(0, _rootName);
         root->setIcon(0, Theme::instance()->applicationIcon());
-        root->setData(0, Qt::UserRole, _folder->remotePath());
-        if (_folder->selectiveSyncBlackList().isEmpty() || _folder->selectiveSyncBlackList().contains(QString())) {
+        root->setData(0, Qt::UserRole, _folderPath);
+        if (_oldBlackList.isEmpty()) {
             root->setCheckState(0, Qt::Checked);
         } else {
             root->setCheckState(0, Qt::PartiallyChecked);
         }
     }
-    const QString folderPath = _folder->remoteUrl().path();
+
+    Account *account = AccountManager::instance()->account();
+    QUrl url = account->davUrl();
+    QString pathToRemove = url.path();
+    if (!pathToRemove.endsWith('/')) {
+        pathToRemove.append('/');
+    }
+    pathToRemove.append(_folderPath);
+    pathToRemove.append('/');
+
     foreach (QString path, list) {
-        path.remove(folderPath);
+        path.remove(pathToRemove);
         QStringList paths = path.split('/');
         if (paths.last().isEmpty()) paths.removeLast();
+        if (paths.isEmpty())
+            continue;
         recursiveInsert(root, paths, path);
     }
     root->setExpanded(true);
 }
 
-void SelectiveSyncDialog::slotItemExpanded(QTreeWidgetItem *item)
+void SelectiveSyncTreeView::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
     LsColJob *job = new LsColJob(AccountManager::instance()->account(), dir, this);
@@ -148,7 +143,7 @@ void SelectiveSyncDialog::slotItemExpanded(QTreeWidgetItem *item)
     job->start();
 }
 
-void SelectiveSyncDialog::slotItemChanged(QTreeWidgetItem *item, int col)
+void SelectiveSyncTreeView::slotItemChanged(QTreeWidgetItem *item, int col)
 {
     if (col != 0 || _inserting)
         return;
@@ -212,10 +207,10 @@ void SelectiveSyncDialog::slotItemChanged(QTreeWidgetItem *item, int col)
     }
 }
 
-QStringList SelectiveSyncDialog::createBlackList(QTreeWidgetItem* root) const
+QStringList SelectiveSyncTreeView::createBlackList(QTreeWidgetItem* root) const
 {
     if (!root) {
-        root = _treeView->topLevelItem(0);
+        root = topLevelItem(0);
     }
     if (!root) return {};
 
@@ -234,9 +229,9 @@ QStringList SelectiveSyncDialog::createBlackList(QTreeWidgetItem* root) const
             result += createBlackList(root->child(i));
         }
     } else {
-        // We did not load from the server so we re-use the one from the old white list
+        // We did not load from the server so we re-use the one from the old black list
         QString path = root->data(0, Qt::UserRole).toString();
-        foreach (const QString & it, _folder->selectiveSyncBlackList()) {
+        foreach (const QString & it, _oldBlackList) {
             if (it.startsWith(path))
                 result += it;
         }
@@ -244,9 +239,31 @@ QStringList SelectiveSyncDialog::createBlackList(QTreeWidgetItem* root) const
     return result;
 }
 
+
+
+SelectiveSyncDialog::SelectiveSyncDialog(Folder* folder, QWidget* parent, Qt::WindowFlags f)
+    :   QDialog(parent, f), _folder(folder)
+{
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    _treeView = new SelectiveSyncTreeView(_folder->remotePath(), _folder->alias(), _folder->selectiveSyncBlackList(), parent);
+    layout->addWidget(_treeView);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
+    QPushButton *button;
+    button = buttonBox->addButton(QDialogButtonBox::Ok);
+    connect(button, SIGNAL(clicked()), this, SLOT(accept()));
+    button = buttonBox->addButton(QDialogButtonBox::Cancel);
+    connect(button, SIGNAL(clicked()), this, SLOT(reject()));
+    layout->addWidget(buttonBox);
+
+    // Make sure we don't get crashes if the folder is destroyed while we are still open
+    connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
+
+    _treeView->refreshFolders();
+}
+
 void SelectiveSyncDialog::accept()
 {
-    QStringList blackList = createBlackList();
+    QStringList blackList = _treeView->createBlackList();
     _folder->setSelectiveSyncBlackList(blackList);
 
     // FIXME: Use MirallConfigFile

@@ -14,6 +14,7 @@
 
 #pragma once
 #include <QDialog>
+#include <QTreeWidget>
 
 class QTreeWidgetItem;
 class QTreeWidget;
@@ -21,26 +22,37 @@ namespace Mirall {
 
 class Folder;
 
+class SelectiveSyncTreeView : public QTreeWidget {
+    Q_OBJECT
+public:
+    explicit SelectiveSyncTreeView(const QString &folderPath, const QString &rootName,
+                                   const QStringList &oldBlackList, QWidget* parent = 0);
+    QStringList createBlackList(QTreeWidgetItem* root = 0) const;
+    void refreshFolders();
+private slots:
+    void slotUpdateDirectories(const QStringList &);
+    void slotItemExpanded(QTreeWidgetItem *);
+    void slotItemChanged(QTreeWidgetItem*,int);
+private:
+    void recursiveInsert(QTreeWidgetItem* parent, QStringList pathTrail, QString path);
+    QString _folderPath;
+    QString _rootName;
+    QStringList _oldBlackList;
+    bool _inserting = false; // set to true when we are inserting new items on the list
+};
+
 class SelectiveSyncDialog : public QDialog {
     Q_OBJECT
 public:
     explicit SelectiveSyncDialog(Folder *folder, QWidget* parent = 0, Qt::WindowFlags f = 0);
 
     virtual void accept() Q_DECL_OVERRIDE;
-    QStringList createBlackList(QTreeWidgetItem* root = 0) const;
-
-private slots:
-    void refreshFolders();
-    void slotUpdateDirectories(const QStringList &);
-    void slotItemExpanded(QTreeWidgetItem *);
-    void slotItemChanged(QTreeWidgetItem*,int);
 
 private:
-    void recursiveInsert(QTreeWidgetItem* parent, QStringList pathTrail, QString path);
+
+    SelectiveSyncTreeView *_treeView;
 
     Folder *_folder;
-    QTreeWidget *_treeView;
-    bool _inserting = false; // set to true when we are inserting new items on the list
 };
 
 
