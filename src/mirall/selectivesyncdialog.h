@@ -25,10 +25,16 @@ class Folder;
 class SelectiveSyncTreeView : public QTreeWidget {
     Q_OBJECT
 public:
-    explicit SelectiveSyncTreeView(const QString &folderPath, const QString &rootName,
-                                   const QStringList &oldBlackList, QWidget* parent = 0);
+    explicit SelectiveSyncTreeView(QWidget* parent = 0);
     QStringList createBlackList(QTreeWidgetItem* root = 0) const;
     void refreshFolders();
+    void setFolderInfo(const QString &folderPath, const QString &rootName,
+                       const QStringList &oldBlackList) {
+        _folderPath = folderPath;
+        _rootName = rootName;
+        _oldBlackList = oldBlackList;
+        refreshFolders();
+    }
 private slots:
     void slotUpdateDirectories(const QStringList &);
     void slotItemExpanded(QTreeWidgetItem *);

@@ -193,10 +193,13 @@ void AccountSettings::slotFolderWizardAccepted()
     QString alias        = folderWizard->field(QLatin1String("alias")).toString();
     QString sourceFolder = folderWizard->field(QLatin1String("sourceFolder")).toString();
     QString targetPath   = folderWizard->property("targetPath").toString();
+    QStringList selectiveSyncBlackList
+                         = folderWizard->property("selectiveSyncBlackList").toStringList();
 
     if (!FolderMan::ensureJournalGone( sourceFolder ))
         return;
-    folderMan->addFolderDefinition(alias, sourceFolder, targetPath );
+
+    folderMan->addFolderDefinition(alias, sourceFolder, targetPath, selectiveSyncBlackList );
     Folder *f = folderMan->setupFolderFromConfigFile( alias );
     slotAddFolder( f );
     folderMan->setSyncEnabled(true);

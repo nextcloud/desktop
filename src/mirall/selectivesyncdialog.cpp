@@ -28,9 +28,8 @@
 
 namespace Mirall {
 
-SelectiveSyncTreeView::SelectiveSyncTreeView(const QString& folderPath, const QString &rootName,
-                                             const QStringList &oldBlackList, QWidget* parent)
-    : QTreeWidget(parent), _folderPath(folderPath), _rootName(rootName), _oldBlackList(oldBlackList)
+SelectiveSyncTreeView::SelectiveSyncTreeView(QWidget* parent)
+    : QTreeWidget(parent)
 {
     connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(slotItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(slotItemChanged(QTreeWidgetItem*,int)));
@@ -121,7 +120,8 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
         pathToRemove.append('/');
     }
     pathToRemove.append(_folderPath);
-    pathToRemove.append('/');
+    if (!_folderPath.isEmpty())
+        pathToRemove.append('/');
 
     foreach (QString path, list) {
         path.remove(pathToRemove);
@@ -245,7 +245,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(Folder* folder, QWidget* parent, Qt::Wi
     :   QDialog(parent, f), _folder(folder)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    _treeView = new SelectiveSyncTreeView(_folder->remotePath(), _folder->alias(), _folder->selectiveSyncBlackList(), parent);
+    _treeView = new SelectiveSyncTreeView(parent);
     layout->addWidget(_treeView);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
     QPushButton *button;
@@ -258,7 +258,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(Folder* folder, QWidget* parent, Qt::Wi
     // Make sure we don't get crashes if the folder is destroyed while we are still open
     connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
 
-    _treeView->refreshFolders();
+    _treeView->setFolderInfo(_folder->remotePath(), _folder->alias(), _folder->selectiveSyncBlackList());
 }
 
 void SelectiveSyncDialog::accept()

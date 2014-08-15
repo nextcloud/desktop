@@ -18,6 +18,7 @@
 #include "mirall/theme.h"
 #include "mirall/networkjobs.h"
 #include "mirall/account.h"
+#include "selectivesyncdialog.h"
 
 #include <QDebug>
 #include <QDesktopServices>
@@ -30,6 +31,7 @@
 #include <QValidator>
 #include <QWizardPage>
 #include <QTreeWidget>
+#include <QVBoxLayout>
 
 #include <stdlib.h>
 
@@ -424,6 +426,50 @@ void FolderWizardRemotePath::showWarn( const QString& msg ) const
 
 // ====================================================================================
 
+FolderWizardSelectiveSync::FolderWizardSelectiveSync()
+{
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    _treeView = new SelectiveSyncTreeView(this);
+    layout->addWidget(new QLabel(tr("Selective Sync: You can optionally deselect subfolders you do not wish to synchronize.")));
+    layout->addWidget(_treeView);
+}
+
+FolderWizardSelectiveSync::~FolderWizardSelectiveSync()
+{
+}
+
+
+void FolderWizardSelectiveSync::initializePage()
+{
+    QString alias        = wizard()->field(QLatin1String("alias")).toString();
+    QString targetPath   = wizard()->property("targetPath").toString();
+    if (targetPath.startsWith('/')) {
+        targetPath = targetPath.mid(1);
+    }
+    _treeView->setFolderInfo(targetPath, alias, {});
+    QWizardPage::initializePage();
+}
+
+bool FolderWizardSelectiveSync::validatePage()
+{
+    wizard()->setProperty("selectiveSyncBlackList", QVariant(_treeView->createBlackList()));
+    return true;
+}
+
+void FolderWizardSelectiveSync::cleanupPage()
+{
+    QString alias        = wizard()->field(QLatin1String("alias")).toString();
+    QString targetPath   = wizard()->property("targetPath").toString();
+    _treeView->setFolderInfo(targetPath, alias, {});
+    QWizardPage::cleanupPage();
+}
+
+
+
+
+// ====================================================================================
+
+
 /**
  * Folder wizard itself
  */
@@ -431,7 +477,8 @@ void FolderWizardRemotePath::showWarn( const QString& msg ) const
 FolderWizard::FolderWizard( QWidget *parent )
     : QWizard(parent),
     _folderWizardSourcePage(new FolderWizardLocalPath),
-    _folderWizardTargetPage(0)
+    _folderWizardTargetPage(0),
+    _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(Page_Source, _folderWizardSourcePage );
@@ -439,6 +486,7 @@ FolderWizard::FolderWizard( QWidget *parent )
         _folderWizardTargetPage = new FolderWizardRemotePath();
         setPage(Page_Target, _folderWizardTargetPage );
     }
+    setPage(Page_SelectiveSync, _folderWizardSelectiveSyncPage);
 
     setWindowTitle( tr("Add Folder") );
     setOptions(QWizard::CancelButtonOnLeft);
