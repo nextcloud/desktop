@@ -46,6 +46,7 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
         _ui->aboutGroupBox->hide();
     } else {
         _ui->aboutLabel->setText(about);
+        _ui->aboutLabel->setWordWrap(true);
         _ui->aboutLabel->setOpenExternalLinks(true);
     }
 

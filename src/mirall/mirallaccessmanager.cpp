@@ -12,6 +12,7 @@
  */
 
 #include <QNetworkRequest>
+#include <QNetworkReply>
 #include <QNetworkProxy>
 #include <QAuthenticator>
 #include <QSslConfiguration>
@@ -19,6 +20,8 @@
 #include "mirall/cookiejar.h"
 #include "mirall/mirallaccessmanager.h"
 #include "mirall/utility.h"
+#include "mirall/authenticationdialog.h"
+
 
 namespace Mirall
 {
@@ -33,8 +36,11 @@ MirallAccessManager::MirallAccessManager(QObject* parent)
     setProxy(proxy);
 #endif
     setCookieJar(new CookieJar);
-    QObject::connect(this, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
-                     this, SLOT(slotProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
+    connect(this, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
+            this, SLOT(slotProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
+    connect(this, SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
+            this, SLOT(slotAuthenticationRequired(QNetworkReply*,QAuthenticator*)));
+
 }
 
 QNetworkReply* MirallAccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)
@@ -58,6 +64,28 @@ void MirallAccessManager::slotProxyAuthenticationRequired(const QNetworkProxy &p
     if (!proxy.user().isEmpty() || !proxy.password().isEmpty()) {
         authenticator->setUser(proxy.user());
         authenticator->setPassword(proxy.password());
+    }
+}
+void MirallAccessManager::slotAuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator)
+{
+    // do not handle 401 created by the networkjobs. We may want
+    // to eventually exempt some, but for now we need
+    // it only for other things, e.g. the browser. Would we handle
+    // network jobs, this would break the wizard logic
+    if (reply->property("doNotHandleAuth").toBool()) {
+        return;
+    }
+    QUrl url = reply->url();
+    // show only scheme, host and port
+    QUrl reducedUrl;
+    reducedUrl.setScheme(url.scheme());
+    reducedUrl.setHost(url.host());
+    reducedUrl.setPort(url.port());
+
+    AuthenticationDialog dialog(authenticator->realm(), reducedUrl.toString());
+    if (dialog.exec() == QDialog::Accepted) {
+        authenticator->setUser(dialog.user());
+        authenticator->setPassword(dialog.password());
     }
 }
 

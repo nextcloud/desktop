@@ -53,7 +53,7 @@ void SyncJournalDb::startTransaction()
 {
     if( _transaction == 0 ) {
         if( !_db.transaction() ) {
-            qDebug() << "ERROR committing to the database: " << _db.lastError().text();
+            qDebug() << "ERROR starting transaction: " << _db.lastError().text();
             return;
         }
         _transaction = 1;
@@ -319,16 +319,33 @@ bool SyncJournalDb::updateDatabaseStructure()
         query.prepare("CREATE INDEX metadata_file_id ON metadata(fileid);");
         re = re && query.exec();
 
-        commitInternal("update database structure");
+        commitInternal("update database structure: add fileid col");
     }
     if( columns.indexOf(QLatin1String("remotePerm")) == -1 ) {
 
         QSqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN remotePerm VARCHAR(128);");
-        re = query.exec();
+        re = re && query.exec();
         commitInternal("update database structure (remotePerm");
     }
 
+    if( 1 ) {
+        QSqlQuery query(_db);
+        query.prepare("CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
+        re = re && query.exec();
+
+        commitInternal("update database structure: add inode index");
+
+    }
+
+    if( 1 ) {
+        QSqlQuery query(_db);
+        query.prepare("CREATE INDEX IF NOT EXISTS metadata_pathlen ON metadata(pathlen);");
+        re = re && query.exec();
+
+        commitInternal("update database structure: add pathlen index");
+
+    }
     return re;
 }
 

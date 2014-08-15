@@ -45,6 +45,7 @@ if (APPLE)
         list(APPEND 3rdparty_SRC
         3rdparty/qtmacgoodies/src/macpreferenceswindow.mm
         3rdparty/qtmacgoodies/src/macstandardicon.mm
+        3rdparty/qtmacgoodies/src/macwindow.mm
         )
 endif()
 
@@ -64,6 +65,7 @@ set(3rdparty_INC
     )
 
 set(libsync_SRCS
+    mirall/authenticationdialog.cpp
     mirall/syncresult.cpp
     mirall/mirallconfigfile.cpp
     mirall/syncengine.cpp
@@ -107,7 +109,6 @@ else()
         creds/shibbolethcredentials.cpp
         creds/shibboleth/shibbolethwebview.cpp
         creds/shibboleth/shibbolethrefresher.cpp
-        creds/shibboleth/authenticationdialog.cpp
         creds/shibboleth/shibbolethuserjob.cpp
     )
 endif()

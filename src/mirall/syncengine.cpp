@@ -624,6 +624,10 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         QProcess::execute(script.toUtf8());
     }
 #endif
+
+    // do a database commit
+    _journal->commit("post treewalk");
+
     _propagator.reset(new OwncloudPropagator (session, _localPath, _remoteUrl, _remotePath,
                                               _journal, &_thread));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),

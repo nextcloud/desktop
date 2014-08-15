@@ -57,6 +57,7 @@ void AbstractNetworkJob::setReply(QNetworkReply *reply)
     if (_reply) {
         _reply->deleteLater();
     }
+    reply->setProperty("doNotHandleAuth", true);
     _reply = reply;
 }
 
@@ -179,7 +180,8 @@ QString AbstractNetworkJob::responseTimestamp()
 }
 
 AbstractNetworkJob::~AbstractNetworkJob() {
-    _reply->deleteLater();
+    if (_reply)
+        _reply->deleteLater();
 }
 
 void AbstractNetworkJob::start()

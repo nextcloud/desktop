@@ -73,6 +73,7 @@ signals:
     void createLocalAndRemoteFolders(const QString&, const QString&);
     // make sure to connect to this, rather than finished(int)!!
     void basicSetupFinished( int );
+    void skipFolderConfiguration();
 
 private:
     Account* _account;

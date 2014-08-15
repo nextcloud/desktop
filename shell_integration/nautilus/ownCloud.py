@@ -11,16 +11,37 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
     nautilusVFSFile_table = {}
     registered_paths = {}
     remainder = ''
+    connected = False
+    watch_id = 0
 
     def __init__(self):
-	self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	self.sock.connect(("localhost", 33001))
-	self.sock.settimeout(5)
-	
-	GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
+        self.connectToOwnCloud
+        if not self.connected:
+          # try again in 5 seconds - attention, logic inverted!
+          GObject.timeout_add(5000, self.connectToOwnCloud)
+
+    def connectToOwnCloud(self):
+	try:
+          self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+          self.sock.connect(("localhost", 33001))
+          self.sock.settimeout(5)
+          self.connected = True
+          self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
+        except:
+          print "Connect could not be established, try again later!"
+          self.sock.close()
+	return not self.connected
 	
     def sendCommand(self, cmd):
-	self.sock.send(cmd)
+        if self.connected:
+          try:
+            self.sock.send(cmd)
+          except:
+            print "Sending failed."
+            GObject.source_remove( self.watch_id )
+            self.connected = False
+            GObject.timeout_add(5000, self.connectToOwnCloud)
 
     def find_item_for_file( self, path ):
 	if path in self.nautilusVFSFile_table:

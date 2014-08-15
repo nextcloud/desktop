@@ -367,6 +367,7 @@ void Utility::winShellChangeNotify( const QString& path )
     SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT,
                    reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16()), NULL );
 #else
+    Q_UNUSED(path);
     qDebug() << Q_FUNC_INFO << " is not implemented on non Windows systems.";
 #endif
 }

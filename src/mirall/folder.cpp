@@ -712,7 +712,7 @@ void Folder::slotJobCompleted(const SyncFileItem &item)
 }
 
 
-void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel)
+void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
 {
     QString msg =
         tr("This sync would remove all the files in the sync folder '%1'.\n"
