@@ -533,7 +533,7 @@ void SyncEngine::startSync()
     qDebug() << "#### Discovery start #################################################### >>";
 
     DiscoveryJob *job = new DiscoveryJob(_csync_ctx);
-    job->_selectiveSyncWhiteList = _selectiveSyncWhiteList;
+    job->_selectiveSyncBlackList = _selectiveSyncWhiteList;
     job->moveToThread(&_thread);
     connect(job, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
     QMetaObject::invokeMethod(job, "start", Qt::QueuedConnection);

@@ -121,9 +121,9 @@ public:
      SyncJournalDb *journalDb() { return &_journal; }
      CSYNC *csyncContext() { return _csync_ctx; }
 
-     QStringList selectiveSyncList() { return _selectiveSyncWhiteList; }
-     void setSelectiveSyncList(const QStringList &whiteList)
-     { _selectiveSyncWhiteList = whiteList; }
+     QStringList selectiveSyncBlackList() { return _selectiveSyncBlackList; }
+     void setSelectiveSyncBlackList(const QStringList &blackList)
+     { _selectiveSyncBlackList = blackList; }
 
 
 signals:
@@ -192,7 +192,7 @@ private:
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
     QStringList  _errors;
-    QStringList _selectiveSyncWhiteList;
+    QStringList _selectiveSyncBlackList;
     bool         _csyncError;
     bool         _csyncUnavail;
     bool         _wipeDb;

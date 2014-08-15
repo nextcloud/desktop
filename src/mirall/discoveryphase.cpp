@@ -16,33 +16,24 @@
 #include <csync_private.h>
 #include <qdebug.h>
 
-bool DiscoveryJob::isInWhiteList(const QString& path) const
+bool DiscoveryJob::isInBlackList(const QString& path) const
 {
-    if (_selectiveSyncWhiteList.isEmpty()) {
-        // If there is no white list, everything is allowed
-        return true;
+    if (_selectiveSyncBlackList.isEmpty()) {
+        // If there is no black list, everything is allowed
+        return false;
     }
 
-    // If the path is a prefix of any item of the list, this means we need to go deeper, so we sync.
-    //  (this means it was partially checked)
-    // If one of the item in the white list is a prefix of the path, it means this path need to
+    // If one of the item in the black list is a prefix of the path, it means this path need not to
     // be synced.
     //
     // We know the list is sorted (for it is done in DiscoveryJob::start)
-    // So we can do a binary search. If the path is a prefix if another item, this item will be
-    // equal, or right after in the lexical order.
-    // If an item has the path as a prefix, it will be right before in the lexicographic order.
+    // So we can do a binary search. If the path is a prefix if another item or right after in the lexical order.
 
     QString pathSlash = path + QLatin1Char('/');
 
-    auto it = std::lower_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), pathSlash);
-    if (it != _selectiveSyncWhiteList.end() && (*it + QLatin1Char('/')).startsWith(pathSlash)) {
-        // If the path is a prefix of something in the white list, we need to sync the contents
-        return true;
-    }
+    auto it = std::lower_bound(_selectiveSyncBlackList.begin(), _selectiveSyncBlackList.end(), pathSlash);
 
-    // If the item before is a prefix of the path, we are also good
-    if (it == _selectiveSyncWhiteList.begin()) {
+	if (it == _selectiveSyncBlackList.begin()) {
         return false;
     }
     --it;
@@ -54,14 +45,14 @@ bool DiscoveryJob::isInWhiteList(const QString& path) const
 
 int DiscoveryJob::isInWhiteListCallBack(void *data, const char *path)
 {
-    return static_cast<DiscoveryJob*>(data)->isInWhiteList(QString::fromUtf8(path));
+    return static_cast<DiscoveryJob*>(data)->isInBlackList(QString::fromUtf8(path));
 }
 
 
 void DiscoveryJob::start() {
-    _selectiveSyncWhiteList.sort();
-    _csync_ctx->checkWhiteListHook = isInWhiteListCallBack;
-    _csync_ctx->checkWhiteListData = this;
+    _selectiveSyncBlackList.sort();
+    _csync_ctx->checkBlackListHook = isInWhiteListCallBack;
+    _csync_ctx->checkBlackListData = this;
     csync_set_log_callback(_log_callback);
     csync_set_log_level(_log_level);
     csync_set_log_userdata(_log_userdata);

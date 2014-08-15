@@ -35,7 +35,7 @@ class DiscoveryJob : public QObject {
      * return true if the given path should be synced,
      * false if the path should be ignored
      */
-    bool isInWhiteList(const QString &path) const;
+    bool isInBlackList(const QString &path) const;
     static int isInWhiteListCallBack(void *, const char *);
 
 public:
@@ -48,7 +48,7 @@ public:
         _log_userdata = csync_get_log_userdata();
     }
 
-    QStringList _selectiveSyncWhiteList;
+    QStringList _selectiveSyncBlackList;
     Q_INVOKABLE void start();
 signals:
     void finished(int result);

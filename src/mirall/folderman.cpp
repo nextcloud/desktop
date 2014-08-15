@@ -312,7 +312,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     QString backend = settings.value(QLatin1String("backend")).toString();
     QString targetPath = settings.value( QLatin1String("targetPath")).toString();
     bool paused = settings.value( QLatin1String("paused"), false).toBool();
-    QStringList whiteList = settings.value( QLatin1String("whiteList")).toStringList();
+    QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
     // QString connection = settings.value( QLatin1String("connection") ).toString();
     QString alias = unescapeAlias( escapedAlias );
 
@@ -328,7 +328,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
 
     folder = new Folder( alias, path, targetPath, this );
     folder->setConfigFile(cfgFile.absoluteFilePath());
-    folder->setSelectiveSyncList(whiteList);
+    folder->setSelectiveSyncBlackList(blackList);
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[alias] = folder;
     if (paused) {

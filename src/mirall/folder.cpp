@@ -596,7 +596,7 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(jobCompleted(SyncFileItem)), this, SLOT(slotJobCompleted(SyncFileItem)));
 
     setDirtyNetworkLimits();
-    _engine->setSelectiveSyncWhiteList(selectiveSyncList());
+    _engine->setSelectiveSyncBlackList(selectiveSyncBlackList());
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 

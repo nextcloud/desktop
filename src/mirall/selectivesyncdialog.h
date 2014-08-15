@@ -27,7 +27,7 @@ public:
     explicit SelectiveSyncDialog(Folder *folder, QWidget* parent = 0, Qt::WindowFlags f = 0);
 
     virtual void accept() Q_DECL_OVERRIDE;
-    QStringList createWhiteList(QTreeWidgetItem* root = 0) const;
+    QStringList createBlackList(QTreeWidgetItem* root = 0) const;
 
 private slots:
     void refreshFolders();

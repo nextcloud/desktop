@@ -91,10 +91,10 @@ void SelectiveSyncDialog::recursiveInsert(QTreeWidgetItem* parent, QStringList p
             } else if (parent->checkState(0) == Qt::Unchecked) {
                 item->setCheckState(0, Qt::Unchecked);
             } else {
-                item->setCheckState(0, Qt::Unchecked);
-                foreach(const QString &str , _folder->selectiveSyncList()) {
+                item->setCheckState(0, Qt::Checked);
+                foreach(const QString &str , _folder->selectiveSyncBlackList()) {
                     if (str + "/" == path) {
-                        item->setCheckState(0, Qt::Checked);
+                        item->setCheckState(0, Qt::Unchecked);
                         break;
                     } else if (str.startsWith(path)) {
                         item->setCheckState(0, Qt::PartiallyChecked);
@@ -123,7 +123,7 @@ void SelectiveSyncDialog::slotUpdateDirectories(const QStringList &list)
         root->setText(0, _folder->alias());
         root->setIcon(0, Theme::instance()->applicationIcon());
         root->setData(0, Qt::UserRole, _folder->remotePath());
-        if (_folder->selectiveSyncList().isEmpty() || _folder->selectiveSyncList().contains(QString())) {
+        if (_folder->selectiveSyncBlackList().isEmpty() || _folder->selectiveSyncBlackList().contains(QString())) {
             root->setCheckState(0, Qt::Checked);
         } else {
             root->setCheckState(0, Qt::PartiallyChecked);
@@ -212,7 +212,7 @@ void SelectiveSyncDialog::slotItemChanged(QTreeWidgetItem *item, int col)
     }
 }
 
-QStringList SelectiveSyncDialog::createWhiteList(QTreeWidgetItem* root) const
+QStringList SelectiveSyncDialog::createBlackList(QTreeWidgetItem* root) const
 {
     if (!root) {
         root = _treeView->topLevelItem(0);
@@ -220,9 +220,9 @@ QStringList SelectiveSyncDialog::createWhiteList(QTreeWidgetItem* root) const
     if (!root) return {};
 
     switch(root->checkState(0)) {
-    case  Qt::Checked:
-        return { root->data(0, Qt::UserRole).toString() };
     case Qt::Unchecked:
+        return { root->data(0, Qt::UserRole).toString() };
+    case  Qt::Checked:
         return {};
     case Qt::PartiallyChecked:
         break;
@@ -231,12 +231,12 @@ QStringList SelectiveSyncDialog::createWhiteList(QTreeWidgetItem* root) const
     QStringList result;
     if (root->childCount()) {
         for (int i = 0; i < root->childCount(); ++i) {
-            result += createWhiteList(root->child(i));
+            result += createBlackList(root->child(i));
         }
     } else {
         // We did not load from the server so we re-use the one from the old white list
         QString path = root->data(0, Qt::UserRole).toString();
-        foreach (const QString & it, _folder->selectiveSyncList()) {
+        foreach (const QString & it, _folder->selectiveSyncBlackList()) {
             if (it.startsWith(path))
                 result += it;
         }
@@ -246,13 +246,13 @@ QStringList SelectiveSyncDialog::createWhiteList(QTreeWidgetItem* root) const
 
 void SelectiveSyncDialog::accept()
 {
-    QStringList whiteList = createWhiteList();
-    _folder->setSelectiveSyncList(whiteList);
+    QStringList blackList = createBlackList();
+    _folder->setSelectiveSyncBlackList(blackList);
 
     // FIXME: Use MirallConfigFile
     QSettings settings(_folder->configFile(), QSettings::IniFormat);
     settings.beginGroup(FolderMan::escapeAlias(_folder->alias()));
-    settings.setValue("whiteList", whiteList);
+    settings.setValue("blackList", blackList);
 
     QDialog::accept();
 }

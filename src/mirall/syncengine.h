@@ -59,7 +59,7 @@ public:
 
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
-    void setSelectiveSyncWhiteList(const QStringList &list)
+    void setSelectiveSyncBlackList(const QStringList &list)
     { _selectiveSyncWhiteList = list; }
 
 signals:
