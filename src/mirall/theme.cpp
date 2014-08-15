@@ -68,9 +68,6 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
     case SyncResult::SetupError:
         resultStr = QCoreApplication::translate("theme", "Setup Error" );
         break;
-    case SyncResult::Unavailable:
-        resultStr = QCoreApplication::translate("theme", "The server is currently unavailable" );
-        break;
     case SyncResult::SyncPrepare:
         resultStr = QCoreApplication::translate("theme", "Preparing to sync" );
         break;
@@ -268,9 +265,6 @@ QIcon Theme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
     switch( status ) {
     case SyncResult::Undefined:
     case SyncResult::NotYetStarted:
-    case SyncResult::Unavailable:
-        statusIcon = QLatin1String("state-offline");
-        break;
     case SyncResult::SyncRunning:
         statusIcon = QLatin1String("state-sync");
         break;
@@ -287,12 +281,22 @@ QIcon Theme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
         break;
     case SyncResult::Error:
     case SyncResult::SetupError:
-        statusIcon = QLatin1String("state-error");  // FIXME: Use state-problem once we have an icon.
+        // FIXME: Use state-problem once we have an icon.
     default:
         statusIcon = QLatin1String("state-error");
     }
 
     return themeIcon( statusIcon, sysTray );
+}
+
+QIcon Theme::folderDisabledIcon( ) const
+{
+    return themeIcon( QLatin1String("state-pause") );
+}
+
+QIcon Theme::folderOfflineIcon(bool systray) const
+{
+    return themeIcon( QLatin1String("state-offline"), systray );
 }
 
 QColor Theme::wizardHeaderTitleColor() const

@@ -81,12 +81,6 @@ QIcon ownCloudTheme::trayFolderIcon( const QString& ) const
     return QIcon::fromTheme("folder", fallback);
 }
 
-QIcon ownCloudTheme::folderDisabledIcon( ) const
-{
-    // Fixme: Do we really want the dialog-canel from theme here?
-    return themeIcon( QLatin1String("state-pause") );
-}
-
 QIcon ownCloudTheme::applicationIcon( ) const
 {
     return themeIcon( QLatin1String("owncloud-icon") );

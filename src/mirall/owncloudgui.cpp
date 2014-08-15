@@ -212,12 +212,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 {
     if (Account *a = AccountManager::instance()->account()) {
         if (a->state() == Account::SignedOut) {
-            _tray->setIcon(Theme::instance()->syncStateIcon( SyncResult::Unavailable, true));
+            _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
             _tray->setToolTip(tr("Please sign in"));
             return;
         }
         if (a->state() == Account::Disconnected) {
-            _tray->setIcon(Theme::instance()->syncStateIcon( SyncResult::Unavailable, true));
+            _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
             _tray->setToolTip(tr("Disconnected from server"));
             return;
         }
