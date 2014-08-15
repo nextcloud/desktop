@@ -287,7 +287,6 @@ void Folder::slotNetworkUnavailable()
     if (account && account->state() == Account::Connected) {
         account->setState(Account::Disconnected);
     }
-    _syncResult.setStatus(SyncResult::Unavailable);
     emit syncStateChange();
 }
 
@@ -662,7 +661,8 @@ void Folder::slotSyncFinished()
         _syncResult.setErrorStrings( _errors );
         qDebug() << "    * owncloud csync thread finished with error";
     } else if (_csyncUnavail) {
-        _syncResult.setStatus(SyncResult::Unavailable);
+        _syncResult.setStatus(SyncResult::Error);
+        qDebug() << "  ** csync not available.";
     } else if( _syncResult.warnCount() > 0 ) {
         // there have been warnings on the way.
         _syncResult.setStatus(SyncResult::Problem);

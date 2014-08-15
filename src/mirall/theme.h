@@ -90,7 +90,8 @@ public:
       */
     virtual QIcon   syncStateIcon( SyncResult::Status, bool sysTray = false ) const;
 
-    virtual QIcon   folderDisabledIcon() const = 0;
+    virtual QIcon   folderDisabledIcon() const;
+    virtual QIcon   folderOfflineIcon(bool systray = false) const;
     virtual QIcon   applicationIcon() const = 0;
 #endif
 

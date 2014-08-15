@@ -14,7 +14,6 @@
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 
-#include "mirall/folderman.h"
 #include "mirall/theme.h"
 #include "mirall/generalsettings.h"
 #include "mirall/networksettings.h"
@@ -74,11 +73,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    FolderMan *folderMan = FolderMan::instance();
-    connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
-             this, SLOT(slotSyncStateChange(QString)));
-
     connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
+    connect( _accountSettings, SIGNAL(accountIconChanged(QIcon)), SLOT(slotUpdateAccountIcon(QIcon)));
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              gui, SLOT(slotFolderOpenAction(QString)));
 
@@ -130,22 +126,7 @@ void SettingsDialog::addAccount(const QString &title, QWidget *widget)
     _accountItem->setSizeHint(QSize(0, 32));
     _ui->labelWidget->addItem(_accountItem);
     _ui->stack->addWidget(widget);
-    slotSyncStateChange();
-
-}
-
-void SettingsDialog::slotSyncStateChange(const QString& alias)
-{
-    FolderMan *folderMan = FolderMan::instance();
-    SyncResult state = folderMan->accountStatus(folderMan->map().values());
-    _accountItem->setIcon(Theme::instance()->syncStateIcon(state.status()));
-
-    if (!alias.isEmpty()) {
-        Folder *folder = folderMan->folder(alias);
-        if( folder ) {
-            _accountSettings->slotUpdateFolderState(folder);
-        }
-    }
+    _accountSettings->slotSyncStateChange();
 }
 
 void SettingsDialog::setGeneralErrors(const QStringList &errors)
@@ -166,6 +147,11 @@ void SettingsDialog::accept() {
     MirallConfigFile cfg;
     cfg.saveGeometry(this);
     QDialog::accept();
+}
+
+void SettingsDialog::slotUpdateAccountIcon(const QIcon &icon)
+{
+    _accountItem->setIcon(icon);
 }
 
 void SettingsDialog::showActivityPage()

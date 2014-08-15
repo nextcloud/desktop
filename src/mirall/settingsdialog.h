@@ -45,12 +45,14 @@ public:
     void setGeneralErrors( const QStringList& errors );
 
 public slots:
-    void slotSyncStateChange(const QString& alias = QString());
     void showActivityPage();
 
 protected:
     void reject() Q_DECL_OVERRIDE;
     void accept() Q_DECL_OVERRIDE;
+
+private slots:
+    void slotUpdateAccountIcon(const QIcon& icon);
 
 private:
     Ui::SettingsDialog *_ui;
