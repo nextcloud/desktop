@@ -89,7 +89,7 @@
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
-        <location filename="../src/mirall/accountsettings.cpp" line="159"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="164"/>
         <source>Pause</source>
         <translation>Paus</translation>
     </message>
@@ -119,53 +119,58 @@
         <translation>&lt;b&gt;Notera:&lt;/b&gt; Vissa mappar, inklusive nätverksmonterade eller delade mappar, kan ha olika begränsningar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="161"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="166"/>
         <source>Resume</source>
         <translation>Återuppta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="318"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="327"/>
         <source>Confirm Folder Remove</source>
         <translation>Bekräfta radering av mapp</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="319"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="328"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen stoppa synkroniseringen av mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notera:&lt;/b&gt; Detta kommer inte att radera filerna från din klient.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="355"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="364"/>
         <source>Confirm Folder Reset</source>
         <translation>Bekräfta återställning av mapp</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="356"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="365"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen nollställa mappen &lt;i&gt;%1&lt;/i&gt; och återställa din databas?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notera:&lt;/b&gt; Denna funktion är endast designad för underhållsuppgifter. Inga filer raderas, men kan skapa mycket datatrafik och ta allt från några minuter till flera timmar att slutföra, beroende på storleken på mappen. Använd endast detta alternativ om du har blivit uppmanad av din systemadministratör.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="608"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="580"/>
+        <source>Discovering %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="624"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="707"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="723"/>
         <source>%1 (%3%) of %2 server space in use.</source>
         <translation>%1 (%3%) av %2 server utrymme används.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="746"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="767"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation>Ingen anslutning till %1 vid &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="753"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="774"/>
         <source>No %1 connection configured.</source>
         <translation>Ingen %1 anslutning konfigurerad.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="449"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="458"/>
         <source>Sync Running</source>
         <translation>Synkronisering pågår</translation>
     </message>
@@ -175,35 +180,35 @@
         <translation>Inget konto är konfigurerat.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="450"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="459"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>En synkronisering pågår.&lt;br/&gt;Vill du avbryta den?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="602"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="618"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
         <translation>%1 %2 (%3 of %4) %5 återstående. Hastighet %6/s</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="617"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="633"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 av %2, fil %3 av %4
 Tid kvar %5</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="739"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="760"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Ansluten till &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="742"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="763"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Ansluten till &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="711"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="727"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Just nu finns ingen utrymmes information tillgänglig</translation>
     </message>
@@ -282,73 +287,73 @@ Tid kvar %5</translation>
         <translation>%1 är inte läsbar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="322"/>
+        <location filename="../src/mirall/folder.cpp" line="321"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="408"/>
+        <location filename="../src/mirall/folder.cpp" line="407"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 och %2 andra filer har tagits bort.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="410"/>
+        <location filename="../src/mirall/folder.cpp" line="409"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har tagits bort.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="415"/>
+        <location filename="../src/mirall/folder.cpp" line="414"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 och %2 andra filer har laddats ner.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="417"/>
+        <location filename="../src/mirall/folder.cpp" line="416"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har laddats ner.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="422"/>
+        <location filename="../src/mirall/folder.cpp" line="421"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 och %2 andra filer har uppdaterats.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="424"/>
+        <location filename="../src/mirall/folder.cpp" line="423"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har uppdaterats.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="429"/>
+        <location filename="../src/mirall/folder.cpp" line="428"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 har döpts om till %2 och %3 andra filer har bytt namn. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="431"/>
+        <location filename="../src/mirall/folder.cpp" line="430"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 har döpts om till %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="436"/>
+        <location filename="../src/mirall/folder.cpp" line="435"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 har flyttats till %2 och %3 andra filer har tagits bort.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="438"/>
+        <location filename="../src/mirall/folder.cpp" line="437"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 har flyttats till %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="446"/>
+        <location filename="../src/mirall/folder.cpp" line="445"/>
         <source>Sync Activity</source>
         <translation>Synk aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="717"/>
+        <location filename="../src/mirall/folder.cpp" line="725"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -357,17 +362,17 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 Är du säker på att du vill fortsätta?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="721"/>
+        <location filename="../src/mirall/folder.cpp" line="729"/>
         <source>Remove All Files?</source>
         <translation>Ta bort alla filer?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="723"/>
+        <location filename="../src/mirall/folder.cpp" line="731"/>
         <source>Remove all files</source>
         <translation>Ta bort alla filer</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="724"/>
+        <location filename="../src/mirall/folder.cpp" line="732"/>
         <source>Keep files</source>
         <translation>Behåll filer</translation>
     </message>
@@ -385,57 +390,52 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
         <translation>En gammal synkroniseringsjournal &apos;%1&apos; hittades, men kunde inte raderas. Vänligen se till att inga program för tillfället använder den.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="780"/>
         <source>Undefined State.</source>
         <translation>Okänt tillstånd.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="783"/>
         <source>Waits to start syncing.</source>
         <translation>Väntar på att starta synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="786"/>
         <source>Preparing for sync.</source>
         <translation>Förbereder synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="796"/>
+        <location filename="../src/mirall/folderman.cpp" line="789"/>
         <source>Sync is running.</source>
         <translation>Synkronisering pågår.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="799"/>
-        <source>Server is currently not available.</source>
-        <translation>Servern är för tillfället inte tillgänglig.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderman.cpp" line="802"/>
+        <location filename="../src/mirall/folderman.cpp" line="792"/>
         <source>Last Sync was successful.</source>
         <translation>Senaste synkronisering lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="797"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Senaste synkning lyckades, men det finns varningar för vissa filer!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="810"/>
+        <location filename="../src/mirall/folderman.cpp" line="800"/>
         <source>Setup Error.</source>
         <translation>Inställningsfel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="803"/>
         <source>User Abort.</source>
         <translation>Användare Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="816"/>
+        <location filename="../src/mirall/folderman.cpp" line="806"/>
         <source>Sync is paused.</source>
         <translation>Synkronisering är pausad.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="822"/>
+        <location filename="../src/mirall/folderman.cpp" line="812"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synk är stoppad)</translation>
     </message>
@@ -1501,27 +1501,27 @@ Försök att synka dessa igen.</translation>
         <translation>Inställningar</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialog.cpp" line="51"/>
+        <location filename="../src/mirall/settingsdialog.cpp" line="50"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
+        <location filename="../src/mirall/settingsdialog.cpp" line="56"/>
         <source>Activity</source>
         <translation>Aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
+        <location filename="../src/mirall/settingsdialog.cpp" line="63"/>
         <source>General</source>
         <translation>Allmänt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialog.cpp" line="71"/>
+        <location filename="../src/mirall/settingsdialog.cpp" line="70"/>
         <source>Network</source>
         <translation>Nätverk</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialog.cpp" line="54"/>
+        <location filename="../src/mirall/settingsdialog.cpp" line="53"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
@@ -1789,229 +1789,229 @@ Försök att synka dessa igen.</translation>
 <context>
     <name>Mirall::SyncEngine</name>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="83"/>
+        <location filename="../src/mirall/syncengine.cpp" line="84"/>
         <source>Success.</source>
         <translation>Lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="86"/>
+        <location filename="../src/mirall/syncengine.cpp" line="87"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync misslyckades med att skapa en låsfil.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="89"/>
+        <location filename="../src/mirall/syncengine.cpp" line="90"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
         <translation>CSync misslyckades att skapa en journal fil. Se till att du har läs och skriv rättigheter i den lokala synk katalogen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="93"/>
+        <location filename="../src/mirall/syncengine.cpp" line="94"/>
         <source>CSync failed to write the journal file.</source>
         <translation>CSynk misslyckades att skriva till journal filen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="96"/>
+        <location filename="../src/mirall/syncengine.cpp" line="97"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Plugin %1 för csync kunde inte laddas.&lt;br/&gt;Var god verifiera installationen!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="99"/>
+        <location filename="../src/mirall/syncengine.cpp" line="100"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Systemtiden på denna klientdator är annorlunda än systemtiden på servern. Använd en tjänst för tidssynkronisering (NTP) på servern och alla klientdatorer så att tiden är lika.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="104"/>
+        <location filename="../src/mirall/syncengine.cpp" line="105"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync kunde inte upptäcka filsystemtyp.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="107"/>
+        <location filename="../src/mirall/syncengine.cpp" line="108"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSYNC fel vid intern bearbetning.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="110"/>
+        <location filename="../src/mirall/syncengine.cpp" line="111"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync misslyckades att reservera minne.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="113"/>
+        <location filename="../src/mirall/syncengine.cpp" line="114"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync fatal parameter fel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="116"/>
+        <location filename="../src/mirall/syncengine.cpp" line="117"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync processteg update misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="119"/>
+        <location filename="../src/mirall/syncengine.cpp" line="120"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync processteg reconcile misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="122"/>
+        <location filename="../src/mirall/syncengine.cpp" line="123"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync processteg propagate misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="125"/>
+        <location filename="../src/mirall/syncengine.cpp" line="126"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Målmappen finns inte&lt;/p&gt;&lt;p&gt;Vänligen, kontroller inställningen för sync.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="129"/>
+        <location filename="../src/mirall/syncengine.cpp" line="130"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>En fil på servern kan inte skapas. Kontrollera åtkomst till fjärranslutningen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="133"/>
+        <location filename="../src/mirall/syncengine.cpp" line="134"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Kan inte skriva till det lokala filsystemet. Var god kontrollera rättigheterna.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="136"/>
+        <location filename="../src/mirall/syncengine.cpp" line="137"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync misslyckades att ansluta genom en proxy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="139"/>
+        <location filename="../src/mirall/syncengine.cpp" line="140"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation>CSync kunde inte autentisera mot proxy. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="142"/>
+        <location filename="../src/mirall/syncengine.cpp" line="143"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync misslyckades att  hitta proxy eller server.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="145"/>
+        <location filename="../src/mirall/syncengine.cpp" line="146"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync misslyckades att autentisera mot %1 servern.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="148"/>
+        <location filename="../src/mirall/syncengine.cpp" line="149"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync misslyckades att ansluta mot nätverket.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="151"/>
+        <location filename="../src/mirall/syncengine.cpp" line="152"/>
         <source>A network connection timeout happened.</source>
         <translation>En timeout på nätverksanslutningen har inträffat.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="154"/>
+        <location filename="../src/mirall/syncengine.cpp" line="155"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Ett HTTP överföringsfel inträffade.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="157"/>
+        <location filename="../src/mirall/syncengine.cpp" line="158"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSYNC misslyckades på grund av att nekad åtkomst inte hanterades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="160"/>
+        <location filename="../src/mirall/syncengine.cpp" line="161"/>
         <source>CSync failed to access </source>
         <translation>CSynk misslyckades att tillträda</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="163"/>
+        <location filename="../src/mirall/syncengine.cpp" line="164"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>CSync försökte skapa en mapp som redan finns.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="166"/>
-        <location filename="../src/mirall/syncengine.cpp" line="169"/>
+        <location filename="../src/mirall/syncengine.cpp" line="167"/>
+        <location filename="../src/mirall/syncengine.cpp" line="170"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Ingen plats på %1 server tillgänglig.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="172"/>
+        <location filename="../src/mirall/syncengine.cpp" line="173"/>
         <source>CSync unspecified error.</source>
         <translation>CSync ospecificerat fel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="175"/>
+        <location filename="../src/mirall/syncengine.cpp" line="176"/>
         <source>Aborted by the user</source>
         <translation>Avbruten av användare</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="179"/>
+        <location filename="../src/mirall/syncengine.cpp" line="180"/>
         <source>An internal error number %1 happened.</source>
         <translation>Ett internt fel hände. nummer %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="238"/>
+        <location filename="../src/mirall/syncengine.cpp" line="239"/>
         <source>The item is not synced because of previous errors: %1</source>
         <translation>Objektet kunde inte synkas på grund av tidigare fel: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="300"/>
+        <location filename="../src/mirall/syncengine.cpp" line="301"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symboliska länkar stöds ej i synkningen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="303"/>
+        <location filename="../src/mirall/syncengine.cpp" line="304"/>
         <source>File is listed on the ignore list.</source>
         <translation>Filen är listad i ignorerings listan.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="306"/>
+        <location filename="../src/mirall/syncengine.cpp" line="307"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Filen innehåller ogiltiga tecken som inte kan synkas oberoende av plattform.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="482"/>
+        <location filename="../src/mirall/syncengine.cpp" line="503"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Kan inte initialisera en synk journal. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="588"/>
+        <location filename="../src/mirall/syncengine.cpp" line="614"/>
         <source>Cannot open the sync journal</source>
         <translation>Kunde inte öppna synk journalen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="770"/>
+        <location filename="../src/mirall/syncengine.cpp" line="796"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Går ej att genomföra då du saknar rättigheter att lägga till underkataloger i den katalogen </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="777"/>
+        <location filename="../src/mirall/syncengine.cpp" line="803"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Går ej att genomföra då du saknar rättigheter att lägga till någon moderkatalog</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="784"/>
+        <location filename="../src/mirall/syncengine.cpp" line="810"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Går ej att genomföra då du saknar rättigheter att lägga till filer i den katalogen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="804"/>
+        <location filename="../src/mirall/syncengine.cpp" line="830"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Inte behörig att ladda upp denna fil då den är skrivskyddad på servern, återställer </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="820"/>
-        <location filename="../src/mirall/syncengine.cpp" line="841"/>
+        <location filename="../src/mirall/syncengine.cpp" line="846"/>
+        <location filename="../src/mirall/syncengine.cpp" line="867"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Inte behörig att radera, återställer</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="891"/>
+        <location filename="../src/mirall/syncengine.cpp" line="917"/>
         <source>Move not allowed, item restored</source>
         <translation>Det gick inte att genomföra flytten, objektet återställs</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="900"/>
+        <location filename="../src/mirall/syncengine.cpp" line="926"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Det gick inte att genomföra flytten då %1 är skrivskyddad</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="901"/>
+        <location filename="../src/mirall/syncengine.cpp" line="927"/>
         <source>the destination</source>
         <translation>destinationen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="901"/>
+        <location filename="../src/mirall/syncengine.cpp" line="927"/>
         <source>the source</source>
         <translation>källan</translation>
     </message>
@@ -2027,7 +2027,7 @@ Försök att synka dessa igen.</translation>
 <context>
     <name>Mirall::Theme</name>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="219"/>
+        <location filename="../src/mirall/theme.cpp" line="216"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -2140,22 +2140,27 @@ Försök att synka dessa igen.</translation>
         <translation>Inga filer har synkroniseras nyligen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="450"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="448"/>
+        <source>Discovering %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="452"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Synkroniserar %1 av %2 (%3 kvar)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="454"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="457"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synkroniserar %1 (%2 kvar)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="477"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="501"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="505"/>
         <source>Up to date</source>
         <translation>Aktuell version</translation>
     </message>
@@ -2400,7 +2405,7 @@ Försök att synka dessa igen.</translation>
 <context>
     <name>ownCloudTheme</name>
     <message>
-        <location filename="../src/mirall/owncloudtheme.cpp" line="100"/>
+        <location filename="../src/mirall/owncloudtheme.cpp" line="94"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
         <translation>Om du inte har en ownCloud-server ännu, besök &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; för mer info.</translation>
@@ -2539,21 +2544,16 @@ Försök att synka dessa igen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
-        <source>The server is currently unavailable</source>
-        <translation>Servern är för närvarande inte tillgänglig</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Preparing to sync</source>
         <translation>Förbereder synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="78"/>
+        <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
         <translation>Avbryter</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="81"/>
+        <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
         <translation>Synk är pausad</translation>
     </message>

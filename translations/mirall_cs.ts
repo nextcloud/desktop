@@ -89,7 +89,7 @@
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
-        <location filename="../src/mirall/accountsettings.cpp" line="159"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="164"/>
         <source>Pause</source>
         <translation>Pozastavit</translation>
     </message>
@@ -119,53 +119,58 @@
         <translation>&lt;b&gt;Poznámka:&lt;/b&gt; Některé složky, včetně síťových či sdílených složek, mohou mít jiné limity.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="161"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="166"/>
         <source>Resume</source>
         <translation>Obnovit</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="318"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="327"/>
         <source>Confirm Folder Remove</source>
         <translation>Potvrdit odstranění složky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="319"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="328"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Opravdu chcete zastavit synchronizaci složky &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Tato akce nesmaže soubory z místní složky.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="355"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="364"/>
         <source>Confirm Folder Reset</source>
         <translation>Potvrdit restartování složky</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="356"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="365"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Skutečně chcete resetovat složku &lt;i&gt;%1&lt;/i&gt; a znovu sestavit klientskou databázi?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Tato funkce je určena pouze pro účely údržby. Žádné soubory nebudou smazány, ale může to způsobit velké datové přenosy a dokončení může trvat mnoho minut či hodin v závislosti na množství dat ve složce. Použijte tuto volbu pouze na pokyn správce.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="608"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="580"/>
+        <source>Discovering %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/accountsettings.cpp" line="624"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="707"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="723"/>
         <source>%1 (%3%) of %2 server space in use.</source>
         <translation>%1 (%3%) z %2 místa na disku použito.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="746"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="767"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation>Žádné spojení s %1 na &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="753"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="774"/>
         <source>No %1 connection configured.</source>
         <translation>Žádné spojení s %1 nenastaveno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="449"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="458"/>
         <source>Sync Running</source>
         <translation>Synchronizace probíhá</translation>
     </message>
@@ -175,35 +180,35 @@
         <translation>Žádný účet nenastaven.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="450"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="459"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Operace synchronizace právě probíhá.&lt;br/&gt;Přejete si ji ukončit?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="602"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="618"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
         <translation>%1 %2 (%3 z %4) zbývající čas %5 při rychlosti %6/s</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="617"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="633"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 z %2, soubor %3 ze %4
 Celkový zbývající čas %5</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="739"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="760"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Připojeno k &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="742"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="763"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Připojeno k &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; jako &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="711"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="727"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Momentálně nejsou k dispozici žádné informace o využití úložiště</translation>
     </message>
@@ -282,73 +287,73 @@ Celkový zbývající čas %5</translation>
         <translation>%1 není čitelný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="322"/>
+        <location filename="../src/mirall/folder.cpp" line="321"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="408"/>
+        <location filename="../src/mirall/folder.cpp" line="407"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 a %2 dalších souborů bylo odebráno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="410"/>
+        <location filename="../src/mirall/folder.cpp" line="409"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 byl odebrán.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="415"/>
+        <location filename="../src/mirall/folder.cpp" line="414"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 a %2 dalších souborů bylo staženo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="417"/>
+        <location filename="../src/mirall/folder.cpp" line="416"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 byl stažen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="422"/>
+        <location filename="../src/mirall/folder.cpp" line="421"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 a %2 dalších souborů bylo aktualizováno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="424"/>
+        <location filename="../src/mirall/folder.cpp" line="423"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 byl aktualizován.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="429"/>
+        <location filename="../src/mirall/folder.cpp" line="428"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 byl přejmenován na %2 a %3 dalších souborů bylo přejmenováno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="431"/>
+        <location filename="../src/mirall/folder.cpp" line="430"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 byl přejmenován na %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="436"/>
+        <location filename="../src/mirall/folder.cpp" line="435"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 byl přesunut do %2 a %3 dalších souborů bylo přesunuto.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="438"/>
+        <location filename="../src/mirall/folder.cpp" line="437"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 byl přemístěn do %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="446"/>
+        <location filename="../src/mirall/folder.cpp" line="445"/>
         <source>Sync Activity</source>
         <translation>Průběh synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="717"/>
+        <location filename="../src/mirall/folder.cpp" line="725"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -357,17 +362,17 @@ Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím
 Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="721"/>
+        <location filename="../src/mirall/folder.cpp" line="729"/>
         <source>Remove All Files?</source>
         <translation>Odstranit všechny soubory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="723"/>
+        <location filename="../src/mirall/folder.cpp" line="731"/>
         <source>Remove all files</source>
         <translation>Odstranit všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="724"/>
+        <location filename="../src/mirall/folder.cpp" line="732"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>
@@ -385,57 +390,52 @@ Opravdu chcete provést tuto akci?</translation>
         <translation>Byl nalezen starý záznam synchronizace &apos;%1&apos;, ale nebylo možné jej odebrat. Ujistěte se, že není aktuálně používán jinou aplikací.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="787"/>
+        <location filename="../src/mirall/folderman.cpp" line="780"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="790"/>
+        <location filename="../src/mirall/folderman.cpp" line="783"/>
         <source>Waits to start syncing.</source>
         <translation>Vyčkává na spuštění synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="793"/>
+        <location filename="../src/mirall/folderman.cpp" line="786"/>
         <source>Preparing for sync.</source>
         <translation>Příprava na synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="796"/>
+        <location filename="../src/mirall/folderman.cpp" line="789"/>
         <source>Sync is running.</source>
         <translation>Synchronizace probíhá.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="799"/>
-        <source>Server is currently not available.</source>
-        <translation>Server je nyní nedostupný.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/folderman.cpp" line="802"/>
+        <location filename="../src/mirall/folderman.cpp" line="792"/>
         <source>Last Sync was successful.</source>
         <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="807"/>
+        <location filename="../src/mirall/folderman.cpp" line="797"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Poslední synchronizace byla úspěšná, ale s varováním u některých souborů</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="810"/>
+        <location filename="../src/mirall/folderman.cpp" line="800"/>
         <source>Setup Error.</source>
         <translation>Chyba nastavení.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="813"/>
+        <location filename="../src/mirall/folderman.cpp" line="803"/>
         <source>User Abort.</source>
         <translation>Zrušení uživatelem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="816"/>
+        <location filename="../src/mirall/folderman.cpp" line="806"/>
         <source>Sync is paused.</source>
         <translation>Synchronizace pozastavena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="822"/>
+        <location filename="../src/mirall/folderman.cpp" line="812"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizace je pozastavena)</translation>
     </message>
@@ -1502,27 +1502,27 @@ Zkuste provést novou synchronizaci.
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialog.cpp" line="51"/>
+        <location filename="../src/mirall/settingsdialog.cpp" line="50"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
+        <location filename="../src/mirall/settingsdialog.cpp" line="56"/>
         <source>Activity</source>
         <translation>Aktivita</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialog.cpp" line="64"/>
+        <location filename="../src/mirall/settingsdialog.cpp" line="63"/>
         <source>General</source>
         <translation>Hlavní</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialog.cpp" line="71"/>
+        <location filename="../src/mirall/settingsdialog.cpp" line="70"/>
         <source>Network</source>
         <translation>Síť</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialog.cpp" line="54"/>
+        <location filename="../src/mirall/settingsdialog.cpp" line="53"/>
         <source>Account</source>
         <translation>Účet</translation>
     </message>
@@ -1790,229 +1790,229 @@ Zkuste provést novou synchronizaci.
 <context>
     <name>Mirall::SyncEngine</name>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="83"/>
+        <location filename="../src/mirall/syncengine.cpp" line="84"/>
         <source>Success.</source>
         <translation>Úspěch.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="86"/>
+        <location filename="../src/mirall/syncengine.cpp" line="87"/>
         <source>CSync failed to create a lock file.</source>
         <translation>CSync nemůže vytvořit soubor zámku.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="89"/>
+        <location filename="../src/mirall/syncengine.cpp" line="90"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
         <translation>CSync se nepodařilo načíst či vytvořit soubor žurnálu. Ujistěte se, že máte oprávnění pro čtení a zápis v místní synchronizované složce.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="93"/>
+        <location filename="../src/mirall/syncengine.cpp" line="94"/>
         <source>CSync failed to write the journal file.</source>
         <translation>CSync se nepodařilo zapsat do souboru žurnálu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="96"/>
+        <location filename="../src/mirall/syncengine.cpp" line="97"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Plugin %1 pro csync nelze načíst.&lt;br/&gt;Zkontrolujte prosím instalaci!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="99"/>
+        <location filename="../src/mirall/syncengine.cpp" line="100"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
         <translation>Systémový čas na klientovi je rozdílný od systémového času serveru. Použijte, prosím, službu synchronizace času (NTP) na serveru i klientovi, aby byl čas na obou strojích stejný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="104"/>
+        <location filename="../src/mirall/syncengine.cpp" line="105"/>
         <source>CSync could not detect the filesystem type.</source>
         <translation>CSync nemohl detekovat typ souborového systému.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="107"/>
+        <location filename="../src/mirall/syncengine.cpp" line="108"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSync obdrželo chybu při zpracování vnitřních struktur.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="110"/>
+        <location filename="../src/mirall/syncengine.cpp" line="111"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync se nezdařilo rezervovat paměť.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="113"/>
+        <location filename="../src/mirall/syncengine.cpp" line="114"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSync: kritická chyba parametrů.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="116"/>
+        <location filename="../src/mirall/syncengine.cpp" line="117"/>
         <source>CSync processing step update failed.</source>
         <translation>CSync se nezdařilo zpracovat krok aktualizace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="119"/>
+        <location filename="../src/mirall/syncengine.cpp" line="120"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync se nezdařilo zpracovat krok sladění.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="122"/>
+        <location filename="../src/mirall/syncengine.cpp" line="123"/>
         <source>CSync processing step propagate failed.</source>
         <translation>CSync se nezdařilo zpracovat krok propagace.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="125"/>
+        <location filename="../src/mirall/syncengine.cpp" line="126"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Cílový adresář neexistuje.&lt;/p&gt;&lt;p&gt;Zkontrolujte, prosím, nastavení synchronizace.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="129"/>
+        <location filename="../src/mirall/syncengine.cpp" line="130"/>
         <source>A remote file can not be written. Please check the remote access.</source>
         <translation>Vzdálený soubor nelze zapsat. Ověřte prosím vzdálený přístup.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="133"/>
+        <location filename="../src/mirall/syncengine.cpp" line="134"/>
         <source>The local filesystem can not be written. Please check permissions.</source>
         <translation>Do místního souborového systému nelze zapisovat. Ověřte, prosím, přístupová práva.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="136"/>
+        <location filename="../src/mirall/syncengine.cpp" line="137"/>
         <source>CSync failed to connect through a proxy.</source>
         <translation>CSync se nezdařilo připojit skrze proxy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="139"/>
+        <location filename="../src/mirall/syncengine.cpp" line="140"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation>CSync se nemohlo přihlásit k proxy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="142"/>
+        <location filename="../src/mirall/syncengine.cpp" line="143"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync se nezdařilo najít proxy server nebo cílový server.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="145"/>
+        <location filename="../src/mirall/syncengine.cpp" line="146"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync se nezdařilo přihlásit k serveru %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="148"/>
+        <location filename="../src/mirall/syncengine.cpp" line="149"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync se nezdařilo připojit k síti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="151"/>
+        <location filename="../src/mirall/syncengine.cpp" line="152"/>
         <source>A network connection timeout happened.</source>
         <translation>Došlo k vypršení časového limitu síťového spojení.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="154"/>
+        <location filename="../src/mirall/syncengine.cpp" line="155"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Nastala chyba HTTP přenosu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="157"/>
+        <location filename="../src/mirall/syncengine.cpp" line="158"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation>CSync selhalo z důvodu nezpracovaného odmítnutí práv.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="160"/>
+        <location filename="../src/mirall/syncengine.cpp" line="161"/>
         <source>CSync failed to access </source>
         <translation>CSync se nezdařil přístup</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="163"/>
+        <location filename="../src/mirall/syncengine.cpp" line="164"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation>CSync se pokusilo vytvořit adresář, který již existuje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="166"/>
-        <location filename="../src/mirall/syncengine.cpp" line="169"/>
+        <location filename="../src/mirall/syncengine.cpp" line="167"/>
+        <location filename="../src/mirall/syncengine.cpp" line="170"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Nedostatek volného místa na serveru %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="172"/>
+        <location filename="../src/mirall/syncengine.cpp" line="173"/>
         <source>CSync unspecified error.</source>
         <translation>Nespecifikovaná chyba CSync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="175"/>
+        <location filename="../src/mirall/syncengine.cpp" line="176"/>
         <source>Aborted by the user</source>
         <translation>Zrušeno uživatelem</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="179"/>
+        <location filename="../src/mirall/syncengine.cpp" line="180"/>
         <source>An internal error number %1 happened.</source>
         <translation>Nastala vnitřní chyba číslo %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="238"/>
+        <location filename="../src/mirall/syncengine.cpp" line="239"/>
         <source>The item is not synced because of previous errors: %1</source>
         <translation>Položka nebyla synchronizována kvůli předchozí chybě: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="300"/>
+        <location filename="../src/mirall/syncengine.cpp" line="301"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symbolické odkazy nejsou při synchronizaci podporovány.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="303"/>
+        <location filename="../src/mirall/syncengine.cpp" line="304"/>
         <source>File is listed on the ignore list.</source>
         <translation>Soubor se nachází na seznamu ignorovaných.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="306"/>
+        <location filename="../src/mirall/syncengine.cpp" line="307"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Soubor obsahuje alespoň jeden neplatný znak, který narušuje synchronizaci v prostředí více platforem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="482"/>
+        <location filename="../src/mirall/syncengine.cpp" line="503"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nemohu inicializovat synchronizační žurnál.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="588"/>
+        <location filename="../src/mirall/syncengine.cpp" line="614"/>
         <source>Cannot open the sync journal</source>
         <translation>Nelze otevřít synchronizační žurnál</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="770"/>
+        <location filename="../src/mirall/syncengine.cpp" line="796"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Není povoleno, protože nemáte oprávnění vytvářet podadresáře v tomto adresáři.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="777"/>
+        <location filename="../src/mirall/syncengine.cpp" line="803"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Není povoleno, protože nemáte oprávnění vytvořit rodičovský adresář.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="784"/>
+        <location filename="../src/mirall/syncengine.cpp" line="810"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Není povoleno, protože nemáte oprávnění přidávat soubory do tohoto adresáře</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="804"/>
+        <location filename="../src/mirall/syncengine.cpp" line="830"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Není povoleno nahrát tento soubor, protože je na serveru uložen pouze pro čtení, obnovuji</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="820"/>
-        <location filename="../src/mirall/syncengine.cpp" line="841"/>
+        <location filename="../src/mirall/syncengine.cpp" line="846"/>
+        <location filename="../src/mirall/syncengine.cpp" line="867"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranění není povoleno, obnovuji</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="891"/>
+        <location filename="../src/mirall/syncengine.cpp" line="917"/>
         <source>Move not allowed, item restored</source>
         <translation>Přesun není povolen, položka obnovena</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="900"/>
+        <location filename="../src/mirall/syncengine.cpp" line="926"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Přesun není povolen, protože %1 je pouze pro čtení</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="901"/>
+        <location filename="../src/mirall/syncengine.cpp" line="927"/>
         <source>the destination</source>
         <translation>cílové umístění</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="901"/>
+        <location filename="../src/mirall/syncengine.cpp" line="927"/>
         <source>the source</source>
         <translation>zdroj</translation>
     </message>
@@ -2028,7 +2028,7 @@ Zkuste provést novou synchronizaci.
 <context>
     <name>Mirall::Theme</name>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="219"/>
+        <location filename="../src/mirall/theme.cpp" line="216"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -2141,22 +2141,27 @@ Zkuste provést novou synchronizaci.
         <translation>Žádné položky nebyly nedávno synchronizovány</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="450"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="448"/>
+        <source>Discovering %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/owncloudgui.cpp" line="452"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Synchronizuji %1 ze %2 (zbývá %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="454"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="457"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synchronizuji %1 (zbývá %2)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="474"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="477"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="501"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="505"/>
         <source>Up to date</source>
         <translation>Aktuální</translation>
     </message>
@@ -2401,7 +2406,7 @@ Zkuste provést novou synchronizaci.
 <context>
     <name>ownCloudTheme</name>
     <message>
-        <location filename="../src/mirall/owncloudtheme.cpp" line="100"/>
+        <location filename="../src/mirall/owncloudtheme.cpp" line="94"/>
         <source>If you don&apos;t have an ownCloud server yet, see &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt; for more info.</source>
         <comment>Top text in setup wizard. Keep short!</comment>
         <translation>Pokud zatím nemáte ownCloud server, získáte více informací na &lt;a href=&quot;https://owncloud.com&quot;&gt;owncloud.com&lt;/a&gt;</translation>
@@ -2540,21 +2545,16 @@ Zkuste provést novou synchronizaci.
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
-        <source>The server is currently unavailable</source>
-        <translation>Server je momentálně nedostupný</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Preparing to sync</source>
         <translation>Připravuji na synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="78"/>
+        <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
         <translation>Ruším...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="81"/>
+        <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
         <translation>Synchronizace pozastavena</translation>
     </message>
