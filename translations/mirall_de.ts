@@ -147,7 +147,7 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="580"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Entdecke %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="624"/>
@@ -2143,7 +2143,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="448"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Entdecke %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="452"/>
@@ -2421,8 +2421,8 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="59"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus GÃ¶tz and others.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo is a registered trademark of ownCloud,Inc. in the United States, other countries, or both&lt;/p&gt;%7</source>
-        <translation>&lt;p&gt;Version %2 Für weitere Informationen besuchen Sie &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Entwickelt durch Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz und andere.&lt;br&gt;Basiert auf Mirall von Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Urheberrecht von ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Lizenziert unter der GNU General Public License (GPL) Version 2.0.&lt;br&gt;ownCloud und das ownCloud-Logo sind eingetragene Warenzeichen von ownCloud in den Vereinigten Staaten, anderen Ländern oder beides.&lt;/p&gt;%7</translation>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus GÃ¶tz and others.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud,Inc. in the United States, other countries, or both&lt;/p&gt;%7</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

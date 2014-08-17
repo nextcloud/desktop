@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="580"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Descubriendo %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="624"/>
@@ -2142,7 +2142,7 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="448"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Descubriendo %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="452"/>
@@ -2420,8 +2420,8 @@ Intente sincronizar los archivos nuevamente.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="59"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus GÃ¶tz and others.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo is a registered trademark of ownCloud,Inc. in the United States, other countries, or both&lt;/p&gt;%7</source>
-        <translation>&lt;p&gt;Versión %2. Para mayor información, visite &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Por Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus GÃ¶tz y otros.&lt;br&gt;Basado en Mirall por Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distribuido bajo la licencia GNU Public License (GPL) Versión 2.0&lt;br/&gt;ownCloud y el logo de ownCloud son marcas registradas de ownCloud,Inc. en los Estados Unidos de América, otros países, o en ambos&lt;/p&gt;%7</translation>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus GÃ¶tz and others.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud,Inc. in the United States, other countries, or both&lt;/p&gt;%7</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
