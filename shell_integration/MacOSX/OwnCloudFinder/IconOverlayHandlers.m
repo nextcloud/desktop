@@ -91,14 +91,18 @@
 
 		if (iconimage != nil)
 		{
-			CGImageSourceRef source;
-			NSData* data = [iconimage TIFFRepresentation];
+			CGRect destRect = CGRectMake(0, 0, [icon size].width, [icon size].height);
+			CGImageRef cgImage = [iconimage CGImageForProposedRect:&destRect
+														   context:[NSGraphicsContext currentContext]
+															 hints:nil];
+			if (cgImage) {
+				CGContextDrawImage(myContext, destRect, cgImage);
+				//CGImageRelease(cgImage); // leak here? if we leave this code in, Finder crashes
+				// But actually i'm not seeing a leak in Activity Monitor.. maybe it is not really leaking?
+			} else {
+				NSLog(@"No image given!!!!!11 %@", [url path]);
+			}
 
-			source = CGImageSourceCreateWithData((CFDataRef)data, NULL);
-			CGImageRef maskRef = CGImageSourceCreateImageAtIndex(source, 0, NULL);
-			CGContextDrawImage(myContext, CGRectMake(0, 0, [icon size].width, [icon size].height), maskRef);
-			CFRelease(source);
-			CFRelease(maskRef);
 		}
 
 		[icon unlockFocus];
