@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="580"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Atopando %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="624"/>
@@ -2029,7 +2029,7 @@ Tente sincronizalos de novo.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="216"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versión %1 Para obter máis información vexa &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distribuído por %4 e licenciado baixo a Licenza Pública Xeral (GPL) Versión 2.0.&lt;br&gt;Os logotipos %5 e %5 son marcas rexistradas de %4 nos&lt;br&gt;Estados Unidos de Norte América e/ou outros países.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2142,7 +2142,7 @@ Tente sincronizalos de novo.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="448"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Atopando %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="452"/>
@@ -2420,7 +2420,7 @@ Tente sincronizalos de novo.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudtheme.cpp" line="59"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus GÃ¶tz and others.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud,Inc. in the United States, other countries, or both&lt;/p&gt;%7</source>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus GÃ¶tz and others.&lt;br&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;%7</source>
         <translation type="unfinished"/>
     </message>
 </context>
