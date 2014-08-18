@@ -214,13 +214,13 @@ QStringList SelectiveSyncTreeView::createBlackList(QTreeWidgetItem* root) const
     if (!root) {
         root = topLevelItem(0);
     }
-    if (!root) return {};
+    if (!root) return QStringList();
 
     switch(root->checkState(0)) {
     case Qt::Unchecked:
-        return { root->data(0, Qt::UserRole).toString() };
+        return QStringList(root->data(0, Qt::UserRole).toString());
     case  Qt::Checked:
-        return {};
+        return QStringList();
     case Qt::PartiallyChecked:
         break;
     }
