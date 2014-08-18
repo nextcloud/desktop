@@ -161,6 +161,11 @@ public:
 #endif
 
     /**
+     * The SHA sum of the released git commit
+     */
+    QString gitSHA1() const;
+
+    /**
      * About dialog contents
      */
     virtual QString about() const;

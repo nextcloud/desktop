@@ -211,15 +211,33 @@ QString Theme::updateCheckUrl() const
     return QLatin1String("https://updates.owncloud.com/client/");
 }
 
+QString Theme::gitSHA1() const
+{
+    QString devString;
+#ifdef GIT_SHA1
+    const QString githubPrefix(QLatin1String(
+                                   "https://github.com/owncloud/mirall/commit/"));
+    const QString gitSha1(QLatin1String(GIT_SHA1));
+    devString = QCoreApplication::translate("ownCloudTheme::about()",
+                   "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
+                   " on %3, %4 using Qt %5.</small></p>")
+            .arg(githubPrefix+gitSha1).arg(gitSha1.left(6))
+            .arg(__DATE__).arg(__TIME__)
+            .arg(QT_VERSION_STR);
+#endif
+    return devString;
+}
+
 QString Theme::about() const
 {
     return tr("<p>Version %1 For more information please visit <a href='%2'>%3</a>.</p>"
               "<p>Copyright ownCloud, Inc.</p>"
-              "<p>Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.<br>"
+              "<p>Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.<br/>"
               "%5 and the %5 logo are registered trademarks of %4 in the "
               "United States, other countries, or both.</p>")
             .arg(MIRALL_VERSION_STRING).arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
-            .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN)).arg(APPLICATION_VENDOR).arg(APPLICATION_NAME);
+            .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN)).arg(APPLICATION_VENDOR).arg(APPLICATION_NAME)
+            +gitSHA1();
 }
 
 #ifndef TOKEN_AUTH_ONLY
