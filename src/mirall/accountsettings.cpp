@@ -158,9 +158,10 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
   } else {
       ui->_buttonAdd->setVisible(true);
   }
-  ui->_buttonAdd->setEnabled(_account && _account->state() == Account::Connected);
+  bool isConnected = _account && _account->state() == Account::Connected;
+  ui->_buttonAdd->setEnabled(isConnected);
   ui->_buttonEnable->setEnabled( isValid );
-  ui->_buttonSelectiveSync->setEnabled( isValid );
+  ui->_buttonSelectiveSync->setEnabled(isConnected && isValid);
 
   if ( isValid ) {
     bool folderEnabled = _model->data( indx, FolderStatusDelegate::FolderSyncEnabled).toBool();
