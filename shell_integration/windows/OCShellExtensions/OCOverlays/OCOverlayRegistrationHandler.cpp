@@ -24,7 +24,8 @@ HRESULT OCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PC
 {
 	HRESULT hResult;
 	HKEY shellOverlayKey = NULL;
-	hResult = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_LOCAL_MACHINE, REGISTRY_OVERLAY_KEY, 0, KEY_WRITE, &shellOverlayKey));
+	// the key may not exist yet
+	hResult = HRESULT_FROM_WIN32(RegCreateKeyEx(HKEY_LOCAL_MACHINE, REGISTRY_OVERLAY_KEY, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &shellOverlayKey, NULL));
 	if (!SUCCEEDED(hResult)) {
 		hResult = RegCreateKey(HKEY_LOCAL_MACHINE, REGISTRY_OVERLAY_KEY, &shellOverlayKey);
 		if(!SUCCEEDED(hResult))	{
