@@ -793,7 +793,7 @@
 													<key>GID</key>
 													<integer>0</integer>
 													<key>PATH</key>
-													<string>Library/ScriptingAdditions/LiferayNativity.osax/Contents</string>
+													<string>Library/ScriptingAdditions/OwnCloudFinder.osax/Contents</string>
 													<key>PATH_TYPE</key>
 													<integer>3</integer>
 													<key>PERMISSIONS</key>
@@ -807,7 +807,7 @@
 											<key>GID</key>
 											<integer>0</integer>
 											<key>PATH</key>
-											<string>LiferayNativity.osax</string>
+											<string>OwnCloudFinder.osax</string>
 											<key>PATH_TYPE</key>
 											<integer>0</integer>
 											<key>PERMISSIONS</key>

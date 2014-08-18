@@ -97,7 +97,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
 void ownCloudGui::setupOverlayIcons()
 {
 
-    if( Utility::isMac() && QFile::exists("/Library/ScriptingAdditions/LiferayNativity.osax") ) {
+    if( Utility::isMac() && QFile::exists("/Library/ScriptingAdditions/OwnCloudFinder.osax") ) {
         QString aScript = QString::fromUtf8("tell application \"Finder\"\n"
                                             "  try\n"
                                             "    «event NVTYload»\n"
