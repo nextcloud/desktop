@@ -45,11 +45,9 @@ QString ownCloudTheme::configFileName() const
 QString ownCloudTheme::about() const
 {
     QString devString;
-    const QString names("Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz");
-    devString = QCoreApplication::translate("ownCloudTheme::about() - please leave _OCDEVS_NAMES_ untouched",
-               "<p>Version %2. "
-               "For more information visit <a href=\"%3\">%4</a></p>"
-               "<p><small>By _OCDEVS_NAMES_ and others.<br/>"
+    devString = trUtf8("<p>Version %2. For more information visit <a href=\"%3\">%4</a></p>"
+               "<p><small>By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, "
+               "Olivier Goffart, Markus Götz and others.<br/>"
                "Based on Mirall by Duncan Mac-Vicar P.</small></p>"
                "<p>Copyright ownCloud, Inc.</p>"
                "<p>Licensed under the GNU Public License (GPL) Version 2.0<br/>"
@@ -60,7 +58,6 @@ QString ownCloudTheme::about() const
             .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
             .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN));
 
-    devString.replace("_OCDEVS_NAMES_", names);
     devString += gitSHA1();
     return devString;
 
