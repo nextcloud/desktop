@@ -134,23 +134,6 @@ enum csync_ftw_type_e {
     CSYNC_FTW_TYPE_SKIP
 };
 
-enum csync_notify_type_e {
-  CSYNC_NOTIFY_INVALID,
-  CSYNC_NOTIFY_START_SYNC_SEQUENCE,
-  CSYNC_NOTIFY_START_DOWNLOAD,
-  CSYNC_NOTIFY_START_UPLOAD,
-  CSYNC_NOTIFY_PROGRESS,
-  CSYNC_NOTIFY_FINISHED_DOWNLOAD,
-  CSYNC_NOTIFY_FINISHED_UPLOAD,
-  CSYNC_NOTIFY_FINISHED_SYNC_SEQUENCE,
-  CSYNC_NOTIFY_START_DELETE,
-  CSYNC_NOTIFY_END_DELETE,
-  CSYNC_NOTIFY_ERROR,
-  CSYNC_NOTIFY_START_LOCAL_UPDATE,
-  CSYNC_NOTIFY_FINISHED_LOCAL_UPDATE,
-  CSYNC_NOTIFY_START_REMOTE_UPDATE,
-  CSYNC_NOTIFY_FINISHED_REMOTE_UPDATE
-};
 
 /**
  * CSync File Traversal structure.
@@ -203,6 +186,9 @@ typedef void (*csync_log_callback) (int verbosity,
                                     const char *buffer,
                                     void *userdata);
 
+typedef void (*csync_update_callback) (bool local,
+                                    const char *dirUrl,
+                                    void *userdata);
 
 /**
  * @brief Allocate a csync context.

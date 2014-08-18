@@ -48,14 +48,39 @@ int DiscoveryJob::isInWhiteListCallBack(void *data, const char *path)
     return static_cast<DiscoveryJob*>(data)->isInBlackList(QString::fromUtf8(path));
 }
 
+void DiscoveryJob::update_job_update_callback (bool local,
+                                    const char *dirUrl,
+                                    void *userdata)
+{
+    DiscoveryJob *updateJob = static_cast<DiscoveryJob*>(userdata);
+    if (updateJob) {
+        // Don't wanna overload the UI
+        if (!updateJob->lastUpdateProgressCallbackCall.isValid()) {
+            updateJob->lastUpdateProgressCallbackCall.restart(); // first call
+        } else if (updateJob->lastUpdateProgressCallbackCall.elapsed() < 200) {
+            return;
+        } else {
+            updateJob->lastUpdateProgressCallbackCall.restart();
+        }
+
+        QString path = QString::fromUtf8(dirUrl).section('/', -1);
+        emit updateJob->folderDiscovered(local, path);
+    }
+}
 
 void DiscoveryJob::start() {
     _selectiveSyncBlackList.sort();
     _csync_ctx->checkBlackListHook = isInWhiteListCallBack;
     _csync_ctx->checkBlackListData = this;
+
+    _csync_ctx->callbacks.update_callback = update_job_update_callback;
+    _csync_ctx->callbacks.update_callback_userdata = this;
+
+
     csync_set_log_callback(_log_callback);
     csync_set_log_level(_log_level);
     csync_set_log_userdata(_log_userdata);
+    lastUpdateProgressCallbackCall.invalidate();
     emit finished(csync_update(_csync_ctx));
     deleteLater();
 }

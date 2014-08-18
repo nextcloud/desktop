@@ -12,6 +12,10 @@
  * for more details.
  */
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    #include <QStandardPaths>
+#endif
+
 static void setupFavLink_private(const QString &folder) {
     // Nautilus: add to ~/.gtk-bookmarks
     QFile gtkBookmarks(QDir::homePath()+QLatin1String("/.gtk-bookmarks"));
@@ -28,14 +32,17 @@ static void setupFavLink_private(const QString &folder) {
 
 // returns the autostart directory the linux way
 // and respects the XDG_CONFIG_HOME env variable
-// can be replaces for qt5 with QStandardPaths
 QString getUserAutostartDir_private()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QString config = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
+#else
     QString config = QFile::decodeName(qgetenv("XDG_CONFIG_HOME"));
 
     if (config.isEmpty()) {
         config = QDir::homePath()+QLatin1String("/.config");
     }
+#endif
     config += QLatin1String("/autostart/");
     return config;
 }
@@ -45,7 +52,6 @@ bool hasLaunchOnStartup_private(const QString &appName)
     QString desktopFileLocation = getUserAutostartDir_private()+appName+QLatin1String(".desktop");
     return QFile::exists(desktopFileLocation);
 }
-
 
 void setLaunchOnStartup_private(const QString &appName, const QString& guiName, bool enable)
 {

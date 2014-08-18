@@ -20,11 +20,14 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
           # try again in 5 seconds - attention, logic inverted!
           GObject.timeout_add(5000, self.connectToOwnCloud)
 
+    def port(self):
+	return 34001 # Fixme, read from config file.
+
     def connectToOwnCloud(self):
 	try:
           self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-          self.sock.connect(("localhost", 33001))
+          self.sock.connect(("localhost", self.port()))
           self.sock.settimeout(5)
           self.connected = True
           self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
@@ -87,13 +90,19 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
                     item = self.find_item_for_file(parts[2])
                     if item:
                         item.add_emblem(emblem)
+
 	    elif action == 'UPDATE_VIEW':
+		# Search all items underneath this path and invalidate them
 		if parts[1] in self.registered_paths:
+		    update_items = []
 		    for p in self.nautilusVFSFile_table:
-			if p.startswith( parts[1] ):
+			if p == parts[1] or p.startswith( parts[1] ):
 			    item = self.nautilusVFSFile_table[p]
-			    item.invalidate_extension_info()
-			    self.update_file_info(item)
+			    update_items.append(item)
+
+		    for item in update_items:
+			item.invalidate_extension_info()
+			# self.update_file_info(item)
 
 	    elif action == 'REGISTER_PATH':
 		self.registered_paths[parts[1]] = 1

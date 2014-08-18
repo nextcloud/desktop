@@ -114,9 +114,13 @@ AccountSettings::AccountSettings(QWidget *parent) :
             this, SLOT(slotAccountChanged(Account*,Account*)));
     slotAccountChanged(AccountManager::instance()->account(), 0);
 
-    connect(FolderMan::instance(), SIGNAL(folderListLoaded(Folder::Map)),
+    FolderMan *folderMan = FolderMan::instance();
+    connect(folderMan, SIGNAL(folderSyncStateChange(QString)),
+             this, SLOT(slotSyncStateChange(QString)));
+    connect(folderMan, SIGNAL(folderListLoaded(Folder::Map)),
             this, SLOT(setFolderList(Folder::Map)));
     setFolderList(FolderMan::instance()->map());
+    slotSyncStateChange();
 }
 
 void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccount)
@@ -125,6 +129,7 @@ void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccoun
         disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
         disconnect(oldAccount->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
                     this, SLOT(slotUpdateQuota(qint64,qint64)));
+        disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
     }
 
     _account = newAccount;
@@ -267,35 +272,39 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
 
     Theme *theme = Theme::instance();
     item->setData( theme->statusHeaderText( status ),  Qt::ToolTipRole );
-    if( f->syncEnabled() ) {
-        if( status == SyncResult::SyncPrepare ) {
-            if( _wasDisabledBefore ) {
-                // if the folder was disabled before, set the sync icon
+    if (_account->state() == Account::Connected) {
+        if( f->syncEnabled() ) {
+            if( status == SyncResult::SyncPrepare ) {
+                if( _wasDisabledBefore ) {
+                    // if the folder was disabled before, set the sync icon
+                    item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
+                }  // we keep the previous icon for the SyncPrepare state.
+            } else if( status == SyncResult::Undefined ) {
+                // startup, the sync was never done.
+                qDebug() << "XXX FIRST time sync, setting icon to sync running!";
                 item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
-            }  // we keep the previous icon for the SyncPrepare state.
-        } else if( status == SyncResult::Undefined ) {
-            // startup, the sync was never done.
-            qDebug() << "XXX FIRST time sync, setting icon to sync running!";
-            item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
-        } else {
-            // kepp the previous icon for the prepare phase.
-            if( status == SyncResult::Problem) {
-                item->setData( theme->syncStateIcon( SyncResult::Success), FolderStatusDelegate::FolderStatusIconRole );
             } else {
-                item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
+                // kepp the previous icon for the prepare phase.
+                if( status == SyncResult::Problem) {
+                    item->setData( theme->syncStateIcon( SyncResult::Success), FolderStatusDelegate::FolderStatusIconRole );
+                } else {
+                    item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
+                }
             }
+        } else {
+            item->setData( theme->folderDisabledIcon( ), FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
+            _wasDisabledBefore = false;
         }
     } else {
-        item->setData( theme->folderDisabledIcon( ), FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
-        _wasDisabledBefore = false;
+        item->setData( theme->folderOfflineIcon(), FolderStatusDelegate::FolderStatusIconRole);
     }
+
     item->setData( theme->statusHeaderText( status ), FolderStatusDelegate::FolderStatus );
 
     if( errorList.isEmpty() ) {
         if( (status == SyncResult::Error ||
              status == SyncResult::SetupError ||
-             status == SyncResult::SyncAbortRequested ||
-             status == SyncResult::Unavailable)) {
+             status == SyncResult::SyncAbortRequested )) {
             errorList <<  theme->statusHeaderText(status);
         }
     }
@@ -585,6 +594,14 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     QStandardItem *item = itemForFolder( folder );
     if( !item ) return;
 
+    // switch on extra space.
+    item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+
+    if (!progress._currentDiscoveredFolder.isEmpty()) {
+        item->setData( tr("Discovering %1").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
+        return;
+    }
+
     if(!progress._lastCompletedItem.isEmpty()
             && Progress::isWarningKind(progress._lastCompletedItem._status)) {
         int warnCount = item->data(FolderStatusDelegate::WarningCount).toInt();
@@ -612,8 +629,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     QString itemFileName = shortenFilename(folder, curItem._file);
     QString kindString = Progress::asActionString(curItem);
 
-    // switch on extra space.
-    item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+
 
     QString fileProgressString;
     if (Progress::isSizeDependent(curItem._instruction)) {
@@ -751,6 +767,11 @@ void AccountSettings::slotAccountStateChanged(int state)
         QUrl safeUrl(_account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
         slotButtonsSetEnabled();
+        FolderMan *folderMan = FolderMan::instance();
+        foreach (Folder *folder, folderMan->map().values()) {
+            slotUpdateFolderState(folder);
+        }
+        slotSyncStateChange();
         if (state == Account::Connected) {
             QString user;
             if (AbstractCredentials *cred = _account->credentials()) {
@@ -774,6 +795,21 @@ void AccountSettings::slotAccountStateChanged(int state)
         showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
         ui->_buttonAdd->setEnabled( false);
     }
+}
+
+void AccountSettings::slotSyncStateChange(const QString& alias)
+{
+    Q_UNUSED(alias);
+
+    FolderMan *folderMan = FolderMan::instance();
+    SyncResult state = folderMan->accountStatus(folderMan->map().values());
+    QIcon icon;
+    if (_account && _account->state() == Account::Connected) {
+        icon = Theme::instance()->syncStateIcon(state.status());
+    } else {
+        icon = Theme::instance()->folderOfflineIcon();
+    }
+    emit accountIconChanged(icon);
 }
 
 AccountSettings::~AccountSettings()

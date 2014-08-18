@@ -48,7 +48,7 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
 }
 
 namespace {
-    const int PORT = 33001;
+    const int PORT = 34001;
 }
 
 namespace Mirall {

@@ -699,9 +699,6 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
             case SyncResult::SyncRunning:
                 overallResult.setStatus( SyncResult::SyncRunning );
                 break;
-            case SyncResult::Unavailable:
-                overallResult.setStatus( SyncResult::Unavailable );
-                break;
             case SyncResult::Problem: // don't show the problem icon in tray.
             case SyncResult::Success:
                 if( overallResult.status() == SyncResult::Undefined )
@@ -728,7 +725,6 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
         int abortSeen = 0;
         int runSeen = 0;
         int various = 0;
-        int unavail = 0;
 
         foreach ( Folder *folder, folders ) {
             SyncResult folderResult = folder->syncResult();
@@ -742,9 +738,6 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
                 break;
             case SyncResult::SyncRunning:
                 runSeen++;
-                break;
-            case SyncResult::Unavailable:
-                unavail++;
                 break;
             case SyncResult::Problem: // don't show the problem icon in tray.
             case SyncResult::Success:
@@ -798,9 +791,6 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool enabled ) const
         break;
     case SyncResult::SyncRunning:
         folderMessage = tr( "Sync is running." );
-        break;
-    case SyncResult::Unavailable:
-        folderMessage = tr( "Server is currently not available." );
         break;
     case SyncResult::Success:
         folderMessage = tr( "Last Sync was successful." );

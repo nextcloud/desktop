@@ -64,9 +64,6 @@ QString SyncResult::statusString() const
     case Problem:
         re = QLatin1String("Success, some files were ignored.");
         break;
-    case Unavailable:
-        re = QLatin1String("Not availabe");
-        break;
     case SyncAbortRequested:
         re = QLatin1String("Sync Request aborted by user");
         break;

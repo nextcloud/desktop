@@ -97,7 +97,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
 void ownCloudGui::setupOverlayIcons()
 {
 
-    if( Utility::isMac() && QFile::exists("/Library/ScriptingAdditions/LiferayNativity.osax") ) {
+    if( Utility::isMac() && QFile::exists("/Library/ScriptingAdditions/OwnCloudFinder.osax") ) {
         QString aScript = QString::fromUtf8("tell application \"Finder\"\n"
                                             "  try\n"
                                             "    «event NVTYload»\n"
@@ -212,12 +212,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 {
     if (Account *a = AccountManager::instance()->account()) {
         if (a->state() == Account::SignedOut) {
-            _tray->setIcon(Theme::instance()->syncStateIcon( SyncResult::Unavailable, true));
+            _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
             _tray->setToolTip(tr("Please sign in"));
             return;
         }
         if (a->state() == Account::Disconnected) {
-            _tray->setIcon(Theme::instance()->syncStateIcon( SyncResult::Unavailable, true));
+            _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
             _tray->setToolTip(tr("Disconnected from server"));
             return;
         }
@@ -444,13 +444,16 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
 {
     Q_UNUSED(folder);
 
-     QString totalSizeStr = Utility::octetsToString( progress._totalSize );
-        if(progress._totalSize == 0 ) {
+     if (!progress._currentDiscoveredFolder.isEmpty()) {
+                 _actionStatus->setText( tr("Discovering %1")
+                     .arg( progress._currentDiscoveredFolder ));
+     } else if (progress._totalSize == 0 ) {
             quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();           
             _actionStatus->setText( tr("Syncing %1 of %2  (%3 left)")
                 .arg( currentFile ).arg( progress._totalFileCount )
                  .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate(), 2, " ",true) ) );
         } else {
+         QString totalSizeStr = Utility::octetsToString( progress._totalSize );
             _actionStatus->setText( tr("Syncing %1 (%2 left)")
                 .arg( totalSizeStr )
                 .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate(), 2, " ",true) ) );
@@ -491,7 +494,8 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
         slotRebuildRecentMenus();
     }
 
-    if (progress._completedFileCount == progress._totalFileCount) {
+    if (progress._completedFileCount == progress._totalFileCount
+            && progress._currentDiscoveredFolder.isEmpty()) {
         QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
     }
 }

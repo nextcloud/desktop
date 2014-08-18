@@ -45,32 +45,21 @@ QString ownCloudTheme::configFileName() const
 QString ownCloudTheme::about() const
 {
     QString devString;
-#ifdef GIT_SHA1
-    const QString githubPrefix(QLatin1String(
-                                   "https://github.com/owncloud/mirall/commit/"));
-    const QString gitSha1(QLatin1String(GIT_SHA1));
-    devString = QCoreApplication::translate("ownCloudTheme::about()",
-                   "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
-                   " on %3, %4 using Qt %5.</small></p>")
-            .arg(githubPrefix+gitSha1).arg(gitSha1.left(6))
-            .arg(__DATE__).arg(__TIME__)
-            .arg(QT_VERSION_STR);
-#endif
-    return  QCoreApplication::translate("ownCloudTheme::about()",
-               "<p>Version %2. "
-               "For more information visit <a href=\"%3\">%4</a></p>"
-               "<p><small>By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.<br>"
+    devString = trUtf8("<p>Version %2. For more information visit <a href=\"%3\">%4</a></p>"
+               "<p><small>By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, "
+               "Olivier Goffart, Markus Götz and others.<br/>"
                "Based on Mirall by Duncan Mac-Vicar P.</small></p>"
                "<p>Copyright ownCloud, Inc.</p>"
                "<p>Licensed under the GNU Public License (GPL) Version 2.0<br/>"
-               "ownCloud and the ownCloud Logo is a registered trademark of ownCloud,"
+               "ownCloud and the ownCloud Logo are registered trademarks of ownCloud, "
                "Inc. in the United States, other countries, or both</p>"
-               "%7"
                )
             .arg(MIRALL_VERSION_STRING)
             .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
-            .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN))
-            .arg(devString);
+            .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN));
+
+    devString += gitSHA1();
+    return devString;
 
 }
 
@@ -79,12 +68,6 @@ QIcon ownCloudTheme::trayFolderIcon( const QString& ) const
 {
     QPixmap fallback = qApp->style()->standardPixmap(QStyle::SP_FileDialogNewFolder);
     return QIcon::fromTheme("folder", fallback);
-}
-
-QIcon ownCloudTheme::folderDisabledIcon( ) const
-{
-    // Fixme: Do we really want the dialog-canel from theme here?
-    return themeIcon( QLatin1String("state-pause") );
 }
 
 QIcon ownCloudTheme::applicationIcon( ) const

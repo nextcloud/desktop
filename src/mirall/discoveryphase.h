@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QObject>
+#include <QElapsedTimer>
 #include <QStringList>
 #include <csync.h>
 
@@ -30,6 +31,7 @@ class DiscoveryJob : public QObject {
     csync_log_callback _log_callback;
     int _log_level;
     void* _log_userdata;
+    QElapsedTimer lastUpdateProgressCallbackCall;
 
     /**
      * return true if the given path should be synced,
@@ -38,6 +40,9 @@ class DiscoveryJob : public QObject {
     bool isInBlackList(const QString &path) const;
     static int isInWhiteListCallBack(void *, const char *);
 
+    static void update_job_update_callback (bool local,
+                                            const char *dirname,
+                                            void *userdata);
 public:
     explicit DiscoveryJob(CSYNC *ctx, QObject* parent = 0)
             : QObject(parent), _csync_ctx(ctx) {
@@ -52,4 +57,6 @@ public:
     Q_INVOKABLE void start();
 signals:
     void finished(int result);
+    void folderDiscovered(bool local, QString folderUrl);
 };
+

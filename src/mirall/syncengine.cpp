@@ -42,6 +42,7 @@
 #include <QUrl>
 #include <QSslCertificate>
 #include <QProcess>
+#include <QElapsedTimer>
 
 namespace Mirall {
 
@@ -536,11 +537,16 @@ void SyncEngine::startSync()
     job->_selectiveSyncBlackList = _selectiveSyncWhiteList;
     job->moveToThread(&_thread);
     connect(job, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
+    connect(job, SIGNAL(folderDiscovered(bool,QString)),
+            this, SIGNAL(folderDiscovered(bool,QString)));
     QMetaObject::invokeMethod(job, "start", Qt::QueuedConnection);
 }
 
 void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 {
+    // To clean the progress info
+    emit folderDiscovered(false, QString());
+
     if (discoveryResult < 0 ) {
         handleSyncError(_csync_ctx, "csync_update");
         return;

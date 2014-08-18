@@ -23,10 +23,12 @@
 #include <QString>
 #include <QSet>
 #include <QMap>
-#include <qelapsedtimer.h>
 #include <QStringList>
 
 #include <csync.h>
+
+// when do we go away with this private/public separation?
+#include <csync_private.h>
 
 #include "mirall/syncfileitem.h"
 #include "mirall/progressdispatcher.h"
@@ -65,6 +67,9 @@ public:
 signals:
     void csyncError( const QString& );
     void csyncUnavailable();
+
+    // During update, before reconcile
+    void folderDiscovered(bool local, QString folderUrl);
 
     // before actual syncing (after update+reconcile) for each item
     void syncItemDiscovered(const SyncFileItem&);
@@ -146,7 +151,6 @@ private:
 
     QStringList _selectiveSyncWhiteList;
 };
-
 
 }
 
