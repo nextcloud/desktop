@@ -29,7 +29,7 @@ public:
     QStringList createBlackList(QTreeWidgetItem* root = 0) const;
     void refreshFolders();
     void setFolderInfo(const QString &folderPath, const QString &rootName,
-                       const QStringList &oldBlackList) {
+                       const QStringList &oldBlackList = QStringList()) {
         _folderPath = folderPath;
         _rootName = rootName;
         _oldBlackList = oldBlackList;
@@ -60,6 +60,5 @@ private:
 
     Folder *_folder;
 };
-
 
 }

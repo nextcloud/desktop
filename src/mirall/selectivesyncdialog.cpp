@@ -280,5 +280,3 @@ void SelectiveSyncDialog::accept()
 
 }
 
-
-

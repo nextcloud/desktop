@@ -446,7 +446,7 @@ void FolderWizardSelectiveSync::initializePage()
     if (targetPath.startsWith('/')) {
         targetPath = targetPath.mid(1);
     }
-    _treeView->setFolderInfo(targetPath, alias, {});
+    _treeView->setFolderInfo(targetPath, alias);
     QWizardPage::initializePage();
 }
 
@@ -460,7 +460,7 @@ void FolderWizardSelectiveSync::cleanupPage()
 {
     QString alias        = wizard()->field(QLatin1String("alias")).toString();
     QString targetPath   = wizard()->property("targetPath").toString();
-    _treeView->setFolderInfo(targetPath, alias, {});
+    _treeView->setFolderInfo(targetPath, alias);
     QWizardPage::cleanupPage();
 }
 
