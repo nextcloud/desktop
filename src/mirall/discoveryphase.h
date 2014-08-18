@@ -19,6 +19,9 @@
 #include <QStringList>
 #include <csync.h>
 
+
+namespace Mirall {
+
 /**
  * The Discovery Phase was once called "update" phase in csync therms.
  * Its goal is to look at the files in one of the remote and check comared to the db
@@ -60,3 +63,4 @@ signals:
     void folderDiscovered(bool local, QString folderUrl);
 };
 
+}

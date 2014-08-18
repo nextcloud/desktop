@@ -16,6 +16,8 @@
 #include <csync_private.h>
 #include <qdebug.h>
 
+namespace Mirall {
+
 bool DiscoveryJob::isInBlackList(const QString& path) const
 {
     if (_selectiveSyncBlackList.isEmpty()) {
@@ -83,4 +85,6 @@ void DiscoveryJob::start() {
     lastUpdateProgressCallbackCall.invalidate();
     emit finished(csync_update(_csync_ctx));
     deleteLater();
+}
+
 }
