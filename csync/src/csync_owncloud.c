@@ -541,7 +541,10 @@ static struct listdir_context *fetch_resource_list(csync_owncloud_ctx_t *ctx, co
         }
     }
 
-    ctx->csync_ctx->callbacks.update_callback(false, curi, ctx->csync_ctx->callbacks.update_callback_userdata);
+    if( ctx->csync_ctx->callbacks.update_callback ) {
+	ctx->csync_ctx->callbacks.update_callback(false, curi, 
+              ctx->csync_ctx->callbacks.update_callback_userdata);
+    }
 
     fetchCtx = c_malloc( sizeof( struct listdir_context ));
     if (!fetchCtx) {

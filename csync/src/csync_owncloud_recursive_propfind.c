@@ -54,7 +54,9 @@ struct listdir_context *get_listdir_context_from_recursive_cache(csync_owncloud_
         DEBUG_WEBDAV("get_listdir_context_from_recursive_cache No element %s in cache found", curi);
         return NULL;
     }
-    ctx->csync_ctx->callbacks.update_callback(false, curi, ctx->csync_ctx->callbacks.update_callback_userdata);
+    if( ctx->csync_ctx->callbacks.update_callback ) {
+        ctx->csync_ctx->callbacks.update_callback(false, curi, ctx->csync_ctx->callbacks.update_callback_userdata);
+    }
 
     /* Out of the element, create a listdir_context.. if we could be sure that it is immutable, we could ref instead.. need to investigate */
     fetchCtx = c_malloc( sizeof( struct listdir_context ));
@@ -147,7 +149,9 @@ static void propfind_results_recursive_callback(void *userdata,
             // a recursive PROPFIND might take some time but we still want to
             // be informed. Later when get_listdir_context_from_recursive_cache is
             // called the DB queries might be the problem causing slowness, so do it again there then.
-            ctx->csync_ctx->callbacks.update_callback(false, path, ctx->csync_ctx->callbacks.update_callback_userdata);
+            if( ctx->csync_ctx->callbacks.update_callback ) {
+		ctx->csync_ctx->callbacks.update_callback(false, path, ctx->csync_ctx->callbacks.update_callback_userdata);
+	    }
         }
     }
 
@@ -196,7 +200,9 @@ void fetch_resource_list_recursive(csync_owncloud_ctx_t *ctx, const char *uri, c
     int depth = NE_DEPTH_INFINITE;
 
     DEBUG_WEBDAV("fetch_resource_list_recursive Starting recursive propfind %s %s", uri, curi);
-    ctx->csync_ctx->callbacks.update_callback(false, curi, ctx->csync_ctx->callbacks.update_callback_userdata);
+    if( ctx->csync_ctx->callbacks.update_callback ) {
+	ctx->csync_ctx->callbacks.update_callback(false, curi, ctx->csync_ctx->callbacks.update_callback_userdata);
+    }
 
     /* do a propfind request and parse the results in the results function, set as callback */
     hdl = ne_propfind_create(ctx->dav_session.ctx, curi, depth);
