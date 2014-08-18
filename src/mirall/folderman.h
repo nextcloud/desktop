@@ -51,7 +51,7 @@ public:
       * QString targetPath on remote
       */
     void addFolderDefinition(const QString&, const QString&, const QString& ,
-                             const QStringList &selectiveSyncBlacklist = QStringList{} );
+                             const QStringList &selectiveSyncBlacklist = QStringList() );
 
     /** Returns the folder which the file or directory stored in path is in */
     Folder* folderForPath(const QString& path);
