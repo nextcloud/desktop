@@ -282,6 +282,9 @@ QIcon Theme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
 
     switch( status ) {
     case SyncResult::Undefined:
+        // this can happen if no sync connections are configured.
+        statusIcon = QLatin1String("state-information");
+        break;
     case SyncResult::NotYetStarted:
     case SyncResult::SyncRunning:
         statusIcon = QLatin1String("state-sync");

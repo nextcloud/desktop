@@ -46,13 +46,13 @@ public:
 
 public slots:
     void showActivityPage();
+    void slotUpdateAccountIcon(const QIcon& icon);
 
 protected:
     void reject() Q_DECL_OVERRIDE;
     void accept() Q_DECL_OVERRIDE;
 
 private slots:
-    void slotUpdateAccountIcon(const QIcon& icon);
 
 private:
     Ui::SettingsDialog *_ui;
