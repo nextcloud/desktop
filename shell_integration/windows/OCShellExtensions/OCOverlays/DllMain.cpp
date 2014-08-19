@@ -108,7 +108,7 @@ HRESULT RegisterCLSID(LPCOLESTR guidStr, PCWSTR overlayStr, PCWSTR szModule)
 		return hResult;
 	}
 
-	hResult = OCOverlayRegistrationHandler::RegisterCOMObject(szModule, guid);
+	hResult = OCOverlayRegistrationHandler::RegisterCOMObject(szModule, overlayStr, guid);
 
 	if (!SUCCEEDED(hResult)) {
 		return hResult;

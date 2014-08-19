@@ -70,7 +70,7 @@ HRESULT OCOverlayRegistrationHandler::RemoveRegistryEntries(PCWSTR friendlyName)
 	return hResult;
 }
 
-HRESULT OCOverlayRegistrationHandler::RegisterCOMObject(PCWSTR modulePath, const CLSID& clsid)
+HRESULT OCOverlayRegistrationHandler::RegisterCOMObject(PCWSTR modulePath, PCWSTR friendlyName, const CLSID& clsid)
 {
     if (modulePath == NULL) {
         return E_FAIL;
@@ -92,14 +92,15 @@ HRESULT OCOverlayRegistrationHandler::RegisterCOMObject(PCWSTR modulePath, const
 		return hResult;
 	}
 
+	hResult = HRESULT_FROM_WIN32(RegSetValue(clsidKey, NULL, REG_SZ, friendlyName, (DWORD) wcslen(friendlyName)));
+
 	HKEY inprocessKey = NULL;
 	hResult = HRESULT_FROM_WIN32(RegCreateKeyEx(clsidKey, REGISTRY_IN_PROCESS, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &inprocessKey, NULL));
 	if(!SUCCEEDED(hResult))	{
 		return hResult;
 	}
 
-	DWORD cbData = lstrlen(modulePath) * sizeof(*modulePath);
-	hResult = HRESULT_FROM_WIN32(RegSetValue(inprocessKey, NULL, REG_SZ, modulePath, cbData));
+	hResult = HRESULT_FROM_WIN32(RegSetValue(inprocessKey, NULL, REG_SZ, modulePath, (DWORD) wcslen(modulePath)));
 
 	if(!SUCCEEDED(hResult)) {
 		return hResult;
