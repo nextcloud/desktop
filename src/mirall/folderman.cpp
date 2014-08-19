@@ -346,7 +346,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     return folder;
 }
 
-void FolderMan::slotEnableFolder( const QString& alias, bool enable )
+void FolderMan::slotSetFolderPaused( const QString& alias, bool paused )
 {
     if( ! _folderMap.contains( alias ) ) {
       qDebug() << "!! Can not enable alias " << alias << ", can not be found in folderMap.";
@@ -355,7 +355,6 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
 
     Folder *f = _folderMap[alias];
     if( f ) {
-        f->setSyncEnabled(enable);
         slotScheduleSync(alias);
 
         // FIXME: Use MirallConfigFile
@@ -442,7 +441,6 @@ void FolderMan::slotScheduleSync( const QString& alias )
             }
         }
         _scheduleQueue.enqueue(alias);
-
     } else {
         qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
@@ -450,6 +448,8 @@ void FolderMan::slotScheduleSync( const QString& alias )
     QTimer::singleShot(500, this, SLOT(slotScheduleFolderSync()));
 }
 
+// only enable or disable foldermans will to schedule and do syncs.
+// this is not the same as Pause and Resume of folders.
 void FolderMan::setSyncEnabled( bool enabled )
 {
     if (!_syncEnabled && enabled && !_scheduleQueue.isEmpty()) {
@@ -457,12 +457,8 @@ void FolderMan::setSyncEnabled( bool enabled )
         QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
     }
     _syncEnabled = enabled;
-
-    foreach( Folder *f, _folderMap.values() ) {
-        if(f) { // check for f != 0. That can happen, do not remove the check!
-            f->setSyncEnabled(enabled && !_disabledFolders.contains(f));
-        }
-    }
+    // force a redraw in case the network connect status changed
+    emit( folderSyncStateChange(QString::null) );
 }
 
 /*

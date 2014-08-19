@@ -482,7 +482,7 @@ void Folder::slotTerminateSync()
         // Do not display an error message, user knows his own actions.
         // _errors.append( tr("The CSync thread terminated.") );
         // _csyncError = true;
-        setSyncEnabled(false);
+        FolderMan::instance()->slotSetFolderPaused(alias(), true);
         setSyncState(SyncResult::SyncAbortRequested);
         return;
     }
