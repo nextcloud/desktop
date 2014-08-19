@@ -44,4 +44,4 @@
 
 #define GET_FILE_OVERLAY_ID		L"getFileIconId"
 
-#define PORT				33001
+#define PORT				34001
