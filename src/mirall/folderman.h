@@ -77,7 +77,7 @@ public:
     /** Creates a new and empty local directory. */
     bool startFromScratch( const QString& );
 
-    QString statusToString( SyncResult, bool enabled ) const;
+    QString statusToString(SyncResult, bool paused ) const;
 
     static SyncResult accountStatus( const QList<Folder*> &folders );
 
@@ -88,6 +88,8 @@ signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.
       * Get the state via the Folder Map or the syncResult and syncState methods.
+      *
+      * Attention: The alias string may be zero. Do a general update of the state than.
       */
     void folderSyncStateChange( const QString & );
 
@@ -95,7 +97,7 @@ signals:
 
 public slots:
     void slotRemoveFolder( const QString& );
-    void slotEnableFolder( const QString&, bool );
+    void slotSetFolderPaused(const QString&, bool paused);
 
     void slotFolderSyncStarted();
     void slotFolderSyncFinished( const SyncResult& );

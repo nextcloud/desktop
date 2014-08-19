@@ -54,7 +54,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _path(path)
       , _remotePath(secondPath)
       , _alias(alias)
-      , _enabled(true)
+      , _paused(false)
       , _csyncError(false)
       , _csyncUnavail(false)
       , _wipeDb(false)
@@ -215,14 +215,14 @@ QString Folder::nativePath() const
     return QDir::toNativeSeparators(_path);
 }
 
-bool Folder::syncEnabled() const
+bool Folder::syncPaused() const
 {
-  return _enabled;
+  return _paused;
 }
 
-void Folder::setSyncEnabled( bool doit )
+void Folder::setSyncPaused( bool doit )
 {
-  _enabled = doit;
+  _paused = doit;
 
   if( doit ) {
       // qDebug() << "Syncing enabled on folder " << name();
