@@ -227,7 +227,7 @@ void AccountSettings::slotAddFolder( Folder *folder )
     if( ! folder || folder->alias().isEmpty() ) return;
 
     QStandardItem *item = new QStandardItem();
-    folderToModelItem( item, folder );
+    folderToModelItem( item, folder, _account->state() == Account::Connected );
     _model->appendRow( item );
     // in order to update the enabled state of the "Sync now" button
     connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChange()), Qt::UniqueConnection);
@@ -249,7 +249,7 @@ void AccountSettings::setGeneralErrors( const QStringList& errors )
     }
 }
 
-void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
+void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f, bool accountConnected )
 {
     if( ! item || !f ) return;
 
@@ -257,6 +257,7 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
     item->setData( f->remotePath(),        FolderStatusDelegate::FolderSecondPathRole );
     item->setData( f->alias(),             FolderStatusDelegate::FolderAliasRole );
     item->setData( f->syncPaused(),        FolderStatusDelegate::FolderSyncPaused );
+    item->setData( accountConnected,       FolderStatusDelegate::FolderAccountConnected );
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
 
@@ -516,7 +517,7 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
     }
 
     if( item ) {
-        folderToModelItem( item, folder );
+        folderToModelItem( item, folder, _account->state() == Account::Connected );
     } else {
         // the dialog is not visible.
     }
@@ -782,10 +783,10 @@ void AccountSettings::slotSyncStateChange(const QString& alias)
 {
     Q_UNUSED(alias);
 
-    FolderMan *folderMan = FolderMan::instance();
-    SyncResult state = folderMan->accountStatus(folderMan->map().values());
     QIcon icon;
     if (_account && _account->state() == Account::Connected) {
+        FolderMan *folderMan = FolderMan::instance();
+        SyncResult state = folderMan->accountStatus(folderMan->map().values());
         icon = Theme::instance()->syncStateIcon(state.status());
     } else {
         icon = Theme::instance()->folderOfflineIcon();

@@ -133,8 +133,9 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   QString itemString    = qvariant_cast<QString>(index.data(SyncProgressItemString));
   int warningCount      = qvariant_cast<int>(index.data(WarningCount));
   bool syncOngoing      = qvariant_cast<bool>(index.data(SyncRunning));
+
   // QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
-  bool syncEnabled = index.data(FolderSyncEnabled).toBool();
+  bool syncEnabled = index.data(FolderAccountConnected).toBool();
   // QString syncStatus = syncEnabled? tr( "Enabled" ) : tr( "Disabled" );
 
   QRect iconRect = option.rect;
