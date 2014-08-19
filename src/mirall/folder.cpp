@@ -260,6 +260,7 @@ void Folder::slotPollTimerTimeout()
         qDebug() << "** Force Sync now, state is " << _syncResult.statusString();
         emit scheduleToSync(alias());
     } else {
+        // do the ordinary etag chech for the root folder.
         RequestEtagJob* job = new RequestEtagJob(AccountManager::instance()->account(), remotePath(), this);
         // check if the etag is different
         QObject::connect(job, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
@@ -689,7 +690,7 @@ void Folder::slotEmitFinishedDelayed()
 }
 
 
-void Folder::slotFolderDiscovered(bool local, QString folderName)
+void Folder::slotFolderDiscovered(bool, QString folderName)
 {
     Progress::Info pi;
     pi._currentDiscoveredFolder = folderName;

@@ -164,12 +164,12 @@ void ownCloudGui::slotSyncStateChange( const QString& alias )
 
     slotComputeOverallSyncStatus();
 
+    if( alias.isEmpty() ) {
+        return; // Valid, just a general GUI redraw was needed.
+    }
+
     qDebug() << "Sync state changed for folder " << alias << ": "  << result.statusString();
 
-    // Promote sync result to settings-dialog for sync protocol?
-    // if( _progressDialog ) {
-    //     _progressDialog->setSyncResult(result);
-    // }
     if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();
     }
@@ -204,8 +204,10 @@ void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
     }
 
     _startupFails = fails; // store that for the settings dialog once it appears.
-    if( !_settingsDialog.isNull() )
+    if( !_settingsDialog.isNull() ) {
         _settingsDialog->setGeneralErrors( _startupFails );
+    }
+
 }
 
 void ownCloudGui::slotComputeOverallSyncStatus()
