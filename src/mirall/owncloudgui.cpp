@@ -54,7 +54,9 @@ ownCloudGui::ownCloudGui(Application *parent) :
 {
     _tray = new Systray();
     _tray->setParent(this);
-    _tray->setIcon( Theme::instance()->syncStateIcon( SyncResult::NotYetStarted, true ) );
+
+    // for the beginning, set the offline icon until the account was verified
+    _tray->setIcon( Theme::instance()->folderOfflineIcon(true));
 
     connect(_tray.data(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
