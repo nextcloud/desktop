@@ -208,6 +208,8 @@ void Application::slotCleanup()
     if (account) {
         account->save();
     }
+    FolderMan::instance()->unloadAllFolders();
+
     _gui->slotShutdown();
     _gui->deleteLater();
 }
