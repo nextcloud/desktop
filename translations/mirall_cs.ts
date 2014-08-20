@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Selective Sync...</source>
-        <translation type="unfinished"/>
+        <translation>Výběrová synchronizace...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="143"/>
@@ -589,7 +589,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="433"/>
         <source>Selective Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Výběrová synchronizace: Můžete dodatečně označit podadresáře, které si nepřejete synchronizovat.</translation>
     </message>
 </context>
 <context>
@@ -2043,7 +2043,7 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Verze %1. Pro více informací navštivte &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distribuováno %4 a licencováno pod GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 a logo %5 jsou registrované obchodní známky %4 ve&lt;br&gt;Spojených státech, ostatních zemích nebo obojí.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

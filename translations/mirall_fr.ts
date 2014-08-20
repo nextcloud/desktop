@@ -1909,7 +1909,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="153"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>Le temps d&apos;attente pour la connexion réseau s&apos;est écoulé.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="156"/>
@@ -1985,7 +1985,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="778"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Non autorisé parce-que vous n&apos;avez pas la permission d&apos;ajouter des sous-dossiers dans ce dossier</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="785"/>
@@ -2011,7 +2011,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="899"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Déplacement non autorisé, élément restauré</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="908"/>

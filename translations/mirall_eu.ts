@@ -1070,7 +1070,8 @@ for additional privileges during the process.</source>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="105"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Url hori EZ da segurua ez baitago kodetuta.
+Ez da gomendagarria erabltzea.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="109"/>
@@ -1230,7 +1231,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizard.cpp" line="83"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Saltatu karpeten ezarpenak</translation>
     </message>
 </context>
 <context>
@@ -2515,7 +2516,7 @@ Saiatu horiek berriz sinkronizatzen.</translation>
         <location filename="../src/mirall/progressdispatcher.cpp" line="78"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="80"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>ezezaguna</translation>
     </message>
 </context>
 <context>

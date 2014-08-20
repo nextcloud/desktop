@@ -246,7 +246,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="90"/>
         <source>No ownCloud account configured</source>
-        <translation>ownCloud アカウントが設定されていません</translation>
+        <translation>ownCloudアカウントが設定されていません</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="105"/>

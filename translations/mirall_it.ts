@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Selective Sync...</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione selettiva...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="143"/>
@@ -589,7 +589,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="433"/>
         <source>Selective Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione selettiva: puoi deselezionare opzionalmente le sottocartelle che non desideri sincronizzare.</translation>
     </message>
 </context>
 <context>
@@ -2041,7 +2041,7 @@ Prova a sincronizzare nuovamente.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versione %1 Per ulteriori informazioni, visita &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;. &lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distribuito da %4 e sotto licenza GNU General Public License (GPL) versione 2.0.&lt;br/&gt;%5 e il logo di %5 sono marchi registrati di %4 negli Stati Uniti, in altri paesi o entrambi.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2182,7 +2182,7 @@ Prova a sincronizzare nuovamente.</translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versione %2. Per ulteriori informazioni, visita &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Di Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz e altri.&lt;br/&gt;Basato su Mirall di Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Sotto licenza GNU Public License (GPL) versione 2.0&lt;br&gt;ownCloud e il logo di ownCloud sono marchi registrati di ownCloud, Inc. negli Stati Uniti, in altri paesi o entrambi&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

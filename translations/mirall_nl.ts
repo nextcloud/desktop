@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Selective Sync...</source>
-        <translation type="unfinished"/>
+        <translation>Selectieve sync:</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="143"/>
@@ -589,7 +589,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="433"/>
         <source>Selective Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Selectieve Sunc: u kunt optioneel de submappen deselecteren die u niet wenst te synchroniseren.</translation>
     </message>
 </context>
 <context>
@@ -1716,7 +1716,7 @@ Probeer opnieuw te synchroniseren.</translation>
         <location filename="../src/mirall/sslbutton.cpp" line="214"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation>Deze verbinding is NIET veilig, omdat de verbinding niet is versleuteld.
+        <translation>Deze verbinding is NIET veilig, omdat deze niet versleuteld is.
 </translation>
     </message>
 </context>
@@ -1741,7 +1741,7 @@ Probeer opnieuw te synchroniseren.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="134"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation>Waarschuwing over huidige SSL Connectie:</translation>
+        <translation>Waarschuwing over huidige SSL-verbinding:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="170"/>
@@ -2042,7 +2042,7 @@ Probeer opnieuw te synchroniseren.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versie %1 Voor meer informatie bezoekt u &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Gedistribueerd door %4 en verstrekt onder de GNU General Public License (GPL) Versie 2.0.&lt;br&gt;%5 en het %5 logo zijn geregistreerde handelsmerken van %4 in de Verenigde Staten, andere landen, of beide.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2183,7 +2183,7 @@ Probeer opnieuw te synchroniseren.</translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versie %2. Bezoek voor meer informatie &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Door Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz en anderen.&lt;br&gt;Gebaseerd op MIrall van Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Gelicenseerd onder de GNU Public License (GPL) Versie 2.0&lt;br&gt;ownCloud en het ownCloud logo zijn geregistreerde handelsmerken van ownCloud,Inc. in de Verenigde Staten, andere landen, of beide.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
