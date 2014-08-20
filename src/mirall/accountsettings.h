@@ -87,7 +87,7 @@ protected slots:
 
 private:
     QString shortenFilename( const QString& folder, const QString& file ) const;
-    void folderToModelItem( QStandardItem *, Folder * );
+    void folderToModelItem(QStandardItem *, Folder * , bool accountConnected);
     QStandardItem* itemForFolder(const QString& );
     void showConnectionLabel( const QString& message, const QString& tooltip = QString() );
 

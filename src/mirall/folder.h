@@ -85,9 +85,9 @@ public:
      * If the sync is switched off, the startSync method is not going to
      * be called.
      */
-     void setSyncEnabled( bool );
+     void setSyncPaused( bool );
 
-     bool syncEnabled() const;
+     bool syncPaused() const;
 
      void prepareToSync();
 
@@ -189,7 +189,7 @@ private:
     QString   _remotePath;
     QString   _alias;
     QString   _configFile;
-    bool       _enabled;
+    bool       _paused;
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
     QStringList  _errors;

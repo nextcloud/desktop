@@ -332,7 +332,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[alias] = folder;
     if (paused) {
-        folder->setSyncEnabled(!paused);
+        folder->setSyncPaused(paused);
         _disabledFolders.insert(folder);
     }
 
@@ -348,7 +348,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     return folder;
 }
 
-void FolderMan::slotEnableFolder( const QString& alias, bool enable )
+void FolderMan::slotSetFolderPaused( const QString& alias, bool paused )
 {
     if( ! _folderMap.contains( alias ) ) {
       qDebug() << "!! Can not enable alias " << alias << ", can not be found in folderMap.";
@@ -357,13 +357,12 @@ void FolderMan::slotEnableFolder( const QString& alias, bool enable )
 
     Folder *f = _folderMap[alias];
     if( f ) {
-        f->setSyncEnabled(enable);
         slotScheduleSync(alias);
 
         // FIXME: Use MirallConfigFile
         QSettings settings(f->configFile(), QSettings::IniFormat);
         settings.beginGroup(escapeAlias(f->alias()));
-        if (enable) {
+        if (!paused) {
             settings.remove("paused");
             _disabledFolders.remove(f);
         } else {
@@ -412,7 +411,7 @@ SyncResult FolderMan::syncResult( const QString& alias )
 void FolderMan::slotScheduleAllFolders()
 {
     foreach( Folder *f, _folderMap.values() ) {
-        if (f && f->syncEnabled()) {
+        if (f && ! f->syncPaused()) {
             slotScheduleSync( f->alias() );
         }
     }
@@ -435,7 +434,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
     if( ! _scheduleQueue.contains(alias ) && _folderMap.contains(alias) ) {
         Folder *f = _folderMap[alias];
         if( f ) {
-            if( f->syncEnabled() ) {
+            if( !f->syncPaused() ) {
                 f->prepareToSync();
             } else {
                 qDebug() << "Folder is not enabled, not scheduled!";
@@ -444,7 +443,6 @@ void FolderMan::slotScheduleSync( const QString& alias )
             }
         }
         _scheduleQueue.enqueue(alias);
-
     } else {
         qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
@@ -452,6 +450,8 @@ void FolderMan::slotScheduleSync( const QString& alias )
     QTimer::singleShot(500, this, SLOT(slotScheduleFolderSync()));
 }
 
+// only enable or disable foldermans will to schedule and do syncs.
+// this is not the same as Pause and Resume of folders.
 void FolderMan::setSyncEnabled( bool enabled )
 {
     if (!_syncEnabled && enabled && !_scheduleQueue.isEmpty()) {
@@ -459,12 +459,8 @@ void FolderMan::setSyncEnabled( bool enabled )
         QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
     }
     _syncEnabled = enabled;
-
-    foreach( Folder *f, _folderMap.values() ) {
-        if(f) { // check for f != 0. That can happen, do not remove the check!
-            f->setSyncEnabled(enabled && !_disabledFolders.contains(f));
-        }
-    }
+    // force a redraw in case the network connect status changed
+    emit( folderSyncStateChange(QString::null) );
 }
 
 /*
@@ -489,7 +485,7 @@ void FolderMan::slotScheduleFolderSync()
         const QString alias = _scheduleQueue.dequeue();
         if( _folderMap.contains( alias ) ) {
             Folder *f = _folderMap[alias];
-            if( f && f->syncEnabled() ) {
+            if( f && !f->syncPaused() ) {
                 _currentSyncFolder = alias;
 
                 f->startSync( QStringList() );
@@ -589,7 +585,7 @@ void FolderMan::removeFolder( const QString& alias )
         f->wipe();
 
         // can be removed if we are able to delete the folder object.
-        f->setSyncEnabled(false);
+        f->setSyncPaused(true);
 
         // remove the folder configuration
         QFile file(f->configFile() );
@@ -684,39 +680,44 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
     if( cnt == 1 ) {
         Folder *folder = folders.at(0);
         if( folder ) {
-            SyncResult::Status syncStatus = folder->syncResult().status();
+            if( folder->syncPaused() ) {
+                overallResult.setStatus(SyncResult::Paused);
+            } else {
+                SyncResult::Status syncStatus = folder->syncResult().status();
 
-            switch( syncStatus ) {
-            case SyncResult::Undefined:
-                overallResult.setStatus(SyncResult::Error);
-                break;
-            case SyncResult::NotYetStarted:
-                overallResult.setStatus( SyncResult::NotYetStarted );
-                break;
-            case SyncResult::SyncPrepare:
-                overallResult.setStatus( SyncResult::SyncPrepare );
-                break;
-            case SyncResult::SyncRunning:
-                overallResult.setStatus( SyncResult::SyncRunning );
-                break;
-            case SyncResult::Problem: // don't show the problem icon in tray.
-            case SyncResult::Success:
-                if( overallResult.status() == SyncResult::Undefined )
-                    overallResult.setStatus( SyncResult::Success );
-                break;
-            case SyncResult::Error:
-                overallResult.setStatus( SyncResult::Error );
-                break;
-            case SyncResult::SetupError:
-                if ( overallResult.status() != SyncResult::Error )
-                    overallResult.setStatus( SyncResult::SetupError );
-                break;
-            case SyncResult::SyncAbortRequested:
-                overallResult.setStatus( SyncResult::SyncAbortRequested);
-                break;
-            case SyncResult::Paused:
-                overallResult.setStatus( SyncResult::Paused);
-                break;
+
+                switch( syncStatus ) {
+                case SyncResult::Undefined:
+                    overallResult.setStatus(SyncResult::Error);
+                    break;
+                case SyncResult::NotYetStarted:
+                    overallResult.setStatus( SyncResult::NotYetStarted );
+                    break;
+                case SyncResult::SyncPrepare:
+                    overallResult.setStatus( SyncResult::SyncPrepare );
+                    break;
+                case SyncResult::SyncRunning:
+                    overallResult.setStatus( SyncResult::SyncRunning );
+                    break;
+                case SyncResult::Problem: // don't show the problem icon in tray.
+                case SyncResult::Success:
+                    if( overallResult.status() == SyncResult::Undefined )
+                        overallResult.setStatus( SyncResult::Success );
+                    break;
+                case SyncResult::Error:
+                    overallResult.setStatus( SyncResult::Error );
+                    break;
+                case SyncResult::SetupError:
+                    if ( overallResult.status() != SyncResult::Error )
+                        overallResult.setStatus( SyncResult::SetupError );
+                    break;
+                case SyncResult::SyncAbortRequested:
+                    overallResult.setStatus( SyncResult::SyncAbortRequested);
+                    break;
+                case SyncResult::Paused:
+                    overallResult.setStatus( SyncResult::Paused);
+                    break;
+                }
             }
         }
     } else {
@@ -727,30 +728,34 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
         int various = 0;
 
         foreach ( Folder *folder, folders ) {
-            SyncResult folderResult = folder->syncResult();
-            SyncResult::Status syncStatus = folderResult.status();
-
-            switch( syncStatus ) {
-            case SyncResult::Undefined:
-            case SyncResult::NotYetStarted:
-            case SyncResult::SyncPrepare:
-                various++;
-                break;
-            case SyncResult::SyncRunning:
-                runSeen++;
-                break;
-            case SyncResult::Problem: // don't show the problem icon in tray.
-            case SyncResult::Success:
-                goodSeen++;
-                break;
-            case SyncResult::Error:
-            case SyncResult::SetupError:
-                errorsSeen++;
-                break;
-            case SyncResult::SyncAbortRequested:
-            case SyncResult::Paused:
+            if( folder->syncPaused() ) {
                 abortSeen++;
-                // no default case on purpose, check compiler warnings
+            } else {
+                SyncResult folderResult = folder->syncResult();
+                SyncResult::Status syncStatus = folderResult.status();
+
+                switch( syncStatus ) {
+                case SyncResult::Undefined:
+                case SyncResult::NotYetStarted:
+                case SyncResult::SyncPrepare:
+                    various++;
+                    break;
+                case SyncResult::SyncRunning:
+                    runSeen++;
+                    break;
+                case SyncResult::Problem: // don't show the problem icon in tray.
+                case SyncResult::Success:
+                    goodSeen++;
+                    break;
+                case SyncResult::Error:
+                case SyncResult::SetupError:
+                    errorsSeen++;
+                    break;
+                case SyncResult::SyncAbortRequested:
+                case SyncResult::Paused:
+                    abortSeen++;
+                    // no default case on purpose, check compiler warnings
+                }
             }
         }
         bool set = false;
@@ -776,7 +781,7 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
     return overallResult;
 }
 
-QString FolderMan::statusToString( SyncResult syncStatus, bool enabled ) const
+QString FolderMan::statusToString( SyncResult syncStatus, bool paused ) const
 {
     QString folderMessage;
     switch( syncStatus.status() ) {
@@ -811,7 +816,7 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool enabled ) const
         break;
     // no default case on purpose, check compiler warnings
     }
-    if( !enabled ) {
+    if( paused ) {
         // sync is disabled.
         folderMessage = tr( "%1 (Sync is paused)" ).arg(folderMessage);
     }
