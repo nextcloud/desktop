@@ -235,7 +235,11 @@ void AccountSettings::slotAddFolder( Folder *folder )
     if( ! folder || folder->alias().isEmpty() ) return;
 
     QStandardItem *item = new QStandardItem();
-    folderToModelItem( item, folder, _account->state() == Account::Connected );
+    bool isConnected = false;
+    if (_account) {
+        isConnected = (_account->state() == Account::Connected);
+    }
+    folderToModelItem( item, folder,  isConnected);
     _model->appendRow( item );
     // in order to update the enabled state of the "Sync now" button
     connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChange()), Qt::UniqueConnection);
@@ -273,7 +277,7 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f, bool ac
 
     Theme *theme = Theme::instance();
     item->setData( theme->statusHeaderText( status ),  Qt::ToolTipRole );
-    if (_account->state() == Account::Connected) {
+    if ( accountConnected ) {
         if( f->syncPaused() ) {
             item->setData( theme->folderDisabledIcon( ), FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
             _wasDisabledBefore = false;
