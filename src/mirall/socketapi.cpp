@@ -261,7 +261,7 @@ void SocketApi::slotUnregisterPath( const QString& alias )
 {
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
-        broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path() );
+        broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path(), QString::null, true );
     }
 }
 
@@ -304,7 +304,7 @@ void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item
 
 
 
-void SocketApi::sendMessage(QTcpSocket *socket, const QString& message)
+void SocketApi::sendMessage(QTcpSocket *socket, const QString& message, bool doWait)
 {
     DEBUG << "Sending message: " << message;
     QString localMessage = message;
@@ -312,13 +312,16 @@ void SocketApi::sendMessage(QTcpSocket *socket, const QString& message)
         localMessage.append(QLatin1Char('\n'));
     }
     qint64 sent = socket->write(localMessage.toUtf8());
+    if( doWait ) {
+        socket->waitForBytesWritten(1000);
+    }
     if( sent != localMessage.toUtf8().length() ) {
         qDebug() << "WARN: Could not send all data on socket for " << localMessage;
     }
 
 }
 
-void SocketApi::broadcastMessage( const QString& verb, const QString& path, const QString& status )
+void SocketApi::broadcastMessage( const QString& verb, const QString& path, const QString& status, bool doWait )
 {
     QString msg(verb);
 
@@ -333,7 +336,7 @@ void SocketApi::broadcastMessage( const QString& verb, const QString& path, cons
 
     DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << msg;
     foreach(QTcpSocket *socket, _listeners) {
-        sendMessage(socket, msg);
+        sendMessage(socket, msg, doWait);
     }
 }
 
