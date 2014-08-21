@@ -474,6 +474,7 @@ SectionEnd
       File "${BUILD_PATH}\vcredist_x86.exe"
       File "${BUILD_PATH}\vcredist_x64.exe"
       Call InstallRedistributables
+      CreateDirectory "$INSTDIR\shellext"
       ${If} ${RunningX64}
          !define LIBRARY_X64
          !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCUtil_x64.dll" "$INSTDIR\shellext\OCUtil_x64.dll" "$INSTDIR\shellext"
