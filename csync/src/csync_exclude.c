@@ -40,28 +40,28 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
 #include "csync_log.h"
 
-static int _csync_exclude_add(CSYNC *ctx, const char *string) {
+static int _csync_exclude_add(c_strlist_t **inList, const char *string) {
     c_strlist_t *list;
 
-    if (ctx->excludes == NULL) {
-        ctx->excludes = c_strlist_new(32);
-        if (ctx->excludes == NULL) {
+    if (*inList == NULL) {
+        *inList = c_strlist_new(32);
+        if (*inList == NULL) {
             return -1;
         }
     }
 
-    if (ctx->excludes->count == ctx->excludes->size) {
-        list = c_strlist_expand(ctx->excludes, 2 * ctx->excludes->size);
+    if ((*inList)->count == (*inList)->size) {
+        list = c_strlist_expand(*inList, 2 * (*inList)->size);
         if (list == NULL) {
             return -1;
         }
-        ctx->excludes = list;
+        *inList = list;
     }
 
-    return c_strlist_add(ctx->excludes, string);
+    return c_strlist_add(*inList, string);
 }
 
-int csync_exclude_load(CSYNC *ctx, const char *fname) {
+int csync_exclude_load(const char *fname, c_strlist_t **list) {
   int fd = -1;
   int i = 0;
   int rc = -1;
@@ -70,7 +70,7 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
   char *entry = NULL;
   mbchar_t *w_fname;
 
-  if (ctx == NULL || fname == NULL) {
+  if (fname == NULL) {
       return -1;
   }
 
@@ -119,7 +119,7 @@ int csync_exclude_load(CSYNC *ctx, const char *fname) {
         buf[i] = '\0';
         if (*entry != '#') {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", entry);
-          rc = _csync_exclude_add(ctx, entry);
+          rc = _csync_exclude_add(list, entry);
           if (rc < 0) {
               goto out;
           }
@@ -145,6 +145,21 @@ void csync_exclude_destroy(CSYNC *ctx) {
 }
 
 CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
+
+    CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
+
+    match = csync_excluded_no_ctx( ctx->excludes, path, filetype );
+
+    if (match == CSYNC_NOT_EXCLUDED && ctx->checkBlackListHook) {
+        if (ctx->checkBlackListHook(ctx->checkBlackListData, path)) {
+            match = CSYNC_FILE_EXCLUDE_LIST;
+        }
+    }
+
+    return match;
+}
+
+CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype) {
   size_t i = 0;
   const char *p = NULL;
   char *bname = NULL;
@@ -226,14 +241,14 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
   SAFE_FREE(bname);
   SAFE_FREE(dname);
 
-  if (ctx == NULL || ctx->excludes == NULL) {
+  if( ! excludes ) {
       goto out;
   }
 
   /* Loop over all exclude patterns and evaluate the given path */
-  for (i = 0; match == CSYNC_NOT_EXCLUDED && i < ctx->excludes->count; i++) {
+  for (i = 0; match == CSYNC_NOT_EXCLUDED && i < excludes->count; i++) {
       bool match_dirs_only = false;
-      char *pattern_stored = c_strdup(ctx->excludes->vector[i]);
+      char *pattern_stored = c_strdup(excludes->vector[i]);
       char* pattern = pattern_stored;
 
       type = CSYNC_FILE_EXCLUDE_LIST;
@@ -313,11 +328,6 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
       SAFE_FREE(dname);
   }
 
-  if (match == CSYNC_NOT_EXCLUDED && ctx->checkBlackListHook) {
-      if (ctx->checkBlackListHook(ctx->checkBlackListData, path)) {
-          match = CSYNC_FILE_EXCLUDE_LIST;
-      }
-  }
 
 out:
 

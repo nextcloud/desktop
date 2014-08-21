@@ -53,6 +53,7 @@ FolderMan::FolderMan(QObject *parent) :
     _instance = this;
 
     _socketApi = new SocketApi(this);
+    _socketApi->slotReadExcludes();
 }
 
 FolderMan *FolderMan::instance()
@@ -489,6 +490,11 @@ void FolderMan::slotScheduleFolderSync()
                 _currentSyncFolder = alias;
 
                 f->startSync( QStringList() );
+
+                // reread the excludes of the socket api
+                // FIXME: the excludes need rework.
+                _socketApi->slotClearExcludesList();
+                _socketApi->slotReadExcludes();
             }
         }
     }
