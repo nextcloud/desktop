@@ -265,7 +265,8 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._file = fileUtf8;
     item._originalFile = item._file;
 
-    if (item._instruction == CSYNC_INSTRUCTION_NONE) {
+    if (item._instruction == CSYNC_INSTRUCTION_NONE
+            || (item._instruction == CSYNC_INSTRUCTION_IGNORE && file->instruction != CSYNC_INSTRUCTION_NONE)) {
         item._instruction = file->instruction;
         item._modtime = file->modtime;
     } else {
