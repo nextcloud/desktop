@@ -83,7 +83,15 @@ void DiscoveryJob::start() {
     csync_set_log_level(_log_level);
     csync_set_log_userdata(_log_userdata);
     lastUpdateProgressCallbackCall.invalidate();
-    emit finished(csync_update(_csync_ctx));
+    int ret = csync_update(_csync_ctx);
+
+    _csync_ctx->checkBlackListHook = 0;
+    _csync_ctx->checkBlackListData = 0;
+
+    _csync_ctx->callbacks.update_callback = 0;
+    _csync_ctx->callbacks.update_callback_userdata = 0;
+
+    emit finished(ret);
     deleteLater();
 }
 
