@@ -43,8 +43,8 @@ enum csync_exclude_type_e {
 };
 typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
 
-CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
-
+CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype);
+int csync_exclude_load(const char *fname, c_strlist_t **list);
 }
 
 namespace {
@@ -57,7 +57,7 @@ namespace Mirall {
 
 namespace SocketApiHelper {
 
-SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName );
+SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes );
 
 /**
  * @brief recursiveFolderStatus
@@ -70,7 +70,7 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName );
  */
 // compute the file status of a directory recursively. It returns either
 // "all in sync" or "needs update" or "error", no more details.
-SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
+SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName, c_strlist_t *excludes  )
 {
     QDir dir(folder->path() + fileName);
 
@@ -84,14 +84,14 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
         SyncFileStatus sfs;
 
         if( fi.isDir() ) {
-            sfs = recursiveFolderStatus(folder, normalizedFile );
+            sfs = recursiveFolderStatus(folder, normalizedFile, excludes );
         } else {
             QString fs( normalizedFile );
             if( fileName.isEmpty() ) {
                 // toplevel, no slash etc. needed.
                 fs = entry.normalized(QString::NormalizationForm_C);
             }
-            sfs = fileStatus(folder, fs );
+            sfs = fileStatus(folder, fs, excludes);
         }
 
         if( sfs.tag() == SyncFileStatus::STATUS_STAT_ERROR || sfs.tag() == SyncFileStatus::STATUS_ERROR ) {
@@ -106,7 +106,7 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName )
 /**
  * Get status about a single file.
  */
-SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName )
+SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes )
 {
     // FIXME: Find a way for STATUS_ERROR
 
@@ -142,7 +142,8 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName )
 
     // '\' is ignored, so convert to unix path before passing the path in.
     QString unixFileName = QDir::fromNativeSeparators(fileName);
-    CSYNC_EXCLUDE_TYPE excl = csync_excluded(folder->csyncContext(), unixFileName.toUtf8(), type);
+
+    CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, unixFileName.toUtf8(), type);
     if( excl != CSYNC_NOT_EXCLUDED ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
@@ -157,7 +158,7 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName )
     SyncFileStatus status(SyncFileStatus::STATUS_NONE);
     if( type == CSYNC_FTW_TYPE_DIR ) {
         // compute recursive status of the directory
-        status = recursiveFolderStatus( folder, fileName );
+        status = recursiveFolderStatus( folder, fileName, excludes );
     } else if(fi.lastModified() != rec._modtime ) {
         // file was locally modified.
         status.set(SyncFileStatus::STATUS_EVAL);
@@ -179,6 +180,7 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName )
 SocketApi::SocketApi(QObject* parent)
     : QObject(parent)
     , _localServer(new QTcpServer(this))
+    , _excludes(0)
 {
     // setup socket
     DEBUG << "Establishing SocketAPI server at" << PORT;
@@ -197,6 +199,28 @@ SocketApi::~SocketApi()
 {
     DEBUG << "dtor";
     _localServer->close();
+    slotClearExcludesList();
+}
+
+void SocketApi::slotClearExcludesList()
+{
+    c_strlist_clear(_excludes);
+}
+
+void SocketApi::slotReadExcludes()
+{
+    MirallConfigFile cfgFile;
+    slotClearExcludesList();
+    QString excludeList = cfgFile.excludeFile( MirallConfigFile::SystemScope );
+    if( !excludeList.isEmpty() ) {
+        qDebug() << "==== added system ignore list to socketapi:" << excludeList.toUtf8();
+        csync_exclude_load(excludeList.toUtf8(), &_excludes);
+    }
+    excludeList = cfgFile.excludeFile( MirallConfigFile::UserScope );
+    if( !excludeList.isEmpty() ) {
+        qDebug() << "==== added user defined ignore list to csync:" << excludeList.toUtf8();
+        csync_exclude_load(excludeList.toUtf8(), &_excludes);
+    }
 }
 
 void SocketApi::slotNewConnection()
@@ -366,7 +390,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket
         statusString = QLatin1String("NOP");
     } else {
         const QString file = argument.mid(syncFolder->path().length());
-        SyncFileStatus fileStatus = SocketApiHelper::fileStatus(syncFolder, file);
+        SyncFileStatus fileStatus = SocketApiHelper::fileStatus(syncFolder, file, _excludes);
 
         statusString = fileStatus.toSocketAPIString();
     }
