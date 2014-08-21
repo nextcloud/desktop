@@ -271,9 +271,11 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
             _tray->setIcon( icon );
             _tray->setToolTip(tr("There are no sync folders configured."));
+#if !defined Q_OS_MAC
             if( _settingsDialog ) {
                 _settingsDialog->slotUpdateAccountIcon(icon);
             }
+#endif
         }
     }
 }
