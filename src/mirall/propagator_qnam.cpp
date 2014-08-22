@@ -528,6 +528,7 @@ void GETFileJob::start() {
         setReply(davRequest("GET", path(), req));
     } else {
         // Use direct URL
+        req.setAttribute(QNetworkRequest::CookieLoadControlAttribute, QNetworkRequest::Manual);
         setReply(davRequest("GET", _directDownloadUrl, req));
     }
     setupConnections(reply());
@@ -723,7 +724,7 @@ void PropagateDownloadFileQNAM::start()
         _job = new GETFileJob(AccountManager::instance()->account(),
                               url,
                               &_tmpFile, headers);
-        qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item._file << _item._directDownloadUrl;
+        qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item._file << _item._directDownloadUrl << headers["Cookie"];
     }
     _job->setTimeout(_propagator->httpTimeout() * 1000);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
