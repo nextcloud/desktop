@@ -17,6 +17,7 @@
 #include <QDebug>
 #include <QNetworkReply>
 #include <QSettings>
+#include <QNetworkCookieJar>
 
 #include "mirall/account.h"
 #include "mirall/mirallaccessmanager.h"
@@ -88,10 +89,9 @@ protected:
         QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
 
-        if (!req.hasRawHeader("Cookie")) {
-            // Only use our token if the request doesn't have a cookie already (e.g. because of direct download URL)
-            req.setRawHeader("Cookie", _cred->_token.toUtf8()); // analogous to neon in syncContextPreStart
-        }
+        // A pre-authenticated cookie
+        QByteArray token = _cred->_token.toUtf8();
+        setRawCookie(token, request.url());
 
         return MirallAccessManager::createRequest(op, req, outgoingData);
     }

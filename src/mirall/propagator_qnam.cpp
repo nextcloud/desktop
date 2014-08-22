@@ -528,7 +528,6 @@ void GETFileJob::start() {
         setReply(davRequest("GET", path(), req));
     } else {
         // Use direct URL
-        req.setAttribute(QNetworkRequest::CookieLoadControlAttribute, QNetworkRequest::Manual);
         setReply(davRequest("GET", _directDownloadUrl, req));
     }
     setupConnections(reply());

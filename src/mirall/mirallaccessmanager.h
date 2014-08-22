@@ -17,6 +17,8 @@
 #include "owncloudlib.h"
 #include <QNetworkAccessManager>
 
+class QByteArray;
+class QUrl;
 namespace Mirall
 {
 
@@ -26,6 +28,8 @@ class OWNCLOUDSYNC_EXPORT MirallAccessManager : public QNetworkAccessManager
 
 public:
     MirallAccessManager(QObject* parent = 0);
+
+    void setRawCookie(const  QByteArray &rawCookie, const  QUrl &url);
 
 protected:
     QNetworkReply* createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData = 0);
