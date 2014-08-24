@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Selective Sync...</source>
-        <translation type="unfinished"/>
+        <translation>Selektiv Sync...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="143"/>
@@ -151,7 +151,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="609"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Söker igenom %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="653"/>
@@ -193,14 +193,14 @@
         <location filename="../src/mirall/accountsettings.cpp" line="647"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation>%1 %2 (%3 of %4) %5 återstående. Hastighet %6/s</translation>
+        <translation>%1 %2 (%3 of %4). Tid kvar enskild fil %5. Hastighet %6/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="662"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 av %2, fil %3 av %4
-Tid kvar %5</translation>
+Total tid kvar %5</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="789"/>
@@ -2165,7 +2165,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="463"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Söker igenom %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="467"/>
