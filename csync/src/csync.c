@@ -660,7 +660,7 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path) {
     return -1;
   }
 
-  return csync_exclude_load(ctx, path);
+  return csync_exclude_load(path, &ctx->excludes);
 }
 
 void csync_clear_exclude_list(CSYNC *ctx)

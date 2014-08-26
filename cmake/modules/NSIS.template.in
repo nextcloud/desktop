@@ -95,6 +95,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !include WordFunc.nsh  ;Used by VersionCompare macro function.
 !include FileFunc.nsh  ;Used to read out parameters
 !include UAC.nsh ;Used by the UAC elevation to install as user or admin.
+!include Library.nsh ;Used by the COM registration for shell extensions
 !include x64.nsh ;Used to determine the right arch for the shell extensions
 
 ;-----------------------------------------------------------------------------
@@ -277,48 +278,8 @@ FunctionEnd
    no_process_${processName}_to_end:
 !macroend
 
-!macro StartExplorerAsUserMacro un
-   Function ${un}StartExplorerAsUser
-      Exec "$WINDIR\explorer.exe"
-   FunctionEnd
-!macroend
-
-!insertmacro StartExplorerAsUserMacro ""
-!insertmacro StartExplorerAsUserMacro "un."
-
-!macro StartExplorer un
-   DetailPrint "Starting Explorer..."
-   ${UAC.CallFunctionAsUser} ${un}StartExplorerAsUser
-!macroend
-
-!macro StopExplorer
-   DetailPrint "Terminated Explorer..."
-   FindWindow $R0 "Shell_TrayWnd"
-   SendMessage $R0 0x5B4 0 0
-   #Processes::KillProcess explorer.exe
-   Sleep 1500
-   DetailPrint "Continuing..."
-!macroend
-
 Function EnsureOwncloudShutdown
    !insertmacro CheckAndConfirmEndProcess "${APPLICATION_EXECUTABLE}"
-FunctionEnd
-
-Function RegisterShellExt
-   SetOutPath "$INSTDIR\shellext"
-   ${If} ${RunningX64}
-      ExecWait '"$SYSDIR\regsvr32.exe" /s "$OUTDIR\OCOverlays_x64.dll"'
-   ${Else}
-      ExecWait '"$SYSDIR\regsvr32.exe" /s "$OUTDIR\OCOverlays_x86.dll"'
-   ${EndIf}
-FunctionEnd
-
-Function Un.RegisterShellExt
-   ${If} ${RunningX64}
-      ExecWait '"$SYSDIR\regsvr32.exe" /u /s "$INSTDIR\shellext\OCOverlays_x64.dll"'
-   ${Else}
-      ExecWait '"$SYSDIR\regsvr32.exe" /u /s "$INSTDIR\shellext\OCOverlays_x86.dll"'
-   ${EndIf}
 FunctionEnd
 
 Function InstallRedistributables
@@ -510,17 +471,19 @@ SectionEnd
       SectionIn 1 2
       SetDetailsPrint textonly
       DetailPrint $OPTION_SECTION_SC_SHELL_EXT_DetailPrint
-      SetOutPath "$INSTDIR\shellext"
-      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCUtil_x64.dll"
-      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCOverlays_x64.dll"
-      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCUtil_x86.dll"
-      File "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCOverlays_x86.dll"
       File "${BUILD_PATH}\vcredist_x86.exe"
       File "${BUILD_PATH}\vcredist_x64.exe"
       Call InstallRedistributables
-      Call RegisterShellExt
-      !insertMacro StopExplorer
-      !insertMacro StartExplorer ""
+      CreateDirectory "$INSTDIR\shellext"
+      ${If} ${RunningX64}
+         !define LIBRARY_X64
+         !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCUtil_x64.dll" "$INSTDIR\shellext\OCUtil_x64.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCOverlays_x64.dll" "$INSTDIR\shellext\OCOverlays_x64.dll" "$INSTDIR\shellext"
+         !undef LIBRARY_X64
+     ${Else}
+         !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCUtil_x86.dll" "$INSTDIR\shellext\OCUtil_x86.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCOverlays_x86.dll" "$INSTDIR\shellext\OCOverlays_x86.dll" "$INSTDIR\shellext"
+      ${Endif}
    ${MementoSectionEnd}
 !endif
 
@@ -673,10 +636,16 @@ Section Uninstall
 
    ;Shell extension
    !ifdef OPTION_SECTION_SC_SHELL_EXT
+      !define LIBRARY_COM
+      !define LIBRARY_SHELL_EXTENSION
       ${If} ${HasSection} SEC_SHELL_EXT
-         !insertmacro StopExplorer
-         Call Un.RegisterShellExt
-         !insertmacro StartExplorer "Un."
+        !define LIBRARY_X64
+        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR/shellext/OCUtil_x64.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR/shellext/OCOverlays_x64.dll"
+        !undef LIBRARY_X64
+     ${Else}
+        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR/shellext/OCUtil_x86.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR/shellext/OCOverlays_x86.dll"
       ${EndIf}
    !endif
 

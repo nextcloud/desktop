@@ -26,6 +26,8 @@
 
 namespace Mirall {
 
+class SelectiveSyncTreeView;
+
 class ownCloudInfo;
 
 class FormatWarningsWizardPage : public QWizardPage {
@@ -90,6 +92,25 @@ private:
 
 };
 
+
+class FolderWizardSelectiveSync : public QWizardPage
+{
+    Q_OBJECT
+public:
+    FolderWizardSelectiveSync();
+    ~FolderWizardSelectiveSync();
+
+    virtual bool validatePage() Q_DECL_OVERRIDE;
+
+    virtual void initializePage() Q_DECL_OVERRIDE;
+    virtual void cleanupPage() Q_DECL_OVERRIDE;
+
+private:
+    SelectiveSyncTreeView *_treeView;
+
+};
+
+
 /**
  *
  */
@@ -100,7 +121,8 @@ public:
 
     enum {
         Page_Source,
-        Page_Target
+        Page_Target,
+        Page_SelectiveSync
     };
 
     FolderWizard(QWidget *parent = 0);
@@ -110,6 +132,7 @@ private:
 
     FolderWizardLocalPath *_folderWizardSourcePage;
     FolderWizardRemotePath *_folderWizardTargetPage;
+    FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage;
 };
 
 

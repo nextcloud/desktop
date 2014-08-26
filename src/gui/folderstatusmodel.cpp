@@ -133,8 +133,9 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   QString itemString    = qvariant_cast<QString>(index.data(SyncProgressItemString));
   int warningCount      = qvariant_cast<int>(index.data(WarningCount));
   bool syncOngoing      = qvariant_cast<bool>(index.data(SyncRunning));
+
   // QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
-  bool syncEnabled = index.data(FolderSyncEnabled).toBool();
+  bool syncEnabled = index.data(FolderAccountConnected).toBool();
   // QString syncStatus = syncEnabled? tr( "Enabled" ) : tr( "Disabled" );
 
   QRect iconRect = option.rect;
@@ -246,7 +247,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   h += aliasMargin;
 
   // Sync File Progress Bar: Show it if syncFile is not empty.
-  if( !overallString.isEmpty()) {
+  if( !overallString.isEmpty() || !itemString.isEmpty()) {
       int fileNameTextHeight = subFm.boundingRect(tr("File")).height();
       int barHeight = qMax(fileNameTextHeight, aliasFm.height()+4); ;
       int overallWidth = option.rect.width()-2*aliasMargin;

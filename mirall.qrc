@@ -13,7 +13,6 @@
         <file>resources/settings.png</file>
         <file>resources/activity.png</file>
         <file>resources/network.png</file>
-        <file>resources/owncloud_logo_blue.png</file>
 	<file>resources/lock-http.png</file>
 	<file>resources/lock-https.png</file>
     </qresource>

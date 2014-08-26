@@ -42,8 +42,9 @@ class FolderStatusDelegate : public QStyledItemDelegate
                     FolderRemotePath,
                     FolderStatus,
                     FolderErrorMsg,
-                    FolderSyncEnabled,
+                    FolderSyncPaused,
                     FolderStatusIconRole,
+                    FolderAccountConnected,
 
                     SyncProgressOverallPercent,
                     SyncProgressOverallString,

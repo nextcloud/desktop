@@ -85,9 +85,9 @@ public:
      * If the sync is switched off, the startSync method is not going to
      * be called.
      */
-     void setSyncEnabled( bool );
+     void setSyncPaused( bool );
 
-     bool syncEnabled() const;
+     bool syncPaused() const;
 
      void prepareToSync();
 
@@ -120,6 +120,10 @@ public:
      // Used by the Socket API
      SyncJournalDb *journalDb() { return &_journal; }
      CSYNC *csyncContext() { return _csync_ctx; }
+
+     QStringList selectiveSyncBlackList() { return _selectiveSyncBlackList; }
+     void setSelectiveSyncBlackList(const QStringList &blackList)
+     { _selectiveSyncBlackList = blackList; }
 
 
 signals:
@@ -157,6 +161,7 @@ private slots:
     void slotCsyncUnavailable();
     void slotSyncFinished();
 
+    void slotFolderDiscovered(bool local, QString folderName);
     void slotTransmissionProgress(const Progress::Info& pi);
     void slotJobCompleted(const SyncFileItem&);
 
@@ -184,10 +189,11 @@ private:
     QString   _remotePath;
     QString   _alias;
     QString   _configFile;
-    bool       _enabled;
+    bool       _paused;
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
     QStringList  _errors;
+    QStringList _selectiveSyncBlackList;
     bool         _csyncError;
     bool         _csyncUnavail;
     bool         _wipeDb;

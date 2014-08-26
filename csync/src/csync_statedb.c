@@ -222,6 +222,9 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   result = csync_statedb_query(db, "PRAGMA case_sensitive_like = ON;");
   c_strlist_destroy(result);
 
+  /* set a busy handler with 5 seconds timeout */
+  sqlite3_busy_timeout(db, 5000);
+
 #ifndef NDEBUG
   sqlite3_profile(db, sqlite_profile, 0 );
 #endif
@@ -319,6 +322,10 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
                         REMOTE_PERM_BUF_SIZE);
             }
         }
+    } else {
+        if( rc != SQLITE_DONE ) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "WARN: Query results in %d", rc);
+        }
     }
     return rc;
 }
@@ -350,8 +357,9 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
 
   sqlite3_bind_int64(ctx->statedb.by_hash_stmt, 1, (long long signed int)phash);
 
-  if( _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_hash_stmt) < 0 ) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata!");
+  rc = _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_hash_stmt);
+  if( !(rc == SQLITE_ROW || rc == SQLITE_DONE) )  {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata: %d!", rc);
   }
   sqlite3_reset(ctx->statedb.by_hash_stmt);
 
@@ -387,8 +395,9 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
     /* bind the query value */
     sqlite3_bind_text(ctx->statedb.by_fileid_stmt, 1, file_id, -1, SQLITE_STATIC);
 
-    if( _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_fileid_stmt) < 0 ) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata!");
+    rc = _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_fileid_stmt);
+    if( !(rc == SQLITE_ROW || rc == SQLITE_DONE) ) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata: %d!", rc);
     }
     // clear the resources used by the statement.
     sqlite3_reset(ctx->statedb.by_fileid_stmt);
@@ -427,8 +436,9 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx,
 
   sqlite3_bind_int64(ctx->statedb.by_inode_stmt, 1, (long long signed int)inode);
 
-  if( _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_inode_stmt) < 0 ) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata by inode!");
+  rc = _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_inode_stmt);
+  if( !(rc == SQLITE_ROW || rc == SQLITE_DONE) ) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata by inode: %d!", rc);
   }
   sqlite3_reset(ctx->statedb.by_inode_stmt);
 
@@ -457,7 +467,7 @@ char *csync_statedb_get_etag( CSYNC *ctx, uint64_t jHash ) {
     return ret;
 }
 
-#define BELOW_PATH_QUERY "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm FROM metadata WHERE path LIKE(?)"
+#define BELOW_PATH_QUERY "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm FROM metadata WHERE pathlen>? AND path LIKE(?)"
 
 int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     int rc;
@@ -465,6 +475,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     int64_t cnt = 0;
     char *likepath;
     int asp;
+    int min_path_len;
 
     if( !path ) {
         return -1;
@@ -476,7 +487,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
     rc = sqlite3_prepare_v2(ctx->statedb.db, BELOW_PATH_QUERY, -1, &stmt, NULL);
     if( rc != SQLITE_OK ) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for hash query.");
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for below path query.");
       return -1;
     }
 
@@ -490,7 +501,9 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
         return -1;
     }
 
-    sqlite3_bind_text(stmt, 1, likepath, -1, SQLITE_STATIC);
+    min_path_len = strlen(path);
+    sqlite3_bind_int(stmt, 1, min_path_len);
+    sqlite3_bind_text(stmt, 2, likepath, -1, SQLITE_STATIC);
 
     cnt = 0;
 

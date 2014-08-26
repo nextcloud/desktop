@@ -1,4 +1,6 @@
 # TODO: OSX and LIB_ONLY seem to require this to go to binary dir only
+    mirall/discoveryphase.cpp
+    mirall/selectivesyncdialog.cpp
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)

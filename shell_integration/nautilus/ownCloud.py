@@ -11,32 +11,64 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
     nautilusVFSFile_table = {}
     registered_paths = {}
     remainder = ''
+    connected = False
+    watch_id = 0
 
     def __init__(self):
-	self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	self.sock.connect(("localhost", 33001))
-	self.sock.settimeout(5)
-	
-	GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
+        self.connectToOwnCloud
+        if not self.connected:
+          # try again in 5 seconds - attention, logic inverted!
+          GObject.timeout_add(5000, self.connectToOwnCloud)
+
+    def port(self):
+	return 34001 # Fixme, read from config file.
+
+    def connectToOwnCloud(self):
+	try:
+          self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+          self.sock.connect(("localhost", self.port()))
+          self.sock.settimeout(5)
+          self.connected = True
+          self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
+        except:
+          print "Connect could not be established, try again later!"
+          self.sock.close()
+	return not self.connected
 	
     def sendCommand(self, cmd):
-	self.sock.send(cmd)
+        if self.connected:
+          try:
+            self.sock.send(cmd)
+          except:
+            print "Sending failed."
+            GObject.source_remove( self.watch_id )
+            self.connected = False
+            GObject.timeout_add(5000, self.connectToOwnCloud)
 
     def find_item_for_file( self, path ):
 	if path in self.nautilusVFSFile_table:
 	    return self.nautilusVFSFile_table[path]
 	else:
 	    return None
-    
-    def callback_update_file( self, path ):
-	print "Got an update callback for " + path
-	
+
     def askForOverlay(self, file):
         if os.path.isdir(file):
             folderStatus = self.sendCommand("RETRIEVE_FOLDER_STATUS:"+file+"\n");
             
         if os.path.isfile(file):
             fileStatus = self.sendCommand("RETRIEVE_FILE_STATUS:"+file+"\n");
+
+    def invalidate_items_underneath( self, path ):
+	update_items = []
+	for p in self.nautilusVFSFile_table:
+	    if p == path or p.startswith( path ):
+		item = self.nautilusVFSFile_table[p]
+		update_items.append(item)
+
+	for item in update_items:
+	    item.invalidate_extension_info()
+	    # self.update_file_info(item)
 
     # Handles a single line of server respoonse and sets the emblem
     def handle_server_response(self, l):
@@ -66,16 +98,27 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
                     item = self.find_item_for_file(parts[2])
                     if item:
                         item.add_emblem(emblem)
+
 	    elif action == 'UPDATE_VIEW':
+		# Search all items underneath this path and invalidate them
 		if parts[1] in self.registered_paths:
-		    for p in self.nautilusVFSFile_table:
-			if p.startswith( parts[1] ):
-			    item = self.nautilusVFSFile_table[p]
-			    item.invalidate_extension_info()
-			    self.update_file_info(item)
+		    self.invalidate_items_underneath( parts[1] )
 
 	    elif action == 'REGISTER_PATH':
 		self.registered_paths[parts[1]] = 1
+		self.invalidate_items_underneath( parts[1] )
+	    elif action == 'UNREGISTER_PATH':
+		del self.registered_paths[parts[1]]
+		self.invalidate_items_underneath( parts[1] )
+
+		# check if there are non pathes any more, if so, its usual
+		# that mirall went away. Try reconnect.
+		if not self.registered_paths:
+		    self.sock.close()
+		    self.connected = False
+		    GObject.source_remove( self.watch_id )
+                    GObject.timeout_add(5000, self.connectToOwnCloud)
+
             else:
                 # print "We got unknown action " + action
                 1
@@ -105,8 +148,6 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
 	    
     def get_local_path(self, path):
         return path.replace("file://", "")
-
-   
 
     def update_file_info(self, item):
         if item.get_uri_scheme() != 'file':

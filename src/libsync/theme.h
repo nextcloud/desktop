@@ -90,7 +90,8 @@ public:
       */
     virtual QIcon   syncStateIcon( SyncResult::Status, bool sysTray = false ) const;
 
-    virtual QIcon   folderDisabledIcon() const = 0;
+    virtual QIcon   folderDisabledIcon() const;
+    virtual QIcon   folderOfflineIcon(bool systray = false) const;
     virtual QIcon   applicationIcon() const = 0;
 #endif
 
@@ -158,6 +159,11 @@ public:
      */
     virtual QPixmap wizardHeaderBanner() const;
 #endif
+
+    /**
+     * The SHA sum of the released git commit
+     */
+    QString gitSHA1() const;
 
     /**
      * About dialog contents

@@ -16,6 +16,10 @@
 #ifndef SOCKETAPI_H
 #define SOCKETAPI_H
 
+extern "C" {
+#include <std/c_string.h>
+}
+
 #include <QWeakPointer>
 #include <QTcpSocket>
 #include <QTcpServer>
@@ -40,7 +44,8 @@ public slots:
     void slotUpdateFolderView(const QString&);
     void slotUnregisterPath( const QString& alias );
     void slotRegisterPath( const QString& alias );
-
+    void slotReadExcludes();
+    void slotClearExcludesList();
 private slots:
     void slotNewConnection();
     void onLostConnection();
@@ -48,8 +53,8 @@ private slots:
     void slotJobCompleted(const QString &, const SyncFileItem &);
 
 private:
-    void sendMessage(QTcpSocket* socket, const QString& message);
-    void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null);
+    void sendMessage(QTcpSocket* socket, const QString& message, bool doWait = false);
+    void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null, bool doWait = false);
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QTcpSocket* socket);
     Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket* socket);
@@ -57,6 +62,7 @@ private:
 private:
     QTcpServer *_localServer;
     QList<QTcpSocket*> _listeners;
+    c_strlist_t *_excludes;
 };
 
 }

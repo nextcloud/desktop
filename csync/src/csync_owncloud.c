@@ -24,6 +24,8 @@
 
 #include <inttypes.h>
 
+#include "csync_private.h"
+
 
 /*
  * helper method to build up a user text for SSL problems, called from the
@@ -430,6 +432,8 @@ static int dav_connect(csync_owncloud_ctx_t *ctx,  const char *base_url) {
         ne_set_read_timeout(ctx->dav_session.ctx, ctx->dav_session.read_timeout);
         DEBUG_WEBDAV("Timeout set to %u seconds", ctx->dav_session.read_timeout );
     }
+    // Should never take more than some seconds, 30 is really a max.
+    ne_set_connect_timeout(ctx->dav_session.ctx, 30);
 
     snprintf( uaBuf, sizeof(uaBuf), "Mozilla/5.0 (%s) csyncoC/%s",
               csync_owncloud_get_platform(), CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
@@ -535,6 +539,11 @@ static struct listdir_context *fetch_resource_list(csync_owncloud_ctx_t *ctx, co
             SAFE_FREE(curi);
             return ctx->propfind_cache;
         }
+    }
+
+    if( ctx->csync_ctx->callbacks.update_callback ) {
+	ctx->csync_ctx->callbacks.update_callback(false, curi, 
+              ctx->csync_ctx->callbacks.update_callback_userdata);
     }
 
     fetchCtx = c_malloc( sizeof( struct listdir_context ));

@@ -31,7 +31,6 @@ public:
 
     QIcon   folderIcon( const QString& ) const;
     QIcon   trayFolderIcon( const QString& ) const Q_DECL_OVERRIDE;
-    QIcon   folderDisabledIcon() const Q_DECL_OVERRIDE;
     QIcon   applicationIcon() const Q_DECL_OVERRIDE;
 
     QVariant customMedia(CustomMediaType type) Q_DECL_OVERRIDE;

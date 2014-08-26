@@ -26,6 +26,7 @@
 #include "ignorelisteditor.h"
 #include "account.h"
 #include "quotainfo.h"
+#include "selectivesyncdialog.h"
 #include "creds/abstractcredentials.h"
 
 #include <math.h>
@@ -77,6 +78,7 @@ AccountSettings::AccountSettings(QWidget *parent) :
 
     ui->_buttonRemove->setEnabled(false);
     ui->_buttonEnable->setEnabled(false);
+    ui->_buttonSelectiveSync->setEnabled(false);
     ui->_buttonAdd->setEnabled(true);
 
     QAction *resetFolderAction = new QAction(this);
@@ -92,6 +94,7 @@ AccountSettings::AccountSettings(QWidget *parent) :
     connect(ui->_buttonRemove, SIGNAL(clicked()), this, SLOT(slotRemoveCurrentFolder()));
     connect(ui->_buttonEnable, SIGNAL(clicked()), this, SLOT(slotEnableCurrentFolder()));
     connect(ui->_buttonAdd,    SIGNAL(clicked()), this, SLOT(slotAddFolder()));
+    connect(ui->_buttonSelectiveSync, SIGNAL(clicked()), this, SLOT(slotSelectiveSync()));
     connect(ui->modifyAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
     connect(ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));;
 
@@ -111,9 +114,13 @@ AccountSettings::AccountSettings(QWidget *parent) :
             this, SLOT(slotAccountChanged(Account*,Account*)));
     slotAccountChanged(AccountManager::instance()->account(), 0);
 
-    connect(FolderMan::instance(), SIGNAL(folderListLoaded(Folder::Map)),
+    FolderMan *folderMan = FolderMan::instance();
+    connect(folderMan, SIGNAL(folderSyncStateChange(QString)),
+             this, SLOT(slotSyncStateChange(QString)));
+    connect(folderMan, SIGNAL(folderListLoaded(Folder::Map)),
             this, SLOT(setFolderList(Folder::Map)));
     setFolderList(FolderMan::instance()->map());
+    slotSyncStateChange();
 }
 
 void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccount)
@@ -122,6 +129,7 @@ void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccoun
         disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
         disconnect(oldAccount->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
                     this, SLOT(slotUpdateQuota(qint64,qint64)));
+        disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
     }
 
     _account = newAccount;
@@ -150,12 +158,14 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
   } else {
       ui->_buttonAdd->setVisible(true);
   }
-  ui->_buttonAdd->setEnabled(_account && _account->state() == Account::Connected);
+  bool isConnected = _account && _account->state() == Account::Connected;
+  ui->_buttonAdd->setEnabled(isConnected);
   ui->_buttonEnable->setEnabled( isValid );
+  ui->_buttonSelectiveSync->setEnabled(isConnected && isValid);
 
   if ( isValid ) {
-    bool folderEnabled = _model->data( indx, FolderStatusDelegate::FolderSyncEnabled).toBool();
-    if ( folderEnabled ) {
+    bool folderPaused = _model->data( indx, FolderStatusDelegate::FolderSyncPaused).toBool();
+    if ( !folderPaused) {
       ui->_buttonEnable->setText( tr( "Pause" ) );
     } else {
       ui->_buttonEnable->setText( tr( "Resume" ) );
@@ -189,10 +199,13 @@ void AccountSettings::slotFolderWizardAccepted()
     QString alias        = folderWizard->field(QLatin1String("alias")).toString();
     QString sourceFolder = folderWizard->field(QLatin1String("sourceFolder")).toString();
     QString targetPath   = folderWizard->property("targetPath").toString();
+    QStringList selectiveSyncBlackList
+                         = folderWizard->property("selectiveSyncBlackList").toStringList();
 
     if (!FolderMan::ensureJournalGone( sourceFolder ))
         return;
-    folderMan->addFolderDefinition(alias, sourceFolder, targetPath );
+
+    folderMan->addFolderDefinition(alias, sourceFolder, targetPath, selectiveSyncBlackList );
     Folder *f = folderMan->setupFolderFromConfigFile( alias );
     slotAddFolder( f );
     folderMan->setSyncEnabled(true);
@@ -222,7 +235,11 @@ void AccountSettings::slotAddFolder( Folder *folder )
     if( ! folder || folder->alias().isEmpty() ) return;
 
     QStandardItem *item = new QStandardItem();
-    folderToModelItem( item, folder );
+    bool isConnected = false;
+    if (_account) {
+        isConnected = (_account->state() == Account::Connected);
+    }
+    folderToModelItem( item, folder,  isConnected);
     _model->appendRow( item );
     // in order to update the enabled state of the "Sync now" button
     connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChange()), Qt::UniqueConnection);
@@ -244,15 +261,15 @@ void AccountSettings::setGeneralErrors( const QStringList& errors )
     }
 }
 
-void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
+void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f, bool accountConnected )
 {
     if( ! item || !f ) return;
 
     item->setData( f->nativePath(),        FolderStatusDelegate::FolderPathRole );
     item->setData( f->remotePath(),        FolderStatusDelegate::FolderSecondPathRole );
     item->setData( f->alias(),             FolderStatusDelegate::FolderAliasRole );
-    item->setData( f->syncEnabled(),       FolderStatusDelegate::FolderSyncEnabled );
-
+    item->setData( f->syncPaused(),        FolderStatusDelegate::FolderSyncPaused );
+    item->setData( accountConnected,       FolderStatusDelegate::FolderAccountConnected );
     SyncResult res = f->syncResult();
     SyncResult::Status status = res.status();
 
@@ -260,35 +277,39 @@ void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f )
 
     Theme *theme = Theme::instance();
     item->setData( theme->statusHeaderText( status ),  Qt::ToolTipRole );
-    if( f->syncEnabled() ) {
-        if( status == SyncResult::SyncPrepare ) {
-            if( _wasDisabledBefore ) {
-                // if the folder was disabled before, set the sync icon
-                item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
-            }  // we keep the previous icon for the SyncPrepare state.
-        } else if( status == SyncResult::Undefined ) {
-            // startup, the sync was never done.
-            qDebug() << "XXX FIRST time sync, setting icon to sync running!";
-            item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
+    if ( accountConnected ) {
+        if( f->syncPaused() ) {
+            item->setData( theme->folderDisabledIcon( ), FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
+            _wasDisabledBefore = false;
         } else {
-            // kepp the previous icon for the prepare phase.
-            if( status == SyncResult::Problem) {
-                item->setData( theme->syncStateIcon( SyncResult::Success), FolderStatusDelegate::FolderStatusIconRole );
+            if( status == SyncResult::SyncPrepare ) {
+                if( _wasDisabledBefore ) {
+                    // if the folder was disabled before, set the sync icon
+                    item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
+                }  // we keep the previous icon for the SyncPrepare state.
+            } else if( status == SyncResult::Undefined ) {
+                // startup, the sync was never done.
+                qDebug() << "XXX FIRST time sync, setting icon to sync running!";
+                item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
             } else {
-                item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
+                // kepp the previous icon for the prepare phase.
+                if( status == SyncResult::Problem) {
+                    item->setData( theme->syncStateIcon( SyncResult::Success), FolderStatusDelegate::FolderStatusIconRole );
+                } else {
+                    item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
+                }
             }
         }
     } else {
-        item->setData( theme->folderDisabledIcon( ), FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
-        _wasDisabledBefore = false;
+        item->setData( theme->folderOfflineIcon(), FolderStatusDelegate::FolderStatusIconRole);
     }
+
     item->setData( theme->statusHeaderText( status ), FolderStatusDelegate::FolderStatus );
 
     if( errorList.isEmpty() ) {
         if( (status == SyncResult::Error ||
              status == SyncResult::SetupError ||
-             status == SyncResult::SyncAbortRequested ||
-             status == SyncResult::Unavailable)) {
+             status == SyncResult::SyncAbortRequested )) {
             errorList <<  theme->statusHeaderText(status);
         }
     }
@@ -369,6 +390,20 @@ void AccountSettings::slotResetCurrentFolder()
     }
 }
 
+void AccountSettings::slotSelectiveSync()
+{
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if( selected.isValid() ) {
+        QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
+        FolderMan *folderMan = FolderMan::instance();
+        Folder *f = folderMan->folder(alias);
+        if (f) {
+            (new SelectiveSyncDialog(f, this))->open();
+        }
+    }
+
+}
+
 void AccountSettings::slotDoubleClicked( const QModelIndex& indx )
 {
     if( ! indx.isValid() ) return;
@@ -422,57 +457,60 @@ void AccountSettings::slotEnableCurrentFolder()
 
     if( selected.isValid() ) {
         QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
-        bool folderEnabled = _model->data( selected, FolderStatusDelegate::FolderSyncEnabled).toBool();
-        qDebug() << "Toggle enabled/disabled Folder alias " << alias << " - current state: " << folderEnabled;
-        if( !alias.isEmpty() ) {
-            FolderMan *folderMan = FolderMan::instance();
 
-            qDebug() << "Application: enable folder with alias " << alias;
-            bool terminate = false;
-
-            // this sets the folder status to disabled but does not interrupt it.
-            Folder *f = folderMan->folder( alias );
-            if (!f) {
-                return;
-            }
-
-            if( folderEnabled ) {
-                // check if a sync is still running and if so, ask if we should terminate.
-                if( f->isBusy() ) { // its still running
-#if defined(Q_OS_MAC)
-                    QWidget *parent = this;
-                    Qt::WindowFlags flags = Qt::Sheet;
-#else
-                    QWidget *parent = 0;
-                    Qt::WindowFlags flags = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint; // default flags
-#endif
-                    QMessageBox msgbox(QMessageBox::Question, tr("Sync Running"),
-                                       tr("The syncing operation is running.<br/>Do you want to terminate it?"),
-                                       QMessageBox::Yes | QMessageBox::No, parent, flags);
-                    msgbox.setDefaultButton(QMessageBox::Yes);
-                    int reply = msgbox.exec();
-                    if ( reply == QMessageBox::Yes )
-                        terminate = true;
-                    else
-                        return; // do nothing
-                }
-            }
-
-            // message box can return at any time while the thread keeps running,
-            // so better check again after the user has responded.
-            if ( f->isBusy() && terminate ) {
-                f->slotTerminateSync();
-            }
-
-            folderMan->slotEnableFolder( alias, !folderEnabled );
-
-            // keep state for the icon setting.
-            if( !folderEnabled ) _wasDisabledBefore = true;
-
-            slotUpdateFolderState (f);
-            // set the button text accordingly.
-            slotFolderActivated( selected );
+        if( alias.isEmpty() ) {
+            qDebug() << "Empty alias to enable.";
+            return;
         }
+
+        FolderMan *folderMan = FolderMan::instance();
+
+        qDebug() << "Application: enable folder with alias " << alias;
+        bool terminate = false;
+        bool currentlyPaused = false;
+
+        // this sets the folder status to disabled but does not interrupt it.
+        Folder *f = folderMan->folder( alias );
+        if (!f) {
+            return;
+        }
+        currentlyPaused = f->syncPaused();
+        if( ! currentlyPaused ) {
+            // check if a sync is still running and if so, ask if we should terminate.
+            if( f->isBusy() ) { // its still running
+#if defined(Q_OS_MAC)
+                QWidget *parent = this;
+                Qt::WindowFlags flags = Qt::Sheet;
+#else
+                QWidget *parent = 0;
+                Qt::WindowFlags flags = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint; // default flags
+#endif
+                QMessageBox msgbox(QMessageBox::Question, tr("Sync Running"),
+                                   tr("The syncing operation is running.<br/>Do you want to terminate it?"),
+                                   QMessageBox::Yes | QMessageBox::No, parent, flags);
+                msgbox.setDefaultButton(QMessageBox::Yes);
+                int reply = msgbox.exec();
+                if ( reply == QMessageBox::Yes )
+                    terminate = true;
+                else
+                    return; // do nothing
+            }
+        }
+
+        // message box can return at any time while the thread keeps running,
+        // so better check again after the user has responded.
+        if ( f->isBusy() && terminate ) {
+            f->slotTerminateSync();
+        }
+        f->setSyncPaused(!currentlyPaused); // toggle the pause setting
+        folderMan->slotSetFolderPaused( alias, !currentlyPaused );
+
+        // keep state for the icon setting.
+        if( currentlyPaused ) _wasDisabledBefore = true;
+
+        slotUpdateFolderState (f);
+        // set the button text accordingly.
+        slotFolderActivated( selected );
     }
 }
 
@@ -505,7 +543,7 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
     }
 
     if( item ) {
-        folderToModelItem( item, folder );
+        folderToModelItem( item, folder, _account->state() == Account::Connected );
     } else {
         // the dialog is not visible.
     }
@@ -564,6 +602,14 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     QStandardItem *item = itemForFolder( folder );
     if( !item ) return;
 
+    // switch on extra space.
+    item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+
+    if (!progress._currentDiscoveredFolder.isEmpty()) {
+        item->setData( tr("Discovering %1").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
+        return;
+    }
+
     if(!progress._lastCompletedItem.isEmpty()
             && Progress::isWarningKind(progress._lastCompletedItem._status)) {
         int warnCount = item->data(FolderStatusDelegate::WarningCount).toInt();
@@ -591,8 +637,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     QString itemFileName = shortenFilename(folder, curItem._file);
     QString kindString = Progress::asActionString(curItem);
 
-    // switch on extra space.
-    item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+
 
     QString fileProgressString;
     if (Progress::isSizeDependent(curItem._instruction)) {
@@ -730,6 +775,11 @@ void AccountSettings::slotAccountStateChanged(int state)
         QUrl safeUrl(_account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
         slotButtonsSetEnabled();
+        FolderMan *folderMan = FolderMan::instance();
+        foreach (Folder *folder, folderMan->map().values()) {
+            slotUpdateFolderState(folder);
+        }
+        slotSyncStateChange();
         if (state == Account::Connected) {
             QString user;
             if (AbstractCredentials *cred = _account->credentials()) {
@@ -753,6 +803,21 @@ void AccountSettings::slotAccountStateChanged(int state)
         showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
         ui->_buttonAdd->setEnabled( false);
     }
+}
+
+void AccountSettings::slotSyncStateChange(const QString& alias)
+{
+    Q_UNUSED(alias);
+
+    QIcon icon;
+    if (_account && _account->state() == Account::Connected) {
+        FolderMan *folderMan = FolderMan::instance();
+        SyncResult state = folderMan->accountStatus(folderMan->map().values());
+        icon = Theme::instance()->syncStateIcon(state.status());
+    } else {
+        icon = Theme::instance()->folderOfflineIcon();
+    }
+    emit accountIconChanged(icon);
 }
 
 AccountSettings::~AccountSettings()

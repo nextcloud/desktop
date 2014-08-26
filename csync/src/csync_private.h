@@ -87,6 +87,8 @@ struct csync_s {
   struct {
       csync_auth_callback auth_function;
       void *userdata;
+      csync_update_callback update_callback;
+      void *update_callback_userdata;
   } callbacks;
   c_strlist_t *excludes;
 
@@ -144,6 +146,10 @@ struct csync_s {
   int  read_from_db_disabled;
 
   struct csync_owncloud_ctx_s *owncloud_context;
+
+  /* hooks for checking the white list */
+  void *checkBlackListData;
+  int (*checkBlackListHook)(void*, const char*);
 };
 
 

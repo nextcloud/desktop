@@ -68,9 +68,6 @@ QString Theme::statusHeaderText( SyncResult::Status status ) const
     case SyncResult::SetupError:
         resultStr = QCoreApplication::translate("theme", "Setup Error" );
         break;
-    case SyncResult::Unavailable:
-        resultStr = QCoreApplication::translate("theme", "The server is currently unavailable" );
-        break;
     case SyncResult::SyncPrepare:
         resultStr = QCoreApplication::translate("theme", "Preparing to sync" );
         break;
@@ -214,15 +211,33 @@ QString Theme::updateCheckUrl() const
     return QLatin1String("https://updates.owncloud.com/client/");
 }
 
+QString Theme::gitSHA1() const
+{
+    QString devString;
+#ifdef GIT_SHA1
+    const QString githubPrefix(QLatin1String(
+                                   "https://github.com/owncloud/mirall/commit/"));
+    const QString gitSha1(QLatin1String(GIT_SHA1));
+    devString = QCoreApplication::translate("ownCloudTheme::about()",
+                   "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
+                   " on %3, %4 using Qt %5.</small></p>")
+            .arg(githubPrefix+gitSha1).arg(gitSha1.left(6))
+            .arg(__DATE__).arg(__TIME__)
+            .arg(QT_VERSION_STR);
+#endif
+    return devString;
+}
+
 QString Theme::about() const
 {
     return tr("<p>Version %1 For more information please visit <a href='%2'>%3</a>.</p>"
-              "<p>Copyright ownCloud, Inc.<p>"
-              "<p>Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.<br>"
-              "%5 and the %5 logo are registered trademarks of %4 in the<br>"
+              "<p>Copyright ownCloud, Inc.</p>"
+              "<p>Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.<br/>"
+              "%5 and the %5 logo are registered trademarks of %4 in the "
               "United States, other countries, or both.</p>")
             .arg(MIRALL_VERSION_STRING).arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
-            .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN)).arg(APPLICATION_VENDOR).arg(APPLICATION_NAME);
+            .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN)).arg(APPLICATION_VENDOR).arg(APPLICATION_NAME)
+            +gitSHA1();
 }
 
 #ifndef TOKEN_AUTH_ONLY
@@ -267,10 +282,10 @@ QIcon Theme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
 
     switch( status ) {
     case SyncResult::Undefined:
-    case SyncResult::NotYetStarted:
-    case SyncResult::Unavailable:
-        statusIcon = QLatin1String("state-offline");
+        // this can happen if no sync connections are configured.
+        statusIcon = QLatin1String("state-information");
         break;
+    case SyncResult::NotYetStarted:
     case SyncResult::SyncRunning:
         statusIcon = QLatin1String("state-sync");
         break;
@@ -287,12 +302,22 @@ QIcon Theme::syncStateIcon( SyncResult::Status status, bool sysTray ) const
         break;
     case SyncResult::Error:
     case SyncResult::SetupError:
-        statusIcon = QLatin1String("state-error");  // FIXME: Use state-problem once we have an icon.
+        // FIXME: Use state-problem once we have an icon.
     default:
         statusIcon = QLatin1String("state-error");
     }
 
     return themeIcon( statusIcon, sysTray );
+}
+
+QIcon Theme::folderDisabledIcon( ) const
+{
+    return themeIcon( QLatin1String("state-pause") );
+}
+
+QIcon Theme::folderOfflineIcon(bool systray) const
+{
+    return themeIcon( QLatin1String("state-offline"), systray );
 }
 
 QColor Theme::wizardHeaderTitleColor() const

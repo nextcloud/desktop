@@ -23,9 +23,12 @@
 #include <QString>
 #include <QSet>
 #include <QMap>
-#include <qelapsedtimer.h>
+#include <QStringList>
 
 #include <csync.h>
+
+// when do we go away with this private/public separation?
+#include <csync_private.h>
 
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
@@ -58,9 +61,15 @@ public:
 
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
+    void setSelectiveSyncBlackList(const QStringList &list)
+    { _selectiveSyncWhiteList = list; }
+
 signals:
     void csyncError( const QString& );
     void csyncUnavailable();
+
+    // During update, before reconcile
+    void folderDiscovered(bool local, QString folderUrl);
 
     // before actual syncing (after update+reconcile) for each item
     void syncItemDiscovered(const SyncFileItem&);
@@ -88,7 +97,7 @@ private slots:
     void slotFinished();
     void slotProgress(const SyncFileItem& item, quint64 curent);
     void slotAdjustTotalTransmissionSize(qint64 change);
-    void slotUpdateFinished(int updateResult);
+    void slotDiscoveryJobFinished(int updateResult);
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
@@ -139,35 +148,9 @@ private:
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
+
+    QStringList _selectiveSyncWhiteList;
 };
-
-
-class UpdateJob : public QObject {
-    Q_OBJECT
-    CSYNC *_csync_ctx;
-    csync_log_callback _log_callback;
-    int _log_level;
-    void* _log_userdata;
-    Q_INVOKABLE void start() {
-        csync_set_log_callback(_log_callback);
-        csync_set_log_level(_log_level);
-        csync_set_log_userdata(_log_userdata);
-        emit finished(csync_update(_csync_ctx));
-        deleteLater();
-    }
-public:
-    explicit UpdateJob(CSYNC *ctx, QObject* parent = 0)
-            : QObject(parent), _csync_ctx(ctx) {
-        // We need to forward the log property as csync uses thread local
-        // and updates run in another thread
-        _log_callback = csync_get_log_callback();
-        _log_level = csync_get_log_level();
-        _log_userdata = csync_get_log_userdata();
-    }
-signals:
-    void finished(int result);
-};
-
 
 }
 

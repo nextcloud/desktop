@@ -37,7 +37,7 @@ typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
  *
  * @return  0 on success, -1 if an error occured with errno set.
  */
-int csync_exclude_load(CSYNC *ctx, const char *fname);
+int csync_exclude_load(const char *fname, c_strlist_t **list);
 
 /**
  * @brief Clear the exclude list in memory.
@@ -65,6 +65,14 @@ void csync_exclude_destroy(CSYNC *ctx);
  */
 CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
 
+/**
+ * @brief csync_excluded_no_ctx
+ * @param excludes
+ * @param path
+ * @param filetype
+ * @return
+ */
+CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype);
 #endif /* _CSYNC_EXCLUDE_H */
 
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

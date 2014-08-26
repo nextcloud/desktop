@@ -182,6 +182,19 @@ void PropagateRemoteMkdir::propfind_results(void *userdata,
     }
 }
 
+/*
+ * Called after the headers have been recieved, try to extract the fileId
+ */
+void PropagateRemoteMkdir::post_headers(ne_request* req, void* userdata, const ne_status* )
+{
+    const char *header = ne_get_response_header(req, "OC-FileId");
+    if( header ) {
+        qDebug() << "MKCOL: " << static_cast<PropagateRemoteMkdir*>(userdata)->_item._file << " FileID from header:" << header;
+        static_cast<PropagateRemoteMkdir*>(userdata)->_item._fileId = header;
+    }
+}
+
+
 void PropagateRemoteMkdir::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
@@ -190,7 +203,12 @@ void PropagateRemoteMkdir::start()
     QScopedPointer<char, QScopedPointerPodDeleter> uri(
         ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
 
+    ne_hook_post_headers(_propagator->_session, post_headers, this);
+
     int rc = ne_mkcol(_propagator->_session, uri.data());
+
+    ne_unhook_post_headers(_propagator->_session, post_headers, this);
+
 
     /* Special for mkcol: it returns 405 if the directory already exists.
      * Ignore that error */
@@ -202,15 +220,16 @@ void PropagateRemoteMkdir::start()
         return;
     }
 
-    // Get the fileid
-    // This is required so that wa can detect moves even if the folder is renamed on the server
-    // while files are still uploading
-    // TODO: Now we have to do a propfind because the server does not give the file id in the request
-    // https://github.com/owncloud/core/issues/9000
-
-    ne_propfind_handler *hdl = ne_propfind_create(_propagator->_session, uri.data(), 0);
-    ne_propfind_named(hdl, ls_props, propfind_results, this);
-    ne_propfind_destroy(hdl);
+    if (_item._fileId.isEmpty()) {
+        // Owncloud 7.0.0 and before did not have a header with the file id.
+        // (https://github.com/owncloud/core/issues/9000)
+        // So we must get the file id using a PROPFIND
+        // This is required so that wa can detect moves even if the folder is renamed on the server
+        // while files are still uploading
+        ne_propfind_handler *hdl = ne_propfind_create(_propagator->_session, uri.data(), 0);
+        ne_propfind_named(hdl, ls_props, propfind_results, this);
+        ne_propfind_destroy(hdl);
+    }
 
     done(SyncFileItem::Success);
 }

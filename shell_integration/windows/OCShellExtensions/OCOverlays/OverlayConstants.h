@@ -22,14 +22,17 @@
 #define OVERLAY_GUID_WARNING		L"{0960F096-F328-48A3-B746-276B1E3C3722}"
 #define OVERLAY_GUID_WARNING_SHARED L"{0960F097-F328-48A3-B746-276B1E3C3722}"
 
-#define OVERLAY_NAME_ERROR			L"OCError"
-#define OVERLAY_NAME_ERROR_SHARED	L"OCErrorShared"
-#define OVERLAY_NAME_OK				L"OCOK"
-#define OVERLAY_NAME_OK_SHARED		L"OCOKShared"
-#define OVERLAY_NAME_SYNC			L"OCSync"
-#define OVERLAY_NAME_SYNC_SHARED	L"OCSyncShared"
-#define OVERLAY_NAME_WARNING		L"OCWarning"
-#define OVERLAY_NAME_WARNING_SHARED	L"OCWarningShared"
+#define OVERLAY_GENERIC_NAME        L"OC Overlay Handler"
+
+// two spaces to put us a head of the competition :/
+#define OVERLAY_NAME_ERROR			L"  OCError"
+#define OVERLAY_NAME_ERROR_SHARED	L"  OCErrorShared"
+#define OVERLAY_NAME_OK				L"  OCOK"
+#define OVERLAY_NAME_OK_SHARED		L"  OCOKShared"
+#define OVERLAY_NAME_SYNC			L"  OCSync"
+#define OVERLAY_NAME_SYNC_SHARED	L"  OCSyncShared"
+#define OVERLAY_NAME_WARNING		L"  OCWarning"
+#define OVERLAY_NAME_WARNING_SHARED	L"  OCWarningShared"
 
 #define REGISTRY_OVERLAY_KEY		L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers"
 #define REGISTRY_CLSID				L"CLSID"
@@ -44,4 +47,4 @@
 
 #define GET_FILE_OVERLAY_ID		L"getFileIconId"
 
-#define PORT				33001
+#define PORT				34001

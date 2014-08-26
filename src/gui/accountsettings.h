@@ -54,6 +54,7 @@ signals:
     void openProtocol();
     void openFolderAlias( const QString& );
     void infoFolderAlias( const QString& );
+    void accountIconChanged( const QIcon& );
 
 public slots:
     void slotFolderActivated( const QModelIndex& );
@@ -62,6 +63,7 @@ public slots:
     void slotDoubleClicked( const QModelIndex& );
     void slotSetProgress(const QString& folder, const Progress::Info& progress);
     void slotButtonsSetEnabled();
+    void slotSyncStateChange(const QString& alias = QString());
 
     void slotUpdateQuota( qint64,qint64 );
     void slotIgnoreFilesEditor();
@@ -81,10 +83,11 @@ protected slots:
     void slotFolderWizardRejected();
     void slotOpenAccountWizard();
     void slotHideProgress();
+    void slotSelectiveSync();
 
 private:
     QString shortenFilename( const QString& folder, const QString& file ) const;
-    void folderToModelItem( QStandardItem *, Folder * );
+    void folderToModelItem(QStandardItem *, Folder * , bool accountConnected);
     QStandardItem* itemForFolder(const QString& );
     void showConnectionLabel( const QString& message, const QString& tooltip = QString() );
 

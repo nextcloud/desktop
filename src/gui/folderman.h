@@ -50,7 +50,8 @@ public:
       * QString sourceFolder on local machine
       * QString targetPath on remote
       */
-    void addFolderDefinition(const QString&, const QString&, const QString& );
+    void addFolderDefinition(const QString&, const QString&, const QString& ,
+                             const QStringList &selectiveSyncBlacklist = QStringList() );
 
     /** Returns the folder which the file or directory stored in path is in */
     Folder* folderForPath(const QString& path);
@@ -77,17 +78,23 @@ public:
     /** Creates a new and empty local directory. */
     bool startFromScratch( const QString& );
 
-    QString statusToString( SyncResult, bool enabled ) const;
+    QString statusToString(SyncResult, bool paused ) const;
 
     static SyncResult accountStatus( const QList<Folder*> &folders );
 
     void removeMonitorPath( const QString& alias, const QString& path );
     void addMonitorPath( const QString& alias, const QString& path );
 
+    // Escaping of the alias which is used in QSettings AND the file
+    // system, thus need to be escaped.
+    static QString escapeAlias( const QString& );
+
 signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.
       * Get the state via the Folder Map or the syncResult and syncState methods.
+      *
+      * Attention: The alias string may be zero. Do a general update of the state than.
       */
     void folderSyncStateChange( const QString & );
 
@@ -95,7 +102,7 @@ signals:
 
 public slots:
     void slotRemoveFolder( const QString& );
-    void slotEnableFolder( const QString&, bool );
+    void slotSetFolderPaused(const QString&, bool paused);
 
     void slotFolderSyncStarted();
     void slotFolderSyncFinished( const SyncResult& );
@@ -131,9 +138,6 @@ private:
     QString getBackupName( const QString& ) const;
     void registerFolderMonitor( Folder *folder );
 
-    // Escaping of the alias which is used in QSettings AND the file
-    // system, thus need to be escaped.
-    QString escapeAlias( const QString& ) const;
     QString unescapeAlias( const QString& ) const;
 
     void removeFolder( const QString& );

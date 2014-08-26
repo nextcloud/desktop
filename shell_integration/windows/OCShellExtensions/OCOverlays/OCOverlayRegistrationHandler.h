@@ -23,7 +23,7 @@ class __declspec(dllexport) OCOverlayRegistrationHandler
 {
 	public:
 		static HRESULT MakeRegistryEntries(const CLSID& clsid, PCWSTR fileType);
-		static HRESULT RegisterCOMObject(PCWSTR modulePath, const CLSID& clsid);
+		static HRESULT RegisterCOMObject(PCWSTR modulePath, PCWSTR friendlyName, const CLSID& clsid);
 		static HRESULT RemoveRegistryEntries(PCWSTR friendlyName);
 		static HRESULT UnregisterCOMObject(const CLSID& clsid);
 };

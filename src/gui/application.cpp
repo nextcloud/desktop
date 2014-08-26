@@ -179,7 +179,6 @@ void Application::slotLogout()
         FolderMan *folderMan = FolderMan::instance();
         folderMan->setSyncEnabled(false);
         folderMan->terminateSyncProcess();
-        folderMan->unloadAllFolders();
         a->setState(Account::SignedOut);
         // show result
         _gui->slotComputeOverallSyncStatus();
@@ -209,6 +208,8 @@ void Application::slotCleanup()
     if (account) {
         account->save();
     }
+    FolderMan::instance()->unloadAllFolders();
+
     _gui->slotShutdown();
     _gui->deleteLater();
 }

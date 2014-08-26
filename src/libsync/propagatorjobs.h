@@ -96,6 +96,7 @@ public:
     void start() Q_DECL_OVERRIDE;
 private:
     static void propfind_results(void *userdata, const ne_uri *uri, const ne_prop_result_set *set);
+    static void post_headers(ne_request *req, void *userdata, const ne_status *status);
     friend class PropagateDirectory; // So it can access the _item;
 };
 class PropagateLocalRename : public PropagateItemJob {
