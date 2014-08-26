@@ -10,19 +10,23 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-prjfile="admin/osx/macosx.pkgproj"
-if [ ! -f $prjfile ]; then
+prjfile=macosx.pkgproj
+vanilla_prjfile="@CMAKE_SOURCE_DIR@/admin/osx/macosx.pkgproj"
+if [ ! -f $vanilla_prjfile ]; then
   echo "ERROR: macosx.pkgproj not in admin dir, start from CMAKE_SOURCE_DIR!"
   exit 2
 fi
 
-pack="admin/ownCloud Installer.pkg"
-rm -f $pack
+cp $vanilla_prjfile $prjfile
 
 install_path=$1
 
 # The name of the installer package
-installer=ownCloud\ Installer.pkg
+installer=ownCloud-@MIRALL_VERSION_STRING@
+installer_file=$installer.pkg
+
+# set the installer name to the copied prj config file
+/usr/local/bin/packagesutil --file $prjfile set project name $installer
 
 # The command line tool of the "Packages" tool, see link above.
 pkgbuild=/usr/local/bin/packagesbuild
@@ -31,9 +35,9 @@ $pkgbuild -F $install_path $prjfile
 rc=$?
 
 if [ $rc == 0 ]; then
-  echo "Successfully created $pack"
+  echo "Successfully created $installer_file"
 else
-  echo "Failed to create $pack"
+  echo "Failed to create $installer_file"
   exit 3
 fi
 
@@ -41,5 +45,3 @@ fi
 # See http://s.sudre.free.fr/Software/documentation/Packages/en/Project_Configuration.html#5
 # certname=gdbsign
 # productsign --cert $certname admin/$installer ./$installer
-
-

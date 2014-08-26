@@ -144,6 +144,7 @@ add_subdirectory(csync)
 add_subdirectory(src)
 add_subdirectory(shell_integration)
 add_subdirectory(doc)
+add_subdirectory(admin)
 
 if(UNIT_TESTING)
     include(CTest)
