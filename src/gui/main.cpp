@@ -28,6 +28,10 @@
 
 #include "updater/updater.h"
 
+#ifdef WITH_CRASHREPORTER
+    #include "../3rdparty/libcrashreporter-qt/src/libcrashreporter-handler/Handler.h"
+#endif
+
 #include <QTimer>
 #include <QMessageBox>
 
@@ -51,6 +55,12 @@ int main(int argc, char **argv)
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
     Mirall::Application app(argc, argv);
+
+
+#ifdef WITH_CRASHREPORTER
+    new CrashReporter::Handler( QDir::tempPath(), true, "owncloud_crash_reporter" );
+#endif
+
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
 #endif

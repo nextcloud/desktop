@@ -227,6 +227,15 @@ target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
 
+if(WITH_CRASHREPORTER)
+    target_link_libraries( ${APPLICATION_EXECUTABLE} crashreporter-handler)
+
+    if(UNIX AND NOT MAC)
+        find_package(Threads REQUIRED)
+        target_link_libraries( ${APPLICATION_EXECUTABLE} ${CMAKE_THREAD_LIBS_INIT})
+    endif()
+endif()
+
 install(TARGETS ${APPLICATION_EXECUTABLE}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
