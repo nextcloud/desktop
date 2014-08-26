@@ -47,6 +47,7 @@ set(mirall_SRCS
     owncloudgui.cpp
     owncloudsetupwizard.cpp
     protocolwidget.cpp
+    selectivesyncdialog.cpp
     settingsdialog.cpp
     socketapi.cpp
     sslbutton.cpp

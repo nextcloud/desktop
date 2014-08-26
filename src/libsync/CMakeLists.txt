@@ -32,30 +32,31 @@ if(SPARKLE_FOUND AND NOT BUILD_LIBRARIES_ONLY)
 endif()
 
 set(libsync_SRCS
-    authenticationdialog.cpp
-    mirallconfigfile.cpp
-    syncengine.cpp
-    owncloudpropagator.cpp
-    propagatorjobs.cpp
-    propagator_qnam.cpp
-    propagator_legacy.cpp
-    syncjournalfilerecord.cpp
-    syncjournaldb.cpp
-    theme.cpp
-    logger.cpp
-    utility.cpp
-    filesystem.cpp
-    connectionvalidator.cpp
-    progressdispatcher.cpp
-    mirallaccessmanager.cpp
-    networkjobs.cpp
     account.cpp
-    quotainfo.cpp
+    authenticationdialog.cpp
     clientproxy.cpp
+    connectionvalidator.cpp
     cookiejar.cpp
-    syncfilestatus.cpp
-    syncresult.cpp
+    discoveryphase.cpp
+    filesystem.cpp
+    logger.cpp
+    mirallaccessmanager.cpp
+    mirallconfigfile.cpp
+    networkjobs.cpp
+    owncloudpropagator.cpp
     owncloudtheme.cpp
+    progressdispatcher.cpp
+    propagatorjobs.cpp
+    propagator_legacy.cpp
+    propagator_qnam.cpp
+    quotainfo.cpp
+    syncengine.cpp
+    syncfilestatus.cpp
+    syncjournaldb.cpp
+    syncjournalfilerecord.cpp
+    syncresult.cpp
+    theme.cpp
+    utility.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialsfactory.cpp
