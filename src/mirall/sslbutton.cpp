@@ -176,6 +176,11 @@ void SslButton::updateAccountInfo(Account *account)
     } else {
         setVisible(true);
     }
+    if(QMenu *oldMenu = menu()) {
+        oldMenu->hide(); // Need to be hidden because the QToolButton would be left in invalid state if the menu is deleted while it is visible
+        setMenu(0);
+        oldMenu->deleteLater();  // setMenu do not delete the previous menu.
+    }
     if (account->url().scheme() == QLatin1String("https")) {
         setIcon(QIcon(QPixmap(":/mirall/resources/lock-https.png")));
         QSslCipher cipher = account->sslConfiguration().sessionCipher();
@@ -212,7 +217,6 @@ void SslButton::updateAccountInfo(Account *account)
     } else {
         setIcon(QIcon(QPixmap(":/mirall/resources/lock-http.png")));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
-        setMenu(0);
     }
 }
 
