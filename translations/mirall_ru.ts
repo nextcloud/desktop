@@ -151,7 +151,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="609"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Обнаружение %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="653"/>
@@ -1316,7 +1316,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="61"/>
         <source>Operation was canceled by user interaction.</source>
-        <translation type="unfinished"/>
+        <translation>Операция отменена пользователем</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="178"/>
@@ -2047,7 +2047,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версия %1. Дополнительная информация доступна по ссылке &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Распространяется под  %4 и лицензировано по GNU General Public License (GPL) Версии 2.0.&lt;br/&gt;%5 и логотип %5 зарегистрированные торговые марки %4 в США, и/или в других странах.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2075,7 +2075,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="273"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Нет настроенных папок для синхронизации</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="299"/>
@@ -2165,7 +2165,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="463"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Обнаружение %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="467"/>
@@ -2193,7 +2193,7 @@ It is not advisable to use it.</source>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версия %2. Дополнительная информация доступна по ссылке &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Авторы: Клаас Фрейтаг, Дэниель Молкентин, Жан-Кристоф Бошард, Оливер Гоффарт, Маркус Гётс и другие.&lt;br/&gt;Основано на Mirall от Дункана Мак-Викара П.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Права принадлежат ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Лицинзируемой под  GNU Public License (GPL) Версии 2.0&lt;br/&gt;ownCloud и логотип ownCloud зарегистрированные торговые марки ownCloud, Inc. в Соединенных Штатах, и/или других странах&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

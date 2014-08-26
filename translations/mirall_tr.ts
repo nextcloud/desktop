@@ -1316,7 +1316,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="61"/>
         <source>Operation was canceled by user interaction.</source>
-        <translation type="unfinished"/>
+        <translation>İşlem kullanıcı etkileşimi tarafından iptal edildi.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="178"/>
@@ -2075,7 +2075,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="273"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Yapılandırılmış eşitleme klasörü yok.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="299"/>

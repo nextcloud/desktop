@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Selective Sync...</source>
-        <translation type="unfinished"/>
+        <translation>Izbirno usklajevanje ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="143"/>
@@ -615,7 +615,7 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="494"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Odziv strežnika kaže na neveljaven obseg vsebine</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="532"/>
@@ -974,7 +974,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Na voljo je nova različica %1. Uporabite orodje za namestitev in posodobitev sistema.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1230,7 +1230,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizard.cpp" line="83"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Preskoči nastavitve map</translation>
     </message>
 </context>
 <context>
@@ -1289,7 +1289,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="427"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Odziv strežnika kaže na neveljaven obseg vsebine</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="478"/>
@@ -1412,7 +1412,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="303"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Krajevna datoteka je bila me usklajevanjem odstranjena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="310"/>
