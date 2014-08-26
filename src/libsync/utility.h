@@ -69,12 +69,15 @@ namespace Utility
      */
     OWNCLOUDSYNC_EXPORT QString timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision, QString separator, bool specific);
     OWNCLOUDSYNC_EXPORT QString timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific);
-    
+
     // convinience OS detection methods
     OWNCLOUDSYNC_EXPORT bool isWindows();
     OWNCLOUDSYNC_EXPORT bool isMac();
     OWNCLOUDSYNC_EXPORT bool isUnix();
     OWNCLOUDSYNC_EXPORT bool isLinux(); // use with care
+
+    // crash helper for --debug
+    OWNCLOUDSYNC_EXPORT void crash();
 
     // Case preserving file system underneath?
     // if this function returns true, the file system is case preserving,

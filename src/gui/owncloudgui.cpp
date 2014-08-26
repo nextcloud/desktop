@@ -350,6 +350,11 @@ void ownCloudGui::setupContextMenu()
     if (!Theme::instance()->helpUrl().isEmpty()) {
         _contextMenu->addAction(_actionHelp);
     }
+
+    if(_actionCrash) {
+        _contextMenu->addAction(_actionCrash);
+    }
+
     _contextMenu->addSeparator();
     if (isConfigured && isConnected) {
         _contextMenu->addAction(_actionLogout);
@@ -423,6 +428,13 @@ void ownCloudGui::setupActions()
     connect(_actionLogin, SIGNAL(triggered()), _app, SLOT(slotLogin()));
     _actionLogout = new QAction(tr("Sign out"), this);
     connect(_actionLogout, SIGNAL(triggered()), _app, SLOT(slotLogout()));
+
+    if(_app->debugMode()) {
+        _actionCrash = new QAction(tr("Crash now"), this);
+        connect(_actionCrash, SIGNAL(triggered()), _app, SLOT(slotCrash()));
+    } else {
+        _actionCrash = 0;
+    }
 
 }
 

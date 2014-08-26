@@ -87,7 +87,8 @@ Application::Application(int &argc, char **argv) :
     _showLogWindow(false),
     _logExpire(0),
     _logFlush(false),
-    _userTriggeredConnect(false)
+    _userTriggeredConnect(false),
+    _debugMode(false)
 {
 // TODO: Can't set this without breaking current config pathes
 //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
@@ -285,6 +286,11 @@ void Application::slotToggleFolderman(int state)
 
 }
 
+void Application::slotCrash()
+{
+    Utility::crash();
+}
+
 void Application::slotConnectionValidatorResult(ConnectionValidator::Status status)
 {
     qDebug() << "Connection Validator Result: " << _conValidator->statusString(status);
@@ -404,6 +410,8 @@ void Application::parseOptions(const QStringList &options)
             } else {
                 showHelp();
             }
+        } else if (option == QLatin1String("--debug")) {
+            _debugMode = true;
         } else {
             setHelp();
             break;
@@ -453,6 +461,11 @@ void Application::showHelp()
         stream << endl << "For more information, see http://www.owncloud.org" << endl << endl;
 
     displayHelpText(helpText);
+}
+
+bool Application::debugMode()
+{
+    return _debugMode;
 }
 
 void Application::setHelp()

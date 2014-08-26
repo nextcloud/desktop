@@ -361,6 +361,12 @@ bool Utility::isLinux()
 #endif
 }
 
+void Utility::crash()
+{
+    volatile int* a = (int*)(NULL);
+    *a = 1;
+}
+
 void Utility::winShellChangeNotify( const QString& path )
 {
 #ifdef Q_OS_WIN
