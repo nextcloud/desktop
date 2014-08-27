@@ -6,20 +6,18 @@
 
 # the path of installation must be given as parameter
 if [ -z "$1" ]; then
-  echo "ERROR: Provide the CMAKE_INSTALL_DIR to this script."
+  echo "ERROR: Provide the path to CMAKE_INSTALL_DIR to this script as first parameter."
   exit 1
 fi
 
-prjfile=macosx.pkgproj
-vanilla_prjfile="@CMAKE_SOURCE_DIR@/admin/osx/macosx.pkgproj"
-if [ ! -f $vanilla_prjfile ]; then
-  echo "ERROR: macosx.pkgproj not in admin dir, start from CMAKE_SOURCE_DIR!"
-  exit 2
+if [ -z "$2" ]; then
+  echo "ERROR: Provide the path to build directory as second parameter."
+  exit 1
 fi
 
-cp $vanilla_prjfile $prjfile
-
 install_path=$1
+build_path=$2
+prjfile=$build_path/admin/osx/macosx.pkgproj
 
 # The name of the installer package
 installer=ownCloud-@MIRALL_VERSION_STRING@
@@ -45,3 +43,5 @@ fi
 # See http://s.sudre.free.fr/Software/documentation/Packages/en/Project_Configuration.html#5
 # certname=gdbsign
 # productsign --cert $certname admin/$installer ./$installer
+
+# FIXME: OEMs?

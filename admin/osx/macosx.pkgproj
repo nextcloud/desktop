@@ -1054,10 +1054,10 @@
 				<integer>6</integer>
 				<key>BACKGROUND_PATH</key>
 				<dict>
-					<key>PATH</key>
-					<string>/Users/mackie/owncloud.com/mirall/resources/owncloud_logo_blue.png</string>
-					<key>PATH_TYPE</key>
-					<integer>0</integer>
+				<key>PATH</key>
+				<string>./owncloud.app/Contents/Resources/owncloud_logo_blue.png</string>
+				<key>PATH_TYPE</key>
+				<integer>3</integer>
 				</dict>
 				<key>CUSTOM</key>
 				<integer>1</integer>
@@ -1240,9 +1240,9 @@
 			<key>BUILD_PATH</key>
 			<dict>
 				<key>PATH</key>
-				<string>/Users/mackie/owncloud.com/mirall/admin</string>
+				<string>../install/.</string>
 				<key>PATH_TYPE</key>
-				<integer>0</integer>
+				<integer>3</integer>
 			</dict>
 			<key>EXCLUDED_FILES</key>
 			<array>
