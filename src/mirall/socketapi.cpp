@@ -22,6 +22,7 @@
 #include "mirall/theme.h"
 #include "mirall/syncjournalfilerecord.h"
 #include "mirall/syncfileitem.h"
+#include "version.h"
 
 #include <QDebug>
 #include <QUrl>
@@ -31,6 +32,11 @@
 #include <QFile>
 #include <QDir>
 #include <QApplication>
+
+// This is the version that is returned when the client asks for the VERSION.
+// The first number should be changed if there is an incompatible change that breaks old clients.
+// The second number should be changed when there are new features.
+#define MIRALL_SOCKET_API_VERSION "1.0"
 
 extern "C" {
 
@@ -399,5 +405,11 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket
             +QDir::toNativeSeparators(argument);
     sendMessage(socket, message);
 }
+
+void SocketApi::command_VERSION(const QString&, QTcpSocket* socket)
+{
+    sendMessage(socket, QLatin1String(MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
+}
+
 
 } // namespace Mirall
