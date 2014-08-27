@@ -328,7 +328,7 @@ void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item
         command = QLatin1String("ERROR");
     }
     if( Utility::isLinux() ) {
-        broadcastMessage(QLatin1String("BROADCAST:"), path, command);
+        broadcastMessage(QLatin1String("BROADCAST"), path, command);
     }
 }
 
