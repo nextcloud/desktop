@@ -75,9 +75,9 @@ QString Progress::asActionString( const SyncFileItem &item )
         return QCoreApplication::translate( "progress", "error");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
-        return QCoreApplication::translate( "progress", "unknown");
+        break;
     }
-    return QCoreApplication::translate( "progress", "unknown");
+    return QString();
 }
 
 bool Progress::isWarningKind( SyncFileItem::Status kind)

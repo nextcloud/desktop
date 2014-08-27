@@ -27,12 +27,12 @@
 
 namespace Mirall {
 
-static uint chunkSize() {
+static qint64 chunkSize() {
     static uint chunkSize;
     if (!chunkSize) {
         chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
         if (chunkSize == 0) {
-            chunkSize = 10*1024*1024; // default to 10 MiB
+            chunkSize = 20*1024*1024; // default to 20 MiB
         }
     }
     return chunkSize;
@@ -231,7 +231,7 @@ void PropagateUploadFileQNAM::startNextChunk()
                 currentChunkSize = chunkSize();
             }
         }
-        device = new ChunkDevice(_file, chunkSize() * sendingChunk, currentChunkSize);
+        device = new ChunkDevice(_file, chunkSize() * quint64(sendingChunk), currentChunkSize);
     } else {
         device = _file;
     }

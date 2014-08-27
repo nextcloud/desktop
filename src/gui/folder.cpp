@@ -220,11 +220,11 @@ bool Folder::syncPaused() const
   return _paused;
 }
 
-void Folder::setSyncPaused( bool doit )
+void Folder::setSyncPaused( bool paused )
 {
-  _paused = doit;
+  _paused = paused;
 
-  if( doit ) {
+  if( !paused ) {
       // qDebug() << "Syncing enabled on folder " << name();
   } else {
       // do not stop or start the watcher here, that is done internally by
@@ -254,6 +254,11 @@ void Folder::prepareToSync()
 void Folder::slotPollTimerTimeout()
 {
     qDebug() << "* Polling" << alias() << "for changes. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
+
+    if (_paused || AccountManager::instance()->account()->state() != Account::Connected) {
+        qDebug() << "Not syncing.  :" << _paused << AccountManager::instance()->account()->state();
+        return;
+    }
 
     if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval() ||
             !(_syncResult.status() == SyncResult::Success ||_syncResult.status() == SyncResult::Problem)) {

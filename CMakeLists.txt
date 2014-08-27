@@ -127,6 +127,11 @@ configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 configure_file(test/test_journal.db "${CMAKE_BINARY_DIR}/test/test_journal.db" COPYONLY)
 
+# Copy that logo, the installer uses it later
+if(BUILD_OWNCLOUD_OSX_BUNDLE)
+    install(FILES resources/owncloud_logo_blue.png DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)
+endif()
+
 include(OwnCloudCPack.cmake)
 
 add_definitions(-DUNICODE)
@@ -143,6 +148,7 @@ add_subdirectory(csync)
 add_subdirectory(src)
 add_subdirectory(shell_integration)
 add_subdirectory(doc)
+add_subdirectory(admin)
 
 if(UNIT_TESTING)
     include(CTest)

@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <QScopedValueRollback>
+#include <QLabel>
 
 namespace Mirall {
 
@@ -107,7 +108,7 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
         root = new QTreeWidgetItem(this);
         root->setText(0, _rootName);
         root->setIcon(0, Theme::instance()->applicationIcon());
-        root->setData(0, Qt::UserRole, _folderPath);
+        root->setData(0, Qt::UserRole, QString());
         if (_oldBlackList.isEmpty()) {
             root->setCheckState(0, Qt::Checked);
         } else {
@@ -139,7 +140,12 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
 void SelectiveSyncTreeView::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
-    LsColJob *job = new LsColJob(AccountManager::instance()->account(), dir, this);
+    if (dir.isEmpty()) return;
+    QString prefix;
+    if (!_folderPath.isEmpty()) {
+        prefix = _folderPath + QLatin1Char('/');
+    }
+    LsColJob *job = new LsColJob(AccountManager::instance()->account(), prefix + dir, this);
     connect(job, SIGNAL(directoryListing(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();
@@ -248,6 +254,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(Folder* folder, QWidget* parent, Qt::Wi
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     _treeView = new SelectiveSyncTreeView(parent);
+    layout->addWidget(new QLabel(tr("Only checked folders will sync to this computer")));
     layout->addWidget(_treeView);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
     QPushButton *button;

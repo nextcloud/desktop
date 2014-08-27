@@ -6,23 +6,25 @@
 
 # the path of installation must be given as parameter
 if [ -z "$1" ]; then
-  echo "ERROR: Provide the CMAKE_INSTALL_DIR to this script."
+  echo "ERROR: Provide the path to CMAKE_INSTALL_DIR to this script as first parameter."
   exit 1
 fi
 
-prjfile="admin/osx/macosx.pkgproj"
-if [ ! -f $prjfile ]; then
-  echo "ERROR: macosx.pkgproj not in admin dir, start from CMAKE_SOURCE_DIR!"
-  exit 2
+if [ -z "$2" ]; then
+  echo "ERROR: Provide the path to build directory as second parameter."
+  exit 1
 fi
 
-pack="admin/ownCloud Installer.pkg"
-rm -f $pack
-
 install_path=$1
+build_path=$2
+prjfile=$build_path/admin/osx/macosx.pkgproj
 
 # The name of the installer package
-installer=ownCloud\ Installer.pkg
+installer="ownCloud-@MIRALL_VERSION_FULL@"
+installer_file="$installer.pkg"
+
+# set the installer name to the copied prj config file
+/usr/local/bin/packagesutil --file $prjfile set project name "$installer"
 
 # The command line tool of the "Packages" tool, see link above.
 pkgbuild=/usr/local/bin/packagesbuild
@@ -31,9 +33,9 @@ $pkgbuild -F $install_path $prjfile
 rc=$?
 
 if [ $rc == 0 ]; then
-  echo "Successfully created $pack"
+  echo "Successfully created $installer_file"
 else
-  echo "Failed to create $pack"
+  echo "Failed to create $installer_file"
   exit 3
 fi
 
@@ -42,4 +44,4 @@ fi
 # certname=gdbsign
 # productsign --cert $certname admin/$installer ./$installer
 
-
+# FIXME: OEMs?

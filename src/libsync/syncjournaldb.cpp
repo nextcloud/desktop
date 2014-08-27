@@ -227,51 +227,51 @@ bool SyncJournalDb::checkConnect()
     commitInternal("checkConnect");
 
     bool rc = updateDatabaseStructure();
-    if( rc ) {
-        _getFileRecordQuery.reset(new QSqlQuery(_db));
-        _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm FROM "
-                                     "metadata WHERE phash=:ph" );
 
-        _setFileRecordQuery.reset(new QSqlQuery(_db) );
-        _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
-                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm) "
-                                     "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ?, ?, ? )" );
+    _getFileRecordQuery.reset(new QSqlQuery(_db));
+    _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm FROM "
+                                 "metadata WHERE phash=:ph" );
 
-        _getDownloadInfoQuery.reset(new QSqlQuery(_db) );
-        _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
-                                        "downloadinfo WHERE path=:pa" );
+    _setFileRecordQuery.reset(new QSqlQuery(_db) );
+    _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
+                                 "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm) "
+                                 "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ?, ?, ? )" );
 
-        _setDownloadInfoQuery.reset(new QSqlQuery(_db) );
-        _setDownloadInfoQuery->prepare( "INSERT OR REPLACE INTO downloadinfo "
-                                        "(path, tmpfile, etag, errorcount) "
-                                        "VALUES ( ? , ?, ? , ? )" );
+    _getDownloadInfoQuery.reset(new QSqlQuery(_db) );
+    _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
+                                    "downloadinfo WHERE path=:pa" );
 
-        _deleteDownloadInfoQuery.reset(new QSqlQuery(_db) );
-        _deleteDownloadInfoQuery->prepare( "DELETE FROM downloadinfo WHERE path=?" );
+    _setDownloadInfoQuery.reset(new QSqlQuery(_db) );
+    _setDownloadInfoQuery->prepare( "INSERT OR REPLACE INTO downloadinfo "
+                                    "(path, tmpfile, etag, errorcount) "
+                                    "VALUES ( ? , ?, ? , ? )" );
 
-        _getUploadInfoQuery.reset(new QSqlQuery(_db));
-        _getUploadInfoQuery->prepare( "SELECT chunk, transferid, errorcount, size, modtime FROM "
-                                      "uploadinfo WHERE path=:pa" );
+    _deleteDownloadInfoQuery.reset(new QSqlQuery(_db) );
+    _deleteDownloadInfoQuery->prepare( "DELETE FROM downloadinfo WHERE path=?" );
 
-        _setUploadInfoQuery.reset(new QSqlQuery(_db));
-        _setUploadInfoQuery->prepare( "INSERT OR REPLACE INTO uploadinfo "
-                                      "(path, chunk, transferid, errorcount, size, modtime) "
-                                      "VALUES ( ? , ?, ? , ? ,  ? , ? )");
+    _getUploadInfoQuery.reset(new QSqlQuery(_db));
+    _getUploadInfoQuery->prepare( "SELECT chunk, transferid, errorcount, size, modtime FROM "
+                                  "uploadinfo WHERE path=:pa" );
 
-        _deleteUploadInfoQuery.reset(new QSqlQuery(_db));
-        _deleteUploadInfoQuery->prepare("DELETE FROM uploadinfo WHERE path=?" );
+    _setUploadInfoQuery.reset(new QSqlQuery(_db));
+    _setUploadInfoQuery->prepare( "INSERT OR REPLACE INTO uploadinfo "
+                                  "(path, chunk, transferid, errorcount, size, modtime) "
+                                  "VALUES ( ? , ?, ? , ? ,  ? , ? )");
+
+    _deleteUploadInfoQuery.reset(new QSqlQuery(_db));
+    _deleteUploadInfoQuery->prepare("DELETE FROM uploadinfo WHERE path=?" );
 
 
-        _deleteFileRecordPhash.reset(new QSqlQuery(_db));
-        _deleteFileRecordPhash->prepare("DELETE FROM metadata WHERE phash=?");
+    _deleteFileRecordPhash.reset(new QSqlQuery(_db));
+    _deleteFileRecordPhash->prepare("DELETE FROM metadata WHERE phash=?");
 
-        _deleteFileRecordRecursively.reset(new QSqlQuery(_db));
-        _deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')");
+    _deleteFileRecordRecursively.reset(new QSqlQuery(_db));
+    _deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')");
 
-        _blacklistQuery.reset(new QSqlQuery(_db));
-        _blacklistQuery->prepare("SELECT lastTryEtag, lastTryModtime, retrycount, errorstring "
-                                 "FROM blacklist WHERE path=:path");
-    }
+    _blacklistQuery.reset(new QSqlQuery(_db));
+    _blacklistQuery->prepare("SELECT lastTryEtag, lastTryModtime, retrycount, errorstring "
+                             "FROM blacklist WHERE path=:path");
+
     return rc;
 }
 
@@ -315,10 +315,16 @@ bool SyncJournalDb::updateDatabaseStructure()
         QSqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN fileid VARCHAR(128);");
         re = query.exec();
+        if(!re) {
+            qDebug() << Q_FUNC_INFO << "SQL Error " << query.lastError().text();
+        }
 
         query.prepare("CREATE INDEX metadata_file_id ON metadata(fileid);");
         re = re && query.exec();
 
+        if(!re) {
+            qDebug() << Q_FUNC_INFO << "SQL Error " << query.lastError().text();
+        }
         commitInternal("update database structure: add fileid col");
     }
     if( columns.indexOf(QLatin1String("remotePerm")) == -1 ) {
@@ -326,6 +332,9 @@ bool SyncJournalDb::updateDatabaseStructure()
         QSqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN remotePerm VARCHAR(128);");
         re = re && query.exec();
+        if(!re) {
+            qDebug() << Q_FUNC_INFO << "SQL Error " << query.lastError().text();
+        }
         commitInternal("update database structure (remotePerm");
     }
 
@@ -334,6 +343,9 @@ bool SyncJournalDb::updateDatabaseStructure()
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
         re = re && query.exec();
 
+        if(!re) {
+            qDebug() << Q_FUNC_INFO << "SQL Error " << query.lastError().text();
+        }
         commitInternal("update database structure: add inode index");
 
     }
@@ -343,6 +355,9 @@ bool SyncJournalDb::updateDatabaseStructure()
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_pathlen ON metadata(pathlen);");
         re = re && query.exec();
 
+        if(!re) {
+            qDebug() << Q_FUNC_INFO << "SQL Error " << query.lastError().text();
+        }
         commitInternal("update database structure: add pathlen index");
 
     }
