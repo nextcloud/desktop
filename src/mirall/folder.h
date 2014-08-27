@@ -164,6 +164,7 @@ private slots:
     void slotFolderDiscovered(bool local, QString folderName);
     void slotTransmissionProgress(const Progress::Info& pi);
     void slotJobCompleted(const SyncFileItem&);
+    void slotSyncItemDiscovered(const SyncFileItem & item);
 
     void slotPollTimerTimeout();
     void etagRetreived(const QString &);

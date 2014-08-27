@@ -201,6 +201,8 @@ signals:
      */
     void jobCompleted(const QString &folder, const SyncFileItem & item);
 
+    void syncItemDiscovered(const QString &folder, const SyncFileItem & item);
+
 protected:
     void setProgressInfo(const QString& folder, const Progress::Info& progress);
 

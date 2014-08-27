@@ -51,6 +51,7 @@ private slots:
     void onLostConnection();
     void slotReadSocket();
     void slotJobCompleted(const QString &, const SyncFileItem &);
+    void slotSyncItemDiscovered(const QString &, const SyncFileItem &);
 
 private:
     void sendMessage(QTcpSocket* socket, const QString& message, bool doWait = false);

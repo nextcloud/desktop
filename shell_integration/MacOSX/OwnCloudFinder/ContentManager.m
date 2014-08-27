@@ -31,6 +31,7 @@ static ContentManager* sharedInstance = nil;
 	{
 		_fileNamesCache = [[NSMutableDictionary alloc] init];
 		_fileIconsEnabled = TRUE;
+		_hasChangedContent = TRUE;
 
 		NSString *base = @"/Applications/owncloud.app/Contents/Resources/icons/";
 		
@@ -107,14 +108,18 @@ static ContentManager* sharedInstance = nil;
 	}
 	
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
-	[_fileNamesCache setObject:res forKey:normalizedPath];
-	// NSLog(@"SET value %d", [res intValue]);
-	
-	[self repaintAllWindows];
+
+    if (![_fileNamesCache objectForKey:normalizedPath] || ![[_fileNamesCache objectForKey:normalizedPath] isEqualToString:res]) {
+		[_fileNamesCache setObject:res forKey:normalizedPath];
+		// NSLog(@"SET value %d", [res intValue]);
+		_hasChangedContent = YES;
+		[self performSelector:@selector(repaintAllWindowsIfNeeded) withObject:0 afterDelay:1.0]; // 1 sec
+	}
 }
 
 - (NSNumber*)iconByPath:(NSString*)path isDirectory:(BOOL)isDir
 {
+	//NSLog(@"%@ %@", NSStringFromSelector(_cmd), path);
 	if (!_fileIconsEnabled)
 	{
 		NSLog(@"Icons are NOT ENABLED!");
@@ -151,6 +156,7 @@ static ContentManager* sharedInstance = nil;
 // it clears the entries from the hash to make it call again home to mirall.
 - (void)clearFileNameCacheForPath:(NSString*)path
 {
+	NSLog(@"%@", NSStringFromSelector(_cmd));
 	NSMutableArray *keysToDelete = [NSMutableArray array];
 	
 	if( path != nil ) {
@@ -170,9 +176,6 @@ static ContentManager* sharedInstance = nil;
 	if( [keysToDelete count] > 0 ) {
 		NSLog( @"Entries to delete: %d", [keysToDelete count]);
 		[_fileNamesCache removeObjectsForKeys:keysToDelete];
-	
-		[self repaintAllWindows];
-
 	}
 }
 
@@ -195,8 +198,20 @@ static ContentManager* sharedInstance = nil;
 	[self repaintAllWindows];
 }
 
+- (void)repaintAllWindowsIfNeeded
+{
+	if (!_hasChangedContent) {
+		NSLog(@"%@ Repaint scheduled but not needed", NSStringFromSelector(_cmd));
+		return;
+	}
+
+	_hasChangedContent = NO;
+	[self repaintAllWindows];
+}
+
 - (void)repaintAllWindows
 {
+	NSLog(@"%@", NSStringFromSelector(_cmd));
 	NSArray* windows = [[NSApplication sharedApplication] windows];
 
 	for (int i = 0; i < [windows count]; i++)
@@ -286,7 +301,7 @@ static ContentManager* sharedInstance = nil;
 				}
 				else
 				{
-					NSLog(@"LiferayNativityFinder: refreshing icon badges failed");
+					NSLog(@"OwnCloudFinder: refreshing icon badges failed");
 
 					return;
 				}
@@ -297,6 +312,7 @@ static ContentManager* sharedInstance = nil;
 
 - (void)setIcons:(NSDictionary*)iconDictionary filterByFolder:(NSString*)filterFolder
 {
+	NSLog(@"%@", NSStringFromSelector(_cmd));
 	for (NSString* path in iconDictionary)
 	{
 		if (filterFolder && ![path hasPrefix:filterFolder])
