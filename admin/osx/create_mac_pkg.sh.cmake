@@ -20,11 +20,11 @@ build_path=$2
 prjfile=$build_path/admin/osx/macosx.pkgproj
 
 # The name of the installer package
-installer=ownCloud-@MIRALL_VERSION_STRING@
-installer_file=$installer.pkg
+installer="ownCloud-@MIRALL_VERSION_STRING@"
+installer_file="$installer.pkg"
 
 # set the installer name to the copied prj config file
-/usr/local/bin/packagesutil --file $prjfile set project name $installer
+/usr/local/bin/packagesutil --file $prjfile set project name "$installer"
 
 # The command line tool of the "Packages" tool, see link above.
 pkgbuild=/usr/local/bin/packagesbuild
