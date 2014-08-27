@@ -26,6 +26,7 @@
 #include "mirall/account.h"
 #include "mirall/theme.h"
 #include "mirall/mirallconfigfile.h"
+#include <selectivesyncdialog.h>
 #include "creds/abstractcredentials.h"
 
 namespace Mirall
@@ -56,6 +57,9 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     connect( _ui.pbSelectLocalFolder, SIGNAL(clicked()), SLOT(slotSelectFolder()));
     setButtonText(QWizard::NextButton, tr("Connect..."));
+
+    connect( _ui.tbSyncEverything, SIGNAL(clicked()), SLOT(slotSyncEverythingClicked()));
+    connect( _ui.tbSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -179,6 +183,11 @@ QString OwncloudAdvancedSetupPage::localFolder() const
     return folder;
 }
 
+QStringList OwncloudAdvancedSetupPage::blacklist() const
+{
+    return _blacklist;
+}
+
 bool OwncloudAdvancedSetupPage::validatePage()
 {
     if(!_created) {
@@ -248,5 +257,30 @@ void OwncloudAdvancedSetupPage::setConfigExists(bool config)
         setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update advanced setup")));
     }
 }
+
+void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
+{
+    // Because clicking on it also changes it, restore it to the previous state in case the user cancel the dialog
+    _ui.tbSelectiveSync->setChecked(!_blacklist.isEmpty());
+
+    Account *acc = static_cast<OwncloudWizard *>(wizard())->account();
+    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, 0, this);
+    if (dlg->exec() == QDialog::Accepted) {
+        _blacklist = dlg->createBlackList();
+        if (!_blacklist.isEmpty()) {
+            _ui.tbSyncEverything->setChecked(false);
+            _ui.tbSelectiveSync->setChecked(true);
+        }
+        wizard()->setProperty("blacklist", _blacklist);
+    }
+}
+
+void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
+{
+    _ui.tbSyncEverything->setChecked(true);
+    _ui.tbSelectiveSync->setChecked(false);
+    _blacklist.clear();
+}
+
 
 } // ns Mirall

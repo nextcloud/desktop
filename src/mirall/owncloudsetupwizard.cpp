@@ -421,7 +421,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         // 1. Initial setup, no prior account exists
         if (isInitialSetup) {
             folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                           localFolder, _remoteFolder );
+                                           localFolder, _remoteFolder, _ocWizard->blacklist() );
             replaceDefaultAccountWith(newAccount);
         }
         // 2. Server URL or user changed, requires reinit of folders
@@ -430,7 +430,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             if (startFromScratch) {
                 if (ensureStartFromScratch(localFolder)) {
                     folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                                   localFolder, _remoteFolder );
+                                                   localFolder, _remoteFolder, _ocWizard->blacklist() );
                     _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
                     replaceDefaultAccountWith(newAccount);
                 }
@@ -439,7 +439,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             else {
                 folderMan->removeAllFolderDefinitions();
                 folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                               localFolder, _remoteFolder );
+                                               localFolder, _remoteFolder, _ocWizard->blacklist() );
                 _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
                 replaceDefaultAccountWith(newAccount);
             }

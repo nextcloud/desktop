@@ -20,12 +20,14 @@ class QTreeWidgetItem;
 class QTreeWidget;
 namespace Mirall {
 
+class Account;
+
 class Folder;
 
 class SelectiveSyncTreeView : public QTreeWidget {
     Q_OBJECT
 public:
-    explicit SelectiveSyncTreeView(QWidget* parent = 0);
+    explicit SelectiveSyncTreeView(Account *account, QWidget* parent = 0);
     QStringList createBlackList(QTreeWidgetItem* root = 0) const;
     void refreshFolders();
     void setFolderInfo(const QString &folderPath, const QString &rootName,
@@ -45,14 +47,18 @@ private:
     QString _rootName;
     QStringList _oldBlackList;
     bool _inserting = false; // set to true when we are inserting new items on the list
+    Account *_account;
 };
 
 class SelectiveSyncDialog : public QDialog {
     Q_OBJECT
 public:
-    explicit SelectiveSyncDialog(Folder *folder, QWidget* parent = 0, Qt::WindowFlags f = 0);
+    // Dialog for a specific folder (used from the account settings button)
+    explicit SelectiveSyncDialog(Account *account, Folder *folder, QWidget* parent = 0, Qt::WindowFlags f = 0);
 
     virtual void accept() Q_DECL_OVERRIDE;
+
+    QStringList createBlackList() const;
 
 private:
 
