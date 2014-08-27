@@ -32,7 +32,7 @@ static qint64 chunkSize() {
     if (!chunkSize) {
         chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
         if (chunkSize == 0) {
-            chunkSize = 10*1024*1024; // default to 10 MiB
+            chunkSize = 20*1024*1024; // default to 20 MiB
         }
     }
     return chunkSize;
