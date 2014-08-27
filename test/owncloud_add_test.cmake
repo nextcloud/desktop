@@ -1,5 +1,10 @@
 macro(owncloud_add_test test_class additional_cpp)
-    include_directories(${QT_INCLUDES} "${PROJECT_SOURCE_DIR}/src" ${CMAKE_CURRENT_BINARY_DIR})
+    include_directories(${QT_INCLUDES}
+                        "${PROJECT_SOURCE_DIR}/src/gui"
+                        "${PROJECT_SOURCE_DIR}/src/libsync"
+                        "${CMAKE_BINARY_DIR}/src/libsync"
+                        "${CMAKE_CURRENT_BINARY_DIR}"
+                       )
 
     set(OWNCLOUD_TEST_CLASS ${test_class})
     set(CMAKE_AUTOMOC TRUE)
