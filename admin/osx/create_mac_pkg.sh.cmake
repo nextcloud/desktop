@@ -20,7 +20,7 @@ build_path=$2
 prjfile=$build_path/admin/osx/macosx.pkgproj
 
 # The name of the installer package
-installer="ownCloud-@MIRALL_VERSION_FULL@"
+installer="ownCloud-@MIRALL_VERSION_FULL@@MIRALL_VERSION_SUFFIX@"
 installer_file="$installer.pkg"
 
 # set the installer name to the copied prj config file
