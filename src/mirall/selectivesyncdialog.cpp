@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <QScopedValueRollback>
+#include <QLabel>
 
 namespace Mirall {
 
@@ -253,6 +254,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(Folder* folder, QWidget* parent, Qt::Wi
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     _treeView = new SelectiveSyncTreeView(parent);
+    layout->addWidget(new QLabel(tr("Only checked folders will sync to this computer")));
     layout->addWidget(_treeView);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
     QPushButton *button;

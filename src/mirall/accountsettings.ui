@@ -73,7 +73,7 @@
         <item>
          <widget class="QPushButton" name="_buttonSelectiveSync">
           <property name="text">
-           <string>Selective Sync...</string>
+           <string>Choose What to Sync</string>
           </property>
          </widget>
         </item>
