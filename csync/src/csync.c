@@ -522,8 +522,6 @@ static void _tree_destructor(void *data) {
  * used by csync_commit and csync_destroy */
 static void _csync_clean_ctx(CSYNC *ctx)
 {
-    c_list_t * walk;
-
     /* destroy the rbtrees */
     if (c_rbtree_size(ctx->local.tree) > 0) {
         c_rbtree_destroy(ctx->local.tree, _tree_destructor);
@@ -535,25 +533,14 @@ static void _csync_clean_ctx(CSYNC *ctx)
 
     csync_rename_destroy(ctx);
 
-    for (walk = c_list_last(ctx->local.ignored_cleanup); walk != NULL; walk = c_list_prev(walk)) {
-        SAFE_FREE(walk->data);
-    }
-    for (walk = c_list_last(ctx->remote.ignored_cleanup); walk != NULL; walk = c_list_prev(walk)) {
-        SAFE_FREE(walk->data);
-    }
-
     /* free memory */
     c_rbtree_free(ctx->local.tree);
     c_list_free(ctx->local.list);
-    c_list_free(ctx->local.ignored_cleanup);
     c_rbtree_free(ctx->remote.tree);
     c_list_free(ctx->remote.list);
-    c_list_free(ctx->remote.ignored_cleanup);
 
     ctx->remote.list = 0;
     ctx->local.list = 0;
-    ctx->remote.ignored_cleanup = 0;
-    ctx->local.ignored_cleanup = 0;
 
     SAFE_FREE(ctx->statedb.file);
 }
