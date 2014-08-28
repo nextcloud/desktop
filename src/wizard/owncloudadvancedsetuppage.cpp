@@ -274,7 +274,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
     _ui.rSyncEverything->setChecked(_blacklist.isEmpty());
 
     Account *acc = static_cast<OwncloudWizard *>(wizard())->account();
-    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, 0, this);
+    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, _blacklist, this);
     if (dlg->exec() == QDialog::Accepted) {
         _blacklist = dlg->createBlackList();
         if (!_blacklist.isEmpty()) {

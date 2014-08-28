@@ -246,13 +246,27 @@ QStringList SelectiveSyncTreeView::createBlackList(QTreeWidgetItem* root) const
     return result;
 }
 
-
-
 SelectiveSyncDialog::SelectiveSyncDialog(Account * account, Folder* folder, QWidget* parent, Qt::WindowFlags f)
     :   QDialog(parent, f), _folder(folder)
 {
+    init(account);
+    _treeView->setFolderInfo(_folder->remotePath(), _folder->alias(), _folder->selectiveSyncBlackList());
+
+    // Make sure we don't get crashes if the folder is destroyed while we are still open
+    connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
+}
+
+SelectiveSyncDialog::SelectiveSyncDialog(Account* account, const QStringList& blacklist, QWidget* parent, Qt::WindowFlags f)
+    : QDialog(parent, f), _folder(0)
+{
+    init(account);
+    _treeView->setFolderInfo(QString(), QString(), blacklist);
+}
+
+void SelectiveSyncDialog::init(Account *account)
+{
     QVBoxLayout *layout = new QVBoxLayout(this);
-    _treeView = new SelectiveSyncTreeView(account, parent);
+    _treeView = new SelectiveSyncTreeView(account, this);
     layout->addWidget(new QLabel(tr("Only checked folders will sync to this computer")));
     layout->addWidget(_treeView);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
@@ -262,16 +276,6 @@ SelectiveSyncDialog::SelectiveSyncDialog(Account * account, Folder* folder, QWid
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
     connect(button, SIGNAL(clicked()), this, SLOT(reject()));
     layout->addWidget(buttonBox);
-
-    if (_folder) {
-        // Make sure we don't get crashes if the folder is destroyed while we are still open
-        connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
-
-        _treeView->setFolderInfo(_folder->remotePath(), _folder->alias(), _folder->selectiveSyncBlackList());
-    } else {
-        _treeView->refreshFolders();
-    }
-
 }
 
 void SelectiveSyncDialog::accept()

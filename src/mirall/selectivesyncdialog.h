@@ -56,11 +56,16 @@ public:
     // Dialog for a specific folder (used from the account settings button)
     explicit SelectiveSyncDialog(Account *account, Folder *folder, QWidget* parent = 0, Qt::WindowFlags f = 0);
 
+    // Dialog for the whole account (Used from the wizard)
+    explicit SelectiveSyncDialog(Account *account, const QStringList &blacklist, QWidget* parent = 0, Qt::WindowFlags f = 0);
+
     virtual void accept() Q_DECL_OVERRIDE;
 
     QStringList createBlackList() const;
 
 private:
+
+    void init(Account *account);
 
     SelectiveSyncTreeView *_treeView;
 
