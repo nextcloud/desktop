@@ -104,7 +104,8 @@ bool PollJob::finished()
         _item._status = classifyError(err, _item._httpErrorCode);
         _item._errorString = reply()->errorString();
         if (_item._status == SyncFileItem::FatalError || _item._httpErrorCode >= 400) {
-            if (_item._status != SyncFileItem::FatalError) {
+            if (_item._status != SyncFileItem::FatalError
+                    && _item._httpErrorCode != 503) {
                 SyncJournalDb::PollInfo info;
                 info._file = _item._file;
                 // no info._url removes it from the database
