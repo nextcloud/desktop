@@ -65,7 +65,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     QIcon appIcon = theme->applicationIcon();
     _ui.lServerIcon->setText(QString());
     _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
-
     _ui.lLocalIcon->setText(QString());
     _ui.lLocalIcon->setPixmap(QPixmap(":/mirall/resources/folder-sync.png"));
 
