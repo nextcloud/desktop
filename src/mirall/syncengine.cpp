@@ -482,6 +482,13 @@ void SyncEngine::startSync()
         qDebug() << "XXXXXXXXXXXXXXXX FAIL: do not have csync_ctx!";
     }
 
+    if (!QDir(_localPath).exists()) {
+        // No _tr, it should only occur in non-mirall
+        emit csyncError("Unable to find local sync directory.");
+        finalize();
+        return;
+    }
+
     _syncedItems.clear();
     _syncItemMap.clear();
     _needsUpdate = false;
