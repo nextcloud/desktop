@@ -102,7 +102,7 @@ void ownCloudGui::setupOverlayIcons()
     if( Utility::isMac() && QFile::exists("/Library/ScriptingAdditions/OwnCloudFinder.osax") ) {
         QString aScript = QString::fromUtf8("tell application \"Finder\"\n"
                                             "  try\n"
-                                            "    «event NVTYload»\n"
+                                            "    «event OWNCload»\n"
                                             "  end try\n"
                                             "end tell\n");
 

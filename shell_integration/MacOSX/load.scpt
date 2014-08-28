@@ -1,6 +1,6 @@
 tell application "Finder"
     try
-        «event NVTYload»
+        «event OWNCload»
     end try
 end tell
 
