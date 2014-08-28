@@ -67,6 +67,9 @@ public:
     bool monoIcons() const;
     void setMonoIcons(bool);
 
+    bool crashReporter() const;
+    void setCrashReporter(bool enabled);
+
     // proxy settings
     void setProxyType(int proxyType,
                       const QString& host = QString(),

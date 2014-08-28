@@ -55,6 +55,7 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 
     // misc
     connect(_ui->monoIconsCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
+    connect(_ui->crashreporterCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
 
     // OEM themes are not obliged to ship mono icons, so there
     // is no point in offering an option
@@ -73,6 +74,7 @@ void GeneralSettings::loadMiscSettings()
     MirallConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
+    _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
 }
 
 void GeneralSettings::slotUpdateInfo()
@@ -96,6 +98,7 @@ void GeneralSettings::saveMiscSettings()
     bool isChecked = _ui->monoIconsCheckBox->isChecked();
     cfgFile.setMonoIcons(isChecked);
     Theme::instance()->setSystrayUseMonoIcons(isChecked);
+    cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
 }
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)

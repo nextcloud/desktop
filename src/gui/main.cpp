@@ -29,6 +29,7 @@
 #include "updater/updater.h"
 
 #ifdef WITH_CRASHREPORTER
+    #include "mirallconfigfile.h"
     #include <libcrashreporter-handler/Handler.h>
 #endif
 
@@ -58,7 +59,8 @@ int main(int argc, char **argv)
 
 
 #ifdef WITH_CRASHREPORTER
-    new CrashReporter::Handler( QDir::tempPath(), true, "owncloud_crash_reporter" );
+    MirallConfigFile cfgFile;
+    new CrashReporter::Handler( QDir::tempPath(), cfgFile.crashReporter(), "owncloud_crash_reporter" );
 #endif
 
 #ifndef Q_OS_WIN
