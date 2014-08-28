@@ -229,6 +229,7 @@ target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
 
 if(WITH_CRASHREPORTER)
     target_link_libraries( ${APPLICATION_EXECUTABLE} crashreporter-handler)
+    include_directories( "../3rdparty/libcrashreporter-qt/src/" )
 
     if(UNIX AND NOT MAC)
         find_package(Threads REQUIRED)

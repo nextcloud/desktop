@@ -19,10 +19,9 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CrashReporterConfig.h.in
                ${CMAKE_CURRENT_BINARY_DIR}/CrashReporterConfig.h)
 
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-#    ../../libtomahawk
-#    ../../thirdparty/libcrashreporter-qt/src
-#)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}
+    "../3rdparty/libcrashreporter-qt/src/"
+)
 
 add_executable( owncloud_crash_reporter WIN32
     ${crashreporter_SOURCES}

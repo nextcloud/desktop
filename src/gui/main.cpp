@@ -29,7 +29,7 @@
 #include "updater/updater.h"
 
 #ifdef WITH_CRASHREPORTER
-    #include "../3rdparty/libcrashreporter-qt/src/libcrashreporter-handler/Handler.h"
+    #include <libcrashreporter-handler/Handler.h>
 #endif
 
 #include <QTimer>

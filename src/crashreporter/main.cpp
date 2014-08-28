@@ -12,9 +12,10 @@
  * for more details.
  */
 
-#include "../3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.h"
 
 #include "CrashReporterConfig.h"
+
+#include <libcrashreporter-gui/CrashReporter.h>
 
 #include <QApplication>
 #include <QDebug>
