@@ -146,20 +146,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   if (excluded != CSYNC_NOT_EXCLUDED) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
     if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
-      switch (ctx->current) {
-        case LOCAL_REPLICA:
-          ctx->local.ignored_cleanup = c_list_append(ctx->local.ignored_cleanup, c_strdup(path));
-          break;
-        case REMOTE_REPLICA:
-          ctx->remote.ignored_cleanup = c_list_append(ctx->remote.ignored_cleanup, c_strdup(path));
-          break;
-        default:
-          break;
-      }
-      return 0;
+        return 0;
     }
     if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
         return 0;
+    }
+
+    if (ctx->current_fs) {
+        ctx->current_fs->has_ignored_files = true;
     }
   }
 
@@ -185,6 +179,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   st->instruction = CSYNC_INSTRUCTION_NONE;
   st->etag = NULL;
   st->child_modified = 0;
+  st->has_ignored_files = 0;
 
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE ) {
@@ -666,7 +661,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     /* this function may update ctx->current and ctx->read_from_db */
 
     if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
+        /* If a directory has modified files, put the flag on the parent directory as well */
         previous_fs->child_modified = ctx->current_fs->child_modified;
+    }
+    if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
+        /* If a directory has ignored files, put the flag on the parent directory as well */
+        previous_fs->has_ignored_files = ctx->current_fs->has_ignored_files;
     }
 
     /* Only for the local replica we have to destroy stat(), for the remote one it is a pointer to dirent */

@@ -167,6 +167,7 @@ struct csync_file_stat_s {
   int type;         /* u32 */
   int child_modified;/*bool*/
   int should_update_etag; /*bool */
+  int has_ignored_files; /*bool: specify that a directory, or child directory contains ignored files */
 
   char *destpath;   /* for renames */
   const char *etag;
