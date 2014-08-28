@@ -664,10 +664,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         /* If a directory has modified files, put the flag on the parent directory as well */
         previous_fs->child_modified = ctx->current_fs->child_modified;
     }
-    if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
-        /* If a directory has ignored files, put the flag on the parent directory as well */
-        previous_fs->has_ignored_files = ctx->current_fs->has_ignored_files;
-    }
 
     /* Only for the local replica we have to destroy stat(), for the remote one it is a pointer to dirent */
     if (ctx->replica == LOCAL_REPLICA) {
@@ -695,6 +691,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
         ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
         ctx->current_fs->should_update_etag = true;
+      }
+
+      if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
+          /* If a directory has ignored files, put the flag on the parent directory as well */
+          previous_fs->has_ignored_files = ctx->current_fs->has_ignored_files;
       }
     }
 

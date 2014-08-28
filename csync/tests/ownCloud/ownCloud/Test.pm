@@ -305,7 +305,7 @@ sub csync( ;$ )
 
     print "CSync URL: $url\n";
 
-    my $args = "--trust"; # Trust crappy SSL certificates
+    my $args = "--trust --exclude exclude.cfg"; # Trust crappy SSL certificates
     my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $args $localDir $url";
     print "Starting: $cmd\n";
 

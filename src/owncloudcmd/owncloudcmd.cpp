@@ -40,6 +40,7 @@ struct CmdOptions {
     QString proxy;
     bool silent;
     bool trustSSL;
+    QString exclude;
 };
 
 // we can't use csync_set_userdata because the SyncEngine sets it already.
@@ -76,6 +77,7 @@ void help()
     std::cout << "  --httpproxy = proxy:   Specify a http proxy to use." << std::endl;
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
+    std::cout << "  --exclude [file]       exclude list file" << std::endl;
     std::cout << "" << std::endl;
     exit(1);
 
@@ -120,6 +122,8 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
             options->silent = true;
         } else if( option == "--trust") {
             options->trustSSL = true;
+        } else if( option == "--exclude" && !it.peekNext().startsWith("-") ) {
+                options->exclude = it.next();
         } else {
             help();
         }
@@ -212,6 +216,10 @@ int main(int argc, char **argv) {
             url = QString("http%1").arg(url);
         }
         clientProxy.setCSyncProxy(QUrl(url), _csync_ctx);
+    }
+
+    if (!options.exclude.isEmpty()) {
+        csync_add_exclude_list(_csync_ctx, options.exclude.toLocal8Bit());
     }
 
     OwncloudCmd owncloudCmd;
