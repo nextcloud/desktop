@@ -401,7 +401,6 @@ void AccountSettings::slotSelectiveSync()
             (new SelectiveSyncDialog(AccountManager::instance()->account(), f, this))->open();
         }
     }
-
 }
 
 void AccountSettings::slotDoubleClicked( const QModelIndex& indx )

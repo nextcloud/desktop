@@ -288,6 +288,12 @@ void SelectiveSyncDialog::accept()
         QSettings settings(_folder->configFile(), QSettings::IniFormat);
         settings.beginGroup(FolderMan::escapeAlias(_folder->alias()));
         settings.setValue("blackList", blackList);
+
+        FolderMan *folderMan = FolderMan::instance();
+        if (_folder->isBusy()) {
+            _folder->slotTerminateSync();
+        }
+        folderMan->slotScheduleSync(_folder->alias());
     }
     QDialog::accept();
 }
