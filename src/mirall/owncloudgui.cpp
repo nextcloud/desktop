@@ -34,6 +34,10 @@
 #include <QMessageBox>
 #include <QSignalMapper>
 
+#if defined(Q_OS_X11)
+#include <QX11Info>
+#endif
+
 namespace Mirall {
 
 ownCloudGui::ownCloudGui(Application *parent) :
@@ -539,6 +543,22 @@ void ownCloudGui::raiseDialog( QWidget *raiseWidget )
 #if defined(Q_OS_MAC)
     // viel hilft viel ;-)
     MacWindow::bringToFront(raiseWidget);
+#endif
+#if defined(Q_OS_X11)
+    WId wid = widget->winId();
+    NETWM::init();
+
+    XEvent e;
+    e.xclient.type = ClientMessage;
+    e.xclient.message_type = NETWM::NET_ACTIVE_WINDOW;
+    e.xclient.display = QX11Info::display();
+    e.xclient.window = wid;
+    e.xclient.format = 32;
+    e.xclient.data.l[0] = 2;
+    e.xclient.data.l[1] = QX11Info::appTime();
+    e.xclient.data.l[2] = 0;
+    e.xclient.data.l[3] = 0l;
+    e.xclient.data.l[4] = 0l;
 #endif
 }
 
