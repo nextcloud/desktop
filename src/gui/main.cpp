@@ -59,8 +59,9 @@ int main(int argc, char **argv)
 
 
 #ifdef WITH_CRASHREPORTER
+    CrashReporter::Handler* handler = new CrashReporter::Handler( QDir::tempPath(), true, "owncloud_crash_reporter" );
     MirallConfigFile cfgFile;
-    new CrashReporter::Handler( QDir::tempPath(), cfgFile.crashReporter(), "owncloud_crash_reporter" );
+    handler->setActive(cfgFile.crashReporter());
 #endif
 
 #ifndef Q_OS_WIN
