@@ -163,6 +163,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     }
   }
 
+  if (ctx->current == REMOTE_REPLICA && ctx->checkBlackListHook) {
+      if (ctx->checkBlackListHook(ctx->checkBlackListData, path)) {
+          return 0;
+      }
+  }
+
   h = _hash_of_file(ctx, file );
   if( h == 0 ) {
     return -1;
