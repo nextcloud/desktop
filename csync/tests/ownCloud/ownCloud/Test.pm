@@ -27,7 +27,6 @@ use Exporter;
 use HTTP::DAV 0.47;
 use Data::Dumper;
 use File::Glob ':glob';
-use Carp::Assert;
 use Digest::MD5;
 use Unicode::Normalize;
 use LWP::UserAgent;
@@ -36,6 +35,7 @@ use HTTP::Request::Common qw( POST GET DELETE );
 use File::Basename;
 use IO::Handle;
 use POSIX qw/strftime/;
+use Carp;
 
 use Encode qw(from_to);
 use utf8;
@@ -66,7 +66,7 @@ our %config;
                   assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir 
                   putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
                   remoteCleanup server initLocalDir initRemoteDir moveRemoteFile
-                  printInfo remoteFileId createShare removeShare
+                  printInfo remoteFileId createShare removeShare assert
                   configValue testDirUrl getToFileLWP getToFileCurl);
 
 sub server
@@ -781,6 +781,14 @@ sub removeShare($$)
     my $req = DELETE $owncloud . $dir;
     $req->authorization_basic($share_user, $share_passwd);
     my $response = $ua->request($req);
+}
+
+sub assert($;$)
+{
+    unless( $_[0] ) {
+      print Carp::confess(@_);
+      exit(1);
+    }
 }
 
 #

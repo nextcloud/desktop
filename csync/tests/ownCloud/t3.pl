@@ -23,7 +23,7 @@
 
 use lib ".";
 
-use Carp::Assert;
+
 use File::Copy;
 use ownCloud::Test;
 
