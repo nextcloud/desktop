@@ -109,7 +109,7 @@ static ContentManager* sharedInstance = nil;
 	
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
 
-    if (![_fileNamesCache objectForKey:normalizedPath] || ![[_fileNamesCache objectForKey:normalizedPath] isEqualToString:res]) {
+    if (![_fileNamesCache objectForKey:normalizedPath] || ![[_fileNamesCache objectForKey:normalizedPath] isEqualTo:res]) {
 		[_fileNamesCache setObject:res forKey:normalizedPath];
 		// NSLog(@"SET value %d", [res intValue]);
 		_hasChangedContent = YES;
