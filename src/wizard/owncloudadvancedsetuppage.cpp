@@ -58,8 +58,18 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     connect( _ui.pbSelectLocalFolder, SIGNAL(clicked()), SLOT(slotSelectFolder()));
     setButtonText(QWizard::NextButton, tr("Connect..."));
 
-    connect( _ui.tbSyncEverything, SIGNAL(clicked()), SLOT(slotSyncEverythingClicked()));
-    connect( _ui.tbSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
+    connect( _ui.rSyncEverything, SIGNAL(clicked()), SLOT(slotSyncEverythingClicked()));
+    connect( _ui.rSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
+    connect( _ui.bSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
+
+    QIcon appIcon = theme->applicationIcon();
+    _ui.lServerIcon->setText(QString());
+    _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
+
+    _ui.lLocalIcon->setText(QString());
+    _ui.lLocalIcon->setPixmap(QPixmap(":/mirall/resources/folder-sync.png"));
+
+
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -261,15 +271,18 @@ void OwncloudAdvancedSetupPage::setConfigExists(bool config)
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 {
     // Because clicking on it also changes it, restore it to the previous state in case the user cancel the dialog
-    _ui.tbSelectiveSync->setChecked(!_blacklist.isEmpty());
+    _ui.rSyncEverything->setChecked(_blacklist.isEmpty());
 
     Account *acc = static_cast<OwncloudWizard *>(wizard())->account();
     SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, 0, this);
     if (dlg->exec() == QDialog::Accepted) {
         _blacklist = dlg->createBlackList();
         if (!_blacklist.isEmpty()) {
-            _ui.tbSyncEverything->setChecked(false);
-            _ui.tbSelectiveSync->setChecked(true);
+            _ui.rSelectiveSync->blockSignals(true);
+            _ui.rSelectiveSync->setChecked(true);
+            _ui.rSelectiveSync->blockSignals(false);
+        } else {
+            _ui.rSyncEverything->setChecked(true);
         }
         wizard()->setProperty("blacklist", _blacklist);
     }
@@ -277,8 +290,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 
 void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
 {
-    _ui.tbSyncEverything->setChecked(true);
-    _ui.tbSelectiveSync->setChecked(false);
+    _ui.rSyncEverything->setChecked(true);
     _blacklist.clear();
 }
 

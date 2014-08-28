@@ -47,7 +47,7 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
 
     Theme* theme = Theme::instance();
     QIcon appIcon = theme->applicationIcon();
-    _ui.pbOpenServer->setText(tr("Open %1").arg(theme->appNameGUI()));
+    _ui.pbOpenServer->setText(tr("Open %1 in Browser").arg(theme->appNameGUI()));
     _ui.pbOpenServer->setIcon(appIcon.pixmap(48));
     _ui.pbOpenServer->setIconSize(QSize(48, 48));
     _ui.pbOpenServer->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
