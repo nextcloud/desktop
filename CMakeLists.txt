@@ -22,6 +22,15 @@ endif()
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
 
+# disable the crashrepoter if libcrashreporter-qt is not available or we're building for ARM
+if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
+    set( WITH_CRASHREPORTER OFF )
+endif()
+
+if(NOT WITH_CRASHREPORTER)
+    message(STATUS "Build of crashreporter disabled.")
+endif()
+
 #####
 ## handle DBUS for Fdo notifications
 if( UNIX AND NOT APPLE )
@@ -93,12 +102,6 @@ option(OWNCLOUD_5XX_NO_BLACKLIST "OWNCLOUD_5XX_NO_BLACKLIST" OFF)
 if(OWNCLOUD_5XX_NO_BLACKLIST)
     add_definitions(-DOWNCLOUD_5XX_NO_BLACKLIST=1)
 endif()
-
-option(WITH_CRASHREPORTER "Build the crash reporter" ON)
-IF( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
-    message(STATUS "Build of crashreporter disabled.")
-    SET(WITH_CRASHREPORTER OFF)
-ENDIF()
 
 #### find libs
 #find_package(Qt4 4.7.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest QtWebkit REQUIRED )
