@@ -9,4 +9,6 @@
 
 #define CRASHREPORTER_VERSION_STRING "@MIRALL_VERSION_STRING@"
 
+#define CRASHREPORTER_SUBMIT_URL "http://crash-reports.owncloud.org/submit"
+
 #endif // CRASHREPORTERCONFIG_H

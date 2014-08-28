@@ -30,7 +30,7 @@ int main( int argc, char* argv[] )
     }
 
     // TODO: install socorro ....
-    CrashReporter reporter( QUrl( "http://crash-reports.tomahawk-player.org/submit" ),  app.arguments() );
+    CrashReporter reporter( QUrl( CRASHREPORTER_SUBMIT_URL ),  app.arguments() );
 
     reporter.setLogo(QPixmap(":/owncloud-icon.png"));
     reporter.setWindowTitle(CRASHREPORTER_PRODUCT_NAME);
