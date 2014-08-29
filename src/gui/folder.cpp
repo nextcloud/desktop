@@ -600,6 +600,7 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(folderDiscovered(bool,QString)), this, SLOT(slotFolderDiscovered(bool,QString)));
     connect(_engine.data(), SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
     connect(_engine.data(), SIGNAL(jobCompleted(SyncFileItem)), this, SLOT(slotJobCompleted(SyncFileItem)));
+    connect(_engine.data(), SIGNAL(syncItemDiscovered(SyncFileItem)), this, SLOT(slotSyncItemDiscovered(SyncFileItem)));
 
     setDirtyNetworkLimits();
     _engine->setSelectiveSyncBlackList(selectiveSyncBlackList());
@@ -723,6 +724,11 @@ void Folder::slotJobCompleted(const SyncFileItem &item)
         _syncResult.setWarnCount(_syncResult.warnCount()+1);
     }
     emit ProgressDispatcher::instance()->jobCompleted(alias(), item);
+}
+
+void Folder::slotSyncItemDiscovered(const SyncFileItem & item)
+{
+    emit ProgressDispatcher::instance()->syncItemDiscovered(alias(), item);
 }
 
 

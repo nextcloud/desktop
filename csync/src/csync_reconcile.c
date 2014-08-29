@@ -134,6 +134,10 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             break;
             /* file has been removed on the opposite replica */
         case CSYNC_INSTRUCTION_NONE:
+            if (cur->has_ignored_files) {
+                /* Do not remove a directory that has ignored files */
+                break;
+            }
             cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             break;
         case CSYNC_INSTRUCTION_EVAL_RENAME:

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sed 's/oC_/@APPLICATION_EXECUTABLE@_/' ownCloud.py
+mv ownCloud.py @APPLICATION_EXECUTABLE@.py

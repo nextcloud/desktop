@@ -429,7 +429,7 @@ void FolderWizardRemotePath::showWarn( const QString& msg ) const
 FolderWizardSelectiveSync::FolderWizardSelectiveSync()
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    _treeView = new SelectiveSyncTreeView(this);
+    _treeView = new SelectiveSyncTreeView(AccountManager::instance()->account(), this);
     layout->addWidget(new QLabel(tr("Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.")));
     layout->addWidget(_treeView);
 }

@@ -18,6 +18,7 @@
 {
 	NSMutableDictionary* _fileNamesCache;
 	BOOL _fileIconsEnabled;
+	BOOL _hasChangedContent;
 	
 	NSNumber *_icnOk;
 	NSNumber *_icnSync;

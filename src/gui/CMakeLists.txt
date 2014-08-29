@@ -54,6 +54,7 @@ set(mirall_SRCS
     sslerrordialog.cpp
     syncrunfilelog.cpp
     systray.cpp
+    accountmigrator.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
     wizard/owncloudhttpcredspage.cpp

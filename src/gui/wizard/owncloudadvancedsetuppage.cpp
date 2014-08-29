@@ -26,6 +26,7 @@
 #include "account.h"
 #include "theme.h"
 #include "mirallconfigfile.h"
+#include "selectivesyncdialog.h"
 #include "creds/abstractcredentials.h"
 
 namespace Mirall
@@ -56,6 +57,18 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     connect( _ui.pbSelectLocalFolder, SIGNAL(clicked()), SLOT(slotSelectFolder()));
     setButtonText(QWizard::NextButton, tr("Connect..."));
+
+    connect( _ui.rSyncEverything, SIGNAL(clicked()), SLOT(slotSyncEverythingClicked()));
+    connect( _ui.rSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
+    connect( _ui.bSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
+
+    QIcon appIcon = theme->applicationIcon();
+    _ui.lServerIcon->setText(QString());
+    _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
+    _ui.lLocalIcon->setText(QString());
+    _ui.lLocalIcon->setPixmap(QPixmap(":/mirall/resources/folder-sync.png"));
+
+
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -179,6 +192,11 @@ QString OwncloudAdvancedSetupPage::localFolder() const
     return folder;
 }
 
+QStringList OwncloudAdvancedSetupPage::blacklist() const
+{
+    return _blacklist;
+}
+
 bool OwncloudAdvancedSetupPage::validatePage()
 {
     if(!_created) {
@@ -248,5 +266,32 @@ void OwncloudAdvancedSetupPage::setConfigExists(bool config)
         setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update advanced setup")));
     }
 }
+
+void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
+{
+    // Because clicking on it also changes it, restore it to the previous state in case the user cancel the dialog
+    _ui.rSyncEverything->setChecked(_blacklist.isEmpty());
+
+    Account *acc = static_cast<OwncloudWizard *>(wizard())->account();
+    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, _blacklist, this);
+    if (dlg->exec() == QDialog::Accepted) {
+        _blacklist = dlg->createBlackList();
+        if (!_blacklist.isEmpty()) {
+            _ui.rSelectiveSync->blockSignals(true);
+            _ui.rSelectiveSync->setChecked(true);
+            _ui.rSelectiveSync->blockSignals(false);
+        } else {
+            _ui.rSyncEverything->setChecked(true);
+        }
+        wizard()->setProperty("blacklist", _blacklist);
+    }
+}
+
+void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
+{
+    _ui.rSyncEverything->setChecked(true);
+    _blacklist.clear();
+}
+
 
 } // ns Mirall

@@ -146,21 +146,21 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   if (excluded != CSYNC_NOT_EXCLUDED) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
     if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
-      switch (ctx->current) {
-        case LOCAL_REPLICA:
-          ctx->local.ignored_cleanup = c_list_append(ctx->local.ignored_cleanup, c_strdup(path));
-          break;
-        case REMOTE_REPLICA:
-          ctx->remote.ignored_cleanup = c_list_append(ctx->remote.ignored_cleanup, c_strdup(path));
-          break;
-        default:
-          break;
-      }
-      return 0;
+        return 0;
     }
     if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
         return 0;
     }
+
+    if (ctx->current_fs) {
+        ctx->current_fs->has_ignored_files = true;
+    }
+  }
+
+  if (ctx->current == REMOTE_REPLICA && ctx->checkBlackListHook) {
+      if (ctx->checkBlackListHook(ctx->checkBlackListData, path)) {
+          return 0;
+      }
   }
 
   h = _hash_of_file(ctx, file );
@@ -179,6 +179,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   st->instruction = CSYNC_INSTRUCTION_NONE;
   st->etag = NULL;
   st->child_modified = 0;
+  st->has_ignored_files = 0;
 
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE ) {
@@ -660,6 +661,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     /* this function may update ctx->current and ctx->read_from_db */
 
     if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
+        /* If a directory has modified files, put the flag on the parent directory as well */
         previous_fs->child_modified = ctx->current_fs->child_modified;
     }
 
@@ -689,6 +691,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
         ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
         ctx->current_fs->should_update_etag = true;
+      }
+
+      if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
+          /* If a directory has ignored files, put the flag on the parent directory as well */
+          previous_fs->has_ignored_files = ctx->current_fs->has_ignored_files;
       }
     }
 

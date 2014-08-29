@@ -104,6 +104,12 @@ QString OwncloudWizard::localFolder() const
     return(_advancedSetupPage->localFolder());
 }
 
+QStringList OwncloudWizard::blacklist() const
+{
+    return _advancedSetupPage->blacklist();
+}
+
+
 QString OwncloudWizard::ocUrl() const
 {
     QString url = field("OCUrl").toString().simplified();

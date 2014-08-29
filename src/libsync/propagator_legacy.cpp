@@ -44,6 +44,18 @@
 
 namespace Mirall {
 
+static QByteArray get_etag_from_reply(ne_request *req)
+{
+    QByteArray ret = parseEtag(ne_get_response_header(req, "OC-ETag"));
+    if (ret.isEmpty()) {
+        ret = parseEtag(ne_get_response_header(req, "ETag"));
+    }
+    if (ret.isEmpty()) {
+        ret = parseEtag(ne_get_response_header(req, "etag"));
+    }
+    return ret;
+}
+
 
 void PropagateUploadFileLegacy::start()
 {
@@ -287,7 +299,8 @@ bool PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
     if (updateErrorFromSession(neon_stat, req.data())) {
         return false;
     } else {
-        _item._etag = parseEtag(ne_get_response_header(req.data(), "etag"));
+        _item._etag = get_etag_from_reply(req.data());
+
         QByteArray fid = parseFileId(req.data());
         if( _item._fileId.isEmpty() ) {
             _item._fileId = fid;
@@ -390,9 +403,7 @@ void PropagateDownloadFileLegacy::install_content_reader( ne_request *req, void 
         return;
     }
 
-    QByteArray etag = parseEtag(ne_get_response_header(req, "etag"));
-    if(etag.isEmpty())
-        etag = parseEtag(ne_get_response_header(req, "ETag"));
+    QByteArray etag = get_etag_from_reply(req);
 
     if (etag.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
@@ -593,7 +604,7 @@ void PropagateDownloadFileLegacy::start()
             }
             return;
         }
-        _item._etag = parseEtag(ne_get_response_header(req.data(), "etag"));
+        _item._etag = get_etag_from_reply(req.data());
         break;
     } while (1);
 

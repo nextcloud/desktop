@@ -1,6 +1,6 @@
 tell application "Finder"
     try
-        «event NVTYunld»
+        «event OWNCunld»
     end try
 end tell
 

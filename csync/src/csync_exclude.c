@@ -150,12 +150,6 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
 
     match = csync_excluded_no_ctx( ctx->excludes, path, filetype );
 
-    if (match == CSYNC_NOT_EXCLUDED && ctx->checkBlackListHook) {
-        if (ctx->checkBlackListHook(ctx->checkBlackListData, path)) {
-            match = CSYNC_FILE_EXCLUDE_LIST;
-        }
-    }
-
     return match;
 }
 

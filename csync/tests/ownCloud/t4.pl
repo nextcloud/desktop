@@ -23,7 +23,7 @@
 
 use lib ".";
 
-use Carp::Assert;
+
 use File::Copy;
 use ownCloud::Test;
 
@@ -37,6 +37,10 @@ initTesting();
 printInfo( "Copy some files to the remote location" );
 mkdir( localDir() . 'test_stat' );
 system( "echo foobar > " . localDir() . 'test_stat/file.txt' );
+
+mkdir( localDir() . 'test_ignored' );
+mkdir( localDir() . 'test_ignored/sub' );
+system( "echo foobarfoo > " . localDir() . 'test_ignored/sub/file.txt' );
 
 # call csync, sync local t1 to remote t1
 csync();
@@ -91,15 +95,25 @@ my $realMD5 = md5OfFile( '/tmp/kernelcrash.txt' );
 print "MD5 compare $localMD5 <-> $realMD5\n";
 assert( $localMD5 eq $realMD5 );
 
-
 printInfo("Added a file that is on the ignore list");
 # (*.directory is in the ignored list that needs cleanup)
 # (it is names with _conflict) because i want the conflicft detection of assertLocalAndRemoteDir to work
 system( "echo dir >> " . localDir() . 'test_stat/file_conflict.directory' );
+# this one should retain the directory
+system( "echo foobarfoo > " . localDir() . 'test_ignored/sub/ignored_conflict.part' );
 csync();
 # The file_conflict.directory is seen as a conflict
 assertLocalAndRemoteDir( '', 1 );
 # TODO: check that the file_conflict.directory is indeed NOT on the server
+# TODO: check that test_ignored/sub/ignored_conflict.part is NOT on the server
+assert(-e localDir() . 'test_ignored/sub/ignored_conflict.part');
+
+printInfo("Remove a directory containing an ignored file that should not be removed\n");
+remoteCleanup('test_ignored');
+csync();
+assert(-e localDir() . 'test_ignored/sub/ignored_conflict.part');
+#remove the file so next sync allow the directory to be removed
+system( "rm " . localDir() . 'test_ignored/sub/ignored_conflict.part' );
 
 printInfo("Remove a directory containing a local file\n");
 remoteCleanup('test_stat');
@@ -150,6 +164,8 @@ printInfo("Now remove the symlink\n");
 system( "rm -f " . localDir() . 'anotherdir' );
 csync();
 assertLocalAndRemoteDir( '', 0 );
+assert(! -e localDir(). 'anotherdir' );
+
 
 cleanup();
 

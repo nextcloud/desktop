@@ -80,10 +80,11 @@ QIcon ownCloudTheme::applicationIcon( ) const
 QVariant ownCloudTheme::customMedia(Theme::CustomMediaType type)
 {
     if (type == Theme::oCSetupTop) {
-        return QCoreApplication::translate("ownCloudTheme",
-                                           "If you don't have an ownCloud server yet, "
-                                           "see <a href=\"https://owncloud.com\">owncloud.com</a> for more info.",
-                                           "Top text in setup wizard. Keep short!");
+        // return QCoreApplication::translate("ownCloudTheme",
+        //                                   "If you don't have an ownCloud server yet, "
+        //                                   "see <a href=\"https://owncloud.com\">owncloud.com</a> for more info.",
+        //                                   "Top text in setup wizard. Keep short!");
+        return QVariant();
     } else {
         return QVariant();
     }
@@ -110,6 +111,16 @@ QPixmap ownCloudTheme::wizardHeaderLogo() const
     return QPixmap(":/mirall/theme/colored/wizard_logo.png");
 }
 #endif
+
+QString ownCloudTheme::appName() const
+{
+    return QLatin1String("owncloud");
+}
+
+QString ownCloudTheme::appNameGUI() const
+{
+    return QLatin1String("ownCloud");
+}
 
 
 }

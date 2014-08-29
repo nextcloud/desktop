@@ -30,8 +30,8 @@
 
 namespace Mirall {
 
-SelectiveSyncTreeView::SelectiveSyncTreeView(QWidget* parent)
-    : QTreeWidget(parent)
+SelectiveSyncTreeView::SelectiveSyncTreeView(Account *account, QWidget* parent)
+    : QTreeWidget(parent), _account(account)
 {
     connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(slotItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(slotItemChanged(QTreeWidgetItem*,int)));
@@ -40,7 +40,7 @@ SelectiveSyncTreeView::SelectiveSyncTreeView(QWidget* parent)
 
 void SelectiveSyncTreeView::refreshFolders()
 {
-    LsColJob *job = new LsColJob(AccountManager::instance()->account(), _folderPath, this);
+    LsColJob *job = new LsColJob(_account, _folderPath, this);
     connect(job, SIGNAL(directoryListing(QStringList)),
             this, SLOT(slotUpdateDirectories(QStringList)));
     job->start();
@@ -116,8 +116,7 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
         }
     }
 
-    Account *account = AccountManager::instance()->account();
-    QUrl url = account->davUrl();
+    QUrl url = _account->davUrl();
     QString pathToRemove = url.path();
     if (!pathToRemove.endsWith('/')) {
         pathToRemove.append('/');
@@ -145,7 +144,7 @@ void SelectiveSyncTreeView::slotItemExpanded(QTreeWidgetItem *item)
     if (!_folderPath.isEmpty()) {
         prefix = _folderPath + QLatin1Char('/');
     }
-    LsColJob *job = new LsColJob(AccountManager::instance()->account(), prefix + dir, this);
+    LsColJob *job = new LsColJob(_account, prefix + dir, this);
     connect(job, SIGNAL(directoryListing(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();
@@ -247,13 +246,27 @@ QStringList SelectiveSyncTreeView::createBlackList(QTreeWidgetItem* root) const
     return result;
 }
 
-
-
-SelectiveSyncDialog::SelectiveSyncDialog(Folder* folder, QWidget* parent, Qt::WindowFlags f)
+SelectiveSyncDialog::SelectiveSyncDialog(Account * account, Folder* folder, QWidget* parent, Qt::WindowFlags f)
     :   QDialog(parent, f), _folder(folder)
 {
+    init(account);
+    _treeView->setFolderInfo(_folder->remotePath(), _folder->alias(), _folder->selectiveSyncBlackList());
+
+    // Make sure we don't get crashes if the folder is destroyed while we are still open
+    connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
+}
+
+SelectiveSyncDialog::SelectiveSyncDialog(Account* account, const QStringList& blacklist, QWidget* parent, Qt::WindowFlags f)
+    : QDialog(parent, f), _folder(0)
+{
+    init(account);
+    _treeView->setFolderInfo(QString(), QString(), blacklist);
+}
+
+void SelectiveSyncDialog::init(Account *account)
+{
     QVBoxLayout *layout = new QVBoxLayout(this);
-    _treeView = new SelectiveSyncTreeView(parent);
+    _treeView = new SelectiveSyncTreeView(account, this);
     layout->addWidget(new QLabel(tr("Only checked folders will sync to this computer")));
     layout->addWidget(_treeView);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
@@ -263,24 +276,31 @@ SelectiveSyncDialog::SelectiveSyncDialog(Folder* folder, QWidget* parent, Qt::Wi
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
     connect(button, SIGNAL(clicked()), this, SLOT(reject()));
     layout->addWidget(buttonBox);
-
-    // Make sure we don't get crashes if the folder is destroyed while we are still open
-    connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
-
-    _treeView->setFolderInfo(_folder->remotePath(), _folder->alias(), _folder->selectiveSyncBlackList());
 }
 
 void SelectiveSyncDialog::accept()
 {
-    QStringList blackList = _treeView->createBlackList();
-    _folder->setSelectiveSyncBlackList(blackList);
+    if (_folder) {
+        QStringList blackList = _treeView->createBlackList();
+        _folder->setSelectiveSyncBlackList(blackList);
 
-    // FIXME: Use MirallConfigFile
-    QSettings settings(_folder->configFile(), QSettings::IniFormat);
-    settings.beginGroup(FolderMan::escapeAlias(_folder->alias()));
-    settings.setValue("blackList", blackList);
+        // FIXME: Use MirallConfigFile
+        QSettings settings(_folder->configFile(), QSettings::IniFormat);
+        settings.beginGroup(FolderMan::escapeAlias(_folder->alias()));
+        settings.setValue("blackList", blackList);
 
+        FolderMan *folderMan = FolderMan::instance();
+        if (_folder->isBusy()) {
+            _folder->slotTerminateSync();
+        }
+        folderMan->slotScheduleSync(_folder->alias());
+    }
     QDialog::accept();
+}
+
+QStringList SelectiveSyncDialog::createBlackList() const
+{
+    return _treeView->createBlackList();
 }
 
 

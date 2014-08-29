@@ -199,6 +199,8 @@ SocketApi::SocketApi(QObject* parent)
     connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), this, SLOT(slotUpdateFolderView(QString)));
     connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem)),
             SLOT(slotJobCompleted(QString,SyncFileItem)));
+    connect(ProgressDispatcher::instance(), SIGNAL(syncItemDiscovered(QString,SyncFileItem)),
+            this, SLOT(slotSyncItemDiscovered(QString,SyncFileItem)));
 }
 
 SocketApi::~SocketApi()
@@ -318,8 +320,9 @@ void SocketApi::slotUpdateFolderView(const QString& alias)
 void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item)
 {
     Folder *f = FolderMan::instance()->folder(folder);
-    if (!f)
+    if (!f) {
         return;
+    }
 
     const QString path = f->path() + item.destination();
 
@@ -327,9 +330,24 @@ void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item
     if (Progress::isWarningKind(item._status)) {
         command = QLatin1String("ERROR");
     }
-    if( Utility::isLinux() ) {
-        broadcastMessage(QLatin1String("BROADCAST"), path, command);
+    broadcastMessage(QLatin1String("STATUS"), path, command);
+}
+
+void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem &item)
+{
+    if (item._instruction == CSYNC_INSTRUCTION_NONE) {
+        return;
     }
+
+    Folder *f = FolderMan::instance()->folder(folder);
+    if (!f) {
+        return;
+    }
+
+    const QString path = f->path() + item.destination();
+
+    const QString command = QLatin1String("SYNC");
+    broadcastMessage(QLatin1String("STATUS"), path, command);
 }
 
 
@@ -408,7 +426,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket
 
 void SocketApi::command_VERSION(const QString&, QTcpSocket* socket)
 {
-    sendMessage(socket, QLatin1String(MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
+    sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }
 
 
