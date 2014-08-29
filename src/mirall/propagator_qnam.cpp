@@ -38,6 +38,15 @@ static qint64 chunkSize() {
     return chunkSize;
 }
 
+static QByteArray get_etag_from_reply(QNetworkReply *reply)
+{
+    QByteArray ret = parseEtag(reply->rawHeader("OC-ETag"));
+    if (ret.isEmpty()) {
+        ret = parseEtag(reply->rawHeader("ETag"));
+    }
+    return ret;
+}
+
 /**
  * Fiven an error from the network, map to a SyncFileItem::Status error
  */
@@ -294,7 +303,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
         return;
     }
 
-    bool finished = job->reply()->hasRawHeader("ETag");
+    bool finished = job->reply()->hasRawHeader("ETag")
+            || job->reply()->hasRawHeader("OC-ETag");
 
     if (!finished) {
         QFileInfo fi(_propagator->_localDir + _item._file);
@@ -343,7 +353,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
         _item._fileId = fid;
     }
 
-    _item._etag = parseEtag(job->reply()->rawHeader("ETag"));
+    QByteArray etag = get_etag_from_reply(job->reply());
+    _item._etag = etag;
+
     _item._responseTimeStamp = job->responseTimestamp();
 
     if (job->reply()->rawHeader("X-OC-MTime") != "accepted") {
@@ -449,8 +461,8 @@ void GETFileJob::slotMetaDataChanged()
         // We will handle the error when the job is finished.
         return;
     }
+    _etag = get_etag_from_reply(reply());
 
-    _etag = parseEtag(reply()->rawHeader("Etag"));
     if (!_directDownloadUrl.isEmpty() && !_etag.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "Direct download used, ignoring server ETag" << _etag;
         _etag = QByteArray(); // reset received ETag
