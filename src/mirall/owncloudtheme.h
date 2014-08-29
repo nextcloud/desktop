@@ -33,6 +33,9 @@ public:
     QIcon   trayFolderIcon( const QString& ) const;
     QIcon   folderDisabledIcon() const;
     QIcon   applicationIcon() const;
+    QString appName() const;
+    QString appNameGUI() const;
+
 
     QVariant customMedia(CustomMediaType type);
     QString helpUrl() const;
