@@ -382,7 +382,7 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
     int progressChunk = _currentChunk + _startChunk;
     if (progressChunk >= _chunkCount)
         progressChunk = _currentChunk;
-    emit progress(_item, sent + _currentChunk * chunkSize());
+    emit progress(_item, sent + progressChunk * chunkSize());
 }
 
 
