@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Valitse synkronoitavat tiedot</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="101"/>
@@ -157,7 +157,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="655"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3/%4)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="659"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="676"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>tiedosto %1/%2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="764"/>

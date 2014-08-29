@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Ne Eşitleneceğini Seçin</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="101"/>
@@ -157,7 +157,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="655"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3/%4)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="659"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="676"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>dosya %1/%2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="764"/>
@@ -600,7 +600,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="433"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Ne Eşitleneceğini Seçin: İsterseniz eşitlemek istemediğiniz alt klasörlerin işaretini kaldırabilirsiniz.</translation>
     </message>
 </context>
 <context>
@@ -1527,7 +1527,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="257"/>
         <source>Only checked folders will sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Bu bilgisayara sadece seçili klasörler eşitlenecektir</translation>
     </message>
 </context>
 <context>

@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Escolher o que Sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="101"/>
@@ -157,7 +157,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="655"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="659"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="676"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>arquivo %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="764"/>
@@ -600,7 +600,7 @@ Você tem certeza que quer executar esta operação?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="433"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Escolher o que sincronizar: Você pode, opcionalmente, desmarcar subpastas que você não deseja sincronizar.</translation>
     </message>
 </context>
 <context>
@@ -1525,7 +1525,7 @@ Tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="257"/>
         <source>Only checked folders will sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Somente pastas verificadas serão sincronizadas com este computador</translation>
     </message>
 </context>
 <context>

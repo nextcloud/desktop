@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Escolher o que sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="101"/>
@@ -151,13 +151,13 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="609"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>A descobrir %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="655"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="659"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="676"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>ficheiro %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="764"/>
@@ -599,7 +599,7 @@ Se você, ou o seu administrador, reiniciou  a sua conta no servidor, escolha &q
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="433"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Escolher o que sincronizar. Opcionalmente, é possível desmarcar sub pastas que você não deseja sincronizar.</translation>
     </message>
 </context>
 <context>
@@ -1239,7 +1239,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="83"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Saltar a configuração das pastas</translation>
     </message>
 </context>
 <context>
@@ -1324,7 +1324,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="61"/>
         <source>Operation was canceled by user interaction.</source>
-        <translation type="unfinished"/>
+        <translation>A operação foi cancelada pela acção do utilizador.</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="178"/>
@@ -1524,7 +1524,7 @@ Por favor tente sincronizar novamente.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="257"/>
         <source>Only checked folders will sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Só as pastas verificadas é que serão sincronizadas com este computador</translation>
     </message>
 </context>
 <context>
@@ -2064,7 +2064,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/libsync/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt; Versão% 1 Para mais informações, visite &lt;a href=&apos;%2&apos;&gt;% 3 &lt;/a&gt;. &lt;/ p&gt; &lt;p&gt; Direitos de autor ownCloud, Inc. &lt;/ p&gt; &lt;p&gt; Distribuído por 4% e licenciado sob a GNU General Public License (GPL) versão 2.0. marcas &lt;br/&gt;% 5% e o logótipo são marcas registadas da 5% 4 nos Estados Unidos, outros países, ou ambos. &lt;/ p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2092,7 +2092,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Não há pastas de sincronização configurado.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="299"/>
@@ -2182,7 +2182,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="463"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>A descobrir %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="467"/>
@@ -2210,7 +2210,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message utf8="true">
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versão% 2. Para mais informações visite &lt;a href=&quot;%3&quot;&gt;% 4 &lt;/a&gt; &lt;/ p&gt; &lt;p&gt; &lt;small&gt; por Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz e outros. &lt;br /&gt; com base Mirall por Duncan Mac-Vicar p. &lt;/ small&gt; &lt;/ p&gt; &lt;p&gt; Direitos de autor ownCloud, Inc. &lt;/ p&gt; &lt;p&gt; Licenciado sob a Licença Pública GNU (GPL) versão 2.0 &lt;br / &gt; ownCloud eo logotipo são marcas registradas da ownCloud ownCloud, Inc. nos Estados Unidos, outros países, ou ambos registrado &lt;/ p&gt;</translation>
     </message>
 </context>
 <context>
