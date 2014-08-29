@@ -426,7 +426,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket
 
 void SocketApi::command_VERSION(const QString&, QTcpSocket* socket)
 {
-    sendMessage(socket, QLatin1String(MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
+    sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }
 
 
