@@ -23,6 +23,8 @@
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
 
+#include "config.h"
+
 #include <QNetworkProxy>
 #include <QDir>
 
@@ -56,6 +58,10 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     // misc
     connect(_ui->monoIconsCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
     connect(_ui->crashreporterCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
+
+#ifndef WITH_CRASHREPORTER
+    _ui->crashreporterCheckBox->setVisible(false);
+#endif
 
     // OEM themes are not obliged to ship mono icons, so there
     // is no point in offering an option
