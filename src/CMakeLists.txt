@@ -270,6 +270,7 @@ set(mirall_SRCS
     mirall/sslbutton.cpp
     mirall/syncrunfilelog.cpp
     mirall/selectivesyncdialog.cpp
+    mirall/accountmigrator.cpp
 )
 
 

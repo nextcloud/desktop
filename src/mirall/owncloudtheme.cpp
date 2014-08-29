@@ -112,6 +112,16 @@ QPixmap ownCloudTheme::wizardHeaderLogo() const
 }
 #endif
 
+QString ownCloudTheme::appName() const
+{
+    return QLatin1String("owncloud");
+}
+
+QString ownCloudTheme::appNameGUI() const
+{
+    return QLatin1String("ownCloud");
+}
+
 
 }
 

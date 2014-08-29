@@ -13,11 +13,14 @@
  */
 
 #include "mirall/folderman.h"
+#include "mirall/account.h"
+
 #include "mirall/mirallconfigfile.h"
 #include "mirall/folder.h"
 #include "mirall/syncresult.h"
 #include "mirall/theme.h"
 #include "mirall/socketapi.h"
+#include "mirall/accountmigrator.h"
 
 #include <neon/ne_socket.h>
 
@@ -180,6 +183,15 @@ int FolderMan::setupFolders()
   //We need to include hidden files just in case the alias starts with '.'
   dir.setFilter(QDir::Files | QDir::Hidden);
   QStringList list = dir.entryList();
+
+  if( list.count() == 0 ) {
+      // maybe the account was just migrated.
+      Account *acc = AccountManager::instance()->account();
+      if ( acc && acc->wasMigrated() ) {
+          AccountMigrator accMig;
+          list = accMig.migrateFolderDefinitons();
+      }
+  }
 
   foreach ( const QString& alias, list ) {
     Folder *f = setupFolderFromConfigFile( alias );
