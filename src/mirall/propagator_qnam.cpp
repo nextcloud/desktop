@@ -120,7 +120,9 @@ bool PollJob::finished()
     }
 
     bool ok = false;
-    QVariantMap status = QtJson::parse(QString::fromUtf8(reply()->readAll()), ok).toMap();
+    QByteArray jsonData = reply()->readAll().trimmed();
+    qDebug() << Q_FUNC_INFO << ">" << jsonData << "<";
+    QVariantMap status = QtJson::parse(QString::fromUtf8(jsonData), ok).toMap();
     if (!ok || status.isEmpty()) {
         _item._errorString = tr("Invalid json reply from the poll URL");
         _item._status = SyncFileItem::NormalError;
