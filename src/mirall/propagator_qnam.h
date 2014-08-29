@@ -139,6 +139,7 @@ public:
     virtual void slotTimeout() Q_DECL_OVERRIDE;
 
     QByteArray &etag() { return _etag; }
+    quint64 resumeStart() { return _resumeStart; }
 
 
 signals:
@@ -156,10 +157,9 @@ class PropagateDownloadFileQNAM : public PropagateItemJob {
 
 //  QFile *_file;
     QFile _tmpFile;
-    quint64 _startSize;
 public:
     PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateItemJob(propagator, item), _startSize(0) {}
+        : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
 private slots:
     void slotGetFinished();

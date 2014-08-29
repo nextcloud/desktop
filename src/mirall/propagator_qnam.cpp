@@ -484,7 +484,7 @@ void GETFileJob::slotMetaDataChanged()
     }
 
     quint64 start = 0;
-    QByteArray ranges = parseEtag(reply()->rawHeader("Content-Range"));
+    QByteArray ranges = reply()->rawHeader("Content-Range");
     if (!ranges.isEmpty()) {
         QRegExp rx("bytes (\\d+)-");
         if (rx.indexIn(ranges) >= 0) {
@@ -502,6 +502,7 @@ void GETFileJob::slotMetaDataChanged()
                 reply()->abort();
                 return;
             }
+            _resumeStart = 0;
         } else {
             _errorString = tr("Server returned wrong content-range");
             _errorStatus = SyncFileItem::NormalError;
@@ -606,6 +607,7 @@ void PropagateDownloadFileQNAM::start()
 
     QMap<QByteArray, QByteArray> headers;
 
+    quint64 startSize = 0;
     if (_tmpFile.size() > 0) {
         quint64 done = _tmpFile.size();
         if (done == _item._size) {
@@ -616,14 +618,14 @@ void PropagateDownloadFileQNAM::start()
         headers["Range"] = "bytes=" + QByteArray::number(done) +'-';
         headers["Accept-Ranges"] = "bytes";
         qDebug() << "Retry with range " << headers["Range"];
-        _startSize = done;
+        startSize = done;
     }
 
     if (_item._directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
         _job = new GETFileJob(AccountManager::instance()->account(),
                             _propagator->_remoteFolder + _item._file,
-                            &_tmpFile, headers, expectedEtagForResume, _startSize);
+                            &_tmpFile, headers, expectedEtagForResume, startSize);
     } else {
         // We were provided a direct URL, use that one
         if (!_item._directDownloadCookies.isEmpty()) {
@@ -748,7 +750,8 @@ void PropagateDownloadFileQNAM::downloadFinished()
 
 void PropagateDownloadFileQNAM::slotDownloadProgress(qint64 received, qint64)
 {
-    emit progress(_item, received + _startSize);
+    if (!_job) return;
+    emit progress(_item, received + _job->resumeStart());
 }
 
 
