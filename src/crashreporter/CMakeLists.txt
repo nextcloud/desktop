@@ -23,7 +23,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
     "../3rdparty/libcrashreporter-qt/src/"
 )
 
-add_executable( owncloud_crash_reporter WIN32
+add_executable( ${CRASHREPORTER_EXECUTABLE} WIN32
     ${crashreporter_SOURCES}
     ${crashreporter_HEADERS_MOC}
     ${crashreporter_UI_HEADERS}
@@ -31,14 +31,14 @@ add_executable( owncloud_crash_reporter WIN32
 )
 
 
-target_link_libraries(owncloud_crash_reporter
+target_link_libraries( ${CRASHREPORTER_EXECUTABLE}
     crashreporter-gui
     ${QT_LIBRARIES}
 )
 
 #TODO: don't use automoc :-(
-set_target_properties(owncloud_crash_reporter PROPERTIES AUTOMOC ON)
-set_target_properties(owncloud_crash_reporter PROPERTIES RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
-install(TARGETS owncloud_crash_reporter RUNTIME DESTINATION ${LIBEXEC_INSTALL_DIR})
+set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES AUTOMOC ON)
+set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+install(TARGETS ${CRASHREPORTER_EXECUTABLE} RUNTIME DESTINATION ${LIBEXEC_INSTALL_DIR})
 
-qt5_use_modules(owncloud_crash_reporter Widgets Network)
+qt5_use_modules(${CRASHREPORTER_EXECUTABLE} Widgets Network)
