@@ -16,6 +16,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QUrl>
+#include <QTimer>
 #include <QPushButton>
 #include <QMessageBox>
 
@@ -143,9 +144,12 @@ void OwncloudSetupPage::initializePage()
     if (Theme::instance()->overrideServerUrl().isEmpty()) {
         _ui.leUrl->setFocus();
     } else {
-        setVisible(false);
         setCommitPage(true);
         validatePage();
+        setVisible(false);
+        // because the wizard will call show on us right after this call, we need to hide in the
+        // next event loop iteration.
+        QTimer::singleShot(0, this, SLOT(hide()));
     }
 }
 

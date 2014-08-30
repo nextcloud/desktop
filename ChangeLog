@@ -1,6 +1,7 @@
 ChangeLog
 =========
-version 1.6.2 (release 2014-07-x )
+version 1.6.2 (release 2014-07-28 )
+ * Limit the HTTP buffer size when downloading to limit memory consumption.
  * Another small mem leak fixed in HTTP Credentials.
  * Fix local file name clash detection for MacOSX.
  * Limit maximum wait time to ten seconds in network limiting.
