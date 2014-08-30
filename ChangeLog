@@ -1,5 +1,12 @@
 ChangeLog
 =========
+version 1.6.3 (release 2014-09-xx)
+ * Memory leak fixed, no more mem loose now
+ * 4 GB upload problem fixed
+ * MacOSX: Settings window coming to front properly
+ * Account migration on branded clients from previously configured
+   community versions
+
 version 1.6.2 (release 2014-07-28 )
  * Limit the HTTP buffer size when downloading to limit memory consumption.
  * Another small mem leak fixed in HTTP Credentials.
