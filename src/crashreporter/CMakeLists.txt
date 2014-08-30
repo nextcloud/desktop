@@ -23,24 +23,31 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
     "../3rdparty/libcrashreporter-qt/src/"
 )
 
-add_executable( ${CRASHREPORTER_EXECUTABLE} WIN32
-    ${crashreporter_SOURCES}
-    ${crashreporter_HEADERS_MOC}
-    ${crashreporter_UI_HEADERS}
-    ${crashreporter_RC_RCC}
-)
 
+if(NOT BUILD_LIBRARIES_ONLY)
+    add_executable( ${CRASHREPORTER_EXECUTABLE} WIN32
+        ${crashreporter_SOURCES}
+        ${crashreporter_HEADERS_MOC}
+        ${crashreporter_UI_HEADERS}
+        ${crashreporter_RC_RCC}
+    )
 
-target_link_libraries( ${CRASHREPORTER_EXECUTABLE}
-    crashreporter-gui
-    ${QT_LIBRARIES}
-)
+    qt5_use_modules(${CRASHREPORTER_EXECUTABLE} Widgets Network)
 
-#TODO: don't use automoc :-(
-set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES AUTOMOC ON)
-set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
-if(NOT WIN32)
-    install(TARGETS ${CRASHREPORTER_EXECUTABLE} RUNTIME DESTINATION ${LIBEXEC_INSTALL_DIR})
+    set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES AUTOMOC ON)
+    set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+    set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES INSTALL_RPATH "${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
+    target_link_libraries(${CRASHREPORTER_EXECUTABLE}
+        crashreporter-gui
+        ${QT_LIBRARIES}
+    )
+
+    if(BUILD_OWNCLOUD_OSX_BUNDLE)
+        install(TARGETS ${CRASHREPORTER_EXECUTABLE} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
+    elseif(NOT BUILD_LIBRARIES_ONLY)
+        install(TARGETS ${CRASHREPORTER_EXECUTABLE}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+    endif()
 endif()
-
-qt5_use_modules(${CRASHREPORTER_EXECUTABLE} Widgets Network)
