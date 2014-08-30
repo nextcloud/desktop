@@ -33,7 +33,9 @@ int main( int argc, char* argv[] )
     // TODO: install socorro ....
     CrashReporter reporter( QUrl( CRASHREPORTER_SUBMIT_URL ),  app.arguments() );
 
-    reporter.setLogo(QPixmap(":/owncloud-icon.png"));
+#ifdef CRASHREPORTER_ICON
+    reporter.setLogo(QPixmap(CRASHREPORTER_ICON));
+#endif
     reporter.setWindowTitle(CRASHREPORTER_PRODUCT_NAME);
     reporter.setText("<html><head/><body><p><span style=\" font-weight:600;\">Sorry!</span> " CRASHREPORTER_PRODUCT_NAME " crashed. Please tell us about it! " CRASHREPORTER_PRODUCT_NAME " has created an error report for you that can help improve the stability in the future. You can now send this report directly to the " CRASHREPORTER_PRODUCT_NAME " developers.</p></body></html>");
 

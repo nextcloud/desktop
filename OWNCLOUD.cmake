@@ -13,3 +13,4 @@ set( WIN_SETUP_BITMAP_PATH  "${CMAKE_SOURCE_DIR}/admin/win/nsi" )
 
 option( WITH_CRASHREPORTER "Build crashreporter" OFF )
 set( CRASHREPORTER_SUBMIT_URL "https://crash-reports.owncloud.org/submit" CACHE string "URL for crash repoter" )
+set( CRASHREPORTER_ICON ":/owncloud-icon.png" )
