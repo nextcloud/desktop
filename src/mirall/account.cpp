@@ -141,13 +141,15 @@ Account* Account::restore()
             // Check the theme url to see if it is the same url that the oC config was for
             QString overrideUrl = Theme::instance()->overrideServerUrl();
             if( !overrideUrl.isEmpty() ) {
+                if (overrideUrl.endsWith('/')) { overrideUrl.chop(1); }
                 QString oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
+                if (oCUrl.endsWith('/')) { oCUrl.chop(1); }
 
                 // in case the urls are equal reset the settings object to read from
                 // the ownCloud settings object
                 qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
-                         << (QUrl(oCUrl) == QUrl(overrideUrl) ? "Yes" : "No");
-                if( QUrl(oCUrl) == QUrl(overrideUrl) ) {
+                         << (oCUrl == overrideUrl ? "Yes" : "No");
+                if( oCUrl == overrideUrl ) {
                     migratedCreds = true;
                     settings.reset( oCSettings );
                 } else {
