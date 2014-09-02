@@ -22,6 +22,9 @@ prjfile=$build_path/admin/osx/macosx.pkgproj
 # The name of the installer package
 installer="ownCloud-@MIRALL_VERSION_FULL@@MIRALL_VERSION_SUFFIX@"
 installer_file="$installer.pkg"
+installer_file_tar="$installer.pkg.tar"
+installer_file_tar_bz2="$installer.pkg.tar.bz2"
+installer_file_tbz="$installer.pkg.tbz"
 
 # set the installer name to the copied prj config file
 /usr/local/bin/packagesutil --file $prjfile set project name "$installer"
@@ -45,3 +48,18 @@ fi
 # productsign --cert $certname admin/$installer ./$installer
 
 # FIXME: OEMs?
+
+
+
+# Sparkle wants a tbz, it cannot install raw pkg
+cd $install_path
+tar cf $installer_file_tar $installer_file
+bzip2 -9 $installer_file_tar
+mv $installer_file_tar_bz2 $installer_file_tbz
+rc=$?
+if [ $rc == 0 ]; then
+  echo "Successfully created $installer_file"
+else
+  echo "Failed to create $installer_file"
+  exit 3
+fi
