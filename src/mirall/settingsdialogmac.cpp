@@ -30,8 +30,13 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
 
 
     // Emulate dialog behavior: Escape means close
+    QAction *closeDialogAction = new QAction(this);
+    closeDialogAction->setShortcut(QKeySequence(Qt::Key_Escape));
+    connect(closeDialogAction, SIGNAL(triggered()), SLOT(close()));
+    addAction(closeDialogAction);
+    // People perceive this as a Window, so also make Ctrl+W work
     QAction *closeWindowAction = new QAction(this);
-    closeWindowAction->setShortcut(QKeySequence(Qt::Key_Escape));
+    closeWindowAction->setShortcut(QKeySequence("Ctrl+W"));
     connect(closeWindowAction, SIGNAL(triggered()), SLOT(close()));
     addAction(closeWindowAction);
 
