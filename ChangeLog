@@ -1,6 +1,7 @@
 ChangeLog
 =========
 version 1.6.3 (release 2014-09-xx)
+ * Fixed updater on OS X
  * Fixed memory leak in SSL button that could lead to quick memory draining
  * Fixed upload problem with files >4 GB
  * MacOSX, Linux: Bring Settings window to front properly
