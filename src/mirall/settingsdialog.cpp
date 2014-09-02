@@ -46,6 +46,13 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi(this);
+
+    // People perceive this as a Window, so also make Ctrl+W work
+    QAction *closeWindowAction = new QAction(this);
+    closeWindowAction->setShortcut(QKeySequence("Ctrl+W"));
+    connect(closeWindowAction, SIGNAL(triggered()), SLOT(accept()));
+    addAction(closeWindowAction);
+
     setObjectName("Settings"); // required as group for saveGeometry call
 
     setWindowTitle(tr("%1").arg(Theme::instance()->appNameGUI()));
