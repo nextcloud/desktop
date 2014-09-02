@@ -255,8 +255,16 @@ void Folder::slotPollTimerTimeout()
 {
     qDebug() << "* Polling" << alias() << "for changes. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
 
-    if (_paused || AccountManager::instance()->account()->state() != Account::Connected) {
-        qDebug() << "Not syncing.  :" << _paused << AccountManager::instance()->account()->state();
+
+    Account *account = AccountManager::instance()->account();
+
+    if (!account) {
+        qDebug() << Q_FUNC_INFO << "No valid account object";
+        return;
+    }
+
+    if (_paused || account->state() != Account::Connected) {
+        qDebug() << "Not syncing.  :" << _paused << account->state();
         return;
     }
 
@@ -265,8 +273,8 @@ void Folder::slotPollTimerTimeout()
         qDebug() << "** Force Sync now, state is " << _syncResult.statusString();
         emit scheduleToSync(alias());
     } else {
-        // do the ordinary etag chech for the root folder.
-        RequestEtagJob* job = new RequestEtagJob(AccountManager::instance()->account(), remotePath(), this);
+        // do the ordinary etag check for the root folder.
+        RequestEtagJob* job = new RequestEtagJob(account, remotePath(), this);
         // check if the etag is different
         QObject::connect(job, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
         QObject::connect(job, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotNetworkUnavailable()));
