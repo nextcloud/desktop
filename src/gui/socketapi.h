@@ -56,6 +56,10 @@ public slots:
     void slotRegisterPath( const QString& alias );
     void slotReadExcludes();
     void slotClearExcludesList();
+
+signals:
+    void shareCommandReceived(const QString &path);
+
 private slots:
     void slotNewConnection();
     void onLostConnection();
@@ -74,6 +78,7 @@ private:
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketType* socket);
     Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType* socket);
+    Q_INVOKABLE void command_SHARE(const QString& argument, QTcpSocket* socket);
 
     Q_INVOKABLE void command_VERSION(const QString& argument, SocketType* socket);
 

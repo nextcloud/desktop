@@ -402,6 +402,13 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
     sendMessage(socket, message);
 }
 
+void SocketApi::command_SHARE(const QString& argument, QTcpSocket* socket)
+{
+    sendMessage(socket, QString("Openening sharing dialog >").append(argument));
+    QString folderForPath = FolderMan::instance()->folderForPath(argument)->path();
+    emit shareCommandReceived(argument.right(argument.count()-folderForPath.count()+1));
+}
+
 void SocketApi::command_VERSION(const QString&, SocketType* socket)
 {
     sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
