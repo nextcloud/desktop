@@ -220,6 +220,7 @@ public:
 
     bool isInSharedDirectory(const QString& file);
     bool localFileNameClash(const QString& relfile);
+    QString getFilePath(const QString& tmp_file_name) const;
 
     void abort() {
         _abortRequested.fetchAndStoreOrdered(true);

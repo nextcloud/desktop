@@ -62,7 +62,7 @@ void PropagateUploadFileLegacy::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    QFile file(_propagator->_localDir + _item._file);
+    QFile file(_propagator->getFilePath(_item._file));
     if (!file.open(QIODevice::ReadOnly)) {
         done(SyncFileItem::NormalError, file.errorString());
         return;
@@ -189,7 +189,7 @@ void PropagateUploadFileLegacy::start()
                 return;
         }
 
-        _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
+        _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->getFilePath(_item._file)));
         // Remove from the progress database:
         _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
         _propagator->_journal->commit("upload file start");
@@ -498,7 +498,7 @@ void PropagateDownloadFileLegacy::start()
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
         if (progressInfo._etag != _item._etag) {
-            QFile::remove(_propagator->_localDir + progressInfo._tmpfile);
+            QFile::remove(_propagator->getFilePath(progressInfo._tmpfile));
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
@@ -516,7 +516,7 @@ void PropagateDownloadFileLegacy::start()
         tmpFileName += ".~" + QString::number(uint(qrand()), 16);
     }
 
-    QFile tmpFile(_propagator->_localDir + tmpFileName);
+    QFile tmpFile(_propagator->getFilePath(tmpFileName));
     _file = &tmpFile;
     if (!tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
         done(SyncFileItem::NormalError, tmpFile.errorString());
@@ -610,7 +610,7 @@ void PropagateDownloadFileLegacy::start()
 
     tmpFile.close();
     tmpFile.flush();
-    QString fn = _propagator->_localDir + _item._file;
+    QString fn = _propagator->getFilePath(_item._file);
 
 
     bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT

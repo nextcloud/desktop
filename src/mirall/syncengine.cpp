@@ -244,6 +244,57 @@ bool SyncEngine::checkBlacklisting( SyncFileItem *item )
     return re;
 }
 
+void SyncEngine::deleteStaleDownloadInfos()
+{
+    // Find all downloadinfo paths that we want to preserve.
+    QSet<QString> download_file_paths;
+    foreach(const SyncFileItem& it, _syncedItems) {
+        if (it._direction == SyncFileItem::Down
+                && it._type == SyncFileItem::File)
+        {
+            download_file_paths.insert(it._file);
+        }
+    }
+
+    // Delete from journal and from filesystem.
+    const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
+            _journal->getAndDeleteStaleDownloadInfos(download_file_paths);
+    foreach (const SyncJournalDb::DownloadInfo & deleted_info, deleted_infos) {
+        const QString tmppath = _propagator->getFilePath(deleted_info._tmpfile);
+        qDebug() << "Deleting stale temporary file: " << tmppath;
+        QFile::remove(tmppath);
+    }
+}
+
+void SyncEngine::deleteStaleUploadInfos()
+{
+    // Find all blacklisted paths that we want to preserve.
+    QSet<QString> upload_file_paths;
+    foreach(const SyncFileItem& it, _syncedItems) {
+        if (it._direction == SyncFileItem::Up
+                && it._type == SyncFileItem::File)
+        {
+            upload_file_paths.insert(it._file);
+        }
+    }
+
+    // Delete from journal.
+    _journal->deleteStaleUploadInfos(upload_file_paths);
+}
+
+void SyncEngine::deleteStaleBlacklistEntries()
+{
+    // Find all blacklisted paths that we want to preserve.
+    QSet<QString> blacklist_file_paths;
+    foreach(const SyncFileItem& it, _syncedItems) {
+        if (it._status == SyncFileItem::FileIgnored)
+            blacklist_file_paths.insert(it._file);
+    }
+
+    // Delete from journal.
+    _journal->deleteStaleBlacklistEntries(blacklist_file_paths);
+}
+
 int SyncEngine::treewalkLocal( TREE_WALK_FILE* file, void *data )
 {
     return static_cast<SyncEngine*>(data)->treewalkFile( file, false );
@@ -646,6 +697,11 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);
+
+    deleteStaleDownloadInfos();
+    deleteStaleUploadInfos();
+    deleteStaleBlacklistEntries();
+    _journal->commit("post stale entry removal");
 
     _propagator->start(_syncedItems);
 }
