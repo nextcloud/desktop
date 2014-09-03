@@ -177,7 +177,7 @@ private slots:
 private:
     bool init();
 
-    void setIgnoredFiles();
+    bool setIgnoredFiles();
 
     void bubbleUpSyncResult();
 
