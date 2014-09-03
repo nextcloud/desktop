@@ -62,7 +62,7 @@ public:
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
     void setSelectiveSyncBlackList(const QStringList &list)
-    { _selectiveSyncWhiteList = list; }
+    { _selectiveSyncBlackList = list; }
 
 signals:
     void csyncError( const QString& );
@@ -159,7 +159,7 @@ private:
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
 
-    QStringList _selectiveSyncWhiteList;
+    QStringList _selectiveSyncBlackList;
 };
 
 }

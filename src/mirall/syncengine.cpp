@@ -586,7 +586,7 @@ void SyncEngine::startSync()
     qDebug() << "#### Discovery start #################################################### >>";
 
     DiscoveryJob *job = new DiscoveryJob(_csync_ctx);
-    job->_selectiveSyncBlackList = _selectiveSyncWhiteList;
+    job->_selectiveSyncBlackList = _selectiveSyncBlackList;
     job->moveToThread(&_thread);
     connect(job, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
     connect(job, SIGNAL(folderDiscovered(bool,QString)),
