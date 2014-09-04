@@ -27,6 +27,7 @@
 #include "mirall/clientproxy.h"
 #include "mirall/syncengine.h"
 #include "mirall/syncrunfilelog.h"
+#include "mirall/filesystem.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -776,7 +777,9 @@ SyncFileStatus Folder::fileStatus( const QString& fileName )
     }
 
     // file was locally modified.
-    if( stat == FILE_STATUS_NONE && fi.lastModified() != rec._modtime ) {
+    if( stat == FILE_STATUS_NONE &&
+            FileSystem::getModTime(fi.absoluteFilePath())
+                != Utility::qDateTimeToTime_t(rec._modtime) ) {
         stat = FILE_STATUS_EVAL;
     }
 
