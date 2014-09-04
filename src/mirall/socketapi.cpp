@@ -22,6 +22,7 @@
 #include "mirall/theme.h"
 #include "mirall/syncjournalfilerecord.h"
 #include "mirall/syncfileitem.h"
+#include "mirall/filesystem.h"
 #include "version.h"
 
 #include <QDebug>
@@ -165,7 +166,7 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strli
     if( type == CSYNC_FTW_TYPE_DIR ) {
         // compute recursive status of the directory
         status = recursiveFolderStatus( folder, fileName, excludes );
-    } else if(fi.lastModified() != rec._modtime ) {
+    } else if( FileSystem::getModTime(fi.absoluteFilePath()) != Utility::qDateTimeToTime_t(rec._modtime) ) {
         // file was locally modified.
         status.set(SyncFileStatus::STATUS_EVAL);
     } else {

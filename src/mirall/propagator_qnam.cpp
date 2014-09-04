@@ -314,8 +314,10 @@ void PropagateUploadFileQNAM::slotPutFinished()
             return;
         }
 
-        if (Utility::qDateTimeToTime_t(fi.lastModified()) != _item._modtime) {
-            qDebug() << "The local file has changed during upload:" << _item._modtime << "!=" << Utility::qDateTimeToTime_t(fi.lastModified())  << fi.lastModified();
+        const time_t new_mtime = FileSystem::getModTime(fi.absoluteFilePath());
+        if (new_mtime != _item._modtime) {
+            qDebug() << "The local file has changed during upload:" << _item._modtime << "!=" << new_mtime
+                     << ", QFileInfo: " << Utility::qDateTimeToTime_t(fi.lastModified()) << fi.lastModified();
             _propagator->_activeJobs--;
             done(SyncFileItem::SoftError, tr("Local file changed during sync."));
             // FIXME:  the legacy code was retrying for a few seconds.
