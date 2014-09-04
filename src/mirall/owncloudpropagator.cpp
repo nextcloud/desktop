@@ -399,6 +399,11 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
     return re;
 }
 
+QString OwncloudPropagator::getFilePath(const QString& tmp_file_name) const
+{
+    return _localDir + tmp_file_name;
+}
+
 // ================================================================================
 
 void PropagateDirectory::start()

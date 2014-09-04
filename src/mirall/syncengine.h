@@ -107,6 +107,16 @@ private:
     int treewalkFile( TREE_WALK_FILE*, bool );
     bool checkBlacklisting( SyncFileItem *item );
 
+    // Cleans up unnecessary downloadinfo entries in the journal as well
+    // as their temporary files.
+    void deleteStaleDownloadInfos();
+
+    // Removes stale uploadinfos from the journal.
+    void deleteStaleUploadInfos();
+
+    // Removes stale blacklist entries from the journal.
+    void deleteStaleBlacklistEntries();
+
     // cleanup and emit the finished signal
     void finalize();
 

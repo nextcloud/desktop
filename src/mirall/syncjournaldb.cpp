@@ -608,6 +608,32 @@ int SyncJournalDb::getFileRecordCount()
     return 0;
 }
 
+static void toDownloadInfo(const QSqlQuery & query, SyncJournalDb::DownloadInfo * res)
+{
+    bool ok = true;
+    res->_tmpfile    = query.value(0).toString();
+    res->_etag       = query.value(1).toByteArray();
+    res->_errorCount = query.value(2).toInt(&ok);
+    res->_valid      = ok;
+}
+
+static bool deleteBatch(QSqlQuery & query, const QStringList & entries, const QString & name)
+{
+    if (entries.isEmpty())
+        return true;
+
+    qDebug() << "Removing stale " << qPrintable(name) << " entries: " << entries.join(", ");
+    query.bindValue(0, entries);
+    if (!query.execBatch()) {
+        QString err = query.lastError().text();
+        qDebug() << "Error removing stale " << qPrintable(name) << " entries: "
+                 << query.lastQuery() << ", Error:" << err;
+        return false;
+    }
+    query.finish();
+    return true;
+}
+
 SyncJournalDb::DownloadInfo SyncJournalDb::getDownloadInfo(const QString& file)
 {
     QMutexLocker locker(&_mutex);
@@ -624,11 +650,7 @@ SyncJournalDb::DownloadInfo SyncJournalDb::getDownloadInfo(const QString& file)
         }
 
         if( _getDownloadInfoQuery->next() ) {
-            bool ok = true;
-            res._tmpfile    = _getDownloadInfoQuery->value(0).toString();
-            res._etag       = _getDownloadInfoQuery->value(1).toByteArray();
-            res._errorCount = _getDownloadInfoQuery->value(2).toInt(&ok);
-            res._valid   = ok;
+            toDownloadInfo(*_getDownloadInfoQuery, &res);
         }
         _getDownloadInfoQuery->finish();
     }
@@ -667,6 +689,43 @@ void SyncJournalDb::setDownloadInfo(const QString& file, const SyncJournalDb::Do
         qDebug() <<  _deleteDownloadInfoQuery->executedQuery()  << file;
         _deleteDownloadInfoQuery->finish();
     }
+}
+
+QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInfos(const QSet<QString>& keep)
+{
+    QMutexLocker locker(&_mutex);
+
+    if (!checkConnect()) {
+        return {};
+    }
+
+    QSqlQuery query(_db);
+    // The selected values *must* match the ones expected by toDownloadInfo().
+    query.prepare("SELECT tmpfile, etag, errorcount, path FROM downloadinfo");
+
+    if (!query.exec()) {
+        QString err = query.lastError().text();
+        qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;
+        return {};
+    }
+
+    QStringList superfluousPaths;
+    QVector<SyncJournalDb::DownloadInfo> deleted_entries;
+
+    while (query.next()) {
+        const QString file = query.value(3).toString(); // path
+        if (!keep.contains(file)) {
+            superfluousPaths.append(file);
+            DownloadInfo info;
+            toDownloadInfo(query, &info);
+            deleted_entries.append(info);
+        }
+    }
+
+    if (!deleteBatch(*_deleteDownloadInfoQuery, superfluousPaths, "downloadinfo"))
+        return {};
+
+    return deleted_entries;
 }
 
 SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString& file)
@@ -734,6 +793,35 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
     }
 }
 
+bool SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
+{
+    QMutexLocker locker(&_mutex);
+
+    if (!checkConnect()) {
+        return false;
+    }
+
+    QSqlQuery query(_db);
+    query.prepare("SELECT path FROM uploadinfo");
+
+    if (!query.exec()) {
+        QString err = query.lastError().text();
+        qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;
+        return false;
+    }
+
+    QStringList superfluousPaths;
+
+    while (query.next()) {
+        const QString file = query.value(0).toString();
+        if (!keep.contains(file)) {
+            superfluousPaths.append(file);
+        }
+    }
+
+    return deleteBatch(*_deleteUploadInfoQuery, superfluousPaths, "uploadinfo");
+}
+
 SyncJournalBlacklistRecord SyncJournalDb::blacklistEntry( const QString& file )
 {
     QMutexLocker locker(&_mutex);
@@ -762,6 +850,37 @@ SyncJournalBlacklistRecord SyncJournalDb::blacklistEntry( const QString& file )
     }
 
     return entry;
+}
+
+bool SyncJournalDb::deleteStaleBlacklistEntries(const QSet<QString> &keep)
+{
+    QMutexLocker locker(&_mutex);
+
+    if (!checkConnect()) {
+        return false;
+    }
+
+    QSqlQuery query(_db);
+    query.prepare("SELECT path FROM blacklist");
+
+    if (!query.exec()) {
+        QString err = query.lastError().text();
+        qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;
+        return false;
+    }
+
+    QStringList superfluousPaths;
+
+    while (query.next()) {
+        const QString file = query.value(0).toString();
+        if (!keep.contains(file)) {
+            superfluousPaths.append(file);
+        }
+    }
+
+    QSqlQuery delQuery(_db);
+    delQuery.prepare("DELETE FROM blacklist WHERE path = ?");
+    return deleteBatch(delQuery, superfluousPaths, "blacklist");
 }
 
 int SyncJournalDb::blackListEntryCount()

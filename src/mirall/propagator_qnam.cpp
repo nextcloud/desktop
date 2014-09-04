@@ -97,7 +97,7 @@ void PropagateUploadFileQNAM::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    _file = new QFile(_propagator->_localDir + _item._file, this);
+    _file = new QFile(_propagator->getFilePath(_item._file), this);
     if (!_file->open(QIODevice::ReadOnly)) {
         done(SyncFileItem::NormalError, _file->errorString());
         delete _file;
@@ -307,7 +307,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
             || job->reply()->hasRawHeader("OC-ETag");
 
     if (!finished) {
-        QFileInfo fi(_propagator->_localDir + _item._file);
+        QFileInfo fi(_propagator->getFilePath(_item._file));
         if( !fi.exists() ) {
             _propagator->_activeJobs--;
             done(SyncFileItem::SoftError, tr("The local file was removed during sync."));
@@ -381,7 +381,7 @@ void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
 
     _item._requestDuration = _duration.elapsed();
 
-    _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
+    _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->getFilePath(_item._file)));
     // Remove from the progress database:
     _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
     _propagator->_journal->commit("upload file start");
@@ -569,7 +569,7 @@ void PropagateDownloadFileQNAM::start()
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
         if (progressInfo._etag != _item._etag) {
-            QFile::remove(_propagator->_localDir + progressInfo._tmpfile);
+            QFile::remove(_propagator->getFilePath(progressInfo._tmpfile));
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
@@ -587,7 +587,7 @@ void PropagateDownloadFileQNAM::start()
         tmpFileName += ".~" + QString::number(uint(qrand()), 16);
     }
 
-    _tmpFile.setFileName(_propagator->_localDir + tmpFileName);
+    _tmpFile.setFileName(_propagator->getFilePath(tmpFileName));
     if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
         done(SyncFileItem::NormalError, _tmpFile.errorString());
         return;
@@ -711,7 +711,7 @@ QString makeConflictFileName(const QString &fn, const QDateTime &dt)
 void PropagateDownloadFileQNAM::downloadFinished()
 {
 
-    QString fn = _propagator->_localDir + _item._file;
+    QString fn = _propagator->getFilePath(_item._file);
 
 
     bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT
