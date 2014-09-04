@@ -233,13 +233,13 @@ QString MirallConfigFile::excludeFile(Scope scope) const
 #endif
 #ifdef Q_OS_UNIX
             fi.setFile( QString( SYSCONFDIR "/%1").arg(Theme::instance()->appName()), exclFile );
-            if ( ! fi.exists() )
-            {
+            if ( ! fi.exists() ) {
                 // Prefer to return the preferred path! Only use the fallback location
                 // if the other path does not exist and the fallback is valid.
-                QFileInfo next_to_binary( QCoreApplication::applicationDirPath(), exclFile );
-                if (next_to_binary.exists())
-                    fi = next_to_binary;
+                QFileInfo nextToBinary( QCoreApplication::applicationDirPath(), exclFile );
+                if (nextToBinary.exists()) {
+                    fi = nextToBinary;
+                }
             }
 #endif
 #ifdef Q_OS_MAC

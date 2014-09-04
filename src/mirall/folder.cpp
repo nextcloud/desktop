@@ -538,8 +538,9 @@ bool Folder::setIgnoredFiles()
     QString excludeList = cfgFile.excludeFile( MirallConfigFile::SystemScope );
     if( !excludeList.isEmpty() ) {
         qDebug() << "==== added system ignore list to csync:" << excludeList.toUtf8();
-        if (csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() ) != -1)
+        if (csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() ) == 0) {
             ok = true;
+        }
     }
     excludeList = cfgFile.excludeFile( MirallConfigFile::UserScope );
     if( !excludeList.isEmpty() ) {
