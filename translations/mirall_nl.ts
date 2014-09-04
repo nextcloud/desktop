@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation>Selecteer een externe doelmap</translation>
+        <translation>Kies een externe doelmap</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -2552,7 +2552,7 @@ Probeer opnieuw te synchroniseren.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="54"/>
         <source>Waiting to start sync</source>
-        <translation>Synchronisatie in afwachting</translation>
+        <translation>In afwachting van synchronisatie</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="57"/>
