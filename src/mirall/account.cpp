@@ -39,6 +39,7 @@ static const char urlC[] = "url";
 static const char authTypeC[] = "authType";
 static const char userC[] = "user";
 static const char httpUserC[] = "http_user";
+static const char caCertsKeyC[] = "CaCertificates";
 
 AccountManager *AccountManager::_instance = 0;
 
@@ -102,15 +103,15 @@ void Account::save()
     }
     settings->sync();
 
-    // ### TODO port away from MirallConfigFile
-    MirallConfigFile cfg;
+    // Save accepted certificates.
+    settings->beginGroup(QLatin1String("General"));
     qDebug() << "Saving " << approvedCerts().count() << " unknown certs.";
     QByteArray certs;
     Q_FOREACH( const QSslCertificate& cert, approvedCerts() ) {
         certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
-        cfg.setCaCerts( certs );
+        settings->setValue( QLatin1String(caCertsKeyC), certs );
     }
 }
 
@@ -176,7 +177,7 @@ Account* Account::restore()
 
         // now the cert, it is in the general group
         settings->beginGroup(QLatin1String("General"));
-        acc->setApprovedCerts(QSslCertificate::fromData(settings->value(QLatin1String("CaCertificates")).toByteArray()));
+        acc->setApprovedCerts(QSslCertificate::fromData(settings->value(caCertsKeyC).toByteArray()));
         acc->setMigrated(migratedCreds);
         return acc;
     }
