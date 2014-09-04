@@ -291,7 +291,7 @@ void SelectiveSyncDialog::accept()
 
         FolderMan *folderMan = FolderMan::instance();
         if (_folder->isBusy()) {
-            _folder->slotTerminateSync();
+            _folder->slotTerminateAndPauseSync();
         }
         folderMan->slotScheduleSync(_folder->alias());
     }

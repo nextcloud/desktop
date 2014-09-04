@@ -138,6 +138,7 @@ public slots:
        * terminate the current sync run
        */
      void slotTerminateSync();
+     void slotTerminateAndPauseSync();
 
      void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool*);
 

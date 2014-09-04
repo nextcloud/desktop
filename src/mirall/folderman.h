@@ -107,6 +107,11 @@ public slots:
     void slotFolderSyncStarted();
     void slotFolderSyncFinished( const SyncResult& );
 
+    /**
+     * Terminates the specified folder sync (or the current one).
+     *
+     * It does not switch the folder to paused state.
+     */
     void terminateSyncProcess( const QString& alias = QString::null );
 
     /* unload and delete on folder object */
@@ -134,7 +139,6 @@ private slots:
 private:
     // finds all folder configuration files
     // and create the folders
-    void terminateCurrentSync();
     QString getBackupName( const QString& ) const;
     void registerFolderMonitor( Folder *folder );
 

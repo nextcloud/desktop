@@ -226,14 +226,6 @@ bool FolderMan::ensureJournalGone(const QString &localPath)
     return true;
 }
 
-void FolderMan::terminateCurrentSync()
-{
-    if( !_currentSyncFolder.isEmpty() ) {
-        qDebug() << "Terminating syncing on folder " << _currentSyncFolder;
-        terminateSyncProcess( _currentSyncFolder );
-    }
-}
-
 #define SLASH_TAG   QLatin1String("__SLASH__")
 #define BSLASH_TAG  QLatin1String("__BSLASH__")
 #define QMARK_TAG   QLatin1String("__QMARK__")
