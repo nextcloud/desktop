@@ -533,20 +533,27 @@ void Folder::wipe()
     }
 }
 
-void Folder::setIgnoredFiles()
+bool Folder::setIgnoredFiles()
 {
+    bool ok = false;
+
     MirallConfigFile cfgFile;
     csync_clear_exclude_list( _csync_ctx );
     QString excludeList = cfgFile.excludeFile( MirallConfigFile::SystemScope );
     if( !excludeList.isEmpty() ) {
         qDebug() << "==== added system ignore list to csync:" << excludeList.toUtf8();
-        csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
+        if (csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() ) == 0) {
+            ok = true;
+        }
     }
     excludeList = cfgFile.excludeFile( MirallConfigFile::UserScope );
     if( !excludeList.isEmpty() ) {
         qDebug() << "==== added user defined ignore list to csync:" << excludeList.toUtf8();
         csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
+        // reading the user exclude file is optional
     }
+
+    return ok;
 }
 
 void Folder::setProxyDirty(bool value)
@@ -569,7 +576,7 @@ void Folder::startSync(const QStringList &pathList)
         if (!_csync_ctx) {
             qDebug() << Q_FUNC_INFO << "init failed.";
             // the error should already be set
-            QMetaObject::invokeMethod(this, "slotCSyncFinished", Qt::QueuedConnection);
+            QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection);
             return;
         }
         _clientProxy.setCSyncProxy(AccountManager::instance()->account()->url(), _csync_ctx);
@@ -590,9 +597,15 @@ void Folder::startSync(const QStringList &pathList)
     _syncResult.setStatus( SyncResult::SyncPrepare );
     emit syncStateChange();
 
-
     qDebug() << "*** Start syncing";
-    setIgnoredFiles();
+
+    if (! setIgnoredFiles())
+    {
+        slotSyncError(tr("Could not read system exclude file"));
+        QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection);
+        return;
+    }
+
     _engine.reset(new SyncEngine( _csync_ctx, path(), remoteUrl().path(), _remotePath, &_journal));
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
