@@ -619,6 +619,12 @@ void ownCloudGui::raiseDialog( QWidget *raiseWidget )
         e.xclient.data.l[2] = 0;
         e.xclient.data.l[3] = 0l;
         e.xclient.data.l[4] = 0l;
+        Display *display = QX11Info::display();
+        XSendEvent(display,
+                   RootWindow(display, DefaultScreen(display)),
+                   False, // propagate
+                   SubstructureRedirectMask|SubstructureNotifyMask,
+                   &e);
 #endif
     }
 }
