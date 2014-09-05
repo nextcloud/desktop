@@ -33,8 +33,8 @@ SyncJournalFileRecord::SyncJournalFileRecord()
 
 SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QString &localFileName)
     : _path(item._file), _modtime(Utility::qDateTimeFromTime_t(item._modtime)),
-      _type(item._type), _etag(item._etag), _fileId(item._fileId), _remotePerm(item._remotePerm),
-      _mode(0)
+      _type(item._type), _etag(item._etag), _fileId(item._fileId), _fileSize(item._size),
+      _remotePerm(item._remotePerm), _mode(0)
 {
     // use the "old" inode coming with the item for the case where the
     // filesystem stat fails. That can happen if the the file was removed
@@ -149,7 +149,8 @@ bool operator==(const SyncJournalFileRecord & lhs,
             && lhs._etag == rhs._etag
             && lhs._fileId == rhs._fileId
             && lhs._remotePerm == rhs._remotePerm
-            && lhs._mode == rhs._mode;
+            && lhs._mode == rhs._mode
+            && lhs._fileSize == rhs._fileSize;
 }
 
 }

@@ -283,13 +283,13 @@ bool SyncJournalDb::checkConnect()
     }
 
     _getFileRecordQuery.reset(new SqlQuery(_db));
-    _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm FROM "
+    _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize FROM "
                                  "metadata WHERE phash=?1" );
 
     _setFileRecordQuery.reset(new SqlQuery(_db) );
     _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
-                                 "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm) "
-                                 "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12);" );
+                                 "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize) "
+                                 "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13);" );
 
     _getDownloadInfoQuery.reset(new SqlQuery(_db) );
     _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
@@ -411,6 +411,16 @@ bool SyncJournalDb::updateMetadataTableStructure()
             re = false;
         }
         commitInternal("update database structure (remotePerm)");
+    }
+    if( columns.indexOf(QLatin1String("filesize")) == -1 )
+    {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE metadata ADD COLUMN filesize BIGINT;");
+        if( !query.exec()) {
+            sqlFail("updateDatabaseStructure: add column filesize", query);
+            re = false;
+        }
+        commitInternal("update database structure: add filesize col");
     }
 
     if( 1 ) {
@@ -547,6 +557,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         _setFileRecordQuery->bindValue(10, etag );
         _setFileRecordQuery->bindValue(11, fileId );
         _setFileRecordQuery->bindValue(12, remotePerm );
+        _setFileRecordQuery->bindValue(13, record._fileSize );
 
         if( !_setFileRecordQuery->exec() ) {
             qWarning() << "Error SQL statement setFileRecord: " << _setFileRecordQuery->lastQuery() <<  " :"
@@ -557,7 +568,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         qDebug() <<  _setFileRecordQuery->lastQuery() << phash << plen << record._path << record._inode
                  << record._mode
                  << QString::number(Utility::qDateTimeToTime_t(record._modtime)) << QString::number(record._type)
-                 << record._etag << record._fileId << record._remotePerm;
+                 << record._etag << record._fileId << record._remotePerm << record._fileSize;
 
         _setFileRecordQuery->reset();
         return true;
@@ -635,6 +646,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._etag    = _getFileRecordQuery->baValue(7);
             rec._fileId  = _getFileRecordQuery->baValue(8);
             rec._remotePerm = _getFileRecordQuery->baValue(9);
+            rec._fileSize   = _getFileRecordQuery->int64Value(10);
         } else {
             QString err = _getFileRecordQuery->error();
             qDebug() << "No journal entry found for " << filename;

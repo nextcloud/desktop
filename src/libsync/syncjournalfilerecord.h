@@ -39,6 +39,7 @@ public:
     int       _type;
     QByteArray _etag;
     QByteArray _fileId;
+    qint64     _fileSize;
     QByteArray _remotePerm;
     int       _mode;
 };

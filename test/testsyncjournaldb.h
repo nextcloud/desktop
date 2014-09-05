@@ -59,6 +59,7 @@ private slots:
         record._fileId = "abcd";
         record._remotePerm = "744";
         record._mode = -17;
+        record._fileSize = 213089055;
         QVERIFY(_db.setFileRecord(record));
 
         SyncJournalFileRecord storedRecord = _db.getFileRecord("foo");
