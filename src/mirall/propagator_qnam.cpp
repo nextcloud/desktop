@@ -315,8 +315,11 @@ void PropagateUploadFileQNAM::slotPutFinished()
         }
 
         const time_t new_mtime = FileSystem::getModTime(fi.absoluteFilePath());
-        if (new_mtime != _item._modtime) {
-            qDebug() << "The local file has changed during upload:" << _item._modtime << "!=" << new_mtime
+        const quint64 new_size = static_cast<quint64>(fi.size());
+        if (new_mtime != _item._modtime || new_size != _item._size) {
+            qDebug() << "The local file has changed during upload:"
+                     << "mtime: " << _item._modtime << "<->" << new_mtime
+                     << ", size: " << _item._size << "<->" << new_size
                      << ", QFileInfo: " << Utility::qDateTimeToTime_t(fi.lastModified()) << fi.lastModified();
             _propagator->_activeJobs--;
             _propagator->_anotherSyncNeeded = true;
@@ -743,7 +746,10 @@ void PropagateDownloadFileQNAM::downloadFinished()
         return;
     }
 
+    // Maybe we downloaded a newer version of the file than we thought we would...
+    // Get up to date information for the journal.
     FileSystem::setModTime(fn, _item._modtime);
+    _item._size = existingFile.size();
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
