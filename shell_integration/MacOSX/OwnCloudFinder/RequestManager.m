@@ -136,6 +136,7 @@ static RequestManager* sharedInstance = nil;
 			[contentman setResultForPath:[chunks objectAtIndex:2] result:[chunks objectAtIndex:1]];
 		} else if( [[chunks objectAtIndex:0] isEqualToString:@"UPDATE_VIEW"] ) {
 			NSString *path = [chunks objectAtIndex:1];
+			[contentman reFetchFileNameCacheForPath:path];
 		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"REGISTER_PATH"] ) {
 			NSNumber *one = [NSNumber numberWithInt:1];
 			NSString *path = [chunks objectAtIndex:1];
@@ -178,6 +179,10 @@ static RequestManager* sharedInstance = nil;
 			[self askOnSocket:path];
 		}
 	}
+
+	ContentManager *contentman = [ContentManager sharedInstance];
+	[contentman clearFileNameCacheForPath:nil];
+	[contentman repaintAllWindows];
 	
 	// Read for the UPDATE_VIEW requests
 	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
@@ -202,6 +207,7 @@ static RequestManager* sharedInstance = nil;
     // clear the caches in conent manager
 	ContentManager *contentman = [ContentManager sharedInstance];
 	[contentman clearFileNameCacheForPath:nil];
+	[contentman repaintAllWindows];
 
 	[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(start) userInfo:nil repeats:NO];
 

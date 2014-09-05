@@ -179,6 +179,20 @@ static ContentManager* sharedInstance = nil;
 	}
 }
 
+- (void)reFetchFileNameCacheForPath:(NSString*)path
+{
+	NSLog(@"%@", NSStringFromSelector(_cmd));
+
+	for (id p in [_fileNamesCache keyEnumerator]) {
+		if ( path && [p hasPrefix:path] ) {
+			NSNumber *askState = [[RequestManager sharedInstance] askForIcon:p isDirectory:false]; // FIXME
+			//[_fileNamesCache setObject:askState forKey:p];
+			NSLog(@"%@ %@", NSStringFromSelector(_cmd), p);
+		}
+	}
+}
+
+
 - (void)removeAllIcons
 {
 	[_fileNamesCache removeAllObjects];
