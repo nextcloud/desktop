@@ -635,27 +635,41 @@ QString FolderMan::getBackupName( QString fullPathName ) const
 
 bool FolderMan::startFromScratch( const QString& localFolder )
 {
-    if( localFolder.isEmpty() ) return false;
+    if( localFolder.isEmpty() ) {
+        return false;
+    }
 
     QFileInfo fi( localFolder );
-    if( fi.exists() && fi.isDir() ) {
-        QDir file = fi.dir();
+    QDir parentDir( fi.dir() );
+    QString folderName = fi.fileName();
 
-        // check if there are files in the directory.
-        if( file.count() == 0 ) {
-            // directory is existing, but its empty. Use it.
+    // Adjust for case where localFolder ends with a /
+    if ( fi.isDir() ) {
+        folderName = parentDir.dirName();
+        parentDir.cdUp();
+    }
+
+    if( fi.exists() ) {
+        // It exists, but is empty -> just reuse it.
+        if( fi.isDir() && fi.dir().count() == 0 ) {
             qDebug() << "startFromScratch: Directory is empty!";
             return true;
         }
-        QString newName = getBackupName( fi.absoluteFilePath() );
-
-        if( file.rename( fi.absoluteFilePath(), newName )) {
-            if( file.mkdir( fi.absoluteFilePath() ) ) {
-                return true;
-            }
+        // Make a backup of the folder/file.
+        QString newName = getBackupName( parentDir.absoluteFilePath( folderName ) );
+        if( !parentDir.rename( fi.absoluteFilePath(), newName ) ) {
+            qDebug() << "startFromScratch: Could not rename" << fi.absoluteFilePath()
+                     << "to" << newName;
+            return false;
         }
     }
-    return false;
+
+    if( !parentDir.mkdir( fi.absoluteFilePath() ) ) {
+        qDebug() << "startFromScratch: Could not mkdir" << fi.absoluteFilePath();
+        return false;
+    }
+
+    return true;
 }
 
 void FolderMan::setDirtyProxy(bool value)
