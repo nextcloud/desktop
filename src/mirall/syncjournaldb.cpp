@@ -693,10 +693,11 @@ void SyncJournalDb::setDownloadInfo(const QString& file, const SyncJournalDb::Do
 
 QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInfos(const QSet<QString>& keep)
 {
+    QVector<SyncJournalDb::DownloadInfo> empty_result;
     QMutexLocker locker(&_mutex);
 
     if (!checkConnect()) {
-        return {};
+        return empty_result;
     }
 
     QSqlQuery query(_db);
@@ -706,7 +707,7 @@ QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInf
     if (!query.exec()) {
         QString err = query.lastError().text();
         qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;
-        return {};
+        return empty_result;
     }
 
     QStringList superfluousPaths;
@@ -723,7 +724,7 @@ QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInf
     }
 
     if (!deleteBatch(*_deleteDownloadInfoQuery, superfluousPaths, "downloadinfo"))
-        return {};
+        return empty_result;
 
     return deleted_entries;
 }
