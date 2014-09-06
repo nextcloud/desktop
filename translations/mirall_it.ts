@@ -371,7 +371,7 @@ Totale tempo rimanente %5</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="604"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile leggere il file di esclusione di sistema</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="763"/>
