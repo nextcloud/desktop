@@ -45,6 +45,9 @@ private slots:
     void slotSharesFetched(QString reply);
     void slotCreateShareFetched(QString reply);
     void slotDeleteShareFetched(QString reply);
+    void slotPasswordSet(QString reply);
+    void slotExpireSet(QString reply);
+    void slotCalendarClicked(QDate date);
     void slotCheckBoxShareLinkClicked();
     void slotCheckBoxPasswordClicked();
     void slotCheckBoxExpireClicked();
@@ -54,6 +57,8 @@ private:
     QString _path;
     QList<QVariant> _shares;
     QVariantMap _public_share;
+    void setPassword(QString password);
+    void setExpireDate(QString date);
 };
 
 }

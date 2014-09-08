@@ -36,6 +36,7 @@ ShareDialog::ShareDialog(QWidget *parent) :
     connect(_ui->checkBox_password, SIGNAL(clicked()), this, SLOT(slotCheckBoxPasswordClicked()));
     connect(_ui->lineEdit_password, SIGNAL(returnPressed()), this, SLOT(slotPasswordReturnPressed()));
     connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
+    connect(_ui->calendar, SIGNAL(clicked(QDate)), SLOT(slotCalendarClicked(QDate)));
 
     _ui->labelShareSpinner->hide();
     _ui->lineEdit_shareLink->hide();
@@ -47,6 +48,32 @@ ShareDialog::ShareDialog(QWidget *parent) :
     _ui->lineEdit_shareGroup->setPlaceholderText("Share with group...");
     _ui->lineEdit_shareUser->setPlaceholderText("Share with user...");
     _ui->lineEdit_password->setPlaceholderText("Choose a password for the public link");
+}
+
+void ShareDialog::setExpireDate(QString date)
+{
+    _ui->labelCalendarSpinner->show();
+    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(_public_share.value("id").toString()));
+    QUrl postData;
+    QList<QPair<QString, QString> > getParams;
+    QList<QPair<QString, QString> > postParams;
+    getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
+    postParams.append(qMakePair(QString::fromLatin1("expireDate"), date));
+    url.setQueryItems(getParams);
+    postData.setQueryItems(postParams);
+    OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotExpireSet(QString)));
+    job->start();
+}
+
+void ShareDialog::slotExpireSet(QString reply)
+{
+    _ui->labelCalendarSpinner->hide();
+}
+
+void ShareDialog::slotCalendarClicked(QDate date)
+{
+    ShareDialog::setExpireDate(date.toString("dd-MM-yyyy"));
 }
 
 QString ShareDialog::getPath()
@@ -67,18 +94,30 @@ ShareDialog::~ShareDialog()
 
 void ShareDialog::slotPasswordReturnPressed()
 {
+    ShareDialog::setPassword(_ui->lineEdit_password->text());
+    _ui->lineEdit_password->setPlaceholderText("Password Protected");
+    _ui->lineEdit_password->setText("");
+}
+
+void ShareDialog::setPassword(QString password)
+{
     _ui->labelPasswordSpinner->show();
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(_public_share.value("id").toString()));
     QUrl postData;
     QList<QPair<QString, QString> > getParams;
     QList<QPair<QString, QString> > postParams;
     getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
-    postParams.append(qMakePair(QString::fromLatin1("password"), _ui->lineEdit_password->text()));
+    postParams.append(qMakePair(QString::fromLatin1("password"), password));
     url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
     OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
-    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotCreateShareFetched(QString)));
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotPasswordSet(QString)));
     job->start();
+}
+
+void ShareDialog::slotPasswordSet(QString reply)
+{
+    _ui->labelPasswordSpinner->hide();
 }
 
 void ShareDialog::getShares()
@@ -121,6 +160,13 @@ void ShareDialog::slotSharesFetched(QString reply)
                 _ui->lineEdit_password->show();
             }
 
+            if (data.value("expire_date").isValid())
+            {
+                _ui->calendar->setSelectedDate(QDate::fromString(data.value("expire_date").toString(), "dd-MM-yyyy"));
+                _ui->calendar->show();
+                _ui->checkBox_expire->setChecked(true);
+            }
+
             char url[512];
             sprintf(url, "https://home.azelphur.com/owncloud/public.php?service=files&t=%s", data.value("token").toString().toStdString().c_str());
             _ui->lineEdit_shareLink->setText(url);
@@ -145,7 +191,6 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
     {
         _ui->labelShareSpinner->show();
         QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
-        //QUrl url = Account::concatUrlPath(QUrl("http://localhost:8080/owncloud"), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
         QUrl postData;
         QList<QPair<QString, QString> > getParams;
         QList<QPair<QString, QString> > postParams;
@@ -194,6 +239,8 @@ void ShareDialog::slotCheckBoxPasswordClicked()
     }
     else
     {
+        ShareDialog::setPassword(QString(""));
+        _ui->labelPasswordSpinner->show();
         _ui->lineEdit_password->hide();
     }
 }
@@ -202,10 +249,14 @@ void ShareDialog::slotCheckBoxExpireClicked()
 {
     if (_ui->checkBox_expire->checkState() == Qt::Checked)
     {
+        QDate date = QDate::currentDate().addDays(1);
+        ShareDialog::setExpireDate(date.toString("dd-MM-yyyy"));
+        _ui->calendar->setSelectedDate(date);
         _ui->calendar->show();
     }
     else
     {
+        ShareDialog::setExpireDate(QString(""));
         _ui->calendar->hide();
     }
 }
