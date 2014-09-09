@@ -371,7 +371,7 @@ Toplam kalan süre: %5</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="604"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>Sistem tarafından okunamayan dosyaları hariç tut</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="763"/>
