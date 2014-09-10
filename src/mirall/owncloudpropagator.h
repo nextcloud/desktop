@@ -206,6 +206,7 @@ public:
             , _journal(progressDb)
             , _finishedEmited(false)
             , _activeJobs(0)
+            , _anotherSyncNeeded(false)
     { }
 
     void start(const SyncFileItemVector &_syncedItems);
@@ -217,6 +218,9 @@ public:
 
     /* The number of currently active jobs */
     int _activeJobs;
+
+    /** We detected that another sync is required after this one */
+    bool _anotherSyncNeeded;
 
     bool isInSharedDirectory(const QString& file);
     bool localFileNameClash(const QString& relfile);

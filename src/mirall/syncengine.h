@@ -64,6 +64,9 @@ public:
     void setSelectiveSyncBlackList(const QStringList &list)
     { _selectiveSyncBlackList = list; }
 
+    /* Return true if we detected that another sync is needed to complete the sync */
+    bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
+
 signals:
     void csyncError( const QString& );
     void csyncUnavailable();
@@ -160,6 +163,8 @@ private:
     QHash<QString, QByteArray> _remotePerms;
 
     QStringList _selectiveSyncBlackList;
+
+    bool _anotherSyncNeeded;
 };
 
 }

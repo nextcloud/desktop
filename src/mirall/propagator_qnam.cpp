@@ -319,6 +319,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
             qDebug() << "The local file has changed during upload:" << _item._modtime << "!=" << new_mtime
                      << ", QFileInfo: " << Utility::qDateTimeToTime_t(fi.lastModified()) << fi.lastModified();
             _propagator->_activeJobs--;
+            _propagator->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("Local file changed during sync."));
             // FIXME:  the legacy code was retrying for a few seconds.
             //         and also checking that after the last chunk, and removed the file in case of INSTRUCTION_NEW

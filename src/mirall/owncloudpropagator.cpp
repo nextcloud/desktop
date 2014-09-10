@@ -150,6 +150,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
             // Also remove the inodes and fileid from the db so no further renames are tried for
             // this item.
             _propagator->_journal->avoidRenamesOnNextSync(_item._file);
+            _propagator->_anotherSyncNeeded = true;
         }
         if( newJob )  {
             newJob->setRestoreJobMsg(msg);
