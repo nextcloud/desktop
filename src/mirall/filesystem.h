@@ -38,7 +38,7 @@ void OWNCLOUDSYNC_EXPORT setFileHidden(const QString& filename, bool hidden);
  * Use this over QFileInfo::lastModified() to avoid timezone related bugs. See
  * owncloud/core#9781 for details.
  */
-time_t getModTime(const QString &filename);
+time_t OWNCLOUDSYNC_EXPORT getModTime(const QString &filename);
 
 void setModTime(const QString &filename, time_t modTime);
 
