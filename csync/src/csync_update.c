@@ -433,9 +433,9 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
       if (ctx->current == REMOTE_REPLICA) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s size=%lld]", file, fs->file_id, fs->size);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s size=%" PRIu64 "]", file, fs->file_id, fs->size);
       } else {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [inode=%" PRIu64 " size=%lld]", file, fs->inode, fs->size);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [inode=%" PRIu64 " size=%" PRIu64 "]", file, fs->inode, fs->size);
       }
       type = CSYNC_FTW_TYPE_FILE;
       break;
