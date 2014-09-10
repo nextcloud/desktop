@@ -266,6 +266,7 @@ void Folder::slotPollTimerTimeout()
     qDebug() << "* Polling" << alias() << "for changes. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
 
     if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval() ||
+            _lastEtag.isNull() ||
             !(_syncResult.status() == SyncResult::Success ||_syncResult.status() == SyncResult::Problem)) {
         qDebug() << "** Force Sync now, state is " << _syncResult.statusString();
         emit scheduleToSync(alias());
@@ -659,10 +660,13 @@ void Folder::slotSyncFinished()
 
     bubbleUpSyncResult();
 
-    _engine.reset(0);
+    bool anotherSyncNeeded = false;
+    if (_engine) {
+        anotherSyncNeeded = _engine->isAnotherSyncNeeded();
+        _engine.reset(0);
+    }
     // _watcher->setEventsEnabledDelayed(2000);
-    _pollTimer.start();
-    _timeSinceLastSync.restart();
+
 
 
     if (_csyncError) {
@@ -688,6 +692,16 @@ void Folder::slotSyncFinished()
     // some time under certain conditions to make the file system notifications
     // all come in.
     QTimer::singleShot(200, this, SLOT(slotEmitFinishedDelayed() ));
+
+    if (!anotherSyncNeeded) {
+        _pollTimer.start();
+        _timeSinceLastSync.restart();
+    } else {
+        // Another sync is required.  We will make sure that the poll timer occurs soon enough
+        // and we clear the etag to force a sync
+        _lastEtag.clear();
+        QTimer::singleShot(1000, this, SLOT(slotPollTimerTimeout() ));
+    }
 
 }
 

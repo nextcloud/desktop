@@ -63,6 +63,9 @@ public:
 
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
+    /* Return true if we detected that another sync is needed to complete the sync */
+    bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
+
 signals:
     void csyncError( const QString& );
     void csyncUnavailable();
@@ -145,8 +148,9 @@ private:
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
-};
 
+    bool _anotherSyncNeeded;
+};
 
 class UpdateJob : public QObject {
     Q_OBJECT
@@ -163,7 +167,7 @@ class UpdateJob : public QObject {
     }
 public:
     explicit UpdateJob(CSYNC *ctx, QObject* parent = 0)
-            : QObject(parent), _csync_ctx(ctx) {
+    : QObject(parent), _csync_ctx(ctx) {
         // We need to forward the log property as csync uses thread local
         // and updates run in another thread
         _log_callback = csync_get_log_callback();

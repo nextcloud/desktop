@@ -66,6 +66,7 @@ SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remo
   , _hasRemoveFile(false)
   , _uploadLimit(0)
   , _downloadLimit(0)
+  , _anotherSyncNeeded(false)
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
@@ -727,6 +728,8 @@ void SyncEngine::slotJobCompleted(const SyncFileItem &item)
 
 void SyncEngine::slotFinished()
 {
+    _anotherSyncNeeded = _anotherSyncNeeded || _propagator->_anotherSyncNeeded;
+
     // emit the treewalk results.
     if( ! _journal->postSyncCleanup( _seenFiles ) ) {
         qDebug() << "Cleaning of synced ";
@@ -938,6 +941,7 @@ void SyncEngine::checkForPermission()
                     //  At this point we would need to go back to the propagate phase on both remote to take
                     //  the decision.
                     _journal->avoidRenamesOnNextSync(it->_file);
+                    _anotherSyncNeeded = true;
 
 
                     if (it->_isDirectory) {
