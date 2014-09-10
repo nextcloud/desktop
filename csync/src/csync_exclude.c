@@ -199,6 +199,20 @@ CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path
       goto out;
   }
 
+#ifdef _WIN32
+  // Windows cannot sync files ending in spaces (#2176). It also cannot
+  // distinguish files ending in '.' from files without an ending,
+  // as '.' is a separator that is not stored internally, so let's
+  // not allow to sync those to avoid file loss/ambiguities (#416)
+  size_t blen = strlen(bname);
+  if (blen > 1 && (bname[blen-1]== ' ' || bname[blen-1]== '.' )) {
+      match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+      SAFE_FREE(bname);
+      SAFE_FREE(dname);
+      goto out;
+  }
+#endif
+
   rc = csync_fnmatch(".owncloudsync.log*", bname, 0);
   if (rc == 0) {
       match = CSYNC_FILE_SILENTLY_EXCLUDED;
