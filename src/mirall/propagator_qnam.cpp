@@ -110,6 +110,7 @@ bool PollJob::finished()
                 info._file = _item._file;
                 // no info._url removes it from the database
                 _journal->setPollInfo(info);
+                _journal->commit("remove poll info");
 
             }
             emit finishedSignal();
@@ -145,6 +146,7 @@ bool PollJob::finished()
     info._file = _item._file;
     // no info._url removes it from the database
     _journal->setPollInfo(info);
+    _journal->commit("remove poll info");
 
     emit finishedSignal();
     return true;
@@ -475,6 +477,7 @@ void PropagateUploadFileQNAM::startPollJob(const QString& path)
     info._url = path;
     info._modtime = _item._modtime;
     _propagator->_journal->setPollInfo(info);
+    _propagator->_journal->commit("add poll info");
     job->start();
 }
 
