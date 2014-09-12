@@ -131,6 +131,10 @@ static ContentManager* sharedInstance = nil;
 		return res;
 	}
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
+
+	if (![[RequestManager sharedInstance] isRegisteredPath:normalizedPath]) {
+		return [NSNumber numberWithInt:0];
+	}
 	
 	NSNumber* result = [_fileNamesCache objectForKey:normalizedPath];
 	// NSLog(@"XXXXXXX Asking for icon for path %@ = %d",path, [result intValue]);
