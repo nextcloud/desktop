@@ -176,8 +176,6 @@ system("sqlite3 " . localDir().'.csync_journal.db .dump');
 #new directory should be uploaded
 system("mv " . localDir().'readonlyDirectory_PERM_M_/subdir_PERM_CK_ ' . localDir().'normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_'  );
 
-# two syncs may be necessary for now: https://github.com/owncloud/mirall/issues/2038
-csync();
 csync();
 system("sqlite3 " . localDir().'.csync_journal.db .dump');
 assertCsyncJournalOk(localDir());
@@ -209,8 +207,6 @@ system("mv " . localDir().'readonlyDirectory_PERM_M_/subdir_PERM_CK_ ' . localDi
 #2. move a directory from read to read only  (move the directory from previous step)
 system("mv " . localDir().'normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_ ' . localDir().'readonlyDirectory_PERM_M_/moved_PERM_CK_'  );
 
-# two syncs may be necessary for now: https://github.com/owncloud/mirall/issues/2038
-csync();
 csync();
 assertCsyncJournalOk(localDir());
 
