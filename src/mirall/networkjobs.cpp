@@ -359,6 +359,7 @@ void CheckServerJob::slotTimeout()
     qDebug() << "TIMEOUT" << Q_FUNC_INFO;
     if (reply()->isRunning())
         emit timeout(reply()->url());
+    deleteLater();
 }
 
 QString CheckServerJob::version(const QVariantMap &info)
