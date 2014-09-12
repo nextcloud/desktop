@@ -193,6 +193,13 @@ void AbstractNetworkJob::start()
     qDebug() << "!!!" << metaObject()->className() << "created for" << account()->url() << "querying" << path();
 }
 
+void AbstractNetworkJob::slotTimeout()
+{
+    qDebug() <<  this << "Timeout" ;
+    reply()->abort();
+}
+
+
 /*********************************************************************************************/
 
 RequestEtagJob::RequestEtagJob(Account *account, const QString &path, QObject *parent)
