@@ -20,7 +20,7 @@
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"
 #if defined(Q_OS_MAC)
-#    include "mirall/settingsdialogmac.h"
+#    include "settingsdialogmac.h"
 #    include "macwindow.h" // qtmacgoodies
 #else
 #    include "settingsdialog.h"

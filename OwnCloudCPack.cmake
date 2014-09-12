@@ -19,7 +19,7 @@ if(APPLE)
     set( CPACK_GENERATOR "DragNDrop" )
     set( CPACK_SOURCE_GENERATOR "")
     set( CPACK_PACKAGE_FILE_NAME ${APPLICATION_NAME}-${CPACK_PACKAGE_VERSION} )
-    set( CPACK_PACKAGE_ICON ${CMAKE_BINARY_DIR}/src/ownCloud.icns)
+    set( CPACK_PACKAGE_ICON ${CMAKE_BINARY_DIR}/src/gui/ownCloud.icns)
 
     set( CPACK_DMG_DS_STORE "${CMAKE_SOURCE_DIR}/admin/osx/DS_Store.in")
 #    set( CPACK_DMG_BACKGROUND_IMAGE "${CMAKE_SOURCE_DIR}/admin/osx/DMGBackground.png" )
