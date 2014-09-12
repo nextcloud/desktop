@@ -246,6 +246,17 @@ void SocketApi::slotNewConnection()
 
     _listeners.append(socket);
 
+#ifdef Q_OS_MAC
+    // We want to tell our location so it can load the icons
+    // e.g. "/Users/guruz/woboq/owncloud/client/buildmirall/owncloud.app/Contents/MacOS/"
+    QString iconPath = qApp->applicationDirPath() + "/../Resources/icons/";
+    if (!QDir(iconPath).exists()) {
+        DEBUG << "Icon path " << iconPath << " does not exist, did you forget make install?";
+    }
+    broadcastMessage(QLatin1String("ICON_PATH"), iconPath );
+#endif
+
+
     foreach( QString alias, FolderMan::instance()->map().keys() ) {
        slotRegisterPath(alias);
     }

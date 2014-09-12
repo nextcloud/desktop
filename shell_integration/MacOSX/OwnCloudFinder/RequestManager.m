@@ -149,6 +149,9 @@ static RequestManager* sharedInstance = nil;
 			[_registeredPathes removeObjectForKey:path];
 
 			[contentman repaintAllWindows];
+		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"ICON_PATH"] ) {
+			NSString *path = [chunks objectAtIndex:1];
+			[[ContentManager sharedInstance] loadIconResourcePath:path];
 		} else {
 			NSLog(@"Unknown command %@", [chunks objectAtIndex:0]);
 		}

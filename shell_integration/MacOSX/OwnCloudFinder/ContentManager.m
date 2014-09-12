@@ -32,19 +32,6 @@ static ContentManager* sharedInstance = nil;
 		_fileNamesCache = [[NSMutableDictionary alloc] init];
 		_fileIconsEnabled = TRUE;
 		_hasChangedContent = TRUE;
-
-		NSString *base = @"/Applications/owncloud.app/Contents/Resources/icons/";
-		
-		_icnOk   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok.icns"]];
-		_icnSync = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync.icns"]];
-		_icnWarn = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning.icns"]];
-		_icnErr  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error.icns"]];
-		_icnOkSwm   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok_swm.icns"]];
-		_icnSyncSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync_swm.icns"]];
-		_icnWarnSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning_swm.icns"]];
-		_icnErrSwm  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error_swm.icns"]];
-		
-		NSLog(@"Icon ok identifier: %d", [_icnOk intValue]);
 	}
 
 	return self;
@@ -72,6 +59,22 @@ static ContentManager* sharedInstance = nil;
 	return sharedInstance;
 }
 
+- (void)loadIconResourcePath:(NSString*)path
+{
+	NSString *base = path;
+
+	_icnOk   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok.icns"]];
+	_icnSync = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync.icns"]];
+	_icnWarn = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning.icns"]];
+	_icnErr  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error.icns"]];
+	_icnOkSwm   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok_swm.icns"]];
+	_icnSyncSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync_swm.icns"]];
+	_icnWarnSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning_swm.icns"]];
+	_icnErrSwm  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error_swm.icns"]];
+
+	NSLog(@"Icon ok identifier: %d from %@", [_icnOk intValue], [base stringByAppendingString:@"ok.icns"]);
+}
+
 - (void)enableFileIcons:(BOOL)enable
 {
 	_fileIconsEnabled = enable;
@@ -81,6 +84,10 @@ static ContentManager* sharedInstance = nil;
 
 - (void)setResultForPath:(NSString*)path result:(NSString*)result
 {
+	if (_icnOk == nil) {
+		// no icon resource path registered yet
+		return;
+	}
 
 	NSNumber *res;
 	res = [NSNumber numberWithInt:0];
