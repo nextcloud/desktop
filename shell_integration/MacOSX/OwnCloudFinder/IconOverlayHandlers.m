@@ -34,7 +34,7 @@
 
 	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
 
-	NSLog(@"1 The icon index is %d", [imageIndex intValue]);
+	//NSLog(@"1 The icon index is %d", [imageIndex intValue]);
 	if ([imageIndex intValue] > 0)
 	{
 		NSImage* image = [[IconCache sharedInstance] getIcon:imageIndex];
@@ -145,7 +145,7 @@
 		}
 		
 		NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
-		NSLog(@"3 The icon index is %d", [imageIndex intValue]);
+		//NSLog(@"3 The icon index is %d", [imageIndex intValue]);
 
 		if ([imageIndex intValue] > 0)
 		{
