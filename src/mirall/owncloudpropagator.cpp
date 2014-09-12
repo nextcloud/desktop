@@ -84,13 +84,14 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         // do not blacklist in case of soft error or fatal error.
         break;
     case SyncFileItem::NormalError:
+        if (_item._httpErrorCode == 0  // Do not blacklist local errors. (#1985)
 #ifdef OWNCLOUD_5XX_NO_BLACKLIST
-        if (_item._httpErrorCode / 100 == 5) {
-            // In this configuration, never blacklist error 5xx
-            qDebug() << "Do not blacklist error " << _item._httpErrorCode;
+            || _item._httpErrorCode / 100 == 5 // In this configuration, never blacklist error 5xx
+#endif
+                ) {
+            qDebug() << "This error is not blacklisted " << _item._httpErrorCode;
             break;
         }
-#endif
         _propagator->_journal->updateBlacklistEntry( record );
         break;
     case SyncFileItem::Success:
