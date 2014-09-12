@@ -107,6 +107,7 @@ if (APPLE)
     list(APPEND 3rdparty_SRC
         ../3rdparty/qtmacgoodies/src/macpreferenceswindow.mm
         ../3rdparty/qtmacgoodies/src/macstandardicon.mm
+        ../3rdparty/qtmacgoodies/src/macwindow.mm
         )
 endif()
 
@@ -157,7 +158,7 @@ set( final_src
 include( AddAppIconMacro )
 set(ownCloud_old ${ownCloud})
 
-# set an icon_app_name. For historical reasons we can not use the 
+# set an icon_app_name. For historical reasons we can not use the
 # application_shortname for ownCloud but must rather set it manually.
 if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
     set(ICON_APP_NAME ${APPLICATION_SHORTNAME})
@@ -191,7 +192,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
     qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql ${ADDITIONAL_APP_MODULES})
-elseif()
+else()
     if (Qt5Core_FOUND)
         include(DeployQt5)
     else(Qt5Core_FOUND)
@@ -232,7 +233,7 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
-        BUNDLE  DESTINATION "."
+        BUNDLE  DESTINATION bin
  )
 
 
