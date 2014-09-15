@@ -58,8 +58,10 @@ class PUTFileJob : public AbstractNetworkJob {
 public:
     // Takes ownership of the device
     explicit PUTFileJob(Account* account, const QString& path, QIODevice *device,
-                        const QMap<QByteArray, QByteArray> &headers, QObject* parent = 0)
-    : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers) {}
+                        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject* parent = 0)
+        : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers), _chunk(chunk) {}
+
+    int _chunk;
 
     virtual void start();
 
@@ -107,16 +109,17 @@ signals:
 
 class PropagateUploadFileQNAM : public PropagateItemJob {
     Q_OBJECT
-    QPointer<PUTFileJob> _job;
     QFile *_file;
     int _startChunk;
     int _currentChunk;
     int _chunkCount;
     int _transferId;
     QElapsedTimer _duration;
+    QVector<PUTFileJob*> _jobs;
+    bool _finished;
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0) {}
+        : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0), _finished(false) {}
     void start();
 private slots:
     void slotPutFinished();
@@ -125,6 +128,7 @@ private slots:
     void abort();
     void startNextChunk();
     void finalize(const SyncFileItem&);
+    void slotJobDestroyed(QObject *job);
 private:
     void startPollJob(const QString& path);
 };

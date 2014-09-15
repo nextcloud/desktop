@@ -221,6 +221,9 @@ public:
     /* The number of currently active jobs */
     int _activeJobs;
 
+    /* The maximum number of active job in parallel  */
+    int maximumActiveJob();
+
     bool isInSharedDirectory(const QString& file);
     bool localFileNameClash(const QString& relfile);
 
