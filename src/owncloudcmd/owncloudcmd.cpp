@@ -146,6 +146,21 @@ int main(int argc, char **argv) {
 
 
     QUrl url(options.target_url.toUtf8());
+    if (url.userName().isEmpty()) {
+        std::cout << "** Please enter the username:" << std::endl;
+        std::string s;
+        std::getline(std::cin, s);
+        url.setUserName(QString::fromStdString(s));
+    }
+    if (url.password().isEmpty()) {
+        std::cout << "** Please enter the password:" << std::endl;
+        std::string s;
+        std::getline(std::cin, s);
+        url.setPassword(QString::fromStdString(s));
+    }
+
+    QUrl originalUrl = url;
+
     Account account;
 
     // Find the folder and the original owncloud url
@@ -165,7 +180,7 @@ restart_sync:
 
     CSYNC *_csync_ctx;
     if( csync_create( &_csync_ctx, options.source_dir.toUtf8(),
-                      options.target_url.toUtf8()) < 0 ) {
+                      originalUrl.toEncoded().constData()) < 0 ) {
         qFatal("Unable to create csync-context!");
         return EXIT_FAILURE;
     }
