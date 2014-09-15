@@ -80,8 +80,14 @@ void SyncJournalDb::commitTransaction()
 bool SyncJournalDb::sqlFail( const QString& log, const QSqlQuery& query )
 {
     commitTransaction();
-    qWarning() << "Error" << log << query.lastError().text();
+#ifdef NDEBUG
+    qWarning()
+#else
+    qFatal()
+#endif
+        << "SQL Error" << log << query.lastError().text();
 
+    _db.close();
     return false;
 }
 
