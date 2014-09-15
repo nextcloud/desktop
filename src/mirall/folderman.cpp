@@ -613,8 +613,11 @@ void FolderMan::removeFolder( const QString& alias )
     }
 }
 
-QString FolderMan::getBackupName( const QString& fullPathName ) const
+QString FolderMan::getBackupName( QString fullPathName ) const
 {
+    if (fullPathName.endsWith("/"))
+        fullPathName.chop(1);
+
     if( fullPathName.isEmpty() ) return QString::null;
 
      QString newName = fullPathName + QLatin1String(".oC_bak");

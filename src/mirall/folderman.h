@@ -139,7 +139,7 @@ private slots:
 private:
     // finds all folder configuration files
     // and create the folders
-    QString getBackupName( const QString& ) const;
+    QString getBackupName( QString fullPathName ) const;
     void registerFolderMonitor( Folder *folder );
 
     QString unescapeAlias( const QString& ) const;
