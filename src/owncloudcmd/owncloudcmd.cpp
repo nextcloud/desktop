@@ -149,7 +149,7 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
         if(!options->target_url.endsWith("/")) {
             options->target_url.append("/");
         }
-        options->target_url.append("remote.php/webdav/");
+        options->target_url.append("remote.php/webdav");
     }
     if (options->target_url.startsWith("http"))
         options->target_url.replace(0, 4, "owncloud");
