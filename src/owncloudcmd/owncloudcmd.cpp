@@ -51,6 +51,7 @@ struct CmdOptions {
     bool silent;
     bool trustSSL;
     bool useNetrc;
+    bool interactive;
     QString exclude;
 };
 
@@ -130,6 +131,7 @@ void help()
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
+    std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
     std::cout << "" << std::endl;
     exit(1);
 
@@ -176,6 +178,8 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
             options->trustSSL = true;
         } else if( option == "-n") {
             options->useNetrc = true;
+        } else if( option == "--non-interactive") {
+            options->interactive = false;
         } else if( (option == "-u" || option == "--user") && !it.peekNext().startsWith("-") ) {
                 options->user = it.next();
         } else if( (option == "-p" || option == "--password") && !it.peekNext().startsWith("-") ) {
@@ -199,6 +203,7 @@ int main(int argc, char **argv) {
     options.silent = false;
     options.trustSSL = false;
     options.useNetrc = false;
+    options.interactive = true;
     ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
@@ -228,14 +233,16 @@ int main(int argc, char **argv) {
             password = url.password();
         }
 
-        if (user.isEmpty()) {
-            std::cout << "Please enter user name: ";
-            std::string s;
-            std::getline(std::cin, s);
-            user = QString::fromStdString(s);
-        }
-        if (password.isEmpty()) {
-            password = queryPassword(user);
+        if (options.interactive) {
+            if (user.isEmpty()) {
+                std::cout << "Please enter user name: ";
+                std::string s;
+                std::getline(std::cin, s);
+                user = QString::fromStdString(s);
+            }
+            if (password.isEmpty()) {
+                password = queryPassword(user);
+            }
         }
     }
 
