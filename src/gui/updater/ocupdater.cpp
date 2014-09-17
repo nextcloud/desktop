@@ -83,8 +83,10 @@ QString OCUpdater::statusString() const
         return tr("Could not check for new updates.");
     case UpdateOnlyAvailableThroughSystem:
         return tr("New version %1 available. Please use the system's update tool to install it.").arg(updateVersion);
-    case Unknown:
+    case CheckingServer:
         return tr("Checking update server...");
+    case Unknown:
+        return tr("Update status is unknown: Did not check for new updates.");
     case UpToDate:
         // fall through
     default:
@@ -120,6 +122,8 @@ void OCUpdater::checkForUpdate()
     connect(_timer, SIGNAL(timeout()), this, SLOT(slotTimedOut()));
     _timer->start(30*1000);
     connect(reply, SIGNAL(finished()), this, SLOT(slotVersionInfoArrived()));
+
+    setDownloadState(CheckingServer);
 }
 
 void OCUpdater::slotOpenUpdateUrl()

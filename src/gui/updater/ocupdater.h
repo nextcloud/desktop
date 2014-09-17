@@ -33,7 +33,8 @@ class OCUpdater : public QObject, public Updater
 {
     Q_OBJECT
 public:
-    enum DownloadState { Unknown = 0, UpToDate, Downloading, DownloadComplete,
+    enum DownloadState { Unknown = 0, CheckingServer, UpToDate,
+                         Downloading, DownloadComplete,
                          DownloadFailed, DownloadTimedOut,
                          UpdateOnlyAvailableThroughSystem };
     explicit OCUpdater(const QUrl &url, QObject *parent = 0);
