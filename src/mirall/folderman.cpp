@@ -39,6 +39,15 @@ namespace Mirall {
 
 FolderMan* FolderMan::_instance = 0;
 
+/**
+ * The minimum time between a sync being requested and it
+ * being executed in milliseconds.
+ *
+ * This delay must be larger than the minFileAgeForUpload in
+ * the propagator.
+ */
+static int msBetweenRequestAndSync = 2000;
+
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
     _syncEnabled( true )
@@ -452,9 +461,9 @@ void FolderMan::slotScheduleSync( const QString& alias )
     }
 
     // Look at the scheduleQueue in a bit to see if the sync is ready to start.
-    // The 1s delay here is essential as the sync will not upload files that were
-    // changed within the last second.
-    QTimer::singleShot(1000, this, SLOT(slotStartScheduledFolderSync()));
+    // The delay here is essential as the sync will not upload files that were
+    // changed too recently.
+    QTimer::singleShot(msBetweenRequestAndSync, this, SLOT(slotStartScheduledFolderSync()));
 }
 
 // only enable or disable foldermans will to schedule and do syncs.

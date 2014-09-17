@@ -27,6 +27,18 @@
 
 namespace Mirall {
 
+/**
+ * The mtime of a file must be at least this many milliseconds in
+ * the past for an upload to be started. Otherwise the propagator will
+ * assume it's still being changed and skip it.
+ *
+ * This value must be smaller than the msBetweenRequestAndSync in
+ * the folder manager.
+ *
+ * Two seconds has shown to be a good value in tests.
+ */
+static int minFileAgeForUpload = 2000;
+
 static qint64 chunkSize() {
     static uint chunkSize;
     if (!chunkSize) {
@@ -104,7 +116,22 @@ void PropagateUploadFileQNAM::start()
         return;
     }
 
+    // Update the mtime and size, it might have changed since discovery.
+    _item._modtime = FileSystem::getModTime(_file->fileName());
     quint64 fileSize = _file->size();
+    _item._size = fileSize;
+
+    // But skip the file if the mtime is too close to 'now'!
+    // That usually indicates a file that is still being changed
+    // or not yet fully copied to the destination.
+    QDateTime modtime = Utility::qDateTimeFromTime_t(_item._modtime);
+    if (modtime.msecsTo(QDateTime::currentDateTime()) < minFileAgeForUpload) {
+        _propagator->_anotherSyncNeeded = true;
+        done(SyncFileItem::SoftError, tr("Local file changed during sync."));
+        delete _file;
+        return;
+    }
+
     _chunkCount = std::ceil(fileSize/double(chunkSize()));
     _startChunk = 0;
     _transferId = qrand() ^ _item._modtime ^ (_item._size << 16);
@@ -198,20 +225,6 @@ void PropagateUploadFileQNAM::startNextChunk()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-
-    /*
-     *        // If the source file has changed during upload, it is detected and the
-     *        // variable _previousFileSize is set accordingly. The propagator waits a
-     *        // couple of seconds and retries.
-     *        if(_previousFileSize > 0) {
-     *            qDebug() << "File size changed underway: " << trans->stat_size - _previousFileSize;
-     *            // Report the change of the overall transmission size to the propagator
-     *            _propagator->overallTransmissionSizeChanged(qint64(trans->stat_size - _previousFileSize));
-     *            // update the item's values to the current from trans. hbf_splitlist does a stat
-     *            _item._size = trans->stat_size;
-     *            _item._modtime = trans->modtime;
-     *
-     */
     quint64 fileSize = _item._size;
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Total-Length"] = QByteArray::number(fileSize);
