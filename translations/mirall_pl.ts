@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Wybierz co synchronizować</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="101"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="675"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>plik %1 z %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="763"/>
@@ -278,7 +278,7 @@ Pozostało czasu %5</translation>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="138"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>wygaśnięcie</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="167"/>
@@ -377,7 +377,7 @@ Pozostało czasu %5</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="605"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>Nie można przeczytać pliku wyłączeń</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="777"/>
@@ -611,7 +611,7 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="433"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Wybierz co synchronizować: Możesz opcjonalnie odznaczyć podfoldery, których nie chcesz synchronizować.</translation>
     </message>
 </context>
 <context>
@@ -1271,7 +1271,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz %1 w przeglądarce</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
@@ -1538,7 +1538,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="270"/>
         <source>Only checked folders will sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Tylko zaznaczone foldery będą synchronizowane z tym komputerem</translation>
     </message>
 </context>
 <context>
@@ -2223,7 +2223,7 @@ Niezalecane jest jego użycie.</translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Wersja %2. Po więcej informacji idź do &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Przez Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz i innych.&lt;br/&gt;Oparte na Mirall przez Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licencjonowane według GNU General Public License (GPL) Wersja 2.0&lt;br/&gt;ownCloud i logo ownCloud są zarejestrowanymi znakami towarowymi  ownCloud, Inc. w USA, innych krajach lub obydwu.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2250,12 +2250,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="103"/>
         <source>Sync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuj wszystko z serwerem</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="122"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Wybierz co synchronizować</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="178"/>
@@ -2265,7 +2265,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="221"/>
         <source>&amp;Start a clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Start czystej synchronizacji (Czyści folder lokalny!)</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="256"/>
