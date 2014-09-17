@@ -72,11 +72,8 @@ void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList
         QTreeWidgetItem *item = findFirstChild(parent, pathTrail.first());
         if (!item) {
             item = new QTreeWidgetItem(parent);
-            if (parent->checkState(0) == Qt::Checked) {
-                item->setCheckState(0, Qt::Checked);
-            } else if (parent->checkState(0) == Qt::Unchecked) {
-                item->setCheckState(0, Qt::Unchecked);
-            } else {
+            if (parent->checkState(0) == Qt::Checked
+                    || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
                 foreach(const QString &str , _oldBlackList) {
                     if (str + "/" == path) {
@@ -86,6 +83,8 @@ void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList
                         item->setCheckState(0, Qt::PartiallyChecked);
                     }
                 }
+            } else if (parent->checkState(0) == Qt::Unchecked) {
+                item->setCheckState(0, Qt::Unchecked);
             }
             item->setIcon(0, folderIcon);
             item->setText(0, pathTrail.first());
@@ -111,8 +110,6 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
         root->setData(0, Qt::UserRole, QString());
         if (_oldBlackList.isEmpty()) {
             root->setCheckState(0, Qt::Checked);
-        } else if (_oldBlackList.contains("")) {
-            root->setCheckState(0, Qt::Unchecked);
         } else {
             root->setCheckState(0, Qt::PartiallyChecked);
         }
@@ -175,7 +172,7 @@ void SelectiveSyncTreeView::slotItemChanged(QTreeWidgetItem *item, int col)
                 parent->setCheckState(0, Qt::PartiallyChecked);
             }
         }
-        // also check all the childs
+        // also check all the children
         for (int i = 0; i < item->childCount(); ++i) {
             if (item->child(i)->checkState(0) != Qt::Checked) {
                 item->child(i)->setCheckState(0, Qt::Checked);
@@ -185,26 +182,20 @@ void SelectiveSyncTreeView::slotItemChanged(QTreeWidgetItem *item, int col)
 
     if (item->checkState(0) == Qt::Unchecked) {
         QTreeWidgetItem *parent = item->parent();
-        if (parent && parent->checkState(0) != Qt::Unchecked) {
-            bool hasChecked = false;
-            for (int i = 0; i < parent->childCount(); ++i) {
-                if (parent->child(i)->checkState(0) != Qt::Unchecked) {
-                    hasChecked = true;
-                    break;
-                }
-            }
-            if (!hasChecked) {
-                parent->setCheckState(0, Qt::Unchecked);
-            } else if (parent->checkState(0) == Qt::Checked) {
-                parent->setCheckState(0, Qt::PartiallyChecked);
-            }
+        if (parent && parent->checkState(0) == Qt::Checked) {
+            parent->setCheckState(0, Qt::PartiallyChecked);
         }
 
-        // Uncheck all the childs
+        // Uncheck all the children
         for (int i = 0; i < item->childCount(); ++i) {
             if (item->child(i)->checkState(0) != Qt::Unchecked) {
                 item->child(i)->setCheckState(0, Qt::Unchecked);
             }
+        }
+
+        // Can't uncheck the root.
+        if (!parent) {
+            item->setCheckState(0, Qt::PartiallyChecked);
         }
     }
 
