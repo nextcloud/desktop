@@ -111,6 +111,8 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
         root->setData(0, Qt::UserRole, QString());
         if (_oldBlackList.isEmpty()) {
             root->setCheckState(0, Qt::Checked);
+        } else if (_oldBlackList.contains("")) {
+            root->setCheckState(0, Qt::Unchecked);
         } else {
             root->setCheckState(0, Qt::PartiallyChecked);
         }
