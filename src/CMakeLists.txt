@@ -427,7 +427,7 @@ if(KRAZY2_EXECUTABLE)
 endif()
 
 set(owncloudcmd_NAME ${APPLICATION_EXECUTABLE}cmd)
-set(OWNCLOUDCMD_SRC owncloudcmd/simplesslerrorhandler.cpp owncloudcmd/owncloudcmd.cpp)
+set(OWNCLOUDCMD_SRC owncloudcmd/simplesslerrorhandler.cpp owncloudcmd/owncloudcmd.cpp owncloudcmd/netrcparser.cpp)
 if(NOT BUILD_LIBRARIES_ONLY)
 
    add_executable(${owncloudcmd_NAME}  ${OWNCLOUDCMD_SRC})
