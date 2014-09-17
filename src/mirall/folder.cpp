@@ -27,6 +27,7 @@
 #include "mirall/clientproxy.h"
 #include "mirall/syncengine.h"
 #include "mirall/syncrunfilelog.h"
+#include "mirall/theme.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -598,7 +599,8 @@ void Folder::startSync(const QStringList &pathList)
     _syncResult.setStatus( SyncResult::SyncPrepare );
     emit syncStateChange();
 
-    qDebug() << "*** Start syncing";
+    qDebug() << "*** Start syncing - client version"
+             << qPrintable(Theme::instance()->version());
 
     if (! setIgnoredFiles())
     {
