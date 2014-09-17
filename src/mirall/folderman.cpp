@@ -428,31 +428,33 @@ void FolderMan::slotScheduleAllFolders()
   */
 void FolderMan::slotScheduleSync( const QString& alias )
 {
-    if( alias.isEmpty() ) return;
-
-    if( _currentSyncFolder == alias ) {
-        qDebug() << "folder " << alias << " is currently syncing. NOT scheduling.";
+    if( alias.isEmpty() || ! _folderMap.contains(alias) ) {
+        qDebug() << "Not scheduling sync for empty or unknown folder" << alias;
         return;
     }
+
     qDebug() << "Schedule folder " << alias << " to sync!";
 
-    if( ! _scheduleQueue.contains(alias ) && _folderMap.contains(alias) ) {
+    if( ! _scheduleQueue.contains(alias) ) {
         Folder *f = _folderMap[alias];
-        if( f ) {
-            if( !f->syncPaused() ) {
-                f->prepareToSync();
-            } else {
-                qDebug() << "Folder is not enabled, not scheduled!";
-                _socketApi->slotUpdateFolderView(f->alias());
-                return;
-            }
+        if ( !f )
+            return;
+        if( !f->syncPaused() ) {
+            f->prepareToSync();
+        } else {
+            qDebug() << "Folder is not enabled, not scheduled!";
+            _socketApi->slotUpdateFolderView(f->alias());
+            return;
         }
         _scheduleQueue.enqueue(alias);
     } else {
         qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
-    // wait a moment until the syncing starts
-    QTimer::singleShot(500, this, SLOT(slotScheduleFolderSync()));
+
+    // Look at the scheduleQueue in a bit to see if the sync is ready to start.
+    // The 1s delay here is essential as the sync will not upload files that were
+    // changed within the last second.
+    QTimer::singleShot(1000, this, SLOT(slotStartScheduledFolderSync()));
 }
 
 // only enable or disable foldermans will to schedule and do syncs.
@@ -461,7 +463,7 @@ void FolderMan::setSyncEnabled( bool enabled )
 {
     if (!_syncEnabled && enabled && !_scheduleQueue.isEmpty()) {
         // We have things in our queue that were waiting the the connection to go back on.
-        QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
+        QTimer::singleShot(200, this, SLOT(slotStartScheduledFolderSync()));
     }
     _syncEnabled = enabled;
     // force a redraw in case the network connect status changed
@@ -473,7 +475,7 @@ void FolderMan::setSyncEnabled( bool enabled )
   * It is either called from the slot where folders enqueue themselves for
   * syncing or after a folder sync was finished.
   */
-void FolderMan::slotScheduleFolderSync()
+void FolderMan::slotStartScheduledFolderSync()
 {
     if( !_currentSyncFolder.isEmpty() ) {
         qDebug() << "Currently folder " << _currentSyncFolder << " is running, wait for finish!";
@@ -485,21 +487,26 @@ void FolderMan::slotScheduleFolderSync()
         return;
     }
 
+    // Try to start the top scheduled sync.
     qDebug() << "XX slotScheduleFolderSync: folderQueue size: " << _scheduleQueue.count();
-    if( ! _scheduleQueue.isEmpty() ) {
+    if( !_scheduleQueue.isEmpty() ) {
         const QString alias = _scheduleQueue.dequeue();
-        if( _folderMap.contains( alias ) ) {
-            Folder *f = _folderMap[alias];
-            if( f && !f->syncPaused() ) {
-                _currentSyncFolder = alias;
+        if( !_folderMap.contains( alias ) ) {
+            qDebug() << "FolderMan: Not syncing queued folder" << alias << ": not in folder map anymore";
+            return;
+        }
 
-                f->startSync( QStringList() );
+        // Start syncing this folder!
+        Folder *f = _folderMap[alias];
+        if( f && !f->syncPaused() ) {
+            _currentSyncFolder = alias;
 
-                // reread the excludes of the socket api
-                // FIXME: the excludes need rework.
-                _socketApi->slotClearExcludesList();
-                _socketApi->slotReadExcludes();
-            }
+            f->startSync( QStringList() );
+
+            // reread the excludes of the socket api
+            // FIXME: the excludes need rework.
+            _socketApi->slotClearExcludesList();
+            _socketApi->slotReadExcludes();
         }
     }
 }
@@ -519,7 +526,7 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 
     _currentSyncFolder.clear();
 
-    QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
+    QTimer::singleShot(200, this, SLOT(slotStartScheduledFolderSync()));
 }
 
 void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceFolder,
