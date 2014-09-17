@@ -123,8 +123,7 @@ void help()
     std::cout << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "  --silent, -s           Don't be so verbose" << std::endl;
-    std::cout << "  --confdir = configdir: Read config from there." << std::endl;
-    std::cout << "  --httpproxy = proxy:   Specify a http proxy to use." << std::endl;
+    std::cout << "  --httpproxy [proxy]    Specify a http proxy to use." << std::endl;
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
     std::cout << "  --exclude [file]       exclude list file" << std::endl;
@@ -168,9 +167,7 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     while(it.hasNext()) {
         const QString option = it.next();
 
-        if( option == "--confdir" && !it.peekNext().startsWith("-") ) {
-            options->config_directory = it.next();
-        } else if( option == "--httpproxy" && !it.peekNext().startsWith("-")) {
+        if( option == "--httpproxy" && !it.peekNext().startsWith("-")) {
             options->proxy = it.next();
         } else if( option == "-s" || option == "--silent") {
             options->silent = true;
