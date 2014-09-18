@@ -185,6 +185,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   if (type == CSYNC_FTW_TYPE_FILE ) {
     if( fs->nlink > 1) {
       st->instruction = CSYNC_INSTRUCTION_IGNORE;
+      st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_HARDLINK;
       goto out;
     }
 

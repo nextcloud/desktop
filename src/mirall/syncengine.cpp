@@ -354,6 +354,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK:
         item._errorString = tr("Symbolic links are not supported in syncing.");
         break;
+    case CSYNC_STATUS_INDIVIDUAL_IS_HARDLINK:
+        item._errorString = tr("Hard links are not supported in syncing.");
+        break;
     case CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST:
         item._errorString = tr("File is listed on the ignore list.");
         break;
