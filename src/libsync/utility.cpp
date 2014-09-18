@@ -184,8 +184,7 @@ qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
 #elif defined(Q_OS_WIN)
     ULARGE_INTEGER freeBytes;
     freeBytes.QuadPart = 0L;
-    QString drive = QDir().absoluteFilePath(path).left(2);
-    if( !GetDiskFreeSpaceEx( reinterpret_cast<const wchar_t *>(drive.utf16()), &freeBytes, NULL, NULL ) ) {
+    if( !GetDiskFreeSpaceEx( reinterpret_cast<const wchar_t *>(path.utf16()), &freeBytes, NULL, NULL ) ) {
         if (ok) *ok = false;
     }
     return freeBytes.QuadPart;

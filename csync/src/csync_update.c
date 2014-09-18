@@ -185,6 +185,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   if (type == CSYNC_FTW_TYPE_FILE ) {
     if( fs->nlink > 1) {
       st->instruction = CSYNC_INSTRUCTION_IGNORE;
+      st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_HARDLINK;
       goto out;
     }
 
@@ -229,14 +230,16 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64 ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64,
-                  ((int64_t) fs->mtime), ((int64_t) tmp->modtime), fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64 ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64 ", size: %" PRId64 " <-> %" PRId64,
+                  ((int64_t) fs->mtime), ((int64_t) tmp->modtime), fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode, (uint64_t) fs->size, (uint64_t) tmp->size);
         if( !fs->etag) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
         if((ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag ))
             || (ctx->current == LOCAL_REPLICA && (fs->mtime != tmp->modtime
+                                                  // zero size in statedb can happen during migration
+                                                  || (tmp->size != 0 && fs->size != tmp->size)
 #if 0
                                                   || fs->inode != tmp->inode
 #endif
@@ -432,11 +435,19 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
 
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s]", file, fs->file_id);
+      if (ctx->current == REMOTE_REPLICA) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s size=%" PRIu64 "]", file, fs->file_id, fs->size);
+      } else {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [inode=%" PRIu64 " size=%" PRIu64 "]", file, fs->inode, fs->size);
+      }
       type = CSYNC_FTW_TYPE_FILE;
       break;
   case CSYNC_FTW_FLAG_DIR: /* enter directory */
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s [file_id=%s]", file, fs->file_id);
+      if (ctx->current == REMOTE_REPLICA) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s [file_id=%s]", file, fs->file_id);
+      } else {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s [inode=%" PRIu64 "]", file, fs->inode);
+      }
       type = CSYNC_FTW_TYPE_DIR;
       break;
   case CSYNC_FTW_FLAG_NSTAT: /* not statable file */

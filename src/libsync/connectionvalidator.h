@@ -60,6 +60,7 @@ public slots:
 protected slots:
     void slotStatusFound(const QUrl&url, const QVariantMap &info);
     void slotNoStatusFound(QNetworkReply *reply);
+    void slotStatusTimeout(const QUrl& url);
 
     void slotCheckAuthentication();
     void slotAuthFailed(QNetworkReply *reply);

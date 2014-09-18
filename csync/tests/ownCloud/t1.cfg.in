@@ -1,8 +1,8 @@
   user   => "joe",
   passwd => "secret",
   url    => "http://localhost/ocm/remote.php/webdav/",
-  ld_libpath => "/home/joe/owncloud/csync/csync-build/modules",
-  csync => "/home/joe/owncloud/csync/csync-build/client/csync",
+  ld_libpath => "/home/joe/owncloud/mirall-install/lib",
+  csync => "/home/joe/owncloud/mirall-install/bin/owncloudcmd",
   ocs_url => "http://localhost/owncloud/ocs/v1.php/",
   share_user => "jenny",
   share_passwd => "also_secret"

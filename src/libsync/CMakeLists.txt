@@ -176,7 +176,7 @@ else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
     if (SPARKLE_FOUND)
         install(DIRECTORY "${SPARKLE_LIBRARY}"
-	        DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks")
+	        DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks" USE_SOURCE_PERMISSIONS)
     endif (SPARKLE_FOUND)
 endif()
 

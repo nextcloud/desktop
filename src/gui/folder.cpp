@@ -27,6 +27,8 @@
 #include "clientproxy.h"
 #include "syncengine.h"
 #include "syncrunfilelog.h"
+#include "theme.h"
+
 
 #include "creds/abstractcredentials.h"
 
@@ -255,18 +257,27 @@ void Folder::slotPollTimerTimeout()
 {
     qDebug() << "* Polling" << alias() << "for changes. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
 
-    if (_paused || AccountManager::instance()->account()->state() != Account::Connected) {
-        qDebug() << "Not syncing.  :" << _paused << AccountManager::instance()->account()->state();
+
+    Account *account = AccountManager::instance()->account();
+
+    if (!account) {
+        qDebug() << Q_FUNC_INFO << "No valid account object";
+        return;
+    }
+
+    if (_paused || account->state() != Account::Connected) {
+        qDebug() << "Not syncing.  :" << _paused << account->state();
         return;
     }
 
     if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval() ||
+            _lastEtag.isNull() ||
             !(_syncResult.status() == SyncResult::Success ||_syncResult.status() == SyncResult::Problem)) {
         qDebug() << "** Force Sync now, state is " << _syncResult.statusString();
         emit scheduleToSync(alias());
     } else {
-        // do the ordinary etag chech for the root folder.
-        RequestEtagJob* job = new RequestEtagJob(AccountManager::instance()->account(), remotePath(), this);
+        // do the ordinary etag check for the root folder.
+        RequestEtagJob* job = new RequestEtagJob(account, remotePath(), this);
         // check if the etag is different
         QObject::connect(job, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
         QObject::connect(job, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotNetworkUnavailable()));
@@ -488,10 +499,14 @@ void Folder::slotTerminateSync()
         // Do not display an error message, user knows his own actions.
         // _errors.append( tr("The CSync thread terminated.") );
         // _csyncError = true;
-        FolderMan::instance()->slotSetFolderPaused(alias(), true);
         setSyncState(SyncResult::SyncAbortRequested);
-        return;
     }
+}
+
+void Folder::slotTerminateAndPauseSync()
+{
+    slotTerminateSync();
+    FolderMan::instance()->slotSetFolderPaused(alias(), true);
 }
 
 // This removes the csync File database
@@ -521,20 +536,27 @@ void Folder::wipe()
     }
 }
 
-void Folder::setIgnoredFiles()
+bool Folder::setIgnoredFiles()
 {
+    bool ok = false;
+
     MirallConfigFile cfgFile;
     csync_clear_exclude_list( _csync_ctx );
     QString excludeList = cfgFile.excludeFile( MirallConfigFile::SystemScope );
     if( !excludeList.isEmpty() ) {
         qDebug() << "==== added system ignore list to csync:" << excludeList.toUtf8();
-        csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
+        if (csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() ) == 0) {
+            ok = true;
+        }
     }
     excludeList = cfgFile.excludeFile( MirallConfigFile::UserScope );
     if( !excludeList.isEmpty() ) {
         qDebug() << "==== added user defined ignore list to csync:" << excludeList.toUtf8();
         csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
+        // reading the user exclude file is optional
     }
+
+    return ok;
 }
 
 void Folder::setProxyDirty(bool value)
@@ -557,7 +579,7 @@ void Folder::startSync(const QStringList &pathList)
         if (!_csync_ctx) {
             qDebug() << Q_FUNC_INFO << "init failed.";
             // the error should already be set
-            QMetaObject::invokeMethod(this, "slotCSyncFinished", Qt::QueuedConnection);
+            QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection);
             return;
         }
         _clientProxy.setCSyncProxy(AccountManager::instance()->account()->url(), _csync_ctx);
@@ -578,9 +600,16 @@ void Folder::startSync(const QStringList &pathList)
     _syncResult.setStatus( SyncResult::SyncPrepare );
     emit syncStateChange();
 
+    qDebug() << "*** Start syncing - client version"
+             << qPrintable(Theme::instance()->version());
 
-    qDebug() << "*** Start syncing";
-    setIgnoredFiles();
+    if (! setIgnoredFiles())
+    {
+        slotSyncError(tr("Could not read system exclude file"));
+        QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection);
+        return;
+    }
+
     _engine.reset(new SyncEngine( _csync_ctx, path(), remoteUrl().path(), _remotePath, &_journal));
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
@@ -658,10 +687,13 @@ void Folder::slotSyncFinished()
 
     bubbleUpSyncResult();
 
-    _engine.reset(0);
+    bool anotherSyncNeeded = false;
+    if (_engine) {
+        anotherSyncNeeded = _engine->isAnotherSyncNeeded();
+        _engine.reset(0);
+    }
     // _watcher->setEventsEnabledDelayed(2000);
-    _pollTimer.start();
-    _timeSinceLastSync.restart();
+
 
 
     if (_csyncError) {
@@ -688,6 +720,16 @@ void Folder::slotSyncFinished()
     // some time under certain conditions to make the file system notifications
     // all come in.
     QTimer::singleShot(200, this, SLOT(slotEmitFinishedDelayed() ));
+
+    if (!anotherSyncNeeded) {
+        _pollTimer.start();
+        _timeSinceLastSync.restart();
+    } else {
+        // Another sync is required.  We will make sure that the poll timer occurs soon enough
+        // and we clear the etag to force a sync
+        _lastEtag.clear();
+        QTimer::singleShot(1000, this, SLOT(slotPollTimerTimeout() ));
+    }
 
 }
 

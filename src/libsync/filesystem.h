@@ -32,6 +32,14 @@ bool fileEquals(const QString &fn1, const QString &fn2);
 /** Mark the file as hidden  (only has effects on windows) */
 void OWNCLOUDSYNC_EXPORT setFileHidden(const QString& filename, bool hidden);
 
+
+/** Get the mtime for a filepath.
+ *
+ * Use this over QFileInfo::lastModified() to avoid timezone related bugs. See
+ * owncloud/core#9781 for details.
+ */
+time_t OWNCLOUDSYNC_EXPORT getModTime(const QString &filename);
+
 void setModTime(const QString &filename, time_t modTime);
 
 /**

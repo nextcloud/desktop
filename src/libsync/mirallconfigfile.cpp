@@ -232,6 +232,14 @@ QString MirallConfigFile::excludeFile(Scope scope) const
 #endif
 #ifdef Q_OS_UNIX
             fi.setFile( QString( SYSCONFDIR "/%1").arg(Theme::instance()->appName()), exclFile );
+            if ( ! fi.exists() ) {
+                // Prefer to return the preferred path! Only use the fallback location
+                // if the other path does not exist and the fallback is valid.
+                QFileInfo nextToBinary( QCoreApplication::applicationDirPath(), exclFile );
+                if (nextToBinary.exists()) {
+                    fi = nextToBinary;
+                }
+            }
 #endif
 #ifdef Q_OS_MAC
             // exec path is inside the bundle

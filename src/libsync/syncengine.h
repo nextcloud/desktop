@@ -62,7 +62,10 @@ public:
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
     void setSelectiveSyncBlackList(const QStringList &list)
-    { _selectiveSyncWhiteList = list; }
+    { _selectiveSyncBlackList = list; }
+
+    /* Return true if we detected that another sync is needed to complete the sync */
+    bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
 
 signals:
     void csyncError( const QString& );
@@ -107,6 +110,16 @@ private:
     int treewalkFile( TREE_WALK_FILE*, bool );
     bool checkBlacklisting( SyncFileItem *item );
 
+    // Cleans up unnecessary downloadinfo entries in the journal as well
+    // as their temporary files.
+    void deleteStaleDownloadInfos();
+
+    // Removes stale uploadinfos from the journal.
+    void deleteStaleUploadInfos();
+
+    // Removes stale blacklist entries from the journal.
+    void deleteStaleBlacklistEntries();
+
     // cleanup and emit the finished signal
     void finalize();
 
@@ -149,7 +162,9 @@ private:
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
 
-    QStringList _selectiveSyncWhiteList;
+    QStringList _selectiveSyncBlackList;
+
+    bool _anotherSyncNeeded;
 };
 
 }

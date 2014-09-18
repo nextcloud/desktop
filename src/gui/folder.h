@@ -138,6 +138,7 @@ public slots:
        * terminate the current sync run
        */
      void slotTerminateSync();
+     void slotTerminateAndPauseSync();
 
      void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool*);
 
@@ -177,7 +178,7 @@ private slots:
 private:
     bool init();
 
-    void setIgnoredFiles();
+    bool setIgnoredFiles();
 
     void bubbleUpSyncResult();
 

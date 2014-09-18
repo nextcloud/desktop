@@ -171,7 +171,6 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
 
     if( id == WizardCommon::Page_ServerSetup ) {
         emit clearPendingRequests();
-        _setupPage->initializePage();
     }
 
     if( id == WizardCommon::Page_Result ) {

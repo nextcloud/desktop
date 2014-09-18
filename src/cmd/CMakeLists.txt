@@ -5,6 +5,7 @@ set(cmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 set(cmd_SRC
     cmd.cpp
     simplesslerrorhandler.cpp
+    netrcparser.cpp
    )
 include_directories(${CMAKE_SOURCE_DIR}/src/libsync
                     ${CMAKE_BINARY_DIR}/src/libsync

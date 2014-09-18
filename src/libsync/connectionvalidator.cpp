@@ -85,6 +85,7 @@ void ConnectionValidator::checkConnection()
         checkJob->setIgnoreCredentialFailure(true);
         connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
         connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
+        connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotStatusTimeout(QUrl)));
         checkJob->start();
     } else {
         _errors << tr("No ownCloud account configured");
@@ -127,8 +128,18 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
     _errors.append( reply->errorString() );
     _networkError = (reply->error() != QNetworkReply::NoError);
     emit connectionResult( StatusNotFound );
-
 }
+
+void ConnectionValidator::slotStatusTimeout(const QUrl &url)
+{
+    _account->setState(Account::Disconnected);
+
+    _errors.append(tr("Unable to connect to %1").arg(url.toString()));
+    _errors.append(tr("timeout"));
+    _networkError = true;
+    emit connectionResult( StatusNotFound );
+}
+
 
 void ConnectionValidator::slotCheckAuthentication()
 {

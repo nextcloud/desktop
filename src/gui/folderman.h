@@ -107,6 +107,11 @@ public slots:
     void slotFolderSyncStarted();
     void slotFolderSyncFinished( const SyncResult& );
 
+    /**
+     * Terminates the specified folder sync (or the current one).
+     *
+     * It does not switch the folder to paused state.
+     */
     void terminateSyncProcess( const QString& alias = QString::null );
 
     /* unload and delete on folder object */
@@ -129,13 +134,12 @@ public slots:
 private slots:
 
     // slot to take the next folder from queue and start syncing.
-    void slotScheduleFolderSync();
+    void slotStartScheduledFolderSync();
 
 private:
     // finds all folder configuration files
     // and create the folders
-    void terminateCurrentSync();
-    QString getBackupName( const QString& ) const;
+    QString getBackupName( QString fullPathName ) const;
     void registerFolderMonitor( Folder *folder );
 
     QString unescapeAlias( const QString& ) const;
@@ -149,9 +153,11 @@ private:
     QSignalMapper *_folderWatcherSignalMapper;
     QString        _currentSyncFolder;
     bool           _syncEnabled;
-    QQueue<QString> _scheduleQueue;
     QMap<QString, FolderWatcher*> _folderWatchers;
     QPointer<SocketApi> _socketApi;
+
+    /** The aliases of folders that shall be synced. */
+    QQueue<QString> _scheduleQueue;
 
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = 0);

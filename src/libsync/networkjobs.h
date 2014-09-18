@@ -96,7 +96,7 @@ protected:
 
 private slots:
     void slotFinished();
-    virtual void slotTimeout() {}
+    virtual void slotTimeout();
 
 private:
     QNetworkReply* addTimer(QNetworkReply *reply);

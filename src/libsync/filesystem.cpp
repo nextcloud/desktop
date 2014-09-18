@@ -12,7 +12,10 @@
  */
 
 #include "filesystem.h"
+
+#include "utility.h"
 #include <QFile>
+#include <QFileInfo>
 #include <QDebug>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -24,10 +27,15 @@
 #include <winbase.h>
 #endif
 
-
 // We use some internals of csync:
 extern "C" int c_utimes(const char *, const struct timeval *);
 extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
+
+extern "C" {
+#include "vio/csync_vio_handle.h"
+#include "vio/csync_vio_file_stat.h"
+#include "vio/csync_vio_local.h"
+}
 
 namespace Mirall {
 
@@ -67,6 +75,25 @@ bool FileSystem::fileEquals(const QString& fn1, const QString& fn2)
 void FileSystem::setFileHidden(const QString& filename, bool hidden)
 {
     return csync_win32_set_file_hidden(filename.toUtf8().constData(), hidden);
+}
+
+time_t FileSystem::getModTime(const QString &filename)
+{
+    csync_vio_file_stat_t* stat = csync_vio_file_stat_new();
+    qint64 result = -1;
+    if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
+            && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_MTIME))
+    {
+        result = stat->mtime;
+    }
+    else
+    {
+        qDebug() << "Could not get modification time for" << filename
+                 << "with csync, using QFileInfo";
+        result = Utility::qDateTimeToTime_t(QFileInfo(filename).lastModified());
+    }
+    csync_vio_file_stat_destroy(stat);
+    return result;
 }
 
 void FileSystem::setModTime(const QString& filename, time_t modTime)

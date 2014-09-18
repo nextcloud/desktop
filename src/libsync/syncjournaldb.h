@@ -68,9 +68,15 @@ public:
 
     DownloadInfo getDownloadInfo(const QString &file);
     void setDownloadInfo(const QString &file, const DownloadInfo &i);
+    QVector<DownloadInfo> getAndDeleteStaleDownloadInfos(const QSet<QString>& keep);
+
     UploadInfo getUploadInfo(const QString &file);
     void setUploadInfo(const QString &file, const UploadInfo &i);
+    bool deleteStaleUploadInfos(const QSet<QString>& keep);
+
     SyncJournalBlacklistRecord blacklistEntry( const QString& );
+    bool deleteStaleBlacklistEntries(const QSet<QString>& keep);
+
     void avoidRenamesOnNextSync(const QString &path);
 
     /**

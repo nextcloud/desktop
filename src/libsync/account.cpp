@@ -39,6 +39,7 @@ static const char urlC[] = "url";
 static const char authTypeC[] = "authType";
 static const char userC[] = "user";
 static const char httpUserC[] = "http_user";
+static const char caCertsKeyC[] = "CaCertificates";
 
 AccountManager *AccountManager::_instance = 0;
 
@@ -102,15 +103,15 @@ void Account::save()
     }
     settings->sync();
 
-    // ### TODO port away from MirallConfigFile
-    MirallConfigFile cfg;
+    // Save accepted certificates.
+    settings->beginGroup(QLatin1String("General"));
     qDebug() << "Saving " << approvedCerts().count() << " unknown certs.";
     QByteArray certs;
     Q_FOREACH( const QSslCertificate& cert, approvedCerts() ) {
         certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
-        cfg.setCaCerts( certs );
+        settings->setValue( QLatin1String(caCertsKeyC), certs );
     }
 }
 
@@ -141,13 +142,15 @@ Account* Account::restore()
             // Check the theme url to see if it is the same url that the oC config was for
             QString overrideUrl = Theme::instance()->overrideServerUrl();
             if( !overrideUrl.isEmpty() ) {
+                if (overrideUrl.endsWith('/')) { overrideUrl.chop(1); }
                 QString oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
+                if (oCUrl.endsWith('/')) { oCUrl.chop(1); }
 
                 // in case the urls are equal reset the settings object to read from
                 // the ownCloud settings object
                 qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
-                         << (QUrl(oCUrl) == QUrl(overrideUrl) ? "Yes" : "No");
-                if( QUrl(oCUrl) == QUrl(overrideUrl) ) {
+                         << (oCUrl == overrideUrl ? "Yes" : "No");
+                if( oCUrl == overrideUrl ) {
                     migratedCreds = true;
                     settings.reset( oCSettings );
                 } else {
@@ -174,7 +177,7 @@ Account* Account::restore()
 
         // now the cert, it is in the general group
         settings->beginGroup(QLatin1String("General"));
-        acc->setApprovedCerts(QSslCertificate::fromData(settings->value(QLatin1String("CaCertificates")).toByteArray()));
+        acc->setApprovedCerts(QSslCertificate::fromData(settings->value(caCertsKeyC).toByteArray()));
         acc->setMigrated(migratedCreds);
         return acc;
     }

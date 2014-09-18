@@ -59,6 +59,7 @@ SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remo
   , _hasRemoveFile(false)
   , _uploadLimit(0)
   , _downloadLimit(0)
+  , _anotherSyncNeeded(false)
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
@@ -244,6 +245,57 @@ bool SyncEngine::checkBlacklisting( SyncFileItem *item )
     return re;
 }
 
+void SyncEngine::deleteStaleDownloadInfos()
+{
+    // Find all downloadinfo paths that we want to preserve.
+    QSet<QString> download_file_paths;
+    foreach(const SyncFileItem& it, _syncedItems) {
+        if (it._direction == SyncFileItem::Down
+                && it._type == SyncFileItem::File)
+        {
+            download_file_paths.insert(it._file);
+        }
+    }
+
+    // Delete from journal and from filesystem.
+    const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
+            _journal->getAndDeleteStaleDownloadInfos(download_file_paths);
+    foreach (const SyncJournalDb::DownloadInfo & deleted_info, deleted_infos) {
+        const QString tmppath = _propagator->getFilePath(deleted_info._tmpfile);
+        qDebug() << "Deleting stale temporary file: " << tmppath;
+        QFile::remove(tmppath);
+    }
+}
+
+void SyncEngine::deleteStaleUploadInfos()
+{
+    // Find all blacklisted paths that we want to preserve.
+    QSet<QString> upload_file_paths;
+    foreach(const SyncFileItem& it, _syncedItems) {
+        if (it._direction == SyncFileItem::Up
+                && it._type == SyncFileItem::File)
+        {
+            upload_file_paths.insert(it._file);
+        }
+    }
+
+    // Delete from journal.
+    _journal->deleteStaleUploadInfos(upload_file_paths);
+}
+
+void SyncEngine::deleteStaleBlacklistEntries()
+{
+    // Find all blacklisted paths that we want to preserve.
+    QSet<QString> blacklist_file_paths;
+    foreach(const SyncFileItem& it, _syncedItems) {
+        if (it._status == SyncFileItem::FileIgnored)
+            blacklist_file_paths.insert(it._file);
+    }
+
+    // Delete from journal.
+    _journal->deleteStaleBlacklistEntries(blacklist_file_paths);
+}
+
 int SyncEngine::treewalkLocal( TREE_WALK_FILE* file, void *data )
 {
     return static_cast<SyncEngine*>(data)->treewalkFile( file, false );
@@ -301,6 +353,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         break;
     case CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK:
         item._errorString = tr("Symbolic links are not supported in syncing.");
+        break;
+    case CSYNC_STATUS_INDIVIDUAL_IS_HARDLINK:
+        item._errorString = tr("Hard links are not supported in syncing.");
         break;
     case CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST:
         item._errorString = tr("File is listed on the ignore list.");
@@ -535,7 +590,7 @@ void SyncEngine::startSync()
     qDebug() << "#### Discovery start #################################################### >>";
 
     DiscoveryJob *job = new DiscoveryJob(_csync_ctx);
-    job->_selectiveSyncBlackList = _selectiveSyncWhiteList;
+    job->_selectiveSyncBlackList = _selectiveSyncBlackList;
     job->moveToThread(&_thread);
     connect(job, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
     connect(job, SIGNAL(folderDiscovered(bool,QString)),
@@ -647,6 +702,11 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);
 
+    deleteStaleDownloadInfos();
+    deleteStaleUploadInfos();
+    deleteStaleBlacklistEntries();
+    _journal->commit("post stale entry removal");
+
     _propagator->start(_syncedItems);
 }
 
@@ -706,6 +766,8 @@ void SyncEngine::slotJobCompleted(const SyncFileItem &item)
 
 void SyncEngine::slotFinished()
 {
+    _anotherSyncNeeded = _anotherSyncNeeded || _propagator->_anotherSyncNeeded;
+
     // emit the treewalk results.
     if( ! _journal->postSyncCleanup( _seenFiles ) ) {
         qDebug() << "Cleaning of synced ";
@@ -917,6 +979,7 @@ void SyncEngine::checkForPermission()
                     //  At this point we would need to go back to the propagate phase on both remote to take
                     //  the decision.
                     _journal->avoidRenamesOnNextSync(it->_file);
+                    _anotherSyncNeeded = true;
 
 
                     if (it->_isDirectory) {

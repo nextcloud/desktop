@@ -22,6 +22,7 @@
 #include "theme.h"
 #include "syncjournalfilerecord.h"
 #include "syncfileitem.h"
+#include "filesystem.h"
 #include "version.h"
 
 #include <QDebug>
@@ -165,7 +166,7 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strli
     if( type == CSYNC_FTW_TYPE_DIR ) {
         // compute recursive status of the directory
         status = recursiveFolderStatus( folder, fileName, excludes );
-    } else if(fi.lastModified() != rec._modtime ) {
+    } else if( FileSystem::getModTime(fi.absoluteFilePath()) != Utility::qDateTimeToTime_t(rec._modtime) ) {
         // file was locally modified.
         status.set(SyncFileStatus::STATUS_EVAL);
     } else {
@@ -244,6 +245,17 @@ void SocketApi::slotNewConnection()
     Q_ASSERT(socket->readAll().isEmpty());
 
     _listeners.append(socket);
+
+#ifdef Q_OS_MAC
+    // We want to tell our location so it can load the icons
+    // e.g. "/Users/guruz/woboq/owncloud/client/buildmirall/owncloud.app/Contents/MacOS/"
+    QString iconPath = qApp->applicationDirPath() + "/../Resources/icons/";
+    if (!QDir(iconPath).exists()) {
+        DEBUG << "Icon path " << iconPath << " does not exist, did you forget make install?";
+    }
+    broadcastMessage(QLatin1String("ICON_PATH"), iconPath );
+#endif
+
 
     foreach( QString alias, FolderMan::instance()->map().keys() ) {
        slotRegisterPath(alias);

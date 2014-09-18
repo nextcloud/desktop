@@ -27,6 +27,18 @@
 
 namespace Mirall {
 
+/**
+ * The mtime of a file must be at least this many milliseconds in
+ * the past for an upload to be started. Otherwise the propagator will
+ * assume it's still being changed and skip it.
+ *
+ * This value must be smaller than the msBetweenRequestAndSync in
+ * the folder manager.
+ *
+ * Two seconds has shown to be a good value in tests.
+ */
+static int minFileAgeForUpload = 2000;
+
 static qint64 chunkSize() {
     static uint chunkSize;
     if (!chunkSize) {
@@ -97,14 +109,29 @@ void PropagateUploadFileQNAM::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    _file = new QFile(_propagator->_localDir + _item._file, this);
+    _file = new QFile(_propagator->getFilePath(_item._file), this);
     if (!_file->open(QIODevice::ReadOnly)) {
         done(SyncFileItem::NormalError, _file->errorString());
         delete _file;
         return;
     }
 
+    // Update the mtime and size, it might have changed since discovery.
+    _item._modtime = FileSystem::getModTime(_file->fileName());
     quint64 fileSize = _file->size();
+    _item._size = fileSize;
+
+    // But skip the file if the mtime is too close to 'now'!
+    // That usually indicates a file that is still being changed
+    // or not yet fully copied to the destination.
+    QDateTime modtime = Utility::qDateTimeFromTime_t(_item._modtime);
+    if (modtime.msecsTo(QDateTime::currentDateTime()) < minFileAgeForUpload) {
+        _propagator->_anotherSyncNeeded = true;
+        done(SyncFileItem::SoftError, tr("Local file changed during sync."));
+        delete _file;
+        return;
+    }
+
     _chunkCount = std::ceil(fileSize/double(chunkSize()));
     _startChunk = 0;
     _transferId = qrand() ^ _item._modtime ^ (_item._size << 16);
@@ -198,20 +225,6 @@ void PropagateUploadFileQNAM::startNextChunk()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-
-    /*
-     *        // If the source file has changed during upload, it is detected and the
-     *        // variable _previousFileSize is set accordingly. The propagator waits a
-     *        // couple of seconds and retries.
-     *        if(_previousFileSize > 0) {
-     *            qDebug() << "File size changed underway: " << trans->stat_size - _previousFileSize;
-     *            // Report the change of the overall transmission size to the propagator
-     *            _propagator->overallTransmissionSizeChanged(qint64(trans->stat_size - _previousFileSize));
-     *            // update the item's values to the current from trans. hbf_splitlist does a stat
-     *            _item._size = trans->stat_size;
-     *            _item._modtime = trans->modtime;
-     *
-     */
     quint64 fileSize = _item._size;
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Total-Length"] = QByteArray::number(fileSize);
@@ -307,16 +320,22 @@ void PropagateUploadFileQNAM::slotPutFinished()
             || job->reply()->hasRawHeader("OC-ETag");
 
     if (!finished) {
-        QFileInfo fi(_propagator->_localDir + _item._file);
+        QFileInfo fi(_propagator->getFilePath(_item._file));
         if( !fi.exists() ) {
             _propagator->_activeJobs--;
             done(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
         }
 
-        if (Utility::qDateTimeToTime_t(fi.lastModified()) != _item._modtime) {
-            qDebug() << "The local file has changed during upload:" << _item._modtime << "!=" << Utility::qDateTimeToTime_t(fi.lastModified())  << fi.lastModified();
+        const time_t new_mtime = FileSystem::getModTime(fi.absoluteFilePath());
+        const quint64 new_size = static_cast<quint64>(fi.size());
+        if (new_mtime != _item._modtime || new_size != _item._size) {
+            qDebug() << "The local file has changed during upload:"
+                     << "mtime: " << _item._modtime << "<->" << new_mtime
+                     << ", size: " << _item._size << "<->" << new_size
+                     << ", QFileInfo: " << Utility::qDateTimeToTime_t(fi.lastModified()) << fi.lastModified();
             _propagator->_activeJobs--;
+            _propagator->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("Local file changed during sync."));
             // FIXME:  the legacy code was retrying for a few seconds.
             //         and also checking that after the last chunk, and removed the file in case of INSTRUCTION_NEW
@@ -381,7 +400,7 @@ void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
 
     _item._requestDuration = _duration.elapsed();
 
-    _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
+    _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->getFilePath(_item._file)));
     // Remove from the progress database:
     _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
     _propagator->_journal->commit("upload file start");
@@ -569,7 +588,7 @@ void PropagateDownloadFileQNAM::start()
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
         if (progressInfo._etag != _item._etag) {
-            QFile::remove(_propagator->_localDir + progressInfo._tmpfile);
+            QFile::remove(_propagator->getFilePath(progressInfo._tmpfile));
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
@@ -587,7 +606,7 @@ void PropagateDownloadFileQNAM::start()
         tmpFileName += ".~" + QString::number(uint(qrand()), 16);
     }
 
-    _tmpFile.setFileName(_propagator->_localDir + tmpFileName);
+    _tmpFile.setFileName(_propagator->getFilePath(tmpFileName));
     if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
         done(SyncFileItem::NormalError, _tmpFile.errorString());
         return;
@@ -711,7 +730,7 @@ QString makeConflictFileName(const QString &fn, const QDateTime &dt)
 void PropagateDownloadFileQNAM::downloadFinished()
 {
 
-    QString fn = _propagator->_localDir + _item._file;
+    QString fn = _propagator->getFilePath(_item._file);
 
 
     bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT
@@ -740,7 +759,10 @@ void PropagateDownloadFileQNAM::downloadFinished()
         return;
     }
 
+    // Maybe we downloaded a newer version of the file than we thought we would...
+    // Get up to date information for the journal.
     FileSystem::setModTime(fn, _item._modtime);
+    _item._size = existingFile.size();
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());

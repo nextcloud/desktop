@@ -50,7 +50,7 @@ QString ownCloudTheme::about() const
                "Olivier Goffart, Markus Götz and others.<br/>"
                "Based on Mirall by Duncan Mac-Vicar P.</small></p>"
                "<p>Copyright ownCloud, Inc.</p>"
-               "<p>Licensed under the GNU Public License (GPL) Version 2.0<br/>"
+               "<p>Licensed under the GNU General Public License (GPL) Version 2.0<br/>"
                "ownCloud and the ownCloud Logo are registered trademarks of ownCloud, "
                "Inc. in the United States, other countries, or both</p>"
                )
@@ -114,7 +114,7 @@ QPixmap ownCloudTheme::wizardHeaderLogo() const
 
 QString ownCloudTheme::appName() const
 {
-    return QLatin1String("owncloud");
+    return QLatin1String("ownCloud");
 }
 
 QString ownCloudTheme::appNameGUI() const

@@ -1,12 +1,7 @@
 t1 - an integration test script for csync syncing to ownCloud.
 
 Note: This test script uses perl HTTP::DAV. This package needs to
-be in version 0.46 at least. Many distros deliver older versions.
-A working version is part of the github checkout.
-
-Note: This test script uses perl HTTP::DAV. This package needs to
-be in version 0.46 at least. Many distros deliver older versions.
-Update than.
+be in version 0.47 at least. Many distros deliver older versions.
 
 t1 uses a perl WebDAV client lib to sync to an existing instance of
 ownCloud. For that, various files are copied around, synced and the
@@ -19,10 +14,6 @@ How to call:
 First, configure the script. For that, create a file t1.cfg. There
 is t1.cfg.in as an example. Yeah, this test script is not secure,
 make sure to run it with a weak account and in a save environment.
-
-Second, unpack the test file collection with 
-tar xf testfiles.tar.xz
-in the directory where the tarball can be found.
 
 To start the script, call ./t1.pl on the commandline. A lot of 
 output is generated. If the script does not fail, everything works.

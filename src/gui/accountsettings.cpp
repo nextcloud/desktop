@@ -383,7 +383,7 @@ void AccountSettings::slotResetCurrentFolder()
         if( ret == QMessageBox::Yes ) {
             FolderMan *folderMan = FolderMan::instance();
             Folder *f = folderMan->folder(alias);
-            f->slotTerminateSync();
+            f->slotTerminateAndPauseSync();
             f->wipe();
             folderMan->slotScheduleAllFolders();
         }
@@ -499,7 +499,7 @@ void AccountSettings::slotEnableCurrentFolder()
         // message box can return at any time while the thread keeps running,
         // so better check again after the user has responded.
         if ( f->isBusy() && terminate ) {
-            f->slotTerminateSync();
+            f->slotTerminateAndPauseSync();
         }
         f->setSyncPaused(!currentlyPaused); // toggle the pause setting
         folderMan->slotSetFolderPaused( alias, !currentlyPaused );
