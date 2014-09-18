@@ -22,13 +22,25 @@ the server URL.
 
 Other comand line switches supported by owncloudcmd include the following:
 
-- ``--silent``
-      Supresses verbose log output.
+``--user``, ``-u`` ``[user]``
+       Use ``user`` as the login name.
 
-- ``--confdir`` `PATH`
-      Fetches or stores configuration in the specified configuration directory.
+``--password``, ``-p`` ``[password]``
+       Use ``password`` as the password.
 
-- ``--httpproxy  http://[user@pass:]<server>:<port>``
+``-n``
+       Use ``netrc (5)`` for login.
+
+``--non-interactive``
+       Do not prompt for questions.
+
+``--silent``, ``-s``
+       Inhibits verbose log output.
+
+``--trust``
+       Trust any SSL certificate, including invalid ones.
+
+``--httpproxy  http://[user@pass:]<server>:<port>``
       Uses the specified ``server`` as the HTTP proxy.
 
 Credential Handling
@@ -41,18 +53,19 @@ setting with the usual URL pattern.  For example::
 
   https://user:secret@192.168.178.2/remote.php/webdav
 
-
 Example
 ~~~~~~~
 
 To synchronize the ownCloud directory ``Music`` to the local directory
-``media/music`, through a proxy listening on port ``8080``, and on a gateway
+``media/music``, through a proxy listening on port ``8080``, and on a gateway
 machine using IP address ``192.168.178.1``, the command line would be::
 
   $ owncloudcmd --httpproxy http://192.168.178.1:8080 \
                 $HOME/media/music \
                 https://server/owncloud/remote.php/webdav/Music
 
+``owncloudcmd`` will enquire user name and password, unless they have
+been specified on the command line or ``-n`` has been passed.
 
 Using the legacy scheme, the command line would be::
 
