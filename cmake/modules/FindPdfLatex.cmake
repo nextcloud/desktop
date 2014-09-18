@@ -1,3 +1,7 @@
+# (c) 2014 Copyright ownCloud, Inc.
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING* file.
+
 find_program(PDFLATEX_EXECUTABLE NAMES pdflatex
   HINTS
   $ENV{PDFLATEX_DIR}

@@ -1,3 +1,7 @@
+# (c) 2014 Copyright ownCloud, Inc.
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING* file.
+
 # Always include srcdir and builddir in include path
 # This saves typing ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY} in
 # about every subdir
