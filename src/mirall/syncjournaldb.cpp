@@ -228,6 +228,9 @@ bool SyncJournalDb::checkConnect()
     commitInternal("checkConnect");
 
     bool rc = updateDatabaseStructure();
+    if( !rc ) {
+        qDebug() << "WARN: Failed to update the database structure!";
+    }
 
     _getFileRecordQuery.reset(new QSqlQuery(_db));
     _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm FROM "
@@ -311,20 +314,19 @@ bool SyncJournalDb::updateDatabaseStructure()
     if( !checkConnect() ) {
         return false;
     }
-    if( columns.indexOf(QLatin1String("fileid")) == -1 ) {
 
+    if( columns.indexOf(QLatin1String("fileid")) == -1 ) {
         QSqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN fileid VARCHAR(128);");
-        re = query.exec();
-        if(!re) {
-            qDebug() << Q_FUNC_INFO << "SQL Error " << query.lastError().text();
+        if( !query.exec() ) {
+            sqlFail("updateDatabaseStructure: Add column fileid", query);
+            re = false;
         }
 
         query.prepare("CREATE INDEX metadata_file_id ON metadata(fileid);");
-        re = re && query.exec();
-
-        if(!re) {
-            qDebug() << Q_FUNC_INFO << "SQL Error " << query.lastError().text();
+        if( ! query.exec() ) {
+            sqlFail("updateDatabaseStructure: create index fileid", query);
+            re = false;
         }
         commitInternal("update database structure: add fileid col");
     }
@@ -332,9 +334,9 @@ bool SyncJournalDb::updateDatabaseStructure()
 
         QSqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN remotePerm VARCHAR(128);");
-        re = re && query.exec();
-        if(!re) {
-            qDebug() << Q_FUNC_INFO << "SQL Error " << query.lastError().text();
+        if( !query.exec()) {
+            sqlFail("updateDatabaseStructure: add column remotePerm", query);
+            re = false;
         }
         commitInternal("update database structure (remotePerm");
     }
@@ -342,10 +344,9 @@ bool SyncJournalDb::updateDatabaseStructure()
     if( 1 ) {
         QSqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
-        re = re && query.exec();
-
-        if(!re) {
-            qDebug() << Q_FUNC_INFO << "SQL Error " << query.lastError().text();
+        if( !query.exec()) {
+            sqlFail("updateDatabaseStructure: create index inode", query);
+            re = false;
         }
         commitInternal("update database structure: add inode index");
 
@@ -354,10 +355,9 @@ bool SyncJournalDb::updateDatabaseStructure()
     if( 1 ) {
         QSqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_pathlen ON metadata(pathlen);");
-        re = re && query.exec();
-
-        if(!re) {
-            qDebug() << Q_FUNC_INFO << "SQL Error " << query.lastError().text();
+        if( !query.exec()) {
+            sqlFail("updateDatabaseStructure: create index pathlen", query);
+            re = false;
         }
         commitInternal("update database structure: add pathlen index");
 
