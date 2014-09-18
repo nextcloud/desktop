@@ -1,3 +1,7 @@
+# (c) 2014 Copyright ownCloud, Inc.
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING* file.
+
 # -helper macro to add a "doc" target with CMake build system. 
 # and configure doxy.config.in to doxy.config
 #

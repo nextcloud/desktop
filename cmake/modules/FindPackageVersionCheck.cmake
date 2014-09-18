@@ -1,3 +1,7 @@
+# (c) 2014 Copyright ownCloud, Inc.
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING* file.
+
 # FIND_PACKAGE_VERSION_CHECK(NAME (DEFAULT_MSG|"Custom failure message"))
 #    This function is intended to be used in FindXXX.cmake modules files.
 #    It handles NAME_FIND_VERSION and NAME_VERSION variables in a Module.

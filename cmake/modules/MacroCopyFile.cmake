@@ -1,3 +1,7 @@
+# (c) 2014 Copyright ownCloud, Inc.
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING* file.
+
 # - macro_copy_file(_src _dst)
 # Copies a file to ${_dst} only if ${_src} is different (newer) than ${_dst}
 #
