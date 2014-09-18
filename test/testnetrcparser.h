@@ -9,7 +9,7 @@
 
 #include <QtTest>
 
-#include "owncloudcmd/netrcparser.h"
+#include "cmd/netrcparser.h"
 
 using namespace Mirall;
 
