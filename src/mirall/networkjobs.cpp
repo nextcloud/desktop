@@ -50,6 +50,15 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
     _timer.setSingleShot(true);
     _timer.setInterval(10*1000); // default to 10 seconds.
     connect(&_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
+
+    connect(this, SIGNAL(networkActivity()), SLOT(resetTimeout()));
+
+    // Network activity on the propagator jobs (GET/PUT) keeps all requests alive.
+    // This is a workaround for OC instances which only support one
+    // parallel up and download
+    if (_account) {
+        connect(_account, SIGNAL(propagatorNetworkActivity()), SLOT(resetTimeout()));
+    }
 }
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
@@ -80,11 +89,6 @@ void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
     _ignoreCredentialFailure = ignore;
 }
 
-void AbstractNetworkJob::setAccount(Account *account)
-{
-    _account = account;
-}
-
 void AbstractNetworkJob::setPath(const QString &path)
 {
     _path = path;
@@ -93,6 +97,8 @@ void AbstractNetworkJob::setPath(const QString &path)
 void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
     connect(reply, SIGNAL(finished()), SLOT(slotFinished()));
+    connect(reply, SIGNAL(downloadProgress(qint64,qint64)), SIGNAL(networkActivity()));
+    connect(reply, SIGNAL(uploadProgress(qint64,qint64)), SIGNAL(networkActivity()));
 }
 
 QNetworkReply* AbstractNetworkJob::addTimer(QNetworkReply *reply)
@@ -179,8 +185,11 @@ QString AbstractNetworkJob::responseTimestamp()
     return _responseTimestamp;
 }
 
-AbstractNetworkJob::~AbstractNetworkJob() {
-    _reply->deleteLater();
+AbstractNetworkJob::~AbstractNetworkJob()
+{
+    if (_reply) {
+        _reply->deleteLater();
+    }
 }
 
 void AbstractNetworkJob::start()

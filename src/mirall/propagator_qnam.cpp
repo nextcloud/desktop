@@ -73,7 +73,7 @@ void PUTFileJob::start() {
     }
 
     connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SIGNAL(uploadProgress(qint64,qint64)));
-    connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(resetTimeout()));
+    connect(this, SIGNAL(networkActivity()), account(), SIGNAL(propagatorNetworkActivity()));
 
     AbstractNetworkJob::start();
 }
@@ -419,6 +419,7 @@ void GETFileJob::start() {
     connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(slotMetaDataChanged()));
     connect(reply(), SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
     connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SIGNAL(downloadProgress(qint64,qint64)));
+    connect(this, SIGNAL(networkActivity()), account(), SIGNAL(propagatorNetworkActivity()));
 
     AbstractNetworkJob::start();
 }
@@ -509,7 +510,6 @@ void GETFileJob::slotReadyRead()
             }
         }
     }
-    resetTimeout();
 }
 
 void PropagateDownloadFileQNAM::start()

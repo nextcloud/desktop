@@ -55,14 +55,13 @@ public:
 
     virtual void start();
 
-    void setAccount(Account *account);
     Account* account() const { return _account; }
+
     void setPath(const QString &path);
     QString path() const { return _path; }
 
     void setReply(QNetworkReply *reply);
     QNetworkReply* reply() const { return _reply; }
-
 
     void setIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
@@ -75,6 +74,7 @@ public slots:
     void resetTimeout();
 signals:
     void networkError(QNetworkReply *reply);
+    void networkActivity();
 protected:
     void setupConnections(QNetworkReply *reply);
     QNetworkReply* davRequest(const QByteArray& verb, const QString &relPath,
