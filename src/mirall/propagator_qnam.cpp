@@ -262,11 +262,8 @@ void PropagateUploadFileQNAM::startNextChunk()
         // Don't do parallel upload of chunk if this might be the last chunk because the server cannot handle that
         // https://github.com/owncloud/core/issues/11106
         // We return now and when the _jobs will be finished we will proceed the last chunk
-        qWarning() << "WTF" << _currentChunk << _chunkCount << _startChunk;
         return;
     }
-
-    qWarning() << "Go Go Go " << _jobs.count() << _currentChunk << _chunkCount << _startChunk;
 
     /*
      *        // If the source file has changed during upload, it is detected and the
@@ -504,7 +501,17 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
     int progressChunk = _currentChunk + _startChunk - 1;
     if (progressChunk >= _chunkCount)
         progressChunk = _currentChunk - 1;
-    emit progress(_item, sent + progressChunk * chunkSize());
+    quint64 amount = progressChunk * chunkSize();
+    sender()->setProperty("byteWritten", sent);
+    if (_jobs.count() == 1) {
+        amount += sent;
+    } else {
+        amount -= (_jobs.count() -1) * chunkSize();
+        foreach (QObject *j, _jobs) {
+            amount += j->property("byteWritten").toULongLong();
+        }
+    }
+    emit progress(_item, amount);
 }
 
 void PropagateUploadFileQNAM::startPollJob(const QString& path)
