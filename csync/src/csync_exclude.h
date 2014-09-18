@@ -29,6 +29,11 @@ enum csync_exclude_type_e {
   CSYNC_FILE_EXCLUDE_INVALID_CHAR
 };
 typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
+
+#ifdef NDEBUG
+int _csync_exclude_add(c_strlist_t **inList, const char *string);
+#endif
+
 /**
  * @brief Load exclude list
  *

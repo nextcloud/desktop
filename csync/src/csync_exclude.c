@@ -40,7 +40,10 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
 #include "csync_log.h"
 
-static int _csync_exclude_add(c_strlist_t **inList, const char *string) {
+#ifndef NDEBUG
+static
+#endif
+int _csync_exclude_add(c_strlist_t **inList, const char *string) {
     c_strlist_t *list;
 
     if (*inList == NULL) {
