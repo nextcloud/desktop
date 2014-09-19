@@ -314,11 +314,13 @@ void Folder::bubbleUpSyncResult()
     int updatedItems = 0;
     int ignoredItems = 0;
     int renamedItems = 0;
+    int errorItems = 0;
 
     SyncFileItem firstItemNew;
     SyncFileItem firstItemDeleted;
     SyncFileItem firstItemUpdated;
     SyncFileItem firstItemRenamed;
+    SyncFileItem firstItemError;
     Logger *logger = Logger::instance();
 
     SyncRunFileLog syncFileLog;
@@ -335,7 +337,10 @@ void Folder::bubbleUpSyncResult()
         // and process the item to the gui
         if( item._status == SyncFileItem::FatalError || item._status == SyncFileItem::NormalError ) {
             slotSyncError( tr("%1: %2").arg(item._file, item._errorString) );
-            logger->postOptionalGuiLog(item._file, item._errorString);
+            errorItems++;
+            if (firstItemError.isEmpty()) {
+                firstItemError = item;
+            }
         } else {
             // add new directories or remove gone away dirs to the watcher
             if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_NEW ) {
@@ -388,9 +393,9 @@ void Folder::bubbleUpSyncResult()
     qDebug() << "Processing result list and logging took " << timer.elapsed() << " Milliseconds.";
     _syncResult.setWarnCount(ignoredItems);
 
-    createGuiLog( firstItemNew._file,     SyncFileStatus(SyncFileStatus::STATUS_NEW), newItems );
-    createGuiLog( firstItemDeleted._file, SyncFileStatus(SyncFileStatus::STATUS_REMOVE), removedItems );
-    createGuiLog( firstItemUpdated._file, SyncFileStatus(SyncFileStatus::STATUS_UPDATED), updatedItems );
+    createGuiLog( firstItemNew._file,     SyncFileStatus::STATUS_NEW, newItems );
+    createGuiLog( firstItemDeleted._file, SyncFileStatus::STATUS_REMOVE, removedItems );
+    createGuiLog( firstItemUpdated._file, SyncFileStatus::STATUS_UPDATED, updatedItems );
 
     if( !firstItemRenamed.isEmpty() ) {
         SyncFileStatus status(SyncFileStatus::STATUS_RENAME);
@@ -402,6 +407,8 @@ void Folder::bubbleUpSyncResult()
         }
         createGuiLog( firstItemRenamed._file, status, renamedItems, firstItemRenamed._renameTarget );
     }
+
+    createGuiLog( firstItemError._file,   SyncFileStatus::STATUS_ERROR, errorItems );
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
 }
@@ -451,6 +458,13 @@ void Folder::createGuiLog( const QString& filename, SyncFileStatus status, int c
                 text = tr("%1 has been moved to %2 and %3 other files have been moved.").arg(file).arg(renameTarget).arg(count-1);
             } else {
                 text = tr("%1 has been moved to %2.").arg(file).arg(renameTarget);
+            }
+            break;
+        case SyncFileStatus::STATUS_ERROR:
+            if( count > 1 ) {
+                text = tr("%1 and %2 other files could not be synced due to errors. See the log for details.", "%1 names a file.").arg(file).arg(count-1);
+            } else {
+                text = tr("%1 could not be synced due to an error. See the log for details.").arg(file);
             }
             break;
         default:
