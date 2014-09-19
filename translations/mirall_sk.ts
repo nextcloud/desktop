@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Vybrať čo synchronizovať</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="101"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="675"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>súbor %1 z %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="763"/>
@@ -278,7 +278,7 @@ Celkom zostáva %5</translation>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="138"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>vypršal časový limit</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="167"/>
@@ -611,7 +611,7 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="433"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Výber synchronizácie: Môžete dodatočne odznačiť podpriečinky, ktoré nechcete synchronizovať.</translation>
     </message>
 </context>
 <context>
@@ -695,12 +695,12 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="370"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Vložte heslo</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="371"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Zadajte prosím %1 heslo pre používateľa &apos;%2&apos;: </translation>
     </message>
 </context>
 <context>
@@ -834,27 +834,27 @@ Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri ods
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="252"/>
+        <location filename="../src/updater/ocupdater.cpp" line="256"/>
         <source>New Version Available</source>
         <translation>Nová verzia je k dispozícii</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="258"/>
+        <location filename="../src/updater/ocupdater.cpp" line="262"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Je dostupná nová verzia klienta %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; je dostupná na stiahnutie. Nainštalovaná verzia je %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="271"/>
+        <location filename="../src/updater/ocupdater.cpp" line="275"/>
         <source>Skip this version</source>
         <translation>Preskočiť túto verziu</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="272"/>
+        <location filename="../src/updater/ocupdater.cpp" line="276"/>
         <source>Skip this time</source>
         <translation>Tentoraz preskočiť</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="273"/>
+        <location filename="../src/updater/ocupdater.cpp" line="277"/>
         <source>Get update</source>
         <translation>Aktualizovať teraz</translation>
     </message>
@@ -1005,7 +1005,12 @@ si počas procesu aktualizácie môže vyžiadať dodatočné práva.</translati
         <translation>Kontrolujem aktualizačný server...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="91"/>
+        <location filename="../src/updater/ocupdater.cpp" line="89"/>
+        <source>Update status is unknown: Did not check for new updates.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/updater/ocupdater.cpp" line="93"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Žiadne aktualizácie nie sú k dispozícii. Používate aktuálnu verziu.</translation>
     </message>
@@ -1271,7 +1276,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť %1 v prehliadači</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
@@ -1536,7 +1541,7 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="272"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="263"/>
         <source>Only checked folders will sync to this computer</source>
         <translation type="unfinished"/>
     </message>
@@ -1999,67 +2004,72 @@ Nie je vhodné ju používať.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
+        <source>Hard links are not supported in syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="361"/>
         <source>File is listed on the ignore list.</source>
         <translation>Súbor je zapísaný na zozname ignorovaných.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="361"/>
+        <location filename="../src/mirall/syncengine.cpp" line="364"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Súbor obsahuje neplatné znaky, ktoré nemôžu byť zosynchronizované medzi platformami.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="537"/>
+        <location filename="../src/mirall/syncengine.cpp" line="540"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nemôžem inicializovať synchronizačný žurnál.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="649"/>
+        <location filename="../src/mirall/syncengine.cpp" line="652"/>
         <source>Cannot open the sync journal</source>
         <translation>Nemožno otvoriť sync žurnál</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="838"/>
+        <location filename="../src/mirall/syncengine.cpp" line="841"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Nie je dovolené, pretože nemáte oprávnenie pridávať do tohto adresára podadresáre.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="845"/>
+        <location filename="../src/mirall/syncengine.cpp" line="848"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Nie je dovolené, pretože nemáte oprávnenie pridať nadradený adresár.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="852"/>
+        <location filename="../src/mirall/syncengine.cpp" line="855"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Nie je dovolené, pretože nemáte oprávnenie pridávať do tohto adresára súbory.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="872"/>
+        <location filename="../src/mirall/syncengine.cpp" line="875"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Nie je dovolené tento súbor nahrať, pretože je na serveri iba na čítanie. Obnovuje sa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="888"/>
-        <location filename="../src/mirall/syncengine.cpp" line="909"/>
+        <location filename="../src/mirall/syncengine.cpp" line="891"/>
+        <location filename="../src/mirall/syncengine.cpp" line="912"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Nie je dovolené odstrániť. Obnovuje sa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="959"/>
+        <location filename="../src/mirall/syncengine.cpp" line="962"/>
         <source>Move not allowed, item restored</source>
         <translation>Presunutie nie je dovolené. Položka obnovená.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="968"/>
+        <location filename="../src/mirall/syncengine.cpp" line="971"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Presunutie nie je dovolené, pretože %1 je na serveri iba na čítanie</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>the destination</source>
         <translation>cieľ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>the source</source>
         <translation>zdroj</translation>
     </message>

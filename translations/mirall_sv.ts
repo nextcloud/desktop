@@ -695,12 +695,12 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="370"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Ange lösenord</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="371"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Vänligen ange %1 lösenord för användare &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -834,27 +834,27 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="252"/>
+        <location filename="../src/updater/ocupdater.cpp" line="256"/>
         <source>New Version Available</source>
         <translation>Ny version tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="258"/>
+        <location filename="../src/updater/ocupdater.cpp" line="262"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;En ny version av %1 klienten är tillgänglig.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; är tillgänglig för nedladdning. Den installerade versionen är %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="271"/>
+        <location filename="../src/updater/ocupdater.cpp" line="275"/>
         <source>Skip this version</source>
         <translation>Hoppa över denna version</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="272"/>
+        <location filename="../src/updater/ocupdater.cpp" line="276"/>
         <source>Skip this time</source>
         <translation>Hoppa över denna gång</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="273"/>
+        <location filename="../src/updater/ocupdater.cpp" line="277"/>
         <source>Get update</source>
         <translation>Hämta uppdatering</translation>
     </message>
@@ -1005,7 +1005,12 @@ efter ytterligare privilegier under processen.</translation>
         <translation>Kontrollerar uppdateringsservern...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="91"/>
+        <location filename="../src/updater/ocupdater.cpp" line="89"/>
+        <source>Update status is unknown: Did not check for new updates.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/updater/ocupdater.cpp" line="93"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Inga uppdateringar tillgängliga. Din installation är redan den senaste versionen.</translation>
     </message>
@@ -1537,7 +1542,7 @@ Försök att synka dessa igen.</translation>
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="272"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="263"/>
         <source>Only checked folders will sync to this computer</source>
         <translation type="unfinished"/>
     </message>
@@ -2000,67 +2005,72 @@ Försök att synka dessa igen.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
+        <source>Hard links are not supported in syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="361"/>
         <source>File is listed on the ignore list.</source>
         <translation>Filen är listad i ignorerings listan.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="361"/>
+        <location filename="../src/mirall/syncengine.cpp" line="364"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Filen innehåller ogiltiga tecken som inte kan synkas oberoende av plattform.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="537"/>
+        <location filename="../src/mirall/syncengine.cpp" line="540"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Kan inte initialisera en synk journal. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="649"/>
+        <location filename="../src/mirall/syncengine.cpp" line="652"/>
         <source>Cannot open the sync journal</source>
         <translation>Kunde inte öppna synk journalen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="838"/>
+        <location filename="../src/mirall/syncengine.cpp" line="841"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Går ej att genomföra då du saknar rättigheter att lägga till underkataloger i den katalogen </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="845"/>
+        <location filename="../src/mirall/syncengine.cpp" line="848"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Går ej att genomföra då du saknar rättigheter att lägga till någon moderkatalog</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="852"/>
+        <location filename="../src/mirall/syncengine.cpp" line="855"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Går ej att genomföra då du saknar rättigheter att lägga till filer i den katalogen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="872"/>
+        <location filename="../src/mirall/syncengine.cpp" line="875"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Inte behörig att ladda upp denna fil då den är skrivskyddad på servern, återställer </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="888"/>
-        <location filename="../src/mirall/syncengine.cpp" line="909"/>
+        <location filename="../src/mirall/syncengine.cpp" line="891"/>
+        <location filename="../src/mirall/syncengine.cpp" line="912"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Inte behörig att radera, återställer</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="959"/>
+        <location filename="../src/mirall/syncengine.cpp" line="962"/>
         <source>Move not allowed, item restored</source>
         <translation>Det gick inte att genomföra flytten, objektet återställs</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="968"/>
+        <location filename="../src/mirall/syncengine.cpp" line="971"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Det gick inte att genomföra flytten då %1 är skrivskyddad</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>the destination</source>
         <translation>destinationen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>the source</source>
         <translation>källan</translation>
     </message>

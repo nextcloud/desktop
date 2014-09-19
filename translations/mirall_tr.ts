@@ -377,7 +377,7 @@ Toplam kalan süre: %5</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="607"/>
         <source>Could not read system exclude file</source>
-        <translation>Sistem tarafından okunamayan dosyaları hariç tut</translation>
+        <translation>Sistem hariç tutulma dosyası okunamadı</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="779"/>
@@ -695,12 +695,12 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="370"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Parolayı Girin</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="371"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen &apos;%2&apos; kullanıcısı için %1 parolasını girin:</translation>
     </message>
 </context>
 <context>
@@ -834,27 +834,27 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="252"/>
+        <location filename="../src/updater/ocupdater.cpp" line="256"/>
         <source>New Version Available</source>
         <translation>Yeni Sürüm Mevcut</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="258"/>
+        <location filename="../src/updater/ocupdater.cpp" line="262"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 İstemcisi yeni sürümü mevcut.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; artık indirilebilir. Kurulu sürüm %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="271"/>
+        <location filename="../src/updater/ocupdater.cpp" line="275"/>
         <source>Skip this version</source>
         <translation>Bu sürümü atla</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="272"/>
+        <location filename="../src/updater/ocupdater.cpp" line="276"/>
         <source>Skip this time</source>
         <translation>Bu kez atla</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="273"/>
+        <location filename="../src/updater/ocupdater.cpp" line="277"/>
         <source>Get update</source>
         <translation>Güncellemeyi al</translation>
     </message>
@@ -1005,7 +1005,12 @@ bu süreç sırasında ek yetki talebinde bulunabilir.</translation>
         <translation>Güncelleme sunucusu denetleniyor...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="91"/>
+        <location filename="../src/updater/ocupdater.cpp" line="89"/>
+        <source>Update status is unknown: Did not check for new updates.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/updater/ocupdater.cpp" line="93"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Güncelleme yok. Kurulumunuz son sürümde.</translation>
     </message>
@@ -1537,7 +1542,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="272"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="263"/>
         <source>Only checked folders will sync to this computer</source>
         <translation>Bu bilgisayara sadece seçili klasörler eşitlenecektir</translation>
     </message>
@@ -2000,67 +2005,72 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
+        <source>Hard links are not supported in syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="361"/>
         <source>File is listed on the ignore list.</source>
         <translation>Dosya yoksayma listesinde.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="361"/>
+        <location filename="../src/mirall/syncengine.cpp" line="364"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Dosya, çapraz platform arasında eşitlenemeyecek karakterler içeriyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="537"/>
+        <location filename="../src/mirall/syncengine.cpp" line="540"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Bir eşitleme günlüğü başlatılamadı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="649"/>
+        <location filename="../src/mirall/syncengine.cpp" line="652"/>
         <source>Cannot open the sync journal</source>
         <translation>Eşitleme günlüğü açılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="838"/>
+        <location filename="../src/mirall/syncengine.cpp" line="841"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Bu dizine alt dizin ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="845"/>
+        <location filename="../src/mirall/syncengine.cpp" line="848"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Üst dizin ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="852"/>
+        <location filename="../src/mirall/syncengine.cpp" line="855"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Bu dizine dosya ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="872"/>
+        <location filename="../src/mirall/syncengine.cpp" line="875"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Sunucuda salt okunur olduğundan, bu dosya yüklenemedi, geri alınıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="888"/>
-        <location filename="../src/mirall/syncengine.cpp" line="909"/>
+        <location filename="../src/mirall/syncengine.cpp" line="891"/>
+        <location filename="../src/mirall/syncengine.cpp" line="912"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Kaldırmaya izin verilmedi, geri alınıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="959"/>
+        <location filename="../src/mirall/syncengine.cpp" line="962"/>
         <source>Move not allowed, item restored</source>
         <translation>Taşımaya izin verilmedi, öge geri alındı</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="968"/>
+        <location filename="../src/mirall/syncengine.cpp" line="971"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>%1 salt okunur olduğundan taşımaya izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>the destination</source>
         <translation>hedef</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>the source</source>
         <translation>kaynak</translation>
     </message>

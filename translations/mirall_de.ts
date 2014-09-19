@@ -696,12 +696,12 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="370"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Passwort eingeben</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="371"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Bitte %1 Passwort für den Nutzer &apos;%2&apos; eingeben:</translation>
     </message>
 </context>
 <context>
@@ -835,27 +835,27 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="252"/>
+        <location filename="../src/updater/ocupdater.cpp" line="256"/>
         <source>New Version Available</source>
         <translation>Eine neue Version ist verfügbar.</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="258"/>
+        <location filename="../src/updater/ocupdater.cpp" line="262"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Eine neue Version des %1 - Klients ist verfügbar.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; steht zum Herunterladen bereit. Die installierte Version ist %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="271"/>
+        <location filename="../src/updater/ocupdater.cpp" line="275"/>
         <source>Skip this version</source>
         <translation>Diese Version auslassen</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="272"/>
+        <location filename="../src/updater/ocupdater.cpp" line="276"/>
         <source>Skip this time</source>
         <translation>Dieses Mal überspringen</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="273"/>
+        <location filename="../src/updater/ocupdater.cpp" line="277"/>
         <source>Get update</source>
         <translation>Update durchführen</translation>
     </message>
@@ -1006,7 +1006,12 @@ nach zusätzlichen Privilegien während des Prozesses.</translation>
         <translation>Aktualisierungsserver wird überprüft...</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="91"/>
+        <location filename="../src/updater/ocupdater.cpp" line="89"/>
+        <source>Update status is unknown: Did not check for new updates.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/updater/ocupdater.cpp" line="93"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Keine Aktualisierungen verfügbar. Ihre Installation ist die aktuelle Version.</translation>
     </message>
@@ -1538,7 +1543,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="272"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="263"/>
         <source>Only checked folders will sync to this computer</source>
         <translation>Nur markierte Ordner werden auf diesen Computer synchronisiert</translation>
     </message>
@@ -2001,67 +2006,72 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
+        <source>Hard links are not supported in syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="361"/>
         <source>File is listed on the ignore list.</source>
         <translation>Die Datei ist in der Ignorierliste geführt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="361"/>
+        <location filename="../src/mirall/syncengine.cpp" line="364"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>Die Datei beinhaltet ungültige Zeichen und kann nicht plattformübergreifend synchronisiert werden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="537"/>
+        <location filename="../src/mirall/syncengine.cpp" line="540"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Synchronisationsbericht konnte nicht initialisiert werden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="649"/>
+        <location filename="../src/mirall/syncengine.cpp" line="652"/>
         <source>Cannot open the sync journal</source>
         <translation>Synchronisationsbericht kann nicht geöffnet werden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="838"/>
+        <location filename="../src/mirall/syncengine.cpp" line="841"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Nicht erlaubt, da Sie keine Rechte zur Erstellung von Unterordnern haben</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="845"/>
+        <location filename="../src/mirall/syncengine.cpp" line="848"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Nicht erlaubt, da Sie keine Rechte zur Erstellung von Hauptordnern haben</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="852"/>
+        <location filename="../src/mirall/syncengine.cpp" line="855"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Nicht erlaubt, da Sie keine Rechte zum Hinzufügen von Dateien in diesen Ordner haben</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="872"/>
+        <location filename="../src/mirall/syncengine.cpp" line="875"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Das Hochladen dieser Datei ist nicht erlaubt, da die Datei auf dem Server schreibgeschützt ist, Wiederherstellung</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="888"/>
-        <location filename="../src/mirall/syncengine.cpp" line="909"/>
+        <location filename="../src/mirall/syncengine.cpp" line="891"/>
+        <location filename="../src/mirall/syncengine.cpp" line="912"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Löschen nicht erlaubt, Wiederherstellung</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="959"/>
+        <location filename="../src/mirall/syncengine.cpp" line="962"/>
         <source>Move not allowed, item restored</source>
         <translation>Verschieben nicht erlaubt, Element wiederhergestellt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="968"/>
+        <location filename="../src/mirall/syncengine.cpp" line="971"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Verschieben nicht erlaubt, da %1 schreibgeschützt ist</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>the destination</source>
         <translation>Das Ziel</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>the source</source>
         <translation>Die Quelle</translation>
     </message>

@@ -695,12 +695,12 @@ Esteu segur que voleu executar aquesta operació?</translation>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="370"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Escriviu contrasenya</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="371"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Escriviu %1 contrasenya per s&apos;usuari &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -834,27 +834,27 @@ Els elements marcats també s&apos;eliminaran si prevenen l&apos;eliminació d&a
 <context>
     <name>Mirall::NSISUpdater</name>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="252"/>
+        <location filename="../src/updater/ocupdater.cpp" line="256"/>
         <source>New Version Available</source>
         <translation>Versió nova disponible</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="258"/>
+        <location filename="../src/updater/ocupdater.cpp" line="262"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Hi ha una nova versió del client %1 disponible.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; està disponible per a la baixada. La versió instal·lada és la %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="271"/>
+        <location filename="../src/updater/ocupdater.cpp" line="275"/>
         <source>Skip this version</source>
         <translation>Omet aquesta versió</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="272"/>
+        <location filename="../src/updater/ocupdater.cpp" line="276"/>
         <source>Skip this time</source>
         <translation>Omet aquesta vegada</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="273"/>
+        <location filename="../src/updater/ocupdater.cpp" line="277"/>
         <source>Get update</source>
         <translation>Obtingueu l&apos;actualització</translation>
     </message>
@@ -1005,7 +1005,12 @@ for additional privileges during the process.</source>
         <translation>Comprovació d&apos;actualitzacions al servidor</translation>
     </message>
     <message>
-        <location filename="../src/updater/ocupdater.cpp" line="91"/>
+        <location filename="../src/updater/ocupdater.cpp" line="89"/>
+        <source>Update status is unknown: Did not check for new updates.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/updater/ocupdater.cpp" line="93"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>No hi ha actualitzacions disponibles. La instal·lació ja es troba en la versió més recent.</translation>
     </message>
@@ -1537,7 +1542,7 @@ Proveu de sincronitzar-los de nou.</translation>
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="272"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="263"/>
         <source>Only checked folders will sync to this computer</source>
         <translation type="unfinished"/>
     </message>
@@ -2000,67 +2005,72 @@ Proveu de sincronitzar-los de nou.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
+        <source>Hard links are not supported in syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="361"/>
         <source>File is listed on the ignore list.</source>
         <translation>El fitxer està a la llista d&apos;ignorats.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="361"/>
+        <location filename="../src/mirall/syncengine.cpp" line="364"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation>El fitxer conté caràcters no vàlids que no es poden sincronitzar entre plataformes.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="537"/>
+        <location filename="../src/mirall/syncengine.cpp" line="540"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>No es pot inicialitzar un periòdic de sincronització</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="649"/>
+        <location filename="../src/mirall/syncengine.cpp" line="652"/>
         <source>Cannot open the sync journal</source>
         <translation>No es pot obrir el diari de sincronització</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="838"/>
+        <location filename="../src/mirall/syncengine.cpp" line="841"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>No es permet perquè no teniu permisos per afegir subcarpetes en aquesta carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="845"/>
+        <location filename="../src/mirall/syncengine.cpp" line="848"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>No es permet perquè no teniu permisos per afegir una carpeta inferior</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="852"/>
+        <location filename="../src/mirall/syncengine.cpp" line="855"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>No es permet perquè no teniu permisos per afegir fitxers en aquesta carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="872"/>
+        <location filename="../src/mirall/syncengine.cpp" line="875"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No es permet pujar aquest fitxer perquè només és de lectura en el servidor, es restaura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="888"/>
-        <location filename="../src/mirall/syncengine.cpp" line="909"/>
+        <location filename="../src/mirall/syncengine.cpp" line="891"/>
+        <location filename="../src/mirall/syncengine.cpp" line="912"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No es permet l&apos;eliminació, es restaura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="959"/>
+        <location filename="../src/mirall/syncengine.cpp" line="962"/>
         <source>Move not allowed, item restored</source>
         <translation>No es permet moure&apos;l, l&apos;element es restaura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="968"/>
+        <location filename="../src/mirall/syncengine.cpp" line="971"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>No es permet moure perquè %1 només és de lectura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>the destination</source>
         <translation>el destí</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>the source</source>
         <translation>l&apos;origen</translation>
     </message>
