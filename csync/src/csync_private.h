@@ -115,7 +115,9 @@ struct csync_s {
     enum csync_replica_e type;
     int  read_from_db;
     c_list_t *ignored_cleanup;
+    const char *root_perms; /* Permission of the root folder. (Since the root folder is not in the db tree, we need to keep a separate entry.) */
   } remote;
+
 
 #if defined(HAVE_ICONV) && defined(WITH_ICONV)
   struct {

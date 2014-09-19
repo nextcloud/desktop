@@ -22,6 +22,7 @@
 #include "syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
 #include "csync_util.h"
+#include "csync_private.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -596,6 +597,11 @@ void SyncEngine::slotUpdateFinished(int updateResult)
     }
     if( walkOk && csync_walk_remote_tree(_csync_ctx, &treewalkRemote, 0) < 0 ) {
         qDebug() << "Error in remote treewalk.";
+    }
+
+    if (_csync_ctx->remote.root_perms) {
+        _remotePerms[QLatin1String("")] = _csync_ctx->remote.root_perms;
+        qDebug() << "Permissions of the root folder: " << _remotePerms[QLatin1String("")];
     }
 
     // The map was used for merging trees, convert it to a list:

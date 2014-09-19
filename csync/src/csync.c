@@ -177,6 +177,8 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
+  ctx->remote.root_perms = 0;
+
   ctx->status = CSYNC_STATUS_INIT;
 
   /* initialize random generator */
@@ -556,6 +558,7 @@ static void _csync_clean_ctx(CSYNC *ctx)
     ctx->local.ignored_cleanup = 0;
 
     SAFE_FREE(ctx->statedb.file);
+    SAFE_FREE(ctx->remote.root_perms);
 }
 
 int csync_commit(CSYNC *ctx) {
