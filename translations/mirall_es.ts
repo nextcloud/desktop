@@ -278,7 +278,7 @@ Tiempo restante %5</translation>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="138"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>tiempo de espera</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="167"/>
@@ -309,78 +309,89 @@ Tiempo restante %5</translation>
         <translation>%1 es ilegible.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="337"/>
+        <location filename="../src/mirall/folder.cpp" line="339"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="423"/>
+        <location filename="../src/mirall/folder.cpp" line="430"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 y %2 otros archivos han sido eliminados.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="425"/>
+        <location filename="../src/mirall/folder.cpp" line="432"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ha sido eliminado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="430"/>
+        <location filename="../src/mirall/folder.cpp" line="437"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 y %2 otros archivos han sido descargados.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="432"/>
+        <location filename="../src/mirall/folder.cpp" line="439"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ha sido descargado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="437"/>
+        <location filename="../src/mirall/folder.cpp" line="444"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 y %2 otros archivos han sido actualizados.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="439"/>
+        <location filename="../src/mirall/folder.cpp" line="446"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ha sido actualizado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="444"/>
+        <location filename="../src/mirall/folder.cpp" line="451"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 ha sido renombrado a %2 y %3 otros archivos han sido renombrados.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="446"/>
+        <location filename="../src/mirall/folder.cpp" line="453"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 ha sido renombrado a %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="451"/>
+        <location filename="../src/mirall/folder.cpp" line="458"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 ha sido movido a %2 y %3 otros archivos han sido movidos.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="453"/>
+        <location filename="../src/mirall/folder.cpp" line="460"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 ha sido movido a %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="461"/>
+        <location filename="../src/mirall/folder.cpp" line="465"/>
+        <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="467"/>
+        <source>%1 could not be synced due to an error. See the log for details.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="475"/>
         <source>Sync Activity</source>
         <translation>Actividad en la Sincronización</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="607"/>
+        <location filename="../src/mirall/folder.cpp" line="621"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo leer el archivo de exclusión del sistema</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="779"/>
+        <location filename="../src/mirall/folder.cpp" line="793"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -389,17 +400,17 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
 Está seguro de que desea realizar esta operación?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="783"/>
+        <location filename="../src/mirall/folder.cpp" line="797"/>
         <source>Remove All Files?</source>
         <translation>Eliminar todos los archivos?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="785"/>
+        <location filename="../src/mirall/folder.cpp" line="799"/>
         <source>Remove all files</source>
         <translation>Eliminar todos los archivos</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="786"/>
+        <location filename="../src/mirall/folder.cpp" line="800"/>
         <source>Keep files</source>
         <translation>Conservar archivos</translation>
     </message>
@@ -626,17 +637,17 @@ Está seguro de que desea realizar esta operación?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="492"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="493"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>No se recibió ninguna e-tag del servidor, revisar el proxy/gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="499"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="500"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Se recibió una e-tag distinta para reanudar. Se intentará nuevamente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="526"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="527"/>
         <source>Server returned wrong content-range</source>
         <translation>El servidor devolvió un content-range erróneo</translation>
     </message>
@@ -1007,7 +1018,7 @@ pida privilegios adicionales durante el proceso.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Estado de actualización desconocido: no se buscaron nuevas actualizaciones.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
@@ -2006,7 +2017,7 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Los enlaces duros no están permitidos en la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="361"/>
@@ -2234,7 +2245,7 @@ Intente sincronizar los archivos nuevamente.</translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versión %2. Para más información consulte &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Por Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz y otros.&lt;br/&gt;Basado en Mirall por Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licenciado bajo la Licencia Pública General de GNU (GPL) Versión 2.0&lt;br/&gt;ownCloud y el logotipo ownCloud son marcas registradas de ownCloud, Inc. en los Estados Unidos, otros países o en ambos&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

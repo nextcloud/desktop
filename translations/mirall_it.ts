@@ -309,78 +309,89 @@ Totale tempo rimanente %5</translation>
         <translation>%1 non è leggibile.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="337"/>
+        <location filename="../src/mirall/folder.cpp" line="339"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="423"/>
+        <location filename="../src/mirall/folder.cpp" line="430"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 e %2 altri file sono stati rimossi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="425"/>
+        <location filename="../src/mirall/folder.cpp" line="432"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato rimosso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="430"/>
+        <location filename="../src/mirall/folder.cpp" line="437"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 e %2 altri file sono stati scaricati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="432"/>
+        <location filename="../src/mirall/folder.cpp" line="439"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato scaricato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="437"/>
+        <location filename="../src/mirall/folder.cpp" line="444"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 e %2 altri file sono stati aggiornati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="439"/>
+        <location filename="../src/mirall/folder.cpp" line="446"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato aggiornato.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="444"/>
+        <location filename="../src/mirall/folder.cpp" line="451"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 è stato rinominato in %2 e %3 altri file sono stati rinominati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="446"/>
+        <location filename="../src/mirall/folder.cpp" line="453"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 è stato rinominato in %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="451"/>
+        <location filename="../src/mirall/folder.cpp" line="458"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 è stato spostato in %2 e %3 altri file sono stati spostati.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="453"/>
+        <location filename="../src/mirall/folder.cpp" line="460"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 è stato spostato in %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="461"/>
+        <location filename="../src/mirall/folder.cpp" line="465"/>
+        <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="467"/>
+        <source>%1 could not be synced due to an error. See the log for details.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="475"/>
         <source>Sync Activity</source>
         <translation>Sincronizza attività</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="607"/>
+        <location filename="../src/mirall/folder.cpp" line="621"/>
         <source>Could not read system exclude file</source>
         <translation>Impossibile leggere il file di esclusione di sistema</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="779"/>
+        <location filename="../src/mirall/folder.cpp" line="793"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -389,17 +400,17 @@ Ciò potrebbe accadere in caso di riconfigurazione della cartella o di rimozione
 Sei sicuro di voler eseguire questa operazione?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="783"/>
+        <location filename="../src/mirall/folder.cpp" line="797"/>
         <source>Remove All Files?</source>
         <translation>Vuoi rimuovere tutti i file?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="785"/>
+        <location filename="../src/mirall/folder.cpp" line="799"/>
         <source>Remove all files</source>
         <translation>Rimuovi tutti i file</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="786"/>
+        <location filename="../src/mirall/folder.cpp" line="800"/>
         <source>Keep files</source>
         <translation>Mantieni i file</translation>
     </message>
@@ -626,17 +637,17 @@ Sei sicuro di voler eseguire questa operazione?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="492"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="493"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Nessun e-tag ricevuto dal server, controlla il proxy/gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="499"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="500"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Abbiamo ricevuto un e-tag diverso per il recupero. Riprova più tardi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="526"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="527"/>
         <source>Server returned wrong content-range</source>
         <translation>Il server ha restituito un content-range errato</translation>
     </message>
@@ -1006,7 +1017,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Lo stato di aggiornamento è sconosciuto. Non è possibile verificare la presenza di nuovi aggiornamenti.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
@@ -2005,7 +2016,7 @@ Prova a sincronizzare nuovamente.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Gli hard link non sono supportati dalla sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="361"/>

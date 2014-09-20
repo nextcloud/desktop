@@ -309,78 +309,89 @@ Celkový zbývající čas %5</translation>
         <translation>%1 není čitelný.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="337"/>
+        <location filename="../src/mirall/folder.cpp" line="339"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="423"/>
+        <location filename="../src/mirall/folder.cpp" line="430"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 a %2 dalších souborů bylo odebráno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="425"/>
+        <location filename="../src/mirall/folder.cpp" line="432"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 byl odebrán.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="430"/>
+        <location filename="../src/mirall/folder.cpp" line="437"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 a %2 dalších souborů bylo staženo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="432"/>
+        <location filename="../src/mirall/folder.cpp" line="439"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 byl stažen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="437"/>
+        <location filename="../src/mirall/folder.cpp" line="444"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 a %2 dalších souborů bylo aktualizováno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="439"/>
+        <location filename="../src/mirall/folder.cpp" line="446"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 byl aktualizován.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="444"/>
+        <location filename="../src/mirall/folder.cpp" line="451"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 byl přejmenován na %2 a %3 dalších souborů bylo přejmenováno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="446"/>
+        <location filename="../src/mirall/folder.cpp" line="453"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 byl přejmenován na %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="451"/>
+        <location filename="../src/mirall/folder.cpp" line="458"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 byl přesunut do %2 a %3 dalších souborů bylo přesunuto.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="453"/>
+        <location filename="../src/mirall/folder.cpp" line="460"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 byl přemístěn do %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="461"/>
+        <location filename="../src/mirall/folder.cpp" line="465"/>
+        <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
+        <comment>%1 names a file.</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="467"/>
+        <source>%1 could not be synced due to an error. See the log for details.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/folder.cpp" line="475"/>
         <source>Sync Activity</source>
         <translation>Průběh synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="607"/>
+        <location filename="../src/mirall/folder.cpp" line="621"/>
         <source>Could not read system exclude file</source>
         <translation>Nezdařilo se přečtení systémového exclude souboru</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="779"/>
+        <location filename="../src/mirall/folder.cpp" line="793"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -389,17 +400,17 @@ Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím
 Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="783"/>
+        <location filename="../src/mirall/folder.cpp" line="797"/>
         <source>Remove All Files?</source>
         <translation>Odstranit všechny soubory?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="785"/>
+        <location filename="../src/mirall/folder.cpp" line="799"/>
         <source>Remove all files</source>
         <translation>Odstranit všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="786"/>
+        <location filename="../src/mirall/folder.cpp" line="800"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>
@@ -626,17 +637,17 @@ Opravdu chcete provést tuto akci?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="492"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="493"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ze serveru nebyl obdržen E-Tag, zkontrolujte proxy/bránu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="499"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="500"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Obdrželi jsme jiný E-Tag pro pokračování. Zkusím znovu příště.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="526"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="527"/>
         <source>Server returned wrong content-range</source>
         <translation>Server odpověděl chybným rozsahem obsahu</translation>
     </message>
@@ -1007,7 +1018,7 @@ si může v průběhu vyžádat dodatečná práva.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Stav aktualizace neznámý: Nové aktualizace nebyly zkontrolovány.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
@@ -2007,7 +2018,7 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Pevné odkazy nejsou při synchronizaci podporovány.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="361"/>
