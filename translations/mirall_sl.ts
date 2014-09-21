@@ -2016,7 +2016,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje ne podpira trdih povezav.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="361"/>
@@ -2062,17 +2062,17 @@ Te je treba uskladiti znova.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="891"/>
         <location filename="../src/mirall/syncengine.cpp" line="912"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Odstranitev ni dovoljena, datoteka bo obnovljena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="962"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Premikanje ni dovoljeno, datoteka bo obnovljena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="971"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>Premikanje ni dovoljeno, ker je nastavljeno določilo %1 le za branje.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="972"/>

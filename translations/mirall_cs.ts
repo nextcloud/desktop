@@ -373,12 +373,12 @@ Celkový zbývající čas %5</translation>
         <location filename="../src/mirall/folder.cpp" line="465"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 a %2 další soubory nebyly kvůli chybě synchronizovány. Detaily jsou k nalezení v logu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="467"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 nebyl kvůli chybě synchronizován. Detaily jsou k nalezení v logu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="475"/>

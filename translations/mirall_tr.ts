@@ -373,12 +373,12 @@ Toplam kalan süre: %5</translation>
         <location filename="../src/mirall/folder.cpp" line="465"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ve diğer %2 dosya hatalar nedeniyle eşitlenemedi. Ayrıntılar için günlüğe bakın.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="467"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 bir hata nedeniyle eşitlenemedi. Ayrıntılar için günlüğe bakın.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="475"/>
