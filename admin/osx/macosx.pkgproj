@@ -1055,7 +1055,7 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 				<key>PATH</key>
-				<string>./owncloud.app/Contents/Resources/owncloud_logo_blue.png</string>
+				<string>./@APPLICATION_EXECUTABLE@.app/Contents/Resources/owncloud_logo_blue.png</string>
 				<key>PATH_TYPE</key>
 				<integer>3</integer>
 				</dict>
