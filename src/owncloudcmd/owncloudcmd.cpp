@@ -65,7 +65,7 @@ public:
     EchoDisabler()
     {
 #ifdef Q_OS_WIN
-        HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+        hStdin = GetStdHandle(STD_INPUT_HANDLE);
         GetConsoleMode(hStdin, &mode);
         SetConsoleMode(hStdin, mode & (~ENABLE_ECHO_INPUT));
 #else
@@ -87,6 +87,7 @@ public:
 private:
 #ifdef Q_OS_WIN
     DWORD mode = 0;
+    HANDLE hStdin;
 #else
     termios tios;
 #endif
