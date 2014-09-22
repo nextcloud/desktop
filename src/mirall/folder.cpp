@@ -321,7 +321,6 @@ void Folder::bubbleUpSyncResult()
     SyncFileItem firstItemUpdated;
     SyncFileItem firstItemRenamed;
     SyncFileItem firstItemError;
-    Logger *logger = Logger::instance();
 
     SyncRunFileLog syncFileLog;
 
