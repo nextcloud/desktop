@@ -1,4 +1,16 @@
 #!/usr/bin/python3
+#
+# Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
 
 import os
 import urllib
@@ -6,7 +18,7 @@ import socket
 
 from gi.repository import GObject, Nautilus
 
-class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoProvider):
+class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoProvider):
 
     nautilusVFSFile_table = {}
     registered_paths = {}
@@ -15,15 +27,15 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
     watch_id = 0
 
     def __init__(self):
-        self.connectToOwnCloud
+        self.connectToSocketServer
         if not self.connected:
             # try again in 5 seconds - attention, logic inverted!
-            GObject.timeout_add(5000, self.connectToOwnCloud)
+            GObject.timeout_add(5000, self.connectToSocketServer)
 
     def port(self):
         return 34001 # Fixme, read from config file.
 
-    def connectToOwnCloud(self):
+    def connectToSocketServer(self):
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect(("localhost", self.port()))
@@ -43,7 +55,7 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
                 print("Sending failed.")
                 GObject.source_remove(self.watch_id)
                 self.connected = False
-                GObject.timeout_add(5000, self.connectToOwnCloud)
+                GObject.timeout_add(5000, self.connectToSocketServer)
 
     def find_item_for_file(self, path):
         if path in self.nautilusVFSFile_table:
@@ -116,7 +128,7 @@ class ownCloudExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoP
                     self.sock.close()
                     self.connected = False
                     GObject.source_remove(self.watch_id)
-                    GObject.timeout_add(5000, self.connectToOwnCloud)
+                    GObject.timeout_add(5000, self.connectToSocketServer)
 
             else:
                 # print "We got unknown action " + action
