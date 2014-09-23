@@ -656,7 +656,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // To announce the beginning of the sync
     emit aboutToPropagate(_syncedItems);
+    _progressInfo._completedFileCount = -1; // indicate the start.
     emit transmissionProgress(_progressInfo);
+    _progressInfo._completedFileCount = 0;
 
     if (!_hasNoneFiles && _hasRemoveFile) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be changed, asking the user";

@@ -247,7 +247,7 @@ void ProtocolWidget::computeResyncButtonEnabled()
 
 void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::Info& progress )
 {
-    if( progress._completedFileCount == 0 ) {
+    if( progress._completedFileCount == -1 ) {
         // The sync is restarting, clean the old items
         cleanIgnoreItems(folder);
         computeResyncButtonEnabled();
