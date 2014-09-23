@@ -139,7 +139,7 @@ static ContentManager* sharedInstance = nil;
 	}
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
 
-	if (![[RequestManager sharedInstance] isRegisteredPath:normalizedPath]) {
+	if (![[RequestManager sharedInstance] isRegisteredPath:normalizedPath isDirectory:isDir]) {
 		return [NSNumber numberWithInt:0];
 	}
 	
@@ -192,7 +192,7 @@ static ContentManager* sharedInstance = nil;
 
 - (void)reFetchFileNameCacheForPath:(NSString*)path
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
+	// NSLog(@"%@", NSStringFromSelector(_cmd));
 
 	for (id p in [_fileNamesCache keyEnumerator]) {
 		if ( path && [p hasPrefix:path] ) {

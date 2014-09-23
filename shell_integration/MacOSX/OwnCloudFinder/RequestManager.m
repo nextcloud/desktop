@@ -77,14 +77,20 @@ static RequestManager* sharedInstance = nil;
 }
 
 
-- (BOOL)isRegisteredPath:(NSString*)path
+- (BOOL)isRegisteredPath:(NSString*)path isDirectory:(BOOL)isDir
 {
 	// check if the file in question is underneath a registered directory
 	NSArray *regPathes = [_registeredPathes allKeys];
 	BOOL registered = NO;
 
+	NSString* checkPath = [[NSString alloc] initWithString:path];
+	if (isDir) {
+		// append a slash
+		checkPath = [path stringByAppendingString:@"/"];
+	}
+
 	for( NSString *regPath in regPathes ) {
-		if( [path hasPrefix:regPath]) {
+		if( [checkPath hasPrefix:regPath]) {
 			// the path was registered
 			registered = YES;
 			break;
@@ -99,7 +105,7 @@ static RequestManager* sharedInstance = nil;
 	NSString *verb = @"RETRIEVE_FILE_STATUS";
 	NSNumber *res = [NSNumber numberWithInt:0];
 
-	if( [self isRegisteredPath:path] ) {
+	if( [self isRegisteredPath:path isDirectory:isDir] ) {
 		if( _isConnected ) {
 			if(isDir) {
 				verb = @"RETRIEVE_FOLDER_STATUS";
@@ -140,11 +146,11 @@ static RequestManager* sharedInstance = nil;
 		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"REGISTER_PATH"] ) {
 			NSNumber *one = [NSNumber numberWithInt:1];
 			NSString *path = [chunks objectAtIndex:1];
+			NSLog(@"Registering path: %@", path);
 			[_registeredPathes setObject:one forKey:path];
 			
 			[contentman repaintAllWindows];
 		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"UNREGISTER_PATH"] ) {
-			NSNumber *one = [NSNumber numberWithInt:1];
 			NSString *path = [chunks objectAtIndex:1];
 			[_registeredPathes removeObjectForKey:path];
 
