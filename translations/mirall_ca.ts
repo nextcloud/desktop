@@ -2040,48 +2040,48 @@ Proveu de sincronitzar-los de nou.</translation>
         <translation>No es pot obrir el diari de sincronització</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="841"/>
+        <location filename="../src/mirall/syncengine.cpp" line="843"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>No es permet perquè no teniu permisos per afegir subcarpetes en aquesta carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="848"/>
+        <location filename="../src/mirall/syncengine.cpp" line="850"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>No es permet perquè no teniu permisos per afegir una carpeta inferior</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="855"/>
+        <location filename="../src/mirall/syncengine.cpp" line="857"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>No es permet perquè no teniu permisos per afegir fitxers en aquesta carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="875"/>
+        <location filename="../src/mirall/syncengine.cpp" line="877"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No es permet pujar aquest fitxer perquè només és de lectura en el servidor, es restaura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="891"/>
-        <location filename="../src/mirall/syncengine.cpp" line="912"/>
+        <location filename="../src/mirall/syncengine.cpp" line="893"/>
+        <location filename="../src/mirall/syncengine.cpp" line="914"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No es permet l&apos;eliminació, es restaura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="962"/>
+        <location filename="../src/mirall/syncengine.cpp" line="964"/>
         <source>Move not allowed, item restored</source>
         <translation>No es permet moure&apos;l, l&apos;element es restaura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="971"/>
+        <location filename="../src/mirall/syncengine.cpp" line="973"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>No es permet moure perquè %1 només és de lectura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="972"/>
+        <location filename="../src/mirall/syncengine.cpp" line="974"/>
         <source>the destination</source>
         <translation>el destí</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="972"/>
+        <location filename="../src/mirall/syncengine.cpp" line="974"/>
         <source>the source</source>
         <translation>l&apos;origen</translation>
     </message>

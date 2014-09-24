@@ -2041,48 +2041,48 @@ It is not advisable to use it.</source>
         <translation>Αδυναμία ανοίγματος του αρχείου συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="841"/>
+        <location filename="../src/mirall/syncengine.cpp" line="843"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε υπο-καταλόγους σε αυτό τον κατάλογο</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="848"/>
+        <location filename="../src/mirall/syncengine.cpp" line="850"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε στο γονεϊκό κατάλογο</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="855"/>
+        <location filename="../src/mirall/syncengine.cpp" line="857"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχεται δικαιώματα να προσθέσετε αρχεία σε αυτόν τον κατάλογο</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="875"/>
+        <location filename="../src/mirall/syncengine.cpp" line="877"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Δεν επιτρέπεται να μεταφορτώσετε αυτό το αρχείο επειδή είναι μόνο για ανάγνωση στο διακομιστή, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="891"/>
-        <location filename="../src/mirall/syncengine.cpp" line="912"/>
+        <location filename="../src/mirall/syncengine.cpp" line="893"/>
+        <location filename="../src/mirall/syncengine.cpp" line="914"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Δεν επιτρέπεται η αφαίρεση, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="962"/>
+        <location filename="../src/mirall/syncengine.cpp" line="964"/>
         <source>Move not allowed, item restored</source>
         <translation>Η μετακίνηση δεν επιτρέπεται, το αντικείμενο αποκαταστάθηκε</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="971"/>
+        <location filename="../src/mirall/syncengine.cpp" line="973"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Η μετακίνηση δεν επιτρέπεται επειδή το %1 είναι μόνο για ανάγνωση</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="972"/>
+        <location filename="../src/mirall/syncengine.cpp" line="974"/>
         <source>the destination</source>
         <translation>ο προορισμός</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="972"/>
+        <location filename="../src/mirall/syncengine.cpp" line="974"/>
         <source>the source</source>
         <translation>η προέλευση</translation>
     </message>

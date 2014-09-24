@@ -151,7 +151,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="608"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Poteka preučevanje %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="654"/>
@@ -1286,7 +1286,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Odpri %1 v brskalniku</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
@@ -1353,7 +1353,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="61"/>
         <source>Operation was canceled by user interaction.</source>
-        <translation type="unfinished"/>
+        <translation>Opravilo je prekinjeno zaradi dejanja uporabnika.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
@@ -1554,7 +1554,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="263"/>
         <source>Only checked folders will sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Z računalnikom bodo usklajene le izbrane mape.</translation>
     </message>
 </context>
 <context>
@@ -2039,48 +2039,48 @@ Te je treba uskladiti znova.</translation>
         <translation>Ni mogoče odpreti dnevnika usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="841"/>
+        <location filename="../src/mirall/syncengine.cpp" line="843"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="848"/>
+        <location filename="../src/mirall/syncengine.cpp" line="850"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="855"/>
+        <location filename="../src/mirall/syncengine.cpp" line="857"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="875"/>
+        <location filename="../src/mirall/syncengine.cpp" line="877"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="891"/>
-        <location filename="../src/mirall/syncengine.cpp" line="912"/>
+        <location filename="../src/mirall/syncengine.cpp" line="893"/>
+        <location filename="../src/mirall/syncengine.cpp" line="914"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranitev ni dovoljena, datoteka bo obnovljena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="962"/>
+        <location filename="../src/mirall/syncengine.cpp" line="964"/>
         <source>Move not allowed, item restored</source>
         <translation>Premikanje ni dovoljeno, datoteka bo obnovljena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="971"/>
+        <location filename="../src/mirall/syncengine.cpp" line="973"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Premikanje ni dovoljeno, ker je nastavljeno določilo %1 le za branje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="972"/>
+        <location filename="../src/mirall/syncengine.cpp" line="974"/>
         <source>the destination</source>
         <translation>cilj</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="972"/>
+        <location filename="../src/mirall/syncengine.cpp" line="974"/>
         <source>the source</source>
         <translation>vir</translation>
     </message>
@@ -2126,7 +2126,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="277"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Ni nastavljenih map za usklajevanje.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="303"/>
@@ -2216,7 +2216,7 @@ Te je treba uskladiti znova.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="467"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Poteka preučevanje %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="471"/>

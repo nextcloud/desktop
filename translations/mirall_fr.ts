@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="675"/>
         <source>file %1 of %2</source>
-        <translation>%1 fichier de %2</translation>
+        <translation>fichier %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="763"/>
@@ -2040,48 +2040,48 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Impossible d&apos;ouvrir le journal de synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="841"/>
+        <location filename="../src/mirall/syncengine.cpp" line="843"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Non autorisé parce-que vous n&apos;avez pas la permission d&apos;ajouter des sous-dossiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="848"/>
+        <location filename="../src/mirall/syncengine.cpp" line="850"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Non autorisé parce-que vous n&apos;avez pas la permission d&apos;ajouter des dossiers parents</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="855"/>
+        <location filename="../src/mirall/syncengine.cpp" line="857"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Non autorisé parce-que vous n&apos;avez pas la permission d&apos;ajouter des fichiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="875"/>
+        <location filename="../src/mirall/syncengine.cpp" line="877"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non autorisé à envoyer ce fichier parce-qu&apos;il est en lecture seule sur le serveur. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="891"/>
-        <location filename="../src/mirall/syncengine.cpp" line="912"/>
+        <location filename="../src/mirall/syncengine.cpp" line="893"/>
+        <location filename="../src/mirall/syncengine.cpp" line="914"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non autorisé à supprimer. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="962"/>
+        <location filename="../src/mirall/syncengine.cpp" line="964"/>
         <source>Move not allowed, item restored</source>
         <translation>Déplacement non autorisé, élément restauré</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="971"/>
+        <location filename="../src/mirall/syncengine.cpp" line="973"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Déplacement non autorisé car %1 est en mode lecture seule</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="972"/>
+        <location filename="../src/mirall/syncengine.cpp" line="974"/>
         <source>the destination</source>
         <translation>la destination</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="972"/>
+        <location filename="../src/mirall/syncengine.cpp" line="974"/>
         <source>the source</source>
         <translation>la source</translation>
     </message>

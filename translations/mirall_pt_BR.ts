@@ -373,12 +373,12 @@ Total de tempo que falta 5%</translation>
         <location filename="../src/mirall/folder.cpp" line="464"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 e %2 outros arquivos não puderam ser sincronizados devido a erros. Veja o log para obter detalhes.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="466"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 não pode ser sincronizado devido a um erro. Veja o log para obter detalhes.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="474"/>
@@ -2038,48 +2038,48 @@ Tente sincronizar novamente.</translation>
         <translation>Não é possível abrir o arquivo de sincronização</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="841"/>
+        <location filename="../src/mirall/syncengine.cpp" line="843"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Não permitido porque você não tem permissão de criar sub-pastas nesta pasta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="848"/>
+        <location filename="../src/mirall/syncengine.cpp" line="850"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Não permitido porque você não tem permissão de criar pastas mãe</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="855"/>
+        <location filename="../src/mirall/syncengine.cpp" line="857"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Não permitido porque você não tem permissão de adicionar arquivos a esta pasta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="875"/>
+        <location filename="../src/mirall/syncengine.cpp" line="877"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Não é permitido fazer o upload deste arquivo porque ele é somente leitura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="891"/>
-        <location filename="../src/mirall/syncengine.cpp" line="912"/>
+        <location filename="../src/mirall/syncengine.cpp" line="893"/>
+        <location filename="../src/mirall/syncengine.cpp" line="914"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Não é permitido remover, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="962"/>
+        <location filename="../src/mirall/syncengine.cpp" line="964"/>
         <source>Move not allowed, item restored</source>
         <translation>Não é permitido mover, item restaurado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="971"/>
+        <location filename="../src/mirall/syncengine.cpp" line="973"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Não é permitido mover porque %1 é somente para leitura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="972"/>
+        <location filename="../src/mirall/syncengine.cpp" line="974"/>
         <source>the destination</source>
         <translation>o destino</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="972"/>
+        <location filename="../src/mirall/syncengine.cpp" line="974"/>
         <source>the source</source>
         <translation>a fonte</translation>
     </message>
