@@ -110,6 +110,18 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName, c_
     return result;
 }
 
+SyncJournalFileRecord dbFileRecord( Folder *folder, QString fileName )
+{
+    QFileInfo fi(fileName);
+    if( !folder ) {
+        return SyncJournalFileRecord();
+    }
+    if( fi.isAbsolute() ) {
+        fileName.remove(0, folder->path().length());
+    }
+    return( folder->journalDb()->getFileRecord(fileName) );
+}
+
 /**
  * Get status about a single file.
  */
@@ -157,8 +169,30 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strli
 
     // Problem: for the sync dir itself we do not have a record in the sync journal
     // so the next check must not be used for the sync root folder.
-    SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(unixFileName);
+    SyncJournalFileRecord rec = dbFileRecord(folder, unixFileName );
     if( !isSyncRootFolder && !rec.isValid() ) {
+        // check the parent folder if it is shared and if it is allowed to create a file/dir within
+        QDir d( fi.path() );
+        QString parentPath = d.path();
+        SyncJournalFileRecord dirRec = dbFileRecord(folder, parentPath);
+        while( !d.isRoot() && !(d.exists() && dirRec.isValid()) ) {
+            d.cdUp(); // returns true if the dir exists.
+
+            parentPath = d.path();
+            // cut the folder path
+            dirRec = dbFileRecord(folder, parentPath);
+        }
+        if( dirRec.isValid() ) {
+            if( dirRec._type == CSYNC_FTW_TYPE_DIR ) {
+                if( !dirRec._remotePerm.contains("K") ) {
+                    return SyncFileStatus::STATUS_ERROR;
+                }
+            } else {
+                if( !dirRec._remotePerm.contains("C") ) {
+                    return SyncFileStatus::STATUS_ERROR;
+                }
+            }
+        }
         return SyncFileStatus(SyncFileStatus::STATUS_NEW);
     }
 
@@ -443,3 +477,4 @@ void SocketApi::command_VERSION(const QString&, QTcpSocket* socket)
 
 
 } // namespace Mirall
+
