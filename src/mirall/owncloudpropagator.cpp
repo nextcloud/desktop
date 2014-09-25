@@ -51,7 +51,9 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
             _item._errorString += tr("; Restoration Failed: ") + errorString;
         }
     } else {
-        _item._errorString = errorString;
+        if( _item._errorString.isEmpty() ) {
+            _item._errorString = errorString;
+        }
     }
 
     if( _propagator->_abortRequested.fetchAndAddRelaxed(0) ) {

@@ -214,7 +214,13 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
         }
 
     } else {
-        message = Progress::asResultString(item);
+        // if the error string is set, it's prefered because it is a usefull user message.
+        // at least should be...
+        if(item._errorString.isEmpty()) {
+            message = Progress::asResultString(item);
+        } else {
+            message = item._errorString;
+        }
         columns << message;
         if (Progress::isSizeDependent(item._instruction)) {
             columns <<  Utility::octetsToString( item._size );
