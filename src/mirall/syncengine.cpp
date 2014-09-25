@@ -884,7 +884,8 @@ void SyncEngine::checkForPermission()
                 if (perms.isNull()) {
                     // No permissions set
                     break;
-                } if (!perms.contains("D")) {
+                }
+                if (!perms.contains("D")) {
                     qDebug() << "checkForPermission: RESTORING" << it->_file;
                     it->_should_update_etag = true;
                     it->_instruction = CSYNC_INSTRUCTION_NEW;
@@ -912,6 +913,29 @@ void SyncEngine::checkForPermission()
                             it->_direction = SyncFileItem::Down;
                             it->_isRestoration = true;
                             it->_errorString = tr("Not allowed to remove, restoring");
+                        }
+                    }
+                }
+                if(perms.contains("S") && perms.contains("D")) {
+                    // this is a top level shared dir which can be removed to unshare it,
+                    // regardless if it is a read only share or not.
+                    // To avoid that we try to restore files underneath this dir which have
+                    // not delete permission we fast forward the iterator and leave the
+                    // delete jobs intact. It is not physically tried to remove this files
+                    // underneath, propagator sees that.
+                    if( it->_isDirectory ) {
+                        SyncFileItemVector::iterator it_prev = it - 1;
+                        const QString path = it->_file + QLatin1Char('/');
+
+
+                        // put a more descriptive message if really a top level share dir is removed.
+                        if( it_prev != _syncedItems.begin() && !(path.startsWith(it_prev->_file)) ) {
+                            it->_errorString = tr("Local files and share folder removed.");
+                        }
+
+                        for (SyncFileItemVector::iterator it_next = it + 1;
+                             it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
+                            it = it_next;
                         }
                     }
                 }
