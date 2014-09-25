@@ -139,7 +139,14 @@ static RequestManager* sharedInstance = nil;
 
 	if( [chunks count] > 0 && tag == READ_TAG ) {
 		if( [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
-			[contentman setResultForPath:[chunks objectAtIndex:2] result:[chunks objectAtIndex:1]];
+			NSString *path = [chunks objectAtIndex:2];
+			if( [chunks count] > 3 ) {
+				for( int i = 2; i < [chunks count]-1; i++ ) {
+					path = [NSString stringWithFormat:@"%@:%@",
+							path, [chunks objectAtIndex:i+1] ];
+				}
+			}
+			[contentman setResultForPath:path result:[chunks objectAtIndex:1]];
 		} else if( [[chunks objectAtIndex:0] isEqualToString:@"UPDATE_VIEW"] ) {
 			NSString *path = [chunks objectAtIndex:1];
 			[contentman reFetchFileNameCacheForPath:path];

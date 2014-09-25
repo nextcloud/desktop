@@ -183,6 +183,15 @@ void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
     }
 }
 
+QString ProtocolWidget::fixupFilename( const QString& name )
+{
+    if( Utility::isMac() ) {
+        QString n(name);
+        return n.replace(QChar(':'), QChar('/'));
+    }
+    return name;
+}
+
 QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& folder, const SyncFileItem& item)
 {
     QStringList columns;
@@ -193,7 +202,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
     QString message;
 
     columns << timeStr;
-    columns << item._file;
+    columns << fixupFilename(item._file);
     columns << folder;
     if (Progress::isWarningKind(item._status)) {
         message= item._errorString;
