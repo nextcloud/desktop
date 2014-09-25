@@ -442,11 +442,12 @@ void PropagateUploadFileQNAM::slotPutFinished()
 
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
-        auto currentChunk = _chunkCount;
+        auto currentChunk = job->_chunk;
         foreach (auto *job, _jobs) {
+            // Take the minimum finished one
             currentChunk = qMin(currentChunk, job->_chunk);
         }
-        pi._chunk = (currentChunk + _startChunk) % _chunkCount; // next chunk to start with
+        pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount ; // next chunk to start with
         pi._transferid = _transferId;
         pi._modtime =  Utility::qDateTimeFromTime_t(_item._modtime);
         _propagator->_journal->setUploadInfo(_item._file, pi);
