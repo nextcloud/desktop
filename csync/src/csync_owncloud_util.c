@@ -373,6 +373,7 @@ void fill_webdav_properties_into_resource(struct resource* newres, const ne_prop
     if (directDownloadCookies) {
         newres->directDownloadCookies = c_strdup(directDownloadCookies);
     }
+    /* DEBUG_WEBDAV("fill_webdav_properties_into_resource %s >%p< ", newres->name, perm ); */
     if (perm && !perm[0]) {
         // special meaning for our code: server returned permissions but are empty
         // meaning only reading is allowed for this resource
