@@ -373,12 +373,12 @@ Pozostało czasu %5</translation>
         <location filename="../src/mirall/folder.cpp" line="464"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 i %2 inne pliki nie mogą zostać zsynchronizowane z powodu błędów. Zobacz szczegóły w logu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="466"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 nie może zostać zsynchronizowany z powodu błędu. Zobacz szczegóły w logu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="474"/>
@@ -711,7 +711,7 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="371"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation>Proszę podać %1 hasło dla użytkownika &apos;%2&apos;:</translation>
+        <translation>Proszę podać hasło %1 dla użytkownika &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -1018,7 +1018,7 @@ poprosić o dodatkowe uprawnienia podczas tego procesu.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Status aktualizacji nieznany. Nie sprawdzono nowych aktualizacji.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
@@ -1389,14 +1389,6 @@ Niezalecane jest jego użycie.</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::PropagateLocalRename</name>
-    <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="253"/>
-        <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation>Plik %1 nie może być nazwany %2 z powodu kolizji z lokalną nazwą pliku</translation>
-    </message>
-</context>
-<context>
     <name>Mirall::PropagateRemoteRemove</name>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="138"/>
@@ -1407,17 +1399,17 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="290"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="283"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Folder ten nie może być zmieniony. Został zmieniony z powrotem do pierwotnej nazwy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="292"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="285"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Nie wolno zmieniać nazwy tego folderu. Proszę zmień nazwę z powrotem na Shared.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="307"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="300"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Plik był edytowany lokalnie ale jest częścią udziału z prawem tylko do odczytu. Przywrócono oryginalny plik</translation>
     </message>
@@ -2017,7 +2009,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Linki stałe nie są wspierane podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="361"/>

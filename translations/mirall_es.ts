@@ -1389,14 +1389,6 @@ No se recomienda usarlo.</translation>
     </message>
 </context>
 <context>
-    <name>Mirall::PropagateLocalRename</name>
-    <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="253"/>
-        <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation>El archivo %1 no se puede renombrar a %2 por causa de un conflicto con el nombre de un archivo local</translation>
-    </message>
-</context>
-<context>
     <name>Mirall::PropagateRemoteRemove</name>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="138"/>
@@ -1407,17 +1399,17 @@ No se recomienda usarlo.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="290"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="283"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Esta carpeta no debe ser renombrada. Ha sido renombrada a su nombre original</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="292"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="285"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Esta carpeta no debe ser renombrada. Favor de renombrar a Compartida.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="307"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="300"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>El archivo fue renombrado, pero es parte de una carpeta compartida en modo de solo lectura. El archivo original ha sido recuperado.</translation>
     </message>
