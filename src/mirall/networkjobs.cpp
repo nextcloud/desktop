@@ -203,10 +203,13 @@ void AbstractNetworkJob::start()
 
 void AbstractNetworkJob::slotTimeout()
 {
-    qDebug() <<  this << "Timeout" ;
-    reply()->abort();
+    qDebug() <<  this << "Timeout";
+    if (reply()) {
+        reply()->abort();
+    } else {
+        qDebug() << "reply was NULL";
+    }
 }
-
 
 /*********************************************************************************************/
 
