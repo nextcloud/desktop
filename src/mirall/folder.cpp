@@ -515,12 +515,6 @@ void Folder::slotTerminateSync()
     }
 }
 
-void Folder::slotTerminateAndPauseSync()
-{
-    slotTerminateSync();
-    FolderMan::instance()->slotSetFolderPaused(alias(), true);
-}
-
 // This removes the csync File database
 // This is needed to provide a clean startup again in case another
 // local folder is synced to the same ownCloud.
