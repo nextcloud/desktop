@@ -146,10 +146,10 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   if (excluded != CSYNC_NOT_EXCLUDED) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
     if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
-        return 0;
+        return 1;
     }
     if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
-        return 0;
+        return 1;
     }
 
     if (ctx->current_fs) {
@@ -159,7 +159,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   if (ctx->current == REMOTE_REPLICA && ctx->checkBlackListHook) {
       if (ctx->checkBlackListHook(ctx->checkBlackListData, path)) {
-          return 0;
+          return 1;
       }
   }
 
@@ -690,7 +690,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto error;
     }
 
-    if (flag == CSYNC_FTW_FLAG_DIR && depth
+    if (flag == CSYNC_FTW_FLAG_DIR && depth && rc == 0
         && (!ctx->current_fs || ctx->current_fs->instruction != CSYNC_INSTRUCTION_IGNORE)) {
       rc = csync_ftw(ctx, filename, fn, depth - 1);
       if (rc < 0) {
