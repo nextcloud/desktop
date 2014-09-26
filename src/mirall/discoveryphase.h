@@ -41,7 +41,7 @@ class DiscoveryJob : public QObject {
      * false if the path should be ignored
      */
     bool isInBlackList(const QString &path) const;
-    static int isInWhiteListCallBack(void *, const char *);
+    static int isInBlackListCallBack(void *, const char *);
 
     static void update_job_update_callback (bool local,
                                             const char *dirname,

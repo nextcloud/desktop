@@ -45,7 +45,7 @@ bool DiscoveryJob::isInBlackList(const QString& path) const
     return false;
 }
 
-int DiscoveryJob::isInWhiteListCallBack(void *data, const char *path)
+int DiscoveryJob::isInBlackListCallBack(void *data, const char *path)
 {
     return static_cast<DiscoveryJob*>(data)->isInBlackList(QString::fromUtf8(path));
 }
@@ -72,7 +72,7 @@ void DiscoveryJob::update_job_update_callback (bool local,
 
 void DiscoveryJob::start() {
     _selectiveSyncBlackList.sort();
-    _csync_ctx->checkBlackListHook = isInWhiteListCallBack;
+    _csync_ctx->checkBlackListHook = isInBlackListCallBack;
     _csync_ctx->checkBlackListData = this;
 
     _csync_ctx->callbacks.update_callback = update_job_update_callback;
