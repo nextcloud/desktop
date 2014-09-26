@@ -1351,12 +1351,12 @@ Uporaba ni priporočljiva.</translation>
         <translation>; obnovitev je spodletela: </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="61"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="63"/>
         <source>Operation was canceled by user interaction.</source>
         <translation>Opravilo je prekinjeno zaradi dejanja uporabnika.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Datoteka ali mapa je bila odstranjena iz mesta v souporabi, ki je nastavljeno le za branje, obnavljanje pa je spodletelo: %1</translation>
     </message>
@@ -1529,12 +1529,12 @@ Uporaba ni priporočljiva.</translation>
         <translation>Stanje usklajevanja je kopirano v odložišče.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="238"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="253"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Trenutno zaradi predhodnih napak ni prezrta nobena datoteka.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="255"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 datotek je prezrtih zaradi predhodnih napak.
@@ -2051,28 +2051,33 @@ Te je treba uskladiti znova.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="893"/>
-        <location filename="../src/mirall/syncengine.cpp" line="914"/>
+        <location filename="../src/mirall/syncengine.cpp" line="894"/>
+        <location filename="../src/mirall/syncengine.cpp" line="915"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranitev ni dovoljena, datoteka bo obnovljena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="964"/>
+        <location filename="../src/mirall/syncengine.cpp" line="933"/>
+        <source>Local files and share folder removed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="988"/>
         <source>Move not allowed, item restored</source>
         <translation>Premikanje ni dovoljeno, datoteka bo obnovljena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="973"/>
+        <location filename="../src/mirall/syncengine.cpp" line="997"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Premikanje ni dovoljeno, ker je nastavljeno določilo %1 le za branje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="974"/>
+        <location filename="../src/mirall/syncengine.cpp" line="998"/>
         <source>the destination</source>
         <translation>cilj</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="974"/>
+        <location filename="../src/mirall/syncengine.cpp" line="998"/>
         <source>the source</source>
         <translation>vir</translation>
     </message>

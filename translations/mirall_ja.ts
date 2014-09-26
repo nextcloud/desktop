@@ -1350,12 +1350,12 @@ It is not advisable to use it.</source>
         <translation>; 復元に失敗: </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="61"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="63"/>
         <source>Operation was canceled by user interaction.</source>
         <translation>操作をキャンセルしました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>ファイルまたはディレクトリが読み込み専用の共有から削除されましたが、復元に失敗しました: %1</translation>
     </message>
@@ -1528,12 +1528,12 @@ It is not advisable to use it.</source>
         <translation>同期状況をクリップボードにコピーしました。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="238"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="253"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>処理前にエラーが発生したため、ファイルは何も除外されていません。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="255"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>処理前にエラーが発生したため、%1 個のファイルが除外されました。
@@ -2050,28 +2050,33 @@ It is not advisable to use it.</source>
         <translation>サーバーでは読み取り専用となっているため、このファイルをアップロードすることはできません、復元しています</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="893"/>
-        <location filename="../src/mirall/syncengine.cpp" line="914"/>
+        <location filename="../src/mirall/syncengine.cpp" line="894"/>
+        <location filename="../src/mirall/syncengine.cpp" line="915"/>
         <source>Not allowed to remove, restoring</source>
         <translation>削除できません、復元しています</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="964"/>
+        <location filename="../src/mirall/syncengine.cpp" line="933"/>
+        <source>Local files and share folder removed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="988"/>
         <source>Move not allowed, item restored</source>
         <translation>移動できません、項目を復元しました</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="973"/>
+        <location filename="../src/mirall/syncengine.cpp" line="997"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>%1 は読み取り専用のため移動できません</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="974"/>
+        <location filename="../src/mirall/syncengine.cpp" line="998"/>
         <source>the destination</source>
         <translation>移動先</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="974"/>
+        <location filename="../src/mirall/syncengine.cpp" line="998"/>
         <source>the source</source>
         <translation>移動元</translation>
     </message>

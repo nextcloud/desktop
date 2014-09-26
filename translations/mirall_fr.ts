@@ -1352,12 +1352,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>; Échec de la restauration : </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="61"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="63"/>
         <source>Operation was canceled by user interaction.</source>
         <translation>L&apos;opération a été annulée par l&apos;utilisateur.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="180"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Un fichier ou un dossier a été supprimé du partage en lecture seule, mais la restauration à échoué : %1</translation>
     </message>
@@ -1530,12 +1530,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Le statu de synchronisation a été copié dans le presse-papier.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="238"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="253"/>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Actuellement aucun fichier n&apos;a été ignoré en raison d&apos;erreurs précédentes.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="240"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="255"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 fichiers ont été ignorés en raison des erreurs précédentes.
@@ -2052,28 +2052,33 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Non autorisé à envoyer ce fichier parce-qu&apos;il est en lecture seule sur le serveur. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="893"/>
-        <location filename="../src/mirall/syncengine.cpp" line="914"/>
+        <location filename="../src/mirall/syncengine.cpp" line="894"/>
+        <location filename="../src/mirall/syncengine.cpp" line="915"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non autorisé à supprimer. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="964"/>
+        <location filename="../src/mirall/syncengine.cpp" line="933"/>
+        <source>Local files and share folder removed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/syncengine.cpp" line="988"/>
         <source>Move not allowed, item restored</source>
         <translation>Déplacement non autorisé, élément restauré</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="973"/>
+        <location filename="../src/mirall/syncengine.cpp" line="997"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Déplacement non autorisé car %1 est en mode lecture seule</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="974"/>
+        <location filename="../src/mirall/syncengine.cpp" line="998"/>
         <source>the destination</source>
         <translation>la destination</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="974"/>
+        <location filename="../src/mirall/syncengine.cpp" line="998"/>
         <source>the source</source>
         <translation>la source</translation>
     </message>
