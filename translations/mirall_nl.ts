@@ -386,12 +386,12 @@ Totaal resterende tijd %5</translation>
         <translation>Synchronisatie-activiteit</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="620"/>
+        <location filename="../src/mirall/folder.cpp" line="614"/>
         <source>Could not read system exclude file</source>
         <translation>Kon het systeem-uitsluitingsbestand niet lezen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="792"/>
+        <location filename="../src/mirall/folder.cpp" line="786"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -400,17 +400,17 @@ Dit kan komen doordat de map ongemerkt opnieuw geconfigureerd is of doordat alle
 Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="796"/>
+        <location filename="../src/mirall/folder.cpp" line="790"/>
         <source>Remove All Files?</source>
         <translation>Verwijder alle bestanden?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="798"/>
+        <location filename="../src/mirall/folder.cpp" line="792"/>
         <source>Remove all files</source>
         <translation>Verwijder alle bestanden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="799"/>
+        <location filename="../src/mirall/folder.cpp" line="793"/>
         <source>Keep files</source>
         <translation>Bewaar bestanden</translation>
     </message>
@@ -2060,7 +2060,7 @@ Probeer opnieuw te synchroniseren.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="933"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Lokale bestanden en share-map verwijderd. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="988"/>
@@ -2597,7 +2597,7 @@ Probeer opnieuw te synchroniseren.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>Synchronisatie geslaagd, sommige bestabnden werden genegeerd.</translation>
+        <translation>Synchronisatie geslaagd, sommige bestanden werden genegeerd.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>

@@ -386,12 +386,12 @@ Tempo total restante %5</translation>
         <translation>Actividade de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="620"/>
+        <location filename="../src/mirall/folder.cpp" line="614"/>
         <source>Could not read system exclude file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="792"/>
+        <location filename="../src/mirall/folder.cpp" line="786"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -400,17 +400,17 @@ Isto podería ser debido a que o cartafol foi reconfigurado en silencio, ou a qu
 Confirma que quere realizar esta operación?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="796"/>
+        <location filename="../src/mirall/folder.cpp" line="790"/>
         <source>Remove All Files?</source>
         <translation>Retirar todos os ficheiros?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="798"/>
+        <location filename="../src/mirall/folder.cpp" line="792"/>
         <source>Remove all files</source>
         <translation>Retirar todos os ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="799"/>
+        <location filename="../src/mirall/folder.cpp" line="793"/>
         <source>Keep files</source>
         <translation>Manter os ficheiros</translation>
     </message>

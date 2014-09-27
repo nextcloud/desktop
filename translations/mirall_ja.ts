@@ -373,12 +373,12 @@ Total time left %5</source>
         <location filename="../src/mirall/folder.cpp" line="464"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>エラーにより、%1 や %2 等のファイルが同期できませんでした。ログで詳細を確認してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="466"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>エラーにより %1 が未同期です。ログで詳細を確認してください。</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="474"/>
@@ -386,12 +386,12 @@ Total time left %5</source>
         <translation>同期アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="620"/>
+        <location filename="../src/mirall/folder.cpp" line="614"/>
         <source>Could not read system exclude file</source>
         <translation>システム上の除外ファイルを読み込めません</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="792"/>
+        <location filename="../src/mirall/folder.cpp" line="786"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -400,17 +400,17 @@ Are you sure you want to perform this operation?</source>
 本当にこの操作を実行しますか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="796"/>
+        <location filename="../src/mirall/folder.cpp" line="790"/>
         <source>Remove All Files?</source>
         <translation>すべてのファイルを削除しますか？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="798"/>
+        <location filename="../src/mirall/folder.cpp" line="792"/>
         <source>Remove all files</source>
         <translation>すべてのファイルを削除</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="799"/>
+        <location filename="../src/mirall/folder.cpp" line="793"/>
         <source>Keep files</source>
         <translation>ファイルを残す</translation>
     </message>
@@ -1017,7 +1017,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>更新状況が不明です： 更新をチェックしていません。</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
@@ -2002,12 +2002,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="355"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>同期の際にシンボリックリンクはサポートしていません</translation>
+        <translation>同期機能は、シンボリックリンクをサポートしていません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>同期機能は、ハードリンクをサポートしていません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="361"/>
@@ -2058,7 +2058,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="933"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>ローカルファイルと共有フォルダが削除されました。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="988"/>

@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="55"/>
         <source>Add Folder...</source>
-        <translation>Ordner hinzufügen...</translation>
+        <translation>Ordner hinzufügen …</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
@@ -387,12 +387,12 @@ Gesamtzeit übrig %5</translation>
         <translation>Synchronisierungsaktivität</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="620"/>
+        <location filename="../src/mirall/folder.cpp" line="614"/>
         <source>Could not read system exclude file</source>
         <translation>Systemeigene Ausschlussdatei kann nicht gelesen werden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="792"/>
+        <location filename="../src/mirall/folder.cpp" line="786"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -401,17 +401,17 @@ Vielleicht wurde der Ordner neu konfiguriert, oder alle Dateien wurden händisch
 Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="796"/>
+        <location filename="../src/mirall/folder.cpp" line="790"/>
         <source>Remove All Files?</source>
         <translation>Alle Dateien löschen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="798"/>
+        <location filename="../src/mirall/folder.cpp" line="792"/>
         <source>Remove all files</source>
         <translation>Lösche alle Dateien</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="799"/>
+        <location filename="../src/mirall/folder.cpp" line="793"/>
         <source>Keep files</source>
         <translation>Dateien behalten</translation>
     </message>
@@ -989,7 +989,7 @@ nach zusätzlichen Privilegien während des Prozesses.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>Lade Version %1 herunter. Bitte warten...</translation>
+        <translation>Version %1 wird heruntergeladen. Bitte warten …</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="79"/>
@@ -1014,7 +1014,7 @@ nach zusätzlichen Privilegien während des Prozesses.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
-        <translation>Aktualisierungsserver wird überprüft...</translation>
+        <translation>Aktualisierungsserver wird überprüft …</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
@@ -1042,7 +1042,7 @@ nach zusätzlichen Privilegien während des Prozesses.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
         <source>Connect...</source>
-        <translation>Verbinde...</translation>
+        <translation>Verbinden …</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="121"/>
@@ -2061,7 +2061,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="933"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Lokale Dateien und Freigabeordner wurden entfernt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="988"/>
@@ -2160,7 +2160,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="411"/>
         <source>Calculating quota...</source>
-        <translation>Berechne Quote...</translation>
+        <translation>Kontingent wird berechnet …</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
@@ -2170,12 +2170,12 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="415"/>
         <source>Settings...</source>
-        <translation>Einstellungen</translation>
+        <translation>Einstellungen …</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="416"/>
         <source>Details...</source>
-        <translation>Details...</translation>
+        <translation>Details …</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="421"/>
@@ -2190,7 +2190,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="426"/>
         <source>Sign in...</source>
-        <translation>Anmeldung...</translation>
+        <translation>Anmeldung …</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="428"/>
@@ -2200,7 +2200,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="436"/>
         <source>Quota n/a</source>
-        <translation>Quote unbekannt</translation>
+        <translation>Kontingent unbekannt</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="443"/>
@@ -2618,7 +2618,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
-        <translation>Abbrechen...</translation>
+        <translation>Es wird abgebrochen …</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
