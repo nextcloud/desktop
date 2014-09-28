@@ -388,7 +388,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="614"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно прочесть исключенный системный файл</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="786"/>
@@ -622,7 +622,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="433"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Выберите, что Синхронизировать: Вы можете опционально исключить из выделения подкаталоги, которые Вы не хотите синхронизировать.</translation>
     </message>
 </context>
 <context>
@@ -1018,7 +1018,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Статус обновления неизвестен: Не удалось проверить наличие обновлений.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
@@ -1287,7 +1287,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Открыть %1 в Браузере</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
@@ -2009,7 +2009,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="358"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация жёстких ссылок не поддерживаются.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="361"/>
@@ -2060,7 +2060,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="933"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Локальные файлы и папки, добавленные в общий доступ, удалены.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="988"/>
@@ -2269,12 +2269,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="103"/>
         <source>Sync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизировать всё с сервера</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="122"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Выберите то, что хотите синхронизировать</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="178"/>
@@ -2284,7 +2284,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="221"/>
         <source>&amp;Start a clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Начать синхронизацию заново (Удаляет локальную папку!)</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="256"/>

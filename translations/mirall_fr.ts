@@ -2060,7 +2060,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="933"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers locaux et répertoire de partage supprimés.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="988"/>
