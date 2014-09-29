@@ -86,6 +86,7 @@ set(libsync_SRCS
     mirall/mirallconfigfile.cpp
     mirall/syncengine.cpp
     mirall/owncloudpropagator.cpp
+    mirall/bandwidthmanager.cpp
     mirall/propagatorjobs.cpp
     mirall/propagator_qnam.cpp
     mirall/propagator_legacy.cpp

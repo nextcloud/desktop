@@ -30,6 +30,9 @@
 
 #include <QStack>
 #include <QFileInfo>
+#include <QTimer>
+#include <QObject>
+#include <QTimerEvent>
 
 namespace Mirall {
 
@@ -317,14 +320,28 @@ bool OwncloudPropagator::isInSharedDirectory(const QString& file)
  */
 bool OwncloudPropagator::useLegacyJobs()
 {
-    if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
-        // QNAM does not support bandwith limiting
+    // Allow an environement variable for debugging
+    QByteArray env = qgetenv("OWNCLOUD_USE_LEGACY_JOBS");
+    if (env=="true" || env =="1") {
         return true;
     }
 
-    // Allow an environement variable for debugging
-    QByteArray env = qgetenv("OWNCLOUD_USE_LEGACY_JOBS");
-    return env=="true" || env =="1";
+    env = qgetenv("OWNCLOUD_NEW_BANDWIDTH_LIMITING");
+    if (env=="true" || env =="1") {
+        // Only certain Qt versions support this at the moment.
+        // They need those Change-Ids: Idb1c2d5a382a704d8cc08fe03c55c883bfc95aa7 Iefbcb1a21d8aedef1eb11761232dd16a049018dc
+        // FIXME We need to check the Qt version and then also return false here as soon
+        // as mirall ships with those Qt versions on Windows and OS X
+        return false;
+    }
+
+    if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
+        // QNAM does not support bandwith limiting
+        // in most Qt versions.
+        return true;
+    }
+
+    return false;
 }
 
 int OwncloudPropagator::httpTimeout()

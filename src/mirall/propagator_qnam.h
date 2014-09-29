@@ -51,7 +51,7 @@ public:
 
 class PUTFileJob : public AbstractNetworkJob {
     Q_OBJECT
-    QIODevice* _device;
+    QSharedPointer<QIODevice> _device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
 
@@ -144,6 +144,11 @@ class GETFileJob : public AbstractNetworkJob {
     SyncFileItem::Status _errorStatus;
     QUrl _directDownloadUrl;
     QByteArray _etag;
+    bool _bandwidthLimited; // if _bandwidthQuota will be used
+    bool _bandwidthChoked; // if download is paused (won't read on readyRead())
+    qint64 _bandwidthQuota;
+    BandwidthManager *_bandwidthManager;
+    bool _hasEmittedFinishedSignal;
 public:
 
     // DOES NOT take owncership of the device.
@@ -154,12 +159,33 @@ public:
     explicit GETFileJob(Account* account, const QUrl& url, QFile *device,
                         const QMap<QByteArray, QByteArray> &headers,
                         QObject* parent = 0);
+    virtual ~GETFileJob() {
+        if (_bandwidthManager) {
+            _bandwidthManager->unregisterDownloadJob(this);
+        }
+    }
 
     virtual void start();
     virtual bool finished() {
-        emit finishedSignal();
-        return true;
+        if (reply()->bytesAvailable()) {
+            qDebug() << Q_FUNC_INFO << "Not all read yet because of bandwidth limits";
+            return false;
+        } else {
+            if (_bandwidthManager) {
+                _bandwidthManager->unregisterDownloadJob(this);
+            }
+            if (!_hasEmittedFinishedSignal) {
+                emit finishedSignal();
+            }
+            _hasEmittedFinishedSignal = true;
+            return true; // discard
+        }
     }
+
+    void setBandwidthManager(BandwidthManager *bwm);
+    void setChoked(bool c);
+    void setBandwidthLimited(bool b);
+    void giveBandwidthQuota(qint64 q);
 
     QString errorString() {
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;
@@ -198,7 +224,5 @@ private slots:
     void downloadFinished();
     void slotDownloadProgress(qint64,qint64);
 };
-
-
 
 }
