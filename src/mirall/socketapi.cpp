@@ -33,6 +33,7 @@
 #include <QFile>
 #include <QDir>
 #include <QApplication>
+#include <QLocalSocket>
 
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
@@ -220,15 +221,33 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strli
 
 SocketApi::SocketApi(QObject* parent)
     : QObject(parent)
-    , _localServer(new QTcpServer(this))
     , _excludes(0)
 {
+
+#ifdef SOCKETAPI_TCP
     // setup socket
     DEBUG << "Establishing SocketAPI server at" << PORT;
-    if (!_localServer->listen(QHostAddress::LocalHost, PORT)) {
+    if (!_localServer.listen(QHostAddress::LocalHost, PORT)) {
         DEBUG << "Failed to bind to port" << PORT;
     }
-    connect(_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
+#else
+    QString socketPath;
+    if (Utility::isWindows()) {
+        socketPath = QLatin1String("\\\\.\\pipe\\")
+                + Theme::instance()->appName();
+    } else {
+        socketPath = MirallConfigFile().configPathWithAppName().append(QLatin1String("socket"));
+    }
+
+    QLocalServer::removeServer(socketPath);
+    if(!_localServer.listen(socketPath)) {
+        DEBUG << "can't start server" << socketPath;
+    } else {
+        DEBUG << "server started, listening at " << socketPath;
+    }
+
+#endif
+    connect(&_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
     connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), this, SLOT(slotUpdateFolderView(QString)));
@@ -241,7 +260,7 @@ SocketApi::SocketApi(QObject* parent)
 SocketApi::~SocketApi()
 {
     DEBUG << "dtor";
-    _localServer->close();
+    _localServer.close();
     slotClearExcludesList();
 }
 
@@ -268,7 +287,7 @@ void SocketApi::slotReadExcludes()
 
 void SocketApi::slotNewConnection()
 {
-    QTcpSocket* socket = _localServer->nextPendingConnection();
+    SocketType* socket = _localServer.nextPendingConnection();
 
     if( ! socket ) {
         return;
@@ -300,14 +319,14 @@ void SocketApi::onLostConnection()
 {
     DEBUG << "Lost connection " << sender();
 
-    QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
+    SocketType* socket = qobject_cast<SocketType*>(sender());
     _listeners.removeAll(socket);
 }
 
 
 void SocketApi::slotReadSocket()
 {
-    QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
+    SocketType* socket = qobject_cast<SocketType*>(sender());
     Q_ASSERT(socket);
 
     while(socket->canReadLine()) {
@@ -315,12 +334,12 @@ void SocketApi::slotReadSocket()
         QString command = line.split(":").first();
         QString function = QString(QLatin1String("command_")).append(command);
 
-        QString functionWithArguments = function + QLatin1String("(QString,QTcpSocket*)");
+        QString functionWithArguments = function + QLatin1String("(QString,SocketType*)");
         int indexOfMethod = this->metaObject()->indexOfMethod(functionWithArguments.toAscii());
 
         QString argument = line.remove(0, command.length()+1).trimmed();
         if(indexOfMethod != -1) {
-            QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(QTcpSocket*, socket));
+            QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(SocketType*, socket));
         } else {
             DEBUG << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
         }
@@ -398,7 +417,7 @@ void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem
 
 
 
-void SocketApi::sendMessage(QTcpSocket *socket, const QString& message, bool doWait)
+void SocketApi::sendMessage(SocketType *socket, const QString& message, bool doWait)
 {
     DEBUG << "Sending message: " << message;
     QString localMessage = message;
@@ -429,12 +448,12 @@ void SocketApi::broadcastMessage( const QString& verb, const QString& path, cons
     }
 
     DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << msg;
-    foreach(QTcpSocket *socket, _listeners) {
+    foreach(SocketType *socket, _listeners) {
         sendMessage(socket, msg, doWait);
     }
 }
 
-void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QTcpSocket* socket)
+void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketType* socket)
 {
     // This command is the same as RETRIEVE_FILE_STATUS
 
@@ -442,7 +461,7 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QTcpSock
     command_RETRIEVE_FILE_STATUS(argument, socket);
 }
 
-void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket* socket)
+void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType* socket)
 {
     if( !socket ) {
         qDebug() << "No valid socket object.";
@@ -470,7 +489,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket
     sendMessage(socket, message);
 }
 
-void SocketApi::command_VERSION(const QString&, QTcpSocket* socket)
+void SocketApi::command_VERSION(const QString&, SocketType* socket)
 {
     sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }

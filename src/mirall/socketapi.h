@@ -23,6 +23,7 @@ extern "C" {
 #include <QWeakPointer>
 #include <QTcpSocket>
 #include <QTcpServer>
+#include <QLocalServer>
 
 #include "mirall/syncfileitem.h"
 
@@ -31,6 +32,17 @@ class QLocalSocket;
 class QStringList;
 
 namespace Mirall {
+
+#if defined(Q_OS_MAC)
+// There is no easy way to use the socket API from non Qt mac applications
+#define SOCKETAPI_TCP
+#endif
+
+#ifdef SOCKETAPI_TCP
+typedef QTcpSocket SocketType;
+#else
+typedef QLocalSocket SocketType;
+#endif
 
 class SocketApi : public QObject
 {
@@ -54,17 +66,21 @@ private slots:
     void slotSyncItemDiscovered(const QString &, const SyncFileItem &);
 
 private:
-    void sendMessage(QTcpSocket* socket, const QString& message, bool doWait = false);
+    void sendMessage(SocketType* socket, const QString& message, bool doWait = false);
     void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null, bool doWait = false);
 
-    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QTcpSocket* socket);
-    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket* socket);
+    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketType* socket);
+    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType* socket);
 
-    Q_INVOKABLE void command_VERSION(const QString& argument, QTcpSocket* socket);
+    Q_INVOKABLE void command_VERSION(const QString& argument, SocketType* socket);
 
 private:
-    QTcpServer *_localServer;
-    QList<QTcpSocket*> _listeners;
+#ifdef SOCKETAPI_TCP
+    QTcpServer _localServer;
+#else
+    QLocalServer _localServer;
+#endif
+    QList<SocketType*> _listeners;
     c_strlist_t *_excludes;
 };
 
