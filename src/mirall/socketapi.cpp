@@ -35,6 +35,11 @@
 #include <QApplication>
 #include <QLocalSocket>
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QStandardPaths>
+#endif
+
+
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
 // The second number should be changed when there are new features.
@@ -232,14 +237,26 @@ SocketApi::SocketApi(QObject* parent)
     }
 #else
     QString socketPath;
+
     if (Utility::isWindows()) {
         socketPath = QLatin1String("\\\\.\\pipe\\")
                 + Theme::instance()->appName();
     } else {
-        socketPath = MirallConfigFile().configPathWithAppName().append(QLatin1String("socket"));
+        QString runtimeDir;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+        runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
+#else
+        runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
+#endif
+        socketPath = runtimeDir + "/" + Theme::instance()->appName() + "/socket";
     }
 
     QLocalServer::removeServer(socketPath);
+    QFileInfo info(socketPath);
+    if (!info.dir().exists()) {
+        bool result = info.dir().mkpath(".");
+        DEBUG << "creating" << info.dir().path() << result;
+    }
     if(!_localServer.listen(socketPath)) {
         DEBUG << "can't start server" << socketPath;
     } else {
