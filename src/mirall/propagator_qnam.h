@@ -167,6 +167,7 @@ public:
 
     virtual void start();
     virtual bool finished() {
+        qDebug() << Q_FUNC_INFO << reply()->bytesAvailable() << _hasEmittedFinishedSignal;
         if (reply()->bytesAvailable()) {
             qDebug() << Q_FUNC_INFO << "Not all read yet because of bandwidth limits";
             return false;
@@ -186,6 +187,7 @@ public:
     void setChoked(bool c);
     void setBandwidthLimited(bool b);
     void giveBandwidthQuota(qint64 q);
+    qint64 currentDownloadPosition();
 
     QString errorString() {
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;

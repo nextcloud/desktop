@@ -389,7 +389,7 @@ void PropagateUploadFileQNAM::startNextChunk()
         job->setTimeout(_propagator->httpTimeout() * 1000);
         connect(job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
         connect(job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
-        connect(_job, SIGNAL(uploadProgress(qint64,qint64)), device, SLOT(slotJobUploadProgress(qint64,qint64)));
+        connect(job, SIGNAL(uploadProgress(qint64,qint64)), device, SLOT(slotJobUploadProgress(qint64,qint64)));
         connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(slotJobDestroyed(QObject*)));
         job->start();
         _propagator->_activeJobs++;
@@ -638,6 +638,7 @@ GETFileJob::GETFileJob(Account* account, const QString& path, QFile *device,
   _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume),
   _resumeStart(_resumeStart) , _errorStatus(SyncFileItem::NoStatus)
 , _bandwidthLimited(false), _bandwidthChoked(false), _bandwidthQuota(0), _bandwidthManager(0)
+, _hasEmittedFinishedSignal(false)
 {
 }
 
@@ -648,6 +649,7 @@ GETFileJob::GETFileJob(Account* account, const QUrl& url, QFile *device,
   _device(device), _headers(headers), _resumeStart(0),
   _errorStatus(SyncFileItem::NoStatus), _directDownloadUrl(url)
 , _bandwidthLimited(false), _bandwidthChoked(false), _bandwidthQuota(0), _bandwidthManager(0)
+, _hasEmittedFinishedSignal(false)
 {
 }
 
@@ -667,6 +669,7 @@ void GETFileJob::start() {
     setupConnections(reply());
 
     reply()->setReadBufferSize(16 * 1024); // keep low so we can easier limit the bandwidth
+    qDebug() << Q_FUNC_INFO << _bandwidthManager << _bandwidthChoked << _bandwidthLimited;
     if (_bandwidthManager) {
         _bandwidthManager->registerDownloadJob(this);
     }
@@ -768,13 +771,20 @@ void GETFileJob::giveBandwidthQuota(qint64 q)
     QMetaObject::invokeMethod(this, "slotReadyRead", Qt::QueuedConnection);
 }
 
+qint64 GETFileJob::currentDownloadPosition()
+{
+    if (_device && _device->pos() > 0 && _device->pos() > _resumeStart) {
+        return _device->pos();
+    }
+    return _resumeStart;
+}
+
 void GETFileJob::slotReadyRead()
 {
     int bufferSize = qMin(1024*8ll , reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
 
     qDebug() << Q_FUNC_INFO << reply()->bytesAvailable() << reply()->isOpen() << reply()->isFinished();
-    //return;
 
     while(reply()->bytesAvailable() > 0) {
         if (_bandwidthChoked) {
@@ -812,6 +822,7 @@ void GETFileJob::slotReadyRead()
     }
     resetTimeout();
 
+    qDebug() << Q_FUNC_INFO << "END" << reply()->isFinished() << reply()->bytesAvailable() << _hasEmittedFinishedSignal;
     if (reply()->isFinished() && reply()->bytesAvailable() == 0) {
         qDebug() << Q_FUNC_INFO << "Actually finished!";
         if (_bandwidthManager) {

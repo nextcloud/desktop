@@ -52,9 +52,12 @@ public slots:
     void relativeUploadMeasuringTimerExpired();
     void relativeUploadDelayTimerExpired();
 
+    void relativeDownloadMeasuringTimerExpired();
+    void relativeDownloadDelayTimerExpired();
+
 private:
     QTimer _switchingTimer; // for switching between absolute and relative bw limiting
-    OwncloudPropagator *_propagator; // this timer and this variable could be replaced
+    OwncloudPropagator *_propagator; // FIXME this timer and this variable should be replaced
     // by the propagator emitting the changed limit values to us as signal
 
     QTimer _absoluteLimitTimer; // for absolute up/down bw limiting
@@ -68,6 +71,10 @@ private:
     qint64 _currentUploadLimit;
 
     QLinkedList<GETFileJob*> _downloadJobList;
+    QTimer _relativeDownloadMeasuringTimer;
+    QTimer _relativeDownloadDelayTimer; // for relative bw limiting, we need to wait this amount before measuring again
+    GETFileJob *_relativeLimitCurrentMeasuredJob; // the device measured
+    qint64 _relativeDownloadLimitProgressAtMeasuringRestart; // for measuring how much progress we made at start
     qint64 _currentDownloadLimit;
 };
 
