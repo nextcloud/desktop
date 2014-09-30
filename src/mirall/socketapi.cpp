@@ -241,6 +241,14 @@ SocketApi::SocketApi(QObject* parent)
     if (Utility::isWindows()) {
         socketPath = QLatin1String("\\\\.\\pipe\\")
                 + Theme::instance()->appName();
+    } else if (Utility::isMac()) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+        // Always using Qt5 on OS X
+        QString runtimeDir = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
+        socketPath = runtimeDir + "/SyncStateHelper/" + Theme::instance()->appName() + ".socket";
+        // We use the generic SyncStateHelper name on OS X since the different branded clients
+        // should unfortunately not mention that they are ownCloud :-)
+#endif
     } else {
         QString runtimeDir;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)

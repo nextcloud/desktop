@@ -183,9 +183,19 @@ static RequestManager* sharedInstance = nil;
 	return 0.0;
 }
 
+-(void)socket:(GCDAsyncSocket*)socket didConnectToUrl:(NSURL *)url {
+	NSLog(@"didConnectToUrl %@", url);
+	[self socketDidConnect:socket];
+}
+
 - (void)socket:(GCDAsyncSocket*)socket didConnectToHost:(NSString*)host port:(UInt16)port
 {
-	NSLog( @"Connected to host successfully!");
+	[self socketDidConnect:socket];
+}
+
+// Our impl
+- (void)socketDidConnect:(GCDAsyncSocket*)socket  {
+	NSLog( @"Connected to sync client successfully!");
 	_isConnected = YES;
 	_isRunning = NO;
 
@@ -234,12 +244,27 @@ static RequestManager* sharedInstance = nil;
 {
 	if (!_isRunning)
 	{
-		NSLog(@"Connect Socket!");
 		NSError *err = nil;
-		if (![_socket connectToHost:@"localhost" onPort:34001 withTimeout:5 error:&err]) // Asynchronous!
-		{
-			// If there was an error, it's likely something like "already connected" or "no delegate set"
-			NSLog(@"I goofed: %@", err);
+		BOOL useTcp = NO;
+		if (useTcp) {
+			NSLog(@"Connect Socket");
+		    if (![_socket connectToHost:@"localhost" onPort:34001 withTimeout:5 error:&err]) {
+				// If there was an error, it's likely something like "already connected" or "no delegate set"
+				NSLog(@"I goofed: %@", err);
+			}
+		} else if (!useTcp) {
+			NSURL *url;
+			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+			if ([paths count])
+			{
+				// file:///Users/guruz/Library/Caches/SyncStateHelper/ownCloud.socket
+				// FIXME Generify this and support all sockets there since multiple sync clients might be running
+				url =[NSURL fileURLWithPath:[[[paths objectAtIndex:0] stringByAppendingPathComponent:@"SyncStateHelper"] stringByAppendingPathComponent:@"ownCloud.socket"]];
+			}
+			if (url) {
+				NSLog(@"Connect Socket to %@", url);
+				[_socket connectToUrl:url withTimeout:5 error:&err];
+			}
 		}
 		
 		 _isRunning = YES;

@@ -33,10 +33,9 @@ class QStringList;
 
 namespace Mirall {
 
-#if defined(Q_OS_MAC)
-// There is no easy way to use the socket API from non Qt mac applications
-#define SOCKETAPI_TCP
-#endif
+//Define this to use the old school TCP API. Maybe we should offer both APIs
+// and have the old TCP one be enableable via command line switch?
+//#define SOCKETAPI_TCP
 
 #ifdef SOCKETAPI_TCP
 typedef QTcpSocket SocketType;
