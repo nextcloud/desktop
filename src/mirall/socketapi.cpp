@@ -133,8 +133,6 @@ SyncJournalFileRecord dbFileRecord( Folder *folder, QString fileName )
  */
 SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes )
 {
-    // FIXME: Find a way for STATUS_ERROR
-
     QString file = folder->path();
     QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
 
@@ -214,7 +212,6 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strli
     }
 
     if (rec._remotePerm.contains("S")) {
-        // FIXME!  that should be an additional flag
        status.setSharedWithMe(true);
     }
 
