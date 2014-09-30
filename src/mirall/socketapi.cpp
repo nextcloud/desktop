@@ -266,6 +266,10 @@ SocketApi::SocketApi(QObject* parent)
     if (!info.dir().exists()) {
         bool result = info.dir().mkpath(".");
         DEBUG << "creating" << info.dir().path() << result;
+        if( result ) {
+            QFile::setPermissions(socketPath,
+                                  QFile::Permissions(QFile::ReadOwner+QFile::WriteOwner+QFile::ExeOwner));
+        }
     }
     if(!_localServer.listen(socketPath)) {
         DEBUG << "can't start server" << socketPath;
