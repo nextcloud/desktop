@@ -1547,7 +1547,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="263"/>
         <source>Only checked folders will sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Только отмеченные папки будут синхронизированы с этим компьютером.</translation>
     </message>
 </context>
 <context>
@@ -2242,7 +2242,7 @@ It is not advisable to use it.</source>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версия %2. Дополнительная информация доступна по ссылке &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Авторы: Клаас Фрейтаг, Дэниель Молкентен, Жан-Кристоф Бошар, Оливье Гоффар, Маркус Гётц и другие.&lt;br/&gt;Основано на Mirall Дункана Мак-Викара П.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Права принадлежат ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Лицензировано под GNU General Public License (GPL) Версии 2.0&lt;br/&gt;ownCloud и логотип ownCloud - зарегистрированные торговые марки ownCloud, Inc. в Соединенных Штатах, и/или других странах&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
