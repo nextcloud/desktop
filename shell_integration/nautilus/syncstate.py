@@ -25,6 +25,7 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
     remainder = ''
     connected = False
     watch_id = 0
+    appname = 'ownCloud'
 
     def __init__(self):
         self.connectToSocketServer
@@ -32,16 +33,22 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             # try again in 5 seconds - attention, logic inverted!
             GObject.timeout_add(5000, self.connectToSocketServer)
 
-    def port(self):
-        return 34001 # Fixme, read from config file.
-
     def connectToSocketServer(self):
         try:
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.connect(("localhost", self.port()))
-            self.sock.settimeout(5)
-            self.connected = True
-            self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
+            self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            postfix = "/"+self.appname+"/socket"
+            sock_file = os.environ["XDG_RUNTIME_DIR"]+postfix
+            print ("XXXX " + sock_file + " <=> " + postfix)
+            if sock_file != postfix:
+		try:
+		    print("Socket File: "+sock_file)
+		    self.sock.connect(sock_file)
+		    self.connected = True
+		    self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
+		except:
+		    print("Could not connect to unix socket.")
+	    else:
+		 print("Sock-File not valid: "+sock_file)
         except:
             print("Connect could not be established, try again later!")
             self.sock.close()
@@ -83,17 +90,17 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
     # Handles a single line of server respoonse and sets the emblem
     def handle_server_response(self, l):
-        Emblems = { 'OK'        : 'oC_ok',
-                    'SYNC'      : 'oC_sync',
-                    'NEW'       : 'oC_sync',
-                    'IGNORE'    : 'oC_warn',
-                    'ERROR'     : 'oC_error',
-                    'OK+SWM'    : 'oC_ok_shared',
-                    'SYNC+SWM'  : 'oC_sync_shared',
-                    'NEW+SWM'   : 'oC_sync_shared',
-                    'IGNORE+SWM': 'oC_warn_shared',
-                    'ERROR+SWM' : 'oC_error_shared',
-                    'NOP'       : 'oC_error'
+        Emblems = { 'OK'        : self.appname +'_ok',
+                    'SYNC'      : self.appname +'_sync',
+                    'NEW'       : self.appname +'_sync',
+                    'IGNORE'    : self.appname +'_warn',
+                    'ERROR'     : self.appname +'_error',
+                    'OK+SWM'    : self.appname +'_ok_shared',
+                    'SYNC+SWM'  : self.appname +'_sync_shared',
+                    'NEW+SWM'   : self.appname +'_sync_shared',
+                    'IGNORE+SWM': self.appname +'_warn_shared',
+                    'ERROR+SWM' : self.appname +'_error_shared',
+                    'NOP'       : self.appname +'_error'
                   }
 
         print("Server response: "+l)
