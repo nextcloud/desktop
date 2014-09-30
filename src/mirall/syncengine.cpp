@@ -656,7 +656,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // To announce the beginning of the sync
     emit aboutToPropagate(_syncedItems);
-    _progressInfo._completedFileCount = -1; // indicate the start.
+    _progressInfo._completedFileCount = std::numeric_limits<quint64>::max(); // indicate the start with max
     emit transmissionProgress(_progressInfo);
     _progressInfo._completedFileCount = 0;
 
