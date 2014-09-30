@@ -320,3 +320,4 @@ if len(sys.argv) <= 2:
 for command in commands:
   p = subprocess.Popen(command)
   os.waitpid(p.pid, 0)
+
