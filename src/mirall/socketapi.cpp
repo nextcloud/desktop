@@ -249,7 +249,7 @@ SocketApi::SocketApi(QObject* parent)
         // We use the generic SyncStateHelper name on OS X since the different branded clients
         // should unfortunately not mention that they are ownCloud :-)
 #endif
-    } else {
+    } else if( Utility::isLinux() ) {
         QString runtimeDir;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
@@ -257,6 +257,8 @@ SocketApi::SocketApi(QObject* parent)
         runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
 #endif
         socketPath = runtimeDir + "/" + Theme::instance()->appName() + "/socket";
+    } else {
+	DEBUG << "An unexpected system detected";
     }
 
     QLocalServer::removeServer(socketPath);
