@@ -452,7 +452,9 @@ void FolderMan::slotScheduleSync( const QString& alias )
             f->prepareToSync();
         } else {
             qDebug() << "Folder is not enabled, not scheduled!";
-            _socketApi->slotUpdateFolderView(f->alias());
+            if( _socketApi ) {
+                _socketApi->slotUpdateFolderView(f->alias());
+            }
             return;
         }
         _scheduleQueue.enqueue(alias);
@@ -514,8 +516,10 @@ void FolderMan::slotStartScheduledFolderSync()
 
             // reread the excludes of the socket api
             // FIXME: the excludes need rework.
-            _socketApi->slotClearExcludesList();
-            _socketApi->slotReadExcludes();
+            if( _socketApi ) {
+                _socketApi->slotClearExcludesList();
+                _socketApi->slotReadExcludes();
+            }
         }
     }
 }
