@@ -404,18 +404,6 @@ if(NOT BUILD_LIBRARIES_ONLY)
  )
 endif()
 
-
-#FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary
-# currently it needs to be done because the code right above needs to be executed no matter
-# if building a bundle or not and the install_qt4_executable needs to be called afterwards
-if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
-    if(Qt5Core_FOUND)
-        install_qt5_executable(${OWNCLOUD_OSX_BUNDLE} "qtaccessiblewidgets;qsqlite;qcocoa")
-    else(Qt5Core_FOUND)
-        install_qt4_executable(${OWNCLOUD_OSX_BUNDLE} "qtaccessiblewidgets;qsqlite")
-    endif(Qt5Core_FOUND)
-endif()
-
 find_program(KRAZY2_EXECUTABLE krazy2)
 if(KRAZY2_EXECUTABLE)
     # s/y k/y ALL k/ for building this target always
@@ -454,4 +442,14 @@ elseif(NOT BUILD_LIBRARIES_ONLY)
 	    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 	    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+endif()
+
+#FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary
+# currently it needs to be done because the code right above needs to be executed no matter
+# if building a bundle or not and the install_qt4_executable needs to be called afterwards
+if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
+   install(CODE "
+    message(STATUS \"Deploying (Qt) dependencies and fixing library pathes...\")
+    execute_process(COMMAND \"${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py\" ${OWNCLOUD_OSX_BUNDLE})
+    " COMPONENT RUNTIME)
 endif()
