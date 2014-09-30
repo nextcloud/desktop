@@ -39,6 +39,11 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     closeWindowAction->setShortcut(QKeySequence("Ctrl+W"));
     connect(closeWindowAction, SIGNAL(triggered()), SLOT(close()));
     addAction(closeWindowAction);
+    // People perceive this as a Window, so also make Ctrl+H work
+    QAction *hideWindowAction = new QAction(this);
+    hideWindowAction->setShortcut(QKeySequence("Ctrl+H"));
+    connect(hideWindowAction, SIGNAL(triggered()), SLOT(hide()));
+    addAction(hideWindowAction);
 
     setObjectName("SettingsMac"); // required as group for saveGeometry call
 
