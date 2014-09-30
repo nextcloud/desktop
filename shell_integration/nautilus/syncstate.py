@@ -71,6 +71,7 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             return None
 
     def askForOverlay(self, file):
+	# print("Asking for overlay for "+file)
         if os.path.isdir(file):
             folderStatus = self.sendCommand("RETRIEVE_FOLDER_STATUS:"+file+"\n");
 
@@ -79,14 +80,16 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
     def invalidate_items_underneath(self, path):
         update_items = []
-        for p in self.nautilusVFSFile_table:
-            if p == path or p.startswith(path):
-                item = self.nautilusVFSFile_table[p]
-                update_items.append(item)
+        if not self.nautilusVFSFile_table:
+	    self.askForOverlay(path)
+	else:
+	    for p in self.nautilusVFSFile_table:
+		if p == path or p.startswith(path):
+		    item = self.nautilusVFSFile_table[p]['item']
+		    update_items.append(item)
 
-        for item in update_items:
-            item.invalidate_extension_info()
-            # self.update_file_info(item)
+	    for item in update_items:
+		item.invalidate_extension_info()
 
     # Handles a single line of server respoonse and sets the emblem
     def handle_server_response(self, l):
@@ -111,11 +114,16 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             # file = parts[1]
             # print "Action for " + file + ": "+parts[0]
             if action == 'STATUS':
-                emblem = Emblems[parts[1]]
+		newState = parts[1]
+                emblem = Emblems[newState]
                 if emblem:
-                    item = self.find_item_for_file(parts[2])
-                    if item:
-                        item.add_emblem(emblem)
+                    itemStore = self.find_item_for_file(parts[2])
+                    if itemStore:
+			if( not itemStore['state'] or newState != itemStore['state'] ):
+			    item = itemStore['item']
+			    item.add_emblem(emblem)
+			    # print "Setting emblem on " + parts[2]
+			    self.nautilusVFSFile_table[parts[2]] = {'item': item, 'state':newState}
 
             elif action == 'UPDATE_VIEW':
                 # Search all items underneath this path and invalidate them
@@ -177,7 +185,7 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
         for reg_path in self.registered_paths:
             if filename.startswith(reg_path):
-                self.nautilusVFSFile_table[filename] = item
+                self.nautilusVFSFile_table[filename] = {'item': item, 'state':''}
 
                 # item.add_string_attribute('share_state', "share state")
                 self.askForOverlay(filename)
