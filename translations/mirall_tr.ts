@@ -428,52 +428,52 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
         <translation>Eski eşitleme günlüğü &apos;%1&apos; bulundu ancak kaldırılamadı. Başka bir uygulama tarafından kullanılmadığından emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="832"/>
+        <location filename="../src/mirall/folderman.cpp" line="836"/>
         <source>Undefined State.</source>
         <translation>Tanımlanmamış Durum.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="835"/>
+        <location filename="../src/mirall/folderman.cpp" line="839"/>
         <source>Waits to start syncing.</source>
         <translation>Eşitleme başlatmak için bekleniyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="838"/>
+        <location filename="../src/mirall/folderman.cpp" line="842"/>
         <source>Preparing for sync.</source>
         <translation>Eşitleme için hazırlanıyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="841"/>
+        <location filename="../src/mirall/folderman.cpp" line="845"/>
         <source>Sync is running.</source>
         <translation>Eşitleme çalışıyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="844"/>
+        <location filename="../src/mirall/folderman.cpp" line="848"/>
         <source>Last Sync was successful.</source>
         <translation>Son Eşitleme başarılı oldu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="849"/>
+        <location filename="../src/mirall/folderman.cpp" line="853"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Son eşitleme başarılıydı, ancak tekil dosyalarda uyarılar vardı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="852"/>
+        <location filename="../src/mirall/folderman.cpp" line="856"/>
         <source>Setup Error.</source>
         <translation>Kurulum Hatası.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="855"/>
+        <location filename="../src/mirall/folderman.cpp" line="859"/>
         <source>User Abort.</source>
         <translation>Kullanıcı İptal Etti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="858"/>
+        <location filename="../src/mirall/folderman.cpp" line="862"/>
         <source>Sync is paused.</source>
         <translation>Eşitleme duraklatıldı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="864"/>
+        <location filename="../src/mirall/folderman.cpp" line="868"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Eşitleme duraklatıldı)</translation>
     </message>
@@ -1586,27 +1586,27 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
 <context>
     <name>Mirall::SettingsDialogMac</name>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="45"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="50"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="49"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="54"/>
         <source>Account</source>
         <translation>Hesap</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="53"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="58"/>
         <source>Activity</source>
         <translation>Etkinlik</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="57"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="62"/>
         <source>General</source>
         <translation>Genel</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="61"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="66"/>
         <source>Network</source>
         <translation>Ağ</translation>
     </message>

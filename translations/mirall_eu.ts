@@ -428,52 +428,52 @@ Ziur zaude eragiketa hau egin nahi duzula?</translation>
         <translation>Aurkitu da &apos;%1&apos; sinkronizazio erregistro zaharra, baina ezin da ezabatu. Ziurtatu aplikaziorik ez dela erabiltzen ari.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="832"/>
+        <location filename="../src/mirall/folderman.cpp" line="836"/>
         <source>Undefined State.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="835"/>
+        <location filename="../src/mirall/folderman.cpp" line="839"/>
         <source>Waits to start syncing.</source>
         <translation>Itxoiten sinkronizazioa hasteko.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="838"/>
+        <location filename="../src/mirall/folderman.cpp" line="842"/>
         <source>Preparing for sync.</source>
         <translation>Sinkronizazioa prestatzen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="841"/>
+        <location filename="../src/mirall/folderman.cpp" line="845"/>
         <source>Sync is running.</source>
         <translation>Sinkronizazioa martxan da.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="844"/>
+        <location filename="../src/mirall/folderman.cpp" line="848"/>
         <source>Last Sync was successful.</source>
         <translation>Azkeneko sinkronizazioa ongi burutu zen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="849"/>
+        <location filename="../src/mirall/folderman.cpp" line="853"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Azkenengo sinkronizazioa ongi burutu zen, baina banakako fitxategi batzuetan abisuak egon dira.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="852"/>
+        <location filename="../src/mirall/folderman.cpp" line="856"/>
         <source>Setup Error.</source>
         <translation>Konfigurazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="855"/>
+        <location filename="../src/mirall/folderman.cpp" line="859"/>
         <source>User Abort.</source>
         <translation>Erabiltzaileak bertan behera utzi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="858"/>
+        <location filename="../src/mirall/folderman.cpp" line="862"/>
         <source>Sync is paused.</source>
         <translation>Sinkronizazioa pausatuta dago.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="864"/>
+        <location filename="../src/mirall/folderman.cpp" line="868"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinkronizazioa pausatuta dago)</translation>
     </message>
@@ -1586,27 +1586,27 @@ Saiatu horiek berriz sinkronizatzen.</translation>
 <context>
     <name>Mirall::SettingsDialogMac</name>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="45"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="50"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="49"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="54"/>
         <source>Account</source>
         <translation>Kontua</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="53"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="58"/>
         <source>Activity</source>
         <translation>Jarduera</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="57"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="62"/>
         <source>General</source>
         <translation>Orokorra</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="61"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="66"/>
         <source>Network</source>
         <translation>Sarea</translation>
     </message>

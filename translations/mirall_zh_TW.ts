@@ -425,52 +425,52 @@ Are you sure you want to perform this operation?</source>
         <translation>發現較舊的同步處理日誌&apos;%1&apos;，但無法移除。請確認沒有應用程式正在使用它。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="832"/>
+        <location filename="../src/mirall/folderman.cpp" line="836"/>
         <source>Undefined State.</source>
         <translation>未知狀態</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="835"/>
+        <location filename="../src/mirall/folderman.cpp" line="839"/>
         <source>Waits to start syncing.</source>
         <translation>等待啟動同步</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="838"/>
+        <location filename="../src/mirall/folderman.cpp" line="842"/>
         <source>Preparing for sync.</source>
         <translation>正在準備同步。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="841"/>
+        <location filename="../src/mirall/folderman.cpp" line="845"/>
         <source>Sync is running.</source>
         <translation>同步執行中</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="844"/>
+        <location filename="../src/mirall/folderman.cpp" line="848"/>
         <source>Last Sync was successful.</source>
         <translation>最後一次同步成功</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="849"/>
+        <location filename="../src/mirall/folderman.cpp" line="853"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="852"/>
+        <location filename="../src/mirall/folderman.cpp" line="856"/>
         <source>Setup Error.</source>
         <translation>安裝失敗</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="855"/>
+        <location filename="../src/mirall/folderman.cpp" line="859"/>
         <source>User Abort.</source>
         <translation>使用者中斷。</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="858"/>
+        <location filename="../src/mirall/folderman.cpp" line="862"/>
         <source>Sync is paused.</source>
         <translation>同步已暫停</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="864"/>
+        <location filename="../src/mirall/folderman.cpp" line="868"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (同步暫停)</translation>
     </message>
@@ -1578,27 +1578,27 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::SettingsDialogMac</name>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="45"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="50"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="49"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="54"/>
         <source>Account</source>
         <translation>帳號</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="53"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="58"/>
         <source>Activity</source>
         <translation>活動</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="57"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="62"/>
         <source>General</source>
         <translation>一般</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="61"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="66"/>
         <source>Network</source>
         <translation>網路</translation>
     </message>

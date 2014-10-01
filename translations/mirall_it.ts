@@ -428,52 +428,52 @@ Sei sicuro di voler eseguire questa operazione?</translation>
         <translation>È stato trovato un vecchio registro di sincronizzazione &apos;%1&apos;, ma non può essere rimosso. Assicurati che nessuna applicazione lo stia utilizzando.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="832"/>
+        <location filename="../src/mirall/folderman.cpp" line="836"/>
         <source>Undefined State.</source>
         <translation>Stato non definito.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="835"/>
+        <location filename="../src/mirall/folderman.cpp" line="839"/>
         <source>Waits to start syncing.</source>
         <translation>Attende l&apos;inizio della sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="838"/>
+        <location filename="../src/mirall/folderman.cpp" line="842"/>
         <source>Preparing for sync.</source>
         <translation>Preparazione della sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="841"/>
+        <location filename="../src/mirall/folderman.cpp" line="845"/>
         <source>Sync is running.</source>
         <translation>La sincronizzazione è in corso.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="844"/>
+        <location filename="../src/mirall/folderman.cpp" line="848"/>
         <source>Last Sync was successful.</source>
         <translation>L&apos;ultima sincronizzazione è stato completata correttamente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="849"/>
+        <location filename="../src/mirall/folderman.cpp" line="853"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Ultima sincronizzazione avvenuta, ma con avvisi relativi a singoli file.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="852"/>
+        <location filename="../src/mirall/folderman.cpp" line="856"/>
         <source>Setup Error.</source>
         <translation>Errore di configurazione.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="855"/>
+        <location filename="../src/mirall/folderman.cpp" line="859"/>
         <source>User Abort.</source>
         <translation>Interrotto dall&apos;utente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="858"/>
+        <location filename="../src/mirall/folderman.cpp" line="862"/>
         <source>Sync is paused.</source>
         <translation>La sincronizzazione è sospesa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="864"/>
+        <location filename="../src/mirall/folderman.cpp" line="868"/>
         <source>%1 (Sync is paused)</source>
         <translation> %1 (La sincronizzazione è sospesa)</translation>
     </message>
@@ -1585,27 +1585,27 @@ Prova a sincronizzare nuovamente.</translation>
 <context>
     <name>Mirall::SettingsDialogMac</name>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="45"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="50"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="49"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="54"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="53"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="58"/>
         <source>Activity</source>
         <translation>Attività</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="57"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="62"/>
         <source>General</source>
         <translation>Generale</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="61"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="66"/>
         <source>Network</source>
         <translation>Rete</translation>
     </message>
