@@ -16,7 +16,7 @@ fix_frameworks() {
     for FMWK in $QT_FMWKS; do
         FMWK_NAME=`basename -s .framework $FMWK`
         FMWK=`basename $FMWK`
-        FMWK_PATH="${TMP_APP}/Contents/Frameworks/${FMWK}"
+        FMWK_PATH="${TMP_APP}/Contents/Resources/Frameworks/${FMWK}"
         mkdir -p "${FMWK_PATH}/Versions/${QT_FMWK_VERSION}/Resources/"
         cp -avf "${QT_FMWK_PATH}/${FMWK}/Contents/Info.plist" "${FMWK_PATH}/Versions/${QT_FMWK_VERSION}/Resources"
         (cd "${FMWK_PATH}" && ln -sf "Versions/${QT_FMWK_VERSION}/Resources" "Resources")
