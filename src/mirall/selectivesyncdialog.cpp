@@ -36,6 +36,8 @@ SelectiveSyncTreeView::SelectiveSyncTreeView(Account *account, QWidget* parent)
     connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(slotItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(slotItemChanged(QTreeWidgetItem*,int)));
     header()->hide();
+    setSortingEnabled(true);
+    sortByColumn(0, Qt::AscendingOrder);
 }
 
 void SelectiveSyncTreeView::refreshFolders()
