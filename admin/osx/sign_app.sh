@@ -5,7 +5,6 @@
 src_app="$1"
 identity="$2"
 
-QT_FMWKS=`basename ${TMP_APP}/Contents/Frameworks`/Qt*
 QT_FMWK_VERSION="5"
 
 fix_frameworks() {
@@ -26,7 +25,7 @@ fix_frameworks() {
 }
 
 fix_frameworks "$src_app" `qmake -query QT_INSTALL_LIBS` "$src_app"/Contents/Frameworks
-codesign -s "$identity"  --force --verify --verbose  --deep "$src_app"
+codesign -s "$identity" --force --verbose=4 --deep "$src_app"
 
 # Just for our debug purposes:
 spctl -a -t exec -vv $src_app
