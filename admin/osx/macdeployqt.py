@@ -93,6 +93,12 @@ binaries = [i for i in glob(os.path.join(bundle_dir, 'Contents', 'MacOS', "*")) 
 fixed_libraries = []
 fixed_frameworks = []
 
+def WriteQtConf():
+  print "Writing qt.conf..."
+  with open(os.path.join(resources_dir, 'qt.conf'), 'w') as f:
+    f.write("[Paths]\nPlugins = PlugIns\n");
+    f.close()
+
 def GetBrokenLibraries(binary):
   #print "Checking libs for binary: %s" % binary
   output = subprocess.Popen(['otool', '-L', binary], stdout=subprocess.PIPE).communicate()[0]
@@ -321,3 +327,4 @@ for command in commands:
   p = subprocess.Popen(command)
   os.waitpid(p.pid, 0)
 
+WriteQtConf()
