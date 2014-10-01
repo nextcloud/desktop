@@ -359,7 +359,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
     qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql ${ADDITIONAL_APP_MODULES})
 elseif(NOT BUILD_LIBRARIES_ONLY)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
-    set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
+    # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
