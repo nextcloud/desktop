@@ -293,9 +293,6 @@ void PropagateRemoteRename::start()
         if (updateErrorFromSession(rc)) {
             return;
         }
-
-        if (!updateMTimeAndETag(uri2.data(), _item._modtime))
-            return;
     }
     //  Wed, 15 Nov 1995 06:25:24 GMT
     QDateTime dt = QDateTime::currentDateTimeUtc();
