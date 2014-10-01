@@ -219,8 +219,8 @@ def FixBinary(path):
     FixLibraryInstallPath(library, path)
 
 def CopyLibrary(path):
-  new_path = os.path.join(frameworks_dir, os.path.basename(path))
-  args = ['ditto', '--arch=i386', '--arch=x86_64', path, new_path]
+  new_path = os.path.join(binary_dir, os.path.basename(path))
+  args = ['ditto', '--arch=x86_64', path, new_path]
   commands.append(args)
   args = ['chmod', 'u+w', new_path]
   commands.append(args)
@@ -230,7 +230,7 @@ def CopyPlugin(path, subdir):
   new_path = os.path.join(plugins_dir, subdir, os.path.basename(path))
   args = ['mkdir', '-p', os.path.dirname(new_path)]
   commands.append(args)
-  args = ['ditto', '--arch=i386', '--arch=x86_64', path, new_path]
+  args = ['ditto', '--arch=x86_64', path, new_path]
   commands.append(args)
   args = ['chmod', 'u+w', new_path]
   commands.append(args)
@@ -245,14 +245,14 @@ def CopyFramework(path):
       break
   args = ['mkdir', '-p', full_path]
   commands.append(args)
-  args = ['ditto', '--arch=i386', '--arch=x86_64', path, full_path]
+  args = ['ditto', '--arch=x86_64', path, full_path]
   commands.append(args)
   args = ['chmod', 'u+w', os.path.join(full_path, parts[-1])]
   commands.append(args)
 
-  menu_nib = os.path.join(os.path.split(path)[0], 'Resources', 'qt_menu.nib')
-  if os.path.exists(menu_nib):
-    args = ['cp', '-r', menu_nib, resources_dir]
+  info_plist = os.path.join(os.path.split(path)[0], '..', '..', 'Contents', 'Info.plist')
+  if os.path.exists(info_plist):
+    args = ['cp', '-r', info_plist, resources_dir]
     commands.append(args)
 
   return os.path.join(full_path, parts[-1])
