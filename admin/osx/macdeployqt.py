@@ -283,7 +283,7 @@ def FindSystemLibrary(library_name):
 def FixLibraryInstallPath(library_path, library):
   system_library = FindSystemLibrary(os.path.basename(library_path))
   if system_library is None:
-    new_path = '@executable_path/../Frameworks/%s' % os.path.basename(library_path)
+    new_path = '@executable_path/../MacOS/%s' % os.path.basename(library_path)
     FixInstallPath(library_path, library, new_path)
   else:
     FixInstallPath(library_path, library, system_library)
