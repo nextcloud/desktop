@@ -25,6 +25,7 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
     remainder = ''
     connected = False
     watch_id = 0
+    appname = 'ownCloud'
 
     def __init__(self):
         self.connectToSocketServer
@@ -32,16 +33,22 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             # try again in 5 seconds - attention, logic inverted!
             GObject.timeout_add(5000, self.connectToSocketServer)
 
-    def port(self):
-        return 34001 # Fixme, read from config file.
-
     def connectToSocketServer(self):
         try:
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.connect(("localhost", self.port()))
-            self.sock.settimeout(5)
-            self.connected = True
-            self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
+            self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            postfix = "/"+self.appname+"/socket"
+            sock_file = os.environ["XDG_RUNTIME_DIR"]+postfix
+            print ("XXXX " + sock_file + " <=> " + postfix)
+            if sock_file != postfix:
+		try:
+		    print("Socket File: "+sock_file)
+		    self.sock.connect(sock_file)
+		    self.connected = True
+		    self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
+		except:
+		    print("Could not connect to unix socket.")
+	    else:
+		 print("Sock-File not valid: "+sock_file)
         except:
             print("Connect could not be established, try again later!")
             self.sock.close()
@@ -64,6 +71,7 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             return None
 
     def askForOverlay(self, file):
+	# print("Asking for overlay for "+file)
         if os.path.isdir(file):
             folderStatus = self.sendCommand("RETRIEVE_FOLDER_STATUS:"+file+"\n");
 
@@ -72,28 +80,30 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
     def invalidate_items_underneath(self, path):
         update_items = []
-        for p in self.nautilusVFSFile_table:
-            if p == path or p.startswith(path):
-                item = self.nautilusVFSFile_table[p]
-                update_items.append(item)
+        if not self.nautilusVFSFile_table:
+	    self.askForOverlay(path)
+	else:
+	    for p in self.nautilusVFSFile_table:
+		if p == path or p.startswith(path):
+		    item = self.nautilusVFSFile_table[p]['item']
+		    update_items.append(item)
 
-        for item in update_items:
-            item.invalidate_extension_info()
-            # self.update_file_info(item)
+	    for item in update_items:
+		item.invalidate_extension_info()
 
     # Handles a single line of server respoonse and sets the emblem
     def handle_server_response(self, l):
-        Emblems = { 'OK'        : 'oC_ok',
-                    'SYNC'      : 'oC_sync',
-                    'NEW'       : 'oC_sync',
-                    'IGNORE'    : 'oC_warn',
-                    'ERROR'     : 'oC_error',
-                    'OK+SWM'    : 'oC_ok_shared',
-                    'SYNC+SWM'  : 'oC_sync_shared',
-                    'NEW+SWM'   : 'oC_sync_shared',
-                    'IGNORE+SWM': 'oC_warn_shared',
-                    'ERROR+SWM' : 'oC_error_shared',
-                    'NOP'       : 'oC_error'
+        Emblems = { 'OK'        : self.appname +'_ok',
+                    'SYNC'      : self.appname +'_sync',
+                    'NEW'       : self.appname +'_sync',
+                    'IGNORE'    : self.appname +'_warn',
+                    'ERROR'     : self.appname +'_error',
+                    'OK+SWM'    : self.appname +'_ok_shared',
+                    'SYNC+SWM'  : self.appname +'_sync_shared',
+                    'NEW+SWM'   : self.appname +'_sync_shared',
+                    'IGNORE+SWM': self.appname +'_warn_shared',
+                    'ERROR+SWM' : self.appname +'_error_shared',
+                    'NOP'       : self.appname +'_error'
                   }
 
         print("Server response: "+l)
@@ -104,11 +114,16 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             # file = parts[1]
             # print "Action for " + file + ": "+parts[0]
             if action == 'STATUS':
-                emblem = Emblems[parts[1]]
+		newState = parts[1]
+                emblem = Emblems[newState]
                 if emblem:
-                    item = self.find_item_for_file(parts[2])
-                    if item:
-                        item.add_emblem(emblem)
+                    itemStore = self.find_item_for_file(parts[2])
+                    if itemStore:
+			if( not itemStore['state'] or newState != itemStore['state'] ):
+			    item = itemStore['item']
+			    item.add_emblem(emblem)
+			    # print "Setting emblem on " + parts[2]
+			    self.nautilusVFSFile_table[parts[2]] = {'item': item, 'state':newState}
 
             elif action == 'UPDATE_VIEW':
                 # Search all items underneath this path and invalidate them
@@ -170,7 +185,7 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
         for reg_path in self.registered_paths:
             if filename.startswith(reg_path):
-                self.nautilusVFSFile_table[filename] = item
+                self.nautilusVFSFile_table[filename] = {'item': item, 'state':''}
 
                 # item.add_string_attribute('share_state', "share state")
                 self.askForOverlay(filename)
