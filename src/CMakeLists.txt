@@ -444,6 +444,6 @@ endif()
 if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
    install(CODE "
     message(STATUS \"Deploying (Qt) dependencies and fixing library pathes...\")
-    execute_process(COMMAND \"${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py\" ${OWNCLOUD_OSX_BUNDLE})
+    execute_process(COMMAND \"${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py\" ${CMAKE_INSTALL_BINDIR}/${OWNCLOUD_OSX_BUNDLE})
     " COMPONENT RUNTIME)
 endif()
