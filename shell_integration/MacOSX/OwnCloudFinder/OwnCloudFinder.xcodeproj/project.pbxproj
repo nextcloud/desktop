@@ -10,6 +10,7 @@
 		0B13ECAE173C687400548DA1 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B13ECAD173C686A00548DA1 /* GCDAsyncSocket.m */; };
 		0B13ECAF173C687900548DA1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BFC9ACB173C57E400CDD329 /* Security.framework */; };
 		0BFAF21C16F8E6C10017EA7E /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAF21B16F8E6C10017EA7E /* JSONKit.m */; };
+		5BB74A8719DBF9BB001BAAAC /* FinishedIconCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB74A8619DBF9BB001BAAAC /* FinishedIconCache.m */; };
 		692C18A516660C4700BF6A53 /* ContextMenuHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = 692C18A416660C4600BF6A53 /* ContextMenuHandlers.m */; };
 		692C18A9166617F500BF6A53 /* IconOverlayHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = 692C18A8166617F500BF6A53 /* IconOverlayHandlers.m */; };
 		692C18AC1666392700BF6A53 /* MenuManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 692C18AB1666392700BF6A53 /* MenuManager.m */; };
@@ -32,6 +33,8 @@
 		0BFAF21A16F8E6C10017EA7E /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		0BFAF21B16F8E6C10017EA7E /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		0BFC9ACB173C57E400CDD329 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		5BB74A8519DBF9BB001BAAAC /* FinishedIconCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinishedIconCache.h; sourceTree = "<group>"; };
+		5BB74A8619DBF9BB001BAAAC /* FinishedIconCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinishedIconCache.m; sourceTree = "<group>"; };
 		692C18A316660C4600BF6A53 /* ContextMenuHandlers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextMenuHandlers.h; sourceTree = "<group>"; };
 		692C18A416660C4600BF6A53 /* ContextMenuHandlers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextMenuHandlers.m; sourceTree = "<group>"; };
 		692C18A7166617F500BF6A53 /* IconOverlayHandlers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconOverlayHandlers.h; sourceTree = "<group>"; };
@@ -117,6 +120,8 @@
 				69948B351636D50E0093B6CE /* ContentManager.m */,
 				8C99F6921622D145002D2135 /* IconCache.h */,
 				8C99F6931622D145002D2135 /* IconCache.m */,
+				5BB74A8519DBF9BB001BAAAC /* FinishedIconCache.h */,
+				5BB74A8619DBF9BB001BAAAC /* FinishedIconCache.m */,
 				692C18AA1666392700BF6A53 /* MenuManager.h */,
 				692C18AB1666392700BF6A53 /* MenuManager.m */,
 			);
@@ -226,6 +231,7 @@
 				8C99F6941622D145002D2135 /* IconCache.m in Sources */,
 				69948B361636D50E0093B6CE /* ContentManager.m in Sources */,
 				6993878616494C000044E4DF /* RequestManager.m in Sources */,
+				5BB74A8719DBF9BB001BAAAC /* FinishedIconCache.m in Sources */,
 				692C18A516660C4700BF6A53 /* ContextMenuHandlers.m in Sources */,
 				692C18A9166617F500BF6A53 /* IconOverlayHandlers.m in Sources */,
 				692C18AC1666392700BF6A53 /* MenuManager.m in Sources */,
