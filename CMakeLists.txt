@@ -133,6 +133,8 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install(FILES resources/owncloud_logo_blue.png DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)
 endif()
 
+include(OwnCloudCPack.cmake)
+
 add_definitions(-DUNICODE)
 add_definitions(-D_UNICODE)
 if( WIN32 )
