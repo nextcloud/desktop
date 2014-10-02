@@ -1542,7 +1542,7 @@ Por favor tente sincronizar novamente.</translation>
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="263"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Only checked folders will sync to this computer</source>
         <translation>Só as pastas verificadas é que serão sincronizadas com este computador</translation>
     </message>

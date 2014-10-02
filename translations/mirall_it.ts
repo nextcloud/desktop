@@ -1544,7 +1544,7 @@ Prova a sincronizzare nuovamente.</translation>
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="263"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Only checked folders will sync to this computer</source>
         <translation>Saranno sincronizzate con il tuo computer solo le cartelle marcate</translation>
     </message>

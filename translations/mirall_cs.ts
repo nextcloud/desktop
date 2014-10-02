@@ -1546,7 +1546,7 @@ Zkuste provést novou synchronizaci.
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="263"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Only checked folders will sync to this computer</source>
         <translation>Pouze označené adresáře se budou synchronizovat na tento počitač</translation>
     </message>
