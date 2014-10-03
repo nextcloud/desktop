@@ -386,10 +386,10 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
             // returns false.
         } else {
             QString realFileName = QString::fromWCharArray( FindFileData.cFileName );
-            qDebug() << Q_FUNC_INFO << "Real file name is " << realFileName;
             FindClose(hFind);
 
             if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
+                qDebug() << Q_FUNC_INFO << "Detected case clash between " << file " and " << realFileName;
                 re = true;
             }
         }
