@@ -921,6 +921,10 @@ int SyncJournalDb::wipeBlacklist()
 
 void SyncJournalDb::wipeBlacklistEntry( const QString& file )
 {
+    if( file.isEmpty() ) {
+        return;
+    }
+
     QMutexLocker locker(&_mutex);
     if( checkConnect() ) {
         QSqlQuery query(_db);

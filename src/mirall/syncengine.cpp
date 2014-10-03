@@ -706,7 +706,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     deleteStaleDownloadInfos();
     deleteStaleUploadInfos();
-    deleteStaleBlacklistEntries();
+    // deleteStaleBlacklistEntries();
     _journal->commit("post stale entry removal");
 
     _propagator->start(_syncedItems);
