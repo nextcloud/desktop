@@ -115,6 +115,8 @@ sub initTesting(;$)
 
   $owncloud .= "/" unless( $owncloud =~ /\/$/ );
 
+  $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME} = 0;
+
   print "Connecting to ownCloud at ". $owncloud ."\n";
 
   # For SSL set the environment variable needed by the LWP module for SSL
@@ -166,7 +168,9 @@ sub testDirUrl()
 # the global var $remoteDir;
 sub initRemoteDir
 {
-  $d->open( $owncloud );
+  $d->open( $owncloud )
+       or die("Couldn't open $owncloud: " .$d->message . "\n");
+
   my $url = testDirUrl();
 
   my $re = $d->mkcol( $url );
@@ -545,7 +549,7 @@ sub putToDirLWP($$)
     my $string = <FILE>;
     close FILE;
 
-    my $ua  = LWP::UserAgent->new();
+    my $ua  = LWP::UserAgent->new( ssl_opts => { verify_hostname => 0 });
     $ua->agent( "ownCloudTest_$localDir");
     my $req = PUT $puturl, Content_Type => 'application/octet-stream',
 		  Content => $string;
@@ -579,7 +583,7 @@ sub getToFileLWP( $$ )
     my $geturl = testDirUrl() . $file;
     print "GETting $geturl to $localFile\n";
 
-    my $ua  = LWP::UserAgent->new();
+    my $ua  = LWP::UserAgent->new( ssl_opts => { verify_hostname => 0 });
     $ua->agent( "ownCloudTest_$localDir");
     $ua->credentials( server(), "foo", $user, $passwd);
     my $req = $ua->get($geturl, ":content_file" => $localFile);
@@ -721,7 +725,7 @@ sub createShare($$)
 
     }
 
-    my $ua  = LWP::UserAgent->new();
+    my $ua  = LWP::UserAgent->new(ssl_opts => { verify_hostname => 0 } );
     $ua->agent( "ownCloudTest_sharing");
     # http://localhost/ocm/ocs/v1.php/apps/files_sharing/api/v1/shares
     my $puturl = $ocs_url . "apps/files_sharing/api/v1/shares";
@@ -757,7 +761,7 @@ sub removeShare($$)
 		      -pass => $share_passwd );
     $dd->open( $owncloud);
 
-    my $ua  = LWP::UserAgent->new();
+    my $ua  = LWP::UserAgent->new(ssl_opts => { verify_hostname => 0 });
     $ua->agent( "ownCloudTest_sharing");
     # http://localhost/ocm/ocs/v1.php/apps/files_sharing/api/v1/shares
     my $url = $ocs_url . "apps/files_sharing/api/v1/shares/" . $shareId;
