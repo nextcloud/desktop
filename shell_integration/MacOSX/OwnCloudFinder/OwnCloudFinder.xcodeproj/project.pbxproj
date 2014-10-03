@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B13ECAE173C687400548DA1 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B13ECAD173C686A00548DA1 /* GCDAsyncSocket.m */; };
+		0B13ECAE173C687400548DA1 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B13ECAD173C686A00548DA1 /* GCDAsyncSocket.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		0B13ECAF173C687900548DA1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BFC9ACB173C57E400CDD329 /* Security.framework */; };
 		0BFAF21C16F8E6C10017EA7E /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAF21B16F8E6C10017EA7E /* JSONKit.m */; };
 		692C18A516660C4700BF6A53 /* ContextMenuHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = 692C18A416660C4600BF6A53 /* ContextMenuHandlers.m */; };
@@ -302,8 +302,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
