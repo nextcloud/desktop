@@ -1357,7 +1357,7 @@ Nedoporučuje se jí používat.</translation>
         <translation>Operace byla ukončena zásahem uživatele</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Soubor nebo adresář by odebrán ze sdílení pouze pro čtení, ale jeho obnovení selhalo: %1</translation>
     </message>

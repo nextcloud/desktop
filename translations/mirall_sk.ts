@@ -1357,7 +1357,7 @@ Nie je vhodné ju používať.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Súbor alebo priečinok bol odobratý zo zdieľania len na čítanie, ale jeho obnovenie zlyhalo: %1</translation>
     </message>

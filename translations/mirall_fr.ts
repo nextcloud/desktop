@@ -1357,7 +1357,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>L&apos;opération a été annulée par l&apos;utilisateur.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Un fichier ou un dossier a été supprimé du partage en lecture seule, mais la restauration à échoué : %1</translation>
     </message>

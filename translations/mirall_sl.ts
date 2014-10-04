@@ -1356,7 +1356,7 @@ Uporaba ni priporočljiva.</translation>
         <translation>Opravilo je prekinjeno zaradi dejanja uporabnika.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Datoteka ali mapa je bila odstranjena iz mesta v souporabi, ki je nastavljeno le za branje, obnavljanje pa je spodletelo: %1</translation>
     </message>

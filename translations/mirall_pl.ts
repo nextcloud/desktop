@@ -1357,7 +1357,7 @@ Niezalecane jest jego użycie.</translation>
         <translation>Operacja została przerwana przez użytkownika</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Plik lub katalog został usunięty z udziału z prawem tylko do odczytu, ale przywrócenie nie powiodło się: %1</translation>
     </message>

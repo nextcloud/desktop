@@ -1358,7 +1358,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <translation>Der Vorgang wurde durch einen Nutzereingriff abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Eine Datei oder Verzeichnis wurde von einer Nur-Lese-Freigabe wiederhergestellt, aber die Wiederherstellung ist mit folgendem Fehler fehlgeschlagen: %1</translation>
     </message>

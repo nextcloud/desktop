@@ -151,7 +151,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="608"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Descobrint %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="654"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="675"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>fitxer %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="763"/>
@@ -278,7 +278,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="138"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>temps excedit</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="167"/>
@@ -378,7 +378,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="466"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 no s&apos;ha pogut sincronitzar degut a un error. Mira el registre per detalls.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="474"/>
@@ -1357,7 +1357,7 @@ No és aconsellada usar-la.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>S&apos;ha eliminat un fitxer o carpeta de la compartició nómés de lectura, però la restauració ha fallat: %1</translation>
     </message>
@@ -2060,7 +2060,7 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="933"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxers locals i carpeta compartida esborrats.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="988"/>
@@ -2124,7 +2124,7 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="277"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>No hi han carpetes sincronitzades configurades.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="303"/>
@@ -2214,7 +2214,7 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="467"/>
         <source>Discovering %1</source>
-        <translation type="unfinished"/>
+        <translation>Descobrint %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="471"/>
@@ -2269,12 +2269,12 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="103"/>
         <source>Sync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Sincronitza-ho tot d&apos;el servidor</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="122"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona el que vulguis sincronitzar</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="178"/>
@@ -2284,7 +2284,7 @@ Proveu de sincronitzar-los de nou.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="221"/>
         <source>&amp;Start a clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Comença una sincronització de neteja (S&apos;esborra la carpeta local!)</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="256"/>

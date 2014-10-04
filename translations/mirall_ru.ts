@@ -1357,7 +1357,7 @@ It is not advisable to use it.</source>
         <translation>Операция отменена пользователем</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Файл или каталог был удалён из опубликованной папки с правами только для чтения, но восстановить его не удалось: %1</translation>
     </message>

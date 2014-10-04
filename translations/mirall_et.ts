@@ -1357,7 +1357,7 @@ Selle kasutamine pole soovitatav.</translation>
         <translation>Tegevus tühistati kasutaja poolt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="182"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Fail või kataloog oli eemaldatud kirjutamisõiguseta jagamisest, kuid taastamine ebaõnnestus: %1</translation>
     </message>
