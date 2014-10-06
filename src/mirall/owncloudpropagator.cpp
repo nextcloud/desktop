@@ -78,7 +78,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         }
         retries = defaultRetriesCount.fetchAndAddAcquire(0);
     }
-    SyncJournalBlacklistRecord record(_item, retries);;
+    SyncJournalBlacklistRecord record(_item, retries);
 
     switch( status ) {
     case SyncFileItem::SoftError:

@@ -203,7 +203,7 @@ bool SyncJournalDb::checkConnect()
                                "custom VARCHAR(256)"
                                ");");
     if (!createQuery.exec()) {
-        return sqlFail("Create table blacklist", createQuery);
+        return sqlFail("Create table version", createQuery);
     }
 
     QSqlQuery versionQuery("SELECT major, minor FROM version;", _db);
