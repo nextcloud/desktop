@@ -1061,7 +1061,7 @@ si může v průběhu vyžádat dodatečná práva.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="137"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Varování:&lt;/strong&gt; Místní složka není prázdná. Zvolte další postup.&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Varování:&lt;/strong&gt; Místní adresář není prázdný. Zvolte další postup.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
@@ -2300,7 +2300,7 @@ Zkuste provést novou synchronizaci.
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="218"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pokud je zaškrtnuta tato volba, aktuální obsah v místní složce bude smazán a bude zahájena nová synchronizace ze serveru.&lt;/p&gt;&lt;p&gt;Nevolte tuto možnost pokud má být místní obsah nahrán do složky na serveru.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pokud je zaškrtnuta tato volba, aktuální obsah v místním  adresáři bude smazán a bude zahájena nová synchronizace ze serveru.&lt;/p&gt;&lt;p&gt;Nevolte tuto možnost pokud má být místní obsah nahrán do adresáře na serveru.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="272"/>

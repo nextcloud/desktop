@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation>同期フォルダを選択</translation>
+        <translation>同期フォルダーを選択</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="101"/>
@@ -1545,7 +1545,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Only checked folders will sync to this computer</source>
-        <translation>マークしたフォルダのみ、このコンピュータに同期されます。</translation>
+        <translation>マークしたフォルダーのみ、このコンピュータに同期されます。</translation>
     </message>
 </context>
 <context>
@@ -2122,7 +2122,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="277"/>
         <source>There are no sync folders configured.</source>
-        <translation>同期するフォルダがありません。</translation>
+        <translation>同期するフォルダーがありません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="303"/>
