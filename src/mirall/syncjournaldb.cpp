@@ -272,9 +272,15 @@ bool SyncJournalDb::checkConnect()
     _deleteFileRecordRecursively.reset(new QSqlQuery(_db));
     _deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')");
 
+    QString sql( "SELECT lastTryEtag, lastTryModtime, retrycount, errorstring "
+                 "FROM blacklist WHERE path=:path");
+    if( Utility::fsCasePreserving() ) {
+        // if the file system is case preserving we have to check the blacklist
+        // case insensitively
+        sql += QLatin1String(" COLLATE NOCASE");
+    }
     _blacklistQuery.reset(new QSqlQuery(_db));
-    _blacklistQuery->prepare("SELECT lastTryEtag, lastTryModtime, retrycount, errorstring "
-                             "FROM blacklist WHERE path=:path");
+    _blacklistQuery->prepare(sql);
 
     return rc;
 }
