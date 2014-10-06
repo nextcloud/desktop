@@ -50,6 +50,9 @@
 
 #define BUF_SIZE 16
 
+#define sqlite_open(A, B) sqlite3_open_v2(A,B, SQLITE_OPEN_READONLY+SQLITE_OPEN_NOMUTEX, NULL)
+
+
 void csync_set_statedb_exists(CSYNC *ctx, int val) {
   ctx->statedb.exists = val;
 }
@@ -111,7 +114,7 @@ static int _csync_statedb_check(const char *statedb) {
                 if (r >= 0) {
                     buf[BUF_SIZE - 1] = '\0';
                     if (c_streq(buf, "SQLite format 3")) {
-                        if (sqlite3_open(statedb, &db ) == SQLITE_OK) {
+                        if( sqlite_open(statedb, &db ) == SQLITE_OK )  {
                             rc = _csync_check_db_integrity(db);
                             if( sqlite3_close(db) != 0 ) {
                                 CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "WARN: sqlite3_close error!");
@@ -142,7 +145,9 @@ static int _csync_statedb_check(const char *statedb) {
 
   c_free_locale_string(wstatedb);
 
-  /* create database */
+  /* create database, use the original sqlite3_open function here as opening
+   * read only is not sufficient because that does not create a new db but
+   * bails out with error. */
   rc = sqlite3_open(statedb, &db);
   if (rc == SQLITE_OK) {
     sqlite3_close(db);
@@ -199,7 +204,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   }
 
   /* Open or create the temporary database */
-  if (sqlite3_open(statedb, &db) != SQLITE_OK) {
+  if (sqlite_open(statedb, &db) != SQLITE_OK) {
     const char *errmsg= sqlite3_errmsg(ctx->statedb.db);
     CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: Failed to sqlite3 open statedb - bail out: %s.",
               errmsg ? errmsg : "<no sqlite3 errormsg>");
