@@ -226,7 +226,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   }
 
   /* optimization for speeding up SQLite */
-  result = csync_statedb_query(db, "PRAGMA synchronous = FULL;");
+  result = csync_statedb_query(db, "PRAGMA synchronous = NORMAL;");
   c_strlist_destroy(result);
   result = csync_statedb_query(db, "PRAGMA case_sensitive_like = ON;");
   c_strlist_destroy(result);
