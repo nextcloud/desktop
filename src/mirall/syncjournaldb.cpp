@@ -945,32 +945,25 @@ void SyncJournalDb::wipeBlacklistEntry( const QString& file )
 
 void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item )
 {
-    QMutexLocker locker(&_mutex);
-    QSqlQuery query(_db);
-
     if( !checkConnect() ) {
         return;
     }
 
-    QString sql("SELECT retrycount FROM blacklist WHERE path=:path");
+    int retries = 0;
+    SyncJournalBlacklistRecord rec = blacklistEntry( item._file );
 
-    if( Utility::fsCasePreserving() ) {
-        // if the file system is case preserving we have to check the blacklist
-        // case insensitively
-        sql += QLatin1String(" COLLATE NOCASE");
-    }
+    QMutexLocker locker(&_mutex);
 
-    query.prepare(sql);
-    query.bindValue(":path", item._file);
+    bool haveRecord = false;
 
-    if( !query.exec() ) {
-        qDebug() << "SQL exec blacklistitem failed:" << query.lastError().text();
-        return;
+    if( rec.isValid() ) {
+        haveRecord = true;
+        retries = rec._retryCount;
     }
 
     QSqlQuery iQuery(_db);
-    if( query.next() ) {
-        int retries = query.value(0).toInt();
+
+    if( haveRecord ) {
         retries--;
         if( retries < 0 ) retries = 0;
 
@@ -993,7 +986,8 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
         iQuery.bindValue(":errorstring", item._errorString);
     }
     if( !iQuery.exec() ) {
-        qDebug() << "SQL exec blacklistitem insert/update failed: "<< iQuery.lastError().text();
+        QString bug = iQuery.lastError().text();
+        qDebug() << "SQL exec blacklistitem insert/update failed: "<< bug;
     }
 
 }
