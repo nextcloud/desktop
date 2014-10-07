@@ -153,13 +153,13 @@ void BandwidthManager::unregisterDownloadJob(QObject* o)
 
 void BandwidthManager::relativeUploadMeasuringTimerExpired()
 {
-    if (!usingRelativeUploadLimit()) {
+    if (!usingRelativeUploadLimit() || _relativeUploadDeviceList.count() == 0) {
         // Not in this limiting mode, just wait 1 sec to continue the cycle
         _relativeUploadDelayTimer.setInterval(1000);
         _relativeUploadDelayTimer.start();
         return;
     }
-    if (_relativeLimitCurrentMeasuredDevice == 0 || _relativeUploadDeviceList.count()) {
+    if (_relativeLimitCurrentMeasuredDevice == 0) {
         qDebug() << Q_FUNC_INFO << "No device set, just waiting 1 sec";
         _relativeUploadDelayTimer.setInterval(1000);
         _relativeUploadDelayTimer.start();
@@ -247,13 +247,13 @@ void BandwidthManager::relativeUploadDelayTimerExpired()
 // for downloads:
 void BandwidthManager::relativeDownloadMeasuringTimerExpired()
 {
-    if (!usingRelativeDownloadLimit()) {
+    if (!usingRelativeDownloadLimit() || _downloadJobList.count() == 0) {
         // Not in this limiting mode, just wait 1 sec to continue the cycle
         _relativeDownloadDelayTimer.setInterval(1000);
         _relativeDownloadDelayTimer.start();
         return;
     }
-    if (_relativeLimitCurrentMeasuredJob == 0 || _downloadJobList.count() == 0) {
+    if (_relativeLimitCurrentMeasuredJob == 0) {
         qDebug() << Q_FUNC_INFO << "No job set, just waiting 1 sec";
         _relativeDownloadDelayTimer.setInterval(1000);
         _relativeDownloadDelayTimer.start();
@@ -315,7 +315,7 @@ void BandwidthManager::relativeDownloadDelayTimerExpired()
     }
 
     if (_downloadJobList.isEmpty()) {
-        qDebug() << Q_FUNC_INFO << _downloadJobList.count() << "No jobs?";
+        //qDebug() << Q_FUNC_INFO << _downloadJobList.count() << "No jobs?";
         return;
     }
 

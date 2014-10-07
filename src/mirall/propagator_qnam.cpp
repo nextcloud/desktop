@@ -121,7 +121,7 @@ bool PollJob::finished()
 
     bool ok = false;
     QByteArray jsonData = reply()->readAll().trimmed();
-    qDebug() << Q_FUNC_INFO << ">" << jsonData << "<";
+    qDebug() << Q_FUNC_INFO << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QVariantMap status = QtJson::parse(QString::fromUtf8(jsonData), ok).toMap();
     if (!ok || status.isEmpty()) {
         _item._errorString = tr("Invalid json reply from the poll URL");
@@ -213,7 +213,7 @@ qint64 UploadDevice::readData(char* data, qint64 maxlen) {
         return -1;
     }
     _file.data()->seek(_start + _read);
-    qDebug() << Q_FUNC_INFO << maxlen << _read << _size << _bandwidthQuota;
+    //qDebug() << Q_FUNC_INFO << maxlen << _read << _size << _bandwidthQuota;
     if (_size - _read <= 0) {
         // at end
         qDebug() << Q_FUNC_INFO << _read << _size << _bandwidthQuota << "at end";
@@ -222,7 +222,6 @@ qint64 UploadDevice::readData(char* data, qint64 maxlen) {
     }
     maxlen = qMin(maxlen, _size - _read);
     if (maxlen == 0) {
-        qDebug() << Q_FUNC_INFO << "FUUUUUU" << maxlen << _size - _read;
         return 0;
     }
     if (isChoked()) {
@@ -242,19 +241,19 @@ qint64 UploadDevice::readData(char* data, qint64 maxlen) {
     qDebug() << Q_FUNC_INFO << "reading limited=" << isBandwidthLimited()
              << "maxlen=" << maxlen << "quota=" << _bandwidthQuota;
     qint64 ret = _file.data()->read(data, maxlen);
-    qDebug() << Q_FUNC_INFO << "returning " << ret;
+    //qDebug() << Q_FUNC_INFO << "returning " << ret;
 
     if (ret < 0)
         return -1;
     _read += ret;
-    qDebug() << Q_FUNC_INFO << "returning2 " << ret << _read;
+    //qDebug() << Q_FUNC_INFO << "returning2 " << ret << _read;
 
     return ret;
 }
 
 void UploadDevice::slotJobUploadProgress(qint64 sent, qint64 t)
 {    
-    qDebug() << Q_FUNC_INFO << sent << _read << t << _size << _bandwidthQuota;
+    //qDebug() << Q_FUNC_INFO << sent << _read << t << _size << _bandwidthQuota;
     if (sent == 0 || t == 0) {
         return;
     }
@@ -266,21 +265,21 @@ bool UploadDevice::atEnd() const {
         qDebug() << Q_FUNC_INFO << "Upload file object deleted during upload";
         return true;
     }
-    qDebug() << this << Q_FUNC_INFO << _read << chunkSize()
-             << (_read >= chunkSize() || _file.data()->atEnd())
-             << (_read >= _size);
+//    qDebug() << this << Q_FUNC_INFO << _read << chunkSize()
+//             << (_read >= chunkSize() || _file.data()->atEnd())
+//             << (_read >= _size);
     return  _file.data()->atEnd() || (_read >= _size);
 }
 
 qint64 UploadDevice::size() const{
-    qDebug() << this << Q_FUNC_INFO << _size;
+//    qDebug() << this << Q_FUNC_INFO << _size;
     return _size;
 }
 
 qint64 UploadDevice::bytesAvailable() const
 {
-    qDebug() << this << Q_FUNC_INFO << _size << _read << QIODevice::bytesAvailable()
-             <<   _size - _read + QIODevice::bytesAvailable();
+//    qDebug() << this << Q_FUNC_INFO << _size << _read << QIODevice::bytesAvailable()
+//             <<   _size - _read + QIODevice::bytesAvailable();
     return _size - _read + QIODevice::bytesAvailable();
 }
 
@@ -301,10 +300,10 @@ bool UploadDevice::seek ( qint64 pos ) {
 }
 
 void UploadDevice::giveBandwidthQuota(qint64 bwq) {
-    qDebug() << Q_FUNC_INFO << bwq;
+//    qDebug() << Q_FUNC_INFO << bwq;
     if (!atEnd()) {
         _bandwidthQuota = bwq;
-        qDebug() << Q_FUNC_INFO << bwq << "emitting readyRead()" <<  _read << _readWithProgress;
+//        qDebug() << Q_FUNC_INFO << bwq << "emitting readyRead()" <<  _read << _readWithProgress;
         QMetaObject::invokeMethod(this, "readyRead", Qt::QueuedConnection); // tell QNAM that we have quota
     }
 }
