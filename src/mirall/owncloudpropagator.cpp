@@ -323,11 +323,13 @@ bool OwncloudPropagator::useLegacyJobs()
     // Allow an environement variable for debugging
     QByteArray env = qgetenv("OWNCLOUD_USE_LEGACY_JOBS");
     if (env=="true" || env =="1") {
+        qDebug() << "Force Legacy Propagator ACTIVATED";
         return true;
     }
 
     env = qgetenv("OWNCLOUD_NEW_BANDWIDTH_LIMITING");
     if (env=="true" || env =="1") {
+        qDebug() << "New Bandwidth Limiting Code ACTIVATED";
         // Only certain Qt versions support this at the moment.
         // They need those Change-Ids: Idb1c2d5a382a704d8cc08fe03c55c883bfc95aa7 Iefbcb1a21d8aedef1eb11761232dd16a049018dc
         // FIXME We need to check the Qt version and then also return false here as soon
@@ -336,6 +338,7 @@ bool OwncloudPropagator::useLegacyJobs()
     }
 
     if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
+        qDebug() << "Switching To Legacy Propagator Because Of Bandwidth Limit ACTIVATED";
         // QNAM does not support bandwith limiting
         // in most Qt versions.
         return true;
