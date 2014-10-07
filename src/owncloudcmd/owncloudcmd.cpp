@@ -209,40 +209,43 @@ int main(int argc, char **argv) {
 
     QUrl url = QUrl::fromUserInput(options.target_url);    
 
-    // Fetch username and password. If empty, try to retrieve
-    // from URL and strip URL
-    QString user;
-    QString password;
+    // Order of retrieval attempt (later attempts override earlier ones):
+    // 1. From URL
+    // 2. From options
+    // 3. From netrc (if enabled)
+    // 4. From prompt (if interactive)
 
-    if (options.useNetrc) {
-        NetrcParser parser;
-        if (parser.parse()) {
-            NetrcParser::LoginPair pair = parser.find(url.host());
-            user = pair.first;
-            password = pair.second;
-        }
-    } else {
-        user = options.user;
-        if (user.isEmpty()) {
-            user = url.userName();
-        }
-        password = options.password;
-        if (password.isEmpty()) {
-            password = url.password();
-        }
+    QString user = url.userName();
+    QString password = url.password();
 
-        if (options.interactive) {
-            if (user.isEmpty()) {
-                std::cout << "Please enter user name: ";
-                std::string s;
-                std::getline(std::cin, s);
-                user = QString::fromStdString(s);
-            }
-            if (password.isEmpty()) {
-                password = queryPassword(user);
-            }
-        }
-    }
+     if (!options.user.isEmpty()) {
+            user = options.user;
+     }
+
+     if (!options.password.isEmpty()) {
+         password = options.password;
+     }
+
+     if (options.useNetrc) {
+         NetrcParser parser;
+         if (parser.parse()) {
+             NetrcParser::LoginPair pair = parser.find(url.host());
+             user = pair.first;
+             password = pair.second;
+         }
+     }
+
+     if (options.interactive) {
+         if (user.isEmpty()) {
+             std::cout << "Please enter user name: ";
+             std::string s;
+             std::getline(std::cin, s);
+             user = QString::fromStdString(s);
+         }
+         if (password.isEmpty()) {
+             password = queryPassword(user);
+         }
+     }
 
     // ### ensure URL is free of credentials
     if (url.userName().isEmpty()) {
