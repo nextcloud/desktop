@@ -482,9 +482,15 @@ void GETFileJob::start() {
 
 void GETFileJob::slotMetaDataChanged()
 {
-    if (reply()->error() != QNetworkReply::NoError
-            || reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() / 100 != 2) {
-        // We will handle the error when the job is finished.
+    int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    // If the status code isn't 2xx, don't write the reply body to the file.
+    // For any error: handle it when the job is finished, not here.
+    if (httpStatus / 100 != 2) {
+        _device->close();
+        return;
+    }
+    if (reply()->error() != QNetworkReply::NoError) {
         return;
     }
     _etag = get_etag_from_reply(reply());
@@ -554,13 +560,15 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        qint64 w = _device->write(buffer.constData(), r);
-        if (w != r) {
-            _errorString = _device->errorString();
-            _errorStatus = SyncFileItem::NormalError;
-            qDebug() << "Error while writing to file" << w << r <<  _errorString;
-            reply()->abort();
-            return;
+        if (_device->isOpen()) {
+            qint64 w = _device->write(buffer.constData(), r);
+            if (w != r) {
+                _errorString = _device->errorString();
+                _errorStatus = SyncFileItem::NormalError;
+                qDebug() << "Error while writing to file" << w << r <<  _errorString;
+                reply()->abort();
+                return;
+            }
         }
     }
 }
