@@ -133,6 +133,8 @@ public:
 
     SyncFileItem::Status errorStatus() { return _errorStatus; }
 
+    quint64 resumeStart() const { return _resumeStart; }
+
     virtual void slotTimeout();
 
 
