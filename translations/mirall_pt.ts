@@ -1284,7 +1284,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir %1 no browser</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
@@ -2272,7 +2272,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="122"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Escolher o que sincronizar</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="178"/>
