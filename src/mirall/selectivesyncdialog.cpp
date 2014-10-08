@@ -31,7 +31,7 @@
 namespace Mirall {
 
 SelectiveSyncTreeView::SelectiveSyncTreeView(Account *account, QWidget* parent)
-    : QTreeWidget(parent), _account(account)
+    : QTreeWidget(parent), _inserting(false), _account(account)
 {
     connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(slotItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(slotItemChanged(QTreeWidgetItem*,int)));

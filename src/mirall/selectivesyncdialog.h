@@ -46,7 +46,7 @@ private:
     QString _folderPath;
     QString _rootName;
     QStringList _oldBlackList;
-    bool _inserting = false; // set to true when we are inserting new items on the list
+    bool _inserting; // set to true when we are inserting new items on the list
     Account *_account;
 };
 
