@@ -153,7 +153,16 @@ if(NOT Qt5Core_FOUND)
         include( ${QT_USE_FILE} )
     endmacro()
 
-    add_definitions("-DQ_DECL_OVERRIDE=override")
+    if (CMAKE_COMPILER_IS_GNUCC)
+        execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
+                OUTPUT_VARIABLE GCC_VERSION)
+        if (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+            add_definitions("-DQ_DECL_OVERRIDE=override")
+        else()
+            add_definitions("-DQ_DECL_OVERRIDE=")
+        endif()
+    endif()
+
 endif()
 
 if( Qt5Core_DIR )
