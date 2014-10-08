@@ -448,6 +448,12 @@ GETFileJob::GETFileJob(Account* account, const QUrl& url, QFile *device,
 
 
 void GETFileJob::start() {
+    if (_resumeStart > 0) {
+        _headers["Range"] = "bytes=" + QByteArray::number(_resumeStart) +'-';
+        _headers["Accept-Ranges"] = "bytes";
+        qDebug() << "Retry with range " << _headers["Range"];
+    }
+
     QNetworkRequest req;
     for(QMap<QByteArray, QByteArray>::const_iterator it = _headers.begin(); it != _headers.end(); ++it) {
         req.setRawHeader(it.key(), it.value());
@@ -626,18 +632,13 @@ void PropagateDownloadFileQNAM::start()
 
     QMap<QByteArray, QByteArray> headers;
 
-    quint64 startSize = 0;
-    if (_tmpFile.size() > 0) {
-        quint64 done = _tmpFile.size();
-        if (done == _item._size) {
+    quint64 startSize = _tmpFile.size();
+    if (startSize > 0) {
+        if (startSize == _item._size) {
             qDebug() << "File is already complete, no need to download";
             downloadFinished();
             return;
         }
-        headers["Range"] = "bytes=" + QByteArray::number(done) +'-';
-        headers["Accept-Ranges"] = "bytes";
-        qDebug() << "Retry with range " << headers["Range"];
-        startSize = done;
     }
 
     if (_item._directDownloadUrl.isEmpty()) {
@@ -647,14 +648,27 @@ void PropagateDownloadFileQNAM::start()
                             &_tmpFile, headers, expectedEtagForResume, startSize);
     } else {
         // We were provided a direct URL, use that one
+        qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item._file << _item._directDownloadUrl;
+
+        // Direct URLs don't support resuming, so clear an existing tmp file
+        if (startSize > 0) {
+            qDebug() << Q_FUNC_INFO << "resuming not supported for directDownloadUrl, deleting temporary";
+            _tmpFile.close();
+            if (!_tmpFile.open(QIODevice::WriteOnly | QIODevice::Unbuffered)) {
+                done(SyncFileItem::NormalError, _tmpFile.errorString());
+                return;
+            }
+            startSize = 0;
+        }
+
         if (!_item._directDownloadCookies.isEmpty()) {
             headers["Cookie"] = _item._directDownloadCookies.toUtf8();
         }
+
         QUrl url = QUrl::fromUserInput(_item._directDownloadUrl);
         _job = new GETFileJob(AccountManager::instance()->account(),
                               url,
                               &_tmpFile, headers);
-        qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item._file << _item._directDownloadUrl;
     }
     _job->setTimeout(_propagator->httpTimeout() * 1000);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
@@ -677,17 +691,33 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
-        if (_tmpFile.size() == 0) {
-            // don't keep the temporary file if it is empty.
+        _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+        // If we sent a 'Range' header and get 416 back, we want to retry
+        // without the header.
+        bool badRangeHeader = job->resumeStart() > 0 && _item._httpErrorCode == 416;
+        if (badRangeHeader) {
+            qDebug() << Q_FUNC_INFO << "server replied 416 to our range request, trying again without";
+            _propagator->_anotherSyncNeeded = true;
+        }
+
+        // Don't keep the temporary file if it is empty or we
+        // used a bad range header.
+        if (_tmpFile.size() == 0 || badRangeHeader) {
             _tmpFile.close();
             _tmpFile.remove();
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         }
-        _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
         _propagator->_activeJobs--;
         SyncFileItem::Status status = job->errorStatus();
         if (status == SyncFileItem::NoStatus) {
             status = classifyError(err, _item._httpErrorCode);
+        }
+        if (badRangeHeader) {
+            // Can't do this in classifyError() because 416 without a
+            // Range header should result in NormalError.
+            status = SyncFileItem::SoftError;
         }
         done(status, job->errorString());
         return;
