@@ -46,7 +46,7 @@ public:
 
         Success, ///< The file was properly synced
         Conflict, ///< The file was properly synced, but a conflict was created
-        FileIgnored, ///< The file is in the ignored list
+        FileIgnored, ///< The file is in the ignored list (or blacklisted with no retries left)
         Restoration ///< The file was restored because what should have been done was not allowed
     };
 
@@ -91,7 +91,11 @@ public:
     QByteArray           _remotePerm;
     QString              _directDownloadUrl;
     QString              _directDownloadCookies;
-    bool                 _blacklistedInDb;
+
+    /// Whether there's an entry in the blacklist table.
+    /// Note: that entry may have retries left, so this can be true
+    /// without the status being FileIgnored.
+    bool                 _hasBlacklistEntry;
 
     // Variables usefull to report to the user
     Status               _status;

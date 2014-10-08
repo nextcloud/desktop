@@ -196,12 +196,12 @@ bool SyncEngine::checkBlacklisting( SyncFileItem *item )
     }
 
     SyncJournalBlacklistRecord entry = _journal->blacklistEntry(item->_file);
-    item->_blacklistedInDb = false;
+    item->_hasBlacklistEntry = false;
 
     // if there is a valid entry in the blacklist table and the retry count is
     // already null or smaller than 0, the file is blacklisted.
     if( entry.isValid() ) {
-        item->_blacklistedInDb = true;
+        item->_hasBlacklistEntry = true;
 
         if( entry._retryCount <= 0 ) {
             re = true;
@@ -288,7 +288,7 @@ void SyncEngine::deleteStaleBlacklistEntries()
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> blacklist_file_paths;
     foreach(const SyncFileItem& it, _syncedItems) {
-        if (it._status == SyncFileItem::FileIgnored)
+        if (it._hasBlacklistEntry)
             blacklist_file_paths.insert(it._file);
     }
 
@@ -706,7 +706,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     deleteStaleDownloadInfos();
     deleteStaleUploadInfos();
-    // deleteStaleBlacklistEntries();
+    deleteStaleBlacklistEntries();
     _journal->commit("post stale entry removal");
 
     _propagator->start(_syncedItems);

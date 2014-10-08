@@ -98,7 +98,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         break;
     case SyncFileItem::Success:
     case SyncFileItem::Restoration:
-        if( _item._blacklistedInDb ) {
+        if( _item._hasBlacklistEntry ) {
             // wipe blacklist entry.
             _propagator->_journal->wipeBlacklistEntry(_item._file);
             // remove a blacklist entry in case the file was moved.
