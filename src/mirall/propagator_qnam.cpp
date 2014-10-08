@@ -783,7 +783,7 @@ void GETFileJob::slotReadyRead()
     int bufferSize = qMin(1024*8ll , reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
 
-    qDebug() << Q_FUNC_INFO << reply()->bytesAvailable() << reply()->isOpen() << reply()->isFinished();
+    //qDebug() << Q_FUNC_INFO << reply()->bytesAvailable() << reply()->isOpen() << reply()->isFinished();
 
     while(reply()->bytesAvailable() > 0) {
         if (_bandwidthChoked) {
@@ -798,7 +798,7 @@ void GETFileJob::slotReadyRead()
                 break;
             }
             _bandwidthQuota -= toRead;
-            qDebug() << Q_FUNC_INFO << "Reading" << toRead << "remaining" << _bandwidthQuota;
+            //qDebug() << Q_FUNC_INFO << "Reading" << toRead << "remaining" << _bandwidthQuota;
         }
 
         qint64 r = reply()->read(buffer.data(), toRead);
@@ -821,7 +821,7 @@ void GETFileJob::slotReadyRead()
     }
     resetTimeout();
 
-    qDebug() << Q_FUNC_INFO << "END" << reply()->isFinished() << reply()->bytesAvailable() << _hasEmittedFinishedSignal;
+    //qDebug() << Q_FUNC_INFO << "END" << reply()->isFinished() << reply()->bytesAvailable() << _hasEmittedFinishedSignal;
     if (reply()->isFinished() && reply()->bytesAvailable() == 0) {
         qDebug() << Q_FUNC_INFO << "Actually finished!";
         if (_bandwidthManager) {
