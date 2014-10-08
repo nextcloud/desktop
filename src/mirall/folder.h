@@ -202,6 +202,7 @@ private:
     QTimer        _pollTimer;
     QString       _lastEtag;
     QElapsedTimer _timeSinceLastSync;
+    bool          _forceSyncOnPollTimeout;
 
     SyncJournalDb _journal;
 

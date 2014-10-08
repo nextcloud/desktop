@@ -60,6 +60,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _csyncUnavail(false)
       , _wipeDb(false)
       , _proxyDirty(true)
+      , _forceSyncOnPollTimeout(false)
       , _journal(path)
       , _csync_ctx(0)
 {
@@ -270,9 +271,10 @@ void Folder::slotPollTimerTimeout()
     }
 
     if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval() ||
-            _lastEtag.isNull() ||
+            _forceSyncOnPollTimeout ||
             !(_syncResult.status() == SyncResult::Success ||_syncResult.status() == SyncResult::Problem)) {
         qDebug() << "** Force Sync now, state is " << _syncResult.statusString();
+        _forceSyncOnPollTimeout = false;
         emit scheduleToSync(alias());
     } else {
         // do the ordinary etag check for the root folder.
@@ -731,9 +733,8 @@ void Folder::slotSyncFinished()
         _pollTimer.start();
         _timeSinceLastSync.restart();
     } else {
-        // Another sync is required.  We will make sure that the poll timer occurs soon enough
-        // and we clear the etag to force a sync
-        _lastEtag.clear();
+        // Another sync is required.  We will make sure that the poll timer occurs soon enough.
+        _forceSyncOnPollTimeout = true;
         QTimer::singleShot(1000, this, SLOT(slotPollTimerTimeout() ));
     }
 
@@ -799,7 +800,8 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
     if (*cancel) {
         wipe();
         // speed up next sync
-        _lastEtag = QString();
+        _lastEtag.clear();
+        _forceSyncOnPollTimeout = true;
         QTimer::singleShot(50, this, SLOT(slotPollTimerTimeout()));
     }
 }
