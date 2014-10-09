@@ -23,6 +23,8 @@ fix_frameworks() {
         mkdir -p "${FMWK_PATH}/Versions/${QT_FMWK_VERSION}/Resources/"
         cp -avf "${QT_FMWK_PATH}/${FMWK}/Contents/Info.plist" "${FMWK_PATH}/Versions/${QT_FMWK_VERSION}/Resources"
         (cd "${FMWK_PATH}" && ln -sf "Versions/${QT_FMWK_VERSION}/Resources" "Resources")
+        (cd "${FMWK_PATH}" && ln -sf "Versions/${QT_FMWK_VERSION}/${FMWK_NAME}")
+        (cd "${FMWK_PATH}/Versions" && ln -sf "${QT_FMWK_VERSION}" "Current")
         perl -pi -e "s/${FMWK_NAME}_debug/${FMWK_NAME}/" "${FMWK_PATH}/Resources/Info.plist"
     done
 }
@@ -30,6 +32,9 @@ fix_frameworks() {
 mount="/Volumes/$(basename "$src_dmg"|sed 's,-\([0-9]\)\(.*\),,')"
 test -e "$tmp_dmg" && rm -rf "$tmp_dmg"
 hdiutil convert "$src_dmg" -format UDRW -o "$tmp_dmg"
+#signing adds data, add a bit of space
+sectors=$(hdiutil resize -limits "$tmp_dmg" |grep -v cur|cut -f2)
+hdiutil resize -sectors $(($sectors+(51200))) "$tmp_dmg"
 hdiutil attach "$tmp_dmg"
 pushd "$mount"
 fix_frameworks "$mount"/*.app `qmake -query QT_INSTALL_LIBS` "$mount"/*.app/Contents/Frameworks
