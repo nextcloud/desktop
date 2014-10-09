@@ -61,8 +61,7 @@ public:
 
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
-    void setSelectiveSyncBlackList(const QStringList &list)
-    { _selectiveSyncBlackList = list; }
+    void setSelectiveSyncBlackList(const QStringList &list);
 
     /* Return true if we detected that another sync is needed to complete the sync */
     bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }

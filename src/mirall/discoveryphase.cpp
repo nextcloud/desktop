@@ -35,11 +35,16 @@ bool DiscoveryJob::isInBlackList(const QString& path) const
 
     auto it = std::lower_bound(_selectiveSyncBlackList.begin(), _selectiveSyncBlackList.end(), pathSlash);
 
+    if (it != _selectiveSyncBlackList.end() && *it == pathSlash) {
+        return true;
+    }
+
 	if (it == _selectiveSyncBlackList.begin()) {
         return false;
     }
     --it;
-    if (pathSlash.startsWith(*it + QLatin1Char('/'))) {
+    Q_ASSERT(*it.endsWith(QLatin1Char('/'))); // SyncEngine::setSelectiveSyncBlackList makes sure of that
+    if (pathSlash.startsWith(*it)) {
         return true;
     }
     return false;

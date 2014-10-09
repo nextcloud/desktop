@@ -1041,6 +1041,17 @@ QByteArray SyncEngine::getPermissions(const QString& file) const
     return _remotePerms.value(file);
 }
 
+void SyncEngine::setSelectiveSyncBlackList(const QStringList& list)
+{
+    _selectiveSyncBlackList = list;
+    for (int i = 0; i < _selectiveSyncBlackList.count(); ++i) {
+        if (!_selectiveSyncBlackList.at(i).endsWith(QLatin1Char('/'))) {
+            _selectiveSyncBlackList[i].append(QLatin1Char('/'));
+        }
+    }
+}
+
+
 
 void SyncEngine::abort()
 {
