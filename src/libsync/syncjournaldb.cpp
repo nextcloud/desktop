@@ -308,15 +308,20 @@ bool SyncJournalDb::checkConnect()
     _deleteFileRecordRecursively.reset(new SqlQuery(_db));
     _deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')");
 
-    QString sql( "SELECT lastTryEtag, lastTryModtime, retrycount, errorstring "
+    QString sql( "SELECT lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration "
                  "FROM blacklist WHERE path=?1");
     if( Utility::fsCasePreserving() ) {
         // if the file system is case preserving we have to check the blacklist
         // case insensitively
         sql += QLatin1String(" COLLATE NOCASE");
     }
-    _blacklistQuery.reset(new SqlQuery(_db));
-    _blacklistQuery->prepare(sql);
+    _getBlacklistQuery.reset(new SqlQuery(_db));
+    _getBlacklistQuery->prepare(sql);
+
+    _setBlacklistQuery.reset(new SqlQuery(_db));
+    _setBlacklistQuery->prepare("INSERT OR REPLACE INTO blacklist "
+                                "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration) "
+                                "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7)");
 
     // don't start a new transaction now
     commitInternal(QString("checkConnect End"), false);
@@ -341,7 +346,7 @@ void SyncJournalDb::close()
     _deleteUploadInfoQuery.reset(0);
     _deleteFileRecordPhash.reset(0);
     _deleteFileRecordRecursively.reset(0);
-    _blacklistQuery.reset(0);
+    _getBlacklistQuery.reset(0);
     _possibleUpgradeFromMirall_1_5 = false;
 
     _db.close();
@@ -351,6 +356,15 @@ void SyncJournalDb::close()
 
 
 bool SyncJournalDb::updateDatabaseStructure()
+{
+    if (!updateMetadataTableStructure())
+        return false;
+    if (!updateBlacklistTableStructure())
+        return false;
+    return true;
+}
+
+bool SyncJournalDb::updateMetadataTableStructure()
 {
     QStringList columns = tableColumns("metadata");
     bool re = true;
@@ -364,13 +378,13 @@ bool SyncJournalDb::updateDatabaseStructure()
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN fileid VARCHAR(128);");
         if( !query.exec() ) {
-            sqlFail("updateDatabaseStructure: Add column fileid", query);
+            sqlFail("updateMetadataTableStructure: Add column fileid", query);
             re = false;
         }
 
         query.prepare("CREATE INDEX metadata_file_id ON metadata(fileid);");
         if( ! query.exec() ) {
-            sqlFail("updateDatabaseStructure: create index fileid", query);
+            sqlFail("updateMetadataTableStructure: create index fileid", query);
             re = false;
         }
         commitInternal("update database structure: add fileid col");
@@ -380,17 +394,17 @@ bool SyncJournalDb::updateDatabaseStructure()
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN remotePerm VARCHAR(128);");
         if( !query.exec()) {
-            sqlFail("updateDatabaseStructure: add column remotePerm", query);
+            sqlFail("updateMetadataTableStructure: add column remotePerm", query);
             re = false;
         }
-        commitInternal("update database structure (remotePerm");
+        commitInternal("update database structure (remotePerm)");
     }
 
     if( 1 ) {
         SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
         if( !query.exec()) {
-            sqlFail("updateDatabaseStructure: create index inode", query);
+            sqlFail("updateMetadataTableStructure: create index inode", query);
             re = false;
         }
         commitInternal("update database structure: add inode index");
@@ -401,12 +415,40 @@ bool SyncJournalDb::updateDatabaseStructure()
         SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_pathlen ON metadata(pathlen);");
         if( !query.exec()) {
-            sqlFail("updateDatabaseStructure: create index pathlen", query);
+            sqlFail("updateMetadataTableStructure: create index pathlen", query);
             re = false;
         }
         commitInternal("update database structure: add pathlen index");
 
     }
+    return re;
+}
+
+bool SyncJournalDb::updateBlacklistTableStructure()
+{
+    QStringList columns = tableColumns("blacklist");
+    bool re = true;
+
+    // check if the file_id column is there and create it if not
+    if( !checkConnect() ) {
+        return false;
+    }
+
+    if( columns.indexOf(QLatin1String("lastTryTime")) == -1 ) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE blacklist ADD COLUMN lastTryTime INTEGER(8);");
+        if( !query.exec() ) {
+            sqlFail("updateBlacklistTableStructure: Add lastTryTime fileid", query);
+            re = false;
+        }
+        query.prepare("ALTER TABLE blacklist ADD COLUMN ignoreDuration INTEGER(8);");
+        if( !query.exec() ) {
+            sqlFail("updateBlacklistTableStructure: Add ignoreDuration fileid", query);
+            re = false;
+        }
+        commitInternal("update database structure: add lastTryTime, ignoreDuration cols");
+    }
+
     return re;
 }
 
@@ -892,20 +934,22 @@ SyncJournalBlacklistRecord SyncJournalDb::blacklistEntry( const QString& file )
     // SELECT lastTryEtag, lastTryModtime, retrycount, errorstring
 
     if( checkConnect() ) {
-        _blacklistQuery->bindValue( 1, file );
-        if( _blacklistQuery->exec() ){
-            if( _blacklistQuery->next() ) {
-                entry._lastTryEtag    = _blacklistQuery->baValue(0);
-                entry._lastTryModtime = _blacklistQuery->int64Value(1);
-                entry._retryCount     = _blacklistQuery->intValue(2);
-                entry._errorString    = _blacklistQuery->stringValue(3);
+        _getBlacklistQuery->bindValue( 1, file );
+        if( _getBlacklistQuery->exec() ){
+            if( _getBlacklistQuery->next() ) {
+                entry._lastTryEtag    = _getBlacklistQuery->baValue(0);
+                entry._lastTryModtime = _getBlacklistQuery->int64Value(1);
+                entry._retryCount     = _getBlacklistQuery->intValue(2);
+                entry._errorString    = _getBlacklistQuery->stringValue(3);
+                entry._lastTryTime    = _getBlacklistQuery->int64Value(4);
+                entry._ignoreDuration = _getBlacklistQuery->int64Value(5);
                 entry._file           = file;
             }
         } else {
-            qWarning() << "Exec error blacklist: " << _blacklistQuery->lastQuery() <<  " : "
-                       << _blacklistQuery->error();
+            qWarning() << "Exec error blacklist: " << _getBlacklistQuery->lastQuery() <<  " : "
+                       << _getBlacklistQuery->error();
         }
-        _blacklistQuery->reset();
+        _getBlacklistQuery->reset();
     }
 
     return entry;
@@ -1001,46 +1045,23 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
         return;
     }
 
-    int retries = 0;
-    SyncJournalBlacklistRecord rec = blacklistEntry( item._file );
-
     QMutexLocker locker(&_mutex);
 
-    bool haveRecord = false;
-
-    if( rec.isValid() ) {
-        haveRecord = true;
-        retries = rec._retryCount;
+    _setBlacklistQuery->bindValue(1, item._file);
+    _setBlacklistQuery->bindValue(2, item._lastTryEtag);
+    _setBlacklistQuery->bindValue(3, QString::number(item._lastTryModtime));
+    _setBlacklistQuery->bindValue(4, item._retryCount);
+    _setBlacklistQuery->bindValue(5, item._errorString);
+    _setBlacklistQuery->bindValue(6, QString::number(item._lastTryTime));
+    _setBlacklistQuery->bindValue(7, QString::number(item._ignoreDuration));
+    if( !_setBlacklistQuery->exec() ) {
+        QString bug = _setBlacklistQuery->error();
+        qDebug() << "SQL exec blacklistitem insert or replace failed: "<< bug;
     }
-
-    SqlQuery iQuery(_db);
-
-    if( haveRecord ) {
-        retries--;
-        if( retries < 0 ) retries = 0;
-
-        iQuery.prepare( "UPDATE blacklist SET lastTryEtag = ?1, lastTryModtime = ?2, "
-                        "retrycount = ?3, errorstring = ?4 WHERE path=?5;");
-        iQuery.bindValue(1, item._lastTryEtag);
-        iQuery.bindValue(2, QString::number(item._lastTryModtime));
-        iQuery.bindValue(3, retries);
-        iQuery.bindValue(4, item._errorString);
-        iQuery.bindValue(5, item._file);
-    } else {
-        // there is no entry yet.
-        iQuery.prepare("INSERT INTO blacklist (path, lastTryEtag, lastTryModtime, retrycount, errorstring) "
-                         "VALUES (?1, ?2, ?3, ?4, ?5);");
-
-        iQuery.bindValue(1, item._file );
-        iQuery.bindValue(2, item._lastTryEtag);
-        iQuery.bindValue(3, QString::number(item._lastTryModtime));
-        iQuery.bindValue(4, item._retryCount);
-        iQuery.bindValue(5, item._errorString);
-    }
-    if( !iQuery.exec() ) {
-        QString bug = iQuery.error();
-        qDebug() << "SQL exec blacklistitem insert/update failed: "<< bug;
-    }
+    qDebug() << "set blacklist entry for " << item._file << item._retryCount
+             << item._errorString << item._lastTryTime << item._ignoreDuration
+             << item._lastTryModtime << item._lastTryEtag;
+    _setBlacklistQuery->reset();
 
 }
 

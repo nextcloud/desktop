@@ -81,11 +81,61 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
 
 }
 
-SyncJournalBlacklistRecord::SyncJournalBlacklistRecord(const SyncFileItem& item, int retries)
-    :_retryCount(retries), _errorString(item._errorString), _lastTryModtime(item._modtime)
-    , _lastTryEtag(item._etag), _file(item._file)
+static time_t getMinBlacklistTime()
 {
+    return qMax(qgetenv("OWNCLOUD_BLACKLIST_TIME_MIN").toInt(),
+                25); // 25 seconds
+}
 
+static time_t getMaxBlacklistTime()
+{
+    int v = qgetenv("OWNCLOUD_BLACKLIST_TIME_MAX").toInt();
+    if (v > 0)
+        return v;
+    return 24*60*60; // 1 day
+}
+
+bool SyncJournalBlacklistRecord::isValid() const
+{
+    return ! _file.isEmpty()
+        && (!_lastTryEtag.isEmpty() || !_lastTryModtime == 0)
+        && _lastTryTime > 0 && _ignoreDuration > 0;
+}
+
+SyncJournalBlacklistRecord SyncJournalBlacklistRecord::update(
+        const SyncJournalBlacklistRecord& old, const SyncFileItem& item)
+{
+    SyncJournalBlacklistRecord entry;
+    if (item._httpErrorCode == 0  // Do not blacklist local errors. (#1985)
+#ifdef OWNCLOUD_5XX_NO_BLACKLIST
+        || item._httpErrorCode / 100 == 5 // In this configuration, never blacklist error 5xx
+#endif
+            ) {
+        qDebug() << "This error is not blacklisted " << item._httpErrorCode;
+        return entry;
+    }
+
+    static time_t minBlacklistTime(getMinBlacklistTime());
+    static time_t maxBlacklistTime(qMax(getMaxBlacklistTime(), minBlacklistTime));
+
+    entry._retryCount = old._retryCount + 1;
+    entry._errorString = item._errorString;
+    entry._lastTryModtime = item._modtime;
+    entry._lastTryEtag = item._etag;
+    entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
+    // The factor of 5 feels natural: 25s, 2 min, 10 min, ~1h, ~5h, ~24h
+    entry._ignoreDuration = qMin(qMax(minBlacklistTime, old._ignoreDuration * 5), maxBlacklistTime);
+    entry._file = item._file;
+
+    if( item._httpErrorCode == 403 || item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
+        qDebug() << "Fatal Error condition" << item._httpErrorCode << ", maximum blacklist ignore time!";
+        entry._ignoreDuration = maxBlacklistTime;
+    }
+
+    qDebug() << "blacklisting " << item._file
+             << " for " << entry._ignoreDuration
+             << ", retry count " << entry._retryCount;
+    return entry;
 }
 
 }

@@ -46,18 +46,40 @@ public:
 class SyncJournalBlacklistRecord
 {
 public:
-    SyncJournalBlacklistRecord() : _retryCount(0), _lastTryModtime(0) { }
+    SyncJournalBlacklistRecord()
+        : _retryCount(0)
+        , _lastTryModtime(0)
+        , _lastTryTime(0)
+        , _ignoreDuration(0)
+    {}
 
-    SyncJournalBlacklistRecord(const SyncFileItem&, int retries);
-
-    // query("SELECT path, inode, uid, gid, mode, modtime, type, md5 FROM metadata WHERE phash=:phash");
+    /// The number of times the operation was unsuccessful so far.
     int        _retryCount;
+
+    /// The last error string.
     QString    _errorString;
+
     time_t     _lastTryModtime;
     QByteArray _lastTryEtag;
+
+    /// The last time the operation was attempted (in s since epoch).
+    time_t     _lastTryTime;
+
+    /// The number of seconds the file shall be ignored.
+    time_t     _ignoreDuration;
+
     QString    _file;
 
-    bool isValid() { return(_lastTryEtag.length() > 0 || _lastTryModtime > 0); }
+    bool isValid() const;
+
+    /** Takes an old blacklist entry and updates it for a new sync result.
+     *
+     * The old entry may be invalid, then a fresh entry is created.
+     * If the returned record is invalid, the file shall not be
+     * blacklisted.
+     */
+    static SyncJournalBlacklistRecord update(
+            const SyncJournalBlacklistRecord& old, const SyncFileItem& item);
 };
 
 }

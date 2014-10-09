@@ -190,8 +190,6 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
 
 bool SyncEngine::checkBlacklisting( SyncFileItem *item )
 {
-    bool re = false;
-
     if( !_journal ) {
         qWarning() << "Journal is undefined!";
         return false;
@@ -200,51 +198,47 @@ bool SyncEngine::checkBlacklisting( SyncFileItem *item )
     SyncJournalBlacklistRecord entry = _journal->blacklistEntry(item->_file);
     item->_hasBlacklistEntry = false;
 
-    // if there is a valid entry in the blacklist table and the retry count is
-    // already null or smaller than 0, the file is blacklisted.
-    if( entry.isValid() ) {
-        item->_hasBlacklistEntry = true;
+    if( !entry.isValid() ) {
+        return false;
+    }
 
-        if( entry._retryCount <= 0 ) {
-            re = true;
+    item->_hasBlacklistEntry = true;
+
+    // If duration has expired, it's not blacklisted anymore
+    time_t now = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
+    if( now > entry._lastTryTime + entry._ignoreDuration ) {
+        qDebug() << "blacklist entry for " << item->_file << " has expired!";
+        return false;
+    }
+
+    // If the file has changed locally or on the server, the blacklist
+    // entry no longer applies
+    if( item->_direction == SyncFileItem::Up ) { // check the modtime
+        if(item->_modtime == 0 || entry._lastTryModtime == 0) {
+            return false;
+        } else if( item->_modtime != entry._lastTryModtime ) {
+            qDebug() << item->_file << " is blacklisted, but has changed mtime!";
+            return false;
         }
-
-        // if the retryCount is 0, but the etag for downloads or the mtime for uploads
-        // has changed, it is tried again
-        // note that if the retryCount is -1 we never try again.
-        if( entry._retryCount == 0 ) {
-            if( item->_direction == SyncFileItem::Up ) { // check the modtime
-                if(item->_modtime == 0 || entry._lastTryModtime == 0) {
-                    re = false;
-                } else {
-                    if( item->_modtime != entry._lastTryModtime ) {
-                        re = false;
-                        qDebug() << item->_file << " is blacklisted, but has changed mtime!";
-                    }
-                }
-            } else {
-                // download, check the etag.
-                if( item->_etag.isEmpty() || entry._lastTryEtag.isEmpty() ) {
-                    qDebug() << item->_file << "one ETag is empty, no blacklisting";
-                    return false;
-                } else {
-                    if( item->_etag != entry._lastTryEtag ) {
-                        re = false;
-                        qDebug() << item->_file << " is blacklisted, but has changed etag!";
-                    }
-                }
-            }
-        }
-
-        if( re ) {
-            qDebug() << "Item is on blacklist: " << entry._file << "retries:" << entry._retryCount;
-            item->_instruction = CSYNC_INSTRUCTION_ERROR;
-            item->_status = SyncFileItem::FileIgnored;
-            item->_errorString = tr("The item is not synced because of previous errors: %1").arg(entry._errorString);
+    } else if( item->_direction == SyncFileItem::Down ) {
+        // download, check the etag.
+        if( item->_etag.isEmpty() || entry._lastTryEtag.isEmpty() ) {
+            qDebug() << item->_file << "one ETag is empty, no blacklisting";
+            return false;
+        } else if( item->_etag != entry._lastTryEtag ) {
+            qDebug() << item->_file << " is blacklisted, but has changed etag!";
+            return false;
         }
     }
 
-    return re;
+    qDebug() << "Item is on blacklist: " << entry._file
+             << "retries:" << entry._retryCount
+             << "for another" << (entry._lastTryTime + entry._ignoreDuration - now) << "s";
+    item->_instruction = CSYNC_INSTRUCTION_ERROR;
+    item->_status = SyncFileItem::FileIgnored;
+    item->_errorString = tr("The item is not synced because of previous errors: %1").arg(entry._errorString);
+
+    return true;
 }
 
 void SyncEngine::deleteStaleDownloadInfos()

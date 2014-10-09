@@ -42,6 +42,24 @@ static int maximumActiveJob() {
     return max;
 }
 
+/** Updates or creates a blacklist entry for the given item.
+ *
+ * Returns whether the file is in the blacklist now.
+ */
+static bool blacklist(SyncJournalDb* journal, const SyncFileItem& item)
+{
+    SyncJournalBlacklistRecord oldEntry = journal->blacklistEntry(item._file);
+    SyncJournalBlacklistRecord newEntry = SyncJournalBlacklistRecord::update(oldEntry, item);
+
+    if (newEntry.isValid()) {
+        journal->updateBlacklistEntry(newEntry);
+    } else if (oldEntry.isValid()) {
+        journal->wipeBlacklistEntry(item._file);
+    }
+
+    return newEntry.isValid();
+}
+
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
 {
     if (_item._isRestoration) {
@@ -62,38 +80,17 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         status = SyncFileItem::SoftError;
     }
 
-    _item._status = status;
-
-    // Blacklisting
-    int retries = 0;
-
-    if( _item._httpErrorCode == 403 ||_item._httpErrorCode == 413 || _item._httpErrorCode == 415 ) {
-        qDebug() << "Fatal Error condition" << _item._httpErrorCode << ", forbid retry!";
-        retries = -1;
-    } else {
-        static QAtomicInt defaultRetriesCount(qgetenv("OWNCLOUD_BLACKLIST_COUNT").toInt());
-        if (defaultRetriesCount.fetchAndAddAcquire(0) <= 0) {
-            defaultRetriesCount.fetchAndStoreRelease(3);
-        }
-        retries = defaultRetriesCount.fetchAndAddAcquire(0);
-    }
-    SyncJournalBlacklistRecord record(_item, retries);
-
     switch( status ) {
     case SyncFileItem::SoftError:
     case SyncFileItem::FatalError:
         // do not blacklist in case of soft error or fatal error.
         break;
     case SyncFileItem::NormalError:
-        if (_item._httpErrorCode == 0  // Do not blacklist local errors. (#1985)
-#ifdef OWNCLOUD_5XX_NO_BLACKLIST
-            || _item._httpErrorCode / 100 == 5 // In this configuration, never blacklist error 5xx
-#endif
-                ) {
-            qDebug() << "This error is not blacklisted " << _item._httpErrorCode;
-            break;
+        if (blacklist(_propagator->_journal, _item) && _item._hasBlacklistEntry) {
+            // do not error if the item was, and continues to be, blacklisted
+            status = SyncFileItem::FileIgnored;
+            _item._errorString.prepend(tr("Continue blacklisting: "));
         }
-        _propagator->_journal->updateBlacklistEntry( record );
         break;
     case SyncFileItem::Success:
     case SyncFileItem::Restoration:
@@ -112,6 +109,8 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         // nothing
         break;
     }
+
+    _item._status = status;
 
     emit completed(_item);
     emit finished(status);

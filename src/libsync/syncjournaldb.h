@@ -111,6 +111,8 @@ public:
 
 private:
     bool updateDatabaseStructure();
+    bool updateMetadataTableStructure();
+    bool updateBlacklistTableStructure();
     bool sqlFail(const QString& log, const SqlQuery &query );
     void commitInternal(const QString &context, bool startTrans = true);
     void startTransaction();
@@ -133,7 +135,8 @@ private:
     QScopedPointer<SqlQuery> _deleteUploadInfoQuery;
     QScopedPointer<SqlQuery> _deleteFileRecordPhash;
     QScopedPointer<SqlQuery> _deleteFileRecordRecursively;
-    QScopedPointer<SqlQuery> _blacklistQuery;
+    QScopedPointer<SqlQuery> _getBlacklistQuery;
+    QScopedPointer<SqlQuery> _setBlacklistQuery;
 
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing

@@ -357,6 +357,9 @@ void Folder::bubbleUpSyncResult()
             if (firstItemError.isEmpty()) {
                 firstItemError = item;
             }
+        } else if( item._status == SyncFileItem::FileIgnored ) {
+            // ignored files don't show up in notifications
+            continue;
         } else {
             // add new directories or remove gone away dirs to the watcher
             if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_NEW ) {
