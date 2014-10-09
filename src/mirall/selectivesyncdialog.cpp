@@ -276,6 +276,7 @@ void SelectiveSyncDialog::init(Account *account)
 void SelectiveSyncDialog::accept()
 {
     if (_folder) {
+        auto oldBlackListSet = _folder->selectiveSyncBlackList().toSet();
         QStringList blackList = _treeView->createBlackList();
         _folder->setSelectiveSyncBlackList(blackList);
 
@@ -283,11 +284,19 @@ void SelectiveSyncDialog::accept()
         QSettings settings(_folder->configFile(), QSettings::IniFormat);
         settings.beginGroup(FolderMan::escapeAlias(_folder->alias()));
         settings.setValue("blackList", blackList);
-
         FolderMan *folderMan = FolderMan::instance();
         if (_folder->isBusy()) {
             _folder->slotTerminateSync();
         }
+
+        //The part that changed should not be read from the DB on next sync because there might be new folders
+        // (the ones that are no longer in the blacklist)
+        auto blackListSet = blackList.toSet();
+        auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+        foreach(const auto &it, changes) {
+            _folder->journalDb()->avoidReadFromDbOnNextSync(it);
+        }
+
         folderMan->slotScheduleSync(_folder->alias());
     }
     QDialog::accept();
