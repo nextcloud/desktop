@@ -161,6 +161,8 @@ if(NOT Qt5Core_FOUND)
         else()
             add_definitions("-DQ_DECL_OVERRIDE=")
         endif()
+    else() #clang or others
+        add_definitions("-DQ_DECL_OVERRIDE=override")
     endif()
 
 endif()
