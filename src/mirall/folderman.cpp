@@ -437,6 +437,16 @@ void FolderMan::slotScheduleAllFolders()
   */
 void FolderMan::slotScheduleSync( const QString& alias )
 {
+    // The folder watcher fires a lot of bogus notifications during
+    // a sync operation, both for actual user files and the database
+    // and log. Never enqueue a folder for sync while it is syncing.
+    // We lose some genuine sync requests that way, but that can't be
+    // helped.
+    if( _currentSyncFolder == alias ) {
+        qDebug() << "folder " << alias << " is currently syncing. NOT scheduling.";
+        return;
+    }
+
     if( alias.isEmpty() || ! _folderMap.contains(alias) ) {
         qDebug() << "Not scheduling sync for empty or unknown folder" << alias;
         return;
@@ -532,6 +542,8 @@ void FolderMan::slotFolderSyncStarted( )
 /*
   * a folder indicates that its syncing is finished.
   * Start the next sync after the system had some milliseconds to breath.
+  * This delay is particularly useful to avoid late file change notifications
+  * (that we caused ourselves by syncing) from triggering another spurious sync.
   */
 void FolderMan::slotFolderSyncFinished( const SyncResult& )
 {
