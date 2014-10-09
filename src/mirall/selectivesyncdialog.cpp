@@ -262,7 +262,7 @@ void SelectiveSyncDialog::init(Account *account)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     _treeView = new SelectiveSyncTreeView(account, this);
-    layout->addWidget(new QLabel(tr("Only checked folders will sync to this computer")));
+    layout->addWidget(new QLabel(tr("Unchecked folders will not be sync to this computer")));
     layout->addWidget(_treeView);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
     QPushButton *button;
