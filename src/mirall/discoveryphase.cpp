@@ -43,7 +43,7 @@ bool DiscoveryJob::isInBlackList(const QString& path) const
         return false;
     }
     --it;
-    Q_ASSERT(*it.endsWith(QLatin1Char('/'))); // SyncEngine::setSelectiveSyncBlackList makes sure of that
+    Q_ASSERT(it->endsWith(QLatin1Char('/'))); // SyncEngine::setSelectiveSyncBlackList makes sure of that
     if (pathSlash.startsWith(*it)) {
         return true;
     }
