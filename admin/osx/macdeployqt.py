@@ -23,7 +23,7 @@ import sys
 from glob import glob
 
 def QueryQMake(attrib):
-    return subprocess.check_output(['qmake', '-query', attrib]).rstrip('\n')
+    return subprocess.check_output([qmake_path, '-query', attrib]).rstrip('\n')
 
 FRAMEWORK_SEARCH_PATH=[
     '/Library/Frameworks',
@@ -71,14 +71,15 @@ class CouldNotFindScriptPluginError(Error):
 class CouldNotFindFrameworkError(Error):
   pass
 
-if len(sys.argv) < 2:
-  print 'Usage: %s <bundle.app>' % sys.argv[0]
+if len(sys.argv) < 3:
+  print 'Usage: %s <bundle.app> <path-to-qmake>' % sys.argv[0]
   exit()
 
 def is_exe(fpath):
   return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
 bundle_dir = sys.argv[1]
+qmake_path = sys.argv[2]
 
 bundle_name = os.path.basename(bundle_dir).split('.')[0]
 
