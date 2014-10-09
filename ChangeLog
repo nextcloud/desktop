@@ -1,5 +1,18 @@
 ChangeLog
 =========
+
+version 1.6.4 (release 2014-10-xx)
+ * Fix startup logic, fixes bug #1989
+ * Fix raise dialog on X11
+ * Win32: fix overflow when computing the size of file > 4GiB
+ * Use a fixed function to get files modification time, the
+   original one was broken for certain timezone issues, see
+   core bug #9781 for details
+ * Added some missing copyright headers
+ * Avoid data corruption due to wrong error handling, bug #2280
+ * Do improved request timeout handling to reduce the number of
+   timed out jobs, bug #2155
+
 version 1.6.3 (release 2014-09-03)
  * Fixed updater on OS X
  * Fixed memory leak in SSL button that could lead to quick memory draining
