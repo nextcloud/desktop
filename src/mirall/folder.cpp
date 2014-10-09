@@ -270,10 +270,24 @@ void Folder::slotPollTimerTimeout()
         return;
     }
 
-    if (quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval() ||
+    bool forceSyncIntervalExpired =
+            quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval();
+    bool okSyncResult =
+            _syncResult.status() == SyncResult::Success ||
+            _syncResult.status() == SyncResult::Problem;
+    if (forceSyncIntervalExpired ||
             _forceSyncOnPollTimeout ||
-            !(_syncResult.status() == SyncResult::Success ||_syncResult.status() == SyncResult::Problem)) {
-        qDebug() << "** Force Sync now, state is " << _syncResult.statusString();
+            !okSyncResult) {
+        if (forceSyncIntervalExpired) {
+            qDebug() << "** Force Sync, because it has been " << _timeSinceLastSync.elapsed() << "ms "
+                     << "since the last sync";
+        }
+        if (_forceSyncOnPollTimeout) {
+            qDebug() << "** Force Sync, because it was requested";
+        }
+        if (!okSyncResult) {
+            qDebug() << "** Force Sync, because the last sync had status: " << _syncResult.statusString();
+        }
         _forceSyncOnPollTimeout = false;
         emit scheduleToSync(alias());
     } else {
@@ -734,6 +748,7 @@ void Folder::slotSyncFinished()
         _timeSinceLastSync.restart();
     } else {
         // Another sync is required.  We will make sure that the poll timer occurs soon enough.
+        qDebug() << "another sync was requested by the finished sync";
         _forceSyncOnPollTimeout = true;
         QTimer::singleShot(1000, this, SLOT(slotPollTimerTimeout() ));
     }
