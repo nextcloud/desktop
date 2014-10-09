@@ -430,7 +430,9 @@ bool CheckServerJob::finished()
 
     bool success = false;
     QByteArray body = reply()->readAll();
-    if( body.isEmpty() ) {
+    int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if( body.isEmpty() || httpStatus != 200) {
+        qDebug() << "error: status.php replied " << httpStatus << body;
         emit instanceNotFound(reply());
     } else {
         QVariantMap status = QtJson::parse(QString::fromUtf8(body), success).toMap();
