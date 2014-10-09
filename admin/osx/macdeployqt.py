@@ -68,6 +68,9 @@ class CouldNotFindQtPluginError(Error):
 class CouldNotFindScriptPluginError(Error):
   pass
 
+class CouldNotFindFrameworkError(Error):
+  pass
+
 if len(sys.argv) < 2:
   print 'Usage: %s <bundle.app>' % sys.argv[0]
   exit()
