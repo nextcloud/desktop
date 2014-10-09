@@ -29,6 +29,8 @@
 
 #include "ui_protocolwidget.h"
 
+#include <climits>
+
 namespace Mirall {
 
 ProtocolWidget::ProtocolWidget(QWidget *parent) :
@@ -262,7 +264,7 @@ void ProtocolWidget::computeResyncButtonEnabled()
 
 void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::Info& progress )
 {
-    if( progress._completedFileCount == std::numeric_limits<quint64>::max() ) {
+    if( progress._completedFileCount == ULLONG_MAX ) {
         // The sync is restarting, clean the old items
         cleanIgnoreItems(folder);
         computeResyncButtonEnabled();
