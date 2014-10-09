@@ -820,12 +820,36 @@ QString SyncEngine::adjustRenamedPath(const QString& original)
     return original;
 }
 
+/**
+ *
+ * Make sure that we are allowed to do what we do by checking the permissions and the selective sync list
+ *
+ */
 void SyncEngine::checkForPermission()
 {
     for (SyncFileItemVector::iterator it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
 
         if (it->_direction != SyncFileItem::Up) {
             // Currently we only check server-side permissions
+            continue;
+        }
+
+        // Do not propagate anything in the server if it is in the selective sync blacklist
+        const QString path = it->destination() + QLatin1Char('/');
+        if (std::binary_search(_selectiveSyncBlackList.constBegin(), _selectiveSyncBlackList.constEnd(),
+                                path)) {
+            it->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            it->_status = SyncFileItem::FileIgnored;
+            it->_errorString = tr("Ignored because of the \"choose what to sync\" blacklist");
+
+            if (it->_isDirectory) {
+                for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
+                    it = it_next;
+                    it->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                    it->_status = SyncFileItem::FileIgnored;
+                    it->_errorString = tr("Ignored because of the \"choose what to sync\" blacklist");
+                }
+            }
             continue;
         }
 
@@ -843,7 +867,6 @@ void SyncEngine::checkForPermission()
                     it->_status = SyncFileItem::NormalError;
                     it->_errorString = tr("Not allowed because you don't have permission to add sub-directories in that directory");
 
-                    const QString path = it->_file + QLatin1Char('/');
                     for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
                         it = it_next;
                         it->_instruction = CSYNC_INSTRUCTION_ERROR;
@@ -896,7 +919,6 @@ void SyncEngine::checkForPermission()
 
                     if (it->_isDirectory) {
                         // restore all sub items
-                        const QString path = it->_file + QLatin1Char('/');
                         for (SyncFileItemVector::iterator it_next = it + 1;
                              it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
                             it = it_next;
@@ -916,8 +938,7 @@ void SyncEngine::checkForPermission()
                             it->_errorString = tr("Not allowed to remove, restoring");
                         }
                     }
-                }
-                if(perms.contains("S") && perms.contains("D")) {
+                } else if(perms.contains("S") && perms.contains("D")) {
                     // this is a top level shared dir which can be removed to unshare it,
                     // regardless if it is a read only share or not.
                     // To avoid that we try to restore files underneath this dir which have
@@ -926,8 +947,6 @@ void SyncEngine::checkForPermission()
                     // underneath, propagator sees that.
                     if( it->_isDirectory ) {
                         SyncFileItemVector::iterator it_prev = it - 1;
-                        const QString path = it->_file + QLatin1Char('/');
-
 
                         // put a more descriptive message if really a top level share dir is removed.
                         if( it_prev != _syncedItems.begin() && !(path.startsWith(it_prev->_file)) ) {
@@ -1010,7 +1029,6 @@ void SyncEngine::checkForPermission()
 
 
                     if (it->_isDirectory) {
-                        const QString path = it->_renameTarget + QLatin1Char('/');
                         for (SyncFileItemVector::iterator it_next = it + 1;
                              it_next != _syncedItems.end() && it_next->destination().startsWith(path); ++it_next) {
                             it = it_next;
