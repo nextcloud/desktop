@@ -153,10 +153,14 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
 {
     QStringList args(app_args);
 
-    if( args.count() < 3 ) {
-        const QString option = args.at(1);
-        if (option == "-v" || option == "--version") {
-            showVersion();
+    int argCount = args.count();
+
+    if( argCount < 3 ) {
+        if (argCount > 2) {
+            const QString option = args.at(1);
+            if (option == "-v" || option == "--version") {
+                showVersion();
+            }
         }
         help();
     }
