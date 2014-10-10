@@ -232,6 +232,9 @@ FolderWizardRemotePath::FolderWizardRemotePath()
     _ui.setupUi(this);
     _ui.warnFrame->hide();
 
+    _ui.folderTreeWidget->setSortingEnabled(true);
+    _ui.folderTreeWidget->sortByColumn(0, Qt::AscendingOrder);
+
     connect(_ui.addFolderButton, SIGNAL(clicked()), SLOT(slotAddRemoteFolder()));
     connect(_ui.refreshButton, SIGNAL(clicked()), SLOT(slotRefreshFolders()));
     connect(_ui.folderTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SIGNAL(completeChanged()));
