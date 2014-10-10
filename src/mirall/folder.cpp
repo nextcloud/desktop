@@ -705,8 +705,11 @@ void Folder::slotCsyncUnavailable()
 
 void Folder::slotSyncFinished()
 {
-    qDebug() << "-> CSync Finished slot with error " << _csyncError << "warn count" << _syncResult.warnCount();
-
+    if( _csyncError ) {
+        qDebug() << "-> SyncEngine finished with ERROR, warn count is" << _syncResult.warnCount();
+    } else {
+        qDebug() << "-> SyncEngine finished without problem.";
+    }
     bubbleUpSyncResult();
 
     bool anotherSyncNeeded = false;
