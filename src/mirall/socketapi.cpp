@@ -439,11 +439,13 @@ void SocketApi::sendMessage(SocketType *socket, const QString& message, bool doW
     if( ! localMessage.endsWith(QLatin1Char('\n'))) {
         localMessage.append(QLatin1Char('\n'));
     }
-    qint64 sent = socket->write(localMessage.toUtf8());
+
+    QByteArray bytesToSend = localMessage.toUtf8();
+    qint64 sent = socket->write(bytesToSend);
     if( doWait ) {
         socket->waitForBytesWritten(1000);
     }
-    if( sent != localMessage.toUtf8().length() ) {
+    if( sent != bytesToSend.length() ) {
         qDebug() << "WARN: Could not send all data on socket for " << localMessage;
     }
 
