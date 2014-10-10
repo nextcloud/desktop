@@ -201,7 +201,7 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
         } else if( (option == "-u" || option == "--user") && !it.peekNext().startsWith("-") ) {
                 options->user = it.next();
         } else if( (option == "-p" || option == "--password") && !it.peekNext().startsWith("-") ) {
-                options->user = it.next();
+                options->password = it.next();
         } else if( option == "--exclude" && !it.peekNext().startsWith("-") ) {
                 options->exclude = it.next();
         } else {
