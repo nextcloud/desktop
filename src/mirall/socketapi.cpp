@@ -226,6 +226,9 @@ SocketApi::SocketApi(QObject* parent)
     , _excludes(0)
 {
 
+    qDebug() << "Hello";
+    qWarning() << "gello";
+
 #ifdef SOCKETAPI_TCP
     // setup socket
     DEBUG << "Establishing SocketAPI server at" << PORT;

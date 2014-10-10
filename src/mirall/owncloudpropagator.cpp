@@ -56,11 +56,10 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         }
     }
 
-    if( _propagator->_abortRequested.fetchAndAddRelaxed(0) ) {
+    if( _propagator->_abortRequested.fetchAndAddRelaxed(0) &&
+            (status == SyncFileItem::NormalError || status == SyncFileItem::FatalError)) {
         // an abort request is ongoing. Change the status to Soft-Error
-
         status = SyncFileItem::SoftError;
-        _item._errorString = tr("Operation was canceled by user interaction.");
     }
 
     _item._status = status;
