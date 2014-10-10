@@ -76,7 +76,7 @@ static int _csync_check_db_integrity(sqlite3 *db) {
         c_strlist_destroy(result);
     }
 
-    if( sqlite3_threadsafe() != 0 ) {
+    if( sqlite3_threadsafe() == 0 ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "* WARNING: SQLite module is not threadsafe!");
     }
 
