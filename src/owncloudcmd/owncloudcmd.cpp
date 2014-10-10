@@ -30,8 +30,11 @@
 #include "creds/httpcredentials.h"
 #include "owncloudcmd.h"
 #include "simplesslerrorhandler.h"
-
+#include "theme.h"
 #include "netrcparser.h"
+
+#include "version.h"
+#include "config.h"
 
 #ifdef Q_OS_WIN32
 #include <windows.h>
@@ -115,9 +118,11 @@ public:
 
 void help()
 {
-    std::cout << "owncloudcmd - command line ownCloud client tool." << std::endl;
+    const char *binaryName = APPLICATION_EXECUTABLE "cmd";
+
+    std::cout << binaryName << " - command line " APPLICATION_NAME " client tool" << std::endl;
     std::cout << "" << std::endl;
-    std::cout << "Usage: owncloudcmd <sourcedir> <owncloudurl>" << std::endl;
+    std::cout << "Usage: " << binaryName << " <sourcedir> <owncloudurl>" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "A proxy can either be set manually using --httpproxy or it" << std::endl;
     std::cout << "uses the setting from a configured sync client." << std::endl;
@@ -127,14 +132,21 @@ void help()
     std::cout << "  --httpproxy [proxy]    Specify a http proxy to use." << std::endl;
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
-    std::cout << "  --exclude [file]       exclude list file" << std::endl;
+    std::cout << "  --exclude [file]       Exclude list file" << std::endl;
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
     std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
+    std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "" << std::endl;
     exit(1);
 
+}
+
+void showVersion() {
+    const char *binaryName = APPLICATION_EXECUTABLE "cmd";
+    std::cout << binaryName << " version " << qPrintable(Theme::instance()->version()) << std::endl;
+    exit(1);
 }
 
 void parseOptions( const QStringList& app_args, CmdOptions *options )
@@ -142,6 +154,10 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     QStringList args(app_args);
 
     if( args.count() < 3 ) {
+        const QString option = args.at(1);
+        if (option == "-v" || option == "--version") {
+            showVersion();
+        }
         help();
     }
 
@@ -205,7 +221,6 @@ int main(int argc, char **argv) {
     ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
-
 
     QUrl url = QUrl::fromUserInput(options.target_url);    
 

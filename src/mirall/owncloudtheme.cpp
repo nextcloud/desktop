@@ -52,7 +52,7 @@ QString ownCloudTheme::about() const
                "<p>Copyright ownCloud, Inc.</p>"
                "<p>Licensed under the GNU General Public License (GPL) Version 2.0<br/>"
                "ownCloud and the ownCloud Logo are registered trademarks of ownCloud, "
-               "Inc. in the United States, other countries, or both</p>"
+               "Inc. in the United States, other countries, or both.</p>"
                )
             .arg(MIRALL_VERSION_STRING)
             .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
