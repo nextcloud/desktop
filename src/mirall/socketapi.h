@@ -33,19 +33,7 @@ class QStringList;
 
 namespace Mirall {
 
-//Define this to use the old school TCP API. Maybe we should offer both APIs
-// and have the old TCP one be enableable via command line switch?
-//#define SOCKETAPI_TCP
-#if defined(Q_OS_WIN)
-// Windows plugin has not been ported
-#define SOCKETAPI_TCP
-#endif
-
-#ifdef SOCKETAPI_TCP
-typedef QTcpSocket SocketType;
-#else
 typedef QLocalSocket SocketType;
-#endif
 
 class SocketApi : public QObject
 {

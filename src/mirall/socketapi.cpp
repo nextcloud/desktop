@@ -60,10 +60,6 @@ CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path
 int csync_exclude_load(const char *fname, c_strlist_t **list);
 }
 
-namespace {
-    const int PORT = 34001;
-}
-
 namespace Mirall {
 
 #define DEBUG qDebug() << "SocketApi: "
@@ -225,17 +221,6 @@ SocketApi::SocketApi(QObject* parent)
     : QObject(parent)
     , _excludes(0)
 {
-
-    qDebug() << "Hello";
-    qWarning() << "gello";
-
-#ifdef SOCKETAPI_TCP
-    // setup socket
-    DEBUG << "Establishing SocketAPI server at" << PORT;
-    if (!_localServer.listen(QHostAddress::LocalHost, PORT)) {
-        DEBUG << "Failed to bind to port" << PORT;
-    }
-#else
     QString socketPath;
 
     if (Utility::isWindows()) {
@@ -277,7 +262,6 @@ SocketApi::SocketApi(QObject* parent)
         DEBUG << "server started, listening at " << socketPath;
     }
 
-#endif
     connect(&_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
