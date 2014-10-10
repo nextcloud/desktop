@@ -185,7 +185,7 @@ static ContentManager* sharedInstance = nil;
 	}
 	
 	if( [keysToDelete count] > 0 ) {
-		NSLog( @"Entries to delete: %d", [keysToDelete count]);
+		NSLog( @"Entries to delete: %lu", (unsigned long)[keysToDelete count]);
 		[_fileNamesCache removeObjectsForKeys:keysToDelete];
 	}
 }
@@ -233,7 +233,7 @@ static ContentManager* sharedInstance = nil;
 - (void)repaintAllWindowsIfNeeded
 {
 	if (!_hasChangedContent) {
-		NSLog(@"%@ Repaint scheduled but not needed", NSStringFromSelector(_cmd));
+		//NSLog(@"%@ Repaint scheduled but not needed", NSStringFromSelector(_cmd));
 		return;
 	}
 

@@ -10,7 +10,7 @@
 
 
 @interface FinishedIconCacheItem : NSObject
-@property (nonatomic, retain) NSImage *icon;
+@property (nonatomic, strong) NSImage *icon;
 @property (nonatomic) NSTimeInterval maxAge;
 @end
 
@@ -18,8 +18,10 @@
 @synthesize icon;
 @synthesize maxAge;
 - (void)dealloc {
-	NSLog(@"RELEASE %@ %@", self, self.icon);
-	[self.icon release];
+	//NSLog(@"RELEASE %@ %@", self, self.icon);
+	if (self.icon) {
+		[self->icon release];
+	}
 	[super dealloc];
 }
 @end
@@ -41,6 +43,12 @@ static FinishedIconCache* sharedInstance = nil;
 	return self;
 }
 
+- (void)dealloc
+{
+	[_cache dealloc];
+	[super dealloc];
+}
+
 + (FinishedIconCache*)sharedInstance
 {
 	@synchronized(self)
@@ -59,7 +67,7 @@ static FinishedIconCache* sharedInstance = nil;
 	NSString *cacheKey = [NSString stringWithFormat:@"%@--%d--%f%f", fileName, idx, w,h];
 	FinishedIconCacheItem *item = [_cache objectForKey:cacheKey];
 	if (item) {
-		if (item.maxAge > [[[NSDate alloc] init] timeIntervalSinceReferenceDate]) {
+		if (item.maxAge > [[NSDate date] timeIntervalSinceReferenceDate]) {
 			_hits++;
 			return item.icon;
 		}
@@ -74,7 +82,7 @@ static FinishedIconCache* sharedInstance = nil;
 	FinishedIconCacheItem *item = [[FinishedIconCacheItem alloc] init];
 	item.icon = icon;
 	// max age between 1 sec and 5 sec
-	item.maxAge = [[[NSDate alloc] init] timeIntervalSinceReferenceDate] + 1.0 + 4.0*((double)arc4random() / 0x100000000);
+	item.maxAge = [[NSDate date] timeIntervalSinceReferenceDate] + 1.0 + 4.0*((double)arc4random() / 0x100000000);
 	[_cache setObject:item forKey:cacheKey cost:w*h];
 	[item release];
 	//NSLog(@"CACHE hit/miss ratio: %f", (float)_hits/(float)_misses);

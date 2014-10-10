@@ -83,7 +83,7 @@ static RequestManager* sharedInstance = nil;
 	NSArray *regPathes = [_registeredPathes allKeys];
 	BOOL registered = NO;
 
-	NSString* checkPath = [[NSString alloc] initWithString:path];
+	NSString* checkPath = [NSString stringWithString:path];
 	if (isDir) {
 		// append a slash
 		checkPath = [path stringByAppendingString:@"/"];
@@ -127,17 +127,17 @@ static RequestManager* sharedInstance = nil;
 
 - (void)socket:(GCDAsyncSocket*)socket didReadData:(NSData*)data withTag:(long)tag
 {
-	NSArray *chunks;
 	NSString *answer = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSArray *chunks = nil;
 	if (answer != nil && [answer length] > 0) {
 		// cut a trailing newline
 		answer = [answer substringToIndex:[answer length] - 1];
 		chunks = [answer componentsSeparatedByString: @":"];
 	}
-	NSLog(@"READ from socket (%ld): <%@>", tag, answer);
 	ContentManager *contentman = [ContentManager sharedInstance];
 
-	if( [chunks count] > 0 && tag == READ_TAG ) {
+	if( chunks && [chunks count] > 0 && tag == READ_TAG ) {
+		NSLog(@"READ from socket (%ld): <%@>", tag, answer);
 		if( [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
 			NSString *path = [chunks objectAtIndex:2];
 			if( [chunks count] > 3 ) {
@@ -168,8 +168,8 @@ static RequestManager* sharedInstance = nil;
 		} else {
 			NSLog(@"Unknown command %@", [chunks objectAtIndex:0]);
 		}
-	} else {
-		NSLog(@"Received unknown tag %ld", tag);
+	} else if (tag != READ_TAG) {
+		NSLog(@"Received unknown tag %ld <%@>", tag, answer);
 	}
 	// Read on and on
 	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
@@ -202,7 +202,7 @@ static RequestManager* sharedInstance = nil;
 	if( [_requestQueue count] > 0 ) {
 		NSLog( @"We have to empty the queue");
 		for( NSString *path in _requestQueue ) {
-			[self askOnSocket:path];
+			[self askOnSocket:path query:@"RETRIEVE_FILE_STATUS"];
 		}
 	}
 
@@ -253,7 +253,7 @@ static RequestManager* sharedInstance = nil;
 				NSLog(@"I goofed: %@", err);
 			}
 		} else if (!useTcp) {
-			NSURL *url;
+			NSURL *url = nil;
 			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
 			if ([paths count])
 			{
