@@ -123,6 +123,14 @@ bool SyncJournalDb::checkConnect()
     }
 
     QSqlQuery pragma1(_db);
+    pragma1.prepare("SELECT sqlite_version();");
+    if (!pragma1.exec()) {
+        return sqlFail("SELECT sqlite_version()", pragma1);
+    } else {
+        pragma1.next();
+        qDebug() << "sqlite3 version" << pragma1.value(0).toString();
+    }
+
     pragma1.prepare("PRAGMA synchronous = 1;");
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA synchronous", pragma1);

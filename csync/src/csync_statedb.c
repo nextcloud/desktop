@@ -225,6 +225,14 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
     csync_set_statedb_exists(ctx, 1);
   }
 
+  /* Print out the version */
+  //
+  result = csync_statedb_query(db, "SELECT sqlite_version();");
+  if (result && result->count >= 1) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "sqlite3 version \"%s\"", *result->vector);
+  }
+  c_strlist_destroy(result);
+
   /* optimization for speeding up SQLite */
   result = csync_statedb_query(db, "PRAGMA synchronous = NORMAL;");
   c_strlist_destroy(result);
