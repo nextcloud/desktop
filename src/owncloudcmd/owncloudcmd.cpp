@@ -226,7 +226,7 @@ int main(int argc, char **argv) {
 
     parseOptions( app.arguments(), &options );
 
-    QUrl url = QUrl::fromUserInput(options.target_url);    
+    QUrl url = QUrl::fromUserInput(options.target_url);
 
     // Order of retrieval attempt (later attempts override earlier ones):
     // 1. From URL
@@ -274,11 +274,15 @@ int main(int argc, char **argv) {
         url.setPassword(password);
     }
 
+    // take the unmodified url to pass to csync_create()
+    QByteArray remUrl = options.target_url.toUtf8();
+
     Account account;
 
     // Find the folder and the original owncloud url
     QStringList splitted = url.path().split(account.davPath());
     url.setPath(splitted.value(0));
+
     url.setScheme(url.scheme().replace("owncloud", "http"));
     QString folder = splitted.value(1);
 
@@ -295,8 +299,9 @@ int main(int argc, char **argv) {
 restart_sync:
 
     CSYNC *_csync_ctx;
+
     if( csync_create( &_csync_ctx, options.source_dir.toUtf8(),
-                      url.toEncoded().constData()) < 0 ) {
+                      remUrl.constData()) < 0 ) {
         qFatal("Unable to create csync-context!");
         return EXIT_FAILURE;
     }
@@ -359,6 +364,7 @@ restart_sync:
 
     OwncloudCmd owncloudCmd;
     SyncJournalDb db(options.source_dir);
+
     SyncEngine engine(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(Progress::Info)), &owncloudCmd, SLOT(transmissionProgressSlot()));
