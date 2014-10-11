@@ -392,7 +392,7 @@ Total time left %5</source>
         <translation>Αδυναμία ανάγνωσης αρχείου αποκλεισμού συστήματος</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="802"/>
+        <location filename="../src/mirall/folder.cpp" line="805"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -401,17 +401,17 @@ Are you sure you want to perform this operation?</source>
 Είστε σίγουροι ότι θέλετε να εκτελέσετε αυτή τη λειτουργία;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="806"/>
+        <location filename="../src/mirall/folder.cpp" line="809"/>
         <source>Remove All Files?</source>
         <translation>Αφαίρεση Όλων των Αρχείων;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="808"/>
+        <location filename="../src/mirall/folder.cpp" line="811"/>
         <source>Remove all files</source>
         <translation>Αφαίρεση όλων των αρχείων</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="809"/>
+        <location filename="../src/mirall/folder.cpp" line="812"/>
         <source>Keep files</source>
         <translation>Διατήρηση αρχείων</translation>
     </message>
@@ -501,8 +501,8 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="491"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="493"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="494"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="496"/>
         <source>Add Folder</source>
         <translation>Προσθήκη Φακέλου</translation>
     </message>
@@ -578,42 +578,42 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="254"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Add Remote Folder</source>
         <translation>Προσθήκη Απομακρυσμένου Φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="255"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder:</source>
         <translation>Εισάγετε το όνομα του νέου φακέλου:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="277"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="280"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Επιτυχής δημιουργία φακέλου στο %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="285"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="288"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Αποτυχία δημιουργίας φακέλου στο %1. Παρακαλώ ελέγξτε χειροκίνητα.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="334"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="337"/>
         <source>Choose this to sync the entire account</source>
         <translation>Επιλέξτε να συγχρονίσετε ολόκληρο το λογαριασμό</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="389"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>This folder is already being synced.</source>
         <translation>Αυτός ο φάκελος συγχρονίζεται ήδη.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="394"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Ο φάκελος &lt;i&gt;%1&lt;/i&gt;, ο οποίος είναι γονεϊκός φάκελος του &lt;i&gt;%2&lt;/i&gt;, συγχρονίζεται ήδη.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="395"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="398"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>Συγχρονίζετε ήδη όλα σας τα αρχεία. Ο συγχρονισμός ενός ακόμα φακέλου &lt;b&gt;δεν&lt;/b&gt; υποστηρίζεται. Εάν θέλετε να συγχρονίσετε πολλαπλούς φακέλους, παρακαλώ αφαιρέστε την τρέχουσα ρύθμιση συχρονισμού του βασικού φακέλου.</translation>
     </message>
@@ -621,7 +621,7 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="433"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="436"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
         <translation>Επιλέξτε Τι θα Συγχρονιστεί: Μπορείτε προαιρετικά να καταργήστε την επιλογή υποφακέλων που δεν επιθυμείτε να συγχρονίσετε.</translation>
     </message>
@@ -1353,12 +1353,7 @@ It is not advisable to use it.</source>
         <translation> - Η αποκατάσταση Απέτυχε:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="63"/>
-        <source>Operation was canceled by user interaction.</source>
-        <translation>Η λειτουργία ακυρώθηκε από αλληλεπίδραση του χρήστη.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="185"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Ένα αρχείο ή ένας κατάλογος αφαιρέθηκε από ένα διαμοιρασμένο κατάλογο μόνο για ανάγνωση, αλλά η επαναφορά απέτυχε: %1</translation>
     </message>
@@ -2248,8 +2243,8 @@ It is not advisable to use it.</source>
     <name>Mirall::ownCloudTheme</name>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Version %2. Για περισσότερες πληροφορίες επισκεφθείτε &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Των Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz και άλλων.&lt;br/&gt;Βασισμένο στο Mirall του Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Αδειοδότηση υπό την GNU General Public License (GPL) Version 2.0&lt;br/&gt;Το ownCloud και το ownCloud Logo είναι σήματα κατατεθέντα της ownCloud, Inc. στις Η.Π.Α., σε άλλες χώρες ή όλες&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

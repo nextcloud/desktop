@@ -391,7 +391,7 @@ Toplam kalan süre: %5</translation>
         <translation>Sistem hariç tutulma dosyası okunamadı</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="802"/>
+        <location filename="../src/mirall/folder.cpp" line="805"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -400,17 +400,17 @@ Bu, klasörün sessizce yeniden yapılandırılması veya tüm dosyaların el il
 Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="806"/>
+        <location filename="../src/mirall/folder.cpp" line="809"/>
         <source>Remove All Files?</source>
         <translation>Tüm Dosyalar Kaldırılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="808"/>
+        <location filename="../src/mirall/folder.cpp" line="811"/>
         <source>Remove all files</source>
         <translation>Tüm dosyaları kaldır</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="809"/>
+        <location filename="../src/mirall/folder.cpp" line="812"/>
         <source>Keep files</source>
         <translation>Dosyaları koru</translation>
     </message>
@@ -500,8 +500,8 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="491"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="493"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="494"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="496"/>
         <source>Add Folder</source>
         <translation>Klasör Ekle</translation>
     </message>
@@ -577,42 +577,42 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
 <context>
     <name>Mirall::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="254"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Add Remote Folder</source>
         <translation>Uzak Klasör Ekle</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="255"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder:</source>
         <translation>Yeni klasörün adını girin:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="277"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="280"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Klasör %1 üzerinde başarıyla oluşturuldu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="285"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="288"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>%1 üzerinde klasör oluşturma başarısız. Lütfen elle denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="334"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="337"/>
         <source>Choose this to sync the entire account</source>
         <translation>Tüm hesabı eşitlemek için bunu seçin</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="389"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>This folder is already being synced.</source>
         <translation>Bu klasör zaten eşitleniyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="394"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>&lt;i&gt;%1&lt;/i&gt; zaten eşitleniyor. Bu, &lt;i&gt;%2&lt;/i&gt; klasörünün üst klasörü.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="395"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="398"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>Zaten tüm dosyalarınızı eşitliyorsunuz. Farklı bir klasör eşitlemek &lt;b&gt;desteklenmiyor&lt;/b&gt;. Eğer çoklu klasörleri eşitlemek isterseniz, lütfen şu anda yapılandırılmış kök klasör eşitlemesini kaldırın.</translation>
     </message>
@@ -620,7 +620,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
 <context>
     <name>Mirall::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="433"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="436"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
         <translation>Ne Eşitleneceğini Seçin: İsterseniz eşitlemek istemediğiniz alt klasörlerin işaretini kaldırabilirsiniz.</translation>
     </message>
@@ -1352,12 +1352,7 @@ Kullanmanız önerilmez.</translation>
         <translation>; Geri Yükleme Başarısız:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="63"/>
-        <source>Operation was canceled by user interaction.</source>
-        <translation>İşlem kullanıcı etkileşimi tarafından iptal edildi.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="185"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Bir dosya veya dizin bir salt okunur paylaşımdan kaldırılmıştı, ancak geri yükleme başarısız oldu: %1</translation>
     </message>
@@ -1547,7 +1542,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Unchecked folders will not be sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>İşareti kaldırılan klasörler, bu bilgisayarla eşitlenmeyecektir</translation>
     </message>
 </context>
 <context>
@@ -2035,7 +2030,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="843"/>
         <location filename="../src/mirall/syncengine.cpp" line="850"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Eşitlenecekleri seçin&quot; kara listesinde olduğundan yoksayıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="868"/>
@@ -2247,8 +2242,8 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <name>Mirall::ownCloudTheme</name>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Sürüm %2. Daha fazla bilgi için lütfen &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz ve diğerleri.&lt;br&gt;Duncan Mac-Vicar P. tarafından yazılmış Mirall tabanlıdır.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;/p&gt;&lt;p&gt;GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır.&lt;br&gt;ownCloud ve ownCloud logoları &lt;br&gt;ABD ve/veya diğer ülkelerde ownCloud, Inc.&apos;nin tescili markalarıdır.&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

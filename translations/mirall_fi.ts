@@ -391,24 +391,24 @@ Aikaa jäljellä yhteensä %5</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="802"/>
+        <location filename="../src/mirall/folder.cpp" line="805"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="806"/>
+        <location filename="../src/mirall/folder.cpp" line="809"/>
         <source>Remove All Files?</source>
         <translation>Poistetaanko kaikki tiedostot?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="808"/>
+        <location filename="../src/mirall/folder.cpp" line="811"/>
         <source>Remove all files</source>
         <translation>Poista kaikki tiedostot</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="809"/>
+        <location filename="../src/mirall/folder.cpp" line="812"/>
         <source>Keep files</source>
         <translation>Säilytä tiedostot</translation>
     </message>
@@ -498,8 +498,8 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="491"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="493"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="494"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="496"/>
         <source>Add Folder</source>
         <translation>Lisää kansio</translation>
     </message>
@@ -575,42 +575,42 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="254"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Add Remote Folder</source>
         <translation>Lisää etäkansio</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="255"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder:</source>
         <translation>Anna uuden kansion nimi:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="277"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="280"/>
         <source>Folder was successfully created on %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="285"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="288"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="334"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="337"/>
         <source>Choose this to sync the entire account</source>
         <translation>Valitse tämä synkronoidaksesi koko tilin</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="389"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>This folder is already being synced.</source>
         <translation>Tätä kansiota synkronoidaan jo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="394"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Synkronoit jo kansiota &lt;i&gt;%1&lt;/i&gt;, ja se on kansion &lt;i&gt;%2&lt;/i&gt; yläkansio.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="395"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="398"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation type="unfinished"/>
     </message>
@@ -618,7 +618,7 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="433"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="436"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
         <translation>Valitse synkronoitavat tiedot: Voit halutessasi olla valitsematta alikansioita synkronoitavaksi.</translation>
     </message>
@@ -1348,12 +1348,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="63"/>
-        <source>Operation was canceled by user interaction.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="185"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -2014,7 +2009,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="365"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto sisältää virheellisiä merkkejä, joiden vuoksi sitä voi synkronoida eri käyttöjärjestelmien välillä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="541"/>
@@ -2242,7 +2237,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <name>Mirall::ownCloudTheme</name>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
 </context>

@@ -391,7 +391,7 @@ Totaal resterende tijd %5</translation>
         <translation>Kon het systeem-uitsluitingsbestand niet lezen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="802"/>
+        <location filename="../src/mirall/folder.cpp" line="805"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -400,17 +400,17 @@ Dit kan komen doordat de map ongemerkt opnieuw geconfigureerd is of doordat alle
 Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="806"/>
+        <location filename="../src/mirall/folder.cpp" line="809"/>
         <source>Remove All Files?</source>
         <translation>Verwijder alle bestanden?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="808"/>
+        <location filename="../src/mirall/folder.cpp" line="811"/>
         <source>Remove all files</source>
         <translation>Verwijder alle bestanden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="809"/>
+        <location filename="../src/mirall/folder.cpp" line="812"/>
         <source>Keep files</source>
         <translation>Bewaar bestanden</translation>
     </message>
@@ -500,8 +500,8 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="491"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="493"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="494"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="496"/>
         <source>Add Folder</source>
         <translation>Voeg map toe</translation>
     </message>
@@ -577,42 +577,42 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
 <context>
     <name>Mirall::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="254"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Add Remote Folder</source>
         <translation>Voeg externe map toe</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="255"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder:</source>
         <translation>Voer de naam in van de nieuwe map:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="277"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="280"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Map is succesvol aangemaakt op %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="285"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="288"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Aanmaken van de map op %1 mislukt. Controleer handmatig.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="334"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="337"/>
         <source>Choose this to sync the entire account</source>
         <translation>Kies dit om uw volledige account te synchroniseren</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="389"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>This folder is already being synced.</source>
         <translation>Deze map is al gesynchroniseerd.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="394"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>U synchroniseert &lt;i&gt;%1&lt;/i&gt; al, dat is de bovenliggende map van &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="395"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="398"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>U bent al uw bestanden al aan het synchroniseren.Het synchroniseren van een andere map wordt &lt;b&gt;niet&lt;/b&gt; ondersteund. Als u meerdere mappen wilt synchroniseren moet u de nu geconfigureerde synchronisatie hoofdmap verwijderen.</translation>
     </message>
@@ -620,7 +620,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
 <context>
     <name>Mirall::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="433"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="436"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
         <translation>Kies wat u wilt synchroniseren: u kunt optioneel submappen die u niet wilt synch&apos;en deselecteren.</translation>
     </message>
@@ -1352,12 +1352,7 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>; Herstel mislukte: </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="63"/>
-        <source>Operation was canceled by user interaction.</source>
-        <translation>Verwerking afgebroken door gebruikersinteractie.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="185"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Er is een bestand of map verwijderd van een alleen-lezen share, maar herstellen is mislukt: %1</translation>
     </message>
@@ -2247,8 +2242,8 @@ Probeer opnieuw te synchroniseren.</translation>
     <name>Mirall::ownCloudTheme</name>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Versie %2. Bezoek voor meer informatie &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Door Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz en anderen.&lt;br&gt;Gebaseerd op MIrall door Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Gelicenseerd onder de GNU Genertal Public License (GPL) Versie 2.0&lt;br&gt;ownCloud en het ownCloud logo zijn geregistreerde handelsmerken van ownCloud, Inc. in de Verenigde Staten, andere landen, of beide.&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

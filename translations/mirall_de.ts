@@ -392,7 +392,7 @@ Gesamtzeit übrig %5</translation>
         <translation>Systemeigene Ausschlussdatei kann nicht gelesen werden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="802"/>
+        <location filename="../src/mirall/folder.cpp" line="805"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -401,17 +401,17 @@ Vielleicht wurde der Ordner neu konfiguriert, oder alle Dateien wurden händisch
 Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="806"/>
+        <location filename="../src/mirall/folder.cpp" line="809"/>
         <source>Remove All Files?</source>
         <translation>Alle Dateien löschen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="808"/>
+        <location filename="../src/mirall/folder.cpp" line="811"/>
         <source>Remove all files</source>
         <translation>Lösche alle Dateien</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="809"/>
+        <location filename="../src/mirall/folder.cpp" line="812"/>
         <source>Keep files</source>
         <translation>Dateien behalten</translation>
     </message>
@@ -501,8 +501,8 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="491"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="493"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="494"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="496"/>
         <source>Add Folder</source>
         <translation>Ordner hinzufügen</translation>
     </message>
@@ -578,42 +578,42 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
 <context>
     <name>Mirall::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="254"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Add Remote Folder</source>
         <translation>Entfernten Ordner hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="255"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder:</source>
         <translation>Geben Sie den Namen des neuen Ordners ein:</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="277"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="280"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Order erfolgreich auf %1 erstellt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="285"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="288"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Die Erstellung des Ordners auf %1 ist fehlgeschlagen. Bitte prüfen Sie dies manuell.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="334"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="337"/>
         <source>Choose this to sync the entire account</source>
         <translation>Wählen Sie dies, um das gesamte Konto zu synchronisieren</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="389"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>This folder is already being synced.</source>
         <translation>Dieser Ordner wird bereits synchronisiert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="391"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="394"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Sie synchronisieren bereits &lt;i&gt;%1&lt;/i&gt;, das ein übergeordneten Ordner von &lt;i&gt;%2&lt;/i&gt; ist.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="395"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="398"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>Sie synchronisieren bereits alle Ihre Dateien. Die Synchronisation anderer Verzeichnisse wird &lt;b&gt;nicht&lt;/b&gt; unterstützt. Wenn Sie mehrere Ordner synchronisieren möchten, entfernen Sie bitte das aktuell konfigurierte Wurzelverzeichnis zur Synchronisation.</translation>
     </message>
@@ -621,7 +621,7 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
 <context>
     <name>Mirall::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="433"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="436"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
         <translation>Zu synchronisierende Elemente auswählen: Sie können optional Unterordner abwählen, die nicht synchronisiert werden sollen.</translation>
     </message>
@@ -1353,12 +1353,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <translation>; Wiederherstellung fehlgeschlagen: </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="63"/>
-        <source>Operation was canceled by user interaction.</source>
-        <translation>Der Vorgang wurde durch einen Nutzereingriff abgebrochen.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudpropagator.cpp" line="186"/>
+        <location filename="../src/mirall/owncloudpropagator.cpp" line="185"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Eine Datei oder Verzeichnis wurde von einer Nur-Lese-Freigabe wiederhergestellt, aber die Wiederherstellung ist mit folgendem Fehler fehlgeschlagen: %1</translation>
     </message>
@@ -1548,7 +1543,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Unchecked folders will not be sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Nicht markierte Ordner werden nicht auf diesen Computer synchronisiert</translation>
     </message>
 </context>
 <context>
@@ -2036,7 +2031,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="843"/>
         <location filename="../src/mirall/syncengine.cpp" line="850"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Aufgrund der &quot;Zu synchronisierende Elemente auswählen&quot;-Sperrliste ignoriert</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="868"/>
@@ -2248,8 +2243,8 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <name>Mirall::ownCloudTheme</name>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Version %2 Für weitere Informationen besuchen Sie &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Entwickelt durch Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz und andere.&lt;br&gt;Basiert auf Mirall von Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Urheberrecht von ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Lizenziert unter der GNU General Public License (GPL) Version 2.0.&lt;br&gt;ownCloud und das ownCloud-Logo sind eingetragene Warenzeichen von ownCloud in den Vereinigten Staaten, anderen Ländern oder beides.&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
