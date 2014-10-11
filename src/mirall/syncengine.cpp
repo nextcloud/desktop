@@ -402,7 +402,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     int re = 0;
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
-        if (file->should_update_etag && !item._isDirectory) {
+        if (remote && item._should_update_etag && !item._isDirectory && item._instruction == CSYNC_INSTRUCTION_NONE) {
             // Update the database now already  (new fileid or etag or remotePerm)
             // Those are files that were detected as "resolved conflict".
             // They should have been a conflict because they both were new, or both
