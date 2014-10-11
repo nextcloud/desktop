@@ -110,7 +110,7 @@ static int ssl_callback_by_neon(void *userdata, int failures,
         }
     }
     DEBUG_WEBDAV("## VERIFY_SSL CERT: %d", ret  );
-      return ret;
+    return ret;
 }
 
 /*
