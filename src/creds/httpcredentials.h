@@ -52,6 +52,7 @@ public:
     virtual QString queryPassword(bool *ok) = 0;
     void invalidateToken(Account *account) Q_DECL_OVERRIDE;
     QString fetchUser(Account *account);
+    virtual bool sslIsTrusted() { return false; }
 
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply*, QAuthenticator*);
