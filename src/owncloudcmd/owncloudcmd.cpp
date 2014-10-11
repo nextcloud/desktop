@@ -167,11 +167,11 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
 
     options->target_url = args.takeLast();
     // check if the remote.php/webdav tail was added and append if not.
-    if( !options->target_url.contains("remote.php/webdav")) {
-        if(!options->target_url.endsWith("/")) {
-            options->target_url.append("/");
-        }
-        options->target_url.append("remote.php/webdav");
+    if(!options->target_url.endsWith("/")) {
+        options->target_url.append("/");
+    }
+    if( !options->target_url.contains("remote.php/webdav/")) {
+        options->target_url.append("remote.php/webdav/");
     }
     if (options->target_url.startsWith("http"))
         options->target_url.replace(0, 4, "owncloud");
