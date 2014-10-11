@@ -107,13 +107,28 @@ QString queryPassword(const QString &user)
 
 class HttpCredentialsText : public HttpCredentials {
 public:
-    HttpCredentialsText(const QString& user, const QString& password) : HttpCredentials(user, password) {}
+    HttpCredentialsText(const QString& user, const QString& password)
+        : HttpCredentials(user, password),
+          _sslTrusted(false)
+    {}
+
     QString queryPassword(bool *ok) {
         if (ok) {
             *ok = true;
         }
         return ::queryPassword(user());
     }
+
+    void setSSLTrusted( bool isTrusted ) {
+        _sslTrusted = isTrusted;
+    }
+
+    bool sslIsTrusted() {
+        return _sslTrusted;
+    }
+
+private:
+    bool _sslTrusted;
 };
 
 void help()
@@ -214,30 +229,6 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     }
 }
 
-int getauth_cmd(const char *prompt,
-            char *buf,
-            size_t len,
-            int echo,
-            int verify,
-            void *userdata)
-{
-    int re = 0;
-
-    const QString qPrompt = QString::fromLatin1( prompt ).trimmed();
-
-    if( qPrompt.startsWith( QLatin1String("There are problems with the SSL certificate:"))) {
-        // its an SSL problem.
-        if( opts->trustSSL ) {
-            qstrcpy(buf, "yes");
-        } else {
-            qstrcpy(buf, "no");
-        }
-    } else {
-        re = -1;
-    }
-    return re;
-}
-
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
 
@@ -312,8 +303,11 @@ int main(int argc, char **argv) {
 
     SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
 
-    HttpCredentials *cred = new HttpCredentialsText(user, password);
+    HttpCredentialsText *cred = new HttpCredentialsText(user, password);
 
+    if( options.trustSSL ) {
+        cred->setSSLTrusted(true);
+    }
     account.setUrl(url);
     account.setCredentials(cred);
     account.setSslErrorHandler(sslErrorHandler);
@@ -338,8 +332,6 @@ restart_sync:
 
     opts = &options;
     cred->syncContextPreInit(_csync_ctx);
-
-    csync_set_auth_callback( _csync_ctx, getauth_cmd );
 
     if( csync_init( _csync_ctx ) < 0 ) {
         qFatal("Could not initialize csync!");
