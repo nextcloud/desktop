@@ -146,8 +146,8 @@ struct csync_s {
   struct csync_owncloud_ctx_s *owncloud_context;
 
   /* hooks for checking the white list */
-  void *checkBlackListData;
-  int (*checkBlackListHook)(void*, const char*);
+  void *checkSelectiveSyncBlackListData;
+  int (*checkSelectiveSyncBlackListHook)(void*, const char*);
 };
 
 

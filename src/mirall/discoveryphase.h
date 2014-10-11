@@ -40,8 +40,8 @@ class DiscoveryJob : public QObject {
      * return true if the given path should be synced,
      * false if the path should be ignored
      */
-    bool isInBlackList(const QString &path) const;
-    static int isInBlackListCallBack(void *, const char *);
+    bool isInSelectiveSyncBlackList(const QString &path) const;
+    static int isInSelectiveSyncBlackListCallBack(void *, const char *);
 
     static void update_job_update_callback (bool local,
                                             const char *dirname,

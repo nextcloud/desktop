@@ -18,7 +18,7 @@
 
 namespace Mirall {
 
-bool DiscoveryJob::isInBlackList(const QString& path) const
+bool DiscoveryJob::isInSelectiveSyncBlackList(const QString& path) const
 {
     if (_selectiveSyncBlackList.isEmpty()) {
         // If there is no black list, everything is allowed
@@ -50,9 +50,9 @@ bool DiscoveryJob::isInBlackList(const QString& path) const
     return false;
 }
 
-int DiscoveryJob::isInBlackListCallBack(void *data, const char *path)
+int DiscoveryJob::isInSelectiveSyncBlackListCallBack(void *data, const char *path)
 {
-    return static_cast<DiscoveryJob*>(data)->isInBlackList(QString::fromUtf8(path));
+    return static_cast<DiscoveryJob*>(data)->isInSelectiveSyncBlackList(QString::fromUtf8(path));
 }
 
 void DiscoveryJob::update_job_update_callback (bool local,
@@ -77,8 +77,8 @@ void DiscoveryJob::update_job_update_callback (bool local,
 
 void DiscoveryJob::start() {
     _selectiveSyncBlackList.sort();
-    _csync_ctx->checkBlackListHook = isInBlackListCallBack;
-    _csync_ctx->checkBlackListData = this;
+    _csync_ctx->checkSelectiveSyncBlackListHook = isInSelectiveSyncBlackListCallBack;
+    _csync_ctx->checkSelectiveSyncBlackListData = this;
 
     _csync_ctx->callbacks.update_callback = update_job_update_callback;
     _csync_ctx->callbacks.update_callback_userdata = this;
@@ -90,8 +90,8 @@ void DiscoveryJob::start() {
     lastUpdateProgressCallbackCall.invalidate();
     int ret = csync_update(_csync_ctx);
 
-    _csync_ctx->checkBlackListHook = 0;
-    _csync_ctx->checkBlackListData = 0;
+    _csync_ctx->checkSelectiveSyncBlackListHook = 0;
+    _csync_ctx->checkSelectiveSyncBlackListData = 0;
 
     _csync_ctx->callbacks.update_callback = 0;
     _csync_ctx->callbacks.update_callback_userdata = 0;
