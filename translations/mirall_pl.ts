@@ -637,22 +637,22 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="505"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Nie otrzymano E-Tag z serwera, sprawdź Proxy/Bramę</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="512"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Otrzymaliśmy inny E-Tag wznowienia. Spróbuje ponownie następnym razem.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="539"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
         <source>Server returned wrong content-range</source>
         <translation>Serwer zwrócił błędną zakres zawartości</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="578"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
         <source>Connection Timeout</source>
         <translation>Limit czasu połączenia</translation>
     </message>
@@ -704,12 +704,12 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
 <context>
     <name>Mirall::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="370"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="374"/>
         <source>Enter Password</source>
         <translation>Wprowadź hasło</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="371"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="375"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Proszę podać hasło %1 dla użytkownika &apos;%2&apos;:</translation>
     </message>
@@ -832,12 +832,12 @@ Zaznaczone przedmioty także będą usunięte, jeżeli będą przeszkadzać w us
 <context>
     <name>Mirall::Logger</name>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="146"/>
+        <location filename="../src/mirall/logger.cpp" line="148"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="147"/>
+        <location filename="../src/mirall/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Plik &apos;%1&apos;&lt;br&gt;nie może zostać otwarty do zapisu.&lt;br/&gt;&lt;br/&gt;Dane wyjściowe dziennika &lt;b&gt;nie&lt;/b&gt; mogą być zapisane!&lt;/nobr&gt;</translation>
     </message>
@@ -1339,7 +1339,7 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="592"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Nie można pobrać pliku %1 ze względu na konflikt nazwy pliku lokalnego!</translation>
     </message>
@@ -1436,18 +1436,18 @@ Niezalecane jest jego użycie.</translation>
         <translation>Plik był edytowany lokalnie ale jest częścią udziału z prawem tylko do odczytu. Został przywrócony i Twoja edycja jest w pliku konfliktu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="326"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
         <source>The local file was removed during sync.</source>
         <translation>Pliki lokalny został usunięty podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="339"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
         <source>Local file changed during sync.</source>
         <translation>Lokalny plik zmienił się podczas synchronizacji.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="349"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Serwer nie potwierdził ostatniego łańcucha danych. (Nie było żadnego e-tag-u)</translation>
     </message>

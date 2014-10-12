@@ -637,22 +637,22 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="505"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Sunucudan E-Etiket alınamadı, Vekil sunucu/Ağ geçidini denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="512"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Devam etmek üzere farklı bir E-Etiket aldık. Sonraki işlemde yeniden denenecek.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="539"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
         <source>Server returned wrong content-range</source>
         <translation>Sunucu yanlış içerik aralığı döndürdü</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="578"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
         <source>Connection Timeout</source>
         <translation>Bağlantı Zaman Aşımı</translation>
     </message>
@@ -704,12 +704,12 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
 <context>
     <name>Mirall::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="370"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="374"/>
         <source>Enter Password</source>
         <translation>Parolayı Girin</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="371"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="375"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Lütfen &apos;%2&apos; kullanıcısı için %1 parolasını girin:</translation>
     </message>
@@ -832,12 +832,12 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
 <context>
     <name>Mirall::Logger</name>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="146"/>
+        <location filename="../src/mirall/logger.cpp" line="148"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="147"/>
+        <location filename="../src/mirall/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;&apos;%1&apos; dosyası&lt;br/&gt;yazmak üzere açılamadı.&lt;br/&gt;&lt;br/&gt;Günlük çıktısı &lt;b&gt;kaydedilemez&lt;/b&gt;!&lt;/nobr&gt;</translation>
     </message>
@@ -1339,7 +1339,7 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="592"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>%1 dosyası, yerel dosya adı çakışması nedeniyle indirilemiyor!</translation>
     </message>
@@ -1436,18 +1436,18 @@ Kullanmanız önerilmez.</translation>
         <translation>Dosya yerel olarak düzenlendi ancak salt okunur paylaşımın bir parçası. Geri yüklendi ve düzenlemeniz çakışan dosyada.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="326"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
         <source>The local file was removed during sync.</source>
         <translation>Eşitleme sırasında yerel dosya kaldırıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="339"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
         <source>Local file changed during sync.</source>
         <translation>Eşitleme sırasında yerel dosya değişti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="349"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Sunucu son yığını onaylamadı. (Mevcut e-etiket bulunamadı)</translation>
     </message>
@@ -2243,7 +2243,7 @@ Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Sürüm %2. Daha fazla bilgi için lütfen &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz ve diğerleri.&lt;br&gt;Duncan Mac-Vicar P. tarafından yazılmış Mirall tabanlıdır.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;/p&gt;&lt;p&gt;GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır.&lt;br&gt;ownCloud ve ownCloud logoları &lt;br&gt;ABD ve/veya diğer ülkelerde ownCloud, Inc.&apos;nin tescili markalarıdır.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

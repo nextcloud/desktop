@@ -637,22 +637,22 @@ Esteu segur que voleu executar aquesta operació?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="505"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>No s&apos;ha rebut cap E-Tag del servidor, comproveu el Proxy/Gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="512"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Hem rebut un E-Tag diferent en la represa. Es comprovarà la pròxima vegada.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="539"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
         <source>Server returned wrong content-range</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="578"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
         <source>Connection Timeout</source>
         <translation>Temps de connexió excedit</translation>
     </message>
@@ -704,12 +704,12 @@ Esteu segur que voleu executar aquesta operació?</translation>
 <context>
     <name>Mirall::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="370"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="374"/>
         <source>Enter Password</source>
         <translation>Escriviu contrasenya</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="371"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="375"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Escriviu %1 contrasenya per s&apos;usuari &apos;%2&apos;:</translation>
     </message>
@@ -832,12 +832,12 @@ Els elements marcats també s&apos;eliminaran si prevenen l&apos;eliminació d&a
 <context>
     <name>Mirall::Logger</name>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="146"/>
+        <location filename="../src/mirall/logger.cpp" line="148"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="147"/>
+        <location filename="../src/mirall/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;El fitxer &apos;%1&apos;&lt;br/&gt;no es pot obrir en mode escriptura.&lt;br/&gt;&lt;br/&gt;La sortida del registre &lt;b&gt;no&lt;/b&gt; es pot desar!&lt;/nobr&gt;</translation>
     </message>
@@ -1339,7 +1339,7 @@ No és aconsellada usar-la.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="592"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>El fitxer %1 no es pot baixar perquè hi ha un xoc amb el nom d&apos;un fitxer local!</translation>
     </message>
@@ -1436,18 +1436,18 @@ No és aconsellada usar-la.</translation>
         <translation>El fitxer s&apos;ha editat localment però és part d&apos;una compartició només de lectura. S&apos;ha restaurat i la vostra edició és en el fitxer en conflicte.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="326"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
         <source>The local file was removed during sync.</source>
         <translation>El fitxer local s&apos;ha eliminat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="339"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
         <source>Local file changed during sync.</source>
         <translation>El fitxer local ha canviat durant la sincronització.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="349"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>El servidor no ha reconegut l&apos;últim fragment. (No hi havia e-Tag)</translation>
     </message>

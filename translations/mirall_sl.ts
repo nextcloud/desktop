@@ -636,22 +636,22 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="505"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ni prejete oznake s strežnika. Preveriti je treba podatke posredovalnega strežnika ali prehoda.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="512"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Prejeta je različna oznaka za nadaljevanje opravila. Ponovni poskus bo izveden kasneje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="539"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
         <source>Server returned wrong content-range</source>
         <translation>Odziv strežnika kaže na neveljaven obseg vsebine</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="578"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
         <source>Connection Timeout</source>
         <translation>Povezava časovno pretekla</translation>
     </message>
@@ -703,12 +703,12 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
 <context>
     <name>Mirall::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="370"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="374"/>
         <source>Enter Password</source>
         <translation>Vnos gesla</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="371"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="375"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Vpisati je treba geslo %1 za uporabnika &apos;%2&apos;:</translation>
     </message>
@@ -831,12 +831,12 @@ Izbrani predmeti bodo tudi izbrisani, v kolikor bi sicer onemogočali brisanje m
 <context>
     <name>Mirall::Logger</name>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="146"/>
+        <location filename="../src/mirall/logger.cpp" line="148"/>
         <source>Error</source>
         <translation>Napaka</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="147"/>
+        <location filename="../src/mirall/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Datoteke &apos;%1&apos;&lt;br/&gt;ni mogoče odpreti za pisanje.&lt;br/&gt;&lt;br/&gt;Dnevniškega zapisa &lt;b&gt;ni mogoče&lt;/b&gt; shraniti!&lt;/nobr&gt;</translation>
     </message>
@@ -1338,7 +1338,7 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="592"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Datoteke %1 ni mogoče prejeti zaradi neskladja z imenom krajevne datoteke!</translation>
     </message>
@@ -1435,18 +1435,18 @@ Uporaba ni priporočljiva.</translation>
         <translation>Datoteka je bila krajevno spremenjena, vendar pa je označena za souporabo le za branje. Izvorna datoteka je obnovljena, vaše spremembe pa so zabeležene v datoteki spora.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="326"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
         <source>The local file was removed during sync.</source>
         <translation>Krajevna datoteka je bila me usklajevanjem odstranjena.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="339"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
         <source>Local file changed during sync.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem spremenjena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="349"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Strežnik ni prepoznal zadnjega niza besed. (ni določenih e-oznak)</translation>
     </message>

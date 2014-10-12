@@ -638,22 +638,22 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="505"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Kein E-Tag vom Server empfangen, bitte Proxy / Gateway überprüfen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="512"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Es wurde ein unterschiedlicher E-Tag zum Fortfahren empfangen. Bitte beim nächsten mal nochmal versuchen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="539"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
         <source>Server returned wrong content-range</source>
         <translation>Server hat falschen Bereich für den Inhalt zurück gegeben</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="578"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
         <source>Connection Timeout</source>
         <translation>Zeitüberschreitung der Verbindung</translation>
     </message>
@@ -705,12 +705,12 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
 <context>
     <name>Mirall::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="370"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="374"/>
         <source>Enter Password</source>
         <translation>Passwort eingeben</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="371"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="375"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Bitte %1 Passwort für den Nutzer &apos;%2&apos; eingeben:</translation>
     </message>
@@ -833,12 +833,12 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
 <context>
     <name>Mirall::Logger</name>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="146"/>
+        <location filename="../src/mirall/logger.cpp" line="148"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="147"/>
+        <location filename="../src/mirall/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Datei &apos;%1&apos;&lt;br/&gt;kann nicht zum Schreiben geöffnet werden.&lt;br/&gt;&lt;br/&gt;Die Protokolldatei kann &lt;b&gt;nicht&lt;/b&gt; gespeichert werden!&lt;/nobr&gt;</translation>
     </message>
@@ -1340,7 +1340,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="592"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Die Datei %1 kann aufgrund eines Konfliktes mit dem lokalen Dateinamen nicht herunter geladen werden!</translation>
     </message>
@@ -1437,18 +1437,18 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <translation>Die Datei wurde von einer Nur-Lese-Freigabe lokal bearbeitet. Die Datei wurde wiederhergestellt und Ihre Bearbeitung ist in der Konflikte-Datei.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="326"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
         <source>The local file was removed during sync.</source>
         <translation>Die lokale Datei wurde während der Synchronisation gelöscht.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="339"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
         <source>Local file changed during sync.</source>
         <translation>Eine lokale Datei wurde während der Synchronisation geändert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="349"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Der Server hat den letzten Block nicht bestätigt. (Der E-Tag war nicht vorhanden)</translation>
     </message>
@@ -1543,7 +1543,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Unchecked folders will not be sync to this computer</source>
-        <translation>Nicht markierte Ordner werden nicht auf diesen Computer synchronisiert</translation>
+        <translation>Nicht markierte Ordner werden nicht auf diesem Rechner synchronisiert</translation>
     </message>
 </context>
 <context>
@@ -2031,7 +2031,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="843"/>
         <location filename="../src/mirall/syncengine.cpp" line="850"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Aufgrund der &quot;Zu synchronisierende Elemente auswählen&quot;-Sperrliste ignoriert</translation>
+        <translation>Aufgrund der »Zu synchronisierende Elemente auswählen«-Sperrliste ignoriert</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="868"/>
@@ -2244,7 +2244,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %2 Für weitere Informationen bitte &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt; besuchen.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Entwickelt durch Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz und andere.&lt;br&gt;Basierend auf Mirall von Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Urheberrecht bei ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Lizenziert unter der GNU General Public License (GPL) Version 2.0.&lt;br&gt;ownCloud und das ownCloud-Logo sind eingetragene Warenzeichen von ownCloud in den Vereinigten Staaten, anderen Ländern oder beides.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

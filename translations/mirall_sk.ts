@@ -637,22 +637,22 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="505"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Zo servera nebol prijatý E-Tag, skontrolujte proxy/bránu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="512"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Prijali sme iný E-Tag pre pokračovanie. Skúsim to neskôr znovu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="539"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
         <source>Server returned wrong content-range</source>
         <translation>Server vrátil nesprávnu hodnotu Content-range</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="578"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
         <source>Connection Timeout</source>
         <translation>Spojenie vypršalo</translation>
     </message>
@@ -704,12 +704,12 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
 <context>
     <name>Mirall::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="370"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="374"/>
         <source>Enter Password</source>
         <translation>Vložte heslo</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="371"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="375"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Zadajte prosím %1 heslo pre používateľa &apos;%2&apos;: </translation>
     </message>
@@ -832,12 +832,12 @@ Zaškrtnuté položky budú taktiež zmazané pokiaľ bránia priečinku pri ods
 <context>
     <name>Mirall::Logger</name>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="146"/>
+        <location filename="../src/mirall/logger.cpp" line="148"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="147"/>
+        <location filename="../src/mirall/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Súbor &apos;%1&apos;&lt;br/&gt;nesmie byť otvorený pre proces úprav.&lt;/br/&gt;&lt;br/&gt;Systémový záznam (log) &lt;b&gt;nemôže&lt;/b&gt; byť uložený!&lt;/nobr&gt;</translation>
     </message>
@@ -1339,7 +1339,7 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="592"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Súbor %1 nie je možné stiahnuť, pretože súbor s rovnakým menom už existuje!</translation>
     </message>
@@ -1436,18 +1436,18 @@ Nie je vhodné ju používať.</translation>
         <translation>Súbor bol zmenený, ale je súčasťou zdieľania len na čítanie. Pôvodný súbor bol obnovený a upravená verzia je uložená v konfliktnom súbore.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="326"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
         <source>The local file was removed during sync.</source>
         <translation>Lokálny súbor bol odstránený počas synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="339"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
         <source>Local file changed during sync.</source>
         <translation>Lokálny súbor bol zmenený počas synchronizácie.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="349"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Server nepotvrdil posledný kúsok. (Nebol prítomný e-tag)</translation>
     </message>

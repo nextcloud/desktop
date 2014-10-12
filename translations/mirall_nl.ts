@@ -637,22 +637,22 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="505"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Geen E-Tag ontvangen van de server, controleer Proxy/Gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="512"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>We ontvingen een afwijkende E-Tag om door te gaan. We proberen het later opnieuw.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="539"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
         <source>Server returned wrong content-range</source>
         <translation>Server retourneerde verkeerde content-bandbreedte</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="578"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
         <source>Connection Timeout</source>
         <translation>Verbindingstime-out</translation>
     </message>
@@ -704,12 +704,12 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
 <context>
     <name>Mirall::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="370"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="374"/>
         <source>Enter Password</source>
         <translation>Vul het wachtwoord in</translation>
     </message>
     <message>
-        <location filename="../src/creds/httpcredentials.cpp" line="371"/>
+        <location filename="../src/creds/httpcredentials.cpp" line="375"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation>Vul het %1 wachtwoord in voor gebruiker &apos;%2&apos;:</translation>
     </message>
@@ -832,12 +832,12 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
 <context>
     <name>Mirall::Logger</name>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="146"/>
+        <location filename="../src/mirall/logger.cpp" line="148"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/mirall/logger.cpp" line="147"/>
+        <location filename="../src/mirall/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Bestand &apos;%1&apos;&lt;br/&gt;kan niet worden geopend voor schrijven.&lt;br/&gt;&lt;br/&gt;De logging output kan &lt;b&gt;niet&lt;/b&gt; worden weggeschreven!&lt;/nobr&gt;</translation>
     </message>
@@ -1339,7 +1339,7 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="592"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Bestand %1 kan niet worden gedownload omdat de naam conflicteert met een lokaal bestand</translation>
     </message>
@@ -1436,18 +1436,18 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>Het bestand is lokaal bewerkt, maar hoort bij een alleen-lezen share. Het originele bestand is teruggezet en uw bewerking staat in het conflicten bestand.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="326"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
         <source>The local file was removed during sync.</source>
         <translation>Het lokale bestand werd verwijderd tijdens sync.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="339"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
         <source>Local file changed during sync.</source>
         <translation>Lokaal bestand gewijzigd bij sync.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="349"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>De server heeft het laatste deel niet bevestigd (er was geen e-tag aanwezig)</translation>
     </message>
@@ -1542,7 +1542,7 @@ Probeer opnieuw te synchroniseren.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Unchecked folders will not be sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Niet geselecteerde mappen worden niet gesynched naar deze computer</translation>
     </message>
 </context>
 <context>
@@ -2030,7 +2030,7 @@ Probeer opnieuw te synchroniseren.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="843"/>
         <location filename="../src/mirall/syncengine.cpp" line="850"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Genegeerd vanwege de &quot;kies wat te synchen&quot; zwarte lijst</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="868"/>
@@ -2243,7 +2243,7 @@ Probeer opnieuw te synchroniseren.</translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versie %2. Bezoek voor meer informatie bezoek &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Door Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz en anderen.&lt;br&gt;Gebaseerd op MIrall door Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Gelicenseerd onder de GNU Genertal Public License (GPL) Versie 2.0&lt;br&gt;ownCloud en het ownCloud logo zijn geregistreerde handelsmerken van ownCloud, Inc. in de Verenigde Staten, andere landen, of beide.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
