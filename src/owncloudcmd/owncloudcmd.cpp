@@ -171,7 +171,7 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     int argCount = args.count();
 
     if( argCount < 3 ) {
-        if (argCount > 2) {
+        if (argCount >= 2) {
             const QString option = args.at(1);
             if (option == "-v" || option == "--version") {
                 showVersion();
@@ -192,7 +192,7 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
         options->target_url.replace(0, 4, "owncloud");
     options->source_dir = args.takeLast();
     if( !QFile::exists( options->source_dir )) {
-        std::cerr << "Source dir does not exists." << std::endl;
+        std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
         exit(1);
     }
 
