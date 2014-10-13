@@ -30,8 +30,6 @@
 
 namespace Mirall {
 
-QString SyncJournalDb::_dbFile;
-
 SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
     QObject(parent), _transaction(0), _possibleUpgradeFromMirall_1_5(false)
 {

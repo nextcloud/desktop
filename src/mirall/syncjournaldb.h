@@ -44,7 +44,7 @@ public:
     int getFileRecordCount();
     bool exists();
 
-    static QString databaseFilePath();
+    QString databaseFilePath();
     static qint64 getPHash(const QString& );
 
     void updateBlacklistEntry( const SyncJournalBlacklistRecord& item );
@@ -118,7 +118,7 @@ private:
     bool checkConnect();
 
     QSqlDatabase _db;
-    static QString _dbFile;
+    QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
     int _transaction;
     bool _possibleUpgradeFromMirall_1_5;

@@ -119,7 +119,7 @@ SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName )
 {
 
     // FIXME: Check if this stat is really needed, or is it done in the caller?
-    if( !folder ) {
+    if( !(folder && folder->journalDb()) ) {
         return SyncJournalFileRecord();
     }
 
@@ -128,7 +128,7 @@ SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName )
         fileName.remove(0, folder->path().length());
     }
 
-    QString dbFileName = SyncJournalDb::databaseFilePath();
+    QString dbFileName = folder->journalDb()->databaseFilePath();
 
     sqlite3 *db = NULL;
     sqlite3_stmt *stmt = NULL;
