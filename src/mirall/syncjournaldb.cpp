@@ -1064,7 +1064,7 @@ void SyncJournalDb::commit(const QString& context, bool startTrans)
 
 void SyncJournalDb::commitInternal(const QString& context, bool startTrans )
 {
-    qDebug() << "Transaction Start " << context;
+    qDebug() << Q_FUNC_INFO << "Transaction commit " << context << (startTrans ? "and starting new transaction" : "");
     commitTransaction();
 
     if( startTrans ) {
