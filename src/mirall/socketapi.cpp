@@ -124,19 +124,6 @@ SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName )
     return rec;
 }
 
-SyncJournalFileRecord dbFileRecord( Folder *folder, QString fileName )
-{
-    if( !folder ) {
-        return SyncJournalFileRecord();
-    }
-
-    QFileInfo fi(fileName);
-    if( fi.isAbsolute() ) {
-        fileName.remove(0, folder->path().length());
-    }
-    return( folder->journalDb()->getFileRecord(fileName) );
-}
-
 /**
  * Get status about a single file.
  */
