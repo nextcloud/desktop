@@ -72,6 +72,13 @@ public:
         return _file.isEmpty();
     }
 
+    bool hasErrorStatus() const {
+        return _status == SyncFileItem::SoftError
+                || _status == SyncFileItem::NormalError
+                || _status == SyncFileItem::FatalError
+                || !_errorString.isEmpty();
+    }
+
     // Variables usefull for everybody
     QString _file;
     QString _renameTarget;

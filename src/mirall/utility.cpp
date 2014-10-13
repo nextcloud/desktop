@@ -224,6 +224,18 @@ QString Utility::toCSyncScheme(const QString &urlStr)
     return url.toString();
 }
 
+bool Utility::doesSetContainPrefix(QSet<QString> &l, QString &p) {
+
+    Q_FOREACH (const QString &setPath, l) {
+        //qDebug() << Q_FUNC_INFO << p << setPath << setPath.startsWith(p);
+        if (setPath.startsWith(p)) {
+            return true;
+        }
+    }
+    //qDebug() << "-> NOOOOO!!!" << p << l.count();
+    return false;
+}
+
 QString Utility::escape(const QString &in)
 {
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)

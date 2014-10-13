@@ -42,6 +42,10 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
     /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
 
+    OWNCLOUDSYNC_EXPORT bool doesSetContainPrefix(QSet<QString> &l, QString &p);
+
+
+
     /**
      * @brief compactFormatDouble - formats a double value human readable.
      *
