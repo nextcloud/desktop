@@ -224,6 +224,11 @@ void SocketApi::slotUnregisterPath( const QString& alias )
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path(), QString::null, true );
+
+        if( _dbConnections.contains(f)) {
+            sqlite3_close_v2(_dbConnections[f]._db);
+        }
+        _dbConnections.remove(f);
     }
 }
 
@@ -407,6 +412,36 @@ SyncFileStatus SocketApi::recursiveFolderStatus(Folder *folder, const QString& f
     return result;
 }
 
+SqliteHandle SocketApi::getSqliteHandle( Folder *folder )
+{
+    if( _dbConnections.contains(folder) ) {
+        return _dbConnections[folder];
+    }
+    SqliteHandle h;
+    h._db = NULL;
+    h._stmt = NULL;
+
+    if( !folder ) {
+        return h;
+    }
+    int rc;
+    const char* query = "SELECT inode, mode, modtime, type, md5, fileid, remotePerm FROM "
+            "metadata WHERE phash=:ph";
+    QString dbFileName = folder->journalDb()->databaseFilePath();
+
+    if( sqlite3_open_v2(dbFileName.toUtf8().constData(), &(h._db),
+                        SQLITE_OPEN_READONLY+SQLITE_OPEN_NOMUTEX, NULL) == SQLITE_OK ) {
+
+        rc = sqlite3_prepare_v2(h._db, query, strlen(query), &(h._stmt), NULL);
+        if( rc != SQLITE_OK ) {
+            qDebug() << "Unable to prepare the query statement.";
+            return h; // do not insert into hash
+        }
+        _dbConnections.insert( folder, h);
+    }
+    return h;
+}
+
 SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString fileName )
 {
     if( !(folder && folder->journalDb()) ) {
@@ -417,29 +452,18 @@ SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString file
         fileName.remove(0, folder->path().length());
     }
 
-    QString dbFileName = folder->journalDb()->databaseFilePath();
+    SqliteHandle h = getSqliteHandle(folder);
 
-    sqlite3 *db = NULL;
-    sqlite3_stmt *stmt = NULL;
+    sqlite3_stmt *stmt = h._stmt;
     SyncJournalFileRecord rec;
-    int rc;
-    const char* query = "SELECT inode, mode, modtime, type, md5, fileid, remotePerm FROM "
-            "metadata WHERE phash=:ph";
 
-    if( sqlite3_open_v2(dbFileName.toUtf8().constData(), &db,
-                        SQLITE_OPEN_READONLY+SQLITE_OPEN_NOMUTEX, NULL) == SQLITE_OK ) {
-
-        rc = sqlite3_prepare_v2(db, query, strlen(query), &stmt, NULL);
-        if( rc != SQLITE_OK ) {
-            qDebug() << "Unable to prepare the query statement.";
-            return rec;
-        }
+    if( h._db && h._stmt ) {
         qlonglong phash = SyncJournalDb::getPHash( fileName );
         sqlite3_bind_int64(stmt, 1, (long long signed int)phash);
 
         // int column_count = sqlite3_column_count(stmt);
 
-        rc = sqlite3_step(stmt);
+        int rc = sqlite3_step(stmt);
 
         if (rc == SQLITE_ROW ) {
             rec._path   = fileName;
@@ -451,8 +475,7 @@ SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString file
             rec._fileId = QByteArray((char*)sqlite3_column_text(stmt, 5));
             rec._remotePerm = QByteArray((char*)sqlite3_column_text(stmt, 6));
         }
-        sqlite3_finalize(stmt);
-        sqlite3_close(db);
+        sqlite3_reset(stmt);
     }
     return rec;
 }
