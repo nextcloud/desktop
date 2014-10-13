@@ -1542,7 +1542,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Unchecked folders will not be sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Les dossiers non sélectionnés ne seront pas synchronisés sur cet ordinateur</translation>
     </message>
 </context>
 <context>
@@ -2030,7 +2030,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="843"/>
         <location filename="../src/mirall/syncengine.cpp" line="850"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Ignoré à cause de la liste noire du contenu à synchroniser.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="868"/>
