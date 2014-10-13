@@ -35,6 +35,9 @@
 #include <QApplication>
 #include <QLocalSocket>
 
+#include <sqlite3.h>
+
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QStandardPaths>
 #endif
@@ -112,12 +115,66 @@ SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName, c_
     return result;
 }
 
-SyncJournalFileRecord dbFileRecord( Folder *folder, QString fileName )
+SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName )
 {
-    QFileInfo fi(fileName);
+
+    // FIXME: Check if this stat is really needed, or is it done in the caller?
     if( !folder ) {
         return SyncJournalFileRecord();
     }
+
+    QFileInfo fi(fileName);
+    if( fi.isAbsolute() ) {
+        fileName.remove(0, folder->path().length());
+    }
+
+    QString dbFileName = SyncJournalDb::databaseFilePath();
+
+    sqlite3 *db = NULL;
+    sqlite3_stmt *stmt = NULL;
+    SyncJournalFileRecord rec;
+    int rc;
+    const char* query = "SELECT inode, mode, modtime, type, md5, fileid, remotePerm FROM "
+            "metadata WHERE phash=:ph";
+
+    if( sqlite3_open_v2(dbFileName.toUtf8().constData(), &db,
+                        SQLITE_OPEN_READONLY+SQLITE_OPEN_NOMUTEX, NULL) == SQLITE_OK ) {
+
+        rc = sqlite3_prepare_v2(db, query, strlen(query), &stmt, NULL);
+        if( rc != SQLITE_OK ) {
+            qDebug() << "Unable to prepare the query statement.";
+            return rec;
+        }
+        qlonglong phash = SyncJournalDb::getPHash( fileName );
+        sqlite3_bind_int64(stmt, 1, (long long signed int)phash);
+
+        // int column_count = sqlite3_column_count(stmt);
+
+        rc = sqlite3_step(stmt);
+
+        if (rc == SQLITE_ROW ) {
+            rec._path   = fileName;
+            rec._inode  = sqlite3_column_int64(stmt,0);;
+            rec._mode = sqlite3_column_int(stmt, 1);
+            rec._modtime = Utility::qDateTimeFromTime_t( strtoul((char*)sqlite3_column_text(stmt, 2), NULL, 10));
+            rec._type = sqlite3_column_int(stmt, 3);;
+            rec._etag = QByteArray((char*)sqlite3_column_text(stmt, 4));
+            rec._fileId = QByteArray((char*)sqlite3_column_text(stmt, 5));
+            rec._remotePerm = QByteArray((char*)sqlite3_column_text(stmt, 6));
+        }
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+    }
+    return rec;
+}
+
+SyncJournalFileRecord dbFileRecord( Folder *folder, QString fileName )
+{
+    if( !folder ) {
+        return SyncJournalFileRecord();
+    }
+
+    QFileInfo fi(fileName);
     if( fi.isAbsolute() ) {
         fileName.remove(0, folder->path().length());
     }
@@ -169,18 +226,18 @@ SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strli
 
     // Problem: for the sync dir itself we do not have a record in the sync journal
     // so the next check must not be used for the sync root folder.
-    SyncJournalFileRecord rec = dbFileRecord(folder, unixFileName );
+    SyncJournalFileRecord rec = dbFileRecord_capi(folder, unixFileName );
     if( !isSyncRootFolder && !rec.isValid() ) {
         // check the parent folder if it is shared and if it is allowed to create a file/dir within
         QDir d( fi.path() );
         QString parentPath = d.path();
-        SyncJournalFileRecord dirRec = dbFileRecord(folder, parentPath);
+        SyncJournalFileRecord dirRec = dbFileRecord_capi(folder, parentPath);
         while( !d.isRoot() && !(d.exists() && dirRec.isValid()) ) {
             d.cdUp(); // returns true if the dir exists.
 
             parentPath = d.path();
             // cut the folder path
-            dirRec = dbFileRecord(folder, parentPath);
+            dirRec = dbFileRecord_capi(folder, parentPath);
         }
         if( dirRec.isValid() ) {
             if( dirRec._type == CSYNC_FTW_TYPE_DIR ) {

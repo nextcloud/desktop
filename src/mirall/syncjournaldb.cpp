@@ -30,6 +30,8 @@
 
 namespace Mirall {
 
+QString SyncJournalDb::_dbFile;
+
 SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
     QObject(parent), _transaction(0), _possibleUpgradeFromMirall_1_5(false)
 {
@@ -47,6 +49,11 @@ bool SyncJournalDb::exists()
 {
     QMutexLocker locker(&_mutex);
     return (!_dbFile.isEmpty() && QFile::exists(_dbFile));
+}
+
+QString SyncJournalDb::databaseFilePath()
+{
+    return _dbFile;
 }
 
 void SyncJournalDb::startTransaction()
@@ -405,7 +412,7 @@ QStringList SyncJournalDb::tableColumns( const QString& table )
     return columns;
 }
 
-qint64 SyncJournalDb::getPHash(const QString& file) const
+qint64 SyncJournalDb::getPHash(const QString& file)
 {
     QByteArray utf8File = file.toUtf8();
     int64_t h;
