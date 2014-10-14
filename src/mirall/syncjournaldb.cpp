@@ -210,7 +210,7 @@ bool SyncJournalDb::checkConnect()
             return sqlFail("Remove version", createQuery);
         }
     }
-    createQuery.prepare("INSERT INTO version (major, minor, patch) VALUES ( ? , ? , ? );");
+    createQuery.prepare("INSERT INTO version (major, minor, patch) VALUES ( ?1 , ?2 , ?3 );");
     createQuery.bindValue(0, MIRALL_VERSION_MAJOR);
     createQuery.bindValue(1, MIRALL_VERSION_MINOR);
     createQuery.bindValue(2, MIRALL_VERSION_PATCH);

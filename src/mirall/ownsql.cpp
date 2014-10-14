@@ -17,11 +17,12 @@
 
 #include "ownsql.h"
 
-#define SQLITE_DO(A) if(1) { _errId = SQLITE_OK; \
-    if( A != SQLITE_OK ) { _error= QString::fromUtf8(sqlite3_errmsg(_db)); \
-    _errId = sqlite3_extended_errcode(_db ); } }
+#define SQLITE_DO(A) if(1) { \
+    _errId = (A); if(_errId != SQLITE_OK) { _error= QString::fromUtf8(sqlite3_errmsg(_db)); \
+     } }
 
 SqlDatabase::SqlDatabase()
+    :_db(NULL)
 {
 
 }
@@ -33,7 +34,12 @@ bool SqlDatabase::isOpen()
 
 bool SqlDatabase::open( const QString& filename )
 {
-    SQLITE_DO( sqlite3_open_v2(filename.toUtf8().constData(), &_db, SQLITE_OPEN_NOMUTEX, NULL) );
+    if(isOpen()) {
+        return true;
+    }
+
+    int flag = SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE|SQLITE_OPEN_NOMUTEX;
+    SQLITE_DO( sqlite3_open_v2(filename.toUtf8().constData(), &_db, flag, NULL) );
 
     if( _errId != SQLITE_OK ) {
         close(); // FIXME: Correct?
@@ -94,7 +100,7 @@ SqlQuery::SqlQuery(const QString& sql, SqlDatabase db)
 
 void SqlQuery::prepare( const QString& sql)
 {
-    SQLITE_DO(sqlite3_prepare_v2(_db, sql.toUtf8(), -1, &_stmt, NULL));
+    SQLITE_DO(sqlite3_prepare_v2(_db, sql.toUtf8().constData(), -1, &_stmt, NULL));
 }
 
 bool SqlQuery::exec()
