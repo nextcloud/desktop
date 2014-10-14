@@ -19,6 +19,8 @@
 #include <QObject>
 #include <QVariant>
 
+namespace Mirall {
+
 class SqlDatabase
 {
 public:
@@ -54,12 +56,15 @@ public:
     quint64 int64Value(int index);
     QByteArray baValue(int index);
 
+    bool isSelect();
+    bool isPragma();
     bool exec();
-    void prepare( const QString& sql );
+    int  prepare( const QString& sql );
     bool next();
     void bindValue(int pos, const QVariant& value);
     QString lastQuery() const;
     int numRowsAffected();
+    void reset();
     void finish();
 
 private:
@@ -67,6 +72,9 @@ private:
     sqlite3_stmt *_stmt;
     QString _error;
     int _errId;
+    QString _sql;
 };
+
+} // namespace Mirall
 
 #endif // OWNSQL_H

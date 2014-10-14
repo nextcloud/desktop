@@ -210,10 +210,10 @@ bool SyncJournalDb::checkConnect()
             return sqlFail("Remove version", createQuery);
         }
     }
-    createQuery.prepare("INSERT INTO version (major, minor, patch) VALUES ( ?1 , ?2 , ?3 );");
-    createQuery.bindValue(0, MIRALL_VERSION_MAJOR);
-    createQuery.bindValue(1, MIRALL_VERSION_MINOR);
-    createQuery.bindValue(2, MIRALL_VERSION_PATCH);
+    createQuery.prepare("INSERT INTO version (major, minor, patch) VALUES ( ?1, ?2 , ?3 );");
+    createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
+    createQuery.bindValue(2, MIRALL_VERSION_MINOR);
+    createQuery.bindValue(3, MIRALL_VERSION_PATCH);
     if (!createQuery.exec()) {
         return sqlFail("Insert Version", createQuery);
     }
@@ -227,46 +227,46 @@ bool SyncJournalDb::checkConnect()
 
     _getFileRecordQuery.reset(new SqlQuery(_db));
     _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm FROM "
-                                 "metadata WHERE phash=:ph" );
+                                 "metadata WHERE phash=?1" );
 
     _setFileRecordQuery.reset(new SqlQuery(_db) );
     _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
                                  "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm) "
-                                 "VALUES ( ? , ?, ? , ? , ? , ? , ?,  ? , ? , ?, ?, ? )" );
+                                 "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12);" );
 
     _getDownloadInfoQuery.reset(new SqlQuery(_db) );
     _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
-                                    "downloadinfo WHERE path=:pa" );
+                                    "downloadinfo WHERE path=?1" );
 
     _setDownloadInfoQuery.reset(new SqlQuery(_db) );
     _setDownloadInfoQuery->prepare( "INSERT OR REPLACE INTO downloadinfo "
                                     "(path, tmpfile, etag, errorcount) "
-                                    "VALUES ( ? , ?, ? , ? )" );
+                                    "VALUES ( ?1 , ?2, ?3, ?4 )" );
 
     _deleteDownloadInfoQuery.reset(new SqlQuery(_db) );
-    _deleteDownloadInfoQuery->prepare( "DELETE FROM downloadinfo WHERE path=?" );
+    _deleteDownloadInfoQuery->prepare( "DELETE FROM downloadinfo WHERE path=?1" );
 
     _getUploadInfoQuery.reset(new SqlQuery(_db));
     _getUploadInfoQuery->prepare( "SELECT chunk, transferid, errorcount, size, modtime FROM "
-                                  "uploadinfo WHERE path=:pa" );
+                                  "uploadinfo WHERE path=?1" );
 
     _setUploadInfoQuery.reset(new SqlQuery(_db));
     _setUploadInfoQuery->prepare( "INSERT OR REPLACE INTO uploadinfo "
                                   "(path, chunk, transferid, errorcount, size, modtime) "
-                                  "VALUES ( ? , ?, ? , ? ,  ? , ? )");
+                                  "VALUES ( ?1 , ?2, ?3 , ?4 ,  ?5, ?6 )");
 
     _deleteUploadInfoQuery.reset(new SqlQuery(_db));
-    _deleteUploadInfoQuery->prepare("DELETE FROM uploadinfo WHERE path=?" );
+    _deleteUploadInfoQuery->prepare("DELETE FROM uploadinfo WHERE path=?1" );
 
 
     _deleteFileRecordPhash.reset(new SqlQuery(_db));
-    _deleteFileRecordPhash->prepare("DELETE FROM metadata WHERE phash=?");
+    _deleteFileRecordPhash->prepare("DELETE FROM metadata WHERE phash=?1");
 
     _deleteFileRecordRecursively.reset(new SqlQuery(_db));
     _deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')");
 
     QString sql( "SELECT lastTryEtag, lastTryModtime, retrycount, errorstring "
-                 "FROM blacklist WHERE path=:path");
+                 "FROM blacklist WHERE path=?1");
     if( Utility::fsCasePreserving() ) {
         // if the file system is case preserving we have to check the blacklist
         // case insensitively
@@ -369,7 +369,7 @@ QStringList SyncJournalDb::tableColumns( const QString& table )
     if( !table.isEmpty() ) {
 
         if( checkConnect() ) {
-            QString q = QString("PRAGMA table_info(%1);").arg(table);
+            QString q = QString("PRAGMA table_info('%1');").arg(table);
             SqlQuery query(_db);
             query.prepare(q);
 
@@ -433,18 +433,18 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         QString remotePerm (record._remotePerm);
         if (remotePerm.isEmpty()) remotePerm = QString(); // have NULL in DB (vs empty)
 
-        _setFileRecordQuery->bindValue(0, QString::number(phash));
-        _setFileRecordQuery->bindValue(1, plen);
-        _setFileRecordQuery->bindValue(2, record._path );
-        _setFileRecordQuery->bindValue(3, record._inode );
-        _setFileRecordQuery->bindValue(4, 0 ); // uid Not used
-        _setFileRecordQuery->bindValue(5, 0 ); // gid Not used
-        _setFileRecordQuery->bindValue(6, record._mode );
-        _setFileRecordQuery->bindValue(7, QString::number(Utility::qDateTimeToTime_t(record._modtime)));
-        _setFileRecordQuery->bindValue(8, QString::number(record._type) );
-        _setFileRecordQuery->bindValue(9, etag );
-        _setFileRecordQuery->bindValue(10, fileId );
-        _setFileRecordQuery->bindValue(11, remotePerm );
+        _setFileRecordQuery->bindValue(1, QString::number(phash));
+        _setFileRecordQuery->bindValue(2, plen);
+        _setFileRecordQuery->bindValue(3, record._path );
+        _setFileRecordQuery->bindValue(4, record._inode );
+        _setFileRecordQuery->bindValue(5, 0 ); // uid Not used
+        _setFileRecordQuery->bindValue(6, 0 ); // gid Not used
+        _setFileRecordQuery->bindValue(7, record._mode );
+        _setFileRecordQuery->bindValue(8, QString::number(Utility::qDateTimeToTime_t(record._modtime)));
+        _setFileRecordQuery->bindValue(9, QString::number(record._type) );
+        _setFileRecordQuery->bindValue(10, etag );
+        _setFileRecordQuery->bindValue(11, fileId );
+        _setFileRecordQuery->bindValue(12, remotePerm );
 
         if( !_setFileRecordQuery->exec() ) {
             qWarning() << "Error SQL statement setFileRecord: " << _setFileRecordQuery->lastQuery() <<  " :"
@@ -456,7 +456,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
                  << record._mode
                  << QString::number(Utility::qDateTimeToTime_t(record._modtime)) << QString::number(record._type)
                  << record._etag << record._fileId << record._remotePerm;
-        _setFileRecordQuery->finish();
+        _setFileRecordQuery->reset();
 
         return true;
     } else {
@@ -474,7 +474,7 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
         // always delete the actual file.
 
         qlonglong phash = getPHash(filename);
-        _deleteFileRecordPhash->bindValue( 0, QString::number(phash) );
+        _deleteFileRecordPhash->bindValue( 1, QString::number(phash) );
 
         if( !_deleteFileRecordPhash->exec() ) {
             qWarning() << "Exec error of SQL statement: "
@@ -483,9 +483,9 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
             return false;
         }
         qDebug() <<  _deleteFileRecordPhash->lastQuery() << phash << filename;
-        _deleteFileRecordPhash->finish();
+        _deleteFileRecordPhash->reset();
         if( recursively) {
-            _deleteFileRecordRecursively->bindValue(0, filename);
+            _deleteFileRecordRecursively->bindValue(1, filename);
             if( !_deleteFileRecordRecursively->exec() ) {
                 qWarning() << "Exec error of SQL statement: "
                            << _deleteFileRecordRecursively->lastQuery()
@@ -493,7 +493,7 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
                 return false;
             }
             qDebug() <<  _deleteFileRecordRecursively->lastQuery()  << filename;
-            _deleteFileRecordRecursively->finish();
+            _deleteFileRecordRecursively->reset();
         }
         return true;
     } else {
@@ -531,7 +531,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._fileId  = _getFileRecordQuery->baValue(8);
             rec._remotePerm = _getFileRecordQuery->baValue(9);
 
-            _getFileRecordQuery->finish();
+            _getFileRecordQuery->reset();
         } else {
             QString err = _getFileRecordQuery->error();
 	    qDebug() << "No journal entry found for " << filename;
@@ -623,7 +623,7 @@ static bool deleteBatch(SqlQuery & query, const QStringList & entries, const QSt
     qDebug() << "Removing stale " << qPrintable(name) << " entries: " << entries.join(", ");
     // FIXME: Was ported from execBatch, check if correct!
     foreach( const QString& entry, entries ) {
-        query.bindValue(0, entry);
+        query.bindValue(1, entry);
         if (!query.exec()) {
             QString err = query.error();
             qDebug() << "Error removing stale " << qPrintable(name) << " entries: "
@@ -631,7 +631,7 @@ static bool deleteBatch(SqlQuery & query, const QStringList & entries, const QSt
             return false;
         }
     }
-    query.finish();
+    query.reset();
     return true;
 }
 
@@ -653,7 +653,7 @@ SyncJournalDb::DownloadInfo SyncJournalDb::getDownloadInfo(const QString& file)
         if( _getDownloadInfoQuery->next() ) {
             toDownloadInfo(*_getDownloadInfoQuery, &res);
         }
-        _getDownloadInfoQuery->finish();
+        _getDownloadInfoQuery->reset();
     }
     return res;
 }
@@ -667,10 +667,10 @@ void SyncJournalDb::setDownloadInfo(const QString& file, const SyncJournalDb::Do
     }
 
     if (i._valid) {
-        _setDownloadInfoQuery->bindValue(0, file);
-        _setDownloadInfoQuery->bindValue(1, i._tmpfile);
-        _setDownloadInfoQuery->bindValue(2, i._etag );
-        _setDownloadInfoQuery->bindValue(3, i._errorCount );
+        _setDownloadInfoQuery->bindValue(1, file);
+        _setDownloadInfoQuery->bindValue(2, i._tmpfile);
+        _setDownloadInfoQuery->bindValue(3, i._etag );
+        _setDownloadInfoQuery->bindValue(4, i._errorCount );
 
         if( !_setDownloadInfoQuery->exec() ) {
             qWarning() << "Exec error of SQL statement: " << _setDownloadInfoQuery->lastQuery() <<  " :"   << _setDownloadInfoQuery->error();
@@ -678,17 +678,17 @@ void SyncJournalDb::setDownloadInfo(const QString& file, const SyncJournalDb::Do
         }
 
         qDebug() <<  _setDownloadInfoQuery->lastQuery() << file << i._tmpfile << i._etag << i._errorCount;
-        _setDownloadInfoQuery->finish();
+        _setDownloadInfoQuery->reset();
 
     } else {
-        _deleteDownloadInfoQuery->bindValue( 0, file );
+        _deleteDownloadInfoQuery->bindValue( 1, file );
 
         if( !_deleteDownloadInfoQuery->exec() ) {
             qWarning() << "Exec error of SQL statement: " << _deleteDownloadInfoQuery->lastQuery() <<  " : " << _deleteDownloadInfoQuery->error();
             return;
         }
         qDebug() <<  _deleteDownloadInfoQuery->lastQuery()  << file;
-        _deleteDownloadInfoQuery->finish();
+        _deleteDownloadInfoQuery->reset();
     }
 }
 
@@ -755,7 +755,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString& file)
             res._modtime    = Utility::qDateTimeFromTime_t(_getUploadInfoQuery->int64Value(4));
             res._valid      = ok;
         }
-        _getUploadInfoQuery->finish();
+        _getUploadInfoQuery->reset();
     }
     return res;
 }
@@ -769,12 +769,12 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
     }
 
     if (i._valid) {
-        _setUploadInfoQuery->bindValue(0, file);
-        _setUploadInfoQuery->bindValue(1, i._chunk);
-        _setUploadInfoQuery->bindValue(2, i._transferid );
-        _setUploadInfoQuery->bindValue(3, i._errorCount );
-        _setUploadInfoQuery->bindValue(4, i._size );
-        _setUploadInfoQuery->bindValue(5, Utility::qDateTimeToTime_t(i._modtime) );
+        _setUploadInfoQuery->bindValue(1, file);
+        _setUploadInfoQuery->bindValue(2, i._chunk);
+        _setUploadInfoQuery->bindValue(3, i._transferid );
+        _setUploadInfoQuery->bindValue(4, i._errorCount );
+        _setUploadInfoQuery->bindValue(5, i._size );
+        _setUploadInfoQuery->bindValue(6, Utility::qDateTimeToTime_t(i._modtime) );
 
         if( !_setUploadInfoQuery->exec() ) {
             qWarning() << "Exec error of SQL statement: " << _setUploadInfoQuery->lastQuery() <<  " :"   << _setUploadInfoQuery->error();
@@ -782,16 +782,16 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
         }
 
         qDebug() <<  _setUploadInfoQuery->lastQuery() << file << i._chunk << i._transferid << i._errorCount;
-        _setUploadInfoQuery->finish();
+        _setUploadInfoQuery->reset();
     } else {
-        _deleteUploadInfoQuery->bindValue(0, file);
+        _deleteUploadInfoQuery->bindValue(1, file);
 
         if( !_deleteUploadInfoQuery->exec() ) {
             qWarning() << "Exec error of SQL statement: " << _deleteUploadInfoQuery->lastQuery() <<  " : " << _deleteUploadInfoQuery->error();
             return;
         }
         qDebug() <<  _deleteUploadInfoQuery->lastQuery() << file;
-        _deleteUploadInfoQuery->finish();
+        _deleteUploadInfoQuery->reset();
     }
 }
 
@@ -847,7 +847,7 @@ SyncJournalBlacklistRecord SyncJournalDb::blacklistEntry( const QString& file )
             qWarning() << "Exec error blacklist: " << _blacklistQuery->lastQuery() <<  " : "
                        << _blacklistQuery->error();
         }
-        _blacklistQuery->finish();
+        _blacklistQuery->reset();
     }
 
     return entry;
@@ -961,8 +961,8 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
         retries--;
         if( retries < 0 ) retries = 0;
 
-        iQuery.prepare( "UPDATE blacklist SET lastTryEtag = ?1, lastTryModtime = ?2, "
-                        "retrycount = ?3, errorstring = ?4 WHERE path=?5");
+        iQuery.prepare( "UPDATE blacklist SET lastTryEtag = ?1, lastTryModtime = ?1, "
+                        "retrycount = ?2, errorstring = ?3 WHERE path=?4");
         iQuery.bindValue(1, item._lastTryEtag);
         iQuery.bindValue(2, QString::number(item._lastTryModtime));
         iQuery.bindValue(3, retries);
@@ -995,8 +995,7 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QString& path)
     }
 
     SqlQuery query(_db);
-    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE path == ? OR path LIKE(?||'/%')");
-    query.bindValue(0, path);
+    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE path == ?1 OR path LIKE(?||'/%')");
     query.bindValue(1, path);
     if( !query.exec() ) {
         qDebug() << Q_FUNC_INFO << "SQL error in avoidRenamesOnNextSync: "<< query.error();
@@ -1024,8 +1023,8 @@ void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
 
     SqlQuery query(_db);
     // This query will match entries for whitch the path is a prefix of fileName
-    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ? LIKE(path||'/%') AND type == 2"); // CSYNC_FTW_TYPE_DIR == 2
-    query.bindValue(0, fileName);
+    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ?1 LIKE(path||'/%') AND type == 2"); // CSYNC_FTW_TYPE_DIR == 2
+    query.bindValue(1, fileName);
     if( !query.exec() ) {
         qDebug() << Q_FUNC_INFO << "SQL error in avoidRenamesOnNextSync: "<< query.error();
     } else {

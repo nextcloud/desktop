@@ -14,12 +14,15 @@
 
 #include <QDateTime>
 #include <QString>
+#include <QDebug>
 
 #include "ownsql.h"
 
 #define SQLITE_DO(A) if(1) { \
     _errId = (A); if(_errId != SQLITE_OK) { _error= QString::fromUtf8(sqlite3_errmsg(_db)); \
      } }
+
+namespace Mirall {
 
 SqlDatabase::SqlDatabase()
     :_db(NULL)
@@ -59,6 +62,7 @@ void SqlDatabase::close()
 {
     if( _db ) {
         SQLITE_DO(sqlite3_close_v2(_db) );
+        _db = NULL;
     }
 }
 
@@ -77,10 +81,19 @@ sqlite3* SqlDatabase::sqliteDb()
     return _db;
 }
 
+#if 0
+QStringList tableColumns(const QString& table)
+{
+    QStringList re;
+    if( !_db ) return re;
+
+}
+#endif
 /* =========================================================================================== */
 
 SqlQuery::SqlQuery( SqlDatabase db )
-    :_db(db.sqliteDb())
+    :_db(db.sqliteDb()),
+      _stmt(0)
 {
 
 }
@@ -93,21 +106,54 @@ SqlQuery::~SqlQuery()
 }
 
 SqlQuery::SqlQuery(const QString& sql, SqlDatabase db)
-    :_db(db.sqliteDb())
+    :_db(db.sqliteDb()),
+      _stmt(0)
 {
     prepare(sql);
 }
 
-void SqlQuery::prepare( const QString& sql)
+int SqlQuery::prepare( const QString& sql)
 {
-    SQLITE_DO(sqlite3_prepare_v2(_db, sql.toUtf8().constData(), -1, &_stmt, NULL));
+    QString s(sql);
+    _sql = s.trimmed();
+    if(_stmt ) {
+        finish();
+    }
+    if(!_sql.isEmpty() ) {
+        SQLITE_DO(sqlite3_prepare_v2(_db, _sql.toUtf8().constData(), -1, &_stmt, NULL));
+        if( _errId != SQLITE_OK ) {
+            qDebug() << "XXXXXXXXXXXXXXXXXXXX " << _error << "in"<<_sql;
+        }
+        // Q_ASSERT(_errId == SQLITE_OK);
+    }
+    return _errId;
+}
+
+bool SqlQuery::isSelect()
+{
+    return (!_sql.isEmpty() && _sql.startsWith("SELECT", Qt::CaseInsensitive));
+}
+
+bool SqlQuery::isPragma()
+{
+    return (!_sql.isEmpty() && _sql.startsWith("PRAGMA", Qt::CaseInsensitive));
 }
 
 bool SqlQuery::exec()
 {
-    SQLITE_DO(sqlite3_step(_stmt));
+    // Don't do anything for selects, that is how we use the lib :-|
+    if(_stmt && !isSelect() && !isPragma() ) {
+        SQLITE_DO(sqlite3_step(_stmt));
+        return _errId == SQLITE_DONE; // either SQLITE_ROW or SQLITE_DONE
+    }
 
-    return (_errId == SQLITE_ROW || _errId == SQLITE_DONE);
+    return true;
+}
+
+bool SqlQuery::next()
+{
+    SQLITE_DO(sqlite3_step(_stmt));
+    return _errId == SQLITE_ROW;
 }
 
 void SqlQuery::bindValue(int pos, const QVariant& value)
@@ -177,20 +223,14 @@ QByteArray SqlQuery::baValue(int index)
                        sqlite3_column_bytes(_stmt, index));
 }
 
-bool SqlQuery::next()
-{
-    SQLITE_DO(sqlite3_step(_stmt));
-    return _errId == SQLITE_ROW;
-}
-
 QString SqlQuery::error() const
 {
-    return QString("ERROR - not yet implemented");
+    return _error;
 }
 
 QString SqlQuery::lastQuery() const
 {
-    return QString("Last Query");
+    return _sql;
 }
 
 int SqlQuery::numRowsAffected()
@@ -203,3 +243,10 @@ void SqlQuery::finish()
     SQLITE_DO(sqlite3_finalize(_stmt));
     _stmt = NULL;
 }
+
+void SqlQuery::reset()
+{
+    SQLITE_DO(sqlite3_reset(_stmt));
+}
+
+} // namespace Mirall
