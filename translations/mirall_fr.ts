@@ -1158,7 +1158,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="230"/>
         <source>Error: Wrong credentials.</source>
-        <translation>Erreur : paramètres de connexion invalides.</translation>
+        <translation>Erreur : paramètres de connexion incorrects.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="244"/>
@@ -2014,7 +2014,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="365"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation>Le fichier contient des caractères invalides qui ne peuvent être synchronisés entre plate-formes.</translation>
+        <translation>Le fichier contient des caractères non valables qui ne peuvent être synchronisés entre plate-formes.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="541"/>
