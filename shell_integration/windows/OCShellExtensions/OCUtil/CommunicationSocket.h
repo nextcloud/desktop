@@ -20,12 +20,13 @@
 #pragma warning (disable : 4251)
 
 #include <string>
+#include <vector>
 #include <WinSock2.h>
 
 class __declspec(dllexport) CommunicationSocket
 {
 public:
-	CommunicationSocket(int port);
+	CommunicationSocket();
 	~CommunicationSocket();
 
 	bool Connect();
@@ -34,9 +35,11 @@ public:
 	bool SendMsg(const wchar_t*);
 	bool ReadLine(std::wstring*);
 
+    HANDLE Event() { return _pipe; }
+
 private:	
-	int _port;
-	SOCKET _clientSocket;
+	HANDLE _pipe;
+	std::vector<char> _buffer;
 };
 
 #endif
