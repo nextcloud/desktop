@@ -512,10 +512,89 @@ QString Folder::configFile()
     return _configFile;
 }
 
+static void addErroredSyncItemPathsToList(const SyncFileItemVector& items, QSet<QString>* set) {
+    Q_FOREACH(const SyncFileItem &item, items) {
+        if (item.hasErrorStatus()) {
+            set->insert(item._file);
+        }
+    }
+}
+
 void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
 {
+    addErroredSyncItemPathsToList(items, &this->_stateLastSyncItemsWithError);
     _syncResult.setSyncFileItemVector(items);
 }
+
+void Folder::slotAboutToPropagate(const SyncFileItemVector& items)
+{
+    // empty the tainted list since the status generation code will use the _syncedItems
+    // (which imply the folder) to generate the syncing state icon now.
+    _stateTaintedFolders.clear();
+
+    addErroredSyncItemPathsToList(items, &this->_stateLastSyncItemsWithError);
+}
+
+
+bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
+{
+    if (t == CSYNC_FTW_TYPE_DIR) {
+        qDebug() << Q_FUNC_INFO << "ASKING ERROR FOLDERS" << fn;
+        if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
+            s->set(SyncFileStatus::STATUS_ERROR);
+            return true;
+        }
+        // If sync is running, check _syncedItems, possibly give it STATUS_EVAL (=syncing down)
+        if (!_engine.isNull()) {
+            qDebug() << Q_FUNC_INFO << "SYNC IS RUNNING, asking SyncEngine" << fn;
+            if (_engine->estimateState(fn, t, s)) {
+                return true;
+            }
+        }
+        qDebug() << Q_FUNC_INFO << "ASKING TAINTED FOLDERS" << fn;
+        if (Utility::doesSetContainPrefix(_stateTaintedFolders, fn)) {
+            qDebug() << Q_FUNC_INFO << "Folder is tainted, EVAL!" << fn;
+            s->set(SyncFileStatus::STATUS_EVAL);
+            return true;
+        }
+        return false;
+    } else if ( t== CSYNC_FTW_TYPE_FILE) {
+        // check if errorList has the directory/file
+        if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
+            s->set(SyncFileStatus::STATUS_ERROR);
+            return true;
+        }
+        // If sync running: _syncedItems -> SyncingState
+        if (!_engine.isNull()) {
+            if (_engine->estimateState(fn, t, s)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Folder::watcherSlot(QString fn)
+{
+    // FIXME: On OS X we could not do this "if" since on OS X the file watcher ignores events for ourselves
+    // however to have the same behaviour atm on all platforms, we don't do it
+    if (!_engine.isNull()) {
+        qDebug() << Q_FUNC_INFO << "Sync running, IGNORE event for " << fn;
+        return;
+    }
+    QFileInfo fi(fn);
+    if (fi.isFile()) {
+        fn = fi.path(); // depending on OS, file watcher might be for dir or file
+    }
+    // Make it a relative path depending on the folder
+    QString relativePath = fn.remove(0, path().length());
+    qDebug() << Q_FUNC_INFO << fi.canonicalFilePath() << fn << relativePath;
+    _stateTaintedFolders.insert(relativePath);
+
+    // Notify the SocketAPI?
+}
+
+
 
 void Folder::slotTerminateSync()
 {
@@ -639,6 +718,8 @@ void Folder::startSync(const QStringList &pathList)
 
     connect( _engine.data(), SIGNAL(treeWalkResult(const SyncFileItemVector&)),
               this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
+    connect( _engine.data(), SIGNAL(aboutToPropagate(const SyncFileItemVector&)),
+              this, SLOT(slotAboutToPropagate(const SyncFileItemVector&)), Qt::QueuedConnection);
 
     connect(_engine.data(), SIGNAL(started()),  SLOT(slotSyncStarted()), Qt::QueuedConnection);
     connect(_engine.data(), SIGNAL(finished()), SLOT(slotSyncFinished()), Qt::QueuedConnection);
@@ -720,6 +801,15 @@ void Folder::slotSyncFinished()
     // _watcher->setEventsEnabledDelayed(2000);
 
 
+    // This is for sync state calculation
+    _stateLastSyncItemsWithError = _stateLastSyncItemsWithErrorNew;
+    _stateLastSyncItemsWithErrorNew.clear();
+    _stateTaintedFolders.clear(); // heuristic: assume the sync had been done, new file watches needed to taint dirs
+    if (_csyncError || _csyncUnavail) {
+        // Taint the whole sync dir, we cannot give reliable state information
+        _stateTaintedFolders.insert(QLatin1String("/"));
+    }
+
 
     if (_csyncError) {
         _syncResult.setStatus(SyncResult::Error);
@@ -786,6 +876,10 @@ void Folder::slotTransmissionProgress(const Progress::Info &pi)
 // a job is completed: count the errors and forward to the ProgressDispatcher
 void Folder::slotJobCompleted(const SyncFileItem &item)
 {
+    if (item.hasErrorStatus()) {
+        _stateLastSyncItemsWithError.insert(item._file);
+    }
+
     if (Progress::isWarningKind(item._status)) {
         // Count all error conditions.
         _syncResult.setWarnCount(_syncResult.warnCount()+1);

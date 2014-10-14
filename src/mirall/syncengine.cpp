@@ -22,6 +22,7 @@
 #include "discoveryphase.h"
 #include "creds/abstractcredentials.h"
 #include "csync_util.h"
+#include "mirall/syncfilestatus.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -1069,7 +1070,18 @@ void SyncEngine::setSelectiveSyncBlackList(const QStringList& list)
     }
 }
 
-
+bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
+{
+    Q_FOREACH(const SyncFileItem &item, _syncedItems) {
+        //qDebug() << Q_FUNC_INFO << fn << item._file << fn.startsWith(item._file) << item._file.startsWith(fn);
+        if (item._file.startsWith(fn)) {
+            qDebug() << Q_FUNC_INFO << "Setting" << fn << " to STATUS_EVAL";
+            s->set(SyncFileStatus::STATUS_EVAL);
+            return true;
+        }
+    }
+    return false;
+}
 
 void SyncEngine::abort()
 {
