@@ -77,7 +77,7 @@ void RemotePathChecker::workerThreadLoop()
 				{   std::unique_lock<std::mutex> lock(_mutex);
 					_watchedDirectories.push_back(responsePath);
 				}
-				SHChangeNotify(SHCNE_MKDIR, SHCNF_PATH, responsePath.data(), NULL);
+				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH, responsePath.data(), NULL);
 			} else if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
                 wstring responsePath = response.substr(16); // length of UNREGISTER_PATH:
 
@@ -95,7 +95,7 @@ void RemotePathChecker::workerThreadLoop()
                         }
                     }
                 }
-                SHChangeNotify(SHCNE_MKDIR, SHCNF_PATH, responsePath.data(), NULL);
+                SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH, responsePath.data(), NULL);
             } else if (StringUtil::begins_with(response, wstring(L"STATUS:")) ||
                     StringUtil::begins_with(response, wstring(L"BROADCAST:"))) {
 
@@ -116,7 +116,7 @@ void RemotePathChecker::workerThreadLoop()
                 {   std::unique_lock<std::mutex> lock(_mutex);
                     _cache[responsePath] = state;
                 }
-                SHChangeNotify(SHCNE_MKDIR, SHCNF_PATH, responsePath.data(), NULL);
+                SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH, responsePath.data(), NULL);
             }
         }
 
