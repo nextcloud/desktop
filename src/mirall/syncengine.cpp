@@ -682,14 +682,16 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     Q_ASSERT(session);
 
     // post update phase script: allow to tweak stuff by a custom script in debug mode.
-#ifndef NDEBUG
     if( !qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT").isEmpty() ) {
+#ifndef NDEBUG
         QString script = qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT");
 
         qDebug() << "OOO => Post Update Script: " << script;
         QProcess::execute(script.toUtf8());
-    }
+#else
+    qDebug() << "**** Attention: POST_UPDATE_SCRIPT installed, but not executed because compiled with NDEBUG";
 #endif
+    }
 
     // do a database commit
     _journal->commit("post treewalk");
