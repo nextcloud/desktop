@@ -68,12 +68,20 @@ void SqlDatabase::close()
 
 bool SqlDatabase::transaction()
 {
-    return true;
+    if( ! _db ) {
+        return false;
+    }
+    SQLITE_DO(sqlite3_exec(_db, "BEGIN", 0, 0, 0));
+    return _errId == SQLITE_OK;
 }
 
 bool SqlDatabase::commit()
 {
-    return true;
+    if( ! _db ) {
+        return false;
+    }
+    SQLITE_DO(sqlite3_exec(_db, "COMMIT", 0, 0, 0));
+    return _errId == SQLITE_OK;
 }
 
 sqlite3* SqlDatabase::sqliteDb()
