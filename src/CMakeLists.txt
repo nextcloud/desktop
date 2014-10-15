@@ -390,7 +390,6 @@ set(ownCloud ${ownCloud_old})
 if (WITH_DBUS)
     set(ADDITIONAL_APP_MODULES DBus)
 endif(WITH_DBUS)
-
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
@@ -427,8 +426,15 @@ elseif(NOT BUILD_LIBRARIES_ONLY)
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${mirall_I18N} DESTINATION ${QM_DIR})
+    get_target_property(_qmake Qt5::qmake LOCATION)
+    execute_process(COMMAND ${_qmake} -query QT_INSTALL_TRANSLATIONS
+        OUTPUT_VARIABLE QT_TRANSLATIONS_DIR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
     file(GLOB qt_I18N ${QT_TRANSLATIONS_DIR}/qt_??.qm ${QT_TRANSLATIONS_DIR}/qt_??_??.qm)
     install(FILES ${qt_I18N} DESTINATION ${QM_DIR})
+    file(GLOB qtbase_I18N ${QT_TRANSLATIONS_DIR}/qtbase_??.qm ${QT_TRANSLATIONS_DIR}/qt_??_??.qm)
+    install(FILES ${qtbase_I18N} DESTINATION ${QM_DIR})
     file(GLOB qtkeychain_I18N ${QT_TRANSLATIONS_DIR}/qtkeychain*.qm)
     install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
 endif()

@@ -378,6 +378,8 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    ; Make sure only to copy qt, not qt_help, etc
    File "${MING_SHARE}\qt5\translations\qt_??.qm"
    File "${MING_SHARE}\qt5\translations\qt_??_??.qm"
+   File "${MING_SHARE}\qt5\translations\qtbase_??.qm"
+   File "${MING_SHARE}\qt5\translations\qtbase_??_??.qm"
    File "${MING_SHARE}\qt5\translations\qtkeychain_*.qm"
 
    SetOutPath "$INSTDIR\platforms"
