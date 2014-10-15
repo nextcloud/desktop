@@ -25,14 +25,14 @@
 namespace Mirall {
 
 SqlDatabase::SqlDatabase()
-    :_db(NULL)
+    :_db(0)
 {
 
 }
 
 bool SqlDatabase::isOpen()
 {
-    return _db != NULL;
+    return _db != 0;
 }
 
 bool SqlDatabase::open( const QString& filename )
@@ -42,11 +42,11 @@ bool SqlDatabase::open( const QString& filename )
     }
 
     int flag = SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE|SQLITE_OPEN_NOMUTEX;
-    SQLITE_DO( sqlite3_open_v2(filename.toUtf8().constData(), &_db, flag, NULL) );
+    SQLITE_DO( sqlite3_open_v2(filename.toUtf8().constData(), &_db, flag, 0) );
 
     if( _errId != SQLITE_OK ) {
         close(); // FIXME: Correct?
-        _db = NULL;
+        _db = 0;
     }
     return isOpen();
 }
@@ -62,7 +62,7 @@ void SqlDatabase::close()
 {
     if( _db ) {
         SQLITE_DO(sqlite3_close_v2(_db) );
-        _db = NULL;
+        _db = 0;
     }
 }
 
@@ -81,14 +81,6 @@ sqlite3* SqlDatabase::sqliteDb()
     return _db;
 }
 
-#if 0
-QStringList tableColumns(const QString& table)
-{
-    QStringList re;
-    if( !_db ) return re;
-
-}
-#endif
 /* =========================================================================================== */
 
 SqlQuery::SqlQuery( SqlDatabase db )
@@ -120,7 +112,7 @@ int SqlQuery::prepare( const QString& sql)
         finish();
     }
     if(!_sql.isEmpty() ) {
-        SQLITE_DO(sqlite3_prepare_v2(_db, _sql.toUtf8().constData(), -1, &_stmt, NULL));
+        SQLITE_DO(sqlite3_prepare_v2(_db, _sql.toUtf8().constData(), -1, &_stmt, 0));
         if( _errId != SQLITE_OK ) {
             qDebug() << "XXXXXXXXXXXXXXXXXXXX " << _error << "in"<<_sql;
         }
@@ -241,7 +233,7 @@ int SqlQuery::numRowsAffected()
 void SqlQuery::finish()
 {
     SQLITE_DO(sqlite3_finalize(_stmt));
-    _stmt = NULL;
+    _stmt = 0;
 }
 
 void SqlQuery::reset()
