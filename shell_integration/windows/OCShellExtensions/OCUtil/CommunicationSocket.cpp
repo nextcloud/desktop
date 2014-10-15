@@ -53,11 +53,8 @@ bool CommunicationSocket::Close()
 }
 
 
-bool CommunicationSocket::Connect()
+bool CommunicationSocket::Connect(const std::wstring &pipename)
 {
-    auto pipename = std::wstring(L"\\\\.\\pipe\\");
-    pipename += L"ownCloud";
-
 	_pipe = CreateFile(pipename.data(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
     if (_pipe == INVALID_HANDLE_VALUE) {
@@ -76,8 +73,8 @@ bool CommunicationSocket::SendMsg(const wchar_t* message)
     if (result) {
         return true;
     } else {
-//        qWarning() << "Failed to send data." <<;
-        // look up error code here using GetLastError()
+        Close();
+
         return false;
     }
 }
@@ -90,7 +87,10 @@ bool CommunicationSocket::ReadLine(wstring* response)
 
     response->clear();
 
-	Sleep(50);
+    if (_pipe == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+
 
 	while (true) {
         int lbPos = 0;
@@ -111,7 +111,7 @@ bool CommunicationSocket::ReadLine(wstring* response)
 
         auto result = ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, NULL);
         if (!result) {
-//            qWarning() << "Failed to read data from the pipe";
+            Close();
             return false;
         }
         if (numBytesRead <= 0) {

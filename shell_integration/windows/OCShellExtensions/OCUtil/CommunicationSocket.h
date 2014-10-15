@@ -29,7 +29,7 @@ public:
 	CommunicationSocket();
 	~CommunicationSocket();
 
-	bool Connect();
+	bool Connect(const std::wstring& pipename);
 	bool Close();
 
 	bool SendMsg(const wchar_t*);
@@ -40,6 +40,7 @@ public:
 private:	
 	HANDLE _pipe;
 	std::vector<char> _buffer;
+    bool _connected;
 };
 
 #endif

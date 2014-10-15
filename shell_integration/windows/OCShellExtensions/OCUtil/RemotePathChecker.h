@@ -54,6 +54,7 @@ private:
 
     std::unordered_map<std::wstring, FileState> _cache;
     std::vector<std::wstring> _watchedDirectories;
+    bool _connected;
 
 
     // The main thread notifies when there are new items in _pending

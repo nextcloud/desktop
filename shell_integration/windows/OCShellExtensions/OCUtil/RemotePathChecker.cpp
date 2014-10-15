@@ -31,14 +31,28 @@ using namespace std;
 // This code is run in a thread
 void RemotePathChecker::workerThreadLoop()
 {
+    auto pipename = std::wstring(L"\\\\.\\pipe\\");
+    pipename += L"ownCloud";
+
+    bool connected = false;
     CommunicationSocket socket;
     std::unordered_set<std::wstring> asked;
-    if (!socket.Connect()) {
-        return;
-        //FIXME! what if this fails!  what if we are disconnected later?
-    }
 
     while(!_stop) {
+
+        if (!connected) {
+            asked.clear();
+            if (!WaitNamedPipe(pipename, 5 * 1000)) {
+                continue;
+            }
+            if (!socket.Connect(pipename)) {
+                continue;
+            }
+            connected = true;
+            std::unique_lock<std::mutex> lock(_mutex);
+            _connected = true;
+        }
+
         {
             std::unique_lock<std::mutex> lock(_mutex);
             while (!_pending.empty() && !_stop) {
@@ -59,8 +73,28 @@ void RemotePathChecker::workerThreadLoop()
             if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH:
 
-                std::unique_lock<std::mutex> lock(_mutex);
-                _watchedDirectories.push_back(responsePath);
+                {   std::unique_lock<std::mutex> lock(_mutex);
+                    _watchedDirectories.push_back(responsePath);
+                }
+                SHChangeNotify(SHCNE_MKDIR, SHCNF_PATH, responsePath.data(), NULL);
+            if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
+                wstring responsePath = response.substr(16); // length of UNREGISTER_PATH:
+
+                {   std::unique_lock<std::mutex> lock(_mutex);
+                    _watchedDirectories.erase(
+                        std::remove(_watchedDirectories.begin(), _watchedDirectories.end(), responsePath),
+                        _watchedDirectories.end());
+
+                    // Remove any item from the cache
+                    for (auto it = _cache.begin(); it != _cache.end() ; ) {
+                        if (StringUtil::begins_with(it.first, responsePath)) {
+                            it = _cache.erase(it);
+                        } else {
+                            ++it;
+                        }
+                    }
+                }
+                SHChangeNotify(SHCNE_MKDIR, SHCNF_PATH, responsePath.data(), NULL);
             } else if (StringUtil::begins_with(response, wstring(L"STATUS:")) ||
                     StringUtil::begins_with(response, wstring(L"BROADCAST:"))) {
 
@@ -85,8 +119,14 @@ void RemotePathChecker::workerThreadLoop()
             }
         }
 
-        if (_stop)
-            return;
+        if (socket.Event() == INVALID_HANDLE_VALUE) {
+            std::unique_lock<std::mutex> lock(_mutex);
+            _cache.clear();
+            _watchedDirectories.clear();
+            _connected = connected = false;
+        }
+
+        Sleep(50);
     }
 }
 
@@ -94,6 +134,7 @@ void RemotePathChecker::workerThreadLoop()
 
 RemotePathChecker::RemotePathChecker()
     : _thread([this]{ this->workerThreadLoop(); } )
+    , _connected(false)
     , _newQueries(CreateEvent(NULL, true, true, NULL))
 {
 }
@@ -118,6 +159,9 @@ bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)
     assert(state); assert(filePath);
 
     std::unique_lock<std::mutex> lock(_mutex);
+    if (!_connected) {
+        return false;
+    }
 
     auto path = std::wstring(filePath);
 
