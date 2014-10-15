@@ -534,12 +534,15 @@ void Application::setupTranslations()
             setProperty("ui_lang", lang);
             const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
             const QString qtTrFile = QLatin1String("qt_") + lang;
+            const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
             if (!qtTranslator->load(qtTrFile, qtTrPath)) {
-                qtTranslator->load(qtTrFile, trPath);
+                if (!qtTranslator->load(qtTrFile, trPath)) {
+                    qtTranslator->load(qtBaseTrFile, trPath);
+                }
             }
-            const QString qtkeychainFile = QLatin1String("qt_") + lang;
-            if (!qtkeychainTranslator->load(qtkeychainFile, qtTrPath)) {
-               qtkeychainTranslator->load(qtkeychainFile, trPath);
+            const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
+            if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
+                qtkeychainTranslator->load(qtkeychainTrFile, trPath);
             }
             if (!translator->isEmpty())
                 installTranslator(translator);
