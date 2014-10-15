@@ -104,12 +104,16 @@ bool CommunicationSocket::ReadLine(wstring* response)
         std::array<char, 128> resp_utf8;
         DWORD numBytesRead = 0;
 		DWORD totalBytesAvailable = 0;
-		PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0);
+		auto result = PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0);
+		if (!result) {
+			Close();
+			return false;
+		}
 		if (totalBytesAvailable == 0) {
 			return false;
 		}
 
-        auto result = ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, NULL);
+        result = ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, NULL);
         if (!result) {
             Close();
             return false;

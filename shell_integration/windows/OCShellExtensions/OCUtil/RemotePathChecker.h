@@ -43,7 +43,6 @@ public:
 private:
 	FileState _StrToFileState(const std::wstring &str);
     std::mutex _mutex;
-    std::thread _thread;
     std::atomic<bool> _stop;
 
     // Everything here is protected by the _mutex
@@ -61,6 +60,7 @@ private:
     //std::condition_variable _newQueries;
     HANDLE _newQueries;
 
+	std::thread _thread;
     void workerThreadLoop();
 };
 

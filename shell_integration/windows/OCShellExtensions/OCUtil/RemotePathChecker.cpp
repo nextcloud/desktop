@@ -39,10 +39,11 @@ void RemotePathChecker::workerThreadLoop()
     std::unordered_set<std::wstring> asked;
 
     while(!_stop) {
+		Sleep(50);
 
         if (!connected) {
             asked.clear();
-            if (!WaitNamedPipe(pipename, 5 * 1000)) {
+            if (!WaitNamedPipe(pipename.data(), 5 * 1000)) {
                 continue;
             }
             if (!socket.Connect(pipename)) {
@@ -70,14 +71,14 @@ void RemotePathChecker::workerThreadLoop()
 
         std::wstring response;
         while (!_stop && socket.ReadLine(&response)) {
-            if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
-                wstring responsePath = response.substr(14); // length of REGISTER_PATH:
+			if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
+				wstring responsePath = response.substr(14); // length of REGISTER_PATH:
 
-                {   std::unique_lock<std::mutex> lock(_mutex);
-                    _watchedDirectories.push_back(responsePath);
-                }
-                SHChangeNotify(SHCNE_MKDIR, SHCNF_PATH, responsePath.data(), NULL);
-            if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
+				{   std::unique_lock<std::mutex> lock(_mutex);
+					_watchedDirectories.push_back(responsePath);
+				}
+				SHChangeNotify(SHCNE_MKDIR, SHCNF_PATH, responsePath.data(), NULL);
+			} else if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
                 wstring responsePath = response.substr(16); // length of UNREGISTER_PATH:
 
                 {   std::unique_lock<std::mutex> lock(_mutex);
@@ -87,7 +88,7 @@ void RemotePathChecker::workerThreadLoop()
 
                     // Remove any item from the cache
                     for (auto it = _cache.begin(); it != _cache.end() ; ) {
-                        if (StringUtil::begins_with(it.first, responsePath)) {
+                        if (StringUtil::begins_with(it->first, responsePath)) {
                             it = _cache.erase(it);
                         } else {
                             ++it;
@@ -119,23 +120,21 @@ void RemotePathChecker::workerThreadLoop()
             }
         }
 
-        if (socket.Event() == INVALID_HANDLE_VALUE) {
-            std::unique_lock<std::mutex> lock(_mutex);
-            _cache.clear();
-            _watchedDirectories.clear();
-            _connected = connected = false;
-        }
-
-        Sleep(50);
+		if (socket.Event() == INVALID_HANDLE_VALUE) {
+			std::unique_lock<std::mutex> lock(_mutex);
+			_cache.clear();
+			_watchedDirectories.clear();
+			_connected = connected = false;
+		}
     }
 }
 
 
 
 RemotePathChecker::RemotePathChecker()
-    : _thread([this]{ this->workerThreadLoop(); } )
-    , _connected(false)
+    : _connected(false)
     , _newQueries(CreateEvent(NULL, true, true, NULL))
+	, _thread([this]{ this->workerThreadLoop(); })
 {
 }
 
