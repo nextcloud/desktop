@@ -144,7 +144,7 @@ bool SqlQuery::exec()
     // Don't do anything for selects, that is how we use the lib :-|
     if(_stmt && !isSelect() && !isPragma() ) {
         SQLITE_DO(sqlite3_step(_stmt));
-        return _errId == SQLITE_DONE; // either SQLITE_ROW or SQLITE_DONE
+        return (_errId == SQLITE_DONE); // either SQLITE_ROW or SQLITE_DONE
     }
 
     return true;
