@@ -126,6 +126,11 @@ void RemotePathChecker::workerThreadLoop()
 			_watchedDirectories.clear();
 			_connected = connected = false;
 		}
+
+		if (_stop) return;
+
+		HANDLE handles[2] = { _newQueries, socket.Event() };
+		WaitForMultipleObjects(2, handles, false, 0);
     }
 }
 
