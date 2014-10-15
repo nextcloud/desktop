@@ -532,7 +532,7 @@ void Application::setupTranslations()
             setProperty("ui_lang", lang);
             const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
             const QString qtTrFile = QLatin1String("qt_") + lang;
-            if (qtTranslator->load(qtTrFile, qtTrPath)) {
+            if (!qtTranslator->load(qtTrFile, qtTrPath)) {
                 qtTranslator->load(qtTrFile, trPath);
             }
             const QString qtkeychainFile = QLatin1String("qt_") + lang;
