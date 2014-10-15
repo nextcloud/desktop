@@ -1502,7 +1502,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="68"/>
         <source>Retry Sync</source>
-        <translation>Lancer à nouveau la synchronisation</translation>
+        <translation>Tenter de synchroniser à nouveau</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="72"/>
@@ -1512,17 +1512,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="73"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation>Copier la liste d&apos;activités dans le presse papiers.</translation>
+        <translation>Copier la liste d&apos;activités dans le presse-papier.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="118"/>
         <source>Copied to clipboard</source>
-        <translation>Copié dans le presse-papiers</translation>
+        <translation>Copié dans le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="118"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation>Le statu de synchronisation a été copié dans le presse-papier.</translation>
+        <translation>L&apos;état de synchronisation a été copié dans le presse-papier.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="255"/>
@@ -1534,7 +1534,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
         <translation>%1 fichiers ont été ignorés en raison des erreurs précédentes.
- Essayer à nouveau de les synchroniser.</translation>
+ Essayez à nouveau de les synchroniser.</translation>
     </message>
 </context>
 <context>
@@ -1598,7 +1598,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="62"/>
         <source>General</source>
-        <translation>Général</translation>
+        <translation>Généraux</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="66"/>
@@ -1825,7 +1825,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="192"/>
         <source>Effective Date: %1</source>
-        <translation>Émis le : %1</translation>
+        <translation>Date de début de validité : %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="193"/>
@@ -1873,12 +1873,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="108"/>
         <source>CSync could not detect the filesystem type.</source>
-        <translation>CSync n&apos;a pas pu détecter le type de système de fichier.</translation>
+        <translation>CSync n&apos;a pas pu détecter le type de système de fichiers.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="111"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation>CSync obtient une erreur pendant le traitement des arbres internes.</translation>
+        <translation>Erreur CSync lors du traitement des arbres internes.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="114"/>
@@ -1948,7 +1948,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="155"/>
         <source>A network connection timeout happened.</source>
-        <translation>Le temps d&apos;attente pour la connexion réseau s&apos;est écoulé.</translation>
+        <translation>Le délai d&apos;attente pour la connexion réseau a été dépassé.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="158"/>
@@ -1974,7 +1974,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="170"/>
         <location filename="../src/mirall/syncengine.cpp" line="173"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation>CSync : Aucun espace disponibla sur le serveur %1.</translation>
+        <translation>CSync : Aucun espace disponible sur le serveur %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="176"/>
@@ -1984,7 +1984,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="179"/>
         <source>Aborted by the user</source>
-        <translation>Abandonné par l&apos;utilisateur</translation>
+        <translation>Interrompu par l&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
@@ -1999,22 +1999,22 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="356"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>Les liens symboliques ne sont pas supportés par la synchronisation.</translation>
+        <translation>Les liens symboliques ne sont pas pris en charge par la synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="359"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation>Les liens en dur ne sont pas supportés par la synchronisation.</translation>
+        <translation>Les liens durs (hard links) ne sont pas pris en charge par la synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="362"/>
         <source>File is listed on the ignore list.</source>
-        <translation>Le fichier est présent dans la liste de fichiers à ignorer.</translation>
+        <translation>Le fichier est dans la liste des fichiers à ignorer.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="365"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation>Le fichier contient des caractères non valables qui ne peuvent être synchronisés entre plate-formes.</translation>
+        <translation>Le fichier contient des caractères non valides qui ne peuvent être synchronisés entre plate-formes.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="541"/>
@@ -2035,22 +2035,22 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="868"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation>Non autorisé parce-que vous n&apos;avez pas la permission d&apos;ajouter des sous-dossiers dans ce dossier</translation>
+        <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des sous-dossiers dans ce dossier</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="874"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
-        <translation>Non autorisé parce-que vous n&apos;avez pas la permission d&apos;ajouter des dossiers parents</translation>
+        <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des dossiers parents</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="881"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
-        <translation>Non autorisé parce-que vous n&apos;avez pas la permission d&apos;ajouter des fichiers dans ce dossier</translation>
+        <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des fichiers dans ce dossier</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="901"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Non autorisé à envoyer ce fichier parce-qu&apos;il est en lecture seule sur le serveur. Restauration</translation>
+        <translation>Non autorisé à envoyer ce fichier car il est en lecture seule sur le serveur. Restauration</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="918"/>
@@ -2097,7 +2097,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Version %1 Pour plus d&apos;informations, veuillez visiter &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 and the %5 logo are registered trademarks of %4 in the&lt;br&gt;United States, other countries, or both.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Version %1. Pour plus d&apos;informations, veuillez visiter &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt;Distribué par %4. Sous licence GNU General Public License (GPL) Version 2.0.&lt;br&gt;%5 et le logo %5 sont des marques déposées de %4 aux&lt;br&gt;Etats-Unis, d&apos;autres pays, ou les deux.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2110,7 +2110,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="230"/>
         <source>Disconnected from server</source>
-        <translation>Déconnecte du serveur</translation>
+        <translation>Déconnecté du serveur</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="262"/>
@@ -2160,7 +2160,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="411"/>
         <source>Calculating quota...</source>
-        <translation>Calcul du quota...</translation>
+        <translation>Calcul du quota en cours...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="413"/>
@@ -2205,7 +2205,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="443"/>
         <source>%1% of %2 in use</source>
-        <translation>%1% de %2 occupés</translation>
+        <translation>%1% sur %2 utilisés</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="455"/>
@@ -2300,7 +2300,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="218"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si cette case est cochée, le contenu existant du dossier local sera supprimé pour démarrer une synchronisation propre depuis le serveur.&lt;/p&gt;&lt;p&gt;Ne pas cocher si le contenu local doit être téléversé vers les dossiers des serveurs.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si cette case est cochée, le contenu existant du dossier local sera supprimé pour démarrer une synchronisation propre depuis le serveur.&lt;/p&gt;&lt;p&gt;Ne pas cocher si le contenu local doit être téléversé vers le serveur.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="272"/>
@@ -2397,7 +2397,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation>&amp;Ne pas sauvegarder sauvegarder de mot de passe sur une machine locale</translation>
+        <translation>&amp;Ne pas mémoriser le mot de passe sur la machine locale</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
@@ -2407,7 +2407,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Veuillez saisir l&apos;url du serveur ownCloud auquel vous souhaitez vous connecter (sans http ni https).</translation>
+        <translation>Veuillez saisir l&apos;adresse du serveur ownCloud auquel vous souhaitez vous connecter (sans http ni https).</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="83"/>
@@ -2474,7 +2474,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/utility.cpp" line="125"/>
         <source>%L1 B</source>
-        <translation>%L1 Octets</translation>
+        <translation>%L1 octets</translation>
     </message>
 </context>
 <context>
@@ -2487,7 +2487,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 nécessite la présence d&apos;une barre des tâches (system tray). Si vous utilisez XFCE, veuillez suivre &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;ces instructions&lt;/a&gt;. Sinon, installez une application mettant en place une barre des tâches, telle que &apos;trayer&apos; et essayer à nouveau.</translation>
+        <translation>%1 nécessite la présence d&apos;une zone de notification système (system tray). Si vous utilisez XFCE, veuillez suivre &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;ces instructions&lt;/a&gt;. Sinon, installez une application mettant en place une zone de notification, telle que &apos;trayer&apos;, et essayez à nouveau.</translation>
     </message>
 </context>
 <context>
@@ -2495,7 +2495,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="221"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Construit à partir de la révision Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; du %3, %4 en utilisant Qt %5.&lt;/small&gt;&lt;p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Construit à partir de la révision Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; le %3, %4 en utilisant Qt %5.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2508,7 +2508,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation>Importé</translation>
+        <translation>Téléversé</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="37"/>
@@ -2523,7 +2523,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="42"/>
         <source>Ignored</source>
-        <translation>Ignorer</translation>
+        <translation>Ignoré</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="44"/>
