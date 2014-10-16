@@ -25,7 +25,8 @@
 namespace Mirall {
 
 SqlDatabase::SqlDatabase()
-    :_db(0)
+    :_db(0),
+      _errId(0)
 {
 
 }
