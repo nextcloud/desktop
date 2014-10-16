@@ -605,7 +605,7 @@ int SyncJournalDb::getFileRecordCount()
     return 0;
 }
 
-static void toDownloadInfo(SqlQuery query, SyncJournalDb::DownloadInfo * res)
+static void toDownloadInfo(SqlQuery &query, SyncJournalDb::DownloadInfo * res)
 {
     bool ok = true;
     res->_tmpfile    = query.stringValue(0);
@@ -651,6 +651,8 @@ SyncJournalDb::DownloadInfo SyncJournalDb::getDownloadInfo(const QString& file)
 
         if( _getDownloadInfoQuery->next() ) {
             toDownloadInfo(*_getDownloadInfoQuery, &res);
+        } else {
+            res._valid = false;
         }
         _getDownloadInfoQuery->reset();
     }

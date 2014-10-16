@@ -43,6 +43,7 @@ private:
 
 class SqlQuery
 {
+    Q_DISABLE_COPY(SqlQuery)
 public:
     explicit SqlQuery();
     explicit SqlQuery(SqlDatabase db);
