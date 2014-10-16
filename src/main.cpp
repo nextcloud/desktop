@@ -82,6 +82,7 @@ int main(int argc, char **argv)
 
     // if the application is already running, notify it.
     if( app.isRunning() ) {
+        qDebug() << Q_FUNC_INFO << "Already running, exiting...";
         QStringList args = app.arguments();
         if ( args.size() > 1 && ! app.giveHelp() ) {
             QString msg = args.join( QLatin1String("|") );
