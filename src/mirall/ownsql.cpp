@@ -159,7 +159,7 @@ bool SqlQuery::next()
 
 void SqlQuery::bindValue(int pos, const QVariant& value)
 {
-    int res;
+    int res = -1;
     if( _stmt ) {
         switch (value.type()) {
         case QVariant::Int:
@@ -201,6 +201,7 @@ void SqlQuery::bindValue(int pos, const QVariant& value)
             break; }
         }
     }
+    Q_ASSERT( res == SQLITE_OK );
 }
 
 QString SqlQuery::stringValue(int index)
