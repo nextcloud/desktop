@@ -76,13 +76,13 @@ private slots:
 
     void testInsert2() {
         const char *sql = "INSERT INTO addresses (id, name, address, entered) VALUES "
-                "(?0, ?1, ?2, ?3);";
+                "(?1, ?2, ?3, ?4);";
         SqlQuery q(_db);
         q.prepare(sql);
-        q.bindValue(0, 2);
-        q.bindValue(1, "Brucely Lafayette");
-        q.bindValue(2, "Nurderway5, New York");
-        q.bindValue(3, 1403101224);
+        q.bindValue(1, 2);
+        q.bindValue(2, "Brucely Lafayette");
+        q.bindValue(3, "Nurderway5, New York");
+        q.bindValue(4, 1403101224);
         QVERIFY(q.exec());
     }
 
@@ -120,6 +120,31 @@ private slots:
         q.exec();
         if( q.next() ) {
             qDebug() << "P:" << q.stringValue(1);
+        }
+    }
+
+    void testUnicode() {
+        const char *sql = "INSERT INTO addresses (id, name, address, entered) VALUES "
+                "(?1, ?2, ?3, ?4);";
+        SqlQuery q(_db);
+        q.prepare(sql);
+        q.bindValue(1, 3);
+        q.bindValue(2, QString::fromUtf8("пятницы"));
+        q.bindValue(3, QString::fromUtf8("проспект"));
+        q.bindValue(4, 1403002224);
+        QVERIFY(q.exec());
+    }
+
+    void testReadUnicode() {
+        const char *sql = "SELECT * FROM addresses WHERE id=3;";
+        SqlQuery q(_db);
+        q.prepare(sql);
+
+        if(q.next()) {
+            QString name = q.stringValue(1);
+            QString address = q.stringValue(2);
+            QVERIFY( name == QString::fromUtf8("пятницы") );
+            QVERIFY( address == QString::fromUtf8("проспект"));
         }
     }
 
