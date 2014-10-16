@@ -25,8 +25,6 @@
 
 #include "../../csync/src/std/c_jhash.h"
 
-#define QSQLITE "QSQLITE"
-
 namespace Mirall {
 
 SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
