@@ -432,7 +432,6 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         if( fileId.isEmpty() ) fileId = "";
         QString remotePerm (record._remotePerm);
         if (remotePerm.isEmpty()) remotePerm = QString(); // have NULL in DB (vs empty)
-
         _setFileRecordQuery->bindValue(1, QString::number(phash));
         _setFileRecordQuery->bindValue(2, plen);
         _setFileRecordQuery->bindValue(3, record._path );
@@ -534,7 +533,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             _getFileRecordQuery->reset();
         } else {
             QString err = _getFileRecordQuery->error();
-	    qDebug() << "No journal entry found for " << filename;
+            qDebug() << "No journal entry found for " << filename;
         }
     }
     return rec;
@@ -961,8 +960,8 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
         retries--;
         if( retries < 0 ) retries = 0;
 
-        iQuery.prepare( "UPDATE blacklist SET lastTryEtag = ?1, lastTryModtime = ?1, "
-                        "retrycount = ?2, errorstring = ?3 WHERE path=?4");
+        iQuery.prepare( "UPDATE blacklist SET lastTryEtag = ?1, lastTryModtime = ?2, "
+                        "retrycount = ?3, errorstring = ?4 WHERE path=?5;");
         iQuery.bindValue(1, item._lastTryEtag);
         iQuery.bindValue(2, QString::number(item._lastTryModtime));
         iQuery.bindValue(3, retries);
@@ -971,7 +970,7 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
     } else {
         // there is no entry yet.
         iQuery.prepare("INSERT INTO blacklist (path, lastTryEtag, lastTryModtime, retrycount, errorstring) "
-                         "VALUES (?1, ?2, ?3, ?4, ?5;");
+                         "VALUES (?1, ?2, ?3, ?4, ?5);");
 
         iQuery.bindValue(1, item._file );
         iQuery.bindValue(2, item._lastTryEtag);
@@ -995,8 +994,9 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QString& path)
     }
 
     SqlQuery query(_db);
-    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE path == ?1 OR path LIKE(?||'/%')");
+    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE path == ?1 OR path LIKE(?2||'/%')");
     query.bindValue(1, path);
+    query.bindValue(2, path);
     if( !query.exec() ) {
         qDebug() << Q_FUNC_INFO << "SQL error in avoidRenamesOnNextSync: "<< query.error();
     } else {
@@ -1023,7 +1023,7 @@ void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
 
     SqlQuery query(_db);
     // This query will match entries for whitch the path is a prefix of fileName
-    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ?1 LIKE(path||'/%') AND type == 2"); // CSYNC_FTW_TYPE_DIR == 2
+    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ?1 LIKE(path||'/%') AND type == 2;"); // CSYNC_FTW_TYPE_DIR == 2
     query.bindValue(1, fileName);
     if( !query.exec() ) {
         qDebug() << Q_FUNC_INFO << "SQL error in avoidRenamesOnNextSync: "<< query.error();
