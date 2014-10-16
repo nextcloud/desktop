@@ -188,10 +188,15 @@ void SqlQuery::bindValue(int pos, const QVariant& value)
             break;
         }
         case QVariant::String: {
-            // lifetime of string == lifetime of its qvariant
-            const QString *str = static_cast<const QString*>(value.constData());
-            res = sqlite3_bind_text16(_stmt, pos, str->utf16(),
-                                      (str->size()) * sizeof(QChar), SQLITE_STATIC);
+            if( !value.toString().isNull() ) {
+                // lifetime of string == lifetime of its qvariant
+                const QString *str = static_cast<const QString*>(value.constData());
+                res = sqlite3_bind_text16(_stmt, pos, str->utf16(),
+                                          (str->size()) * sizeof(QChar), SQLITE_STATIC);
+            } else {
+                // unbound value create a null entry.
+                res = SQLITE_OK;
+            }
             break; }
         default: {
             QString str = value.toString();
