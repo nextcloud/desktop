@@ -22,6 +22,7 @@
 #include "discoveryphase.h"
 #include "creds/abstractcredentials.h"
 #include "csync_util.h"
+#include "mirall/syncfilestatus.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -681,14 +682,16 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     Q_ASSERT(session);
 
     // post update phase script: allow to tweak stuff by a custom script in debug mode.
-#ifndef NDEBUG
     if( !qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT").isEmpty() ) {
+#ifndef NDEBUG
         QString script = qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT");
 
         qDebug() << "OOO => Post Update Script: " << script;
         QProcess::execute(script.toUtf8());
-    }
+#else
+    qDebug() << "**** Attention: POST_UPDATE_SCRIPT installed, but not executed because compiled with NDEBUG";
 #endif
+    }
 
     // do a database commit
     _journal->commit("post treewalk");
@@ -1069,7 +1072,18 @@ void SyncEngine::setSelectiveSyncBlackList(const QStringList& list)
     }
 }
 
-
+bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
+{
+    Q_FOREACH(const SyncFileItem &item, _syncedItems) {
+        //qDebug() << Q_FUNC_INFO << fn << item._file << fn.startsWith(item._file) << item._file.startsWith(fn);
+        if (item._file.startsWith(fn)) {
+            qDebug() << Q_FUNC_INFO << "Setting" << fn << " to STATUS_EVAL";
+            s->set(SyncFileStatus::STATUS_EVAL);
+            return true;
+        }
+    }
+    return false;
+}
 
 void SyncEngine::abort()
 {

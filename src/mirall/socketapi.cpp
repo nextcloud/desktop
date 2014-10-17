@@ -35,6 +35,9 @@
 #include <QApplication>
 #include <QLocalSocket>
 
+#include <sqlite3.h>
+
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QStandardPaths>
 #endif
@@ -63,159 +66,6 @@ int csync_exclude_load(const char *fname, c_strlist_t **list);
 namespace Mirall {
 
 #define DEBUG qDebug() << "SocketApi: "
-
-namespace SocketApiHelper {
-
-SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes );
-
-/**
- * @brief recursiveFolderStatus
- * @param fileName - the relative file name to examine
- * @return the resulting status
- *
- * The resulting status can only be either SYNC which means all files
- * are in sync, ERROR if an error occured, or EVAL if something needs
- * to be synced underneath this dir.
- */
-// compute the file status of a directory recursively. It returns either
-// "all in sync" or "needs update" or "error", no more details.
-SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName, c_strlist_t *excludes  )
-{
-    QDir dir(folder->path() + fileName);
-
-    const QStringList dirEntries = dir.entryList( QDir::AllEntries | QDir::NoDotAndDotDot );
-
-    SyncFileStatus result(SyncFileStatus::STATUS_SYNC);
-
-    foreach( const QString entry, dirEntries ) {
-        QString normalizedFile = QString(fileName + QLatin1Char('/') + entry).normalized(QString::NormalizationForm_C);
-        QFileInfo fi(entry);
-        SyncFileStatus sfs;
-
-        if( fi.isDir() ) {
-            sfs = recursiveFolderStatus(folder, normalizedFile, excludes );
-        } else {
-            QString fs( normalizedFile );
-            if( fileName.isEmpty() ) {
-                // toplevel, no slash etc. needed.
-                fs = entry.normalized(QString::NormalizationForm_C);
-            }
-            sfs = fileStatus(folder, fs, excludes);
-        }
-
-        if( sfs.tag() == SyncFileStatus::STATUS_STAT_ERROR || sfs.tag() == SyncFileStatus::STATUS_ERROR ) {
-            return SyncFileStatus::STATUS_ERROR;
-        } else if( sfs.tag() == SyncFileStatus::STATUS_EVAL || sfs.tag() == SyncFileStatus::STATUS_NEW) {
-            result.set(SyncFileStatus::STATUS_EVAL);
-        }
-    }
-    return result;
-}
-
-SyncJournalFileRecord dbFileRecord( Folder *folder, QString fileName )
-{
-    QFileInfo fi(fileName);
-    if( !folder ) {
-        return SyncJournalFileRecord();
-    }
-    if( fi.isAbsolute() ) {
-        fileName.remove(0, folder->path().length());
-    }
-    return( folder->journalDb()->getFileRecord(fileName) );
-}
-
-/**
- * Get status about a single file.
- */
-SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes )
-{
-    QString file = folder->path();
-    QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
-
-    bool isSyncRootFolder = true;
-    if( fileName != QLatin1String("/") && !fileName.isEmpty() ) {
-        file = folder->path() + fileName;
-        isSyncRootFolder = false;
-    }
-
-    if( fileName.endsWith(QLatin1Char('/')) ) {
-        fileName.truncate(fileName.length()-1);
-        qDebug() << "Removed trailing slash: " << fileName;
-    }
-
-    QFileInfo fi(file);
-
-    if( !fi.exists() ) {
-        qDebug() << "OO File " << file << " is not existing";
-        return SyncFileStatus(SyncFileStatus::STATUS_STAT_ERROR);
-    }
-
-    // file is ignored?
-    if( fi.isSymLink() ) {
-        return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
-    }
-    int type = CSYNC_FTW_TYPE_FILE;
-    if( fi.isDir() ) {
-        type = CSYNC_FTW_TYPE_DIR;
-    }
-
-    // '\' is ignored, so convert to unix path before passing the path in.
-    QString unixFileName = QDir::fromNativeSeparators(fileName);
-
-    CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, unixFileName.toUtf8(), type);
-    if( excl != CSYNC_NOT_EXCLUDED ) {
-        return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
-    }
-
-    // Problem: for the sync dir itself we do not have a record in the sync journal
-    // so the next check must not be used for the sync root folder.
-    SyncJournalFileRecord rec = dbFileRecord(folder, unixFileName );
-    if( !isSyncRootFolder && !rec.isValid() ) {
-        // check the parent folder if it is shared and if it is allowed to create a file/dir within
-        QDir d( fi.path() );
-        QString parentPath = d.path();
-        SyncJournalFileRecord dirRec = dbFileRecord(folder, parentPath);
-        while( !d.isRoot() && !(d.exists() && dirRec.isValid()) ) {
-            d.cdUp(); // returns true if the dir exists.
-
-            parentPath = d.path();
-            // cut the folder path
-            dirRec = dbFileRecord(folder, parentPath);
-        }
-        if( dirRec.isValid() ) {
-            if( dirRec._type == CSYNC_FTW_TYPE_DIR ) {
-                if( !dirRec._remotePerm.contains("K") ) {
-                    return SyncFileStatus::STATUS_ERROR;
-                }
-            } else {
-                if( !dirRec._remotePerm.contains("C") ) {
-                    return SyncFileStatus::STATUS_ERROR;
-                }
-            }
-        }
-        return SyncFileStatus(SyncFileStatus::STATUS_NEW);
-    }
-
-    SyncFileStatus status(SyncFileStatus::STATUS_NONE);
-    if( type == CSYNC_FTW_TYPE_DIR ) {
-        // compute recursive status of the directory
-        status = recursiveFolderStatus( folder, fileName, excludes );
-    } else if( FileSystem::getModTime(fi.absoluteFilePath()) != Utility::qDateTimeToTime_t(rec._modtime) ) {
-        // file was locally modified.
-        status.set(SyncFileStatus::STATUS_EVAL);
-    } else {
-        status.set(SyncFileStatus::STATUS_SYNC);
-    }
-
-    if (rec._remotePerm.contains("S")) {
-       status.setSharedWithMe(true);
-    }
-
-    return status;
-}
-
-
-}
 
 SocketApi::SocketApi(QObject* parent)
     : QObject(parent)
@@ -374,6 +224,11 @@ void SocketApi::slotUnregisterPath( const QString& alias )
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path(), QString::null, true );
+
+        if( _dbConnections.contains(f)) {
+            sqlite3_close_v2(_dbConnections[f]._db);
+        }
+        _dbConnections.remove(f);
     }
 }
 
@@ -393,6 +248,8 @@ void SocketApi::slotUpdateFolderView(const QString& alias)
             } else {
                 broadcastMessage(QLatin1String("UPDATE_VIEW"), f->path() );
             }
+        } else {
+            qDebug() << "Not sending UPDATE_VIEW for" << alias << "because status() is" << f->syncResult().status();
         }
     }
 }
@@ -464,7 +321,8 @@ void SocketApi::broadcastMessage( const QString& verb, const QString& path, cons
         msg.append(QDir::toNativeSeparators(path));
     }
 
-    DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << msg;
+    // sendMessage already has a debug output
+    //DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << msg;
     foreach(SocketType *socket, _listeners) {
         sendMessage(socket, msg, doWait);
     }
@@ -495,10 +353,11 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
         DEBUG << "folder offline or not watched:" << argument;
         statusString = QLatin1String("NOP");
     } else {
-        const QString file = argument.mid(syncFolder->path().length());
-        SyncFileStatus fileStatus = SocketApiHelper::fileStatus(syncFolder, file, _excludes);
+        QString file = argument.mid(syncFolder->path().length());
+        if( file.isEmpty() ) file = QLatin1String("/");
+        SyncFileStatus fStatus = this->fileStatus(syncFolder, file, _excludes);
 
-        statusString = fileStatus.toSocketAPIString();
+        statusString = fStatus.toSocketAPIString();
     }
 
     QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')
@@ -509,6 +368,178 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
 void SocketApi::command_VERSION(const QString&, SocketType* socket)
 {
     sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
+}
+
+SqliteHandle SocketApi::getSqliteHandle( Folder *folder )
+{
+    if( _dbConnections.contains(folder) ) {
+        return _dbConnections[folder];
+    }
+    SqliteHandle h;
+    h._db = NULL;
+    h._stmt = NULL;
+
+    if( !folder ) {
+        return h;
+    }
+    int rc;
+    const char* query = "SELECT inode, mode, modtime, type, md5, fileid, remotePerm FROM "
+            "metadata WHERE phash=:ph";
+    QString dbFileName = folder->journalDb()->databaseFilePath();
+
+    if( sqlite3_open_v2(dbFileName.toUtf8().constData(), &(h._db),
+                        SQLITE_OPEN_READONLY+SQLITE_OPEN_NOMUTEX, NULL) == SQLITE_OK ) {
+
+        rc = sqlite3_prepare_v2(h._db, query, strlen(query), &(h._stmt), NULL);
+        if( rc != SQLITE_OK ) {
+            qDebug() << "Unable to prepare the query statement.";
+            return h; // do not insert into hash
+        }
+        _dbConnections.insert( folder, h);
+    }
+    return h;
+}
+
+SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString fileName )
+{
+    if( !(folder && folder->journalDb()) ) {
+        return SyncJournalFileRecord();
+    }
+
+    if( fileName.startsWith( folder->path() )) {
+        fileName.remove(0, folder->path().length());
+    }
+
+    SqliteHandle h = getSqliteHandle(folder);
+
+    sqlite3_stmt *stmt = h._stmt;
+    SyncJournalFileRecord rec;
+
+    if( h._db && h._stmt ) {
+        qlonglong phash = SyncJournalDb::getPHash( fileName );
+        sqlite3_bind_int64(stmt, 1, (long long signed int)phash);
+
+        // int column_count = sqlite3_column_count(stmt);
+
+        int rc = sqlite3_step(stmt);
+
+        if (rc == SQLITE_ROW ) {
+            rec._path   = fileName;
+            rec._inode  = sqlite3_column_int64(stmt,0);;
+            rec._mode = sqlite3_column_int(stmt, 1);
+            rec._modtime = Utility::qDateTimeFromTime_t( strtoul((char*)sqlite3_column_text(stmt, 2), NULL, 10));
+            rec._type = sqlite3_column_int(stmt, 3);;
+            rec._etag = QByteArray((char*)sqlite3_column_text(stmt, 4));
+            rec._fileId = QByteArray((char*)sqlite3_column_text(stmt, 5));
+            rec._remotePerm = QByteArray((char*)sqlite3_column_text(stmt, 6));
+        }
+        sqlite3_reset(stmt);
+    }
+    return rec;
+}
+
+/**
+ * Get status about a single file.
+ */
+SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes )
+{
+    QString file = folder->path();
+    QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
+
+    bool isSyncRootFolder = true;
+    if( fileName != QLatin1String("/") && !fileName.isEmpty() ) {
+        file = folder->path() + fileName;
+        isSyncRootFolder = false;
+    }
+
+    if( fileName.endsWith(QLatin1Char('/')) ) {
+        fileName.truncate(fileName.length()-1);
+        qDebug() << "Removed trailing slash: " << fileName;
+    }
+
+    QFileInfo fi(file);
+
+    if( !fi.exists() ) {
+        qDebug() << "OO File " << file << " is not existing";
+        return SyncFileStatus(SyncFileStatus::STATUS_STAT_ERROR);
+    }
+
+    // file is ignored?
+    if( fi.isSymLink() ) {
+        return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
+    }
+
+    csync_ftw_type_e type = CSYNC_FTW_TYPE_FILE;
+    if( fi.isDir() ) {
+        type = CSYNC_FTW_TYPE_DIR;
+    }
+
+    // '\' is ignored, so convert to unix path before passing the path in.
+    QString unixFileName = QDir::fromNativeSeparators(fileName);
+
+    CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, unixFileName.toUtf8(), type);
+    if( excl != CSYNC_NOT_EXCLUDED ) {
+        return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
+    }
+
+
+    SyncFileStatus status(SyncFileStatus::STATUS_NONE);
+    if (type == CSYNC_FTW_TYPE_DIR) {
+        if (folder->estimateState(fileName, type, &status)) {
+            qDebug() << Q_FUNC_INFO << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
+            return status;
+        }
+        if (fileName == "") {
+            // sync folder itself
+            if (folder->syncResult().status() == SyncResult::Undefined
+                    || folder->syncResult().status() == SyncResult::NotYetStarted
+                    || folder->syncResult().status() == SyncResult::SyncPrepare
+                    || folder->syncResult().status() == SyncResult::SyncRunning
+                    || folder->syncResult().status() == SyncResult::Paused) {
+                status.set(SyncFileStatus::STATUS_EVAL);
+                return status;
+            } else if (folder->syncResult().status() == SyncResult::Success
+                       || folder->syncResult().status() == SyncResult::Problem) {
+                status.set(SyncFileStatus::STATUS_SYNC);
+                return status;
+            }  else if (folder->syncResult().status() == SyncResult::Error
+                        || folder->syncResult().status() == SyncResult::SetupError
+                        || folder->syncResult().status() == SyncResult::SyncAbortRequested) {
+                status.set(SyncFileStatus::STATUS_ERROR);
+                return status;
+            }
+        }
+        SyncJournalFileRecord rec = dbFileRecord_capi(folder, unixFileName );
+        if (rec.isValid()) {
+            status.set(SyncFileStatus::STATUS_SYNC);
+            if (rec._remotePerm.contains("S")) {
+               status.setSharedWithMe(true);
+            }
+        } else {
+            status.set(SyncFileStatus::STATUS_EVAL);
+        }
+    } else if (type == CSYNC_FTW_TYPE_FILE) {
+        if (folder->estimateState(fileName, type, &status)) {
+            return status;
+        }
+        SyncJournalFileRecord rec = dbFileRecord_capi(folder, unixFileName );
+        if (rec.isValid()) {
+            if (rec._remotePerm.contains("S")) {
+               status.setSharedWithMe(true);
+            }
+            if( FileSystem::getModTime(fi.absoluteFilePath()) == Utility::qDateTimeToTime_t(rec._modtime) ) {
+                status.set(SyncFileStatus::STATUS_SYNC);
+                return status;
+            } else {
+                status.set(SyncFileStatus::STATUS_EVAL);
+                return status;
+            }
+        }
+        status.set(SyncFileStatus::STATUS_NEW);
+        return status;
+    }
+
+    return status;
 }
 
 

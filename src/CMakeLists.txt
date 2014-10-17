@@ -75,6 +75,7 @@ set(libsync_SRCS
     mirall/propagator_legacy.cpp
     mirall/syncjournalfilerecord.cpp
     mirall/syncjournaldb.cpp
+    mirall/ownsql.cpp
     mirall/theme.cpp
     mirall/owncloudtheme.cpp
     mirall/logger.cpp
@@ -173,9 +174,9 @@ GENERATE_EXPORT_HEADER( ${synclib_NAME}
 
 
 if(TOKEN_AUTH_ONLY)
-    qt5_use_modules(${synclib_NAME} Network Xml Sql)
+    qt5_use_modules(${synclib_NAME} Network Xml)
 else()
-    qt5_use_modules(${synclib_NAME} Widgets Network Xml WebKitWidgets Sql)
+    qt5_use_modules(${synclib_NAME} Widgets Network Xml WebKitWidgets)
 endif()
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
@@ -355,7 +356,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
 
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
-    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql ${ADDITIONAL_APP_MODULES})
+    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets ${ADDITIONAL_APP_MODULES})
 elseif(NOT BUILD_LIBRARIES_ONLY)
     set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
@@ -363,7 +364,7 @@ elseif(NOT BUILD_LIBRARIES_ONLY)
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
-    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql  ${ADDITIONAL_APP_MODULES})
+    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets ${ADDITIONAL_APP_MODULES})
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${mirall_I18N} DESTINATION ${QM_DIR})
@@ -420,7 +421,7 @@ set(OWNCLOUDCMD_SRC owncloudcmd/simplesslerrorhandler.cpp owncloudcmd/owncloudcm
 if(NOT BUILD_LIBRARIES_ONLY)
 
    add_executable(${owncloudcmd_NAME}  ${OWNCLOUDCMD_SRC})
-	qt5_use_modules(${owncloudcmd_NAME} Network Sql)
+        qt5_use_modules(${owncloudcmd_NAME} Network)
 	set_target_properties(${owncloudcmd_NAME} PROPERTIES
 	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
         set_target_properties(${owncloudcmd_NAME} PROPERTIES

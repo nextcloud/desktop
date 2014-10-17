@@ -27,6 +27,7 @@
 
 #include <QDir>
 #include <QHash>
+#include <QSet>
 #include <QObject>
 #include <QStringList>
 
@@ -34,14 +35,11 @@
 #include <QTimer>
 #include <qelapsedtimer.h>
 
-class QFileSystemWatcher;
 class QThread;
 
 namespace Mirall {
 
 class SyncEngine;
-
-class FolderWatcher;
 
 class Folder : public QObject
 {
@@ -119,12 +117,12 @@ public:
 
      // Used by the Socket API
      SyncJournalDb *journalDb() { return &_journal; }
-     CSYNC *csyncContext() { return _csync_ctx; }
 
      QStringList selectiveSyncBlackList() { return _selectiveSyncBlackList; }
      void setSelectiveSyncBlackList(const QStringList &blackList)
      { _selectiveSyncBlackList = blackList; }
 
+     bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
 
 signals:
     void syncStateChange();
@@ -170,9 +168,12 @@ private slots:
     void etagRetreived(const QString &);
     void slotNetworkUnavailable();
 
-    void slotThreadTreeWalkResult(const SyncFileItemVector& );
+    void slotAboutToPropagate(const SyncFileItemVector& );
+    void slotThreadTreeWalkResult(const SyncFileItemVector& ); // after sync is done
 
     void slotEmitFinishedDelayed();
+
+    void watcherSlot(QString);
 
 private:
     bool init();
@@ -203,6 +204,11 @@ private:
     QString       _lastEtag;
     QElapsedTimer _timeSinceLastSync;
     bool          _forceSyncOnPollTimeout;
+
+    // For the SocketAPI folder states
+    QSet<QString>   _stateLastSyncItemsWithErrorNew; // gets moved to _stateLastSyncItemsWithError at end of sync
+    QSet<QString>   _stateLastSyncItemsWithError;
+    QSet<QString>   _stateTaintedFolders;
 
     SyncJournalDb _journal;
 

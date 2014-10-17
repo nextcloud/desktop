@@ -20,13 +20,15 @@ extern "C" {
 #include <std/c_string.h>
 }
 
+#include <sqlite3.h>
+
 #include <QWeakPointer>
 #include <QTcpSocket>
 #include <QTcpServer>
 #include <QLocalServer>
 
 #include "mirall/syncfileitem.h"
-
+#include "mirall/syncjournalfilerecord.h"
 class QUrl;
 class QLocalSocket;
 class QStringList;
@@ -34,6 +36,15 @@ class QStringList;
 namespace Mirall {
 
 typedef QLocalSocket SocketType;
+
+class SyncFileStatus;
+class Folder;
+
+struct SqliteHandle
+{
+    sqlite3 *_db;
+    sqlite3_stmt *_stmt;
+};
 
 class SocketApi : public QObject
 {
@@ -57,6 +68,12 @@ private slots:
     void slotSyncItemDiscovered(const QString &, const SyncFileItem &);
 
 private:
+    SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes );
+    SyncJournalFileRecord dbFileRecord( Folder *folder, QString fileName );
+    SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName );
+    SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName, c_strlist_t *excludes  );
+    SqliteHandle getSqliteHandle( Folder *folder );
+
     void sendMessage(SocketType* socket, const QString& message, bool doWait = false);
     void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null, bool doWait = false);
 
@@ -65,7 +82,6 @@ private:
 
     Q_INVOKABLE void command_VERSION(const QString& argument, SocketType* socket);
 
-private:
 #ifdef SOCKETAPI_TCP
     QTcpServer _localServer;
 #else
@@ -73,6 +89,7 @@ private:
 #endif
     QList<SocketType*> _listeners;
     c_strlist_t *_excludes;
+    QHash<Folder*, SqliteHandle> _dbConnections;
 };
 
 }

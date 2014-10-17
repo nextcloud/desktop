@@ -34,6 +34,7 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             GObject.timeout_add(5000, self.connectToSocketServer)
 
     def connectToSocketServer(self):
+        do_reconnect = True
         try:
             self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             postfix = "/"+self.appname+"/socket"
@@ -44,15 +45,18 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 		    print("Socket File: "+sock_file)
 		    self.sock.connect(sock_file)
 		    self.connected = True
+		    print("Setting connected to %r" % self.connected )
 		    self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
-		except:
-		    print("Could not connect to unix socket.")
+		    do_reconnect = False
+		except Exception, e:
+		    print("Could not connect to unix socket." + str(e))
 	    else:
 		 print("Sock-File not valid: "+sock_file)
-        except:
-            print("Connect could not be established, try again later!")
+        except Exception, e:
+            print("Connect could not be established, try again later " + str(e))
             self.sock.close()
-        return not self.connected
+        # print("Returning %r" % do_reconnect)
+        return do_reconnect
 
     def sendCommand(self, cmd):
         if self.connected:
@@ -122,7 +126,7 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 			if( not itemStore['state'] or newState != itemStore['state'] ):
 			    item = itemStore['item']
 			    item.add_emblem(emblem)
-			    # print "Setting emblem on " + parts[2]
+			    # print "Setting emblem on " + parts[2]+ "<>"+emblem+"<>"
 			    self.nautilusVFSFile_table[parts[2]] = {'item': item, 'state':newState}
 
             elif action == 'UPDATE_VIEW':

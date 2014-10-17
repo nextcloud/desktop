@@ -147,6 +147,9 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         connect(fw, SIGNAL(folderChanged(QString)), _folderWatcherSignalMapper, SLOT(map()));
         _folderWatcherSignalMapper->setMapping(fw, folder->alias());
         _folderWatchers.insert(folder->alias(), fw);
+
+        // This is at the moment only for the behaviour of the SocketApi.
+        connect(fw, SIGNAL(folderChanged(QString)), folder, SLOT(watcherSlot(QString)));
     }
 
     // register the folder with the socket API
@@ -437,19 +440,27 @@ void FolderMan::slotScheduleAllFolders()
   */
 void FolderMan::slotScheduleSync( const QString& alias )
 {
+    if( alias.isEmpty() || ! _folderMap.contains(alias) ) {
+        qDebug() << "Not scheduling sync for empty or unknown folder" << alias;
+        return;
+    }
+
     // The folder watcher fires a lot of bogus notifications during
     // a sync operation, both for actual user files and the database
     // and log. Never enqueue a folder for sync while it is syncing.
     // We lose some genuine sync requests that way, but that can't be
     // helped.
+    // ^^ FIXME: Note that this is not the case on OS X
     if( _currentSyncFolder == alias ) {
         qDebug() << "folder " << alias << " is currently syncing. NOT scheduling.";
         return;
     }
 
-    if( alias.isEmpty() || ! _folderMap.contains(alias) ) {
-        qDebug() << "Not scheduling sync for empty or unknown folder" << alias;
-        return;
+    if( _socketApi ) {
+        // We want the SocketAPI to already now update so that it can show the EVAL icon
+        // for files/folders. Only do this when not syncing, else we might get a lot
+        // of those notifications.
+        _socketApi->slotUpdateFolderView(alias);
     }
 
     qDebug() << "Schedule folder " << alias << " to sync!";
@@ -578,11 +589,11 @@ Folder *FolderMan::folderForPath(const QString &path)
         const QString folderPath = QDir::cleanPath(folder->path())+QLatin1Char('/');
 
         if(absolutePath.startsWith(folderPath)) {
-            qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
+            //qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
             return folder;
         }
     }
-
+    qDebug() << "ERROR: could not find folder for " << absolutePath;
     return 0;
 }
 

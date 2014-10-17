@@ -63,7 +63,7 @@ our %config;
 
 @ISA        = qw(Exporter);
 @EXPORT     = qw( initTesting createRemoteDir removeRemoteDir createLocalDir cleanup csync
-                  assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir 
+                  assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir
                   putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
                   remoteCleanup server initLocalDir initRemoteDir moveRemoteFile
                   printInfo remoteFileId createShare removeShare assert
@@ -73,12 +73,12 @@ sub server
 {
   return $owncloud;
 }
-                  
+
 sub fromFileName($)
 {
   my ($file) = @_;
   if ( $^O eq "darwin" ) {
-    my $fromFileName = NFC( Encode::decode('utf-8', $file) ); 
+    my $fromFileName = NFC( Encode::decode('utf-8', $file) );
     return $fromFileName;
   } else {
     return $file;
@@ -89,7 +89,7 @@ sub fromFileName($)
 sub initTesting(;$)
 {
   my ($prefix) = @_;
-  
+
   my $cfgFile = "./t1.cfg";
   $cfgFile = "/etc/ownCloud/t1.cfg" if( -r "/etc/ownCloud/t1.cfg" );
 
@@ -131,15 +131,15 @@ sub initTesting(;$)
 		  -pass=> $passwd );
   # $d->DebugLevel(3);
   $prefix = "t1" unless( defined $prefix );
-  
+
   my $dirId = sprintf("%02d", rand(100));
   my $dateTime = strftime('%Y%m%d%H%M%S',localtime);
   my $dir = sprintf( "%s-%s-%s/", $prefix, $dateTime, $dirId );
-  
+
   $localDir = $dir;
   $localDir .= "/" unless( $localDir =~ /\/$/ );
   $remoteDir = $dir;
-  
+
   initRemoteDir();
   initLocalDir();
   printf( "Test directory name is %s\n", $dir );
@@ -208,7 +208,7 @@ sub removeRemoteDir($;$)
     if( $re == 0 ) {
 	print "Failed to remove directory <$url>:" . $d->message() ."\n";
     }
-  
+
     return $re;
 }
 
@@ -340,7 +340,7 @@ sub localDir()
   return $localDir;
 }
 
-sub remoteDir() 
+sub remoteDir()
 {
   return $remoteDir;
 }
@@ -385,7 +385,7 @@ sub traverse( $$;$ )
 {
     my ($remote, $acceptConflicts, $aurl) = @_;
     $remote .= '/' unless $remote =~ /(^|\/)$/;
-    
+
     my $url = testDirUrl() . $remote;
     if( $aurl ) {
 	$url = $aurl . $remote;
@@ -493,13 +493,13 @@ sub glob_put( $$;$ )
 	      print "   *** Putting $lfile to $puturl\n";
 	      # putToDirLWP( $lfile, $puturl );
 	      put_to_dir($lfile, $puturl, $optionsRef);
-	      
+
 	      # if( ! $d->put( -local=>$lfile, -url=> $puturl ) ) {
 	      #print "   ### FAILED to put: ". $d->message . '\n';
 	      # s}
 	    }
 	}
-	  
+
     }
 }
 
@@ -529,7 +529,7 @@ sub put_to_dir( $$;$ )
     }
 }
 
-# The HTTP DAV module often does a PROPFIND before it really PUTs. That 
+# The HTTP DAV module often does a PROPFIND before it really PUTs. That
 # is not neccessary if we know that the directory is really there.
 # Use this function in this case:
 sub putToDirLWP($$)
@@ -555,7 +555,7 @@ sub putToDirLWP($$)
 		  Content => $string;
     $req->authorization_basic($user, $passwd);
     my $response = $ua->request($req);
-    
+
     if ($response->is_success()) {
       # print "OK: ", $response->content;
     } else {
@@ -598,15 +598,15 @@ sub getToFileLWP( $$ )
     }
 }
 
-sub createLocalFile( $$ ) 
+sub createLocalFile( $$ )
 {
   my ($fname, $size) = @_;
   $size = 1024 unless( $size );
-  
+
   my $md5 = Digest::MD5->new;
 
   open(FILE, ">", $fname) or die "Can't open $fname for writing ($!)";
-  
+
   my $minimum = 32;
   my $range = 96;
 
@@ -624,20 +624,20 @@ sub createLocalFile( $$ )
   print FILE $s;
   $md5->add($s);
   close FILE;
-  return $md5->hexdigest; 
+  return $md5->hexdigest;
 }
 
-sub md5OfFile( $ ) 
+sub md5OfFile( $ )
 {
   my ($file) = @_;
-  
+
   open FILE, "$file";
 
   my $ctx = Digest::MD5->new;
   $ctx->addfile (*FILE);
   my $hash = $ctx->hexdigest;
   close (FILE);
-  
+
   return $hash;
 }
 
@@ -651,27 +651,27 @@ sub moveRemoteFile($$;$)
 
   my $fromUrl = testDirUrl(). $from;
   my $toUrl = testDirUrl() . $to;
-  
+
   if( $no_testdir ) {
      $fromUrl = $from;
      $toUrl = $to;
   }
-  
+
   $d->move($fromUrl, $toUrl);
-  
+
 }
 
 sub printInfo($)
 {
   my ($info) = @_;
   my $tt = 6+length( $info );
-  
+
   print "#" x $tt;
   printf( "\n# %2d. %s", $infoCnt, $info );
   print "\n" unless $info =~ /\n$/;
   print "#" x $tt;
   print "\n";
-  
+
   $infoCnt++;
 }
 
@@ -722,16 +722,15 @@ sub createShare($$)
     my $re = $dd->mkcol( $url );
     if( $re == 0 ) {
 	print "Failed to create test dir $url\n";
-
     }
 
     my $ua  = LWP::UserAgent->new(ssl_opts => { verify_hostname => 0 } );
     $ua->agent( "ownCloudTest_sharing");
     # http://localhost/ocm/ocs/v1.php/apps/files_sharing/api/v1/shares
-    my $puturl = $ocs_url . "apps/files_sharing/api/v1/shares";
+    my $puturl = $ocs_url . "ocs/v1.php/apps/files_sharing/api/v1/shares";
 
     my $string = "path=$dir&shareType=0&shareWith=$user&publicUpload=false&permissions=$readWrite";
-    print ">>>>>>>>>> $string\n";
+    print ">>>>>>>>>> $puturl $string\n";
 
     my $req = POST $puturl, Content => $string;
     $req->authorization_basic($share_user, $share_passwd);
@@ -763,15 +762,14 @@ sub removeShare($$)
 
     my $ua  = LWP::UserAgent->new(ssl_opts => { verify_hostname => 0 });
     $ua->agent( "ownCloudTest_sharing");
-    # http://localhost/ocm/ocs/v1.php/apps/files_sharing/api/v1/shares
-    my $url = $ocs_url . "apps/files_sharing/api/v1/shares/" . $shareId;
+
+    my $url = $ocs_url . "ocs/v1.php/apps/files_sharing/api/v1/shares/" . $shareId;
 
     my $req = DELETE $url;
     $req->authorization_basic($share_user, $share_passwd);
     my $response = $ua->request($req);
 
     if ($response->is_success()) {
-      # print "OK: ", $response->content;
 	print $response->decoded_content;
 	if( $response->decoded_content =~ /<status_code>(\d+)<\/status_code>/m) {
 	    my $code = $1;

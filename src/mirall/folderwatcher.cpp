@@ -81,7 +81,7 @@ bool FolderWatcher::pathIsIgnored( const QString& path )
 
         QFileInfo fInfo(path);
         if( fInfo.isHidden() ) {
-            qDebug() << "* Discarded as is hidden!";
+            qDebug() << "* Discarded as is hidden!" << fInfo.filePath();
             return true;
         }
 
