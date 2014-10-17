@@ -59,7 +59,7 @@ void SyncJournalDb::startTransaction()
             return;
         }
         _transaction = 1;
-        // qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Transaction start!";
+        // qDebug() << "XXX Transaction start!";
     } else {
         qDebug() << "Database Transaction is running, do not starting another one!";
     }
@@ -73,7 +73,7 @@ void SyncJournalDb::commitTransaction()
             return;
         }
         _transaction = 0;
-        // qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Transaction END!";
+        // qDebug() << "XXX Transaction END!";
     } else {
         qDebug() << "No database Transaction to commit";
     }

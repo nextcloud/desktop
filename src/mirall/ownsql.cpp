@@ -123,7 +123,7 @@ int SqlQuery::prepare( const QString& sql)
     if(!_sql.isEmpty() ) {
         SQLITE_DO(sqlite3_prepare_v2(_db, _sql.toUtf8().constData(), -1, &_stmt, 0));
         if( _errId != SQLITE_OK ) {
-            qDebug() << "XXXXXXXXXXXXXXXXXXXX " << _error << "in"<<_sql;
+            qDebug() << "Sqlite prepare statement error:" << _error << "in"<<_sql;
         }
         // Q_ASSERT(_errId == SQLITE_OK);
     }
