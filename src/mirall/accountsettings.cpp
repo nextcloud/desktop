@@ -605,7 +605,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
 
     if (!progress._currentDiscoveredFolder.isEmpty()) {
-        item->setData( tr("Discovering %1").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
+        item->setData( tr("Discovering '%1'").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
         return;
     }
 
