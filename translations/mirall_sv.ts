@@ -75,7 +75,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="159"/>
         <source>Modify Account</source>
-        <translation>Ändra Konto</translation>
+        <translation>Ändra konto</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
@@ -373,12 +373,12 @@ Total tid kvar %5</translation>
         <location filename="../src/mirall/folder.cpp" line="480"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 och %2 andra filer kunde inte synkroniseras på grund av ett fel. Kolla loggen för ytterligare detaljer.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="482"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 kunde inte synkroniseras på grund av ett fel. Kolla loggen för ytterligare detaljer.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="490"/>
@@ -1018,7 +1018,7 @@ efter ytterligare privilegier under processen.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Uppdateringsstatus är okänd: Gjorde ingen kontroll av nya uppdateringar.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
@@ -1287,7 +1287,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Öppna %1 i webbläsare</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
@@ -1542,7 +1542,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Unchecked folders will not be sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Mappar som inte är valda kommer inte att synkas till den här datorn</translation>
     </message>
 </context>
 <context>
@@ -2061,7 +2061,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="953"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Lokala filer och mappar som är delade är borttagna.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="1008"/>
@@ -2125,7 +2125,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="276"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Det finns inga synkmappar konfigurerade.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="302"/>
@@ -2270,7 +2270,7 @@ Försök att synka dessa igen.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="103"/>
         <source>Sync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Synka allt från servern</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="122"/>
