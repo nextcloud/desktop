@@ -29,7 +29,6 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
     def __init__(self):
         self.connectToSocketServer
-        print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
         if not self.connected:
             # try again in 5 seconds - attention, logic inverted!
             GObject.timeout_add(5000, self.connectToSocketServer)
