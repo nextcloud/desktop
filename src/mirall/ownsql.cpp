@@ -102,7 +102,7 @@ SqlQuery::SqlQuery( SqlDatabase db )
 SqlQuery::~SqlQuery()
 {
     if( _stmt ) {
-        sqlite3_finalize(_stmt);
+        finish();
     }
 }
 
