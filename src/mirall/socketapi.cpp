@@ -353,11 +353,10 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
         DEBUG << "folder offline or not watched:" << argument;
         statusString = QLatin1String("NOP");
     } else {
-        QString file = argument.mid(syncFolder->path().length());
-        if( file.isEmpty() ) file = QLatin1String("/");
-        SyncFileStatus fStatus = this->fileStatus(syncFolder, file, _excludes);
+        const QString file = argument.mid(syncFolder->path().length());
+        SyncFileStatus fileStatus = this->fileStatus(syncFolder, file, _excludes);
 
-        statusString = fStatus.toSocketAPIString();
+        statusString = fileStatus.toSocketAPIString();
     }
 
     QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')
