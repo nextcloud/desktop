@@ -206,15 +206,16 @@ QString MirallConfigFile::configPathWithAppName() const
     return QFileInfo( configFile() ).dir().absolutePath().append("/");
 }
 
+static const QLatin1String exclFile("sync-exclude.lst");
+
 QString MirallConfigFile::excludeFile(Scope scope) const
 {
     // prefer sync-exclude.lst, but if it does not exist, check for
     // exclude.lst for compatibility reasons in the user writeable
     // directories.
-    const QString exclFile("sync-exclude.lst");
-    QFileInfo fi;
 
     if (scope != SystemScope) {
+        QFileInfo fi;
         fi.setFile( configPath(), exclFile );
 
         if( ! fi.isReadable() ) {
@@ -223,32 +224,37 @@ QString MirallConfigFile::excludeFile(Scope scope) const
         if( ! fi.isReadable() ) {
             fi.setFile( configPath(), exclFile );
         }
+        return fi.absoluteFilePath();
+    } else if (scope != UserScope) {
+        return MirallConfigFile::excludeFileFromSystem();
+    } else {
+        Q_ASSERT(false);
+        return QString(); // unreachable
     }
+}
 
-    if (scope != UserScope) {
-        // Check alternative places...
-        if( ! fi.isReadable() ) {
+QString MirallConfigFile::excludeFileFromSystem()
+{
+    QFileInfo fi;
 #ifdef Q_OS_WIN
-            fi.setFile( QCoreApplication::applicationDirPath(), exclFile );
+    fi.setFile( QCoreApplication::applicationDirPath(), exclFile );
 #endif
 #ifdef Q_OS_UNIX
-            fi.setFile( QString( SYSCONFDIR "/%1").arg(Theme::instance()->appName()), exclFile );
-            if ( ! fi.exists() ) {
-                // Prefer to return the preferred path! Only use the fallback location
-                // if the other path does not exist and the fallback is valid.
-                QFileInfo nextToBinary( QCoreApplication::applicationDirPath(), exclFile );
-                if (nextToBinary.exists()) {
-                    fi = nextToBinary;
-                }
-            }
-#endif
-#ifdef Q_OS_MAC
-            // exec path is inside the bundle
-            fi.setFile( QCoreApplication::applicationDirPath(),
-                        QLatin1String("../Resources/") + exclFile );
-#endif
+    fi.setFile( QString( SYSCONFDIR "/%1").arg(Theme::instance()->appName()), exclFile );
+    if ( ! fi.exists() ) {
+        // Prefer to return the preferred path! Only use the fallback location
+        // if the other path does not exist and the fallback is valid.
+        QFileInfo nextToBinary( QCoreApplication::applicationDirPath(), exclFile );
+        if (nextToBinary.exists()) {
+            fi = nextToBinary;
         }
     }
+#endif
+#ifdef Q_OS_MAC
+    // exec path is inside the bundle
+    fi.setFile( QCoreApplication::applicationDirPath(),
+                QLatin1String("../Resources/") + exclFile );
+#endif
     return fi.absoluteFilePath();
 }
 

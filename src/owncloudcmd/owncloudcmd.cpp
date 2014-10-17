@@ -27,6 +27,7 @@
 #include "csync.h"
 #include "mirall/clientproxy.h"
 #include "mirall/account.h"
+#include "mirall/mirallconfigfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #include "creds/httpcredentials.h"
 #include "owncloudcmd.h"
 #include "simplesslerrorhandler.h"
@@ -374,8 +375,22 @@ restart_sync:
         clientProxy.setCSyncProxy(QUrl(url), _csync_ctx);
     }
 
+    // Exclude lists
+    QString systemExcludeListFn = MirallConfigFile::excludeFileFromSystem();
+    int loadedSystemExcludeList = false;
+    if (!systemExcludeListFn.isEmpty()) {
+        loadedSystemExcludeList = csync_add_exclude_list(_csync_ctx, systemExcludeListFn.toLocal8Bit());
+    }
+
+    int loadedUserExcludeList = false;
     if (!options.exclude.isEmpty()) {
-        csync_add_exclude_list(_csync_ctx, options.exclude.toLocal8Bit());
+        loadedUserExcludeList = csync_add_exclude_list(_csync_ctx, options.exclude.toLocal8Bit());
+    }
+
+    if (loadedSystemExcludeList != 0 && loadedUserExcludeList != 0) {
+        // Always make sure at least one list had been loaded
+        qFatal("Cannot load system exclude list or list supplied via --exclude");
+        return EXIT_FAILURE;
     }
 
     cred->syncContextPreStart(_csync_ctx);
