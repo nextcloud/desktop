@@ -16,6 +16,8 @@
 #include <csync_private.h>
 #include <qdebug.h>
 
+#include <QUrl>
+
 namespace Mirall {
 
 bool DiscoveryJob::isInSelectiveSyncBlackList(const QString& path) const
@@ -70,7 +72,7 @@ void DiscoveryJob::update_job_update_callback (bool local,
             updateJob->lastUpdateProgressCallbackCall.restart();
         }
 
-        QString path = QString::fromUtf8(dirUrl).section('/', -1);
+        QString path(QUrl::fromPercentEncoding(QByteArray(dirUrl)).section('/', -1));
         emit updateJob->folderDiscovered(local, path);
     }
 }
