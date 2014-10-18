@@ -17,6 +17,10 @@
 #include <QDebug>
 
 #include "ownsql.h"
+#include "utility.h"
+
+#define SQLITE_SLEEP_TIME_USEC 100000
+#define SQLITE_REPEAT_COUNT 20
 
 #define SQLITE_DO(A) if(1) { \
     _errId = (A); if(_errId != SQLITE_OK) { _error= QString::fromUtf8(sqlite3_errmsg(_db)); \
@@ -121,7 +125,17 @@ int SqlQuery::prepare( const QString& sql)
         finish();
     }
     if(!_sql.isEmpty() ) {
-        SQLITE_DO(sqlite3_prepare_v2(_db, _sql.toUtf8().constData(), -1, &_stmt, 0));
+        int n = 0;
+        int rc;
+        do {
+            rc = sqlite3_prepare_v2(_db, _sql.toUtf8().constData(), -1, &_stmt, 0);
+            if( (rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED) ) {
+                n++;
+                Mirall::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
+            }
+        } while( (n < SQLITE_REPEAT_COUNT) && ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)));
+        _errId = rc;
+
         if( _errId != SQLITE_OK ) {
             qDebug() << "Sqlite prepare statement error:" << _error << "in"<<_sql;
         }
@@ -144,7 +158,20 @@ bool SqlQuery::exec()
 {
     // Don't do anything for selects, that is how we use the lib :-|
     if(_stmt && !isSelect() && !isPragma() ) {
-        SQLITE_DO(sqlite3_step(_stmt));
+        int rc, n = 0;
+        do {
+            rc = sqlite3_step(_stmt);
+            if( rc == SQLITE_LOCKED ) {
+                rc = sqlite3_reset(_stmt); /* This will also return SQLITE_LOCKED */
+                n++;
+                Mirall::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
+            } else if( (rc == SQLITE_BUSY) ) {
+                Mirall::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
+                n++;
+            }
+        } while( (n < SQLITE_REPEAT_COUNT) && ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)));
+        _errId = rc;
+
         return (_errId == SQLITE_DONE); // either SQLITE_ROW or SQLITE_DONE
     }
 

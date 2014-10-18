@@ -52,6 +52,19 @@
 
 #define sqlite_open(A, B) sqlite3_open_v2(A,B, SQLITE_OPEN_READONLY+SQLITE_OPEN_NOMUTEX, NULL)
 
+#define SQLTM_TIME 150000
+#define SQLTM_COUNT 10
+
+#define SQLITE_BUSY_HANDLED(F) if(1) { \
+    int n = 0; \
+    do { rc = F ; \
+      if( (rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED) ) { \
+         n++; \
+         usleep(SQLTM_TIME); \
+      } \
+    }while( (n < SQLTM_COUNT) && ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED))); \
+  }
+
 
 void csync_set_statedb_exists(CSYNC *ctx, int val) {
   ctx->statedb.exists = val;
@@ -284,7 +297,7 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
 
     column_count = sqlite3_column_count(stmt);
 
-    rc = sqlite3_step(stmt);
+    SQLITE_BUSY_HANDLED( sqlite3_step(stmt) );
 
     if( rc == SQLITE_ROW ) {
         if(column_count > 7) {
@@ -347,7 +360,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
   if( ctx->statedb.by_hash_stmt == NULL ) {
       const char *hash_query = "SELECT * FROM metadata WHERE phash=?1";
 
-      rc = sqlite3_prepare_v2(ctx->statedb.db, hash_query, strlen(hash_query), &ctx->statedb.by_hash_stmt, NULL);
+      SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, hash_query, strlen(hash_query), &ctx->statedb.by_hash_stmt, NULL));
       if( rc != SQLITE_OK ) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for hash query.");
           return NULL;
@@ -389,7 +402,6 @@ void   csync_statedb_finalize_statements(CSYNC *ctx) {
     }
 }
 
-
 csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
                                                       const char *file_id ) {
     csync_file_stat_t *st = NULL;
@@ -409,7 +421,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
     if( ctx->statedb.by_fileid_stmt == NULL ) {
         const char *query = "SELECT * FROM metadata WHERE fileid=?1";
 
-        rc = sqlite3_prepare_v2(ctx->statedb.db, query, strlen(query), &ctx->statedb.by_fileid_stmt, NULL);
+        SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, query, strlen(query), &ctx->statedb.by_fileid_stmt, NULL));
         if( rc != SQLITE_OK ) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for file id query.");
             return NULL;
@@ -447,7 +459,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx,
   if( ctx->statedb.by_inode_stmt == NULL ) {
       const char *inode_query = "SELECT * FROM metadata WHERE inode=?1";
 
-      rc = sqlite3_prepare_v2(ctx->statedb.db, inode_query, strlen(inode_query), &ctx->statedb.by_inode_stmt, NULL);
+      SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, inode_query, strlen(inode_query), &ctx->statedb.by_inode_stmt, NULL));
       if( rc != SQLITE_OK ) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for inode query.");
           return NULL;
@@ -509,7 +521,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
         return -1;
     }
 
-    rc = sqlite3_prepare_v2(ctx->statedb.db, BELOW_PATH_QUERY, -1, &stmt, NULL);
+    SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, BELOW_PATH_QUERY, -1, &stmt, NULL));
     if( rc != SQLITE_OK ) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for below path query.");
       return -1;
