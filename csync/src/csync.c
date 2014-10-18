@@ -254,6 +254,13 @@ int csync_update(CSYNC *ctx) {
 
   csync_gettime(&finish);
 
+  /* Finalize the sql precompiled statements after the update run since
+   * it runs in its own thread. Precompiled statements shoult not be shared
+   * across thread borders according to
+   * http://www.sqlite.org/cvstrac/wiki?p=MultiThreading
+   */
+  csync_statedb_finalize_statements(ctx);
+
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Update detection for remote replica took %.2f seconds "
             "walking %zu files.",

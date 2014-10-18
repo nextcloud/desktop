@@ -260,21 +260,7 @@ int csync_statedb_close(CSYNC *ctx) {
       return -1;
   }
 
-  /* deallocate query resources */
-  if( ctx->statedb.by_hash_stmt ) {
-      rc = sqlite3_finalize(ctx->statedb.by_hash_stmt);
-      ctx->statedb.by_hash_stmt = NULL;
-  }
-
-  if( ctx->statedb.by_fileid_stmt ) {
-      rc = sqlite3_finalize(ctx->statedb.by_fileid_stmt);
-      ctx->statedb.by_fileid_stmt = NULL;
-  }
-
-  if( ctx->statedb.by_inode_stmt ) {
-      rc = sqlite3_finalize(ctx->statedb.by_inode_stmt);
-      ctx->statedb.by_inode_stmt = NULL;
-  }
+  csync_statedb_finalize_statements(ctx);
 
   sqlite3_close(ctx->statedb.db);
 
@@ -382,6 +368,27 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
 
   return st;
 }
+
+void   csync_statedb_finalize_statements(CSYNC *ctx) {
+    if( !ctx ) {
+        return;
+    }
+
+    /* deallocate query resources */
+    if( ctx->statedb.by_fileid_stmt ) {
+        sqlite3_finalize(ctx->statedb.by_fileid_stmt);
+        ctx->statedb.by_fileid_stmt = NULL;
+    }
+    if( ctx->statedb.by_hash_stmt ) {
+        sqlite3_finalize(ctx->statedb.by_hash_stmt);
+        ctx->statedb.by_hash_stmt = NULL;
+    }
+    if( ctx->statedb.by_inode_stmt) {
+        sqlite3_finalize(ctx->statedb.by_inode_stmt);
+        ctx->statedb.by_inode_stmt = NULL;
+    }
+}
+
 
 csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
                                                       const char *file_id ) {

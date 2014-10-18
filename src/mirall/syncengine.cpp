@@ -1074,6 +1074,7 @@ void SyncEngine::setSelectiveSyncBlackList(const QStringList& list)
 
 bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
 {
+    Q_UNUSED(t);
     Q_FOREACH(const SyncFileItem &item, _syncedItems) {
         //qDebug() << Q_FUNC_INFO << fn << item._file << fn.startsWith(item._file) << item._file.startsWith(fn);
         if (item._file.startsWith(fn)) {
