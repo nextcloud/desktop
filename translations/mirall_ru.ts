@@ -1388,7 +1388,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="257"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 не может быть переименован в %2 из-за локальных конфликтов имен</translation>
     </message>
 </context>
 <context>

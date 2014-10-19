@@ -1388,7 +1388,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="257"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Súbor %1 nemôže byť premenovaný na %2 z dôvodu, že tento názov je už použitý</translation>
     </message>
 </context>
 <context>

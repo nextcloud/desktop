@@ -198,7 +198,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="608"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; avastamine</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="648"/>
@@ -278,7 +278,7 @@ Aega kokku jäänud %5</translation>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="138"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>aegumine</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="167"/>
@@ -1388,7 +1388,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="257"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Faili %1 ei saa ümber nimetada %2-ks, kuna on konflikt kohaliku faili nimega</translation>
     </message>
 </context>
 <context>
@@ -2223,7 +2223,7 @@ Proovi neid uuesti sünkroniseerida.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="466"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; avastamine</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="470"/>

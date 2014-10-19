@@ -1389,7 +1389,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="257"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 δεν είναι δυνατό να μετονομαστεί σε %2 λόγω μιας διένεξης με το όνομα ενός τοπικού αρχείου</translation>
     </message>
 </context>
 <context>

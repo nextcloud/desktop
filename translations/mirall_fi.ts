@@ -1014,7 +1014,7 @@ saattaa kysyä lisäoikeuksia toimenpiteen aikana.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Päivityksen tila on tuntematon: uusia päivityksiä ei tarkistettu.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
@@ -2064,7 +2064,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="956"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Paikalliset tiedostot ja jakokansio poistettu.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="1011"/>
