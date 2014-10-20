@@ -39,6 +39,8 @@ Q_DECLARE_METATYPE(QTimer*)
 
 namespace Mirall {
 
+bool AbstractNetworkJob::preOc7WasDetected = false;
+
 AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QObject *parent)
     : QObject(parent)
     , _duration(0)
@@ -48,7 +50,12 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
     , _path(path)
 {
     _timer.setSingleShot(true);
-    _timer.setInterval(10*1000); // default to 10 seconds.
+    if (!AbstractNetworkJob::preOc7WasDetected) {
+        _timer.setInterval(10*1000); // default to 10 seconds.
+    } else {
+        qDebug() << "Pre-oc7 server detected, adjusting timeout values";
+        _timer.setInterval(60*1000); // long PROPFINDs in oc6 might take too long
+    }
     connect(&_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
 
     connect(this, SIGNAL(networkActivity()), SLOT(resetTimeout()));
@@ -445,6 +452,12 @@ bool CheckServerJob::finished()
         if( status.contains("installed")
                 && status.contains("version")
                 && status.contains("versionstring") ) {
+
+            QString versionString = status.value("version").toString();
+            if (versionString.contains('.') && versionString.split('.')[0].toInt() < 7) {
+                AbstractNetworkJob::preOc7WasDetected = true;
+            }
+
             emit instanceFound(reply()->url(), status);
         } else {
             qDebug() << "No proper answer on " << requestedUrl;

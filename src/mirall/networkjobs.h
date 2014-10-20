@@ -94,6 +94,9 @@ protected:
     QElapsedTimer _durationTimer;
     quint64       _duration;
 
+    // Timeout workarounds (Because of PHP session locking)
+    static bool preOc7WasDetected;
+
 private slots:
     void slotFinished();
     virtual void slotTimeout();
