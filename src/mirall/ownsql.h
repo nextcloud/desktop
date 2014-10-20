@@ -19,9 +19,11 @@
 #include <QObject>
 #include <QVariant>
 
+#include "owncloudlib.h"
+
 namespace Mirall {
 
-class SqlDatabase
+class OWNCLOUDSYNC_EXPORT SqlDatabase
 {
 public:
     explicit SqlDatabase();
@@ -41,7 +43,7 @@ private:
 
 };
 
-class SqlQuery
+class OWNCLOUDSYNC_EXPORT SqlQuery
 {
     Q_DISABLE_COPY(SqlQuery)
 public:
