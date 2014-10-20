@@ -53,6 +53,9 @@ bool SqlDatabase::open( const QString& filename )
         close(); // FIXME: Correct?
         _db = 0;
     }
+
+    sqlite3_busy_timeout(_db, 5000);
+
     return isOpen();
 }
 
