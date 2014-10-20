@@ -86,6 +86,7 @@ private:
     QList<SocketType*> _listeners;
     c_strlist_t *_excludes;
     QHash<Folder*, SqlQuery*> _dbQueries;
+    QHash<Folder*, SqlDatabase*> _openDbs;
 };
 
 }

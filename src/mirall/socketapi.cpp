@@ -229,9 +229,15 @@ void SocketApi::slotUnregisterPath( const QString& alias )
             SqlQuery *h = _dbQueries[f];
             if( h ) {
                 h->finish();
-                h->closeDb();
             }
             _dbQueries.remove(f);
+        }
+        if( _openDbs.contains(f) ) {
+            SqlDatabase *db = _openDbs[f];
+            if( db ) {
+                db->close();
+            }
+            _openDbs.remove(f);
         }
     }
 }
@@ -393,7 +399,9 @@ SqlQuery* SocketApi::getSqlQuery( Folder *folder )
     if( fi.exists() ) {
         SqlDatabase *db = new SqlDatabase;
 
-        if( db->open(dbFileName) ) {
+        if( db && db->open(dbFileName) ) {
+            _openDbs.insert(folder, db);
+
             SqlQuery *query = new SqlQuery(*db);
             rc = query->prepare(sql);
 
