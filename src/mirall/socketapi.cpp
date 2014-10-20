@@ -445,10 +445,8 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     QString file = folder->path();
     QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
 
-    bool isSyncRootFolder = true;
     if( fileName != QLatin1String("/") && !fileName.isEmpty() ) {
         file = folder->path() + fileName;
-        isSyncRootFolder = false;
     }
 
     if( fileName.endsWith(QLatin1Char('/')) ) {
