@@ -555,6 +555,9 @@ void SyncEngine::startSync()
         qDebug() << "===== Activating recursive PROPFIND (currently" << fileRecordCount << "file records)";
         bool no_recursive_propfind = false;
         csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
+    } else {
+        bool no_recursive_propfind = true;
+        csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
     }
 
     csync_set_userdata(_csync_ctx, this);
