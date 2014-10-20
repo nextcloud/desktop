@@ -525,19 +525,36 @@ void SyncEngine::startSync()
 
     csync_resume(_csync_ctx);
 
+    bool usingSelectiveSync = (!_selectiveSyncBlackList.isEmpty());
+    qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
+
+    int fileRecordCount = -1;
     if (!_journal->exists()) {
+        fileRecordCount = _journal->getFileRecordCount(); // this creates the DB
+        _journal->close(); // Close again so it doesn't interfere with the sync in the the other thread in csync_update
+
+        if( fileRecordCount == -1 ) {
+            // FIXME de-duplicate with logic below
+            qDebug() << "No way to create a sync journal!";
+            emit csyncError(tr("Unable to initialize a sync journal."));
+            finalize();
+            return;
+            // database creation error!
+        }
+
         qDebug() << "=====sync looks new (no DB exists), activating recursive PROPFIND if csync supports it";
         bool no_recursive_propfind = false;
         csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
     } else {
         // retrieve the file count from the db and close it afterwards because
         // csync_update also opens the database.
-        int fileRecordCount = 0;
+
         fileRecordCount = _journal->getFileRecordCount();
         bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
         _journal->close();
 
         if( fileRecordCount == -1 ) {
+            // FIXME de-duplicate with logic above
             qDebug() << "No way to create a sync journal!";
             emit csyncError(tr("Unable to initialize a sync journal."));
             finalize();

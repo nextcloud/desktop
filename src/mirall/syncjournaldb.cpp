@@ -94,14 +94,19 @@ bool SyncJournalDb::checkConnect()
         return true;
     }
 
-    if( _dbFile.isEmpty() || !QFile::exists(_dbFile) ) {
-        qDebug() << "Database " + _dbFile + " is empty or does not exist";
+    if( _dbFile.isEmpty()) {
+        qDebug() << "Database filename" + _dbFile + " is empty";
         return false;
     }
 
     if( !_db.open(_dbFile) ) {
         QString error = _db.error();
         qDebug() << "Error opening the db: " << error;
+        return false;
+    }
+
+    if( !QFile::exists(_dbFile) ) {
+        qDebug() << "Database file" + _dbFile + " does not exist";
         return false;
     }
 
