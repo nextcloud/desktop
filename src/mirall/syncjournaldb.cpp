@@ -99,6 +99,7 @@ bool SyncJournalDb::checkConnect()
         return false;
     }
 
+    // The database file is created by this call (SQLITE_OPEN_CREATE)
     if( !_db.open(_dbFile) ) {
         QString error = _db.error();
         qDebug() << "Error opening the db: " << error;

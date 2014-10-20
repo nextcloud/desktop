@@ -525,54 +525,37 @@ void SyncEngine::startSync()
 
     csync_resume(_csync_ctx);
 
-    bool usingSelectiveSync = (!_selectiveSyncBlackList.isEmpty());
-    qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
-
     int fileRecordCount = -1;
     if (!_journal->exists()) {
-        fileRecordCount = _journal->getFileRecordCount(); // this creates the DB
-        _journal->close(); // Close again so it doesn't interfere with the sync in the the other thread in csync_update
+        qDebug() << "=====sync looks new (no DB exists)";
+    } else {
+        qDebug() << "=====sync with existing DB";
+    }
 
-        if( fileRecordCount == -1 ) {
-            // FIXME de-duplicate with logic below
-            qDebug() << "No way to create a sync journal!";
-            emit csyncError(tr("Unable to initialize a sync journal."));
-            finalize();
-            return;
-            // database creation error!
-        }
+    fileRecordCount = _journal->getFileRecordCount(); // this creates the DB if it does not exist yet
+    bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
+    _journal->close(); // Close again so it doesn't interfere with the sync in the the other thread in csync_update
 
-        qDebug() << "=====sync looks new (no DB exists), activating recursive PROPFIND if csync supports it";
+    if( fileRecordCount == -1 ) {
+        qDebug() << "No way to create a sync journal!";
+        emit csyncError(tr("Unable to initialize a sync journal."));
+        finalize();
+        return;
+        // database creation error!
+    }
+
+    if (fileRecordCount >= 1 && isUpdateFrom_1_5) {
+        qDebug() << "detected update from 1.5";
+        // Disable the read from DB to be sure to re-read all the fileid and etags.
+        csync_set_read_from_db(_csync_ctx, false);
+    }
+
+    bool usingSelectiveSync = (!_selectiveSyncBlackList.isEmpty());
+    qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
+    if (fileRecordCount >= 0 && fileRecordCount < 50 && !usingSelectiveSync) {
+        qDebug() << "===== Activating recursive PROPFIND (currently" << fileRecordCount << "file records)";
         bool no_recursive_propfind = false;
         csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
-    } else {
-        // retrieve the file count from the db and close it afterwards because
-        // csync_update also opens the database.
-
-        fileRecordCount = _journal->getFileRecordCount();
-        bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
-        _journal->close();
-
-        if( fileRecordCount == -1 ) {
-            // FIXME de-duplicate with logic above
-            qDebug() << "No way to create a sync journal!";
-            emit csyncError(tr("Unable to initialize a sync journal."));
-            finalize();
-            return;
-            // database creation error!
-        } else if ( fileRecordCount < 50 ) {
-            qDebug() << "=====sync DB has only" << fileRecordCount << "items, enable recursive PROPFIND if csync supports it";
-            bool no_recursive_propfind = false;
-            csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
-        } else {
-            qDebug() << "=====sync with existing DB";
-        }
-
-        if (fileRecordCount > 1 && isUpdateFrom_1_5) {
-            qDebug() << "detected update from 1.5";
-            // Disable the read from DB to be sure to re-read all the fileid and etags.
-            csync_set_read_from_db(_csync_ctx, false);
-        }
     }
 
     csync_set_userdata(_csync_ctx, this);
