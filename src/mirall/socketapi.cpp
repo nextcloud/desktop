@@ -389,7 +389,8 @@ SqlQuery* SocketApi::getSqlQuery( Folder *folder )
                       "metadata WHERE phash=?1");
     QString dbFileName = folder->journalDb()->databaseFilePath();
 
-    if( QFileInfo::exists(dbFileName) ) {
+    QFileInfo fi(dbFileName);
+    if( fi.exists(dbFileName) ) {
         SqlDatabase *db = new SqlDatabase;
 
         if( db->open(dbFileName) ) {
