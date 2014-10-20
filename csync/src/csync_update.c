@@ -100,6 +100,10 @@ static bool _csync_sameextension(const char *p1, const char *p2) {
 }
 #endif
 
+static bool _last_db_return_error(CSYNC* ctx) {
+    return ctx->statedb.lastReturnValue != SQLITE_OK && ctx->statedb.lastReturnValue != SQLITE_DONE && ctx->statedb.lastReturnValue != SQLITE_ROW;
+}
+
 static int _csync_detect_update(CSYNC *ctx, const char *file,
     const csync_vio_file_stat_t *fs, const int type) {
   uint64_t h = 0;
@@ -190,8 +194,15 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     }
 
     if (fs->mtime == 0) {
-      tmp = csync_statedb_get_stat_by_hash(ctx, h);
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", path);
+
+      tmp = csync_statedb_get_stat_by_hash(ctx, h);
+      if(_last_db_return_error(ctx)) {
+          SAFE_FREE(st);
+          ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+          return -1;
+      }
+
       if (tmp == NULL) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - not found in db, IGNORE!", path);
         st->instruction = CSYNC_INSTRUCTION_IGNORE;
@@ -227,6 +238,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
    */
   if (csync_get_statedb_exists(ctx)) {
     tmp = csync_statedb_get_stat_by_hash(ctx, h);
+
+    if(_last_db_return_error(ctx)) {
+        SAFE_FREE(st);
+        ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+        return -1;
+    }
 
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
@@ -289,6 +306,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
             tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
 
+            if(_last_db_return_error(ctx)) {
+                SAFE_FREE(st);
+                ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+                return -1;
+            }
+
             /* translate the file type between the two stat types csync has. */
             if( tmp && tmp->type == 0 ) {
                 tmp_vio_type = CSYNC_VIO_FILE_TYPE_REGULAR;
@@ -319,6 +342,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         } else {
             /* Remote Replica Rename check */
             tmp = csync_statedb_get_stat_by_file_id(ctx, fs->file_id);
+
+            if(_last_db_return_error(ctx)) {
+                SAFE_FREE(st);
+                ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+                return -1;
+            }
             if(tmp ) {                           /* tmp existing at all */
                 if ((tmp->type == CSYNC_FTW_TYPE_DIR && fs->type != CSYNC_VIO_FILE_TYPE_DIRECTORY) ||
                         (tmp->type == CSYNC_FTW_TYPE_FILE && fs->type != CSYNC_VIO_FILE_TYPE_REGULAR)) {
@@ -651,6 +680,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         int len = strlen( path );
         uint64_t h = c_jhash64((uint8_t *) path, len, 0);
         etag = csync_statedb_get_etag( ctx, h );
+
+        if(_last_db_return_error(ctx)) {
+            ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+            goto error;
+        }
 
         if( etag ) {
             SAFE_FREE(fs->etag);

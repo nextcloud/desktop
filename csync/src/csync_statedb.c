@@ -209,6 +209,8 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
       return -1;
   }
 
+  ctx->statedb.lastReturnValue = SQLITE_OK;
+
   /* csync_statedb_check tries to open the statedb and creates it in case
    * its not there.
    */
@@ -361,6 +363,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
       const char *hash_query = "SELECT * FROM metadata WHERE phash=?1";
 
       SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, hash_query, strlen(hash_query), &ctx->statedb.by_hash_stmt, NULL));
+      ctx->statedb.lastReturnValue = rc;
       if( rc != SQLITE_OK ) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for hash query.");
           return NULL;
@@ -374,6 +377,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
   sqlite3_bind_int64(ctx->statedb.by_hash_stmt, 1, (long long signed int)phash);
 
   rc = _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_hash_stmt);
+  ctx->statedb.lastReturnValue = rc;
   if( !(rc == SQLITE_ROW || rc == SQLITE_DONE) )  {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata: %d!", rc);
   }
@@ -400,6 +404,8 @@ void   csync_statedb_finalize_statements(CSYNC *ctx) {
         sqlite3_finalize(ctx->statedb.by_inode_stmt);
         ctx->statedb.by_inode_stmt = NULL;
     }
+
+    ctx->statedb.lastReturnValue = SQLITE_OK;
 }
 
 csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
@@ -422,6 +428,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
         const char *query = "SELECT * FROM metadata WHERE fileid=?1";
 
         SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, query, strlen(query), &ctx->statedb.by_fileid_stmt, NULL));
+        ctx->statedb.lastReturnValue = rc;
         if( rc != SQLITE_OK ) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for file id query.");
             return NULL;
@@ -432,6 +439,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
     sqlite3_bind_text(ctx->statedb.by_fileid_stmt, 1, file_id, -1, SQLITE_STATIC);
 
     rc = _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_fileid_stmt);
+    ctx->statedb.lastReturnValue = rc;
     if( !(rc == SQLITE_ROW || rc == SQLITE_DONE) ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata: %d!", rc);
     }
@@ -460,6 +468,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx,
       const char *inode_query = "SELECT * FROM metadata WHERE inode=?1";
 
       SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, inode_query, strlen(inode_query), &ctx->statedb.by_inode_stmt, NULL));
+      ctx->statedb.lastReturnValue = rc;
       if( rc != SQLITE_OK ) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for inode query.");
           return NULL;
@@ -473,6 +482,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx,
   sqlite3_bind_int64(ctx->statedb.by_inode_stmt, 1, (long long signed int)inode);
 
   rc = _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_inode_stmt);
+  ctx->statedb.lastReturnValue = rc;
   if( !(rc == SQLITE_ROW || rc == SQLITE_DONE) ) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata by inode: %d!", rc);
   }
@@ -522,6 +532,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     }
 
     SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, BELOW_PATH_QUERY, -1, &stmt, NULL));
+    ctx->statedb.lastReturnValue = rc;
     if( rc != SQLITE_OK ) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for below path query.");
       return -1;
@@ -543,6 +554,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
     cnt = 0;
 
+    ctx->statedb.lastReturnValue = rc;
     do {
         csync_file_stat_t *st = NULL;
 
@@ -558,6 +570,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
         }
     } while( rc == SQLITE_ROW );
 
+    ctx->statedb.lastReturnValue = rc;
     if( rc != SQLITE_DONE ) {
         ctx->status_code = CSYNC_STATUS_TREE_ERROR;
     } else {
