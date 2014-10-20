@@ -93,6 +93,7 @@ public:
      * Commit will actually commit the transaction and create a new one.
      */
     void commit(const QString &context, bool startTrans = true);
+    void commitIfNeededAndStartNewTransaction(const QString &context);
 
     void close();
 

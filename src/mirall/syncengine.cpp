@@ -618,7 +618,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         return;
     } else {
         // Commits a possibly existing (should not though) transaction and starts a new one for the propagate phase
-        _journal->commit("pre Propagate");
+        _journal->commitIfNeededAndStartNewTransaction("Post discovery");
     }
 
     if( csync_reconcile(_csync_ctx) < 0 ) {

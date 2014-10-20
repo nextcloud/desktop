@@ -1046,6 +1046,16 @@ void SyncJournalDb::commit(const QString& context, bool startTrans)
     commitInternal(context, startTrans);
 }
 
+void SyncJournalDb::commitIfNeededAndStartNewTransaction(const QString &context)
+{
+    QMutexLocker lock(&_mutex);
+    if( _transaction == 1 ) {
+        commitInternal(context, true);
+    } else {
+        startTransaction();
+    }
+}
+
 
 void SyncJournalDb::commitInternal(const QString& context, bool startTrans )
 {
