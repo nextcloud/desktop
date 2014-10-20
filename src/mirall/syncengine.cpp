@@ -534,7 +534,6 @@ void SyncEngine::startSync()
 
     fileRecordCount = _journal->getFileRecordCount(); // this creates the DB if it does not exist yet
     bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
-    _journal->close(); // Close again so it doesn't interfere with the sync in the the other thread in csync_update
 
     if( fileRecordCount == -1 ) {
         qDebug() << "No way to create a sync journal!";
@@ -611,6 +610,17 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     }
     qDebug() << "<<#### Discovery end #################################################### " << _stopWatch.addLapTime(QLatin1String("Discovery Finished"));
 
+    // Sanity check
+    if (!_journal->isConnected()) {
+        qDebug() << "Bailing out, DB failure";
+        emit csyncError(tr("Cannot open the sync journal"));
+        finalize();
+        return;
+    } else {
+        // Commits a possibly existing (should not though) transaction and starts a new one for the propagate phase
+        _journal->commit("pre Propagate");
+    }
+
     if( csync_reconcile(_csync_ctx) < 0 ) {
         handleSyncError(_csync_ctx, "csync_reconcile");
         return;
@@ -647,14 +657,6 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // make sure everything is allowed
     checkForPermission();
-
-    // Sanity check
-    if (!_journal->isConnected()) {
-        qDebug() << "Bailing out, DB failure";
-        emit csyncError(tr("Cannot open the sync journal"));
-        finalize();
-        return;
-    }
 
     // To announce the beginning of the sync
     emit aboutToPropagate(_syncedItems);

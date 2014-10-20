@@ -207,14 +207,9 @@ bool SyncJournalDb::checkConnect()
     if (!versionQuery.next()) {
         // If there was no entry in the table, it means we are likely upgrading from 1.5
         _possibleUpgradeFromMirall_1_5 = true;
-    } else {
-        // Delete the existing entry so we can replace it by the new one
-        createQuery.prepare("DELETE FROM version;");
-        if (!createQuery.exec()) {
-            return sqlFail("Remove version", createQuery);
-        }
     }
-    createQuery.prepare("INSERT INTO version (major, minor, patch) VALUES ( ?1, ?2 , ?3 );");
+
+    createQuery.prepare("INSERT OR REPLACE INTO version (major, minor, patch) VALUES ( ?1, ?2 , ?3 );");
     createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
     createQuery.bindValue(2, MIRALL_VERSION_MINOR);
     createQuery.bindValue(3, MIRALL_VERSION_PATCH);
@@ -279,12 +274,16 @@ bool SyncJournalDb::checkConnect()
     _blacklistQuery.reset(new SqlQuery(_db));
     _blacklistQuery->prepare(sql);
 
+    // don't start a new transaction now
+    commitInternal(QString("checkConnect End"), false);
+
     return rc;
 }
 
 void SyncJournalDb::close()
 {
     QMutexLocker locker(&_mutex);
+    qDebug() << Q_FUNC_INFO << _dbFile;
 
     commitTransaction();
 
