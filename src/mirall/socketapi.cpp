@@ -225,13 +225,13 @@ void SocketApi::slotUnregisterPath( const QString& alias )
     if (f) {
         broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path(), QString::null, true );
 
-        if( _dbConnections.contains(f)) {
-            SqliteHandle h = _dbConnections[f];
-            if( h._stmt ) {
-                sqlite3_finalize(h._stmt);
+        if( _dbQueries.contains(f)) {
+            SqlQuery *h = _dbQueries[f];
+            if( h ) {
+                h->finish();
+                h->closeDb();
             }
-            sqlite3_close(h._db);
-            _dbConnections.remove(f);
+            _dbQueries.remove(f);
         }
     }
 }
@@ -373,34 +373,39 @@ void SocketApi::command_VERSION(const QString&, SocketType* socket)
     sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }
 
-SqliteHandle SocketApi::getSqliteHandle( Folder *folder )
+SqlQuery* SocketApi::getSqlQuery( Folder *folder )
 {
-    if( _dbConnections.contains(folder) ) {
-        return _dbConnections[folder];
-    }
-    SqliteHandle h;
-    h._db = NULL;
-    h._stmt = NULL;
-
     if( !folder ) {
-        return h;
+        return 0;
     }
+
+    if( _dbQueries.contains(folder) ) {
+        return _dbQueries[folder];
+    }
+
+    /* No valid sql query object yet for this folder */
     int rc;
-    const char* query = "SELECT inode, mode, modtime, type, md5, fileid, remotePerm FROM "
-            "metadata WHERE phash=:ph";
+    const QString sql("SELECT inode, mode, modtime, type, md5, fileid, remotePerm FROM "
+                      "metadata WHERE phash=?1");
     QString dbFileName = folder->journalDb()->databaseFilePath();
 
-    if( sqlite3_open_v2(dbFileName.toUtf8().constData(), &(h._db),
-                        SQLITE_OPEN_READONLY+SQLITE_OPEN_NOMUTEX, NULL) == SQLITE_OK ) {
+    if( QFileInfo::exists(dbFileName) ) {
+        SqlDatabase *db = new SqlDatabase;
 
-        rc = sqlite3_prepare_v2(h._db, query, strlen(query), &(h._stmt), NULL);
-        if( rc != SQLITE_OK ) {
-            qDebug() << "Unable to prepare the query statement.";
-            return h; // do not insert into hash
+        if( db->open(dbFileName) ) {
+            SqlQuery *query = new SqlQuery(*db);
+            rc = query->prepare(sql);
+
+            if( rc != SQLITE_OK ) {
+                delete query;
+                qDebug() << "Unable to prepare the query statement:" << rc;
+                return 0; // do not insert into hash
+            }
+            _dbQueries.insert( folder, query);
+            return query;
         }
-        _dbConnections.insert( folder, h);
     }
-    return h;
+    return 0;
 }
 
 SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString fileName )
@@ -413,30 +418,25 @@ SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString file
         fileName.remove(0, folder->path().length());
     }
 
-    SqliteHandle h = getSqliteHandle(folder);
-
-    sqlite3_stmt *stmt = h._stmt;
+    SqlQuery *query = getSqlQuery(folder);
     SyncJournalFileRecord rec;
 
-    if( h._db && h._stmt ) {
+    if( query ) {
         qlonglong phash = SyncJournalDb::getPHash( fileName );
-        sqlite3_bind_int64(stmt, 1, (long long signed int)phash);
-
+        query->bindValue(1, phash);
         // int column_count = sqlite3_column_count(stmt);
 
-        int rc = sqlite3_step(stmt);
-
-        if (rc == SQLITE_ROW ) {
-            rec._path   = fileName;
-            rec._inode  = sqlite3_column_int64(stmt,0);;
-            rec._mode = sqlite3_column_int(stmt, 1);
-            rec._modtime = Utility::qDateTimeFromTime_t( strtoul((char*)sqlite3_column_text(stmt, 2), NULL, 10));
-            rec._type = sqlite3_column_int(stmt, 3);;
-            rec._etag = QByteArray((char*)sqlite3_column_text(stmt, 4));
-            rec._fileId = QByteArray((char*)sqlite3_column_text(stmt, 5));
-            rec._remotePerm = QByteArray((char*)sqlite3_column_text(stmt, 6));
+        if (query->next()) {
+            rec._path    = fileName;
+            rec._inode   = query->int64Value(0);
+            rec._mode    = query->intValue(1);
+            rec._modtime = Utility::qDateTimeFromTime_t( query->int64Value(2));
+            rec._type    = query->intValue(3);
+            rec._etag    = query->baValue(4);
+            rec._fileId  = query->baValue(5);
+            rec._remotePerm = query->baValue(6);
         }
-        sqlite3_reset(stmt);
+        query->reset();
     }
     return rec;
 }

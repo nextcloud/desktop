@@ -283,4 +283,11 @@ void SqlQuery::reset()
     SQLITE_DO(sqlite3_reset(_stmt));
 }
 
+void SqlQuery::closeDb()
+{
+    if( _db) {
+        SQLITE_DO(sqlite3_close(_db) );
+        _db = 0;
+    }
+}
 } // namespace Mirall

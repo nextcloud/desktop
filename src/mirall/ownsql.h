@@ -57,6 +57,9 @@ public:
     quint64 int64Value(int index);
     QByteArray baValue(int index);
 
+    // use only in rare cases, invalidates the internal db object.
+    void closeDb();
+
     bool isSelect();
     bool isPragma();
     bool exec();

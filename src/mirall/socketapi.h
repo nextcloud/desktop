@@ -29,6 +29,8 @@ extern "C" {
 
 #include "mirall/syncfileitem.h"
 #include "mirall/syncjournalfilerecord.h"
+#include "mirall/ownsql.h"
+
 class QUrl;
 class QLocalSocket;
 class QStringList;
@@ -39,12 +41,6 @@ typedef QLocalSocket SocketType;
 
 class SyncFileStatus;
 class Folder;
-
-struct SqliteHandle
-{
-    sqlite3 *_db;
-    sqlite3_stmt *_stmt;
-};
 
 class SocketApi : public QObject
 {
@@ -72,7 +68,7 @@ private:
     SyncJournalFileRecord dbFileRecord( Folder *folder, QString fileName );
     SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName );
     SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName, c_strlist_t *excludes  );
-    SqliteHandle getSqliteHandle( Folder *folder );
+    SqlQuery *getSqlQuery( Folder *folder );
 
     void sendMessage(SocketType* socket, const QString& message, bool doWait = false);
     void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null, bool doWait = false);
@@ -89,7 +85,7 @@ private:
 #endif
     QList<SocketType*> _listeners;
     c_strlist_t *_excludes;
-    QHash<Folder*, SqliteHandle> _dbConnections;
+    QHash<Folder*, SqlQuery*> _dbQueries;
 };
 
 }
