@@ -632,10 +632,13 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     path = filename + ulen;
 
     /* skip ".csync_journal.db" and ".csync_journal.db.ctmp" */
+    /* Isn't this done via csync_exclude already? */
     if (c_streq(path, ".csync_journal.db")
             || c_streq(path, ".csync_journal.db.ctmp")
             || c_streq(path, ".csync_journal.db.ctmp-journal")
-            || c_streq(path, ".csync-progressdatabase")) {
+            || c_streq(path, ".csync-progressdatabase")
+            || c_streq(path, ".csync_journal.db-shm")
+            || c_streq(path, ".csync_journal.db-wal")) {
         csync_vio_file_stat_destroy(dirent);
         dirent = NULL;
         SAFE_FREE(filename);

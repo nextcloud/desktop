@@ -120,6 +120,15 @@ bool SyncJournalDb::checkConnect()
         qDebug() << "sqlite3 version" << pragma1.stringValue(0);
     }
 
+    pragma1.prepare("PRAGMA journal_mode=WAL;");
+    if (!pragma1.exec()) {
+        return sqlFail("Set PRAGMA synchronous", pragma1);
+    } else {
+        pragma1.next();
+        qDebug() << "sqlite3 journal_mode=" << pragma1.stringValue(0);
+
+    }
+
     pragma1.prepare("PRAGMA synchronous = 1;");
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA synchronous", pragma1);
