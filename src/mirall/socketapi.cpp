@@ -226,9 +226,13 @@ void SocketApi::slotUnregisterPath( const QString& alias )
         broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path(), QString::null, true );
 
         if( _dbConnections.contains(f)) {
-            sqlite3_close_v2(_dbConnections[f]._db);
+            SqliteHandle h = _dbConnections[f];
+            if( h._stmt ) {
+                sqlite3_finalize(h._stmt);
+            }
+            sqlite3_close(h._db);
+            _dbConnections.remove(f);
         }
-        _dbConnections.remove(f);
     }
 }
 

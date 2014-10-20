@@ -66,7 +66,7 @@ QString SqlDatabase::error() const
 void SqlDatabase::close()
 {
     if( _db ) {
-        SQLITE_DO(sqlite3_close_v2(_db) );
+        SQLITE_DO(sqlite3_close(_db) );
         _db = 0;
     }
 }
