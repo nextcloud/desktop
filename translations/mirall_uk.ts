@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть локальний каталог на Вашому ПК для синхронізації:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="44"/>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть віддалену теку для зберігання даних</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
@@ -80,12 +80,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
         <source>Account to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Обліковий запис для синхронізації</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Підключено до &lt;server&gt; як &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
@@ -101,12 +101,12 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="55"/>
         <source>Add Folder...</source>
-        <translation type="unfinished"/>
+        <translation>Додати теку...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть, що хочете синхронізувати</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="101"/>
@@ -121,7 +121,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="130"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Зверніть увагу:&lt;/b&gt; Деякі теки, включно з мережевими та віддаленими, можуть мати різні обмеження.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="171"/>
@@ -141,39 +141,39 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="376"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Підтвердіть скидання теки</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="377"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ви дійсно бажаєте скинути теку &lt;i&gt;%1&lt;/i&gt; та перебудувати клієнтську базу даних?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Зверніть увагу:&lt;/b&gt; Дана функція призначена лише для технічного обслуговування. Файли не будуть видалені, але, в залежності від розміру теки, операція може зайняти від кількох хвилин до кількох годин та може бути переданий великий обсяг даних. Використовуйте дану операцію лише за рекомендації адміністратора.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="654"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 of %4)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="658"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="675"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>файл %1 з %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="763"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>Використовується %1 (%3%) з %2 місця на сервері.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="807"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Немає зв&apos;язку з %1 за адресою &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="814"/>
@@ -188,7 +188,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="110"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>Обліковий запис не налаштовано.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="488"/>
@@ -198,34 +198,35 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="608"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Виявлення &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="648"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 of %4). Залишилось %5 на швидкості %6/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="669"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 of %2, файл %3 з %4
+Залишилось: %5</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="800"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Підключено до &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="803"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Підключено до &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; як &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="767"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>На даний час немає відомостей про наповнення сховища.</translation>
     </message>
 </context>
 <context>
@@ -233,17 +234,17 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Потрібна аутентифікація</translation>
     </message>
     <message>
         <location filename="../src/mirall/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Введіть ім&apos;я та пароль для &apos;%1&apos; в %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Користувач:</translation>
     </message>
     <message>
         <location filename="../src/mirall/authenticationdialog.cpp" line="36"/>
@@ -256,33 +257,33 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="91"/>
         <source>No ownCloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Обліковий запис ownCloud не налаштовано</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="106"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Налаштований сервер застарий для цього клієнта</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="107"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Будь ласка, оновіть сервер до останньої версії та перезавантажте клієнт.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="127"/>
         <location filename="../src/mirall/connectionvalidator.cpp" line="137"/>
         <source>Unable to connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося підключитися до %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="138"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>час вичерпано</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="167"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>Введені дані не вірні</translation>
     </message>
 </context>
 <context>
@@ -290,7 +291,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="112"/>
         <source>Unable to create csync-context</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо створити csync-контекст</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="166"/>
@@ -310,84 +311,84 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/folder.cpp" line="354"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="445"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 та %2 інших файлів було видалено.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="447"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 видалено.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="452"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 та %2 інших файлів було завантажено.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="454"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 завантажено.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="459"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 та %2 інших файлів було оновлено.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="461"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 оновлено.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="466"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>%1 перейменовано в %2 та ще %3 інших файлів перейменовано.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="468"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 перейменовано на %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="473"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>%1 переміщено до %2 та ще %3 інших файлів.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="475"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 переміщено в %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="480"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 та %2 інші файли не можуть синхронізуватися через помилки. Дивіться деталі в журналі.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="482"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 не може синхронізуватися через помилки. Дивіться деталі в журналі.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="490"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Журнал синхронізації</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="709"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо прочитати виключений системний файл</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="899"/>
@@ -424,7 +425,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="229"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Знайдено старий журнал синхронізації &apos;%1&apos;, його неможливо видалити. Будь ласка, впевніться що він не відкритий в іншій програмі.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="859"/>
@@ -454,7 +455,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="876"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Остання синхронізація пройшла вдало, але були зауваження про деякі файли.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="879"/>
@@ -464,17 +465,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="882"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Відмінено користувачем.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="885"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація призупинена.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="891"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Синхронізація призупинена)</translation>
     </message>
 </context>
 <context>
@@ -510,12 +511,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="63"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Натисніть, щоб обрати локальну теку для синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="67"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Введіть шлях до локальної теки.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="71"/>
@@ -692,7 +693,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="66"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Оновлення</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
@@ -1465,7 +1466,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Журнал синхронізації</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
@@ -2089,7 +2090,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/systray.cpp" line="49"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -2215,7 +2216,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="466"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Виявлення &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="470"/>
@@ -2265,7 +2266,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="88"/>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation>Сервер</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="103"/>
