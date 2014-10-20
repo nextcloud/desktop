@@ -390,7 +390,7 @@ SqlQuery* SocketApi::getSqlQuery( Folder *folder )
     QString dbFileName = folder->journalDb()->databaseFilePath();
 
     QFileInfo fi(dbFileName);
-    if( fi.exists(dbFileName) ) {
+    if( fi.exists() ) {
         SqlDatabase *db = new SqlDatabase;
 
         if( db->open(dbFileName) ) {
@@ -405,6 +405,8 @@ SqlQuery* SocketApi::getSqlQuery( Folder *folder )
             _dbQueries.insert( folder, query);
             return query;
         }
+    } else {
+        qDebug() << Q_FUNC_INFO << "Journal to query does not yet exist.";
     }
     return 0;
 }
