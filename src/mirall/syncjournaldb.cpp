@@ -239,6 +239,12 @@ bool SyncJournalDb::checkConnect()
     if (!versionQuery.next()) {
         // If there was no entry in the table, it means we are likely upgrading from 1.5
         _possibleUpgradeFromMirall_1_5 = true;
+    } else {
+        // Delete the existing entry so we can replace it by the new one
+        createQuery.prepare("DELETE FROM version;");
+        if (!createQuery.exec()) {
+            return sqlFail("Remove version", createQuery);
+        }
     }
 
     createQuery.prepare("INSERT OR REPLACE INTO version (major, minor, patch) VALUES ( ?1, ?2 , ?3 );");
