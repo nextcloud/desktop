@@ -260,6 +260,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(Account* account, const QStringList& bl
 
 void SelectiveSyncDialog::init(Account *account)
 {
+    setWindowTitle(tr("Choose What to Sync"));
     QVBoxLayout *layout = new QVBoxLayout(this);
     _treeView = new SelectiveSyncTreeView(account, this);
     layout->addWidget(new QLabel(tr("Unchecked folders will not be sync to this computer")));
