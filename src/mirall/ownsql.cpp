@@ -168,7 +168,7 @@ bool SqlQuery::exec()
                 rc = sqlite3_reset(_stmt); /* This will also return SQLITE_LOCKED */
                 n++;
                 Mirall::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
-            } else if( (rc == SQLITE_BUSY) ) {
+            } else if( rc == SQLITE_BUSY ) {
                 Mirall::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
                 n++;
             }
