@@ -168,7 +168,6 @@ static int _csync_statedb_check(const char *statedb) {
   rc = sqlite3_open(statedb, &db);
   if (rc == SQLITE_OK) {
     sqlite3_close(db);
-    csync_win32_set_file_hidden(statedb, true);
     return 1;
   }
   sqlite3_close(db);

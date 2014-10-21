@@ -23,6 +23,7 @@
 #include "syncjournalfilerecord.h"
 #include "utility.h"
 #include "version.h"
+#include "filesystem.h"
 
 #include "../../csync/src/std/c_jhash.h"
 
@@ -154,6 +155,11 @@ bool SyncJournalDb::checkConnect()
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA case_sensitivity", pragma1);
     }
+
+    // Hide 'em all!
+    FileSystem::setFileHidden(databaseFilePath(), true);
+    FileSystem::setFileHidden(databaseFilePath() + "-wal", true);
+    FileSystem::setFileHidden(databaseFilePath() + "-shm", true);
 
     /* Because insert are so slow, e do everything in a transaction, and one need to call commit */
     startTransaction();
