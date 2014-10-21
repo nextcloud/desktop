@@ -375,8 +375,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         }
     }
   } else  {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unable to open statedb, setting inst to NEW" );
-      st->instruction = CSYNC_INSTRUCTION_NEW;
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unable to open statedb" );
+      ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+      return -1;
   }
 
 out:
