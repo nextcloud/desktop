@@ -521,22 +521,22 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="71"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>Псевдонім каталогу - наочне ім&apos;я для цієї синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="100"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Локальний каталог не обрано!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="105"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>У вас немає прав на запис в цю теку!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="129"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Локальний шлях %1 вже належить каталогу для завантаження. Будь ласка, оберіть інший!</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="134"/>
@@ -546,17 +546,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="141"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Обрана тека є символічним посиланням. В теці, на яку веде посилання, вже існує тека, що синхронізується. </translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="148"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Вже налаштований каталог містить вказану теку.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="154"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Обрана тека є символічним посиланням. Тека, що вже синхронізується, має посилання на обрану директорію.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="167"/>
@@ -566,7 +566,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="178"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>Псевдонім &lt;i&gt;%1&lt;/i&gt; уже використовується. Будь ласка, оберіть інший.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="211"/>
@@ -579,12 +579,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Add Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Додати Віддалену Теку</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder:</source>
-        <translation type="unfinished"/>
+        <translation>Введіть ім&apos;я нової теки:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="280"/>
@@ -594,27 +594,27 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="288"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося створити теку на %1. Будь ласка, перевірте вручну.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="337"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть це для синхронізації всього облікового запису</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="392"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Тека вже синхронізується.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="394"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Тека &lt;i&gt;%1&lt;/i&gt; вже синхронізується, та вона є батьківською для &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="398"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>Всі ваші файли синхронізуються. Синхронізація інших тек в цьому режимі &lt;b&gt;не&lt;/b&gt; підтримується. Якщо вам необхідно синхронізувати декілька локальних каталогів, спочатку видаліть синхронізацію батьківської теки.</translation>
     </message>
 </context>
 <context>
@@ -622,7 +622,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="436"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть, що Синхронізувати: Ви можете вимкнути синхронізацію для деяких підкаталогів.</translation>
     </message>
 </context>
 <context>
@@ -631,7 +631,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/mirall/folderwizard.cpp" line="45"/>
         <location filename="../src/mirall/folderwizard.cpp" line="47"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; </source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Увага:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -639,22 +639,22 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Не отримано E-Tag від серверу, перевірте мережеві налаштування (проксі, шлюз)</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Ми отримали інший E-Tag для відновлення. Спробуйте ще раз пізніше.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Сервер повернув невірний content-range</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Тайм-аут З&apos;єднання</translation>
     </message>
 </context>
 <context>
@@ -667,7 +667,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation type="unfinished"/>
+        <translation>Загальні Налаштування</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
@@ -698,7 +698,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="91"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Перезавантаження &amp;&amp; Оновлення</translation>
     </message>
 </context>
 <context>
@@ -706,12 +706,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="374"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Введіть Пароль</translation>
     </message>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="375"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Будь ласка, введіть пароль від %1 для користувача &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -736,7 +736,9 @@ Are you sure you want to perform this operation?</source>
         <source>Files or directories matching a pattern will not be synchronized.
 
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Теки та файли, що відповідають шаблону ігнорування, не будуть синхронізовані.
+
+Відмічені елементи також будуть видалені, якщо вони заважають видалити каталог. Це корисно для метаданих.</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
@@ -761,17 +763,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Редагувати Шаблон Ігнорування</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Редагувати шаблон ігнорування:</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Цей запис створено системою в &apos;%1&apos;, тут змінити його не можна.</translation>
     </message>
 </context>
 <context>
@@ -845,27 +847,27 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="256"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Доступна Нова Версія</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="262"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Доступна нова версія додатку %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; доступна для завантаження. Встановлена версія: %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="275"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Пропустити цю версію</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="276"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Пропустити цього разу</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="277"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Отримати оновлення</translation>
     </message>
 </context>
 <context>
@@ -919,29 +921,29 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/mirall/networksettings.ui" line="196"/>
         <location filename="../src/mirall/networksettings.ui" line="278"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>Обмежити до</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="218"/>
         <location filename="../src/mirall/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>Кбайт/сек</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="227"/>
         <location filename="../src/mirall/networksettings.ui" line="295"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Без обмежень</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Швидкість Завантаження</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>Автоматичне обмеження</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="34"/>
@@ -974,53 +976,54 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Доступна нова версія</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Оновлення  встановлюється. Під час оновлення
+програмі можуть знадобитися додаткові привілеї.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Завантаження файлів %1. Будь ласка, почекайте...</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="79"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Доступна версія %1. Перезавантажте додаток та оновіть його.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо завантажити оновлення. Будь ласка, натисніть &lt;a href=&apos;%1&apos;&gt;тут&lt;/a&gt;, щоб самостійно завантажити оновлення.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося перевірити наявність оновлень. </translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Доступна нова версія %1. Будь ласка, скористайтесь оновленням системи для встановлення.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Перевірка оновлень на сервері...</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Статус оновлення невідомий: Не вдалося перевірити наявність оновлень.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>У вас встановленно останню версію.</translation>
     </message>
 </context>
 <context>
@@ -1028,47 +1031,47 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Підключено до %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>Налаштування локальної теки</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>Підключення ...</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="121"/>
         <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Ваш запис цілком синхронізовано із локальною текою &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="124"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation type="unfinished"/>
+        <translation>%1 тека &apos;%2&apos; синхронізована з локальним каталогом &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="130"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Увага:&lt;/strong&gt; У вас налаштовано декілька каталогів. Якщо ви продовжите з цими налаштуваннями, налаштування тек будуть відкинуті та буде створена одна батьківська тека!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="137"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Увага:&lt;/strong&gt; Локальна тека не пуста. Оберіть рішення!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Локальна Тека для Синхронізації</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="266"/>
         <source>Update advanced setup</source>
-        <translation type="unfinished"/>
+        <translation>Оновити додаткові налаштування</translation>
     </message>
 </context>
 <context>
@@ -1076,17 +1079,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="42"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>З&apos;єднати з %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="43"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Внести облікові дані</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="159"/>
         <source>Update user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Оновити облікові дані</translation>
     </message>
 </context>
 <context>
@@ -1094,18 +1097,19 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>З&apos;єднати з %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="46"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Налаштувати %1 сервер</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="106"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Це посилання НЕ зашифроване.
+Ми не рекомендуємо відкривати такі посилання.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
@@ -1115,17 +1119,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
         <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося безпечно підключитися. Бажаєте підключитися без шифрування (не рекомендується)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Збій підключення</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="263"/>
         <source>Update %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Оновити %1 сервер</translation>
     </message>
 </context>
 <context>
@@ -1154,7 +1158,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="230"/>
         <source>Error: Wrong credentials.</source>
-        <translation type="unfinished"/>
+        <translation>Помилка: Невірні облікові дані</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="244"/>
@@ -1185,12 +1189,12 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="185"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="193"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося з&apos;єднатися з %1 в %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="279"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Не вказано віддалену теку!</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="285"/>
@@ -1252,7 +1256,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо видалити теку та створити її резервну копію, оскільки тека або файли, що в ній розташовані,  використовуються. Будь ласка, закрийте всі програми, що можуть використовувати цю теку та спробуйте ще раз, або скасуйте встановлення.</translation>
     </message>
 </context>
 <context>
@@ -1265,7 +1269,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizard.cpp" line="83"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Пропустити налаштування теки</translation>
     </message>
 </context>
 <context>
@@ -1283,7 +1287,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити %1 в Браузері</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
@@ -1293,7 +1297,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
         <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 тека &lt;i&gt;%1&lt;/i&gt; синхронізована з локальним каталогом &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
@@ -1301,7 +1305,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="103"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Тайм-аут З&apos;єднання</translation>
     </message>
 </context>
 <context>
@@ -1309,27 +1313,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="357"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація перервана користувачем.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="410"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Не отримано E-Tag від серверу, перевірте мережеві налаштування (проксі, шлюз)</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="416"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Ми отримали інший E-Tag для відновлення. Спробуйте ще раз пізніше.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="438"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Сервер повернув невірний content-range</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="489"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 не завантажено, через локальний конфлікт ім&apos;я! </translation>
     </message>
 </context>
 <context>
@@ -1337,7 +1341,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 не завантажено, через локальний конфлікт ім&apos;я! </translation>
     </message>
 </context>
 <context>
@@ -1345,12 +1349,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="51"/>
         <source>; Restoration Failed: </source>
-        <translation type="unfinished"/>
+        <translation>; Відновлення не вдалося:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="185"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Файл або каталог було видалено з опублікованої теки з правами тільки на перегляд, але відновити його не вдалося: %1</translation>
     </message>
 </context>
 <context>
@@ -1358,12 +1362,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="113"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Увага, можливий конфлікт чутливості до реєстру з %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="118"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося створити теку %1</translation>
     </message>
 </context>
 <context>
@@ -1371,12 +1375,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо видалити %1 через локальний конфлікт імен</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
         <source>Could not remove directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо видалити теку %1</translation>
     </message>
 </context>
 <context>
@@ -1384,7 +1388,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="257"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>%1 не можна перейменувати на %2 через локальний конфлікт імен</translation>
     </message>
 </context>
 <context>
@@ -1392,7 +1396,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="138"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Файл видалено з опублікованої теки з правами тільки на перегляд. Файл відновлено.</translation>
     </message>
 </context>
 <context>
@@ -1400,17 +1404,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="294"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Цю теку не можна перейменувати. Буде повернено старе ім&apos;я.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="296"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Цю теку не можна перейменувати. Будь ласка, поверніть їй ім&apos;я Shared.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="311"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Файл було перейменовано, але він розташований в теці з правами лише на перегляд. Відновлено оригінальний файл. </translation>
     </message>
 </context>
 <context>
@@ -1419,17 +1423,17 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/propagator_legacy.cpp" line="165"/>
         <location filename="../src/mirall/propagator_legacy.cpp" line="224"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Локальний файл змінився під час синхронізації, повторюємо процес</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="168"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація перервана користувачем.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="174"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Файл було змінено локально, але він розташований в теці з правами лише на перегляд. Файл відновлено, а ваші зміни розташовані в теці конфліктів.</translation>
     </message>
 </context>
 <context>
@@ -1437,23 +1441,23 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="296"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Файл було змінено локально, але він розташований в теці з правами лише на перегляд. Файл відновлено, а ваші зміни розташовані в теці конфліктів.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Локальний файл було видалено під час синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
         <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Локальний файл змінився під час синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Сервер не зміг підтвердити останній відрізок даних. (Були відсутні e-tag)</translation>
     </message>
 </context>
 <context>
@@ -1471,12 +1475,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="49"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.ui" line="54"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="50"/>
@@ -1496,7 +1500,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="53"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Дія</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="54"/>
@@ -1506,7 +1510,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="68"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>Повторити Синхронізацію</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="72"/>
@@ -1516,7 +1520,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="73"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Скопіювати протокол синхронізації до буферу обміну.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="118"/>
@@ -1526,18 +1530,19 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="118"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Протокол синхронізації був скопійований в буфер обміну.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="255"/>
         <source>Currently no files are ignored because of previous errors.</source>
-        <translation type="unfinished"/>
+        <translation>На даний час, проігноровані файли відсутні через помилки.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="257"/>
         <source>%1 files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 проігноровано через помилки.
+Спробуйте повторити синхронізацію.</translation>
     </message>
 </context>
 <context>
@@ -1545,7 +1550,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
         <source>Unchecked folders will not be sync to this computer</source>
-        <translation type="unfinished"/>
+        <translation>Не відмічені теки не будуть синхронізовані на цьому компь&apos;ютері</translation>
     </message>
 </context>
 <context>
@@ -1558,7 +1563,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="57"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialog.cpp" line="63"/>
@@ -1586,7 +1591,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="50"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/settingsdialogmac.cpp" line="54"/>
@@ -1614,12 +1619,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="285"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Помилка входу</translation>
     </message>
     <message>
         <location filename="../src/creds/shibbolethcredentials.cpp" line="285"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Ви маєте увійти як %1</translation>
     </message>
 </context>
 <context>
@@ -1627,22 +1632,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="55"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Аутентифікація</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="61"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>Потрібна повторна аутентифікація</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="61"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation type="unfinished"/>
+        <translation>Ваша сесія скінчилася. Вам потрібно ввійти знову, щоб продовжити користуватися програмою.</translation>
     </message>
     <message>
         <location filename="../src/creds/shibboleth/shibbolethwebview.cpp" line="108"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
 </context>
 <context>
@@ -1650,32 +1655,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="96"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Деталі сертифікату&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="99"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Загальне Ім&apos;я (CN):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="100"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Альтернативне Ім&apos;я:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="102"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Організація (O):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="103"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Підрозділ (OU):</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="104"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Область:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="105"/>
@@ -1685,79 +1690,81 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="106"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Серія:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="109"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Видавець&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="112"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Видавець:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="113"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Видано для:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="114"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Закінчується:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="117"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Відбитки пальців&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="121"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="123"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="125"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="129"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Примітка:&lt;/b&gt; Цей сертифікат був схвалений вручну&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="149"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (самозавірений)</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="151"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="187"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>З&apos;єднання зашифроване %1-бітним %2.
+</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="190"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Інформація про сертифікат:</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslbutton.cpp" line="219"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>З&apos;єднання НЕ зашифровано.
+</translation>
     </message>
 </context>
 <context>
@@ -1831,7 +1838,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="193"/>
         <source>Expiration Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Термін Дії: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/sslerrordialog.cpp" line="197"/>
@@ -1854,12 +1861,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="94"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не зміг завантажити або створити файл протоколу. Перевірте, чи надано права на перегляд та запис до локальної теки.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="98"/>
         <source>CSync failed to write the journal file.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не зміг записати файл протоколу.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="101"/>
@@ -1909,7 +1916,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="130"/>
         <source>&lt;p&gt;The target directory does not exist.&lt;/p&gt;&lt;p&gt;Please check the sync setup.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Цільовий каталог не існує.&lt;/p&gt;&lt;p&gt;Будь ласка, перевірте налаштування синхронізації.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="134"/>
@@ -1929,7 +1936,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="144"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не вдалося аутентифікуватися на проксі-сервері.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="147"/>
@@ -1949,7 +1956,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="156"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>Час під&apos;єднання до мережі вичерпався.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="159"/>
@@ -1964,7 +1971,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="165"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>CSync не має доступу</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="168"/>
@@ -1985,104 +1992,104 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="180"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Перервано користувачем</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="184"/>
         <source>An internal error number %1 happened.</source>
-        <translation type="unfinished"/>
+        <translation>Виникла внутрішня помилка за номером %1.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="243"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>Шлях не синхронізується через помилки: %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="357"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація символічних посилань не підтримується. </translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="360"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація жорстких посилань не підтримується.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="363"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Файл присутній у списку ігноруємих.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="366"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>Файл містить недопустимі символи, через це синхронізація між платформами неможлива.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="542"/>
+        <location filename="../src/mirall/syncengine.cpp" line="540"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося ініціалізувати протокол синхронізації.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="654"/>
+        <location filename="../src/mirall/syncengine.cpp" line="619"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Не вдається відкрити протокол синхронізації</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="846"/>
-        <location filename="../src/mirall/syncengine.cpp" line="853"/>
+        <location filename="../src/mirall/syncengine.cpp" line="851"/>
+        <location filename="../src/mirall/syncengine.cpp" line="858"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Ігнорується через чорний список в &quot;обрати що синхронізувати&quot;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="871"/>
+        <location filename="../src/mirall/syncengine.cpp" line="876"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Не дозволено через відсутність прав на додавання підкаталогів в цій теці.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="877"/>
+        <location filename="../src/mirall/syncengine.cpp" line="882"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
-        <translation type="unfinished"/>
+        <translation>Не дозволено через відсутність прав на додавання батьківської теки.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="884"/>
+        <location filename="../src/mirall/syncengine.cpp" line="889"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Не дозволено через відсутність прав на додавання файлів в цю теку.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="904"/>
+        <location filename="../src/mirall/syncengine.cpp" line="909"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Не дозволено завантажувати цей файл, оскільки він має дозвіл лише на перегляд, відновлюємо</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="921"/>
-        <location filename="../src/mirall/syncengine.cpp" line="941"/>
+        <location filename="../src/mirall/syncengine.cpp" line="926"/>
+        <location filename="../src/mirall/syncengine.cpp" line="946"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Не дозволено видаляти, відновлюємо</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="956"/>
+        <location filename="../src/mirall/syncengine.cpp" line="961"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Локальні файли та теки в загальному доступі було видалено.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1011"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1016"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Переміщення не дозволено, елемент відновлено </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1020"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1025"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>Переміщення не дозволено, оскільки %1 помічений тільки для перегляду</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1021"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1026"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>призначення</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1021"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1026"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>джерело</translation>
     </message>
 </context>
 <context>
@@ -2098,7 +2105,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версія %1 Щоб дізнатися більше, будь ласка, пройдіть за посиланням &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Всі права захищено ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Розповсюджується під %4 та ліцензовано по GNU General Public License (GPL) Версії 2.0.&lt;br/&gt;%5 та логотип %5 зареєстровані торгові марки %4 в США, та/або інших країнах.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2106,17 +2113,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="224"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Будь ласка ввійдіть в обліковий запис</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="229"/>
         <source>Disconnected from server</source>
-        <translation type="unfinished"/>
+        <translation>Від&apos;єднано від серверу</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="261"/>
         <source>Folder %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Тека %1: %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="267"/>
@@ -2126,12 +2133,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="276"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Немає налаштованих тек для синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="302"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>Пусто.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="306"/>
@@ -2151,32 +2158,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="336"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити теку &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="408"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити %1 в браузері</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="410"/>
         <source>Calculating quota...</source>
-        <translation type="unfinished"/>
+        <translation>Підрахунок квоти...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="412"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>Невідомий статус</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="414"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>Налаштування...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="415"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>Деталі...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="420"/>
@@ -2186,32 +2193,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="422"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>Закрити %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="425"/>
         <source>Sign in...</source>
-        <translation type="unfinished"/>
+        <translation>Ввійти...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="427"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>Вийти</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="435"/>
         <source>Quota n/a</source>
-        <translation type="unfinished"/>
+        <translation>Квота недоступна</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="442"/>
         <source>%1% of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>Використовується %1% з %2.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="454"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>Нещодавно нічого не синхронізувалося</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="466"/>
@@ -2221,22 +2228,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="470"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізовано %1 з %2 (залишилося %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="475"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізовано %1 (залишилося %2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="495"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="523"/>
         <source>Up to date</source>
-        <translation type="unfinished"/>
+        <translation>Оновлено</translation>
     </message>
 </context>
 <context>
@@ -2244,7 +2251,7 @@ It is not advisable to use it.</source>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версія %2. Додаткова інформація доступна за посиланням &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Автори: Клаас Фрейтаг, Дэніель Молкентен, Жан-Кристоф Бошар, Олив&apos;є Гоффар, Маркус Гьотц та інші.&lt;br/&gt;Створено на основі Mirall Дункана Мак-Вікара П.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Права належать ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Ліцензовано по GNU General Public License (GPL) Версії 2.0.&lt;br/&gt;ownCloud та логотип ownCloud - зареєстровані торгові марки ownCloud, Inc. в США, та/або інших країнах.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2271,42 +2278,42 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="103"/>
         <source>Sync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізувати усе з серверу</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="122"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть, що хочете синхронізувати</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="178"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Локальна Тека</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="221"/>
         <source>&amp;Start a clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Почати синхронізацію заново (Видалить локальну теку!)</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="256"/>
         <source>pbSelectLocalFolder</source>
-        <translation type="unfinished"/>
+        <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="208"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Зберегти локальні дані</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="218"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Якщо встановлено цю позначку, існуючі дані в локальній теці будуть видалені, щоб розпочати чисту синхронізацію з сервером.&lt;/p&gt;&lt;p&gt;Не ставте її, якщо локальні дані мають бути завантажені на сервер.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="272"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Повідомлення про статус</translation>
     </message>
 </context>
 <context>
@@ -2319,17 +2326,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ім&apos;я користувача</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Пароль</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>Помилка</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.ui" line="109"/>
@@ -2423,7 +2430,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="157"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>Помилка</translation>
     </message>
 </context>
 <context>
@@ -2447,7 +2454,7 @@ It is not advisable to use it.</source>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="98"/>
         <location filename="../src/wizard/owncloudwizardresultpage.ui" line="120"/>
         <source>PushButton</source>
-        <translation type="unfinished"/>
+        <translation>НатиснітьКнопку</translation>
     </message>
 </context>
 <context>
@@ -2455,27 +2462,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/utility.cpp" line="113"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 ТБ</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="116"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 ГБ</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="119"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 МБ</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="122"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 кБ</translation>
     </message>
     <message>
         <location filename="../src/mirall/utility.cpp" line="125"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 Б</translation>
     </message>
 </context>
 <context>
@@ -2483,12 +2490,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/main.cpp" line="38"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>Системний Трей не доступний</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 вимагає працюючий системний трей. Якщо ви використовуєте XFCE, будь ласка перегляньте &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;інструкцію&lt;/a&gt;. В інакшому випадку, встановіть системний трей (наприклад trayer), та спробуйте ще раз.</translation>
     </message>
 </context>
 <context>
@@ -2496,7 +2503,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="221"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Створено з версії Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; на %3, %4 використовуючи Qt %5.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2519,17 +2526,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="40"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Переміщено до %1</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="42"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Проігноровано</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="44"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Помилка доступу до файлової системи</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="46"/>
@@ -2545,33 +2552,33 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="62"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>зкачування</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="64"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>завантаження</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="66"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>видалення</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="69"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>переміщення</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="71"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>ігнорування</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="73"/>
         <location filename="../src/mirall/progressdispatcher.cpp" line="75"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>помилка</translation>
     </message>
 </context>
 <context>
@@ -2599,12 +2606,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="63"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізацію завершено, деякі файли проігноровано.</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="66"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>Помилка синхронізації</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
@@ -2614,17 +2621,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>Підготовка до синхронізації</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="75"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>Відміна...</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="78"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація призупинена</translation>
     </message>
 </context>
 </TS>
