@@ -244,6 +244,10 @@ void SocketApi::slotUnregisterPath( const QString& alias )
 
 void SocketApi::slotUpdateFolderView(const QString& alias)
 {
+    if (_listeners.isEmpty()) {
+        return;
+    }
+
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         // do only send UPDATE_VIEW for a couple of status
@@ -253,6 +257,10 @@ void SocketApi::slotUpdateFolderView(const QString& alias)
                 f->syncResult().status() == SyncResult::Problem ||
                 f->syncResult().status() == SyncResult::Error   ||
                 f->syncResult().status() == SyncResult::SetupError ) {
+
+            broadcastMessage(QLatin1String("STATUS"), f->path() ,
+                             this->fileStatus(f, "", _excludes).toSocketAPIString());
+
             broadcastMessage(QLatin1String("UPDATE_VIEW"), f->path() );
         } else {
             qDebug() << "Not sending UPDATE_VIEW for" << alias << "because status() is" << f->syncResult().status();
@@ -262,6 +270,10 @@ void SocketApi::slotUpdateFolderView(const QString& alias)
 
 void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item)
 {
+    if (_listeners.isEmpty()) {
+        return;
+    }
+
     Folder *f = FolderMan::instance()->folder(folder);
     if (!f) {
         return;
@@ -278,6 +290,10 @@ void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item
 
 void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem &item)
 {
+    if (_listeners.isEmpty()) {
+        return;
+    }
+
     if (item._instruction == CSYNC_INSTRUCTION_NONE) {
         return;
     }
