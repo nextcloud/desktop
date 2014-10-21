@@ -117,6 +117,8 @@ bool SyncJournalDb::checkConnect()
         return false;
     }
 
+    bool isNewDb = !QFile::exists(_dbFile);
+
     // The database file is created by this call (SQLITE_OPEN_CREATE)
     if( !_db.open(_dbFile) ) {
         QString error = _db.error();
@@ -235,10 +237,14 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table version", createQuery);
     }
 
+    _possibleUpgradeFromMirall_1_5 = false;
     SqlQuery versionQuery("SELECT major, minor FROM version;", _db);
     if (!versionQuery.next()) {
         // If there was no entry in the table, it means we are likely upgrading from 1.5
-        _possibleUpgradeFromMirall_1_5 = true;
+        if (!isNewDb) {
+            qDebug() << Q_FUNC_INFO << "_possibleUpgradeFromMirall_1_5 detected!";
+            _possibleUpgradeFromMirall_1_5 = true;
+        }
     } else {
         // Delete the existing entry so we can replace it by the new one
         createQuery.prepare("DELETE FROM version;");
@@ -621,6 +627,10 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString> &items )
 
     // Incoroporate results back into main DB
     walCheckpoint();
+
+    if (_possibleUpgradeFromMirall_1_5) {
+        _possibleUpgradeFromMirall_1_5 = false; // should be handled now
+    }
 
     return true;
 }
