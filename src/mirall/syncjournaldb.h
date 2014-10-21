@@ -42,6 +42,7 @@ public:
     bool deleteFileRecord( const QString& filename, bool recursively = false );
     int getFileRecordCount();
     bool exists();
+    void walCheckpoint();
 
     QString databaseFilePath();
     static qint64 getPHash(const QString& );

@@ -14,6 +14,7 @@
 #include <QFile>
 #include <QStringList>
 #include <QDebug>
+#include <QElapsedTimer>
 #include "mirall/ownsql.h"
 
 #include <inttypes.h>
@@ -49,6 +50,22 @@ bool SyncJournalDb::exists()
 QString SyncJournalDb::databaseFilePath()
 {
     return _dbFile;
+}
+
+// Note that this does not change the size of the -wal file, but it is supposed to make
+// the normal .db faster since the changes from the wal will be incorporated into it.
+// Then the next sync (and the SocketAPI) will have a faster access.
+void SyncJournalDb::walCheckpoint()
+{
+    QElapsedTimer t;
+    t.start();
+    SqlQuery pragma1(_db);
+    pragma1.prepare("PRAGMA wal_checkpoint(FULL);");
+    if (!pragma1.exec()) {
+        qDebug() << pragma1.error();
+    } else {
+        qDebug() << Q_FUNC_INFO << "took" << t.elapsed() << "msec";
+    }
 }
 
 void SyncJournalDb::startTransaction()
@@ -589,6 +606,10 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString> &items )
             return false;
         }
     }
+
+    // Incoroporate results back into main DB
+    walCheckpoint();
+
     return true;
 }
 
