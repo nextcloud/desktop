@@ -169,6 +169,19 @@ assertLocalAndRemoteDir( '', 0);
 assert( -e localDir().'remoteToLocal1/rtlX' );
 assert( -e localDir().'remoteToLocal1/rtlX/rtl11/file.txt' );
 
+printInfo( "Remove a directory on the server with new files on the client");
+removeRemoteDir('remoteToLocal1/rtlX');
+system("echo hello > " . localDir(). "remoteToLocal1/rtlX/rtl11/hello.txt");
+csync();
+assertLocalAndRemoteDir( '', 0);
+# file.txt must be gone because the directory was removed on the server, but hello.txt must be there
+#   as it is a new file
+assert( ! -e localDir().'remoteToLocal1/rtlX/rtl11/file.txt' );
+assert( -e localDir().'remoteToLocal1/rtlX/rtl11/hello.txt' );
+
+
+
+
 # ==================================================================
 
 cleanup();

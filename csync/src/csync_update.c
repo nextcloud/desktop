@@ -708,11 +708,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     rc = fn(ctx, filename, fs, flag);
     /* this function may update ctx->current and ctx->read_from_db */
 
-    if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
-        /* If a directory has modified files, put the flag on the parent directory as well */
-        previous_fs->child_modified = ctx->current_fs->child_modified;
-    }
-
     /* Only for the local replica we have to destroy stat(), for the remote one it is a pointer to dirent */
     if (ctx->replica == LOCAL_REPLICA) {
         csync_vio_file_stat_destroy(fs);
@@ -745,6 +740,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           /* If a directory has ignored files, put the flag on the parent directory as well */
           previous_fs->has_ignored_files = ctx->current_fs->has_ignored_files;
       }
+    }
+
+    if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
+        /* If a directory has modified files, put the flag on the parent directory as well */
+        previous_fs->child_modified = ctx->current_fs->child_modified;
     }
 
     if (flag == CSYNC_FTW_FLAG_DIR && ctx->current_fs
