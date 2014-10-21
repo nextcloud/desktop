@@ -667,6 +667,7 @@ static bool deleteBatch(SqlQuery & query, const QStringList & entries, const QSt
     qDebug() << "Removing stale " << qPrintable(name) << " entries: " << entries.join(", ");
     // FIXME: Was ported from execBatch, check if correct!
     foreach( const QString& entry, entries ) {
+        query.reset();
         query.bindValue(1, entry);
         if (!query.exec()) {
             QString err = query.error();
@@ -675,7 +676,8 @@ static bool deleteBatch(SqlQuery & query, const QStringList & entries, const QSt
             return false;
         }
     }
-    query.reset();
+    query.reset(); // viel hilft viel ;-)
+
     return true;
 }
 

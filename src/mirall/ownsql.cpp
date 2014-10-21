@@ -236,6 +236,9 @@ void SqlQuery::bindValue(int pos, const QVariant& value)
             break; }
         }
     }
+    if (res != SQLITE_OK) {
+        qDebug() << Q_FUNC_INFO << "ERROR" << value.toString() << res;
+    }
     Q_ASSERT( res == SQLITE_OK );
 }
 
