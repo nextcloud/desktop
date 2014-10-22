@@ -517,71 +517,68 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         }
     }
 
-
     SyncFileStatus status(SyncFileStatus::STATUS_NONE);
-    if (type == CSYNC_FTW_TYPE_DIR) {
-        if (folder->estimateState(fileName, type, &status)) {
-            qDebug() << Q_FUNC_INFO << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
+    SyncJournalFileRecord rec = dbFileRecord_capi(folder, unixFileName );
+
+    if (folder->estimateState(fileName, type, &status)) {
+        qDebug() << Q_FUNC_INFO << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
+    } else if (fileName == "") {
+        // sync folder itself
+        switch (folder->syncResult().status()) {
+        case SyncResult::Undefined:
+        case SyncResult::NotYetStarted:
+        case SyncResult::SyncPrepare:
+        case SyncResult::SyncRunning:
+            status.set(SyncFileStatus::STATUS_EVAL);
+            return status;
+
+        case SyncResult::Success:
+        case SyncResult::Problem:
+            status.set(SyncFileStatus::STATUS_SYNC);
+            return status;
+
+        case SyncResult::Error:
+        case SyncResult::SetupError:
+        case SyncResult::SyncAbortRequested:
+            status.set(SyncFileStatus::STATUS_ERROR);
+            return status;
+
+        case SyncResult::Paused:
+            status.set(SyncFileStatus::STATUS_IGNORE);
             return status;
         }
-        if (fileName == "") {
-            // sync folder itself
-            switch (folder->syncResult().status()) {
-            case SyncResult::Undefined:
-            case SyncResult::NotYetStarted:
-            case SyncResult::SyncPrepare:
-            case SyncResult::SyncRunning:
-                status.set(SyncFileStatus::STATUS_EVAL);
-                return status;
-
-            case SyncResult::Success:
-            case SyncResult::Problem:
-                status.set(SyncFileStatus::STATUS_SYNC);
-                return status;
-
-            case SyncResult::Error:
-            case SyncResult::SetupError:
-            case SyncResult::SyncAbortRequested:
-                status.set(SyncFileStatus::STATUS_ERROR);
-                return status;
-
-            case SyncResult::Paused:
-                status.set(SyncFileStatus::STATUS_IGNORE);
-                return status;
-            }
-        }
-        SyncJournalFileRecord rec = dbFileRecord_capi(folder, unixFileName );
+    } else if (type == CSYNC_FTW_TYPE_DIR) {
         if (rec.isValid()) {
             status.set(SyncFileStatus::STATUS_SYNC);
-            if (rec._remotePerm.contains("S")) {
-               status.setSharedWithMe(true);
-            }
         } else {
-            qDebug() << Q_FUNC_INFO << "Could not determine state for folder" << fileName << "will set STATUS_EVAL";
-            status.set(SyncFileStatus::STATUS_EVAL);
+            qDebug() << Q_FUNC_INFO << "Could not determine state for folder" << fileName << "will set STATUS_NEW";
+            status.set(SyncFileStatus::STATUS_NEW);
         }
     } else if (type == CSYNC_FTW_TYPE_FILE) {
-        if (folder->estimateState(fileName, type, &status)) {
-            return status;
-        }
-        SyncJournalFileRecord rec = dbFileRecord_capi(folder, unixFileName );
         if (rec.isValid()) {
-            if (rec._remotePerm.contains("S")) {
-               status.setSharedWithMe(true);
-            }
             if( FileSystem::getModTime(fi.absoluteFilePath()) == Utility::qDateTimeToTime_t(rec._modtime) ) {
                 status.set(SyncFileStatus::STATUS_SYNC);
-                return status;
             } else {
                 status.set(SyncFileStatus::STATUS_EVAL);
-                return status;
             }
+        } else {
+            qDebug() << Q_FUNC_INFO << "Could not determine state for file" << fileName << "will set STATUS_NEW";
+            status.set(SyncFileStatus::STATUS_NEW);
         }
-        qDebug() << Q_FUNC_INFO << "Could not determine state for file" << fileName << "will set STATUS_NEW";
         status.set(SyncFileStatus::STATUS_NEW);
-        return status;
     }
 
+    if (rec.isValid()) {
+        if (rec._remotePerm.isNull()) {
+            // probably owncloud 6, that does not have permissions flag yet.
+            QString url = folder->remoteUrl().toString() + fileName;
+            if (url.contains(QLatin1String("/remote.php/webdav/Shared/"))) {
+                status.setSharedWithMe(true);
+            }
+        } else if (rec._remotePerm.contains("S")) {
+            status.setSharedWithMe(true);
+        }
+    }
     return status;
 }
 
