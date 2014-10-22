@@ -238,27 +238,41 @@ bool SyncJournalDb::checkConnect()
     }
 
     _possibleUpgradeFromMirall_1_5 = false;
-    SqlQuery versionQuery("SELECT major, minor FROM version;", _db);
+    SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
     if (!versionQuery.next()) {
         // If there was no entry in the table, it means we are likely upgrading from 1.5
         if (!isNewDb) {
             qDebug() << Q_FUNC_INFO << "_possibleUpgradeFromMirall_1_5 detected!";
             _possibleUpgradeFromMirall_1_5 = true;
         }
-    } else {
-        // Delete the existing entry so we can replace it by the new one
-        createQuery.prepare("DELETE FROM version;");
-        if (!createQuery.exec()) {
-            return sqlFail("Remove version", createQuery);
-        }
-    }
+        createQuery.prepare("INSERT INTO version VALUES (?1, ?2, ?3, ?4);");
+        createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
+        createQuery.bindValue(2, MIRALL_VERSION_MINOR);
+        createQuery.bindValue(3, MIRALL_VERSION_PATCH);
+        createQuery.bindValue(3, MIRALL_VERSION_BUILD);
+        createQuery.exec();
 
-    createQuery.prepare("INSERT OR REPLACE INTO version (major, minor, patch) VALUES ( ?1, ?2 , ?3 );");
-    createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
-    createQuery.bindValue(2, MIRALL_VERSION_MINOR);
-    createQuery.bindValue(3, MIRALL_VERSION_PATCH);
-    if (!createQuery.exec()) {
-        return sqlFail("Insert Version", createQuery);
+    } else {
+        int major = versionQuery.intValue(0);
+        int minor = versionQuery.intValue(1);
+        int patch = versionQuery.intValue(2);
+
+        // Not comparing the BUILD id here, correct?
+        if( !(major == MIRALL_VERSION_MAJOR && minor == MIRALL_VERSION_MINOR && patch == MIRALL_VERSION_PATCH) ) {
+            createQuery.prepare("UPDATE version SET major=?1, minor=?2, patch =?3, custom=?4 "
+                                "WHERE major=?5 AND minor=?6 AND patch=?7;");
+            createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
+            createQuery.bindValue(2, MIRALL_VERSION_MINOR);
+            createQuery.bindValue(3, MIRALL_VERSION_PATCH);
+            createQuery.bindValue(4, MIRALL_VERSION_BUILD);
+            createQuery.bindValue(5, major);
+            createQuery.bindValue(6, minor);
+            createQuery.bindValue(7, patch);
+            if (!createQuery.exec()) {
+                return sqlFail("Update version", createQuery);
+            }
+
+        }
     }
 
     commitInternal("checkConnect");
