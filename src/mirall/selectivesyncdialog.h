@@ -18,6 +18,7 @@
 
 class QTreeWidgetItem;
 class QTreeWidget;
+class QLabel;
 namespace Mirall {
 
 class Account;
@@ -48,6 +49,7 @@ private:
     QStringList _oldBlackList;
     bool _inserting; // set to true when we are inserting new items on the list
     Account *_account;
+    QLabel *_loading;
 };
 
 class SelectiveSyncDialog : public QDialog {

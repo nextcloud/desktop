@@ -33,6 +33,7 @@ namespace Mirall {
 SelectiveSyncTreeView::SelectiveSyncTreeView(Account *account, QWidget* parent)
     : QTreeWidget(parent), _inserting(false), _account(account)
 {
+    _loading = new QLabel(tr("Loading ..."), this);
     connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(slotItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(slotItemChanged(QTreeWidgetItem*,int)));
     header()->hide();
@@ -47,6 +48,8 @@ void SelectiveSyncTreeView::refreshFolders()
             this, SLOT(slotUpdateDirectories(QStringList)));
     job->start();
     clear();
+    _loading->show();
+    _loading->move(10,10);
 }
 
 static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)
@@ -103,6 +106,8 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
 {
     QScopedValueRollback<bool> isInserting(_inserting);
     _inserting = true;
+
+    _loading->hide();
 
     QTreeWidgetItem *root = topLevelItem(0);
     if (!root) {
