@@ -122,7 +122,6 @@ static void sqlite_profile( void *x, const char* sql, sqlite3_uint64 time)
 
 int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   int rc = -1;
-  int check_rc = -1;
   c_strlist_t *result = NULL;
   sqlite3 *db = NULL;
 
