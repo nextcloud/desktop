@@ -119,8 +119,7 @@ public:
      SyncJournalDb *journalDb() { return &_journal; }
 
      QStringList selectiveSyncBlackList() { return _selectiveSyncBlackList; }
-     void setSelectiveSyncBlackList(const QStringList &blackList)
-     { _selectiveSyncBlackList = blackList; }
+     void setSelectiveSyncBlackList(const QStringList &blackList);
 
      bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
 

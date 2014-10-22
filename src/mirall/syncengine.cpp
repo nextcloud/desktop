@@ -1072,11 +1072,6 @@ QByteArray SyncEngine::getPermissions(const QString& file) const
 void SyncEngine::setSelectiveSyncBlackList(const QStringList& list)
 {
     _selectiveSyncBlackList = list;
-    for (int i = 0; i < _selectiveSyncBlackList.count(); ++i) {
-        if (!_selectiveSyncBlackList.at(i).endsWith(QLatin1Char('/'))) {
-            _selectiveSyncBlackList[i].append(QLatin1Char('/'));
-        }
-    }
 }
 
 bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)

@@ -471,6 +471,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
 {
     QString file = folder->path();
     QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
+    QString fileNameSlash = fileName;
 
     if( fileName != QLatin1String("/") && !fileName.isEmpty() ) {
         file = folder->path() + fileName;
@@ -479,6 +480,8 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     if( fileName.endsWith(QLatin1Char('/')) ) {
         fileName.truncate(fileName.length()-1);
         qDebug() << "Removed trailing slash: " << fileName;
+    } else {
+        fileNameSlash += QLatin1Char('/');
     }
 
     QFileInfo fi(file);
@@ -504,6 +507,13 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, unixFileName.toUtf8(), type);
     if( excl != CSYNC_NOT_EXCLUDED ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
+    }
+
+    // Error if it is in the selective sync blacklistr
+    foreach(const auto &s, folder->selectiveSyncBlackList()) {
+        if (fileNameSlash.startsWith(s)) {
+            return SyncFileStatus(SyncFileStatus::STATUS_ERROR);
+        }
     }
 
 

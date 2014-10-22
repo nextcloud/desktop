@@ -766,6 +766,17 @@ void Folder::setDirtyNetworkLimits()
     }
 }
 
+void Folder::setSelectiveSyncBlackList(const QStringList& blackList)
+{
+    _selectiveSyncBlackList = blackList;
+    for (int i = 0; i < _selectiveSyncBlackList.count(); ++i) {
+        if (!_selectiveSyncBlackList.at(i).endsWith(QLatin1Char('/'))) {
+            _selectiveSyncBlackList[i].append(QLatin1Char('/'));
+        }
+    }
+}
+
+
 void Folder::slotSyncError(const QString& err)
 {
     _errors.append( err );
