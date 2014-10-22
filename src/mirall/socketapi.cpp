@@ -515,21 +515,27 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         }
         if (fileName == "") {
             // sync folder itself
-            if (folder->syncResult().status() == SyncResult::Undefined
-                    || folder->syncResult().status() == SyncResult::NotYetStarted
-                    || folder->syncResult().status() == SyncResult::SyncPrepare
-                    || folder->syncResult().status() == SyncResult::SyncRunning
-                    || folder->syncResult().status() == SyncResult::Paused) {
+            switch (folder->syncResult().status()) {
+            case SyncResult::Undefined:
+            case SyncResult::NotYetStarted:
+            case SyncResult::SyncPrepare:
+            case SyncResult::SyncRunning:
                 status.set(SyncFileStatus::STATUS_EVAL);
                 return status;
-            } else if (folder->syncResult().status() == SyncResult::Success
-                       || folder->syncResult().status() == SyncResult::Problem) {
+
+            case SyncResult::Success:
+            case SyncResult::Problem:
                 status.set(SyncFileStatus::STATUS_SYNC);
                 return status;
-            }  else if (folder->syncResult().status() == SyncResult::Error
-                        || folder->syncResult().status() == SyncResult::SetupError
-                        || folder->syncResult().status() == SyncResult::SyncAbortRequested) {
+
+            case SyncResult::Error:
+            case SyncResult::SetupError:
+            case SyncResult::SyncAbortRequested:
                 status.set(SyncFileStatus::STATUS_ERROR);
+                return status;
+
+            case SyncResult::Paused:
+                status.set(SyncFileStatus::STATUS_IGNORE);
                 return status;
             }
         }
