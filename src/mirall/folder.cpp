@@ -539,19 +539,17 @@ void Folder::slotAboutToPropagate(const SyncFileItemVector& items)
 bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
 {
     if (t == CSYNC_FTW_TYPE_DIR) {
-        qDebug() << Q_FUNC_INFO << "ASKING ERROR FOLDERS" << fn;
         if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
+            qDebug() << Q_FUNC_INFO << "Folder has error" << fn;
             s->set(SyncFileStatus::STATUS_ERROR);
             return true;
         }
         // If sync is running, check _syncedItems, possibly give it STATUS_EVAL (=syncing down)
         if (!_engine.isNull()) {
-            qDebug() << Q_FUNC_INFO << "SYNC IS RUNNING, asking SyncEngine" << fn;
             if (_engine->estimateState(fn, t, s)) {
                 return true;
             }
         }
-        qDebug() << Q_FUNC_INFO << "ASKING TAINTED FOLDERS" << fn;
         if (Utility::doesSetContainPrefix(_stateTaintedFolders, fn)) {
             qDebug() << Q_FUNC_INFO << "Folder is tainted, EVAL!" << fn;
             s->set(SyncFileStatus::STATUS_EVAL);

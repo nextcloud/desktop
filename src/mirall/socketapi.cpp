@@ -354,7 +354,7 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketTy
 {
     // This command is the same as RETRIEVE_FILE_STATUS
 
-    qDebug() << Q_FUNC_INFO << argument;
+    //qDebug() << Q_FUNC_INFO << argument;
     command_RETRIEVE_FILE_STATUS(argument, socket);
 }
 
@@ -504,6 +504,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     // '\' is ignored, so convert to unix path before passing the path in.
     QString unixFileName = QDir::fromNativeSeparators(fileName);
 
+    // Is it excluded?
     CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, unixFileName.toUtf8(), type);
     if( excl != CSYNC_NOT_EXCLUDED ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
@@ -556,6 +557,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
                status.setSharedWithMe(true);
             }
         } else {
+            qDebug() << Q_FUNC_INFO << "Could not determine state for folder" << fileName << "will set STATUS_EVAL";
             status.set(SyncFileStatus::STATUS_EVAL);
         }
     } else if (type == CSYNC_FTW_TYPE_FILE) {
@@ -575,6 +577,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
                 return status;
             }
         }
+        qDebug() << Q_FUNC_INFO << "Could not determine state for file" << fileName << "will set STATUS_NEW";
         status.set(SyncFileStatus::STATUS_NEW);
         return status;
     }
