@@ -375,7 +375,9 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
         DEBUG << "folder offline or not watched:" << argument;
         statusString = QLatin1String("NOP");
     } else {
-        const QString file = argument.mid(syncFolder->path().length());
+
+
+        const QString file = QDir::cleanPath(argument).mid(QDir::cleanPath(syncFolder->path()).length()+1);
         SyncFileStatus fileStatus = this->fileStatus(syncFolder, file, _excludes);
 
         statusString = fileStatus.toSocketAPIString();
@@ -501,11 +503,8 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         type = CSYNC_FTW_TYPE_DIR;
     }
 
-    // '\' is ignored, so convert to unix path before passing the path in.
-    QString unixFileName = QDir::fromNativeSeparators(fileName);
-
     // Is it excluded?
-    CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, unixFileName.toUtf8(), type);
+    CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, fileName.toUtf8(), type);
     if( excl != CSYNC_NOT_EXCLUDED ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
@@ -518,7 +517,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     }
 
     SyncFileStatus status(SyncFileStatus::STATUS_NONE);
-    SyncJournalFileRecord rec = dbFileRecord_capi(folder, unixFileName );
+    SyncJournalFileRecord rec = dbFileRecord_capi(folder, fileName );
 
     if (folder->estimateState(fileName, type, &status)) {
         qDebug() << Q_FUNC_INFO << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
