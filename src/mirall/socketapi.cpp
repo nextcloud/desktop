@@ -565,7 +565,6 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
             qDebug() << Q_FUNC_INFO << "Could not determine state for file" << fileName << "will set STATUS_NEW";
             status.set(SyncFileStatus::STATUS_NEW);
         }
-        status.set(SyncFileStatus::STATUS_NEW);
     }
 
     if (rec.isValid()) {
