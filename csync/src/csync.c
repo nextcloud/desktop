@@ -228,9 +228,10 @@ int csync_update(CSYNC *ctx) {
 
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
   if (rc < 0) {
-    if(ctx->status_code == CSYNC_STATUS_OK)
+    if(ctx->status_code == CSYNC_STATUS_OK) {
         ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
-    return -1;
+    }
+    goto out;
   }
 
   csync_gettime(&finish);
@@ -247,19 +248,13 @@ int csync_update(CSYNC *ctx) {
 
   rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
   if (rc < 0) {
-      if(ctx->status_code == CSYNC_STATUS_OK)
+      if(ctx->status_code == CSYNC_STATUS_OK) {
           ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
-      return -1;
+      }
+      goto out;
   }
 
   csync_gettime(&finish);
-
-  /* Finalize the sql precompiled statements after the update run since
-   * it runs in its own thread. Precompiled statements shoult not be shared
-   * across thread borders according to
-   * http://www.sqlite.org/cvstrac/wiki?p=MultiThreading
-   */
-  csync_statedb_finalize_statements(ctx);
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
             "Update detection for remote replica took %.2f seconds "
@@ -269,7 +264,11 @@ int csync_update(CSYNC *ctx) {
 
   ctx->status |= CSYNC_STATUS_UPDATE;
 
-  return 0;
+  rc = 0;
+
+out:
+  csync_statedb_close(ctx);
+  return rc;
 }
 
 int csync_reconcile(CSYNC *ctx) {
@@ -284,6 +283,12 @@ int csync_reconcile(CSYNC *ctx) {
 
   /* Reconciliation for local replica */
   csync_gettime(&start);
+
+  if (csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db) < 0) {
+    ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
+    rc = -1;
+    return rc;
+  }
 
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
@@ -300,7 +305,7 @@ int csync_reconcile(CSYNC *ctx) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
           ctx->status_code = csync_errno_to_status( errno, CSYNC_STATUS_RECONCILE_ERROR );
       }
-      return -1;
+      goto out;
   }
 
   /* Reconciliation for remote replica */
@@ -321,11 +326,15 @@ int csync_reconcile(CSYNC *ctx) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
           ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_RECONCILE_ERROR );
       }
-      return -1;
+      goto out;
   }
 
   ctx->status |= CSYNC_STATUS_RECONCILE;
 
+  rc = 0;
+
+out:
+  csync_statedb_close(ctx);
   return 0;
 }
 

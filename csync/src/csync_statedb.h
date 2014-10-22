@@ -98,12 +98,6 @@ int csync_statedb_get_below_path(CSYNC *ctx, const char *path);
  */
 c_strlist_t *csync_statedb_query(sqlite3 *db, const char *statement);
 
-/**
- * @brief csync_statedb_finalize_statements - Clear prepared statements
- * @param ctx The csync context
- */
-void csync_statedb_finalize_statements(CSYNC *ctx);
-
 #ifdef __cplusplus
 }
 #endif
