@@ -558,7 +558,11 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
             if( FileSystem::getModTime(fi.absoluteFilePath()) == Utility::qDateTimeToTime_t(rec._modtime) ) {
                 status.set(SyncFileStatus::STATUS_SYNC);
             } else {
-                status.set(SyncFileStatus::STATUS_EVAL);
+                if (rec._remotePerm.isNull() || rec._remotePerm.contains("W") ) {
+                    status.set(SyncFileStatus::STATUS_EVAL);
+                } else {
+                    status.set(SyncFileStatus::STATUS_ERROR);
+                }
             }
         } else {
             qDebug() << Q_FUNC_INFO << "Could not determine state for file" << fileName << "will set STATUS_NEW";
@@ -575,6 +579,28 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
             }
         } else if (rec._remotePerm.contains("S")) {
             status.setSharedWithMe(true);
+        }
+    }
+    if (status.tag() == SyncFileStatus::STATUS_NEW) {
+        // check the parent folder if it is shared and if it is allowed to create a file/dir within
+        QDir d( fi.path() );
+        auto parentPath = d.path();
+        auto dirRec = dbFileRecord_capi(folder, parentPath);
+        bool isDir = type == CSYNC_FTW_TYPE_DIR;
+        while( !d.isRoot() && !(d.exists() && dirRec.isValid()) ) {
+            d.cdUp(); // returns true if the dir exists.
+
+            parentPath = d.path();
+            // cut the folder path
+            dirRec = dbFileRecord_capi(folder, parentPath);
+
+            isDir = true;
+        }
+        if( dirRec.isValid() && !dirRec._remotePerm.isNull()) {
+            if( (isDir && !dirRec._remotePerm.contains("K"))
+                    || (!isDir && !dirRec._remotePerm.contains("C")) ) {
+                status.set(SyncFileStatus::STATUS_ERROR);
+            }
         }
     }
     return status;

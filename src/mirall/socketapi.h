@@ -65,7 +65,6 @@ private slots:
 
 private:
     SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes );
-    SyncJournalFileRecord dbFileRecord( Folder *folder, QString fileName );
     SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName );
     SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName, c_strlist_t *excludes  );
     SqlQuery *getSqlQuery( Folder *folder );
