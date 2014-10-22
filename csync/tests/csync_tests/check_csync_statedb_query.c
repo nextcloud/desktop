@@ -47,6 +47,12 @@ static void setup(void **state)
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
 
+    sqlite3 *db = NULL;
+    rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
+    assert_int_equal(rc, SQLITE_OK);
+    rc = sqlite3_close_v2(db);
+    assert_int_equal(rc, SQLITE_OK);
+
     rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
     assert_int_equal(rc, 0);
 

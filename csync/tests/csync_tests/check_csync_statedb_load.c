@@ -42,6 +42,13 @@ static void setup(void **state) {
 
     csync->statedb.file = c_strdup( TESTDB );
     *state = csync;
+
+    sqlite3 *db = NULL;
+    rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
+    assert_int_equal(rc, SQLITE_OK);
+
+    rc = sqlite3_close_v2(db);
+    assert_int_equal(rc, SQLITE_OK);
 }
 
 static void teardown(void **state) {
