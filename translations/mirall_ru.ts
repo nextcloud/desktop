@@ -2030,64 +2030,64 @@ It is not advisable to use it.</source>
         <translation>Не удалось инициализировать журнал синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="619"/>
+        <location filename="../src/mirall/syncengine.cpp" line="621"/>
         <source>Cannot open the sync journal</source>
         <translation>Не удаётся открыть журнал синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="851"/>
-        <location filename="../src/mirall/syncengine.cpp" line="858"/>
+        <location filename="../src/mirall/syncengine.cpp" line="853"/>
+        <location filename="../src/mirall/syncengine.cpp" line="860"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Игнорируется из-за черного списка в &quot;выбрать что синхронизировать&quot;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="876"/>
+        <location filename="../src/mirall/syncengine.cpp" line="878"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Недопустимо из-за отсутствия у вас разрешений на добавление подпапок в этой папке</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="882"/>
+        <location filename="../src/mirall/syncengine.cpp" line="884"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Недопустимо из-за отсутствия у вас разрешений на добавление родительской папки</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="889"/>
+        <location filename="../src/mirall/syncengine.cpp" line="891"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Недопустимо из-за отсутствия у вас разрешений на добавление файлов в эту папку</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="909"/>
+        <location filename="../src/mirall/syncengine.cpp" line="911"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Недопустимо отправить этот файл поскольку на севрере он помечен только для чтения, восстанавливаем</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="926"/>
-        <location filename="../src/mirall/syncengine.cpp" line="946"/>
+        <location filename="../src/mirall/syncengine.cpp" line="928"/>
+        <location filename="../src/mirall/syncengine.cpp" line="948"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Недопустимо удалить, восстанавливаем</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="961"/>
+        <location filename="../src/mirall/syncengine.cpp" line="963"/>
         <source>Local files and share folder removed.</source>
         <translation>Локальные файлы и папки, добавленные в общий доступ, удалены.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1016"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1018"/>
         <source>Move not allowed, item restored</source>
         <translation>Перемещение недопустимо, элемент восстановлен</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1025"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1027"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Перемещение недопустимо, поскольку %1 помечен только для чтения</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1026"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1028"/>
         <source>the destination</source>
         <translation> Назначение</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1026"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1028"/>
         <source>the source</source>
         <translation>Источник</translation>
     </message>
