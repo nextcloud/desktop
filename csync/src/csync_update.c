@@ -247,8 +247,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64 ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64 ", size: %" PRId64 " <-> %" PRId64,
-                  ((int64_t) fs->mtime), ((int64_t) tmp->modtime), fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode, (uint64_t) fs->size, (uint64_t) tmp->size);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64
+                                            ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
+                                            ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s",
+                  ((int64_t) fs->mtime), ((int64_t) tmp->modtime),
+                  fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode,
+                  (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm );
         if( !fs->etag) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
