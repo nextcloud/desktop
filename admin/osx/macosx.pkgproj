@@ -491,7 +491,7 @@
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>
-				<string>1.6.2</string>
+				<string>@MIRALL_VERSION_FULL@</string>
 			</dict>
 			<key>UUID</key>
 			<string>7D7219B7-1897-48C3-8533-842BDEC46F71</string>
@@ -1019,7 +1019,7 @@
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>
-				<string>1.6.2</string>
+				<string>@MIRALL_VERSION_FULL@</string>
 			</dict>
 			<key>TYPE</key>
 			<integer>0</integer>
@@ -1041,7 +1041,7 @@
 			ZW50LVN0eWxlLVR5cGUiIGNvbnRlbnQ9InRleHQvY3NzIj4KPHRp
 			dGxlPjwvdGl0bGU+CjxtZXRhIG5hbWU9IkdlbmVyYXRvciIgY29u
 			dGVudD0iQ29jb2EgSFRNTCBXcml0ZXIiPgo8bWV0YSBuYW1lPSJD
-			b2NvYVZlcnNpb24iIGNvbnRlbnQ9IjExMzguNTEiPgo8c3R5bGUg
+			b2NvYVZlcnNpb24iIGNvbnRlbnQ9IjEzNDMuMTQiPgo8c3R5bGUg
 			dHlwZT0idGV4dC9jc3MiPgo8L3N0eWxlPgo8L2hlYWQ+Cjxib2R5
 			Pgo8L2JvZHk+CjwvaHRtbD4K
 			</data>
@@ -1054,10 +1054,10 @@
 				<integer>6</integer>
 				<key>BACKGROUND_PATH</key>
 				<dict>
-				<key>PATH</key>
-				<string>./@APPLICATION_EXECUTABLE@.app/Contents/Resources/owncloud_logo_blue.png</string>
-				<key>PATH_TYPE</key>
-				<integer>3</integer>
+					<key>PATH</key>
+					<string>@CMAKE_SOURCE_DIR@/admin/osx/installer-background.png</string>
+					<key>PATH_TYPE</key>
+					<integer>0</integer>
 				</dict>
 				<key>CUSTOM</key>
 				<integer>1</integer>
@@ -1415,7 +1415,7 @@
 			<key>NAME</key>
 			<string>ownCloud Installer</string>
 			<key>REFERENCE_FOLDER_PATH</key>
-			<string>/Users/mackie/install</string>
+			<string>@CMAKE_INSTALL_DIR@</string>
 		</dict>
 	</dict>
 	<key>TYPE</key>
