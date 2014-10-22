@@ -39,7 +39,7 @@ sub createPostUpdateScript($)
 
     my $srcFile = localDir().'BIG1.file';
     my $cred = configValue("user") . ":" . configValue("passwd");
-    my $cmd = "curl -T $srcFile -u $cred " . testDirUrl().$name;
+    my $cmd = "curl -T $srcFile -u $cred --insecure" . testDirUrl().$name;
     my $script = "/tmp/post_update_script.sh";
     open SC, ">$script" || die("Can not create script file");
     print SC "#!/bin/bash\n";
