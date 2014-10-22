@@ -124,9 +124,18 @@ static void setup_ftw(void **state)
     assert_int_equal(rc, 0);
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
+
+    sqlite3 *db = NULL;
+    rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
+    assert_int_equal(rc, SQLITE_OK);
+    statedb_create_metadata_table(db);
+    rc = sqlite3_close_v2(db);
+    assert_int_equal(rc, SQLITE_OK);
+
     rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
     assert_int_equal(rc, 0);
 
+    csync->statedb.file = c_strdup( TESTDB );
     *state = csync;
 }
 

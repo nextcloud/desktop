@@ -809,11 +809,6 @@ void Folder::slotSyncFinished()
     _stateLastSyncItemsWithError = _stateLastSyncItemsWithErrorNew;
     _stateLastSyncItemsWithErrorNew.clear();
     _stateTaintedFolders.clear(); // heuristic: assume the sync had been done, new file watches needed to taint dirs
-    if (_csyncError || _csyncUnavail) {
-        // Taint the whole sync dir, we cannot give reliable state information
-        _stateTaintedFolders.insert(QLatin1String("/"));
-    }
-
 
     if (_csyncError) {
         _syncResult.setStatus(SyncResult::Error);
