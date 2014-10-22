@@ -224,7 +224,7 @@ QString Utility::toCSyncScheme(const QString &urlStr)
     return url.toString();
 }
 
-bool Utility::doesSetContainPrefix(QSet<QString> &l, QString &p) {
+bool Utility::doesSetContainPrefix(const QSet<QString> &l, const QString &p) {
 
     Q_FOREACH (const QString &setPath, l) {
         //qDebug() << Q_FUNC_INFO << p << setPath << setPath.startsWith(p);
