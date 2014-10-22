@@ -57,6 +57,7 @@ set(libsync_SRCS
     syncresult.cpp
     theme.cpp
     utility.cpp
+    ownsql.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialsfactory.cpp

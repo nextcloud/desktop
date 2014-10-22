@@ -51,14 +51,15 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
             _item._errorString += tr("; Restoration Failed: ") + errorString;
         }
     } else {
-        _item._errorString = errorString;
+        if( _item._errorString.isEmpty() ) {
+            _item._errorString = errorString;
+        }
     }
 
-    if( _propagator->_abortRequested.fetchAndAddRelaxed(0) ) {
+    if( _propagator->_abortRequested.fetchAndAddRelaxed(0) &&
+            (status == SyncFileItem::NormalError || status == SyncFileItem::FatalError)) {
         // an abort request is ongoing. Change the status to Soft-Error
-
         status = SyncFileItem::SoftError;
-        _item._errorString = tr("Operation was canceled by user interaction.");
     }
 
     _item._status = status;
@@ -76,7 +77,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         }
         retries = defaultRetriesCount.fetchAndAddAcquire(0);
     }
-    SyncJournalBlacklistRecord record(_item, retries);;
+    SyncJournalBlacklistRecord record(_item, retries);
 
     switch( status ) {
     case SyncFileItem::SoftError:
@@ -96,9 +97,13 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         break;
     case SyncFileItem::Success:
     case SyncFileItem::Restoration:
-        if( _item._blacklistedInDb ) {
+        if( _item._hasBlacklistEntry ) {
             // wipe blacklist entry.
             _propagator->_journal->wipeBlacklistEntry(_item._file);
+            // remove a blacklist entry in case the file was moved.
+            if( _item._originalFile != _item._file ) {
+                _propagator->_journal->wipeBlacklistEntry(_item._originalFile);
+            }
         }
         break;
     case SyncFileItem::Conflict:
@@ -380,10 +385,10 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
             // returns false.
         } else {
             QString realFileName = QString::fromWCharArray( FindFileData.cFileName );
-            qDebug() << Q_FUNC_INFO << "Real file name is " << realFileName;
             FindClose(hFind);
 
             if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
+                qDebug() << Q_FUNC_INFO << "Detected case clash between" << file << "and" << realFileName;
                 re = true;
             }
         }

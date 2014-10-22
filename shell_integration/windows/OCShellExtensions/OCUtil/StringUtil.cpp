@@ -11,22 +11,26 @@
 * details.
 */
 
-#include <Windows.h>
+#include <locale>
+#include <string>
+#include <codecvt>
 
 #include "StringUtil.h"
 
-char* StringUtil::toUtf8(const wchar_t *utf16, int len)
+std::string StringUtil::toUtf8(const wchar_t *utf16, int len)
 {
-	int newlen = WideCharToMultiByte(CP_UTF8, 0, utf16, len, NULL, 0, NULL, NULL);
-	char* str = new char[newlen];
-	WideCharToMultiByte(CP_UTF8, 0, utf16, -1, str, newlen, NULL, NULL);
-	return str;
+	if (len < 0) {
+		len = wcslen(utf16);
+	}
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t> > converter;
+    return converter.to_bytes(utf16, utf16+len);
 }
 
-wchar_t* StringUtil::toUtf16(const char *utf8, int len)
+std::wstring StringUtil::toUtf16(const char *utf8, int len)
 {
-	int newlen = MultiByteToWideChar(CP_UTF8, 0, utf8, len, NULL, 0);
-	wchar_t* wstr = new wchar_t[newlen];
-	MultiByteToWideChar(CP_UTF8, 0, utf8, -1, wstr, newlen);
-	return wstr;
+	if (len < 0) {
+		len = strlen(utf8);
+	}
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t> > converter;
+    return converter.from_bytes(utf8, utf8+len);
 }

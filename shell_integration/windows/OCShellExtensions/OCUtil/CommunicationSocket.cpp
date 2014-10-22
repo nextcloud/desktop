@@ -21,6 +21,7 @@
 #include <windows.h>
 #include <iostream>
 #include <vector>
+#include <array>
 
 #include <fstream> 
 
@@ -30,8 +31,8 @@ using namespace std;
 
 #define DEFAULT_BUFLEN 4096
 
-CommunicationSocket::CommunicationSocket(int port)
-	: _port(port), _clientSocket(INVALID_SOCKET)
+CommunicationSocket::CommunicationSocket()
+    : _pipe(INVALID_HANDLE_VALUE)
 {
 }
 
@@ -43,64 +44,39 @@ CommunicationSocket::~CommunicationSocket()
 bool CommunicationSocket::Close()
 {
 	WSACleanup();
-	bool closed = (closesocket(_clientSocket) == 0);
-	shutdown(_clientSocket, SD_BOTH);
-	_clientSocket = INVALID_SOCKET;
-	return closed;
+	if (_pipe == INVALID_HANDLE_VALUE) {
+		return false;
+	}
+	CloseHandle(_pipe);
+	_pipe = INVALID_HANDLE_VALUE;
+	return true;
 }
 
 
-bool CommunicationSocket::Connect()
+bool CommunicationSocket::Connect(const std::wstring &pipename)
 {
-	WSADATA wsaData;
+	_pipe = CreateFile(pipename.data(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
-	HRESULT iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-
-	if (iResult != NO_ERROR) {
-		int error = WSAGetLastError();
-	}
-
-
-	_clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-	if (_clientSocket == INVALID_SOCKET) {
-		//int error = WSAGetLastError();
-		Close();
-		return false;
-	}
-
-	struct sockaddr_in clientService;
-
-	clientService.sin_family = AF_INET;
-	clientService.sin_addr.s_addr = inet_addr(PLUG_IN_SOCKET_ADDRESS);
-	clientService.sin_port = htons(_port);
-
-	iResult = connect(_clientSocket, (SOCKADDR*)&clientService, sizeof(clientService));
-	DWORD timeout = 500; // ms
-	setsockopt(_clientSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*) &timeout, sizeof(DWORD));
-
-	if (iResult == SOCKET_ERROR) {
-		//int error = WSAGetLastError();
-		Close();
-		return false;
-	}
-	return true;
+    if (_pipe == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+    return true;
 }
 
 bool CommunicationSocket::SendMsg(const wchar_t* message)
 {
-	const char* utf8_msg = StringUtil::toUtf8(message);
-	size_t result = send(_clientSocket, utf8_msg, (int)strlen(utf8_msg), 0);
-	delete[] utf8_msg;
+	auto utf8_msg = StringUtil::toUtf8(message);
 
-	if (result == SOCKET_ERROR) {
-		//int error = WSAGetLastError();
-		closesocket(_clientSocket);
-		return false;
-	}
+    DWORD numBytesWritten = 0;
+    auto result = WriteFile( _pipe, utf8_msg.c_str(), DWORD(utf8_msg.size()), &numBytesWritten, NULL);
 
-	return true;
+    if (result) {
+        return true;
+    } else {
+        Close();
 
+        return false;
+    }
 }
 
 bool CommunicationSocket::ReadLine(wstring* response)
@@ -109,21 +85,43 @@ bool CommunicationSocket::ReadLine(wstring* response)
 		return false;
 	}
 
-	vector<char> resp_utf8;
-	char buffer;
+    response->clear();
+
+    if (_pipe == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+
+
 	while (true) {
-		int bytesRead = recv(_clientSocket, &buffer, 1, 0);
-		if (bytesRead <= 0) {
-			response = 0;
+        int lbPos = 0;
+        auto it = std::find(_buffer.begin() + lbPos, _buffer.end(), '\n');
+        if (it != _buffer.end()) {
+            *response = StringUtil::toUtf16(_buffer.data(), DWORD(it - _buffer.begin()));
+            _buffer.erase(_buffer.begin(), it + 1);
+            return true;
+        }
+
+        std::array<char, 128> resp_utf8;
+        DWORD numBytesRead = 0;
+		DWORD totalBytesAvailable = 0;
+		auto result = PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0);
+		if (!result) {
+			Close();
+			return false;
+		}
+		if (totalBytesAvailable == 0) {
 			return false;
 		}
 
-		if (buffer == '\n')	{
-			resp_utf8.push_back(0);
-			*response = StringUtil::toUtf16(&resp_utf8[0], resp_utf8.size());
-			return true;
-		} else {
-			resp_utf8.push_back(buffer);
-		}
+        result = ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, NULL);
+        if (!result) {
+            Close();
+            return false;
+        }
+        if (numBytesRead <= 0) {
+            return false;
+        }
+		_buffer.insert(_buffer.end(), resp_utf8.begin(), resp_utf8.begin()+numBytesRead);
+        continue;
 	}
 }

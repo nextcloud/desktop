@@ -99,25 +99,10 @@ int csync_statedb_get_below_path(CSYNC *ctx, const char *path);
 c_strlist_t *csync_statedb_query(sqlite3 *db, const char *statement);
 
 /**
- * @brief Insert function for the statedb.
- *
- * @param ctx        The csync context.
- * @param statement  The SQL statement to insert into the statedb.
- *
- * @return  The rowid of the most recent INSERT on success, 0 if the query
- *          wasn't successful.
+ * @brief csync_statedb_finalize_statements - Clear prepared statements
+ * @param ctx The csync context
  */
-typedef struct csync_progressinfo_s {
-  struct csync_progressinfo_s *next;
-  uint64_t phash;
-  uint64_t modtime;
-  char *md5;
-  int error;
-  int chunk;
-  int transferId;
-  char *tmpfile;
-  char *error_string;
-} csync_progressinfo_t;
+void csync_statedb_finalize_statements(CSYNC *ctx);
 
 #ifdef __cplusplus
 }

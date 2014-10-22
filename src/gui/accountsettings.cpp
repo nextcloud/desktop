@@ -383,7 +383,7 @@ void AccountSettings::slotResetCurrentFolder()
         if( ret == QMessageBox::Yes ) {
             FolderMan *folderMan = FolderMan::instance();
             Folder *f = folderMan->folder(alias);
-            f->slotTerminateAndPauseSync();
+            f->slotTerminateSync();
             f->wipe();
             folderMan->slotScheduleAllFolders();
         }
@@ -499,7 +499,7 @@ void AccountSettings::slotEnableCurrentFolder()
         // message box can return at any time while the thread keeps running,
         // so better check again after the user has responded.
         if ( f->isBusy() && terminate ) {
-            f->slotTerminateAndPauseSync();
+            f->slotTerminateSync();
         }
         f->setSyncPaused(!currentlyPaused); // toggle the pause setting
         folderMan->slotSetFolderPaused( alias, !currentlyPaused );
@@ -605,7 +605,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
 
     if (!progress._currentDiscoveredFolder.isEmpty()) {
-        item->setData( tr("Discovering %1").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
+        item->setData( tr("Discovering '%1'").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
         return;
     }
 

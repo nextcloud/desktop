@@ -66,7 +66,11 @@ int getauth(const char *prompt,
         // qDebug() << "OOO Password requested!";
         qstrncpy( buf, pwd.toUtf8().constData(), len );
     } else {
-        re = handleNeonSSLProblems(prompt, buf, len, echo, verify, userdata);
+        if( http_credentials->sslIsTrusted() ) {
+            qstrcpy( buf, "yes" ); // Certificate is fine!
+        } else {
+            re = handleNeonSSLProblems(prompt, buf, len, echo, verify, userdata);
+        }
     }
     return re;
 }

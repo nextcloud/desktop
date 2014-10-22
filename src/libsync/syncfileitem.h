@@ -46,13 +46,13 @@ public:
 
         Success, ///< The file was properly synced
         Conflict, ///< The file was properly synced, but a conflict was created
-        FileIgnored, ///< The file is in the ignored list
+        FileIgnored, ///< The file is in the ignored list (or blacklisted with no retries left)
         Restoration ///< The file was restored because what should have been done was not allowed
     };
 
     SyncFileItem() : _type(UnknownType),  _direction(None), _isDirectory(false),
         _instruction(CSYNC_INSTRUCTION_NONE), _modtime(0),
-        _size(0), _inode(0), _should_update_etag(false), _blacklistedInDb(false),
+        _size(0), _inode(0), _should_update_etag(false), _hasBlacklistEntry(false),
         _status(NoStatus), _httpErrorCode(0), _requestDuration(0), _isRestoration(false) {}
 
     friend bool operator==(const SyncFileItem& item1, const SyncFileItem& item2) {
@@ -70,6 +70,13 @@ public:
 
     bool isEmpty() const {
         return _file.isEmpty();
+    }
+
+    bool hasErrorStatus() const {
+        return _status == SyncFileItem::SoftError
+                || _status == SyncFileItem::NormalError
+                || _status == SyncFileItem::FatalError
+                || !_errorString.isEmpty();
     }
 
     // Variables usefull for everybody
@@ -91,7 +98,11 @@ public:
     QByteArray           _remotePerm;
     QString              _directDownloadUrl;
     QString              _directDownloadCookies;
-    bool                 _blacklistedInDb;
+
+    /// Whether there's an entry in the blacklist table.
+    /// Note: that entry may have retries left, so this can be true
+    /// without the status being FileIgnored.
+    bool                 _hasBlacklistEntry;
 
     // Variables usefull to report to the user
     Status               _status;

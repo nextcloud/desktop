@@ -33,6 +33,7 @@
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
 #include "utility.h"
+#include "syncfilestatus.h"
 
 class QProcess;
 
@@ -61,11 +62,12 @@ public:
 
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
-    void setSelectiveSyncBlackList(const QStringList &list)
-    { _selectiveSyncBlackList = list; }
+    void setSelectiveSyncBlackList(const QStringList &list);
 
     /* Return true if we detected that another sync is needed to complete the sync */
     bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
+
+    bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
 
 signals:
     void csyncError( const QString& );
@@ -124,7 +126,11 @@ private:
     void finalize();
 
     static bool _syncRunning; //true when one sync is running somewhere (for debugging)
+
     QMap<QString, SyncFileItem> _syncItemMap;
+
+    // should be called _syncItems (present tense). It's the items from the _syncItemMap but
+    // sorted and re-adjusted based on permissions.
     SyncFileItemVector _syncedItems;
 
     CSYNC *_csync_ctx;

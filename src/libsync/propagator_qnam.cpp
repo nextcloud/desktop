@@ -94,7 +94,7 @@ void PUTFileJob::start() {
     }
 
     connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SIGNAL(uploadProgress(qint64,qint64)));
-    connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(resetTimeout()));
+    connect(this, SIGNAL(networkActivity()), account(), SIGNAL(propagatorNetworkActivity()));
 
     AbstractNetworkJob::start();
 }
@@ -310,6 +310,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
             // Precondition Failed:   Maybe the bad etag is in the database, we need to clear the
             // parent folder etag so we won't read from DB next sync.
             _propagator->_journal->avoidReadFromDbOnNextSync(_item._file);
+            _propagator->_anotherSyncNeeded = true;
         }
 
         done(classifyError(err, _item._httpErrorCode), errorString);
@@ -448,6 +449,12 @@ GETFileJob::GETFileJob(Account* account, const QUrl& url, QFile *device,
 
 
 void GETFileJob::start() {
+    if (_resumeStart > 0) {
+        _headers["Range"] = "bytes=" + QByteArray::number(_resumeStart) +'-';
+        _headers["Accept-Ranges"] = "bytes";
+        qDebug() << "Retry with range " << _headers["Range"];
+    }
+
     QNetworkRequest req;
     for(QMap<QByteArray, QByteArray>::const_iterator it = _headers.begin(); it != _headers.end(); ++it) {
         req.setRawHeader(it.key(), it.value());
@@ -469,15 +476,22 @@ void GETFileJob::start() {
     connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(slotMetaDataChanged()));
     connect(reply(), SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
     connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SIGNAL(downloadProgress(qint64,qint64)));
+    connect(this, SIGNAL(networkActivity()), account(), SIGNAL(propagatorNetworkActivity()));
 
     AbstractNetworkJob::start();
 }
 
 void GETFileJob::slotMetaDataChanged()
 {
-    if (reply()->error() != QNetworkReply::NoError
-            || reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() / 100 != 2) {
-        // We will handle the error when the job is finished.
+    int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    // If the status code isn't 2xx, don't write the reply body to the file.
+    // For any error: handle it when the job is finished, not here.
+    if (httpStatus / 100 != 2) {
+        _device->close();
+        return;
+    }
+    if (reply()->error() != QNetworkReply::NoError) {
         return;
     }
     _etag = get_etag_from_reply(reply());
@@ -547,16 +561,17 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        qint64 w = _device->write(buffer.constData(), r);
-        if (w != r) {
-            _errorString = _device->errorString();
-            _errorStatus = SyncFileItem::NormalError;
-            qDebug() << "Error while writing to file" << w << r <<  _errorString;
-            reply()->abort();
-            return;
+        if (_device->isOpen()) {
+            qint64 w = _device->write(buffer.constData(), r);
+            if (w != r) {
+                _errorString = _device->errorString();
+                _errorStatus = SyncFileItem::NormalError;
+                qDebug() << "Error while writing to file" << w << r <<  _errorString;
+                reply()->abort();
+                return;
+            }
         }
     }
-    resetTimeout();
 }
 
 void GETFileJob::slotTimeout()
@@ -626,18 +641,13 @@ void PropagateDownloadFileQNAM::start()
 
     QMap<QByteArray, QByteArray> headers;
 
-    quint64 startSize = 0;
-    if (_tmpFile.size() > 0) {
-        quint64 done = _tmpFile.size();
-        if (done == _item._size) {
+    quint64 startSize = _tmpFile.size();
+    if (startSize > 0) {
+        if (startSize == _item._size) {
             qDebug() << "File is already complete, no need to download";
             downloadFinished();
             return;
         }
-        headers["Range"] = "bytes=" + QByteArray::number(done) +'-';
-        headers["Accept-Ranges"] = "bytes";
-        qDebug() << "Retry with range " << headers["Range"];
-        startSize = done;
     }
 
     if (_item._directDownloadUrl.isEmpty()) {
@@ -647,14 +657,27 @@ void PropagateDownloadFileQNAM::start()
                             &_tmpFile, headers, expectedEtagForResume, startSize);
     } else {
         // We were provided a direct URL, use that one
+        qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item._file << _item._directDownloadUrl;
+
+        // Direct URLs don't support resuming, so clear an existing tmp file
+        if (startSize > 0) {
+            qDebug() << Q_FUNC_INFO << "resuming not supported for directDownloadUrl, deleting temporary";
+            _tmpFile.close();
+            if (!_tmpFile.open(QIODevice::WriteOnly | QIODevice::Unbuffered)) {
+                done(SyncFileItem::NormalError, _tmpFile.errorString());
+                return;
+            }
+            startSize = 0;
+        }
+
         if (!_item._directDownloadCookies.isEmpty()) {
             headers["Cookie"] = _item._directDownloadCookies.toUtf8();
         }
+
         QUrl url = QUrl::fromUserInput(_item._directDownloadUrl);
         _job = new GETFileJob(AccountManager::instance()->account(),
                               url,
                               &_tmpFile, headers);
-        qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item._file << _item._directDownloadUrl;
     }
     _job->setTimeout(_propagator->httpTimeout() * 1000);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
@@ -677,17 +700,33 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
-        if (_tmpFile.size() == 0) {
-            // don't keep the temporary file if it is empty.
+        _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+        // If we sent a 'Range' header and get 416 back, we want to retry
+        // without the header.
+        bool badRangeHeader = job->resumeStart() > 0 && _item._httpErrorCode == 416;
+        if (badRangeHeader) {
+            qDebug() << Q_FUNC_INFO << "server replied 416 to our range request, trying again without";
+            _propagator->_anotherSyncNeeded = true;
+        }
+
+        // Don't keep the temporary file if it is empty or we
+        // used a bad range header.
+        if (_tmpFile.size() == 0 || badRangeHeader) {
             _tmpFile.close();
             _tmpFile.remove();
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         }
-        _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
         _propagator->_activeJobs--;
         SyncFileItem::Status status = job->errorStatus();
         if (status == SyncFileItem::NoStatus) {
             status = classifyError(err, _item._httpErrorCode);
+        }
+        if (badRangeHeader) {
+            // Can't do this in classifyError() because 416 without a
+            // Range header should result in NormalError.
+            status = SyncFileItem::SoftError;
         }
         done(status, job->errorString());
         return;
@@ -759,6 +798,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
         return;
     }
 
+    existingFile.refresh();
     // Maybe we downloaded a newer version of the file than we thought we would...
     // Get up to date information for the journal.
     FileSystem::setModTime(fn, _item._modtime);

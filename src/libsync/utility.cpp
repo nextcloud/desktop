@@ -224,6 +224,18 @@ QString Utility::toCSyncScheme(const QString &urlStr)
     return url.toString();
 }
 
+bool Utility::doesSetContainPrefix(QSet<QString> &l, QString &p) {
+
+    Q_FOREACH (const QString &setPath, l) {
+        //qDebug() << Q_FUNC_INFO << p << setPath << setPath.startsWith(p);
+        if (setPath.startsWith(p)) {
+            return true;
+        }
+    }
+    //qDebug() << "-> NOOOOO!!!" << p << l.count();
+    return false;
+}
+
 QString Utility::escape(const QString &in)
 {
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -357,17 +369,6 @@ bool Utility::isLinux()
     return true;
 #else
     return false;
-#endif
-}
-
-void Utility::winShellChangeNotify( const QString& path )
-{
-#ifdef Q_OS_WIN
-    SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT,
-                   reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16()), NULL );
-#else
-    Q_UNUSED(path);
-    qDebug() << Q_FUNC_INFO << " is not implemented on non Windows systems.";
 #endif
 }
 

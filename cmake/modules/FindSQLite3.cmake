@@ -50,8 +50,18 @@ if (SQLite3_FIND_VERSION AND _SQLITE3_VERSION)
     set(SQLite3_VERSION _SQLITE3_VERSION)
 endif (SQLite3_FIND_VERSION AND _SQLITE3_VERSION)
 
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SQLite3 DEFAULT_MSG SQLITE3_LIBRARIES SQLITE3_INCLUDE_DIRS)
+if (APPLE OR WIN32)
+    set(USE_OUR_OWN_SQLITE3 TRUE)
+    set(SQLITE3_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3)
+    set(SQLITE3_LIBRARIES "")
+    set(SQLITE3_SOURCE ${SQLITE3_INCLUDE_DIR}/sqlite3.c)
+    MESSAGE(STATUS "Using own sqlite3 from " ${SQLITE3_INCLUDE_DIR})
+else()
+    include(FindPackageHandleStandardArgs)
+    find_package_handle_standard_args(SQLite3 DEFAULT_MSG SQLITE3_LIBRARIES SQLITE3_INCLUDE_DIRS)
+endif()
+
+
 
 # show the SQLITE3_INCLUDE_DIRS and SQLITE3_LIBRARIES variables only in the advanced view
 mark_as_advanced(SQLITE3_INCLUDE_DIRS SQLITE3_LIBRARIES)

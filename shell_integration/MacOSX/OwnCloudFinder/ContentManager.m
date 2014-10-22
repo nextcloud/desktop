@@ -118,7 +118,7 @@ static ContentManager* sharedInstance = nil;
 
     if (![_fileNamesCache objectForKey:normalizedPath] || ![[_fileNamesCache objectForKey:normalizedPath] isEqualTo:res]) {
 		[_fileNamesCache setObject:res forKey:normalizedPath];
-		// NSLog(@"SET value %d", [res intValue]);
+		//NSLog(@"SET value %d %@", [res intValue], normalizedPath);
 		_hasChangedContent = YES;
 		[self performSelector:@selector(repaintAllWindowsIfNeeded) withObject:0 afterDelay:1.0]; // 1 sec
 	}
@@ -139,12 +139,12 @@ static ContentManager* sharedInstance = nil;
 	}
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
 
-	if (![[RequestManager sharedInstance] isRegisteredPath:normalizedPath]) {
+	if (![[RequestManager sharedInstance] isRegisteredPath:normalizedPath isDirectory:isDir]) {
 		return [NSNumber numberWithInt:0];
 	}
 	
 	NSNumber* result = [_fileNamesCache objectForKey:normalizedPath];
-	// NSLog(@"XXXXXXX Asking for icon for path %@ = %d",path, [result intValue]);
+	// NSLog(@"XXXXXXX Asking for icon for path %@ = %d",normalizedPath, [result intValue]);
 	
 	if( result == nil ) {
 		// start the async call
@@ -185,22 +185,29 @@ static ContentManager* sharedInstance = nil;
 	}
 	
 	if( [keysToDelete count] > 0 ) {
-		NSLog( @"Entries to delete: %d", [keysToDelete count]);
+		NSLog( @"Entries to delete: %lu", (unsigned long)[keysToDelete count]);
 		[_fileNamesCache removeObjectsForKeys:keysToDelete];
 	}
 }
 
 - (void)reFetchFileNameCacheForPath:(NSString*)path
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
+	 NSLog(@"%@", NSStringFromSelector(_cmd));
 
 	for (id p in [_fileNamesCache keyEnumerator]) {
 		if ( path && [p hasPrefix:path] ) {
-			NSNumber *askState = [[RequestManager sharedInstance] askForIcon:p isDirectory:false]; // FIXME
-			//[_fileNamesCache setObject:askState forKey:p];
-			NSLog(@"%@ %@", NSStringFromSelector(_cmd), p);
+			[[RequestManager sharedInstance] askForIcon:p isDirectory:false]; // FIXME isDirectory parameter
+			//[_fileNamesCache setObject:askState forKey:p]; We don't do this since we want to keep the old icon meanwhile
+			//NSLog(@"%@ %@", NSStringFromSelector(_cmd), p);
 		}
 	}
+
+	// Ask for directory itself
+	if ([path hasSuffix:@"/"]) {
+		path = [path substringToIndex:path.length - 1];
+	}
+	[[RequestManager sharedInstance] askForIcon:path isDirectory:true];
+	//NSLog(@"%@ %@", NSStringFromSelector(_cmd), path);
 }
 
 
@@ -226,7 +233,7 @@ static ContentManager* sharedInstance = nil;
 - (void)repaintAllWindowsIfNeeded
 {
 	if (!_hasChangedContent) {
-		NSLog(@"%@ Repaint scheduled but not needed", NSStringFromSelector(_cmd));
+		//NSLog(@"%@ Repaint scheduled but not needed", NSStringFromSelector(_cmd));
 		return;
 	}
 

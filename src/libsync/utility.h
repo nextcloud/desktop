@@ -42,6 +42,10 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
     /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
 
+    OWNCLOUDSYNC_EXPORT bool doesSetContainPrefix(QSet<QString> &l, QString &p);
+
+
+
     /**
      * @brief compactFormatDouble - formats a double value human readable.
      *
@@ -58,8 +62,6 @@ namespace Utility
     // conversion function QDateTime <-> time_t   (because the ones builtin work on only unsigned 32bit)
     OWNCLOUDSYNC_EXPORT QDateTime qDateTimeFromTime_t(qint64 t);
     OWNCLOUDSYNC_EXPORT qint64 qDateTimeToTime_t(const QDateTime &t);
-
-    OWNCLOUDSYNC_EXPORT void winShellChangeNotify( const QString& path );
 
     /**
      * @brief Convert milliseconds to HMS string.

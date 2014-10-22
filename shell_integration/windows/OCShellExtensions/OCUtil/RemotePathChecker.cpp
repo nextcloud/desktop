@@ -20,88 +20,173 @@
 #include <iostream>
 #include <sstream>
 #include <iterator>
+#include <unordered_set>
+#include <cassert>
+
+#include <shlobj.h>
 
 using namespace std;
 
-RemotePathChecker::RemotePathChecker(int port)
-	: _port(port)
+
+// This code is run in a thread
+void RemotePathChecker::workerThreadLoop()
 {
+    auto pipename = std::wstring(L"\\\\.\\pipe\\");
+    pipename += L"ownCloud";
+
+    bool connected = false;
+    CommunicationSocket socket;
+    std::unordered_set<std::wstring> asked;
+
+    while(!_stop) {
+		Sleep(50);
+
+        if (!connected) {
+            asked.clear();
+            if (!WaitNamedPipe(pipename.data(), 5 * 1000)) {
+                continue;
+            }
+            if (!socket.Connect(pipename)) {
+                continue;
+            }
+            connected = true;
+            std::unique_lock<std::mutex> lock(_mutex);
+            _connected = true;
+        }
+
+        {
+            std::unique_lock<std::mutex> lock(_mutex);
+            while (!_pending.empty() && !_stop) {
+                auto filePath = _pending.front();
+                _pending.pop();
+
+                lock.unlock();
+                if (!asked.count(filePath)) {
+                    asked.insert(filePath);
+                    socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n').data());
+                }
+                lock.lock();
+            }
+        }
+
+        std::wstring response;
+        while (!_stop && socket.ReadLine(&response)) {
+			if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
+				wstring responsePath = response.substr(14); // length of REGISTER_PATH:
+
+				{   std::unique_lock<std::mutex> lock(_mutex);
+					_watchedDirectories.push_back(responsePath);
+				}
+				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH, responsePath.data(), NULL);
+			} else if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
+                wstring responsePath = response.substr(16); // length of UNREGISTER_PATH:
+
+                {   std::unique_lock<std::mutex> lock(_mutex);
+                    _watchedDirectories.erase(
+                        std::remove(_watchedDirectories.begin(), _watchedDirectories.end(), responsePath),
+                        _watchedDirectories.end());
+
+                    // Remove any item from the cache
+                    for (auto it = _cache.begin(); it != _cache.end() ; ) {
+                        if (StringUtil::begins_with(it->first, responsePath)) {
+                            it = _cache.erase(it);
+                        } else {
+                            ++it;
+                        }
+                    }
+                }
+                SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH, responsePath.data(), NULL);
+            } else if (StringUtil::begins_with(response, wstring(L"STATUS:")) ||
+                    StringUtil::begins_with(response, wstring(L"BROADCAST:"))) {
+
+                auto statusBegin = response.find(L':', 0);
+                assert(statusBegin != std::wstring::npos);
+
+                auto statusEnd = response.find(L':', statusBegin + 1);
+                if (statusEnd == std::wstring::npos) {
+                    // the command do not contains two colon?
+                    continue;
+                }
+
+                auto responseStatus = response.substr(statusBegin+1, statusEnd - statusBegin-1);
+                auto responsePath = response.substr(statusEnd+1);
+                auto state = _StrToFileState(responseStatus);
+                auto erased = asked.erase(responsePath);
+
+                bool changed = false;
+                {   std::unique_lock<std::mutex> lock(_mutex);
+                    auto &it = _cache[responsePath];
+                    changed = it == state;
+                    it = state;
+                }
+                if (changed) {
+                    SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
+                }
+            }
+        }
+
+		if (socket.Event() == INVALID_HANDLE_VALUE) {
+			std::unique_lock<std::mutex> lock(_mutex);
+			_cache.clear();
+			_watchedDirectories.clear();
+			_connected = connected = false;
+		}
+
+		if (_stop) return;
+
+		HANDLE handles[2] = { _newQueries, socket.Event() };
+		WaitForMultipleObjects(2, handles, false, 0);
+    }
+}
+
+
+
+RemotePathChecker::RemotePathChecker()
+    : _connected(false)
+    , _newQueries(CreateEvent(NULL, true, true, NULL))
+	, _thread([this]{ this->workerThreadLoop(); })
+{
+}
+
+RemotePathChecker::~RemotePathChecker()
+{
+    _stop = true;
+    //_newQueries.notify_all();
+    SetEvent(_newQueries);
+    _thread.join();
+    CloseHandle(_newQueries);
 }
 
 vector<wstring> RemotePathChecker::WatchedDirectories()
 {
-	vector<wstring> watchedDirectories;
-	wstring response;
-	bool needed = false;
-
-	CommunicationSocket socket(_port);
-	socket.Connect();
-
-	while (socket.ReadLine(&response)) {
-		if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
-			size_t pathBegin = response.find(L':', 0);
-			if (pathBegin == -1) {
-				continue;
-			}
-
-			// chop trailing '\n'
-			wstring responsePath = response.substr(pathBegin + 1, response.length()-1);
-			watchedDirectories.push_back(responsePath);
-		}
-	}
-
-	return watchedDirectories;
+    std::unique_lock<std::mutex> lock(_mutex);
+    return _watchedDirectories;
 }
 
 bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)
 {
-	wstring request;
-	wstring response;
-	bool needed = false;
+    assert(state); assert(filePath);
 
-	CommunicationSocket socket(_port);
-	socket.Connect();
-	request = L"RETRIEVE_FILE_STATUS:";
-	request += filePath;
-	request += L'\n';
+    std::unique_lock<std::mutex> lock(_mutex);
+    if (!_connected) {
+        return false;
+    }
 
-	if (!socket.SendMsg(request.c_str())) {
-		return false;
-	}
+    auto path = std::wstring(filePath);
 
-	while (socket.ReadLine(&response)) {
-		// discard broadcast messages
-		if (StringUtil::begins_with(response, wstring(L"STATUS:"))) {
-			break;
-		}
-	}
+    auto it = _cache.find(path);
+    if (it != _cache.end()) {
+        *state = it->second;
+        return true;
+    }
 
-	size_t statusBegin = response.find(L':', 0);
-	if (statusBegin == -1)
-		return false;
+    _pending.push(filePath);
+    SetEvent(_newQueries);
+    return false;
 
-	size_t statusEnd = response.find(L':', statusBegin + 1);
-	if (statusEnd == -1)
-		return false;
-
-
-	wstring responseStatus = response.substr(statusBegin+1, statusEnd - statusBegin-1);
-	wstring responsePath = response.substr(statusEnd+1);
-	if (responsePath == filePath) {
-		if (!state) {
-			return false;
-		}
-		*state = _StrToFileState(responseStatus);
-		if (*state == StateNone) {
-			return false;
-		}
-		needed = true;
-	}
-
-	return needed;
 }
 
-int RemotePathChecker::_StrToFileState(const std::wstring &str)
+RemotePathChecker::FileState RemotePathChecker::_StrToFileState(const std::wstring &str)
 {
 	if (str == L"NOP" || str == L"NONE") {
 		return StateNone;

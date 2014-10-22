@@ -193,13 +193,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
     qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql ${ADDITIONAL_APP_MODULES})
 else()
-    if (Qt5Core_FOUND)
-        include(DeployQt5)
-    else(Qt5Core_FOUND)
-        include(DeployQt4)
-    endif(Qt5Core_FOUND)
-
-    set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
+    # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
@@ -208,8 +202,15 @@ else()
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${mirall_I18N} DESTINATION ${QM_DIR})
+    get_target_property(_qmake Qt5::qmake LOCATION)
+    execute_process(COMMAND ${_qmake} -query QT_INSTALL_TRANSLATIONS
+        OUTPUT_VARIABLE QT_TRANSLATIONS_DIR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
     file(GLOB qt_I18N ${QT_TRANSLATIONS_DIR}/qt_??.qm ${QT_TRANSLATIONS_DIR}/qt_??_??.qm)
     install(FILES ${qt_I18N} DESTINATION ${QM_DIR})
+    file(GLOB qtbase_I18N ${QT_TRANSLATIONS_DIR}/qtbase_??.qm ${QT_TRANSLATIONS_DIR}/qt_??_??.qm)
+    install(FILES ${qtbase_I18N} DESTINATION ${QM_DIR})
     file(GLOB qtkeychain_I18N ${QT_TRANSLATIONS_DIR}/qtkeychain*.qm)
     install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
 endif()
@@ -221,6 +222,7 @@ qt5_use_modules(updater Widgets Network Xml)
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
+# Only relevant for Linux? On OS X it by default properly checks in the bundle directory next to the exe
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 	  INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
 
@@ -233,19 +235,19 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
-        BUNDLE  DESTINATION bin
+        BUNDLE  DESTINATION "."
  )
 
 
 #FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary
 # currently it needs to be done because the code right above needs to be executed no matter
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
-if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    if(Qt5Core_FOUND)
-        install_qt5_executable(${OWNCLOUD_OSX_BUNDLE} "qtaccessiblewidgets;qsqlite;qcocoa")
-    else(Qt5Core_FOUND)
-        install_qt4_executable(${OWNCLOUD_OSX_BUNDLE} "qtaccessiblewidgets;qsqlite")
-    endif(Qt5Core_FOUND)
+if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
+   get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+   install(CODE "
+    message(STATUS \"Deploying (Qt) dependencies and fixing library pathes...\")
+    execute_process(COMMAND \"${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py\" ${CMAKE_INSTALL_PREFIX}/${OWNCLOUD_OSX_BUNDLE} ${QT_QMAKE_EXECUTABLE})
+    " COMPONENT RUNTIME)
 endif()
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)

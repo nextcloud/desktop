@@ -17,11 +17,13 @@
 #include <QString>
 #include <QDateTime>
 
+#include "owncloudlib.h"
+
 namespace Mirall {
 
 class SyncFileItem;
 
-class SyncJournalFileRecord
+class OWNCLOUDSYNC_EXPORT SyncJournalFileRecord
 {
 public:
     SyncJournalFileRecord();

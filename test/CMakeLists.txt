@@ -27,5 +27,4 @@ endif(UNIX AND NOT APPLE)
 
 owncloud_add_test(CSyncSqlite "")
 owncloud_add_test(NetrcParser ../src/cmd/netrcparser.cpp)
-
-
+owncloud_add_test(OwnSql ../src/libsync/ownsql.cpp)

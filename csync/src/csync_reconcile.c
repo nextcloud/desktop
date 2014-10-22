@@ -138,6 +138,11 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                 /* Do not remove a directory that has ignored files */
                 break;
             }
+            if (cur->child_modified) {
+                /* re-create directory that has modified contents */
+                cur->instruction = CSYNC_INSTRUCTION_NEW;
+                break;
+            }
             cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             break;
         case CSYNC_INSTRUCTION_EVAL_RENAME:

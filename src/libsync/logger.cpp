@@ -16,6 +16,7 @@
 
 #include <QDir>
 #include <QStringList>
+#include <QThread>
 
 namespace Mirall {
 
@@ -85,6 +86,7 @@ void Logger::log(Log log)
     } else {
         // msg += "ownCloud - ";
     }
+    msg += QString().sprintf("%p ", (void*)QThread::currentThread());
     msg += log.message;
     // _logs.append(log);
     // std::cout << qPrintable(log.message) << std::endl;

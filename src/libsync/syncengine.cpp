@@ -22,6 +22,7 @@
 #include "discoveryphase.h"
 #include "creds/abstractcredentials.h"
 #include "csync_util.h"
+#include "syncfilestatus.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -29,6 +30,7 @@
 #include <unistd.h>
 #endif
 
+#include <climits>
 #include <assert.h>
 
 #include <QDebug>
@@ -196,12 +198,12 @@ bool SyncEngine::checkBlacklisting( SyncFileItem *item )
     }
 
     SyncJournalBlacklistRecord entry = _journal->blacklistEntry(item->_file);
-    item->_blacklistedInDb = false;
+    item->_hasBlacklistEntry = false;
 
     // if there is a valid entry in the blacklist table and the retry count is
     // already null or smaller than 0, the file is blacklisted.
     if( entry.isValid() ) {
-        item->_blacklistedInDb = true;
+        item->_hasBlacklistEntry = true;
 
         if( entry._retryCount <= 0 ) {
             re = true;
@@ -288,7 +290,7 @@ void SyncEngine::deleteStaleBlacklistEntries()
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> blacklist_file_paths;
     foreach(const SyncFileItem& it, _syncedItems) {
-        if (it._status == SyncFileItem::FileIgnored)
+        if (it._hasBlacklistEntry)
             blacklist_file_paths.insert(it._file);
     }
 
@@ -401,7 +403,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     int re = 0;
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
-        if (file->should_update_etag && !item._isDirectory) {
+        if (remote && item._should_update_etag && !item._isDirectory && item._instruction == CSYNC_INSTRUCTION_NONE) {
             // Update the database now already  (new fileid or etag or remotePerm)
             // Those are files that were detected as "resolved conflict".
             // They should have been a conflict because they both were new, or both
@@ -523,37 +525,41 @@ void SyncEngine::startSync()
 
     csync_resume(_csync_ctx);
 
+    int fileRecordCount = -1;
     if (!_journal->exists()) {
-        qDebug() << "=====sync looks new (no DB exists), activating recursive PROPFIND if csync supports it";
+        qDebug() << "=====sync looks new (no DB exists)";
+    } else {
+        qDebug() << "=====sync with existing DB";
+    }
+
+    fileRecordCount = _journal->getFileRecordCount(); // this creates the DB if it does not exist yet
+    bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
+
+    if( fileRecordCount == -1 ) {
+        qDebug() << "No way to create a sync journal!";
+        emit csyncError(tr("Unable to initialize a sync journal."));
+        finalize();
+        return;
+        // database creation error!
+    }
+
+    if (fileRecordCount >= 1 && isUpdateFrom_1_5) {
+        qDebug() << "detected update from 1.5" << fileRecordCount << isUpdateFrom_1_5;
+        // Disable the read from DB to be sure to re-read all the fileid and etags.
+        csync_set_read_from_db(_csync_ctx, false);
+    } else {
+        csync_set_read_from_db(_csync_ctx, true);
+    }
+
+    bool usingSelectiveSync = (!_selectiveSyncBlackList.isEmpty());
+    qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
+    if (fileRecordCount >= 0 && fileRecordCount < 50 && !usingSelectiveSync) {
+        qDebug() << "===== Activating recursive PROPFIND (currently" << fileRecordCount << "file records)";
         bool no_recursive_propfind = false;
         csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
     } else {
-        // retrieve the file count from the db and close it afterwards because
-        // csync_update also opens the database.
-        int fileRecordCount = 0;
-        fileRecordCount = _journal->getFileRecordCount();
-        bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
-        _journal->close();
-
-        if( fileRecordCount == -1 ) {
-            qDebug() << "No way to create a sync journal!";
-            emit csyncError(tr("Unable to initialize a sync journal."));
-            finalize();
-            return;
-            // database creation error!
-        } else if ( fileRecordCount < 50 ) {
-            qDebug() << "=====sync DB has only" << fileRecordCount << "items, enable recursive PROPFIND if csync supports it";
-            bool no_recursive_propfind = false;
-            csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
-        } else {
-            qDebug() << "=====sync with existing DB";
-        }
-
-        if (fileRecordCount > 1 && isUpdateFrom_1_5) {
-            qDebug() << "detected update from 1.5";
-            // Disable the read from DB to be sure to re-read all the fileid and etags.
-            csync_set_read_from_db(_csync_ctx, false);
-        }
+        bool no_recursive_propfind = true;
+        csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
     }
 
     csync_set_userdata(_csync_ctx, this);
@@ -609,6 +615,17 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     }
     qDebug() << "<<#### Discovery end #################################################### " << _stopWatch.addLapTime(QLatin1String("Discovery Finished"));
 
+    // Sanity check
+    if (!_journal->isConnected()) {
+        qDebug() << "Bailing out, DB failure";
+        emit csyncError(tr("Cannot open the sync journal"));
+        finalize();
+        return;
+    } else {
+        // Commits a possibly existing (should not though) transaction and starts a new one for the propagate phase
+        _journal->commitIfNeededAndStartNewTransaction("Post discovery");
+    }
+
     if( csync_reconcile(_csync_ctx) < 0 ) {
         handleSyncError(_csync_ctx, "csync_reconcile");
         return;
@@ -646,17 +663,11 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // make sure everything is allowed
     checkForPermission();
 
-    // Sanity check
-    if (!_journal->isConnected()) {
-        qDebug() << "Bailing out, DB failure";
-        emit csyncError(tr("Cannot open the sync journal"));
-        finalize();
-        return;
-    }
-
     // To announce the beginning of the sync
     emit aboutToPropagate(_syncedItems);
+    _progressInfo._completedFileCount = ULLONG_MAX; // indicate the start with max
     emit transmissionProgress(_progressInfo);
+    _progressInfo._completedFileCount = 0;
 
     if (!_hasNoneFiles && _hasRemoveFile) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be changed, asking the user";
@@ -678,14 +689,16 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     Q_ASSERT(session);
 
     // post update phase script: allow to tweak stuff by a custom script in debug mode.
-#ifndef NDEBUG
     if( !qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT").isEmpty() ) {
+#ifndef NDEBUG
         QString script = qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT");
 
         qDebug() << "OOO => Post Update Script: " << script;
         QProcess::execute(script.toUtf8());
-    }
+#else
+    qDebug() << "**** Attention: POST_UPDATE_SCRIPT installed, but not executed because compiled with NDEBUG";
 #endif
+    }
 
     // do a database commit
     _journal->commit("post treewalk");
@@ -817,12 +830,36 @@ QString SyncEngine::adjustRenamedPath(const QString& original)
     return original;
 }
 
+/**
+ *
+ * Make sure that we are allowed to do what we do by checking the permissions and the selective sync list
+ *
+ */
 void SyncEngine::checkForPermission()
 {
     for (SyncFileItemVector::iterator it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
 
         if (it->_direction != SyncFileItem::Up) {
             // Currently we only check server-side permissions
+            continue;
+        }
+
+        // Do not propagate anything in the server if it is in the selective sync blacklist
+        const QString path = it->destination() + QLatin1Char('/');
+        if (std::binary_search(_selectiveSyncBlackList.constBegin(), _selectiveSyncBlackList.constEnd(),
+                                path)) {
+            it->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            it->_status = SyncFileItem::FileIgnored;
+            it->_errorString = tr("Ignored because of the \"choose what to sync\" blacklist");
+
+            if (it->_isDirectory) {
+                for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
+                    it = it_next;
+                    it->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                    it->_status = SyncFileItem::FileIgnored;
+                    it->_errorString = tr("Ignored because of the \"choose what to sync\" blacklist");
+                }
+            }
             continue;
         }
 
@@ -840,7 +877,6 @@ void SyncEngine::checkForPermission()
                     it->_status = SyncFileItem::NormalError;
                     it->_errorString = tr("Not allowed because you don't have permission to add sub-directories in that directory");
 
-                    const QString path = it->_file + QLatin1Char('/');
                     for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
                         it = it_next;
                         it->_instruction = CSYNC_INSTRUCTION_ERROR;
@@ -882,7 +918,8 @@ void SyncEngine::checkForPermission()
                 if (perms.isNull()) {
                     // No permissions set
                     break;
-                } if (!perms.contains("D")) {
+                }
+                if (!perms.contains("D")) {
                     qDebug() << "checkForPermission: RESTORING" << it->_file;
                     it->_should_update_etag = true;
                     it->_instruction = CSYNC_INSTRUCTION_NEW;
@@ -892,7 +929,6 @@ void SyncEngine::checkForPermission()
 
                     if (it->_isDirectory) {
                         // restore all sub items
-                        const QString path = it->_file + QLatin1Char('/');
                         for (SyncFileItemVector::iterator it_next = it + 1;
                              it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
                             it = it_next;
@@ -910,6 +946,26 @@ void SyncEngine::checkForPermission()
                             it->_direction = SyncFileItem::Down;
                             it->_isRestoration = true;
                             it->_errorString = tr("Not allowed to remove, restoring");
+                        }
+                    }
+                } else if(perms.contains("S") && perms.contains("D")) {
+                    // this is a top level shared dir which can be removed to unshare it,
+                    // regardless if it is a read only share or not.
+                    // To avoid that we try to restore files underneath this dir which have
+                    // not delete permission we fast forward the iterator and leave the
+                    // delete jobs intact. It is not physically tried to remove this files
+                    // underneath, propagator sees that.
+                    if( it->_isDirectory ) {
+                        SyncFileItemVector::iterator it_prev = it - 1;
+
+                        // put a more descriptive message if really a top level share dir is removed.
+                        if( it_prev != _syncedItems.begin() && !(path.startsWith(it_prev->_file)) ) {
+                            it->_errorString = tr("Local files and share folder removed.");
+                        }
+
+                        for (SyncFileItemVector::iterator it_next = it + 1;
+                             it_next != _syncedItems.end() && it_next->_file.startsWith(path); ++it_next) {
+                            it = it_next;
                         }
                     }
                 }
@@ -983,7 +1039,6 @@ void SyncEngine::checkForPermission()
 
 
                     if (it->_isDirectory) {
-                        const QString path = it->_renameTarget + QLatin1Char('/');
                         for (SyncFileItemVector::iterator it_next = it + 1;
                              it_next != _syncedItems.end() && it_next->destination().startsWith(path); ++it_next) {
                             it = it_next;
@@ -1014,6 +1069,29 @@ QByteArray SyncEngine::getPermissions(const QString& file) const
     return _remotePerms.value(file);
 }
 
+void SyncEngine::setSelectiveSyncBlackList(const QStringList& list)
+{
+    _selectiveSyncBlackList = list;
+    for (int i = 0; i < _selectiveSyncBlackList.count(); ++i) {
+        if (!_selectiveSyncBlackList.at(i).endsWith(QLatin1Char('/'))) {
+            _selectiveSyncBlackList[i].append(QLatin1Char('/'));
+        }
+    }
+}
+
+bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
+{
+    Q_UNUSED(t);
+    Q_FOREACH(const SyncFileItem &item, _syncedItems) {
+        //qDebug() << Q_FUNC_INFO << fn << item._file << fn.startsWith(item._file) << item._file.startsWith(fn);
+        if (item._file.startsWith(fn)) {
+            qDebug() << Q_FUNC_INFO << "Setting" << fn << " to STATUS_EVAL";
+            s->set(SyncFileStatus::STATUS_EVAL);
+            return true;
+        }
+    }
+    return false;
+}
 
 void SyncEngine::abort()
 {

@@ -31,11 +31,13 @@
 namespace Mirall {
 
 SelectiveSyncTreeView::SelectiveSyncTreeView(Account *account, QWidget* parent)
-    : QTreeWidget(parent), _account(account)
+    : QTreeWidget(parent), _inserting(false), _account(account)
 {
     connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(slotItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(slotItemChanged(QTreeWidgetItem*,int)));
     header()->hide();
+    setSortingEnabled(true);
+    sortByColumn(0, Qt::AscendingOrder);
 }
 
 void SelectiveSyncTreeView::refreshFolders()
@@ -260,7 +262,7 @@ void SelectiveSyncDialog::init(Account *account)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     _treeView = new SelectiveSyncTreeView(account, this);
-    layout->addWidget(new QLabel(tr("Only checked folders will sync to this computer")));
+    layout->addWidget(new QLabel(tr("Unchecked folders will not be sync to this computer")));
     layout->addWidget(_treeView);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
     QPushButton *button;
@@ -274,6 +276,7 @@ void SelectiveSyncDialog::init(Account *account)
 void SelectiveSyncDialog::accept()
 {
     if (_folder) {
+        auto oldBlackListSet = _folder->selectiveSyncBlackList().toSet();
         QStringList blackList = _treeView->createBlackList();
         _folder->setSelectiveSyncBlackList(blackList);
 
@@ -281,11 +284,19 @@ void SelectiveSyncDialog::accept()
         QSettings settings(_folder->configFile(), QSettings::IniFormat);
         settings.beginGroup(FolderMan::escapeAlias(_folder->alias()));
         settings.setValue("blackList", blackList);
-
         FolderMan *folderMan = FolderMan::instance();
         if (_folder->isBusy()) {
-            _folder->slotTerminateAndPauseSync();
+            _folder->slotTerminateSync();
         }
+
+        //The part that changed should not be read from the DB on next sync because there might be new folders
+        // (the ones that are no longer in the blacklist)
+        auto blackListSet = blackList.toSet();
+        auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+        foreach(const auto &it, changes) {
+            _folder->journalDb()->avoidReadFromDbOnNextSync(it);
+        }
+
         folderMan->slotScheduleSync(_folder->alias());
     }
     QDialog::accept();

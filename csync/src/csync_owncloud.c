@@ -110,7 +110,7 @@ static int ssl_callback_by_neon(void *userdata, int failures,
         }
     }
     DEBUG_WEBDAV("## VERIFY_SSL CERT: %d", ret  );
-      return ret;
+    return ret;
 }
 
 /*
@@ -761,6 +761,7 @@ int owncloud_commit(CSYNC* ctx) {
     }
 
     ctx->owncloud_context->is_first_propfind = true;
+    ctx->owncloud_context->dav_session.no_recursive_propfind = true;
   /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
 
   ctx->owncloud_context->dav_session.ctx = 0;

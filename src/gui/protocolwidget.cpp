@@ -29,6 +29,8 @@
 
 #include "ui_protocolwidget.h"
 
+#include <climits>
+
 namespace Mirall {
 
 ProtocolWidget::ProtocolWidget(QWidget *parent) :
@@ -183,6 +185,15 @@ void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
     }
 }
 
+QString ProtocolWidget::fixupFilename( const QString& name )
+{
+    if( Utility::isMac() ) {
+        QString n(name);
+        return n.replace(QChar(':'), QChar('/'));
+    }
+    return name;
+}
+
 QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& folder, const SyncFileItem& item)
 {
     QStringList columns;
@@ -193,7 +204,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
     QString message;
 
     columns << timeStr;
-    columns << item._file;
+    columns << fixupFilename(item._file);
     columns << folder;
     if (Progress::isWarningKind(item._status)) {
         message= item._errorString;
@@ -205,7 +216,13 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
         }
 
     } else {
-        message = Progress::asResultString(item);
+        // if the error string is set, it's prefered because it is a usefull user message.
+        // at least should be...
+        if(item._errorString.isEmpty()) {
+            message = Progress::asResultString(item);
+        } else {
+            message = item._errorString;
+        }
         columns << message;
         if (Progress::isSizeDependent(item._instruction)) {
             columns <<  Utility::octetsToString( item._size );
@@ -247,7 +264,7 @@ void ProtocolWidget::computeResyncButtonEnabled()
 
 void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::Info& progress )
 {
-    if( progress._completedFileCount == 0 ) {
+    if( progress._completedFileCount == ULLONG_MAX ) {
         // The sync is restarting, clean the old items
         cleanIgnoreItems(folder);
         computeResyncButtonEnabled();

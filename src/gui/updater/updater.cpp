@@ -80,7 +80,11 @@ QString Updater::getSystemInfo()
 // To test, cmake with -DAPPLICATION_UPDATE_URL="http://127.0.0.1:8080/test.rss"
 Updater *Updater::create()
 {
-    QUrl updateBaseUrl = addQueryParams(QUrl(QLatin1String(APPLICATION_UPDATE_URL)));
+    QUrl updateBaseUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
+    if (updateBaseUrl.isEmpty()) {
+        updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
+    }
+    updateBaseUrl = addQueryParams(updateBaseUrl);
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
     updateBaseUrl.addQueryItem( QLatin1String("sparkle"), QLatin1String("true"));
     return new SparkleUpdater(updateBaseUrl.toString());

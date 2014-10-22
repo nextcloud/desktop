@@ -20,17 +20,27 @@ extern "C" {
 #include <std/c_string.h>
 }
 
+#include <sqlite3.h>
+
 #include <QWeakPointer>
 #include <QTcpSocket>
 #include <QTcpServer>
+#include <QLocalServer>
 
 #include "syncfileitem.h"
+#include "syncjournalfilerecord.h"
+#include "ownsql.h"
 
 class QUrl;
 class QLocalSocket;
 class QStringList;
 
 namespace Mirall {
+
+typedef QLocalSocket SocketType;
+
+class SyncFileStatus;
+class Folder;
 
 class SocketApi : public QObject
 {
@@ -54,18 +64,29 @@ private slots:
     void slotSyncItemDiscovered(const QString &, const SyncFileItem &);
 
 private:
-    void sendMessage(QTcpSocket* socket, const QString& message, bool doWait = false);
+    SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes );
+    SyncJournalFileRecord dbFileRecord( Folder *folder, QString fileName );
+    SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName );
+    SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName, c_strlist_t *excludes  );
+    SqlQuery *getSqlQuery( Folder *folder );
+
+    void sendMessage(SocketType* socket, const QString& message, bool doWait = false);
     void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null, bool doWait = false);
 
-    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QTcpSocket* socket);
-    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QTcpSocket* socket);
+    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketType* socket);
+    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType* socket);
 
-    Q_INVOKABLE void command_VERSION(const QString& argument, QTcpSocket* socket);
+    Q_INVOKABLE void command_VERSION(const QString& argument, SocketType* socket);
 
-private:
-    QTcpServer *_localServer;
-    QList<QTcpSocket*> _listeners;
+#ifdef SOCKETAPI_TCP
+    QTcpServer _localServer;
+#else
+    QLocalServer _localServer;
+#endif
+    QList<SocketType*> _listeners;
     c_strlist_t *_excludes;
+    QHash<Folder*, SqlQuery*> _dbQueries;
+    QHash<Folder*, SqlDatabase*> _openDbs;
 };
 
 }

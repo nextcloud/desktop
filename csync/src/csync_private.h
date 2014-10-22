@@ -100,6 +100,8 @@ struct csync_s {
     sqlite3_stmt* by_hash_stmt;
     sqlite3_stmt* by_fileid_stmt;
     sqlite3_stmt* by_inode_stmt;
+
+    int lastReturnValue;
   } statedb;
 
   struct {
@@ -146,8 +148,8 @@ struct csync_s {
   struct csync_owncloud_ctx_s *owncloud_context;
 
   /* hooks for checking the white list */
-  void *checkBlackListData;
-  int (*checkBlackListHook)(void*, const char*);
+  void *checkSelectiveSyncBlackListData;
+  int (*checkSelectiveSyncBlackListHook)(void*, const char*);
 };
 
 

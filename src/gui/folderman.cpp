@@ -146,6 +146,9 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         connect(fw, SIGNAL(folderChanged(QString)), _folderWatcherSignalMapper, SLOT(map()));
         _folderWatcherSignalMapper->setMapping(fw, folder->alias());
         _folderWatchers.insert(folder->alias(), fw);
+
+        // This is at the moment only for the behaviour of the SocketApi.
+        connect(fw, SIGNAL(folderChanged(QString)), folder, SLOT(watcherSlot(QString)));
     }
 
     // register the folder with the socket API
@@ -441,6 +444,24 @@ void FolderMan::slotScheduleSync( const QString& alias )
         return;
     }
 
+    // The folder watcher fires a lot of bogus notifications during
+    // a sync operation, both for actual user files and the database
+    // and log. Never enqueue a folder for sync while it is syncing.
+    // We lose some genuine sync requests that way, but that can't be
+    // helped.
+    // ^^ FIXME: Note that this is not the case on OS X
+    if( _currentSyncFolder == alias ) {
+        qDebug() << "folder " << alias << " is currently syncing. NOT scheduling.";
+        return;
+    }
+
+    if( _socketApi ) {
+        // We want the SocketAPI to already now update so that it can show the EVAL icon
+        // for files/folders. Only do this when not syncing, else we might get a lot
+        // of those notifications.
+        _socketApi->slotUpdateFolderView(alias);
+    }
+
     qDebug() << "Schedule folder " << alias << " to sync!";
 
     if( ! _scheduleQueue.contains(alias) ) {
@@ -451,7 +472,9 @@ void FolderMan::slotScheduleSync( const QString& alias )
             f->prepareToSync();
         } else {
             qDebug() << "Folder is not enabled, not scheduled!";
-            _socketApi->slotUpdateFolderView(f->alias());
+            if( _socketApi ) {
+                _socketApi->slotUpdateFolderView(f->alias());
+            }
             return;
         }
         _scheduleQueue.enqueue(alias);
@@ -513,8 +536,10 @@ void FolderMan::slotStartScheduledFolderSync()
 
             // reread the excludes of the socket api
             // FIXME: the excludes need rework.
-            _socketApi->slotClearExcludesList();
-            _socketApi->slotReadExcludes();
+            if( _socketApi ) {
+                _socketApi->slotClearExcludesList();
+                _socketApi->slotReadExcludes();
+            }
         }
     }
 }
@@ -527,6 +552,8 @@ void FolderMan::slotFolderSyncStarted( )
 /*
   * a folder indicates that its syncing is finished.
   * Start the next sync after the system had some milliseconds to breath.
+  * This delay is particularly useful to avoid late file change notifications
+  * (that we caused ourselves by syncing) from triggering another spurious sync.
   */
 void FolderMan::slotFolderSyncFinished( const SyncResult& )
 {
@@ -561,11 +588,11 @@ Folder *FolderMan::folderForPath(const QString &path)
         const QString folderPath = QDir::cleanPath(folder->path())+QLatin1Char('/');
 
         if(absolutePath.startsWith(folderPath)) {
-            qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
+            //qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
             return folder;
         }
     }
-
+    qDebug() << "ERROR: could not find folder for " << absolutePath;
     return 0;
 }
 

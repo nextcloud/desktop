@@ -50,7 +50,6 @@ ownCloudGui::ownCloudGui(Application *parent) :
     _settingsDialog(new SettingsDialog(this)),
 #endif
     _logBrowser(0),
-    _contextMenu(0),
     _recentActionsMenu(0),
     _folderOpenActionMapper(new QSignalMapper(this)),
     _recentItemsMapper(new QSignalMapper(this)),
@@ -303,11 +302,11 @@ void ownCloudGui::setupContextMenu()
         _recentActionsMenu->addAction(tr("None."));
         _recentActionsMenu->addAction(_actionRecent);
     } else {
-        _contextMenu = new QMenu(_contextMenu);
-        _recentActionsMenu = new QMenu(tr("Recent Changes"));
+        _contextMenu.reset(new QMenu());
+        _recentActionsMenu = new QMenu(tr("Recent Changes"), _contextMenu.data());
         // this must be called only once after creating the context menu, or
         // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
-        _tray->setContextMenu(_contextMenu);
+        _tray->setContextMenu(_contextMenu.data());
     }
     _contextMenu->setTitle(Theme::instance()->appNameGUI() );
     _contextMenu->addAction(_actionOpenoC);
@@ -464,7 +463,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
     Q_UNUSED(folder);
 
      if (!progress._currentDiscoveredFolder.isEmpty()) {
-                 _actionStatus->setText( tr("Discovering %1")
+                 _actionStatus->setText( tr("Discovering '%1'")
                      .arg( progress._currentDiscoveredFolder ));
      } else if (progress._totalSize == 0 ) {
             quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();           

@@ -154,8 +154,10 @@ public:
     QNetworkAccessManager* networkAccessManager();
 
     QuotaInfo *quotaInfo();
+
 signals:
     void stateChanged(int state);
+    void propagatorNetworkActivity();
 
 protected Q_SLOTS:
     void slotHandleErrors(QNetworkReply*,QList<QSslError>);

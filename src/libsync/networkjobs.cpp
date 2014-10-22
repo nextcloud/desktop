@@ -39,6 +39,8 @@ Q_DECLARE_METATYPE(QTimer*)
 
 namespace Mirall {
 
+bool AbstractNetworkJob::preOc7WasDetected = false;
+
 AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QObject *parent)
     : QObject(parent)
     , _duration(0)
@@ -48,8 +50,22 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
     , _path(path)
 {
     _timer.setSingleShot(true);
-    _timer.setInterval(10*1000); // default to 10 seconds.
+    if (!AbstractNetworkJob::preOc7WasDetected) {
+        _timer.setInterval(10*1000); // default to 10 seconds.
+    } else {
+        qDebug() << "Pre-oc7 server detected, adjusting timeout values";
+        _timer.setInterval(60*1000); // long PROPFINDs in oc6 might take too long
+    }
     connect(&_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
+
+    connect(this, SIGNAL(networkActivity()), SLOT(resetTimeout()));
+
+    // Network activity on the propagator jobs (GET/PUT) keeps all requests alive.
+    // This is a workaround for OC instances which only support one
+    // parallel up and download
+    if (_account) {
+        connect(_account, SIGNAL(propagatorNetworkActivity()), SLOT(resetTimeout()));
+    }
 }
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
@@ -80,11 +96,6 @@ void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
     _ignoreCredentialFailure = ignore;
 }
 
-void AbstractNetworkJob::setAccount(Account *account)
-{
-    _account = account;
-}
-
 void AbstractNetworkJob::setPath(const QString &path)
 {
     _path = path;
@@ -93,6 +104,8 @@ void AbstractNetworkJob::setPath(const QString &path)
 void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
     connect(reply, SIGNAL(finished()), SLOT(slotFinished()));
+    connect(reply, SIGNAL(downloadProgress(qint64,qint64)), SIGNAL(networkActivity()));
+    connect(reply, SIGNAL(uploadProgress(qint64,qint64)), SIGNAL(networkActivity()));
 }
 
 QNetworkReply* AbstractNetworkJob::addTimer(QNetworkReply *reply)
@@ -179,9 +192,11 @@ QString AbstractNetworkJob::responseTimestamp()
     return _responseTimestamp;
 }
 
-AbstractNetworkJob::~AbstractNetworkJob() {
-    if (_reply)
+AbstractNetworkJob::~AbstractNetworkJob()
+{
+    if (_reply) {
         _reply->deleteLater();
+    }
 }
 
 void AbstractNetworkJob::start()
@@ -195,10 +210,13 @@ void AbstractNetworkJob::start()
 
 void AbstractNetworkJob::slotTimeout()
 {
-    qDebug() <<  this << "Timeout" ;
-    reply()->abort();
+    qDebug() <<  this << "Timeout";
+    if (reply()) {
+        reply()->abort();
+    } else {
+        qDebug() << "reply was NULL";
+    }
 }
-
 
 /*********************************************************************************************/
 
@@ -419,7 +437,9 @@ bool CheckServerJob::finished()
 
     bool success = false;
     QByteArray body = reply()->readAll();
-    if( body.isEmpty() ) {
+    int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if( body.isEmpty() || httpStatus != 200) {
+        qDebug() << "error: status.php replied " << httpStatus << body;
         emit instanceNotFound(reply());
     } else {
         QVariantMap status = QtJson::parse(QString::fromUtf8(body), success).toMap();
@@ -432,6 +452,12 @@ bool CheckServerJob::finished()
         if( status.contains("installed")
                 && status.contains("version")
                 && status.contains("versionstring") ) {
+
+            QString versionString = status.value("version").toString();
+            if (versionString.contains('.') && versionString.split('.')[0].toInt() < 7) {
+                AbstractNetworkJob::preOc7WasDetected = true;
+            }
+
             emit instanceFound(reply()->url(), status);
         } else {
             qDebug() << "No proper answer on " << requestedUrl;

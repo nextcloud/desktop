@@ -56,6 +56,8 @@ private:
     void setSyncResultStatus(const SyncResult& result );
     void cleanIgnoreItems( const QString& folder );
     void computeResyncButtonEnabled();
+    QString fixupFilename( const QString& name );
+
 
     QTreeWidgetItem* createCompletedTreewidgetItem(const QString &folder, const SyncFileItem &item );
 

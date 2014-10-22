@@ -247,7 +247,11 @@ void PropagateLocalRename::start()
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
         QFile file(_propagator->_localDir + _item._file);
 
-        if (_propagator->localFileNameClash(_item._renameTarget)) {
+        if (QString::compare(_item._file, _item._renameTarget, Qt::CaseInsensitive) != 0
+                && _propagator->localFileNameClash(_item._renameTarget)) {
+            // Only use localFileNameClash for the destination if we know that the source was not
+            // the one conflicting  (renaming  A.txt -> a.txt is OK)
+
             // Fixme: the file that is the reason for the clash could be named here,
             // it would have to come out the localFileNameClash function
             done(SyncFileItem::NormalError, tr( "File %1 can not be renamed to %2 because of a local file name clash")
@@ -311,9 +315,6 @@ void PropagateRemoteRename::start()
         if (updateErrorFromSession(rc)) {
             return;
         }
-
-        if (!updateMTimeAndETag(uri2.data(), _item._modtime))
-            return;
     }
     //  Wed, 15 Nov 1995 06:25:24 GMT
     QDateTime dt = QDateTime::currentDateTimeUtc();
