@@ -10,7 +10,7 @@ system tray (Windows, KDE), status bar (MAC OS X), or notification area
 .. image:: images/icon.png
 
 This is a status indicator which uses overlay icons to indicate the 
-current status of your synchronization. The green circle with the white arrow 
+current status of your synchronization. The green circle with the white checkmark 
 tells you that your synchronization is current and you are connected to your 
 ownCloud server.
 
