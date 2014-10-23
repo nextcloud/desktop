@@ -99,7 +99,7 @@ sqlite3* SqlDatabase::sqliteDb()
 
 /* =========================================================================================== */
 
-SqlQuery::SqlQuery( SqlDatabase db )
+SqlQuery::SqlQuery( SqlDatabase& db )
     :_db(db.sqliteDb()),
       _stmt(0)
 {
@@ -113,7 +113,7 @@ SqlQuery::~SqlQuery()
     }
 }
 
-SqlQuery::SqlQuery(const QString& sql, SqlDatabase db)
+SqlQuery::SqlQuery(const QString& sql, SqlDatabase& db)
     :_db(db.sqliteDb()),
       _stmt(0)
 {

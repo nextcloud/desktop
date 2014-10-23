@@ -359,7 +359,6 @@ void SyncJournalDb::close()
     _possibleUpgradeFromMirall_1_5 = false;
 
     _db.close();
-    _db = SqlDatabase(); // avoid the warning SqlDatabasePrivate::removeDatabase: connection [...] still in use
     _avoidReadFromDbOnNextSyncFilter.clear();
 }
 
