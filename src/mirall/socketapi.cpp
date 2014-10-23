@@ -75,7 +75,11 @@ SocketApi::SocketApi(QObject* parent)
 
     if (Utility::isWindows()) {
         socketPath = QLatin1String("\\\\.\\pipe\\")
-                + Theme::instance()->appName();
+        + QLatin1String("ownCloud");
+        // TODO: once the windows extension supports multiple
+        // client connections, switch back to the theme name
+        // See issue #2388
+        // + Theme::instance()->appName();
     } else if (Utility::isMac()) {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         // Always using Qt5 on OS X
