@@ -122,8 +122,24 @@ assertLocalAndRemoteDir( '', 0);
 
 # The previous sync should have updated the etags, and this should NOT be a conflict
 printInfo( "Update the file again");
-createLocalFile( localDir() . "remoteToLocal1/kernelcrash.txt", 2136 );
-createLocalFile( localDir() . "remoteToLocal1/kraft_logo.gif", 2332 );
+
+my $f1 = localDir() . "remoteToLocal1/kernelcrash.txt";
+my $s1 = 2136;
+createLocalFile( $f1, $s1);
+
+# stat the file
+my @stat1 = stat $f1;
+print "Updating File $f1 to $s1, size is $stat1[7]\n";
+
+
+my $f2 = localDir() . "remoteToLocal1/kraft_logo.gif";
+my $s2 = 2332;
+
+createLocalFile( $f2, $s2);
+# stat the file
+my @stat2 = stat $f2;
+print "Updating File $f2 to $s2, size is $stat2[7]\n";
+
 system( "sleep 2 && touch " . localDir() . "remoteToLocal1/kernelcrash.txt" );
 csync( );
 assertLocalAndRemoteDir( '', 0);
