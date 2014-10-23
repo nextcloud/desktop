@@ -27,7 +27,7 @@ static NSString* globalLock = @"I'm the global lock to prevent concruent handler
 @end
 
 static bool liferayNativityLoaded = false;
-static NSString* liferayNativityBundleName = @"OwnCloudFinder";
+static NSString* liferayNativityBundleName = @"SyncStateFinder";
 
 typedef struct {
   NSString* location;
@@ -85,7 +85,7 @@ static OSErr loadBundle(LNBundleType type, AppleEvent* reply, long refcon) {
   }
 
   if (isLoaded) {
-    NSLog(@"LiferayNativityInjector: %@ already loaded.", bundleName);
+    NSLog(@"OwnCloudInjector: %@ already loaded.", bundleName);
     return noErr;
   }
 

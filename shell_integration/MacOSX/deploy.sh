@@ -1,10 +1,10 @@
 #!/bin/sh
 # osascript $HOME/owncloud.com/mirall/shell_integration/MacOSX/unload.scpt
 
-sudo rm -rf /Library/ScriptingAdditions/OwnCloudFinder.osax
+sudo rm -rf /Library/ScriptingAdditions/SyncStateFinder.osax
 # Klaas' machine
-OSAXDIR=$HOME/Library/Developer/Xcode/DerivedData/OwnCloud-*/Build/Products/Debug/OwnCloudFinder.osax
-[ -d $OSAXDIR ] ||OSAXDIR=$HOME/Library/Developer/Xcode/DerivedData/OwnCloud-*/Build/Intermediates/ArchiveIntermediates/OwnCloudFinder.osax/IntermediateBuildFilesPath/UninstalledProducts/OwnCloudFinder.osax
+OSAXDIR=$HOME/Library/Developer/Xcode/DerivedData/OwnCloud-*/Build/Products/Debug/SyncStateFinder.osax
+[ -d $OSAXDIR ] ||OSAXDIR=$HOME/Library/Developer/Xcode/DerivedData/OwnCloud-*/Build/Intermediates/ArchiveIntermediates/SyncStateFinder.osax/IntermediateBuildFilesPath/UninstalledProducts/SyncStateFinder.osax
 
 # Markus' machine
 [ -d $OSAXDIR ] || echo "OSAX does not exist"

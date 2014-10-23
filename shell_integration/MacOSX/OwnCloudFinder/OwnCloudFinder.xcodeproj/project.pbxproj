@@ -48,7 +48,7 @@
 		8C37DDB9161594B400016A95 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		8C99F6921622D145002D2135 /* IconCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconCache.h; sourceTree = "<group>"; };
 		8C99F6931622D145002D2135 /* IconCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconCache.m; sourceTree = "<group>"; };
-		8D576316048677EA00EA77CD /* OwnCloudFinder.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OwnCloudFinder.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D576316048677EA00EA77CD /* SyncStateFinder.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncStateFinder.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,7 +67,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		089C166AFE841209C02AAC07 /* OwnCloudFinder */ = {
+		089C166AFE841209C02AAC07 /* SyncStateFinder */ = {
 			isa = PBXGroup;
 			children = (
 				08FB77AFFE84173DC02AAC07 /* Source */,
@@ -75,7 +75,7 @@
 				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
 			);
-			name = OwnCloudFinder;
+			name = SyncStateFinder;
 			sourceTree = "<group>";
 			usesTabs = 1;
 		};
@@ -144,7 +144,7 @@
 		19C28FB6FE9D52B211CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D576316048677EA00EA77CD /* OwnCloudFinder.bundle */,
+				8D576316048677EA00EA77CD /* SyncStateFinder.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -152,9 +152,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D57630D048677EA00EA77CD /* OwnCloudFinder */ = {
+		8D57630D048677EA00EA77CD /* SyncStateFinder */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB911A08733D790010E9CD /* Build configuration list for PBXNativeTarget "OwnCloudFinder" */;
+			buildConfigurationList = 1DEB911A08733D790010E9CD /* Build configuration list for PBXNativeTarget "SyncStateFinder" */;
 			buildPhases = (
 				8D57630F048677EA00EA77CD /* Resources */,
 				8D576311048677EA00EA77CD /* Sources */,
@@ -164,10 +164,10 @@
 			);
 			dependencies = (
 			);
-			name = OwnCloudFinder;
+			name = SyncStateFinder;
 			productInstallPath = "$(HOME)/Library/Bundles";
-			productName = OwnCloudFinder;
-			productReference = 8D576316048677EA00EA77CD /* OwnCloudFinder.bundle */;
+			productName = SyncStateFinder;
+			productReference = 8D576316048677EA00EA77CD /* SyncStateFinder.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -178,7 +178,7 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 			};
-			buildConfigurationList = 1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "OwnCloudFinder" */;
+			buildConfigurationList = 1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "SyncStateFinder" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -188,11 +188,11 @@
 				French,
 				German,
 			);
-			mainGroup = 089C166AFE841209C02AAC07 /* OwnCloudFinder */;
+			mainGroup = 089C166AFE841209C02AAC07 /* SyncStateFinder` */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D57630D048677EA00EA77CD /* OwnCloudFinder */,
+				8D57630D048677EA00EA77CD /* SyncStateFinder */,
 			);
 		};
 /* End PBXProject section */
@@ -252,7 +252,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				PRODUCT_NAME = OwnCloudFinder;
+				PRODUCT_NAME = SyncStateFinder;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -269,7 +269,7 @@
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				PRODUCT_NAME = OwnCloudFinder;
+				PRODUCT_NAME = SyncStateFinder;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -308,7 +308,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB911A08733D790010E9CD /* Build configuration list for PBXNativeTarget "OwnCloudFinder" */ = {
+		1DEB911A08733D790010E9CD /* Build configuration list for PBXNativeTarget "SyncStateFinder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB911B08733D790010E9CD /* Debug */,
@@ -317,7 +317,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "OwnCloudFinder" */ = {
+		1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "SyncStateFinder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB911F08733D790010E9CD /* Debug */,
