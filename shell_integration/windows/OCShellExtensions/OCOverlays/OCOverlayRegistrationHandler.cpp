@@ -62,7 +62,7 @@ HRESULT OCOverlayRegistrationHandler::RemoveRegistryEntries(PCWSTR friendlyName)
 	}
 
 	HKEY syncExOverlayKey = NULL;
-	hResult = HRESULT_FROM_WIN32(RegDeleteKeyEx(shellOverlayKey, friendlyName, DELETE, 0));
+	hResult = HRESULT_FROM_WIN32(RegDeleteKey(shellOverlayKey, friendlyName));
 	if (!SUCCEEDED(hResult)) {
 		return hResult;
 	}
@@ -137,12 +137,12 @@ HRESULT OCOverlayRegistrationHandler::UnregisterCOMObject(const CLSID& clsid)
 		return hResult;
 	}
 
-	hResult = HRESULT_FROM_WIN32(RegDeleteKeyEx(clsidKey, REGISTRY_IN_PROCESS, DELETE, 0));
+	hResult = HRESULT_FROM_WIN32(RegDeleteKey(clsidKey, REGISTRY_IN_PROCESS));
 	if(!SUCCEEDED(hResult)) {
 		return hResult;
 	}
 
-	hResult = HRESULT_FROM_WIN32(RegDeleteKeyEx(hKey, stringCLSID, DELETE, 0));
+	hResult = HRESULT_FROM_WIN32(RegDeleteKey(hKey, stringCLSID));
 	if(!SUCCEEDED(hResult)) {
 		return hResult;
 	}
