@@ -386,12 +386,12 @@ Toplam kalan süre: %5</translation>
         <translation>Eşitleme Etkinliği</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="709"/>
+        <location filename="../src/mirall/folder.cpp" line="707"/>
         <source>Could not read system exclude file</source>
         <translation>Sistem hariç tutulma dosyası okunamadı</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="899"/>
+        <location filename="../src/mirall/folder.cpp" line="903"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -400,17 +400,17 @@ Bu, klasörün sessizce yeniden yapılandırılması veya tüm dosyaların el il
 Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="903"/>
+        <location filename="../src/mirall/folder.cpp" line="907"/>
         <source>Remove All Files?</source>
         <translation>Tüm Dosyalar Kaldırılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="905"/>
+        <location filename="../src/mirall/folder.cpp" line="909"/>
         <source>Remove all files</source>
         <translation>Tüm dosyaları kaldır</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="906"/>
+        <location filename="../src/mirall/folder.cpp" line="910"/>
         <source>Keep files</source>
         <translation>Dosyaları koru</translation>
     </message>
@@ -1044,32 +1044,27 @@ bu süreç sırasında ek yetki talebinde bulunabilir.</translation>
         <translation>Bağlan...</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="121"/>
-        <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation>Tüm hesabınız yerel &apos;%1&apos; klasörü ile eşitlenecek.</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="124"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="123"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 klasörü &apos;%2&apos;, yerel &apos;%3&apos; klasörü ile eşitlendi</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="130"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="129"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uyarı:&lt;/strong&gt; Şu anda birden fazla yapılandırılmış klasörünüz var. Eğer geçerli ayarlarla devam ederseniz, klasör yapılandırmaları silinecek ve tek bir kök klasör eşitlemesi oluşturulacak!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="137"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="136"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uyarı:&lt;/strong&gt; Yerel klasör boş değil. Bir çözüm seçin!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="252"/>
         <source>Local Sync Folder</source>
         <translation>Yerel Eşitleme Klasörü</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="266"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
         <source>Update advanced setup</source>
         <translation>Gelişmiş kurulumu güncelle</translation>
     </message>
@@ -1537,20 +1532,32 @@ Kullanmanız önerilmez.</translation>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Önceki hata koşullarından dolayı yoksayılmış dosya yok.</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="257"/>
-        <source>%1 files are ignored because of previous errors.
+        <source>%n files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation>Önceki hata koşullarından dolayı %1 dosya yoksayıldı.
-Bu dosyaları tekrar eşitlemeyi deneyin.</translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="268"/>
+        <source>Choose What to Sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="271"/>
         <source>Unchecked folders will not be sync to this computer</source>
         <translation>İşareti kaldırılan klasörler, bu bilgisayarla eşitlenmeyecektir</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::SelectiveSyncTreeView</name>
+    <message>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="36"/>
+        <source>Loading ...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

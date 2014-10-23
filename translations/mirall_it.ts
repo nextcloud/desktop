@@ -386,12 +386,12 @@ Totale tempo rimanente %5</translation>
         <translation>Sincronizza attività</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="709"/>
+        <location filename="../src/mirall/folder.cpp" line="707"/>
         <source>Could not read system exclude file</source>
         <translation>Impossibile leggere il file di esclusione di sistema</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="899"/>
+        <location filename="../src/mirall/folder.cpp" line="903"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -400,17 +400,17 @@ Ciò potrebbe accadere in caso di riconfigurazione della cartella o di rimozione
 Sei sicuro di voler eseguire questa operazione?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="903"/>
+        <location filename="../src/mirall/folder.cpp" line="907"/>
         <source>Remove All Files?</source>
         <translation>Vuoi rimuovere tutti i file?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="905"/>
+        <location filename="../src/mirall/folder.cpp" line="909"/>
         <source>Remove all files</source>
         <translation>Rimuovi tutti i file</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="906"/>
+        <location filename="../src/mirall/folder.cpp" line="910"/>
         <source>Keep files</source>
         <translation>Mantieni i file</translation>
     </message>
@@ -1043,32 +1043,27 @@ for additional privileges during the process.</source>
         <translation>Connetti...</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="121"/>
-        <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation>L&apos;intero account sarà sincronizzato con la cartella locale &apos;%1&apos;.</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="124"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="123"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>La cartella &apos;%2&apos; di %1 è sincronizzata con la cartella locale &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="130"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="129"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Avviso:&lt;/strong&gt; attualmente hai configurato più cartelle. Se procedi con le impostazioni attuali, le configurazioni delle cartelle saranno scartate, mentre sarà creata un&apos;unica cartella radice di sincronizzazione.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="137"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="136"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Avviso:&lt;/strong&gt; la cartella locale non è vuota. Scegli una soluzione.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="252"/>
         <source>Local Sync Folder</source>
         <translation>Cartella locale di sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="266"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
         <source>Update advanced setup</source>
         <translation>Aggiorna la configurazione avanzata</translation>
     </message>
@@ -1536,20 +1531,32 @@ Non è consigliabile utilizzarlo.</translation>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation>Attualmente nessun file è ignorato a causa di errori precedenti.</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="257"/>
-        <source>%1 files are ignored because of previous errors.
+        <source>%n files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation>%1 file sono ignorati a causa di errori precedenti.
-Prova a sincronizzare nuovamente.</translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="268"/>
+        <source>Choose What to Sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="271"/>
         <source>Unchecked folders will not be sync to this computer</source>
         <translation>Le caselle non marcate non saranno sincronizzate con questo computer</translation>
+    </message>
+</context>
+<context>
+    <name>Mirall::SelectiveSyncTreeView</name>
+    <message>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="36"/>
+        <source>Loading ...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

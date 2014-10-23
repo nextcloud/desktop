@@ -385,12 +385,12 @@ Total time left %5</source>
         <translation>同步活动</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="709"/>
+        <location filename="../src/mirall/folder.cpp" line="707"/>
         <source>Could not read system exclude file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="899"/>
+        <location filename="../src/mirall/folder.cpp" line="903"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -399,17 +399,17 @@ Are you sure you want to perform this operation?</source>
 你确定执行该操作吗？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="903"/>
+        <location filename="../src/mirall/folder.cpp" line="907"/>
         <source>Remove All Files?</source>
         <translation>删除所有文件？</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="905"/>
+        <location filename="../src/mirall/folder.cpp" line="909"/>
         <source>Remove all files</source>
         <translation>删除所有文件</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="906"/>
+        <location filename="../src/mirall/folder.cpp" line="910"/>
         <source>Keep files</source>
         <translation>保持所有文件</translation>
     </message>
@@ -1042,32 +1042,27 @@ for additional privileges during the process.</source>
         <translation>连接...</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="121"/>
-        <source>Your entire account will be synced to the local folder &apos;%1&apos;.</source>
-        <translation>您的整个账户将被同步到本地文件夹 %1。</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="124"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="123"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 文件夹 &apos;%2&apos; 将被同步到本地文件夹 &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="130"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="129"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>警告：当前设置了多个文件夹。如果继续当前操作，文件夹设置将丢失，且一个根文件夹会被建立并同步。</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="137"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="136"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;警告：&lt;/strong&gt; 本地目录非空。选择一个操作！&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="252"/>
         <source>Local Sync Folder</source>
         <translation>本地同步文件夹</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="266"/>
+        <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
         <source>Update advanced setup</source>
         <translation>更新高级设置</translation>
     </message>
@@ -1534,18 +1529,31 @@ It is not advisable to use it.</source>
         <source>Currently no files are ignored because of previous errors.</source>
         <translation type="unfinished"/>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="257"/>
-        <source>%1 files are ignored because of previous errors.
+        <source>%n files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
     <name>Mirall::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/mirall/selectivesyncdialog.cpp" line="265"/>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="268"/>
+        <source>Choose What to Sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="271"/>
         <source>Unchecked folders will not be sync to this computer</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Mirall::SelectiveSyncTreeView</name>
+    <message>
+        <location filename="../src/mirall/selectivesyncdialog.cpp" line="36"/>
+        <source>Loading ...</source>
         <translation type="unfinished"/>
     </message>
 </context>
