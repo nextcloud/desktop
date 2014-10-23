@@ -90,18 +90,22 @@ void showInFileManager(const QString &localPath)
         }
 #endif
         QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
+        QFileInfo fi(localPath);
 
-        if (!QFileInfo(localPath).isDir()) {
-            explorer += QLatin1String("/select,");
+        // canonicalFilePath returns empty if the file does not exist
+        if( !fi.canonicalFilePath().isEmpty() ) {
+            if (!fi.isDir()) {
+                explorer += QLatin1String("/select,");
+            }
+            explorer += QLatin1Char('"');
+            explorer += QDir::toNativeSeparators(fi.canonicalFilePath());
+            explorer += QLatin1Char('"');
+
+            qDebug() << "OO Open explorer commandline:" << explorer;
+            QProcess p;
+            p.start(explorer);
+            p.waitForFinished(5000);
         }
-        explorer += QLatin1Char('"');
-        explorer += QDir::toNativeSeparators(localPath);
-        explorer += QLatin1Char('"');
-
-        qDebug() << "OO Open explorer commandline:" << explorer;
-        QProcess p;
-        p.start(explorer);
-        p.waitForFinished(5000);
     } else if (Utility::isMac()) {
         QStringList scriptArgs;
         scriptArgs << QLatin1String("-e")
