@@ -701,7 +701,13 @@ bool FolderMan::startFromScratch( const QString& localFolder )
         // Disconnect the socket api from the database to avoid that locking of the
         // db file does not allow to move this dir.
         if( _socketApi ) {
-            _socketApi->slotUnregisterPath(localFolder);
+            foreach( Folder *f, _folderMap.values() ) {
+                if(f) {
+                    if( localFolder.startsWith(f->path()) ) {
+                        _socketApi->slotUnregisterPath(f->alias());
+                    }
+                }
+            }
         }
 
         // Make a backup of the folder/file.
