@@ -203,6 +203,7 @@ private:
     QString       _lastEtag;
     QElapsedTimer _timeSinceLastSync;
     bool          _forceSyncOnPollTimeout;
+    int           _consecutiveFailingSyncs;
 
     // For the SocketAPI folder states
     QSet<QString>   _stateLastSyncItemsWithErrorNew; // gets moved to _stateLastSyncItemsWithError at end of sync

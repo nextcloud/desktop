@@ -61,6 +61,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _wipeDb(false)
       , _proxyDirty(true)
       , _forceSyncOnPollTimeout(false)
+      , _consecutiveFailingSyncs(0)
       , _journal(path)
       , _csync_ctx(0)
 {
@@ -272,12 +273,10 @@ void Folder::slotPollTimerTimeout()
 
     bool forceSyncIntervalExpired =
             quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval();
-    bool okSyncResult =
-            _syncResult.status() == SyncResult::Success ||
-            _syncResult.status() == SyncResult::Problem;
+    bool syncAgainAfterFail = _consecutiveFailingSyncs > 0 && _consecutiveFailingSyncs < 3;
     if (forceSyncIntervalExpired ||
             _forceSyncOnPollTimeout ||
-            !okSyncResult) {
+            syncAgainAfterFail) {
         if (forceSyncIntervalExpired) {
             qDebug() << "** Force Sync, because it has been " << _timeSinceLastSync.elapsed() << "ms "
                      << "since the last sync";
@@ -285,8 +284,10 @@ void Folder::slotPollTimerTimeout()
         if (_forceSyncOnPollTimeout) {
             qDebug() << "** Force Sync, because it was requested";
         }
-        if (!okSyncResult) {
-            qDebug() << "** Force Sync, because the last sync had status: " << _syncResult.statusString();
+        if (syncAgainAfterFail) {
+            qDebug() << "** Force Sync, because the last"
+                     << _consecutiveFailingSyncs << "syncs failed, last status:"
+                     << _syncResult.statusString();
         }
         _forceSyncOnPollTimeout = false;
         emit scheduleToSync(alias());
@@ -828,6 +829,18 @@ void Folder::slotSyncFinished()
         _syncResult.setStatus(SyncResult::Problem);
     } else {
         _syncResult.setStatus(SyncResult::Success);
+    }
+
+    // Count the number of syncs that have failed in a row.
+    if (_syncResult.status() == SyncResult::Success
+            || _syncResult.status() == SyncResult::Problem)
+    {
+        _consecutiveFailingSyncs = 0;
+    }
+    else
+    {
+        _consecutiveFailingSyncs++;
+        qDebug() << "the last" << _consecutiveFailingSyncs << "syncs failed";
     }
 
     emit syncStateChange();
