@@ -335,6 +335,11 @@ QString Utility::timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMap
     return retStr;
 }
 
+bool Utility::hasDarkSystray()
+{
+    return hasDarkSystray_private();
+}
+
 
 bool Utility::isWindows()
 {

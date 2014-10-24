@@ -86,3 +86,8 @@ void setLaunchOnStartup_private(const QString &appName, const QString& guiName, 
         }
     }
 }
+
+static inline bool hasDarkSystray_private()
+{
+    return true;
+}

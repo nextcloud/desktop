@@ -71,7 +71,19 @@ namespace Utility
      */
     OWNCLOUDSYNC_EXPORT QString timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision, QString separator, bool specific);
     OWNCLOUDSYNC_EXPORT QString timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific);
-    
+
+    /**
+     * @brief hasDarkSystray - determines whether the systray is dark or light.
+     *
+     * Use this to check if the OS has a dark or a light systray.
+     *
+     * The value might change during the execution of the program
+     * (e.g. on OS X 10.10).
+     *
+     * @return bool which is true for systems with dark systray.
+     */
+    OWNCLOUDSYNC_EXPORT bool hasDarkSystray();
+
     // convinience OS detection methods
     OWNCLOUDSYNC_EXPORT bool isWindows();
     OWNCLOUDSYNC_EXPORT bool isMac();
