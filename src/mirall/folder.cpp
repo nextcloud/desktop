@@ -62,6 +62,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _proxyDirty(true)
       , _forceSyncOnPollTimeout(false)
       , _consecutiveFailingSyncs(0)
+      , _consecutiveFollowUpSyncs(0)
       , _journal(path)
       , _csync_ctx(0)
 {
@@ -274,9 +275,18 @@ void Folder::slotPollTimerTimeout()
     bool forceSyncIntervalExpired =
             quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval();
     bool syncAgainAfterFail = _consecutiveFailingSyncs > 0 && _consecutiveFailingSyncs < 3;
-    if (forceSyncIntervalExpired ||
-            _forceSyncOnPollTimeout ||
-            syncAgainAfterFail) {
+
+    // There are several conditions under which we trigger a full-discovery sync:
+    // * When a suitably long time has passed since the last sync finished
+    // * When the last sync failed (only a couple of times)
+    // * When the last sync requested another sync to be done (only a couple of times)
+    //
+    // Note that the etag check (see below) and the file watcher may also trigger
+    // syncs.
+    if (forceSyncIntervalExpired
+            || _forceSyncOnPollTimeout
+            || syncAgainAfterFail) {
+
         if (forceSyncIntervalExpired) {
             qDebug() << "** Force Sync, because it has been " << _timeSinceLastSync.elapsed() << "ms "
                      << "since the last sync";
@@ -291,8 +301,11 @@ void Folder::slotPollTimerTimeout()
         }
         _forceSyncOnPollTimeout = false;
         emit scheduleToSync(alias());
+
     } else {
-        // do the ordinary etag check for the root folder.
+        // Do the ordinary etag check for the root folder and only schedule a real
+        // sync if it's different.
+
         RequestEtagJob* job = new RequestEtagJob(account, remotePath(), this);
         // check if the etag is different
         QObject::connect(job, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
@@ -853,16 +866,28 @@ void Folder::slotSyncFinished()
     // all come in.
     QTimer::singleShot(200, this, SLOT(slotEmitFinishedDelayed() ));
 
-    if (!anotherSyncNeeded) {
-        _pollTimer.start();
-        _timeSinceLastSync.restart();
+    _timeSinceLastSync.restart();
+
+    // Increment the follow-up sync counter if necessary.
+    if (anotherSyncNeeded) {
+        _consecutiveFollowUpSyncs++;
+        qDebug() << "another sync was requested by the finished sync, this has"
+                 << "happened" << _consecutiveFollowUpSyncs << "times";
     } else {
-        // Another sync is required.  We will make sure that the poll timer occurs soon enough.
-        qDebug() << "another sync was requested by the finished sync";
-        _forceSyncOnPollTimeout = true;
-        QTimer::singleShot(1000, this, SLOT(slotPollTimerTimeout() ));
+        _consecutiveFollowUpSyncs = 0;
     }
 
+    // Maybe force a follow-up sync to take place, but only a couple of times.
+    if (anotherSyncNeeded && _consecutiveFollowUpSyncs <= 3)
+    {
+        _forceSyncOnPollTimeout = true;
+        // We will make sure that the poll timer occurs soon enough.
+        // delay 1s, 4s, 9s
+        int c = _consecutiveFollowUpSyncs;
+        QTimer::singleShot(c*c * 1000, this, SLOT(slotPollTimerTimeout() ));
+    } else {
+        _pollTimer.start();
+    }
 }
 
 void Folder::slotEmitFinishedDelayed()

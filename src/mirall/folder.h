@@ -203,7 +203,14 @@ private:
     QString       _lastEtag;
     QElapsedTimer _timeSinceLastSync;
     bool          _forceSyncOnPollTimeout;
+
+    /// The number of syncs that failed in a row.
+    /// Reset when a sync is successful.
     int           _consecutiveFailingSyncs;
+
+    /// The number of requested follow-up syncs.
+    /// Reset when no follow-up is requested.
+    int           _consecutiveFollowUpSyncs;
 
     // For the SocketAPI folder states
     QSet<QString>   _stateLastSyncItemsWithErrorNew; // gets moved to _stateLastSyncItemsWithError at end of sync
