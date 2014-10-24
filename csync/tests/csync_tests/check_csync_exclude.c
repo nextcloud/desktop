@@ -174,6 +174,25 @@ static void check_csync_pathes(void **state)
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 }
 
+static void check_csync_is_windows_reserved_word() {
+    assert_true(csync_is_windows_reserved_word("CON"));
+    assert_true(csync_is_windows_reserved_word("con"));
+    assert_true(csync_is_windows_reserved_word("CON."));
+    assert_true(csync_is_windows_reserved_word("con."));
+    assert_true(csync_is_windows_reserved_word("CON.ference"));
+    assert_false(csync_is_windows_reserved_word("CONference"));
+    assert_false(csync_is_windows_reserved_word("conference"));
+    assert_false(csync_is_windows_reserved_word("conf.erence"));
+    assert_false(csync_is_windows_reserved_word("co"));
+    assert_true(csync_is_windows_reserved_word("A:"));
+    assert_true(csync_is_windows_reserved_word("a:"));
+    assert_true(csync_is_windows_reserved_word("z:"));
+    assert_true(csync_is_windows_reserved_word("Z:"));
+    assert_true(csync_is_windows_reserved_word("M:"));
+    assert_true(csync_is_windows_reserved_word("m:"));
+
+}
+
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
@@ -181,6 +200,7 @@ int torture_run_tests(void)
         unit_test_setup_teardown(check_csync_exclude_load, setup, teardown),
         unit_test_setup_teardown(check_csync_excluded, setup_init, teardown),
         unit_test_setup_teardown(check_csync_pathes, setup_init, teardown),
+        unit_test_setup_teardown(check_csync_is_windows_reserved_word, setup_init, teardown),
     };
 
     return run_tests(tests);

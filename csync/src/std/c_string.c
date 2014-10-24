@@ -134,6 +134,14 @@ static char *c_iconv(const char* str, enum iconv_direction dir)
 }
 #endif /* defined(HAVE_ICONV) && defined(WITH_ICONV) */
 
+int c_strncasecmp(const char *a, const char *b, size_t n) {
+#ifdef _WIN32
+    return _strnicmp(a, b, n);
+#else
+    return strncasecmp(a, b, n);
+#endif
+}
+
 int c_streq(const char *a, const char *b) {
   register const char *s1 = a;
   register const char *s2 = b;
