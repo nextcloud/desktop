@@ -81,7 +81,7 @@ void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList
                     || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
                 foreach(const QString &str , _oldBlackList) {
-                    if (str + "/" == path) {
+                    if (str == path) {
                         item->setCheckState(0, Qt::Unchecked);
                         break;
                     } else if (str.startsWith(path)) {
@@ -137,6 +137,9 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
         if (paths.last().isEmpty()) paths.removeLast();
         if (paths.isEmpty())
             continue;
+        if (!path.endsWith('/')) {
+            path.append('/');
+        }
         recursiveInsert(root, paths, path);
     }
     root->setExpanded(true);
@@ -223,7 +226,7 @@ QStringList SelectiveSyncTreeView::createBlackList(QTreeWidgetItem* root) const
 
     switch(root->checkState(0)) {
     case Qt::Unchecked:
-        return QStringList(root->data(0, Qt::UserRole).toString());
+        return QStringList(root->data(0, Qt::UserRole).toString() + "/");
     case  Qt::Checked:
         return QStringList();
     case Qt::PartiallyChecked:
