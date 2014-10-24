@@ -60,6 +60,17 @@ struct c_strlist_s {
 };
 
 /**
+ * @brief Compare to strings case insensitively.
+ *
+ * @param a  First string to compare.
+ * @param b  Second string to compare.
+ * @param n  Max comparison length.
+ *
+ * @return see strncasecmp
+ */
+int c_strncasecmp(const char *a, const char *b, size_t n);
+
+/**
  * @brief Compare to strings if they are equal.
  *
  * @param a  First string to compare.
