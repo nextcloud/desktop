@@ -413,6 +413,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         if( f ) {
             folderMan->setSyncEnabled(false);
             folderMan->terminateSyncProcess(f->alias());
+            f->journalDb()->close();
         }
 
         bool isInitialSetup = (origAccount == 0);
