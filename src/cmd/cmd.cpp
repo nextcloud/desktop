@@ -140,7 +140,7 @@ void help()
 
     std::cout << binaryName << " - command line " APPLICATION_NAME " client tool" << std::endl;
     std::cout << "" << std::endl;
-    std::cout << "Usage: " << binaryName << " <source_dir> <server_url>" << std::endl;
+    std::cout << "Usage: " << binaryName << " [OPTION] <source_dir> <server_url>" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "A proxy can either be set manually using --httpproxy." << std::endl;
     std::cout << "Otherwise, the setting from a configured sync client will be used." << std::endl;
