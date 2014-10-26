@@ -1536,7 +1536,9 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/mirall/protocolwidget.cpp" line="257"/>
         <source>%n files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dosya önceki hatalar nedeniyle yoksayıldı.
+Tekrar eşitleyi deneyin.em.</numerusform><numerusform>%n dosya önceki hatalar nedeniyle yoksayıldı.
+Tekrar eşitleyi deneyin.em.</numerusform></translation>
     </message>
 </context>
 <context>
