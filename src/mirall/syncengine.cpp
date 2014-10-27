@@ -325,7 +325,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item._modtime = file->modtime;
     } else {
         if (file->instruction != CSYNC_INSTRUCTION_NONE) {
+            qDebug() << "ERROR: Instruction" << item._instruction << "vs" << file->instruction << "for" << fileUtf8;
             Q_ASSERT(!"Instructions are both unequal NONE");
+            return -1;
         }
     }
 
