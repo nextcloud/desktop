@@ -41,11 +41,11 @@ To set up your build enviroment for development using HomeBrew_:
 
 1. Add the ownCloud repository using the following command::
 
-  brew tap owncloud/owncloud
+    brew tap owncloud/owncloud
 
 2. Install any missing dependencies::
 
-  brew install $(brew deps mirall)
+    brew install $(brew deps mirall)
 
 To build mirall, follow the `generic build instructions`_.
 
@@ -63,15 +63,14 @@ have it installed already.
 
 To cross-compile:
 
-1. Add the following repositories using YaST or ``zypper ar`` (adjust when using openSUSE 12.2 or 13.1):
+1. Add the following repositories using YaST or ``zypper ar`` (adjust when using openSUSE 12.2 or 13.1)::
 
-  - ``zypper ar http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_13.1/windows:mingw:win32.repo``
-
-  - ``zypper ar http://download.opensuse.org/repositories/windows:/mingw/openSUSE_13.1/windows:mingw.repo``
+    zypper ar http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_13.1/windows:mingw:win32.repo
+    zypper ar http://download.opensuse.org/repositories/windows:/mingw/openSUSE_13.1/windows:mingw.repo
 
 2. Install the cross-compiler packages and the cross-compiled dependencies::
 
-  ``zypper install cmake make mingw32-cross-binutils mingw32-cross-cpp mingw32-cross-gcc \
+    zypper install cmake make mingw32-cross-binutils mingw32-cross-cpp mingw32-cross-gcc \
                  mingw32-cross-gcc-c++ mingw32-cross-pkg-config mingw32-filesystem \
                  mingw32-headers mingw32-runtime site-config mingw32-libqt4-sql \
                  mingw32-libqt4-sql-sqlite mingw32-sqlite mingw32-libsqlite-devel \
@@ -82,15 +81,15 @@ To cross-compile:
                  mingw32-libpng-devel mingw32-libsqlite mingw32-qtkeychain \
                  mingw32-qtkeychain-devel mingw32-dlfcn mingw32-libintl-devel \
                  mingw32-libneon-devel mingw32-libopenssl-devel mingw32-libproxy-devel \
-                 mingw32-libxml2-devel mingw32-zlib-devel``
+                 mingw32-libxml2-devel mingw32-zlib-devel
 
 3. For the installer, install the NSIS installer package::
 
-  ``zypper install mingw32-cross-nsis``
+    zypper install mingw32-cross-nsis
 
 4. Install the following plugin::
 
-    ``mingw32-cross-nsis-plugin-processes mingw32-cross-nsis-plugin-uac``
+    mingw32-cross-nsis-plugin-processes mingw32-cross-nsis-plugin-uac
 
   .. note:: This plugin is typically required.  However, due to a current bug
      in ``mingw``, the plugins do not currently build properly from source.
@@ -99,9 +98,8 @@ To cross-compile:
 
   ..note:: These files operate using openSUSE 12.2 and newer.
 
-  - ``rpm -ihv http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-processes-0-1.1.x86_64.rpm``
-
-  - ``rpm -ihv http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-uac-0-3.1.x86_64.rpm``
+    rpm -ihv http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-processes-0-1.1.x86_64.rpm
+    rpm -ihv http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-uac-0-3.1.x86_64.rpm
 
 6. Follow the `generic build instructions`_
 
@@ -115,9 +113,10 @@ To cross-compile:
   ..note:: Using ``make package`` produces an NSIS-based installer, provided
     the NSIS mingw32 packages are installed.
 
+.. _`generic build instructions`:
+
 Generic Build Instructions
 --------------------------
-.. _`generic build instructions`
 
 Compared to previous versions, building Mirall has become easier. Unlike
 earlier versions, CSync, which is the sync engine library of Mirall, is now
@@ -157,16 +156,15 @@ The following are known cmake parameters:
 * ``QTKEYCHAIN_LIBRARY=/path/to/qtkeychain.dylib -DQTKEYCHAIN_INCLUDE_DIR=/path/to/qtkeychain/``:
    Used for stored credentials.  When compiling with Qt5, the library is called ``qt5keychain.dylib.``
    You need to compile QtKeychain with the same Qt version.
-* ``WITH_DOC=TRUE``: Creates doc and manpages through running ``make``; also
-* adds install statements, providing the ability to install using ``make
-* install``.
+* ``WITH_DOC=TRUE``: Creates doc and manpages through running ``make``; also adds install statements,
+  providing the ability to install using ``make install``.
 * ``CMAKE_PREFIX_PATH=/path/to/Qt5.2.0/5.2.0/yourarch/lib/cmake/``: Builds using Qt5.
 * ``BUILD_WITH_QT4=ON``: Builds using Qt4 (even if Qt5 is found).
 
-.. _`ownCloud repository from OBS`: http://software.opensuse.org/download/package?project=isv:ownCloud:devel&package=owncloud-client
+.. _`ownCloud repository from OBS`: http://software.opensuse.org/download/package?project=isv:ownCloud:desktop&package=owncloud-client
 .. _CSync: http://www.csync.org
 .. _`Client Download Page`: http://owncloud.org/sync-clients/
 .. _Git: http://git-scm.com
 .. _MacPorts: http://www.macports.org
 .. _Homebrew: http://mxcl.github.com/homebrew/
-.. _QtKeychain https://github.com/frankosterfeld/qtkeychain
+.. _QtKeychain: https://github.com/frankosterfeld/qtkeychain
