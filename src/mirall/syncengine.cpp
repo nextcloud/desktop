@@ -179,7 +179,9 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_ABORTED:
         errStr = tr("Aborted by the user");
         break;
-
+    case CSYNC_STATUS_SERVICE_UNAVAILABLE:
+	errStr = tr("The mounted directory is temporary not available on the server");
+	break;
     default:
         errStr = tr("An internal error number %1 happened.").arg( (int) err );
     }
@@ -370,7 +372,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
         item._errorString = QLatin1String("File locked"); // don't translate, internal use!
         break;
-
+    case CSYNC_STATUS_SERVICE_UNAVAILABLE:
+        item._errorString = QLatin1String("Directory temporarily not available on server.");
+        break;
     default:
         Q_ASSERT("Non handled error-status");
         /* No error string */
