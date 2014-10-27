@@ -152,7 +152,8 @@ bool OwncloudAdvancedSetupPage::dataChanged()
     Account *oldAccount = AccountManager::instance()->account();
 
     if (!ocWizard || !oldAccount) {
-        return false;
+        // If there was no account configured before, the data is new (hence changed)
+        return true;
     }
 
     const QString url(field("OCUrl").toString());
