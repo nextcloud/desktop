@@ -8,9 +8,9 @@ major platforms. You should read this section if you want to develop for the
 desktop client.
 
 .. note:: Building instruction are subject to change as development proceeds.
-  Please check the version for which you want to built.
+  Please check the version for which you want to build.
 
-The instructions contained in this topic were updated to work with version 1.5 of the ownCloud Client.
+The instructions contained in this topic were updated to work with version 1.7 of the ownCloud Client.
 
 Linux
 -----
@@ -23,6 +23,11 @@ Linux
   * Fedora/CentOS: ``yum install yum-utils; yum-builddep owncloud-client``
 
 3. Follow the `generic build instructions`_.
+
+4. (Optional) Call ``make install`` to install the client to the ``/usr/local/bin`` directory.
+
+.. note:: This step requires the ``mingw32-cross-nsis`` packages be installed on
+          Windows.
 
 Mac OS X
 --------
@@ -47,11 +52,24 @@ To set up your build enviroment for development using HomeBrew_:
 
     brew install $(brew deps mirall)
 
-To build mirall, follow the `generic build instructions`_.
+3. Add Qt from brew to the path::
 
-.. note:: Because the product from the mirall build is an app bundle, do not
-   call ``make install`` at any time.  Instead, call ``make package`` to create an
-   install-ready disk image.
+    export PATH=/usr/local/Cellar/qt5/5.x.y/bin/qmake
+
+   Where ``x.z`` is the current version of Qt 5 that brew has installed
+   on your machine.
+
+5. For compilation of mirall, follow the `generic build instructions`_.
+
+6. In the build directory, run ``admin/osx/create_mac.sh <build_dir>
+   <install_dir>``. If you have a developer signing certificate, you can specify
+   its Common Name as a third parameter (use quotes) to have the package
+   signed automatically.
+
+.. note:: Contrary to earlier versions, ownCloud 1.7 and later are packaged
+          as a ``pkg`` installer. Do not call "make package" at any time when
+          compiling for OS X, as this will build a disk image, and will not
+          work correctly.
 
 Windows (Cross-Compile)
 -----------------------
@@ -96,21 +114,23 @@ To cross-compile:
 
 5. Manually download and install the following files using ``rpm -ivh <package>``:
 
-  ..note:: These files operate using openSUSE 12.2 and newer.
+  .. note:: These files also work for more recent openSUSE versions!
 
-    rpm -ihv http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-processes-0-1.1.x86_64.rpm
-    rpm -ihv http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-uac-0-3.1.x86_64.rpm
+  ::
+
+    rpm -ivh http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-processes-0-1.1.x86_64.rpm
+    rpm -ivh http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-uac-0-3.1.x86_64.rpm
 
 6. Follow the `generic build instructions`_
 
   .. note:: When building for Windows platforms, you must specify a special
      toolchain file that enables cmake to locate the platform-specific tools. To add
      this parameter to the call to cmake, enter
-     ``DCMAKE_TOOLCHAIN_FILE=../mirall/admin/win/Toolchain-mingw32-openSUSE.cmake``.
+     ``-DCMAKE_TOOLCHAIN_FILE=../mirall/admin/win/Toolchain-mingw32-openSUSE.cmake``.
 
 7. Build by running ``make``.
 
-  ..note:: Using ``make package`` produces an NSIS-based installer, provided
+  .. note:: Using ``make package`` produces an NSIS-based installer, provided
     the NSIS mingw32 packages are installed.
 
 .. _`generic build instructions`:
@@ -139,17 +159,16 @@ To build the most up to date version of the client:
   ``cd ../mirall-build``
   ``cmake -DCMAKE_BUILD_TYPE="Debug" ../mirall``
 
-  ..note:: You must use absolute pathes for the ``include`` and ``library`` directories.
+  ..note:: You must use absolute paths for the ``include`` and ``library``
+           directories.
+
+  ..note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
+           where ``target`` is a private location, i.e. in parallel to your build
+           dir by specifying ``../install``.
 
 4. Call ``make``.
 
   The owncloud binary appear in the ``bin`` directory.
-
-5. (Optional) Call ``make install`` to install the client to the ``/usr/local/bin`` directory.
-
-6. (Optional) Call ``make package`` to build an installer/app bundle
-
-  ..note:: This step requires the ``mingw32-cross-nsis`` packages be installed on Windows.
 
 The following are known cmake parameters:
 
@@ -160,6 +179,7 @@ The following are known cmake parameters:
   providing the ability to install using ``make install``.
 * ``CMAKE_PREFIX_PATH=/path/to/Qt5.2.0/5.2.0/yourarch/lib/cmake/``: Builds using Qt5.
 * ``BUILD_WITH_QT4=ON``: Builds using Qt4 (even if Qt5 is found).
+* ``CMAKE_INSTALL_PREFIX=path``: Set an install prefix. This is mandatory on Mac OS
 
 .. _`ownCloud repository from OBS`: http://software.opensuse.org/download/package?project=isv:ownCloud:desktop&package=owncloud-client
 .. _CSync: http://www.csync.org
