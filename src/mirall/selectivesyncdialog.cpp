@@ -271,7 +271,9 @@ void SelectiveSyncDialog::init(Account *account)
     setWindowTitle(tr("Choose What to Sync"));
     QVBoxLayout *layout = new QVBoxLayout(this);
     _treeView = new SelectiveSyncTreeView(account, this);
-    layout->addWidget(new QLabel(tr("Unchecked folders will not be sync to this computer")));
+    QLabel *label = new QLabel(tr("Unchecked folders will be <b>removed</b> from your local file system and will not be synchronized to this computer anymore"));
+    label->setWordWrap(true);
+    layout->addWidget(label);
     layout->addWidget(_treeView);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
     QPushButton *button;
