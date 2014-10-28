@@ -1,11 +1,10 @@
 The Automatic Updater
 =====================
 
-To ensure that you are always using the latest version of the ownCloud 
-client, the Automatic Updater ensures that you always have the 
-latest features and bugfixes.
+The Automatic Updater ensures that you always have the 
+latest features and bugfixes for your ownCloud synchronization client.
 
-The Automatic Updater operates only on Mac OS X and Windows computers; Linux 
+The Automatic Updater updates only on Mac OS X and Windows computers; Linux 
 users only need to use their normal package managers. However, on Linux systems 
 the Updater will check for updates and notify you when a new version is 
 available.
@@ -120,5 +119,5 @@ Preventing Automatic Updates in Linux Environments
 Because Linux does not provide automatic updating functionality, there is no
 need to remove the automatic-update check.  However, if you want to disable
 this check, go to ``Settings -> General -> Updates`` and un-check ``Show 
-Desktop Notifications``. You may visit this tab anytime to check your update 
+Desktop Notifications``. You may visit this tab anytime to see your update 
 status.
