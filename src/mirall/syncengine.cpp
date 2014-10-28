@@ -374,6 +374,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         break;
     case CSYNC_STATUS_SERVICE_UNAVAILABLE:
         item._errorString = QLatin1String("Directory temporarily not available on server.");
+        item._status = SyncFileItem::SoftError;
         break;
     default:
         Q_ASSERT("Non handled error-status");
