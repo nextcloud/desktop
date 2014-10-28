@@ -17,6 +17,7 @@ operating systems:
 
 Windows
 ^^^^^^^
+
 The ownCloud client checks for updates and downloads them when available. You
 can view the update status under ``Settings -> General -> Updates`` in the
 ownCloud client.
@@ -109,15 +110,16 @@ using the system-wide ``.plist`` file.  To access this file:
 5. Set the item to ``true``.
 
 Alternatively, you can copy the file
-``owncloud.app/Contents/Resources/deny_autoupdate_com.owncloud.desktopclient.
-plist``
+``owncloud.app/Contents/Resources/deny_autoupdate_com.owncloud.desktopclient.plist``
 to ``/Library/Preferences/com.owncloud.desktopclient.plist``.
 
 Preventing Automatic Updates in Linux Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Because Linux does not provide automatic updating functionality, there is no
-need to remove the automatic-update check.  However, if you want to disable
-this check, go to ``Settings -> General -> Updates`` and un-check ``Show 
-Desktop Notifications``. You may visit this tab anytime to see your update 
-status.
+Because the Linux client does not provide automatic updating functionality, there is no
+need to remove the automatic-update check.  However, if you want to disable it edit (or 
+create, if it does not already exist) ``/etc/ownCloud/ownCloud.conf``. Add these lines:
+
+    [General]
+    skipUpdateCheck=true
+
