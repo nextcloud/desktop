@@ -50,7 +50,7 @@ bool SqlDatabase::open( const QString& filename )
     SQLITE_DO( sqlite3_open_v2(filename.toUtf8().constData(), &_db, flag, 0) );
 
     if( _errId != SQLITE_OK ) {
-        qDebug() << Q_FUNC_INFO << "Error:" << _error;
+        qDebug() << Q_FUNC_INFO << "Error:" << _error << "for" << filename;
         close();
         _db = 0;
     }
