@@ -1,20 +1,23 @@
 The Automatic Updater
 =====================
 
-To ensure that you are always using the latest version of the ownCloud client,
-an auto-update mechanism has been added in Version 1.5.1. The Automatic Updater
-ensures that you automatically profit from the latest features and bugfixes.
+To ensure that you are always using the latest version of the ownCloud 
+client, the Automatic Updater ensures that you always have the 
+latest features and bugfixes.
 
-.. note:: The Automatic Updater functions differently, depending on the operating system.
+The Automatic Updater operates only on Mac OS X and Windows computers; Linux 
+users only need to use their normal package managers. However, on Linux systems 
+the Updater will check for updates and notify you when a new version is 
+available.
 
 Basic Workflow
 --------------
 
-The following sections describe how to use the Automatic Updater on different operating systems:
+The following sections describe how to use the Automatic Updater on different 
+operating systems:
 
 Windows
 ^^^^^^^
-
 The ownCloud client checks for updates and downloads them when available. You
 can view the update status under ``Settings -> General -> Updates`` in the
 ownCloud client.
@@ -36,7 +39,7 @@ process for Mac OS X applications.
 Linux
 ^^^^^
 
-Linux distributions provide their own update tool, so ownCloud clients that use
+Linux distributions provide their own update tools, so ownCloud clients that use
 the Linux operating system do not perform any updates on their own. Linux
 operating systems do, however, check for the latest version of the ownCloud
 client and passively notify the user (``Settings -> General -> Updates``) when
@@ -74,7 +77,8 @@ To manually override this key, use the same value in ``HKEY_CURRENT_USER``.
 
 To prevent automatic updates and disallow manual overrides:
 
-.. note::This is the preferred method of controlling the updater behavior using Group Policies.
+.. note::This is the preferred method of controlling the updater behavior using 
+   Group Policies.
 
 1. Migrate to the following directory::
 
@@ -106,7 +110,8 @@ using the system-wide ``.plist`` file.  To access this file:
 5. Set the item to ``true``.
 
 Alternatively, you can copy the file
-``owncloud.app/Contents/Resources/deny_autoupdate_com.owncloud.desktopclient.plist``
+``owncloud.app/Contents/Resources/deny_autoupdate_com.owncloud.desktopclient.
+plist``
 to ``/Library/Preferences/com.owncloud.desktopclient.plist``.
 
 Preventing Automatic Updates in Linux Environments
@@ -114,14 +119,6 @@ Preventing Automatic Updates in Linux Environments
 
 Because Linux does not provide automatic updating functionality, there is no
 need to remove the automatic-update check.  However, if you want to disable
-this check:
-
-1. Locate and open the following file::
-
-	/etc/ownCloud/ownCloud.conf
-
-2. Add the following content to the file::
-
- 	[General]
-	skipUpdateCheck=true
-
+this check, go to ``Settings -> General -> Updates`` and un-check ``Show 
+Desktop Notifications``. You may visit this tab anytime to check your update 
+status.
