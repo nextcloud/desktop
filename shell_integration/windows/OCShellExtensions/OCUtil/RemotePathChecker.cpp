@@ -123,6 +123,14 @@ void RemotePathChecker::workerThreadLoop()
                     SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
                 }
             }
+        } else if (StringUtil::begins_with(response, wstring(L"UPDATE_VIEW"))) {
+            std::unique_lock<std::mutex> lock(_mutex);
+            // Request a status for all the items in the cache.
+            for (auto it = _cache.begin(); it != _cache.end() ; ++it ) {
+                if (!socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + it->first + L'\n').data())) {
+                    break;
+                }
+            }
         }
 
 		if (socket.Event() == INVALID_HANDLE_VALUE) {
