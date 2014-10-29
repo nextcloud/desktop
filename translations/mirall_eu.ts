@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Hautatu zer sinkronizatu</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="101"/>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="675"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1. fitxategia %2tik</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="763"/>
@@ -278,7 +278,7 @@ Geratzen den denbora %5</translation>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="138"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>denbora iraungi da</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="167"/>
@@ -1282,7 +1282,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Ireki %1 Arakatzailean</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
@@ -1544,7 +1544,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="271"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Hautatu zer sinkronizatu</translation>
     </message>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="274"/>
@@ -2035,71 +2035,71 @@ Ez da gomendagarria erabltzea.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="546"/>
+        <location filename="../src/mirall/syncengine.cpp" line="547"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Ezin izan da sinkronizazio egunerokoa hasieratu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="627"/>
+        <location filename="../src/mirall/syncengine.cpp" line="628"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="859"/>
-        <location filename="../src/mirall/syncengine.cpp" line="866"/>
+        <location filename="../src/mirall/syncengine.cpp" line="860"/>
+        <location filename="../src/mirall/syncengine.cpp" line="867"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="884"/>
+        <location filename="../src/mirall/syncengine.cpp" line="885"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="890"/>
+        <location filename="../src/mirall/syncengine.cpp" line="891"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="897"/>
+        <location filename="../src/mirall/syncengine.cpp" line="898"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="917"/>
+        <location filename="../src/mirall/syncengine.cpp" line="918"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="934"/>
-        <location filename="../src/mirall/syncengine.cpp" line="954"/>
+        <location filename="../src/mirall/syncengine.cpp" line="935"/>
+        <location filename="../src/mirall/syncengine.cpp" line="955"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Ezabatzeko baimenik gabe, berrezartzen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="969"/>
+        <location filename="../src/mirall/syncengine.cpp" line="970"/>
         <source>Local files and share folder removed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1024"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1025"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Mugitzea ez dago baimenduta, elementua berrezarri da</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1033"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1034"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>Mugitzea ez dago baimenduta %1 irakurtzeko bakarrik delako</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1034"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1035"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>helburua</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1034"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1035"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>jatorria</translation>
     </message>
 </context>
 <context>
@@ -2115,7 +2115,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 Bertsioa, informazio gehiago eskuratzeko ikusi mesedez &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt; %4-k GNU General Public License (GPL)  2.0 bertsioaren lizentziapean banatuta.&lt;br&gt;%5 eta %5 logoa %4ren marka erregistratuak dira Amerikako Estatu Batuetan, beste herrialdeetan edo bietan.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2128,7 +2128,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="233"/>
         <source>Disconnected from server</source>
-        <translation type="unfinished"/>
+        <translation>Zerbitzaritik deskonektatuta</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="265"/>
@@ -2143,7 +2143,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="280"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago sinkronizazio karpetarik definituta.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="306"/>
@@ -2178,7 +2178,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="414"/>
         <source>Calculating quota...</source>
-        <translation type="unfinished"/>
+        <translation>Kuota kalkulatzen...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="416"/>
@@ -2218,7 +2218,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="439"/>
         <source>Quota n/a</source>
-        <translation type="unfinished"/>
+        <translation>Kouta e/e</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="446"/>
@@ -2238,12 +2238,12 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="474"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatzen %1 %2tik (%3 faltan)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="479"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatzen %1 (%2faltan)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="499"/>
@@ -2261,7 +2261,8 @@ Ez da gomendagarria erabltzea.</translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%2 Bertsioa, informazio gehiago eskuratzeko ikusi mesdez &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz eta beste batzuk egina.&lt;br/&gt;Duncan Mac-Vicar P.ren Mirallean oinarrituta&lt;/small&gt;&lt;/p&gt;
+&lt;p&gt;Copyright ownCloud, Inc.&lt;p&gt;&lt;p&gt; GNU General Public License (GPL)  2.0 bertsioaren lizentziapean banatuta.&lt;br&gt;ownCloud eta ownCloud logoa ownCloudren marka erregistratuak dira Amerikako Estatu Batuetan, beste herrialdeetan edo bietan.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
