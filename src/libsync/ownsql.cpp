@@ -50,11 +50,14 @@ bool SqlDatabase::open( const QString& filename )
     SQLITE_DO( sqlite3_open_v2(filename.toUtf8().constData(), &_db, flag, 0) );
 
     if( _errId != SQLITE_OK ) {
-        close(); // FIXME: Correct?
+        qDebug() << Q_FUNC_INFO << "Error:" << _error << "for" << filename;
+        close();
         _db = 0;
     }
 
-    sqlite3_busy_timeout(_db, 5000);
+    if (_db) {
+        sqlite3_busy_timeout(_db, 5000);
+    }
 
     return isOpen();
 }
@@ -99,7 +102,7 @@ sqlite3* SqlDatabase::sqliteDb()
 
 /* =========================================================================================== */
 
-SqlQuery::SqlQuery( SqlDatabase db )
+SqlQuery::SqlQuery( SqlDatabase& db )
     :_db(db.sqliteDb()),
       _stmt(0)
 {
@@ -113,7 +116,7 @@ SqlQuery::~SqlQuery()
     }
 }
 
-SqlQuery::SqlQuery(const QString& sql, SqlDatabase db)
+SqlQuery::SqlQuery(const QString& sql, SqlDatabase& db)
     :_db(db.sqliteDb()),
       _stmt(0)
 {

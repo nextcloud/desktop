@@ -138,4 +138,18 @@ SyncJournalBlacklistRecord SyncJournalBlacklistRecord::update(
     return entry;
 }
 
+
+bool operator==(const SyncJournalFileRecord & lhs,
+                const SyncJournalFileRecord & rhs)
+{
+    return     lhs._path == rhs._path
+            && lhs._inode == rhs._inode
+            && lhs._modtime == rhs._modtime
+            && lhs._type == rhs._type
+            && lhs._etag == rhs._etag
+            && lhs._fileId == rhs._fileId
+            && lhs._remotePerm == rhs._remotePerm
+            && lhs._mode == rhs._mode;
+}
+
 }

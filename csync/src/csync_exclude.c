@@ -156,6 +156,40 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
     return match;
 }
 
+// See http://support.microsoft.com/kb/74496
+static const char *win_reserved_words[] = {"CON","PRN","AUX", "NUL",
+                                           "COM1", "COM2", "COM3", "COM4",
+                                           "LPT1", "LPT2", "LPT3", "CLOCK$" };
+
+
+bool csync_is_windows_reserved_word(const char* filename) {
+
+  size_t win_reserve_words_len = sizeof(win_reserved_words) / sizeof(char*);
+  size_t j;
+
+  for (j = 0; j < win_reserve_words_len; j++) {
+    int len_reserved_word = strlen(win_reserved_words[j]);
+    int len_filename = strlen(filename);
+    if (len_filename == 2 && filename[1] == ':') {
+        if (filename[0] >= 'a' && filename[0] <= 'z') {
+            return true;
+        }
+        if (filename[0] >= 'A' && filename[0] <= 'Z') {
+            return true;
+        }
+    }
+    if (c_strncasecmp(filename, win_reserved_words[j], len_reserved_word) == 0) {
+        if (len_filename == len_reserved_word) {
+            return true;
+        }
+        if ((len_filename > len_reserved_word) && (filename[len_reserved_word] == '.')) {
+            return true;
+        }
+    }
+  }
+  return false;
+}
+
 CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype) {
   size_t i = 0;
   const char *p = NULL;
@@ -213,6 +247,13 @@ CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path
       SAFE_FREE(bname);
       SAFE_FREE(dname);
       goto out;
+  }
+
+  if (csync_is_windows_reserved_word(bname)) {
+    match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+    SAFE_FREE(bname);
+    SAFE_FREE(dname);
+    goto out;
   }
 #endif
 

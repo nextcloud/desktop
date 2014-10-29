@@ -250,8 +250,10 @@ def CopyFramework(path):
   parts = path.split(os.sep)
   print "CopyFramework:", path
   for i, part in enumerate(parts):
-    if re.match(r'\w+\.framework', part):
+    matchObj = re.match(r'(\w+\.framework)', part)
+    if matchObj:
       full_path = os.path.join(frameworks_dir, *parts[i:-1])
+      framework = matchObj.group(1)
       break
   args = ['mkdir', '-p', full_path]
   commands.append(args)
@@ -259,12 +261,13 @@ def CopyFramework(path):
   commands.append(args)
   args = ['chmod', 'u+w', os.path.join(full_path, parts[-1])]
   commands.append(args)
+  args = ['chmod', 'u+w', os.path.join(frameworks_dir, framework, "Resources")]
+  commands.append(args)
 
   info_plist = os.path.join(os.path.split(path)[0], '..', '..', 'Contents', 'Info.plist')
   if os.path.exists(info_plist):
-    args = ['cp', '-r', info_plist, resources_dir]
+    args = ['cp', '-r', info_plist, os.path.join(frameworks_dir, framework, "Resources")]
     commands.append(args)
-
   return os.path.join(full_path, parts[-1])
 
 def FixId(path, library_name):

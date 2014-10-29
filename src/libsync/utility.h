@@ -42,7 +42,7 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
     /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
 
-    OWNCLOUDSYNC_EXPORT bool doesSetContainPrefix(QSet<QString> &l, QString &p);
+    OWNCLOUDSYNC_EXPORT bool doesSetContainPrefix(const QSet<QString> &l, const QString &p);
 
 
 

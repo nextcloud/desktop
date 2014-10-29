@@ -254,7 +254,7 @@ void ProtocolWidget::computeResyncButtonEnabled()
 
     QString t = tr("Currently no files are ignored because of previous errors.");
     if(cnt > 0) {
-        t = tr("%1 files are ignored because of previous errors.\n Try to sync these again.").arg(cnt);
+        t = tr("%n files are ignored because of previous errors.\n Try to sync these again.", 0, cnt);
     }
 
     _clearBlacklistBtn->setEnabled(cnt > 0);

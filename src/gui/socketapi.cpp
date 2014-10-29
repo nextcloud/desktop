@@ -75,7 +75,11 @@ SocketApi::SocketApi(QObject* parent)
 
     if (Utility::isWindows()) {
         socketPath = QLatin1String("\\\\.\\pipe\\")
-                + Theme::instance()->appName();
+        + QLatin1String("ownCloud");
+        // TODO: once the windows extension supports multiple
+        // client connections, switch back to the theme name
+        // See issue #2388
+        // + Theme::instance()->appName();
     } else if (Utility::isMac()) {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         // Always using Qt5 on OS X
@@ -354,7 +358,7 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketTy
 {
     // This command is the same as RETRIEVE_FILE_STATUS
 
-    qDebug() << Q_FUNC_INFO << argument;
+    //qDebug() << Q_FUNC_INFO << argument;
     command_RETRIEVE_FILE_STATUS(argument, socket);
 }
 
@@ -375,7 +379,9 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
         DEBUG << "folder offline or not watched:" << argument;
         statusString = QLatin1String("NOP");
     } else {
-        const QString file = argument.mid(syncFolder->path().length());
+
+
+        const QString file = QDir::cleanPath(argument).mid(QDir::cleanPath(syncFolder->path()).length()+1);
         SyncFileStatus fileStatus = this->fileStatus(syncFolder, file, _excludes);
 
         statusString = fileStatus.toSocketAPIString();
@@ -471,6 +477,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
 {
     QString file = folder->path();
     QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
+    QString fileNameSlash = fileName;
 
     if( fileName != QLatin1String("/") && !fileName.isEmpty() ) {
         file = folder->path() + fileName;
@@ -479,6 +486,8 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     if( fileName.endsWith(QLatin1Char('/')) ) {
         fileName.truncate(fileName.length()-1);
         qDebug() << "Removed trailing slash: " << fileName;
+    } else {
+        fileNameSlash += QLatin1Char('/');
     }
 
     QFileInfo fi(file);
@@ -498,77 +507,106 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         type = CSYNC_FTW_TYPE_DIR;
     }
 
-    // '\' is ignored, so convert to unix path before passing the path in.
-    QString unixFileName = QDir::fromNativeSeparators(fileName);
-
-    CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, unixFileName.toUtf8(), type);
+    // Is it excluded?
+    CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, fileName.toUtf8(), type);
     if( excl != CSYNC_NOT_EXCLUDED ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 
-
-    SyncFileStatus status(SyncFileStatus::STATUS_NONE);
-    if (type == CSYNC_FTW_TYPE_DIR) {
-        if (folder->estimateState(fileName, type, &status)) {
-            qDebug() << Q_FUNC_INFO << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
-            return status;
+    // Error if it is in the selective sync blacklistr
+    foreach(const auto &s, folder->selectiveSyncBlackList()) {
+        if (fileNameSlash.startsWith(s)) {
+            return SyncFileStatus(SyncFileStatus::STATUS_ERROR);
         }
-        if (fileName == "") {
-            // sync folder itself
-            switch (folder->syncResult().status()) {
-            case SyncResult::Undefined:
-            case SyncResult::NotYetStarted:
-            case SyncResult::SyncPrepare:
-            case SyncResult::SyncRunning:
-                status.set(SyncFileStatus::STATUS_EVAL);
-                return status;
-
-            case SyncResult::Success:
-            case SyncResult::Problem:
-                status.set(SyncFileStatus::STATUS_SYNC);
-                return status;
-
-            case SyncResult::Error:
-            case SyncResult::SetupError:
-            case SyncResult::SyncAbortRequested:
-                status.set(SyncFileStatus::STATUS_ERROR);
-                return status;
-
-            case SyncResult::Paused:
-                status.set(SyncFileStatus::STATUS_IGNORE);
-                return status;
-            }
-        }
-        SyncJournalFileRecord rec = dbFileRecord_capi(folder, unixFileName );
-        if (rec.isValid()) {
-            status.set(SyncFileStatus::STATUS_SYNC);
-            if (rec._remotePerm.contains("S")) {
-               status.setSharedWithMe(true);
-            }
-        } else {
-            status.set(SyncFileStatus::STATUS_EVAL);
-        }
-    } else if (type == CSYNC_FTW_TYPE_FILE) {
-        if (folder->estimateState(fileName, type, &status)) {
-            return status;
-        }
-        SyncJournalFileRecord rec = dbFileRecord_capi(folder, unixFileName );
-        if (rec.isValid()) {
-            if (rec._remotePerm.contains("S")) {
-               status.setSharedWithMe(true);
-            }
-            if( FileSystem::getModTime(fi.absoluteFilePath()) == Utility::qDateTimeToTime_t(rec._modtime) ) {
-                status.set(SyncFileStatus::STATUS_SYNC);
-                return status;
-            } else {
-                status.set(SyncFileStatus::STATUS_EVAL);
-                return status;
-            }
-        }
-        status.set(SyncFileStatus::STATUS_NEW);
-        return status;
     }
 
+    SyncFileStatus status(SyncFileStatus::STATUS_NONE);
+    SyncJournalFileRecord rec = dbFileRecord_capi(folder, fileName );
+
+    if (folder->estimateState(fileName, type, &status)) {
+        qDebug() << Q_FUNC_INFO << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
+    } else if (fileName == "") {
+        // sync folder itself
+        switch (folder->syncResult().status()) {
+        case SyncResult::Undefined:
+        case SyncResult::NotYetStarted:
+        case SyncResult::SyncPrepare:
+        case SyncResult::SyncRunning:
+            status.set(SyncFileStatus::STATUS_EVAL);
+            return status;
+
+        case SyncResult::Success:
+        case SyncResult::Problem:
+            status.set(SyncFileStatus::STATUS_SYNC);
+            return status;
+
+        case SyncResult::Error:
+        case SyncResult::SetupError:
+        case SyncResult::SyncAbortRequested:
+            status.set(SyncFileStatus::STATUS_ERROR);
+            return status;
+
+        case SyncResult::Paused:
+            status.set(SyncFileStatus::STATUS_IGNORE);
+            return status;
+        }
+    } else if (type == CSYNC_FTW_TYPE_DIR) {
+        if (rec.isValid()) {
+            status.set(SyncFileStatus::STATUS_SYNC);
+        } else {
+            qDebug() << Q_FUNC_INFO << "Could not determine state for folder" << fileName << "will set STATUS_NEW";
+            status.set(SyncFileStatus::STATUS_NEW);
+        }
+    } else if (type == CSYNC_FTW_TYPE_FILE) {
+        if (rec.isValid()) {
+            if( FileSystem::getModTime(fi.absoluteFilePath()) == Utility::qDateTimeToTime_t(rec._modtime) ) {
+                status.set(SyncFileStatus::STATUS_SYNC);
+            } else {
+                if (rec._remotePerm.isNull() || rec._remotePerm.contains("W") ) {
+                    status.set(SyncFileStatus::STATUS_EVAL);
+                } else {
+                    status.set(SyncFileStatus::STATUS_ERROR);
+                }
+            }
+        } else {
+            qDebug() << Q_FUNC_INFO << "Could not determine state for file" << fileName << "will set STATUS_NEW";
+            status.set(SyncFileStatus::STATUS_NEW);
+        }
+    }
+
+    if (rec.isValid()) {
+        if (rec._remotePerm.isNull()) {
+            // probably owncloud 6, that does not have permissions flag yet.
+            QString url = folder->remoteUrl().toString() + fileName;
+            if (url.contains(QLatin1String("/remote.php/webdav/Shared/"))) {
+                status.setSharedWithMe(true);
+            }
+        } else if (rec._remotePerm.contains("S")) {
+            status.setSharedWithMe(true);
+        }
+    }
+    if (status.tag() == SyncFileStatus::STATUS_NEW) {
+        // check the parent folder if it is shared and if it is allowed to create a file/dir within
+        QDir d( fi.path() );
+        auto parentPath = d.path();
+        auto dirRec = dbFileRecord_capi(folder, parentPath);
+        bool isDir = type == CSYNC_FTW_TYPE_DIR;
+        while( !d.isRoot() && !(d.exists() && dirRec.isValid()) ) {
+            d.cdUp(); // returns true if the dir exists.
+
+            parentPath = d.path();
+            // cut the folder path
+            dirRec = dbFileRecord_capi(folder, parentPath);
+
+            isDir = true;
+        }
+        if( dirRec.isValid() && !dirRec._remotePerm.isNull()) {
+            if( (isDir && !dirRec._remotePerm.contains("K"))
+                    || (!isDir && !dirRec._remotePerm.contains("C")) ) {
+                status.set(SyncFileStatus::STATUS_ERROR);
+            }
+        }
+    }
     return status;
 }
 

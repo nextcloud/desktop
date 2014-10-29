@@ -179,7 +179,9 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_ABORTED:
         errStr = tr("Aborted by the user");
         break;
-
+    case CSYNC_STATUS_SERVICE_UNAVAILABLE:
+	errStr = tr("The mounted directory is temporary not available on the server");
+	break;
     default:
         errStr = tr("An internal error number %1 happened.").arg( (int) err );
     }
@@ -319,7 +321,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item._modtime = file->modtime;
     } else {
         if (file->instruction != CSYNC_INSTRUCTION_NONE) {
+            qDebug() << "ERROR: Instruction" << item._instruction << "vs" << file->instruction << "for" << fileUtf8;
             Q_ASSERT(!"Instructions are both unequal NONE");
+            return -1;
         }
     }
 
@@ -362,7 +366,10 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
         item._errorString = QLatin1String("File locked"); // don't translate, internal use!
         break;
-
+    case CSYNC_STATUS_SERVICE_UNAVAILABLE:
+        item._errorString = QLatin1String("Directory temporarily not available on server.");
+        item._status = SyncFileItem::SoftError;
+        break;
     default:
         Q_ASSERT("Non handled error-status");
         /* No error string */
@@ -1066,11 +1073,6 @@ QByteArray SyncEngine::getPermissions(const QString& file) const
 void SyncEngine::setSelectiveSyncBlackList(const QStringList& list)
 {
     _selectiveSyncBlackList = list;
-    for (int i = 0; i < _selectiveSyncBlackList.count(); ++i) {
-        if (!_selectiveSyncBlackList.at(i).endsWith(QLatin1Char('/'))) {
-            _selectiveSyncBlackList[i].append(QLatin1Char('/'));
-        }
-    }
 }
 
 bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)

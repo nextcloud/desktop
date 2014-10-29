@@ -33,6 +33,7 @@ namespace Mirall {
 SelectiveSyncTreeView::SelectiveSyncTreeView(Account *account, QWidget* parent)
     : QTreeWidget(parent), _inserting(false), _account(account)
 {
+    _loading = new QLabel(tr("Loading ..."), this);
     connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(slotItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(slotItemChanged(QTreeWidgetItem*,int)));
     header()->hide();
@@ -47,6 +48,8 @@ void SelectiveSyncTreeView::refreshFolders()
             this, SLOT(slotUpdateDirectories(QStringList)));
     job->start();
     clear();
+    _loading->show();
+    _loading->move(10,10);
 }
 
 static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)
@@ -78,7 +81,7 @@ void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList
                     || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
                 foreach(const QString &str , _oldBlackList) {
-                    if (str + "/" == path) {
+                    if (str == path) {
                         item->setCheckState(0, Qt::Unchecked);
                         break;
                     } else if (str.startsWith(path)) {
@@ -103,6 +106,8 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
 {
     QScopedValueRollback<bool> isInserting(_inserting);
     _inserting = true;
+
+    _loading->hide();
 
     QTreeWidgetItem *root = topLevelItem(0);
     if (!root) {
@@ -132,6 +137,9 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
         if (paths.last().isEmpty()) paths.removeLast();
         if (paths.isEmpty())
             continue;
+        if (!path.endsWith('/')) {
+            path.append('/');
+        }
         recursiveInsert(root, paths, path);
     }
     root->setExpanded(true);
@@ -218,7 +226,7 @@ QStringList SelectiveSyncTreeView::createBlackList(QTreeWidgetItem* root) const
 
     switch(root->checkState(0)) {
     case Qt::Unchecked:
-        return QStringList(root->data(0, Qt::UserRole).toString());
+        return QStringList(root->data(0, Qt::UserRole).toString() + "/");
     case  Qt::Checked:
         return QStringList();
     case Qt::PartiallyChecked:
@@ -260,9 +268,12 @@ SelectiveSyncDialog::SelectiveSyncDialog(Account* account, const QStringList& bl
 
 void SelectiveSyncDialog::init(Account *account)
 {
+    setWindowTitle(tr("Choose What to Sync"));
     QVBoxLayout *layout = new QVBoxLayout(this);
     _treeView = new SelectiveSyncTreeView(account, this);
-    layout->addWidget(new QLabel(tr("Unchecked folders will not be sync to this computer")));
+    QLabel *label = new QLabel(tr("Unchecked folders will be <b>removed</b> from your local file system and will not be synchronized to this computer anymore"));
+    label->setWordWrap(true);
+    layout->addWidget(label);
     layout->addWidget(_treeView);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
     QPushButton *button;

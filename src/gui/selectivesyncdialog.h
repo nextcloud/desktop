@@ -18,6 +18,7 @@
 
 class QTreeWidgetItem;
 class QTreeWidget;
+class QLabel;
 namespace Mirall {
 
 class Account;
@@ -28,8 +29,12 @@ class SelectiveSyncTreeView : public QTreeWidget {
     Q_OBJECT
 public:
     explicit SelectiveSyncTreeView(Account *account, QWidget* parent = 0);
+
+    /// Returns a list of blacklisted paths, each including the trailing /
     QStringList createBlackList(QTreeWidgetItem* root = 0) const;
     void refreshFolders();
+
+    // oldBlackList is a list of excluded paths, each including a trailing /
     void setFolderInfo(const QString &folderPath, const QString &rootName,
                        const QStringList &oldBlackList = QStringList()) {
         _folderPath = folderPath;
@@ -48,6 +53,7 @@ private:
     QStringList _oldBlackList;
     bool _inserting; // set to true when we are inserting new items on the list
     Account *_account;
+    QLabel *_loading;
 };
 
 class SelectiveSyncDialog : public QDialog {

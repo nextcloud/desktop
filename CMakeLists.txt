@@ -51,6 +51,7 @@ if (${GIT_SHA1} STREQUAL "GITDIR-NOTFOUND")
         set (GIT_SHA1 "${sha1_candidate}")
     endif()
 endif()
+message(STATUS "GIT_SHA1 ${GIT_SHA1}")
 endif()
 
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})

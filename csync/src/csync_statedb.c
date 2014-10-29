@@ -129,6 +129,11 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
       return -1;
   }
 
+  if (ctx->statedb.db) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: DB already open");
+      return -1;
+  }
+
   ctx->statedb.lastReturnValue = SQLITE_OK;
 
   /* Openthe database */
@@ -178,6 +183,8 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
 #endif
   *pdb = db;
 
+   CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "Success");
+
   return 0;
 out:
   sqlite3_close(db);
@@ -191,9 +198,26 @@ int csync_statedb_close(CSYNC *ctx) {
       return -1;
   }
 
-  csync_statedb_finalize_statements(ctx);
+  /* deallocate query resources */
+  if( ctx->statedb.by_fileid_stmt ) {
+      sqlite3_finalize(ctx->statedb.by_fileid_stmt);
+      ctx->statedb.by_fileid_stmt = NULL;
+  }
+  if( ctx->statedb.by_hash_stmt ) {
+      sqlite3_finalize(ctx->statedb.by_hash_stmt);
+      ctx->statedb.by_hash_stmt = NULL;
+  }
+  if( ctx->statedb.by_inode_stmt) {
+      sqlite3_finalize(ctx->statedb.by_inode_stmt);
+      ctx->statedb.by_inode_stmt = NULL;
+  }
 
-  sqlite3_close(ctx->statedb.db);
+  ctx->statedb.lastReturnValue = SQLITE_OK;
+
+  int sr = sqlite3_close(ctx->statedb.db);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "sqlite3_close=%d", sr);
+
+  ctx->statedb.db = 0;
 
   return rc;
 }
@@ -300,28 +324,6 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
   sqlite3_reset(ctx->statedb.by_hash_stmt);
 
   return st;
-}
-
-void   csync_statedb_finalize_statements(CSYNC *ctx) {
-    if( !ctx ) {
-        return;
-    }
-
-    /* deallocate query resources */
-    if( ctx->statedb.by_fileid_stmt ) {
-        sqlite3_finalize(ctx->statedb.by_fileid_stmt);
-        ctx->statedb.by_fileid_stmt = NULL;
-    }
-    if( ctx->statedb.by_hash_stmt ) {
-        sqlite3_finalize(ctx->statedb.by_hash_stmt);
-        ctx->statedb.by_hash_stmt = NULL;
-    }
-    if( ctx->statedb.by_inode_stmt) {
-        sqlite3_finalize(ctx->statedb.by_inode_stmt);
-        ctx->statedb.by_inode_stmt = NULL;
-    }
-
-    ctx->statedb.lastReturnValue = SQLITE_OK;
 }
 
 csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,

@@ -727,7 +727,7 @@ sub createShare($$)
     my $ua  = LWP::UserAgent->new(ssl_opts => { verify_hostname => 0 } );
     $ua->agent( "ownCloudTest_sharing");
     # http://localhost/ocm/ocs/v1.php/apps/files_sharing/api/v1/shares
-    my $puturl = $ocs_url . "ocs/v1.php/apps/files_sharing/api/v1/shares";
+    my $puturl = $ocs_url . "apps/files_sharing/api/v1/shares";
 
     my $string = "path=$dir&shareType=0&shareWith=$user&publicUpload=false&permissions=$readWrite";
     print ">>>>>>>>>> $puturl $string\n";

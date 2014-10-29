@@ -118,8 +118,7 @@ void OwncloudAdvancedSetupPage::updateStatus()
     _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
     if (dataChanged()) {
         if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
-            t = tr("Your entire account will be synced to the local folder '%1'.")
-                .arg(QDir::toNativeSeparators(locFolder));
+            t = "";
         } else {
             t = tr("%1 folder '%2' is synced to local folder '%3'")
                 .arg(Theme::instance()->appName()).arg(_remoteFolder)
@@ -153,7 +152,8 @@ bool OwncloudAdvancedSetupPage::dataChanged()
     Account *oldAccount = AccountManager::instance()->account();
 
     if (!ocWizard || !oldAccount) {
-        return false;
+        // If there was no account configured before, the data is new (hence changed)
+        return true;
     }
 
     const QString url(field("OCUrl").toString());

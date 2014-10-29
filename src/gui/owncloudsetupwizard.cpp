@@ -401,13 +401,19 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         _ocWizard->account()->deleteLater();
         qDebug() << "Rejected the new config, use the old!";
     } else if( result == QDialog::Accepted ) {
-
         Account *newAccount = _ocWizard->account();
         Account *origAccount = AccountManager::instance()->account();
 
         QString localFolder = QDir::fromNativeSeparators(_ocWizard->localFolder());
         if( !localFolder.endsWith(QLatin1Char('/'))) {
             localFolder.append(QLatin1Char('/'));
+        }
+
+        Folder *f = folderMan->folderForPath(localFolder);
+        if( f ) {
+            folderMan->setSyncEnabled(false);
+            folderMan->terminateSyncProcess(f->alias());
+            f->journalDb()->close();
         }
 
         bool isInitialSetup = (origAccount == 0);

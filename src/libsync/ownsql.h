@@ -25,6 +25,7 @@ namespace Mirall {
 
 class OWNCLOUDSYNC_EXPORT SqlDatabase
 {
+    Q_DISABLE_COPY(SqlDatabase)
 public:
     explicit SqlDatabase();
 
@@ -48,8 +49,8 @@ class OWNCLOUDSYNC_EXPORT SqlQuery
     Q_DISABLE_COPY(SqlQuery)
 public:
     explicit SqlQuery();
-    explicit SqlQuery(SqlDatabase db);
-    explicit SqlQuery(const QString& sql, SqlDatabase db);
+    explicit SqlQuery(SqlDatabase& db);
+    explicit SqlQuery(const QString& sql, SqlDatabase& db);
 
     ~SqlQuery();
     QString error() const;

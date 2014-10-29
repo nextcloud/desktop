@@ -101,8 +101,9 @@ ownCloudGui::ownCloudGui(Application *parent) :
 
 void ownCloudGui::setupOverlayIcons()
 {
-
-    if( Utility::isMac() && QFile::exists("/Library/ScriptingAdditions/OwnCloudFinder.osax") ) {
+#ifdef Q_OS_MAC
+    const QLatin1String finderExtension("/Library/ScriptingAdditions/SyncStateFinder.osax");
+    if(QFile::exists(finderExtension) ) {
         QString aScript = QString::fromUtf8("tell application \"Finder\"\n"
                                             "  try\n"
                                             "    «event OWNCload»\n"
@@ -122,7 +123,10 @@ void ownCloudGui::setupOverlayIcons()
           QString resultAsString(result); // if appropriate
           qDebug() << "Laod Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
                    << (p.exitCode() != 0 ? p.errorString() : QString::null);
+    } else  {
+        qDebug() << finderExtension << "does not exist! Finder Overlay Plugin loading failed";
     }
+#endif
 }
 
 // This should rather be in application.... or rather in MirallConfigFile?

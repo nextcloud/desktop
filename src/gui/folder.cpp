@@ -62,6 +62,8 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
       , _wipeDb(false)
       , _proxyDirty(true)
       , _forceSyncOnPollTimeout(false)
+      , _consecutiveFailingSyncs(0)
+      , _consecutiveFollowUpSyncs(0)
       , _journal(path)
       , _csync_ctx(0)
 {
@@ -273,12 +275,19 @@ void Folder::slotPollTimerTimeout()
 
     bool forceSyncIntervalExpired =
             quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval();
-    bool okSyncResult =
-            _syncResult.status() == SyncResult::Success ||
-            _syncResult.status() == SyncResult::Problem;
-    if (forceSyncIntervalExpired ||
-            _forceSyncOnPollTimeout ||
-            !okSyncResult) {
+    bool syncAgainAfterFail = _consecutiveFailingSyncs > 0 && _consecutiveFailingSyncs < 3;
+
+    // There are several conditions under which we trigger a full-discovery sync:
+    // * When a suitably long time has passed since the last sync finished
+    // * When the last sync failed (only a couple of times)
+    // * When the last sync requested another sync to be done (only a couple of times)
+    //
+    // Note that the etag check (see below) and the file watcher may also trigger
+    // syncs.
+    if (forceSyncIntervalExpired
+            || _forceSyncOnPollTimeout
+            || syncAgainAfterFail) {
+
         if (forceSyncIntervalExpired) {
             qDebug() << "** Force Sync, because it has been " << _timeSinceLastSync.elapsed() << "ms "
                      << "since the last sync";
@@ -286,13 +295,18 @@ void Folder::slotPollTimerTimeout()
         if (_forceSyncOnPollTimeout) {
             qDebug() << "** Force Sync, because it was requested";
         }
-        if (!okSyncResult) {
-            qDebug() << "** Force Sync, because the last sync had status: " << _syncResult.statusString();
+        if (syncAgainAfterFail) {
+            qDebug() << "** Force Sync, because the last"
+                     << _consecutiveFailingSyncs << "syncs failed, last status:"
+                     << _syncResult.statusString();
         }
         _forceSyncOnPollTimeout = false;
         emit scheduleToSync(alias());
+
     } else {
-        // do the ordinary etag check for the root folder.
+        // Do the ordinary etag check for the root folder and only schedule a real
+        // sync if it's different.
+
         RequestEtagJob* job = new RequestEtagJob(account, remotePath(), this);
         // check if the etag is different
         QObject::connect(job, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
@@ -543,19 +557,17 @@ void Folder::slotAboutToPropagate(const SyncFileItemVector& items)
 bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
 {
     if (t == CSYNC_FTW_TYPE_DIR) {
-        qDebug() << Q_FUNC_INFO << "ASKING ERROR FOLDERS" << fn;
         if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
+            qDebug() << Q_FUNC_INFO << "Folder has error" << fn;
             s->set(SyncFileStatus::STATUS_ERROR);
             return true;
         }
         // If sync is running, check _syncedItems, possibly give it STATUS_EVAL (=syncing down)
         if (!_engine.isNull()) {
-            qDebug() << Q_FUNC_INFO << "SYNC IS RUNNING, asking SyncEngine" << fn;
             if (_engine->estimateState(fn, t, s)) {
                 return true;
             }
         }
-        qDebug() << Q_FUNC_INFO << "ASKING TAINTED FOLDERS" << fn;
         if (Utility::doesSetContainPrefix(_stateTaintedFolders, fn)) {
             qDebug() << Q_FUNC_INFO << "Folder is tainted, EVAL!" << fn;
             s->set(SyncFileStatus::STATUS_EVAL);
@@ -770,6 +782,17 @@ void Folder::setDirtyNetworkLimits()
     }
 }
 
+void Folder::setSelectiveSyncBlackList(const QStringList& blackList)
+{
+    _selectiveSyncBlackList = blackList;
+    for (int i = 0; i < _selectiveSyncBlackList.count(); ++i) {
+        if (!_selectiveSyncBlackList.at(i).endsWith(QLatin1Char('/'))) {
+            _selectiveSyncBlackList[i].append(QLatin1Char('/'));
+        }
+    }
+}
+
+
 void Folder::slotSyncError(const QString& err)
 {
     _errors.append( err );
@@ -825,6 +848,18 @@ void Folder::slotSyncFinished()
         _syncResult.setStatus(SyncResult::Success);
     }
 
+    // Count the number of syncs that have failed in a row.
+    if (_syncResult.status() == SyncResult::Success
+            || _syncResult.status() == SyncResult::Problem)
+    {
+        _consecutiveFailingSyncs = 0;
+    }
+    else
+    {
+        _consecutiveFailingSyncs++;
+        qDebug() << "the last" << _consecutiveFailingSyncs << "syncs failed";
+    }
+
     emit syncStateChange();
 
     // The syncFinished result that is to be triggered here makes the folderman
@@ -835,16 +870,28 @@ void Folder::slotSyncFinished()
     // all come in.
     QTimer::singleShot(200, this, SLOT(slotEmitFinishedDelayed() ));
 
-    if (!anotherSyncNeeded) {
-        _pollTimer.start();
-        _timeSinceLastSync.restart();
+    _timeSinceLastSync.restart();
+
+    // Increment the follow-up sync counter if necessary.
+    if (anotherSyncNeeded) {
+        _consecutiveFollowUpSyncs++;
+        qDebug() << "another sync was requested by the finished sync, this has"
+                 << "happened" << _consecutiveFollowUpSyncs << "times";
     } else {
-        // Another sync is required.  We will make sure that the poll timer occurs soon enough.
-        qDebug() << "another sync was requested by the finished sync";
-        _forceSyncOnPollTimeout = true;
-        QTimer::singleShot(1000, this, SLOT(slotPollTimerTimeout() ));
+        _consecutiveFollowUpSyncs = 0;
     }
 
+    // Maybe force a follow-up sync to take place, but only a couple of times.
+    if (anotherSyncNeeded && _consecutiveFollowUpSyncs <= 3)
+    {
+        _forceSyncOnPollTimeout = true;
+        // We will make sure that the poll timer occurs soon enough.
+        // delay 1s, 4s, 9s
+        int c = _consecutiveFollowUpSyncs;
+        QTimer::singleShot(c*c * 1000, this, SLOT(slotPollTimerTimeout() ));
+    } else {
+        _pollTimer.start();
+    }
 }
 
 void Folder::slotEmitFinishedDelayed()

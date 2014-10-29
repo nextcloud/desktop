@@ -252,6 +252,10 @@ void Application::slotCredentialsFetched()
 {
     Account *account = AccountManager::instance()->account();
     Q_ASSERT(account);
+    if (!account) {
+        qDebug() << Q_FUNC_INFO << "No account!";
+        return;
+    }
     disconnect(account->credentials(), SIGNAL(fetched()), this, SLOT(slotCredentialsFetched()));
     if (!account->credentials()->ready()) {
         // User canceled the connection or did not give a password

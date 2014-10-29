@@ -145,5 +145,10 @@ private:
     QList<QString> _avoidReadFromDbOnNextSyncFilter;
 };
 
+bool operator==(const SyncJournalDb::DownloadInfo & lhs,
+                const SyncJournalDb::DownloadInfo & rhs);
+bool operator==(const SyncJournalDb::UploadInfo & lhs,
+                const SyncJournalDb::UploadInfo & rhs);
+
 }  // namespace Mirall
 #endif // SYNCJOURNALDB_H

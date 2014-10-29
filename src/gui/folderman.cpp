@@ -697,6 +697,17 @@ bool FolderMan::startFromScratch( const QString& localFolder )
             qDebug() << "startFromScratch: Directory is empty!";
             return true;
         }
+        // Disconnect the socket api from the database to avoid that locking of the
+        // db file does not allow to move this dir.
+        if( _socketApi ) {
+            Folder *f = folderForPath(localFolder);
+            if(f) {
+                if( localFolder.startsWith(f->path()) ) {
+                    _socketApi->slotUnregisterPath(f->alias());
+                }
+            }
+        }
+
         // Make a backup of the folder/file.
         QString newName = getBackupName( parentDir.absoluteFilePath( folderName ) );
         if( !parentDir.rename( fi.absoluteFilePath(), newName ) ) {

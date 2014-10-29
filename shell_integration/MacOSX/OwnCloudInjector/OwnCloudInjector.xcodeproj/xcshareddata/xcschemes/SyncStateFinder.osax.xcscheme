@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8D57630D048677EA00EA77CD"
-               BuildableName = "OwnCloudFinder.bundle"
-               BlueprintName = "OwnCloudFinder"
+               BuildableName = "SyncStateFinder.bundle"
+               BlueprintName = "SyncStateFinder"
                ReferencedContainer = "container:../OwnCloudFinder/OwnCloudFinder.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,8 +29,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8D57630D048677EA00EA77CD"
-               BuildableName = "OwnCloudFinder.osax"
-               BlueprintName = "OwnCloudFinder.osax"
+               BuildableName = "SyncStateFinder.osax"
+               BlueprintName = "SyncStateFinder.osax"
                ReferencedContainer = "container:OwnCloudInjector.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
