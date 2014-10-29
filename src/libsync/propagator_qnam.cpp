@@ -317,32 +317,50 @@ void PropagateUploadFileQNAM::slotPutFinished()
         return;
     }
 
+    // Check the file again post upload.
+    // Two cases must be considered separately: If the upload is finished,
+    // the file is on the server and has a changed ETag. In that case,
+    // the etag has to be properly updated in the client journal, and because
+    // of that we can bail out here with an error. But we can reschedule a
+    // sync ASAP.
+    // But if the upload is ongoing, because not all chunks were uploaded
+    // yet, the upload can be stopped and an error can be displayed, because
+    // the server hasn't registered the new file yet.
     bool finished = job->reply()->hasRawHeader("ETag")
             || job->reply()->hasRawHeader("OC-ETag");
 
-    if (!finished) {
-        QFileInfo fi(_propagator->getFilePath(_item._file));
-        if( !fi.exists() ) {
+    QFileInfo fi(_propagator->getFilePath(_item._file));
+
+    // Check if the file still exists
+    if( !fi.exists() ) {
+        if( !finished ) {
             _propagator->_activeJobs--;
             done(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
-        }
-
-        const time_t new_mtime = FileSystem::getModTime(fi.absoluteFilePath());
-        const quint64 new_size = static_cast<quint64>(fi.size());
-        if (new_mtime != _item._modtime || new_size != _item._size) {
-            qDebug() << "The local file has changed during upload:"
-                     << "mtime: " << _item._modtime << "<->" << new_mtime
-                     << ", size: " << _item._size << "<->" << new_size
-                     << ", QFileInfo: " << Utility::qDateTimeToTime_t(fi.lastModified()) << fi.lastModified();
-            _propagator->_activeJobs--;
+        } else {
             _propagator->_anotherSyncNeeded = true;
+        }
+    }
+
+    // compare expected and real modification time of the file and size
+    const time_t new_mtime = FileSystem::getModTime(fi.absoluteFilePath());
+    const quint64 new_size = static_cast<quint64>(fi.size());
+    if (new_mtime != _item._modtime || new_size != _item._size) {
+        qDebug() << "The local file has changed during upload:"
+                 << "mtime: " << _item._modtime << "<->" << new_mtime
+                 << ", size: " << _item._size << "<->" << new_size
+                 << ", QFileInfo: " << Utility::qDateTimeToTime_t(fi.lastModified()) << fi.lastModified();
+        _propagator->_anotherSyncNeeded = true;
+        if( !finished ) {
+            _propagator->_activeJobs--;
             done(SyncFileItem::SoftError, tr("Local file changed during sync."));
             // FIXME:  the legacy code was retrying for a few seconds.
             //         and also checking that after the last chunk, and removed the file in case of INSTRUCTION_NEW
             return;
         }
+    }
 
+    if (!finished) {
         // Proceed to next chunk.
         _currentChunk++;
         if (_currentChunk >= _chunkCount) {
