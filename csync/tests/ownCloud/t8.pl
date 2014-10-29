@@ -35,7 +35,7 @@ print "Hello, this is t8, a tester for syncing of files on a case sensitive FS\n
 # The test is run on a 'normal' file system, but we tell pwncloud that it is case preserving anyway
 $ENV{OWNCLOUD_TEST_CASE_PRESERVING} = "1";
 
-# FIXME!  the code does not work with parallelism
+# No parallelism for more deterministic action.
 $ENV{OWNCLOUD_MAX_PARALLEL}="1";
 
 initTesting();
@@ -111,6 +111,26 @@ assert( !-e localDir() . 'DIR/Hello.dat' );
 assert( !-e localDir() . 'dir' );
 
 # dir/NORMAL.dat is still on the server
+
+
+printInfo( "Attempt downloading two clashing files in parallel" );
+
+# Enable parallelism
+$ENV{OWNCLOUD_MAX_PARALLEL}="2";
+
+my $tmpdir2 = "/tmp/t8/parallel/";
+mkdir($tmpdir2);
+createLocalFile( $tmpdir2 . "FILE.dat", 23251233 );
+createLocalFile( $tmpdir2 . "file.dat",       33 );
+createRemoteDir( "parallel" );
+glob_put( "$tmpdir2/*", "parallel" );
+
+csync();
+
+# We assume the smaller file finished first, blocking
+# the second file from being saved.
+assert( !-e localDir() . 'parallel/FILE.dat' );
+assert( -e localDir() . 'parallel/file.dat' );
 
 cleanup();
 system("rm -r " . $tmpdir);
