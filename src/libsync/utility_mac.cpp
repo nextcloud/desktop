@@ -108,3 +108,18 @@ void setLaunchOnStartup_private(const QString &appName, const QString& guiName, 
     CFRelease(urlRef);
 }
 
+static bool hasDarkSystray_private()
+{
+    bool returnValue = false;
+    CFStringRef interfaceStyleKey = CFSTR("AppleInterfaceStyle");
+    CFStringRef interfaceStyle = NULL;
+    CFStringRef darkInterfaceStyle = CFSTR("Dark");
+    interfaceStyle = (CFStringRef)CFPreferencesCopyAppValue(interfaceStyleKey,
+                                                            kCFPreferencesCurrentApplication);
+    if (interfaceStyle != NULL) {
+        returnValue = (kCFCompareEqualTo == CFStringCompare(interfaceStyle, darkInterfaceStyle, 0));
+        CFRelease(interfaceStyle);
+    }
+    return returnValue;
+}
+
