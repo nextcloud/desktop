@@ -382,8 +382,11 @@ void CheckServerJob::start()
 void CheckServerJob::slotTimeout()
 {
     qDebug() << "TIMEOUT" << Q_FUNC_INFO;
-    if (reply()->isRunning())
+    if (reply() && reply()->isRunning()) {
         emit timeout(reply()->url());
+    } else if (!reply()) {
+        qDebug() << Q_FUNC_INFO << "Timeout even there was no reply?";
+    }
     deleteLater();
 }
 
