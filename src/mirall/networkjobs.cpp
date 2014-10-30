@@ -51,7 +51,7 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
 {
     _timer.setSingleShot(true);
     if (!AbstractNetworkJob::preOc7WasDetected) {
-        _timer.setInterval(10*1000); // default to 10 seconds.
+        _timer.setInterval(15*1000); // default to 15 seconds.
     } else {
         qDebug() << "Pre-oc7 server detected, adjusting timeout values";
         _timer.setInterval(60*1000); // long PROPFINDs in oc6 might take too long
@@ -104,6 +104,12 @@ void AbstractNetworkJob::setPath(const QString &path)
 void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
     connect(reply, SIGNAL(finished()), SLOT(slotFinished()));
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+    connect(reply, SIGNAL(encrypted()), SIGNAL(networkActivity()));
+#endif
+    connect(reply->manager(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)), SIGNAL(networkActivity()));
+    connect(reply, SIGNAL(sslErrors(QList<QSslError>)), SIGNAL(networkActivity()));
+    connect(reply, SIGNAL(metaDataChanged()), SIGNAL(networkActivity()));
     connect(reply, SIGNAL(downloadProgress(qint64,qint64)), SIGNAL(networkActivity()));
     connect(reply, SIGNAL(uploadProgress(qint64,qint64)), SIGNAL(networkActivity()));
 }
