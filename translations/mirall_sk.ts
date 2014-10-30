@@ -1355,12 +1355,12 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="113"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="127"/>
         <source>Attention, possible case sensitivity clash with %1</source>
         <translation>Pozor, možná kolízia z dôvodu veľkosti písmen s %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="118"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="132"/>
         <source>could not create directory %1</source>
         <translation>nepodarilo sa vytvoriť priečinok %1</translation>
     </message>
@@ -1368,20 +1368,25 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
-        <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Nemožno odstrániť %1 z dôvodu kolízie názvu súboru s lokálnym súborom</translation>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
+        <source>Error removing &apos;%1&apos;: %2; </source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
-        <source>Could not remove directory %1</source>
-        <translation>Nemožno odstrániť priečinok %1</translation>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
+        <source>Could not remove directory &apos;%1&apos;; </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>
+        <source>Could not remove %1 because of a local file name clash</source>
+        <translation>Nemožno odstrániť %1 z dôvodu kolízie názvu súboru s lokálnym súborom</translation>
     </message>
 </context>
 <context>
     <name>Mirall::PropagateLocalRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="257"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="271"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Súbor %1 nemôže byť premenovaný na %2 z dôvodu, že tento názov je už použitý</translation>
     </message>
@@ -1389,7 +1394,7 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::PropagateRemoteRemove</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="138"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="152"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation>Súbor bol odobratý zo zdieľania len na čítanie. Súbor bol obnovený.</translation>
     </message>
@@ -1397,17 +1402,17 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="294"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="308"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Tento priečinok nemôže byť premenovaný. Prosím, vráťte mu pôvodné meno.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="296"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="310"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Tento priečinok nemôže byť premenovaný. Prosím, vráťte mu meno Shared.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="311"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="325"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Súbor bol premenovaný, ale je súčasťou zdieľania len na čítanie. Pôvodný súbor bol obnovený.</translation>
     </message>
@@ -1596,27 +1601,27 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>Mirall::SettingsDialogMac</name>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="50"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="63"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="54"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="67"/>
         <source>Account</source>
         <translation>Účet</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="58"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="71"/>
         <source>Activity</source>
         <translation>Aktivita</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="62"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="75"/>
         <source>General</source>
         <translation>Všeobecné</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="66"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="79"/>
         <source>Network</source>
         <translation>Sieť</translation>
     </message>

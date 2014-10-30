@@ -75,7 +75,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="159"/>
         <source>Modify Account</source>
-        <translation>Modifier un compte</translation>
+        <translation>Modifier le compte</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="20"/>
@@ -121,7 +121,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="130"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>&lt;b&gt;Note :&lt;/b&gt; Certains fichiers, incluant des dossiers montés depuis le réseau ou des dossiers partagés, peuvent avoir des limites différentes.</translation>
+        <translation>&lt;b&gt;Note :&lt;/b&gt; Certains dossiers, montés depuis le réseau ou partagés, peuvent avoir des limites différentes.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="171"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="763"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation>%1 (%3%) de %2 d&apos;espace utilisé sur le serveur.</translation>
+        <translation>L&apos;espace disque sur le serveur est utilisé à %3% (%1 sur %2)</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="807"/>
@@ -489,7 +489,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="205"/>
         <source>Syncing all files in your account with</source>
-        <translation>Synchroniser tous les fichiers sur votre compte avec </translation>
+        <translation>Tous les fichiers sont synchronisés dans</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="208"/>
@@ -927,7 +927,7 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
         <location filename="../src/mirall/networksettings.ui" line="218"/>
         <location filename="../src/mirall/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation>KOctets/s</translation>
+        <translation>Ko/s</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.ui" line="227"/>
@@ -1355,12 +1355,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="113"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="127"/>
         <source>Attention, possible case sensitivity clash with %1</source>
         <translation>Attention, collision possible avec %1 à cause de la casse</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="118"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="132"/>
         <source>could not create directory %1</source>
         <translation>impossible de créer le répertoire %1</translation>
     </message>
@@ -1368,20 +1368,25 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
-        <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Impossible de supprimer %1 à cause d&apos;un conflit local de nom de fichier</translation>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
+        <source>Error removing &apos;%1&apos;: %2; </source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
-        <source>Could not remove directory %1</source>
-        <translation>Impossible de supprimer le dossier %1</translation>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
+        <source>Could not remove directory &apos;%1&apos;; </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>
+        <source>Could not remove %1 because of a local file name clash</source>
+        <translation>Impossible de supprimer %1 à cause d&apos;un conflit local de nom de fichier</translation>
     </message>
 </context>
 <context>
     <name>Mirall::PropagateLocalRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="257"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="271"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Le fichier %1 ne peut pas être renommé en %2 à cause d&apos;un conflit local de nom de fichier</translation>
     </message>
@@ -1389,7 +1394,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::PropagateRemoteRemove</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="138"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="152"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation>Le fichier a été supprimé d&apos;un partage en lecture seule. Il a été restauré.</translation>
     </message>
@@ -1397,17 +1402,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="294"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="308"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Ce dossier ne doit pas être renommé. Il sera renommé avec son nom original.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="296"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="310"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Ce dossier ne doit pas être renommé. Veuillez le nommer Partagé uniquement.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="311"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="325"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Le fichier a été renommé mais appartient à un partage en lecture seule. Le fichier original a été restauré.</translation>
     </message>
@@ -1505,7 +1510,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="68"/>
         <source>Retry Sync</source>
-        <translation>Tenter de synchroniser à nouveau</translation>
+        <translation>Relancer la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="72"/>
@@ -1598,27 +1603,27 @@ Essayez de les synchroniser à nouveau.</numerusform></translation>
 <context>
     <name>Mirall::SettingsDialogMac</name>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="50"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="63"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="54"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="67"/>
         <source>Account</source>
         <translation>Compte</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="58"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="71"/>
         <source>Activity</source>
         <translation>Activité</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="62"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="75"/>
         <source>General</source>
         <translation>Généraux</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="66"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="79"/>
         <source>Network</source>
         <translation>Réseau</translation>
     </message>

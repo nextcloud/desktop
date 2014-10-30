@@ -1355,12 +1355,12 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="113"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="127"/>
         <source>Attention, possible case sensitivity clash with %1</source>
         <translation>Uwaga, możliwa niezgodność związana z wielością liter w %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="118"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="132"/>
         <source>could not create directory %1</source>
         <translation>nie można utworzyć katalogu %1</translation>
     </message>
@@ -1368,20 +1368,25 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="80"/>
-        <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Nie można usunąć %1 z powodu kolizji z lokalną nazwą pliku</translation>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
+        <source>Error removing &apos;%1&apos;: %2; </source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="87"/>
-        <source>Could not remove directory %1</source>
-        <translation>Nie mogę usunąć katalogu %1</translation>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
+        <source>Could not remove directory &apos;%1&apos;; </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>
+        <source>Could not remove %1 because of a local file name clash</source>
+        <translation>Nie można usunąć %1 z powodu kolizji z lokalną nazwą pliku</translation>
     </message>
 </context>
 <context>
     <name>Mirall::PropagateLocalRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="257"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="271"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Plik %1 nie może być nazwany %2 z powodu kolizji z lokalną nazwą pliku</translation>
     </message>
@@ -1389,7 +1394,7 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::PropagateRemoteRemove</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="138"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="152"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation>Plik został usunięty z zasobu z prawem tylko do odczytu. Został przywrócony.</translation>
     </message>
@@ -1397,17 +1402,17 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::PropagateRemoteRename</name>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="294"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="308"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Folder ten nie może być zmieniony. Został zmieniony z powrotem do pierwotnej nazwy.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="296"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="310"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Nie wolno zmieniać nazwy tego folderu. Proszę zmień nazwę z powrotem na Shared.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagatorjobs.cpp" line="311"/>
+        <location filename="../src/mirall/propagatorjobs.cpp" line="325"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Plik był edytowany lokalnie ale jest częścią udziału z prawem tylko do odczytu. Przywrócono oryginalny plik</translation>
     </message>
@@ -1596,27 +1601,27 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>Mirall::SettingsDialogMac</name>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="50"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="63"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="54"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="67"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="58"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="71"/>
         <source>Activity</source>
         <translation>Aktywność</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="62"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="75"/>
         <source>General</source>
         <translation>Ogólne</translation>
     </message>
     <message>
-        <location filename="../src/mirall/settingsdialogmac.cpp" line="66"/>
+        <location filename="../src/mirall/settingsdialogmac.cpp" line="79"/>
         <source>Network</source>
         <translation>Sieć</translation>
     </message>
