@@ -1338,6 +1338,11 @@ Nie je vhodné ju používať.</translation>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Súbor %1 nie je možné stiahnuť, pretože súbor s rovnakým menom už existuje!</translation>
     </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
+        <source>File %1 cannot be saved because of a local file name clash!</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>Mirall::PropagateItemJob</name>

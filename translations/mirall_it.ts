@@ -1337,6 +1337,11 @@ Non è consigliabile utilizzarlo.</translation>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Il file %1 non può essere scaricato a causa di un conflitto con un file locale.</translation>
     </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
+        <source>File %1 cannot be saved because of a local file name clash!</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>Mirall::PropagateItemJob</name>
@@ -1369,12 +1374,12 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>Errore durante la rimozione di &apos;%1&apos;: %2; </translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rimuovere la cartella &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>
@@ -1555,7 +1560,7 @@ Prova a sincronizzare nuovamente.</numerusform></translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="274"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Le cartelle non marcate saranno &lt;b&gt;rimosse&lt;/b&gt; dal file system locale e non saranno sincronizzate più con questo computer</translation>
     </message>
 </context>
 <context>
@@ -2010,7 +2015,7 @@ Prova a sincronizzare nuovamente.</numerusform></translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>The mounted directory is temporary not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>La cartella montata è temporaneamente indisponibile sul server</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="186"/>

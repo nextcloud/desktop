@@ -1338,6 +1338,11 @@ Kullanmanız önerilmez.</translation>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>%1 dosyası, yerel dosya adı çakışması nedeniyle indirilemiyor!</translation>
     </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
+        <source>File %1 cannot be saved because of a local file name clash!</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>Mirall::PropagateItemJob</name>
@@ -1370,12 +1375,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; kaldırılırken hata: %2; </translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; dizini kaldırılamadı; </translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>

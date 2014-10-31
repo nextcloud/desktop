@@ -1338,6 +1338,11 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>File %1 ne peut pas être téléchargé en raison d&apos;un conflit sur le nom du fichier local. </translation>
     </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
+        <source>File %1 cannot be saved because of a local file name clash!</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>Mirall::PropagateItemJob</name>
@@ -1370,12 +1375,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>Erreur lord de la suppression de &apos;%1&apos; : %2;</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation type="unfinished"/>
+        <translation>Impossible de supprimer le répertoire &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>

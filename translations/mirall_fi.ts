@@ -1334,6 +1334,11 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
+        <source>File %1 cannot be saved because of a local file name clash!</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>Mirall::PropagateItemJob</name>
@@ -2221,7 +2226,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="439"/>
         <source>Quota n/a</source>
-        <translation type="unfinished"/>
+        <translation>Kiintiö -</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="446"/>
