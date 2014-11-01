@@ -1339,7 +1339,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo %1 não pode ser salvo por causa de um confronto com um nome de arquivo local!</translation>
     </message>
 </context>
 <context>

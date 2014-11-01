@@ -198,7 +198,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="608"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation> &apos;%1&apos;を検索中</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="648"/>
@@ -1339,7 +1339,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>%1 はローカルファイル名が衝突しているため保存できません！</translation>
     </message>
 </context>
 <context>
@@ -1373,12 +1373,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;の削除エラー : %2;</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation type="unfinished"/>
+        <translation>ディレクトリ &apos;%1&apos;を削除できません;</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>
@@ -1544,7 +1544,8 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/protocolwidget.cpp" line="257"/>
         <source>%n files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>直前のエラーのため､%n個のファイルが無視されました。
+もう一度同期してください。</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1557,7 +1558,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="274"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>チェックしていないフォルダはローカルファイルシステムから &lt;b&gt;削除&lt;/b&gt;され､このコンピュータと同期されなくなります。</translation>
     </message>
 </context>
 <context>
@@ -2012,7 +2013,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>The mounted directory is temporary not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>マウントしたディレクトリはサーバー上では一時的に利用出来ません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="186"/>
@@ -2243,7 +2244,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="470"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation> &apos;%1&apos;を検索中</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="474"/>

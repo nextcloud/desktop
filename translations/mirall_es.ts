@@ -1341,7 +1341,7 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>¡ El fichero %1 no puede guardar debido a un conflicto con el nombre de otro fichero local !</translation>
     </message>
 </context>
 <context>
@@ -1375,12 +1375,12 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>Error eliminando &apos;%1&apos;: %2; </translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation type="unfinished"/>
+        <translation>No se pudo eliminar el directorio &apos;%1&apos;; </translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>
@@ -2016,7 +2016,7 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>The mounted directory is temporary not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>El directorio en uso no esta, temporalmente, disponible en el servidor</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="186"/>

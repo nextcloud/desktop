@@ -1341,7 +1341,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 nemohl být uložen z důvodu kolize názvu se souborem v místním systému!</translation>
     </message>
 </context>
 <context>
