@@ -118,7 +118,7 @@ void RemotePathChecker::workerThreadLoop()
                 bool changed = false;
                 {   std::unique_lock<std::mutex> lock(_mutex);
                     auto &it = _cache[responsePath];
-                    changed = it == state;
+                    changed = (it != state);
                     it = state;
                 }
                 if (changed) {
