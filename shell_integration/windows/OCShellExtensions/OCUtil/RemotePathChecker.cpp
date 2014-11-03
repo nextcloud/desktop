@@ -16,6 +16,8 @@
 #include "RemotePathChecker.h"
 #include "StringUtil.h"
 
+#include <shlobj.h>
+
 #include <algorithm>
 #include <iostream>
 #include <sstream>
@@ -77,7 +79,7 @@ void RemotePathChecker::workerThreadLoop()
 				{   std::unique_lock<std::mutex> lock(_mutex);
 					_watchedDirectories.push_back(responsePath);
 				}
-				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH, responsePath.data(), NULL);
+				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
 			} else if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
                 wstring responsePath = response.substr(16); // length of UNREGISTER_PATH:
 
@@ -95,7 +97,7 @@ void RemotePathChecker::workerThreadLoop()
                         }
                     }
                 }
-                SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH, responsePath.data(), NULL);
+				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
             } else if (StringUtil::begins_with(response, wstring(L"STATUS:")) ||
                     StringUtil::begins_with(response, wstring(L"BROADCAST:"))) {
 
@@ -122,16 +124,17 @@ void RemotePathChecker::workerThreadLoop()
                 if (changed) {
                     SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
                 }
-            }
-        } else if (StringUtil::begins_with(response, wstring(L"UPDATE_VIEW"))) {
-            std::unique_lock<std::mutex> lock(_mutex);
-            // Request a status for all the items in the cache.
-            for (auto it = _cache.begin(); it != _cache.end() ; ++it ) {
-                if (!socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + it->first + L'\n').data())) {
-                    break;
-                }
-            }
-        }
+			}
+			else if (StringUtil::begins_with(response, wstring(L"UPDATE_VIEW"))) {
+				std::unique_lock<std::mutex> lock(_mutex);
+				// Request a status for all the items in the cache.
+				for (auto it = _cache.begin(); it != _cache.end(); ++it) {
+					if (!socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + it->first + L'\n').data())) {
+						break;
+					}
+				}
+			}
+		}
 
 		if (socket.Event() == INVALID_HANDLE_VALUE) {
 			std::unique_lock<std::mutex> lock(_mutex);
