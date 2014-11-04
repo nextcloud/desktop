@@ -120,7 +120,7 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
     auto watchedDirectories = _checker->WatchedDirectories();
 
 	wstring wpath(pwszPath);
-	//wpath.append(L"\\");
+	wpath.append(L"\\");
 	vector<wstring>::iterator it;
 	bool watched = false;
 	for (it = watchedDirectories.begin(); it != watchedDirectories.end(); ++it) {
