@@ -195,4 +195,4 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
                 self.askForOverlay(filename)
                 break
             else:
-                print("Not in scope:"+filename)
+                # print("Not in scope:"+filename)
