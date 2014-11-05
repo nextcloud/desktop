@@ -802,6 +802,19 @@ void PropagateDownloadFileQNAM::downloadFinished()
 
     QString error;
     if (!FileSystem::renameReplace(_tmpFile.fileName(), fn, &error)) {
+        // If we moved away the original file due to a conflict but can't
+        // put the downloaded file in its place, we are in a bad spot:
+        // If we do nothing the next sync run will assume the user deleted
+        // the file!
+        // To avoid that, the file is removed from the metadata table entirely
+        // which makes it look like we're just about to initially download
+        // it.
+        if (isConflict) {
+            _propagator->_journal->deleteFileRecord(fn);
+            _propagator->_journal->commit("download finished");
+            _propagator->_anotherSyncNeeded = true;
+        }
+
         done(SyncFileItem::NormalError, error);
         return;
     }
