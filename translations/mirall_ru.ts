@@ -1375,12 +1375,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>Ошибка при удалении &apos;%1&apos;: %2; </translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation type="unfinished"/>
+        <translation>Невозможно удалить директорию &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>
@@ -1546,7 +1546,10 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/protocolwidget.cpp" line="257"/>
         <source>%n files are ignored because of previous errors.
  Try to sync these again.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n файл проигнорированы из-за предыдущих ошибок.
+Попробуйте синхронизировать их ещё раз.</numerusform><numerusform>%n файлов проигнорированы из-за предыдущих ошибок.
+Попробуйте синхронизировать их ещё раз.</numerusform><numerusform>%n файла проигнорированы из-за предыдущих ошибок.
+Попробуйте синхронизировать их ещё раз.</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2014,7 +2017,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>The mounted directory is temporary not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Подключённая директория временно недоступна на сервере</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="186"/>
