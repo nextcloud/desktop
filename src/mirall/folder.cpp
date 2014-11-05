@@ -316,7 +316,7 @@ void Folder::slotPollTimerTimeout()
 
 void Folder::etagRetreived(const QString& etag)
 {
-    qDebug() << "* Compare etag  with previous etag: " << (_lastEtag != etag);
+    qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag;
 
     // re-enable sync if it was disabled because network was down
     FolderMan::instance()->setSyncEnabled(true);
