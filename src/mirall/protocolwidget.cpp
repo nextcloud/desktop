@@ -65,9 +65,9 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 
     connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
 
-    _clearBlacklistBtn = _ui->_dialogButtonBox->addButton(tr("Retry Sync"), QDialogButtonBox::ActionRole);
-    _clearBlacklistBtn->setEnabled(false);
-    connect(_clearBlacklistBtn, SIGNAL(clicked()), SLOT(slotClearBlacklist()));
+    _retrySyncBtn = _ui->_dialogButtonBox->addButton(tr("Retry Sync"), QDialogButtonBox::ActionRole);
+    _retrySyncBtn->setEnabled(false);
+    connect(_retrySyncBtn, SIGNAL(clicked()), SLOT(slotRetrySync()));
 
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
@@ -118,7 +118,7 @@ void ProtocolWidget::copyToClipboard()
     emit guiLog(tr("Copied to clipboard"), tr("The sync status has been copied to the clipboard."));
 }
 
-void ProtocolWidget::slotClearBlacklist()
+void ProtocolWidget::slotRetrySync()
 {
     FolderMan *folderMan = FolderMan::instance();
 
@@ -126,7 +126,12 @@ void ProtocolWidget::slotClearBlacklist()
 
     foreach( Folder *f, folders ) {
         int num = f->slotWipeBlacklist();
-        qDebug() << num << "entries were removed from"<< f->alias() << "blacklist";
+        qDebug() << num << "entries were removed from"
+                 << f->alias() << "blacklist";
+
+        num = f->slotDiscardDownloadProgress();
+        qDebug() << num << "temporary files with partial downloads"
+                 << "were removed from" << f->alias();
     }
 
     folderMan->slotScheduleAllFolders();
@@ -247,18 +252,23 @@ void ProtocolWidget::computeResyncButtonEnabled()
     FolderMan *folderMan = FolderMan::instance();
     Folder::Map folders = folderMan->map();
 
-    int cnt = 0;
+    int blacklist_cnt = 0;
+    int downloads_cnt = 0;
     foreach( Folder *f, folders ) {
-        cnt += f->blackListEntryCount();
+        blacklist_cnt += f->blackListEntryCount();
+        downloads_cnt += f->downloadInfoCount();
     }
 
-    QString t = tr("Currently no files are ignored because of previous errors.");
-    if(cnt > 0) {
-        t = tr("%n files are ignored because of previous errors.\n Try to sync these again.", 0, cnt);
+    QString t = tr("Currently no files are ignored because of previous errors and no downloads are in progress.");
+    bool enabled = blacklist_cnt > 0 || downloads_cnt > 0;
+    if (enabled) {
+        t =   tr("%n files are ignored because of previous errors.\n", 0, blacklist_cnt)
+            + tr("%n files are partially downloaded.\n", 0, downloads_cnt)
+            + tr("Try to sync these again.");
     }
 
-    _clearBlacklistBtn->setEnabled(cnt > 0);
-    _clearBlacklistBtn->setToolTip(t);
+    _retrySyncBtn->setEnabled(enabled);
+    _retrySyncBtn->setToolTip(t);
 
 }
 

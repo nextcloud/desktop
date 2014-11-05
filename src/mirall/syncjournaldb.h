@@ -72,6 +72,7 @@ public:
     DownloadInfo getDownloadInfo(const QString &file);
     void setDownloadInfo(const QString &file, const DownloadInfo &i);
     QVector<DownloadInfo> getAndDeleteStaleDownloadInfos(const QSet<QString>& keep);
+    int downloadInfoCount();
 
     UploadInfo getUploadInfo(const QString &file);
     void setUploadInfo(const QString &file, const UploadInfo &i);

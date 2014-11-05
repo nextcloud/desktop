@@ -47,7 +47,7 @@ public slots:
 
 protected slots:
     void copyToClipboard();
-    void slotClearBlacklist();
+    void slotRetrySync();
 
 signals:
     void guiLog(const QString&, const QString&);
@@ -65,7 +65,7 @@ private:
 
     const int IgnoredIndicatorRole;
     Ui::ProtocolWidget *_ui;
-    QPushButton *_clearBlacklistBtn;
+    QPushButton *_retrySyncBtn;
     QPushButton *_copyBtn;
 };
 

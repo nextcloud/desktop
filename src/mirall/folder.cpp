@@ -506,6 +506,26 @@ void Folder::createGuiLog( const QString& filename, SyncFileStatus status, int c
     }
 }
 
+int Folder::slotDiscardDownloadProgress()
+{
+    // Delete from journal and from filesystem.
+    QDir folderpath(_path);
+    QSet<QString> keep_nothing;
+    const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
+            _journal.getAndDeleteStaleDownloadInfos(keep_nothing);
+    foreach (const SyncJournalDb::DownloadInfo & deleted_info, deleted_infos) {
+        const QString tmppath = folderpath.filePath(deleted_info._tmpfile);
+        qDebug() << "Deleting temporary file: " << tmppath;
+        QFile::remove(tmppath);
+    }
+    return deleted_infos.size();
+}
+
+int Folder::downloadInfoCount()
+{
+    return _journal.downloadInfoCount();
+}
+
 int Folder::blackListEntryCount()
 {
     return _journal.blackListEntryCount();
