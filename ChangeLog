@@ -26,6 +26,14 @@ version 1.7.0 (release 2014-10-xx)
  * OS X: Sparkle update to provide pkg format properly
  * OS X: Change distribution format from dmg to pkg with new installer.
  * Win: Fix handling of filenames with trailing dot or space
+ * Fixed data loss when renaming a download temporary fails and there was
+   a conflict at the same time.
+ * Fixed missing warnings about reusing a sync folder when the back button
+   was used in the advanced folder setup wizard.
+ * The 'Retry Sync' button now also restarts all downloads.
+ * Win: Don't use the wrong way to get file mtimes in the legacy propagator.
+ * Clean up temporary downloads and some extra database files when wiping a
+   folder.
 
 version 1.6.4 (release 2014-10-22)
  * Fix startup logic, fixes bug #1989
