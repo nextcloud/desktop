@@ -95,6 +95,12 @@ void PropagateUploadFileLegacy::start()
 
         state = hbf_splitlist(trans.data(), file.handle());
 
+        // This is the modtime hbf will announce to the server.
+        // We don't trust the modtime hbf computes itself via _fstat64
+        // on windows - hbf may only use it to detect file changes during
+        // upload.
+        trans->oc_header_modtime = FileSystem::getModTime(file.fileName());
+
         // If the source file has changed during upload, it is detected and the
         // variable _previousFileSize is set accordingly. The propagator waits a
         // couple of seconds and retries.
@@ -105,7 +111,7 @@ void PropagateUploadFileLegacy::start()
                                       Q_ARG(qint64, trans->stat_size - _previousFileSize));
             // update the item's values to the current from trans. hbf_splitlist does a stat
             _item._size = trans->stat_size;
-            _item._modtime = trans->modtime;
+            _item._modtime = trans->oc_header_modtime;
 
         }
         emit progress(_item, 0);
@@ -185,7 +191,7 @@ void PropagateUploadFileLegacy::start()
         if( trans->modtime_accepted ) {
             _item._etag = parseEtag(hbf_transfer_etag( trans.data() ));
         } else {
-            if (!updateMTimeAndETag(uri.data(), _item._modtime))
+            if (!updateMTimeAndETag(uri.data(), trans->oc_header_modtime))
                 return;
         }
 
@@ -242,7 +248,7 @@ void PropagateUploadFileLegacy::chunk_finished_cb(hbf_transfer_s *trans, int chu
         pi._valid = true;
         pi._chunk = chunk + 1; // next chunk to start with
         pi._transferid = trans->transfer_id;
-        pi._modtime =  Utility::qDateTimeFromTime_t(trans->modtime);
+        pi._modtime =  Utility::qDateTimeFromTime_t(trans->oc_header_modtime);
         that->_propagator->_journal->setUploadInfo(that->_item._file, pi);
         that->_propagator->_journal->commit("Upload info");
     }
