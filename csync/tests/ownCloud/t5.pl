@@ -51,6 +51,11 @@ print "Created share with id <$shareId>\n";
 
 assert( $shareId > 0 );
 
+if( $ENV{SERVER_VERSION} eq "owncloud6" ) {
+  print "This test does not make more sense for ownCloud6, leaving for good!\n\n";
+  exit;
+} 
+
 # put a couple of files into the shared directory in the sharer account
 glob_put( 'sharing/*', $share_dir, $sharee);
 
@@ -61,7 +66,6 @@ moveRemoteFile( server() . $share_dir, localDir(), 1 );
 # call csync, sync local t1 to remote t1
 printInfo("Initial sync, sync stuff down.");
 csync();
-
 
 assertLocalAndRemoteDir( '', 0 );
 

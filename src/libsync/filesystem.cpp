@@ -96,12 +96,18 @@ time_t FileSystem::getModTime(const QString &filename)
     return result;
 }
 
-void FileSystem::setModTime(const QString& filename, time_t modTime)
+bool FileSystem::setModTime(const QString& filename, time_t modTime)
 {
     struct timeval times[2];
     times[0].tv_sec = times[1].tv_sec = modTime;
     times[0].tv_usec = times[1].tv_usec = 0;
-    c_utimes(filename.toUtf8().data(), times);
+    int rc = c_utimes(filename.toUtf8().data(), times);
+    if (rc != 0) {
+        qDebug() << "Error setting mtime for" << filename
+                 << "failed: rc" << rc << ", errno:" << errno;
+        return false;
+    }
+    return true;
 }
 
 bool FileSystem::renameReplace(const QString& originFileName, const QString& destinationFileName, QString* errorString)

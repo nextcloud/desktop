@@ -861,6 +861,24 @@ QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInf
     return deleted_entries;
 }
 
+int SyncJournalDb::downloadInfoCount()
+{
+    int re = 0;
+
+    QMutexLocker locker(&_mutex);
+    if( checkConnect() ) {
+        SqlQuery query("SELECT count(*) FROM downloadinfo", _db);
+
+        if( ! query.exec() ) {
+            sqlFail("Count number of downloadinfo entries failed", query);
+        }
+        if( query.next() ) {
+            re = query.intValue(0);
+        }
+    }
+    return re;
+}
+
 SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString& file)
 {
     QMutexLocker locker(&_mutex);

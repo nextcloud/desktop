@@ -50,7 +50,8 @@
 namespace Mirall {
 
 // Code copied from Qt5's QDir::removeRecursively
-static bool removeRecursively(const QString &path)
+// (and modified to report the error)
+static bool removeRecursively(const QString &path, QString &error)
 {
     bool success = true;
     QDirIterator di(path, QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
@@ -58,15 +59,28 @@ static bool removeRecursively(const QString &path)
         di.next();
         const QFileInfo& fi = di.fileInfo();
         bool ok;
-        if (fi.isDir() && !fi.isSymLink())
-            ok = removeRecursively(di.filePath()); // recursive
-        else
-            ok = QFile::remove(di.filePath());
+        if (fi.isDir() && !fi.isSymLink()) {
+            ok = removeRecursively(di.filePath(), error); // recursive
+        } else {
+            QFile f(di.filePath());
+            ok = f.remove();
+            if (!ok) {
+                error += PropagateLocalRemove::tr("Error removing '%1': %2; ").
+                    arg(QDir::toNativeSeparators(f.fileName()), f.errorString());
+                qDebug() << "Error removing " << f.fileName() << ':' << f.errorString();
+            }
+        }
         if (!ok)
             success = false;
     }
-    if (success)
+    if (success) {
         success = QDir().rmdir(path);
+        if (!success) {
+            error += PropagateLocalRemove::tr("Could not remove directory '%1'; ")
+                .arg(QDir::toNativeSeparators(path));
+            qDebug() << "Error removing directory" << path;
+        }
+    }
     return success;
 }
 
@@ -83,9 +97,9 @@ void PropagateLocalRemove::start()
     }
 
     if (_item._isDirectory) {
-        if (QDir(filename).exists() && !removeRecursively(filename)) {
-            done(SyncFileItem::NormalError, tr("Could not remove directory %1")
-                 .arg(QDir::toNativeSeparators(filename)));
+        QString error;
+        if (QDir(filename).exists() && !removeRecursively(filename, error)) {
+            done(SyncFileItem::NormalError, error);
             return;
         }
     } else {

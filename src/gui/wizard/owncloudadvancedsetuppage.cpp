@@ -98,7 +98,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 
     _checking  = false;
     _multipleFoldersExist = false;
-    _oldLocalFolder = localFolder();
+    _oldLocalFolder = wizard()->property("oldLocalFolder").toString();
 
     // call to init label
     updateStatus();

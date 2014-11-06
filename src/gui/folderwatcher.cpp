@@ -71,6 +71,12 @@ bool FolderWatcher::pathIsIgnored( const QString& path )
 {
     if( path.isEmpty() ) return true;
 
+    QFileInfo fInfo(path);
+    if( fInfo.isHidden() ) {
+        qDebug() << "* Discarded as is hidden!" << fInfo.filePath();
+        return true;
+    }
+
     // Remember: here only directories are checked!
     // If that changes to files too at some day, remember to check
     // for the database name as well as the trailing slash rule for
@@ -78,12 +84,6 @@ bool FolderWatcher::pathIsIgnored( const QString& path )
     foreach (QString pattern, _ignores) {
         QRegExp regexp(pattern);
         regexp.setPatternSyntax(QRegExp::Wildcard);
-
-        QFileInfo fInfo(path);
-        if( fInfo.isHidden() ) {
-            qDebug() << "* Discarded as is hidden!" << fInfo.filePath();
-            return true;
-        }
 
         if(pattern.endsWith('/')) {
             // directory only pattern. But since only dirs here, we cut off the trailing dir.

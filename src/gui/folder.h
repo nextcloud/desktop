@@ -149,6 +149,8 @@ public slots:
       void setProxyDirty(bool value);
       bool proxyDirty();
 
+      int slotDiscardDownloadProgress();
+      int downloadInfoCount();
       int slotWipeBlacklist();
       int blackListEntryCount();
 

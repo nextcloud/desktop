@@ -2,18 +2,18 @@ ChangeLog
 =========
 version 1.7.0 (release 2014-10-xx)
 
-* oC7 Sharing: Handle new sharing options of ownCloud 7 correctly.
+ * oC7 Sharing: Handle new sharing options of ownCloud 7 correctly.
  * Added Selective sync: Ability to unselect server folders which are
    excluded from syncing, plus GUI and setup GUI
+ * Added overlay icons for Windows Explorer, Mac OS Finder and GNOME Nautilus.
+   Information is provided by the client via a local socket / named pipe API
+   which provides information about the sync status of files.
  * Improved local change detection: consider file size, detect files
    with ongoing changes and do not upload immediately
  * Improved HTTP request timeout handler: all successful requests reset
    the timeout counter
  * Improvements for syncing command line tool: netrc support, improved
    SSL support, non interactive mode
- * Added a socket based API to provide file management shells with status
-   information about the sync status of files. That is a prerequisite for
-   the overlay icons in the file managers.
  * Permission system: ownCloud 7 delivers file and folder permissions,
    added ability to deal with it for shared folders and more.
  * Ignore handling: Do not recurse into ignored or excluded directories
@@ -23,9 +23,17 @@ version 1.7.0 (release 2014-10-xx)
  * Blacklist improvements
  * Improved logging: more useful meta info, removed noise
  * Updated to latest Qt5 versions on Windows and OS X
+ * Fixed data loss when renaming a download temporary fails and there was
+   a conflict at the same time.
+ * Fixed missing warnings about reusing a sync folder when the back button
+   was used in the advanced folder setup wizard.
+ * The 'Retry Sync' button now also restarts all downloads.
+ * Clean up temporary downloads and some extra database files when wiping a
+   folder.
  * OS X: Sparkle update to provide pkg format properly
  * OS X: Change distribution format from dmg to pkg with new installer.
- * Win: Fix handling of filenames with trailing dot or space
+ * Windows: Fix handling of filenames with trailing dot or space
+ * Windows: Don't use the wrong way to get file mtimes in the legacy propagator.
 
 version 1.6.4 (release 2014-10-22)
  * Fix startup logic, fixes bug #1989

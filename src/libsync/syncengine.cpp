@@ -405,12 +405,17 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
         if (remote && item._should_update_etag && !item._isDirectory && item._instruction == CSYNC_INSTRUCTION_NONE) {
-            // Update the database now already  (new fileid or etag or remotePerm)
-            // Those are files that were detected as "resolved conflict".
+            // Update the database now already:  New fileid or Etag or RemotePerm
+            // Or for files that were detected as "resolved conflict".
             // They should have been a conflict because they both were new, or both
             // had their local mtime or remote etag modified, but the size and mtime
             // is the same on the server.  This typically happen when the database is removed.
             // Nothing will be done for those file, but we still need to update the database.
+
+            // Even if the mtime is different on the server, we always want to keep the mtime from
+            // the file system in the DB, this is to avoid spurious upload on the next sync
+            item._modtime = file->other.modtime;
+
             _journal->setFileRecord(SyncJournalFileRecord(item, _localPath + item._file));
             item._should_update_etag = false;
         }

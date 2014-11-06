@@ -317,7 +317,7 @@ void Folder::slotPollTimerTimeout()
 
 void Folder::etagRetreived(const QString& etag)
 {
-    qDebug() << "* Compare etag  with previous etag: " << (_lastEtag != etag);
+    qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag;
 
     // re-enable sync if it was disabled because network was down
     FolderMan::instance()->setSyncEnabled(true);
@@ -510,6 +510,26 @@ void Folder::createGuiLog( const QString& filename, SyncFileStatus status, int c
     }
 }
 
+int Folder::slotDiscardDownloadProgress()
+{
+    // Delete from journal and from filesystem.
+    QDir folderpath(_path);
+    QSet<QString> keep_nothing;
+    const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
+            _journal.getAndDeleteStaleDownloadInfos(keep_nothing);
+    foreach (const SyncJournalDb::DownloadInfo & deleted_info, deleted_infos) {
+        const QString tmppath = folderpath.filePath(deleted_info._tmpfile);
+        qDebug() << "Deleting temporary file: " << tmppath;
+        QFile::remove(tmppath);
+    }
+    return deleted_infos.size();
+}
+
+int Folder::downloadInfoCount()
+{
+    return _journal.downloadInfoCount();
+}
+
 int Folder::blackListEntryCount()
 {
     return _journal.blackListEntryCount();
@@ -633,6 +653,9 @@ void Folder::wipe()
 {
     QString stateDbFile = path()+QLatin1String(".csync_journal.db");
 
+    // Delete files that have been partially downloaded.
+    slotDiscardDownloadProgress();
+
     _journal.close(); // close the sync journal
 
     QFile file(stateDbFile);
@@ -645,12 +668,11 @@ void Folder::wipe()
     } else {
         qDebug() << "WRN: statedb is empty, can not remove.";
     }
-    // Check if the tmp database file also exists
-    QString ctmpName = path() + QLatin1String(".csync_journal.db.ctmp");
-    QFile ctmpFile( ctmpName );
-    if( ctmpFile.exists() ) {
-        ctmpFile.remove();
-    }
+
+    // Also remove other db related files
+    QFile::remove( stateDbFile + ".ctmp" );
+    QFile::remove( stateDbFile + "-shm" );
+    QFile::remove( stateDbFile + "-wal" );
 }
 
 bool Folder::setIgnoredFiles()

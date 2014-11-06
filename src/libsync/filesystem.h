@@ -40,7 +40,7 @@ void OWNCLOUDSYNC_EXPORT setFileHidden(const QString& filename, bool hidden);
  */
 time_t OWNCLOUDSYNC_EXPORT getModTime(const QString &filename);
 
-void setModTime(const QString &filename, time_t modTime);
+bool setModTime(const QString &filename, time_t modTime);
 
 /**
  * Rename the file \a originFileName to \a destinationFileName, and overwrite the destination if it
