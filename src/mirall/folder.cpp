@@ -649,6 +649,9 @@ void Folder::wipe()
 {
     QString stateDbFile = path()+QLatin1String(".csync_journal.db");
 
+    // Delete files that have been partially downloaded.
+    slotDiscardDownloadProgress();
+
     _journal.close(); // close the sync journal
 
     QFile file(stateDbFile);
@@ -661,12 +664,11 @@ void Folder::wipe()
     } else {
         qDebug() << "WRN: statedb is empty, can not remove.";
     }
-    // Check if the tmp database file also exists
-    QString ctmpName = path() + QLatin1String(".csync_journal.db.ctmp");
-    QFile ctmpFile( ctmpName );
-    if( ctmpFile.exists() ) {
-        ctmpFile.remove();
-    }
+
+    // Also remove other db related files
+    QFile::remove( stateDbFile + ".ctmp" );
+    QFile::remove( stateDbFile + "-shm" );
+    QFile::remove( stateDbFile + "-wal" );
 }
 
 bool Folder::setIgnoredFiles()
