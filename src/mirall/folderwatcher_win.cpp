@@ -56,11 +56,14 @@ void WatcherThread::run()
                 size_t len = pFileNotify->FileNameLength / 2;
                 QString file = _path + "\\" + QString::fromWCharArray(pFileNotify->FileName, len);
 
+                QString longfile;
                 QScopedArrayPointer<TCHAR> buffer(new TCHAR[maxlen]);
                 if (GetLongPathNameW(reinterpret_cast<LPCWSTR>(file.utf16()), buffer.data(), maxlen) == 0) {
-                    qDebug() << "Error converting file name to full length";
+                    qDebug() << Q_FUNC_INFO << "Error converting file name to full length, resorting to original name.";
+                    longfile = file;
+                } else {
+                    longfile = QString::fromUtf16(reinterpret_cast<const ushort *>(buffer.data()), maxlen-1);
                 }
-                const QString longfile = QString::fromUtf16(reinterpret_cast<const ushort *>(buffer.data()), maxlen-1);
 
                 qDebug() << Q_FUNC_INFO << "Found change in" << file;
                 emit changed(longfile);
