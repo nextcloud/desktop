@@ -196,3 +196,4 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
                 break
             else:
                 # print("Not in scope:"+filename)
+                pass
