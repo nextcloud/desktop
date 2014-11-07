@@ -444,16 +444,19 @@ void FolderMan::slotScheduleSync( const QString& alias )
         return;
     }
 
+#ifndef Q_OS_MAC
     // The folder watcher fires a lot of bogus notifications during
     // a sync operation, both for actual user files and the database
     // and log. Never enqueue a folder for sync while it is syncing.
     // We lose some genuine sync requests that way, but that can't be
     // helped.
-    // ^^ FIXME: Note that this is not the case on OS X
+    // This works fine on OSX, where the folder watcher does not
+    // report changes done by our own process.
     if( _currentSyncFolder == alias ) {
         qDebug() << "folder " << alias << " is currently syncing. NOT scheduling.";
         return;
     }
+#endif
 
     if( _socketApi ) {
         // We want the SocketAPI to already now update so that it can show the EVAL icon
