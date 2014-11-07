@@ -73,7 +73,7 @@ private slots:
         Utility::writeRandomFile( _root+"/a1/movefile");
 
         _watcher = new FolderWatcher(_root);
-        QObject::connect(_watcher, SIGNAL(folderChanged(QString)), this, SLOT(slotFolderChanged(QString)));
+        QObject::connect(_watcher, SIGNAL(pathChanged(QString)), this, SLOT(slotFolderChanged(QString)));
         _timer.singleShot(5000, this, SLOT(slotEnd()));
     }
 
@@ -91,9 +91,10 @@ private slots:
     }
 
     void testACreate() { // create a new file
+        QString file(_root + "/foo.txt");
         QString cmd;
-        _requiredNotifications.insert(_root);
-        cmd = QString("echo \"xyz\" > %1/foo.txt").arg(_root);
+        _requiredNotifications.insert(file);
+        cmd = QString("echo \"xyz\" > %1").arg(file);
         qDebug() << "Command: " << cmd;
         system(cmd.toLocal8Bit());
 
@@ -101,12 +102,13 @@ private slots:
     }
 
     void testATouch() { // touch an existing file.
-        _requiredNotifications.insert(_root+"/a1");
+        QString file(_root + "/a1/random.bin");
+        _requiredNotifications.insert(file);
 #ifdef Q_OS_WIN
         Utility::writeRandomFile(QString("%1/a1/random.bin").arg(_root));
 #else
         QString cmd;
-        cmd = QString("/usr/bin/touch %1/a1/random.bin").arg(_root);
+        cmd = QString("/usr/bin/touch %1").arg(file);
         qDebug() << "Command: " << cmd;
         system(cmd.toLocal8Bit());
 #endif
@@ -115,47 +117,55 @@ private slots:
     }
 
     void testCreateADir() {
-        _requiredNotifications.insert(_root+"/a1/b1");
-        _skipNotifications.insert(_root + "/a1/b1/new_dir");
+        QString file(_root+"/a1/b1/new_dir");
+        _requiredNotifications.insert(file);
+        //_skipNotifications.insert(_root + "/a1/b1/new_dir");
         QDir dir;
-        dir.mkdir( _root + "/a1/b1/new_dir");
-        QVERIFY(QFile::exists(_root + "/a1/b1/new_dir"));
+        dir.mkdir(file);
+        QVERIFY(QFile::exists(file));
 
         checkNotifications();
     }
 
     void testRemoveADir() {
-        _requiredNotifications.insert(_root+"/a1/b3");
+        QString file(_root+"/a1/b3/c3");
+        _requiredNotifications.insert(file);
         QDir dir;
-        QVERIFY(dir.rmdir(_root+"/a1/b3/c3"));
+        QVERIFY(dir.rmdir(file));
 
         checkNotifications();
     }
 
     void testRemoveAFile() {
-        _requiredNotifications.insert(_root+"/a1/b2");
-        QVERIFY(QFile::exists(_root+"/a1/b2/todelete.bin"));
-        QFile::remove(_root+"/a1/b2/todelete.bin");
-        QVERIFY(!QFile::exists(_root+"/a1/b2/todelete.bin"));
+        QString file(_root+"/a1/b2/todelete.bin");
+        _requiredNotifications.insert(file);
+        QVERIFY(QFile::exists(file));
+        QFile::remove(file);
+        QVERIFY(!QFile::exists(file));
 
         checkNotifications();
     }
 
     void testRenameAFile() {
-        _requiredNotifications.insert(_root+"/a2");
-        QVERIFY(QFile::exists(_root+"/a2/renamefile"));
-        QFile::rename(_root+"/a2/renamefile", _root+"/a2/renamefile.renamed" );
-        QVERIFY(QFile::exists(_root+"/a2/renamefile.renamed"));
+        QString file1(_root+"/a2/renamefile");
+        QString file2(_root+"/a2/renamefile.renamed");
+        _requiredNotifications.insert(file1);
+        _requiredNotifications.insert(file2);
+        QVERIFY(QFile::exists(file1));
+        QFile::rename(file1, file2);
+        QVERIFY(QFile::exists(file2));
 
         checkNotifications();
     }
 
     void testMoveAFile() {
-        _requiredNotifications.insert(_root+"/a1");
-        _requiredNotifications.insert(_root+"/a2");
-        QVERIFY(QFile::exists(_root+"/a1/movefile"));
-        QFile::rename(_root+"/a1/movefile", _root+"/a2/movefile.renamed" );
-        QVERIFY(QFile::exists(_root+"/a2/movefile.renamed"));
+        QString old_file(_root+"/a1/movefile");
+        QString new_file(_root+"/a2/movefile.renamed");
+        _requiredNotifications.insert(old_file);
+        _requiredNotifications.insert(new_file);
+        QVERIFY(QFile::exists(old_file));
+        QFile::rename(old_file, new_file);
+        QVERIFY(QFile::exists(new_file));
 
         checkNotifications();
     }

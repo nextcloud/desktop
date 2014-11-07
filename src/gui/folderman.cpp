@@ -140,15 +140,15 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         fw->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::SystemScope) );
         fw->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::UserScope) );
 
-        // Connect the folderChanged signal, which comes with the changed path,
+        // Connect the pathChanged signal, which comes with the changed path,
         // to the signal mapper which maps to the folder alias. The changed path
         // is lost this way, but we do not need it for the current implementation.
-        connect(fw, SIGNAL(folderChanged(QString)), _folderWatcherSignalMapper, SLOT(map()));
+        connect(fw, SIGNAL(pathChanged(QString)), _folderWatcherSignalMapper, SLOT(map()));
         _folderWatcherSignalMapper->setMapping(fw, folder->alias());
         _folderWatchers.insert(folder->alias(), fw);
 
         // This is at the moment only for the behaviour of the SocketApi.
-        connect(fw, SIGNAL(folderChanged(QString)), folder, SLOT(watcherSlot(QString)));
+        connect(fw, SIGNAL(pathChanged(QString)), folder, SLOT(watcherSlot(QString)));
     }
 
     // register the folder with the socket API

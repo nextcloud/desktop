@@ -159,7 +159,6 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
     while(i + sizeof(struct inotify_event) < static_cast<unsigned int>(len)) {
         // cast an inotify_event
         event = (struct inotify_event*)&buffer[i];
-        // with the help of watch descriptor, retrieve, corresponding INotify
         if (event == NULL) {
             qDebug() << "NULL event";
             i += sizeof(struct inotify_event);

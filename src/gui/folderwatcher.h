@@ -34,7 +34,7 @@ class FolderWatcherPrivate;
 /*
  * Folder Watcher monitors a directory and its sub directories
  * for changes in the local file system. Changes are signalled
- * through the folderChanged() signal.
+ * through the pathChanged() signal.
  *
  * Note that if new folders are created, this folderwatcher class
  * does not automatically adds them to the list of monitored
@@ -74,8 +74,9 @@ public:
     bool pathIsIgnored( const QString& path );
 
 signals:
-    /** Emitted when one of the paths is changed */
-    void folderChanged(const QString &path);
+    /** Emitted when one of the watched directories or one
+     *  of the contained files is changed. */
+    void pathChanged(const QString &path);
 
     /** Emitted if an error occurs */
     void error(const QString& error);
