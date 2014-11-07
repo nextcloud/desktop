@@ -166,16 +166,16 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
             continue;
         }
 
-        // fire event
-        // Note: The name of the changed file and stuff could be taken from
-        // the event data structure. That does not happen yet.
+        // Fire event for the path that was changed.
         if (event->len > 0 && event->wd > -1) {
+            QByteArray fileName(event->name);
             // qDebug() << Q_FUNC_INFO << event->name;
-            if (QByteArray(event->name).startsWith(".csync") ||
-                    QByteArray(event->name).startsWith(".owncloudsync.log")) {
+            if (fileName.startsWith(".csync_journal.db") ||
+                    fileName.startsWith(".owncloudsync.log")) {
                 // qDebug() << "ignore journal";
             } else {
-                const QString p = _watches[event->wd];
+                const QString p = _watches[event->wd] + '/' + fileName;
+                //qDebug() << "found a change in " << p;
                 _parent->changeDetected(p);
             }
         }
