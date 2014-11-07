@@ -69,6 +69,12 @@ public:
 
     bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
 
+    /** Get the ms since a file was touched, or -1 if it wasn't.
+     *
+     * Thread-safe.
+     */
+    qint64 timeSinceFileTouched(const QString& fn) const;
+
 signals:
     void csyncError( const QString& );
     void csyncUnavailable();
@@ -140,7 +146,7 @@ private:
     QString _remoteUrl;
     QString _remotePath;
     SyncJournalDb *_journal;
-    QScopedPointer <OwncloudPropagator> _propagator;
+    QSharedPointer <OwncloudPropagator> _propagator;
     QString _lastDeleted; // if the last item was a path and it has been deleted
     QSet<QString> _seenFiles;
     QThread _thread;

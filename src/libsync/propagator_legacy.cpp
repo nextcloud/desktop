@@ -712,6 +712,7 @@ void PropagateDownloadFileLegacy::start()
     FileSystem::setFileHidden(tmpFile.fileName(), false);
 
     QString error;
+    _propagator->addTouchedFile(fn);
     if (!FileSystem::renameReplace(tmpFile.fileName(), fn, &error)) {
         done(SyncFileItem::NormalError, error);
         return;

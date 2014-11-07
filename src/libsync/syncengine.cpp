@@ -716,9 +716,6 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
-    if (_needsUpdate)
-        emit(started());
-
     ne_session_s *session = 0;
     // that call to set property actually is a get which will return the session
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
@@ -755,6 +752,10 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     deleteStaleUploadInfos();
     deleteStaleBlacklistEntries();
     _journal->commit("post stale entry removal");
+
+    // Emit the started signal only after the propagator has been set up.
+    if (_needsUpdate)
+        emit(started());
 
     _propagator->start(_syncedItems);
 }
@@ -842,9 +843,11 @@ void SyncEngine::finalize()
     qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
     _stopWatch.stop();
 
-    _propagator.reset(0);
     _syncRunning = false;
     emit finished();
+
+    // Delete the propagator only after emitting the signal.
+    _propagator.reset();
 }
 
 void SyncEngine::slotProgress(const SyncFileItem& item, quint64 current)
@@ -1128,6 +1131,16 @@ bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s
         }
     }
     return false;
+}
+
+qint64 SyncEngine::timeSinceFileTouched(const QString& fn) const
+{
+    // This copy is essential for thread safety.
+    QSharedPointer<OwncloudPropagator> prop = _propagator;
+    if (prop) {
+        return prop->timeSinceFileTouched(fn);
+    }
+    return -1;
 }
 
 void SyncEngine::abort()

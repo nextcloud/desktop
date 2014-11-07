@@ -24,6 +24,7 @@
 #include <QTimer>
 #include <QPointer>
 #include <QIODevice>
+#include <QMutex>
 
 #include "syncfileitem.h"
 #include "syncjournaldb.h"
@@ -291,6 +292,19 @@ public:
     // timeout in seconds
     static int httpTimeout();
 
+    /** Records that a file was touched by a job.
+     *
+     * Thread-safe.
+     */
+    void addTouchedFile(const QString& fn);
+
+    /** Get the ms since a file was touched, or -1 if it wasn't.
+     *
+     * Thread-safe.
+     */
+    qint64 timeSinceFileTouched(const QString& fn) const;
+
+
 private slots:
 
     /** Emit the finished signal and make sure it is only emit once */
@@ -312,6 +326,11 @@ signals:
      */
     void adjustTotalTransmissionSize( qint64 adjust );
 
+private:
+
+    /** Stores the time since a job touched a file. */
+    QHash<QString, QElapsedTimer> _touchedFiles;
+    mutable QMutex _touchedFilesMutex;
 };
 
 // Job that wait for all the poll jobs to be completed

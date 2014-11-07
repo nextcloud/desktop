@@ -476,6 +476,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
     FileSystem::setFileHidden(_tmpFile.fileName(), false);
 
     QString error;
+    _propagator->addTouchedFile(fn);
     if (!FileSystem::renameReplace(_tmpFile.fileName(), fn, &error)) {
         // If we moved away the original file due to a conflict but can't
         // put the downloaded file in its place, we are in a bad spot:

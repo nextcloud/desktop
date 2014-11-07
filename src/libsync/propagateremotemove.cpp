@@ -58,13 +58,18 @@ void PropagateRemoteMove::start()
 
     qDebug() << Q_FUNC_INFO << _item._file << _item._renameTarget;
 
+    QString targetFile(_propagator->getFilePath(_item._renameTarget));
+
     if (_item._file == _item._renameTarget) {
         // The parents has been renamed already so there is nothing more to do.
         finalize();
         return;
     } else if (AbstractNetworkJob::preOc7WasDetected && _item._file == QLatin1String("Shared") ) {
         // Check if it is the toplevel Shared folder and do not propagate it.
-        if( QFile::rename(  _propagator->_localDir + _item._renameTarget, _propagator->_localDir + QLatin1String("Shared")) ) {
+        QString originalFile(_propagator->getFilePath(QLatin1String("Shared")));
+        _propagator->addTouchedFile(originalFile);
+        _propagator->addTouchedFile(targetFile);
+        if( QFile::rename( targetFile, originalFile) ) {
             done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
         } else {
             done(SyncFileItem::NormalError, tr("This folder must not be renamed. Please name it back to Shared."));
@@ -131,7 +136,7 @@ void PropagateRemoteMove::slotMoveJobFinished()
 void PropagateRemoteMove::finalize()
 {
     _propagator->_journal->deleteFileRecord(_item._originalFile);
-    SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
+    SyncJournalFileRecord record(_item, _propagator->getFilePath(_item._renameTarget));
     record._path = _item._renameTarget;
 
     _propagator->_journal->setFileRecord(record);

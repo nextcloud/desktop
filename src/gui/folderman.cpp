@@ -55,10 +55,6 @@ FolderMan::FolderMan(QObject *parent) :
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),
             this, SIGNAL(folderSyncStateChange(const QString &)));
 
-    _folderWatcherSignalMapper = new QSignalMapper(this);
-    connect(_folderWatcherSignalMapper, SIGNAL(mapped(const QString&)),
-            this, SLOT(slotScheduleSync(const QString&)));
-
     ne_sock_init();
     Q_ASSERT(!_instance);
     _instance = this;
@@ -100,8 +96,6 @@ void FolderMan::unloadFolder( const QString& alias )
 
         _folderChangeSignalMapper->removeMappings(f);
         if( _folderWatchers.contains(alias)) {
-            FolderWatcher *fw = _folderWatchers[alias];
-            _folderWatcherSignalMapper->removeMappings(fw);
             _folderWatchers.remove(alias);
         }
         _folderMap.remove( alias );
@@ -135,7 +129,7 @@ void FolderMan::registerFolderMonitor( Folder *folder )
     if( !folder ) return;
 
     if( !_folderWatchers.contains(folder->alias() ) ) {
-        FolderWatcher *fw = new FolderWatcher(folder->path(), this);
+        FolderWatcher *fw = new FolderWatcher(folder->path(), folder);
         MirallConfigFile cfg;
         fw->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::SystemScope) );
         fw->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::UserScope) );
@@ -143,8 +137,7 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         // Connect the pathChanged signal, which comes with the changed path,
         // to the signal mapper which maps to the folder alias. The changed path
         // is lost this way, but we do not need it for the current implementation.
-        connect(fw, SIGNAL(pathChanged(QString)), _folderWatcherSignalMapper, SLOT(map()));
-        _folderWatcherSignalMapper->setMapping(fw, folder->alias());
+        connect(fw, SIGNAL(pathChanged(QString)), folder, SLOT(slotWatchedPathChanged(QString)));
         _folderWatchers.insert(folder->alias(), fw);
 
         // This is at the moment only for the behaviour of the SocketApi.
@@ -443,20 +436,6 @@ void FolderMan::slotScheduleSync( const QString& alias )
         qDebug() << "Not scheduling sync for empty or unknown folder" << alias;
         return;
     }
-
-#ifndef Q_OS_MAC
-    // The folder watcher fires a lot of bogus notifications during
-    // a sync operation, both for actual user files and the database
-    // and log. Never enqueue a folder for sync while it is syncing.
-    // We lose some genuine sync requests that way, but that can't be
-    // helped.
-    // This works fine on OSX, where the folder watcher does not
-    // report changes done by our own process.
-    if( _currentSyncFolder == alias ) {
-        qDebug() << "folder " << alias << " is currently syncing. NOT scheduling.";
-        return;
-    }
-#endif
 
     if( _socketApi ) {
         // We want the SocketAPI to already now update so that it can show the EVAL icon

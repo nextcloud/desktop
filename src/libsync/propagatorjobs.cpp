@@ -131,12 +131,14 @@ void PropagateLocalRename::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
+    QString existingFile = _propagator->getFilePath(_item._file);
+    QString targetFile = _propagator->getFilePath(_item._renameTarget);
+
     // if the file is a file underneath a moved dir, the _item.file is equal
     // to _item.renameTarget and the file is not moved as a result.
     if (_item._file != _item._renameTarget) {
         emit progress(_item, 0);
-        qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
-        QFile file(_propagator->_localDir + _item._file);
+        qDebug() << "MOVE " << existingFile << " => " << targetFile;
 
         if (QString::compare(_item._file, _item._renameTarget, Qt::CaseInsensitive) != 0
                 && _propagator->localFileNameClash(_item._renameTarget)) {
@@ -149,7 +151,11 @@ void PropagateLocalRename::start()
                  .arg(QDir::toNativeSeparators(_item._file)).arg(QDir::toNativeSeparators(_item._renameTarget)) );
             return;
         }
-        if (!file.rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget)) {
+
+        _propagator->addTouchedFile(existingFile);
+        _propagator->addTouchedFile(targetFile);
+        QFile file(existingFile);
+        if (!file.rename(targetFile)) {
             done(SyncFileItem::NormalError, file.errorString());
             return;
         }
@@ -160,7 +166,7 @@ void PropagateLocalRename::start()
     // store the rename file name in the item.
     _item._file = _item._renameTarget;
 
-    SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
+    SyncJournalFileRecord record(_item, targetFile);
     record._path = _item._renameTarget;
 
     if (!_item._isDirectory) { // Directory are saved at the end
