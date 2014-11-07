@@ -35,18 +35,25 @@ void WatcherThread::run()
         NULL
         );
 
+    if (_handle == INVALID_HANDLE_VALUE)
+    {
+        qDebug() << Q_FUNC_INFO << "Failed to set up a watch for" << _path << ", stopping watcher!";
+        FindCloseChangeNotification(_handle);
+        _handle = 0;
+        return;
+    }
+
     size_t bufsize = 4096;
     size_t maxlen = 4096;
     while(true) {
         char fileNotify[bufsize];
-        // TODO: handle CreateFileW failure
         FILE_NOTIFY_INFORMATION *pFileNotify =
                 (FILE_NOTIFY_INFORMATION*)fileNotify;
         DWORD dwBytesReturned = 0;
         SecureZeroMemory(pFileNotify, bufsize);
         if(ReadDirectoryChangesW( _handle, (LPVOID)pFileNotify,
                                   bufsize, true,
-                                  FILE_NOTIFY_CHANGE_LAST_WRITE |
+                                  FILE_NOTIFY_CHANGE_FILE_NAME |
                                   FILE_NOTIFY_CHANGE_DIR_NAME |
                                   FILE_NOTIFY_CHANGE_LAST_WRITE,
                                   &dwBytesReturned, NULL, NULL))
