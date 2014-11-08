@@ -227,6 +227,15 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table blacklist", createQuery);
     }
 
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS poll("
+                           "path VARCHAR(4096),"
+                           "modtime INTEGER(8),"
+                           "pollpath VARCHAR(4096));");
+    if (!createQuery.exec()) {
+        return sqlFail("Create table poll", createQuery);
+    }
+
+
     createQuery.prepare("CREATE TABLE IF NOT EXISTS version("
                                "major INTEGER(8),"
                                "minor INTEGER(8),"
@@ -1116,6 +1125,63 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
              << item._lastTryModtime << item._lastTryEtag;
     _setBlacklistQuery->reset();
 
+}
+
+QVector< SyncJournalDb::PollInfo > SyncJournalDb::getPollInfos()
+{
+    QMutexLocker locker(&_mutex);
+
+    QVector< SyncJournalDb::PollInfo > res;
+
+    if( !checkConnect() )
+        return res;
+
+    SqlQuery query("SELECT path, modtime, pollpath FROM poll",_db);
+
+    if (!query.exec()) {
+        QString err = query.error();
+        qDebug() << "Database error :" << query.lastQuery() << ", Error:" << err;
+        return res;
+    }
+
+    while( query.next() ) {
+        PollInfo info;
+        info._file = query.stringValue(0);
+        info._modtime = query.int64Value(1);
+        info._url = query.stringValue(2);
+        res.append(info);
+    }
+
+    query.finish();
+    return res;
+}
+
+void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo& info)
+{
+    QMutexLocker locker(&_mutex);
+    if( !checkConnect() ) {
+        return;
+    }
+
+    if (info._url.isEmpty()) {
+        SqlQuery query("DELETE FROM poll WHERE path=?", _db);
+        query.bindValue(0, info._file);
+        if( !query.exec() ) {
+            qDebug() << "SQL error in setPollInfo: "<< query.error();
+        } else {
+            qDebug() << query.lastQuery()  << info._file;
+        }
+    } else {
+        SqlQuery query("INSERT OR REPLACE INTO poll (path, modtime, pollpath) VALUES( ? , ? , ? )", _db);
+        query.bindValue(0, info._file);
+        query.bindValue(1, QString::number(info._modtime));
+        query.bindValue(2, info._url);
+        if( !query.exec() ) {
+            qDebug() << "SQL error in setPollInfo: "<< query.error();
+        } else {
+            qDebug() << query.lastQuery()  << info._file << info._url;
+        }
+    }
 }
 
 void SyncJournalDb::avoidRenamesOnNextSync(const QString& path)
