@@ -619,7 +619,7 @@ void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
     done(SyncFileItem::Success);
 }
 
-void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64 t)
+void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
 {
     int progressChunk = _currentChunk + _startChunk - 1;
     if (progressChunk >= _chunkCount)
@@ -838,7 +838,7 @@ void GETFileJob::giveBandwidthQuota(qint64 q)
 
 qint64 GETFileJob::currentDownloadPosition()
 {
-    if (_device && _device->pos() > 0 && _device->pos() > _resumeStart) {
+    if (_device && _device->pos() > 0 && _device->pos() > qint64(_resumeStart)) {
         return _device->pos();
     }
     return _resumeStart;
