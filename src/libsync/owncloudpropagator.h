@@ -18,9 +18,16 @@
 #include <neon/ne_request.h>
 #include <QHash>
 #include <QObject>
-#include <qelapsedtimer.h>
+#include <QMap>
+#include <QLinkedList>
+#include <QElapsedTimer>
+#include <QTimer>
+#include <QPointer>
+#include <QIODevice>
 
 #include "syncfileitem.h"
+#include "syncjournaldb.h"
+#include "bandwidthmanager.h"
 
 struct hbf_transfer_s;
 struct ne_session_s;
@@ -28,6 +35,8 @@ struct ne_decompress_s;
 typedef struct ne_prop_result_set_s ne_prop_result_set;
 
 namespace Mirall {
+
+class Account;
 
 class SyncJournalDb;
 class OwncloudPropagator;
@@ -174,6 +183,43 @@ public:
     }
 };
 
+class BandwidthManager; // fwd
+class UploadDevice : public QIODevice {
+    Q_OBJECT
+public:
+    QPointer<QIODevice> _file;
+    qint64 _read;
+    qint64 _size;
+    qint64 _start;
+    BandwidthManager* _bandwidthManager;
+
+    qint64 _bandwidthQuota;
+    qint64 _readWithProgress;
+
+    UploadDevice(QIODevice *file,  qint64 start, qint64 size, BandwidthManager *bwm);
+    ~UploadDevice();
+    virtual qint64 writeData(const char* , qint64 );
+    virtual qint64 readData(char* data, qint64 maxlen);
+    virtual bool atEnd() const;
+    virtual qint64 size() const;
+    qint64 bytesAvailable() const;
+    virtual bool isSequential() const;
+    virtual bool seek ( qint64 pos );
+
+    void setBandwidthLimited(bool);
+    bool isBandwidthLimited() { return _bandwidthLimited; }
+    void setChoked(bool);
+    bool isChoked() { return _choked; }
+    void giveBandwidthQuota(qint64 bwq);
+private:
+    bool _bandwidthLimited; // if _bandwidthQuota will be used
+    bool _choked; // if upload is paused (readData() will return 0)
+protected slots:
+    void slotJobUploadProgress(qint64 sent, qint64 t);
+};
+//Q_DECLARE_METATYPE(UploadDevice);
+//Q_DECLARE_METATYPE(QPointer<UploadDevice>);
+
 
 class OwncloudPropagator : public QObject {
     Q_OBJECT
@@ -195,6 +241,8 @@ public:
     SyncJournalDb * const _journal;
     bool _finishedEmited; // used to ensure that finished is only emit once
 
+    BandwidthManager _bandwidthManager;
+
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir, const QString &remoteFolder,
                        SyncJournalDb *progressDb, QThread *neonThread)
@@ -205,6 +253,7 @@ public:
             , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder+'/' )
             , _journal(progressDb)
             , _finishedEmited(false)
+            , _bandwidthManager(this)
             , _activeJobs(0)
             , _anotherSyncNeeded(false)
     { }
@@ -221,6 +270,9 @@ public:
 
     /** We detected that another sync is required after this one */
     bool _anotherSyncNeeded;
+
+    /* The maximum number of active job in parallel  */
+    int maximumActiveJob();
 
     bool isInSharedDirectory(const QString& file);
     bool localFileNameClash(const QString& relfile);
@@ -256,6 +308,26 @@ signals:
      */
     void adjustTotalTransmissionSize( qint64 adjust );
 
+};
+
+// Job that wait for all the poll jobs to be completed
+class CleanupPollsJob : public QObject {
+    Q_OBJECT
+    QVector< SyncJournalDb::PollInfo > _pollInfos;
+    Account *_account;
+    SyncJournalDb *_journal;
+    QString _localPath;
+public:
+    explicit CleanupPollsJob(const QVector< SyncJournalDb::PollInfo > &pollInfos, Account *account,
+                             SyncJournalDb *journal, const QString &localPath, QObject* parent = 0)
+        : QObject(parent), _pollInfos(pollInfos), _account(account), _journal(journal), _localPath(localPath) {}
+
+    void start();
+signals:
+    void finished();
+    void aborted(const QString &error);
+private slots:
+    void slotPollFinished();
 };
 
 }

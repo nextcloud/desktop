@@ -144,6 +144,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   len = strlen(path);
 
+  /* This code should probably be in csync_exclude, but it does not have the fs parameter.
+     Keep it here for now and TODO also find out if we want this for Windows
+     https://github.com/owncloud/mirall/issues/2086 */
+  if (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file excluded because it is a hidden file: %s", path);
+      return 0;
+  }
+
   /* Check if file is excluded */
   excluded = csync_excluded(ctx, path,type);
 

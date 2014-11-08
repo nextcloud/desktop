@@ -103,6 +103,7 @@ private slots:
     void slotProgress(const SyncFileItem& item, quint64 curent);
     void slotAdjustTotalTransmissionSize(qint64 change);
     void slotDiscoveryJobFinished(int updateResult);
+    void slotCleanPollsJobAborted(const QString &error);
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);

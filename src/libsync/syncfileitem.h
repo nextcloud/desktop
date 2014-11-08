@@ -65,7 +65,10 @@ public:
     }
 
     QString destination() const {
-        return _instruction == CSYNC_INSTRUCTION_RENAME ? _renameTarget : _file;
+        if (!_renameTarget.isEmpty()) {
+            return _renameTarget;
+        }
+        return _file;
     }
 
     bool isEmpty() const {

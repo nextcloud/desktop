@@ -16,6 +16,8 @@
 #include <QNetworkProxy>
 #include <QAuthenticator>
 #include <QSslConfiguration>
+#include <QNetworkCookie>
+#include <QNetworkCookieJar>
 
 #include "authenticationdialog.h"
 #include "cookiejar.h"
@@ -42,9 +44,27 @@ MirallAccessManager::MirallAccessManager(QObject* parent)
 
 }
 
+void MirallAccessManager::setRawCookie(const QByteArray &rawCookie, const  QUrl &url)
+{
+    QNetworkCookie cookie(rawCookie.left(rawCookie.indexOf('=')),
+                          rawCookie.mid(rawCookie.indexOf('=')+1));
+    qDebug() << Q_FUNC_INFO << cookie.name() << cookie.value();
+    QList<QNetworkCookie> cookieList;
+    cookieList.append(cookie);
+
+    QNetworkCookieJar *jar = cookieJar();
+    jar->setCookiesFromUrl(cookieList, url);
+}
+
 QNetworkReply* MirallAccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)
 {
     QNetworkRequest newRequest(request);
+
+    if (newRequest.hasRawHeader("cookie")) {
+        // This will set the cookie into the QNetworkCookieJar which will then override the cookie header
+        setRawCookie(request.rawHeader("cookie"), request.url());
+    }
+
     newRequest.setRawHeader(QByteArray("User-Agent"), Utility::userAgentString());
     QByteArray verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
     // For PROPFIND (assumed to be a WebDAV op), set xml/utf8 as content type/encoding
