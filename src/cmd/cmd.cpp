@@ -115,7 +115,7 @@ public:
           _sslTrusted(false)
     {}
 
-    QString queryPassword(bool *ok) {
+    QString queryPassword(bool *ok) Q_DECL_OVERRIDE {
         if (ok) {
             *ok = true;
         }
@@ -126,7 +126,7 @@ public:
         _sslTrusted = isTrusted;
     }
 
-    bool sslIsTrusted() {
+    bool sslIsTrusted() Q_DECL_OVERRIDE {
         return _sslTrusted;
     }
 
