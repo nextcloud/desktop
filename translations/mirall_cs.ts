@@ -1540,24 +1540,30 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>V současné době nejsou na černé listině žádné soubory kvůli předchozím chybovým stavům a neprobíhá žádné stahování.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform> %n soubor je ignorován kvůli předchozím chybovým hlášením.
+</numerusform><numerusform>%n soubory jsou ignorovány kvůli předchozím chybovým hlášením.
+</numerusform><numerusform>%n souborů je ignorováno kvůli předchozím chybovým hlášením.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n soubor je částečně stažený.
+</numerusform><numerusform>%n soubory jsou částečně stažené.
+</numerusform><numerusform>%n souborů je částečně staženo.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Zkuste je znovu synchronizovat.</translation>
     </message>
 </context>
 <context>

@@ -1341,7 +1341,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>Yerel bir dosya ismi ile çakıştığından, %1 dosyası kaydedilemedi.</translation>
+        <translation>Yerel bir dosya ismi ile çakıştığından, %1 dosyası kaydedilemedi!</translation>
     </message>
 </context>
 <context>
@@ -1540,24 +1540,28 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>Önceki hatalar nedeniyle hiçbir dosya yolsayılmadı ve süren bir indirme yok.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>önceki hatalardan dolayı %n dosya yoksayıldı.
+</numerusform><numerusform>önceki hatalardan dolayı %n dosya yoksayıldı.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dosya kısmen karşıya indirilebildi.
+</numerusform><numerusform>%n dosya kısmen karşıya indirilebildi.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Bunları tekrar eşitlemeyi deneyin.</translation>
     </message>
 </context>
 <context>
@@ -2025,7 +2029,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>The mounted directory is temporary not available on the server</source>
-        <translation>Bağlanan dizin geçici olup sunucuda mevcut değildir</translation>
+        <translation>Bağlanan dizin geçici olarak sunucuda kullanılamıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="186"/>

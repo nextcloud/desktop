@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Choisir</translation>
+        <translation>&amp;Choisir...</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardsourcepage.ui" line="55"/>
@@ -1540,24 +1540,28 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>Actuellement aucun fichier n&apos;a été ignoré en raison d&apos;erreurs précédentes, et aucun téléchargement n&apos;est en cours.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n fichiers ont été ignorés à cause de précédentes erreurs.
+</numerusform><numerusform>%n fichiers ont été ignorés à cause d&apos;erreurs précédentes.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Les fichiers %n sont partiellement téléchargés.
+</numerusform><numerusform>%n fichiers sont partiellement téléchargés.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Essayez de les synchroniser à nouveau.</translation>
     </message>
 </context>
 <context>
@@ -2201,7 +2205,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="414"/>
         <source>Calculating quota...</source>
-        <translation>Calcul du quota en cours...</translation>
+        <translation>Calcul du quota...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="416"/>
