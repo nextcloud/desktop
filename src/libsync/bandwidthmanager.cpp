@@ -16,7 +16,7 @@
 #include "propagator_qnam.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
-#include "mirall/utility.h"
+#include "utility.h"
 
 #ifdef Q_OS_WIN
 #include <windef.h>

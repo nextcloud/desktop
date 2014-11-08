@@ -518,6 +518,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
 
     // Check if the file still exists
     if( !fi.exists() ) {
+        if (!finished) {
             _finished = true;
             done(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
