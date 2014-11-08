@@ -1,5 +1,4 @@
 # TODO: OSX and LIB_ONLY seem to require this to go to binary dir only
-    mirall/bandwidthmanager.cpp
 if(NOT TOKEN_AUTH_ONLY)
 endif()
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

@@ -34,6 +34,7 @@ endif()
 set(libsync_SRCS
     account.cpp
     authenticationdialog.cpp
+    bandwidthmanager.cpp
     clientproxy.cpp
     connectionvalidator.cpp
     cookiejar.cpp
