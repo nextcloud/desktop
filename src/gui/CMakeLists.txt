@@ -29,7 +29,7 @@ set(client_UI
     wizard/owncloudwizardresultpage.ui
 )
 
-qt_wrap_ui(client_UI_SRCS ${mirall_UI})
+qt_wrap_ui(client_UI_SRCS ${client_UI})
 
 set(client_SRCS
     accountsettings.cpp
@@ -85,10 +85,10 @@ IF( APPLE )
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )
-set(client_SRCS ${mirall_SRCS} folderwatcher_linux.cpp)
+set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp)
 ENDIF()
 IF( WIN32 )
-set(client_SRCS ${mirall_SRCS} folderwatcher_win.cpp)
+set(client_SRCS ${client_SRCS} folderwatcher_win.cpp)
 ENDIF()
 IF( APPLE )
 list(APPEND client_SRCS folderwatcher_mac.cpp)
@@ -148,7 +148,7 @@ set( final_src
     ${MIRALL_RC_SRC}
     ${client_SRCS}
     ${client_UI_SRCS}
-    ${mirallMoc}
+    ${clientMoc}
     ${client_I18N}
     ${3rdparty_SRC}
     ${3rdparty_MOC}
