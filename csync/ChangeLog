@@ -67,7 +67,7 @@ version 0.90.1  (released 2013-09-24, ownCloud Client 1.4.1)
   * detect if server does not send an etag after an upload 
     completed.
   * fix crash in case of network timeout, reported as
-    https://github.com/owncloud/mirall/issues/1010
+    https://github.comowncloud/client/issues/1010
   * compile and cmake fixes for win32
   * fixed behaviour of csync_exclude
   * documentation and spelling fixes.

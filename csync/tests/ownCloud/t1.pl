@@ -161,7 +161,7 @@ system("rm " . localDir().'remoteToLocal1/kernelcrash_conflict-*.txt' );
 
 
 # prepare test for issue 1329, rtlX need to be modified
-# [https://github.com/owncloud/mirall/issues/1329]
+# [https://github.comowncloud/client/issues/1329]
 printInfo( "Add a local directory");
 system("cp -r 'toremote1/rtl1/'  '" . localDir(). "remoteToLocal1/rtlX'");
 csync();

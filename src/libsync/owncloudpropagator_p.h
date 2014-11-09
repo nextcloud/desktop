@@ -21,7 +21,7 @@ inline QByteArray parseEtag(const char *header) {
     if (!header)
         return QByteArray();
     QByteArray arr = header;
-    arr.replace("-gzip", ""); // https://github.com/owncloud/mirall/issues/1195
+    arr.replace("-gzip", ""); // https://github.comowncloud/client/issues/1195
     if(arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
         arr = arr.mid(1, arr.length() - 2);
     }

@@ -32,7 +32,7 @@ use strict;
 print "Hello, this is t7, a tester for syncing of files in read only directory\n";
 
 # Check if the expected rows in the DB are non-empty. Note that in some cases they might be, then we cannot use this function
-# https://github.com/owncloud/mirall/issues/2038
+# https://github.comowncloud/client/issues/2038
 sub assertCsyncJournalOk {
 	my $path = $_[0];
 
