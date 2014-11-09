@@ -148,7 +148,7 @@ set( final_src
     ${MIRALL_RC_SRC}
     ${client_SRCS}
     ${client_UI_SRCS}
-    ${clientMoc}
+    ${guiMoc}
     ${client_I18N}
     ${3rdparty_SRC}
     ${3rdparty_MOC}

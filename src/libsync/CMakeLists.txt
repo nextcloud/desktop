@@ -40,8 +40,8 @@ set(libsync_SRCS
     discoveryphase.cpp
     filesystem.cpp
     logger.cpp
-    mirallaccessmanager.cpp
-    mirallconfigfile.cpp
+    accessmanager.cpp
+    configfile.cpp
     networkjobs.cpp
     owncloudpropagator.cpp
     owncloudtheme.cpp
@@ -85,7 +85,7 @@ endif()
 set(owncloudsync_HEADERS
     account.h
     syncengine.h
-    mirallconfigfile.h
+    configfile.h
     networkjobs.h
     progressdispatcher.h
     syncfileitem.h
