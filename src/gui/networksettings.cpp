@@ -75,7 +75,7 @@ NetworkSettings::~NetworkSettings()
 void NetworkSettings::loadProxySettings()
 {
     // load current proxy settings
-    Mirall::MirallConfigFile cfgFile;
+    Mirall::ConfigFile cfgFile;
     int type = cfgFile.proxyType();
     switch (type) {
     case QNetworkProxy::NoProxy:
@@ -108,7 +108,7 @@ void NetworkSettings::loadProxySettings()
 
 void NetworkSettings::loadBWLimitSettings()
 {
-    MirallConfigFile cfgFile;
+    ConfigFile cfgFile;
     _ui->downloadLimitRadioButton->setChecked(cfgFile.useDownloadLimit());
     int uploadLimit = cfgFile.useUploadLimit();
     if ( uploadLimit >= 1 ) {
@@ -124,7 +124,7 @@ void NetworkSettings::loadBWLimitSettings()
 
 void NetworkSettings::saveProxySettings()
 {
-    MirallConfigFile cfgFile;
+    ConfigFile cfgFile;
 
     if (_ui->noProxyRadioButton->isChecked()){
         cfgFile.setProxyType(QNetworkProxy::NoProxy);
@@ -150,7 +150,7 @@ void NetworkSettings::saveProxySettings()
 
 void NetworkSettings::saveBWLimitSettings()
 {
-    MirallConfigFile cfgFile;
+    ConfigFile cfgFile;
     cfgFile.setUseDownloadLimit(_ui->downloadLimitRadioButton->isChecked());
 
     if (_ui->uploadLimitRadioButton->isChecked()) {

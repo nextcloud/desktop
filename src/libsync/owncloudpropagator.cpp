@@ -344,7 +344,7 @@ int OwncloudPropagator::httpTimeout()
     if (!timeout) {
         timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
         if (timeout == 0) {
-            MirallConfigFile cfg;
+            ConfigFile cfg;
             timeout = cfg.timeout();
         }
 

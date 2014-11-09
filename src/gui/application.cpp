@@ -119,7 +119,7 @@ Application::Application(int &argc, char **argv) :
 
     qRegisterMetaType<Progress::Info>("Progress::Info");
 
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect (_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));
 
@@ -404,7 +404,7 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QLatin1String("--confdir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 QString confDir = it.next();
-                MirallConfigFile::setConfDir( confDir );
+                ConfigFile::setConfDir( confDir );
             } else {
                 showHelp();
             }

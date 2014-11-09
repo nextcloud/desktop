@@ -378,7 +378,7 @@ restart_sync:
     }
 
     // Exclude lists
-    QString systemExcludeListFn = MirallConfigFile::excludeFileFromSystem();
+    QString systemExcludeListFn = ConfigFile::excludeFileFromSystem();
     int loadedSystemExcludeList = false;
     if (!systemExcludeListFn.isEmpty()) {
         loadedSystemExcludeList = csync_add_exclude_list(_csync_ctx, systemExcludeListFn.toLocal8Bit());

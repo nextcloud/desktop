@@ -22,7 +22,7 @@
 
 namespace Mirall {
 
-class MirallConfigFile;
+class ConfigFile;
 
 class OWNCLOUDSYNC_EXPORT ClientProxy : public QObject
 {
@@ -37,7 +37,7 @@ public slots:
     void setupQtProxyFromConfig();
 
 private:
-    QNetworkProxy proxyFromConfig(const MirallConfigFile& cfg);
+    QNetworkProxy proxyFromConfig(const ConfigFile& cfg);
     const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
 };
 

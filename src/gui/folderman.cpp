@@ -136,9 +136,9 @@ void FolderMan::registerFolderMonitor( Folder *folder )
 
     if( !_folderWatchers.contains(folder->alias() ) ) {
         FolderWatcher *fw = new FolderWatcher(folder->path(), this);
-        MirallConfigFile cfg;
-        fw->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::SystemScope) );
-        fw->addIgnoreListFile( cfg.excludeFile(MirallConfigFile::UserScope) );
+        ConfigFile cfg;
+        fw->addIgnoreListFile( cfg.excludeFile(ConfigFile::SystemScope) );
+        fw->addIgnoreListFile( cfg.excludeFile(ConfigFile::UserScope) );
 
         // Connect the folderChanged signal, which comes with the changed path,
         // to the signal mapper which maps to the folder alias. The changed path
@@ -185,7 +185,7 @@ int FolderMan::setupFolders()
 
   unloadAllFolders();
 
-  MirallConfigFile cfg;
+  ConfigFile cfg;
   QDir storageDir(cfg.configPath());
   storageDir.mkpath(QLatin1String("folders"));
   _folderConfigPath = cfg.configPath() + QLatin1String("folders");
@@ -375,7 +375,7 @@ void FolderMan::slotSetFolderPaused( const QString& alias, bool paused )
     if( f ) {
         slotScheduleSync(alias);
 
-        // FIXME: Use MirallConfigFile
+        // FIXME: Use ConfigFile
         QSettings settings(f->configFile(), QSettings::IniFormat);
         settings.beginGroup(escapeAlias(f->alias()));
         if (!paused) {

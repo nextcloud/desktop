@@ -42,7 +42,7 @@ QString DummyCredentials::user() const
 
 QNetworkAccessManager* DummyCredentials::getQNAM() const
 {
-    return new MirallAccessManager;
+    return new AccessManager;
 }
 
 bool DummyCredentials::ready() const

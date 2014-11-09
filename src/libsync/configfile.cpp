@@ -63,10 +63,10 @@ static const char downloadLimitC[]    = "BWLimit/downloadLimit";
 
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
-QString MirallConfigFile::_confDir = QString::null;
-bool    MirallConfigFile::_askedUser = false;
+QString ConfigFile::_confDir = QString::null;
+bool    ConfigFile::_askedUser = false;
 
-MirallConfigFile::MirallConfigFile()
+ConfigFile::ConfigFile()
 {
     // QDesktopServices uses the application name to create a config path
     qApp->setApplicationName( Theme::instance()->appNameGUI() );
@@ -82,7 +82,7 @@ MirallConfigFile::MirallConfigFile()
     // qDebug() << Q_FUNC_INFO << "Loading config: " << config << " (URL is " << settings.value("url").toString() << ")";
 }
 
-void MirallConfigFile::setConfDir(const QString &value)
+void ConfigFile::setConfDir(const QString &value)
 {
     QString dirPath = value;
     if( dirPath.isEmpty() ) return;
@@ -101,26 +101,26 @@ void MirallConfigFile::setConfDir(const QString &value)
     }
 }
 
-bool MirallConfigFile::optionalDesktopNotifications() const
+bool ConfigFile::optionalDesktopNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(optionalDesktopNoficationsC), true).toBool();
 }
 
-int MirallConfigFile::timeout() const
+int ConfigFile::timeout() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(timeoutC), 300).toInt(); // default to 5 min
 }
 
-void MirallConfigFile::setOptionalDesktopNotifications(bool show)
+void ConfigFile::setOptionalDesktopNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(optionalDesktopNoficationsC), show);
     settings.sync();
 }
 
-void MirallConfigFile::saveGeometry(QWidget *w)
+void ConfigFile::saveGeometry(QWidget *w)
 {
 #ifndef TOKEN_AUTH_ONLY
     Q_ASSERT(!w->objectName().isNull());
@@ -131,14 +131,14 @@ void MirallConfigFile::saveGeometry(QWidget *w)
 #endif
 }
 
-void MirallConfigFile::restoreGeometry(QWidget *w)
+void ConfigFile::restoreGeometry(QWidget *w)
 {
 #ifndef TOKEN_AUTH_ONLY
     w->restoreGeometry(getValue(geometryC, w->objectName()).toByteArray());
 #endif
 }
 
-void MirallConfigFile::saveGeometryHeader(QHeaderView *header)
+void ConfigFile::saveGeometryHeader(QHeaderView *header)
 {
 #ifndef TOKEN_AUTH_ONLY
     if(!header) return;
@@ -151,7 +151,7 @@ void MirallConfigFile::saveGeometryHeader(QHeaderView *header)
 #endif
 }
 
-void MirallConfigFile::restoreGeometryHeader(QHeaderView *header)
+void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 {
 #ifndef TOKEN_AUTH_ONLY
     if(!header) return;
@@ -163,7 +163,7 @@ void MirallConfigFile::restoreGeometryHeader(QHeaderView *header)
 #endif
 }
 
-QVariant MirallConfigFile::getPolicySetting(const QString &setting, const QVariant& defaultValue) const
+QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant& defaultValue) const
 {
     if (Utility::isWindows()) {
         // check for policies first and return immediately if a value is found.
@@ -184,7 +184,7 @@ QVariant MirallConfigFile::getPolicySetting(const QString &setting, const QVaria
     return defaultValue;
 }
 
-QString MirallConfigFile::configPath() const
+QString ConfigFile::configPath() const
 {
     #ifndef TOKEN_AUTH_ONLY
     if( _confDir.isEmpty() ) {
@@ -199,7 +199,7 @@ QString MirallConfigFile::configPath() const
     return dir;
 }
 
-QString MirallConfigFile::configPathWithAppName() const
+QString ConfigFile::configPathWithAppName() const
 {
     //HACK
     return QFileInfo( configFile() ).dir().absolutePath().append("/");
@@ -207,7 +207,7 @@ QString MirallConfigFile::configPathWithAppName() const
 
 static const QLatin1String exclFile("sync-exclude.lst");
 
-QString MirallConfigFile::excludeFile(Scope scope) const
+QString ConfigFile::excludeFile(Scope scope) const
 {
     // prefer sync-exclude.lst, but if it does not exist, check for
     // exclude.lst for compatibility reasons in the user writeable
@@ -225,14 +225,14 @@ QString MirallConfigFile::excludeFile(Scope scope) const
         }
         return fi.absoluteFilePath();
     } else if (scope != UserScope) {
-        return MirallConfigFile::excludeFileFromSystem();
+        return ConfigFile::excludeFileFromSystem();
     } else {
         Q_ASSERT(false);
         return QString(); // unreachable
     }
 }
 
-QString MirallConfigFile::excludeFileFromSystem()
+QString ConfigFile::excludeFileFromSystem()
 {
     QFileInfo fi;
 #ifdef Q_OS_WIN
@@ -257,23 +257,23 @@ QString MirallConfigFile::excludeFileFromSystem()
     return fi.absoluteFilePath();
 }
 
-QString MirallConfigFile::configFile() const
+QString ConfigFile::configFile() const
 {
     return configPath() + Theme::instance()->configFileName();
 }
 
-bool MirallConfigFile::exists()
+bool ConfigFile::exists()
 {
     QFile file( configFile() );
     return file.exists();
 }
 
-QString MirallConfigFile::defaultConnection() const
+QString ConfigFile::defaultConnection() const
 {
     return Theme::instance()->appName();
 }
 
-void MirallConfigFile::storeData(const QString& group, const QString& key, const QVariant& value)
+void ConfigFile::storeData(const QString& group, const QString& key, const QVariant& value)
 {
     const QString con(group.isEmpty() ? defaultConnection() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -283,7 +283,7 @@ void MirallConfigFile::storeData(const QString& group, const QString& key, const
     settings.sync();
 }
 
-QVariant MirallConfigFile::retrieveData(const QString& group, const QString& key) const
+QVariant ConfigFile::retrieveData(const QString& group, const QString& key) const
 {
     const QString con(group.isEmpty() ? defaultConnection() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -292,7 +292,7 @@ QVariant MirallConfigFile::retrieveData(const QString& group, const QString& key
     return settings.value(key);
 }
 
-void MirallConfigFile::removeData(const QString& group, const QString& key)
+void ConfigFile::removeData(const QString& group, const QString& key)
 {
     const QString con(group.isEmpty() ? defaultConnection() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -301,7 +301,7 @@ void MirallConfigFile::removeData(const QString& group, const QString& key)
     settings.remove(key);
 }
 
-bool MirallConfigFile::dataExists(const QString& group, const QString& key) const
+bool ConfigFile::dataExists(const QString& group, const QString& key) const
 {
     const QString con(group.isEmpty() ? defaultConnection() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -310,13 +310,13 @@ bool MirallConfigFile::dataExists(const QString& group, const QString& key) cons
     return settings.contains(key);
 }
 
-QByteArray MirallConfigFile::caCerts( )
+QByteArray ConfigFile::caCerts( )
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value( QLatin1String(caCertsKeyC) ).toByteArray();
 }
 
-void MirallConfigFile::setCaCerts( const QByteArray & certs )
+void ConfigFile::setCaCerts( const QByteArray & certs )
 {
     QSettings settings(configFile(), QSettings::IniFormat);
 
@@ -324,7 +324,7 @@ void MirallConfigFile::setCaCerts( const QByteArray & certs )
     settings.sync();
 }
 
-int MirallConfigFile::remotePollInterval( const QString& connection ) const
+int ConfigFile::remotePollInterval( const QString& connection ) const
 {
   QString con( connection );
   if( connection.isEmpty() ) con = defaultConnection();
@@ -340,7 +340,7 @@ int MirallConfigFile::remotePollInterval( const QString& connection ) const
   return remoteInterval;
 }
 
-void MirallConfigFile::setRemotePollInterval(int interval, const QString &connection )
+void ConfigFile::setRemotePollInterval(int interval, const QString &connection )
 {
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
@@ -355,7 +355,7 @@ void MirallConfigFile::setRemotePollInterval(int interval, const QString &connec
     settings.sync();
 }
 
-quint64 MirallConfigFile::forceSyncInterval(const QString& connection) const
+quint64 ConfigFile::forceSyncInterval(const QString& connection) const
 {
     uint pollInterval = remotePollInterval(connection);
 
@@ -372,7 +372,7 @@ quint64 MirallConfigFile::forceSyncInterval(const QString& connection) const
     return interval;
 }
 
-bool MirallConfigFile::skipUpdateCheck( const QString& connection ) const
+bool ConfigFile::skipUpdateCheck( const QString& connection ) const
 {
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
@@ -384,7 +384,7 @@ bool MirallConfigFile::skipUpdateCheck( const QString& connection ) const
     return value.toBool();
 }
 
-void MirallConfigFile::setSkipUpdateCheck( bool skip, const QString& connection )
+void ConfigFile::setSkipUpdateCheck( bool skip, const QString& connection )
 {
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
@@ -397,20 +397,20 @@ void MirallConfigFile::setSkipUpdateCheck( bool skip, const QString& connection 
 
 }
 
-int MirallConfigFile::maxLogLines() const
+int ConfigFile::maxLogLines() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value( QLatin1String(maxLogLinesC), DEFAULT_MAX_LOG_LINES ).toInt();
 }
 
-void MirallConfigFile::setMaxLogLines( int lines )
+void ConfigFile::setMaxLogLines( int lines )
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(maxLogLinesC), lines);
     settings.sync();
 }
 
-void MirallConfigFile::setProxyType(int proxyType,
+void ConfigFile::setProxyType(int proxyType,
                   const QString& host,
                   int port, bool needsAuth,
                   const QString& user,
@@ -431,7 +431,7 @@ void MirallConfigFile::setProxyType(int proxyType,
     settings.sync();
 }
 
-QVariant MirallConfigFile::getValue(const QString& param, const QString& group,
+QVariant ConfigFile::getValue(const QString& param, const QString& group,
                                     const QVariant& defaultValue) const
 {
     QVariant systemSetting;
@@ -463,91 +463,91 @@ QVariant MirallConfigFile::getValue(const QString& param, const QString& group,
     return settings.value(param, systemSetting);
 }
 
-void MirallConfigFile::setValue(const QString& key, const QVariant &value)
+void ConfigFile::setValue(const QString& key, const QVariant &value)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
 
     settings.setValue(key, value);
 }
 
-int MirallConfigFile::proxyType() const
+int ConfigFile::proxyType() const
 {
     return getValue(QLatin1String(proxyTypeC)).toInt();
 }
 
-QString MirallConfigFile::proxyHostName() const
+QString ConfigFile::proxyHostName() const
 {
     return getValue(QLatin1String(proxyHostC)).toString();
 }
 
-int MirallConfigFile::proxyPort() const
+int ConfigFile::proxyPort() const
 {
     return getValue(QLatin1String(proxyPortC)).toInt();
 }
 
-bool MirallConfigFile::proxyNeedsAuth() const
+bool ConfigFile::proxyNeedsAuth() const
 {
     return getValue(QLatin1String(proxyNeedsAuthC)).toBool();
 }
 
-QString MirallConfigFile::proxyUser() const
+QString ConfigFile::proxyUser() const
 {
     return getValue(QLatin1String(proxyUserC)).toString();
 }
 
-QString MirallConfigFile::proxyPassword() const
+QString ConfigFile::proxyPassword() const
 {
     QByteArray pass = getValue(proxyPassC).toByteArray();
     return QString::fromUtf8(QByteArray::fromBase64(pass));
 }
 
-int MirallConfigFile::useUploadLimit() const
+int ConfigFile::useUploadLimit() const
 {
     return getValue(useUploadLimitC, QString::null, 0).toInt();
 }
 
-bool MirallConfigFile::useDownloadLimit() const
+bool ConfigFile::useDownloadLimit() const
 {
     return getValue(useDownloadLimitC, QString::null, false).toBool();
 }
 
-void MirallConfigFile::setUseUploadLimit(int val)
+void ConfigFile::setUseUploadLimit(int val)
 {
     setValue(useUploadLimitC, val);
 }
 
-void MirallConfigFile::setUseDownloadLimit(bool enable)
+void ConfigFile::setUseDownloadLimit(bool enable)
 {
     setValue(useDownloadLimitC, enable);
 }
 
-int MirallConfigFile::uploadLimit() const
+int ConfigFile::uploadLimit() const
 {
     return getValue(uploadLimitC, QString::null, 10).toInt();
 }
 
-int MirallConfigFile::downloadLimit() const
+int ConfigFile::downloadLimit() const
 {
     return getValue(downloadLimitC, QString::null, 80).toInt();
 }
 
-void MirallConfigFile::setUploadLimit(int kbytes)
+void ConfigFile::setUploadLimit(int kbytes)
 {
     setValue(uploadLimitC, kbytes);
 }
 
-void MirallConfigFile::setDownloadLimit(int kbytes)
+void ConfigFile::setDownloadLimit(int kbytes)
 {
     setValue(downloadLimitC, kbytes);
 }
 
-bool MirallConfigFile::monoIcons() const
+bool ConfigFile::monoIcons() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(monoIconsC), false).toBool();
 }
 
-void MirallConfigFile::setMonoIcons(bool useMonoIcons)
+void ConfigFile::setMonoIcons(bool useMonoIcons)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(monoIconsC), useMonoIcons);

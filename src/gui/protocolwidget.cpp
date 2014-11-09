@@ -74,13 +74,13 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     _copyBtn->setEnabled(false);
     connect(_copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
 
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     cfg.restoreGeometryHeader(_ui->_treeWidget->header());
 }
 
 ProtocolWidget::~ProtocolWidget()
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     cfg.saveGeometryHeader(_ui->_treeWidget->header() );
 
     delete _ui;

@@ -19,7 +19,7 @@
 namespace Mirall
 {
 
-class HttpConfigFile : public MirallConfigFile
+class HttpConfigFile : public ConfigFile
 {
 public:
   QString user() const;

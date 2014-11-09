@@ -90,7 +90,7 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     connect(showLogWindow, SIGNAL(triggered()), gui, SLOT(slotToggleLogBrowser()));
     addAction(showLogWindow);
 
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     cfg.restoreGeometry(this);
 }
 
@@ -116,7 +116,7 @@ void SettingsDialogMac::setGeneralErrors(const QStringList &errors)
 
 void SettingsDialogMac::closeEvent(QCloseEvent *event)
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     cfg.saveGeometry(this);
     MacPreferencesWindow::closeEvent(event);
 }

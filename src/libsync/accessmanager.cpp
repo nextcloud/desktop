@@ -25,7 +25,7 @@
 namespace Mirall
 {
 
-MirallAccessManager::MirallAccessManager(QObject* parent)
+AccessManager::AccessManager(QObject* parent)
     : QNetworkAccessManager (parent)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && defined(Q_OS_MAC)
@@ -42,7 +42,7 @@ MirallAccessManager::MirallAccessManager(QObject* parent)
 
 }
 
-QNetworkReply* MirallAccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)
+QNetworkReply* AccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)
 {
     QNetworkRequest newRequest(request);
     newRequest.setRawHeader(QByteArray("User-Agent"), Utility::userAgentString());
@@ -55,7 +55,7 @@ QNetworkReply* MirallAccessManager::createRequest(QNetworkAccessManager::Operati
     return QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
 }
 
-void MirallAccessManager::slotProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
+void AccessManager::slotProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
 {
     Q_UNUSED(authenticator);
     qDebug() << Q_FUNC_INFO << proxy.type();
@@ -65,7 +65,7 @@ void MirallAccessManager::slotProxyAuthenticationRequired(const QNetworkProxy &p
         authenticator->setPassword(proxy.password());
     }
 }
-void MirallAccessManager::slotAuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator)
+void AccessManager::slotAuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator)
 {
     // do not handle 401 created by the networkjobs. We may want
     // to eventually exempt some, but for now we need

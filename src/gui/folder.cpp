@@ -70,7 +70,7 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     qsrand(QTime::currentTime().msec());
     _timeSinceLastSync.start();
 
-    MirallConfigFile cfg;
+    ConfigFile cfg;
 
     _syncResult.setStatus( SyncResult::NotYetStarted );
 
@@ -274,7 +274,7 @@ void Folder::slotPollTimerTimeout()
     }
 
     bool forceSyncIntervalExpired =
-            quint64(_timeSinceLastSync.elapsed()) > MirallConfigFile().forceSyncInterval();
+            quint64(_timeSinceLastSync.elapsed()) > ConfigFile().forceSyncInterval();
     bool syncAgainAfterFail = _consecutiveFailingSyncs > 0 && _consecutiveFailingSyncs < 3;
 
     // There are several conditions under which we trigger a full-discovery sync:
@@ -679,16 +679,16 @@ bool Folder::setIgnoredFiles()
 {
     bool ok = false;
 
-    MirallConfigFile cfgFile;
+    ConfigFile cfgFile;
     csync_clear_exclude_list( _csync_ctx );
-    QString excludeList = cfgFile.excludeFile( MirallConfigFile::SystemScope );
+    QString excludeList = cfgFile.excludeFile( ConfigFile::SystemScope );
     if( !excludeList.isEmpty() ) {
         qDebug() << "==== added system ignore list to csync:" << excludeList.toUtf8();
         if (csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() ) == 0) {
             ok = true;
         }
     }
-    excludeList = cfgFile.excludeFile( MirallConfigFile::UserScope );
+    excludeList = cfgFile.excludeFile( ConfigFile::UserScope );
     if( !excludeList.isEmpty() ) {
         qDebug() << "==== added user defined ignore list to csync:" << excludeList.toUtf8();
         csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
@@ -787,7 +787,7 @@ void Folder::setDirtyNetworkLimits()
 {
     if (_engine) {
 
-        MirallConfigFile cfg;
+        ConfigFile cfg;
         int downloadLimit = 0;
         if (cfg.useDownloadLimit()) {
             downloadLimit = cfg.downloadLimit() * 1000;

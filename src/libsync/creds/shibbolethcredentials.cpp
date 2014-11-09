@@ -169,7 +169,7 @@ QString ShibbolethCredentials::user() const
 
 QNetworkAccessManager* ShibbolethCredentials::getQNAM() const
 {
-    QNetworkAccessManager* qnam(new MirallAccessManager);
+    QNetworkAccessManager* qnam(new AccessManager);
     connect(qnam, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(slotReplyFinished(QNetworkReply*)));
     return qnam;

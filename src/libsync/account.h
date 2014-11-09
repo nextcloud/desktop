@@ -34,7 +34,7 @@ namespace Mirall {
 class AbstractCredentials;
 class Account;
 class QuotaInfo;
-class MirallAccessManager;
+class AccessManager;
 
 class OWNCLOUDSYNC_EXPORT AccountManager : public QObject {
     Q_OBJECT

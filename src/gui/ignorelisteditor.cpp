@@ -36,9 +36,9 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
                                      "Checked items will also be deleted if they prevent a directory from "
                                      "being removed. This is useful for meta data."));
 
-    MirallConfigFile cfgFile;
-    readIgnoreFile(cfgFile.excludeFile(MirallConfigFile::SystemScope), true);
-    readIgnoreFile(cfgFile.excludeFile(MirallConfigFile::UserScope), false);
+    ConfigFile cfgFile;
+    readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), true);
+    readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
 
     connect(this, SIGNAL(accepted()), SLOT(slotUpdateLocalIgnoreList()));
     ui->removePushButton->setEnabled(false);
@@ -79,8 +79,8 @@ void IgnoreListEditor::slotRemoveCurrentItem()
 
 void IgnoreListEditor::slotUpdateLocalIgnoreList()
 {
-    MirallConfigFile cfgFile;
-    QString ignoreFile = cfgFile.excludeFile(MirallConfigFile::UserScope);
+    ConfigFile cfgFile;
+    QString ignoreFile = cfgFile.excludeFile(ConfigFile::UserScope);
     QFile ignores(ignoreFile);
     if (ignores.open(QIODevice::WriteOnly)) {
         for(int i = 0; i < ui->listWidget->count(); ++i) {
@@ -136,10 +136,10 @@ void IgnoreListEditor::slotEditPattern(QListWidgetItem *item)
 void IgnoreListEditor::readIgnoreFile(const QString &file, bool readOnly)
 {
 
-    MirallConfigFile cfgFile;
+    ConfigFile cfgFile;
     const QString disabledTip(tr("This entry is provided by the system at '%1' "
                                  "and cannot be modified in this view.")
-            .arg(QDir::toNativeSeparators(cfgFile.excludeFile(MirallConfigFile::SystemScope))));
+            .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope))));
 
     QFile ignores(file);
     if (ignores.open(QIODevice::ReadOnly)) {

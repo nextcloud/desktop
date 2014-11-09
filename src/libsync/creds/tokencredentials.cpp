@@ -72,11 +72,11 @@ const char authenticationFailedC[] = "owncloud-authentication-failed";
 
 } // ns
 
-class TokenCredentialsAccessManager : public MirallAccessManager {
+class TokenCredentialsAccessManager : public AccessManager {
 public:
     friend class TokenCredentials;
     TokenCredentialsAccessManager(const TokenCredentials *cred, QObject* parent = 0)
-        : MirallAccessManager(parent), _cred(cred) {}
+        : AccessManager(parent), _cred(cred) {}
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) {
         if (_cred->user().isEmpty() || _cred->password().isEmpty() || _cred->_token.isEmpty()) {
@@ -90,7 +90,7 @@ protected:
 
         req.setRawHeader("Cookie", _cred->_token.toUtf8()); // analogous to neon in syncContextPreStart
 
-        return MirallAccessManager::createRequest(op, req, outgoingData);
+        return AccessManager::createRequest(op, req, outgoingData);
     }
 private:
     const TokenCredentials *_cred;
@@ -149,7 +149,7 @@ QString TokenCredentials::password() const
 
 QNetworkAccessManager* TokenCredentials::getQNAM() const
 {
-    MirallAccessManager* qnam = new TokenCredentialsAccessManager(this);
+    AccessManager* qnam = new TokenCredentialsAccessManager(this);
 
     connect( qnam, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));

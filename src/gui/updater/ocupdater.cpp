@@ -41,14 +41,14 @@ OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
     QObject(parent)
   , _updateUrl(url)
   , _state(Unknown)
-  , _accessManager(new MirallAccessManager(this))
+  , _accessManager(new AccessManager(this))
   , _timer(new QTimer(this))
 {
 }
 
 bool OCUpdater::performUpdate()
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     QString updateFile = settings.value(updateAvailableC).toString();
     if (!updateFile.isEmpty() && QFile(updateFile).exists()) {
@@ -107,7 +107,7 @@ void OCUpdater::setDownloadState(DownloadState state)
 
 void OCUpdater::slotStartInstaller()
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     QString updateFile = settings.value(updateAvailableC).toString();
     settings.setValue(autoUpdateAttemptedC, true);
@@ -133,7 +133,7 @@ void OCUpdater::slotOpenUpdateUrl()
 
 bool OCUpdater::updateSucceeded() const
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
 
     qint64 targetVersionInt = Helper::stringVersionToInt(settings.value(updateTargetVersionC).toString());
@@ -195,7 +195,7 @@ void NSISUpdater::slotDownloadFinished()
     QFile::copy(_file->fileName(), _targetFile);
     setDownloadState(DownloadComplete);
     qDebug() << "Downloaded" << url.toString() << "to" << _targetFile;
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     settings.setValue(updateTargetVersionC, updateInfo().version());
     settings.setValue(updateAvailableC, _targetFile);
@@ -203,7 +203,7 @@ void NSISUpdater::slotDownloadFinished()
 
 void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     qint64 infoVersion = Helper::stringVersionToInt(info.version());
     qint64 seenVersion = Helper::stringVersionToInt(settings.value(seenVersionC).toString());
@@ -290,7 +290,7 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
 
 NSISUpdater::UpdateState NSISUpdater::updateStateOnStart()
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     QString updateFileName = settings.value(updateAvailableC).toString();
     // has the previous run downloaded an update?
@@ -339,7 +339,7 @@ bool NSISUpdater::handleStartup()
 
 void NSISUpdater::slotSetSeenVersion()
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     settings.setValue(seenVersionC, updateInfo().version());
 }

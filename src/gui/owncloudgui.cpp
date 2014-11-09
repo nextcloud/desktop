@@ -129,7 +129,7 @@ void ownCloudGui::setupOverlayIcons()
 #endif
 }
 
-// This should rather be in application.... or rather in MirallConfigFile?
+// This should rather be in application.... or rather in ConfigFile?
 void ownCloudGui::slotOpenSettingsDialog( bool openSettings )
 {
     // if account is set up, start the configuration wizard.
@@ -377,7 +377,7 @@ void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
 
 void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QString &msg)
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     if (cfg.optionalDesktopNotifications()) {
         slotShowTrayMessage(title, msg);
     }

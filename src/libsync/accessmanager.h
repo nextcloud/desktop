@@ -20,12 +20,12 @@
 namespace Mirall
 {
 
-class OWNCLOUDSYNC_EXPORT MirallAccessManager : public QNetworkAccessManager
+class OWNCLOUDSYNC_EXPORT AccessManager : public QNetworkAccessManager
 {
     Q_OBJECT
 
 public:
-    MirallAccessManager(QObject* parent = 0);
+    AccessManager(QObject* parent = 0);
 
 protected:
     QNetworkReply* createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData = 0) Q_DECL_OVERRIDE;

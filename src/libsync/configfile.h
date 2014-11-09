@@ -27,10 +27,10 @@ namespace Mirall {
 
 class AbstractCredentials;
 
-class OWNCLOUDSYNC_EXPORT MirallConfigFile
+class OWNCLOUDSYNC_EXPORT ConfigFile
 {
 public:
-    MirallConfigFile();
+    ConfigFile();
 
     enum Scope { UserScope, SystemScope };
 

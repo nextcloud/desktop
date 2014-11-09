@@ -336,7 +336,7 @@ QSettings *Account::settingsWithGroup(const QString& group, QObject *parent)
 {
     if (_configFileName.isEmpty()) {
         // cache file name
-        MirallConfigFile cfg;
+        ConfigFile cfg;
         _configFileName = cfg.configFile();
     }
     QSettings *settings = new QSettings(_configFileName, QSettings::IniFormat, parent);

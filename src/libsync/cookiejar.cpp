@@ -148,7 +148,7 @@ QList<QNetworkCookie> CookieJar::removeExpired(const QList<QNetworkCookie> &cook
 
 QString CookieJar::storagePath() const
 {
-  MirallConfigFile cfg;
+  ConfigFile cfg;
   return cfg.configPath() + "/cookies.db";
 }
 

@@ -118,7 +118,7 @@ LogBrowser::LogBrowser(QWidget *parent) :
     connect(showLogWindow, SIGNAL(triggered()), SLOT(close()));
     addAction(showLogWindow);
 
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     cfg.restoreGeometry(this);
     int lines = cfg.maxLogLines();
     // qDebug() << "#        ##  Have " << lines << " Loglines!";
@@ -132,7 +132,7 @@ LogBrowser::~LogBrowser()
 
 void LogBrowser::closeEvent(QCloseEvent *)
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     cfg.saveGeometry(this);
 }
 

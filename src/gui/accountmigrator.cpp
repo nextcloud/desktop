@@ -43,7 +43,7 @@ AccountMigrator::AccountMigrator()
 
 QStringList AccountMigrator::migrateFolderDefinitons()
 {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     QStringList re;
 
     QString themePath = cfg.configPath();

@@ -70,7 +70,7 @@ GeneralSettings::~GeneralSettings()
 
 void GeneralSettings::loadMiscSettings()
 {
-    MirallConfigFile cfgFile;
+    ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
 }
@@ -92,7 +92,7 @@ void GeneralSettings::slotUpdateInfo()
 
 void GeneralSettings::saveMiscSettings()
 {
-    MirallConfigFile cfgFile;
+    ConfigFile cfgFile;
     bool isChecked = _ui->monoIconsCheckBox->isChecked();
     cfgFile.setMonoIcons(isChecked);
     Theme::instance()->setSystrayUseMonoIcons(isChecked);
@@ -106,7 +106,7 @@ void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
 
 void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
 {
-    MirallConfigFile cfgFile;
+    ConfigFile cfgFile;
     cfgFile.setOptionalDesktopNotifications(enable);
 }
 

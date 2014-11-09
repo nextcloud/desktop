@@ -140,14 +140,14 @@ void SocketApi::slotClearExcludesList()
 
 void SocketApi::slotReadExcludes()
 {
-    MirallConfigFile cfgFile;
+    ConfigFile cfgFile;
     slotClearExcludesList();
-    QString excludeList = cfgFile.excludeFile( MirallConfigFile::SystemScope );
+    QString excludeList = cfgFile.excludeFile( ConfigFile::SystemScope );
     if( !excludeList.isEmpty() ) {
         qDebug() << "==== added system ignore list to socketapi:" << excludeList.toUtf8();
         csync_exclude_load(excludeList.toUtf8(), &_excludes);
     }
-    excludeList = cfgFile.excludeFile( MirallConfigFile::UserScope );
+    excludeList = cfgFile.excludeFile( ConfigFile::UserScope );
     if( !excludeList.isEmpty() ) {
         qDebug() << "==== added user defined ignore list to csync:" << excludeList.toUtf8();
         csync_exclude_load(excludeList.toUtf8(), &_excludes);

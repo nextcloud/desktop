@@ -119,7 +119,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     effectiveWidth = qMin(effectiveWidth, maxWidth);
     listWidget->setFixedWidth(effectiveWidth);
 
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     cfg.restoreGeometry(this);
 }
 
@@ -146,13 +146,13 @@ void SettingsDialog::setGeneralErrors(const QStringList &errors)
 
 // close event is not being called here
 void SettingsDialog::reject() {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     cfg.saveGeometry(this);
     QDialog::reject();
 }
 
 void SettingsDialog::accept() {
-    MirallConfigFile cfg;
+    ConfigFile cfg;
     cfg.saveGeometry(this);
     QDialog::accept();
 }

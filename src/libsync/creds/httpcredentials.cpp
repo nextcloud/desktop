@@ -81,17 +81,17 @@ const char userC[] = "user";
 const char authenticationFailedC[] = "owncloud-authentication-failed";
 } // ns
 
-class HttpCredentialsAccessManager : public MirallAccessManager {
+class HttpCredentialsAccessManager : public AccessManager {
 public:
     HttpCredentialsAccessManager(const HttpCredentials *cred, QObject* parent = 0)
-        : MirallAccessManager(parent), _cred(cred) {}
+        : AccessManager(parent), _cred(cred) {}
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) Q_DECL_OVERRIDE {
         QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
         //qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
-        return MirallAccessManager::createRequest(op, req, outgoingData);
+        return AccessManager::createRequest(op, req, outgoingData);
     }
 private:
     const HttpCredentials *_cred;
@@ -172,7 +172,7 @@ QString HttpCredentials::password() const
 
 QNetworkAccessManager* HttpCredentials::getQNAM() const
 {
-    MirallAccessManager* qnam = new HttpCredentialsAccessManager(this);
+    AccessManager* qnam = new HttpCredentialsAccessManager(this);
 
     connect( qnam, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
