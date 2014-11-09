@@ -31,7 +31,7 @@
 #include <QTimer>
 #include <QMessageBox>
 
-using namespace Mirall;
+using namespace OCC;
 
 void warnSystray()
 {
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 #ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
-    Mirall::Application app(argc, argv);
+    OCC::Application app(argc, argv);
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
 #endif

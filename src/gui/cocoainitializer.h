@@ -11,7 +11,7 @@
  * for more details.
  */
 
-namespace Mirall {
+namespace OCC {
 namespace Mac {
 
 /** CocoaInitializer provides an AutoRelease Pool via RIIA for use in main() */
@@ -25,4 +25,4 @@ private:
 };
 
 } // namespace Mac
-} // namespace Mirall
+} // namespace OCC

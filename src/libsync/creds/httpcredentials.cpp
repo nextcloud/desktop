@@ -34,7 +34,7 @@
 
 using namespace QKeychain;
 
-namespace Mirall
+namespace OCC
 {
 
 int getauth(const char *prompt,
@@ -381,4 +381,4 @@ QString HttpCredentialsGui::queryPassword(bool *ok)
     }
 }
 
-} // ns Mirall
+} // namespace OCC

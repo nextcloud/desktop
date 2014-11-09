@@ -31,7 +31,7 @@
 #include <QDebug>
 #include <QSettings>
 
-namespace Mirall {
+namespace OCC {
 
 SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     : MacPreferencesWindow(parent)

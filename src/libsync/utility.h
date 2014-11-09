@@ -24,7 +24,7 @@
 
 class QWidget;
 
-namespace Mirall {
+namespace OCC {
 
 namespace Utility
 {

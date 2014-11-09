@@ -39,7 +39,7 @@
 #include <QX11Info>
 #endif
 
-namespace Mirall {
+namespace OCC {
 
 ownCloudGui::ownCloudGui(Application *parent) :
     QObject(parent),

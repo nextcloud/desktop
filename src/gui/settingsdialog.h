@@ -22,7 +22,7 @@
 class QStandardItemModel;
 class QListWidgetItem;
 
-namespace Mirall {
+namespace OCC {
 
 namespace Ui {
 class SettingsDialog;

@@ -7,7 +7,7 @@
 #include <QDomElement>
 #include <QXmlStreamWriter>
 
-namespace Mirall {
+namespace OCC {
 
 class UpdateInfo
 {
@@ -36,6 +36,6 @@ class UpdateInfo
     QString mDownloadUrl;
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // UPDATEINFO_H

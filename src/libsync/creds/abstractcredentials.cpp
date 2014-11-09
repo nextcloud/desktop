@@ -17,7 +17,7 @@
 
 #include "creds/abstractcredentials.h"
 
-namespace Mirall
+namespace OCC
 {
 
 QString AbstractCredentials::keychainKey(const QString &url, const QString &user)
@@ -39,4 +39,4 @@ QString AbstractCredentials::keychainKey(const QString &url, const QString &user
     QString key = user+QLatin1Char(':')+u;
     return key;
 }
-} // ns Mirall
+} // namespace OCC

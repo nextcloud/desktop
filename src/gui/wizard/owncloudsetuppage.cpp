@@ -26,7 +26,7 @@
 #include "wizard/owncloudsetuppage.h"
 #include "theme.h"
 
-namespace Mirall
+namespace OCC
 {
 
 OwncloudSetupPage::OwncloudSetupPage()
@@ -265,4 +265,4 @@ void OwncloudSetupPage::setConfigExists(  bool config )
     }
 }
 
-} // ns Mirall
+} // namespace OCC

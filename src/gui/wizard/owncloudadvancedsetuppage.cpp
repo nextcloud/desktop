@@ -29,7 +29,7 @@
 #include "selectivesyncdialog.h"
 #include "creds/abstractcredentials.h"
 
-namespace Mirall
+namespace OCC
 {
 
 OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
@@ -294,4 +294,4 @@ void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
 }
 
 
-} // ns Mirall
+} // namespace OCC

@@ -18,7 +18,7 @@
 
 #include <QObject>
 
-namespace Mirall {
+namespace OCC {
 
 class SparkleUpdater : public Updater {
 public:
@@ -34,6 +34,6 @@ private:
     Private *d;
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // SPARKLEUPDATER_H

@@ -23,7 +23,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 
-namespace Mirall {
+namespace OCC {
 
 IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     QDialog(parent),
@@ -164,4 +164,4 @@ void IgnoreListEditor::readIgnoreFile(const QString &file, bool readOnly)
     }
 }
 
-} // namespace Mirall
+} // namespace OCC

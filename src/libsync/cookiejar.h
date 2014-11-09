@@ -18,7 +18,7 @@
 
 #include "owncloudlib.h"
 
-namespace Mirall {
+namespace OCC {
 
 class OWNCLOUDSYNC_EXPORT CookieJar : public QNetworkCookieJar
 {
@@ -46,6 +46,6 @@ private:
 
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // MIRALL_COOKIEJAR_H

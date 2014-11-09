@@ -27,7 +27,7 @@
 
 class QSignalMapper;
 
-namespace Mirall {
+namespace OCC {
 
 class Application;
 class SyncResult;
@@ -41,7 +41,7 @@ public:
 
     int setupFolders();
 
-    Mirall::Folder::Map map();
+    OCC::Folder::Map map();
 
     /**
       * Add a folder definition to the config
@@ -162,8 +162,8 @@ private:
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = 0);
     ~FolderMan();
-    friend class Mirall::Application;
+    friend class OCC::Application;
 };
 
-} // namespace Mirall
+} // namespace OCC
 #endif // FOLDERMAN_H

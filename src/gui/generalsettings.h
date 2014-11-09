@@ -17,7 +17,7 @@
 #include <QWidget>
 
 
-namespace Mirall {
+namespace OCC {
 
 namespace Ui {
 class GeneralSettings;
@@ -44,5 +44,5 @@ private:
 };
 
 
-} // namespace Mirall
+} // namespace OCC
 #endif // MIRALL_GENERALSETTINGS_H

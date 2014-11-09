@@ -46,11 +46,11 @@
 #include <QProcess>
 #include <QElapsedTimer>
 
-namespace Mirall {
+namespace OCC {
 
 bool SyncEngine::_syncRunning = false;
 
-SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, Mirall::SyncJournalDb* journal)
+SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, OCC::SyncJournalDb* journal)
   : _csync_ctx(ctx)
   , _needsUpdate(false)
   , _localPath(localPath)
@@ -1101,4 +1101,4 @@ void SyncEngine::abort()
         _propagator->abort();
 }
 
-} // ns Mirall
+} // namespace OCC

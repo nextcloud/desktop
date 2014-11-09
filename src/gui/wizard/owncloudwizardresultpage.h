@@ -20,7 +20,7 @@
 
 #include "ui_owncloudwizardresultpage.h"
 
-namespace Mirall {
+namespace OCC {
 
 class OwncloudWizardResultPage : public QWizardPage
 {
@@ -51,6 +51,6 @@ private:
   Ui_OwncloudWizardResultPage _ui;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

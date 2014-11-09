@@ -18,7 +18,7 @@
 #include <QHash>
 #include <QPair>
 
-namespace Mirall {
+namespace OCC {
 
 class NetrcParser
 {
@@ -36,6 +36,6 @@ private:
     QString _fileName;
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // NETRCPARSER_H

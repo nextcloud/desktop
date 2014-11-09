@@ -18,7 +18,7 @@
 
 #include <owncloudlib.h>
 
-namespace Mirall {
+namespace OCC {
 
 /**
  * This file contains file system helper.

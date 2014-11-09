@@ -13,7 +13,7 @@
 
 #include "creds/http/httpconfigfile.h"
 
-namespace Mirall
+namespace OCC
 {
 
 namespace
@@ -78,4 +78,4 @@ void HttpConfigFile::removeOldPassword()
     removeData(QString(), QLatin1String(oldPasswdC));
 }
 
-} // ns Mirall
+} // namespace OCC

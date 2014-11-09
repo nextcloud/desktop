@@ -22,7 +22,7 @@
 #include "owncloudlib.h"
 #include "syncfileitem.h"
 
-namespace Mirall
+namespace OCC
 {
 
 class OWNCLOUDSYNC_EXPORT SyncResult

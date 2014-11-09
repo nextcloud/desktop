@@ -15,7 +15,7 @@
 
 #include <QDebug>
 
-namespace Mirall {
+namespace OCC {
 SyncFileStatus::SyncFileStatus()
     :_tag(STATUS_NONE), _sharedWithMe(false)
 {

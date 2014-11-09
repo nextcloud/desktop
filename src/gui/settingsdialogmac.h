@@ -21,7 +21,7 @@
 class QStandardItemModel;
 class QListWidgetItem;
 
-namespace Mirall {
+namespace OCC {
 
 class AccountSettings;
 class ProtocolWidget;

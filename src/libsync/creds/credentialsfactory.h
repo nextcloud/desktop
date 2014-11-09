@@ -18,7 +18,7 @@
 
 class QString;
 
-namespace Mirall
+namespace OCC
 {
 class AbstractCredentials;
 
@@ -29,6 +29,6 @@ OWNCLOUDSYNC_EXPORT AbstractCredentials* create(const QString& type);
 
 } // ns CredentialsFactory
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

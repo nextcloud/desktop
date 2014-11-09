@@ -37,7 +37,7 @@
 
 Q_DECLARE_METATYPE(QTimer*)
 
-namespace Mirall {
+namespace OCC {
 
 bool AbstractNetworkJob::preOc7WasDetected = false;
 
@@ -652,4 +652,4 @@ NetworkJobTimeoutPauser::~NetworkJobTimeoutPauser()
     }
 }
 
-} // namespace Mirall
+} // namespace OCC

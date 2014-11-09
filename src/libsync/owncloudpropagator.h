@@ -27,7 +27,7 @@ struct ne_session_s;
 struct ne_decompress_s;
 typedef struct ne_prop_result_set_s ne_prop_result_set;
 
-namespace Mirall {
+namespace OCC {
 
 class SyncJournalDb;
 class OwncloudPropagator;

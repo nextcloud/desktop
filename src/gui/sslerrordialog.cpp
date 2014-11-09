@@ -24,7 +24,7 @@
 
 #include "ui_sslerrordialog.h"
 
-namespace Mirall
+namespace OCC
 {
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)

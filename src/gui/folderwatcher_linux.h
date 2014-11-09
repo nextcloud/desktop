@@ -22,7 +22,7 @@
 
 #include "folderwatcher.h"
 
-namespace Mirall
+namespace OCC
 {
 class FolderWatcherPrivate : public QObject
 {

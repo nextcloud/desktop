@@ -42,7 +42,7 @@
 
 #include "account.h"
 
-namespace Mirall {
+namespace OCC {
 
 static const char progressBarStyleC[] =
         "QProgressBar {"
@@ -836,4 +836,4 @@ AccountSettings::~AccountSettings()
     delete ui;
 }
 
-} // namespace Mirall
+} // namespace OCC

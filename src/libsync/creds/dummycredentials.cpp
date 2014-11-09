@@ -14,7 +14,7 @@
 #include "creds/dummycredentials.h"
 #include "mirallaccessmanager.h"
 
-namespace Mirall
+namespace OCC
 {
 
 void DummyCredentials::syncContextPreInit(CSYNC*)
@@ -64,4 +64,4 @@ void DummyCredentials::fetch(Account*)
 void DummyCredentials::persist(Account*)
 {}
 
-} // ns Mirall
+} // namespace OCC

@@ -25,7 +25,7 @@
 
 #include "config.h"
 
-namespace Mirall {
+namespace OCC {
 
 Updater *Updater::_instance = 0;
 
@@ -123,4 +123,4 @@ QString Updater::clientVersion()
     return QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_FULL));
 }
 
-} // namespace Mirall
+} // namespace OCC

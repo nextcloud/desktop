@@ -15,7 +15,7 @@
 #include "account.h"
 #include "simplesslerrorhandler.h"
 
-bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, Mirall::Account *account)
+bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, OCC::Account *account)
 {
     (void) account;
 

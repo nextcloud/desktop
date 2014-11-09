@@ -16,7 +16,7 @@
 #include "mirallconfigfile.h"
 #include <QUrl>
 
-namespace Mirall {
+namespace OCC {
 
 ClientProxy::ClientProxy(QObject *parent) :
     QObject(parent)
@@ -41,7 +41,7 @@ QNetworkProxy ClientProxy::proxyFromConfig(const ConfigFile& cfg)
 
 void ClientProxy::setupQtProxyFromConfig()
 {
-    Mirall::ConfigFile cfg;
+    OCC::ConfigFile cfg;
     int proxyType = QNetworkProxy::DefaultProxy;
     QNetworkProxy proxy;
 

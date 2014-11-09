@@ -22,7 +22,7 @@
 class QNetworkCookie;
 class QUrl;
 
-namespace Mirall
+namespace OCC
 {
 
 class ShibbolethCookieJar;
@@ -58,6 +58,6 @@ private:
   bool _cursorOverriden;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

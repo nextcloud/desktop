@@ -18,7 +18,7 @@
 
 class QListWidgetItem;
 
-namespace Mirall {
+namespace OCC {
 
 namespace Ui {
 class IgnoreListEditor;
@@ -44,6 +44,6 @@ private:
     Ui::IgnoreListEditor *ui;
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // IGNORELISTEDITOR_H

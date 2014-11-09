@@ -22,7 +22,7 @@
 #include <QWidgetAction>
 #include <QLabel>
 
-namespace Mirall {
+namespace OCC {
 
 SslButton::SslButton(QWidget *parent) :
     QToolButton(parent)
@@ -220,4 +220,4 @@ void SslButton::updateAccountInfo(Account *account)
     }
 }
 
-} // namespace Mirall
+} // namespace OCC

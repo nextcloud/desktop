@@ -16,7 +16,7 @@
 
 #include <QStringList>
 
-namespace Mirall {
+namespace OCC {
 
 class AccountMigrator {
 

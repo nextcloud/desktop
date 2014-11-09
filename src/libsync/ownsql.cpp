@@ -26,7 +26,7 @@
     _errId = (A); if(_errId != SQLITE_OK) { _error= QString::fromUtf8(sqlite3_errmsg(_db)); \
      } }
 
-namespace Mirall {
+namespace OCC {
 
 SqlDatabase::SqlDatabase()
     :_db(0),
@@ -137,7 +137,7 @@ int SqlQuery::prepare( const QString& sql)
             rc = sqlite3_prepare_v2(_db, _sql.toUtf8().constData(), -1, &_stmt, 0);
             if( (rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED) ) {
                 n++;
-                Mirall::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
+                OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
             }
         } while( (n < SQLITE_REPEAT_COUNT) && ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)));
         _errId = rc;
@@ -170,9 +170,9 @@ bool SqlQuery::exec()
             if( rc == SQLITE_LOCKED ) {
                 rc = sqlite3_reset(_stmt); /* This will also return SQLITE_LOCKED */
                 n++;
-                Mirall::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
+                OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
             } else if( rc == SQLITE_BUSY ) {
-                Mirall::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
+                OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
                 n++;
             }
         } while( (n < SQLITE_REPEAT_COUNT) && ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)));
@@ -292,4 +292,4 @@ void SqlQuery::reset()
     SQLITE_DO(sqlite3_reset(_stmt));
 }
 
-} // namespace Mirall
+} // namespace OCC

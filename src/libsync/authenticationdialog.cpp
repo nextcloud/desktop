@@ -19,7 +19,7 @@
 #include <QFormLayout>
 #include <QDialogButtonBox>
 
-namespace Mirall {
+namespace OCC {
 
 AuthenticationDialog::AuthenticationDialog(const QString &realm, const QString &domain, QWidget *parent)
     : QDialog(parent)
@@ -53,4 +53,4 @@ QString AuthenticationDialog::password() const
     return _password->text();
 }
 
-} // namespace Mirall
+} // namespace OCC

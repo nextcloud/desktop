@@ -20,7 +20,7 @@
 #include "networkjobs.h"
 #include <creds/abstractcredentials.h>
 
-namespace Mirall {
+namespace OCC {
 
 ConnectionValidator::ConnectionValidator(Account *account, QObject *parent)
     : QObject(parent),
@@ -187,4 +187,4 @@ void ConnectionValidator::slotAuthSuccess()
     emit connectionResult(Connected);
 }
 
-} // namespace Mirall
+} // namespace OCC

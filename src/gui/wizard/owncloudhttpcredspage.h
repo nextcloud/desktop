@@ -22,7 +22,7 @@
 
 class QProgressIndicator;
 
-namespace Mirall {
+namespace OCC {
 
 class OwncloudHttpCredsPage : public AbstractCredentialsWizardPage
 {
@@ -55,6 +55,6 @@ private:
   QProgressIndicator* _progressIndi;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

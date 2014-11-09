@@ -63,7 +63,7 @@ CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path
 int csync_exclude_load(const char *fname, c_strlist_t **list);
 }
 
-namespace Mirall {
+namespace OCC {
 
 #define DEBUG qDebug() << "SocketApi: "
 
@@ -611,5 +611,5 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
 }
 
 
-} // namespace Mirall
+} // namespace OCC
 

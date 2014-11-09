@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 
-namespace Mirall {
+namespace OCC {
 
 static const char updateAvailableC[] = "Updater/updateAvailable";
 static const char updateTargetVersionC[] = "Updater/updateTargetVersion";

@@ -37,7 +37,7 @@
 
 class QProcess;
 
-namespace Mirall {
+namespace OCC {
 
 class SyncJournalFileRecord;
 

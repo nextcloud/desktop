@@ -33,7 +33,7 @@
 
 #include <QDebug>
 
-namespace Mirall {
+namespace OCC {
 
 static const char urlC[] = "url";
 static const char authTypeC[] = "authType";
@@ -425,4 +425,4 @@ void Account::setMigrated(bool mig)
     _wasMigrated = mig;
 }
 
-} // namespace Mirall
+} // namespace OCC

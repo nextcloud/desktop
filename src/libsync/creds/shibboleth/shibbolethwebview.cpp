@@ -27,7 +27,7 @@
 #include "mirallaccessmanager.h"
 #include "theme.h"
 
-namespace Mirall
+namespace OCC
 {
 
 ShibbolethWebView::ShibbolethWebView(Account* account, QWidget* parent)
@@ -119,4 +119,4 @@ void ShibbolethWebView::accept()
     _accepted = true;
 }
 
-} // ns Mirall
+} // namespace OCC

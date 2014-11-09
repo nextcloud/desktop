@@ -18,7 +18,7 @@
 #include <QStyledItemDelegate>
 #include <QStandardItemModel>
 
-namespace Mirall {
+namespace OCC {
 
 class FolderStatusModel : public QStandardItemModel
 {
@@ -59,6 +59,6 @@ class FolderStatusDelegate : public QStyledItemDelegate
                       const QModelIndex& index ) Q_DECL_OVERRIDE;
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // FOLDERSTATUSMODEL_H

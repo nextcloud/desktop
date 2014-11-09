@@ -18,7 +18,7 @@
 
 #include <QUrl>
 
-namespace Mirall {
+namespace OCC {
 
 bool DiscoveryJob::isInSelectiveSyncBlackList(const QString& path) const
 {

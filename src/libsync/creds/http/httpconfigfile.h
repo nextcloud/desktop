@@ -16,7 +16,7 @@
 
 #include "mirallconfigfile.h"
 
-namespace Mirall
+namespace OCC
 {
 
 class HttpConfigFile : public ConfigFile
@@ -35,6 +35,6 @@ private:
   void removeOldPassword();
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

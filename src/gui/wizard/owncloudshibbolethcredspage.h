@@ -22,7 +22,7 @@
 
 #include "wizard/abstractcredswizardpage.h"
 
-namespace Mirall {
+namespace OCC {
 
 class Account;
 class ShibbolethWebView;
@@ -57,6 +57,6 @@ private:
   QNetworkCookie _cookie;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

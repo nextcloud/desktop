@@ -25,7 +25,7 @@
 #include <QMenu>
 #include <QSignalMapper>
 
-namespace Mirall {
+namespace OCC {
 
 class SettingsDialog;
 class SettingsDialogMac;
@@ -110,6 +110,6 @@ private:
     QStringList _startupFails;
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // OWNCLOUDGUI_H

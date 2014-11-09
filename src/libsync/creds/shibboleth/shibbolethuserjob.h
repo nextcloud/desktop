@@ -16,7 +16,7 @@
 
 #include <networkjobs.h>
 
-namespace Mirall
+namespace OCC
 {
 
 /**
@@ -38,5 +38,5 @@ private slots:
 };
 
 
-} // ns Mirall
+} // namespace OCC
 

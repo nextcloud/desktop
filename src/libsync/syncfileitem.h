@@ -21,7 +21,7 @@
 
 #include <csync.h>
 
-namespace Mirall {
+namespace OCC {
 
 class SyncFileItem {
 public:
@@ -133,6 +133,6 @@ typedef QVector<SyncFileItem> SyncFileItemVector;
 
 }
 
-Q_DECLARE_METATYPE(Mirall::SyncFileItem)
+Q_DECLARE_METATYPE(OCC::SyncFileItem)
 
 #endif // SYNCFILEITEM_H

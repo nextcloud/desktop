@@ -23,7 +23,7 @@
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
 
-namespace Mirall
+namespace OCC
 {
 
 OwncloudHttpCredsPage::OwncloudHttpCredsPage()
@@ -160,4 +160,4 @@ void OwncloudHttpCredsPage::setConfigExists(bool config)
     }
 }
 
-} // ns Mirall
+} // namespace OCC

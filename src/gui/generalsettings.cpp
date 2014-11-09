@@ -26,7 +26,7 @@
 #include <QNetworkProxy>
 #include <QDir>
 
-namespace Mirall {
+namespace OCC {
 
 GeneralSettings::GeneralSettings(QWidget *parent) :
     QWidget(parent),
@@ -110,4 +110,4 @@ void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
     cfgFile.setOptionalDesktopNotifications(enable);
 }
 
-} // namespace Mirall
+} // namespace OCC

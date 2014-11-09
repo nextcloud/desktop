@@ -21,7 +21,7 @@
 #include <QFile>
 #include <qdebug.h>
 
-namespace Mirall {
+namespace OCC {
 
 /* Helper for QScopedPointer<>, to be used as the deleter.
  * QScopePointer will call the right overload of cleanup for the pointer it holds

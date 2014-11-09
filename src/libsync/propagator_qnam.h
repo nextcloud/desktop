@@ -22,7 +22,7 @@
 #include <QBuffer>
 #include <QFile>
 
-namespace Mirall {
+namespace OCC {
 
 class ChunkBlock {
 

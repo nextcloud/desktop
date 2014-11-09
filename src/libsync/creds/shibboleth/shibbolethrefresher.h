@@ -20,7 +20,7 @@
 
 class QByteArray;
 
-namespace Mirall
+namespace OCC
 {
 
 class Account;
@@ -44,6 +44,6 @@ private:
     CSYNC* _csync_ctx;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

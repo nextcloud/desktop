@@ -27,7 +27,7 @@
 
 class QTimer;
 
-namespace Mirall {
+namespace OCC {
 
 class FolderWatcherPrivate;
 

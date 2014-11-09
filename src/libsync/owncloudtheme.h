@@ -17,7 +17,7 @@
 
 #include "theme.h"
 
-namespace Mirall {
+namespace OCC {
 
 class ownCloudTheme : public Theme
 {

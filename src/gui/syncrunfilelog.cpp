@@ -18,7 +18,7 @@
 #include "filesystem.h"
 #include <qfileinfo.h>
 
-namespace Mirall {
+namespace OCC {
 
 SyncRunFileLog::SyncRunFileLog()
 {

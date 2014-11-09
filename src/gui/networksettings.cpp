@@ -23,7 +23,7 @@
 
 #include <QNetworkProxy>
 
-namespace Mirall {
+namespace OCC {
 
 NetworkSettings::NetworkSettings(QWidget *parent) :
     QWidget(parent),
@@ -75,7 +75,7 @@ NetworkSettings::~NetworkSettings()
 void NetworkSettings::loadProxySettings()
 {
     // load current proxy settings
-    Mirall::ConfigFile cfgFile;
+    OCC::ConfigFile cfgFile;
     int type = cfgFile.proxyType();
     switch (type) {
     case QNetworkProxy::NoProxy:
@@ -167,4 +167,4 @@ void NetworkSettings::saveBWLimitSettings()
     FolderMan::instance()->setDirtyNetworkLimits();
 }
 
-} // namespace Mirall
+} // namespace OCC

@@ -24,11 +24,11 @@
 
 #include "utility.h"
 
-namespace Mirall {
+namespace OCC {
 
 struct Log{
   typedef enum{
-    Mirall,
+    Occ,
     CSync
   } Source;
 
@@ -84,6 +84,6 @@ private:
 
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // LOGGER_H

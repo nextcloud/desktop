@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QVarLengthArray>
 
-namespace Mirall {
+namespace OCC {
 
 FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString& path)
     : QObject(),

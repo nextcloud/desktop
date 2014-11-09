@@ -16,7 +16,7 @@
 #ifndef MIRALL_CREDS_COMMON_H
 #define MIRALL_CREDS_COMMON_H
 
-namespace Mirall
+namespace OCC
 {
 
 int handleNeonSSLProblems(const char* prompt,
@@ -26,6 +26,6 @@ int handleNeonSSLProblems(const char* prompt,
                           int verify,
                           void* userdata);
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

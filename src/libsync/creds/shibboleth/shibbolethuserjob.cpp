@@ -16,7 +16,7 @@
 #include <account.h>
 #include <json.h>
 
-namespace Mirall {
+namespace OCC {
 
 ShibbolethUserJob::ShibbolethUserJob(Account* account, QObject* parent)
 : AbstractNetworkJob(account, QLatin1String("ocs/v1.php/cloud/user"), parent)

@@ -40,7 +40,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-namespace Mirall {
+namespace OCC {
 
 static void csyncLogCatcher(int /*verbosity*/,
                         const char */*function*/,
@@ -985,5 +985,5 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
         QTimer::singleShot(50, this, SLOT(slotPollTimerTimeout()));
     }
 }
-} // namespace Mirall
+} // namespace OCC
 

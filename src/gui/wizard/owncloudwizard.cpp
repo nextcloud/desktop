@@ -31,7 +31,7 @@
 
 #include <stdlib.h>
 
-namespace Mirall
+namespace OCC
 {
 
 OwncloudWizard::OwncloudWizard(QWidget *parent)

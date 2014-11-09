@@ -19,7 +19,7 @@
 
 #include "owncloudlib.h"
 
-namespace Mirall {
+namespace OCC {
 
 class SyncFileItem;
 

@@ -24,7 +24,7 @@
 class QSslError;
 class QSslCertificate;
 
-namespace Mirall
+namespace OCC
 {
 
 namespace Ui {

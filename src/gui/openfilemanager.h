@@ -14,7 +14,7 @@
 
 #include <QString>
 
-namespace Mirall {
+namespace OCC {
 /** Open the file manager with the specified file pre-selected */
 void showInFileManager(const QString &localPath);
 }

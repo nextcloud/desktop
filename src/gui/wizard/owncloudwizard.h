@@ -20,7 +20,7 @@
 
 #include "wizard/owncloudwizardcommon.h"
 
-namespace Mirall {
+namespace OCC {
 
 class Account;
 class OwncloudSetupPage;
@@ -91,6 +91,6 @@ private:
     bool _configExists;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

@@ -17,7 +17,7 @@
 #include "owncloudlib.h"
 #include <QNetworkAccessManager>
 
-namespace Mirall
+namespace OCC
 {
 
 class OWNCLOUDSYNC_EXPORT AccessManager : public QNetworkAccessManager
@@ -35,6 +35,6 @@ protected slots:
 
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

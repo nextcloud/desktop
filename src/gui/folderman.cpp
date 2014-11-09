@@ -34,7 +34,7 @@
 #include <QPointer>
 #include <QtCore>
 
-namespace Mirall {
+namespace OCC {
 
 FolderMan* FolderMan::_instance = 0;
 
@@ -79,7 +79,7 @@ FolderMan::~FolderMan()
     _instance = 0;
 }
 
-Mirall::Folder::Map FolderMan::map()
+OCC::Folder::Map FolderMan::map()
 {
     return _folderMap;
 }
@@ -903,4 +903,4 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool paused ) const
     return folderMessage;
 }
 
-} // namespace Mirall
+} // namespace OCC

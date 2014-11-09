@@ -20,7 +20,7 @@
 #include <CoreServices/CoreServices.h>
 
 
-namespace Mirall
+namespace OCC
 {
 
 class FolderWatcherPrivate

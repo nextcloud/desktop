@@ -57,7 +57,7 @@
 @end
 
 
-namespace Mirall {
+namespace OCC {
 
 class SparkleUpdater::Private
 {
@@ -109,4 +109,4 @@ void SparkleUpdater::backgroundCheckForUpdate()
     [d->updater checkForUpdatesInBackground];
 }
 
-} // namespace Mirall
+} // namespace OCC

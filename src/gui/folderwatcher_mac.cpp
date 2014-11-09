@@ -23,7 +23,7 @@
 
 
 
-namespace Mirall {
+namespace OCC {
 
 FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString& path)
     : _parent(p),

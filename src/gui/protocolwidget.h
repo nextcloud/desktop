@@ -24,7 +24,7 @@
 
 class QPushButton;
 
-namespace Mirall {
+namespace OCC {
 class SyncResult;
 
 namespace Ui {

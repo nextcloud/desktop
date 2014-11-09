@@ -17,7 +17,7 @@
 #include <QThread>
 #include <windows.h>
 
-namespace Mirall {
+namespace OCC {
 
 class FolderWatcher;
 

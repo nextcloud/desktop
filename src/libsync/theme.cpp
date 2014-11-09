@@ -30,7 +30,7 @@
 #  include INCLUDE_FILE(THEME_INCLUDE)
 #endif
 
-namespace Mirall {
+namespace OCC {
 
 Theme* Theme::_instance = 0;
 

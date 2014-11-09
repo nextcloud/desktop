@@ -29,7 +29,7 @@
 #include "version.h"
 #include "config.h"
 
-namespace Mirall {
+namespace OCC {
 
 ownCloudTheme::ownCloudTheme() :
     Theme()

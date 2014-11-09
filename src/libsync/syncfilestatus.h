@@ -18,7 +18,7 @@
 
 #include "owncloudlib.h"
 
-namespace Mirall {
+namespace OCC {
 
 class OWNCLOUDSYNC_EXPORT SyncFileStatus
 {

@@ -18,7 +18,7 @@
 #include <QDebug>
 #include <QCoreApplication>
 
-namespace Mirall {
+namespace OCC {
 
 ProgressDispatcher* ProgressDispatcher::_instance = 0;
 

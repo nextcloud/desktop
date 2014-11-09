@@ -20,7 +20,7 @@
 #include <csync.h>
 #include "utility.h"
 
-namespace Mirall {
+namespace OCC {
 
 class ConfigFile;
 

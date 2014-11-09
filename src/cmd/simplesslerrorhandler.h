@@ -18,9 +18,9 @@
 class QSslError;
 class QSslCertificate;
 
-class SimpleSslErrorHandler : public Mirall::AbstractSslErrorHandler {
+class SimpleSslErrorHandler : public OCC::AbstractSslErrorHandler {
 public:
-    bool handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, Mirall::Account*) Q_DECL_OVERRIDE;
+    bool handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, OCC::Account*) Q_DECL_OVERRIDE;
 };
 
 #endif // SIMPLESSLERRORHANDLER_H

@@ -22,7 +22,7 @@
 #include "mirallaccessmanager.h"
 #include "utility.h"
 
-namespace Mirall
+namespace OCC
 {
 
 AccessManager::AccessManager(QObject* parent)
@@ -88,4 +88,4 @@ void AccessManager::slotAuthenticationRequired(QNetworkReply *reply, QAuthentica
     }
 }
 
-} // ns Mirall
+} // namespace OCC

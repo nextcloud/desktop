@@ -15,7 +15,7 @@
 
 #pragma once
 
-namespace Mirall {
+namespace OCC {
 
 inline QByteArray parseEtag(const char *header) {
     if (!header)

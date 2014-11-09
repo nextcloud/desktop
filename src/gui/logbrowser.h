@@ -26,7 +26,7 @@
 #include <QPushButton>
 #include <QLabel>
 
-namespace Mirall {
+namespace OCC {
 
 class LogWidget : public QPlainTextEdit 
 {

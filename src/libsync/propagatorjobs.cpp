@@ -47,7 +47,7 @@
 #include <time.h>
 
 
-namespace Mirall {
+namespace OCC {
 
 // Code copied from Qt5's QDir::removeRecursively
 // (and modified to report the error)

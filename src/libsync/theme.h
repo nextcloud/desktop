@@ -24,7 +24,7 @@ class QObject;
 class QPixmap;
 class QColor;
 
-namespace Mirall {
+namespace OCC {
 
 class SyncResult;
 

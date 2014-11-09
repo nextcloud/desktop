@@ -23,7 +23,7 @@
 class QWidget;
 class QHeaderView;
 
-namespace Mirall {
+namespace OCC {
 
 class AbstractCredentials;
 

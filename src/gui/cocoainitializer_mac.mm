@@ -16,7 +16,7 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <AppKit/NSApplication.h>
 
-namespace Mirall {
+namespace OCC {
 namespace Mac {
 
 class CocoaInitializer::Private {
@@ -36,4 +36,4 @@ CocoaInitializer::~CocoaInitializer() {
 }
 
 } // namespace Mac
-} // namespace Mirall
+} // namespace OCC

@@ -26,7 +26,7 @@
 #include "utility.h"
 #include "account.h"
 
-namespace Mirall
+namespace OCC
 {
 
 int handleNeonSSLProblems(const char* prompt,
@@ -76,4 +76,4 @@ int handleNeonSSLProblems(const char* prompt,
     return re;
 }
 
-} // ns Mirall
+} // namespace OCC

@@ -47,7 +47,7 @@
 
 class QSocket;
 
-namespace Mirall {
+namespace OCC {
 
 namespace {
 
@@ -565,5 +565,5 @@ bool Application::giveHelp()
 {
     return _helpOnly;
 }
-} // namespace Mirall
+} // namespace OCC
 

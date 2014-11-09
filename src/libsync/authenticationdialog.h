@@ -18,7 +18,7 @@
 
 class QLineEdit;
 
-namespace Mirall {
+namespace OCC {
 
 /** @brief Authenticate a user for a specific credential given his credentials */
 class AuthenticationDialog : public QDialog {
@@ -36,6 +36,6 @@ private:
 };
 
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // MIRALL_AUTHENTICATIONDIALOG_H

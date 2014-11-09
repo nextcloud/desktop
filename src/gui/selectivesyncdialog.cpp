@@ -28,7 +28,7 @@
 #include <QScopedValueRollback>
 #include <QLabel>
 
-namespace Mirall {
+namespace OCC {
 
 SelectiveSyncTreeView::SelectiveSyncTreeView(Account *account, QWidget* parent)
     : QTreeWidget(parent), _inserting(false), _account(account)

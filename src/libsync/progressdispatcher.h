@@ -22,7 +22,7 @@
 #include <QElapsedTimer>
 #include "syncfileitem.h"
 
-namespace Mirall {
+namespace OCC {
 
 /**
  * @brief The FolderScheduler class schedules folders for sync

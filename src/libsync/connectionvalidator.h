@@ -20,7 +20,7 @@
 #include <QVariantMap>
 #include <QNetworkReply>
 
-namespace Mirall {
+namespace OCC {
 
 class Account;
 

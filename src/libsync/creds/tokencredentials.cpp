@@ -26,7 +26,7 @@
 #include "creds/tokencredentials.h"
 
 
-namespace Mirall
+namespace OCC
 {
 
 namespace
@@ -209,4 +209,4 @@ void TokenCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* 
     reply->close();
 }
 
-} // ns Mirall
+} // namespace OCC

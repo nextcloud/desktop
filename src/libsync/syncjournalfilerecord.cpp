@@ -24,7 +24,7 @@
 #include <sys/stat.h>
 #endif
 
-namespace Mirall {
+namespace OCC {
 
 SyncJournalFileRecord::SyncJournalFileRecord()
     :_inode(0), _type(0), _mode(0)

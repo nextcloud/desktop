@@ -27,7 +27,7 @@
 
 class QUrl;
 
-namespace Mirall {
+namespace OCC {
 
 class Account;
 class AbstractSslErrorHandler;
@@ -241,6 +241,6 @@ private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // NETWORKJOBS_H

@@ -22,7 +22,7 @@
 #include "wizard/owncloudwizardcommon.h"
 #include "theme.h"
 
-namespace Mirall
+namespace OCC
 {
 
 OwncloudWizardResultPage::OwncloudWizardResultPage()
@@ -113,4 +113,4 @@ void OwncloudWizardResultPage::slotOpenServer()
     QDesktopServices::openUrl(url);
 }
 
-} // ns Mirall
+} // namespace OCC

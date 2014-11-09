@@ -35,7 +35,7 @@ class QUrl;
 class QLocalSocket;
 class QStringList;
 
-namespace Mirall {
+namespace OCC {
 
 typedef QLocalSocket SocketType;
 

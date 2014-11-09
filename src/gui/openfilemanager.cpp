@@ -22,7 +22,7 @@
 #include <QDebug>
 #include <QApplication>
 
-namespace Mirall {
+namespace OCC {
 
 // according to the QStandardDir impl from Qt5
 static QStringList xdgDataDirs()

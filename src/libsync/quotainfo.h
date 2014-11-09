@@ -19,7 +19,7 @@
 
 class QTimer;
 
-namespace Mirall {
+namespace OCC {
 
 class Account;
 
@@ -52,6 +52,6 @@ private:
 
 
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif //QUOTAINFO_H

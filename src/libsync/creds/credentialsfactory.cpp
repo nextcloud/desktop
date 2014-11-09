@@ -22,7 +22,7 @@
 #include "creds/shibbolethcredentials.h"
 #endif
 
-namespace Mirall
+namespace OCC
 {
 
 namespace CredentialsFactory
@@ -50,4 +50,4 @@ AbstractCredentials* create(const QString& type)
 
 } // ns CredentialsFactory
 
-} // ns Mirall
+} // namespace OCC

@@ -19,7 +19,7 @@
 #include <QTimer>
 #include <QDebug>
 
-namespace Mirall {
+namespace OCC {
 
 namespace {
 static const int defaultIntervalT = 30*1000;

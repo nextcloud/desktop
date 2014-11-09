@@ -39,7 +39,7 @@
 
 using namespace QKeychain;
 
-namespace Mirall
+namespace OCC
 {
 
 namespace
@@ -438,4 +438,4 @@ void ShibbolethCredentials::addToCookieJar(const QNetworkCookie &cookie)
 }
 
 
-} // ns Mirall
+} // namespace OCC

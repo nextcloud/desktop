@@ -17,7 +17,7 @@
 #include "creds/shibboleth/shibbolethrefresher.h"
 #include "creds/shibbolethcredentials.h"
 
-namespace Mirall
+namespace OCC
 {
 
 ShibbolethRefresher::ShibbolethRefresher(Account *account, ShibbolethCredentials* creds, CSYNC* csync_ctx, QObject* parent)
@@ -52,4 +52,4 @@ void ShibbolethRefresher::onInvalidatedAndFetched(const QByteArray& cookies)
     csync_set_module_property(_csync_ctx, "session_key", myCookies.data());
 }
 
-} // ns Mirall
+} // namespace OCC

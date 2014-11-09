@@ -50,7 +50,7 @@
 #include "utility_unix.cpp"
 #endif
 
-namespace Mirall {
+namespace OCC {
 
 bool Utility::writeRandomFile( const QString& fname, int size )
 {
@@ -431,4 +431,4 @@ quint64 Utility::StopWatch::durationOfLap( const QString& lapName ) const
 }
 
 
-} // namespace Mirall
+} // namespace OCC

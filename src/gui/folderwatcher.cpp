@@ -33,7 +33,7 @@
 #endif
 
 
-namespace Mirall {
+namespace OCC {
 
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
     : QObject(parent)
@@ -167,5 +167,5 @@ void FolderWatcher::removePath(const QString &path )
 }
 
 
-} // namespace Mirall
+} // namespace OCC
 

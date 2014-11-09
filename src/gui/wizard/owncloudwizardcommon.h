@@ -19,7 +19,7 @@
 class QVariant;
 class QLabel;
 
-namespace Mirall
+namespace OCC
 {
 
 namespace WizardCommon
@@ -50,6 +50,6 @@ enum Pages {
 
 } // ns WizardCommon
 
-} // ns Mirall
+} // namespace OCC
 
 #endif // MIRALL_OWNCLOUD_WIZARD_COMMON_H

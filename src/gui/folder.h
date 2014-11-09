@@ -37,7 +37,7 @@
 
 class QThread;
 
-namespace Mirall {
+namespace OCC {
 
 class SyncEngine;
 

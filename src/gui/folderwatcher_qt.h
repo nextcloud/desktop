@@ -18,7 +18,7 @@
 #include <QDir>
 #include <QFileSystemWatcher>
 
-namespace Mirall {
+namespace OCC {
 
 class FolderWatcher;
 

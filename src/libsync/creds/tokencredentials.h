@@ -27,7 +27,7 @@ namespace QKeychain {
 class Job;
 }
 
-namespace Mirall
+namespace OCC
 {
 
 class TokenCredentialsAccessManager;
@@ -64,6 +64,6 @@ private:
     bool _ready;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

@@ -21,7 +21,7 @@
 #include "syncfileitem.h"
 #include "utility.h"
 
-namespace Mirall {
+namespace OCC {
 class SyncFileItem;
 
 class SyncRunFileLog

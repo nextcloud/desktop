@@ -20,7 +20,7 @@
 #include <QDateTime>
 #include <QNetworkCookie>
 
-namespace Mirall {
+namespace OCC {
 
 namespace {
   const unsigned int JAR_VERSION = 23;
@@ -152,4 +152,4 @@ QString CookieJar::storagePath() const
   return cfg.configPath() + "/cookies.db";
 }
 
-} // namespace Mirall
+} // namespace OCC

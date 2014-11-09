@@ -34,7 +34,7 @@
 #include "mirallconfigfile.h"
 #include "logger.h"
 
-namespace Mirall {
+namespace OCC {
 
 // ==============================================================================
 

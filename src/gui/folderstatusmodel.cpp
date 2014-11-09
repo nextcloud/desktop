@@ -21,7 +21,7 @@
 #include <QtWidgets>
 #endif
 
-namespace Mirall {
+namespace OCC {
 
 FolderStatusModel::FolderStatusModel()
     :QStandardItemModel()
@@ -308,4 +308,4 @@ bool FolderStatusDelegate::editorEvent ( QEvent * /*event*/, QAbstractItemModel 
     return false;
 }
 
-} // namespace Mirall
+} // namespace OCC

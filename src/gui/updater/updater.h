@@ -18,7 +18,7 @@
 
 class QUrl;
 
-namespace Mirall {
+namespace OCC {
 
 class Updater {
 public:
@@ -45,6 +45,6 @@ private:
     static Updater *_instance;
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // UPDATER_H

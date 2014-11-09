@@ -19,7 +19,7 @@
 class QTreeWidgetItem;
 class QTreeWidget;
 class QLabel;
-namespace Mirall {
+namespace OCC {
 
 class Account;
 

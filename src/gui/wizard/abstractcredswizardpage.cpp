@@ -18,7 +18,7 @@
 
 #include "wizard/abstractcredswizardpage.h"
 
-namespace Mirall {
+namespace OCC {
 
 void AbstractCredentialsWizardPage::cleanupPage()
 {

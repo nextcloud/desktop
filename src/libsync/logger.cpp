@@ -18,7 +18,7 @@
 #include <QStringList>
 #include <QThread>
 
-namespace Mirall {
+namespace OCC {
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 // logging handler.
@@ -115,7 +115,7 @@ void Logger::csyncLog( const QString& message )
 void Logger::mirallLog( const QString& message )
 {
     Log log_;
-    log_.source = Log::Mirall;
+    log_.source = Log::Occ;
     log_.timeStamp = QDateTime::currentDateTime();
     log_.message = message;
 
@@ -201,4 +201,4 @@ void Logger::enterNextLogFile()
     }
 }
 
-} // namespace Mirall
+} // namespace OCC

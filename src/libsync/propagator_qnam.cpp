@@ -25,7 +25,7 @@
 #include <QDir>
 #include <cmath>
 
-namespace Mirall {
+namespace OCC {
 
 /**
  * The mtime of a file must be at least this many milliseconds in

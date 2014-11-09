@@ -31,7 +31,7 @@
 
 #include <climits>
 
-namespace Mirall {
+namespace OCC {
 
 ProtocolWidget::ProtocolWidget(QWidget *parent) :
     QWidget(parent),

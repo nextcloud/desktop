@@ -14,7 +14,7 @@
 
 #include "syncresult.h"
 
-namespace Mirall
+namespace OCC
 {
 
 SyncResult::SyncResult()

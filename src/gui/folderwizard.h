@@ -24,7 +24,7 @@
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
 
-namespace Mirall {
+namespace OCC {
 
 class SelectiveSyncTreeView;
 
@@ -136,6 +136,6 @@ private:
 };
 
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

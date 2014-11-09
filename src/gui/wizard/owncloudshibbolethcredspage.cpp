@@ -22,7 +22,7 @@
 #include "creds/shibbolethcredentials.h"
 #include "creds/shibboleth/shibbolethwebview.h"
 
-namespace Mirall
+namespace OCC
 {
 
 OwncloudShibbolethCredsPage::OwncloudShibbolethCredsPage()
@@ -110,4 +110,4 @@ void OwncloudShibbolethCredsPage::slotBrowserRejected()
     wizard()->show();
 }
 
-} // ns Mirall
+} // namespace OCC

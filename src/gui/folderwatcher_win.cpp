@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <tchar.h>
 
-namespace Mirall {
+namespace OCC {
 
 void WatcherThread::run()
 {
@@ -87,4 +87,4 @@ FolderWatcherPrivate::~FolderWatcherPrivate()
     delete _thread;
 }
 
-} // namespace Mirall
+} // namespace OCC

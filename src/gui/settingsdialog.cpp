@@ -30,7 +30,7 @@
 #include <QDebug>
 #include <QSettings>
 
-namespace Mirall {
+namespace OCC {
 
 QIcon createDummy() {
     QIcon icon;
@@ -168,4 +168,4 @@ void SettingsDialog::showActivityPage()
 }
 
 
-} // namespace Mirall
+} // namespace OCC

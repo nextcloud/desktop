@@ -26,7 +26,7 @@
 
 #include "wizard/owncloudwizardcommon.h"
 
-namespace Mirall {
+namespace OCC {
 
 class OwncloudWizard;
 class Account;

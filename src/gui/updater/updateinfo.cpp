@@ -9,7 +9,7 @@
 #include <QtCore/QtDebug>
 #include <QtCore/QFile>
 
-namespace Mirall {
+namespace OCC {
 
 void UpdateInfo::setVersion( const QString &v )
 {
@@ -165,4 +165,4 @@ bool UpdateInfo::writeFile( const QString &filename )
   return true;
 }
 
-} // namespace Mirall
+} // namespace OCC

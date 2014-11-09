@@ -22,7 +22,7 @@
 #include "utility.h"
 #include "ownsql.h"
 
-namespace Mirall {
+namespace OCC {
 class SyncJournalFileRecord;
 class SyncJournalBlacklistRecord;
 
@@ -151,5 +151,5 @@ bool operator==(const SyncJournalDb::DownloadInfo & lhs,
 bool operator==(const SyncJournalDb::UploadInfo & lhs,
                 const SyncJournalDb::UploadInfo & rhs);
 
-}  // namespace Mirall
+}  // namespace OCC
 #endif // SYNCJOURNALDB_H

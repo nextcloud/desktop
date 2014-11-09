@@ -20,7 +20,7 @@
 #include "wizard/owncloudwizardcommon.h"
 #include "theme.h"
 
-namespace Mirall
+namespace OCC
 {
 
 namespace WizardCommon
@@ -68,4 +68,4 @@ void initErrorLabel(QLabel* errorLabel)
 
 } // ns WizardCommon
 
-} // ns Mirall
+} // namespace OCC

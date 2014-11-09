@@ -20,7 +20,7 @@
 #include <csync.h>
 
 
-namespace Mirall {
+namespace OCC {
 
 /**
  * The Discovery Phase was once called "update" phase in csync therms.

@@ -34,7 +34,7 @@
 #include "creds/abstractcredentials.h"
 #include "creds/dummycredentials.h"
 
-namespace Mirall {
+namespace OCC {
 
 OwncloudSetupWizard::OwncloudSetupWizard(QObject* parent) :
     QObject( parent ),
@@ -535,4 +535,4 @@ bool ValidateDavAuthJob::finished()
     return true;
 }
 
-} // ns Mirall
+} // namespace OCC

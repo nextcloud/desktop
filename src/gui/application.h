@@ -34,7 +34,7 @@ class QMessageBox;
 class QSystemTrayIcon;
 class QSocket;
 
-namespace Mirall {
+namespace OCC {
 class Theme;
 class Folder;
 class SslErrorDialog;
@@ -111,6 +111,6 @@ private:
     friend class ownCloudGui; // for _startupNetworkError
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // APPLICATION_H

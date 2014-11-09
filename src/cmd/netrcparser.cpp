@@ -18,7 +18,7 @@
 
 #include "netrcparser.h"
 
-namespace Mirall {
+namespace OCC {
 
 namespace {
 QString defaultKeyword = QLatin1String("default");
@@ -94,4 +94,4 @@ NetrcParser::LoginPair NetrcParser::find(const QString &machine)
     }
 }
 
-} // namespace Mirall
+} // namespace OCC

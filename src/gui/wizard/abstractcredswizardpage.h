@@ -16,7 +16,7 @@
 
 #include <QWizardPage>
 
-namespace Mirall
+namespace OCC
 {
 
 class AbstractCredentials;
@@ -28,6 +28,6 @@ public:
     virtual AbstractCredentials* getCredentials() const = 0;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

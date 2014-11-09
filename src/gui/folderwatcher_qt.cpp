@@ -18,7 +18,7 @@
 #include <QFileInfo>
 #include <QDebug>
 
-namespace Mirall {
+namespace OCC {
 
 FolderWatcherPrivate::FolderWatcherPrivate()
     :QObject(), _parent(0)
@@ -104,4 +104,4 @@ void FolderWatcherPrivate::removePath(const QString &path )
 }
 
 
-} // namespace Mirall
+} // namespace OCC

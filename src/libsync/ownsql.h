@@ -21,7 +21,7 @@
 
 #include "owncloudlib.h"
 
-namespace Mirall {
+namespace OCC {
 
 class OWNCLOUDSYNC_EXPORT SqlDatabase
 {
@@ -79,6 +79,6 @@ private:
     QString _sql;
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // OWNSQL_H

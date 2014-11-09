@@ -26,7 +26,7 @@ class QNetworkAccessManager;
 class QNetworkReply;
 class QTimer;
 
-namespace Mirall {
+namespace OCC {
 
 /** @short Class that uses an ownCloud propritary XML format to fetch update information */
 class OCUpdater : public QObject, public Updater

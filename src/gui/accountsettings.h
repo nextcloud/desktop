@@ -30,7 +30,7 @@ class QStandardItem;
 class QNetworkReply;
 class QListWidgetItem;
 
-namespace Mirall {
+namespace OCC {
 
 namespace Ui {
 class AccountSettings;
@@ -104,6 +104,6 @@ private slots:
     void slotAccountChanged(Account*,Account*);
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // ACCOUNTSETTINGS_H

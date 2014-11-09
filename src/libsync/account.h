@@ -29,7 +29,7 @@ class QNetworkReply;
 class QUrl;
 class QNetworkAccessManager;
 
-namespace Mirall {
+namespace OCC {
 
 class AbstractCredentials;
 class Account;
@@ -180,6 +180,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(Mirall::Account*)
+Q_DECLARE_METATYPE(OCC::Account*)
 
 #endif //SERVERCONNECTION_H

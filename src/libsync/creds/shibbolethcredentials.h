@@ -28,7 +28,7 @@ namespace QKeychain {
 
 class QAuthenticator;
 
-namespace Mirall
+namespace OCC
 {
 
 class ShibbolethWebView;
@@ -93,6 +93,6 @@ private:
     QString _user;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

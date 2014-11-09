@@ -23,7 +23,7 @@
 #include <QFileInfo>
 #include <QDebug>
 
-namespace Mirall {
+namespace OCC {
 
 // The purpose of this class is to migrate an existing account that
 // was set up with an unbranded client to an branded one.

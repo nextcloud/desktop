@@ -17,7 +17,7 @@
 
 #include "propagatorjobs.h"
 
-namespace Mirall {
+namespace OCC {
 
 class PropagateUploadFileLegacy: public PropagateNeonJob {
     Q_OBJECT

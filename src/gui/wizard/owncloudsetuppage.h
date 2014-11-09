@@ -25,7 +25,7 @@ class QLabel;
 class QVariant;
 class QProgressIndicator;
 
-namespace Mirall {
+namespace OCC {
 
 class OwncloudSetupPage: public QWizardPage
 {
@@ -74,6 +74,6 @@ private:
   QString _remoteFolder;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

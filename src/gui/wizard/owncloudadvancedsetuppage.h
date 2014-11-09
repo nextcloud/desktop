@@ -23,7 +23,7 @@
 
 class QProgressIndicator;
 
-namespace Mirall {
+namespace OCC {
 
 class OwncloudAdvancedSetupPage: public QWizardPage
 {
@@ -71,6 +71,6 @@ private:
   QStringList _blacklist;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

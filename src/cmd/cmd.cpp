@@ -45,7 +45,7 @@
 #include <termios.h>
 #endif
 
-using namespace Mirall;
+using namespace OCC;
 
 struct CmdOptions {
     QString source_dir;

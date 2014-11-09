@@ -37,7 +37,7 @@ extern "C" {
 #include "vio/csync_vio_local.h"
 }
 
-namespace Mirall {
+namespace OCC {
 
 bool FileSystem::fileEquals(const QString& fn1, const QString& fn2)
 {

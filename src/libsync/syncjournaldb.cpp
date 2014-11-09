@@ -27,7 +27,7 @@
 
 #include "../../csync/src/std/c_jhash.h"
 
-namespace Mirall {
+namespace OCC {
 
 SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
     QObject(parent), _transaction(0), _possibleUpgradeFromMirall_1_5(false)
@@ -1234,4 +1234,4 @@ bool operator==(const SyncJournalDb::UploadInfo & lhs,
             && lhs._transferid == rhs._transferid;
 }
 
-} // namespace Mirall
+} // namespace OCC

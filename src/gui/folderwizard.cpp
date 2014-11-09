@@ -35,7 +35,7 @@
 
 #include <stdlib.h>
 
-namespace Mirall
+namespace OCC
 {
 
 QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) const

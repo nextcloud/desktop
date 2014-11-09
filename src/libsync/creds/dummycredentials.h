@@ -16,7 +16,7 @@
 
 #include "creds/abstractcredentials.h"
 
-namespace Mirall
+namespace OCC
 {
 
 class DummyCredentials : public AbstractCredentials
@@ -40,6 +40,6 @@ public:
     void invalidateToken(Account *) Q_DECL_OVERRIDE {}
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

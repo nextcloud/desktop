@@ -27,7 +27,7 @@ namespace QKeychain {
 class Job;
 }
 
-namespace Mirall
+namespace OCC
 {
 
 class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
@@ -76,6 +76,6 @@ public:
     QString queryPassword(bool *ok) Q_DECL_OVERRIDE;
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

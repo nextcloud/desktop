@@ -22,7 +22,7 @@
 
 class QNetworkAccessManager;
 class QNetworkReply;
-namespace Mirall
+namespace OCC
 {
 class Account;
 
@@ -56,6 +56,6 @@ Q_SIGNALS:
     void fetched();
 };
 
-} // ns Mirall
+} // namespace OCC
 
 #endif

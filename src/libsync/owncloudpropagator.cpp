@@ -31,7 +31,7 @@
 #include <QFileInfo>
 #include <QDir>
 
-namespace Mirall {
+namespace OCC {
 
 /* The maximum number of active job in parallel  */
 static int maximumActiveJob() {

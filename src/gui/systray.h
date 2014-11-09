@@ -19,7 +19,7 @@
 
 class QIcon;
 
-namespace Mirall {
+namespace OCC {
 
 class Systray : public QSystemTrayIcon
 {
@@ -29,6 +29,6 @@ public:
     void setToolTip(const QString &tip);
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif //SYSTRAY_H

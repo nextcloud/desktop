@@ -22,7 +22,7 @@ class QAction;
 class QSslCertificate;
 class QSslConfiguration;
 
-namespace Mirall {
+namespace OCC {
 
 class Account;
 
@@ -39,6 +39,6 @@ private:
                          const QList<QSslCertificate>& userApproved, int pos);
 };
 
-} // namespace Mirall
+} // namespace OCC
 
 #endif // SSLBUTTON_H
