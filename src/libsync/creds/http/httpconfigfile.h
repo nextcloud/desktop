@@ -14,7 +14,7 @@
 #ifndef MIRALL_CREDS_HTTP_CONFIG_FILE_H
 #define MIRALL_CREDS_HTTP_CONFIG_FILE_H
 
-#include "mirallconfigfile.h"
+#include "configfile.h"
 
 namespace OCC
 {

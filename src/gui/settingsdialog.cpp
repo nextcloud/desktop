@@ -19,7 +19,7 @@
 #include "generalsettings.h"
 #include "networksettings.h"
 #include "accountsettings.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
 #include "protocolwidget.h"

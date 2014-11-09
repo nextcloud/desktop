@@ -14,7 +14,7 @@
 
 #include "config.h"
 
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "theme.h"
 #include "utility.h"
 

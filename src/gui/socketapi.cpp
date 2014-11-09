@@ -15,7 +15,7 @@
 
 #include "socketapi.h"
 
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "folderman.h"
 #include "folder.h"
 #include "utility.h"

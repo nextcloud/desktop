@@ -19,7 +19,7 @@
 #include "propagator_qnam.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "utility.h"
 
 #ifdef Q_OS_WIN

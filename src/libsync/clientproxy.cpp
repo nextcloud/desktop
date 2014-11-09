@@ -13,7 +13,7 @@
 
 #include "clientproxy.h"
 
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include <QUrl>
 
 namespace OCC {

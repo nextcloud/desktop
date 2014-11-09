@@ -15,10 +15,10 @@
 #include "ui_networksettings.h"
 
 #include "theme.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "application.h"
 #include "utility.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "folderman.h"
 
 #include <QNetworkProxy>

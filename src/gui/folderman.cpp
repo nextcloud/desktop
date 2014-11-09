@@ -13,7 +13,7 @@
  */
 
 #include "folderman.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "folder.h"
 #include "syncresult.h"
 #include "theme.h"

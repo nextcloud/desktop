@@ -17,7 +17,7 @@
 #endif
 
 #include "protocolwidget.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "syncresult.h"
 #include "logger.h"
 #include "utility.h"

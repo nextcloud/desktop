@@ -11,7 +11,7 @@
  * for more details.
  */
 
-#include "mirallconfigfile.h"
+#include "configfile.h"
 
 #include "ignorelisteditor.h"
 #include "ui_ignorelisteditor.h"

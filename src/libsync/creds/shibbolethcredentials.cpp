@@ -26,7 +26,7 @@
 #include "shibboleth/shibbolethuserjob.h"
 #include "creds/credentialscommon.h"
 
-#include "mirallaccessmanager.h"
+#include "accessmanager.h"
 #include "account.h"
 #include "theme.h"
 #include "cookiejar.h"

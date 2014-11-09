@@ -25,7 +25,7 @@
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "account.h"
 #include "theme.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "selectivesyncdialog.h"
 #include "creds/abstractcredentials.h"
 

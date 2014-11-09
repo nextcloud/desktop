@@ -18,7 +18,7 @@
 #include "creds/httpcredentials.h"
 #include "theme.h"
 #include "account.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "wizard/owncloudhttpcredspage.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"

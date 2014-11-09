@@ -19,7 +19,7 @@
 #include "folder.h"
 #include "folderman.h"
 #include "logger.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "networkjobs.h"
 #include "syncjournalfilerecord.h"
 #include "syncresult.h"

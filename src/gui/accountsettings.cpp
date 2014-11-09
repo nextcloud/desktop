@@ -22,7 +22,7 @@
 #include "utility.h"
 #include "application.h"
 #include "owncloudsetupwizard.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "ignorelisteditor.h"
 #include "account.h"
 #include "quotainfo.h"

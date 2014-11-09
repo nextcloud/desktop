@@ -10,7 +10,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "utility.h"
 #include "account.h"
 #include "simplesslerrorhandler.h"

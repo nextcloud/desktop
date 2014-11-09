@@ -31,7 +31,7 @@
 #include <QSettings>
 #include <QAction>
 
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "logger.h"
 
 namespace OCC {

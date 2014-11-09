@@ -12,7 +12,7 @@
  */
 
 #include "creds/dummycredentials.h"
-#include "mirallaccessmanager.h"
+#include "accessmanager.h"
 
 namespace OCC
 {

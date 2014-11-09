@@ -14,7 +14,7 @@
 
 #include "folderwizard.h"
 #include "folderman.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "theme.h"
 #include "networkjobs.h"
 #include "account.h"

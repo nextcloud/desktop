@@ -15,7 +15,7 @@
 #include "owncloudgui.h"
 #include "theme.h"
 #include "folderman.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "utility.h"
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"

@@ -26,7 +26,7 @@
 #endif
 
 #include "account.h"
-#include "mirallaccessmanager.h"
+#include "accessmanager.h"
 #include "utility.h"
 #include "theme.h"
 #include "creds/credentialscommon.h"

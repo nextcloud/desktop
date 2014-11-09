@@ -24,7 +24,7 @@
 
 #include "account.h"
 #include "clientproxy.h"
-#include "mirallconfigfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
+#include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #include "creds/httpcredentials.h"
 #include "simplesslerrorhandler.h"
 #include "syncengine.h"

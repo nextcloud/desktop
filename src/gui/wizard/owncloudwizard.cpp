@@ -14,7 +14,7 @@
  */
 
 #include "account.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "theme.h"
 
 #include "wizard/owncloudwizard.h"

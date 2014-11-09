@@ -25,7 +25,7 @@
 #include "folder.h"
 #include "folderman.h"
 #include "logger.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "socketapi.h"
 #include "sslerrordialog.h"
 #include "theme.h"

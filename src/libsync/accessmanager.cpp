@@ -19,7 +19,7 @@
 
 #include "authenticationdialog.h"
 #include "cookiejar.h"
-#include "mirallaccessmanager.h"
+#include "accessmanager.h"
 #include "utility.h"
 
 namespace OCC

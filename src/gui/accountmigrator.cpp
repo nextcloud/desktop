@@ -12,7 +12,7 @@
  */
 
 #include "accountmigrator.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "folderman.h"
 #include "theme.h"
 

@@ -13,7 +13,7 @@
 
 #include "cookiejar.h"
 
-#include "mirallconfigfile.h"
+#include "configfile.h"
 
 #include <QDebug>
 #include <QFile>

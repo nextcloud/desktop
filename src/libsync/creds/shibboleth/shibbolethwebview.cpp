@@ -24,7 +24,7 @@
 #include "creds/shibbolethcredentials.h"
 #include "account.h"
 #include "logger.h"
-#include "mirallaccessmanager.h"
+#include "accessmanager.h"
 #include "theme.h"
 
 namespace OCC

@@ -15,10 +15,10 @@
 #include "ui_generalsettings.h"
 
 #include "theme.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "application.h"
 #include "utility.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 
 #include "updater/updater.h"
 #include "updater/ocupdater.h"

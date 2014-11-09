@@ -14,9 +14,9 @@
 
 #include "theme.h"
 #include "version.h"
-#include "mirallconfigfile.h"
+#include "configfile.h"
 #include "utility.h"
-#include "mirallaccessmanager.h"
+#include "accessmanager.h"
 
 #include "updater/ocupdater.h"
 
