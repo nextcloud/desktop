@@ -1,5 +1,5 @@
-Torture for Mirall
-==================
+Torture for ownCloud Client
+===========================
 
 This is a set of scripts comprising of two parts:
 

@@ -14,7 +14,7 @@
 #include "libsync/syncjournaldb.h"
 #include "libsync/syncjournalfilerecord.h"
 
-using namespace Mirall;
+using namespace OCC;
 
 namespace {
 

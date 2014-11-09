@@ -12,7 +12,7 @@
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
 
-using namespace Mirall;
+using namespace OCC;
 
 class TestUpdater : public QObject
 {

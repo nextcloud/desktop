@@ -12,7 +12,7 @@
 #include "folderwatcher_linux.h"
 #include "utility.h"
 
-using namespace Mirall;
+using namespace OCC;
 
 class TestInotifyWatcher: public FolderWatcherPrivate
 {

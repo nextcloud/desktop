@@ -13,7 +13,7 @@
 #include "utility.h"
 #include "folder.h"
 
-using namespace Mirall;
+using namespace OCC;
 
 class TestFolder: public QObject
 {

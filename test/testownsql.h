@@ -13,7 +13,7 @@
 
 #include "ownsql.h"
 
-using namespace Mirall;
+using namespace OCC;
 
 namespace {
 

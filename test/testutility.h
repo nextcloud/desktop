@@ -11,7 +11,7 @@
 
 #include "utility.h"
 
-using namespace Mirall::Utility;
+using namespace OCC::Utility;
 
 class TestUtility : public QObject
 {
