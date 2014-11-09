@@ -1539,24 +1539,28 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>Attualmente nessun file è ignorato a causa di errori precedenti e non ci sono scaricamenti in corso.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n file sono ignorati a causa di errori precedenti.
+</numerusform><numerusform>%n file sono ignorati a causa di errori precedenti.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n file sono stati scaricati parzialmente.
+ </numerusform><numerusform>%n file sono stati scaricati parzialmente.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Prova a sincronizzarli nuovamente.</translation>
     </message>
 </context>
 <context>

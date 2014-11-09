@@ -1557,7 +1557,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>これらをもう一度同期してください。</translation>
     </message>
 </context>
 <context>

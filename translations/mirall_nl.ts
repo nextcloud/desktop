@@ -1540,24 +1540,27 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>Er worden op dit moment geen bestanden genegeerd vanwege eerdere fouten er zijn geen downloads bezig.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n bestand genegeerd wegens eerdere fouten.</numerusform><numerusform>%n bestanden genegeerd wegens eerdere fouten.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n bestand gedeeltelijk gedownload.
+</numerusform><numerusform>%n bestanden gedeeltelijk gedownload.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Probeer deze opnieuw te synchen.</translation>
     </message>
 </context>
 <context>
