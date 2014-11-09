@@ -22,7 +22,7 @@ If your issue appears to be a bug, and hasn't been reported, open a new issue.
 Help us to maximize the effort we can spend fixing issues and adding new
 features, by not reporting duplicate issues.
 
-[template]: https://raw.github.com/owncloud/mirall/master/issue_template.md
+[template]: https://raw.github.com/owncloud/client/master/issue_template.md
 [mailinglist]: https://mail.kde.org/mailman/listinfo/owncloud
 [forum]: http://forum.owncloud.org/
 [irc]: http://webchat.freenode.net/?channels=owncloud&uio=d4
@@ -31,16 +31,16 @@ features, by not reporting duplicate issues.
 
 Thanks for wanting to contribute source code to ownCloud. That's great!
 
-Before we're able to merge your code to mirall, you need to sign
+Before we're able to merge your code to ownCloud Desktop Client, you need to sign
 our [Contributor Agreement][agreement].
 
-Please read the [Desktop Client Manual][mirallman] and the [Developer
+Please read the [Desktop Client Manual][desktopman] and the [Developer
 Manuals][devmanual] to get useful infos like how to create your first
 application or how to test the ownCloud code with phpunit.
 
 [agreement]: http://owncloud.org/about/contributor-agreement/
 [devmanual]: http://owncloud.org/dev/
-[mirallman]: http://doc.owncloud.org/desktop/1.1/
+[desktopman]: http://doc.owncloud.org/desktop/1.1/
 
 ## Translations
 Please submit translations via [Transifex][transifex].
