@@ -50,7 +50,7 @@ To set up your build enviroment for development using HomeBrew_:
 
 2. Install any missing dependencies::
 
-    brew install $(brew deps mirall)
+    brew install $(brew deps owncloud-client)
 
 3. Add Qt from brew to the path::
 
@@ -59,7 +59,7 @@ To set up your build enviroment for development using HomeBrew_:
    Where ``x.z`` is the current version of Qt 5 that brew has installed
    on your machine.
 
-5. For compilation of mirall, follow the `generic build instructions`_.
+5. For compilation of the client, follow the `generic build instructions`_.
 
 6. In the build directory, run ``admin/osx/create_mac.sh <build_dir>
    <install_dir>``. If you have a developer signing certificate, you can specify
@@ -126,7 +126,7 @@ To cross-compile:
   .. note:: When building for Windows platforms, you must specify a special
      toolchain file that enables cmake to locate the platform-specific tools. To add
      this parameter to the call to cmake, enter
-     ``-DCMAKE_TOOLCHAIN_FILE=../mirall/admin/win/Toolchain-mingw32-openSUSE.cmake``.
+     ``-DCMAKE_TOOLCHAIN_FILE=../client/admin/win/Toolchain-mingw32-openSUSE.cmake``.
 
 7. Build by running ``make``.
 
@@ -148,16 +148,16 @@ To build the most up to date version of the client:
 
 1. Clone the latest versions of Mirall from Git_ as follows:
 
-  ``git clone git://github.com/owncloud/mirall.git``
+  ``git clone git://github.com/owncloud/client.git``
 
 2. Create build directories:
 
-  ``mkdir mirall-build``
+  ``mkdir client-build``
 
-3. Build mirall:
+3. Build the client:
 
-  ``cd ../mirall-build``
-  ``cmake -DCMAKE_BUILD_TYPE="Debug" ../mirall``
+  ``cd ../client-build``
+  ``cmake -DCMAKE_BUILD_TYPE="Debug" ../client``
 
   ..note:: You must use absolute paths for the ``include`` and ``library``
            directories.

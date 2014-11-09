@@ -10,7 +10,7 @@ SYNOPSIS
 DESCRIPTION
 ===========
 owncloudcmd is the command line tool used for the ownCloud file synchronization
-desktop utility.  This command line tool is based on mirall.
+desktop utility.
 
 Contrary to the :manpage:`owncloud(1)` GUI client, `owncloudcmd` only performs
 a single sync run and then exits. In so doing, `owncloudcmd` replaces the
@@ -72,7 +72,7 @@ Using the legacy scheme, it would be::
 
 BUGS
 ====
-Please report bugs at https://github.com/owncloud/mirall/issues.
+Please report bugs at https://github.com/owncloud/client/issues.
 
 SEE ALSO
 ========

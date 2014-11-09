@@ -12,10 +12,6 @@ synchronizing tool that provides both a command line client as well as a
 library. A special module for csync was written to synchronize with the
 ownCloud built-in WebDAV server.
 
-The ownCloud sync client is based on a tool called *mirall*, initially written
-by Duncan Mac Vicar. Later Klaas Freitag joined the project and enhanced it to
-function with the ownCloud server.
-
 The ownCloud Client software is written in C++ using the `Qt Framework`_. As a
 result, the ownCloud Client runs on Linux, Windows, and MacOS.
 
