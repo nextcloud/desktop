@@ -13,7 +13,7 @@ else()
     set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 endif()
 
-set(mirall_UI
+set(client_UI
     accountsettings.ui
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
@@ -29,9 +29,9 @@ set(mirall_UI
     wizard/owncloudwizardresultpage.ui
 )
 
-qt_wrap_ui(mirall_UI_SRCS ${mirall_UI})
+qt_wrap_ui(client_UI_SRCS ${mirall_UI})
 
-set(mirall_SRCS
+set(client_SRCS
     accountsettings.cpp
     application.cpp
     folder.cpp
@@ -73,9 +73,9 @@ set(updater_SRCS
 )
 
 IF( APPLE )
-    list(APPEND mirall_SRCS cocoainitializer_mac.mm)
+    list(APPEND client_SRCS cocoainitializer_mac.mm)
 
-    list(APPEND mirall_SRCS settingsdialogmac.cpp)
+    list(APPEND client_SRCS settingsdialogmac.cpp)
 
     if(SPARKLE_FOUND)
        # Define this, we need to check in updater.cpp
@@ -85,13 +85,13 @@ IF( APPLE )
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )
-set(mirall_SRCS ${mirall_SRCS} folderwatcher_linux.cpp)
+set(client_SRCS ${mirall_SRCS} folderwatcher_linux.cpp)
 ENDIF()
 IF( WIN32 )
-set(mirall_SRCS ${mirall_SRCS} folderwatcher_win.cpp)
+set(client_SRCS ${mirall_SRCS} folderwatcher_win.cpp)
 ENDIF()
 IF( APPLE )
-list(APPEND mirall_SRCS folderwatcher_mac.cpp)
+list(APPEND client_SRCS folderwatcher_mac.cpp)
 ENDIF()
 
 set(3rdparty_SRC
@@ -142,14 +142,14 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                    )
 
 
-qt_add_translation(mirall_I18N ${TRANSLATIONS})
+qt_add_translation(client_I18N ${TRANSLATIONS})
 
 set( final_src
     ${MIRALL_RC_SRC}
-    ${mirall_SRCS}
-    ${mirall_UI_SRCS}
+    ${client_SRCS}
+    ${client_UI_SRCS}
     ${mirallMoc}
-    ${mirall_I18N}
+    ${client_I18N}
     ${3rdparty_SRC}
     ${3rdparty_MOC}
 )
@@ -185,7 +185,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
         endforeach( _file )
     endif(NOT WIN32)
 
-    install(FILES ${mirall_I18N} DESTINATION share/${APPLICATION_EXECUTABLE}/i18n)
+    install(FILES ${client_I18N} DESTINATION share/${APPLICATION_EXECUTABLE}/i18n)
 
     # we may not add MACOSX_BUNDLE here, if not building one
 
@@ -201,7 +201,7 @@ else()
     qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql  ${ADDITIONAL_APP_MODULES})
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
-    install(FILES ${mirall_I18N} DESTINATION ${QM_DIR})
+    install(FILES ${client_I18N} DESTINATION ${QM_DIR})
     get_target_property(_qmake Qt5::qmake LOCATION)
     execute_process(COMMAND ${_qmake} -query QT_INSTALL_TRANSLATIONS
         OUTPUT_VARIABLE QT_TRANSLATIONS_DIR

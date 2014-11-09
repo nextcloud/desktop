@@ -1,12 +1,7 @@
-
 cmake_minimum_required(VERSION 2.6)
 cmake_policy(VERSION 2.8.0)
 
-project(mirall)
-set(PACKAGE "mirall")
-set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
-
-include(Warnings)
+project(client)
 
 set(OEM_THEME_DIR "" CACHE STRING "Define directory containing a custom theme")
 if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
@@ -18,6 +13,11 @@ endif()
 if (NOT DEFINED APPLICATION_SHORTNAME)
      set ( APPLICATION_SHORTNAME ${APPLICATION_NAME} )
 endif()
+
+set(PACKAGE "${APPLICATION_SHORTNAME}-client")
+set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
+
+include(Warnings)
 
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
