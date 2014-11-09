@@ -47,8 +47,7 @@ QString ownCloudTheme::about() const
     QString devString;
     devString = trUtf8("<p>Version %2. For more information visit <a href=\"%3\">%4</a></p>"
                "<p><small>By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, "
-               "Olivier Goffart, Markus Götz and others.<br/>"
-               "Based on Mirall by Duncan Mac-Vicar P.</small></p>"
+               "Olivier Goffart, Markus Götz and others.</small></p>"
                "<p>Copyright ownCloud, Inc.</p>"
                "<p>Licensed under the GNU General Public License (GPL) Version 2.0<br/>"
                "ownCloud and the ownCloud Logo are registered trademarks of ownCloud, "
