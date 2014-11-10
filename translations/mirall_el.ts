@@ -1376,12 +1376,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα αφαίρεσης &apos;%1&apos;: %2;</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία αφαίρεσης καταλόγου &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>
@@ -1558,7 +1558,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Προσπάθεια για συγχρονισμό αυτών ξανά.</translation>
     </message>
 </context>
 <context>

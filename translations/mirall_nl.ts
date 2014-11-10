@@ -2053,7 +2053,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="367"/>
         <source>File is listed on the ignore list.</source>
-        <translation>De file is opgenomen op de negeerlijst.</translation>
+        <translation>Het bestand is opgenomen op de negeerlijst.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="370"/>
@@ -2063,12 +2063,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="552"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation>Niet in staat om een synchornisatie journaal te starten.</translation>
+        <translation>Niet in staat om een synchronisatie transactielog te starten.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="633"/>
         <source>Cannot open the sync journal</source>
-        <translation>Kan het sync journal niet openen</translation>
+        <translation>Kan het sync transactielog niet openen</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="865"/>
