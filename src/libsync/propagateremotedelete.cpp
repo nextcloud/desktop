@@ -80,8 +80,9 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->reply()->errorString());
 
     QNetworkReply::NetworkError err = _job->reply()->error();
+    _item._httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
     if (err != QNetworkReply::NoError) {
-        _item._httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
         if( checkForProblemsWithShared(_item._httpErrorCode,
             tr("The file has been removed from a read only share. It was restored.")) ) {
@@ -95,6 +96,15 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
 
     _item._requestDuration = _job->duration();
     _item._responseTimeStamp = _job->responseTimestamp();
+
+    if (_item._httpErrorCode != 204 ) {
+        // Normaly we expect "204 No Content"
+        // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
+        // throw an error.
+        done(SyncFileItem::NormalError, tr("Wrong HTTP code returned by server. Expected 204, but recieved \"%1 %2\".")
+            .arg(_item._httpErrorCode).arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
+        return;
+    }
 
     _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
     _propagator->_journal->commit("Remote Remove");
