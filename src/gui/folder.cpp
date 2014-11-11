@@ -850,6 +850,7 @@ void Folder::slotSyncFinished()
     // _watcher->setEventsEnabledDelayed(2000);
 
 
+
     // This is for sync state calculation
     _stateLastSyncItemsWithError = _stateLastSyncItemsWithErrorNew;
     _stateLastSyncItemsWithErrorNew.clear();
@@ -891,6 +892,16 @@ void Folder::slotSyncFinished()
     // some time under certain conditions to make the file system notifications
     // all come in.
     QTimer::singleShot(200, this, SLOT(slotEmitFinishedDelayed() ));
+
+    if (!anotherSyncNeeded) {
+        _pollTimer.start();
+        _timeSinceLastSync.restart();
+    } else {
+        // Another sync is required.  We will make sure that the poll timer occurs soon enough
+        // and we clear the etag to force a sync
+        _lastEtag.clear();
+        QTimer::singleShot(1000, this, SLOT(slotPollTimerTimeout() ));
+    }
 
     _timeSinceLastSync.restart();
 

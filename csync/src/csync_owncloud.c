@@ -730,6 +730,14 @@ csync_vio_file_stat_t *owncloud_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle)
 
             SAFE_FREE( escaped_path );
             return lfs;
+        } else {
+            /* The first item is the root item, memorize its permissions */
+            if (!ctx->remote.root_perms) {
+                if (strlen(currResource->remotePerm) > 0) {
+                    /* Only copy if permissions contain something. Empty string means server didn't return them */
+                    ctx->remote.root_perms = c_strdup(currResource->remotePerm);
+                }
+            }
         }
 
         /* This is the target URI */

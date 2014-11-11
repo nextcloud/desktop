@@ -23,6 +23,7 @@
 #include "creds/abstractcredentials.h"
 #include "csync_util.h"
 #include "syncfilestatus.h"
+#include "csync_private.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -520,10 +521,30 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
 
 void SyncEngine::startSync()
 {
+    if (_journal->exists()) {
+        QVector< SyncJournalDb::PollInfo > pollInfos = _journal->getPollInfos();
+        if (!pollInfos.isEmpty()) {
+            qDebug() << "Finish Poll jobs before starting a sync";
+            CleanupPollsJob *job = new CleanupPollsJob(pollInfos, AccountManager::instance()->account(),
+                                                       _journal, _localPath, this);
+            connect(job, SIGNAL(finished()), this, SLOT(startSync()));
+            connect(job, SIGNAL(aborted(QString)), this, SLOT(slotCleanPollsJobAborted(QString)));
+            job->start();
+            return;
+        }
+    }
+
     Q_ASSERT(!_syncRunning);
     _syncRunning = true;
 
     Q_ASSERT(_csync_ctx);
+
+    if (!QDir(_localPath).exists()) {
+        // No _tr, it should only occur in non-mirall
+        emit csyncError("Unable to find local sync directory.");
+        finalize();
+        return;
+    }
 
     _syncedItems.clear();
     _syncItemMap.clear();
@@ -654,6 +675,11 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         qDebug() << "Error in remote treewalk.";
     }
 
+    if (_csync_ctx->remote.root_perms) {
+        _remotePerms[QLatin1String("")] = _csync_ctx->remote.root_perms;
+        qDebug() << "Permissions of the root folder: " << _remotePerms[QLatin1String("")];
+    }
+
     // The map was used for merging trees, convert it to a list:
     _syncedItems = _syncItemMap.values().toVector();
 
@@ -727,6 +753,12 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _journal->commit("post stale entry removal");
 
     _propagator->start(_syncedItems);
+}
+
+void SyncEngine::slotCleanPollsJobAborted(const QString &error)
+{
+    csyncError(error);
+    finalize();
 }
 
 void SyncEngine::setNetworkLimits(int upload, int download)

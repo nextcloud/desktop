@@ -44,6 +44,7 @@ bool AbstractNetworkJob::preOc7WasDetected = false;
 AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QObject *parent)
     : QObject(parent)
     , _duration(0)
+    , _timedout(false)
     , _ignoreCredentialFailure(false)
     , _reply(0)
     , _account(account)
@@ -216,6 +217,7 @@ void AbstractNetworkJob::start()
 
 void AbstractNetworkJob::slotTimeout()
 {
+    _timedout = true;
     qDebug() <<  this << "Timeout";
     if (reply()) {
         reply()->abort();

@@ -16,11 +16,15 @@
 #include "owncloudpropagator.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
-#include "propagator_qnam.h"
+#include "propagatedownload.h"
+#include "propagateupload.h"
+#include "propagateremotedelete.h"
+#include "propagateremotemove.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
 #include "configfile.h"
 #include "utility.h"
+#include <json.h>
 
 #ifdef Q_OS_WIN
 #include <windef.h>
@@ -30,11 +34,15 @@
 #include <QStack>
 #include <QFileInfo>
 #include <QDir>
+#include <QTimer>
+#include <QObject>
+#include <QTimerEvent>
 
 namespace OCC {
 
 /* The maximum number of active job in parallel  */
-static int maximumActiveJob() {
+int OwncloudPropagator::maximumActiveJob()
+{
     static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
     if (!max) {
         max = 3; //default
@@ -191,7 +199,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
             if (item._direction == SyncFileItem::Down) return new PropagateLocalRemove(this, item);
-            else return new PropagateRemoteRemove(this, item);
+            else return new PropagateRemoteDelete(this, item);
         case CSYNC_INSTRUCTION_NEW:
             if (item._isDirectory) {
                 if (item._direction == SyncFileItem::Down) return new PropagateLocalMkdir(this, item);
@@ -218,7 +226,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
             }
         case CSYNC_INSTRUCTION_RENAME:
             if (item._direction == SyncFileItem::Up) {
-                return new PropagateRemoteRename(this, item);
+                return new PropagateRemoteMove(this, item);
             } else {
                 return new PropagateLocalRename(this, item);
             }
@@ -328,14 +336,31 @@ bool OwncloudPropagator::isInSharedDirectory(const QString& file)
  */
 bool OwncloudPropagator::useLegacyJobs()
 {
-    if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
-        // QNAM does not support bandwith limiting
+    // Allow an environement variable for debugging
+    QByteArray env = qgetenv("OWNCLOUD_USE_LEGACY_JOBS");
+    if (env=="true" || env =="1") {
+        qDebug() << "Force Legacy Propagator ACTIVATED";
         return true;
     }
 
-    // Allow an environement variable for debugging
-    QByteArray env = qgetenv("OWNCLOUD_USE_LEGACY_JOBS");
-    return env=="true" || env =="1";
+    env = qgetenv("OWNCLOUD_NEW_BANDWIDTH_LIMITING");
+    if (env=="true" || env =="1") {
+        qDebug() << "New Bandwidth Limiting Code ACTIVATED";
+        // Only certain Qt versions support this at the moment.
+        // They need those Change-Ids: Idb1c2d5a382a704d8cc08fe03c55c883bfc95aa7 Iefbcb1a21d8aedef1eb11761232dd16a049018dc
+        // FIXME We need to check the Qt version and then also return false here as soon
+        // as mirall ships with those Qt versions on Windows and OS X
+        return false;
+    }
+
+    if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
+        qDebug() << "Switching To Legacy Propagator Because Of Bandwidth Limit ACTIVATED";
+        // QNAM does not support bandwith limiting
+        // in most Qt versions.
+        return true;
+    }
+
+    return false;
 }
 
 int OwncloudPropagator::httpTimeout()
@@ -443,7 +468,7 @@ void PropagateDirectory::slotSubJobReady()
         return; // Ignore the case when the _fistJob is ready and not yet finished
     if (_runningNow && _current >= 0 && _current < _subJobs.count()) {
         // there is a job running and the current one is not ready yet, we can't start new job
-        if (!_subJobs[_current]->_readySent || _propagator->_activeJobs >= maximumActiveJob())
+        if (!_subJobs[_current]->_readySent || _propagator->_activeJobs >= _propagator->maximumActiveJob())
             return;
     }
 
@@ -474,6 +499,40 @@ void PropagateDirectory::slotSubJobReady()
         }
         emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
     }
+}
+
+void CleanupPollsJob::start()
+{
+    if (_pollInfos.empty()) {
+        emit finished();
+        deleteLater();
+        return;
+    }
+
+    auto info = _pollInfos.first();
+    _pollInfos.pop_front();
+    SyncFileItem item;
+    item._file = info._file;
+    item._modtime = info._modtime;
+    PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
+    connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
+    job->start();
+}
+
+void CleanupPollsJob::slotPollFinished()
+{
+    PollJob *job = qobject_cast<PollJob *>(sender());
+    Q_ASSERT(job);
+    if (job->_item._status == SyncFileItem::FatalError) {
+        emit aborted(job->_item._errorString);
+        return;
+    } else if (job->_item._status != SyncFileItem::Success) {
+        qDebug() << "There was an error with file " << job->_item._file << job->_item._errorString;
+    } else {
+        _journal->setFileRecord(SyncJournalFileRecord(job->_item, _localPath + job->_item._file));
+    }
+    // Continue with the next entry, or finish
+    start();
 }
 
 }

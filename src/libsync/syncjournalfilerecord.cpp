@@ -98,7 +98,7 @@ static time_t getMaxBlacklistTime()
 bool SyncJournalBlacklistRecord::isValid() const
 {
     return ! _file.isEmpty()
-        && (!_lastTryEtag.isEmpty() || !_lastTryModtime == 0)
+        && (!_lastTryEtag.isEmpty() || _lastTryModtime != 0)
         && _lastTryTime > 0 && _ignoreDuration > 0;
 }
 

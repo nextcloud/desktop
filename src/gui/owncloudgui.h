@@ -99,6 +99,7 @@ private:
     QAction *_actionRecent;
     QAction *_actionHelp;
     QAction *_actionQuit;
+    QAction *_actionCrash;
 
     QList<QAction*> _recentItemsActions;
 

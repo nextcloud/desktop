@@ -23,7 +23,7 @@ public:
     LogWindowHighlighter(QTextDocument *parent = 0);
 
 protected:
-    void highlightBlock(const QString &text);
+    void highlightBlock(const QString &text) Q_DECL_OVERRIDE;
     void highlightHelper(const QString& text, const QTextCharFormat &format, const QString &exp);
 };
 

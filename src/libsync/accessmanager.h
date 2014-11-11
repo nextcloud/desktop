@@ -17,6 +17,9 @@
 #include "owncloudlib.h"
 #include <QNetworkAccessManager>
 
+class QByteArray;
+class QUrl;
+
 namespace OCC
 {
 
@@ -26,6 +29,8 @@ class OWNCLOUDSYNC_EXPORT AccessManager : public QNetworkAccessManager
 
 public:
     AccessManager(QObject* parent = 0);
+
+    void setRawCookie(const  QByteArray &rawCookie, const  QUrl &url);
 
 protected:
     QNetworkReply* createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData = 0) Q_DECL_OVERRIDE;

@@ -141,6 +141,16 @@ move( localDir() . '3.txt', localDir() . '3_bis.txt' );
 system( "echo \"new file un\" > " . localDir() . '1.txt' );
 system( "echo \"new file trois\" > " . localDir() . '3.txt' );
 
+#also add special file with special character for next sync
+#and file with special characters
+createLocalFile(localDir().  'hêllo%20th@re.txt' , 1208 );
+
+csync();
+assertLocalAndRemoteDir( '', 0);
+
+printInfo("Move a file containing special character");
+
+move(localDir().  'hêllo%20th@re.txt', localDir().  'hêllo%20th@re.doc');
 csync();
 assertLocalAndRemoteDir( '', 0);
 

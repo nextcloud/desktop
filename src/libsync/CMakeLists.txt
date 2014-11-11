@@ -34,6 +34,7 @@ endif()
 set(libsync_SRCS
     account.cpp
     authenticationdialog.cpp
+    bandwidthmanager.cpp
     clientproxy.cpp
     connectionvalidator.cpp
     cookiejar.cpp
@@ -48,7 +49,10 @@ set(libsync_SRCS
     progressdispatcher.cpp
     propagatorjobs.cpp
     propagator_legacy.cpp
-    propagator_qnam.cpp
+    propagatedownload.cpp
+    propagateupload.cpp
+    propagateremotedelete.cpp
+    propagateremotemove.cpp
     quotainfo.cpp
     syncengine.cpp
     syncfilestatus.cpp
@@ -151,7 +155,7 @@ set_target_properties( ${synclib_NAME}  PROPERTIES
 	SOVERSION ${MIRALL_SOVERSION}
 )
 set_target_properties( ${synclib_NAME} PROPERTIES
-	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
+	INSTALL_RPATH "${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
 
 target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )
 

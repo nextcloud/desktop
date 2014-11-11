@@ -10,3 +10,7 @@ set( APPLICATION_REV_DOMAIN "com.owncloud.desktopclient" )
 set( WIN_SETUP_BITMAP_PATH  "${CMAKE_SOURCE_DIR}/admin/win/nsi" )
 # set( THEME_INCLUDE          "${OEM_THEME_DIR}/mytheme.h" )
 # set( APPLICATION_LICENSE    "${OEM_THEME_DIR}/license.txt )
+
+option( WITH_CRASHREPORTER "Build crashreporter" OFF )
+set( CRASHREPORTER_SUBMIT_URL "https://crash-reports.owncloud.org/submit" CACHE string "URL for crash repoter" )
+set( CRASHREPORTER_ICON ":/owncloud-icon.png" )

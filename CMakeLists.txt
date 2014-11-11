@@ -17,10 +17,23 @@ endif()
 set(PACKAGE "${APPLICATION_SHORTNAME}-client")
 set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 
+if(NOT CRASHREPORTER_EXECUTABLE)
+    set(CRASHREPORTER_EXECUTABLE "${APPLICATION_EXECUTABLE}_crash_reporter")
+endif()
+
 include(Warnings)
 
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
+
+# disable the crashrepoter if libcrashreporter-qt is not available or we're building for ARM
+if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
+    set( WITH_CRASHREPORTER OFF )
+endif()
+
+if(NOT WITH_CRASHREPORTER)
+    message(STATUS "Build of crashreporter disabled.")
+endif()
 
 #####
 ## handle DBUS for Fdo notifications

@@ -38,7 +38,7 @@ StrCpy $UNINSTALL_MESSAGEBOX "Il semble que ${APPLICATION_NAME} ne soit pas inst
 StrCpy $UNINSTALL_ABORT "Désinstallation interrompue par l'utilisateur"
 StrCpy $INIT_NO_QUICK_LAUNCH "Raccourci de lancement rapide (non disponible)"
 StrCpy $INIT_NO_DESKTOP "Raccourci bureau (remplace l’existant)"
-StrCpy $UAC_ERROR_ELEVATE "Echec d'élévation, erreur :"
+StrCpy $UAC_ERROR_ELEVATE "Échec d'élévation, erreur :"
 StrCpy $UAC_INSTALLER_REQUIRE_ADMIN "Cet installateur requiert les droits administrateur, essayez à nouveau"
 StrCpy $INIT_INSTALLER_RUNNING "Une installation est déjà en cours."
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Ce désinstallateur requiert les droits administrateur, essayez à nouveau"

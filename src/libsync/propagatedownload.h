@@ -1,6 +1,5 @@
 /*
  * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,94 +13,13 @@
  */
 #pragma once
 
-
 #include "owncloudpropagator.h"
-#include "owncloudpropagator_p.h"
 #include "networkjobs.h"
 
 #include <QBuffer>
 #include <QFile>
 
-namespace OCC {
-
-class ChunkBlock {
-
-public:
-    explicit ChunkBlock() : _state(NotTransfered) { }
-    enum State {
-        CHUNK_SUCCESS,
-        NotTransfered,           /* never tried to transfer     */
-        Transfered,              /* transfer currently running  */
-        TransferFailed,          /* transfer tried but failed   */
-        TransferSuccess,         /* block transfer succeeded.   */
-        Fail
-    };
-
-    int      _sequenceNo;
-    int64_t  _start;
-    int64_t  _size;
-
-    State    _state;
-    int      _httpResultCode;
-    QString  _httpErrorMsg;
-    QString  _etag;
-    QBuffer *_buffer;
-
-};
-
-class PUTFileJob : public AbstractNetworkJob {
-    Q_OBJECT
-    QIODevice* _device;
-    QMap<QByteArray, QByteArray> _headers;
-    QString _errorString;
-
-public:
-    // Takes ownership of the device
-    explicit PUTFileJob(Account* account, const QString& path, QIODevice *device,
-                        const QMap<QByteArray, QByteArray> &headers, QObject* parent = 0)
-    : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers) {}
-
-    virtual void start() Q_DECL_OVERRIDE;
-
-    virtual bool finished() Q_DECL_OVERRIDE {
-        emit finishedSignal();
-        return true;
-    }
-
-    QString errorString() {
-        return _errorString.isEmpty() ? reply()->errorString() : _errorString;
-    };
-
-    virtual void slotTimeout() Q_DECL_OVERRIDE;
-
-
-signals:
-    void finishedSignal();
-    void uploadProgress(qint64,qint64);
-};
-
-
-class PropagateUploadFileQNAM : public PropagateItemJob {
-    Q_OBJECT
-    QPointer<PUTFileJob> _job;
-    QFile *_file;
-    int _startChunk;
-    int _currentChunk;
-    int _chunkCount;
-    int _transferId;
-    QElapsedTimer _duration;
-public:
-    PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
-        : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0) {}
-    void start() Q_DECL_OVERRIDE;
-private slots:
-    void slotPutFinished();
-    void slotUploadProgress(qint64,qint64);
-    void abort() Q_DECL_OVERRIDE;
-    void startNextChunk();
-    void finalize(const SyncFileItem&);
-};
-
+namespace Mirall {
 
 class GETFileJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -113,6 +31,11 @@ class GETFileJob : public AbstractNetworkJob {
     SyncFileItem::Status _errorStatus;
     QUrl _directDownloadUrl;
     QByteArray _etag;
+    bool _bandwidthLimited; // if _bandwidthQuota will be used
+    bool _bandwidthChoked; // if download is paused (won't read on readyRead())
+    qint64 _bandwidthQuota;
+    BandwidthManager *_bandwidthManager;
+    bool _hasEmittedFinishedSignal;
 public:
 
     // DOES NOT take owncership of the device.
@@ -123,12 +46,35 @@ public:
     explicit GETFileJob(Account* account, const QUrl& url, QFile *device,
                         const QMap<QByteArray, QByteArray> &headers,
                         QObject* parent = 0);
+    virtual ~GETFileJob() {
+        if (_bandwidthManager) {
+            _bandwidthManager->unregisterDownloadJob(this);
+        }
+    }
 
     virtual void start() Q_DECL_OVERRIDE;
     virtual bool finished() Q_DECL_OVERRIDE {
-        emit finishedSignal();
-        return true;
+        qDebug() << Q_FUNC_INFO << reply()->bytesAvailable() << _hasEmittedFinishedSignal;
+        if (reply()->bytesAvailable()) {
+            qDebug() << Q_FUNC_INFO << "Not all read yet because of bandwidth limits";
+            return false;
+        } else {
+            if (_bandwidthManager) {
+                _bandwidthManager->unregisterDownloadJob(this);
+            }
+            if (!_hasEmittedFinishedSignal) {
+                emit finishedSignal();
+            }
+            _hasEmittedFinishedSignal = true;
+            return true; // discard
+        }
     }
+
+    void setBandwidthManager(BandwidthManager *bwm);
+    void setChoked(bool c);
+    void setBandwidthLimited(bool b);
+    void giveBandwidthQuota(qint64 q);
+    qint64 currentDownloadPosition();
 
     QString errorString() {
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;
@@ -166,10 +112,6 @@ private slots:
     void abort() Q_DECL_OVERRIDE;
     void downloadFinished();
     void slotDownloadProgress(qint64,qint64);
-
-
 };
-
-
 
 }

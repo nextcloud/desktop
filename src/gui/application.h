@@ -48,6 +48,7 @@ public:
 
     bool giveHelp();
     void showHelp();
+    bool debugMode();
 
 public slots:
     // TODO: this should not be public
@@ -81,6 +82,7 @@ protected slots:
     void slotAccountChanged(Account *newAccount, Account *oldAccount = 0);
     void slotCredentialsFetched();
     void slotToggleFolderman(int state);
+    void slotCrash();
 
 private:
     void setHelp();
@@ -101,6 +103,7 @@ private:
     int     _logExpire;
     bool    _logFlush;
     bool    _userTriggeredConnect;
+    bool    _debugMode;
 
     ClientProxy _proxy;
 
