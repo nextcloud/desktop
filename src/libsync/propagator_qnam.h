@@ -21,6 +21,7 @@
 
 #include <QBuffer>
 #include <QFile>
+#include <QDebug>
 
 namespace Mirall {
 

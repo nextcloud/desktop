@@ -506,7 +506,8 @@ void CleanupPollsJob::start()
         return;
     }
 
-    auto info = _pollInfos.takeFirst();
+    auto info = _pollInfos.first();
+    _pollInfos.pop_front();
     SyncFileItem item;
     item._file = info._file;
     item._modtime = info._modtime;

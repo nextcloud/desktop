@@ -109,7 +109,7 @@ void PollJob::start()
     setTimeout(120 * 1000);
     QUrl accountUrl = account()->url();
     QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QLatin1String("://") +  accountUrl.authority()
-        + (path().startsWith('/') ? QLatin1String("") : QLatin1Literal("/")) + path());
+        + (path().startsWith('/') ? QLatin1String("") : QLatin1String("/")) + path());
     setReply(getRequest(finalUrl));
     setupConnections(reply());
     connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(resetTimeout()));
