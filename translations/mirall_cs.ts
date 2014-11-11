@@ -198,7 +198,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="608"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation>Hledám &apos;%1&apos;</translation>
+        <translation>Prohledávám &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="648"/>
@@ -1380,7 +1380,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation>Nezdařilo se odstranění adresáře &apos;%1&apos;;</translation>
+        <translation>Nepodařilo se odstranit adresář &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>
@@ -1576,7 +1576,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="274"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Neoznačené adresáře budou &lt;b&gt;odstraněny&lt;/b&gt; z lokálního souborového systému a nebudou již synchronizovány na tento počítač</translation>
+        <translation>Neoznačené adresáře budou &lt;b&gt;odstraněny&lt;/b&gt; z místního souborového systému a nebudou již synchronizovány na tento počítač</translation>
     </message>
 </context>
 <context>
@@ -2262,7 +2262,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="470"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation>Hledám &apos;%1&apos;</translation>
+        <translation>Prohledávám &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="474"/>

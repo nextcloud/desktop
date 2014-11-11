@@ -121,7 +121,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="130"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>&lt;b&gt;Huomio:&lt;/b&gt; Joillakin kansioilla, mukaan lukien verkon yli liitetyt tai jaetut kansiot, voivat olla erilaisten rajoitusten piirissä.</translation>
+        <translation>&lt;b&gt;Huomio:&lt;/b&gt; Jotkin kansiot, mukaan lukien verkon yli liitetyt tai jaetut kansiot, voivat olla eri rajoitusten piirissä.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="171"/>
@@ -216,7 +216,7 @@ Aikaa jäljellä yhteensä %5</translation>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="800"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation>Muodosta yhteys - &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
+        <translation>Muodostetty yhteys kohteeseen &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="803"/>
@@ -487,7 +487,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="205"/>
         <source>Syncing all files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>Synkronoidaan kaikki tilisi tiedostot polkuun</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="208"/>
@@ -1062,7 +1062,7 @@ saattaa kysyä lisäoikeuksia toimenpiteen aikana.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="266"/>
         <source>Update advanced setup</source>
-        <translation type="unfinished"/>
+        <translation>Lisäasetuksien päivitys</translation>
     </message>
 </context>
 <context>
@@ -1521,7 +1521,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="73"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi toimilista leikepöydälle.</translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="118"/>
@@ -1566,7 +1566,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="274"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Ilman valintaa olevat kansiot &lt;b&gt;poistetaan&lt;/b&gt; paikallisesta tiedostojärjestelmästä, eikä niitä synkronoida enää jatkossa tämän tietokoneen kanssa</translation>
     </message>
 </context>
 <context>

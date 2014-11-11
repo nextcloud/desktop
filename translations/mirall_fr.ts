@@ -311,7 +311,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="368"/>
         <source>%1: %2</source>
-        <translation>%1: %2</translation>
+        <translation>%1 : %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="459"/>
@@ -494,7 +494,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/mirall/folderstatusmodel.cpp" line="208"/>
         <source>Remote path: %1</source>
-        <translation>Chemin distant: %1</translation>
+        <translation>Chemin distant : %1</translation>
     </message>
 </context>
 <context>
@@ -711,7 +711,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="375"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation>Veuillez entrer %1 mot de passe pour l&apos;utilisateur &apos;%2&apos;:</translation>
+        <translation>Veuillez entrer %1 mot de passe pour l&apos;utilisateur &apos;%2&apos; :</translation>
     </message>
 </context>
 <context>
@@ -1148,7 +1148,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="162"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Connecté avec succès à %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;Connecté avec succès à %1 : %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="231"/>
@@ -1184,7 +1184,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="186"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="194"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>Échec de la connexion à %1 pour %2:&lt;br/&gt;%3</translation>
+        <translation>Échec de la connexion à %1 pour %2 :&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="280"/>
@@ -2134,7 +2134,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/systray.cpp" line="49"/>
         <source>%1: %2</source>
-        <translation>%1: %2</translation>
+        <translation>%1 : %2</translation>
     </message>
 </context>
 <context>
