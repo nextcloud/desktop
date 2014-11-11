@@ -181,7 +181,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("Aborted by the user");
         break;
     case CSYNC_STATUS_SERVICE_UNAVAILABLE:
-	errStr = tr("The mounted directory is temporary not available on the server");
+	errStr = tr("The mounted directory is temporarily not available on the server");
 	break;
     default:
         errStr = tr("An internal error number %1 happened.").arg( (int) err );
