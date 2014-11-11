@@ -263,54 +263,6 @@ void PropagateLocalRename::start()
     done(SyncFileItem::Success);
 }
 
-void PropagateRemoteRename::start()
-{
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
-        return;
-
-    if (_item._file == _item._renameTarget) {
-        // The parents has been renamed already so there is nothing more to do.
-    } else if (_item._file == QLatin1String("Shared") ) {
-        // Check if it is the toplevel Shared folder and do not propagate it.
-        if( QFile::rename(  _propagator->_localDir + _item._renameTarget, _propagator->_localDir + QLatin1String("Shared")) ) {
-            done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
-        } else {
-            done(SyncFileItem::NormalError, tr("This folder must not be renamed. Please name it back to Shared."));
-        }
-        return;
-    } else {
-        emit progress(_item, 0);
-
-        QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-        QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
-        qDebug() << "MOVE on Server: " << uri1.data() << "->" << uri2.data();
-
-        int rc = ne_move(_propagator->_session, 1, uri1.data(), uri2.data());
-
-        QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-        int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-        if( checkForProblemsWithShared(httpStatusCode,
-                tr("The file was renamed but is part of a read only share. The original file was restored."))) {
-            return;
-        }
-
-        if (updateErrorFromSession(rc)) {
-            return;
-        }
-    }
-    //  Wed, 15 Nov 1995 06:25:24 GMT
-    QDateTime dt = QDateTime::currentDateTimeUtc();
-    _item._responseTimeStamp = dt.toString("hh:mm:ss");
-
-    _propagator->_journal->deleteFileRecord(_item._originalFile);
-    SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
-    record._path = _item._renameTarget;
-
-    _propagator->_journal->setFileRecord(record);
-    _propagator->_journal->commit("Remote Rename");
-    done(SyncFileItem::Success);
-}
-
 bool PropagateNeonJob::updateErrorFromSession(int neon_code, ne_request* req, int ignoreHttpCode)
 {
     if( neon_code != NE_OK ) {

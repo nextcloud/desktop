@@ -19,6 +19,7 @@
 #include "propagatedownload.h"
 #include "propagateupload.h"
 #include "propagateremotedelete.h"
+#include "propagateremotemove.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
 #include "mirallconfigfile.h"
@@ -225,7 +226,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
             }
         case CSYNC_INSTRUCTION_RENAME:
             if (item._direction == SyncFileItem::Up) {
-                return new PropagateRemoteRename(this, item);
+                return new PropagateRemoteMove(this, item);
             } else {
                 return new PropagateLocalRename(this, item);
             }

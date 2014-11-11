@@ -52,6 +52,7 @@ set(libsync_SRCS
     propagatedownload.cpp
     propagateupload.cpp
     propagateremotedelete.cpp
+    propagateremotemove.cpp
     quotainfo.cpp
     syncengine.cpp
     syncfilestatus.cpp
