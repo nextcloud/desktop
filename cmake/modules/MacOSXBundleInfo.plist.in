@@ -30,6 +30,8 @@
         <string>(C) 2014 @APPLICATION_VENDOR@</string>
         <key>SUShowReleaseNotes</key>
         <false/>
+        <key>LSMinimumBundleVersion</key>
+        <string>10.7.0</string>
         <key>SUPublicDSAKeyFile</key>
         <string>dsa_pub.pem</string>
 </dict>

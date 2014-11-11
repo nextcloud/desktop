@@ -27,6 +27,7 @@
 
 #include <QDir>
 #include <QHash>
+#include <QSet>
 #include <QObject>
 #include <QStringList>
 
@@ -34,14 +35,11 @@
 #include <QTimer>
 #include <qelapsedtimer.h>
 
-class QFileSystemWatcher;
 class QThread;
 
 namespace Mirall {
 
 class SyncEngine;
-
-class FolderWatcher;
 
 class Folder : public QObject
 {
@@ -119,12 +117,11 @@ public:
 
      // Used by the Socket API
      SyncJournalDb *journalDb() { return &_journal; }
-     CSYNC *csyncContext() { return _csync_ctx; }
 
      QStringList selectiveSyncBlackList() { return _selectiveSyncBlackList; }
-     void setSelectiveSyncBlackList(const QStringList &blackList)
-     { _selectiveSyncBlackList = blackList; }
+     void setSelectiveSyncBlackList(const QStringList &blackList);
 
+     bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
 
 signals:
     void syncStateChange();
@@ -152,6 +149,8 @@ public slots:
       void setProxyDirty(bool value);
       bool proxyDirty();
 
+      int slotDiscardDownloadProgress();
+      int downloadInfoCount();
       int slotWipeBlacklist();
       int blackListEntryCount();
 
@@ -164,19 +163,23 @@ private slots:
     void slotFolderDiscovered(bool local, QString folderName);
     void slotTransmissionProgress(const Progress::Info& pi);
     void slotJobCompleted(const SyncFileItem&);
+    void slotSyncItemDiscovered(const SyncFileItem & item);
 
     void slotPollTimerTimeout();
     void etagRetreived(const QString &);
     void slotNetworkUnavailable();
 
-    void slotThreadTreeWalkResult(const SyncFileItemVector& );
+    void slotAboutToPropagate(const SyncFileItemVector& );
+    void slotThreadTreeWalkResult(const SyncFileItemVector& ); // after sync is done
 
     void slotEmitFinishedDelayed();
+
+    void watcherSlot(QString);
 
 private:
     bool init();
 
-    void setIgnoredFiles();
+    bool setIgnoredFiles();
 
     void bubbleUpSyncResult();
 
@@ -201,6 +204,20 @@ private:
     QTimer        _pollTimer;
     QString       _lastEtag;
     QElapsedTimer _timeSinceLastSync;
+    bool          _forceSyncOnPollTimeout;
+
+    /// The number of syncs that failed in a row.
+    /// Reset when a sync is successful.
+    int           _consecutiveFailingSyncs;
+
+    /// The number of requested follow-up syncs.
+    /// Reset when no follow-up is requested.
+    int           _consecutiveFollowUpSyncs;
+
+    // For the SocketAPI folder states
+    QSet<QString>   _stateLastSyncItemsWithErrorNew; // gets moved to _stateLastSyncItemsWithError at end of sync
+    QSet<QString>   _stateLastSyncItemsWithError;
+    QSet<QString>   _stateTaintedFolders;
 
     SyncJournalDb _journal;
 

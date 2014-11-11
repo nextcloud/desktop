@@ -18,6 +18,7 @@
 #include "mirallconfigfile.h"
 #include "mirallaccessmanager.h"
 #include "quotainfo.h"
+#include "owncloudtheme.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
 
@@ -27,6 +28,8 @@
 #include <QNetworkAccessManager>
 #include <QSslSocket>
 #include <QNetworkCookieJar>
+#include <QFileInfo>
+#include <QDir>
 
 #include <QDebug>
 
@@ -36,6 +39,7 @@ static const char urlC[] = "url";
 static const char authTypeC[] = "authType";
 static const char userC[] = "user";
 static const char httpUserC[] = "http_user";
+static const char caCertsKeyC[] = "CaCertificates";
 
 AccountManager *AccountManager::_instance = 0;
 
@@ -71,6 +75,7 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     , _treatSslErrorsAsFailure(false)
     , _state(Account::Disconnected)
     , _davPath("remote.php/webdav/")
+    , _wasMigrated(false)
 {
     qRegisterMetaType<Account*>("Account*");
 }
@@ -98,25 +103,66 @@ void Account::save()
     }
     settings->sync();
 
-    // ### TODO port away from MirallConfigFile
-    MirallConfigFile cfg;
+    // Save accepted certificates.
+    settings->beginGroup(QLatin1String("General"));
     qDebug() << "Saving " << approvedCerts().count() << " unknown certs.";
     QByteArray certs;
     Q_FOREACH( const QSslCertificate& cert, approvedCerts() ) {
         certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
-        cfg.setCaCerts( certs );
+        settings->setValue( QLatin1String(caCertsKeyC), certs );
     }
 }
 
 Account* Account::restore()
 {
+    // try to open the correctly themed settings
     QScopedPointer<QSettings> settings(settingsWithGroup(Theme::instance()->appName()));
+
+    Account *acc = 0;
+    bool migratedCreds = false;
+
+    // if the settings file could not be opened, the childKeys list is empty
+    if( settings->childKeys().isEmpty() ) {
+        // Now try to open the original ownCloud settings to see if they exist.
+        QString oCCfgFile = QDir::fromNativeSeparators( settings->fileName() );
+        // replace the last two segments with ownCloud/owncloud.cfg
+        oCCfgFile = oCCfgFile.left( oCCfgFile.lastIndexOf('/'));
+        oCCfgFile = oCCfgFile.left( oCCfgFile.lastIndexOf('/'));
+        oCCfgFile += QLatin1String("/ownCloud/owncloud.cfg");
+
+        qDebug() << "Migrate: checking old config " << oCCfgFile;
+
+        QFileInfo fi( oCCfgFile );
+        if( fi.isReadable() ) {
+            QSettings *oCSettings = new QSettings(oCCfgFile, QSettings::IniFormat);
+            oCSettings->beginGroup(QLatin1String("ownCloud"));
+
+            // Check the theme url to see if it is the same url that the oC config was for
+            QString overrideUrl = Theme::instance()->overrideServerUrl();
+            if( !overrideUrl.isEmpty() ) {
+                if (overrideUrl.endsWith('/')) { overrideUrl.chop(1); }
+                QString oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
+                if (oCUrl.endsWith('/')) { oCUrl.chop(1); }
+
+                // in case the urls are equal reset the settings object to read from
+                // the ownCloud settings object
+                qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
+                         << (oCUrl == overrideUrl ? "Yes" : "No");
+                if( oCUrl == overrideUrl ) {
+                    migratedCreds = true;
+                    settings.reset( oCSettings );
+                } else {
+                    delete oCSettings;
+                }
+            }
+        }
+    }
+
     if (!settings->childKeys().isEmpty()) {
-        Account *acc = new Account;
-        MirallConfigFile cfg;
-        acc->setApprovedCerts(QSslCertificate::fromData(cfg.caCerts()));
+        acc = new Account;
+
         acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
         acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
 
@@ -128,6 +174,11 @@ Account* Account::restore()
                 continue;
             acc->_settingsMap.insert(key, settings->value(key));
         }
+
+        // now the cert, it is in the general group
+        settings->beginGroup(QLatin1String("General"));
+        acc->setApprovedCerts(QSslCertificate::fromData(settings->value(caCertsKeyC).toByteArray()));
+        acc->setMigrated(migratedCreds);
         return acc;
     }
     return 0;
@@ -362,6 +413,16 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
             return;
         }
     }
+}
+
+bool Account::wasMigrated()
+{
+    return _wasMigrated;
+}
+
+void Account::setMigrated(bool mig)
+{
+    _wasMigrated = mig;
 }
 
 } // namespace Mirall

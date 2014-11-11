@@ -29,6 +29,11 @@ enum csync_exclude_type_e {
   CSYNC_FILE_EXCLUDE_INVALID_CHAR
 };
 typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
+
+#ifdef NDEBUG
+int _csync_exclude_add(c_strlist_t **inList, const char *string);
+#endif
+
 /**
  * @brief Load exclude list
  *
@@ -74,5 +79,13 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
  */
 CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype);
 #endif /* _CSYNC_EXCLUDE_H */
+
+/**
+ * @brief Checks if filename is considered reserved by Windows
+ * @param file_name filename
+ * @return true if file is reserved, false otherwise
+ */
+bool csync_is_windows_reserved_word(const char *file_name);
+
 
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

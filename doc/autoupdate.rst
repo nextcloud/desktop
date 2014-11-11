@@ -1,16 +1,19 @@
 The Automatic Updater
 =====================
 
-To ensure that you are always using the latest version of the ownCloud client,
-an auto-update mechanism has been added in Version 1.5.1. The Automatic Updater
-ensures that you automatically profit from the latest features and bugfixes.
+The Automatic Updater ensures that you always have the 
+latest features and bugfixes for your ownCloud synchronization client.
 
-.. note:: The Automatic Updater functions differently, depending on the operating system.
+The Automatic Updater updates only on Mac OS X and Windows computers; Linux 
+users only need to use their normal package managers. However, on Linux systems 
+the Updater will check for updates and notify you when a new version is 
+available.
 
 Basic Workflow
 --------------
 
-The following sections describe how to use the Automatic Updater on different operating systems:
+The following sections describe how to use the Automatic Updater on different 
+operating systems:
 
 Windows
 ^^^^^^^
@@ -36,7 +39,7 @@ process for Mac OS X applications.
 Linux
 ^^^^^
 
-Linux distributions provide their own update tool, so ownCloud clients that use
+Linux distributions provide their own update tools, so ownCloud clients that use
 the Linux operating system do not perform any updates on their own. Linux
 operating systems do, however, check for the latest version of the ownCloud
 client and passively notify the user (``Settings -> General -> Updates``) when
@@ -52,7 +55,7 @@ deployment tools and policies. To address this case, it is possible to disable
 the auto-updater entirely.  The following sections describe how to disable the
 auto-update mechanism for different operating systems.
 
-Preventing Automatic Updates in Windows Environents
+Preventing Automatic Updates in Windows Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can prevent automatic updates from occuring in Windows environments using
@@ -61,9 +64,10 @@ update check mechanism whereas the second method prevents any manual overrides.
 
 To prevent automatic updates, but allow manual overrides:
 
-1. Migrate to the following directory::
+1. Migrate to the following directory:
 
-	HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud
+    a. (32-bit) ``HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud``
+    b. (64-bit) ``HKEY_LOCAL_MACHINE\Software\Wow6432Node\ownCloud\ownCloud``
 
 2. Add the key ``skipUpdateCheck`` (of type DWORD).
 
@@ -73,7 +77,8 @@ To manually override this key, use the same value in ``HKEY_CURRENT_USER``.
 
 To prevent automatic updates and disallow manual overrides:
 
-.. note::This is the preferred method of controlling the updater behavior using Group Policies.
+.. note::This is the preferred method of controlling the updater behavior using 
+   Group Policies.
 
 1. Migrate to the following directory::
 
@@ -111,16 +116,10 @@ to ``/Library/Preferences/com.owncloud.desktopclient.plist``.
 Preventing Automatic Updates in Linux Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Because Linux does not provide automatic updating functionality, there is no
-need to remove the automatic-update check.  However, if you want to disable
-this check:
+Because the Linux client does not provide automatic updating functionality, there is no
+need to remove the automatic-update check.  However, if you want to disable it edit your desktop
+client configuration file, ``$HOME/.local/share/data/ownCloud/owncloud.cfg``. Add these lines:
 
-1. Locate and open the following file::
-
-	/etc/ownCloud/ownCloud.conf
-
-2. Add the following content to the file::
-
- 	[General]
-	skipUpdateCheck=true
+    [General]
+    skipUpdateCheck=true
 

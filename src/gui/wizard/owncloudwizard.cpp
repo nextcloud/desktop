@@ -104,6 +104,12 @@ QString OwncloudWizard::localFolder() const
     return(_advancedSetupPage->localFolder());
 }
 
+QStringList OwncloudWizard::blacklist() const
+{
+    return _advancedSetupPage->blacklist();
+}
+
+
 QString OwncloudWizard::ocUrl() const
 {
     QString url = field("OCUrl").toString().simplified();
@@ -165,7 +171,6 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
 
     if( id == WizardCommon::Page_ServerSetup ) {
         emit clearPendingRequests();
-        _setupPage->initializePage();
     }
 
     if( id == WizardCommon::Page_Result ) {

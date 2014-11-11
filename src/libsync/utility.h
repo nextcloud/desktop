@@ -42,6 +42,10 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
     /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
 
+    OWNCLOUDSYNC_EXPORT bool doesSetContainPrefix(const QSet<QString> &l, const QString &p);
+
+
+
     /**
      * @brief compactFormatDouble - formats a double value human readable.
      *
@@ -59,8 +63,6 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT QDateTime qDateTimeFromTime_t(qint64 t);
     OWNCLOUDSYNC_EXPORT qint64 qDateTimeToTime_t(const QDateTime &t);
 
-    OWNCLOUDSYNC_EXPORT void winShellChangeNotify( const QString& path );
-
     /**
      * @brief Convert milliseconds to HMS string.
      * @param quint64 msecs the milliseconds to convert to string.
@@ -69,6 +71,18 @@ namespace Utility
      */
     OWNCLOUDSYNC_EXPORT QString timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision, QString separator, bool specific);
     OWNCLOUDSYNC_EXPORT QString timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific);
+
+    /**
+     * @brief hasDarkSystray - determines whether the systray is dark or light.
+     *
+     * Use this to check if the OS has a dark or a light systray.
+     *
+     * The value might change during the execution of the program
+     * (e.g. on OS X 10.10).
+     *
+     * @return bool which is true for systems with dark systray.
+     */
+    OWNCLOUDSYNC_EXPORT bool hasDarkSystray();
 
     // convinience OS detection methods
     OWNCLOUDSYNC_EXPORT bool isWindows();

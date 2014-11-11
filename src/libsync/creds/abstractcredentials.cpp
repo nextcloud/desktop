@@ -28,7 +28,7 @@ QString AbstractCredentials::keychainKey(const QString &url, const QString &user
         return QString::null;
     }
     if( user.isEmpty() ) {
-        qDebug() << "Error: User is emty!";
+        qDebug() << "Error: User is empty!";
         return QString::null;
     }
 

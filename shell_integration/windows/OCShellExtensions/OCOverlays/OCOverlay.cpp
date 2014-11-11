@@ -36,17 +36,13 @@ extern HINSTANCE instanceHandle;
 #define IDM_DISPLAY 0  
 #define IDB_OK 101
 
-namespace {
-	static std::vector<std::wstring> s_watchedDirectories;
-}
-
 OCOverlay::OCOverlay(int state) 
-	: _communicationSocket(0)
-	, _referenceCount(1)
-	, _checker(new RemotePathChecker(PORT))
+	: _referenceCount(1)
 	, _state(state)
 
 {
+    static RemotePathChecker s_remotePathChecker;
+    _checker = &s_remotePathChecker;
 }
 
 OCOverlay::~OCOverlay(void)
@@ -121,23 +117,13 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
 
  IFACEMETHODIMP OCOverlay::IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib)
 {
-	
-	//if(!_IsOverlaysEnabled())
-	//{
-	//	return MAKE_HRESULT(S_FALSE, 0, 0);
-	//}
-
-	// FIXME: Use Registry instead, this will only trigger once
-	// and now follow any user changes in the client
-	if (s_watchedDirectories.empty()) {
-		s_watchedDirectories = _checker->WatchedDirectories();
-	}
+    auto watchedDirectories = _checker->WatchedDirectories();
 
 	wstring wpath(pwszPath);
-	wpath.append(L"\\");
+	//wpath.append(L"\\");
 	vector<wstring>::iterator it;
 	bool watched = false;
-	for (it = s_watchedDirectories.begin(); it != s_watchedDirectories.end(); ++it) {
+	for (it = watchedDirectories.begin(); it != watchedDirectories.end(); ++it) {
 		if (StringUtil::begins_with(wpath, *it)) {
 			watched = true;
 		}

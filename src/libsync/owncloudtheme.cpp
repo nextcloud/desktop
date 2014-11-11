@@ -50,9 +50,9 @@ QString ownCloudTheme::about() const
                "Olivier Goffart, Markus Götz and others.<br/>"
                "Based on Mirall by Duncan Mac-Vicar P.</small></p>"
                "<p>Copyright ownCloud, Inc.</p>"
-               "<p>Licensed under the GNU Public License (GPL) Version 2.0<br/>"
+               "<p>Licensed under the GNU General Public License (GPL) Version 2.0<br/>"
                "ownCloud and the ownCloud Logo are registered trademarks of ownCloud, "
-               "Inc. in the United States, other countries, or both</p>"
+               "Inc. in the United States, other countries, or both.</p>"
                )
             .arg(MIRALL_VERSION_STRING)
             .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
@@ -80,10 +80,11 @@ QIcon ownCloudTheme::applicationIcon( ) const
 QVariant ownCloudTheme::customMedia(Theme::CustomMediaType type)
 {
     if (type == Theme::oCSetupTop) {
-        return QCoreApplication::translate("ownCloudTheme",
-                                           "If you don't have an ownCloud server yet, "
-                                           "see <a href=\"https://owncloud.com\">owncloud.com</a> for more info.",
-                                           "Top text in setup wizard. Keep short!");
+        // return QCoreApplication::translate("ownCloudTheme",
+        //                                   "If you don't have an ownCloud server yet, "
+        //                                   "see <a href=\"https://owncloud.com\">owncloud.com</a> for more info.",
+        //                                   "Top text in setup wizard. Keep short!");
+        return QVariant();
     } else {
         return QVariant();
     }
@@ -110,6 +111,16 @@ QPixmap ownCloudTheme::wizardHeaderLogo() const
     return QPixmap(":/mirall/theme/colored/wizard_logo.png");
 }
 #endif
+
+QString ownCloudTheme::appName() const
+{
+    return QLatin1String("ownCloud");
+}
+
+QString ownCloudTheme::appNameGUI() const
+{
+    return QLatin1String("ownCloud");
+}
 
 
 }

@@ -24,8 +24,8 @@
 
 #include "account.h"
 #include "clientproxy.h"
+#include "mirallconfigfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #include "creds/httpcredentials.h"
-#include "csync.h"
 #include "simplesslerrorhandler.h"
 #include "syncengine.h"
 #include "syncjournaldb.h"
@@ -33,78 +33,169 @@
 
 #include "cmd.h"
 
+#include "theme.h"
+#include "netrcparser.h"
+
+#include "version.h"
+#include "config.h"
+
+#ifdef Q_OS_WIN32
+#include <windows.h>
+#else
+#include <termios.h>
+#endif
+
 using namespace Mirall;
 
 struct CmdOptions {
     QString source_dir;
     QString target_url;
     QString config_directory;
+    QString user;
+    QString password;
     QString proxy;
     bool silent;
     bool trustSSL;
+    bool useNetrc;
+    bool interactive;
+    QString exclude;
 };
 
 // we can't use csync_set_userdata because the SyncEngine sets it already.
 // So we have to use a global variable
 CmdOptions *opts = 0;
 
-int getauth(const char* prompt, char* buf, size_t len, int a, int b, void *userdata)
+class EchoDisabler
 {
-    Q_UNUSED(a) Q_UNUSED(b) Q_UNUSED(userdata)
-
-    std::cout << "** Authentication required: \n" << prompt << std::endl;
-    std::string s;
-    if(opts && opts->trustSSL) {
-        s = "yes";
-    } else {
-        std::getline(std::cin, s);
+public:
+    EchoDisabler()
+    {
+#ifdef Q_OS_WIN
+        hStdin = GetStdHandle(STD_INPUT_HANDLE);
+        GetConsoleMode(hStdin, &mode);
+        SetConsoleMode(hStdin, mode & (~ENABLE_ECHO_INPUT));
+#else
+        tcgetattr(STDIN_FILENO, &tios);
+        termios tios_new = tios;
+        tios_new.c_lflag &= ~ECHO;
+        tcsetattr(STDIN_FILENO, TCSANOW, &tios_new);
+#endif
     }
-    strncpy( buf, s.c_str(), len );
-    return 0;
+
+    ~EchoDisabler()
+    {
+#ifdef Q_OS_WIN
+        SetConsoleMode(hStdin, mode);
+#else
+        tcsetattr(STDIN_FILENO, TCSANOW, &tios);
+#endif
+    }
+private:
+#ifdef Q_OS_WIN
+    DWORD mode = 0;
+    HANDLE hStdin;
+#else
+    termios tios;
+#endif
+};
+
+QString queryPassword(const QString &user)
+{
+    EchoDisabler disabler;
+    std::cout << "Password for user " << qPrintable(user) << ": ";
+    std::string s;
+    std::getline(std::cin, s);
+    return QString::fromStdString(s);
 }
+
+class HttpCredentialsText : public HttpCredentials {
+public:
+    HttpCredentialsText(const QString& user, const QString& password)
+        : HttpCredentials(user, password),
+          _sslTrusted(false)
+    {}
+
+    QString queryPassword(bool *ok) Q_DECL_OVERRIDE {
+        if (ok) {
+            *ok = true;
+        }
+        return ::queryPassword(user());
+    }
+
+    void setSSLTrusted( bool isTrusted ) {
+        _sslTrusted = isTrusted;
+    }
+
+    bool sslIsTrusted() Q_DECL_OVERRIDE {
+        return _sslTrusted;
+    }
+
+private:
+    bool _sslTrusted;
+};
 
 void help()
 {
-    const char* appName = APPLICATION_EXECUTABLE "cmd";
-    std::cout << appName << " - command line " APPLICATION_NAME " client tool." << std::endl;
+    const char *binaryName = APPLICATION_EXECUTABLE "cmd";
+
+    std::cout << binaryName << " - command line " APPLICATION_NAME " client tool" << std::endl;
     std::cout << "" << std::endl;
-    std::cout << "Usage: " << appName << " <source_dir> <server_url>" << std::endl;
+    std::cout << "Usage: " << binaryName << " [OPTION] <source_dir> <server_url>" << std::endl;
     std::cout << "" << std::endl;
     std::cout << "A proxy can either be set manually using --httpproxy." << std::endl;
     std::cout << "Otherwise, the setting from a configured sync client will be used." << std::endl;
     std::cout << std::endl;
     std::cout << "Options:" << std::endl;
-    std::cout << "  --silent               Don't be so verbose" << std::endl;
-    std::cout << "  --confdir = configdir: Read config from there." << std::endl;
-    std::cout << "  --httpproxy = proxy:   Specify a http proxy to use." << std::endl;
+    std::cout << "  --silent, -s           Don't be so verbose" << std::endl;
+    std::cout << "  --httpproxy [proxy]    Specify a http proxy to use." << std::endl;
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
+    std::cout << "  --exclude [file]       Exclude list file" << std::endl;
+    std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
+    std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
+    std::cout << "  -n                     Use netrc (5) for login" << std::endl;
+    std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
+    std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "" << std::endl;
     exit(1);
 
+}
+
+void showVersion() {
+    const char *binaryName = APPLICATION_EXECUTABLE "cmd";
+    std::cout << binaryName << " version " << qPrintable(Theme::instance()->version()) << std::endl;
+    exit(1);
 }
 
 void parseOptions( const QStringList& app_args, CmdOptions *options )
 {
     QStringList args(app_args);
 
-    if( args.count() < 3 ) {
+    int argCount = args.count();
+
+    if( argCount < 3 ) {
+        if (argCount >= 2) {
+            const QString option = args.at(1);
+            if (option == "-v" || option == "--version") {
+                showVersion();
+            }
+        }
         help();
     }
 
     options->target_url = args.takeLast();
     // check if the remote.php/webdav tail was added and append if not.
-    if( !options->target_url.contains("remote.php/webdav")) {
-        if(!options->target_url.endsWith("/")) {
-            options->target_url.append("/");
-        }
+    if(!options->target_url.endsWith("/")) {
+        options->target_url.append("/");
+    }
+    if( !options->target_url.contains("remote.php/webdav/")) {
         options->target_url.append("remote.php/webdav/");
     }
     if (options->target_url.startsWith("http"))
         options->target_url.replace(0, 4, "owncloud");
     options->source_dir = args.takeLast();
     if( !QFile::exists( options->source_dir )) {
-        std::cerr << "Source dir does not exists." << std::endl;
+        std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
         exit(1);
     }
 
@@ -115,14 +206,22 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     while(it.hasNext()) {
         const QString option = it.next();
 
-        if( option == "--confdir" && !it.peekNext().startsWith("-") ) {
-            options->config_directory = it.next();
-        } else if( option == "--httpproxy" && !it.peekNext().startsWith("-")) {
+        if( option == "--httpproxy" && !it.peekNext().startsWith("-")) {
             options->proxy = it.next();
-        } else if( option == "--silent") {
+        } else if( option == "-s" || option == "--silent") {
             options->silent = true;
         } else if( option == "--trust") {
             options->trustSSL = true;
+        } else if( option == "-n") {
+            options->useNetrc = true;
+        } else if( option == "--non-interactive") {
+            options->interactive = false;
+        } else if( (option == "-u" || option == "--user") && !it.peekNext().startsWith("-") ) {
+                options->user = it.next();
+        } else if( (option == "-p" || option == "--password") && !it.peekNext().startsWith("-") ) {
+                options->password = it.next();
+        } else if( option == "--exclude" && !it.peekNext().startsWith("-") ) {
+                options->exclude = it.next();
         } else {
             help();
         }
@@ -139,30 +238,91 @@ int main(int argc, char **argv) {
     CmdOptions options;
     options.silent = false;
     options.trustSSL = false;
+    options.useNetrc = false;
+    options.interactive = true;
     ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
 
+    QUrl url = QUrl::fromUserInput(options.target_url);
 
-    QUrl url(options.target_url.toUtf8());
+    // Order of retrieval attempt (later attempts override earlier ones):
+    // 1. From URL
+    // 2. From options
+    // 3. From netrc (if enabled)
+    // 4. From prompt (if interactive)
+
+    QString user = url.userName();
+    QString password = url.password();
+
+     if (!options.user.isEmpty()) {
+            user = options.user;
+     }
+
+     if (!options.password.isEmpty()) {
+         password = options.password;
+     }
+
+     if (options.useNetrc) {
+         NetrcParser parser;
+         if (parser.parse()) {
+             NetrcParser::LoginPair pair = parser.find(url.host());
+             user = pair.first;
+             password = pair.second;
+         }
+     }
+
+     if (options.interactive) {
+         if (user.isEmpty()) {
+             std::cout << "Please enter user name: ";
+             std::string s;
+             std::getline(std::cin, s);
+             user = QString::fromStdString(s);
+         }
+         if (password.isEmpty()) {
+             password = queryPassword(user);
+         }
+     }
+
+    // ### ensure URL is free of credentials
+    if (url.userName().isEmpty()) {
+        url.setUserName(user);
+    }
+    if (url.password().isEmpty()) {
+        url.setPassword(password);
+    }
+
+    // take the unmodified url to pass to csync_create()
+    QByteArray remUrl = options.target_url.toUtf8();
+
     Account account;
 
     // Find the folder and the original owncloud url
     QStringList splitted = url.path().split(account.davPath());
     url.setPath(splitted.value(0));
+
     url.setScheme(url.scheme().replace("owncloud", "http"));
     QString folder = splitted.value(1);
 
     SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
 
+    HttpCredentialsText *cred = new HttpCredentialsText(user, password);
+
+    if( options.trustSSL ) {
+        cred->setSSLTrusted(true);
+    }
     account.setUrl(url);
-    account.setCredentials(new HttpCredentials(url.userName(), url.password()));
+    account.setCredentials(cred);
     account.setSslErrorHandler(sslErrorHandler);
+
     AccountManager::instance()->setAccount(&account);
 
+restart_sync:
+
     CSYNC *_csync_ctx;
+
     if( csync_create( &_csync_ctx, options.source_dir.toUtf8(),
-                      options.target_url.toUtf8()) < 0 ) {
+                      remUrl.constData()) < 0 ) {
         qFatal("Unable to create csync-context!");
         return EXIT_FAILURE;
     }
@@ -174,7 +334,7 @@ int main(int argc, char **argv) {
     csync_set_log_level(options.silent ? 1 : 11);
 
     opts = &options;
-    csync_set_auth_callback( _csync_ctx, getauth );
+    cred->syncContextPreInit(_csync_ctx);
 
     if( csync_init( _csync_ctx ) < 0 ) {
         qFatal("Could not initialize csync!");
@@ -217,9 +377,29 @@ int main(int argc, char **argv) {
         clientProxy.setCSyncProxy(QUrl(url), _csync_ctx);
     }
 
-    Cmd cmd;
+    // Exclude lists
+    QString systemExcludeListFn = MirallConfigFile::excludeFileFromSystem();
+    int loadedSystemExcludeList = false;
+    if (!systemExcludeListFn.isEmpty()) {
+        loadedSystemExcludeList = csync_add_exclude_list(_csync_ctx, systemExcludeListFn.toLocal8Bit());
+    }
 
+    int loadedUserExcludeList = false;
+    if (!options.exclude.isEmpty()) {
+        loadedUserExcludeList = csync_add_exclude_list(_csync_ctx, options.exclude.toLocal8Bit());
+    }
+
+    if (loadedSystemExcludeList != 0 && loadedUserExcludeList != 0) {
+        // Always make sure at least one list had been loaded
+        qFatal("Cannot load system exclude list or list supplied via --exclude");
+        return EXIT_FAILURE;
+    }
+
+    cred->syncContextPreStart(_csync_ctx);
+
+    Cmd cmd;
     SyncJournalDb db(options.source_dir);
+
     SyncEngine engine(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(Progress::Info)), &cmd, SLOT(transmissionProgressSlot()));
@@ -232,6 +412,11 @@ int main(int argc, char **argv) {
     csync_destroy(_csync_ctx);
 
     ne_sock_exit();
+
+    if (engine.isAnotherSyncNeeded()) {
+        qDebug() << "Restarting Sync, because another sync is needed";
+        goto restart_sync;
+    }
 
     return 0;
 }

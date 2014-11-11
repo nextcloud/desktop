@@ -1,3 +1,7 @@
+# (c) 2014 Copyright ownCloud, Inc.
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING* file.
+
 # define system dependent compiler flags
 
 include(CheckCCompilerFlag)
@@ -10,7 +14,8 @@ if (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
 
     # add -Wconversion ?
     # cannot be pedantic with sqlite3 directly linked
-    if (NOT CSYNC_STATIC_COMPILE_DIR)
+    # FIXME Can we somehow not use those flags for sqlite3.* but use them for the rest of csync?
+    if (NOT USE_OUR_OWN_SQLITE3)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -pedantic -pedantic-errors")
     endif()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wshadow -Wmissing-prototypes")

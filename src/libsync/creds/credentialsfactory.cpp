@@ -36,7 +36,7 @@ AbstractCredentials* create(const QString& type)
 	
     // empty string might happen for old version of configuration
     if (type == "http" || type == "") {
-        return new HttpCredentials;
+        return new HttpCredentialsGui;
     } else if (type == "dummy") {
         return new DummyCredentials;
     } else if (type == "shibboleth") {

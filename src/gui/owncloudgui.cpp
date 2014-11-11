@@ -20,7 +20,7 @@
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"
 #if defined(Q_OS_MAC)
-#    include "mirall/settingsdialogmac.h"
+#    include "settingsdialogmac.h"
 #    include "macwindow.h" // qtmacgoodies
 #else
 #    include "settingsdialog.h"
@@ -35,6 +35,10 @@
 #include <QMessageBox>
 #include <QSignalMapper>
 
+#if defined(Q_OS_X11)
+#include <QX11Info>
+#endif
+
 namespace Mirall {
 
 ownCloudGui::ownCloudGui(Application *parent) :
@@ -46,7 +50,6 @@ ownCloudGui::ownCloudGui(Application *parent) :
     _settingsDialog(new SettingsDialog(this)),
 #endif
     _logBrowser(0),
-    _contextMenu(0),
     _recentActionsMenu(0),
     _folderOpenActionMapper(new QSignalMapper(this)),
     _recentItemsMapper(new QSignalMapper(this)),
@@ -98,11 +101,12 @@ ownCloudGui::ownCloudGui(Application *parent) :
 
 void ownCloudGui::setupOverlayIcons()
 {
-
-    if( Utility::isMac() && QFile::exists("/Library/ScriptingAdditions/OwnCloudFinder.osax") ) {
+#ifdef Q_OS_MAC
+    const QLatin1String finderExtension("/Library/ScriptingAdditions/SyncStateFinder.osax");
+    if(QFile::exists(finderExtension) ) {
         QString aScript = QString::fromUtf8("tell application \"Finder\"\n"
                                             "  try\n"
-                                            "    «event NVTYload»\n"
+                                            "    «event OWNCload»\n"
                                             "  end try\n"
                                             "end tell\n");
 
@@ -119,7 +123,10 @@ void ownCloudGui::setupOverlayIcons()
           QString resultAsString(result); // if appropriate
           qDebug() << "Laod Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
                    << (p.exitCode() != 0 ? p.errorString() : QString::null);
+    } else  {
+        qDebug() << finderExtension << "does not exist! Finder Overlay Plugin loading failed";
     }
+#endif
 }
 
 // This should rather be in application.... or rather in MirallConfigFile?
@@ -299,11 +306,11 @@ void ownCloudGui::setupContextMenu()
         _recentActionsMenu->addAction(tr("None."));
         _recentActionsMenu->addAction(_actionRecent);
     } else {
-        _contextMenu = new QMenu(_contextMenu);
-        _recentActionsMenu = new QMenu(tr("Recent Changes"));
+        _contextMenu.reset(new QMenu());
+        _recentActionsMenu = new QMenu(tr("Recent Changes"), _contextMenu.data());
         // this must be called only once after creating the context menu, or
         // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
-        _tray->setContextMenu(_contextMenu);
+        _tray->setContextMenu(_contextMenu.data());
     }
     _contextMenu->setTitle(Theme::instance()->appNameGUI() );
     _contextMenu->addAction(_actionOpenoC);
@@ -472,7 +479,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
     Q_UNUSED(folder);
 
      if (!progress._currentDiscoveredFolder.isEmpty()) {
-                 _actionStatus->setText( tr("Discovering %1")
+                 _actionStatus->setText( tr("Discovering '%1'")
                      .arg( progress._currentDiscoveredFolder ));
      } else if (progress._totalSize == 0 ) {
             quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();           
@@ -611,6 +618,28 @@ void ownCloudGui::raiseDialog( QWidget *raiseWidget )
 #if defined(Q_OS_MAC)
         // viel hilft viel ;-)
         MacWindow::bringToFront(raiseWidget);
+#endif
+#if defined(Q_OS_X11)
+        WId wid = widget->winId();
+        NETWM::init();
+
+        XEvent e;
+        e.xclient.type = ClientMessage;
+        e.xclient.message_type = NETWM::NET_ACTIVE_WINDOW;
+        e.xclient.display = QX11Info::display();
+        e.xclient.window = wid;
+        e.xclient.format = 32;
+        e.xclient.data.l[0] = 2;
+        e.xclient.data.l[1] = QX11Info::appTime();
+        e.xclient.data.l[2] = 0;
+        e.xclient.data.l[3] = 0l;
+        e.xclient.data.l[4] = 0l;
+        Display *display = QX11Info::display();
+        XSendEvent(display,
+                   RootWindow(display, DefaultScreen(display)),
+                   False, // propagate
+                   SubstructureRedirectMask|SubstructureNotifyMask,
+                   &e);
 #endif
     }
 }

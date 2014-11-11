@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) by Denis Dzyubenko
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
 #include "settingsdialogmac.h"
 
 #include "macstandardicon.h"
@@ -30,10 +43,20 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
 
 
     // Emulate dialog behavior: Escape means close
+    QAction *closeDialogAction = new QAction(this);
+    closeDialogAction->setShortcut(QKeySequence(Qt::Key_Escape));
+    connect(closeDialogAction, SIGNAL(triggered()), SLOT(close()));
+    addAction(closeDialogAction);
+    // People perceive this as a Window, so also make Ctrl+W work
     QAction *closeWindowAction = new QAction(this);
-    closeWindowAction->setShortcut(QKeySequence(Qt::Key_Escape));
+    closeWindowAction->setShortcut(QKeySequence("Ctrl+W"));
     connect(closeWindowAction, SIGNAL(triggered()), SLOT(close()));
     addAction(closeWindowAction);
+    // People perceive this as a Window, so also make Ctrl+H work
+    QAction *hideWindowAction = new QAction(this);
+    hideWindowAction->setShortcut(QKeySequence("Ctrl+H"));
+    connect(hideWindowAction, SIGNAL(triggered()), SLOT(hide()));
+    addAction(hideWindowAction);
 
     setObjectName("SettingsMac"); // required as group for saveGeometry call
 

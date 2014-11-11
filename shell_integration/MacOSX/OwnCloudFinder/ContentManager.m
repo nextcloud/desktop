@@ -31,19 +31,7 @@ static ContentManager* sharedInstance = nil;
 	{
 		_fileNamesCache = [[NSMutableDictionary alloc] init];
 		_fileIconsEnabled = TRUE;
-
-		NSString *base = @"/Applications/owncloud.app/Contents/Resources/icons/";
-		
-		_icnOk   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok.icns"]];
-		_icnSync = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync.icns"]];
-		_icnWarn = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning.icns"]];
-		_icnErr  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error.icns"]];
-		_icnOkSwm   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok_swm.icns"]];
-		_icnSyncSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync_swm.icns"]];
-		_icnWarnSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning_swm.icns"]];
-		_icnErrSwm  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error_swm.icns"]];
-		
-		NSLog(@"Icon ok identifier: %d", [_icnOk intValue]);
+		_hasChangedContent = TRUE;
 	}
 
 	return self;
@@ -71,6 +59,22 @@ static ContentManager* sharedInstance = nil;
 	return sharedInstance;
 }
 
+- (void)loadIconResourcePath:(NSString*)path
+{
+	NSString *base = path;
+
+	_icnOk   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok.icns"]];
+	_icnSync = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync.icns"]];
+	_icnWarn = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning.icns"]];
+	_icnErr  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error.icns"]];
+	_icnOkSwm   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok_swm.icns"]];
+	_icnSyncSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync_swm.icns"]];
+	_icnWarnSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning_swm.icns"]];
+	_icnErrSwm  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error_swm.icns"]];
+
+	NSLog(@"Icon ok identifier: %d from %@", [_icnOk intValue], [base stringByAppendingString:@"ok.icns"]);
+}
+
 - (void)enableFileIcons:(BOOL)enable
 {
 	_fileIconsEnabled = enable;
@@ -80,6 +84,10 @@ static ContentManager* sharedInstance = nil;
 
 - (void)setResultForPath:(NSString*)path result:(NSString*)result
 {
+	if (_icnOk == nil) {
+		// no icon resource path registered yet
+		return;
+	}
 
 	NSNumber *res;
 	res = [NSNumber numberWithInt:0];
@@ -107,14 +115,18 @@ static ContentManager* sharedInstance = nil;
 	}
 	
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
-	[_fileNamesCache setObject:res forKey:normalizedPath];
-	// NSLog(@"SET value %d", [res intValue]);
-	
-	[self repaintAllWindows];
+
+    if (![_fileNamesCache objectForKey:normalizedPath] || ![[_fileNamesCache objectForKey:normalizedPath] isEqualTo:res]) {
+		[_fileNamesCache setObject:res forKey:normalizedPath];
+		//NSLog(@"SET value %d %@", [res intValue], normalizedPath);
+		_hasChangedContent = YES;
+		[self performSelector:@selector(repaintAllWindowsIfNeeded) withObject:0 afterDelay:1.0]; // 1 sec
+	}
 }
 
 - (NSNumber*)iconByPath:(NSString*)path isDirectory:(BOOL)isDir
 {
+	//NSLog(@"%@ %@", NSStringFromSelector(_cmd), path);
 	if (!_fileIconsEnabled)
 	{
 		NSLog(@"Icons are NOT ENABLED!");
@@ -126,9 +138,13 @@ static ContentManager* sharedInstance = nil;
 		return res;
 	}
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
+
+	if (![[RequestManager sharedInstance] isRegisteredPath:normalizedPath isDirectory:isDir]) {
+		return [NSNumber numberWithInt:0];
+	}
 	
 	NSNumber* result = [_fileNamesCache objectForKey:normalizedPath];
-	// NSLog(@"XXXXXXX Asking for icon for path %@ = %d",path, [result intValue]);
+	// NSLog(@"XXXXXXX Asking for icon for path %@ = %d",normalizedPath, [result intValue]);
 	
 	if( result == nil ) {
 		// start the async call
@@ -151,6 +167,7 @@ static ContentManager* sharedInstance = nil;
 // it clears the entries from the hash to make it call again home to mirall.
 - (void)clearFileNameCacheForPath:(NSString*)path
 {
+	NSLog(@"%@", NSStringFromSelector(_cmd));
 	NSMutableArray *keysToDelete = [NSMutableArray array];
 	
 	if( path != nil ) {
@@ -168,13 +185,31 @@ static ContentManager* sharedInstance = nil;
 	}
 	
 	if( [keysToDelete count] > 0 ) {
-		NSLog( @"Entries to delete: %d", [keysToDelete count]);
+		NSLog( @"Entries to delete: %lu", (unsigned long)[keysToDelete count]);
 		[_fileNamesCache removeObjectsForKeys:keysToDelete];
-	
-		[self repaintAllWindows];
-
 	}
 }
+
+- (void)reFetchFileNameCacheForPath:(NSString*)path
+{
+	 NSLog(@"%@", NSStringFromSelector(_cmd));
+
+	for (id p in [_fileNamesCache keyEnumerator]) {
+		if ( path && [p hasPrefix:path] ) {
+			[[RequestManager sharedInstance] askForIcon:p isDirectory:false]; // FIXME isDirectory parameter
+			//[_fileNamesCache setObject:askState forKey:p]; We don't do this since we want to keep the old icon meanwhile
+			//NSLog(@"%@ %@", NSStringFromSelector(_cmd), p);
+		}
+	}
+
+	// Ask for directory itself
+	if ([path hasSuffix:@"/"]) {
+		path = [path substringToIndex:path.length - 1];
+	}
+	[[RequestManager sharedInstance] askForIcon:path isDirectory:true];
+	//NSLog(@"%@ %@", NSStringFromSelector(_cmd), path);
+}
+
 
 - (void)removeAllIcons
 {
@@ -195,8 +230,20 @@ static ContentManager* sharedInstance = nil;
 	[self repaintAllWindows];
 }
 
+- (void)repaintAllWindowsIfNeeded
+{
+	if (!_hasChangedContent) {
+		//NSLog(@"%@ Repaint scheduled but not needed", NSStringFromSelector(_cmd));
+		return;
+	}
+
+	_hasChangedContent = NO;
+	[self repaintAllWindows];
+}
+
 - (void)repaintAllWindows
 {
+	NSLog(@"%@", NSStringFromSelector(_cmd));
 	NSArray* windows = [[NSApplication sharedApplication] windows];
 
 	for (int i = 0; i < [windows count]; i++)
@@ -286,7 +333,7 @@ static ContentManager* sharedInstance = nil;
 				}
 				else
 				{
-					NSLog(@"LiferayNativityFinder: refreshing icon badges failed");
+					NSLog(@"OwnCloudFinder: refreshing icon badges failed");
 
 					return;
 				}
@@ -297,6 +344,7 @@ static ContentManager* sharedInstance = nil;
 
 - (void)setIcons:(NSDictionary*)iconDictionary filterByFolder:(NSString*)filterFolder
 {
+	NSLog(@"%@", NSStringFromSelector(_cmd));
 	for (NSString* path in iconDictionary)
 	{
 		if (filterFolder && ![path hasPrefix:filterFolder])

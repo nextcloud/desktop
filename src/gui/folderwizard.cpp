@@ -232,6 +232,9 @@ FolderWizardRemotePath::FolderWizardRemotePath()
     _ui.setupUi(this);
     _ui.warnFrame->hide();
 
+    _ui.folderTreeWidget->setSortingEnabled(true);
+    _ui.folderTreeWidget->sortByColumn(0, Qt::AscendingOrder);
+
     connect(_ui.addFolderButton, SIGNAL(clicked()), SLOT(slotAddRemoteFolder()));
     connect(_ui.refreshButton, SIGNAL(clicked()), SLOT(slotRefreshFolders()));
     connect(_ui.folderTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SIGNAL(completeChanged()));
@@ -429,8 +432,8 @@ void FolderWizardRemotePath::showWarn( const QString& msg ) const
 FolderWizardSelectiveSync::FolderWizardSelectiveSync()
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    _treeView = new SelectiveSyncTreeView(this);
-    layout->addWidget(new QLabel(tr("Selective Sync: You can optionally deselect subfolders you do not wish to synchronize.")));
+    _treeView = new SelectiveSyncTreeView(AccountManager::instance()->account(), this);
+    layout->addWidget(new QLabel(tr("Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.")));
     layout->addWidget(_treeView);
 }
 

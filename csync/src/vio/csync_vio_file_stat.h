@@ -42,7 +42,7 @@ typedef struct csync_vio_file_stat_s csync_vio_file_stat_t;
 enum csync_vio_file_flags_e {
   CSYNC_VIO_FILE_FLAGS_NONE = 0,
   CSYNC_VIO_FILE_FLAGS_SYMLINK = 1 << 0,
-  CSYNC_VIO_FILE_FLAGS_LOCAL = 1 << 1
+  CSYNC_VIO_FILE_FLAGS_HIDDEN = 1 << 1
 };
 
 enum csync_vio_file_type_e {

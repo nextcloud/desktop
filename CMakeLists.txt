@@ -64,6 +64,7 @@ if (${GIT_SHA1} STREQUAL "GITDIR-NOTFOUND")
         set (GIT_SHA1 "${sha1_candidate}")
     endif()
 endif()
+message(STATUS "GIT_SHA1 ${GIT_SHA1}")
 endif()
 
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
@@ -74,9 +75,9 @@ set(DATADIR ${DATA_INSTALL_DIR})
 # BUILD_OWNCLOUD_OSX_BUNDLE was not initialized OR set to true on OSX
 if(APPLE AND (NOT DEFINED BUILD_OWNCLOUD_OSX_BUNDLE OR BUILD_OWNCLOUD_OSX_BUNDLE))
     set(BUILD_OWNCLOUD_OSX_BUNDLE ON)
-    set(OWNCLOUD_OSX_BUNDLE "bin/${APPLICATION_EXECUTABLE}.app")
-    set(LIB_INSTALL_DIR "bin/${APPLICATION_EXECUTABLE}.app/Contents/MacOS")
-    set(BIN_INSTALL_DIR "bin/${APPLICATION_EXECUTABLE}.app/Contents/MacOS")
+    set(OWNCLOUD_OSX_BUNDLE "${APPLICATION_EXECUTABLE}.app")
+    set(LIB_INSTALL_DIR "${APPLICATION_EXECUTABLE}.app/Contents/MacOS")
+    set(BIN_INSTALL_DIR "${APPLICATION_EXECUTABLE}.app/Contents/MacOS")
 
 # BUILD_OWNCLOUD_OSX_BUNDLE was disabled on OSX
 elseif(APPLE AND NOT BUILD_OWNCLOUD_OSX_BUNDLE)
@@ -135,10 +136,21 @@ find_package(Sphinx)
 find_package(PdfLatex)
 
 
+find_package(SQLite3 3.8.0 REQUIRED)
+# On some OS, we want to use our own, not the system sqlite
+if (USE_OUR_OWN_SQLITE3)
+    include_directories(BEFORE ${SQLITE3_INCLUDE_DIR})
+endif()
+
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 configure_file(test/test_journal.db "${CMAKE_BINARY_DIR}/test/test_journal.db" COPYONLY)
+
+# Copy that logo, the installer uses it later
+if(BUILD_OWNCLOUD_OSX_BUNDLE)
+    install(FILES resources/owncloud_logo_blue.png DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)
+endif()
 
 include(OwnCloudCPack.cmake)
 
@@ -156,6 +168,7 @@ add_subdirectory(csync)
 add_subdirectory(src)
 add_subdirectory(shell_integration)
 add_subdirectory(doc)
+add_subdirectory(admin)
 
 if(UNIT_TESTING)
     include(CTest)
@@ -167,4 +180,5 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE)
     configure_file(sync-exclude.lst ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/sync-exclude.lst COPYONLY)
 else()
     install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
+    configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
 endif()

@@ -44,13 +44,25 @@
 
 namespace Mirall {
 
+static QByteArray get_etag_from_reply(ne_request *req)
+{
+    QByteArray ret = parseEtag(ne_get_response_header(req, "OC-ETag"));
+    if (ret.isEmpty()) {
+        ret = parseEtag(ne_get_response_header(req, "ETag"));
+    }
+    if (ret.isEmpty()) {
+        ret = parseEtag(ne_get_response_header(req, "etag"));
+    }
+    return ret;
+}
+
 
 void PropagateUploadFileLegacy::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    QFile file(_propagator->_localDir + _item._file);
+    QFile file(_propagator->getFilePath(_item._file));
     if (!file.open(QIODevice::ReadOnly)) {
         done(SyncFileItem::NormalError, file.errorString());
         return;
@@ -83,6 +95,12 @@ void PropagateUploadFileLegacy::start()
 
         state = hbf_splitlist(trans.data(), file.handle());
 
+        // This is the modtime hbf will announce to the server.
+        // We don't trust the modtime hbf computes itself via _fstat64
+        // on windows - hbf may only use it to detect file changes during
+        // upload.
+        trans->oc_header_modtime = FileSystem::getModTime(file.fileName());
+
         // If the source file has changed during upload, it is detected and the
         // variable _previousFileSize is set accordingly. The propagator waits a
         // couple of seconds and retries.
@@ -93,7 +111,7 @@ void PropagateUploadFileLegacy::start()
                                       Q_ARG(qint64, trans->stat_size - _previousFileSize));
             // update the item's values to the current from trans. hbf_splitlist does a stat
             _item._size = trans->stat_size;
-            _item._modtime = trans->modtime;
+            _item._modtime = trans->oc_header_modtime;
 
         }
         emit progress(_item, 0);
@@ -173,11 +191,11 @@ void PropagateUploadFileLegacy::start()
         if( trans->modtime_accepted ) {
             _item._etag = parseEtag(hbf_transfer_etag( trans.data() ));
         } else {
-            if (!updateMTimeAndETag(uri.data(), _item._modtime))
+            if (!updateMTimeAndETag(uri.data(), trans->oc_header_modtime))
                 return;
         }
 
-        _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->_localDir + _item._file));
+        _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->getFilePath(_item._file)));
         // Remove from the progress database:
         _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
         _propagator->_journal->commit("upload file start");
@@ -230,7 +248,7 @@ void PropagateUploadFileLegacy::chunk_finished_cb(hbf_transfer_s *trans, int chu
         pi._valid = true;
         pi._chunk = chunk + 1; // next chunk to start with
         pi._transferid = trans->transfer_id;
-        pi._modtime =  Utility::qDateTimeFromTime_t(trans->modtime);
+        pi._modtime =  Utility::qDateTimeFromTime_t(trans->oc_header_modtime);
         that->_propagator->_journal->setUploadInfo(that->_item._file, pi);
         that->_propagator->_journal->commit("Upload info");
     }
@@ -287,7 +305,8 @@ bool PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
     if (updateErrorFromSession(neon_stat, req.data())) {
         return false;
     } else {
-        _item._etag = parseEtag(ne_get_response_header(req.data(), "etag"));
+        _item._etag = get_etag_from_reply(req.data());
+
         QByteArray fid = parseFileId(req.data());
         if( _item._fileId.isEmpty() ) {
             _item._fileId = fid;
@@ -390,9 +409,7 @@ void PropagateDownloadFileLegacy::install_content_reader( ne_request *req, void 
         return;
     }
 
-    QByteArray etag = parseEtag(ne_get_response_header(req, "etag"));
-    if(etag.isEmpty())
-        etag = parseEtag(ne_get_response_header(req, "ETag"));
+    QByteArray etag = get_etag_from_reply(req);
 
     if (etag.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "No E-Tag reply by server, considering it invalid" << ne_get_response_header(req, "etag");
@@ -466,7 +483,7 @@ void PropagateDownloadFileLegacy::notify_status_cb(void* userdata, ne_session_st
     }
 }
 
-extern QString makeConflictFileName(const QString &fn, const QDateTime &dt); // _qnam.cpp
+extern QString makeConflictFileName(const QString &fn, const QDateTime &dt); // propagatedownload.cpp
 
 void PropagateDownloadFileLegacy::start()
 {
@@ -487,7 +504,7 @@ void PropagateDownloadFileLegacy::start()
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
         if (progressInfo._etag != _item._etag) {
-            QFile::remove(_propagator->_localDir + progressInfo._tmpfile);
+            QFile::remove(_propagator->getFilePath(progressInfo._tmpfile));
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
@@ -505,7 +522,7 @@ void PropagateDownloadFileLegacy::start()
         tmpFileName += ".~" + QString::number(uint(qrand()), 16);
     }
 
-    QFile tmpFile(_propagator->_localDir + tmpFileName);
+    QFile tmpFile(_propagator->getFilePath(tmpFileName));
     _file = &tmpFile;
     if (!tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
         done(SyncFileItem::NormalError, tmpFile.errorString());
@@ -593,13 +610,13 @@ void PropagateDownloadFileLegacy::start()
             }
             return;
         }
-        _item._etag = parseEtag(ne_get_response_header(req.data(), "etag"));
+        _item._etag = get_etag_from_reply(req.data());
         break;
     } while (1);
 
     tmpFile.close();
     tmpFile.flush();
-    QString fn = _propagator->_localDir + _item._file;
+    QString fn = _propagator->getFilePath(_item._file);
 
 
     bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT

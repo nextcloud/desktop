@@ -15,6 +15,7 @@
 #import <objc/runtime.h>
 #import "ContentManager.h"
 #import "IconCache.h"
+#import "FinishedIconCache.h"
 #import "IconOverlayHandlers.h"
 #import "Finder/Finder.h"
 
@@ -34,7 +35,7 @@
 
 	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
 
-	NSLog(@"1 The icon index is %d", [imageIndex intValue]);
+	//NSLog(@"1 The icon index is %d", [imageIndex intValue]);
 	if ([imageIndex intValue] > 0)
 	{
 		NSImage* image = [[IconCache sharedInstance] getIcon:imageIndex];
@@ -69,7 +70,6 @@
 
 	NSURL* url = [node previewItemURL];
 
-	NSError *error;
 	BOOL isDir;
 	if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] == NO) {
 		NSLog(@"ERROR: Could not determine file type of %@", [url path]);
@@ -77,21 +77,32 @@
 	}
 
 	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
-	// NSLog(@"2 The icon index is %d", [imageIndex intValue]);
+	//NSLog(@"2 The icon index is %d %@ %@", [imageIndex intValue], [url path], isDir ? @"isDir" : @"");
 
 	if ([imageIndex intValue] > 0)
 	{
 		NSImage* icon = [arg1 _nsImage];
 
-		[icon lockFocus];
-
-		CGContextRef myContext = [[NSGraphicsContext currentContext] graphicsPort];
+		// Use the short term icon cache that possibly has the finished icon
+		FinishedIconCache *finishedIconCache = [FinishedIconCache sharedInstance];
+		NSImage *finishedImage = [finishedIconCache getIcon:[url path] overlayIconIndex:imageIndex width:[icon size].width height:[icon size].height];
+		if (finishedImage) {
+			//NSLog(@"X Got finished image from cache %@ %@", finishedImage, [url path]);
+			return [[[IKImageWrapper alloc] initWithNSImage:finishedImage] autorelease];;
+		} else {
+			//NSLog(@"X Need to redraw %@", [url path]);
+		}
 
 		NSImage* iconimage = [[IconCache sharedInstance] getIcon:[NSNumber numberWithInt:[imageIndex intValue]]];
 
 		if (iconimage != nil)
 		{
+			[icon lockFocus];
+
+			CGContextRef myContext = [[NSGraphicsContext currentContext] graphicsPort];
+
 			CGRect destRect = CGRectMake(0, 0, [icon size].width, [icon size].height);
+
 			CGImageRef cgImage = [iconimage CGImageForProposedRect:&destRect
 														   context:[NSGraphicsContext currentContext]
 															 hints:nil];
@@ -103,9 +114,11 @@
 				NSLog(@"No image given!!!!!11 %@", [url path]);
 			}
 
+			[icon unlockFocus];
 		}
 
-		[icon unlockFocus];
+		// Insert into cache
+		[finishedIconCache registerIcon:icon withFileName:[url path] overlayIconIndex:imageIndex width:[icon size].width height:[icon size].height];
 
 		return [[[IKImageWrapper alloc] initWithNSImage:icon] autorelease];
 	}
@@ -145,7 +158,7 @@
 		}
 		
 		NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
-		NSLog(@"3 The icon index is %d", [imageIndex intValue]);
+		//NSLog(@"3 The icon index is %d", [imageIndex intValue]);
 
 		if ([imageIndex intValue] > 0)
 		{

@@ -16,11 +16,15 @@
 #include "owncloudpropagator.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
-#include "propagator_qnam.h"
+#include "propagatedownload.h"
+#include "propagateupload.h"
+#include "propagateremotedelete.h"
+#include "propagateremotemove.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
 #include "mirallconfigfile.h"
 #include "utility.h"
+#include <json.h>
 
 #ifdef Q_OS_WIN
 #include <windef.h>
@@ -30,16 +34,38 @@
 #include <QStack>
 #include <QFileInfo>
 #include <QDir>
+#include <QTimer>
+#include <QObject>
+#include <QTimerEvent>
 
 namespace Mirall {
 
 /* The maximum number of active job in parallel  */
-static int maximumActiveJob() {
+int OwncloudPropagator::maximumActiveJob()
+{
     static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
     if (!max) {
         max = 3; //default
     }
     return max;
+}
+
+/** Updates or creates a blacklist entry for the given item.
+ *
+ * Returns whether the file is in the blacklist now.
+ */
+static bool blacklist(SyncJournalDb* journal, const SyncFileItem& item)
+{
+    SyncJournalBlacklistRecord oldEntry = journal->blacklistEntry(item._file);
+    SyncJournalBlacklistRecord newEntry = SyncJournalBlacklistRecord::update(oldEntry, item);
+
+    if (newEntry.isValid()) {
+        journal->updateBlacklistEntry(newEntry);
+    } else if (oldEntry.isValid()) {
+        journal->wipeBlacklistEntry(item._file);
+    }
+
+    return newEntry.isValid();
 }
 
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
@@ -51,32 +77,16 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
             _item._errorString += tr("; Restoration Failed: ") + errorString;
         }
     } else {
-        _item._errorString = errorString;
-    }
-
-    if( _propagator->_abortRequested.fetchAndAddRelaxed(0) ) {
-        // an abort request is ongoing. Change the status to Soft-Error
-
-        status = SyncFileItem::SoftError;
-        _item._errorString = tr("Operation was canceled by user interaction.");
-    }
-
-    _item._status = status;
-
-    // Blacklisting
-    int retries = 0;
-
-    if( _item._httpErrorCode == 403 ||_item._httpErrorCode == 413 || _item._httpErrorCode == 415 ) {
-        qDebug() << "Fatal Error condition" << _item._httpErrorCode << ", forbid retry!";
-        retries = -1;
-    } else {
-        static QAtomicInt defaultRetriesCount(qgetenv("OWNCLOUD_BLACKLIST_COUNT").toInt());
-        if (defaultRetriesCount.fetchAndAddAcquire(0) <= 0) {
-            defaultRetriesCount.fetchAndStoreRelease(3);
+        if( _item._errorString.isEmpty() ) {
+            _item._errorString = errorString;
         }
-        retries = defaultRetriesCount.fetchAndAddAcquire(0);
     }
-    SyncJournalBlacklistRecord record(_item, retries);;
+
+    if( _propagator->_abortRequested.fetchAndAddRelaxed(0) &&
+            (status == SyncFileItem::NormalError || status == SyncFileItem::FatalError)) {
+        // an abort request is ongoing. Change the status to Soft-Error
+        status = SyncFileItem::SoftError;
+    }
 
     switch( status ) {
     case SyncFileItem::SoftError:
@@ -84,20 +94,21 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         // do not blacklist in case of soft error or fatal error.
         break;
     case SyncFileItem::NormalError:
-#ifdef OWNCLOUD_5XX_NO_BLACKLIST
-        if (_item._httpErrorCode / 100 == 5) {
-            // In this configuration, never blacklist error 5xx
-            qDebug() << "Do not blacklist error " << _item._httpErrorCode;
-            break;
+        if (blacklist(_propagator->_journal, _item) && _item._hasBlacklistEntry) {
+            // do not error if the item was, and continues to be, blacklisted
+            status = SyncFileItem::FileIgnored;
+            _item._errorString.prepend(tr("Continue blacklisting: "));
         }
-#endif
-        _propagator->_journal->updateBlacklistEntry( record );
         break;
     case SyncFileItem::Success:
     case SyncFileItem::Restoration:
-        if( _item._blacklistedInDb ) {
+        if( _item._hasBlacklistEntry ) {
             // wipe blacklist entry.
             _propagator->_journal->wipeBlacklistEntry(_item._file);
+            // remove a blacklist entry in case the file was moved.
+            if( _item._originalFile != _item._file ) {
+                _propagator->_journal->wipeBlacklistEntry(_item._originalFile);
+            }
         }
         break;
     case SyncFileItem::Conflict:
@@ -106,6 +117,8 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         // nothing
         break;
     }
+
+    _item._status = status;
 
     emit completed(_item);
     emit finished(status);
@@ -150,6 +163,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
             // Also remove the inodes and fileid from the db so no further renames are tried for
             // this item.
             _propagator->_journal->avoidRenamesOnNextSync(_item._file);
+            _propagator->_anotherSyncNeeded = true;
         }
         if( newJob )  {
             newJob->setRestoreJobMsg(msg);
@@ -185,7 +199,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
             if (item._direction == SyncFileItem::Down) return new PropagateLocalRemove(this, item);
-            else return new PropagateRemoteRemove(this, item);
+            else return new PropagateRemoteDelete(this, item);
         case CSYNC_INSTRUCTION_NEW:
             if (item._isDirectory) {
                 if (item._direction == SyncFileItem::Down) return new PropagateLocalMkdir(this, item);
@@ -212,7 +226,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
             }
         case CSYNC_INSTRUCTION_RENAME:
             if (item._direction == SyncFileItem::Up) {
-                return new PropagateRemoteRename(this, item);
+                return new PropagateRemoteMove(this, item);
             } else {
                 return new PropagateLocalRename(this, item);
             }
@@ -322,14 +336,31 @@ bool OwncloudPropagator::isInSharedDirectory(const QString& file)
  */
 bool OwncloudPropagator::useLegacyJobs()
 {
-    if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
-        // QNAM does not support bandwith limiting
+    // Allow an environement variable for debugging
+    QByteArray env = qgetenv("OWNCLOUD_USE_LEGACY_JOBS");
+    if (env=="true" || env =="1") {
+        qDebug() << "Force Legacy Propagator ACTIVATED";
         return true;
     }
 
-    // Allow an environement variable for debugging
-    QByteArray env = qgetenv("OWNCLOUD_USE_LEGACY_JOBS");
-    return env=="true" || env =="1";
+    env = qgetenv("OWNCLOUD_NEW_BANDWIDTH_LIMITING");
+    if (env=="true" || env =="1") {
+        qDebug() << "New Bandwidth Limiting Code ACTIVATED";
+        // Only certain Qt versions support this at the moment.
+        // They need those Change-Ids: Idb1c2d5a382a704d8cc08fe03c55c883bfc95aa7 Iefbcb1a21d8aedef1eb11761232dd16a049018dc
+        // FIXME We need to check the Qt version and then also return false here as soon
+        // as mirall ships with those Qt versions on Windows and OS X
+        return false;
+    }
+
+    if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
+        qDebug() << "Switching To Legacy Propagator Because Of Bandwidth Limit ACTIVATED";
+        // QNAM does not support bandwith limiting
+        // in most Qt versions.
+        return true;
+    }
+
+    return false;
 }
 
 int OwncloudPropagator::httpTimeout()
@@ -378,10 +409,10 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
             // returns false.
         } else {
             QString realFileName = QString::fromWCharArray( FindFileData.cFileName );
-            qDebug() << Q_FUNC_INFO << "Real file name is " << realFileName;
             FindClose(hFind);
 
             if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
+                qDebug() << Q_FUNC_INFO << "Detected case clash between" << file << "and" << realFileName;
                 re = true;
             }
         }
@@ -397,6 +428,11 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
 #endif
     }
     return re;
+}
+
+QString OwncloudPropagator::getFilePath(const QString& tmp_file_name) const
+{
+    return _localDir + tmp_file_name;
 }
 
 // ================================================================================
@@ -432,7 +468,7 @@ void PropagateDirectory::slotSubJobReady()
         return; // Ignore the case when the _fistJob is ready and not yet finished
     if (_runningNow && _current >= 0 && _current < _subJobs.count()) {
         // there is a job running and the current one is not ready yet, we can't start new job
-        if (!_subJobs[_current]->_readySent || _propagator->_activeJobs >= maximumActiveJob())
+        if (!_subJobs[_current]->_readySent || _propagator->_activeJobs >= _propagator->maximumActiveJob())
             return;
     }
 
@@ -463,6 +499,40 @@ void PropagateDirectory::slotSubJobReady()
         }
         emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
     }
+}
+
+void CleanupPollsJob::start()
+{
+    if (_pollInfos.empty()) {
+        emit finished();
+        deleteLater();
+        return;
+    }
+
+    auto info = _pollInfos.first();
+    _pollInfos.pop_front();
+    SyncFileItem item;
+    item._file = info._file;
+    item._modtime = info._modtime;
+    PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
+    connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
+    job->start();
+}
+
+void CleanupPollsJob::slotPollFinished()
+{
+    PollJob *job = qobject_cast<PollJob *>(sender());
+    Q_ASSERT(job);
+    if (job->_item._status == SyncFileItem::FatalError) {
+        emit aborted(job->_item._errorString);
+        return;
+    } else if (job->_item._status != SyncFileItem::Success) {
+        qDebug() << "There was an error with file " << job->_item._file << job->_item._errorString;
+    } else {
+        _journal->setFileRecord(SyncJournalFileRecord(job->_item, _localPath + job->_item._file));
+    }
+    // Continue with the next entry, or finish
+    start();
 }
 
 }

@@ -37,9 +37,6 @@ using namespace QKeychain;
 namespace Mirall
 {
 
-namespace
-{
-
 int getauth(const char *prompt,
             char *buf,
             size_t len,
@@ -69,15 +66,19 @@ int getauth(const char *prompt,
         // qDebug() << "OOO Password requested!";
         qstrncpy( buf, pwd.toUtf8().constData(), len );
     } else {
-        re = handleNeonSSLProblems(prompt, buf, len, echo, verify, userdata);
+        if( http_credentials->sslIsTrusted() ) {
+            qstrcpy( buf, "yes" ); // Certificate is fine!
+        } else {
+            re = handleNeonSSLProblems(prompt, buf, len, echo, verify, userdata);
+        }
     }
     return re;
 }
 
+namespace
+{
 const char userC[] = "user";
 const char authenticationFailedC[] = "owncloud-authentication-failed";
-
-
 } // ns
 
 class HttpCredentialsAccessManager : public MirallAccessManager {
@@ -299,19 +300,6 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
     }
 }
 
-QString HttpCredentials::queryPassword(bool *ok)
-{
-    if (ok) {
-        QString str = QInputDialog::getText(0, tr("Enter Password"),
-                                     tr("Please enter %1 password for user '%2':")
-                                     .arg(Theme::instance()->appNameGUI(), _user),
-                                     QLineEdit::Password, QString(), ok);
-        return str;
-    } else {
-        return QString();
-    }
-}
-
 void HttpCredentials::invalidateToken(Account *account)
 {
     _password = QString();
@@ -378,6 +366,19 @@ void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* a
     qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
     reply->setProperty(authenticationFailedC, true);
     reply->close();
+}
+
+QString HttpCredentialsGui::queryPassword(bool *ok)
+{
+    if (ok) {
+        QString str = QInputDialog::getText(0, tr("Enter Password"),
+                                     tr("Please enter %1 password for user '%2':")
+                                     .arg(Theme::instance()->appNameGUI(), _user),
+                                     QLineEdit::Password, QString(), ok);
+        return str;
+    } else {
+        return QString();
+    }
 }
 
 } // ns Mirall

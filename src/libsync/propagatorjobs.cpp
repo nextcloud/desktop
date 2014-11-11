@@ -50,7 +50,8 @@
 namespace Mirall {
 
 // Code copied from Qt5's QDir::removeRecursively
-static bool removeRecursively(const QString &path)
+// (and modified to report the error)
+static bool removeRecursively(const QString &path, QString &error)
 {
     bool success = true;
     QDirIterator di(path, QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
@@ -58,15 +59,28 @@ static bool removeRecursively(const QString &path)
         di.next();
         const QFileInfo& fi = di.fileInfo();
         bool ok;
-        if (fi.isDir() && !fi.isSymLink())
-            ok = removeRecursively(di.filePath()); // recursive
-        else
-            ok = QFile::remove(di.filePath());
+        if (fi.isDir() && !fi.isSymLink()) {
+            ok = removeRecursively(di.filePath(), error); // recursive
+        } else {
+            QFile f(di.filePath());
+            ok = f.remove();
+            if (!ok) {
+                error += PropagateLocalRemove::tr("Error removing '%1': %2; ").
+                    arg(QDir::toNativeSeparators(f.fileName()), f.errorString());
+                qDebug() << "Error removing " << f.fileName() << ':' << f.errorString();
+            }
+        }
         if (!ok)
             success = false;
     }
-    if (success)
+    if (success) {
         success = QDir().rmdir(path);
+        if (!success) {
+            error += PropagateLocalRemove::tr("Could not remove directory '%1'; ")
+                .arg(QDir::toNativeSeparators(path));
+            qDebug() << "Error removing directory" << path;
+        }
+    }
     return success;
 }
 
@@ -83,9 +97,9 @@ void PropagateLocalRemove::start()
     }
 
     if (_item._isDirectory) {
-        if (QDir(filename).exists() && !removeRecursively(filename)) {
-            done(SyncFileItem::NormalError, tr("Could not remove directory %1")
-                 .arg(QDir::toNativeSeparators(filename)));
+        QString error;
+        if (QDir(filename).exists() && !removeRecursively(filename, error)) {
+            done(SyncFileItem::NormalError, error);
             return;
         }
     } else {
@@ -118,38 +132,6 @@ void PropagateLocalMkdir::start()
         done( SyncFileItem::NormalError, tr("could not create directory %1").arg(newDirStr) );
         return;
     }
-    done(SyncFileItem::Success);
-}
-
-void PropagateRemoteRemove::start()
-{
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
-        return;
-
-    QScopedPointer<char, QScopedPointerPodDeleter> uri(
-        ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-    emit progress(_item, 0);
-    qDebug() << "** DELETE " << uri.data();
-    int rc = ne_delete(_propagator->_session, uri.data());
-
-    QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-    int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-    if( checkForProblemsWithShared(httpStatusCode,
-            tr("The file has been removed from a read only share. It was restored.")) ) {
-        return;
-    }
-
-    /* Ignore the error 404,  it means it is already deleted */
-    if (updateErrorFromSession(rc, 0, 404)) {
-        return;
-    }
-
-    //  Wed, 15 Nov 1995 06:25:24 GMT
-    QDateTime dt = QDateTime::currentDateTimeUtc();
-    _item._responseTimeStamp = dt.toString("hh:mm:ss");
-
-    _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
-    _propagator->_journal->commit("Remote Remove");
     done(SyncFileItem::Success);
 }
 
@@ -247,7 +229,11 @@ void PropagateLocalRename::start()
         qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
         QFile file(_propagator->_localDir + _item._file);
 
-        if (_propagator->localFileNameClash(_item._renameTarget)) {
+        if (QString::compare(_item._file, _item._renameTarget, Qt::CaseInsensitive) != 0
+                && _propagator->localFileNameClash(_item._renameTarget)) {
+            // Only use localFileNameClash for the destination if we know that the source was not
+            // the one conflicting  (renaming  A.txt -> a.txt is OK)
+
             // Fixme: the file that is the reason for the clash could be named here,
             // it would have to come out the localFileNameClash function
             done(SyncFileItem::NormalError, tr( "File %1 can not be renamed to %2 because of a local file name clash")
@@ -274,57 +260,6 @@ void PropagateLocalRename::start()
     _propagator->_journal->commit("localRename");
 
 
-    done(SyncFileItem::Success);
-}
-
-void PropagateRemoteRename::start()
-{
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
-        return;
-
-    if (_item._file == _item._renameTarget) {
-        // The parents has been renamed already so there is nothing more to do.
-    } else if (_item._file == QLatin1String("Shared") ) {
-        // Check if it is the toplevel Shared folder and do not propagate it.
-        if( QFile::rename(  _propagator->_localDir + _item._renameTarget, _propagator->_localDir + QLatin1String("Shared")) ) {
-            done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
-        } else {
-            done(SyncFileItem::NormalError, tr("This folder must not be renamed. Please name it back to Shared."));
-        }
-        return;
-    } else {
-        emit progress(_item, 0);
-
-        QScopedPointer<char, QScopedPointerPodDeleter> uri1(ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-        QScopedPointer<char, QScopedPointerPodDeleter> uri2(ne_path_escape((_propagator->_remoteDir + _item._renameTarget).toUtf8()));
-        qDebug() << "MOVE on Server: " << uri1.data() << "->" << uri2.data();
-
-        int rc = ne_move(_propagator->_session, 1, uri1.data(), uri2.data());
-
-        QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-        int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-        if( checkForProblemsWithShared(httpStatusCode,
-                tr("The file was renamed but is part of a read only share. The original file was restored."))) {
-            return;
-        }
-
-        if (updateErrorFromSession(rc)) {
-            return;
-        }
-
-        if (!updateMTimeAndETag(uri2.data(), _item._modtime))
-            return;
-    }
-    //  Wed, 15 Nov 1995 06:25:24 GMT
-    QDateTime dt = QDateTime::currentDateTimeUtc();
-    _item._responseTimeStamp = dt.toString("hh:mm:ss");
-
-    _propagator->_journal->deleteFileRecord(_item._originalFile);
-    SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
-    record._path = _item._renameTarget;
-
-    _propagator->_journal->setFileRecord(record);
-    _propagator->_journal->commit("Remote Rename");
     done(SyncFileItem::Success);
 }
 

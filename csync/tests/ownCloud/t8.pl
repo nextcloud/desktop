@@ -23,7 +23,7 @@
 
 use lib ".";
 
-use Carp::Assert;
+
 use File::Copy;
 use ownCloud::Test;
 
@@ -35,7 +35,7 @@ print "Hello, this is t8, a tester for syncing of files on a case sensitive FS\n
 # The test is run on a 'normal' file system, but we tell pwncloud that it is case preserving anyway
 $ENV{OWNCLOUD_TEST_CASE_PRESERVING} = "1";
 
-# FIXME!  the code does not work with parallelism
+# No parallelism for more deterministic action.
 $ENV{OWNCLOUD_MAX_PARALLEL}="1";
 
 initTesting();
@@ -48,6 +48,7 @@ mkdir($tmpdir);
 createLocalFile( $tmpdir . "HELLO.dat", 100 );
 createLocalFile( $tmpdir . "Hello.dat", 150 );
 createLocalFile( $tmpdir . "Normal.dat", 110 );
+createLocalFile( $tmpdir . "test.dat", 170 );
 
 #put them in some directories
 createRemoteDir( "dir" );
@@ -73,13 +74,19 @@ assertLocalAndRemoteDir( '', 0);
 
 printInfo( "Renaming one file to the same name as another one with different casing" );
 moveRemoteFile( 'dir/Hello.dat', 'dir/NORMAL.dat');
+moveRemoteFile( 'dir/test.dat', 'dir/TEST.dat');
 
 csync();
 
-#It should not have do the move
+# Hello -> NORMAL should not have do the move since the case conflict
 assert( -e localDir() . 'dir/Hello.dat' );
 assert( !-e localDir() . 'dir/NORMAL.dat' );
 assert( -e localDir() . 'dir/Normal.dat' );
+
+#test->TEST should have been worked.
+assert( -e localDir() . 'dir/TEST.dat' );
+assert( !-e localDir() . 'dir/test.dat' );
+
 
 printInfo( "Another directory with the same name but different casing is created" );
 
@@ -104,6 +111,26 @@ assert( !-e localDir() . 'DIR/Hello.dat' );
 assert( !-e localDir() . 'dir' );
 
 # dir/NORMAL.dat is still on the server
+
+
+printInfo( "Attempt downloading two clashing files in parallel" );
+
+# Enable parallelism
+$ENV{OWNCLOUD_MAX_PARALLEL}="2";
+
+my $tmpdir2 = "/tmp/t8/parallel/";
+mkdir($tmpdir2);
+createLocalFile( $tmpdir2 . "FILE.dat", 23251233 );
+createLocalFile( $tmpdir2 . "file.dat",       33 );
+createRemoteDir( "parallel" );
+glob_put( "$tmpdir2/*", "parallel" );
+
+csync();
+
+# We assume the smaller file finished first, blocking
+# the second file from being saved.
+assert( !-e localDir() . 'parallel/FILE.dat' );
+assert( -e localDir() . 'parallel/file.dat' );
 
 cleanup();
 system("rm -r " . $tmpdir);

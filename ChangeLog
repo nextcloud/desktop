@@ -1,6 +1,61 @@
 ChangeLog
 =========
-version 1.6.2 (release 2014-07-x )
+version 1.7.0 (release 2014-10-xx)
+
+ * oC7 Sharing: Handle new sharing options of ownCloud 7 correctly.
+ * Added Selective sync: Ability to unselect server folders which are
+   excluded from syncing, plus GUI and setup GUI
+ * Added overlay icons for Windows Explorer, Mac OS Finder and GNOME Nautilus.
+   Information is provided by the client via a local socket / named pipe API
+   which provides information about the sync status of files.
+ * Improved local change detection: consider file size, detect files
+   with ongoing changes and do not upload immediately
+ * Improved HTTP request timeout handler: all successful requests reset
+   the timeout counter
+ * Improvements for syncing command line tool: netrc support, improved
+   SSL support, non interactive mode
+ * Permission system: ownCloud 7 delivers file and folder permissions,
+   added ability to deal with it for shared folders and more.
+ * Ignore handling: Do not recurse into ignored or excluded directories
+ * Major sync journal database improvements for more stability and performance
+ * New library interface to sqlite3
+ * Improve "resync handling" if errors occur
+ * Blacklist improvements
+ * Improved logging: more useful meta info, removed noise
+ * Updated to latest Qt5 versions on Windows and OS X
+ * Fixed data loss when renaming a download temporary fails and there was
+   a conflict at the same time.
+ * Fixed missing warnings about reusing a sync folder when the back button
+   was used in the advanced folder setup wizard.
+ * The 'Retry Sync' button now also restarts all downloads.
+ * Clean up temporary downloads and some extra database files when wiping a
+   folder.
+ * OS X: Sparkle update to provide pkg format properly
+ * OS X: Change distribution format from dmg to pkg with new installer.
+ * Windows: Fix handling of filenames with trailing dot or space
+ * Windows: Don't use the wrong way to get file mtimes in the legacy propagator.
+
+version 1.6.4 (release 2014-10-22)
+ * Fix startup logic, fixes bug #1989
+ * Fix raise dialog on X11
+ * Win32: fix overflow when computing the size of file > 4GiB
+ * Use a fixed function to get files modification time, the
+   original one was broken for certain timezone issues, see
+   core bug #9781 for details
+ * Added some missing copyright headers
+ * Avoid data corruption due to wrong error handling, bug #2280
+ * Do improved request timeout handling to reduce the number of
+   timed out jobs, bug #2155
+   version 1.6.3 (release 2014-09-03)
+ * Fixed updater on OS X
+ * Fixed memory leak in SSL button that could lead to quick memory draining
+ * Fixed upload problem with files >4 GB
+ * MacOSX, Linux: Bring Settings window to front properly
+ * Branded clients: If no configuration is detected, try to import the data
+    from a previously configured community edition.
+
+version 1.6.2 (release 2014-07-28 )
+ * Limit the HTTP buffer size when downloading to limit memory consumption.
  * Another small mem leak fixed in HTTP Credentials.
  * Fix local file name clash detection for MacOSX.
  * Limit maximum wait time to ten seconds in network limiting.

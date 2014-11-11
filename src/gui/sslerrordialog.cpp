@@ -149,11 +149,10 @@ bool SslErrorDialog::checkFailingCertsKnown( const QList<QSslError> &errors )
     }
     msg += QL("</div></body></html>");
 
-    qDebug() << "#  # # # # # ";
-    qDebug() << msg;
+    //qDebug() << "#  # # # # # ";
+    //qDebug() << msg;
     QTextDocument *doc = new QTextDocument(0);
     QString style = styleSheet();
-    qDebug() << "Style: " << style;
     doc->addResource( QTextDocument::StyleSheetResource, QUrl( QL("format.css") ), style);
     doc->setHtml( msg );
 

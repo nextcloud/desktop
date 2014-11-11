@@ -42,6 +42,13 @@ static void setup(void **state) {
 
     csync->statedb.file = c_strdup( TESTDB );
     *state = csync;
+
+    sqlite3 *db = NULL;
+    rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
+    assert_int_equal(rc, SQLITE_OK);
+
+    rc = sqlite3_close(db);
+    assert_int_equal(rc, SQLITE_OK);
 }
 
 static void teardown(void **state) {
@@ -55,37 +62,6 @@ static void teardown(void **state) {
     assert_int_equal(rc, 0);
 
     *state = NULL;
-}
-
-static void check_csync_statedb_check(void **state)
-{
-    int rc;
-
-    (void) state; /* unused */
-
-    rc = system("mkdir -p /tmp/check_csync1");
-
-    /* old db */
-    rc = system("echo \"SQLite format 2\" > /tmp/check_csync1/test.db");
-    assert_int_equal(rc, 0);
-    rc = _csync_statedb_check(TESTDB);
-    assert_int_equal(rc, 1);
-
-    /* db already exists */
-    rc = _csync_statedb_check(TESTDB);
-    assert_int_equal(rc, 1);
-
-    /* no db exists */
-    rc = system("rm -f /tmp/check_csync1/test.db");
-    assert_int_equal(rc, 0);
-    rc = _csync_statedb_check(TESTDB);
-    assert_int_equal(rc, 1);
-
-    rc = _csync_statedb_check("/tmp/check_csync1/");
-    assert_int_equal(rc, -1);
-
-    rc = system("rm -rf /tmp/check_csync1");
-    assert_int_equal(rc, 0);
 }
 
 static void check_csync_statedb_load(void **state)
@@ -143,7 +119,6 @@ static void check_csync_statedb_close(void **state)
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_statedb_check, setup, teardown),
         unit_test_setup_teardown(check_csync_statedb_load, setup, teardown),
         unit_test_setup_teardown(check_csync_statedb_close, setup, teardown),
     };

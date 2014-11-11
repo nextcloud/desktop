@@ -100,6 +100,10 @@ static bool _csync_sameextension(const char *p1, const char *p2) {
 }
 #endif
 
+static bool _last_db_return_error(CSYNC* ctx) {
+    return ctx->statedb.lastReturnValue != SQLITE_OK && ctx->statedb.lastReturnValue != SQLITE_DONE && ctx->statedb.lastReturnValue != SQLITE_ROW;
+}
+
 static int _csync_detect_update(CSYNC *ctx, const char *file,
     const csync_vio_file_stat_t *fs, const int type) {
   uint64_t h = 0;
@@ -140,27 +144,35 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   len = strlen(path);
 
+  /* This code should probably be in csync_exclude, but it does not have the fs parameter.
+     Keep it here for now and TODO also find out if we want this for Windows
+     https://github.com/owncloud/mirall/issues/2086 */
+  if (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN) {
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file excluded because it is a hidden file: %s", path);
+      return 0;
+  }
+
   /* Check if file is excluded */
   excluded = csync_excluded(ctx, path,type);
 
   if (excluded != CSYNC_NOT_EXCLUDED) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
     if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
-      switch (ctx->current) {
-        case LOCAL_REPLICA:
-          ctx->local.ignored_cleanup = c_list_append(ctx->local.ignored_cleanup, c_strdup(path));
-          break;
-        case REMOTE_REPLICA:
-          ctx->remote.ignored_cleanup = c_list_append(ctx->remote.ignored_cleanup, c_strdup(path));
-          break;
-        default:
-          break;
-      }
-      return 0;
+        return 1;
     }
     if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
-        return 0;
+        return 1;
     }
+
+    if (ctx->current_fs) {
+        ctx->current_fs->has_ignored_files = true;
+    }
+  }
+
+  if (ctx->current == REMOTE_REPLICA && ctx->checkSelectiveSyncBlackListHook) {
+      if (ctx->checkSelectiveSyncBlackListHook(ctx->checkSelectiveSyncBlackListData, path)) {
+          return 1;
+      }
   }
 
   h = _hash_of_file(ctx, file );
@@ -179,17 +191,26 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   st->instruction = CSYNC_INSTRUCTION_NONE;
   st->etag = NULL;
   st->child_modified = 0;
+  st->has_ignored_files = 0;
 
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE ) {
     if( fs->nlink > 1) {
       st->instruction = CSYNC_INSTRUCTION_IGNORE;
+      st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_HARDLINK;
       goto out;
     }
 
     if (fs->mtime == 0) {
-      tmp = csync_statedb_get_stat_by_hash(ctx, h);
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", path);
+
+      tmp = csync_statedb_get_stat_by_hash(ctx, h);
+      if(_last_db_return_error(ctx)) {
+          SAFE_FREE(st);
+          ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+          return -1;
+      }
+
       if (tmp == NULL) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - not found in db, IGNORE!", path);
         st->instruction = CSYNC_INSTRUCTION_IGNORE;
@@ -226,16 +247,28 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   if (csync_get_statedb_exists(ctx)) {
     tmp = csync_statedb_get_stat_by_hash(ctx, h);
 
+    if(_last_db_return_error(ctx)) {
+        SAFE_FREE(st);
+        ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+        return -1;
+    }
+
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64 ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64,
-                  ((int64_t) fs->mtime), ((int64_t) tmp->modtime), fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode);
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64
+                                            ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
+                                            ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s",
+                  ((int64_t) fs->mtime), ((int64_t) tmp->modtime),
+                  fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode,
+                  (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm );
         if( !fs->etag) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
         if((ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag ))
             || (ctx->current == LOCAL_REPLICA && (fs->mtime != tmp->modtime
+                                                  // zero size in statedb can happen during migration
+                                                  || (tmp->size != 0 && fs->size != tmp->size)
 #if 0
                                                   || fs->inode != tmp->inode
 #endif
@@ -285,6 +318,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
             tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
 
+            if(_last_db_return_error(ctx)) {
+                SAFE_FREE(st);
+                ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+                return -1;
+            }
+
             /* translate the file type between the two stat types csync has. */
             if( tmp && tmp->type == 0 ) {
                 tmp_vio_type = CSYNC_VIO_FILE_TYPE_REGULAR;
@@ -315,6 +354,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         } else {
             /* Remote Replica Rename check */
             tmp = csync_statedb_get_stat_by_file_id(ctx, fs->file_id);
+
+            if(_last_db_return_error(ctx)) {
+                SAFE_FREE(st);
+                ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+                return -1;
+            }
             if(tmp ) {                           /* tmp existing at all */
                 if ((tmp->type == CSYNC_FTW_TYPE_DIR && fs->type != CSYNC_VIO_FILE_TYPE_DIRECTORY) ||
                         (tmp->type == CSYNC_FTW_TYPE_FILE && fs->type != CSYNC_VIO_FILE_TYPE_REGULAR)) {
@@ -342,8 +387,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         }
     }
   } else  {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unable to open statedb, setting inst to NEW" );
-      st->instruction = CSYNC_INSTRUCTION_NEW;
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unable to open statedb" );
+      ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+      return -1;
   }
 
 out:
@@ -431,11 +477,19 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
 
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s]", file, fs->file_id);
+      if (ctx->current == REMOTE_REPLICA) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s size=%" PRIu64 "]", file, fs->file_id, fs->size);
+      } else {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [inode=%" PRIu64 " size=%" PRIu64 "]", file, fs->inode, fs->size);
+      }
       type = CSYNC_FTW_TYPE_FILE;
       break;
   case CSYNC_FTW_FLAG_DIR: /* enter directory */
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s [file_id=%s]", file, fs->file_id);
+      if (ctx->current == REMOTE_REPLICA) {
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s [file_id=%s]", file, fs->file_id);
+      } else {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s [inode=%" PRIu64 "]", file, fs->inode);
+      }
       type = CSYNC_FTW_TYPE_DIR;
       break;
   case CSYNC_FTW_FLAG_NSTAT: /* not statable file */
@@ -535,6 +589,17 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           if (asp < 0) {
               CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
           }
+      } else if(errno == ERRNO_SERVICE_UNAVAILABLE) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Service was not available!");
+          if (ctx->current_fs) {
+              ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
+              ctx->current_fs->error_status = CSYNC_STATUS_SERVICE_UNAVAILABLE;
+              /* If a directory has ignored files, put the flag on the parent directory as well */
+              if( previous_fs ) {
+                  previous_fs->has_ignored_files = true;
+              }
+              goto done;
+          }
       } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "opendir failed for %s - errno %d", uri, errno);
       }
@@ -591,10 +656,13 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     path = filename + ulen;
 
     /* skip ".csync_journal.db" and ".csync_journal.db.ctmp" */
+    /* Isn't this done via csync_exclude already? */
     if (c_streq(path, ".csync_journal.db")
             || c_streq(path, ".csync_journal.db.ctmp")
             || c_streq(path, ".csync_journal.db.ctmp-journal")
-            || c_streq(path, ".csync-progressdatabase")) {
+            || c_streq(path, ".csync-progressdatabase")
+            || c_streq(path, ".csync_journal.db-shm")
+            || c_streq(path, ".csync_journal.db-wal")) {
         csync_vio_file_stat_destroy(dirent);
         dirent = NULL;
         SAFE_FREE(filename);
@@ -640,6 +708,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         uint64_t h = c_jhash64((uint8_t *) path, len, 0);
         etag = csync_statedb_get_etag( ctx, h );
 
+        if(_last_db_return_error(ctx)) {
+            ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+            goto error;
+        }
+
         if( etag ) {
             SAFE_FREE(fs->etag);
             fs->etag = etag;
@@ -659,10 +732,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     rc = fn(ctx, filename, fs, flag);
     /* this function may update ctx->current and ctx->read_from_db */
 
-    if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
-        previous_fs->child_modified = ctx->current_fs->child_modified;
-    }
-
     /* Only for the local replica we have to destroy stat(), for the remote one it is a pointer to dirent */
     if (ctx->replica == LOCAL_REPLICA) {
         csync_vio_file_stat_destroy(fs);
@@ -677,7 +746,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto error;
     }
 
-    if (flag == CSYNC_FTW_FLAG_DIR && depth
+    if (flag == CSYNC_FTW_FLAG_DIR && depth && rc == 0
         && (!ctx->current_fs || ctx->current_fs->instruction != CSYNC_INSTRUCTION_IGNORE)) {
       rc = csync_ftw(ctx, filename, fn, depth - 1);
       if (rc < 0) {
@@ -690,6 +759,16 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
         ctx->current_fs->should_update_etag = true;
       }
+
+      if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
+          /* If a directory has ignored files, put the flag on the parent directory as well */
+          previous_fs->has_ignored_files = ctx->current_fs->has_ignored_files;
+      }
+    }
+
+    if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
+        /* If a directory has modified files, put the flag on the parent directory as well */
+        previous_fs->child_modified = ctx->current_fs->child_modified;
     }
 
     if (flag == CSYNC_FTW_FLAG_DIR && ctx->current_fs

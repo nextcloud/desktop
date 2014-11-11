@@ -26,6 +26,7 @@
 #include "account.h"
 #include "theme.h"
 #include "mirallconfigfile.h"
+#include "selectivesyncdialog.h"
 #include "creds/abstractcredentials.h"
 
 namespace Mirall
@@ -56,6 +57,18 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     connect( _ui.pbSelectLocalFolder, SIGNAL(clicked()), SLOT(slotSelectFolder()));
     setButtonText(QWizard::NextButton, tr("Connect..."));
+
+    connect( _ui.rSyncEverything, SIGNAL(clicked()), SLOT(slotSyncEverythingClicked()));
+    connect( _ui.rSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
+    connect( _ui.bSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
+
+    QIcon appIcon = theme->applicationIcon();
+    _ui.lServerIcon->setText(QString());
+    _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
+    _ui.lLocalIcon->setText(QString());
+    _ui.lLocalIcon->setPixmap(QPixmap(":/mirall/resources/folder-sync.png"));
+
+
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -85,7 +98,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 
     _checking  = false;
     _multipleFoldersExist = false;
-    _oldLocalFolder = localFolder();
+    _oldLocalFolder = wizard()->property("oldLocalFolder").toString();
 
     // call to init label
     updateStatus();
@@ -105,8 +118,7 @@ void OwncloudAdvancedSetupPage::updateStatus()
     _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
     if (dataChanged()) {
         if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
-            t = tr("Your entire account will be synced to the local folder '%1'.")
-                .arg(QDir::toNativeSeparators(locFolder));
+            t = "";
         } else {
             t = tr("%1 folder '%2' is synced to local folder '%3'")
                 .arg(Theme::instance()->appName()).arg(_remoteFolder)
@@ -140,7 +152,8 @@ bool OwncloudAdvancedSetupPage::dataChanged()
     Account *oldAccount = AccountManager::instance()->account();
 
     if (!ocWizard || !oldAccount) {
-        return false;
+        // If there was no account configured before, the data is new (hence changed)
+        return true;
     }
 
     const QString url(field("OCUrl").toString());
@@ -177,6 +190,11 @@ QString OwncloudAdvancedSetupPage::localFolder() const
 {
     QString folder = wizard()->property("localFolder").toString();
     return folder;
+}
+
+QStringList OwncloudAdvancedSetupPage::blacklist() const
+{
+    return _blacklist;
 }
 
 bool OwncloudAdvancedSetupPage::validatePage()
@@ -248,5 +266,32 @@ void OwncloudAdvancedSetupPage::setConfigExists(bool config)
         setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update advanced setup")));
     }
 }
+
+void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
+{
+    // Because clicking on it also changes it, restore it to the previous state in case the user cancel the dialog
+    _ui.rSyncEverything->setChecked(_blacklist.isEmpty());
+
+    Account *acc = static_cast<OwncloudWizard *>(wizard())->account();
+    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, _blacklist, this);
+    if (dlg->exec() == QDialog::Accepted) {
+        _blacklist = dlg->createBlackList();
+        if (!_blacklist.isEmpty()) {
+            _ui.rSelectiveSync->blockSignals(true);
+            _ui.rSelectiveSync->setChecked(true);
+            _ui.rSelectiveSync->blockSignals(false);
+        } else {
+            _ui.rSyncEverything->setChecked(true);
+        }
+        wizard()->setProperty("blacklist", _blacklist);
+    }
+}
+
+void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
+{
+    _ui.rSyncEverything->setChecked(true);
+    _blacklist.clear();
+}
+
 
 } // ns Mirall

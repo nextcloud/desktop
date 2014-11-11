@@ -33,6 +33,7 @@
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
 #include "utility.h"
+#include "syncfilestatus.h"
 
 class QProcess;
 
@@ -61,8 +62,12 @@ public:
 
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
-    void setSelectiveSyncBlackList(const QStringList &list)
-    { _selectiveSyncWhiteList = list; }
+    void setSelectiveSyncBlackList(const QStringList &list);
+
+    /* Return true if we detected that another sync is needed to complete the sync */
+    bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
+
+    bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
 
 signals:
     void csyncError( const QString& );
@@ -98,6 +103,7 @@ private slots:
     void slotProgress(const SyncFileItem& item, quint64 curent);
     void slotAdjustTotalTransmissionSize(qint64 change);
     void slotDiscoveryJobFinished(int updateResult);
+    void slotCleanPollsJobAborted(const QString &error);
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
@@ -107,11 +113,25 @@ private:
     int treewalkFile( TREE_WALK_FILE*, bool );
     bool checkBlacklisting( SyncFileItem *item );
 
+    // Cleans up unnecessary downloadinfo entries in the journal as well
+    // as their temporary files.
+    void deleteStaleDownloadInfos();
+
+    // Removes stale uploadinfos from the journal.
+    void deleteStaleUploadInfos();
+
+    // Removes stale blacklist entries from the journal.
+    void deleteStaleBlacklistEntries();
+
     // cleanup and emit the finished signal
     void finalize();
 
     static bool _syncRunning; //true when one sync is running somewhere (for debugging)
+
     QMap<QString, SyncFileItem> _syncItemMap;
+
+    // should be called _syncItems (present tense). It's the items from the _syncItemMap but
+    // sorted and re-adjusted based on permissions.
     SyncFileItemVector _syncedItems;
 
     CSYNC *_csync_ctx;
@@ -149,7 +169,9 @@ private:
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
 
-    QStringList _selectiveSyncWhiteList;
+    QStringList _selectiveSyncBlackList;
+
+    bool _anotherSyncNeeded;
 };
 
 }

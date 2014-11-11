@@ -16,6 +16,12 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <queue>
+#include <thread>
+#include <mutex>
+#include <atomic>
+#include <condition_variable>
 
 #pragma once    
 
@@ -29,14 +35,33 @@ public:
 		StateWarning, StateWarningSWM,
 		StateNone
 	};
-	RemotePathChecker(int port);
+	RemotePathChecker();
+    ~RemotePathChecker();
 	std::vector<std::wstring> WatchedDirectories();
 	bool IsMonitoredPath(const wchar_t* filePath, int* state);
 
 private:
-	int _StrToFileState(const std::wstring &str);
-	int _port;
+	FileState _StrToFileState(const std::wstring &str);
+    std::mutex _mutex;
+    std::atomic<bool> _stop;
 
+    // Everything here is protected by the _mutex
+
+    /** The list of paths we need to query. The main thread fill this, and the worker thread
+     * send that to the socket. */
+    std::queue<std::wstring> _pending;
+
+    std::unordered_map<std::wstring, FileState> _cache;
+    std::vector<std::wstring> _watchedDirectories;
+    bool _connected;
+
+
+    // The main thread notifies when there are new items in _pending
+    //std::condition_variable _newQueries;
+    HANDLE _newQueries;
+
+	std::thread _thread;
+    void workerThreadLoop();
 };
 
 #endif

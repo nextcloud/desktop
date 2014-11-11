@@ -40,7 +40,10 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
 #include "csync_log.h"
 
-static int _csync_exclude_add(c_strlist_t **inList, const char *string) {
+#ifndef NDEBUG
+static
+#endif
+int _csync_exclude_add(c_strlist_t **inList, const char *string) {
     c_strlist_t *list;
 
     if (*inList == NULL) {
@@ -150,13 +153,41 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
 
     match = csync_excluded_no_ctx( ctx->excludes, path, filetype );
 
-    if (match == CSYNC_NOT_EXCLUDED && ctx->checkBlackListHook) {
-        if (ctx->checkBlackListHook(ctx->checkBlackListData, path)) {
-            match = CSYNC_FILE_EXCLUDE_LIST;
+    return match;
+}
+
+// See http://support.microsoft.com/kb/74496
+static const char *win_reserved_words[] = {"CON","PRN","AUX", "NUL",
+                                           "COM1", "COM2", "COM3", "COM4",
+                                           "LPT1", "LPT2", "LPT3", "CLOCK$" };
+
+
+bool csync_is_windows_reserved_word(const char* filename) {
+
+  size_t win_reserve_words_len = sizeof(win_reserved_words) / sizeof(char*);
+  size_t j;
+
+  for (j = 0; j < win_reserve_words_len; j++) {
+    int len_reserved_word = strlen(win_reserved_words[j]);
+    int len_filename = strlen(filename);
+    if (len_filename == 2 && filename[1] == ':') {
+        if (filename[0] >= 'a' && filename[0] <= 'z') {
+            return true;
+        }
+        if (filename[0] >= 'A' && filename[0] <= 'Z') {
+            return true;
         }
     }
-
-    return match;
+    if (c_strncasecmp(filename, win_reserved_words[j], len_reserved_word) == 0) {
+        if (len_filename == len_reserved_word) {
+            return true;
+        }
+        if ((len_filename > len_reserved_word) && (filename[len_reserved_word] == '.')) {
+            return true;
+        }
+    }
+  }
+  return false;
 }
 
 CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype) {
@@ -204,6 +235,27 @@ CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path
       SAFE_FREE(dname);
       goto out;
   }
+
+#ifdef _WIN32
+  // Windows cannot sync files ending in spaces (#2176). It also cannot
+  // distinguish files ending in '.' from files without an ending,
+  // as '.' is a separator that is not stored internally, so let's
+  // not allow to sync those to avoid file loss/ambiguities (#416)
+  size_t blen = strlen(bname);
+  if (blen > 1 && (bname[blen-1]== ' ' || bname[blen-1]== '.' )) {
+      match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+      SAFE_FREE(bname);
+      SAFE_FREE(dname);
+      goto out;
+  }
+
+  if (csync_is_windows_reserved_word(bname)) {
+    match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+    SAFE_FREE(bname);
+    SAFE_FREE(dname);
+    goto out;
+  }
+#endif
 
   rc = csync_fnmatch(".owncloudsync.log*", bname, 0);
   if (rc == 0) {

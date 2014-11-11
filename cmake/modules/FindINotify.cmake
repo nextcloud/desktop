@@ -1,3 +1,7 @@
+# (c) 2014 Copyright ownCloud, Inc.
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING* file.
+
 # This module defines
 #  INOTIFY_INCLUDE_DIR, where to find inotify.h, etc.
 #  INOTIFY_FOUND, If false, do not try to use inotify.

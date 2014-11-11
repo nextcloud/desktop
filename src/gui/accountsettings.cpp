@@ -398,10 +398,9 @@ void AccountSettings::slotSelectiveSync()
         FolderMan *folderMan = FolderMan::instance();
         Folder *f = folderMan->folder(alias);
         if (f) {
-            (new SelectiveSyncDialog(f, this))->open();
+            (new SelectiveSyncDialog(AccountManager::instance()->account(), f, this))->open();
         }
     }
-
 }
 
 void AccountSettings::slotDoubleClicked( const QModelIndex& indx )
@@ -606,7 +605,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
 
     if (!progress._currentDiscoveredFolder.isEmpty()) {
-        item->setData( tr("Discovering %1").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
+        item->setData( tr("Discovering '%1'").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
         return;
     }
 
@@ -643,12 +642,18 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     if (Progress::isSizeDependent(curItem._instruction)) {
         QString s1 = Utility::octetsToString( curItemProgress );
         QString s2 = Utility::octetsToString( curItem._size );
-        //: Example text: "uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
-        fileProgressString = tr("%1 %2 (%3 of %4) %5 left at a rate of %6/s")
-            .arg(kindString, itemFileName, s1, s2,
-                 Utility::timeToDescriptiveString(progress.getFileEstimate(curItem).getEtaEstimate(), 3, " ", true),
-		 Utility::octetsToString(progress.getFileEstimate(curItem).getEstimatedBandwidth()) );
-    } else {
+        quint64 estimatedBw = progress.getFileEstimate(curItem).getEstimatedBandwidth();
+        if (estimatedBw) {
+            //: Example text: "uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
+            fileProgressString = tr("%1 %2 (%3 of %4) %5 left at a rate of %6/s")
+                .arg(kindString, itemFileName, s1, s2,
+                    Utility::timeToDescriptiveString(progress.getFileEstimate(curItem).getEtaEstimate(), 3, " ", true),
+                    Utility::octetsToString(estimatedBw) );
+        } else {
+            //: Example text: "uploading foobar.png (2MB of 2MB)"
+            fileProgressString = tr("%1 %2 (%3 of %4)") .arg(kindString, itemFileName, s1, s2);
+        }
+    } else if (!kindString.isEmpty()) {
         //: Example text: "uploading foobar.png"
         fileProgressString = tr("%1 %2").arg(kindString, itemFileName);
     }
@@ -657,12 +662,18 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     // overall progress
     quint64 completedSize = progress.completedSize();
     quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();
-    QString s1 = Utility::octetsToString( completedSize );
-    QString s2 = Utility::octetsToString( progress._totalSize );
-    QString overallSyncString = tr("%1 of %2, file %3 of %4\nTotal time left %5")
-        .arg(s1, s2)
-        .arg(currentFile).arg(progress._totalFileCount)
-        .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate(), 3, " ", true) );
+    QString overallSyncString;
+    if (progress._totalSize > 0) {
+        QString s1 = Utility::octetsToString( completedSize );
+        QString s2 = Utility::octetsToString( progress._totalSize );
+        overallSyncString = tr("%1 of %2, file %3 of %4\nTotal time left %5")
+            .arg(s1, s2)
+            .arg(currentFile).arg(progress._totalFileCount)
+            .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate(), 3, " ", true) );
+    } else if (progress._totalFileCount > 0) {
+        // Don't attemt to estimate the time left if there is no kb to transfer.
+        overallSyncString = tr("file %1 of %2") .arg(currentFile).arg(progress._totalFileCount);
+    }
 
     item->setData( overallSyncString, FolderStatusDelegate::SyncProgressOverallString );
 

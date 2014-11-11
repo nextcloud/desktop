@@ -23,7 +23,7 @@
 
 use lib ".";
 
-use Carp::Assert;
+
 use File::Copy;
 use ownCloud::Test;
 
@@ -33,11 +33,13 @@ print "Hello, this is t6, a tester for csync with ownCloud.\n";
 
 initTesting();
 
-sub createPostUpdateScript()
+sub createPostUpdateScript($)
 {
-    my $srcFile = localDir()."BIG.file";
+  my ($name) = @_;
+
+    my $srcFile = localDir().'BIG1.file';
     my $cred = configValue("user") . ":" . configValue("passwd");
-    my $cmd = "curl -T $srcFile -u $cred " . testDirUrl();
+    my $cmd = "curl -T $srcFile -u $cred --insecure " . testDirUrl().$name;
     my $script = "/tmp/post_update_script.sh";
     open SC, ">$script" || die("Can not create script file");
     print SC "#!/bin/bash\n";
@@ -48,11 +50,11 @@ sub createPostUpdateScript()
     return $script;
 }
 
-sub getETagFromJournal($)
+sub getETagFromJournal($$)
 {
-    my ($num) = @_;
-    
-    my $sql = "sqlite3 " . localDir() . ".csync_journal.db \"SELECT md5 FROM metadata WHERE path='BIG.file';\"";
+    my ($name,$num) = @_;
+
+    my $sql = "sqlite3 " . localDir() . ".csync_journal.db \"SELECT md5 FROM metadata WHERE path='$name';\"";
     open(my $fh, '-|', $sql) or die $!;
     my $etag  = <$fh>;
     close $fh;
@@ -61,14 +63,14 @@ sub getETagFromJournal($)
     return $etag;
 }
 
-sub chunkFileTest( $$ ) 
+sub chunkFileTest( $$ )
 {
     my ($name, $size) = @_;
 
     # Big file chunking
     createLocalFile( localDir().$name, $size );
     assert( -e localDir().$name );
-    
+
     my $bigMd5 = md5OfFile( localDir().$name );
 
     csync();
@@ -89,26 +91,39 @@ sub chunkFileTest( $$ )
 }
 
 printInfo("Big file that needs chunking with default chunk size");
-chunkFileTest( "BIG.file", 23251233 );
+chunkFileTest( "BIG1.file", 23251233 );
 
 printInfo("Update the existing file and trigger reupload");
 # change the existing file again -> update
-chunkFileTest( "BIG.file", 21762122 );
+chunkFileTest( "BIG2.file", 21762122 );
 
 printInfo("Cause a precondition failed error");
 # Now overwrite the existing file to change it
-createLocalFile( localDir()."BIG.file", 21832199 );
+createLocalFile( localDir()."BIG3.file", 21832 );
+sleep(2);
+csync();
+createLocalFile( localDir().'BIG3.file', 34323 );
+sleep(2);
 # and create a post update script
-my $script = createPostUpdateScript();
+my $script = createPostUpdateScript('BIG3.file');
 $ENV{'OWNCLOUD_POST_UPDATE_SCRIPT'} = $script;
 
 # Save the etag before the sync
-my $firstETag = getETagFromJournal('First');
-csync(); # Sync, which ends in a precondition failed error 
+my $firstETag = getETagFromJournal('BIG3.file', 'First');
+sleep(2);
+csync(); # Sync, which ends in a precondition failed error
 # get the etag again. It has to be unchanged because of the error.
-my $secondETag = getETagFromJournal('Second');
-assert( $firstETag eq $secondETag, "Different ETags, no precondition error." );
+my $secondETag = getETagFromJournal('BIG3.file', 'Second');
 
+# Now the result is that there is a conflict file because since 1.7
+# the sync is stopped on preconditoin failed and done again.
+my $seen = 0;
+opendir(my $dh, localDir() );
+while(readdir $dh) {
+  $seen = 1 if ( /BIG3_conflict.*\.file/ );
+}
+closedir $dh;
+assert( $seen == 1, "No conflict file created on precondition failed!" );
 unlink($script);
 
 # Set a custom chunk size in environment.

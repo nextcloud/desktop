@@ -15,6 +15,7 @@
 #include "theme.h"
 #include "version.h"
 #include "config.h"
+#include "utility.h"
 
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
@@ -184,11 +185,7 @@ QString Theme::systrayIconFlavor(bool mono) const
 {
     QString flavor;
     if (mono) {
-#ifdef Q_OS_MAC
-        flavor = QLatin1String("black");
-#else
-        flavor = QLatin1String("white");
-#endif
+        flavor = Utility::hasDarkSystray() ? QLatin1String("white") : QLatin1String("black");
     } else {
         flavor = QLatin1String("colored");
     }

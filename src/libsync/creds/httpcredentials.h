@@ -49,21 +49,31 @@ public:
     void persist(Account *account) Q_DECL_OVERRIDE;
     QString user() const Q_DECL_OVERRIDE;
     QString password() const;
-    QString queryPassword(bool *ok);
+    virtual QString queryPassword(bool *ok) = 0;
     void invalidateToken(Account *account) Q_DECL_OVERRIDE;
     QString fetchUser(Account *account);
+    virtual bool sslIsTrusted() { return false; }
 
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply*, QAuthenticator*);
     void slotReadJobDone(QKeychain::Job*);
     void slotWriteJobDone(QKeychain::Job*);
 
-private:
+protected:
     QString _user;
     QString _password;
+
+private:
     bool _ready;
     bool _fetchJobInProgress; //True if the keychain job is in progress or the input dialog visible
     bool _readPwdFromDeprecatedPlace;
+};
+
+class OWNCLOUDSYNC_EXPORT HttpCredentialsGui : public HttpCredentials {
+public:
+    HttpCredentialsGui() : HttpCredentials() {}
+    HttpCredentialsGui(const QString& user, const QString& password) : HttpCredentials(user, password) {}
+    QString queryPassword(bool *ok) Q_DECL_OVERRIDE;
 };
 
 } // ns Mirall

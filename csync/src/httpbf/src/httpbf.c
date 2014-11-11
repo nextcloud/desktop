@@ -96,6 +96,7 @@ hbf_transfer_t *hbf_init_transfer( const char *dest_uri ) {
     transfer->block_size = DEFAULT_BLOCK_SIZE;
     transfer->threshold = transfer->block_size;
     transfer->modtime_accepted = 0;
+    transfer->oc_header_modtime = 0;
 
     return transfer;
 }
@@ -491,8 +492,8 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
 
                 snprintf(buf, sizeof(buf), "%"PRId64, transfer->stat_size);
                 ne_add_request_header(req, "OC-Total-Length", buf);
-                if( transfer->modtime > 0 ) {
-                    snprintf(buf, sizeof(buf), "%"PRId64, transfer->modtime);
+                if( transfer->oc_header_modtime > 0 ) {
+                    snprintf(buf, sizeof(buf), "%"PRId64, transfer->oc_header_modtime);
                     ne_add_request_header(req, "X-OC-Mtime", buf);
                 }
 

@@ -77,14 +77,20 @@ static RequestManager* sharedInstance = nil;
 }
 
 
-- (BOOL)isRegisteredPath:(NSString*)path
+- (BOOL)isRegisteredPath:(NSString*)path isDirectory:(BOOL)isDir
 {
 	// check if the file in question is underneath a registered directory
 	NSArray *regPathes = [_registeredPathes allKeys];
 	BOOL registered = NO;
 
+	NSString* checkPath = [NSString stringWithString:path];
+	if (isDir) {
+		// append a slash
+		checkPath = [path stringByAppendingString:@"/"];
+	}
+
 	for( NSString *regPath in regPathes ) {
-		if( [path hasPrefix:regPath]) {
+		if( [checkPath hasPrefix:regPath]) {
 			// the path was registered
 			registered = YES;
 			break;
@@ -99,7 +105,7 @@ static RequestManager* sharedInstance = nil;
 	NSString *verb = @"RETRIEVE_FILE_STATUS";
 	NSNumber *res = [NSNumber numberWithInt:0];
 
-	if( [self isRegisteredPath:path] ) {
+	if( [self isRegisteredPath:path isDirectory:isDir] ) {
 		if( _isConnected ) {
 			if(isDir) {
 				verb = @"RETRIEVE_FOLDER_STATUS";
@@ -121,41 +127,49 @@ static RequestManager* sharedInstance = nil;
 
 - (void)socket:(GCDAsyncSocket*)socket didReadData:(NSData*)data withTag:(long)tag
 {
-	NSArray *chunks;
 	NSString *answer = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSArray *chunks = nil;
 	if (answer != nil && [answer length] > 0) {
 		// cut a trailing newline
 		answer = [answer substringToIndex:[answer length] - 1];
 		chunks = [answer componentsSeparatedByString: @":"];
 	}
-	NSLog(@"READ from socket (%ld): <%@>", tag, answer);
 	ContentManager *contentman = [ContentManager sharedInstance];
 
-	if( [chunks count] > 0 && tag == READ_TAG ) {
+	if( chunks && [chunks count] > 0 && tag == READ_TAG ) {
+		NSLog(@"READ from socket (%ld): <%@>", tag, answer);
 		if( [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
-			[contentman setResultForPath:[chunks objectAtIndex:2] result:[chunks objectAtIndex:1]];
+			NSString *path = [chunks objectAtIndex:2];
+			if( [chunks count] > 3 ) {
+				for( int i = 2; i < [chunks count]-1; i++ ) {
+					path = [NSString stringWithFormat:@"%@:%@",
+							path, [chunks objectAtIndex:i+1] ];
+				}
+			}
+			[contentman setResultForPath:path result:[chunks objectAtIndex:1]];
 		} else if( [[chunks objectAtIndex:0] isEqualToString:@"UPDATE_VIEW"] ) {
 			NSString *path = [chunks objectAtIndex:1];
-			[contentman clearFileNameCacheForPath:path];
-
-			[contentman repaintAllWindows];
+			[contentman reFetchFileNameCacheForPath:path];
 		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"REGISTER_PATH"] ) {
 			NSNumber *one = [NSNumber numberWithInt:1];
 			NSString *path = [chunks objectAtIndex:1];
+			NSLog(@"Registering path: %@", path);
 			[_registeredPathes setObject:one forKey:path];
 			
 			[contentman repaintAllWindows];
 		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"UNREGISTER_PATH"] ) {
-			NSNumber *one = [NSNumber numberWithInt:1];
 			NSString *path = [chunks objectAtIndex:1];
 			[_registeredPathes removeObjectForKey:path];
 
 			[contentman repaintAllWindows];
+		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"ICON_PATH"] ) {
+			NSString *path = [chunks objectAtIndex:1];
+			[[ContentManager sharedInstance] loadIconResourcePath:path];
 		} else {
 			NSLog(@"Unknown command %@", [chunks objectAtIndex:0]);
 		}
-	} else {
-		NSLog(@"Received unknown tag %ld", tag);
+	} else if (tag != READ_TAG) {
+		NSLog(@"Received unknown tag %ld <%@>", tag, answer);
 	}
 	// Read on and on
 	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
@@ -169,18 +183,32 @@ static RequestManager* sharedInstance = nil;
 	return 0.0;
 }
 
+-(void)socket:(GCDAsyncSocket*)socket didConnectToUrl:(NSURL *)url {
+	NSLog(@"didConnectToUrl %@", url);
+	[self socketDidConnect:socket];
+}
+
 - (void)socket:(GCDAsyncSocket*)socket didConnectToHost:(NSString*)host port:(UInt16)port
 {
-	NSLog( @"Connected to host successfully!");
+	[self socketDidConnect:socket];
+}
+
+// Our impl
+- (void)socketDidConnect:(GCDAsyncSocket*)socket  {
+	NSLog( @"Connected to sync client successfully!");
 	_isConnected = YES;
 	_isRunning = NO;
 
 	if( [_requestQueue count] > 0 ) {
 		NSLog( @"We have to empty the queue");
 		for( NSString *path in _requestQueue ) {
-			[self askOnSocket:path];
+			[self askOnSocket:path query:@"RETRIEVE_FILE_STATUS"];
 		}
 	}
+
+	ContentManager *contentman = [ContentManager sharedInstance];
+	[contentman clearFileNameCacheForPath:nil];
+	[contentman repaintAllWindows];
 	
 	// Read for the UPDATE_VIEW requests
 	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
@@ -205,6 +233,7 @@ static RequestManager* sharedInstance = nil;
     // clear the caches in conent manager
 	ContentManager *contentman = [ContentManager sharedInstance];
 	[contentman clearFileNameCacheForPath:nil];
+	[contentman repaintAllWindows];
 
 	[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(start) userInfo:nil repeats:NO];
 
@@ -215,12 +244,27 @@ static RequestManager* sharedInstance = nil;
 {
 	if (!_isRunning)
 	{
-		NSLog(@"Connect Socket!");
 		NSError *err = nil;
-		if (![_socket connectToHost:@"localhost" onPort:34001 withTimeout:5 error:&err]) // Asynchronous!
-		{
-			// If there was an error, it's likely something like "already connected" or "no delegate set"
-			NSLog(@"I goofed: %@", err);
+		BOOL useTcp = NO;
+		if (useTcp) {
+			NSLog(@"Connect Socket");
+		    if (![_socket connectToHost:@"localhost" onPort:34001 withTimeout:5 error:&err]) {
+				// If there was an error, it's likely something like "already connected" or "no delegate set"
+				NSLog(@"I goofed: %@", err);
+			}
+		} else if (!useTcp) {
+			NSURL *url = nil;
+			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+			if ([paths count])
+			{
+				// file:///Users/guruz/Library/Caches/SyncStateHelper/ownCloud.socket
+				// FIXME Generify this and support all sockets there since multiple sync clients might be running
+				url =[NSURL fileURLWithPath:[[[paths objectAtIndex:0] stringByAppendingPathComponent:@"SyncStateHelper"] stringByAppendingPathComponent:@"ownCloud.socket"]];
+			}
+			if (url) {
+				NSLog(@"Connect Socket to %@", url);
+				[_socket connectToUrl:url withTimeout:5 error:&err];
+			}
 		}
 		
 		 _isRunning = YES;

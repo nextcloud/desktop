@@ -184,8 +184,7 @@ qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
 #elif defined(Q_OS_WIN)
     ULARGE_INTEGER freeBytes;
     freeBytes.QuadPart = 0L;
-    QString drive = QDir().absoluteFilePath(path).left(2);
-    if( !GetDiskFreeSpaceEx( reinterpret_cast<const wchar_t *>(drive.utf16()), &freeBytes, NULL, NULL ) ) {
+    if( !GetDiskFreeSpaceEx( reinterpret_cast<const wchar_t *>(path.utf16()), &freeBytes, NULL, NULL ) ) {
         if (ok) *ok = false;
     }
     return freeBytes.QuadPart;
@@ -223,6 +222,18 @@ QString Utility::toCSyncScheme(const QString &urlStr)
         url.setScheme( QLatin1String("ownclouds") );
     }
     return url.toString();
+}
+
+bool Utility::doesSetContainPrefix(const QSet<QString> &l, const QString &p) {
+
+    Q_FOREACH (const QString &setPath, l) {
+        //qDebug() << Q_FUNC_INFO << p << setPath << setPath.startsWith(p);
+        if (setPath.startsWith(p)) {
+            return true;
+        }
+    }
+    //qDebug() << "-> NOOOOO!!!" << p << l.count();
+    return false;
 }
 
 QString Utility::escape(const QString &in)
@@ -324,6 +335,11 @@ QString Utility::timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMap
     return retStr;
 }
 
+bool Utility::hasDarkSystray()
+{
+    return hasDarkSystray_private();
+}
+
 
 bool Utility::isWindows()
 {
@@ -366,18 +382,6 @@ void Utility::crash()
     volatile int* a = (int*)(NULL);
     *a = 1;
 }
-
-void Utility::winShellChangeNotify( const QString& path )
-{
-#ifdef Q_OS_WIN
-    SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT,
-                   reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16()), NULL );
-#else
-    Q_UNUSED(path);
-    qDebug() << Q_FUNC_INFO << " is not implemented on non Windows systems.";
-#endif
-}
-
 
 static const char STOPWATCH_END_TAG[] = "_STOPWATCH_END";
 

@@ -55,14 +55,13 @@ public:
 
     virtual void start();
 
-    void setAccount(Account *account);
     Account* account() const { return _account; }
+
     void setPath(const QString &path);
     QString path() const { return _path; }
 
     void setReply(QNetworkReply *reply);
     QNetworkReply* reply() const { return _reply; }
-
 
     void setIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
@@ -75,6 +74,7 @@ public slots:
     void resetTimeout();
 signals:
     void networkError(QNetworkReply *reply);
+    void networkActivity();
 protected:
     void setupConnections(QNetworkReply *reply);
     QNetworkReply* davRequest(const QByteArray& verb, const QString &relPath,
@@ -93,10 +93,16 @@ protected:
     QString       _responseTimestamp;
     QElapsedTimer _durationTimer;
     quint64       _duration;
+    bool          _timedout;  // set to true when the timeout slot is recieved
+
+public:
+    // Timeout workarounds (Because of PHP session locking)
+    static bool preOc7WasDetected;
+
 
 private slots:
     void slotFinished();
-    virtual void slotTimeout() {}
+    virtual void slotTimeout();
 
 private:
     QNetworkReply* addTimer(QNetworkReply *reply);

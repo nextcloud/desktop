@@ -23,7 +23,6 @@
 
 use lib ".";
 
-use Carp::Assert;
 use File::Copy;
 use ownCloud::Test;
 
@@ -123,8 +122,24 @@ assertLocalAndRemoteDir( '', 0);
 
 # The previous sync should have updated the etags, and this should NOT be a conflict
 printInfo( "Update the file again");
-createLocalFile( localDir() . "remoteToLocal1/kernelcrash.txt", 2136 );
-createLocalFile( localDir() . "remoteToLocal1/kraft_logo.gif", 2332 );
+
+my $f1 = localDir() . "remoteToLocal1/kernelcrash.txt";
+my $s1 = 2136;
+createLocalFile( $f1, $s1);
+
+# stat the file
+my @stat1 = stat $f1;
+print "Updating File $f1 to $s1, size is $stat1[7]\n";
+
+
+my $f2 = localDir() . "remoteToLocal1/kraft_logo.gif";
+my $s2 = 2332;
+
+createLocalFile( $f2, $s2);
+# stat the file
+my @stat2 = stat $f2;
+print "Updating File $f2 to $s2, size is $stat2[7]\n";
+
 system( "sleep 2 && touch " . localDir() . "remoteToLocal1/kernelcrash.txt" );
 csync( );
 assertLocalAndRemoteDir( '', 0);
@@ -169,6 +184,19 @@ csync();
 assertLocalAndRemoteDir( '', 0);
 assert( -e localDir().'remoteToLocal1/rtlX' );
 assert( -e localDir().'remoteToLocal1/rtlX/rtl11/file.txt' );
+
+printInfo( "Remove a directory on the server with new files on the client");
+removeRemoteDir('remoteToLocal1/rtlX');
+system("echo hello > " . localDir(). "remoteToLocal1/rtlX/rtl11/hello.txt");
+csync();
+assertLocalAndRemoteDir( '', 0);
+# file.txt must be gone because the directory was removed on the server, but hello.txt must be there
+#   as it is a new file
+assert( ! -e localDir().'remoteToLocal1/rtlX/rtl11/file.txt' );
+assert( -e localDir().'remoteToLocal1/rtlX/rtl11/hello.txt' );
+
+
+
 
 # ==================================================================
 

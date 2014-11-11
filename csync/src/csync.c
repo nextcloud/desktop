@@ -177,6 +177,8 @@ int csync_init(CSYNC *ctx) {
     goto out;
   }
 
+  ctx->remote.root_perms = 0;
+
   ctx->status = CSYNC_STATUS_INIT;
 
   /* initialize random generator */
@@ -228,9 +230,10 @@ int csync_update(CSYNC *ctx) {
 
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
   if (rc < 0) {
-    if(ctx->status_code == CSYNC_STATUS_OK)
+    if(ctx->status_code == CSYNC_STATUS_OK) {
         ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
-    return -1;
+    }
+    goto out;
   }
 
   csync_gettime(&finish);
@@ -247,9 +250,10 @@ int csync_update(CSYNC *ctx) {
 
   rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
   if (rc < 0) {
-      if(ctx->status_code == CSYNC_STATUS_OK)
+      if(ctx->status_code == CSYNC_STATUS_OK) {
           ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
-      return -1;
+      }
+      goto out;
   }
 
   csync_gettime(&finish);
@@ -262,7 +266,11 @@ int csync_update(CSYNC *ctx) {
 
   ctx->status |= CSYNC_STATUS_UPDATE;
 
-  return 0;
+  rc = 0;
+
+out:
+  csync_statedb_close(ctx);
+  return rc;
 }
 
 int csync_reconcile(CSYNC *ctx) {
@@ -277,6 +285,12 @@ int csync_reconcile(CSYNC *ctx) {
 
   /* Reconciliation for local replica */
   csync_gettime(&start);
+
+  if (csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db) < 0) {
+    ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
+    rc = -1;
+    return rc;
+  }
 
   ctx->current = LOCAL_REPLICA;
   ctx->replica = ctx->local.type;
@@ -293,7 +307,7 @@ int csync_reconcile(CSYNC *ctx) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
           ctx->status_code = csync_errno_to_status( errno, CSYNC_STATUS_RECONCILE_ERROR );
       }
-      return -1;
+      goto out;
   }
 
   /* Reconciliation for remote replica */
@@ -314,11 +328,15 @@ int csync_reconcile(CSYNC *ctx) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
           ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_RECONCILE_ERROR );
       }
-      return -1;
+      goto out;
   }
 
   ctx->status |= CSYNC_STATUS_RECONCILE;
 
+  rc = 0;
+
+out:
+  csync_statedb_close(ctx);
   return 0;
 }
 
@@ -522,8 +540,6 @@ static void _tree_destructor(void *data) {
  * used by csync_commit and csync_destroy */
 static void _csync_clean_ctx(CSYNC *ctx)
 {
-    c_list_t * walk;
-
     /* destroy the rbtrees */
     if (c_rbtree_size(ctx->local.tree) > 0) {
         c_rbtree_destroy(ctx->local.tree, _tree_destructor);
@@ -535,27 +551,17 @@ static void _csync_clean_ctx(CSYNC *ctx)
 
     csync_rename_destroy(ctx);
 
-    for (walk = c_list_last(ctx->local.ignored_cleanup); walk != NULL; walk = c_list_prev(walk)) {
-        SAFE_FREE(walk->data);
-    }
-    for (walk = c_list_last(ctx->remote.ignored_cleanup); walk != NULL; walk = c_list_prev(walk)) {
-        SAFE_FREE(walk->data);
-    }
-
     /* free memory */
     c_rbtree_free(ctx->local.tree);
     c_list_free(ctx->local.list);
-    c_list_free(ctx->local.ignored_cleanup);
     c_rbtree_free(ctx->remote.tree);
     c_list_free(ctx->remote.list);
-    c_list_free(ctx->remote.ignored_cleanup);
 
     ctx->remote.list = 0;
     ctx->local.list = 0;
-    ctx->remote.ignored_cleanup = 0;
-    ctx->local.ignored_cleanup = 0;
 
     SAFE_FREE(ctx->statedb.file);
+    SAFE_FREE(ctx->remote.root_perms);
 }
 
 int csync_commit(CSYNC *ctx) {

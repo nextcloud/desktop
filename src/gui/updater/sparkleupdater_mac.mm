@@ -87,9 +87,9 @@ SparkleUpdater::SparkleUpdater(const QString& appCastUrl)
             [NSString stringWithUTF8String: appCastUrl.toUtf8().data()]];
     [d->updater setFeedURL: url];
 
-// requires a more recent version
-//    NSString *userAgent = [NSString stringWithUTF8String: Utility::userAgentString().data()];
-//    [d->updater setUserAgentString: userAgent];
+    // Sparkle 1.8 required
+    NSString *userAgent = [NSString stringWithUTF8String: Utility::userAgentString().data()];
+    [d->updater setUserAgentString: userAgent];
 }
 
 SparkleUpdater::~SparkleUpdater()

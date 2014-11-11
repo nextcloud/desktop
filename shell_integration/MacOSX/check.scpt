@@ -1,6 +1,6 @@
 tell application "Finder"
     try
-        «event NVTYlded»
+        «event OWNClded»
         set the result to 0
     on error msg number code
         set the result to code

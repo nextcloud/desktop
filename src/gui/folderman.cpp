@@ -18,6 +18,8 @@
 #include "syncresult.h"
 #include "theme.h"
 #include "socketapi.h"
+#include "account.h"
+#include "accountmigrator.h"
 
 #include <neon/ne_socket.h>
 
@@ -35,6 +37,15 @@
 namespace Mirall {
 
 FolderMan* FolderMan::_instance = 0;
+
+/**
+ * The minimum time between a sync being requested and it
+ * being executed in milliseconds.
+ *
+ * This delay must be larger than the minFileAgeForUpload in
+ * the propagator.
+ */
+static int msBetweenRequestAndSync = 2000;
 
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
@@ -135,6 +146,9 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         connect(fw, SIGNAL(folderChanged(QString)), _folderWatcherSignalMapper, SLOT(map()));
         _folderWatcherSignalMapper->setMapping(fw, folder->alias());
         _folderWatchers.insert(folder->alias(), fw);
+
+        // This is at the moment only for the behaviour of the SocketApi.
+        connect(fw, SIGNAL(folderChanged(QString)), folder, SLOT(watcherSlot(QString)));
     }
 
     // register the folder with the socket API
@@ -181,6 +195,15 @@ int FolderMan::setupFolders()
   dir.setFilter(QDir::Files | QDir::Hidden);
   QStringList list = dir.entryList();
 
+  if( list.count() == 0 ) {
+      // maybe the account was just migrated.
+      Account *acc = AccountManager::instance()->account();
+      if ( acc && acc->wasMigrated() ) {
+          AccountMigrator accMig;
+          list = accMig.migrateFolderDefinitons();
+      }
+  }
+
   foreach ( const QString& alias, list ) {
     Folder *f = setupFolderFromConfigFile( alias );
     if( f ) {
@@ -212,14 +235,6 @@ bool FolderMan::ensureJournalGone(const QString &localPath)
         }
     }
     return true;
-}
-
-void FolderMan::terminateCurrentSync()
-{
-    if( !_currentSyncFolder.isEmpty() ) {
-        qDebug() << "Terminating syncing on folder " << _currentSyncFolder;
-        terminateSyncProcess( _currentSyncFolder );
-    }
 }
 
 #define SLASH_TAG   QLatin1String("__SLASH__")
@@ -424,31 +439,53 @@ void FolderMan::slotScheduleAllFolders()
   */
 void FolderMan::slotScheduleSync( const QString& alias )
 {
-    if( alias.isEmpty() ) return;
+    if( alias.isEmpty() || ! _folderMap.contains(alias) ) {
+        qDebug() << "Not scheduling sync for empty or unknown folder" << alias;
+        return;
+    }
 
+    // The folder watcher fires a lot of bogus notifications during
+    // a sync operation, both for actual user files and the database
+    // and log. Never enqueue a folder for sync while it is syncing.
+    // We lose some genuine sync requests that way, but that can't be
+    // helped.
+    // ^^ FIXME: Note that this is not the case on OS X
     if( _currentSyncFolder == alias ) {
         qDebug() << "folder " << alias << " is currently syncing. NOT scheduling.";
         return;
     }
+
+    if( _socketApi ) {
+        // We want the SocketAPI to already now update so that it can show the EVAL icon
+        // for files/folders. Only do this when not syncing, else we might get a lot
+        // of those notifications.
+        _socketApi->slotUpdateFolderView(alias);
+    }
+
     qDebug() << "Schedule folder " << alias << " to sync!";
 
-    if( ! _scheduleQueue.contains(alias ) && _folderMap.contains(alias) ) {
+    if( ! _scheduleQueue.contains(alias) ) {
         Folder *f = _folderMap[alias];
-        if( f ) {
-            if( !f->syncPaused() ) {
-                f->prepareToSync();
-            } else {
-                qDebug() << "Folder is not enabled, not scheduled!";
+        if ( !f )
+            return;
+        if( !f->syncPaused() ) {
+            f->prepareToSync();
+        } else {
+            qDebug() << "Folder is not enabled, not scheduled!";
+            if( _socketApi ) {
                 _socketApi->slotUpdateFolderView(f->alias());
-                return;
             }
+            return;
         }
         _scheduleQueue.enqueue(alias);
     } else {
         qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
-    // wait a moment until the syncing starts
-    QTimer::singleShot(500, this, SLOT(slotScheduleFolderSync()));
+
+    // Look at the scheduleQueue in a bit to see if the sync is ready to start.
+    // The delay here is essential as the sync will not upload files that were
+    // changed too recently.
+    QTimer::singleShot(msBetweenRequestAndSync, this, SLOT(slotStartScheduledFolderSync()));
 }
 
 // only enable or disable foldermans will to schedule and do syncs.
@@ -457,7 +494,7 @@ void FolderMan::setSyncEnabled( bool enabled )
 {
     if (!_syncEnabled && enabled && !_scheduleQueue.isEmpty()) {
         // We have things in our queue that were waiting the the connection to go back on.
-        QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
+        QTimer::singleShot(200, this, SLOT(slotStartScheduledFolderSync()));
     }
     _syncEnabled = enabled;
     // force a redraw in case the network connect status changed
@@ -469,7 +506,7 @@ void FolderMan::setSyncEnabled( bool enabled )
   * It is either called from the slot where folders enqueue themselves for
   * syncing or after a folder sync was finished.
   */
-void FolderMan::slotScheduleFolderSync()
+void FolderMan::slotStartScheduledFolderSync()
 {
     if( !_currentSyncFolder.isEmpty() ) {
         qDebug() << "Currently folder " << _currentSyncFolder << " is running, wait for finish!";
@@ -481,18 +518,25 @@ void FolderMan::slotScheduleFolderSync()
         return;
     }
 
+    // Try to start the top scheduled sync.
     qDebug() << "XX slotScheduleFolderSync: folderQueue size: " << _scheduleQueue.count();
-    if( ! _scheduleQueue.isEmpty() ) {
+    if( !_scheduleQueue.isEmpty() ) {
         const QString alias = _scheduleQueue.dequeue();
-        if( _folderMap.contains( alias ) ) {
-            Folder *f = _folderMap[alias];
-            if( f && !f->syncPaused() ) {
-                _currentSyncFolder = alias;
+        if( !_folderMap.contains( alias ) ) {
+            qDebug() << "FolderMan: Not syncing queued folder" << alias << ": not in folder map anymore";
+            return;
+        }
 
-                f->startSync( QStringList() );
+        // Start syncing this folder!
+        Folder *f = _folderMap[alias];
+        if( f && !f->syncPaused() ) {
+            _currentSyncFolder = alias;
 
-                // reread the excludes of the socket api
-                // FIXME: the excludes need rework.
+            f->startSync( QStringList() );
+
+            // reread the excludes of the socket api
+            // FIXME: the excludes need rework.
+            if( _socketApi ) {
                 _socketApi->slotClearExcludesList();
                 _socketApi->slotReadExcludes();
             }
@@ -508,6 +552,8 @@ void FolderMan::slotFolderSyncStarted( )
 /*
   * a folder indicates that its syncing is finished.
   * Start the next sync after the system had some milliseconds to breath.
+  * This delay is particularly useful to avoid late file change notifications
+  * (that we caused ourselves by syncing) from triggering another spurious sync.
   */
 void FolderMan::slotFolderSyncFinished( const SyncResult& )
 {
@@ -515,7 +561,7 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 
     _currentSyncFolder.clear();
 
-    QTimer::singleShot(200, this, SLOT(slotScheduleFolderSync()));
+    QTimer::singleShot(200, this, SLOT(slotStartScheduledFolderSync()));
 }
 
 void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceFolder,
@@ -542,11 +588,11 @@ Folder *FolderMan::folderForPath(const QString &path)
         const QString folderPath = QDir::cleanPath(folder->path())+QLatin1Char('/');
 
         if(absolutePath.startsWith(folderPath)) {
-            qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
+            //qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
             return folder;
         }
     }
-
+    qDebug() << "ERROR: could not find folder for " << absolutePath;
     return 0;
 }
 
@@ -609,8 +655,11 @@ void FolderMan::removeFolder( const QString& alias )
     }
 }
 
-QString FolderMan::getBackupName( const QString& fullPathName ) const
+QString FolderMan::getBackupName( QString fullPathName ) const
 {
+    if (fullPathName.endsWith("/"))
+        fullPathName.chop(1);
+
     if( fullPathName.isEmpty() ) return QString::null;
 
      QString newName = fullPathName + QLatin1String(".oC_bak");
@@ -628,27 +677,52 @@ QString FolderMan::getBackupName( const QString& fullPathName ) const
 
 bool FolderMan::startFromScratch( const QString& localFolder )
 {
-    if( localFolder.isEmpty() ) return false;
+    if( localFolder.isEmpty() ) {
+        return false;
+    }
 
     QFileInfo fi( localFolder );
-    if( fi.exists() && fi.isDir() ) {
-        QDir file = fi.dir();
+    QDir parentDir( fi.dir() );
+    QString folderName = fi.fileName();
 
-        // check if there are files in the directory.
-        if( file.count() == 0 ) {
-            // directory is existing, but its empty. Use it.
+    // Adjust for case where localFolder ends with a /
+    if ( fi.isDir() ) {
+        folderName = parentDir.dirName();
+        parentDir.cdUp();
+    }
+
+    if( fi.exists() ) {
+        // It exists, but is empty -> just reuse it.
+        if( fi.isDir() && fi.dir().count() == 0 ) {
             qDebug() << "startFromScratch: Directory is empty!";
             return true;
         }
-        QString newName = getBackupName( fi.absoluteFilePath() );
-
-        if( file.rename( fi.absoluteFilePath(), newName )) {
-            if( file.mkdir( fi.absoluteFilePath() ) ) {
-                return true;
+        // Disconnect the socket api from the database to avoid that locking of the
+        // db file does not allow to move this dir.
+        if( _socketApi ) {
+            Folder *f = folderForPath(localFolder);
+            if(f) {
+                if( localFolder.startsWith(f->path()) ) {
+                    _socketApi->slotUnregisterPath(f->alias());
+                }
             }
         }
+
+        // Make a backup of the folder/file.
+        QString newName = getBackupName( parentDir.absoluteFilePath( folderName ) );
+        if( !parentDir.rename( fi.absoluteFilePath(), newName ) ) {
+            qDebug() << "startFromScratch: Could not rename" << fi.absoluteFilePath()
+                     << "to" << newName;
+            return false;
+        }
     }
-    return false;
+
+    if( !parentDir.mkdir( fi.absoluteFilePath() ) ) {
+        qDebug() << "startFromScratch: Could not mkdir" << fi.absoluteFilePath();
+        return false;
+    }
+
+    return true;
 }
 
 void FolderMan::setDirtyProxy(bool value)

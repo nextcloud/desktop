@@ -47,7 +47,7 @@ public slots:
 
 protected slots:
     void copyToClipboard();
-    void slotClearBlacklist();
+    void slotRetrySync();
 
 signals:
     void guiLog(const QString&, const QString&);
@@ -56,6 +56,8 @@ private:
     void setSyncResultStatus(const SyncResult& result );
     void cleanIgnoreItems( const QString& folder );
     void computeResyncButtonEnabled();
+    QString fixupFilename( const QString& name );
+
 
     QTreeWidgetItem* createCompletedTreewidgetItem(const QString &folder, const SyncFileItem &item );
 
@@ -63,7 +65,7 @@ private:
 
     const int IgnoredIndicatorRole;
     Ui::ProtocolWidget *_ui;
-    QPushButton *_clearBlacklistBtn;
+    QPushButton *_retrySyncBtn;
     QPushButton *_copyBtn;
 };
 

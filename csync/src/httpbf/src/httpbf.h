@@ -92,6 +92,7 @@ struct hbf_transfer_s {
 
     int64_t stat_size;
     time_t modtime;
+    time_t oc_header_modtime;
     int64_t block_size;
     int64_t threshold;
 

@@ -71,6 +71,7 @@ static IconCache* sharedInstance = nil;
 
 	if (image == nil)
 	{
+		NSLog(@"%@ Could not load %@", NSStringFromSelector(_cmd), path);
 		return [NSNumber numberWithInt:-1];
 	}
 

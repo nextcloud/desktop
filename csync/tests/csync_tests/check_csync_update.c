@@ -23,11 +23,64 @@
 
 #define TESTDB "/tmp/check_csync/journal.db"
 
+static int firstrun = 1;
+
+static void statedb_create_metadata_table(sqlite3 *db)
+{
+    int rc = 0;
+
+    if( db ) {
+        const char *sql = "CREATE TABLE IF NOT EXISTS metadata("
+                          "phash INTEGER(8),"
+                          "pathlen INTEGER,"
+                          "path VARCHAR(4096),"
+                          "inode INTEGER,"
+                          "uid INTEGER,"
+                          "gid INTEGER,"
+                          "mode INTEGER,"
+                          "modtime INTEGER(8),"
+                          "type INTEGER,"
+                          "md5 VARCHAR(32),"
+                          "PRIMARY KEY(phash));";
+
+        rc = sqlite3_exec(db, sql, NULL, NULL, NULL);
+        const char *msg = sqlite3_errmsg(db);
+        assert_int_equal( rc, SQLITE_OK );
+    }
+}
+
+static void statedb_insert_metadata(sqlite3 *db)
+{
+    int rc = 0;
+
+    if( db ) {
+        char *stmt = sqlite3_mprintf("INSERT INTO metadata"
+                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime,type,md5) VALUES"
+                                     "(%lld, %d, '%q', %d, %d, %d, %d, %lld, %d, '%q');",
+                                     (long long signed int)42,
+                                     42,
+                                     "I_was_wurst_before_I_became_wurstsalat",
+                                     619070,
+                                     42,
+                                     42,
+                                     42,
+                                     (long long signed int)42,
+                                     0,
+                                     "4711");
+
+        char *errmsg;
+        rc = sqlite3_exec(db, stmt, NULL, NULL, &errmsg);
+        sqlite3_free(stmt);
+        assert_int_equal( rc, SQLITE_OK );
+    }
+}
+
 static void setup(void **state)
 {
     CSYNC *csync;
     int rc;
 
+    unlink(TESTDB);
     rc = system("mkdir -p /tmp/check_csync");
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync1");
@@ -38,9 +91,20 @@ static void setup(void **state)
     assert_int_equal(rc, 0);
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
+
+    /* Create a new db with metadata */
+    sqlite3 *db;
+    csync->statedb.file = c_strdup(TESTDB);
+    rc = sqlite3_open(csync->statedb.file, &db);
+    statedb_create_metadata_table(db);
+    if( firstrun ) {
+        statedb_insert_metadata(db);
+        firstrun = 0;
+    }
+    sqlite3_close(db);
+
     rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
     assert_int_equal(rc, 0);
-
 
     *state = csync;
 }
@@ -60,9 +124,18 @@ static void setup_ftw(void **state)
     assert_int_equal(rc, 0);
     rc = csync_init(csync);
     assert_int_equal(rc, 0);
+
+    sqlite3 *db = NULL;
+    rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
+    assert_int_equal(rc, SQLITE_OK);
+    statedb_create_metadata_table(db);
+    rc = sqlite3_close(db);
+    assert_int_equal(rc, SQLITE_OK);
+
     rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
     assert_int_equal(rc, 0);
 
+    csync->statedb.file = c_strdup( TESTDB );
     *state = csync;
 }
 
@@ -71,6 +144,7 @@ static void teardown(void **state)
     CSYNC *csync = *state;
     int rc;
 
+    unlink( csync->statedb.file);
     rc = csync_destroy(csync);
     assert_int_equal(rc, 0);
 
@@ -249,6 +323,7 @@ static void check_csync_detect_update_db_eval(void **state)
     csync_vio_file_stat_destroy(fs);
 }
 
+
 static void check_csync_detect_update_db_rename(void **state)
 {
     CSYNC *csync = *state;
@@ -256,27 +331,6 @@ static void check_csync_detect_update_db_rename(void **state)
 
     csync_vio_file_stat_t *fs;
     int rc = 0;
-    char *stmt = NULL;
-
-    // rc = csync_statedb_create_tables(csync->statedb.db);
-
-    assert_int_equal(rc, 0);
-    stmt = sqlite3_mprintf("INSERT INTO metadata"
-                           "(phash, pathlen, path, inode, uid, gid, mode, modtime,type,md5) VALUES"
-                           "(%lld, %d, '%q', %d, %d, %d, %d, %lld, %d, '%q');",
-                           (long long signed int)42,
-                           42,
-                           "I_was_wurst_before_I_became_wurstsalat",
-                           619070,
-                           42,
-                           42,
-                           42,
-                           (long long signed int)42,
-                           0,
-                           "4711");
-
-    // rc = csync_statedb_insert(csync->statedb.db, stmt);
-    sqlite3_free(stmt);
 
     fs = create_fstat("wurst.txt", 0, 1, 42);
     assert_non_null(fs);

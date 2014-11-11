@@ -100,6 +100,10 @@ void ClientProxy::setCSyncProxy( const QUrl& url, CSYNC *csync_ctx )
     QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(url));
     // We set at least one in Application
     Q_ASSERT(proxies.count() > 0);
+    if (proxies.count() == 0) {
+        qDebug() << Q_FUNC_INFO << "No proxy!";
+        return;
+    }
     QNetworkProxy proxy = proxies.first();
     if (proxy.type() == QNetworkProxy::NoProxy) {
         qDebug() << "Passing NO proxy to csync for" << url.toString();

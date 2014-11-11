@@ -141,6 +141,57 @@ static void check_csync_excluded(void **state)
 
 }
 
+static void check_csync_pathes(void **state)
+{
+    CSYNC *csync = *state;
+    int rc;
+
+    _csync_exclude_add( &(csync->excludes), "/exclude" );
+
+    /* Check toplevel dir, the pattern only works for toplevel dir. */
+    rc = csync_excluded(csync, "/exclude", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded(csync, "/foo/exclude", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
+    /* check for a file called exclude. Must still work */
+    rc = csync_excluded(csync, "/exclude", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded(csync, "/foo/exclude", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
+    /* Add an exclude for directories only: excl/ */
+    _csync_exclude_add( &(csync->excludes), "excl/" );
+    rc = csync_excluded(csync, "/excl", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded(csync, "meep/excl", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded(csync, "/excl", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+}
+
+static void check_csync_is_windows_reserved_word() {
+    assert_true(csync_is_windows_reserved_word("CON"));
+    assert_true(csync_is_windows_reserved_word("con"));
+    assert_true(csync_is_windows_reserved_word("CON."));
+    assert_true(csync_is_windows_reserved_word("con."));
+    assert_true(csync_is_windows_reserved_word("CON.ference"));
+    assert_false(csync_is_windows_reserved_word("CONference"));
+    assert_false(csync_is_windows_reserved_word("conference"));
+    assert_false(csync_is_windows_reserved_word("conf.erence"));
+    assert_false(csync_is_windows_reserved_word("co"));
+    assert_true(csync_is_windows_reserved_word("A:"));
+    assert_true(csync_is_windows_reserved_word("a:"));
+    assert_true(csync_is_windows_reserved_word("z:"));
+    assert_true(csync_is_windows_reserved_word("Z:"));
+    assert_true(csync_is_windows_reserved_word("M:"));
+    assert_true(csync_is_windows_reserved_word("m:"));
+
+}
 
 int torture_run_tests(void)
 {
@@ -148,6 +199,8 @@ int torture_run_tests(void)
         unit_test_setup_teardown(check_csync_exclude_add, setup, teardown),
         unit_test_setup_teardown(check_csync_exclude_load, setup, teardown),
         unit_test_setup_teardown(check_csync_excluded, setup_init, teardown),
+        unit_test_setup_teardown(check_csync_pathes, setup_init, teardown),
+        unit_test_setup_teardown(check_csync_is_windows_reserved_word, setup_init, teardown),
     };
 
     return run_tests(tests);

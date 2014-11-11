@@ -111,6 +111,7 @@ void OwncloudSetupWizard::startWizard()
         }
     }
 
+    _ocWizard->setProperty("oldLocalFolder", localFolder);
     _ocWizard->setProperty("localFolder", localFolder);
 
     // remember the local folder to compare later if it changed, but clean first
@@ -401,13 +402,19 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         _ocWizard->account()->deleteLater();
         qDebug() << "Rejected the new config, use the old!";
     } else if( result == QDialog::Accepted ) {
-
         Account *newAccount = _ocWizard->account();
         Account *origAccount = AccountManager::instance()->account();
 
         QString localFolder = QDir::fromNativeSeparators(_ocWizard->localFolder());
         if( !localFolder.endsWith(QLatin1Char('/'))) {
             localFolder.append(QLatin1Char('/'));
+        }
+
+        Folder *f = folderMan->folderForPath(localFolder);
+        if( f ) {
+            folderMan->setSyncEnabled(false);
+            folderMan->terminateSyncProcess(f->alias());
+            f->journalDb()->close();
         }
 
         bool isInitialSetup = (origAccount == 0);
@@ -421,7 +428,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         // 1. Initial setup, no prior account exists
         if (isInitialSetup) {
             folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                           localFolder, _remoteFolder );
+                                           localFolder, _remoteFolder, _ocWizard->blacklist() );
             replaceDefaultAccountWith(newAccount);
         }
         // 2. Server URL or user changed, requires reinit of folders
@@ -430,7 +437,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             if (startFromScratch) {
                 if (ensureStartFromScratch(localFolder)) {
                     folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                                   localFolder, _remoteFolder );
+                                                   localFolder, _remoteFolder, _ocWizard->blacklist() );
                     _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
                     replaceDefaultAccountWith(newAccount);
                 }
@@ -439,7 +446,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             else {
                 folderMan->removeAllFolderDefinitions();
                 folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                               localFolder, _remoteFolder );
+                                               localFolder, _remoteFolder, _ocWizard->blacklist() );
                 _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
                 replaceDefaultAccountWith(newAccount);
             }

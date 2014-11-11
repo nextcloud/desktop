@@ -1,3 +1,7 @@
+# (c) 2014 Copyright ownCloud, Inc.
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING* file.
+
 include (MacroOptionalFindPackage)
 include (MacroLogFeature)
 
@@ -66,10 +70,15 @@ endif()
 	qt5_add_resources(${ARGN})
     endmacro()
 
+if(NOT TOKEN_AUTH_ONLY)
     find_package(Qt5LinguistTools REQUIRED)
     macro(qt_add_translation)
 	qt5_add_translation(${ARGN})
     endmacro()
+	else()
+    macro(qt_add_translation)
+    endmacro()
+endif()
 
     macro(qt_add_dbus_interface)
 	qt5_add_dbus_interface(${ARGN})
@@ -149,7 +158,18 @@ if(NOT Qt5Core_FOUND)
         include( ${QT_USE_FILE} )
     endmacro()
 
-    add_definitions("-DQ_DECL_OVERRIDE=override")
+    if (CMAKE_COMPILER_IS_GNUCC)
+        execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
+                OUTPUT_VARIABLE GCC_VERSION)
+        if (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+            add_definitions("-DQ_DECL_OVERRIDE=override")
+        else()
+            add_definitions("-DQ_DECL_OVERRIDE=")
+        endif()
+    else() #clang or others
+        add_definitions("-DQ_DECL_OVERRIDE=override")
+    endif()
+
 endif()
 
 if( Qt5Core_DIR )

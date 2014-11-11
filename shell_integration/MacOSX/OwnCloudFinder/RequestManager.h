@@ -31,7 +31,7 @@
 
 + (RequestManager*)sharedInstance;
 
-- (BOOL)isRegisteredPath:(NSString*)path;
+- (BOOL)isRegisteredPath:(NSString*)path isDirectory:(BOOL)isDir;
 - (void)askOnSocket:(NSString*)path query:(NSString*)verb;
 - (NSNumber*)askForIcon:(NSString*)path isDirectory:(BOOL)isDir;
 - (void)menuItemClicked:(NSDictionary*)actionDictionary;

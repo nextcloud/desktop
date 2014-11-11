@@ -148,7 +148,7 @@ void OwncloudHttpCredsPage::setErrorString(const QString& err)
 
 AbstractCredentials* OwncloudHttpCredsPage::getCredentials() const
 {
-    return new HttpCredentials(_ui.leUsername->text(), _ui.lePassword->text());
+    return new HttpCredentialsGui(_ui.leUsername->text(), _ui.lePassword->text());
 }
 
 void OwncloudHttpCredsPage::setConfigExists(bool config)

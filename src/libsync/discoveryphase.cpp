@@ -16,9 +16,11 @@
 #include <csync_private.h>
 #include <qdebug.h>
 
+#include <QUrl>
+
 namespace Mirall {
 
-bool DiscoveryJob::isInBlackList(const QString& path) const
+bool DiscoveryJob::isInSelectiveSyncBlackList(const QString& path) const
 {
     if (_selectiveSyncBlackList.isEmpty()) {
         // If there is no black list, everything is allowed
@@ -35,19 +37,24 @@ bool DiscoveryJob::isInBlackList(const QString& path) const
 
     auto it = std::lower_bound(_selectiveSyncBlackList.begin(), _selectiveSyncBlackList.end(), pathSlash);
 
+    if (it != _selectiveSyncBlackList.end() && *it == pathSlash) {
+        return true;
+    }
+
 	if (it == _selectiveSyncBlackList.begin()) {
         return false;
     }
     --it;
-    if (pathSlash.startsWith(*it + QLatin1Char('/'))) {
+    Q_ASSERT(it->endsWith(QLatin1Char('/'))); // Folder::setSelectiveSyncBlackList makes sure of that
+    if (pathSlash.startsWith(*it)) {
         return true;
     }
     return false;
 }
 
-int DiscoveryJob::isInWhiteListCallBack(void *data, const char *path)
+int DiscoveryJob::isInSelectiveSyncBlackListCallBack(void *data, const char *path)
 {
-    return static_cast<DiscoveryJob*>(data)->isInBlackList(QString::fromUtf8(path));
+    return static_cast<DiscoveryJob*>(data)->isInSelectiveSyncBlackList(QString::fromUtf8(path));
 }
 
 void DiscoveryJob::update_job_update_callback (bool local,
@@ -65,15 +72,15 @@ void DiscoveryJob::update_job_update_callback (bool local,
             updateJob->lastUpdateProgressCallbackCall.restart();
         }
 
-        QString path = QString::fromUtf8(dirUrl).section('/', -1);
+        QString path(QUrl::fromPercentEncoding(QByteArray(dirUrl)).section('/', -1));
         emit updateJob->folderDiscovered(local, path);
     }
 }
 
 void DiscoveryJob::start() {
     _selectiveSyncBlackList.sort();
-    _csync_ctx->checkBlackListHook = isInWhiteListCallBack;
-    _csync_ctx->checkBlackListData = this;
+    _csync_ctx->checkSelectiveSyncBlackListHook = isInSelectiveSyncBlackListCallBack;
+    _csync_ctx->checkSelectiveSyncBlackListData = this;
 
     _csync_ctx->callbacks.update_callback = update_job_update_callback;
     _csync_ctx->callbacks.update_callback_userdata = this;
@@ -85,8 +92,8 @@ void DiscoveryJob::start() {
     lastUpdateProgressCallbackCall.invalidate();
     int ret = csync_update(_csync_ctx);
 
-    _csync_ctx->checkBlackListHook = 0;
-    _csync_ctx->checkBlackListData = 0;
+    _csync_ctx->checkSelectiveSyncBlackListHook = 0;
+    _csync_ctx->checkSelectiveSyncBlackListData = 0;
 
     _csync_ctx->callbacks.update_callback = 0;
     _csync_ctx->callbacks.update_callback_userdata = 0;

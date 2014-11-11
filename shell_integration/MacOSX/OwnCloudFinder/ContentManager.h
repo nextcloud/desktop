@@ -18,6 +18,7 @@
 {
 	NSMutableDictionary* _fileNamesCache;
 	BOOL _fileIconsEnabled;
+	BOOL _hasChangedContent;
 	
 	NSNumber *_icnOk;
 	NSNumber *_icnSync;
@@ -38,6 +39,9 @@
 - (void)setIcons:(NSDictionary*)iconDictionary filterByFolder:(NSString*)filterFolder;
 - (void)setResultForPath:(NSString*)path result:(NSString*)result;
 - (void)clearFileNameCacheForPath:(NSString*)path;
+- (void)reFetchFileNameCacheForPath:(NSString*)path;
 - (void)repaintAllWindows;
+
+- (void)loadIconResourcePath:(NSString*)path;
 
 @end

@@ -100,6 +100,8 @@ struct csync_s {
     sqlite3_stmt* by_hash_stmt;
     sqlite3_stmt* by_fileid_stmt;
     sqlite3_stmt* by_inode_stmt;
+
+    int lastReturnValue;
   } statedb;
 
   struct {
@@ -107,7 +109,6 @@ struct csync_s {
     c_rbtree_t *tree;
     c_list_t *list;
     enum csync_replica_e type;
-    c_list_t *ignored_cleanup;
   } local;
 
   struct {
@@ -116,8 +117,9 @@ struct csync_s {
     c_list_t *list;
     enum csync_replica_e type;
     int  read_from_db;
-    c_list_t *ignored_cleanup;
+    const char *root_perms; /* Permission of the root folder. (Since the root folder is not in the db tree, we need to keep a separate entry.) */
   } remote;
+
 
 #if defined(HAVE_ICONV) && defined(WITH_ICONV)
   struct {
@@ -148,8 +150,8 @@ struct csync_s {
   struct csync_owncloud_ctx_s *owncloud_context;
 
   /* hooks for checking the white list */
-  void *checkBlackListData;
-  int (*checkBlackListHook)(void*, const char*);
+  void *checkSelectiveSyncBlackListData;
+  int (*checkSelectiveSyncBlackListHook)(void*, const char*);
 };
 
 
@@ -167,6 +169,7 @@ struct csync_file_stat_s {
   int type;         /* u32 */
   int child_modified;/*bool*/
   int should_update_etag; /*bool */
+  int has_ignored_files; /*bool: specify that a directory, or child directory contains ignored files */
 
   char *destpath;   /* for renames */
   const char *etag;

@@ -253,6 +253,10 @@ void Application::slotCredentialsFetched()
 {
     Account *account = AccountManager::instance()->account();
     Q_ASSERT(account);
+    if (!account) {
+        qDebug() << Q_FUNC_INFO << "No account!";
+        return;
+    }
     disconnect(account->credentials(), SIGNAL(fetched()), this, SLOT(slotCredentialsFetched()));
     if (!account->credentials()->ready()) {
         // User canceled the connection or did not give a password
@@ -547,12 +551,15 @@ void Application::setupTranslations()
             setProperty("ui_lang", lang);
             const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
             const QString qtTrFile = QLatin1String("qt_") + lang;
-            if (qtTranslator->load(qtTrFile, qtTrPath)) {
-                qtTranslator->load(qtTrFile, trPath);
+            const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
+            if (!qtTranslator->load(qtTrFile, qtTrPath)) {
+                if (!qtTranslator->load(qtTrFile, trPath)) {
+                    qtTranslator->load(qtBaseTrFile, trPath);
+                }
             }
-            const QString qtkeychainFile = QLatin1String("qt_") + lang;
-            if (!qtkeychainTranslator->load(qtkeychainFile, qtTrPath)) {
-               qtkeychainTranslator->load(qtkeychainFile, trPath);
+            const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
+            if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
+                qtkeychainTranslator->load(qtkeychainTrFile, trPath);
             }
             if (!translator->isEmpty())
                 installTranslator(translator);

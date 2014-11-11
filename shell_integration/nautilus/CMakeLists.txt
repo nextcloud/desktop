@@ -1,1 +1,2 @@
-install(FILES ownCloud.py  DESTINATION ${DATADIR}/nautilus-python/extensions)
+
+install(FILES syncstate.py  DESTINATION ${DATADIR}/nautilus-python/extensions)

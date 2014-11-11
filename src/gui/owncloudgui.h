@@ -85,7 +85,7 @@ private:
 #endif
     QPointer<LogBrowser>_logBrowser;
        // tray's menu
-    QMenu *_contextMenu;
+    QScopedPointer<QMenu> _contextMenu;
     QMenu *_recentActionsMenu;
 
     QAction *_actionLogin;

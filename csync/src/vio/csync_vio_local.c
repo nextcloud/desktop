@@ -224,6 +224,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
         buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
         break;
     } while (0);
+    /* TODO Do we want to parse for CSYNC_VIO_FILE_FLAGS_HIDDEN ? */
     buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FLAGS;
     buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
 
@@ -237,7 +238,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     /* printf("Index: %I64i\n", FileIndex.QuadPart); */
     buf->inode = FileIndex.QuadPart;
 
-    buf->size = (fileInfo.nFileSizeHigh * (int64_t)(MAXDWORD+1)) + fileInfo.nFileSizeLow;
+    buf->size = (fileInfo.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + fileInfo.nFileSizeLow;
     buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
 
     /* Get the file time with a win32 call rather than through stat. See
@@ -321,6 +322,11 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   } else {
     buf->flags = CSYNC_VIO_FILE_FLAGS_NONE;
   }
+#ifdef __APPLE__
+  if (sb.st_flags & UF_HIDDEN) {
+      buf->flags |= CSYNC_VIO_FILE_FLAGS_HIDDEN;
+  }
+#endif
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FLAGS;
 
   buf->device = sb.st_dev;

@@ -36,6 +36,7 @@ public:
   virtual int nextId() const Q_DECL_OVERRIDE;
   bool validatePage() Q_DECL_OVERRIDE;
   QString localFolder() const;
+  QStringList blacklist() const;
   void setRemoteFolder( const QString& remoteFolder);
   void setMultipleFoldersExist( bool exist );
   void directoriesCreated();
@@ -49,6 +50,8 @@ public slots:
 
 private slots:
   void slotSelectFolder();
+  void slotSyncEverythingClicked();
+  void slotSelectiveSyncClicked();
 
 private:
   void setupCustomization();
@@ -65,6 +68,7 @@ private:
   QProgressIndicator* _progressIndi;
   QString _oldLocalFolder;
   QString _remoteFolder;
+  QStringList _blacklist;
 };
 
 } // ns Mirall

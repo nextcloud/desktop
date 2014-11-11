@@ -34,6 +34,7 @@ endif()
 set(libsync_SRCS
     account.cpp
     authenticationdialog.cpp
+    bandwidthmanager.cpp
     clientproxy.cpp
     connectionvalidator.cpp
     cookiejar.cpp
@@ -48,7 +49,10 @@ set(libsync_SRCS
     progressdispatcher.cpp
     propagatorjobs.cpp
     propagator_legacy.cpp
-    propagator_qnam.cpp
+    propagatedownload.cpp
+    propagateupload.cpp
+    propagateremotedelete.cpp
+    propagateremotemove.cpp
     quotainfo.cpp
     syncengine.cpp
     syncfilestatus.cpp
@@ -57,6 +61,7 @@ set(libsync_SRCS
     syncresult.cpp
     theme.cpp
     utility.cpp
+    ownsql.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialsfactory.cpp
@@ -176,7 +181,7 @@ else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
     if (SPARKLE_FOUND)
         install(DIRECTORY "${SPARKLE_LIBRARY}"
-	        DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks")
+	        DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks" USE_SOURCE_PERMISSIONS)
     endif (SPARKLE_FOUND)
 endif()
 

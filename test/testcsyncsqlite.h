@@ -8,6 +8,7 @@
 #define MIRALL_TESTCSYNCSQLITE_H
 
 #include "csync_statedb.h"
+#include "csync_private.h"
 #include <QtTest>
 
 
@@ -16,39 +17,12 @@ class TestCSyncSqlite : public QObject
     Q_OBJECT
 
 private:
-    /* Attention !!!!!!!!!!!!!!!!!!!
-     * This struct MY_CSYNC has to be a copy of the CSYNC struct defined
-     * in csync_private.h until the end of struct statedb.
-     * Subsequent functions cast the struct to CSYNC. In order to get the
-     * same values as in the original struct, the start must be the same.
-     */
-    typedef struct {
-        struct {
-            csync_auth_callback auth_function;
-            void *userdata;
-            csync_update_callback update_callback;
-            void *update_callback_userdata;
-        } callbacks;
-        c_strlist_t *excludes;
-
-        struct {
-            char *file;
-            sqlite3 *db;
-            int exists;
-            int disabled;
-
-            sqlite3_stmt* by_hash_stmt;
-            sqlite3_stmt* by_fileid_stmt;
-            sqlite3_stmt* by_inode_stmt;
-        } statedb;
-    } MY_CSYNC;
-
-    MY_CSYNC _ctx;
+    CSYNC _ctx;
 private slots:
     void initTestCase() {
         int rc;
 
-        memset(&_ctx, 0, sizeof(MY_CSYNC));
+        memset(&_ctx, 0, sizeof(CSYNC));
 
         _ctx.statedb.file = c_strdup("./test_journal.db");
 
