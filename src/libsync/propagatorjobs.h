@@ -83,12 +83,6 @@ public:
     void start() Q_DECL_OVERRIDE;
 
 };
-class PropagateRemoteRemove : public PropagateNeonJob {
-    Q_OBJECT
-public:
-    PropagateRemoteRemove (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
-    void start() Q_DECL_OVERRIDE;
-};
 class PropagateRemoteMkdir : public PropagateNeonJob {
     Q_OBJECT
 public:

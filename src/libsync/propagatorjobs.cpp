@@ -135,38 +135,6 @@ void PropagateLocalMkdir::start()
     done(SyncFileItem::Success);
 }
 
-void PropagateRemoteRemove::start()
-{
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
-        return;
-
-    QScopedPointer<char, QScopedPointerPodDeleter> uri(
-        ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-    emit progress(_item, 0);
-    qDebug() << "** DELETE " << uri.data();
-    int rc = ne_delete(_propagator->_session, uri.data());
-
-    QString errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-    int httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-    if( checkForProblemsWithShared(httpStatusCode,
-            tr("The file has been removed from a read only share. It was restored.")) ) {
-        return;
-    }
-
-    /* Ignore the error 404,  it means it is already deleted */
-    if (updateErrorFromSession(rc, 0, 404)) {
-        return;
-    }
-
-    //  Wed, 15 Nov 1995 06:25:24 GMT
-    QDateTime dt = QDateTime::currentDateTimeUtc();
-    _item._responseTimeStamp = dt.toString("hh:mm:ss");
-
-    _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
-    _propagator->_journal->commit("Remote Remove");
-    done(SyncFileItem::Success);
-}
-
 /* The list of properties that is fetched in PropFind after a MKCOL */
 static const ne_propname ls_props[] = {
     { "DAV:", "getetag"},

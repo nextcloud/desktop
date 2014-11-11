@@ -395,7 +395,6 @@ void PropagateDownloadFileQNAM::slotGetFinished()
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         }
 
-        _propagator->_activeJobs--;
         SyncFileItem::Status status = job->errorStatus();
         if (status == SyncFileItem::NoStatus) {
             status = classifyError(err, _item._httpErrorCode);

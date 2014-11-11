@@ -18,6 +18,7 @@
 #include "syncjournalfilerecord.h"
 #include "propagatedownload.h"
 #include "propagateupload.h"
+#include "propagateremotedelete.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
 #include "mirallconfigfile.h"
@@ -197,7 +198,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
     switch(item._instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
             if (item._direction == SyncFileItem::Down) return new PropagateLocalRemove(this, item);
-            else return new PropagateRemoteRemove(this, item);
+            else return new PropagateRemoteDelete(this, item);
         case CSYNC_INSTRUCTION_NEW:
             if (item._isDirectory) {
                 if (item._direction == SyncFileItem::Down) return new PropagateLocalMkdir(this, item);
