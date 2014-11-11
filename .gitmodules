@@ -7,3 +7,6 @@
 [submodule "binary"]
 	path = binary
 	url = git://github.com/owncloud/owncloud-client-binary.git
+[submodule "src/3rdparty/libcrashreporter-qt"]
+	path = src/3rdparty/libcrashreporter-qt
+	url = git://github.com/dschmidt/libcrashreporter-qt.git

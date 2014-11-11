@@ -377,6 +377,11 @@ bool Utility::isLinux()
 #endif
 }
 
+void Utility::crash()
+{
+    volatile int* a = (int*)(NULL);
+    *a = 1;
+}
 
 static const char STOPWATCH_END_TAG[] = "_STOPWATCH_END";
 

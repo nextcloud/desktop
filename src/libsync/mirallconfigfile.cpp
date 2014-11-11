@@ -44,6 +44,7 @@ static const char caCertsKeyC[] = "CaCertificates";
 static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
 static const char monoIconsC[] = "monoIcons";
+static const char crashReporterC[] = "crashReporter";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char geometryC[] = "geometry";
@@ -551,6 +552,18 @@ void MirallConfigFile::setMonoIcons(bool useMonoIcons)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(monoIconsC), useMonoIcons);
+}
+
+bool MirallConfigFile::crashReporter() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(crashReporterC), true).toBool();
+}
+
+void MirallConfigFile::setCrashReporter(bool enabled)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(crashReporterC), enabled);
 }
 
 }

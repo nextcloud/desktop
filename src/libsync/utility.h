@@ -90,6 +90,9 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT bool isUnix();
     OWNCLOUDSYNC_EXPORT bool isLinux(); // use with care
 
+    // crash helper for --debug
+    OWNCLOUDSYNC_EXPORT void crash();
+
     // Case preserving file system underneath?
     // if this function returns true, the file system is case preserving,
     // that means "test" means the same as "TEST" for filenames.

@@ -28,6 +28,13 @@
 
 #include "updater/updater.h"
 
+
+#include "config.h"
+#ifdef WITH_CRASHREPORTER
+    #include "mirallconfigfile.h"
+    #include <libcrashreporter-handler/Handler.h>
+#endif
+
 #include <QTimer>
 #include <QMessageBox>
 
@@ -51,6 +58,14 @@ int main(int argc, char **argv)
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
     Mirall::Application app(argc, argv);
+
+
+#ifdef WITH_CRASHREPORTER
+    CrashReporter::Handler* handler = new CrashReporter::Handler( QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE );
+    MirallConfigFile cfgFile;
+    handler->setActive(cfgFile.crashReporter());
+#endif
+
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
 #endif
