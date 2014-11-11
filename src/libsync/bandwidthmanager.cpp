@@ -13,7 +13,8 @@
  */
 
 #include "owncloudpropagator.h"
-#include "propagator_qnam.h"
+#include "propagatedownload.h"
+#include "propagateupload.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
 #include "utility.h"

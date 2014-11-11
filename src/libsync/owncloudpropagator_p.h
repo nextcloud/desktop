@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include <QNetworkReply>
+#include "syncfileitem.h"
+
 namespace Mirall {
 
 inline QByteArray parseEtag(const char *header) {
@@ -28,5 +31,33 @@ inline QByteArray parseEtag(const char *header) {
     return arr;
 }
 
+inline QByteArray getEtagFromReply(QNetworkReply *reply)
+{
+    QByteArray ret = parseEtag(reply->rawHeader("OC-ETag"));
+    if (ret.isEmpty()) {
+        ret = parseEtag(reply->rawHeader("ETag"));
+    }
+    return ret;
+}
+
+/**
+ * Fiven an error from the network, map to a SyncFileItem::Status error
+ */
+inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror, int httpCode) {
+    Q_ASSERT (nerror != QNetworkReply::NoError); // we should only be called when there is an error
+
+    if (nerror > QNetworkReply::NoError &&  nerror <= QNetworkReply::UnknownProxyError) {
+        // network error or proxy error -> fatal
+        return SyncFileItem::FatalError;
+    }
+
+    if (httpCode == 412) {
+        // "Precondition Failed"
+        // Happens when the e-tag has changed
+        return SyncFileItem::SoftError;
+    }
+
+    return SyncFileItem::NormalError;
+}
 
 }

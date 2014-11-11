@@ -49,7 +49,8 @@ set(libsync_SRCS
     progressdispatcher.cpp
     propagatorjobs.cpp
     propagator_legacy.cpp
-    propagator_qnam.cpp
+    propagatedownload.cpp
+    propagateupload.cpp
     quotainfo.cpp
     syncengine.cpp
     syncfilestatus.cpp
