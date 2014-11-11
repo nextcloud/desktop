@@ -41,18 +41,18 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             sock_file = os.environ["XDG_RUNTIME_DIR"]+postfix
             print ("XXXX " + sock_file + " <=> " + postfix)
             if sock_file != postfix:
-		try:
-		    print("Socket File: "+sock_file)
-		    self.sock.connect(sock_file)
-		    self.connected = True
-		    print("Setting connected to %r" % self.connected )
-		    self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
-		    do_reconnect = False
-		except Exception, e:
-		    print("Could not connect to unix socket." + str(e))
-	    else:
-		 print("Sock-File not valid: "+sock_file)
-        except Exception, e:
+                try:
+                    print("Socket File: "+sock_file)
+                    self.sock.connect(sock_file)
+                    self.connected = True
+                    print("Setting connected to %r" % self.connected )
+                    self.watch_id = GObject.io_add_watch(self.sock, GObject.IO_IN, self.handle_notify)
+                    do_reconnect = False
+                except Exception as e:
+                    print("Could not connect to unix socket." + str(e))
+            else:
+                print("Sock-File not valid: "+sock_file)
+        except Exception as e:
             print("Connect could not be established, try again later " + str(e))
             self.sock.close()
         # print("Returning %r" % do_reconnect)
@@ -75,7 +75,7 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             return None
 
     def askForOverlay(self, file):
-	# print("Asking for overlay for "+file)
+        # print("Asking for overlay for "+file)
         if os.path.isdir(file):
             folderStatus = self.sendCommand("RETRIEVE_FOLDER_STATUS:"+file+"\n");
 
@@ -85,15 +85,15 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
     def invalidate_items_underneath(self, path):
         update_items = []
         if not self.nautilusVFSFile_table:
-	    self.askForOverlay(path)
-	else:
-	    for p in self.nautilusVFSFile_table:
-		if p == path or p.startswith(path):
-		    item = self.nautilusVFSFile_table[p]['item']
-		    update_items.append(item)
+            self.askForOverlay(path)
+        else:
+            for p in self.nautilusVFSFile_table:
+                if p == path or p.startswith(path):
+                    item = self.nautilusVFSFile_table[p]['item']
+                    update_items.append(item)
 
-	    for item in update_items:
-		item.invalidate_extension_info()
+            for item in update_items:
+                item.invalidate_extension_info()
 
     # Handles a single line of server respoonse and sets the emblem
     def handle_server_response(self, l):
@@ -118,16 +118,16 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             # file = parts[1]
             # print "Action for " + file + ": "+parts[0]
             if action == 'STATUS':
-		newState = parts[1]
+                newState = parts[1]
                 emblem = Emblems[newState]
                 if emblem:
                     itemStore = self.find_item_for_file(parts[2])
                     if itemStore:
-			if( not itemStore['state'] or newState != itemStore['state'] ):
-			    item = itemStore['item']
-			    item.add_emblem(emblem)
-			    # print "Setting emblem on " + parts[2]+ "<>"+emblem+"<>"
-			    self.nautilusVFSFile_table[parts[2]] = {'item': item, 'state':newState}
+                        if( not itemStore['state'] or newState != itemStore['state'] ):
+                            item = itemStore['item']
+                            item.add_emblem(emblem)
+                            # print "Setting emblem on " + parts[2]+ "<>"+emblem+"<>"
+                            self.nautilusVFSFile_table[parts[2]] = {'item': item, 'state':newState}
 
             elif action == 'UPDATE_VIEW':
                 # Search all items underneath this path and invalidate them
