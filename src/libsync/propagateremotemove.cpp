@@ -29,7 +29,7 @@ MoveJob::MoveJob(Account* account, const QString& path,
 void MoveJob::start()
 {
     QNetworkRequest req;
-    req.setRawHeader("Destination", _destination.toUtf8());
+    req.setRawHeader("Destination", QUrl::toPercentEncoding(_destination, "/"));
     setReply(davRequest("MOVE", path(), req));
     setupConnections(reply());
 
