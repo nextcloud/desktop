@@ -127,10 +127,9 @@ glob_put( "$tmpdir2/*", "parallel" );
 
 csync();
 
-# We assume the smaller file finished first, blocking
-# the second file from being saved.
-assert( !-e localDir() . 'parallel/FILE.dat' );
-assert( -e localDir() . 'parallel/file.dat' );
+# only one file must exist
+assert( (!-e localDir() . 'parallel/FILE.dat' ) or (!-e localDir() . 'parallel/file.dat') );
+assert( (-e localDir() . 'parallel/FILE.dat' ) or (-e localDir() . 'parallel/file.dat') );
 
 cleanup();
 system("rm -r " . $tmpdir);
