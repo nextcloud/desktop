@@ -1540,24 +1540,27 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>Hetkel ei ignoreerita ühtegi faili eelnenud vigade tõttu ja ühtegi allalaadimist ei toimu</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n fail on ignoreeritud eelnenud vigade tõttu</numerusform><numerusform>%n faili on ignoreeritud eelnenud vigade tõttu
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n fail on osaliselt allalaaditud
+</numerusform><numerusform>%n fail on osaliselt allalaaditud
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Proovi neid uuesti sünkroniseerida.</translation>
     </message>
 </context>
 <context>
