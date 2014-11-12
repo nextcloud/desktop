@@ -544,6 +544,8 @@ void SyncEngine::startSync()
         qDebug() << "=====sync with existing DB";
     }
 
+    qDebug() <<  "=====Using Qt" << qVersion() << "with" << QSslSocket::sslLibraryVersionString().toUtf8().data();
+
     fileRecordCount = _journal->getFileRecordCount(); // this creates the DB if it does not exist yet
     bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
 
