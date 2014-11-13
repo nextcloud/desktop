@@ -20,6 +20,7 @@
 #include "propagateupload.h"
 #include "propagateremotedelete.h"
 #include "propagateremotemove.h"
+#include "propagateremotemkdir.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
 #include "mirallconfigfile.h"
