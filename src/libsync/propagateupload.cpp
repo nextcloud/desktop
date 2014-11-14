@@ -14,6 +14,7 @@
 
 #include "propagateupload.h"
 #include "owncloudpropagator_p.h"
+#include "propagator_legacy.h"
 #include "networkjobs.h"
 #include "account.h"
 #include "syncjournaldb.h"

@@ -35,15 +35,6 @@
 #include <qstack.h>
 #include <QCoreApplication>
 
-#include <neon/ne_basic.h>
-#include <neon/ne_socket.h>
-#include <neon/ne_session.h>
-#include <neon/ne_props.h>
-#include <neon/ne_auth.h>
-#include <neon/ne_dates.h>
-#include <neon/ne_compress.h>
-#include <neon/ne_redirect.h>
-
 #include <time.h>
 
 
@@ -180,80 +171,5 @@ void PropagateLocalRename::start()
 
     done(SyncFileItem::Success);
 }
-
-bool PropagateNeonJob::updateErrorFromSession(int neon_code, ne_request* req, int ignoreHttpCode)
-{
-    if( neon_code != NE_OK ) {
-        qDebug("Neon error code was %d", neon_code);
-    }
-
-    QString errorString;
-    int httpStatusCode = 0;
-
-    switch(neon_code) {
-        case NE_OK:     /* Success, but still the possiblity of problems */
-            if( req ) {
-                const ne_status *status = ne_get_status(req);
-
-                if (status) {
-                    if ( status->klass == 2 || status->code == ignoreHttpCode) {
-                        // Everything is ok, no error.
-                        return false;
-                    }
-                    errorString = QString::fromUtf8( status->reason_phrase );
-                    httpStatusCode = status->code;
-                    _item._httpErrorCode = httpStatusCode;
-                }
-            } else {
-                errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-                httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-                _item._httpErrorCode = httpStatusCode;
-                if ((httpStatusCode >= 200 && httpStatusCode < 300)
-                    || (httpStatusCode != 0 && httpStatusCode == ignoreHttpCode)) {
-                    // No error
-                    return false;
-                    }
-            }
-            // FIXME: classify the error
-            done (SyncFileItem::NormalError, errorString);
-            return true;
-        case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
-            errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-            // Check if we don't need to ignore that error.
-            httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-            _item._httpErrorCode = httpStatusCode;
-            qDebug() << Q_FUNC_INFO << "NE_ERROR" << errorString << httpStatusCode << ignoreHttpCode;
-            if (ignoreHttpCode && httpStatusCode == ignoreHttpCode)
-                return false;
-
-            done(SyncFileItem::NormalError, errorString);
-            return true;
-        case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
-        case NE_AUTH:     /* User authentication failed on server */
-        case NE_PROXYAUTH:  /* User authentication failed on proxy */
-        case NE_CONNECT:  /* Could not connect to server */
-        case NE_TIMEOUT:  /* Connection timed out */
-            done(SyncFileItem::FatalError, QString::fromUtf8(ne_get_error(_propagator->_session)));
-            return true;
-        case NE_FAILED:   /* The precondition failed */
-        case NE_RETRY:    /* Retry request (ne_end_request ONLY) */
-        case NE_REDIRECT: /* See ne_redirect.h */
-        default:
-            done(SyncFileItem::SoftError, QString::fromUtf8(ne_get_error(_propagator->_session)));
-            return true;
-    }
-    return false;
-}
-
-void UpdateMTimeAndETagJob::start()
-{
-    QScopedPointer<char, QScopedPointerPodDeleter> uri(
-        ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-    if (!updateMTimeAndETag(uri.data(), _item._modtime))
-        return;
-    done(SyncFileItem::Success);
-}
-
-
 
 }
