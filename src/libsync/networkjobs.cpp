@@ -498,7 +498,8 @@ void PropfindJob::start()
     QByteArray propStr;
     foreach (const QByteArray &prop, properties) {
         if (prop.contains(':')) {
-            propStr += "    <" + prop + " />\n";
+            int colIdx = prop.lastIndexOf(":");
+            propStr += "    <" + prop.mid(colIdx+1) + " xmlns=\"" + prop.left(colIdx) + "\" />\n";
         } else {
             propStr += "    <d:" + prop + " />\n";
         }
@@ -545,17 +546,16 @@ bool PropfindJob::finished()
         while (!reader.atEnd()) {
             QXmlStreamReader::TokenType type = reader.readNext();
             if (type == QXmlStreamReader::StartElement) {
-                if (curElement.isEmpty()) {
-                    curElement.push(reader.name().toString());
-                    items.insert(reader.name().toString(), reader.text().toString());
+                if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
+                    items.insert(reader.name().toString(), reader.readElementText());
                 }
+                curElement.push(reader.name().toString());
             }
             if (type == QXmlStreamReader::EndElement) {
                 if(curElement.top() == reader.name()) {
                     curElement.pop();
                 }
             }
-
         }
         emit result(items);
     } else {
