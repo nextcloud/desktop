@@ -22,31 +22,6 @@
 
 namespace Mirall {
 
-class ChunkBlock {
-
-public:
-    explicit ChunkBlock() : _state(NotTransfered) { }
-    enum State {
-        CHUNK_SUCCESS,
-        NotTransfered,           /* never tried to transfer     */
-        Transfered,              /* transfer currently running  */
-        TransferFailed,          /* transfer tried but failed   */
-        TransferSuccess,         /* block transfer succeeded.   */
-        Fail
-    };
-
-    int      _sequenceNo;
-    int64_t  _start;
-    int64_t  _size;
-
-    State    _state;
-    int      _httpResultCode;
-    QString  _httpErrorMsg;
-    QString  _etag;
-    QBuffer *_buffer;
-
-};
-
 class PUTFileJob : public AbstractNetworkJob {
     Q_OBJECT
     QSharedPointer<QIODevice> _device;
