@@ -1118,7 +1118,11 @@ It is not advisable to use it.</source>
 %1
 
 Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося безпечно підключитися.
+
+%1
+
+Бажаєте підключитися без шифрування (не рекомендується)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>

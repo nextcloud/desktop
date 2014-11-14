@@ -1118,7 +1118,11 @@ We adviseren deze site niet te gebruiken.</translation>
 %1
 
 Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Kon geen beveiligde verbinding maken:
+
+%1
+
+Wilt u een onversleutelde verbinding maken (niet aanbevolen)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>

@@ -1118,7 +1118,11 @@ Nedoporučuje se jí používat.</translation>
 %1
 
 Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Nelze se připojit zabezpečeně:
+
+%1
+
+Chcete se místo toho připojit nezabezpečeně (nedoporučuje se)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
