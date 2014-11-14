@@ -21,6 +21,41 @@
 #include <QDebug>
 
 namespace Mirall {
+class BandwidthManager;
+
+class UploadDevice : public QIODevice {
+    Q_OBJECT
+public:
+    QPointer<QIODevice> _file;
+    qint64 _read;
+    qint64 _size;
+    qint64 _start;
+    BandwidthManager* _bandwidthManager;
+
+    qint64 _bandwidthQuota;
+    qint64 _readWithProgress;
+
+    UploadDevice(QIODevice *file,  qint64 start, qint64 size, BandwidthManager *bwm);
+    ~UploadDevice();
+    virtual qint64 writeData(const char* , qint64 );
+    virtual qint64 readData(char* data, qint64 maxlen);
+    virtual bool atEnd() const;
+    virtual qint64 size() const;
+    qint64 bytesAvailable() const;
+    virtual bool isSequential() const;
+    virtual bool seek ( qint64 pos );
+
+    void setBandwidthLimited(bool);
+    bool isBandwidthLimited() { return _bandwidthLimited; }
+    void setChoked(bool);
+    bool isChoked() { return _choked; }
+    void giveBandwidthQuota(qint64 bwq);
+private:
+    bool _bandwidthLimited; // if _bandwidthQuota will be used
+    bool _choked; // if upload is paused (readData() will return 0)
+protected slots:
+    void slotJobUploadProgress(qint64 sent, qint64 t);
+};
 
 class PUTFileJob : public AbstractNetworkJob {
     Q_OBJECT
