@@ -344,21 +344,31 @@ bool OwncloudPropagator::useLegacyJobs()
         return true;
     }
 
-    env = qgetenv("OWNCLOUD_NEW_BANDWIDTH_LIMITING");
-    if (env=="true" || env =="1") {
-        qDebug() << "New Bandwidth Limiting Code ACTIVATED";
-        // Only certain Qt versions support this at the moment.
-        // They need those Change-Ids: Idb1c2d5a382a704d8cc08fe03c55c883bfc95aa7 Iefbcb1a21d8aedef1eb11761232dd16a049018dc
-        // FIXME We need to check the Qt version and then also return false here as soon
-        // as mirall ships with those Qt versions on Windows and OS X
-        return false;
-    }
-
     if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
-        qDebug() << "Switching To Legacy Propagator Because Of Bandwidth Limit ACTIVATED";
-        // QNAM does not support bandwith limiting
-        // in most Qt versions.
+        // QNAM bandwith limiting only work with version of Qt greater or equal to 5.3.3
+        // (It needs Qt commits 097b641 and b99fa32)
+#if QT_VERSION >= QT_VERSION_CHECK(5,3,3)
         return true;
+#elif QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        env = qgetenv("OWNCLOUD_NEW_BANDWIDTH_LIMITING");
+        if (env=="true" || env =="1") {
+            qDebug() << "New Bandwidth Limiting Code ACTIVATED";
+            return true;
+        }
+
+        // Do a runtime check.
+        // (Poor man's version comparison)
+        const char *v = qVersion(); // "x.y.z";
+        if (QLatin1String(v) >= QLatin1String("5.3.3")) {
+            return true;
+        } else {
+            qDebug() << "Use legacy jobs because qt version is only" << v << "while 5.3.3 is needed";
+            return false;
+        }
+#else
+        qDebug() << "Use legacy jobs because of Qt4";
+        return false;
+#endif
     }
 
     return false;
