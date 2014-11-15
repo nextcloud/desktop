@@ -508,7 +508,9 @@ SectionGroup $SectionGroup_Shortcuts
       SetDetailsPrint textonly
       DetailPrint $OPTION_SECTION_SC_DESKTOP_DetailPrint
       SetDetailsPrint listonly
+      SetShellVarContext all
       CreateShortCut "$DESKTOP\${APPLICATION_NAME}.lnk" "$INSTDIR\${APPLICATION_EXECUTABLE}"
+      SetShellVarContext current
    ${MementoSectionEnd}
 !endif
 
@@ -517,8 +519,10 @@ SectionGroup $SectionGroup_Shortcuts
       SectionIn 1 2
       SetDetailsPrint textonly
       DetailPrint $OPTION_SECTION_SC_QUICK_LAUNCH_DetailPrint
+      SetShellVarContext all
       SetDetailsPrint listonly
       CreateShortCut "$QUICKLAUNCH\${APPLICATION_NAME}.lnk" "$INSTDIR\${APPLICATION_EXECUTABLE}"
+      SetShellVarContext current
    ${MementoSectionEnd}
 !endif
 
