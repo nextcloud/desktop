@@ -10,3 +10,12 @@ set( APPLICATION_REV_DOMAIN "com.owncloud.desktopclient" )
 set( WIN_SETUP_BITMAP_PATH  "${CMAKE_SOURCE_DIR}/admin/win/nsi" )
 # set( THEME_INCLUDE          "${OEM_THEME_DIR}/mytheme.h" )
 # set( APPLICATION_LICENSE    "${OEM_THEME_DIR}/license.txt )
+
+
+# please ignore the 5 lines below this
+# need this logic to not mess with re/uninstallations via macosx.pkgproj
+if(${APPLICATION_REV_DOMAIN} STREQUAL "com.owncloud.desktopclient")
+    set(APPLICATION_REV_DOMAIN_INSTALLER "com.ownCloud.client")
+else()
+set(APPLICATION_REV_DOMAIN_INSTALLER ${APPLICATION_REV_DOMAIN})
+endif()
