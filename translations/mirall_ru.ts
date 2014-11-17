@@ -1561,7 +1561,7 @@ Do you want to connect unencrypted instead (not recommended)?</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Попробуйте синхронизировать позже</translation>
     </message>
 </context>
 <context>
