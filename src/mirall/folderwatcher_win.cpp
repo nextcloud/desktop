@@ -25,73 +25,42 @@ namespace Mirall {
 
 void WatcherThread::run()
 {
-    _handle = CreateFileW(
-        (wchar_t*)_path.utf16(),
-        FILE_LIST_DIRECTORY,
-        FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
-        NULL,
-        OPEN_EXISTING,
-        FILE_FLAG_BACKUP_SEMANTICS,
-        NULL
-        );
+    _handle = FindFirstChangeNotification((wchar_t*)_path.utf16(),
+                                         true, // recursive watch
+                                         FILE_NOTIFY_CHANGE_FILE_NAME |
+                                         FILE_NOTIFY_CHANGE_DIR_NAME |
+                                         FILE_NOTIFY_CHANGE_LAST_WRITE);
 
     if (_handle == INVALID_HANDLE_VALUE)
     {
-        qDebug() << Q_FUNC_INFO << "Failed to set up a watch for" << _path << ", stopping watcher!";
+        qDebug() << Q_FUNC_INFO << "FindFirstChangeNotification function failed, stopping watcher!";
         FindCloseChangeNotification(_handle);
         _handle = 0;
         return;
     }
 
-    size_t bufsize = 4096;
-    size_t maxlen = 4096;
+    if (_handle == NULL)
+    {
+        qDebug() << Q_FUNC_INFO << "FindFirstChangeNotification returned null, stopping watcher!";
+        FindCloseChangeNotification(_handle);
+        _handle = 0;
+        return;
+    }
+
     while(true) {
-        char fileNotify[bufsize];
-        FILE_NOTIFY_INFORMATION *pFileNotify =
-                (FILE_NOTIFY_INFORMATION*)fileNotify;
-        DWORD dwBytesReturned = 0;
-        SecureZeroMemory(pFileNotify, bufsize);
-        if(ReadDirectoryChangesW( _handle, (LPVOID)pFileNotify,
-                                  bufsize, true,
-                                  FILE_NOTIFY_CHANGE_FILE_NAME |
-                                  FILE_NOTIFY_CHANGE_DIR_NAME |
-                                  FILE_NOTIFY_CHANGE_LAST_WRITE,
-                                  &dwBytesReturned, NULL, NULL))
-        {
-            FILE_NOTIFY_INFORMATION *curEntry = pFileNotify;
-            while(true) {
-                size_t len = pFileNotify->FileNameLength / 2;
-                QString file = _path + "\\" + QString::fromWCharArray(pFileNotify->FileName, len);
-
-                QString longfile;
-                QScopedArrayPointer<TCHAR> buffer(new TCHAR[maxlen]);
-                if (GetLongPathNameW(reinterpret_cast<LPCWSTR>(file.utf16()), buffer.data(), maxlen) == 0) {
-                    qDebug() << Q_FUNC_INFO << "Error converting file name to full length, resorting to original name.";
-                    longfile = file;
-                } else {
-                    longfile = QString::fromUtf16(reinterpret_cast<const ushort *>(buffer.data()), maxlen-1);
-                }
-
-                qDebug() << Q_FUNC_INFO << "Found change in" << file;
-                emit changed(longfile);
-                if (curEntry->NextEntryOffset == 0) {
-                    break;
-                }
-                curEntry = (FILE_NOTIFY_INFORMATION*)
-                                (char*)curEntry + curEntry->NextEntryOffset;
+        switch(WaitForSingleObject(_handle, /*wait*/ INFINITE)) {
+        case WAIT_OBJECT_0:
+            if (FindNextChangeNotification(_handle) == false) {
+                qDebug() << Q_FUNC_INFO << "FindFirstChangeNotification returned FALSE, stopping watcher!";
+                FindCloseChangeNotification(_handle);
+                _handle = 0;
+                return;
             }
-        } else {
-            switch(GetLastError()) {
-            case ERROR_NOTIFY_ENUM_DIR:
-                qDebug() << Q_FUNC_INFO << "Too many events for buffer, resizing";
-                bufsize *= 2;
-                break;
-            default:
-                qDebug() << Q_FUNC_INFO << "General error while watching. Exiting.";
-                CloseHandle(_handle);
-                _handle = NULL;
-                break;
-            }
+            // qDebug() << Q_FUNC_INFO << "Change detected in" << _path << "from" << QThread::currentThread    ();
+            emit changed(_path);
+            break;
+        default:
+            qDebug()  << Q_FUNC_INFO << "Error while watching";
         }
     }
 }
