@@ -78,7 +78,6 @@ void PropagateRemoteMove::start()
         connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
         _propagator->_activeJobs++;
         _job->start();
-        emitReady();
     }
 }
 

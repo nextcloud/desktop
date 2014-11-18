@@ -72,6 +72,8 @@ public:
         : PropagateItemJob(propagator, item), _lastProgress(0), _httpStatusCode(0) {
             moveToThread(propagator->_neonThread);
         }
+
+    JobParallelism parallelism() Q_DECL_OVERRIDE { return WaitForFinished; }
 };
 
 class UpdateMTimeAndETagJob : public PropagateNeonJob {

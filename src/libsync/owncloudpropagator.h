@@ -45,19 +45,28 @@ class PropagatorJob : public QObject {
     Q_OBJECT
 protected:
     OwncloudPropagator *_propagator;
-    void emitReady() {
-        bool wasReady = _readySent;
-        _readySent = true;
-        if (!wasReady)
-            emit ready();
-    };
+
 public:
-    bool _readySent;
-    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator), _readySent(false) {}
+    enum JobState {
+        NotYetStarted,
+        Running,
+        Finished
+    };
+
+    enum JobParallelism {
+        FullParallelism,
+        WaitForFinished,
+        WaitForFinishedInParentDirectory
+    };
+
+    JobState _state;
+    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator), _state(NotYetStarted) {}
+
 
 public slots:
-    virtual void start() = 0;
+    virtual JobParallelism parallelism() { return FullParallelism; }
     virtual void abort() {}
+    virtual bool scheduleNextJob() = 0;
 signals:
     /**
      * Emitted when the job is fully finished
@@ -111,7 +120,8 @@ public:
         _subJobs.append(subJob);
     }
 
-    virtual void start() Q_DECL_OVERRIDE;
+    virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
+    virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
     virtual void abort() Q_DECL_OVERRIDE {
         if (_firstJob)
             _firstJob->abort();
@@ -120,23 +130,23 @@ public:
     }
 
 private slots:
-    void startJob(PropagatorJob *next) {
-        connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
-        connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
-        connect(next, SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
-        connect(next, SIGNAL(ready()), this, SLOT(slotSubJobReady()));
-        _runningNow++;
-        QMetaObject::invokeMethod(next, "start", Qt::QueuedConnection);
+    bool possiblyRunNextJob(PropagatorJob *next) {
+        if (next->_state == NotYetStarted) {
+            connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
+            connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
+            connect(next, SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
+            connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
+            _runningNow++;
+        }
+        return next->scheduleNextJob();
     }
 
     void slotSubJobFinished(SyncFileItem::Status status);
-    void slotSubJobReady();
 };
 
 
 /*
  * Abstract class to propagate a single item
- * (Only used for neon job)
  */
 class PropagateItemJob : public PropagatorJob {
     Q_OBJECT
@@ -168,6 +178,16 @@ private:
 public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItem &item)
         : PropagatorJob(propagator), _item(item) {}
+
+    bool scheduleNextJob() Q_DECL_OVERRIDE {
+        if (_state != NotYetStarted) {
+            return false;
+        }
+        _state = Running;
+        start();
+        return true;
+    }
+    virtual void start() = 0;
 
 };
 
@@ -259,6 +279,8 @@ private slots:
             emit finished();
         _finishedEmited = true;
     }
+
+    void scheduleNextJob();
 
 signals:
     void completed(const SyncFileItem &);

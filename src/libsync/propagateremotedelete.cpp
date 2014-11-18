@@ -60,7 +60,6 @@ void PropagateRemoteDelete::start()
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotDeleteJobFinished()));
     _propagator->_activeJobs ++;
     _job->start();
-    emitReady();
 }
 
 void PropagateRemoteDelete::abort()

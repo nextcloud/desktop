@@ -33,7 +33,6 @@ void PropagateRemoteMkdir::start()
     connect(_job, SIGNAL(finished(QNetworkReply::NetworkError)), this, SLOT(slotMkcolJobFinished()));
     _propagator->_activeJobs++;
     _job->start();
-    emitReady();
 }
 
 void PropagateRemoteMkdir::abort()

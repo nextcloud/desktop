@@ -361,7 +361,6 @@ void PropagateDownloadFileQNAM::start()
     connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
     _propagator->_activeJobs ++;
     _job->start();
-    emitReady();
 }
 
 void PropagateDownloadFileQNAM::slotGetFinished()

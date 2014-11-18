@@ -404,7 +404,7 @@ void PropagateUploadFileQNAM::startNextChunk()
             startNextChunk();
         }
         if (!parallelChunkUpload || _chunkCount - _currentChunk <= 0) {
-            emitReady();
+            emit ready();
         }
     } else {
         qDebug() << "ERR: Could not open upload file: " << device->errorString();

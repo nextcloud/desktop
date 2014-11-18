@@ -40,6 +40,7 @@ class PropagateLocalRename : public PropagateItemJob {
 public:
     PropagateLocalRename (OwncloudPropagator* propagator,const SyncFileItem& item)  : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
+    JobParallelism parallelism() Q_DECL_OVERRIDE { return WaitForFinishedInParentDirectory; }
 };
 
 
