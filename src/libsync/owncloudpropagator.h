@@ -41,31 +41,52 @@ class Account;
 class SyncJournalDb;
 class OwncloudPropagator;
 
+/**
+ * @class PropagatorJob
+ * @brief the base class of propagator jobs
+ *
+ * This can either be a job, or a container for jobs.
+ * If it is a composite jobs, it then inherits from PropagateDirectory
+ *
+ *
+ */
+
 class PropagatorJob : public QObject {
     Q_OBJECT
 protected:
     OwncloudPropagator *_propagator;
 
 public:
+    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator), _state(NotYetStarted) {}
+
     enum JobState {
         NotYetStarted,
         Running,
         Finished
     };
+    JobState _state;
 
     enum JobParallelism {
+
+        /** Jobs can be run in parallel to this job */
         FullParallelism,
+        /** This job do not support parallelism, and no other job shall
+            be started until this one has finished */
         WaitForFinished,
+
+        /** This job support paralelism with other jobs in the same directory, but it should
+             not be paralelized with jobs in other directories  (typically a move operation) */
         WaitForFinishedInParentDirectory
     };
 
-    JobState _state;
-    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator), _state(NotYetStarted) {}
-
+    virtual JobParallelism parallelism() { return FullParallelism; }
 
 public slots:
-    virtual JobParallelism parallelism() { return FullParallelism; }
     virtual void abort() {}
+
+    /** Starts this job, or a new subjob
+     * returns true if a job was started.
+     */
     virtual bool scheduleNextJob() = 0;
 signals:
     /**
@@ -79,9 +100,8 @@ signals:
     void completed(const SyncFileItem &);
 
     /**
-     * Emitted when all the sub-jobs have been scheduled and
-     * we are ready and more jobs might be started
-     * This signal is not always emitted.
+     * Emitted when all the sub-jobs have been finished and
+     * more jobs might be started  (so scheduleNextJob can/must be called again)
      */
     void ready();
 
