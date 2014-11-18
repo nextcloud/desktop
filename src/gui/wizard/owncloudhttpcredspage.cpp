@@ -26,7 +26,7 @@
 namespace OCC
 {
 
-OwncloudHttpCredsPage::OwncloudHttpCredsPage()
+OwncloudHttpCredsPage::OwncloudHttpCredsPage(QWidget* parent)
   : AbstractCredentialsWizardPage(),
     _ui(),
     _connected(false),
@@ -35,6 +35,10 @@ OwncloudHttpCredsPage::OwncloudHttpCredsPage()
     _progressIndi(new QProgressIndicator (this))
 {
     _ui.setupUi(this);
+
+    if(parent){
+        _ocWizard = qobject_cast<OwncloudWizard *>(parent);
+    }
 
     registerField( QLatin1String("OCUser*"),   _ui.leUsername);
     registerField( QLatin1String("OCPasswd*"), _ui.lePassword);
@@ -148,7 +152,8 @@ void OwncloudHttpCredsPage::setErrorString(const QString& err)
 
 AbstractCredentials* OwncloudHttpCredsPage::getCredentials() const
 {
-    return new HttpCredentialsGui(_ui.leUsername->text(), _ui.lePassword->text());
+    QDateTime now = QDateTime::currentDateTime();
+    return new HttpCredentialsGui(_ui.leUsername->text(), _ui.lePassword->text(), _ocWizard->ownCloudCertificatePath, now.toString(QLatin1String("yyyy-MM-dd")), _ocWizard->ownCloudCertificatePasswd);
 }
 
 void OwncloudHttpCredsPage::setConfigExists(bool config)

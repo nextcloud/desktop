@@ -59,6 +59,9 @@ int getauth(const char *prompt,
     QString qPrompt = QString::fromLatin1( prompt ).trimmed();
     QString user = http_credentials->user();
     QString pwd  = http_credentials->password();
+    QString certificatePath = http_credentials->certificatePath();
+    QString certificateDate = http_credentials->certificateDate();
+    QString certificatePasswd = http_credentials->certificatePasswd();
 
     if( qPrompt == QLatin1String("Enter your username:") ) {
         // qDebug() << "OOO Username requested!";
@@ -79,6 +82,9 @@ int getauth(const char *prompt,
 namespace
 {
 const char userC[] = "user";
+const char certifPathC[] = "certificatePath";
+const char certifPasswdC[] = "certificatePasswd";
+const char certifDateC[] = "certificateDate";
 const char authenticationFailedC[] = "owncloud-authentication-failed";
 } // ns
 
@@ -101,15 +107,21 @@ private:
 HttpCredentials::HttpCredentials()
     : _user(),
       _password(),
+      _certificatePath(),
+      _certificateDate(),
+      _certificatePasswd(),
       _ready(false),
       _fetchJobInProgress(false),
       _readPwdFromDeprecatedPlace(false)
 {
 }
 
-HttpCredentials::HttpCredentials(const QString& user, const QString& password)
+HttpCredentials::HttpCredentials(const QString& user, const QString& password, const QString& certificatePath, const QString& certificateDate, const QString& certificatePasswd)
     : _user(user),
       _password(password),
+      _certificatePath(certificatePath),
+      _certificateDate(certificateDate),
+      _certificatePasswd(certificatePasswd),
       _ready(true),
       _fetchJobInProgress(false)
 {
@@ -118,6 +130,13 @@ HttpCredentials::HttpCredentials(const QString& user, const QString& password)
 void HttpCredentials::syncContextPreInit (CSYNC* ctx)
 {
     csync_set_auth_callback (ctx, getauth);
+    // create a SSL client certificate configuration in CSYNC* ctx
+    struct csync_client_certs_s clientCerts;
+    clientCerts.certificatePath = strdup(_certificatePath.toStdString().c_str());
+    clientCerts.certificatePasswd = strdup(_certificatePasswd.toStdString().c_str());
+    csync_set_module_property(ctx, "SSLClientCerts", &clientCerts);
+    free(clientCerts.certificatePath);
+    free(clientCerts.certificatePasswd);
 }
 
 void HttpCredentials::syncContextPreStart (CSYNC* ctx)
@@ -167,6 +186,21 @@ QString HttpCredentials::password() const
     return _password;
 }
 
+QString HttpCredentials::certificatePath() const
+{
+    return _certificatePath;
+}
+
+QString HttpCredentials::certificateDate() const
+{
+    return _certificateDate;
+}
+
+QString HttpCredentials::certificatePasswd() const
+{
+    return _certificatePasswd;
+}
+
 QNetworkAccessManager* HttpCredentials::getQNAM() const
 {
     AccessManager* qnam = new HttpCredentialsAccessManager(this);
@@ -196,6 +230,9 @@ void HttpCredentials::fetch()
 
     // User must be fetched from config file
     fetchUser();
+    _certificatePath = _account->credentialSetting(QLatin1String(certifPathC)).toString();
+    _certificatePasswd = _account->credentialSetting(QLatin1String(certifPasswdC)).toString();
+    _certificateDate = _account->credentialSetting(QLatin1String(certifDateC)).toString();
 
     QSettings *settings = _account->settingsWithGroup(Theme::instance()->appName());
     const QString kck = keychainKey(_account->url().toString(), _user );
@@ -322,6 +359,9 @@ void HttpCredentials::persist()
         return;
     }
     _account->setCredentialSetting(QLatin1String(userC), _user);
+    _account->setCredentialSetting(QLatin1String(certifPathC), _certificatePath);
+    _account->setCredentialSetting(QLatin1String(certifPasswdC), _certificatePasswd);
+    _account->setCredentialSetting(QLatin1String(certifDateC), _certificateDate);
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     QSettings *settings = _account->settingsWithGroup(Theme::instance()->appName());
     settings->setParent(job); // make the job parent to make setting deleted properly

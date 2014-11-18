@@ -20,6 +20,7 @@
 #include "owncloudtheme.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
+#include "../3rdparty/certificates/p12topem.h"
 
 #include <QSettings>
 #include <QMutex>
@@ -29,8 +30,8 @@
 #include <QNetworkCookieJar>
 #include <QFileInfo>
 #include <QDir>
-
 #include <QDebug>
+#include <QSslKey>
 
 namespace OCC {
 
@@ -294,6 +295,7 @@ QNetworkReply *Account::getRequest(const QString &relPath)
 QNetworkReply *Account::getRequest(const QUrl &url)
 {
     QNetworkRequest request(url);
+    request.setSslConfiguration(this->createSslConfig());
     return _am->get(request);
 }
 
@@ -305,12 +307,59 @@ QNetworkReply *Account::davRequest(const QByteArray &verb, const QString &relPat
 QNetworkReply *Account::davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
     req.setUrl(url);
+    req.setSslConfiguration(this->createSslConfig());
     return _am->sendCustomRequest(req, verb, data);
+}
+
+void Account::setCertificate(QByteArray certficate, QString privateKey)
+{
+    _pemCertificate=certficate;
+    _pemPrivateKey=privateKey;
 }
 
 void Account::setSslConfiguration(const QSslConfiguration &config)
 {
     _sslConfiguration = config;
+}
+
+QSslConfiguration Account::createSslConfig()
+{
+    // if setting the client certificate fails, you will probably get an error similar to this:
+    //  "An internal error number 1060 happened. SSL handshake failed, client certificate was requested: SSL error: sslv3 alert handshake failure"
+  
+    // maybe this code must not have to be reevaluated every request?
+    QSslConfiguration sslConfig;
+    QSslCertificate sslClientCertificate;
+    
+    // maybe move this code from createSslConfig to the Account constructor
+    ConfigFile cfgFile;
+    if(!cfgFile.certificatePath().isEmpty() && !cfgFile.certificatePasswd().isEmpty()) {
+        resultP12ToPem certif = p12ToPem(cfgFile.certificatePath().toStdString(), cfgFile.certificatePasswd().toStdString());
+        QString s = QString::fromStdString(certif.Certificate);
+        QByteArray ba = s.toLocal8Bit();
+        this->setCertificate(ba, QString::fromStdString(certif.PrivateKey));
+    }
+    if((!_pemCertificate.isEmpty())&&(!_pemPrivateKey.isEmpty())) {
+        // Read certificates
+        QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(_pemCertificate, QSsl::Pem);
+        if(sslCertificateList.length() != 0) {
+            sslClientCertificate = sslCertificateList.takeAt(0);
+        }
+        // Read key from file
+        QSslKey privateKey(_pemPrivateKey.toLocal8Bit(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey , "");
+
+        // SSL configuration
+        sslConfig.defaultConfiguration();
+        sslConfig.setCaCertificates(QSslSocket::systemCaCertificates());
+        QList<QSslCertificate> caCertifs = sslConfig.caCertificates();
+        sslConfig.setLocalCertificate(sslClientCertificate);
+        sslConfig.setPrivateKey(privateKey);
+        qDebug() << "Added SSL client certificate to the query";
+    } else {
+        qDebug() << "Failed to add the SSL client certificate to the query!";
+    }
+
+    return sslConfig;
 }
 
 void Account::setApprovedCerts(const QList<QSslCertificate> certs)
@@ -387,32 +436,34 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
 void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
 {
     NetworkJobTimeoutPauser pauser(reply);
-    qDebug() << "SSL-Errors happened for url " << reply->url().toString();
+    QString out;
+    QDebug(&out) << "SSL-Errors happened for url " << reply->url().toString();
     foreach(const QSslError &error, errors) {
-       qDebug() << "\tError in " << error.certificate() << ":"
-                << error.errorString() << "("<< error.error()<< ")";
+        QDebug(&out) << "\tError in " << error.certificate() << ":"
+                     << error.errorString() << "("<< error.error() << ")" << "\n";
     }
 
     if( _treatSslErrorsAsFailure ) {
         // User decided once not to trust. Honor this decision.
-        qDebug() << "Certs not trusted by user decision, returning.";
+        qDebug() << out << "Certs not trusted by user decision, returning.";
         return;
     }
 
     QList<QSslCertificate> approvedCerts;
     if (_sslErrorHandler.isNull() ) {
-        qDebug() << Q_FUNC_INFO << "called without valid SSL error handler for account" << url();
+        qDebug() << out << Q_FUNC_INFO << "called without valid SSL error handler for account" << url();
+        return;
+    }
+
+    if (_sslErrorHandler->handleErrors(errors, &approvedCerts, sharedFromThis())) {
+        QSslSocket::addDefaultCaCertificates(approvedCerts);
+        addApprovedCerts(approvedCerts);
+        // all ssl certs are known and accepted. We can ignore the problems right away.
+//         qDebug() << out << "Certs are known and trusted! This is not an actual error.";
+        reply->ignoreSslErrors();
     } else {
-        if (_sslErrorHandler->handleErrors(errors, &approvedCerts, sharedFromThis())) {
-            QSslSocket::addDefaultCaCertificates(approvedCerts);
-            addApprovedCerts(approvedCerts);
-            // all ssl certs are known and accepted. We can ignore the problems right away.
-            qDebug() << "Certs are already known and trusted, Errors are not valid.";
-            reply->ignoreSslErrors();
-        } else {
-            _treatSslErrorsAsFailure = true;
-            return;
-        }
+        _treatSslErrorsAsFailure = true;
+        return;
     }
 }
 

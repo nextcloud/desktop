@@ -374,7 +374,7 @@ static int post_send_hook(ne_request *req, void *userdata,
  * This function sets the flag _connected if the connection is established
  * and returns if the flag is set, so calling it frequently is save.
  */
-static int dav_connect(csync_owncloud_ctx_t *ctx,  const char *base_url) {
+static int dav_connect(csync_owncloud_ctx_t *ctx, struct csync_client_certs_s* clientCerts, const char *base_url) {
     int useSSL = 0;
     int rc;
     char protocol[6] = {'\0'};
@@ -447,6 +447,29 @@ static int dav_connect(csync_owncloud_ctx_t *ctx,  const char *base_url) {
             goto out;
         }
 
+        if(clientCerts != NULL) {
+            ne_ssl_client_cert *clicert;
+
+            DEBUG_WEBDAV("dav_connect: certificatePath and certificatePasswd are set, so we use it" );
+            DEBUG_WEBDAV("    with certificatePath: %s", clientCerts->certificatePath );
+            DEBUG_WEBDAV("    with certificatePasswd: %s", clientCerts->certificatePasswd );
+            clicert = ne_ssl_clicert_read ( clientCerts->certificatePath );
+            if ( clicert == NULL ) {
+                DEBUG_WEBDAV ( "Error read certificate : %s", ne_get_error ( ctx->dav_session.ctx ) );
+            } else {
+                if ( ne_ssl_clicert_encrypted ( clicert ) ) {
+                    int rtn = ne_ssl_clicert_decrypt ( clicert, clientCerts->certificatePasswd );
+                    if ( !rtn ) {
+                        DEBUG_WEBDAV ( "Certificate was deciphered successfully." );
+                        ne_ssl_set_clicert ( ctx->dav_session.ctx, clicert );
+                    } else {
+                        DEBUG_WEBDAV ( "Errors while deciphering certificate: %s", ne_get_error ( ctx->dav_session.ctx ) );
+                    }
+                }
+            }
+        } else {
+            DEBUG_WEBDAV("dav_connect: error with csync_client_certs_s* clientCerts");
+        }
         ne_ssl_trust_default_ca( ctx->dav_session.ctx );
         ne_ssl_set_verify( ctx->dav_session.ctx, ssl_callback_by_neon, ctx);
     }
@@ -654,7 +677,7 @@ csync_vio_handle_t *owncloud_opendir(CSYNC *ctx, const char *uri) {
 
     DEBUG_WEBDAV("opendir method called on %s", uri );
 
-    if (dav_connect( ctx->owncloud_context, uri ) < 0) {
+    if (dav_connect( ctx->owncloud_context, ctx->clientCerts, uri ) < 0) {
         DEBUG_WEBDAV("connection failed");
         return NULL;
     }
@@ -691,6 +714,7 @@ csync_vio_handle_t *owncloud_opendir(CSYNC *ctx, const char *uri) {
 
 int owncloud_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
     struct listdir_context *fetchCtx = dhandle;
+
     free_fetchCtx(fetchCtx);
     (void)ctx;
     return 0;
@@ -789,6 +813,12 @@ void owncloud_destroy(CSYNC* ctx)
 {
     owncloud_commit(ctx);
     SAFE_FREE(ctx->owncloud_context);
+    
+    SAFE_FREE(ctx->clientCerts->certificatePasswd);
+    SAFE_FREE(ctx->clientCerts->certificatePath);
+    SAFE_FREE(ctx->clientCerts);
+    ctx->clientCerts = NULL;
+
     ctx->owncloud_context = 0;
 }
 
@@ -826,10 +856,26 @@ int owncloud_set_property(CSYNC* ctx, const char *key, void *data) {
     if( c_streq(key, "redirect_callback")) {
         if (data) {
             csync_owncloud_redirect_callback_t* cb_wrapper = data;
-
             ctx->owncloud_context->dav_session.redir_callback = *cb_wrapper;
         } else {
             ctx->owncloud_context->dav_session.redir_callback = NULL;
+        }
+    }
+    if( c_streq(key, "SSLClientCerts")) {
+        if(ctx->clientCerts != NULL) {
+            SAFE_FREE(ctx->clientCerts->certificatePasswd);
+            SAFE_FREE(ctx->clientCerts->certificatePath);
+            SAFE_FREE(ctx->clientCerts);
+            ctx->clientCerts = NULL;
+        }
+        if (data) {
+            struct csync_client_certs_s* clientCerts = (struct csync_client_certs_s*) data;
+            struct csync_client_certs_s* newCerts = c_malloc(sizeof(struct csync_client_certs_s));
+            newCerts->certificatePath = c_strdup(clientCerts->certificatePath);
+            newCerts->certificatePasswd = c_strdup(clientCerts->certificatePasswd);
+            ctx->clientCerts = newCerts;
+        } else {
+            DEBUG_WEBDAV("error: in owncloud_set_property for 'SSLClientCerts'" );
         }
     }
 
@@ -847,3 +893,4 @@ void owncloud_init(CSYNC* ctx) {
 }
 
 /* vim: set ts=4 sw=4 et cindent: */
+

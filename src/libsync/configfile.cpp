@@ -64,6 +64,9 @@ static const char downloadLimitC[]    = "BWLimit/downloadLimit";
 
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
+const char certPath[] = "http_certificatePath";
+const char certDate[] = "http_certificateDate";
+const char certPasswd[] = "http_certificatePasswd";
 QString ConfigFile::_confDir = QString::null;
 bool    ConfigFile::_askedUser = false;
 
@@ -213,6 +216,8 @@ QString ConfigFile::excludeFile(Scope scope) const
     // prefer sync-exclude.lst, but if it does not exist, check for
     // exclude.lst for compatibility reasons in the user writeable
     // directories.
+    const QString exclFile("sync-exclude.lst");
+    QFileInfo fi;
 
     if (scope != SystemScope) {
         QFileInfo fi;
@@ -255,11 +260,15 @@ QString ConfigFile::excludeFileFromSystem()
     fi.setFile( QCoreApplication::applicationDirPath(),
                 QLatin1String("../Resources/") + exclFile );
 #endif
+    
     return fi.absoluteFilePath();
 }
 
 QString ConfigFile::configFile() const
 {
+    if( qApp->applicationName().isEmpty() ) {
+        qApp->setApplicationName( Theme::instance()->appNameGUI() );
+    }
     return configPath() + Theme::instance()->configFileName();
 }
 
@@ -565,6 +574,42 @@ void ConfigFile::setCrashReporter(bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(crashReporterC), enabled);
+}
+
+QString ConfigFile::certificatePath() const
+{
+    return retrieveData(QString(), QLatin1String(certPath)).toString();
+}
+
+void ConfigFile::setCertificatePath(const QString& cPath)
+{
+     QSettings settings(configFile(), QSettings::IniFormat);
+     settings.setValue( QLatin1String(certPath), cPath);
+     settings.sync();
+}
+
+QString ConfigFile::certificateDate() const
+{
+    return retrieveData(QString(), QLatin1String(certDate)).toString();
+}
+
+void ConfigFile::setCertificateDate(const QString& cDate)
+{
+     QSettings settings(configFile(), QSettings::IniFormat);
+     settings.setValue( QLatin1String(certDate), cDate);
+     settings.sync();
+}
+
+QString ConfigFile::certificatePasswd() const
+{
+    return retrieveData(QString(), QLatin1String(certPasswd)).toString();
+}
+
+void ConfigFile::setCertificatePasswd(const QString& cPasswd)
+{
+     QSettings settings(configFile(), QSettings::IniFormat);
+     settings.setValue( QLatin1String(certPasswd), cPasswd);
+     settings.sync();
 }
 
 }

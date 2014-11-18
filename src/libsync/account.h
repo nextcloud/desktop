@@ -19,6 +19,7 @@
 #include <QUrl>
 #include <QNetworkCookie>
 #include <QNetworkRequest>
+#include <QSslSocket>
 #include <QSslCertificate>
 #include <QSslConfiguration>
 #include <QSslError>
@@ -123,6 +124,7 @@ public:
     QNetworkReply* davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data = 0);
 
     /** The ssl configuration during the first connection */
+    QSslConfiguration createSslConfig();
     QSslConfiguration sslConfiguration() const { return _sslConfiguration; }
     void setSslConfiguration(const QSslConfiguration &config);
     /** The certificates of the account */
@@ -144,6 +146,8 @@ public:
     QVariant credentialSetting(const QString& key) const;
     void setCredentialSetting(const QString& key, const QVariant &value);
 
+    void setCertificate(QByteArray certficate = QByteArray(), QString privateKey = QString());
+    
     void clearCookieJar();
 
     QNetworkAccessManager* networkAccessManager();
@@ -169,10 +173,14 @@ private:
     QList<QSslCertificate> _approvedCerts;
     QSslConfiguration _sslConfiguration;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
+    QuotaInfo *_quotaInfo;
     QNetworkAccessManager *_am;
     AbstractCredentials* _credentials;
     bool _treatSslErrorsAsFailure;
+    int _state;
     static QString _configFileName;
+    QByteArray _pemCertificate; 
+    QString _pemPrivateKey;  
     QString _davPath; // default "remote.php/webdav/";
     bool _wasMigrated;
 };
