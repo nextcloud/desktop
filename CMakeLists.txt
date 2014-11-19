@@ -14,6 +14,13 @@ if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
 else ()
      include ( ${CMAKE_SOURCE_DIR}/OWNCLOUD.cmake )
 endif()
+# need this logic to not mess with re/uninstallations via macosx.pkgproj
+if(${APPLICATION_REV_DOMAIN} STREQUAL "com.owncloud.desktopclient")
+    set(APPLICATION_REV_DOMAIN_INSTALLER "com.ownCloud.client")
+else()
+    set(APPLICATION_REV_DOMAIN_INSTALLER ${APPLICATION_REV_DOMAIN})
+endif()
+
 
 if (NOT DEFINED APPLICATION_SHORTNAME)
      set ( APPLICATION_SHORTNAME ${APPLICATION_NAME} )

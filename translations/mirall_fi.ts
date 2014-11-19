@@ -1109,8 +1109,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
-        <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation>Salattua yhteyttä ei voitu muodostaa. Haluatko sen muodostaa salaamattoman yhteyden? (ei suositeltu)</translation>
+        <source>Could not connect securely:
+
+%1
+
+Do you want to connect unencrypted instead (not recommended)?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
@@ -1345,7 +1349,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="51"/>
         <source>; Restoration Failed: </source>
-        <translation type="unfinished"/>
+        <translation>; Palauttaminen epäonnistui: </translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="185"/>
@@ -1371,7 +1375,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>Virhe poistaessa &apos;%1&apos;: %2; </translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
@@ -2054,69 +2058,69 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>Tiedosto sisältää virheellisiä merkkejä, joiden vuoksi sitä voi synkronoida eri käyttöjärjestelmien välillä.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="552"/>
+        <location filename="../src/mirall/syncengine.cpp" line="556"/>
         <source>Unable to initialize a sync journal.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="633"/>
+        <location filename="../src/mirall/syncengine.cpp" line="637"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="865"/>
-        <location filename="../src/mirall/syncengine.cpp" line="872"/>
+        <location filename="../src/mirall/syncengine.cpp" line="869"/>
+        <location filename="../src/mirall/syncengine.cpp" line="876"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="890"/>
+        <location filename="../src/mirall/syncengine.cpp" line="894"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="896"/>
+        <location filename="../src/mirall/syncengine.cpp" line="900"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="903"/>
+        <location filename="../src/mirall/syncengine.cpp" line="907"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Ei sallittu, koska sinulla ei ole oikeutta lisätä tiedostoja kyseiseen kansioon</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="923"/>
+        <location filename="../src/mirall/syncengine.cpp" line="927"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="940"/>
-        <location filename="../src/mirall/syncengine.cpp" line="960"/>
+        <location filename="../src/mirall/syncengine.cpp" line="944"/>
+        <location filename="../src/mirall/syncengine.cpp" line="964"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Poistaminen ei ole sallittua, palautetaan</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="975"/>
+        <location filename="../src/mirall/syncengine.cpp" line="979"/>
         <source>Local files and share folder removed.</source>
         <translation>Paikalliset tiedostot ja jakokansio poistettu.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1030"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1034"/>
         <source>Move not allowed, item restored</source>
         <translation>Siirtäminen ei ole sallittua, kohde palautettu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1039"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1043"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Siirto ei ole sallittu, koska %1 on &quot;vain luku&quot;-tilassa</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1040"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1044"/>
         <source>the destination</source>
         <translation>kohde</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1040"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1044"/>
         <source>the source</source>
         <translation>lähde</translation>
     </message>

@@ -485,9 +485,9 @@
 				<key>CONCLUSION_ACTION</key>
 				<integer>0</integer>
 				<key>IDENTIFIER</key>
-				<string>com.ownCloud.client</string>
+				<string>@APPLICATION_REV_DOMAIN_INSTALLER@</string>
 				<key>NAME</key>
-				<string>ownCloud Client</string>
+				<string>@APPLICATION_NAME@</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>

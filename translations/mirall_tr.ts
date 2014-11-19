@@ -1113,8 +1113,16 @@ Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
-        <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation>Güvenli olarak bağlanılamadı. Bunun yerine şifrelenmemiş bağlantı yapmak ister misiniz (önerilmez)?</translation>
+        <source>Could not connect securely:
+
+%1
+
+Do you want to connect unencrypted instead (not recommended)?</source>
+        <translation>Güvenli olarak bağlanılamadı:
+
+%1
+
+Bunun yerine şifrelenmemiş bağlantı yapmak ister misiniz (önerilmez)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
@@ -2062,69 +2070,69 @@ Kullanmanız önerilmez.</translation>
         <translation>Dosya, çapraz platform arasında eşitlenemeyecek karakterler içeriyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="552"/>
+        <location filename="../src/mirall/syncengine.cpp" line="556"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Bir eşitleme günlüğü başlatılamadı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="633"/>
+        <location filename="../src/mirall/syncengine.cpp" line="637"/>
         <source>Cannot open the sync journal</source>
         <translation>Eşitleme günlüğü açılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="865"/>
-        <location filename="../src/mirall/syncengine.cpp" line="872"/>
+        <location filename="../src/mirall/syncengine.cpp" line="869"/>
+        <location filename="../src/mirall/syncengine.cpp" line="876"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;Eşitlenecekleri seçin&quot; kara listesinde olduğundan yoksayıldı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="890"/>
+        <location filename="../src/mirall/syncengine.cpp" line="894"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Bu dizine alt dizin ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="896"/>
+        <location filename="../src/mirall/syncengine.cpp" line="900"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Üst dizin ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="903"/>
+        <location filename="../src/mirall/syncengine.cpp" line="907"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Bu dizine dosya ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="923"/>
+        <location filename="../src/mirall/syncengine.cpp" line="927"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Sunucuda salt okunur olduğundan, bu dosya yüklenemedi, geri alınıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="940"/>
-        <location filename="../src/mirall/syncengine.cpp" line="960"/>
+        <location filename="../src/mirall/syncengine.cpp" line="944"/>
+        <location filename="../src/mirall/syncengine.cpp" line="964"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Kaldırmaya izin verilmedi, geri alınıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="975"/>
+        <location filename="../src/mirall/syncengine.cpp" line="979"/>
         <source>Local files and share folder removed.</source>
         <translation>Yerel dosyalar ve paylaşım klasörü kaldırıldı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1030"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1034"/>
         <source>Move not allowed, item restored</source>
         <translation>Taşımaya izin verilmedi, öge geri alındı</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1039"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1043"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>%1 salt okunur olduğundan taşımaya izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1040"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1044"/>
         <source>the destination</source>
         <translation>hedef</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1040"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1044"/>
         <source>the source</source>
         <translation>kaynak</translation>
     </message>
@@ -2142,7 +2150,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Sürüm %1 Daha fazla bilgi için lütfen &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Dağıtım %4 ve GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır olup &lt;br/&gt;%5 ve %5 logoları ABD ve/veya diğer ülkelerde %4 tescili markalarıdır.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Sürüm %1 Daha fazla bilgi için lütfen &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;/p&gt;&lt;p&gt;%4 tarafından dağıtılmakta ve GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır olup &lt;br/&gt;%5 ve %5 logoları ABD ve/veya diğer ülkelerde %4 tescili markalarıdır.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2288,7 +2296,7 @@ Kullanmanız önerilmez.</translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Sürüm %2. Daha fazla bilgi için lütfen &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz ve diğerleri.&lt;br&gt;Duncan Mac-Vicar P. tarafından yazılmış Mirall tabanlıdır.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;/p&gt;&lt;p&gt;GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır.&lt;br&gt;ownCloud ve ownCloud logoları &lt;br&gt;ABD ve/veya diğer ülkelerde ownCloud, Inc.&apos;nin tescili markalarıdır.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Sürüm %2. Daha fazla bilgi için lütfen &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz ve diğerleri.&lt;br/&gt;Duncan Mac-Vicar P. tarafından yazılmış Mirall tabanlıdır.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;/p&gt;&lt;p&gt;GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır.&lt;br/&gt;ownCloud ve ownCloud logoları ABD ve/veya diğer ülkelerde ownCloud, Inc.&apos;nin tescili markalarıdır.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

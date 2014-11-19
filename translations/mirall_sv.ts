@@ -1113,8 +1113,12 @@ Det är inte lämpligt använda den.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
-        <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation>Kunde inte ansluta säkert. Vill du ansluta okrypterat istället (rekommenderas ej)?</translation>
+        <source>Could not connect securely:
+
+%1
+
+Do you want to connect unencrypted instead (not recommended)?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
@@ -2058,69 +2062,69 @@ Det är inte lämpligt använda den.</translation>
         <translation>Filen innehåller ogiltiga tecken som inte kan synkas oberoende av plattform.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="552"/>
+        <location filename="../src/mirall/syncengine.cpp" line="556"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Kan inte initialisera en synk journal. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="633"/>
+        <location filename="../src/mirall/syncengine.cpp" line="637"/>
         <source>Cannot open the sync journal</source>
         <translation>Kunde inte öppna synk journalen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="865"/>
-        <location filename="../src/mirall/syncengine.cpp" line="872"/>
+        <location filename="../src/mirall/syncengine.cpp" line="869"/>
+        <location filename="../src/mirall/syncengine.cpp" line="876"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorerad eftersom den är svartlistad i &quot;välj vad som ska synkas&quot; </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="890"/>
+        <location filename="../src/mirall/syncengine.cpp" line="894"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Går ej att genomföra då du saknar rättigheter att lägga till underkataloger i den katalogen </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="896"/>
+        <location filename="../src/mirall/syncengine.cpp" line="900"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Går ej att genomföra då du saknar rättigheter att lägga till någon moderkatalog</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="903"/>
+        <location filename="../src/mirall/syncengine.cpp" line="907"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Går ej att genomföra då du saknar rättigheter att lägga till filer i den katalogen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="923"/>
+        <location filename="../src/mirall/syncengine.cpp" line="927"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Inte behörig att ladda upp denna fil då den är skrivskyddad på servern, återställer </translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="940"/>
-        <location filename="../src/mirall/syncengine.cpp" line="960"/>
+        <location filename="../src/mirall/syncengine.cpp" line="944"/>
+        <location filename="../src/mirall/syncengine.cpp" line="964"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Inte behörig att radera, återställer</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="975"/>
+        <location filename="../src/mirall/syncengine.cpp" line="979"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokala filer och mappar som är delade är borttagna.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1030"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1034"/>
         <source>Move not allowed, item restored</source>
         <translation>Det gick inte att genomföra flytten, objektet återställs</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1039"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1043"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Det gick inte att genomföra flytten då %1 är skrivskyddad</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1040"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1044"/>
         <source>the destination</source>
         <translation>destinationen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1040"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1044"/>
         <source>the source</source>
         <translation>källan</translation>
     </message>

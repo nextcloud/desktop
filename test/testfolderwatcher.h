@@ -10,7 +10,7 @@
 
 #include <QtTest>
 
-#include "folderwatcher_linux.h"
+#include "folderwatcher.h"
 #include "utility.h"
 
 using namespace Mirall;
