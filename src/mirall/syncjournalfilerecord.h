@@ -43,8 +43,9 @@ public:
     int       _mode;
 };
 
-bool operator==(const SyncJournalFileRecord & lhs,
-                const SyncJournalFileRecord & rhs);
+bool OWNCLOUDSYNC_EXPORT
+operator==(const SyncJournalFileRecord & lhs,
+           const SyncJournalFileRecord & rhs);
 
 class SyncJournalBlacklistRecord
 {
