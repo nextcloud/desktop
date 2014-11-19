@@ -350,26 +350,26 @@ bool OwncloudPropagator::useLegacyJobs()
         // QNAM bandwith limiting only work with version of Qt greater or equal to 5.3.3
         // (It needs Qt commits 097b641 and b99fa32)
 #if QT_VERSION >= QT_VERSION_CHECK(5,3,3)
-        return true;
+        return false;
 #elif QT_VERSION >= QT_VERSION_CHECK(5,0,0)
         env = qgetenv("OWNCLOUD_NEW_BANDWIDTH_LIMITING");
         if (env=="true" || env =="1") {
             qDebug() << "New Bandwidth Limiting Code ACTIVATED";
-            return true;
+            return false;
         }
 
         // Do a runtime check.
         // (Poor man's version comparison)
         const char *v = qVersion(); // "x.y.z";
         if (QLatin1String(v) >= QLatin1String("5.3.3")) {
-            return true;
+            return false;
         } else {
             qDebug() << "Use legacy jobs because qt version is only" << v << "while 5.3.3 is needed";
-            return false;
+            return true;
         }
 #else
         qDebug() << "Use legacy jobs because of Qt4";
-        return false;
+        return true;
 #endif
     }
 
