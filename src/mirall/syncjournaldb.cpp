@@ -158,11 +158,6 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Set PRAGMA case_sensitivity", pragma1);
     }
 
-    // Hide 'em all!
-    FileSystem::setFileHidden(databaseFilePath(), true);
-    FileSystem::setFileHidden(databaseFilePath() + "-wal", true);
-    FileSystem::setFileHidden(databaseFilePath() + "-shm", true);
-
     /* Because insert are so slow, e do everything in a transaction, and one need to call commit */
     startTransaction();
 
@@ -334,6 +329,11 @@ bool SyncJournalDb::checkConnect()
 
     // don't start a new transaction now
     commitInternal(QString("checkConnect End"), false);
+
+    // Hide 'em all!
+    FileSystem::setFileHidden(databaseFilePath(), true);
+    FileSystem::setFileHidden(databaseFilePath() + "-wal", true);
+    FileSystem::setFileHidden(databaseFilePath() + "-shm", true);
 
     return rc;
 }
