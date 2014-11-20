@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Add Folder</source>
-        <translation>Ajouter le dossier</translation>
+        <translation>Ajouter un dossier</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -503,7 +503,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
         <location filename="../src/mirall/folderwizard.cpp" line="494"/>
         <location filename="../src/mirall/folderwizard.cpp" line="496"/>
         <source>Add Folder</source>
-        <translation>Ajouter le dossier</translation>
+        <translation>Ajouter un dossier</translation>
     </message>
 </context>
 <context>
@@ -1031,7 +1031,7 @@ peut demander des privilèges additionnels durant le processus.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Connect to %1</source>
-        <translation>Connecter à %1</translation>
+        <translation>Connexion à %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
@@ -1074,7 +1074,7 @@ peut demander des privilèges additionnels durant le processus.</translation>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="42"/>
         <source>Connect to %1</source>
-        <translation>Connecter à %1</translation>
+        <translation>Connexion à %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="43"/>
@@ -1084,7 +1084,7 @@ peut demander des privilèges additionnels durant le processus.</translation>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="159"/>
         <source>Update user credentials</source>
-        <translation>Mettre à jour les identifiants de connexion de l&apos;utilisateur</translation>
+        <translation>Modification des identifiants de connexion</translation>
     </message>
 </context>
 <context>
@@ -1092,7 +1092,7 @@ peut demander des privilèges additionnels durant le processus.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="45"/>
         <source>Connect to %1</source>
-        <translation>Connecter à %1</translation>
+        <translation>Connexion à %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="46"/>
@@ -1132,7 +1132,7 @@ Voulez-vous vous connecter sans chiffrement à la place (non recommandé) ?</tra
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="263"/>
         <source>Update %1 server</source>
-        <translation>Mettre à jour le serveur %1</translation>
+        <translation>Modification de l&apos;adresse du serveur %1</translation>
     </message>
 </context>
 <context>
@@ -2323,7 +2323,7 @@ Voulez-vous vous connecter sans chiffrement à la place (non recommandé) ?</tra
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="103"/>
         <source>Sync everything from server</source>
-        <translation>Synchroniser tout le contenu du serveur</translation>
+        <translation>Synchroniser tout le contenu de votre compte</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="122"/>

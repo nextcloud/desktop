@@ -33,6 +33,8 @@ public:
 
 protected:
     void run();
+    void watchChanges(size_t fileNotifyBufferSize,
+                      bool* increaseBufferSize);
 
 signals:
     void changed(const QString &path);
