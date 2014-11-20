@@ -435,7 +435,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="873"/>
         <source>Waits to start syncing.</source>
-        <translation>Eşitleme başlatmak için bekleniyor.</translation>
+        <translation>Eşitleme başlatmak için bekliyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="876"/>
