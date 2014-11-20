@@ -365,13 +365,7 @@ quint64 MirallConfigFile::forceSyncInterval(const QString& connection) const
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup( con );
 
-    quint64 defaultInterval = 10 * pollInterval;
-#ifdef Q_OS_MAC
-    // On OSX we trust the file watcher. It does not report changes done
-    // by our own process and thus it's enabled during a folder's sync run.
-    // That means we don't need to do a full local discovery often.
-    defaultInterval = qMax(2 * 60 * 60 * 1000ull, defaultInterval); // >=2 hours
-#endif
+    quint64 defaultInterval = 2 * 60 * 60 * 1000ull; // 2h
     quint64 interval = settings.value( QLatin1String(forceSyncIntervalC), defaultInterval ).toULongLong();
     if( interval < pollInterval) {
         qDebug() << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval;
