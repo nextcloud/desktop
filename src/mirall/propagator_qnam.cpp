@@ -742,6 +742,21 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
     _tmpFile.close();
     _tmpFile.flush();
+
+    /* Check that the size of the GET reply matches the file size. There have been cases
+     * reported that if a server breaks behind a proxy, the GET is still a 200 but is
+     * truncated, as described here: https://github.com/owncloud/mirall/issues/2528
+     */
+    const QByteArray sizeHeader("Content-Length");
+    qint64 bodySize = job->reply()->rawHeader(sizeHeader).toLongLong();
+
+    if( bodySize != _tmpFile.size() ) {
+        _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+        _tmpFile.remove();
+        done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."));
+        return;
+    }
+
     downloadFinished();
 }
 
