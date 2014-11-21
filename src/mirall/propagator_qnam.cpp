@@ -750,9 +750,8 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     const QByteArray sizeHeader("Content-Length");
     qint64 bodySize = job->reply()->rawHeader(sizeHeader).toLongLong();
 
-    if( bodySize != _tmpFile.size() ) {
-        _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
-        _tmpFile.remove();
+    if(bodySize > 0 && bodySize != _tmpFile.size() ) {
+        _propagator->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."));
         return;
     }
