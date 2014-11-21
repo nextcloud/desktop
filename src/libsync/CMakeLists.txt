@@ -33,7 +33,6 @@ endif()
 
 set(libsync_SRCS
     account.cpp
-    authenticationdialog.cpp
     bandwidthmanager.cpp
     clientproxy.cpp
     connectionvalidator.cpp
@@ -83,6 +82,7 @@ else()
         creds/shibboleth/shibbolethwebview.cpp
         creds/shibboleth/shibbolethrefresher.cpp
         creds/shibboleth/shibbolethuserjob.cpp
+        authenticationdialog.cpp
     )
 endif()
 

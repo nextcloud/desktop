@@ -173,9 +173,11 @@ set(TRANSLATIONS ${TRANS_FILES})
 
 add_subdirectory(csync)
 add_subdirectory(src)
+if(NOT BUILD_LIBRARIES_ONLY)
 add_subdirectory(shell_integration)
 add_subdirectory(doc)
 add_subdirectory(admin)
+endif(NOT BUILD_LIBRARIES_ONLY)
 
 if(UNIT_TESTING)
     include(CTest)

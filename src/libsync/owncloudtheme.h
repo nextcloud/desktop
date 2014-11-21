@@ -27,20 +27,22 @@ public:
 
     QString configFileName() const Q_DECL_OVERRIDE;
     QString about() const Q_DECL_OVERRIDE;
-    QPixmap splashScreen() const;
 
-    QIcon   folderIcon( const QString& ) const;
+#ifndef TOKEN_AUTH_ONLY
     QIcon   trayFolderIcon( const QString& ) const Q_DECL_OVERRIDE;
     QIcon   applicationIcon() const Q_DECL_OVERRIDE;
+#endif
     QString appName() const Q_DECL_OVERRIDE;
     QString appNameGUI() const Q_DECL_OVERRIDE;
 
-    QVariant customMedia(CustomMediaType type) Q_DECL_OVERRIDE;
     QString helpUrl() const Q_DECL_OVERRIDE;
+#ifndef TOKEN_AUTH_ONLY
+    QVariant customMedia(CustomMediaType type) Q_DECL_OVERRIDE;
 
     QColor  wizardHeaderBackgroundColor() const Q_DECL_OVERRIDE;
     QColor  wizardHeaderTitleColor() const Q_DECL_OVERRIDE;
     QPixmap wizardHeaderLogo() const Q_DECL_OVERRIDE;
+#endif
 private:
 
 
