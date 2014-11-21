@@ -321,7 +321,11 @@ void Folder::etagRetreived(const QString& etag)
     // re-enable sync if it was disabled because network was down
     FolderMan::instance()->setSyncEnabled(true);
 
-    if (_lastEtag != etag) {
+    if (_lastEtag.isEmpty()) {
+        _lastEtag = etag;
+        // don't schedule a sync in this case, the _lastEtag is empty because it is the start
+        // and a sync was scheduled through other means anyway.
+    } else if (_lastEtag != etag) {
         _lastEtag = etag;
         emit scheduleToSync(alias());
     }
