@@ -399,21 +399,17 @@ void FolderMan::slotSetFolderPaused( const QString& alias, bool paused )
     }
 }
 
-// this really terminates, ie. no questions, no prisoners.
+// this really terminates the current sync process
+// ie. no questions, no prisoners
 // csync still remains in a stable state, regardless of that.
-void FolderMan::terminateSyncProcess( const QString& alias )
+void FolderMan::terminateSyncProcess()
 {
-    QString folderAlias = alias;
-    if( alias.isEmpty() ) {
-        folderAlias = _currentSyncFolder;
-    }
-    if( ! folderAlias.isEmpty() && _folderMap.contains(folderAlias) ) {
-        Folder *f = _folderMap[folderAlias];
+    if( ! _currentSyncFolder.isEmpty() && _folderMap.contains(_currentSyncFolder) ) {
+        Folder *f = _folderMap[_currentSyncFolder];
         if( f ) {
+            // This will, indirectly and eventually, call slotFolderSyncFinished
+            // and thereby clear _currentSyncFolder.
             f->slotTerminateSync();
-            if(_currentSyncFolder == folderAlias ) {
-                _currentSyncFolder.clear();
-            }
         }
     }
 }
@@ -706,7 +702,7 @@ void FolderMan::slotRemoveFolder( const QString& alias )
 
     if( _currentSyncFolder == alias ) {
         // terminate if the sync is currently underway.
-        terminateSyncProcess( alias );
+        terminateSyncProcess();
     }
     removeFolder(alias);
 }

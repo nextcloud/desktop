@@ -413,7 +413,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         Folder *f = folderMan->folderForPath(localFolder);
         if( f ) {
             folderMan->setSyncEnabled(false);
-            folderMan->terminateSyncProcess(f->alias());
+            f->slotTerminateSync();
             f->journalDb()->close();
         }
 

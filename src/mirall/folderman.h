@@ -108,11 +108,11 @@ public slots:
     void slotFolderSyncFinished( const SyncResult& );
 
     /**
-     * Terminates the specified folder sync (or the current one).
+     * Terminates the current folder sync.
      *
      * It does not switch the folder to paused state.
      */
-    void terminateSyncProcess( const QString& alias = QString::null );
+    void terminateSyncProcess();
 
     /* unload and delete on folder object */
     void unloadFolder( const QString& alias );
