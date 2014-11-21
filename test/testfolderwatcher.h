@@ -15,11 +15,6 @@
 
 using namespace Mirall;
 
-class FriendlyThread : public QThread
-{
-    friend class TestFolderWatcher;
-};
-
 class TestFolderWatcher : public QObject
 {
     Q_OBJECT
@@ -51,7 +46,7 @@ private:
     void processAndWait()
     {
         _loop.processEvents();
-        FriendlyThread::msleep(200);
+        Utility::usleep(200000);
         _loop.processEvents();
     }
 

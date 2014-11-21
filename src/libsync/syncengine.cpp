@@ -559,7 +559,11 @@ void SyncEngine::startSync()
         qDebug() << "=====sync with existing DB";
     }
 
-    qDebug() <<  "=====Using Qt" << qVersion() << "with" << QSslSocket::sslLibraryVersionString().toUtf8().data();
+    qDebug() <<  "=====Using Qt" << qVersion();
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    qDebug() <<  "=====Using SSL library version"
+             <<  QSslSocket::sslLibraryVersionString().toUtf8().data();
+#endif
     // Note that this seems to output the OpenSSL build version not runtime version:
     qDebug() <<  "=====Using" << ne_version_string();
 
