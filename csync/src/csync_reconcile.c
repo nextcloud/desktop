@@ -254,6 +254,10 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     is_equal_files = (other->modtime == cur->modtime);
                 } else {
                     is_equal_files = ((other->size == cur->size) && (other->modtime == cur->modtime));
+                    // FIXME: do a binary comparision of the file here because of the following
+                    // edge case:
+                    // The files could still have different content, even though the mtime
+                    // and size are the same.
                 }
                 if (is_equal_files) {
                     /* The files are considered equal. */
