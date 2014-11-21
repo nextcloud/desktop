@@ -244,7 +244,6 @@ public:
     SyncJournalDb * const _journal;
     bool _finishedEmited; // used to ensure that finished is only emit once
 
-    BandwidthManager _bandwidthManager;
 
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir, const QString &remoteFolder,
@@ -265,6 +264,7 @@ public:
 
     QAtomicInt _downloadLimit;
     QAtomicInt _uploadLimit;
+    BandwidthManager _bandwidthManager;
 
     QAtomicInt _abortRequested; // boolean set by the main thread to abort.
 
