@@ -1349,7 +1349,7 @@ Wilt u een onversleutelde verbinding maken (niet aanbevolen)?</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="755"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand kon niet volledig worden gedownload.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="791"/>
