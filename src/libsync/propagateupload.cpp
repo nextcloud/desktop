@@ -445,6 +445,13 @@ void PropagateUploadFileQNAM::slotPutFinished()
             _propagator->_anotherSyncNeeded = true;
         }
 
+        foreach (auto job, _jobs) {
+            if (job->reply()) {
+                job->reply()->abort();
+            }
+        }
+
+        _finished = true;
         done(classifyError(err, _item._httpErrorCode), errorString);
         return;
     }
@@ -455,6 +462,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
         _finished = true;
         QString path =  QString::fromUtf8(job->reply()->rawHeader("OC-Finish-Poll"));
         if (path.isEmpty()) {
+            _finished = true;
             done(SyncFileItem::NormalError, tr("Poll URL missing"));
             return;
         }
@@ -576,7 +584,7 @@ void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
     _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
     _propagator->_journal->commit("upload file start");
 
-    qDebug() << Q_FUNC_INFO << "msec=" <<_duration.elapsed();
+    _finished = true;
     done(SyncFileItem::Success);
 }
 
@@ -618,6 +626,7 @@ void PropagateUploadFileQNAM::slotPollFinished()
     Q_ASSERT(job);
 
     if (job->_item._status != SyncFileItem::Success) {
+        _finished = true;
         done(job->_item._status, job->_item._errorString);
         return;
     }
