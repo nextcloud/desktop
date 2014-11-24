@@ -617,6 +617,7 @@ void PropagateUploadFileQNAM::startPollJob(const QString& path)
     info._modtime = _item._modtime;
     _propagator->_journal->setPollInfo(info);
     _propagator->_journal->commit("add poll info");
+    _propagator->_activeJobs++;
     job->start();
 }
 
@@ -624,6 +625,8 @@ void PropagateUploadFileQNAM::slotPollFinished()
 {
     PollJob *job = qobject_cast<PollJob *>(sender());
     Q_ASSERT(job);
+
+    _propagator->_activeJobs--;
 
     if (job->_item._status != SyncFileItem::Success) {
         _finished = true;
