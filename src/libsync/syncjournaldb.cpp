@@ -1164,8 +1164,9 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo& info)
     }
 
     if (info._url.isEmpty()) {
+        qDebug() << "Deleting Poll job" << info._file;
         SqlQuery query("DELETE FROM poll WHERE path=?", _db);
-        query.bindValue(0, info._file);
+        query.bindValue(1, info._file);
         if( !query.exec() ) {
             qDebug() << "SQL error in setPollInfo: "<< query.error();
         } else {
@@ -1173,9 +1174,9 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo& info)
         }
     } else {
         SqlQuery query("INSERT OR REPLACE INTO poll (path, modtime, pollpath) VALUES( ? , ? , ? )", _db);
-        query.bindValue(0, info._file);
-        query.bindValue(1, QString::number(info._modtime));
-        query.bindValue(2, info._url);
+        query.bindValue(1, info._file);
+        query.bindValue(2, QString::number(info._modtime));
+        query.bindValue(3, info._url);
         if( !query.exec() ) {
             qDebug() << "SQL error in setPollInfo: "<< query.error();
         } else {
