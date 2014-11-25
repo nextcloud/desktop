@@ -205,9 +205,10 @@ public:
             return false;
         }
         _state = Running;
-        start();
+        QMetaObject::invokeMethod(this, "start"); // We could be in a different thread (neon jobs)
         return true;
     }
+public slots:
     virtual void start() = 0;
 
 };
