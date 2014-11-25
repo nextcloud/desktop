@@ -503,6 +503,8 @@ Hbf_State hbf_transfer( ne_session *session, hbf_transfer_t *transfer, const cha
 
                 if( transfer->block_cnt > 1 ) {
                   ne_add_request_header(req, "OC-Chunked", "1");
+                  snprintf(buf, sizeof(buf), "%"PRId64, transfer->threshold);
+                  ne_add_request_header(req, "OC-Chunk-Size", buf);
                 }
                 ne_add_request_header( req, "Content-Type", "application/octet-stream");
 
