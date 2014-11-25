@@ -740,8 +740,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // do a database commit
     _journal->commit("post treewalk");
 
-    _propagator.reset(new OwncloudPropagator (session, _localPath, _remoteUrl, _remotePath,
-                                              _journal, &_thread));
+    _propagator = QSharedPointer<OwncloudPropagator>(
+        new OwncloudPropagator (session, _localPath, _remoteUrl, _remotePath, _journal, &_thread));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
             this, SLOT(slotJobCompleted(SyncFileItem)));
     connect(_propagator.data(), SIGNAL(progress(SyncFileItem,quint64)),
@@ -851,7 +851,7 @@ void SyncEngine::finalize()
     emit finished();
 
     // Delete the propagator only after emitting the signal.
-    _propagator.reset();
+    _propagator.clear();
 }
 
 void SyncEngine::slotProgress(const SyncFileItem& item, quint64 current)
