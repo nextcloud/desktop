@@ -637,22 +637,22 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="507"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Sunucudan E-Etiket alınamadı, Vekil sunucu/Ağ geçidini denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="514"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Devam etmek üzere farklı bir E-Etiket aldık. Sonraki işlemde yeniden denenecek.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="541"/>
         <source>Server returned wrong content-range</source>
         <translation>Sunucu yanlış içerik aralığı döndürdü</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="580"/>
         <source>Connection Timeout</source>
         <translation>Bağlantı Zaman Aşımı</translation>
     </message>
@@ -1342,17 +1342,17 @@ Bunun yerine şifrelenmemiş bağlantı yapmak ister misiniz (önerilmez)?</tran
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="594"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>%1 dosyası, yerel dosya adı çakışması nedeniyle indirilemiyor!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="755"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="756"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Dosya tamamıyla indirilemedi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="791"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="792"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Yerel bir dosya ismi ile çakıştığından, %1 dosyası kaydedilemedi!</translation>
     </message>
@@ -1457,23 +1457,23 @@ Bunun yerine şifrelenmemiş bağlantı yapmak ister misiniz (önerilmez)?</tran
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="296"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="297"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Dosya yerel olarak düzenlendi ancak salt okunur paylaşımın bir parçası. Geri yüklendi ve düzenlemeniz çakışan dosyada.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="328"/>
         <source>The local file was removed during sync.</source>
         <translation>Eşitleme sırasında yerel dosya kaldırıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="341"/>
         <source>Local file changed during sync.</source>
         <translation>Eşitleme sırasında yerel dosya değişti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Sunucu son yığını onaylamadı. (Mevcut e-etiket bulunamadı)</translation>
     </message>
