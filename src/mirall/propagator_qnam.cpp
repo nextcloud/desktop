@@ -749,9 +749,10 @@ void PropagateDownloadFileQNAM::slotGetFinished()
      * truncated, as described here: https://github.com/owncloud/mirall/issues/2528
      */
     const QByteArray sizeHeader("Content-Length");
-    qint64 bodySize = job->reply()->rawHeader(sizeHeader).toLongLong();
+    quint64 bodySize = job->reply()->rawHeader(sizeHeader).toULongLong();
 
-    if(bodySize > 0 && bodySize != _tmpFile.size() ) {
+    if(bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart() ) {
+        qDebug() << bodySize << _tmpFile.size() << job->resumeStart();
         _propagator->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."));
         return;
