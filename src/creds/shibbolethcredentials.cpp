@@ -241,7 +241,19 @@ void ShibbolethCredentials::persist(Account* account)
 void ShibbolethCredentials::invalidateToken(Account *account)
 {
     CookieJar *jar = static_cast<CookieJar*>(account->networkAccessManager()->cookieJar());
-    jar->deleteCookie(_shibCookie);
+
+    // Remove the _shibCookie
+    auto cookies = jar->allCookies();
+    for (auto it = cookies.begin(); it != cookies.end(); ) {
+        if (it->name() == _shibCookie.name()) {
+            it = cookies.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    jar->setAllCookies(cookies);
+
+    // Clear all other temporary cookies
     jar->clearSessionCookies();
     removeShibCookie(account);
     _shibCookie = QNetworkCookie();

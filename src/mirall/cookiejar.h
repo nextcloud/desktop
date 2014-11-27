@@ -29,12 +29,10 @@ public:
     bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url) Q_DECL_OVERRIDE;
     QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const Q_DECL_OVERRIDE;
 
-    bool deleteCookie(const QNetworkCookie & cookie)
-#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
-        Q_DECL_OVERRIDE //that function is not virtual in Qt4
-#endif
-    ;
     void clearSessionCookies();
+
+    using QNetworkCookieJar::setAllCookies;
+    using QNetworkCookieJar::allCookies;
 
 signals:
     void newCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
