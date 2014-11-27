@@ -557,6 +557,7 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
     if (status == SyncFileItem::FatalError ||
             (sender() == _firstJob.data() && status != SyncFileItem::Success && status != SyncFileItem::Restoration)) {
         abort();
+        _state = Finished;
         emit finished(status);
         return;
     } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
