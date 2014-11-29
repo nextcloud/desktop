@@ -1349,7 +1349,7 @@ Do you want to connect unencrypted instead (not recommended)?</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="757"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Файл не може бути завантажений повністю.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="793"/>
