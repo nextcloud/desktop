@@ -2405,7 +2405,7 @@ Wilt u een onversleutelde verbinding maken (niet aanbevolen)?</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="20"/>
         <source>Server &amp;address:</source>
-        <translation>Server adres:</translation>
+        <translation>Server &amp;adres:</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="36"/>
@@ -2454,7 +2454,7 @@ Wilt u een onversleutelde verbinding maken (niet aanbevolen)?</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation>&amp;Geen wachtwoorden opslaan op de lokale machine.</translation>
+        <translation>&amp;Sla geen wachtwoorden op op de lokale machine.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="140"/>
@@ -2464,12 +2464,12 @@ Wilt u een onversleutelde verbinding maken (niet aanbevolen)?</translation>
     <message>
         <location filename="../src/mirall/owncloudsetuppage.ui" line="147"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Voer de url in van de ownCloud-server waarmee u wilt verbinden (met http of https).</translation>
+        <translation>Voer de URL in van de server waarmee u wilt verbinden (zonder http of https).</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="83"/>
         <source>Server &amp;Address</source>
-        <translation>Server&amp;adres</translation>
+        <translation>Server &amp;adres</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetupnocredspage.ui" line="99"/>
@@ -2585,7 +2585,7 @@ Wilt u een onversleutelde verbinding maken (niet aanbevolen)?</translation>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="44"/>
         <source>Filesystem access error</source>
-        <translation>Bestandssysteem toegangsfout</translation>
+        <translation>Toegangsfout van het bestandssysteem</translation>
     </message>
     <message>
         <location filename="../src/mirall/progressdispatcher.cpp" line="46"/>
