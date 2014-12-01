@@ -63,8 +63,8 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     setWindowTitle(tr("%1").arg(Theme::instance()->appNameGUI()));
 
     _accountSettings = new AccountSettings;
-    QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Undefined, true);
-    _accountIdx = addPreferencesPanel(icon, tr("Account"), _accountSettings);
+    QIcon accountIcon = (QLatin1String(":/mirall/resources/accounts.png"));
+    addPreferencesPanel(accountIcon, tr("Account"), _accountSettings);
 
     QIcon protocolIcon(QLatin1String(":/mirall/resources/activity.png"));
     _protocolWidget = new ProtocolWidget;
@@ -97,9 +97,6 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
 void SettingsDialogMac::slotSyncStateChange(const QString& alias)
 {
     FolderMan *folderMan = FolderMan::instance();
-    SyncResult state = folderMan->accountStatus(folderMan->map().values());
-    QIcon accountIcon = Theme::instance()->syncStateIcon(state.status());
-    setPreferencesPanelIcon(_accountIdx, accountIcon);
 
     Folder *folder = folderMan->folder(alias);
     if( folder ) {
@@ -109,9 +106,7 @@ void SettingsDialogMac::slotSyncStateChange(const QString& alias)
 
 void SettingsDialogMac::setGeneralErrors(const QStringList &errors)
 {
-    if( _accountSettings ) {
-        _accountSettings->setGeneralErrors(errors);
-    }
+    _accountSettings->setGeneralErrors(errors);
 }
 
 void SettingsDialogMac::closeEvent(QCloseEvent *event)
