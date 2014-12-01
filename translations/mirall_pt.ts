@@ -636,22 +636,22 @@ Se você, ou o seu administrador, reiniciou  a sua conta no servidor, escolha &q
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="507"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Nenhum E-Tag recebido do servidor, verifique Proxy / gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="514"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Recebemos um e-Tag diferente para resumir. Tentando uma próxima vez.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="541"/>
         <source>Server returned wrong content-range</source>
         <translation>O servidor retornou o alcance-conteúdo errado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="580"/>
         <source>Connection Timeout</source>
         <translation>O tempo de ligação expirou </translation>
     </message>
@@ -728,7 +728,7 @@ Se você, ou o seu administrador, reiniciou  a sua conta no servidor, escolha &q
     <message>
         <location filename="../src/mirall/ignorelisteditor.ui" line="63"/>
         <source>Remove</source>
-        <translation>Apagar</translation>
+        <translation>Remover</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="35"/>
@@ -851,7 +851,7 @@ Itens verificados também serão removidos se evitarem que um diretório seja re
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="262"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;A nova serão do %1 Cliente está disponivel.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; está disponível para descarga. A versão instalada é a %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;A nova serão do %1 Cliente está disponivel.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; está disponível para transferência. A versão instalada é a %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="275"/>
@@ -947,12 +947,12 @@ Itens verificados também serão removidos se evitarem que um diretório seja re
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation>Nome do servidor proxy.</translation>
+        <translation>Nome do servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
-        <translation>Nome de utilizador para o servidor proxy.</translation>
+        <translation>Nome de utilizador para o servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/mirall/networksettings.cpp" line="36"/>
@@ -975,7 +975,7 @@ Itens verificados também serão removidos se evitarem que um diretório seja re
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
-        <translation>Nova actualização disponível</translation>
+        <translation>Nova atualização disponível</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="56"/>
@@ -1006,7 +1006,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation>Uma nova versão %1 está disponível. Por favor use o sistema de actualização para instalar.</translation>
+        <translation>Nova versão %1 disponível. Por favor use a ferramenta de atualização do sistema para a instalar.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1016,7 +1016,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>Estado de actualização é desconhecido: não foi possível procurar novas actualizações</translation>
+        <translation>Estado de actualização é desconhecido: não foi possível procurar novas actualizações.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
@@ -1339,17 +1339,17 @@ Em vez disso deseja utilizar uma ligação não codificada (não recomendado)?</
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="594"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>O ficheiro %1 não pode ser descarregado devido a conflito com um nome de ficheiro local!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="756"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="757"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível transferir o ficheiro na totalidade.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="792"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="793"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Ficheiro %1 não pode ser guardado devido à existência de um ficheiro local com o mesmo nome.</translation>
     </message>
@@ -1454,23 +1454,23 @@ Em vez disso deseja utilizar uma ligação não codificada (não recomendado)?</
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="296"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="297"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>O ficheiro foi editado localmente mas faz parte de uma prtilha só de leitura. Foi restaurado mas a edição está no ficheiro de conflito.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="328"/>
         <source>The local file was removed during sync.</source>
         <translation>O arquivo local foi removido durante a sincronização.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="341"/>
         <source>Local file changed during sync.</source>
         <translation>Ficheiro local alterado durante a sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>O servidor não reconheceu o último bloco. (Nenhuma e-tag estava presente)</translation>
     </message>
@@ -1659,12 +1659,12 @@ Em vez disso deseja utilizar uma ligação não codificada (não recomendado)?</
 <context>
     <name>Mirall::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="285"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="297"/>
         <source>Login Error</source>
         <translation>Erro de login</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="285"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="297"/>
         <source>You must sign in as user %1</source>
         <translation>Deve fazer o login como utilizador %1.</translation>
     </message>
@@ -2246,12 +2246,12 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="429"/>
         <source>Sign in...</source>
-        <translation>Entrar...</translation>
+        <translation>Iniciar sessão...</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="431"/>
         <source>Sign out</source>
-        <translation>Sair</translation>
+        <translation>Terminar sessão</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="439"/>
@@ -2281,7 +2281,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="479"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Sincronizando %1 (%2 faltando)</translation>
+        <translation>A sincronizar %1 (%2 em falta)</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="499"/>
@@ -2291,7 +2291,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="527"/>
         <source>Up to date</source>
-        <translation>Actualizado</translation>
+        <translation>Atualizado</translation>
     </message>
 </context>
 <context>
@@ -2299,7 +2299,7 @@ Por favor utilize um servidor de sincronização horária (NTP), no servidor e n
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Versão %2. Para mais informação visita &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Por Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Baseado em Mirall por Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licenciado sob a GNU General Public License (GPL) Versão 2.0&lt;br/&gt;ownCloud e ownCloud Logo são marcas registadas de ownCloud, Inc. nos Estados Unidos da América, em outros países, ou ambos.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Versão %2. Para mais informações visite &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Por Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Baseado em Mirall por Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licenciado sob a GNU General Public License (GPL) Versão 2.0&lt;br/&gt;ownCloud e ownCloud Logo são marcas registadas de ownCloud, Inc. nos Estados Unidos da América, em outros países, ou ambos.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

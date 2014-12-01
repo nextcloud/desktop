@@ -198,7 +198,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="608"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ищем &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="648"/>
@@ -637,22 +637,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="507"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation> E-Tag от сервера на получен, проверьте сетевые настройки (настройки прокси, шлюз).</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="514"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Мы получили другой E-Tag для возобновления. Повторите попытку позже.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="541"/>
         <source>Server returned wrong content-range</source>
         <translation>Сервер вернул неверный диапазон содержания</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="580"/>
         <source>Connection Timeout</source>
         <translation>Тайм-аут подключения</translation>
     </message>
@@ -1118,7 +1118,11 @@ It is not advisable to use it.</source>
 %1
 
 Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation type="unfinished"/>
+        <translation>Не удаётся установить защищённое подключение к:
+
+%1
+
+Хотите установить незашифрованное подключение (не рекомендуется)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
@@ -1338,19 +1342,19 @@ Do you want to connect unencrypted instead (not recommended)?</source>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="594"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Файл %1 не может быть загружен из-за локальных конфликтов имен!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="756"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="757"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно полностью загрузить файл.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="792"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="793"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 не может быть сохранён из-за совпадения его имени с локальным файлом!</translation>
     </message>
 </context>
 <context>
@@ -1453,23 +1457,23 @@ Do you want to connect unencrypted instead (not recommended)?</source>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="296"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="297"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Этот файл был изменен локально, но является частью опубликованной папки с правами только для чтения. Он восстановлен и ваши изменения находятся в файле конфликтов.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="328"/>
         <source>The local file was removed during sync.</source>
         <translation>Локальный файл был удалён в процессе синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="341"/>
         <source>Local file changed during sync.</source>
         <translation>Локальный файл изменился в процессе синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Сервер не смог подтвердить последний отрезок данных. (Отсутствовали теги e-tag)</translation>
     </message>
@@ -1549,19 +1553,26 @@ Do you want to connect unencrypted instead (not recommended)?</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>В настоящий момент из-за предыдущих ошибок ни один из файлов не игнорируется и нет ни одной активной загрузки.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n файл игнорируется из-за предыдущих ошибок.
+
+</numerusform><numerusform>%n файла игнорируются из-за предыдущих ошибок.
+</numerusform><numerusform>%n файлов игнорируются из-за предыдущих ошибок.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n файл частично загружен.
+</numerusform><numerusform>%n файла частично загружены.
+</numerusform><numerusform>%n файлов частично загружены.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
@@ -1579,7 +1590,7 @@ Do you want to connect unencrypted instead (not recommended)?</source>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="274"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Неотмеченные папки будут &lt;b&gt;удалены&lt;/b&gt; из вашей локальной файловой системы и больше не будут синхронизироваться на этом компьютере</translation>
     </message>
 </context>
 <context>
@@ -1654,12 +1665,12 @@ Do you want to connect unencrypted instead (not recommended)?</source>
 <context>
     <name>Mirall::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="285"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="297"/>
         <source>Login Error</source>
         <translation>Ошибка входа</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="285"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="297"/>
         <source>You must sign in as user %1</source>
         <translation>Вы должны войти как пользователь %1</translation>
     </message>
@@ -2265,7 +2276,7 @@ Do you want to connect unencrypted instead (not recommended)?</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="470"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ищем &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="474"/>

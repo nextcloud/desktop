@@ -29,6 +29,7 @@
 
 namespace Mirall {
 
+    headers["OC-Chunk-Size"]= QByteArray::number(quint64(chunkSize()));
 // DOES NOT take owncership of the device.
 GETFileJob::GETFileJob(Account* account, const QString& path, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
@@ -423,9 +424,10 @@ void PropagateDownloadFileQNAM::slotGetFinished()
      * truncated, as described here: https://github.com/owncloud/mirall/issues/2528
      */
     const QByteArray sizeHeader("Content-Length");
-    qint64 bodySize = job->reply()->rawHeader(sizeHeader).toLongLong();
+    quint64 bodySize = job->reply()->rawHeader(sizeHeader).toULongLong();
 
-    if(bodySize > 0 && bodySize != _tmpFile.size() ) {
+    if(bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart() ) {
+        qDebug() << bodySize << _tmpFile.size() << job->resumeStart();
         _propagator->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."));
         return;
