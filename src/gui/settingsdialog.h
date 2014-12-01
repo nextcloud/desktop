@@ -54,10 +54,10 @@ protected:
 private slots:
 
 private:
-    Ui::SettingsDialog *_ui;
+    Ui::SettingsDialog * const _ui;
     QHash<QAction*, QWidget*> _actions;
-    AccountSettings *_accountSettings;
-    QAction *_protocolAction;
+    AccountSettings * const _accountSettings;
+    QAction * _protocolAction;
 };
 
 }

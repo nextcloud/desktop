@@ -43,8 +43,10 @@ namespace {
 namespace Mirall {
 
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
-    QDialog(parent),
-    _ui(new Ui::SettingsDialog)
+    QDialog(parent)
+    , _ui(new Ui::SettingsDialog)
+    , _accountSettings(new AccountSettings)
+
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi(this);
@@ -69,7 +71,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     QIcon accountIcon(QLatin1String(":/mirall/resources/accounts.png"));
     QAction *accountAction = toolBar->addAction(accountIcon, tr("Account"));
     accountAction->setCheckable(true);
-    _accountSettings = new AccountSettings;
     _ui->stack->addWidget(_accountSettings);
 
     QIcon protocolIcon(QLatin1String(":/mirall/resources/activity.png"));
@@ -157,7 +158,9 @@ void SettingsDialog::slotSwitchPage(QAction *action)
 
 void SettingsDialog::showActivityPage()
 {
-    slotSwitchPage(_protocolAction);
+    if (_protocolAction) {
+        slotSwitchPage(_protocolAction);
+    }
 }
 
 
