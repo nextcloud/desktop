@@ -29,7 +29,6 @@
 
 namespace Mirall {
 
-    headers["OC-Chunk-Size"]= QByteArray::number(quint64(chunkSize()));
 // DOES NOT take owncership of the device.
 GETFileJob::GETFileJob(Account* account, const QString& path, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,

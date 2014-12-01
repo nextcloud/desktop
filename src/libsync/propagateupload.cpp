@@ -333,6 +333,7 @@ void PropagateUploadFileQNAM::startNextChunk()
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Total-Length"] = QByteArray::number(fileSize);
     headers["OC-Async"] = "1";
+    headers["OC-Chunk-Size"]= QByteArray::number(quint64(chunkSize()));
     headers["Content-Type"] = "application/octet-stream";
     headers["X-OC-Mtime"] = QByteArray::number(qint64(_item._modtime));
     if (!_item._etag.isEmpty() && _item._etag != "empty_etag" &&
