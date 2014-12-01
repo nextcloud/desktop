@@ -94,6 +94,11 @@ SocketApi::SocketApi(QObject* parent)
         runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
 #else
         runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
+        if (runtimeDir.isEmpty()) {
+            runtimeDir = QDir::tempPath() + QLatin1String("/runtime-")
+                + QString::fromLocal8Bit(qgetenv("USER"));
+            QDir().mkdir(runtimeDir);
+        }
 #endif
         socketPath = runtimeDir + "/" + Theme::instance()->appName() + "/socket";
     } else {

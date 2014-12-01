@@ -18,6 +18,19 @@ import socket
 
 from gi.repository import GObject, Nautilus
 
+
+def get_runtime_dir():
+    """Returns the value of $XDG_RUNTIME_DIR, a directory path.
+
+    If the value is not set, returns the same default as in Qt5
+    """
+    try:
+        return os.environ['XDG_RUNTIME_DIR']
+    except KeyError:
+        fallback = '/tmp/runtime-' + os.environ['USER']
+        return fallback
+
+
 class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoProvider):
 
     nautilusVFSFile_table = {}
@@ -38,7 +51,7 @@ class syncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
         try:
             self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             postfix = "/"+self.appname+"/socket"
-            sock_file = os.environ["XDG_RUNTIME_DIR"]+postfix
+            sock_file = get_runtime_dir()+postfix
             print ("XXXX " + sock_file + " <=> " + postfix)
             if sock_file != postfix:
                 try:
