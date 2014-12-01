@@ -153,7 +153,8 @@ void PropagateUploadFileQNAM::start()
 
     _file = new QFile(_propagator->getFilePath(_item._file), this);
     if (!_file->open(QIODevice::ReadOnly)) {
-        done(SyncFileItem::NormalError, _file->errorString());
+        // Soft error because this is likely caused by the user modifying his files while syncing
+        done(SyncFileItem::SoftError, _file->errorString());
         delete _file;
         return;
     }
