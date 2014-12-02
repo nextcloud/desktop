@@ -34,6 +34,8 @@
 #include <QMessageBox>
 #include <QPointer>
 #include <QtCore>
+#include <QMutableSetIterator>
+#include <QSet>
 
 namespace Mirall {
 
@@ -66,6 +68,13 @@ FolderMan::FolderMan(QObject *parent) :
 
     _socketApi = new SocketApi(this);
     _socketApi->slotReadExcludes();
+
+    MirallConfigFile cfg;
+    int polltime = cfg.remotePollInterval();
+    qDebug() << "setting remote poll timer interval to" << polltime << "msec";
+    _etagPollTimer.setInterval( polltime );
+    QObject::connect(&_etagPollTimer, SIGNAL(timeout()), this, SLOT(slotEtagPollTimerTimeout()));
+    _etagPollTimer.start();
 }
 
 FolderMan *FolderMan::instance()
@@ -489,6 +498,43 @@ void FolderMan::slotScheduleSync( const QString& alias )
     QTimer::singleShot(msBetweenRequestAndSync, this, SLOT(slotStartScheduledFolderSync()));
 }
 
+void FolderMan::slotScheduleETagJob ( const QString &alias, RequestEtagJob *job)
+{
+    QObject::connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(slotEtagJobDestroyed(QObject*)));
+    QMetaObject::invokeMethod(this, "slotRunOneEtagJob", Qt::QueuedConnection);
+
+}
+
+void FolderMan::slotEtagJobDestroyed (QObject* o)
+{
+    RequestEtagJob *job = 0;
+    if (job == _currentEtagJob) {
+        _currentEtagJob = 0; // viel hilft viel
+    }
+    QMetaObject::invokeMethod(this, "slotRunOneEtagJob", Qt::QueuedConnection);
+}
+
+void FolderMan::slotRunOneEtagJob()
+{
+    if (_currentEtagJob.isNull()) {
+        QString alias;
+        foreach(Folder *f, _folderMap) {
+            if (f->etagJob()) {
+                // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a seperate queue.
+                _currentEtagJob = f->etagJob();
+                alias = f->alias();
+                break;
+            }
+        }
+        if (_currentEtagJob.isNull()) {
+            qDebug() << Q_FUNC_INFO << "No more remote ETag check jobs to schedule.";
+        } else {
+            qDebug() << Q_FUNC_INFO << "Scheduling" << alias << "to check remote ETag";
+            _currentEtagJob->start(); // on destroy/end it will continue the queue via slotEtagJobDestroyed
+        }
+    }
+}
+
 // only enable or disable foldermans will to schedule and do syncs.
 // this is not the same as Pause and Resume of folders.
 void FolderMan::setSyncEnabled( bool enabled )
@@ -542,6 +588,51 @@ void FolderMan::slotStartScheduledFolderSync()
                 _socketApi->slotReadExcludes();
             }
         }
+    }
+}
+
+void FolderMan::slotEtagPollTimerTimeout()
+{
+    //qDebug() << Q_FUNC_INFO << "Checking if we need to make any folders check the remote ETag";
+    MirallConfigFile cfg;
+    int polltime = cfg.remotePollInterval();
+
+    QSet<QString> folderAliases = _folderMap.keys().toSet();
+    QMutableSetIterator<QString> i(folderAliases);
+    while (i.hasNext()) {
+        QString alias = i.next();
+        if (_currentSyncFolder == alias) {
+            i.remove();
+            continue;
+        }
+        if (_scheduleQueue.contains(alias)) {
+            i.remove();
+            continue;
+        }
+        Folder *f = _folderMap.value(alias);
+        if (f && _disabledFolders.contains(f)) {
+            i.remove();
+            continue;
+        }
+        if (f && (f->etagJob() || f->isBusy() || f->syncPaused())) {
+            i.remove();
+            continue;
+        }
+        if (f && f->msecSinceLastSync() < polltime) {
+            i.remove();
+            continue;
+        }
+    }
+
+    if (folderAliases.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "No folders need to check for the remote ETag";
+    } else {
+        qDebug() << Q_FUNC_INFO << "The following folders need to check for the remote ETag:" << folderAliases;
+        i = folderAliases; // reset
+         while (i.hasNext()) {
+             QString alias = i.next();
+             QMetaObject::invokeMethod(_folderMap.value(alias), "slotRunEtagJob", Qt::QueuedConnection);
+         }
     }
 }
 

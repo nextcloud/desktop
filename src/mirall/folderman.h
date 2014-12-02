@@ -130,11 +130,16 @@ public slots:
 
     // slot to add a folder to the syncing queue
     void slotScheduleSync( const QString & );
+    // slot to scheule an ETag job
+    void slotScheduleETagJob ( const QString &alias, RequestEtagJob *job);
+    void slotEtagJobDestroyed (QObject*);
+    void slotRunOneEtagJob();
 
 private slots:
 
     // slot to take the next folder from queue and start syncing.
     void slotStartScheduledFolderSync();
+    void slotEtagPollTimerTimeout();
 
 private:
     // finds all folder configuration files
@@ -153,6 +158,9 @@ private:
     QSignalMapper *_folderWatcherSignalMapper;
     QString        _currentSyncFolder;
     bool           _syncEnabled;
+    QTimer         _etagPollTimer;
+    QPointer<RequestEtagJob>        _currentEtagJob; // alias of Folder running the current RequestEtagJob
+
     QMap<QString, FolderWatcher*> _folderWatchers;
     QPointer<SocketApi> _socketApi;
 

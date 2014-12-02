@@ -69,18 +69,10 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
     qsrand(QTime::currentTime().msec());
     _timeSinceLastSync.start();
 
-    MirallConfigFile cfg;
-
     _syncResult.setStatus( SyncResult::NotYetStarted );
 
     // check if the local path exists
     checkLocalPath();
-
-    int polltime = cfg.remotePollInterval();
-    qDebug() << "setting remote poll timer interval to" << polltime << "msec";
-    _pollTimer.setInterval( polltime );
-    QObject::connect(&_pollTimer, SIGNAL(timeout()), this, SLOT(slotPollTimerTimeout()));
-    _pollTimer.start();
 
     _syncResult.setFolder(alias);
 }
@@ -234,7 +226,6 @@ void Folder::setSyncPaused( bool paused )
       // do not stop or start the watcher here, that is done internally by
       // folder class. Even if the watcher fires, the folder does not
       // schedule itself because it checks the var. _enabled before.
-      _pollTimer.stop();
       setSyncState(SyncResult::Paused);
   }
 }
@@ -255,20 +246,24 @@ void Folder::prepareToSync()
     _syncResult.clearErrors();
 }
 
-void Folder::slotPollTimerTimeout()
+void Folder::slotRunEtagJob()
 {
-    qDebug() << "* Polling" << alias() << "for changes. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
+    qDebug() << "* Trying to check" << alias() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
 
 
     Account *account = AccountManager::instance()->account();
-
     if (!account) {
-        qDebug() << Q_FUNC_INFO << "No valid account object";
+        qDebug() << Q_FUNC_INFO << alias() << "No valid account object, not trying to sync";
+        return;
+    }
+
+    if (!_requestEtagJob.isNull()) {
+        qDebug() << Q_FUNC_INFO << alias() << "has ETag job queued, not trying to sync";
         return;
     }
 
     if (_paused || account->state() != Account::Connected) {
-        qDebug() << "Not syncing.  :" << _paused << account->state();
+        qDebug() << "Not syncing.  :"  << alias() << _paused << account->state();
         return;
     }
 
@@ -306,11 +301,12 @@ void Folder::slotPollTimerTimeout()
         // Do the ordinary etag check for the root folder and only schedule a real
         // sync if it's different.
 
-        RequestEtagJob* job = new RequestEtagJob(account, remotePath(), this);
+        _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
         // check if the etag is different
-        QObject::connect(job, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
-        QObject::connect(job, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotNetworkUnavailable()));
-        job->start();
+        QObject::connect(_requestEtagJob, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
+        QObject::connect(_requestEtagJob, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotNetworkUnavailable()));
+        FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
+        // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
     }
 }
 
@@ -775,7 +771,6 @@ void Folder::startSync(const QStringList &pathList)
 
     // disable events until syncing is done
     // _watcher->setEventsEnabled(false);
-    _pollTimer.stop();
     emit syncStarted();
 }
 
@@ -906,9 +901,7 @@ void Folder::slotSyncFinished()
         // We will make sure that the poll timer occurs soon enough.
         // delay 1s, 4s, 9s
         int c = _consecutiveFollowUpSyncs;
-        QTimer::singleShot(c*c * 1000, this, SLOT(slotPollTimerTimeout() ));
-    } else {
-        _pollTimer.start();
+        QTimer::singleShot(c*c * 1000, this, SLOT(slotRunEtagJob() ));
     }
 }
 
@@ -978,7 +971,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
         // speed up next sync
         _lastEtag.clear();
         _forceSyncOnPollTimeout = true;
-        QTimer::singleShot(50, this, SLOT(slotPollTimerTimeout()));
+        QTimer::singleShot(50, this, SLOT(slotRunEtagJob()));
     }
 }
 } // namespace Mirall
