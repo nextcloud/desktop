@@ -19,12 +19,26 @@
  */
 
 #include "c_lib.h"
-#include "vio/csync_vio_file_stat.h"
+#include "csync.h"
 
 csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
   csync_vio_file_stat_t *file_stat = (csync_vio_file_stat_t *) c_malloc(sizeof(csync_vio_file_stat_t));
   ZERO_STRUCTP(file_stat);
   return file_stat;
+}
+
+csync_vio_file_stat_t* csync_vio_file_stat_copy(csync_vio_file_stat_t *file_stat) {
+    csync_vio_file_stat_t *file_stat_cpy = csync_vio_file_stat_new();
+    memcpy(file_stat_cpy, file_stat, sizeof(csync_vio_file_stat_t));
+    file_stat_cpy->etag = c_strdup(file_stat_cpy->etag);
+    if (file_stat_cpy->directDownloadCookies) {
+        file_stat_cpy->directDownloadCookies = c_strdup(file_stat_cpy->directDownloadCookies);
+    }
+    if (file_stat_cpy->directDownloadUrl) {
+        file_stat_cpy->directDownloadUrl = c_strdup(file_stat_cpy->directDownloadUrl);
+    }
+    file_stat_cpy->name = c_strdup(file_stat_cpy->name);
+    return file_stat_cpy;
 }
 
 void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {

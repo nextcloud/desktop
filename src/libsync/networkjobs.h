@@ -142,7 +142,10 @@ public:
     QHash<QString, qint64> _sizes;
 
 signals:
-    void directoryListing(const QStringList &items);
+    void directoryListingSubfolders(const QStringList &items);
+    void directoryListingIterated(const QString name, QMap<QString,QString> properties);
+    void finishedWithError(QNetworkReply *reply);
+    void finishedWithoutError();
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;

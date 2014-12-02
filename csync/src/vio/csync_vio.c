@@ -29,7 +29,6 @@
 #include "csync_private.h"
 #include "csync_util.h"
 #include "vio/csync_vio.h"
-#include "vio/csync_vio_handle_private.h"
 #include "vio/csync_vio_local.h"
 #include "csync_statedb.h"
 #include "std/c_jhash.h"
@@ -45,7 +44,7 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
       if(ctx->remote.read_from_db) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Read from db flag is true, should not!" );
       }
-      return owncloud_opendir(ctx, name);
+      return ctx->callbacks.remote_opendir_hook(name, ctx->callbacks.vio_userdata);
       break;
     case LOCAL_REPLICA:
 	if( ctx->callbacks.update_callback ) {
@@ -73,7 +72,8 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
       if( ctx->remote.read_from_db ) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Remote ReadFromDb is true, should not!");
       }
-      rc = owncloud_closedir(ctx, dhandle);
+      ctx->callbacks.remote_closedir_hook(dhandle, ctx->callbacks.vio_userdata);
+      rc = 0;
       break;
   case LOCAL_REPLICA:
       rc = csync_vio_local_closedir(dhandle);
@@ -91,7 +91,7 @@ csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle
       if( ctx->remote.read_from_db ) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Remote readfromdb is true, should not!");
       }
-      return owncloud_readdir(ctx, dhandle);
+      return ctx->callbacks.remote_readdir_hook(dhandle, ctx->callbacks.vio_userdata);
       break;
     case LOCAL_REPLICA:
       return csync_vio_local_readdir(dhandle);

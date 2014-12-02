@@ -222,6 +222,12 @@ int csync_update(CSYNC *ctx) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "No exclude file loaded or defined!");
   }
 
+  /* This is not actually connecting, just setting the info for neon. The legacy propagator can use it.. */
+  if (dav_connect( ctx, ctx->remote.uri ) < 0) {
+      ctx->status_code = CSYNC_STATUS_CONNECT_ERROR;
+      return -1;
+  }
+
   /* update detection for local replica */
   csync_gettime(&start);
   ctx->current = LOCAL_REPLICA;

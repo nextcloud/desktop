@@ -25,8 +25,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "c_private.h"
-#include "vio/csync_vio_handle.h"
-#include "vio/csync_vio_file_stat.h"
+#include "csync.h"
 #include "csync_private.h"
 
 typedef struct fhandle_s {

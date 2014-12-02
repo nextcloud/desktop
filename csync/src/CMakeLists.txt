@@ -62,7 +62,6 @@ set(csync_SRCS
   vio/csync_vio_local.c
 
   csync_owncloud.c
-  csync_owncloud_recursive_propfind.c
   csync_owncloud_util.c
 )
 
@@ -72,8 +71,6 @@ set(csync_HDRS
   ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h
   csync.h
   vio/csync_vio.h
-  vio/csync_vio_file_stat.h
-  vio/csync_vio_handle.h
   vio/csync_vio_method.h
   vio/csync_vio_module.h
 )

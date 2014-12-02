@@ -41,7 +41,6 @@
 #include "std/c_private.h"
 #include "csync.h"
 #include "csync_misc.h"
-#include "vio/csync_vio_file_stat.h"
 
 #ifdef WITH_ICONV
 #include <iconv.h>
@@ -89,6 +88,11 @@ struct csync_s {
       void *userdata;
       csync_update_callback update_callback;
       void *update_callback_userdata;
+
+      csync_vio_opendir_hook remote_opendir_hook;
+      csync_vio_readdir_hook remote_readdir_hook;
+      csync_vio_closedir_hook remote_closedir_hook;
+      void *vio_userdata;
   } callbacks;
   c_strlist_t *excludes;
 
@@ -204,6 +208,10 @@ struct _csync_treewalk_context_s
 };
 typedef struct _csync_treewalk_context_s _csync_treewalk_context;
 
+
+time_t oc_httpdate_parse( const char *date );
+
+void set_errno_from_http_errcode( int err );
 
 /**
  * }@

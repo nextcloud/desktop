@@ -22,17 +22,15 @@
 #define CSYNC_OWNCLOUD_H
 
 #include "csync.h"
-#include "vio/csync_vio_file_stat.h"
 #include "vio/csync_vio.h"
 
 // Public API used by csync
-csync_vio_handle_t *owncloud_opendir(CSYNC* ctx, const char *uri);
-csync_vio_file_stat_t *owncloud_readdir(CSYNC* ctx, csync_vio_handle_t *dhandle);
-int owncloud_closedir(CSYNC* ctx, csync_vio_handle_t *dhandle);
 int owncloud_commit(CSYNC* ctx);
 void owncloud_destroy(CSYNC* ctx);
 char *owncloud_error_string(CSYNC* ctx);
-void owncloud_init(CSYNC* ctx);
 int owncloud_set_property(CSYNC* ctx, const char *key, void *data);
+void owncloud_init(CSYNC* ctx);
+
+int dav_connect(CSYNC* ctx,  const char *base_url);
 
 #endif /* CSYNC_OWNCLOUD_H */

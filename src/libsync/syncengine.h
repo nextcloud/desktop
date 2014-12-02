@@ -36,6 +36,7 @@
 #include "utility.h"
 #include "syncfilestatus.h"
 #include "accountfwd.h"
+#include "discoveryphase.h"
 
 class QProcess;
 
@@ -150,6 +151,7 @@ private:
     QString _remoteUrl;
     QString _remotePath;
     SyncJournalDb *_journal;
+    QPointer<DiscoveryMainThread> _discoveryMainThread;
     QSharedPointer <OwncloudPropagator> _propagator;
     QString _lastDeleted; // if the last item was a path and it has been deleted
     QSet<QString> _seenFiles;

@@ -19,7 +19,7 @@
  */
 #include "torture.h"
 
-#include "vio/csync_vio_file_stat.h"
+#include "csync.h"
 
 static void check_csync_vio_file_stat_new(void **state)
 {

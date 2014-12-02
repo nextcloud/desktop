@@ -328,11 +328,20 @@ void LsColJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("Depth", "1");
+    // FIXME The results are delivered without namespace, if this is ever a problem we need to check it..
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
-                   "<d:propfind xmlns:d=\"DAV:\">\n"
+                   "<d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\">\n"
                    "  <d:prop>\n"
                    "    <d:resourcetype/>\n"
                    "    <d:quota-used-bytes/>\n"
+                   "    <d:getlastmodified/>\n"
+                   "    <d:getcontentlength/>\n"
+                   "    <d:resourcetype/>\n"
+                   "    <d:getetag/>\n"
+                   "    <oc:id/>\n"
+                   "    <oc:downloadURL/>\n"
+                   "    <oc:dDC/>\n"
+                   "    <oc:permissions/>\n"
                    "  </d:prop>\n"
                    "</d:propfind>\n");
     QBuffer *buf = new QBuffer(this);
@@ -345,42 +354,128 @@ void LsColJob::start()
     AbstractNetworkJob::start();
 }
 
+// supposed to read <D:collection> when pointing to <D:resourcetype><D:collection></D:resourcetype>..
+static QString readContentsAsString(QXmlStreamReader &reader) {
+    QString result;
+    int level = 0;
+    do {
+        QXmlStreamReader::TokenType type = reader.readNext();
+        if (type == QXmlStreamReader::StartElement) {
+            level++;
+            result += "<" + reader.name().toString() + ">";
+        } else if (type == QXmlStreamReader::Characters) {
+            result += reader.text();
+        } else if (type == QXmlStreamReader::EndElement) {
+            level--;
+            if (level < 0) {
+                break;
+            }
+            result += "</" + reader.name().toString() + ">";
+        }
+
+    } while (!reader.atEnd());
+    return result;
+}
+
 bool LsColJob::finished()
 {
-    if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
+    QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
+    int httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (httpCode == 207 && contentType.contains("application/xml; charset=utf-8")) {
         // Parse DAV response
-        QXmlStreamReader reader(reply());
+        QByteArray xml = reply()->readAll();
+        qDebug() << xml;
+        QXmlStreamReader reader(xml);
         reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
 
         QStringList folders;
-        QString currentItem;
+        QString currentHref;
+        QMap<QString, QString> currentTmpProperties;
+        QMap<QString, QString> currentHttp200Properties;
+        bool currentPropsHaveHttp200 = false;
+        bool insidePropstat = false;
+        bool insideProp = false;
 
         while (!reader.atEnd()) {
             QXmlStreamReader::TokenType type = reader.readNext();
-            if (type == QXmlStreamReader::StartElement &&
-                    reader.namespaceUri() == QLatin1String("DAV:")) {
-                QString name = reader.name().toString();
+            QString name = reader.name().toString();
+            // Start elements with DAV:
+            if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
+                qDebug() << Q_FUNC_INFO << "StartElement" << name;
                 if (name == QLatin1String("href")) {
-                    currentItem = reader.readElementText();
-                } else if (name == QLatin1String("collection") &&
-                           !currentItem.isEmpty()) {
-                    folders.append(QUrl::fromEncoded(currentItem.toLatin1()).path());
-                } else if (name == QLatin1String("quota-used-bytes") &&
-                           !currentItem.isEmpty()) {
-                    bool ok = false;
-                    auto s = reader.readElementText().toLongLong(&ok);
-                    if (ok) {
-                        _sizes[currentItem] = s;
+                    currentHref = QUrl::fromPercentEncoding(reader.readElementText().toUtf8());
+                } else if (name == QLatin1String("response")) {
+                } else if (name == QLatin1String("propstat")) {
+                    qDebug() << "inside propstat!";
+                    insidePropstat = true;
+                } else if (name == QLatin1String("status") && insidePropstat) {
+                    QString httpStatus = reader.readElementText();
+                    if (httpStatus.startsWith("HTTP/1.1 200")) {
+                        currentPropsHaveHttp200 = true;
+                        qDebug() << Q_FUNC_INFO << "currentPropsHaveHttp200!";
+                    } else {
+                        currentPropsHaveHttp200 = false;
                     }
-
+                    qDebug() << Q_FUNC_INFO << "properties have " << httpStatus;
+                } else if (name == QLatin1String("prop")) {
+                    qDebug() << "inside prop!";
+                    insideProp = true;
+                    continue;
                 }
-            } else if (type == QXmlStreamReader::EndElement &&
-                    reader.namespaceUri() == QLatin1String("DAV:") &&
-                    reader.name() == QLatin1String("response")) {
-                currentItem.clear();
+            }
+
+            if (type == QXmlStreamReader::StartElement && insidePropstat && insideProp) {
+                // All those elements are properties
+                //QString propertyContent = reader.readElementText(QXmlStreamReader::IncludeChildElements);
+                QString propertyContent = readContentsAsString(reader);
+                qDebug() << "PROP" << reader.namespaceUri() << reader.name() << propertyContent;
+                if (name == QLatin1String("resourcetype") && propertyContent.contains("collection")) {
+                    qDebug() << "IS COLLECTION!";
+                    folders.append(QUrl::fromEncoded(currentHref.toLatin1()).path());
+                } else if (name == QLatin1String("quota-used-bytes")) {
+                    bool ok = false;
+                    auto s = propertyContent.toLongLong(&ok);
+                    if (ok) {
+                        _sizes[currentHref] = s;
+                    }
+                }
+                currentTmpProperties.insert(reader.name().toString(), propertyContent);
+            }
+
+            // End elements with DAV:
+            if (type == QXmlStreamReader::EndElement) {
+                qDebug() << Q_FUNC_INFO << "EndElement" << name;
+                if (reader.namespaceUri() == QLatin1String("DAV:")) {
+                    if (reader.name() == "response") {
+                        qDebug() << Q_FUNC_INFO << "EMITTING" << currentHref;
+                        if (currentHref.endsWith('/')) {
+                            currentHref.chop(1);
+                        }
+                        emit directoryListingIterated(currentHref, currentHttp200Properties);
+                        currentHref.clear();                        
+                        currentHttp200Properties.clear();
+                    } else if (reader.name() == "propstat") {
+                        qDebug() <<"END PROPSTAT" << currentTmpProperties.keys();
+                        insidePropstat = false;
+                        if (currentPropsHaveHttp200) {
+                            currentHttp200Properties = QMap<QString,QString>(currentTmpProperties);
+                        }
+                        currentTmpProperties.clear();
+                        currentPropsHaveHttp200 = false;
+                    } else if (reader.name() == "prop") {
+                        insideProp = false;
+                    }
+                }
             }
         }
-        emit directoryListing(folders);
+        emit directoryListingSubfolders(folders);
+        emit finishedWithoutError();
+    } else if (httpCode == 207) {
+        // wrong content type
+        emit finishedWithError(reply());
+    } else {
+        // wrong HTTP code
+        emit finishedWithError(reply());
     }
     return true;
 }

@@ -36,9 +36,7 @@
 #include "csync_log.h"
 #include "csync_vio.h"
 
-#include "vio/csync_vio_handle.h"
 #include "vio/csync_vio_local.h"
-#include "vio/csync_vio_handle_private.h"
 
 
 /*
