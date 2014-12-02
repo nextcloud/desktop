@@ -706,6 +706,8 @@ bool FolderMan::startFromScratch( const QString& localFolder )
                 if( localFolder.startsWith(f->path()) ) {
                     _socketApi->slotUnregisterPath(f->alias());
                 }
+                f->journalDb()->close();
+                f->slotTerminateSync(); // Normaly it should not be running, but viel hilft viel
             }
         }
 
