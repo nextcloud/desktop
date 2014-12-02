@@ -112,7 +112,7 @@ void AccessManager::slotAuthenticationRequired(QNetworkReply *reply, QAuthentica
     }
 #else
     Q_UNUSED(reply) Q_UNUSED(authenticator)
-    Q_ASSERT(!"MirallAccessManager::slotAuthenticationRequired called");
+    Q_ASSERT(!"OCC::AccessManager::slotAuthenticationRequired called");
 #endif
 }
 

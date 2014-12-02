@@ -27,7 +27,7 @@
 #include <QTimer>
 #include <QObject>
 
-namespace Mirall {
+namespace OCC {
 
 // Because of the many layers of buffering inside Qt (and probably the OS and the network)
 // we cannot lower this value much more. If we do, the estimated bw will be very high

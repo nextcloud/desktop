@@ -18,7 +18,7 @@
 #include "syncjournalfilerecord.h"
 #include <QFile>
 
-namespace Mirall {
+namespace OCC {
 
 void PropagateRemoteMkdir::start()
 {

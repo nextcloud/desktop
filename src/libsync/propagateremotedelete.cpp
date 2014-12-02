@@ -16,7 +16,7 @@
 #include "owncloudpropagator_p.h"
 #include "account.h"
 
-namespace Mirall {
+namespace OCC {
 
 DeleteJob::DeleteJob(Account* account, const QString& path, QObject* parent)
     : AbstractNetworkJob(account, path, parent)

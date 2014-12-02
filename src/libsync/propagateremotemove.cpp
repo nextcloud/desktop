@@ -18,7 +18,7 @@
 #include "syncjournalfilerecord.h"
 #include <QFile>
 
-namespace Mirall {
+namespace OCC {
 
 MoveJob::MoveJob(Account* account, const QString& path,
                  const QString &destination, QObject* parent)

@@ -16,7 +16,7 @@
 #include "owncloudpropagator.h"
 #include "networkjobs.h"
 
-namespace Mirall {
+namespace OCC {
 
 class PropagateRemoteMkdir : public PropagateItemJob {
     Q_OBJECT

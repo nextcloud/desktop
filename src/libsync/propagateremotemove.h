@@ -16,7 +16,7 @@
 #include "owncloudpropagator.h"
 #include "networkjobs.h"
 
-namespace Mirall {
+namespace OCC {
 
 class MoveJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -43,7 +43,7 @@ public:
         : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
     void abort() Q_DECL_OVERRIDE;
-    JobParallelism parallelism() Q_DECL_OVERRIDE { return Mirall::PropagatorJob::WaitForFinishedInParentDirectory; }
+    JobParallelism parallelism() Q_DECL_OVERRIDE { return OCC::PropagatorJob::WaitForFinishedInParentDirectory; }
 private slots:
     void slotMoveJobFinished();
     void finalize();

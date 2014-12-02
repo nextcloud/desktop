@@ -555,13 +555,13 @@ void ConfigFile::setMonoIcons(bool useMonoIcons)
     settings.setValue(QLatin1String(monoIconsC), useMonoIcons);
 }
 
-bool MirallConfigFile::crashReporter() const
+bool ConfigFile::crashReporter() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(crashReporterC), true).toBool();
 }
 
-void MirallConfigFile::setCrashReporter(bool enabled)
+void ConfigFile::setCrashReporter(bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(crashReporterC), enabled);

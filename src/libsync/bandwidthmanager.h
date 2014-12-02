@@ -20,7 +20,7 @@
 #include <QTimer>
 #include <QIODevice>
 
-namespace Mirall {
+namespace OCC {
 
 class UploadDevice;
 class GETFileJob;

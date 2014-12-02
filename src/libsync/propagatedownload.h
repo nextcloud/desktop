@@ -19,7 +19,7 @@
 #include <QBuffer>
 #include <QFile>
 
-namespace Mirall {
+namespace OCC {
 
 class GETFileJob : public AbstractNetworkJob {
     Q_OBJECT
