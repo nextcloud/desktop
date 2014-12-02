@@ -184,17 +184,17 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantM
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
 {
     _ocWizard->displayError(tr("Failed to connect to %1 at %2:<br/>%3")
-                            .arg(Theme::instance()->appNameGUI())
-                            .arg(reply->url().toString())
-                            .arg(reply->errorString()));
+                            .arg(Theme::instance()->appNameGUI(),
+                                 reply->url().toString(),
+                                 reply->errorString()));
 }
 
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuthTimeout(const QUrl&url)
 {
     _ocWizard->displayError(tr("Failed to connect to %1 at %2:<br/>%3")
-                            .arg(Theme::instance()->appNameGUI())
-                            .arg(url.toString())
-                            .arg("Timeout"));
+                            .arg(Theme::instance()->appNameGUI(),
+                                 url.toString(),
+                                 "Timeout"));
 }
 
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )

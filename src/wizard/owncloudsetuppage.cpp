@@ -224,7 +224,7 @@ void OwncloudSetupPage::setErrorString( const QString& err )
         _ui.errorLabel->setVisible(false);
     } else {
         if (_ui.leUrl->text().startsWith("https://")) {
-            QString msg = tr("Could not connect securely:\n\n%1\n\nDo you want to connect unencrypted instead (not recommended)?").arg(err);
+            QString msg = tr("<p>Could not connect securely:</p><p>%1</p><p>Do you want to connect unencrypted instead (not recommended)?</p>").arg(err);
             QString title = tr("Connection failed");
             if (QMessageBox::question(this, title, msg, QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
                 QUrl url(_ui.leUrl->text());
