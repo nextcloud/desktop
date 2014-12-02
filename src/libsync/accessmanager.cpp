@@ -19,7 +19,10 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 
+#ifndef TOKEN_AUTH_ONLY
 #include "authenticationdialog.h"
+#endif
+
 #include "cookiejar.h"
 #include "accessmanager.h"
 #include "utility.h"
@@ -87,6 +90,7 @@ void AccessManager::slotProxyAuthenticationRequired(const QNetworkProxy &proxy, 
 }
 void AccessManager::slotAuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator)
 {
+#ifndef TOKEN_AUTH_ONLY
     // do not handle 401 created by the networkjobs. We may want
     // to eventually exempt some, but for now we need
     // it only for other things, e.g. the browser. Would we handle
@@ -106,6 +110,10 @@ void AccessManager::slotAuthenticationRequired(QNetworkReply *reply, QAuthentica
         authenticator->setUser(dialog.user());
         authenticator->setPassword(dialog.password());
     }
+#else
+    Q_UNUSED(reply) Q_UNUSED(authenticator)
+    Q_ASSERT(!"MirallAccessManager::slotAuthenticationRequired called");
+#endif
 }
 
 } // namespace OCC

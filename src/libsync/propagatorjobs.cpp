@@ -35,15 +35,6 @@
 #include <qstack.h>
 #include <QCoreApplication>
 
-#include <neon/ne_basic.h>
-#include <neon/ne_socket.h>
-#include <neon/ne_session.h>
-#include <neon/ne_props.h>
-#include <neon/ne_auth.h>
-#include <neon/ne_dates.h>
-#include <neon/ne_compress.h>
-#include <neon/ne_redirect.h>
-
 #include <time.h>
 
 
@@ -135,99 +126,19 @@ void PropagateLocalMkdir::start()
     done(SyncFileItem::Success);
 }
 
-/* The list of properties that is fetched in PropFind after a MKCOL */
-static const ne_propname ls_props[] = {
-    { "DAV:", "getetag"},
-    { "http://owncloud.org/ns", "id"},
-    { NULL, NULL }
-};
-
-/*
- * Parse the PROPFIND result after a MKCOL
- */
-void PropagateRemoteMkdir::propfind_results(void *userdata,
-                    const ne_uri *uri,
-                    const ne_prop_result_set *set)
-{
-    PropagateRemoteMkdir *job = static_cast<PropagateRemoteMkdir *>(userdata);
-
-    job->_item._etag = parseEtag(ne_propset_value( set, &ls_props[0] ));
-
-    const char* fileId = ne_propset_value( set, &ls_props[1] );
-    if (fileId) {
-        job->_item._fileId = fileId;
-        qDebug() << "MKCOL: " << uri << " FileID set it to " << fileId;
-
-        // save the file id already so we can detect rename
-        SyncJournalFileRecord record(job->_item, job->_propagator->_localDir + job->_item._renameTarget);
-        job->_propagator->_journal->setFileRecord(record);
-    }
-}
-
-/*
- * Called after the headers have been recieved, try to extract the fileId
- */
-void PropagateRemoteMkdir::post_headers(ne_request* req, void* userdata, const ne_status* )
-{
-    const char *header = ne_get_response_header(req, "OC-FileId");
-    if( header ) {
-        qDebug() << "MKCOL: " << static_cast<PropagateRemoteMkdir*>(userdata)->_item._file << " FileID from header:" << header;
-        static_cast<PropagateRemoteMkdir*>(userdata)->_item._fileId = header;
-    }
-}
-
-
-void PropagateRemoteMkdir::start()
-{
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
-        return;
-
-    QScopedPointer<char, QScopedPointerPodDeleter> uri(
-        ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-
-    ne_hook_post_headers(_propagator->_session, post_headers, this);
-
-    int rc = ne_mkcol(_propagator->_session, uri.data());
-
-    ne_unhook_post_headers(_propagator->_session, post_headers, this);
-
-
-    /* Special for mkcol: it returns 405 if the directory already exists.
-     * Ignore that error */
-    //  Wed, 15 Nov 1995 06:25:24 GMT
-    QDateTime dt = QDateTime::currentDateTimeUtc();
-    _item._responseTimeStamp = dt.toString("hh:mm:ss");
-
-    if( updateErrorFromSession( rc , 0, 405 ) ) {
-        return;
-    }
-
-    if (_item._fileId.isEmpty()) {
-        // Owncloud 7.0.0 and before did not have a header with the file id.
-        // (https://github.com/owncloud/core/issues/9000)
-        // So we must get the file id using a PROPFIND
-        // This is required so that wa can detect moves even if the folder is renamed on the server
-        // while files are still uploading
-        ne_propfind_handler *hdl = ne_propfind_create(_propagator->_session, uri.data(), 0);
-        ne_propfind_named(hdl, ls_props, propfind_results, this);
-        ne_propfind_destroy(hdl);
-    }
-
-    done(SyncFileItem::Success);
-}
-
-
 void PropagateLocalRename::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
+    QString existingFile = _propagator->getFilePath(_item._file);
+    QString targetFile = _propagator->getFilePath(_item._renameTarget);
+
     // if the file is a file underneath a moved dir, the _item.file is equal
     // to _item.renameTarget and the file is not moved as a result.
     if (_item._file != _item._renameTarget) {
         emit progress(_item, 0);
-        qDebug() << "MOVE " << _propagator->_localDir + _item._file << " => " << _propagator->_localDir + _item._renameTarget;
-        QFile file(_propagator->_localDir + _item._file);
+        qDebug() << "MOVE " << existingFile << " => " << targetFile;
 
         if (QString::compare(_item._file, _item._renameTarget, Qt::CaseInsensitive) != 0
                 && _propagator->localFileNameClash(_item._renameTarget)) {
@@ -240,7 +151,11 @@ void PropagateLocalRename::start()
                  .arg(QDir::toNativeSeparators(_item._file)).arg(QDir::toNativeSeparators(_item._renameTarget)) );
             return;
         }
-        if (!file.rename(_propagator->_localDir + _item._file, _propagator->_localDir + _item._renameTarget)) {
+
+        _propagator->addTouchedFile(existingFile);
+        _propagator->addTouchedFile(targetFile);
+        QFile file(existingFile);
+        if (!file.rename(targetFile)) {
             done(SyncFileItem::NormalError, file.errorString());
             return;
         }
@@ -251,7 +166,7 @@ void PropagateLocalRename::start()
     // store the rename file name in the item.
     _item._file = _item._renameTarget;
 
-    SyncJournalFileRecord record(_item, _propagator->_localDir + _item._renameTarget);
+    SyncJournalFileRecord record(_item, targetFile);
     record._path = _item._renameTarget;
 
     if (!_item._isDirectory) { // Directory are saved at the end
@@ -262,80 +177,5 @@ void PropagateLocalRename::start()
 
     done(SyncFileItem::Success);
 }
-
-bool PropagateNeonJob::updateErrorFromSession(int neon_code, ne_request* req, int ignoreHttpCode)
-{
-    if( neon_code != NE_OK ) {
-        qDebug("Neon error code was %d", neon_code);
-    }
-
-    QString errorString;
-    int httpStatusCode = 0;
-
-    switch(neon_code) {
-        case NE_OK:     /* Success, but still the possiblity of problems */
-            if( req ) {
-                const ne_status *status = ne_get_status(req);
-
-                if (status) {
-                    if ( status->klass == 2 || status->code == ignoreHttpCode) {
-                        // Everything is ok, no error.
-                        return false;
-                    }
-                    errorString = QString::fromUtf8( status->reason_phrase );
-                    httpStatusCode = status->code;
-                    _item._httpErrorCode = httpStatusCode;
-                }
-            } else {
-                errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-                httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-                _item._httpErrorCode = httpStatusCode;
-                if ((httpStatusCode >= 200 && httpStatusCode < 300)
-                    || (httpStatusCode != 0 && httpStatusCode == ignoreHttpCode)) {
-                    // No error
-                    return false;
-                    }
-            }
-            // FIXME: classify the error
-            done (SyncFileItem::NormalError, errorString);
-            return true;
-        case NE_ERROR:  /* Generic error; use ne_get_error(session) for message */
-            errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
-            // Check if we don't need to ignore that error.
-            httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-            _item._httpErrorCode = httpStatusCode;
-            qDebug() << Q_FUNC_INFO << "NE_ERROR" << errorString << httpStatusCode << ignoreHttpCode;
-            if (ignoreHttpCode && httpStatusCode == ignoreHttpCode)
-                return false;
-
-            done(SyncFileItem::NormalError, errorString);
-            return true;
-        case NE_LOOKUP:  /* Server or proxy hostname lookup failed */
-        case NE_AUTH:     /* User authentication failed on server */
-        case NE_PROXYAUTH:  /* User authentication failed on proxy */
-        case NE_CONNECT:  /* Could not connect to server */
-        case NE_TIMEOUT:  /* Connection timed out */
-            done(SyncFileItem::FatalError, QString::fromUtf8(ne_get_error(_propagator->_session)));
-            return true;
-        case NE_FAILED:   /* The precondition failed */
-        case NE_RETRY:    /* Retry request (ne_end_request ONLY) */
-        case NE_REDIRECT: /* See ne_redirect.h */
-        default:
-            done(SyncFileItem::SoftError, QString::fromUtf8(ne_get_error(_propagator->_session)));
-            return true;
-    }
-    return false;
-}
-
-void UpdateMTimeAndETagJob::start()
-{
-    QScopedPointer<char, QScopedPointerPodDeleter> uri(
-        ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-    if (!updateMTimeAndETag(uri.data(), _item._modtime))
-        return;
-    done(SyncFileItem::Success);
-}
-
-
 
 }

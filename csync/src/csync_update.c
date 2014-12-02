@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
+#include <time.h>
 
 #include "c_lib.h"
 #include "c_jhash.h"
@@ -266,7 +267,10 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             goto out;
         }
         if((ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag ))
-            || (ctx->current == LOCAL_REPLICA && (fs->mtime != tmp->modtime
+            || (ctx->current == LOCAL_REPLICA && ((fs->mtime != tmp->modtime
+                                                        /* Ignore when there is exactly one hour difference because of summer time switches */
+                                                        && (int64_t)difftime(fs->mtime, tmp->modtime) != 3600
+                                                        && (int64_t)difftime(fs->mtime, tmp->modtime) != -3600)
                                                   // zero size in statedb can happen during migration
                                                   || (tmp->size != 0 && fs->size != tmp->size)
 #if 0

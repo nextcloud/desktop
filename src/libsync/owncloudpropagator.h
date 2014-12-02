@@ -24,6 +24,7 @@
 #include <QTimer>
 #include <QPointer>
 #include <QIODevice>
+#include <QMutex>
 
 #include "syncfileitem.h"
 #include "syncjournaldb.h"
@@ -41,23 +42,53 @@ class Account;
 class SyncJournalDb;
 class OwncloudPropagator;
 
+/**
+ * @class PropagatorJob
+ * @brief the base class of propagator jobs
+ *
+ * This can either be a job, or a container for jobs.
+ * If it is a composite jobs, it then inherits from PropagateDirectory
+ *
+ *
+ */
+
 class PropagatorJob : public QObject {
     Q_OBJECT
 protected:
     OwncloudPropagator *_propagator;
-    void emitReady() {
-        bool wasReady = _readySent;
-        _readySent = true;
-        if (!wasReady)
-            emit ready();
-    };
+
 public:
-    bool _readySent;
-    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator), _readySent(false) {}
+    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator), _state(NotYetStarted) {}
+
+    enum JobState {
+        NotYetStarted,
+        Running,
+        Finished
+    };
+    JobState _state;
+
+    enum JobParallelism {
+
+        /** Jobs can be run in parallel to this job */
+        FullParallelism,
+        /** This job do not support parallelism, and no other job shall
+            be started until this one has finished */
+        WaitForFinished,
+
+        /** This job support paralelism with other jobs in the same directory, but it should
+             not be paralelized with jobs in other directories  (typically a move operation) */
+        WaitForFinishedInParentDirectory
+    };
+
+    virtual JobParallelism parallelism() { return FullParallelism; }
 
 public slots:
-    virtual void start() = 0;
     virtual void abort() {}
+
+    /** Starts this job, or a new subjob
+     * returns true if a job was started.
+     */
+    virtual bool scheduleNextJob() = 0;
 signals:
     /**
      * Emitted when the job is fully finished
@@ -70,9 +101,8 @@ signals:
     void completed(const SyncFileItem &);
 
     /**
-     * Emitted when all the sub-jobs have been scheduled and
-     * we are ready and more jobs might be started
-     * This signal is not always emitted.
+     * Emitted when all the sub-jobs have been finished and
+     * more jobs might be started  (so scheduleNextJob can/must be called again)
      */
     void ready();
 
@@ -111,7 +141,8 @@ public:
         _subJobs.append(subJob);
     }
 
-    virtual void start() Q_DECL_OVERRIDE;
+    virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
+    virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
     virtual void abort() Q_DECL_OVERRIDE {
         if (_firstJob)
             _firstJob->abort();
@@ -120,23 +151,23 @@ public:
     }
 
 private slots:
-    void startJob(PropagatorJob *next) {
-        connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
-        connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
-        connect(next, SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
-        connect(next, SIGNAL(ready()), this, SLOT(slotSubJobReady()));
-        _runningNow++;
-        QMetaObject::invokeMethod(next, "start", Qt::QueuedConnection);
+    bool possiblyRunNextJob(PropagatorJob *next) {
+        if (next->_state == NotYetStarted) {
+            connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
+            connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
+            connect(next, SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
+            connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
+            _runningNow++;
+        }
+        return next->scheduleNextJob();
     }
 
     void slotSubJobFinished(SyncFileItem::Status status);
-    void slotSubJobReady();
 };
 
 
 /*
  * Abstract class to propagate a single item
- * (Only used for neon job)
  */
 class PropagateItemJob : public PropagatorJob {
     Q_OBJECT
@@ -169,6 +200,17 @@ public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItem &item)
         : PropagatorJob(propagator), _item(item) {}
 
+    bool scheduleNextJob() Q_DECL_OVERRIDE {
+        if (_state != NotYetStarted) {
+            return false;
+        }
+        _state = Running;
+        QMetaObject::invokeMethod(this, "start"); // We could be in a different thread (neon jobs)
+        return true;
+    }
+public slots:
+    virtual void start() = 0;
+
 };
 
 // Dummy job that just mark it as completed and ignored.
@@ -182,44 +224,6 @@ public:
         done(status == SyncFileItem::NoStatus ? SyncFileItem::FileIgnored : status, _item._errorString);
     }
 };
-
-class BandwidthManager; // fwd
-class UploadDevice : public QIODevice {
-    Q_OBJECT
-public:
-    QPointer<QIODevice> _file;
-    qint64 _read;
-    qint64 _size;
-    qint64 _start;
-    BandwidthManager* _bandwidthManager;
-
-    qint64 _bandwidthQuota;
-    qint64 _readWithProgress;
-
-    UploadDevice(QIODevice *file,  qint64 start, qint64 size, BandwidthManager *bwm);
-    ~UploadDevice();
-    virtual qint64 writeData(const char* , qint64 );
-    virtual qint64 readData(char* data, qint64 maxlen);
-    virtual bool atEnd() const;
-    virtual qint64 size() const;
-    qint64 bytesAvailable() const;
-    virtual bool isSequential() const;
-    virtual bool seek ( qint64 pos );
-
-    void setBandwidthLimited(bool);
-    bool isBandwidthLimited() { return _bandwidthLimited; }
-    void setChoked(bool);
-    bool isChoked() { return _choked; }
-    void giveBandwidthQuota(qint64 bwq);
-private:
-    bool _bandwidthLimited; // if _bandwidthQuota will be used
-    bool _choked; // if upload is paused (readData() will return 0)
-protected slots:
-    void slotJobUploadProgress(qint64 sent, qint64 t);
-};
-//Q_DECLARE_METATYPE(UploadDevice);
-//Q_DECLARE_METATYPE(QPointer<UploadDevice>);
-
 
 class OwncloudPropagator : public QObject {
     Q_OBJECT
@@ -241,7 +245,6 @@ public:
     SyncJournalDb * const _journal;
     bool _finishedEmited; // used to ensure that finished is only emit once
 
-    BandwidthManager _bandwidthManager;
 
 public:
     OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir, const QString &remoteFolder,
@@ -262,6 +265,7 @@ public:
 
     QAtomicInt _downloadLimit;
     QAtomicInt _uploadLimit;
+    BandwidthManager _bandwidthManager;
 
     QAtomicInt _abortRequested; // boolean set by the main thread to abort.
 
@@ -289,6 +293,19 @@ public:
     // timeout in seconds
     static int httpTimeout();
 
+    /** Records that a file was touched by a job.
+     *
+     * Thread-safe.
+     */
+    void addTouchedFile(const QString& fn);
+
+    /** Get the ms since a file was touched, or -1 if it wasn't.
+     *
+     * Thread-safe.
+     */
+    qint64 timeSinceFileTouched(const QString& fn) const;
+
+
 private slots:
 
     /** Emit the finished signal and make sure it is only emit once */
@@ -297,6 +314,8 @@ private slots:
             emit finished();
         _finishedEmited = true;
     }
+
+    void scheduleNextJob();
 
 signals:
     void completed(const SyncFileItem &);
@@ -308,6 +327,11 @@ signals:
      */
     void adjustTotalTransmissionSize( qint64 adjust );
 
+private:
+
+    /** Stores the time since a job touched a file. */
+    QHash<QString, QElapsedTimer> _touchedFiles;
+    mutable QMutex _touchedFilesMutex;
 };
 
 // Job that wait for all the poll jobs to be completed

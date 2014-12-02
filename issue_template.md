@@ -39,6 +39,8 @@ logs.
 ```Template for output < 10 lines```
 
 1. Output of `owncloud --logwindow` or `owncloud --logfile log.txt`
+(On Windows using `cmd.exe`, you might need to first `cd` into the ownCloud directory)
+(See also http://doc.owncloud.org/desktop/1.5/troubleshooting.html#client-logfile )
 
 2. Web server error log:
 

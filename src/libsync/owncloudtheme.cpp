@@ -74,7 +74,6 @@ QIcon ownCloudTheme::applicationIcon( ) const
     return themeIcon( QLatin1String("owncloud-icon") );
 }
 
-#endif
 
 QVariant ownCloudTheme::customMedia(Theme::CustomMediaType type)
 {
@@ -88,6 +87,8 @@ QVariant ownCloudTheme::customMedia(Theme::CustomMediaType type)
         return QVariant();
     }
 }
+
+#endif
 
 QString ownCloudTheme::helpUrl() const
 {

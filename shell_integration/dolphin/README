@@ -1,0 +1,18 @@
+
+
+- The patch 0001-KOverlayIconPlugin.patch should be applied to kde-baseapps git repository
+(It should applies to both KDE/4.14 or Applications/14.12 branches)
+
+- Recompile and install dolphin
+
+- Build and install the plugin
+
+- After installing, run
+    kdeinit4 --noincremental
+
+- To test taht the plugin is well installed
+    ktraderclient --servicetype KOverlayIconPlugin
+  It should show the Owncloud plugin
+
+- restart dolphin (make sure to kill all instances)
+

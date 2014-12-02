@@ -27,8 +27,8 @@ endif(UNIX AND NOT APPLE)
 
 owncloud_add_test(CSyncSqlite "")
 owncloud_add_test(NetrcParser ../src/cmd/netrcparser.cpp)
-owncloud_add_test(OwnSql ../src/libsync/ownsql.cpp)
-owncloud_add_test(SyncJournalDB ../src/libsync/syncjournaldb.cpp)
+owncloud_add_test(OwnSql "")
+owncloud_add_test(SyncJournalDB "")
 
 
 

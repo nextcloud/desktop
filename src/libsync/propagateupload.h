@@ -21,30 +21,40 @@
 #include <QDebug>
 
 namespace OCC {
+class BandwidthManager;
 
-class ChunkBlock {
-
+class UploadDevice : public QIODevice {
+    Q_OBJECT
 public:
-    explicit ChunkBlock() : _state(NotTransfered) { }
-    enum State {
-        CHUNK_SUCCESS,
-        NotTransfered,           /* never tried to transfer     */
-        Transfered,              /* transfer currently running  */
-        TransferFailed,          /* transfer tried but failed   */
-        TransferSuccess,         /* block transfer succeeded.   */
-        Fail
-    };
+    QPointer<QIODevice> _file;
+    qint64 _read;
+    qint64 _size;
+    qint64 _start;
+    BandwidthManager* _bandwidthManager;
 
-    int      _sequenceNo;
-    int64_t  _start;
-    int64_t  _size;
+    qint64 _bandwidthQuota;
+    qint64 _readWithProgress;
 
-    State    _state;
-    int      _httpResultCode;
-    QString  _httpErrorMsg;
-    QString  _etag;
-    QBuffer *_buffer;
+    UploadDevice(QIODevice *file,  qint64 start, qint64 size, BandwidthManager *bwm);
+    ~UploadDevice();
+    virtual qint64 writeData(const char* , qint64 );
+    virtual qint64 readData(char* data, qint64 maxlen);
+    virtual bool atEnd() const;
+    virtual qint64 size() const;
+    qint64 bytesAvailable() const;
+    virtual bool isSequential() const;
+    virtual bool seek ( qint64 pos );
 
+    void setBandwidthLimited(bool);
+    bool isBandwidthLimited() { return _bandwidthLimited; }
+    void setChoked(bool);
+    bool isChoked() { return _choked; }
+    void giveBandwidthQuota(qint64 bwq);
+private:
+    bool _bandwidthLimited; // if _bandwidthQuota will be used
+    bool _choked; // if upload is paused (readData() will return 0)
+protected slots:
+    void slotJobUploadProgress(qint64 sent, qint64 t);
 };
 
 class PUTFileJob : public AbstractNetworkJob {

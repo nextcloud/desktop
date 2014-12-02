@@ -150,7 +150,6 @@ private:
     Folder::Map    _folderMap;
     QString        _folderConfigPath;
     QSignalMapper *_folderChangeSignalMapper;
-    QSignalMapper *_folderWatcherSignalMapper;
     QString        _currentSyncFolder;
     bool           _syncEnabled;
     QMap<QString, FolderWatcher*> _folderWatchers;

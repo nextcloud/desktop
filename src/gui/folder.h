@@ -154,6 +154,13 @@ public slots:
       int slotWipeBlacklist();
       int blackListEntryCount();
 
+      /**
+       * Triggered by the folder watcher when a file/dir in this folder
+       * changes. Needs to check whether this change should trigger a new
+       * sync run to be scheduled.
+       */
+      void slotWatchedPathChanged(const QString& path);
+
 private slots:
     void slotSyncStarted();
     void slotSyncError(const QString& );

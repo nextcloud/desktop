@@ -20,6 +20,7 @@
 #include "propagateupload.h"
 #include "propagateremotedelete.h"
 #include "propagateremotemove.h"
+#include "propagateremotemkdir.h"
 #include "propagatorjobs.h"
 #include "propagator_legacy.h"
 #include "configfile.h"
@@ -70,6 +71,7 @@ static bool blacklist(SyncJournalDb* journal, const SyncFileItem& item)
 
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
 {
+    _state = Finished;
     if (_item._isRestoration) {
         if( status == SyncFileItem::Success || status == SyncFileItem::Conflict) {
             status = SyncFileItem::Restoration;
@@ -308,10 +310,11 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
     connect(_rootJob.data(), SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
     connect(_rootJob.data(), SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished()));
+    connect(_rootJob.data(), SIGNAL(ready()), this, SLOT(scheduleNextJob()), Qt::QueuedConnection);
 
     qDebug() << (useLegacyJobs() ? "Using legacy libneon/HTTP sequential code path" : "Using QNAM/HTTP parallel code path");
 
-    QMetaObject::invokeMethod(_rootJob.data(), "start", Qt::QueuedConnection);
+    QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
 }
 
 bool OwncloudPropagator::isInSharedDirectory(const QString& file)
@@ -343,21 +346,31 @@ bool OwncloudPropagator::useLegacyJobs()
         return true;
     }
 
-    env = qgetenv("OWNCLOUD_NEW_BANDWIDTH_LIMITING");
-    if (env=="true" || env =="1") {
-        qDebug() << "New Bandwidth Limiting Code ACTIVATED";
-        // Only certain Qt versions support this at the moment.
-        // They need those Change-Ids: Idb1c2d5a382a704d8cc08fe03c55c883bfc95aa7 Iefbcb1a21d8aedef1eb11761232dd16a049018dc
-        // FIXME We need to check the Qt version and then also return false here as soon
-        // as mirall ships with those Qt versions on Windows and OS X
-        return false;
-    }
-
     if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
-        qDebug() << "Switching To Legacy Propagator Because Of Bandwidth Limit ACTIVATED";
-        // QNAM does not support bandwith limiting
-        // in most Qt versions.
+        // QNAM bandwith limiting only work with version of Qt greater or equal to 5.3.3
+        // (It needs Qt commits 097b641 and b99fa32)
+#if QT_VERSION >= QT_VERSION_CHECK(5,3,3)
+        return false;
+#elif QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        env = qgetenv("OWNCLOUD_NEW_BANDWIDTH_LIMITING");
+        if (env=="true" || env =="1") {
+            qDebug() << "New Bandwidth Limiting Code ACTIVATED";
+            return false;
+        }
+
+        // Do a runtime check.
+        // (Poor man's version comparison)
+        const char *v = qVersion(); // "x.y.z";
+        if (QLatin1String(v) >= QLatin1String("5.3.3")) {
+            return false;
+        } else {
+            qDebug() << "Use legacy jobs because qt version is only" << v << "while 5.3.3 is needed";
+            return true;
+        }
+#else
+        qDebug() << "Use legacy jobs because of Qt4";
         return true;
+#endif
     }
 
     return false;
@@ -435,52 +448,133 @@ QString OwncloudPropagator::getFilePath(const QString& tmp_file_name) const
     return _localDir + tmp_file_name;
 }
 
+void OwncloudPropagator::scheduleNextJob()
+{
+    if (this->_activeJobs < maximumActiveJob()) {
+        if (_rootJob->scheduleNextJob()) {
+            QTimer::singleShot(100, this, SLOT(scheduleNextJob()));
+        }
+    }
+}
+
+void OwncloudPropagator::addTouchedFile(const QString& fn)
+{
+    QString file = QDir::cleanPath(fn);
+
+    QElapsedTimer timer;
+    timer.start();
+
+    QMutexLocker lock(&_touchedFilesMutex);
+    _touchedFiles.insert(file, timer);
+}
+
+qint64 OwncloudPropagator::timeSinceFileTouched(const QString& fn) const
+{
+    QMutexLocker lock(&_touchedFilesMutex);
+    if (! _touchedFiles.contains(fn)) {
+        return -1;
+    }
+
+    return _touchedFiles[fn].elapsed();
+}
+
 // ================================================================================
 
-void PropagateDirectory::start()
+PropagatorJob::JobParallelism PropagateDirectory::parallelism()
 {
-    _current = -1;
-    _hasError = SyncFileItem::NoStatus;
-    if (!_firstJob) {
-        slotSubJobReady();
-    } else {
-        startJob(_firstJob.data());
+    // If any of the non-finished sub jobs is not parallel, we have to wait
+
+    // FIXME!  we should probably cache this result
+
+    if (_firstJob && _firstJob->_state != Finished) {
+        if (_firstJob->parallelism() != FullParallelism)
+            return WaitForFinished;
     }
+
+    // FIXME: use the cached value of finished job
+    for (int i = 0; i < _subJobs.count(); ++i) {
+        if (_subJobs.at(i)->_state != Finished && _subJobs.at(i)->parallelism() != FullParallelism) {
+            return WaitForFinished;
+        }
+    }
+    return FullParallelism;
+}
+
+
+bool PropagateDirectory::scheduleNextJob()
+{
+    if (_state == Finished) {
+        return false;
+    }
+
+    if (_state == NotYetStarted) {
+        _state = Running;
+
+        if (!_firstJob && _subJobs.isEmpty()) {
+            slotSubJobFinished(SyncFileItem::Success);
+            return true;
+        }
+    }
+
+    if (_firstJob && _firstJob->_state == NotYetStarted) {
+        return possiblyRunNextJob(_firstJob.data());
+    }
+
+    if (_firstJob && _firstJob->_state == Running) {
+        return false;
+    }
+
+    bool stopAtDirectory = false;
+    // FIXME: use the cached value of finished job
+    for (int i = 0; i < _subJobs.count(); ++i) {
+        if (_subJobs.at(i)->_state == Finished) {
+            continue;
+        }
+
+        if (stopAtDirectory && qobject_cast<PropagateDirectory*>(_subJobs.at(i))) {
+            return false;
+        }
+
+        if (possiblyRunNextJob(_subJobs.at(i))) {
+            return true;
+        }
+
+        Q_ASSERT(_subJobs.at(i)->_state == Running);
+
+        auto paral = _subJobs.at(i)->parallelism();
+        if (paral == WaitForFinished) {
+            return false;
+        }
+        if (paral == WaitForFinishedInParentDirectory) {
+            stopAtDirectory = true;
+        }
+    }
+    return false;
 }
 
 void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 {
     if (status == SyncFileItem::FatalError ||
-            (_current == -1 && status != SyncFileItem::Success && status != SyncFileItem::Restoration)) {
+            (sender() == _firstJob.data() && status != SyncFileItem::Success && status != SyncFileItem::Restoration)) {
         abort();
+        _state = Finished;
         emit finished(status);
         return;
     } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
         _hasError = status;
     }
     _runningNow--;
-    slotSubJobReady();
-}
 
-void PropagateDirectory::slotSubJobReady()
-{
-    if (_runningNow && _current == -1)
-        return; // Ignore the case when the _fistJob is ready and not yet finished
-    if (_runningNow && _current >= 0 && _current < _subJobs.count()) {
-        // there is a job running and the current one is not ready yet, we can't start new job
-        if (!_subJobs[_current]->_readySent || _propagator->_activeJobs >= _propagator->maximumActiveJob())
-            return;
+    int total = _subJobs.count();
+    if (!_firstJob) {
+        total--;
     }
 
     _current++;
-    if (_current < _subJobs.size() && !_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
-        PropagatorJob *next = _subJobs.at(_current);
-        startJob(next);
-        return;
-    }
+
     // We finished to processing all the jobs
-    emitReady();
-    if (!_runningNow) {
+    // check if we finished
+    if (_current >= total) {
         if (!_item.isEmpty() && _hasError == SyncFileItem::NoStatus) {
             if( !_item._renameTarget.isEmpty() ) {
                 _item._file = _item._renameTarget;
@@ -497,7 +591,10 @@ void PropagateDirectory::slotSubJobReady()
                 _propagator->_journal->setFileRecord(record);
             }
         }
+        _state = Finished;
         emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
+    } else {
+        emit ready();
     }
 }
 

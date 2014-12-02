@@ -540,6 +540,37 @@ int Folder::slotWipeBlacklist()
     return _journal.wipeBlacklist();
 }
 
+void Folder::slotWatchedPathChanged(const QString& path)
+{
+    // When no sync is running or it's in the prepare phase, we can
+    // always schedule a new sync.
+    if (! _engine || _syncResult.status() == SyncResult::SyncPrepare) {
+        emit scheduleToSync(alias());
+        return;
+    }
+
+    // The folder watcher fires a lot of bogus notifications during
+    // a sync operation, both for actual user files and the database
+    // and log. Therefore we check notifications against operations
+    // the sync is doing to filter out our own changes.
+    bool ownChange = false;
+#ifdef Q_OS_MAC
+    // On OSX the folder watcher does not report changes done by our
+    // own process. Therefore nothing needs to be done here!
+#else
+    // Use the path to figure out whether it was our own change
+    const auto maxNotificationDelay = 15*1000;
+    qint64 time = _engine->timeSinceFileTouched(path);
+    if (time != -1 && time < maxNotificationDelay) {
+        ownChange = true;
+    }
+#endif
+
+    if (! ownChange) {
+        emit scheduleToSync(alias());
+    }
+}
+
 void Folder::setConfigFile( const QString& file )
 {
     _configFile = file;

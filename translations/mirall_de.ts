@@ -387,12 +387,12 @@ Gesamtzeit übrig %5</translation>
         <translation>Synchronisierungsaktivität</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="721"/>
+        <location filename="../src/mirall/folder.cpp" line="743"/>
         <source>Could not read system exclude file</source>
         <translation>Systemeigene Ausschlussdatei kann nicht gelesen werden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="941"/>
+        <location filename="../src/mirall/folder.cpp" line="963"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -401,17 +401,17 @@ Vielleicht wurde der Ordner neu konfiguriert, oder alle Dateien wurden händisch
 Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="945"/>
+        <location filename="../src/mirall/folder.cpp" line="967"/>
         <source>Remove All Files?</source>
         <translation>Alle Dateien löschen?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="947"/>
+        <location filename="../src/mirall/folder.cpp" line="969"/>
         <source>Remove all files</source>
         <translation>Lösche alle Dateien</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="948"/>
+        <location filename="../src/mirall/folder.cpp" line="970"/>
         <source>Keep files</source>
         <translation>Dateien behalten</translation>
     </message>
@@ -461,7 +461,7 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="890"/>
         <source>Setup Error.</source>
-        <translation>Setup-Fehler.</translation>
+        <translation>Installationsfehler.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="893"/>
@@ -638,22 +638,22 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="507"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Kein E-Tag vom Server empfangen, bitte Proxy / Gateway überprüfen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="514"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Es wurde ein unterschiedlicher E-Tag zum Fortfahren empfangen. Bitte beim nächsten mal nochmal versuchen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="541"/>
         <source>Server returned wrong content-range</source>
         <translation>Server hat falschen Bereich für den Inhalt zurück gegeben</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="580"/>
         <source>Connection Timeout</source>
         <translation>Zeitüberschreitung der Verbindung</translation>
     </message>
@@ -744,7 +744,7 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="97"/>
         <source>Could not open file</source>
-        <translation>Konnte Datei nicht öffnen</translation>
+        <translation>Datei konnte nicht geöffnet werden</translation>
     </message>
     <message>
         <location filename="../src/mirall/ignorelisteditor.cpp" line="98"/>
@@ -840,7 +840,7 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
     <message>
         <location filename="../src/mirall/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Datei &apos;%1&apos;&lt;br/&gt;kann nicht zum Schreiben geöffnet werden.&lt;br/&gt;&lt;br/&gt;Die Protokolldatei kann &lt;b&gt;nicht&lt;/b&gt; gespeichert werden!&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;Datei »%1«&lt;br/&gt;kann nicht zum Schreiben geöffnet werden.&lt;br/&gt;&lt;br/&gt;Die Protokolldatei kann &lt;b&gt;nicht&lt;/b&gt; gespeichert werden!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1114,8 +1114,16 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
-        <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation>Die Verbindung kann nicht sicher hergestellt werden. Möchten Sie stattdessen unverschlüsselt verbinden (nicht empfohlen)?</translation>
+        <source>Could not connect securely:
+
+%1
+
+Do you want to connect unencrypted instead (not recommended)?</source>
+        <translation>Die Verbindung kann nicht sicher hergestellt werden:
+
+%1
+
+Möchten Sie stattdessen unverschlüsselt verbinden (nicht empfohlen)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
@@ -1252,7 +1260,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Kann den Ordner nicht entfernen und sichern, da der Ordner oder einer seiner Dateien in einem anderen Programm geöffnet ist. Bitte schließen Sie den Ordner ode die Datei oder beenden Sie das Setup.</translation>
+        <translation>Der Ordner kann nicht entfernt und gesichert werden, da der Ordner oder einer seiner Dateien in einem anderen Programm geöffnet ist. Bitte schließen Sie den Ordner oder die Datei oder beenden Sie die Installation.</translation>
     </message>
 </context>
 <context>
@@ -1307,27 +1315,27 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="357"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="363"/>
         <source>Sync was aborted by user.</source>
         <translation>Synchronisation wurde durch den Nutzer abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="410"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="416"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Kein E-Tag vom Server empfangen, bitte Proxy / Gateway überprüfen</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="416"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="422"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Es wurde ein unterschiedlicher E-Tag zum Fortfahren empfangen. Bitte beim nächsten mal nochmal versuchen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="438"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="444"/>
         <source>Server returned wrong content-range</source>
         <translation>Server hat falschen Bereich für den Inhalt zurück gegeben</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="489"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="495"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Die Datei %1 kann aufgrund eines Konfliktes mit dem lokalen Dateinamen nicht herunter geladen werden!</translation>
     </message>
@@ -1335,12 +1343,17 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="594"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Die Datei %1 kann aufgrund eines Konfliktes mit dem lokalen Dateinamen nicht herunter geladen werden!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="757"/>
+        <source>The file could not be downloaded completely.</source>
+        <translation>Die Datei konnte nicht vollständig herunter geladen werden.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="793"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Die Datei %1 kann aufgrund eines Konfliktes mit dem lokalen Dateinamen nicht gespeichert geladen werden!</translation>
     </message>
@@ -1426,18 +1439,18 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>Mirall::PropagateUploadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="165"/>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="224"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="171"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="230"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation>Eine lokale Datei wurde während der Synchronisation geändert, synchronisieren Sie nochmals sobald die aktuelle Datei vollständig angekommen ist</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="168"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="174"/>
         <source>Sync was aborted by user.</source>
         <translation>Synchronisation wurde durch den Nutzer abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="174"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="180"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Die Datei wurde von einer Nur-Lese-Freigabe lokal bearbeitet. Die Datei wurde wiederhergestellt und Ihre Bearbeitung ist in der Konflikte-Datei.</translation>
     </message>
@@ -1445,23 +1458,23 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="296"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="297"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Die Datei wurde von einer Nur-Lese-Freigabe lokal bearbeitet. Die Datei wurde wiederhergestellt und Ihre Bearbeitung ist in der Konflikte-Datei.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="328"/>
         <source>The local file was removed during sync.</source>
         <translation>Die lokale Datei wurde während der Synchronisation gelöscht.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="341"/>
         <source>Local file changed during sync.</source>
         <translation>Eine lokale Datei wurde während der Synchronisation geändert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Der Server hat den letzten Block nicht bestätigt. (Der E-Tag war nicht vorhanden)</translation>
     </message>
@@ -1539,17 +1552,28 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <translation>Der Synchronisationsstatus wurde in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="255"/>
-        <source>Currently no files are ignored because of previous errors.</source>
-        <translation>Aktuell werden keine Dateien, aufgrund vorheriger Fehler, ignoriert.</translation>
+        <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
+        <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
+        <translation>Aktuell werden keine Dateien, aufgrund vorheriger Fehler und keine laufenden Downloads, ignoriert.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/protocolwidget.cpp" line="257"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
- Try to sync these again.</source>
-        <translation><numerusform>%n Datei wurde aufgrund eines vorherigen Fehlers ignoriert.
-Versuchen Sie diese nochmals zu synchronisieren.</numerusform><numerusform>%n Dateien werden aufgrund vorheriger Fehler ignoriert.
-Versuchen Sie diese nochmals zu synchronisieren.</numerusform></translation>
+</source>
+        <translation><numerusform>%n Datei wird aufgrund vorheriger Fehler ignoriert.</numerusform><numerusform>%n Dateien werden aufgrund vorheriger Fehler ignoriert.
+</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
+        <source>%n files are partially downloaded.
+</source>
+        <translation><numerusform>%n Datei ist teilweise heruntergeladen.</numerusform><numerusform>%n Dateien sind teilweise heruntergeladen.
+</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
+        <source>Try to sync these again.</source>
+        <translation>Versuchen, diese nochmals zu synchronisieren.</translation>
     </message>
 </context>
 <context>
@@ -1637,12 +1661,12 @@ Versuchen Sie diese nochmals zu synchronisieren.</numerusform></translation>
 <context>
     <name>Mirall::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="285"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="297"/>
         <source>Login Error</source>
         <translation>Log-In Fehler</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="285"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="297"/>
         <source>You must sign in as user %1</source>
         <translation>Sie müssen sich als %1 einloggen</translation>
     </message>
@@ -2050,69 +2074,69 @@ Versuchen Sie diese nochmals zu synchronisieren.</numerusform></translation>
         <translation>Die Datei beinhaltet ungültige Zeichen und kann nicht plattformübergreifend synchronisiert werden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="547"/>
+        <location filename="../src/mirall/syncengine.cpp" line="560"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Synchronisationsbericht konnte nicht initialisiert werden.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="628"/>
+        <location filename="../src/mirall/syncengine.cpp" line="641"/>
         <source>Cannot open the sync journal</source>
         <translation>Synchronisationsbericht kann nicht geöffnet werden</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="860"/>
-        <location filename="../src/mirall/syncengine.cpp" line="867"/>
+        <location filename="../src/mirall/syncengine.cpp" line="873"/>
+        <location filename="../src/mirall/syncengine.cpp" line="880"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Aufgrund der »Zu synchronisierende Elemente auswählen«-Sperrliste ignoriert</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="885"/>
+        <location filename="../src/mirall/syncengine.cpp" line="898"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Nicht erlaubt, da Sie keine Rechte zur Erstellung von Unterordnern haben</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="891"/>
+        <location filename="../src/mirall/syncengine.cpp" line="904"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Nicht erlaubt, da Sie keine Rechte zur Erstellung von Hauptordnern haben</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="898"/>
+        <location filename="../src/mirall/syncengine.cpp" line="911"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Nicht erlaubt, da Sie keine Rechte zum Hinzufügen von Dateien in diesen Ordner haben</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="918"/>
+        <location filename="../src/mirall/syncengine.cpp" line="931"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Das Hochladen dieser Datei ist nicht erlaubt, da die Datei auf dem Server schreibgeschützt ist, Wiederherstellung</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="935"/>
-        <location filename="../src/mirall/syncengine.cpp" line="955"/>
+        <location filename="../src/mirall/syncengine.cpp" line="948"/>
+        <location filename="../src/mirall/syncengine.cpp" line="968"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Löschen nicht erlaubt, Wiederherstellung</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="970"/>
+        <location filename="../src/mirall/syncengine.cpp" line="983"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokale Dateien und Freigabeordner wurden entfernt.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1025"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1038"/>
         <source>Move not allowed, item restored</source>
         <translation>Verschieben nicht erlaubt, Element wiederhergestellt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1034"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1047"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Verschieben nicht erlaubt, da %1 schreibgeschützt ist</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1035"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1048"/>
         <source>the destination</source>
         <translation>Das Ziel</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1035"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1048"/>
         <source>the source</source>
         <translation>Die Quelle</translation>
     </message>
@@ -2183,7 +2207,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</numerusform></translation>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="340"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation>Ordner &apos;%1&apos; öffnen</translation>
+        <translation>Ordner »%1« öffnen</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="412"/>
@@ -2641,7 +2665,7 @@ Versuchen Sie diese nochmals zu synchronisieren.</numerusform></translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="69"/>
         <source>Setup Error</source>
-        <translation>Setup-Fehler</translation>
+        <translation>Installationsfehler</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="72"/>

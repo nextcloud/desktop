@@ -10,7 +10,7 @@
 
 #include <QtTest>
 
-#include "folderwatcher_linux.h"
+#include "folderwatcher.h"
 #include "utility.h"
 
 using namespace OCC;
@@ -21,9 +21,12 @@ class TestFolderWatcher : public QObject
 
 public slots:
     void slotFolderChanged( const QString& path ) {
-        qDebug() << "COMPARE: " << path << _checkMark;
-        QVERIFY(_checkMark == path);
-        _checkMark.clear();
+        if (_skipNotifications.contains(path)) {
+            return;
+        }
+        if (_requiredNotifications.contains(path)) {
+            _receivedNotifications.insert(path);
+        }
     }
 
     void slotEnd() { // in case something goes wrong...
@@ -36,7 +39,16 @@ private:
     FolderWatcher *_watcher;
     QEventLoop     _loop;
     QTimer         _timer;
-    QString        _checkMark;
+    QSet<QString>  _requiredNotifications;
+    QSet<QString>  _receivedNotifications;
+    QSet<QString>  _skipNotifications;
+
+    void processAndWait()
+    {
+        _loop.processEvents();
+        Utility::usleep(200000);
+        _loop.processEvents();
+    }
 
 private slots:
     void initTestCase() {
@@ -52,68 +64,105 @@ private slots:
         rootDir.mkpath(_root + "/a2/b3/c3");
         Utility::writeRandomFile( _root+"/a1/random.bin");
         Utility::writeRandomFile( _root+"/a1/b2/todelete.bin");
-        Utility::writeRandomFile( _root+"/a2/movefile");
+        Utility::writeRandomFile( _root+"/a2/renamefile");
+        Utility::writeRandomFile( _root+"/a1/movefile");
 
         _watcher = new FolderWatcher(_root);
-        QObject::connect(_watcher, SIGNAL(folderChanged(QString)), this, SLOT(slotFolderChanged(QString)));
-        _timer.singleShot(3000, this, SLOT(slotEnd()));
+        QObject::connect(_watcher, SIGNAL(pathChanged(QString)), this, SLOT(slotFolderChanged(QString)));
+        _timer.singleShot(5000, this, SLOT(slotEnd()));
+    }
+
+    void init()
+    {
+        _receivedNotifications.clear();
+        _requiredNotifications.clear();
+        _skipNotifications.clear();
+    }
+
+    void checkNotifications()
+    {
+        processAndWait();
+        QCOMPARE(_receivedNotifications, _requiredNotifications);
     }
 
     void testACreate() { // create a new file
+        QString file(_root + "/foo.txt");
         QString cmd;
-        _checkMark = _root;
-        cmd = QString("echo \"xyz\" > %1/foo.txt").arg(_root);
+        _requiredNotifications.insert(file);
+        cmd = QString("echo \"xyz\" > %1").arg(file);
         qDebug() << "Command: " << cmd;
         system(cmd.toLocal8Bit());
 
-        _loop.processEvents();
-        QVERIFY(_checkMark.isEmpty()); // the slot clears the checkmark.
+        checkNotifications();
     }
 
     void testATouch() { // touch an existing file.
+        QString file(_root + "/a1/random.bin");
+        _requiredNotifications.insert(file);
+#ifdef Q_OS_WIN
+        Utility::writeRandomFile(QString("%1/a1/random.bin").arg(_root));
+#else
         QString cmd;
-        cmd = QString("/usr/bin/touch %1/a1/random.bin").arg(_root);
-        _checkMark = _root+"/a1";
+        cmd = QString("/usr/bin/touch %1").arg(file);
         qDebug() << "Command: " << cmd;
         system(cmd.toLocal8Bit());
+#endif
 
-        _loop.processEvents();
-        QVERIFY(_checkMark.isEmpty()); // the slot clears the checkmark.
+        checkNotifications();
     }
 
     void testCreateADir() {
-        _checkMark = _root+"/a1/b1";
+        QString file(_root+"/a1/b1/new_dir");
+        _requiredNotifications.insert(file);
+        //_skipNotifications.insert(_root + "/a1/b1/new_dir");
         QDir dir;
-        dir.mkdir( _root + "/a1/b1/new_dir");
-        QVERIFY(QFile::exists(_root + "/a1/b1/new_dir"));
-        _loop.processEvents();
-        QVERIFY(_checkMark.isEmpty()); // the slot clears the checkmark.
+        dir.mkdir(file);
+        QVERIFY(QFile::exists(file));
+
+        checkNotifications();
     }
 
     void testRemoveADir() {
-        _checkMark = _root+"/a1/b3";
+        QString file(_root+"/a1/b3/c3");
+        _requiredNotifications.insert(file);
         QDir dir;
-        QVERIFY(dir.rmdir(_root+"/a1/b3/c3"));
-        _loop.processEvents();
-        QVERIFY(_checkMark.isEmpty()); // the slot clears the checkmark.
+        QVERIFY(dir.rmdir(file));
+
+        checkNotifications();
     }
 
     void testRemoveAFile() {
-        _checkMark = _root+"/a1/b2";
-        QVERIFY(QFile::exists(_root+"/a1/b2/todelete.bin"));
-        QFile::remove(_root+"/a1/b2/todelete.bin");
-        QVERIFY(!QFile::exists(_root+"/a1/b2/todelete.bin"));
-        _loop.processEvents();
-        QVERIFY(_checkMark.isEmpty()); // the slot clears the checkmark.
+        QString file(_root+"/a1/b2/todelete.bin");
+        _requiredNotifications.insert(file);
+        QVERIFY(QFile::exists(file));
+        QFile::remove(file);
+        QVERIFY(!QFile::exists(file));
+
+        checkNotifications();
+    }
+
+    void testRenameAFile() {
+        QString file1(_root+"/a2/renamefile");
+        QString file2(_root+"/a2/renamefile.renamed");
+        _requiredNotifications.insert(file1);
+        _requiredNotifications.insert(file2);
+        QVERIFY(QFile::exists(file1));
+        QFile::rename(file1, file2);
+        QVERIFY(QFile::exists(file2));
+
+        checkNotifications();
     }
 
     void testMoveAFile() {
-        _checkMark = _root+"/a2";
-        QVERIFY(QFile::exists(_root+"/a2/movefile"));
-        QFile::rename(_root+"/a2/movefile", _root+"/a2/movefile.renamed" );
-        QVERIFY(QFile::exists(_root+"/a2/movefile.renamed"));
-        _loop.processEvents();
-        QVERIFY(_checkMark.isEmpty()); // the slot clears the checkmark.
+        QString old_file(_root+"/a1/movefile");
+        QString new_file(_root+"/a2/movefile.renamed");
+        _requiredNotifications.insert(old_file);
+        _requiredNotifications.insert(new_file);
+        QVERIFY(QFile::exists(old_file));
+        QFile::rename(old_file, new_file);
+        QVERIFY(QFile::exists(new_file));
+
+        checkNotifications();
     }
 
     void cleanupTestCase() {

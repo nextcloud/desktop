@@ -365,7 +365,8 @@ quint64 ConfigFile::forceSyncInterval(const QString& connection) const
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup( con );
 
-    quint64 interval = settings.value( QLatin1String(forceSyncIntervalC), 10 * pollInterval ).toULongLong();
+    quint64 defaultInterval = 2 * 60 * 60 * 1000ull; // 2h
+    quint64 interval = settings.value( QLatin1String(forceSyncIntervalC), defaultInterval ).toULongLong();
     if( interval < pollInterval) {
         qDebug() << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval;
         interval = pollInterval;

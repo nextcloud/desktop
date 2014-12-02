@@ -361,7 +361,6 @@ void PropagateDownloadFileQNAM::start()
     connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
     _propagator->_activeJobs ++;
     _job->start();
-    emitReady();
 }
 
 void PropagateDownloadFileQNAM::slotGetFinished()
@@ -418,6 +417,21 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
     _tmpFile.close();
     _tmpFile.flush();
+
+    /* Check that the size of the GET reply matches the file size. There have been cases
+     * reported that if a server breaks behind a proxy, the GET is still a 200 but is
+     * truncated, as described here: https://github.com/owncloud/mirall/issues/2528
+     */
+    const QByteArray sizeHeader("Content-Length");
+    quint64 bodySize = job->reply()->rawHeader(sizeHeader).toULongLong();
+
+    if(bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart() ) {
+        qDebug() << bodySize << _tmpFile.size() << job->resumeStart();
+        _propagator->_anotherSyncNeeded = true;
+        done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."));
+        return;
+    }
+
     downloadFinished();
 }
 
@@ -477,6 +491,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
     FileSystem::setFileHidden(_tmpFile.fileName(), false);
 
     QString error;
+    _propagator->addTouchedFile(fn);
     if (!FileSystem::renameReplace(_tmpFile.fileName(), fn, &error)) {
         // If we moved away the original file due to a conflict but can't
         // put the downloaded file in its place, we are in a bad spot:

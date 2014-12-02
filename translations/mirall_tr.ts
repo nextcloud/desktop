@@ -386,12 +386,12 @@ Toplam kalan süre: %5</translation>
         <translation>Eşitleme Etkinliği</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="721"/>
+        <location filename="../src/mirall/folder.cpp" line="743"/>
         <source>Could not read system exclude file</source>
         <translation>Sistem hariç tutulma dosyası okunamadı</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="941"/>
+        <location filename="../src/mirall/folder.cpp" line="963"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -400,17 +400,17 @@ Bu, klasörün sessizce yeniden yapılandırılması veya tüm dosyaların el il
 Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="945"/>
+        <location filename="../src/mirall/folder.cpp" line="967"/>
         <source>Remove All Files?</source>
         <translation>Tüm Dosyalar Kaldırılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="947"/>
+        <location filename="../src/mirall/folder.cpp" line="969"/>
         <source>Remove all files</source>
         <translation>Tüm dosyaları kaldır</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="948"/>
+        <location filename="../src/mirall/folder.cpp" line="970"/>
         <source>Keep files</source>
         <translation>Dosyaları koru</translation>
     </message>
@@ -435,7 +435,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="873"/>
         <source>Waits to start syncing.</source>
-        <translation>Eşitleme başlatmak için bekleniyor.</translation>
+        <translation>Eşitleme başlatmak için bekliyor.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="876"/>
@@ -637,22 +637,22 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="507"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Sunucudan E-Etiket alınamadı, Vekil sunucu/Ağ geçidini denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="514"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Devam etmek üzere farklı bir E-Etiket aldık. Sonraki işlemde yeniden denenecek.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="541"/>
         <source>Server returned wrong content-range</source>
         <translation>Sunucu yanlış içerik aralığı döndürdü</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="580"/>
         <source>Connection Timeout</source>
         <translation>Bağlantı Zaman Aşımı</translation>
     </message>
@@ -1113,8 +1113,16 @@ Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
-        <source>Could not connect securely. Do you want to connect unencrypted instead (not recommended)?</source>
-        <translation>Güvenli olarak bağlanılamadı. Bunun yerine şifrelenmemiş bağlantı yapmak ister misiniz (önerilmez)?</translation>
+        <source>Could not connect securely:
+
+%1
+
+Do you want to connect unencrypted instead (not recommended)?</source>
+        <translation>Güvenli olarak bağlanılamadı:
+
+%1
+
+Bunun yerine şifrelenmemiş bağlantı yapmak ister misiniz (önerilmez)?</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
@@ -1306,27 +1314,27 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="357"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="363"/>
         <source>Sync was aborted by user.</source>
         <translation>Eşitleme kullanıcı tarafından iptal edildi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="410"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="416"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Sunucudan E-Etiket alınamadı, Vekil sunucu/Ağ geçidini denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="416"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="422"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Devam etmek üzere farklı bir E-Etiket aldık. Sonraki işlemde yeniden denenecek.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="438"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="444"/>
         <source>Server returned wrong content-range</source>
         <translation>Sunucu yanlış içerik aralığı döndürdü</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="489"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="495"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>%1 dosyası, yerel dosya adı çakışması nedeniyle indirilemiyor!</translation>
     </message>
@@ -1334,14 +1342,19 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="594"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>%1 dosyası, yerel dosya adı çakışması nedeniyle indirilemiyor!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="777"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="757"/>
+        <source>The file could not be downloaded completely.</source>
+        <translation>Dosya tamamıyla indirilemedi.</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="793"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>Yerel bir dosya ismi ile çakıştığından, %1 dosyası kaydedilemedi.</translation>
+        <translation>Yerel bir dosya ismi ile çakıştığından, %1 dosyası kaydedilemedi!</translation>
     </message>
 </context>
 <context>
@@ -1425,18 +1438,18 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>Mirall::PropagateUploadFileLegacy</name>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="165"/>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="224"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="171"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="230"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
         <translation>Eşitleme sırasında yerel dosya değişti, tamamen ulaştıktan sonra bir kez eşitlenecek</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="168"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="174"/>
         <source>Sync was aborted by user.</source>
         <translation>Eşitleme kullanıcı tarafından iptal edildi.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_legacy.cpp" line="174"/>
+        <location filename="../src/mirall/propagator_legacy.cpp" line="180"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Dosya yerel olarak düzenlendi ancak salt okunur paylaşımın bir parçası. Geri yüklendi ve düzenlemeniz çakışan dosyada.</translation>
     </message>
@@ -1444,23 +1457,23 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="296"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="297"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Dosya yerel olarak düzenlendi ancak salt okunur paylaşımın bir parçası. Geri yüklendi ve düzenlemeniz çakışan dosyada.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="328"/>
         <source>The local file was removed during sync.</source>
         <translation>Eşitleme sırasında yerel dosya kaldırıldı.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="341"/>
         <source>Local file changed during sync.</source>
         <translation>Eşitleme sırasında yerel dosya değişti.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Sunucu son yığını onaylamadı. (Mevcut e-etiket bulunamadı)</translation>
     </message>
@@ -1538,17 +1551,30 @@ Kullanmanız önerilmez.</translation>
         <translation>Eşitleme durumu panoya kopyalandı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/protocolwidget.cpp" line="255"/>
-        <source>Currently no files are ignored because of previous errors.</source>
-        <translation>Önceki hata koşullarından dolayı yoksayılmış dosya yok.</translation>
+        <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
+        <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
+        <translation>Önceki hatalar nedeniyle hiçbir dosya yolsayılmadı ve süren bir indirme yok.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mirall/protocolwidget.cpp" line="257"/>
+        <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
- Try to sync these again.</source>
-        <translation><numerusform>%n dosya önceki hatalar nedeniyle yoksayıldı.
-Tekrar eşitleyi deneyin.em.</numerusform><numerusform>%n dosya önceki hatalar nedeniyle yoksayıldı.
-Tekrar eşitleyi deneyin.em.</numerusform></translation>
+</source>
+        <translation><numerusform>önceki hatalardan dolayı %n dosya yoksayıldı.
+</numerusform><numerusform>önceki hatalardan dolayı %n dosya yoksayıldı.
+</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
+        <source>%n files are partially downloaded.
+</source>
+        <translation><numerusform>%n dosya kısmen karşıya indirilebildi.
+</numerusform><numerusform>%n dosya kısmen karşıya indirilebildi.
+</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
+        <source>Try to sync these again.</source>
+        <translation>Bunları tekrar eşitlemeyi deneyin.</translation>
     </message>
 </context>
 <context>
@@ -1636,12 +1662,12 @@ Tekrar eşitleyi deneyin.em.</numerusform></translation>
 <context>
     <name>Mirall::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="285"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="297"/>
         <source>Login Error</source>
         <translation>Oturum Açma Hatası</translation>
     </message>
     <message>
-        <location filename="../src/creds/shibbolethcredentials.cpp" line="285"/>
+        <location filename="../src/creds/shibbolethcredentials.cpp" line="297"/>
         <source>You must sign in as user %1</source>
         <translation>%1 kullanıcısı olarak oturum açmalısınız</translation>
     </message>
@@ -2016,7 +2042,7 @@ Tekrar eşitleyi deneyin.em.</numerusform></translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>The mounted directory is temporary not available on the server</source>
-        <translation>Bağlanan dizin geçici olup sunucuda mevcut değildir</translation>
+        <translation>Bağlanan dizin geçici olarak sunucuda kullanılamıyor</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="186"/>
@@ -2049,69 +2075,69 @@ Tekrar eşitleyi deneyin.em.</numerusform></translation>
         <translation>Dosya, çapraz platform arasında eşitlenemeyecek karakterler içeriyor.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="547"/>
+        <location filename="../src/mirall/syncengine.cpp" line="560"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Bir eşitleme günlüğü başlatılamadı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="628"/>
+        <location filename="../src/mirall/syncengine.cpp" line="641"/>
         <source>Cannot open the sync journal</source>
         <translation>Eşitleme günlüğü açılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="860"/>
-        <location filename="../src/mirall/syncengine.cpp" line="867"/>
+        <location filename="../src/mirall/syncengine.cpp" line="873"/>
+        <location filename="../src/mirall/syncengine.cpp" line="880"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;Eşitlenecekleri seçin&quot; kara listesinde olduğundan yoksayıldı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="885"/>
+        <location filename="../src/mirall/syncengine.cpp" line="898"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Bu dizine alt dizin ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="891"/>
+        <location filename="../src/mirall/syncengine.cpp" line="904"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Üst dizin ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="898"/>
+        <location filename="../src/mirall/syncengine.cpp" line="911"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Bu dizine dosya ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="918"/>
+        <location filename="../src/mirall/syncengine.cpp" line="931"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Sunucuda salt okunur olduğundan, bu dosya yüklenemedi, geri alınıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="935"/>
-        <location filename="../src/mirall/syncengine.cpp" line="955"/>
+        <location filename="../src/mirall/syncengine.cpp" line="948"/>
+        <location filename="../src/mirall/syncengine.cpp" line="968"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Kaldırmaya izin verilmedi, geri alınıyor</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="970"/>
+        <location filename="../src/mirall/syncengine.cpp" line="983"/>
         <source>Local files and share folder removed.</source>
         <translation>Yerel dosyalar ve paylaşım klasörü kaldırıldı.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1025"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1038"/>
         <source>Move not allowed, item restored</source>
         <translation>Taşımaya izin verilmedi, öge geri alındı</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1034"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1047"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>%1 salt okunur olduğundan taşımaya izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1035"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1048"/>
         <source>the destination</source>
         <translation>hedef</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1035"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1048"/>
         <source>the source</source>
         <translation>kaynak</translation>
     </message>
@@ -2129,7 +2155,7 @@ Tekrar eşitleyi deneyin.em.</numerusform></translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Sürüm %1 Daha fazla bilgi için lütfen &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Dağıtım %4 ve GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır olup &lt;br/&gt;%5 ve %5 logoları ABD ve/veya diğer ülkelerde %4 tescili markalarıdır.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Sürüm %1 Daha fazla bilgi için lütfen &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;/p&gt;&lt;p&gt;%4 tarafından dağıtılmakta ve GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır olup &lt;br/&gt;%5 ve %5 logoları ABD ve/veya diğer ülkelerde %4 tescili markalarıdır.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2275,7 +2301,7 @@ Tekrar eşitleyi deneyin.em.</numerusform></translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Sürüm %2. Daha fazla bilgi için lütfen &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz ve diğerleri.&lt;br&gt;Duncan Mac-Vicar P. tarafından yazılmış Mirall tabanlıdır.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;/p&gt;&lt;p&gt;GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır.&lt;br&gt;ownCloud ve ownCloud logoları &lt;br&gt;ABD ve/veya diğer ülkelerde ownCloud, Inc.&apos;nin tescili markalarıdır.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Sürüm %2. Daha fazla bilgi için lütfen &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz ve diğerleri.&lt;br/&gt;Duncan Mac-Vicar P. tarafından yazılmış Mirall tabanlıdır.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud, Inc.&lt;/p&gt;&lt;p&gt;GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır.&lt;br/&gt;ownCloud ve ownCloud logoları ABD ve/veya diğer ülkelerde ownCloud, Inc.&apos;nin tescili markalarıdır.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

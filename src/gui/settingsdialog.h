@@ -19,8 +19,8 @@
 
 #include "progressdispatcher.h"
 
+class QAction;
 class QStandardItemModel;
-class QListWidgetItem;
 
 namespace OCC {
 
@@ -28,7 +28,6 @@ namespace Ui {
 class SettingsDialog;
 }
 class AccountSettings;
-class ProtocolWidget;
 class Application;
 class FolderMan;
 class ownCloudGui;
@@ -46,7 +45,7 @@ public:
 
 public slots:
     void showActivityPage();
-    void slotUpdateAccountIcon(const QIcon& icon);
+    void slotSwitchPage(QAction *action);
 
 protected:
     void reject() Q_DECL_OVERRIDE;
@@ -55,12 +54,10 @@ protected:
 private slots:
 
 private:
-    Ui::SettingsDialog *_ui;
-    AccountSettings *_accountSettings;
-    QListWidgetItem *_accountItem;
-    ProtocolWidget  *_protocolWidget;
-
-    int _protocolIdx;
+    Ui::SettingsDialog * const _ui;
+    QHash<QAction*, QWidget*> _actions;
+    AccountSettings * const _accountSettings;
+    QAction * _protocolAction;
 };
 
 }

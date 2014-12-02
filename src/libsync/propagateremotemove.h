@@ -43,6 +43,7 @@ public:
         : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
     void abort() Q_DECL_OVERRIDE;
+    JobParallelism parallelism() Q_DECL_OVERRIDE { return Mirall::PropagatorJob::WaitForFinishedInParentDirectory; }
 private slots:
     void slotMoveJobFinished();
     void finalize();

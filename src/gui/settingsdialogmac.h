@@ -49,7 +49,6 @@ private:
     QListWidgetItem *_accountItem;
     ProtocolWidget  *_protocolWidget;
 
-    int _accountIdx;
     int _protocolIdx;
 };
 

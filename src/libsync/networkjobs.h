@@ -158,6 +158,7 @@ public:
 
 signals:
     void result(const QVariantMap &values);
+    void finishedWithError();
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;

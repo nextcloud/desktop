@@ -181,7 +181,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("Aborted by the user");
         break;
     case CSYNC_STATUS_SERVICE_UNAVAILABLE:
-	errStr = tr("The mounted directory is temporary not available on the server");
+	errStr = tr("The mounted directory is temporarily not available on the server");
 	break;
     default:
         errStr = tr("An internal error number %1 happened.").arg( (int) err );
@@ -559,6 +559,14 @@ void SyncEngine::startSync()
         qDebug() << "=====sync with existing DB";
     }
 
+    qDebug() <<  "=====Using Qt" << qVersion();
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    qDebug() <<  "=====Using SSL library version"
+             <<  QSslSocket::sslLibraryVersionString().toUtf8().data();
+#endif
+    // Note that this seems to output the OpenSSL build version not runtime version:
+    qDebug() <<  "=====Using" << ne_version_string();
+
     fileRecordCount = _journal->getFileRecordCount(); // this creates the DB if it does not exist yet
     bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
 
@@ -712,9 +720,6 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
-    if (_needsUpdate)
-        emit(started());
-
     ne_session_s *session = 0;
     // that call to set property actually is a get which will return the session
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
@@ -735,8 +740,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // do a database commit
     _journal->commit("post treewalk");
 
-    _propagator.reset(new OwncloudPropagator (session, _localPath, _remoteUrl, _remotePath,
-                                              _journal, &_thread));
+    _propagator = QSharedPointer<OwncloudPropagator>(
+        new OwncloudPropagator (session, _localPath, _remoteUrl, _remotePath, _journal, &_thread));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
             this, SLOT(slotJobCompleted(SyncFileItem)));
     connect(_propagator.data(), SIGNAL(progress(SyncFileItem,quint64)),
@@ -751,6 +756,10 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     deleteStaleUploadInfos();
     deleteStaleBlacklistEntries();
     _journal->commit("post stale entry removal");
+
+    // Emit the started signal only after the propagator has been set up.
+    if (_needsUpdate)
+        emit(started());
 
     _propagator->start(_syncedItems);
 }
@@ -838,9 +847,11 @@ void SyncEngine::finalize()
     qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
     _stopWatch.stop();
 
-    _propagator.reset(0);
     _syncRunning = false;
     emit finished();
+
+    // Delete the propagator only after emitting the signal.
+    _propagator.clear();
 }
 
 void SyncEngine::slotProgress(const SyncFileItem& item, quint64 current)
@@ -1124,6 +1135,16 @@ bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s
         }
     }
     return false;
+}
+
+qint64 SyncEngine::timeSinceFileTouched(const QString& fn) const
+{
+    // This copy is essential for thread safety.
+    QSharedPointer<OwncloudPropagator> prop = _propagator;
+    if (prop) {
+        return prop->timeSinceFileTouched(fn);
+    }
+    return -1;
 }
 
 void SyncEngine::abort()

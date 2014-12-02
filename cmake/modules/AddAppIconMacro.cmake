@@ -1,4 +1,4 @@
-SET(WINDRES_EXECUTABLE  ${CMAKE_RC_COMPILER})
+SET(WINDRES_EXECUTABLE_BASE  ${CMAKE_RC_COMPILER})
 
 # This macro is taken from kdelibs/cmake/modules/KDE4Macros.cmake.
 #
@@ -21,7 +21,7 @@ macro (KDE4_ADD_APP_ICON appsources pattern)
         else(NOT WINCE)
         find_program(PNG2ICO_EXECUTABLE NAMES png2ico PATHS ${HOST_BINDIR} NO_DEFAULT_PATH )
         endif(NOT WINCE)
-        find_program(WINDRES_EXECUTABLE NAMES windres)
+        find_program(WINDRES_EXECUTABLE NAMES ${WINDRES_EXECUTABLE_BASE})
         if(MSVC)
             set(WINDRES_EXECUTABLE TRUE)
         endif(MSVC)

@@ -13,7 +13,8 @@
         <file>resources/settings.png</file>
         <file>resources/activity.png</file>
         <file>resources/network.png</file>
-	<file>resources/lock-http.png</file>
-	<file>resources/lock-https.png</file>
+        <file>resources/lock-http.png</file>
+        <file>resources/lock-https.png</file>
+        <file>resources/accounts.png</file>
     </qresource>
 </RCC>

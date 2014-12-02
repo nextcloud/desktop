@@ -497,7 +497,12 @@ void PropfindJob::start()
     req.setRawHeader("Depth", "0");
     QByteArray propStr;
     foreach (const QByteArray &prop, properties) {
-        propStr += "    <d:" + prop + " />\n";
+        if (prop.contains(':')) {
+            int colIdx = prop.lastIndexOf(":");
+            propStr += "    <" + prop.mid(colIdx+1) + " xmlns=\"" + prop.left(colIdx) + "\" />\n";
+        } else {
+            propStr += "    <d:" + prop + " />\n";
+        }
     }
     QByteArray xml = "<?xml version=\"1.0\" ?>\n"
                      "<d:propfind xmlns:d=\"DAV:\">\n"
@@ -540,25 +545,23 @@ bool PropfindJob::finished()
 
         while (!reader.atEnd()) {
             QXmlStreamReader::TokenType type = reader.readNext();
-            if (type == QXmlStreamReader::StartElement &&
-                    reader.namespaceUri() == QLatin1String("DAV:")) {
-                if (curElement.isEmpty()) {
-                    curElement.push(reader.name().toString());
-                    items.insert(reader.name().toString(), reader.text().toString());
+            if (type == QXmlStreamReader::StartElement) {
+                if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
+                    items.insert(reader.name().toString(), reader.readElementText());
                 }
+                curElement.push(reader.name().toString());
             }
-            if (type == QXmlStreamReader::EndElement &&
-                    reader.namespaceUri() == QLatin1String("DAV:")) {
+            if (type == QXmlStreamReader::EndElement) {
                 if(curElement.top() == reader.name()) {
                     curElement.pop();
                 }
             }
-
         }
         emit result(items);
     } else {
         qDebug() << "Quota request *not* successful, http result code is" << http_result_code
                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString()  : QLatin1String(""));
+        emit finishedWithError();
     }
     return true;
 }

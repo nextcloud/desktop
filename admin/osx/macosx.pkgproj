@@ -485,9 +485,9 @@
 				<key>CONCLUSION_ACTION</key>
 				<integer>0</integer>
 				<key>IDENTIFIER</key>
-				<string>com.ownCloud.client</string>
+				<string>@APPLICATION_REV_DOMAIN_INSTALLER@</string>
 				<key>NAME</key>
-				<string>ownCloud Client</string>
+				<string>@APPLICATION_NAME@</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>
@@ -1213,7 +1213,7 @@
 						<key>LANGUAGE</key>
 						<string>English</string>
 						<key>VALUE</key>
-						<string>ownCloud Client</string>
+						<string>@APPLICATION_NAME@ Client</string>
 					</dict>
 				</array>
 			</dict>
@@ -1413,7 +1413,7 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>ownCloud Installer</string>
+			<string>@APPLICATION_NAME@ Installer</string>
 			<key>REFERENCE_FOLDER_PATH</key>
 			<string>@CMAKE_INSTALL_DIR@</string>
 		</dict>

@@ -54,9 +54,9 @@ public:
 
     virtual void start() Q_DECL_OVERRIDE;
     virtual bool finished() Q_DECL_OVERRIDE {
-        qDebug() << Q_FUNC_INFO << reply()->bytesAvailable() << _hasEmittedFinishedSignal;
+//         qDebug() << Q_FUNC_INFO << reply()->bytesAvailable() << _hasEmittedFinishedSignal;
         if (reply()->bytesAvailable()) {
-            qDebug() << Q_FUNC_INFO << "Not all read yet because of bandwidth limits";
+//             qDebug() << Q_FUNC_INFO << "Not all read yet because of bandwidth limits";
             return false;
         } else {
             if (_bandwidthManager) {

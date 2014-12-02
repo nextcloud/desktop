@@ -91,26 +91,10 @@ QList<QNetworkCookie> CookieJar::cookiesForUrl(const QUrl &url) const
     return cookies;
 }
 
-bool CookieJar::deleteCookie(const QNetworkCookie &delCookie)
-{
-    QList<QNetworkCookie> cookies = allCookies();
-    bool removeSucceeded = false;
-    foreach(const QNetworkCookie &cookie, cookies) {
-        // ### cookies are not identical in attriutes, why?
-        if (cookie.name() == delCookie.name()) {
-            cookies.removeOne(cookie);
-            removeSucceeded = true;
-        }
-    }
-    setAllCookies(cookies);
-    return removeSucceeded;
-}
-
 void CookieJar::clearSessionCookies()
 {
     setAllCookies(removeExpired(allCookies()));
 }
-
 
 void CookieJar::save()
 {

@@ -130,7 +130,7 @@ void FolderWatcher::changeDetected( const QStringList& paths )
     _lastPaths = pathsSet;
     _timer.restart();
 
-    QSet<QString> changedFolders;
+    QSet<QString> changedPaths;
 
     // ------- handle ignores:
     for (int i = 0; i < paths.size(); ++i) {
@@ -139,20 +139,15 @@ void FolderWatcher::changeDetected( const QStringList& paths )
             continue;
         }
 
-        QFileInfo fi(path);
-        if (fi.isDir()) {
-            changedFolders.insert(path);
-        } else {
-            changedFolders.insert(fi.dir().path());
-        }
+        changedPaths.insert(path);
     }
-    if (changedFolders.isEmpty()) {
+    if (changedPaths.isEmpty()) {
         return;
     }
 
-    qDebug() << "detected changes in folders:" << changedFolders;
-    foreach (const QString &path, changedFolders) {
-        emit folderChanged(path);
+    qDebug() << "detected changes in paths:" << changedPaths;
+    foreach (const QString &path, changedPaths) {
+        emit pathChanged(path);
     }
 }
 
