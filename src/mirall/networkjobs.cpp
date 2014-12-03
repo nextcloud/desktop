@@ -50,12 +50,7 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
     , _path(path)
 {
     _timer.setSingleShot(true);
-    if (!AbstractNetworkJob::preOc7WasDetected) {
-        _timer.setInterval(15*1000); // default to 15 seconds.
-    } else {
-        qDebug() << "Pre-oc7 server detected, adjusting timeout values";
-        _timer.setInterval(60*1000); // long PROPFINDs in oc6 might take too long
-    }
+    _timer.setInterval(OwncloudPropagator::httpTimeout() * 1000); // default to 5 minutes.
     connect(&_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
 
     connect(this, SIGNAL(networkActivity()), SLOT(resetTimeout()));

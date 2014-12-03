@@ -266,7 +266,6 @@ void PropagateUploadFileQNAM::startNextChunk()
 
     if( isOpen ) {
         _job = new PUTFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + path, device, headers);
-        _job->setTimeout(_propagator->httpTimeout() * 1000);
         connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
         connect(_job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
         _job->start();
@@ -680,7 +679,6 @@ void PropagateDownloadFileQNAM::start()
                               url,
                               &_tmpFile, headers);
     }
-    _job->setTimeout(_propagator->httpTimeout() * 1000);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
     connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
     _propagator->_activeJobs ++;
