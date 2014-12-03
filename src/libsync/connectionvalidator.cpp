@@ -80,16 +80,23 @@ QString ConnectionValidator::statusString( Status stat ) const
 
 void ConnectionValidator::checkConnection()
 {
-    if( _account ) {
+    if( !_account ) {
+        _errors << tr("No ownCloud account configured");
+        emit connectionResult( NotConfigured );
+        return;
+    }
+
+    if( _account->state() == Account::Connected ) {
+        // When we're already connected, just make sure a minimal request
+        // gets replied to.
+        slotCheckAuthentication();
+    } else {
         CheckServerJob *checkJob = new CheckServerJob(_account, false, this);
         checkJob->setIgnoreCredentialFailure(true);
         connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
         connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
         connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotStatusTimeout(QUrl)));
         checkJob->start();
-    } else {
-        _errors << tr("No ownCloud account configured");
-        emit connectionResult( NotConfigured );
     }
 }
 
@@ -100,7 +107,6 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
              << url << " with version "
              << CheckServerJob::versionString(info)
              << "(" << CheckServerJob::version(info) << ")";
-    // now check the authentication
 
     if( CheckServerJob::version(info).startsWith("4.0") ) {
         _errors.append( tr("The configured server for this client is too old") );
@@ -109,6 +115,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
         return;
     }
 
+    // now check the authentication
     AbstractCredentials *creds = _account->credentials();
     if (creds->ready()) {
         QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
@@ -146,14 +153,15 @@ void ConnectionValidator::slotCheckAuthentication()
     AbstractCredentials *creds = _account->credentials();
     disconnect( creds, SIGNAL(fetched()),
                 this, SLOT(slotCheckAuthentication()));
+
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
+    qDebug() << "# Check whether authenticated propfind works.";
     PropfindJob *job = new PropfindJob(_account, "/", this);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
     connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));
     job->start();
-    qDebug() << "# checking for authentication settings.";
 }
 
 void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
@@ -166,11 +174,7 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         qDebug() << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
-        switch (_account->state()) {
-        case Account::SignedOut:
-            _account->setState(Account::SignedOut);
-            break;
-        default:
+        if (_account->state() != Account::SignedOut) {
             _account->setState(Account::Disconnected);
         }
 

@@ -62,10 +62,6 @@ void QuotaInfo::slotAccountStateChanged(int state)
 
 void QuotaInfo::slotRequestFailed()
 {
-    if (!_account.isNull() && _account->state() == Account::Connected) {
-        _account->setState(Account::Disconnected);
-    }
-
     _lastQuotaTotalBytes = 0;
     _lastQuotaUsedBytes = 0;
     _jobRestartTimer->start(failIntervalT);
@@ -84,9 +80,6 @@ void QuotaInfo::slotCheckQuota()
 
 void QuotaInfo::slotUpdateLastQuota(qint64 total, qint64 used)
 {
-    if(_account->state() == Account::Disconnected) {
-        _account->setState(Account::Connected);
-    }
     _lastQuotaTotalBytes = total;
     _lastQuotaUsedBytes = used;
     emit quotaUpdated(total, used);

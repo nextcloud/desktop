@@ -373,9 +373,27 @@ int Account::state() const
 void Account::setState(int state)
 {
     if (_state != state) {
+        qDebug() << "Account state change: "
+                 << stateString(_state) << "->" << stateString(state);
         _state = state;
         emit stateChanged(state);
     }
+}
+
+QString Account::stateString(int state)
+{
+    switch (state)
+    {
+    case Connected:
+        return QLatin1String("Connected");
+    case Disconnected:
+        return QLatin1String("Disconnected");
+    case SignedOut:
+        return QLatin1String("SignedOut");
+    case InvalidCredential:
+        return QLatin1String("InvalidCredential");
+    }
+    return QLatin1String("Unknown");
 }
 
 QuotaInfo *Account::quotaInfo()

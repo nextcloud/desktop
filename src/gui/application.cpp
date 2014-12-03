@@ -275,17 +275,26 @@ void Application::slotToggleFolderman(int state)
     FolderMan* folderMan = FolderMan::instance();
     switch (state) {
     case Account::Connected:
+        qDebug() << "Enabling sync scheduler, scheduling all folders";
         folderMan->setSyncEnabled(true);
         folderMan->slotScheduleAllFolders();
         break;
-    case Account::Disconnected:
-        _checkConnectionTimer.start();
-        // fall through
     case Account::SignedOut:
     case Account::InvalidCredential:
+    case Account::Disconnected:
+        qDebug() << "Disabling sync scheduler, terminating sync";
         folderMan->setSyncEnabled(false);
         folderMan->terminateSyncProcess();
         break;
+    }
+
+    // Stop checking the connection if we're manually signed out or
+    // when the credentials are wrong.
+    if (state == Account::SignedOut
+            || state == Account::InvalidCredential) {
+        _checkConnectionTimer.stop();
+    } else if (! _checkConnectionTimer.isActive()) {
+        _checkConnectionTimer.start();
     }
 }
 
@@ -299,24 +308,14 @@ void Application::slotConnectionValidatorResult(ConnectionValidator::Status stat
     qDebug() << "Connection Validator Result: " << _conValidator->statusString(status);
     QStringList startupFails;
 
-    if( status == ConnectionValidator::Connected ) {
-        FolderMan *folderMan = FolderMan::instance();
-        qDebug() << "######## Connection and Credentials are ok!";
-        folderMan->setSyncEnabled(true);
-        // queue up the sync for all folders.
-        folderMan->slotScheduleAllFolders();
-        _checkConnectionTimer.stop();
-    } else {
-        // if we have problems here, it's unlikely that syncing will work.
-        FolderMan::instance()->setSyncEnabled(false);
-
+    if( status != ConnectionValidator::Connected ) {
         startupFails = _conValidator->errors();
         _startupNetworkError = _conValidator->networkError();
         if (_userTriggeredConnect) {
             _userTriggeredConnect = false;
         }
     }
-    _gui->startupConnected( (status == ConnectionValidator::Connected), startupFails);
+    _gui->setConnectionErrors( (status == ConnectionValidator::Connected), startupFails);
 
     _conValidator->deleteLater();
 }

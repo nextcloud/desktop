@@ -39,7 +39,7 @@ public:
     explicit ownCloudGui(Application *parent = 0);
 
     void setupContextMenu();
-    void startupConnected(bool connected , const QStringList &fails);
+    void setConnectionErrors(bool connected , const QStringList &fails);
 
     bool checkAccountExists(bool openSettings);
 

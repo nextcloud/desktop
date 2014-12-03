@@ -148,6 +148,7 @@ public:
 
     int state() const;
     void setState(int state);
+    static QString stateString(int state);
 
     void clearCookieJar();
 

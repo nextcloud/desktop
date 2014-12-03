@@ -201,17 +201,8 @@ void ownCloudGui::slotAccountStateChanged()
     slotComputeOverallSyncStatus();
 }
 
-void ownCloudGui::startupConnected( bool connected, const QStringList& fails )
+void ownCloudGui::setConnectionErrors( bool /*connected*/, const QStringList& fails )
 {
-    FolderMan *folderMan = FolderMan::instance();
-
-    if( connected ) {
-        qDebug() << "######## connected to ownCloud Server!";
-        folderMan->setSyncEnabled(true);
-        // _tray->setIcon( Theme::instance()->syncStateIcon( SyncResult::NotYetStarted, true ) );
-        // _tray->show();
-    }
-
     _startupFails = fails; // store that for the settings dialog once it appears.
     if( !_settingsDialog.isNull() ) {
         _settingsDialog->setGeneralErrors( _startupFails );
