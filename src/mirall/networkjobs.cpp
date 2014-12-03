@@ -170,8 +170,8 @@ void AbstractNetworkJob::slotFinished()
     bool discard = finished();
     AbstractCredentials *creds = _account->credentials();
     if (!creds->stillValid(_reply) &&! _ignoreCredentialFailure
-            && _account->state() != Account::InvalidCredidential) {
-        _account->setState(Account::InvalidCredidential);
+            && _account->state() != Account::InvalidCredential) {
+        _account->setState(Account::InvalidCredential);
 
         // invalidate & forget token/password
         // but try to re-sign in.

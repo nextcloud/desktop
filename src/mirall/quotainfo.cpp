@@ -51,7 +51,7 @@ void QuotaInfo::slotAccountStateChanged(int state)
 {
     switch (state) {
     case Account::SignedOut: // fall through
-    case Account::InvalidCredidential:
+    case Account::InvalidCredential:
     case Account::Disconnected:
         _jobRestartTimer->stop();
         break;
