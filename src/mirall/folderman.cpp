@@ -494,19 +494,17 @@ void FolderMan::slotScheduleSync( const QString& alias )
     QTimer::singleShot(msBetweenRequestAndSync, this, SLOT(slotStartScheduledFolderSync()));
 }
 
-void FolderMan::slotScheduleETagJob ( const QString &alias, RequestEtagJob *job)
+void FolderMan::slotScheduleETagJob(const QString &/*alias*/, RequestEtagJob *job)
 {
     QObject::connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(slotEtagJobDestroyed(QObject*)));
     QMetaObject::invokeMethod(this, "slotRunOneEtagJob", Qt::QueuedConnection);
-
+    // maybe: add to queue
 }
 
-void FolderMan::slotEtagJobDestroyed (QObject* o)
+void FolderMan::slotEtagJobDestroyed(QObject* /*o*/)
 {
-    RequestEtagJob *job = 0;
-    if (job == _currentEtagJob) {
-        _currentEtagJob = 0; // viel hilft viel
-    }
+    // _currentEtagJob is automatically cleared
+    // maybe: remove from queue
     QMetaObject::invokeMethod(this, "slotRunOneEtagJob", Qt::QueuedConnection);
 }
 
@@ -523,9 +521,9 @@ void FolderMan::slotRunOneEtagJob()
             }
         }
         if (_currentEtagJob.isNull()) {
-            qDebug() << Q_FUNC_INFO << "No more remote ETag check jobs to schedule.";
+            qDebug() << "No more remote ETag check jobs to schedule.";
         } else {
-            qDebug() << Q_FUNC_INFO << "Scheduling" << alias << "to check remote ETag";
+            qDebug() << "Scheduling" << alias << "to check remote ETag";
             _currentEtagJob->start(); // on destroy/end it will continue the queue via slotEtagJobDestroyed
         }
     }
