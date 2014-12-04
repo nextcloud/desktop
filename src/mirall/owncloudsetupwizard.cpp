@@ -433,6 +433,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         }
         // 2. Server URL or user changed, requires reinit of folders
         else if (reinitRequired) {
+            folderMan->removeAllFolderDefinitions();
             // 2.1: startFromScratch: (Re)move local data, clean slate sync
             if (startFromScratch) {
                 if (ensureStartFromScratch(localFolder)) {
@@ -444,7 +445,6 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             }
             // 2.2: Reinit: Remove journal and start a sync
             else {
-                folderMan->removeAllFolderDefinitions();
                 folderMan->addFolderDefinition(Theme::instance()->appName(),
                                                localFolder, _remoteFolder, _ocWizard->blacklist() );
                 _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
