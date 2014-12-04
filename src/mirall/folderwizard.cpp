@@ -254,9 +254,9 @@ void FolderWizardRemotePath::slotAddRemoteFolder()
 
     QInputDialog *dlg = new QInputDialog(this);
 
-    dlg->setWindowTitle(tr("Add Remote Folder"));
-    dlg->setLabelText(tr("Enter the name of the new folder:"));
-    dlg->setTextValue(parent);
+    dlg->setWindowTitle(tr("Create Remote Folder"));
+    dlg->setLabelText(tr("Enter the name of the new folder to be created below '%1':")
+                      .arg(parent));
     dlg->open(this, SLOT(slotCreateRemoteFolder(QString)));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -265,7 +265,14 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
 {
     if( folder.isEmpty() ) return;
 
-    MkColJob *job = new MkColJob(AccountManager::instance()->account(), folder, this);
+    QTreeWidgetItem *current = _ui.folderTreeWidget->currentItem();
+    QString fullPath;
+    if (current) {
+        fullPath = current->data(0, Qt::UserRole).toString();
+    }
+    fullPath += "/" + folder;
+
+    MkColJob *job = new MkColJob(AccountManager::instance()->account(), fullPath, this);
     /* check the owncloud configuration file and query the ownCloud */
     connect(job, SIGNAL(finished(QNetworkReply::NetworkError)),
                  SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
