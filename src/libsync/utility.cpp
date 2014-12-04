@@ -401,10 +401,12 @@ void Utility::StopWatch::start()
     _timer.start();
 }
 
-void Utility::StopWatch::stop()
+quint64 Utility::StopWatch::stop()
 {
     addLapTime(QLatin1String(STOPWATCH_END_TAG));
+    quint64 duration = _timer.elapsed();
     _timer.invalidate();
+    return duration;
 }
 
 void Utility::StopWatch::reset()
