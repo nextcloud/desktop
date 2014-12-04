@@ -31,6 +31,7 @@
 
 #include "mirall/networkjobs.h"
 #include "mirall/account.h"
+#include "mirall/owncloudpropagator.h"
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
