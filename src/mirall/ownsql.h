@@ -30,7 +30,8 @@ public:
     explicit SqlDatabase();
 
     bool isOpen();
-    bool open( const QString& filename );
+    bool openOrCreateReadWrite( const QString& filename );
+    bool openReadOnly( const QString& filename );
     bool transaction();
     bool commit();
     void close();
@@ -38,6 +39,9 @@ public:
     sqlite3* sqliteDb();
 
 private:
+    bool openHelper( const QString& filename, int sqliteFlags );
+    bool checkDb();
+
     sqlite3 *_db;
     QString _error; // last error string
     int _errId;

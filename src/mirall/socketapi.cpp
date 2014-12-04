@@ -422,7 +422,7 @@ SqlQuery* SocketApi::getSqlQuery( Folder *folder )
     if( fi.exists() ) {
         SqlDatabase *db = new SqlDatabase;
 
-        if( db && db->open(dbFileName) ) {
+        if( db && db->openReadOnly(dbFileName) ) {
             _openDbs.insert(folder, db);
 
             SqlQuery *query = new SqlQuery(*db);
@@ -435,6 +435,8 @@ SqlQuery* SocketApi::getSqlQuery( Folder *folder )
             }
             _dbQueries.insert( folder, query);
             return query;
+        } else {
+            qDebug() << "Unable to open db" << dbFileName;
         }
     } else {
         qDebug() << Q_FUNC_INFO << "Journal to query does not yet exist.";
