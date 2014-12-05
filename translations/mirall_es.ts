@@ -36,8 +36,8 @@
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
-        <source>Add Folder</source>
-        <translation>Añadir carpeta</translation>
+        <source>Create Folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -428,52 +428,52 @@ Está seguro de que desea realizar esta operación?</translation>
         <translation>Un antiguo registro (journal) de sincronización &apos;%1&apos; se ha encontrado, pero no se ha podido eliminar. Por favor asegúrese que ninguna aplicación la está utilizando.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="959"/>
+        <location filename="../src/mirall/folderman.cpp" line="957"/>
         <source>Undefined State.</source>
         <translation>Estado no definido.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="962"/>
+        <location filename="../src/mirall/folderman.cpp" line="960"/>
         <source>Waits to start syncing.</source>
         <translation>Esperando el inicio de la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="965"/>
+        <location filename="../src/mirall/folderman.cpp" line="963"/>
         <source>Preparing for sync.</source>
         <translation>Preparándose para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="968"/>
+        <location filename="../src/mirall/folderman.cpp" line="966"/>
         <source>Sync is running.</source>
         <translation>Sincronización en funcionamiento.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="971"/>
+        <location filename="../src/mirall/folderman.cpp" line="969"/>
         <source>Last Sync was successful.</source>
         <translation>La última sincronización fue exitosa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="976"/>
+        <location filename="../src/mirall/folderman.cpp" line="974"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>La última sincronización fue exitosa pero con advertencias para archivos individuales.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="979"/>
+        <location filename="../src/mirall/folderman.cpp" line="977"/>
         <source>Setup Error.</source>
         <translation>Error de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="982"/>
+        <location filename="../src/mirall/folderman.cpp" line="980"/>
         <source>User Abort.</source>
         <translation>Interrumpir.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="985"/>
+        <location filename="../src/mirall/folderman.cpp" line="983"/>
         <source>Sync is paused.</source>
         <translation>La sincronización está en pausa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="991"/>
+        <location filename="../src/mirall/folderman.cpp" line="989"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sincronización en pausa)</translation>
     </message>
@@ -500,8 +500,8 @@ Está seguro de que desea realizar esta operación?</translation>
 <context>
     <name>Mirall::FolderWizard</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="494"/>
-        <location filename="../src/mirall/folderwizard.cpp" line="496"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="501"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="503"/>
         <source>Add Folder</source>
         <translation>Añadir carpeta</translation>
     </message>
@@ -578,41 +578,41 @@ Está seguro de que desea realizar esta operación?</translation>
     <name>Mirall::FolderWizardRemotePath</name>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
-        <source>Add Remote Folder</source>
-        <translation>Agregar carpeta remota</translation>
+        <source>Create Remote Folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
-        <source>Enter the name of the new folder:</source>
-        <translation>Introduzca el nombre de la nueva carpeta:</translation>
+        <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="280"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="287"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Carpeta fue creada con éxito en %1.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="288"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="295"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Fallo al crear la carpeta %1. Por favor revíselo manualmente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="337"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="344"/>
         <source>Choose this to sync the entire account</source>
         <translation>Escoja esto para sincronizar la cuenta entera</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="392"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="399"/>
         <source>This folder is already being synced.</source>
         <translation>Este directorio ya se ha soncronizado.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="394"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="401"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Ya ha sincronizado &lt;i&gt;%1&lt;/i&gt;, el cual es la carpeta de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="398"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="405"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>Todavía se están sincronizando ficheros. La sincronización de de otras carpetas &lt;b&gt;no&lt;/b&gt; está soportada. Si quieres sincronizar múltiples carpetas, por favor revisa la carpeta raíz configurada.</translation>
     </message>
@@ -620,7 +620,7 @@ Está seguro de que desea realizar esta operación?</translation>
 <context>
     <name>Mirall::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/mirall/folderwizard.cpp" line="436"/>
+        <location filename="../src/mirall/folderwizard.cpp" line="443"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
         <translation>Elija qué sincronizar: puede anular la selección de subcarpetas que no desee sincronizar.</translation>
     </message>
@@ -637,22 +637,22 @@ Está seguro de que desea realizar esta operación?</translation>
 <context>
     <name>Mirall::GETFileJob</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="507"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="506"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>No se recibió ninguna e-tag del servidor, revisar el proxy/gateway</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="514"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="513"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Se recibió una e-tag distinta para reanudar. Se intentará nuevamente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="541"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
         <source>Server returned wrong content-range</source>
         <translation>El servidor devolvió un content-range erróneo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="580"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
         <source>Connection Timeout</source>
         <translation>Tiempo de espera de conexión agotado</translation>
     </message>
@@ -1114,7 +1114,7 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
         <source>&lt;p&gt;Could not connect securely:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Do you want to connect unencrypted instead (not recommended)?&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;No se puede conectar de forma segura:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p¿Quieres conectar sin cifrar en lugar (no recomendado)?&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
@@ -1135,7 +1135,7 @@ No se recomienda usarlo.</translation>
         <translation>Error Renombrando Carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="441"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="450"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Carpeta de sincronización local %1 creada con éxito&lt;/b&gt;&lt;/font&gt;</translation>
@@ -1334,17 +1334,17 @@ No se recomienda usarlo.</translation>
 <context>
     <name>Mirall::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="594"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>¡El fichero %1 no puede ser descargado debido al nombre de la clase de un fichero local!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="757"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="755"/>
         <source>The file could not be downloaded completely.</source>
         <translation>No se pudo descargar el archivo completamente.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="793"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="791"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>¡ El fichero %1 no puede guardar debido a un conflicto con el nombre de otro fichero local !</translation>
     </message>
@@ -1449,23 +1449,23 @@ No se recomienda usarlo.</translation>
 <context>
     <name>Mirall::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="297"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="296"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>El archivo fue modificado localmente, pero es parte de una carpeta compartida en modo de solo lectura. Ha sido recuperado y tu modificación está en el archivo de conflicto.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="328"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
         <source>The local file was removed during sync.</source>
         <translation>El archivo local fue eliminado durante la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="130"/>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="341"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="340"/>
         <source>Local file changed during sync.</source>
         <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/propagator_qnam.cpp" line="351"/>
+        <location filename="../src/mirall/propagator_qnam.cpp" line="350"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>El servidor no reconoció la última parte. (No había una e-tag presente.)</translation>
     </message>
