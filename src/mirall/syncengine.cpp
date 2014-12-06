@@ -380,7 +380,11 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         Q_ASSERT("Non handled error-status");
         /* No error string */
     }
+
     item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
+    if(item._isDirectory) {
+        item._affectedItems = 0; // defaults to 1 for normal items.
+    }
 
     // The etag is already set in the previous sync phases somewhere. Maybe we should remove it there
     // and do it here so we have a consistent state about which tree stores information from which source.
