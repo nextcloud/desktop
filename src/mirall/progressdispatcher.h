@@ -119,9 +119,7 @@ namespace Progress
                 if (Progress::isSizeDependent(item._instruction)) {
                     _completedSize += item._size;
                 }
-            } else {
-                qDebug() << "Also reached for directories!";
-            }
+            } 
             _lastCompletedItem = item;
             this->updateEstimation();
         }
