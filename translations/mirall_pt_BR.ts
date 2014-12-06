@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>Criar uma Pasta</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -579,12 +579,12 @@ Você tem certeza que quer executar esta operação?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Criar uma Pasta Remota</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Entre com o nome da nova pasta a ser criada abaixo &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>

@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>Map aanmaken</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -579,12 +579,12 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Externe map aanmaken</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Voer de naam van de hieronder te maken nieuwe map in &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>

@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>Créer un dossier</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -579,12 +579,12 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Créer un dossier distant</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Entrez le nom du nouveau dossier à créer ci-dessous &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>

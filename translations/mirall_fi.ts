@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>Luo kansio</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -577,7 +577,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Luo etäkansio</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>

@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>Crea cartella</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -579,12 +579,12 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Crea cartella remota</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Digita il nome della nuova cartella da creare sotto a &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
@@ -1113,7 +1113,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
         <source>&lt;p&gt;Could not connect securely:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Do you want to connect unencrypted instead (not recommended)?&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Impossibile connettersi in modo sicuro:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Vuoi invece connetterti senza cifratura (non consigliato)?&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
