@@ -2067,69 +2067,69 @@ Recomendámoslle que non o use.</translation>
         <translation>O ficheiro conten caracteres incorrectos que non poden sincronizarse entre distintas plataformas.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="560"/>
+        <location filename="../src/mirall/syncengine.cpp" line="564"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Non é posíbel iniciar un rexistro de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="641"/>
+        <location filename="../src/mirall/syncengine.cpp" line="645"/>
         <source>Cannot open the sync journal</source>
         <translation>Non foi posíbel abrir o rexistro de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="873"/>
-        <location filename="../src/mirall/syncengine.cpp" line="880"/>
+        <location filename="../src/mirall/syncengine.cpp" line="877"/>
+        <location filename="../src/mirall/syncengine.cpp" line="884"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado debido a lista negra de &quot;escolla qué sincronizar&quot;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="898"/>
+        <location filename="../src/mirall/syncengine.cpp" line="902"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Non está permitido xa que non ten permiso para engadir subdirectorios nese directorio</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="904"/>
+        <location filename="../src/mirall/syncengine.cpp" line="908"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Non está permitido xa que non ten permiso para engadir un directorio pai</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="911"/>
+        <location filename="../src/mirall/syncengine.cpp" line="915"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Non está permitido xa que non ten permiso para engadir ficheiros nese directorio</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="931"/>
+        <location filename="../src/mirall/syncengine.cpp" line="935"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non está permitido o envío xa que o ficheiro é só de lectura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="948"/>
-        <location filename="../src/mirall/syncengine.cpp" line="968"/>
+        <location filename="../src/mirall/syncengine.cpp" line="952"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non está permitido retiralo, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="983"/>
+        <location filename="../src/mirall/syncengine.cpp" line="987"/>
         <source>Local files and share folder removed.</source>
         <translation>Ficheiros locáis e cartafol compartido eliminados.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1038"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1042"/>
         <source>Move not allowed, item restored</source>
         <translation>Nos está permitido movelo, elemento restaurado</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1047"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1051"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Bon está permitido movelo xa que %1 é só de lectura</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1048"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1052"/>
         <source>the destination</source>
         <translation>o destino</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1048"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1052"/>
         <source>the source</source>
         <translation>a orixe</translation>
     </message>

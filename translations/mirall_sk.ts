@@ -2063,69 +2063,69 @@ Nie je vhodné ju používať.</translation>
         <translation>Súbor obsahuje neplatné znaky, ktoré nemôžu byť zosynchronizované medzi platformami.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="560"/>
+        <location filename="../src/mirall/syncengine.cpp" line="564"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nemôžem inicializovať synchronizačný žurnál.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="641"/>
+        <location filename="../src/mirall/syncengine.cpp" line="645"/>
         <source>Cannot open the sync journal</source>
         <translation>Nemožno otvoriť sync žurnál</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="873"/>
-        <location filename="../src/mirall/syncengine.cpp" line="880"/>
+        <location filename="../src/mirall/syncengine.cpp" line="877"/>
+        <location filename="../src/mirall/syncengine.cpp" line="884"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="898"/>
+        <location filename="../src/mirall/syncengine.cpp" line="902"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Nie je dovolené, pretože nemáte oprávnenie pridávať do tohto adresára podadresáre.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="904"/>
+        <location filename="../src/mirall/syncengine.cpp" line="908"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Nie je dovolené, pretože nemáte oprávnenie pridať nadradený adresár.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="911"/>
+        <location filename="../src/mirall/syncengine.cpp" line="915"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Nie je dovolené, pretože nemáte oprávnenie pridávať do tohto adresára súbory.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="931"/>
+        <location filename="../src/mirall/syncengine.cpp" line="935"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Nie je dovolené tento súbor nahrať, pretože je na serveri iba na čítanie. Obnovuje sa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="948"/>
-        <location filename="../src/mirall/syncengine.cpp" line="968"/>
+        <location filename="../src/mirall/syncengine.cpp" line="952"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Nie je dovolené odstrániť. Obnovuje sa.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="983"/>
+        <location filename="../src/mirall/syncengine.cpp" line="987"/>
         <source>Local files and share folder removed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1038"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1042"/>
         <source>Move not allowed, item restored</source>
         <translation>Presunutie nie je dovolené. Položka obnovená.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1047"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1051"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Presunutie nie je dovolené, pretože %1 je na serveri iba na čítanie</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1048"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1052"/>
         <source>the destination</source>
         <translation>cieľ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1048"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1052"/>
         <source>the source</source>
         <translation>zdroj</translation>
     </message>

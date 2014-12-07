@@ -2066,69 +2066,69 @@ Selle kasutamine pole soovitatav.</translation>
         <translation>Fail sisaldab sobimatuid sümboleid, mida ei saa sünkroniseerida erinevate platvormide vahel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="560"/>
+        <location filename="../src/mirall/syncengine.cpp" line="564"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Ei suuda lähtestada sünkroniseeringu zurnaali.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="641"/>
+        <location filename="../src/mirall/syncengine.cpp" line="645"/>
         <source>Cannot open the sync journal</source>
         <translation>Ei suuda avada sünkroniseeringu zurnaali</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="873"/>
-        <location filename="../src/mirall/syncengine.cpp" line="880"/>
+        <location filename="../src/mirall/syncengine.cpp" line="877"/>
+        <location filename="../src/mirall/syncengine.cpp" line="884"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;Vali, mida sünkroniseerida&quot; musta nimekirja tõttu vahele jäetud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="898"/>
+        <location filename="../src/mirall/syncengine.cpp" line="902"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Pole lubatud, kuna sul puuduvad õigused lisada sellesse kataloogi lisada alam-kataloogi</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="904"/>
+        <location filename="../src/mirall/syncengine.cpp" line="908"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Pole lubatud, kuna sul puuduvad õigused lisada ülemkataloog</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="911"/>
+        <location filename="../src/mirall/syncengine.cpp" line="915"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Pole lubatud, kuna sul puuduvad õigused sellesse kataloogi faile lisada</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="931"/>
+        <location filename="../src/mirall/syncengine.cpp" line="935"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Pole lubatud üles laadida, kuna tegemist on ainult-loetava serveriga, taastan</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="948"/>
-        <location filename="../src/mirall/syncengine.cpp" line="968"/>
+        <location filename="../src/mirall/syncengine.cpp" line="952"/>
+        <location filename="../src/mirall/syncengine.cpp" line="972"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Eemaldamine pole lubatud, taastan</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="983"/>
+        <location filename="../src/mirall/syncengine.cpp" line="987"/>
         <source>Local files and share folder removed.</source>
         <translation>Kohalikud failid ja jagatud kaustad eemaldatud.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1038"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1042"/>
         <source>Move not allowed, item restored</source>
         <translation>Liigutamine pole lubatud, üksus taastatud</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1047"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1051"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Liigutamien pole võimalik kuna %1 on ainult lugemiseks</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1048"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1052"/>
         <source>the destination</source>
         <translation>sihtkoht</translation>
     </message>
     <message>
-        <location filename="../src/mirall/syncengine.cpp" line="1048"/>
+        <location filename="../src/mirall/syncengine.cpp" line="1052"/>
         <source>the source</source>
         <translation>allikas</translation>
     </message>
