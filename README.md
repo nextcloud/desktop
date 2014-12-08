@@ -16,7 +16,7 @@ with your computer.
 Tehe ownCloud Desktop Client is developed in Git. Since Git makes it easy to
 fork and improve the source code and to adapt it to your need, many copies
 can be found on the Internet, in particular on GitHub. However, the
-authoritative pepository maintained by the developers is located at
+authoritative repository maintained by the developers is located at
 https://github.com/owncloud/client.
 
 ## Building the source code
