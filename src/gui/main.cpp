@@ -31,7 +31,7 @@
 
 #include "config.h"
 #ifdef WITH_CRASHREPORTER
-    #include "mirallconfigfile.h"
+    #include "configfile.h"
     #include <libcrashreporter-handler/Handler.h>
 #endif
 

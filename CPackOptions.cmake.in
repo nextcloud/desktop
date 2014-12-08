@@ -21,6 +21,6 @@ set( CRASHREPORTER_EXECUTABLE @CRASHREPORTER_EXECUTABLE@)
 
 set( BUILD_OWNCLOUD_OSX_BUNDLE @BUILD_OWNCLOUD_OSX_BUNDLE@)
 if(APPLE AND NOT BUILD_OWNCLOUD_OSX_BUNDLE)
-    message( FATAL_ERROR "You're trying to build a bundle although you haven't built mirall in bundle mode.\n Add -DBUILD_OWNCLOUD_OSX_BUNDLE=ON")
+    message( FATAL_ERROR "You're trying to build a bundle although you haven't built the client in bundle mode.\n Add -DBUILD_OWNCLOUD_OSX_BUNDLE=ON")
 endif()
 

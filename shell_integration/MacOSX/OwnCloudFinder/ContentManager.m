@@ -164,7 +164,7 @@ static ContentManager* sharedInstance = nil;
 }
 
 // called as a result of an UPDATE_VIEW message.
-// it clears the entries from the hash to make it call again home to mirall.
+// it clears the entries from the hash to make it call again home to the desktop client.
 - (void)clearFileNameCacheForPath:(NSString*)path
 {
 	NSLog(@"%@", NSStringFromSelector(_cmd));

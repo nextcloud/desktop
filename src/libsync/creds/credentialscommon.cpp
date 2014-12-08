@@ -40,7 +40,7 @@ int handleNeonSSLProblems(const char* prompt,
     const QString qPrompt = QString::fromLatin1( prompt ).trimmed();
 
     if( qPrompt.startsWith( QLatin1String("There are problems with the SSL certificate:"))) {
-        // SSL is requested. If the program came here, the SSL check was done by mirall
+        // SSL is requested. If the program came here, the SSL check was done by Qt
         // It needs to be checked if the  chain is still equal to the one which
         // was verified by the user.
         const QRegExp regexp("fingerprint: ([\\w\\d:]+)");

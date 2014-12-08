@@ -44,7 +44,7 @@ contact the authors directly by mail, as this increases the chance
 of your report being lost.
 
 If you created a patch, please submit a [Pull
-Request](https://github.com/owncloud/mirall/pulls). For non-trivial
+Request](https://github.com/owncloud/client/pulls). For non-trivial
 patches, we need you to sign the [Contributor
 Agreement](https://owncloud.org/contribute/agreement) before
 we can accept your patch.
