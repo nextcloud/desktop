@@ -126,7 +126,7 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
         QList<int> sizes;
         sizes <<16 << 22 << 32 << 48 << 64 << 128;
         foreach (int size, sizes) {
-            QString pixmapName = QString::fromLatin1(":/mirall/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
+            QString pixmapName = QString::fromLatin1(":/client/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
             if (QFile::exists(pixmapName)) {
                 QPixmap px(pixmapName);
                 // HACK, get rid of it by supporting FDO icon themes, this is really just emulating ubuntu-mono
@@ -141,7 +141,7 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
         }
         if (icon.isNull()) {
             foreach (int size, sizes) {
-                QString pixmapName = QString::fromLatin1(":/mirall/resources/%1-%2.png").arg(name).arg(size);
+                QString pixmapName = QString::fromLatin1(":/client/resources/%1-%2.png").arg(name).arg(size);
                 if (QFile::exists(pixmapName)) {
                     icon.addFile(pixmapName);
                 }
@@ -259,7 +259,7 @@ QVariant Theme::customMedia( CustomMediaType type )
         break;
     }
 
-    QString imgPath = QString::fromLatin1(":/mirall/theme/colored/%1.png").arg(key);
+    QString imgPath = QString::fromLatin1(":/client/theme/colored/%1.png").arg(key);
     if ( QFile::exists( imgPath ) ) {
         QPixmap pix( imgPath );
         if( pix.isNull() ) {

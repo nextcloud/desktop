@@ -137,7 +137,7 @@ public:
     /**
      * Override to use a string or a custom image name.
      * The default implementation will try to look up
-     * :/mirall/theme/<type>.png
+     * :/client/theme/<type>.png
      */
     virtual QVariant customMedia( CustomMediaType type );
 

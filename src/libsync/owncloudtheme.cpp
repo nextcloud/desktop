@@ -108,7 +108,7 @@ QColor ownCloudTheme::wizardHeaderTitleColor() const
 
 QPixmap ownCloudTheme::wizardHeaderLogo() const
 {
-    return QPixmap(":/mirall/theme/colored/wizard_logo.png");
+    return QPixmap(":/client/theme/colored/wizard_logo.png");
 }
 #endif
 

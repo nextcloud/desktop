@@ -497,7 +497,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
 
         if (Progress::isWarningKind(progress._lastCompletedItem._status)) {
             // display a warn icon if warnings happend.
-            QIcon warnIcon(":/mirall/resources/warning-16");
+            QIcon warnIcon(":/client/resources/warning-16");
             _actionRecent->setIcon(warnIcon);
         }
 

@@ -63,10 +63,10 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     setWindowTitle(tr("%1").arg(Theme::instance()->appNameGUI()));
 
     _accountSettings = new AccountSettings;
-    QIcon accountIcon(QLatin1String(":/mirall/resources/accounts.png"));
+    QIcon accountIcon(QLatin1String(":/client/resources/accounts.png"));
     addPreferencesPanel(accountIcon, tr("Account"), _accountSettings);
 
-    QIcon protocolIcon(QLatin1String(":/mirall/resources/activity.png"));
+    QIcon protocolIcon(QLatin1String(":/client/resources/activity.png"));
     _protocolWidget = new ProtocolWidget;
     _protocolIdx = addPreferencesPanel(protocolIcon, tr("Activity"), _protocolWidget);
 

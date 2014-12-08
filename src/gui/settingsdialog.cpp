@@ -68,24 +68,24 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 
     setWindowTitle(Theme::instance()->appNameGUI());
 
-    QIcon accountIcon(QLatin1String(":/mirall/resources/accounts.png"));
+    QIcon accountIcon(QLatin1String(":/client/resources/accounts.png"));
     QAction *accountAction = toolBar->addAction(accountIcon, tr("Account"));
     accountAction->setCheckable(true);
     _ui->stack->addWidget(_accountSettings);
 
-    QIcon protocolIcon(QLatin1String(":/mirall/resources/activity.png"));
+    QIcon protocolIcon(QLatin1String(":/client/resources/activity.png"));
     _protocolAction = toolBar->addAction(protocolIcon, tr("Activity"));
     _protocolAction->setCheckable(true);
     ProtocolWidget *protocolWidget = new ProtocolWidget;
     _ui->stack->addWidget(protocolWidget);
 
-    QIcon generalIcon(QLatin1String(":/mirall/resources/settings.png"));
+    QIcon generalIcon(QLatin1String(":/client/resources/settings.png"));
     QAction *generalAction = toolBar->addAction(generalIcon, tr("General"));
     generalAction->setCheckable(true);
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
 
-    QIcon networkIcon(QLatin1String(":/mirall/resources/network.png"));
+    QIcon networkIcon(QLatin1String(":/client/resources/network.png"));
     QAction *networkAction = toolBar->addAction(networkIcon, tr("Network"));
     networkAction->setCheckable(true);
     NetworkSettings *networkSettings = new NetworkSettings;

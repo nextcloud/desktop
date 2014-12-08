@@ -52,7 +52,7 @@ void warnSystray()
 
 int main(int argc, char **argv)
 {
-    Q_INIT_RESOURCE(mirall);
+    Q_INIT_RESOURCE(client);
 
 #ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA

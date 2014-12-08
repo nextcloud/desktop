@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/mirall">
+    <qresource prefix="/client">
         <file>resources/dialog-close.png</file>
         <file>resources/dialog-ok.png</file>
         <file>resources/dialog-cancel.png</file>
