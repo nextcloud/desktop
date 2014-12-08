@@ -71,18 +71,7 @@ bool OwncloudWizardResultPage::isComplete() const
 
 void OwncloudWizardResultPage::initializePage()
 {
-    const QString localFolder = wizard()->property("localFolder").toString();
-    QString text;
-    if( _remoteFolder == QLatin1String("/") || _remoteFolder.isEmpty() ) {
-        text = tr("Your entire account is synced to the local folder <i>%1</i>")
-                .arg(QDir::toNativeSeparators(localFolder));
-    } else {
-        text = tr("%1 folder <i>%1</i> is synced to local folder <i>%2</i>")
-                .arg(Theme::instance()->appNameGUI())
-                .arg(_remoteFolder).arg(QDir::toNativeSeparators(localFolder));
-    }
-    _ui.localFolderLabel->setText( text );
-
+    _ui.localFolderLabel->setText( QString::null );
 }
 
 void OwncloudWizardResultPage::setRemoteFolder(const QString &remoteFolder)
