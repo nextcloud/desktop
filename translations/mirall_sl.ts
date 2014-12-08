@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>Ustvari mapo</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -579,12 +579,12 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Ustvari oddaljeno mapo</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Vnesite ime nove mape, ki bo ustvarjena kot podrejena &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
@@ -1114,7 +1114,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
         <source>&lt;p&gt;Could not connect securely:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Do you want to connect unencrypted instead (not recommended)?&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Varne povezave ni mogoče vzpostaviti:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Ali želite vzpostaviti nešifrirano povezavo (ni priporočeno)?&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
@@ -1341,7 +1341,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="755"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ni mogoče v celoti prejeti.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="791"/>
@@ -1561,10 +1561,10 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation><numerusform>Prenos %n datoteke še ni končan.
-</numerusform><numerusform>Prenos %n datotek še ni končan.
-</numerusform><numerusform>Prenos %n datotek še ni končan.
-</numerusform><numerusform>Prenos %n datotek še ni končan.
+        <translation><numerusform>%n datoteka je le delno prejeta.
+</numerusform><numerusform>%n datoteki sta le delno prejeti.
+</numerusform><numerusform>%n datoteke so le delno prejete.
+</numerusform><numerusform>%n datotek je le delno prejetih.
 </numerusform></translation>
     </message>
     <message>
