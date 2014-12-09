@@ -1284,16 +1284,6 @@ Nie je vhodné ju používať.</translation>
         <source>Open %1 in Browser</source>
         <translation>Otvoriť %1 v prehliadači</translation>
     </message>
-    <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
-        <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Celý váš účet bol zosynchronizovaný s lokálnym priečinkom &lt;i&gt;%1&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
-        <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>Priečinok %1 &lt;i&gt;%1&lt;/i&gt; je synchronizovaný do lokálneho priečinka &lt;i&gt;%2&lt;/i&gt;</translation>
-    </message>
 </context>
 <context>
     <name>Mirall::PUTFileJob</name>

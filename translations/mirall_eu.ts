@@ -1284,16 +1284,6 @@ Ez da gomendagarria erabltzea.</translation>
         <source>Open %1 in Browser</source>
         <translation>Ireki %1 Arakatzailean</translation>
     </message>
-    <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
-        <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Zure kontu osoa  &lt;i&gt;%1&lt;/i&gt; karpeta lokalarekin sinkronizaturik dago</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
-        <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
-    </message>
 </context>
 <context>
     <name>Mirall::PUTFileJob</name>

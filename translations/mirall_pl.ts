@@ -1284,16 +1284,6 @@ Niezalecane jest jego użycie.</translation>
         <source>Open %1 in Browser</source>
         <translation>Otwórz %1 w przeglądarce</translation>
     </message>
-    <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
-        <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Twoje całe konto zostało zsynchronizowane z twoim lokalnym folderem &lt;i&gt;%1&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
-        <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>%1 katalog &lt;i&gt;%1&lt;/i&gt; jest zsynchronizowany do lokalnego katalogu &lt;i&gt;%2&lt;/i&gt;</translation>
-    </message>
 </context>
 <context>
     <name>Mirall::PUTFileJob</name>

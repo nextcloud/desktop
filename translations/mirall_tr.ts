@@ -1284,16 +1284,6 @@ Kullanmanız önerilmez.</translation>
         <source>Open %1 in Browser</source>
         <translation>%1&apos;ı Tarayıcıda Aç</translation>
     </message>
-    <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
-        <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Tüm hesabınız yerel &lt;i&gt;%1&lt;/i&gt; klasörüne eşitlendi</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
-        <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>%1 klasörü &lt;i&gt;%1&lt;/i&gt;, yerel &lt;i&gt;%2&lt;/i&gt; klasörü ile eşitlendi</translation>
-    </message>
 </context>
 <context>
     <name>Mirall::PUTFileJob</name>

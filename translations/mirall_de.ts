@@ -1285,16 +1285,6 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <source>Open %1 in Browser</source>
         <translation>%1 im Browser öffnen</translation>
     </message>
-    <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="77"/>
-        <source>Your entire account is synced to the local folder &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Ihr gesamter Account wird mit dem lokalen Ordner &lt;i&gt;%1&lt;/i&gt; synchronisiert.</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/owncloudwizardresultpage.cpp" line="80"/>
-        <source>%1 folder &lt;i&gt;%1&lt;/i&gt; is synced to local folder &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>%1 Ordner &lt;i&gt;%1&lt;/i&gt; ist mit einem lokalen Ordner synchronisiert &lt;i&gt;%2&lt;/i&gt;</translation>
-    </message>
 </context>
 <context>
     <name>Mirall::PUTFileJob</name>
