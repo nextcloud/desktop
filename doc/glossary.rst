@@ -7,8 +7,8 @@ Glossary
    ownCloud Sync Client
    ownCloud Client
      Name of the official ownCloud syncing client for desktop, which runs on
-     Windows, Mac OS X and Linux. It is based Mirall, and uses the CSync
-     sync engine for synchronization with the ownCloud server.
+     Windows, Mac OS X and Linux. It uses the CSync sync engine for 
+     synchronization with the ownCloud server.
 
    ownCloud Server
      The server counter part of ownCloud Client as provided by the ownCloud
