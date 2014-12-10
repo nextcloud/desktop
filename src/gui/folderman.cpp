@@ -33,6 +33,8 @@
 #include <QMessageBox>
 #include <QPointer>
 #include <QtCore>
+#include <QMutableSetIterator>
+#include <QSet>
 
 namespace OCC {
 
@@ -61,6 +63,13 @@ FolderMan::FolderMan(QObject *parent) :
 
     _socketApi = new SocketApi(this);
     _socketApi->slotReadExcludes();
+
+    ConfigFile cfg;
+    int polltime = cfg.remotePollInterval();
+    qDebug() << "setting remote poll timer interval to" << polltime << "msec";
+    _etagPollTimer.setInterval( polltime );
+    QObject::connect(&_etagPollTimer, SIGNAL(timeout()), this, SLOT(slotEtagPollTimerTimeout()));
+    _etagPollTimer.start();
 }
 
 FolderMan *FolderMan::instance()
@@ -382,21 +391,17 @@ void FolderMan::slotSetFolderPaused( const QString& alias, bool paused )
     }
 }
 
-// this really terminates, ie. no questions, no prisoners.
+// this really terminates the current sync process
+// ie. no questions, no prisoners
 // csync still remains in a stable state, regardless of that.
-void FolderMan::terminateSyncProcess( const QString& alias )
+void FolderMan::terminateSyncProcess()
 {
-    QString folderAlias = alias;
-    if( alias.isEmpty() ) {
-        folderAlias = _currentSyncFolder;
-    }
-    if( ! folderAlias.isEmpty() && _folderMap.contains(folderAlias) ) {
-        Folder *f = _folderMap[folderAlias];
+    if( ! _currentSyncFolder.isEmpty() && _folderMap.contains(_currentSyncFolder) ) {
+        Folder *f = _folderMap[_currentSyncFolder];
         if( f ) {
+            // This will, indirectly and eventually, call slotFolderSyncFinished
+            // and thereby clear _currentSyncFolder.
             f->slotTerminateSync();
-            if(_currentSyncFolder == folderAlias ) {
-                _currentSyncFolder.clear();
-            }
         }
     }
 }
@@ -470,6 +475,41 @@ void FolderMan::slotScheduleSync( const QString& alias )
     QTimer::singleShot(msBetweenRequestAndSync, this, SLOT(slotStartScheduledFolderSync()));
 }
 
+void FolderMan::slotScheduleETagJob(const QString &/*alias*/, RequestEtagJob *job)
+{
+    QObject::connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(slotEtagJobDestroyed(QObject*)));
+    QMetaObject::invokeMethod(this, "slotRunOneEtagJob", Qt::QueuedConnection);
+    // maybe: add to queue
+}
+
+void FolderMan::slotEtagJobDestroyed(QObject* /*o*/)
+{
+    // _currentEtagJob is automatically cleared
+    // maybe: remove from queue
+    QMetaObject::invokeMethod(this, "slotRunOneEtagJob", Qt::QueuedConnection);
+}
+
+void FolderMan::slotRunOneEtagJob()
+{
+    if (_currentEtagJob.isNull()) {
+        QString alias;
+        foreach(Folder *f, _folderMap) {
+            if (f->etagJob()) {
+                // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a seperate queue.
+                _currentEtagJob = f->etagJob();
+                alias = f->alias();
+                break;
+            }
+        }
+        if (_currentEtagJob.isNull()) {
+            qDebug() << "No more remote ETag check jobs to schedule.";
+        } else {
+            qDebug() << "Scheduling" << alias << "to check remote ETag";
+            _currentEtagJob->start(); // on destroy/end it will continue the queue via slotEtagJobDestroyed
+        }
+    }
+}
+
 // only enable or disable foldermans will to schedule and do syncs.
 // this is not the same as Pause and Resume of folders.
 void FolderMan::setSyncEnabled( bool enabled )
@@ -523,6 +563,51 @@ void FolderMan::slotStartScheduledFolderSync()
                 _socketApi->slotReadExcludes();
             }
         }
+    }
+}
+
+void FolderMan::slotEtagPollTimerTimeout()
+{
+    //qDebug() << Q_FUNC_INFO << "Checking if we need to make any folders check the remote ETag";
+    ConfigFile cfg;
+    int polltime = cfg.remotePollInterval();
+
+    QSet<QString> folderAliases = _folderMap.keys().toSet();
+    QMutableSetIterator<QString> i(folderAliases);
+    while (i.hasNext()) {
+        QString alias = i.next();
+        if (_currentSyncFolder == alias) {
+            i.remove();
+            continue;
+        }
+        if (_scheduleQueue.contains(alias)) {
+            i.remove();
+            continue;
+        }
+        Folder *f = _folderMap.value(alias);
+        if (f && _disabledFolders.contains(f)) {
+            i.remove();
+            continue;
+        }
+        if (f && (f->etagJob() || f->isBusy() || f->syncPaused())) {
+            i.remove();
+            continue;
+        }
+        if (f && f->msecSinceLastSync() < polltime) {
+            i.remove();
+            continue;
+        }
+    }
+
+    if (folderAliases.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "No folders need to check for the remote ETag";
+    } else {
+        qDebug() << Q_FUNC_INFO << "The following folders need to check for the remote ETag:" << folderAliases;
+        i = folderAliases; // reset
+         while (i.hasNext()) {
+             QString alias = i.next();
+             QMetaObject::invokeMethod(_folderMap.value(alias), "slotRunEtagJob", Qt::QueuedConnection);
+         }
     }
 }
 
@@ -596,7 +681,7 @@ void FolderMan::slotRemoveFolder( const QString& alias )
 
     if( _currentSyncFolder == alias ) {
         // terminate if the sync is currently underway.
-        terminateSyncProcess( alias );
+        terminateSyncProcess();
     }
     removeFolder(alias);
 }
@@ -687,6 +772,8 @@ bool FolderMan::startFromScratch( const QString& localFolder )
                 if( localFolder.startsWith(f->path()) ) {
                     _socketApi->slotUnregisterPath(f->alias());
                 }
+                f->journalDb()->close();
+                f->slotTerminateSync(); // Normaly it should not be running, but viel hilft viel
             }
         }
 

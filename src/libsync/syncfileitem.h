@@ -53,7 +53,10 @@ public:
     SyncFileItem() : _type(UnknownType),  _direction(None), _isDirectory(false),
         _instruction(CSYNC_INSTRUCTION_NONE), _modtime(0),
         _size(0), _inode(0), _should_update_etag(false), _hasBlacklistEntry(false),
-        _status(NoStatus), _httpErrorCode(0), _requestDuration(0), _isRestoration(false) {}
+        _status(NoStatus), _httpErrorCode(0), _requestDuration(0), _isRestoration(false),
+        _affectedItems(1)
+    {
+    }
 
     friend bool operator==(const SyncFileItem& item1, const SyncFileItem& item2) {
         return item1._file == item2._file;
@@ -114,7 +117,8 @@ public:
     QString              _responseTimeStamp;
     quint64              _requestDuration;
     bool                 _isRestoration; // The original operation was forbidden, and this is a restoration
-
+    int                  _affectedItems; // the number of affected items by the operation on this item.
+     // usually this value is 1, but for removes on dirs, it might be much higher.
     struct {
         quint64     _size;
         time_t      _modtime;

@@ -42,7 +42,7 @@ private slots:
     void testOpenDb() {
         QFileInfo fi( testdbC );
         QVERIFY( !fi.exists() ); // must not exist
-        _db.open(testdbC);
+        _db.openOrCreateReadWrite(testdbC);
         fi.refresh();
         QVERIFY(fi.exists());
 

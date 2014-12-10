@@ -481,6 +481,8 @@ SectionEnd
       File "${BUILD_PATH}\vcredist_x64.exe"
       Call InstallRedistributables
       CreateDirectory "$INSTDIR\shellext"
+      !define LIBRARY_COM
+      !define LIBRARY_SHELL_EXTENSION
       ${If} ${RunningX64}
          !define LIBRARY_X64
          !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCUtil_x64.dll" "$INSTDIR\shellext\OCUtil_x64.dll" "$INSTDIR\shellext"
@@ -490,6 +492,8 @@ SectionEnd
          !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCUtil_x86.dll" "$INSTDIR\shellext\OCUtil_x86.dll" "$INSTDIR\shellext"
          !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCOverlays_x86.dll" "$INSTDIR\shellext\OCOverlays_x86.dll" "$INSTDIR\shellext"
       ${Endif}
+      !undef LIBRARY_COM
+      !undef LIBRARY_SHELL_EXTENSION
    ${MementoSectionEnd}
 !endif
 
@@ -645,15 +649,19 @@ Section Uninstall
       !define LIBRARY_COM
       !define LIBRARY_SHELL_EXTENSION
       ${If} ${HasSection} SEC_SHELL_EXT
+        DetailPrint "Uninstalling x64 overlay DLLs"
         !define LIBRARY_X64
-        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR/shellext/OCUtil_x64.dll"
-        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR/shellext/OCOverlays_x64.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCOverlays_x64.dll"
+        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCUtil_x64.dll"
         !undef LIBRARY_X64
      ${Else}
-        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR/shellext/OCUtil_x86.dll"
-        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR/shellext/OCOverlays_x86.dll"
+        DetailPrint "Uninstalling x86 overlay DLLs"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCOverlays_x86.dll"
+        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCUtil_x86.dll"
       ${EndIf}
-   !endif
+      !undef LIBRARY_COM
+      !undef LIBRARY_SHELL_EXTENSION
+  !endif
 
    ;Start menu shortcut
    !ifdef OPTION_SECTION_SC_START_MENU

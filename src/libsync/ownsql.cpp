@@ -15,6 +15,7 @@
 #include <QDateTime>
 #include <QString>
 #include <QDebug>
+#include <QFile>
 
 #include "ownsql.h"
 #include "utility.h"
@@ -40,26 +41,88 @@ bool SqlDatabase::isOpen()
     return _db != 0;
 }
 
-bool SqlDatabase::open( const QString& filename )
+bool SqlDatabase::openHelper( const QString& filename, int sqliteFlags )
 {
-    if(isOpen()) {
+    if( isOpen() ) {
         return true;
     }
 
-    int flag = SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE|SQLITE_OPEN_NOMUTEX;
-    SQLITE_DO( sqlite3_open_v2(filename.toUtf8().constData(), &_db, flag, 0) );
+    sqliteFlags |= SQLITE_OPEN_NOMUTEX;
+
+    SQLITE_DO( sqlite3_open_v2(filename.toUtf8().constData(), &_db, sqliteFlags, 0) );
 
     if( _errId != SQLITE_OK ) {
-        qDebug() << Q_FUNC_INFO << "Error:" << _error << "for" << filename;
+        qDebug() << "Error:" << _error << "for" << filename;
         close();
-        _db = 0;
+        return false;
     }
 
-    if (_db) {
-        sqlite3_busy_timeout(_db, 5000);
+    if( !_db ) {
+        qDebug() << "Error: no database for" << filename;
+        return false;
     }
 
-    return isOpen();
+    sqlite3_busy_timeout(_db, 5000);
+
+    return true;
+}
+
+bool SqlDatabase::checkDb()
+{
+    SqlQuery quick_check("PRAGMA quick_check;", *this);
+    if( !quick_check.exec() ) {
+        qDebug() << "Error running quick_check on database";
+        return false;
+    }
+
+    quick_check.next();
+    QString result = quick_check.stringValue(0);
+    if( result != "ok" ) {
+        qDebug() << "quick_check returned failure:" << result;
+        return false;
+    }
+
+    return true;
+}
+
+bool SqlDatabase::openOrCreateReadWrite( const QString& filename )
+{
+    if( isOpen() ) {
+        return true;
+    }
+
+    if( !openHelper(filename, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE) ) {
+        return false;
+    }
+
+    if( !checkDb() ) {
+        qDebug() << "Consistency check failed, removing broken db" << filename;
+        close();
+        QFile::remove(filename);
+
+        return openHelper(filename, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
+    }
+
+    return true;
+}
+
+bool SqlDatabase::openReadOnly( const QString& filename )
+{
+    if( isOpen() ) {
+        return true;
+    }
+
+    if( !openHelper(filename, SQLITE_OPEN_READONLY) ) {
+        return false;
+    }
+
+    if( !checkDb() ) {
+        qDebug() << "Consistency check failed in readonly mode, giving up" << filename;
+        close();
+        return false;
+    }
+
+    return true;
 }
 
 QString SqlDatabase::error() const

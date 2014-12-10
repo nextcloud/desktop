@@ -110,64 +110,10 @@ signals:
 
 };
 
-/*
- * Propagate a directory, and all its sub entries.
- */
-class PropagateDirectory : public PropagatorJob {
-    Q_OBJECT
-public:
-    // e.g: create the directory
-    QScopedPointer<PropagatorJob>_firstJob;
-
-    // all the sub files or sub directories.
-    QVector<PropagatorJob *> _subJobs;
-
-    SyncFileItem _item;
-
-    int _current; // index of the current running job
-    int _runningNow; // number of subJob running now
-    SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
-
-
-    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItem &item = SyncFileItem())
-        : PropagatorJob(propagator)
-        , _firstJob(0), _item(item),  _current(-1), _runningNow(0), _hasError(SyncFileItem::NoStatus) { }
-
-    virtual ~PropagateDirectory() {
-        qDeleteAll(_subJobs);
-    }
-
-    void append(PropagatorJob *subJob) {
-        _subJobs.append(subJob);
-    }
-
-    virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
-    virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
-    virtual void abort() Q_DECL_OVERRIDE {
-        if (_firstJob)
-            _firstJob->abort();
-        foreach (PropagatorJob *j, _subJobs)
-            j->abort();
-    }
-
-private slots:
-    bool possiblyRunNextJob(PropagatorJob *next) {
-        if (next->_state == NotYetStarted) {
-            connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
-            connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
-            connect(next, SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
-            connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
-            _runningNow++;
-        }
-        return next->scheduleNextJob();
-    }
-
-    void slotSubJobFinished(SyncFileItem::Status status);
-};
-
 
 /*
  * Abstract class to propagate a single item
+ * (Only used for neon job)
  */
 class PropagateItemJob : public PropagatorJob {
     Q_OBJECT
@@ -188,8 +134,6 @@ protected:
         _item._errorString = msg;
     }
 
-    SyncFileItem  _item;
-
 protected slots:
     void slotRestoreJobCompleted(const SyncFileItem& );
 
@@ -208,10 +152,73 @@ public:
         QMetaObject::invokeMethod(this, "start"); // We could be in a different thread (neon jobs)
         return true;
     }
+
+    SyncFileItem  _item;
+
 public slots:
     virtual void start() = 0;
-
 };
+
+
+/*
+ * Propagate a directory, and all its sub entries.
+ */
+class PropagateDirectory : public PropagatorJob {
+    Q_OBJECT
+public:
+    // e.g: create the directory
+    QScopedPointer<PropagateItemJob>_firstJob;
+
+    // all the sub files or sub directories.
+    QVector<PropagatorJob *> _subJobs;
+
+    SyncFileItem _item;
+
+    int _current; // index of the current running job
+    int _runningNow; // number of subJob running now
+    SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
+
+    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItem &item = SyncFileItem())
+        : PropagatorJob(propagator)
+        , _firstJob(0), _item(item),  _current(-1), _runningNow(0), _hasError(SyncFileItem::NoStatus)
+    { }
+
+    virtual ~PropagateDirectory() {
+        qDeleteAll(_subJobs);
+    }
+
+    void append(PropagatorJob *subJob) {
+        _subJobs.append(subJob);
+    }
+
+    virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
+    virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
+    virtual void abort() Q_DECL_OVERRIDE {
+        if (_firstJob)
+            _firstJob->abort();
+        foreach (PropagatorJob *j, _subJobs)
+            j->abort();
+    }
+
+    void increaseAffectedCount() {
+        _firstJob->_item._affectedItems++;
+    }
+
+private slots:
+    bool possiblyRunNextJob(PropagatorJob *next) {
+        if (next->_state == NotYetStarted) {
+            connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
+            connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
+            connect(next, SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
+            connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
+            _runningNow++;
+        }
+        return next->scheduleNextJob();
+    }
+
+    void slotSubJobFinished(SyncFileItem::Status status);
+};
+
 
 // Dummy job that just mark it as completed and ignored.
 class PropagateIgnoreJob : public PropagateItemJob {

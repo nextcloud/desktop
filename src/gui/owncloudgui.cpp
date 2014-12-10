@@ -259,16 +259,17 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         // create the tray blob message, check if we have an defined state
         if( overallResult.status() != SyncResult::Undefined ) {
             QStringList allStatusStrings;
-            foreach(Folder* folder, map.values()) {
-                qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
-                QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
-                allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
-            }
+            if( map.count() > 0 ) {
+                foreach(Folder* folder, map.values()) {
+                    qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
+                    QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
+                    allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
+                }
 
-            if( ! allStatusStrings.isEmpty() )
                 trayMessage = allStatusStrings.join(QLatin1String("\n"));
-            else
+            } else {
                 trayMessage = tr("No sync folders configured.");
+            }
 
             QIcon statusIcon = Theme::instance()->syncStateIcon( overallResult.status(), true);
             _tray->setIcon( statusIcon );

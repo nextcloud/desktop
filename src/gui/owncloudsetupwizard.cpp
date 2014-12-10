@@ -146,7 +146,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     }
     Account *account = _ocWizard->account();
     account->setUrl(url);
-    // Set fake credentials beforfe we check what credidential it actually is.
+    // Set fake credentials beforfe we check what credential it actually is.
     account->setCredentials(CredentialsFactory::create("dummy"));
     CheckServerJob *job = new CheckServerJob(_ocWizard->account(), false, this);
     job->setIgnoreCredentialFailure(true);
@@ -184,17 +184,17 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantM
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
 {
     _ocWizard->displayError(tr("Failed to connect to %1 at %2:<br/>%3")
-                            .arg(Theme::instance()->appNameGUI())
-                            .arg(reply->url().toString())
-                            .arg(reply->errorString()));
+                            .arg(Theme::instance()->appNameGUI(),
+                                 reply->url().toString(),
+                                 reply->errorString()));
 }
 
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuthTimeout(const QUrl&url)
 {
     _ocWizard->displayError(tr("Failed to connect to %1 at %2:<br/>%3")
-                            .arg(Theme::instance()->appNameGUI())
-                            .arg(url.toString())
-                            .arg("Timeout"));
+                            .arg(Theme::instance()->appNameGUI(),
+                                 url.toString(),
+                                 "Timeout"));
 }
 
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
@@ -413,7 +413,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         Folder *f = folderMan->folderForPath(localFolder);
         if( f ) {
             folderMan->setSyncEnabled(false);
-            folderMan->terminateSyncProcess(f->alias());
+            f->slotTerminateSync();
             f->journalDb()->close();
         }
 
@@ -433,6 +433,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         }
         // 2. Server URL or user changed, requires reinit of folders
         else if (reinitRequired) {
+            folderMan->removeAllFolderDefinitions();
             // 2.1: startFromScratch: (Re)move local data, clean slate sync
             if (startFromScratch) {
                 if (ensureStartFromScratch(localFolder)) {
@@ -444,7 +445,6 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             }
             // 2.2: Reinit: Remove journal and start a sync
             else {
-                folderMan->removeAllFolderDefinitions();
                 folderMan->addFolderDefinition(Theme::instance()->appName(),
                                                localFolder, _remoteFolder, _ocWizard->blacklist() );
                 _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));

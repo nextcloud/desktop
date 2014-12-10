@@ -127,8 +127,10 @@ void RemotePathChecker::workerThreadLoop()
 			}
 			else if (StringUtil::begins_with(response, wstring(L"UPDATE_VIEW"))) {
 				std::unique_lock<std::mutex> lock(_mutex);
+                auto cache = _cache; // Make a copy of the cache under the mutex
+                lock.unlock();
 				// Request a status for all the items in the cache.
-				for (auto it = _cache.begin(); it != _cache.end(); ++it) {
+				for (auto it = cache.begin(); it != cache.end(); ++it) {
 					if (!socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + it->first + L'\n').data())) {
 						break;
 					}
@@ -192,6 +194,7 @@ bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)
     }
 
     _pending.push(filePath);
+    lock.unlock();
     SetEvent(_newQueries);
     return false;
 

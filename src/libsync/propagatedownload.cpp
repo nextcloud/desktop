@@ -356,7 +356,6 @@ void PropagateDownloadFileQNAM::start()
                               &_tmpFile, headers);
     }
     _job->setBandwidthManager(&_propagator->_bandwidthManager);
-    _job->setTimeout(_propagator->httpTimeout() * 1000);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
     connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
     _propagator->_activeJobs ++;

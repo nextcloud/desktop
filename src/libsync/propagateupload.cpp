@@ -372,7 +372,6 @@ void PropagateUploadFileQNAM::startNextChunk()
     if( isOpen ) {
         PUTFileJob* job = new PUTFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + path, device, headers, _currentChunk);
         _jobs.append(job);
-        job->setTimeout(_propagator->httpTimeout() * 1000);
         connect(job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
         connect(job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
         connect(job, SIGNAL(uploadProgress(qint64,qint64)), device, SLOT(slotJobUploadProgress(qint64,qint64)));

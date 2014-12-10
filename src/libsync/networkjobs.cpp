@@ -31,6 +31,7 @@
 
 #include "networkjobs.h"
 #include "account.h"
+#include "owncloudpropagator.h"
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
@@ -51,12 +52,7 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
     , _path(path)
 {
     _timer.setSingleShot(true);
-    if (!AbstractNetworkJob::preOc7WasDetected) {
-        _timer.setInterval(15*1000); // default to 15 seconds.
-    } else {
-        qDebug() << "Pre-oc7 server detected, adjusting timeout values";
-        _timer.setInterval(60*1000); // long PROPFINDs in oc6 might take too long
-    }
+    _timer.setInterval(OwncloudPropagator::httpTimeout() * 1000); // default to 5 minutes.
     connect(&_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
 
     connect(this, SIGNAL(networkActivity()), SLOT(resetTimeout()));
@@ -171,8 +167,8 @@ void AbstractNetworkJob::slotFinished()
     bool discard = finished();
     AbstractCredentials *creds = _account->credentials();
     if (!creds->stillValid(_reply) &&! _ignoreCredentialFailure
-            && _account->state() != Account::InvalidCredidential) {
-        _account->setState(Account::InvalidCredidential);
+            && _account->state() != Account::InvalidCredential) {
+        _account->setState(Account::InvalidCredential);
 
         // invalidate & forget token/password
         // but try to re-sign in.

@@ -1055,12 +1055,12 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>@CMAKE_SOURCE_DIR@/admin/osx/installer-background.png</string>
+					<string>@MAC_INSTALLER_BACKGROUND_FILE@</string>
 					<key>PATH_TYPE</key>
 					<integer>0</integer>
 				</dict>
 				<key>CUSTOM</key>
-				<integer>1</integer>
+				<integer>@MAC_INSTALLER_DO_CUSTOM_BACKGROUND@</integer>
 				<key>SCALING</key>
 				<integer>0</integer>
 			</dict>

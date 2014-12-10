@@ -226,7 +226,7 @@ void Application::slotCheckConnection()
     Account *account = AccountManager::instance()->account();
 
     if( account ) {
-        if (account->state() == Account::InvalidCredidential
+        if (account->state() == Account::InvalidCredential
                 || account->state() == Account::SignedOut) {
             //Do not try to connect if we are logged out
             if (!_userTriggeredConnect) {
@@ -263,8 +263,8 @@ void Application::slotCredentialsFetched()
         account->setState(Account::SignedOut);
         return;
     }
-    if (account->state() == Account::InvalidCredidential) {
-        // Then we ask again for the credidentials if they are wrong again
+    if (account->state() == Account::InvalidCredential) {
+        // Then we ask again for the credentials if they are wrong again
         account->setState(Account::Disconnected);
     }
     slotCheckConnection();
@@ -282,12 +282,11 @@ void Application::slotToggleFolderman(int state)
         _checkConnectionTimer.start();
         // fall through
     case Account::SignedOut:
-    case Account::InvalidCredidential:
+    case Account::InvalidCredential:
         folderMan->setSyncEnabled(false);
         folderMan->terminateSyncProcess();
         break;
     }
-
 }
 
 void Application::slotCrash()

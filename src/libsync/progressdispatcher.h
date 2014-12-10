@@ -20,6 +20,8 @@
 #include <QTime>
 #include <QQueue>
 #include <QElapsedTimer>
+#include <QDebug>
+
 #include "syncfileitem.h"
 
 namespace OCC {
@@ -112,12 +114,12 @@ namespace Progress
 
         void setProgressComplete(const SyncFileItem &item) {
             _currentItems.remove(item._file);
+            _completedFileCount += item._affectedItems;
             if (!item._isDirectory) {
-                _completedFileCount++;
-		        if (Progress::isSizeDependent(item._instruction)) {
-		            _completedSize += item._size;
-		        }
-            }
+                if (Progress::isSizeDependent(item._instruction)) {
+                    _completedSize += item._size;
+                }
+            } 
             _lastCompletedItem = item;
             this->updateEstimation();
         }

@@ -22,6 +22,7 @@
 #include "syncjournaldb.h"
 #include "clientproxy.h"
 #include "syncfilestatus.h"
+#include "networkjobs.h"
 
 #include <csync.h>
 
@@ -123,6 +124,9 @@ public:
 
      bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
 
+     RequestEtagJob *etagJob() { return _requestEtagJob; }
+     qint64 msecSinceLastSync() { return _timeSinceLastSync.elapsed(); }
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -172,7 +176,7 @@ private slots:
     void slotJobCompleted(const SyncFileItem&);
     void slotSyncItemDiscovered(const SyncFileItem & item);
 
-    void slotPollTimerTimeout();
+    void slotRunEtagJob();
     void etagRetreived(const QString &);
     void slotNetworkUnavailable();
 
@@ -208,7 +212,7 @@ private:
     bool         _csyncUnavail;
     bool         _wipeDb;
     bool         _proxyDirty;
-    QTimer        _pollTimer;
+    QPointer<RequestEtagJob> _requestEtagJob;
     QString       _lastEtag;
     QElapsedTimer _timeSinceLastSync;
     bool          _forceSyncOnPollTimeout;

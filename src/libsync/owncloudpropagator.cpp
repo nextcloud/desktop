@@ -257,13 +257,23 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 
         if (!removedDirectory.isEmpty() && item._file.startsWith(removedDirectory)) {
             // this is an item in a directory which is going to be removed.
+            PropagateDirectory *delDirJob = dynamic_cast<PropagateDirectory*>(directoriesToRemove.last());
+
             if (item._instruction == CSYNC_INSTRUCTION_REMOVE) {
                 //already taken care of.  (by the removal of the parent directory)
+
+                // increase the number of subjobs that would be there.
+                if( delDirJob ) {
+                    delDirJob->increaseAffectedCount();
+                }
                 continue;
             } else if (item._instruction == CSYNC_INSTRUCTION_NEW && item._isDirectory) {
                 // create a new directory within a deleted directory? That can happen if the directory
                 // etag were not fetched properly on the previous sync because the sync was aborted
                 // while uploading this directory (which is now removed).  We can ignore it.
+                if( delDirJob ) {
+                    delDirJob->increaseAffectedCount();
+                }
                 continue;
             } else if (item._instruction == CSYNC_INSTRUCTION_IGNORE) {
                 continue;
