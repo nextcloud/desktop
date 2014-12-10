@@ -1080,7 +1080,7 @@ saattaa kysyä lisäoikeuksia toimenpiteen aikana.</translation>
     <message>
         <location filename="../src/wizard/owncloudhttpcredspage.cpp" line="159"/>
         <source>Update user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Päivitä käyttäjätiedot</translation>
     </message>
 </context>
 <context>
