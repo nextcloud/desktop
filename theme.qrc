@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/mirall">
+    <qresource prefix="/client">
         <file>theme/colored/state-sync-32.png</file>
         <file>theme/colored/state-pause-32.png</file>
         <file>theme/colored/state-ok-32.png</file>
