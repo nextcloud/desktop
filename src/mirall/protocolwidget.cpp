@@ -278,7 +278,7 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::In
         // The sync is restarting, clean the old items
         cleanIgnoreItems(folder);
         computeResyncButtonEnabled();
-    } else if (progress._totalFileCount == progress._completedFileCount) {
+    } else if (progress._completedFileCount >= progress._totalFileCount) {
         //Sync completed
         computeResyncButtonEnabled();
     }
