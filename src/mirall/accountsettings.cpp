@@ -202,10 +202,9 @@ void AccountSettings::slotFolderWizardAccepted()
     QStringList selectiveSyncBlackList
                          = folderWizard->property("selectiveSyncBlackList").toStringList();
 
-    if (!FolderMan::ensureJournalGone( sourceFolder ))
+    if (!folderMan->addFolderDefinition(alias, sourceFolder, targetPath, selectiveSyncBlackList))
         return;
 
-    folderMan->addFolderDefinition(alias, sourceFolder, targetPath, selectiveSyncBlackList );
     Folder *f = folderMan->setupFolderFromConfigFile( alias );
     slotAddFolder( f );
     folderMan->setSyncEnabled(true);
