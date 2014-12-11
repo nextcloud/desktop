@@ -166,7 +166,6 @@ void AbstractNetworkJob::slotFinished()
     _responseTimestamp = QString::fromAscii(_reply->rawHeader("Date"));
     _duration = _durationTimer.elapsed();
 
-
     if (_followRedirects) {
         // ### the qWarnings here should be exported via displayErrors() so they
         // ### can be presented to the user if the job executor has a GUI
@@ -188,22 +187,12 @@ void AbstractNetworkJob::slotFinished()
         }
     }
 
-    bool discard = finished();
     AbstractCredentials *creds = _account->credentials();
-    if (!creds->stillValid(_reply) &&! _ignoreCredentialFailure
-            && _account->state() != Account::InvalidCredential) {
-        _account->setState(Account::InvalidCredential);
-
-        // invalidate & forget token/password
-        // but try to re-sign in.
-        connect( creds, SIGNAL(fetched()),
-                 qApp, SLOT(slotCredentialsFetched()), Qt::UniqueConnection);
-        if (creds->ready()) {
-            creds->invalidateAndFetch(_account);
-        } else {
-            creds->fetch(_account);
-        }
+    if (!creds->stillValid(_reply) && ! _ignoreCredentialFailure) {
+        _account->handleInvalidCredentials();
     }
+
+    bool discard = finished();
     if (discard) {
         deleteLater();
     }

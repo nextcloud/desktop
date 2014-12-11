@@ -178,7 +178,6 @@ private slots:
 
     void slotRunEtagJob();
     void etagRetreived(const QString &);
-    void slotNetworkUnavailable();
 
     void slotAboutToPropagate(const SyncFileItemVector& );
     void slotThreadTreeWalkResult(const SyncFileItemVector& ); // after sync is done

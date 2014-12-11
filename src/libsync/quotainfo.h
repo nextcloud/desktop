@@ -36,7 +36,6 @@ public Q_SLOTS:
     void slotCheckQuota();
 
 private Q_SLOTS:
-    void slotAccountChanged(Account *newAccount, Account *oldAccount);
     void slotAccountStateChanged(int state);
     void slotRequestFailed();
 

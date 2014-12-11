@@ -30,36 +30,28 @@ ConnectionValidator::ConnectionValidator(Account *account, QObject *parent)
 
 QString ConnectionValidator::statusString( Status stat )
 {
-    QString re;
-
     switch( stat ) {
     case Undefined:
-        re = QLatin1String("Undefined");
-        break;
+        return QLatin1String("Undefined");
     case Connected:
-        re = QLatin1String("Connected");
-        break;
+        return QLatin1String("Connected");
     case NotConfigured:
-        re = QLatin1String("NotConfigured");
-        break;
+        return QLatin1String("NotConfigured");
     case ServerVersionMismatch:
-        re = QLatin1String("Server Version Mismatch");
-        break;
+        return QLatin1String("Server Version Mismatch");
     case CredentialsWrong:
-        re = QLatin1String("Credentials Wrong");
-        break;
+        return QLatin1String("Credentials Wrong");
     case StatusNotFound:
-        re = QLatin1String("Status not found");
-        break;
-    default:
-        re = QLatin1String("status undeclared.");
+        return QLatin1String("Status not found");
+    case Timeout:
+        return QLatin1String("Timeout");
     }
-    return re;
+    return QLatin1String("status undeclared.");
 }
 
 bool ConnectionValidator::isNetworkError( Status status )
 {
-    return status == StatusNotFound;
+    return status == Timeout;
 }
 
 void ConnectionValidator::checkConnection()
@@ -70,7 +62,7 @@ void ConnectionValidator::checkConnection()
         return;
     }
 
-    if( _account->state() == Account::Connected ) {
+    if( _account->connectionStatus() == Connected ) {
         // When we're already connected, just make sure a minimal request
         // gets replied to.
         slotCheckAuthentication();
@@ -113,8 +105,6 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
 // status.php could not be loaded.
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
-    _account->setState(Account::Disconnected);
-
     _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
     _errors.append( reply->errorString() );
     reportResult( StatusNotFound );
@@ -122,11 +112,9 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 
 void ConnectionValidator::slotJobTimeout(const QUrl &url)
 {
-    _account->setState(Account::Disconnected);
-
     _errors.append(tr("Unable to connect to %1").arg(url.toString()));
     _errors.append(tr("timeout"));
-    reportResult( StatusNotFound );
+    reportResult( Timeout );
 }
 
 
@@ -148,7 +136,7 @@ void ConnectionValidator::slotCheckAuthentication()
 
 void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 {
-    Status stat = StatusNotFound;
+    Status stat = Timeout;
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
             reply->error() == QNetworkReply::OperationCanceledError ) { // returned if the user/pwd is wrong.
@@ -156,9 +144,6 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         qDebug() << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
-        if (_account->state() != Account::SignedOut) {
-            _account->setState(Account::Disconnected);
-        }
 
     } else if( reply->error() != QNetworkReply::NoError ) {
         _errors << reply->errorString();
@@ -169,7 +154,6 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 
 void ConnectionValidator::slotAuthSuccess()
 {
-    _account->setState(Account::Connected);
     _errors.clear();
     reportResult(Connected);
 }

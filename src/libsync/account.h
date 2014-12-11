@@ -23,6 +23,7 @@
 #include <QSslConfiguration>
 #include <QSslError>
 #include "utility.h"
+#include "connectionvalidator.h"
 
 class QSettings;
 class QNetworkReply;
@@ -68,11 +69,28 @@ public:
 class OWNCLOUDSYNC_EXPORT Account : public QObject {
     Q_OBJECT
 public:
-    enum State { Disconnected = 0, /// no network connection
-                 Connected, /// account is online
-                 SignedOut, /// Disconnected + credential token has been discarded
-                 InvalidCredential /// The credentials are invalid and we are asking the user for them
-               };
+    enum State {
+        /// Not even attempting to connect, most likely because the
+        /// user explicitly signed out or cancelled a credential dialog.
+        SignedOut,
+
+        /// Account would like to be connected but hasn't heard back yet.
+        Disconnected,
+
+        /// The account is successfully talking to the server.
+        Connected,
+
+        /// Could not communicate with the server for some reason.
+        /// We assume this may resolve itself over time and will try
+        /// again automatically.
+        NetworkError,
+
+        /// An error like invalid credentials where retrying won't help.
+        ConfigurationError
+    };
+
+    /// The actual current connectivity status.
+    typedef ConnectionValidator::Status ConnectionStatus;
 
     QString davPath() const { return _davPath; }
     void setDavPath(const QString&s) { _davPath = s; }
@@ -146,9 +164,15 @@ public:
     QVariant credentialSetting(const QString& key) const;
     void setCredentialSetting(const QString& key, const QVariant &value);
 
-    int state() const;
-    void setState(int state);
-    static QString stateString(int state);
+    ConnectionStatus connectionStatus() const;
+    QStringList connectionErrors() const;
+    static QString connectionStatusString(ConnectionStatus status);
+
+    State state() const;
+    static QString stateString(State status);
+
+    bool isSignedOut() const;
+    void setSignedOut(bool signedOut);
 
     void clearCookieJar();
 
@@ -156,12 +180,24 @@ public:
 
     QuotaInfo *quotaInfo();
 
+    /// Triggers a ping to the server to update state and
+    /// connection status and errors.
+    void checkConnectivity();
+
+    /// Called when a request fails because of a credential error.
+    void handleInvalidCredentials();
+
+private:
+    void setState(State state);
+
 signals:
     void stateChanged(int state);
     void propagatorNetworkActivity();
 
 protected Q_SLOTS:
     void slotHandleErrors(QNetworkReply*,QList<QSslError>);
+    void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList& errors);
+    void slotCredentialsFetched();
 
 private:
     QMap<QString, QVariant> _settingsMap;
@@ -173,7 +209,10 @@ private:
     QNetworkAccessManager *_am;
     AbstractCredentials* _credentials;
     bool _treatSslErrorsAsFailure;
-    int _state;
+    State _state;
+    ConnectionStatus _connectionStatus;
+    QStringList _connectionErrors;
+    bool _waitingForNewCredentials;
     static QString _configFileName;
     QString _davPath; // default "remote.php/webdav/";
     bool _wasMigrated;

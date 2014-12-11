@@ -34,29 +34,19 @@ QuotaInfo::QuotaInfo(Account *account)
     , _lastQuotaUsedBytes(0)
     , _jobRestartTimer(new QTimer(this))
 {
-    connect(_account, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
+    connect(_account, SIGNAL(stateChanged(int)),
+            SLOT(slotAccountStateChanged(int)));
     connect(_jobRestartTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
     _jobRestartTimer->setSingleShot(true);
     _jobRestartTimer->start(initialTimeT);
 }
 
-void QuotaInfo::slotAccountChanged(Account *newAccount, Account *oldAccount)
-{
-    _account = newAccount;
-    disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
-    connect(newAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
-}
-
 void QuotaInfo::slotAccountStateChanged(int state)
 {
-    switch (state) {
-    case Account::SignedOut: // fall through
-    case Account::InvalidCredential:
-    case Account::Disconnected:
-        _jobRestartTimer->stop();
-        break;
-    case Account::Connected: // fall through
+    if (state == Account::Connected) {
         slotCheckQuota();
+    } else {
+        _jobRestartTimer->stop();
     }
 }
 

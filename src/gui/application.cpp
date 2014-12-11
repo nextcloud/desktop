@@ -165,8 +165,7 @@ void Application::slotLogin()
     Account *a = AccountManager::instance()->account();
     if (a) {
         FolderMan::instance()->setupFolders();
-        _userTriggeredConnect = true;
-        slotCheckConnection();
+        a->setSignedOut(false);
     }
 }
 
@@ -180,7 +179,7 @@ void Application::slotLogout()
         FolderMan *folderMan = FolderMan::instance();
         folderMan->setSyncEnabled(false);
         folderMan->terminateSyncProcess();
-        a->setState(Account::SignedOut);
+        a->setSignedOut(true);
         // show result
         _gui->slotComputeOverallSyncStatus();
     }
@@ -190,12 +189,12 @@ void Application::slotAccountChanged(Account *newAccount, Account *oldAccount)
 {
     if (oldAccount) {
         disconnect(oldAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
-        disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotToggleFolderman(int)));
+        disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
         connect(oldAccount->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
                 _gui, SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
     }
     connect(newAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
-    connect(newAccount, SIGNAL(stateChanged(int)), this, SLOT(slotToggleFolderman(int)));
+    connect(newAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
     connect(newAccount->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
             _gui, SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
 }
@@ -226,20 +225,7 @@ void Application::slotCheckConnection()
     Account *account = AccountManager::instance()->account();
 
     if( account ) {
-        if (account->state() == Account::InvalidCredential
-                || account->state() == Account::SignedOut) {
-            //Do not try to connect if we are logged out
-            if (!_userTriggeredConnect) {
-                return;
-            }
-        }
-
-        if (_conValidator)
-            _conValidator->deleteLater();
-        _conValidator = new ConnectionValidator(account);
-        connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status, QStringList)),
-                 this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status, QStringList)) );
-        _conValidator->checkConnection();
+        account->checkConnectivity();
 
     } else {
         // let gui open the setup wizard
@@ -249,28 +235,7 @@ void Application::slotCheckConnection()
     }
 }
 
-void Application::slotCredentialsFetched()
-{
-    Account *account = AccountManager::instance()->account();
-    Q_ASSERT(account);
-    if (!account) {
-        qDebug() << Q_FUNC_INFO << "No account!";
-        return;
-    }
-    disconnect(account->credentials(), SIGNAL(fetched()), this, SLOT(slotCredentialsFetched()));
-    if (!account->credentials()->ready()) {
-        // User canceled the connection or did not give a password
-        account->setState(Account::SignedOut);
-        return;
-    }
-    if (account->state() == Account::InvalidCredential) {
-        // Then we ask again for the credentials if they are wrong again
-        account->setState(Account::Disconnected);
-    }
-    slotCheckConnection();
-}
-
-void Application::slotToggleFolderman(int state)
+void Application::slotAccountStateChanged(int state)
 {
     FolderMan* folderMan = FolderMan::instance();
     switch (state) {
@@ -280,7 +245,8 @@ void Application::slotToggleFolderman(int state)
         folderMan->slotScheduleAllFolders();
         break;
     case Account::SignedOut:
-    case Account::InvalidCredential:
+    case Account::ConfigurationError:
+    case Account::NetworkError:
     case Account::Disconnected:
         qDebug() << "Disabling sync scheduler, terminating sync";
         folderMan->setSyncEnabled(false);
@@ -289,13 +255,15 @@ void Application::slotToggleFolderman(int state)
     }
 
     // Stop checking the connection if we're manually signed out or
-    // when the credentials are wrong.
+    // when the error is permanent.
     if (state == Account::SignedOut
-            || state == Account::InvalidCredential) {
+            || state == Account::ConfigurationError) {
         _checkConnectionTimer.stop();
     } else if (! _checkConnectionTimer.isActive()) {
         _checkConnectionTimer.start();
     }
+
+    slotUpdateConnectionErrors(state);
 }
 
 void Application::slotCrash()
@@ -303,19 +271,17 @@ void Application::slotCrash()
     Utility::crash();
 }
 
-void Application::slotConnectionValidatorResult(ConnectionValidator::Status status,
-                                                const QStringList& errors)
+void Application::slotUpdateConnectionErrors(int accountState)
 {
-    qDebug() << "Connection Validator Result: " << ConnectionValidator::statusString(status);
-
-    bool isConnected = status == ConnectionValidator::Connected;
+    bool isConnected = accountState == Account::Connected;
     if( !isConnected ) {
-        _startupNetworkError = ConnectionValidator::isNetworkError(status);
-        if (_userTriggeredConnect) {
-            _userTriggeredConnect = false;
-        }
+        _startupNetworkError = accountState == Account::NetworkError;
     }
-    _gui->setConnectionErrors( isConnected, errors );
+
+    Account *account = AccountManager::instance()->account();
+    if (account) {
+        _gui->setConnectionErrors( isConnected, account->connectionErrors() );
+    }
 }
 
 void Application::slotownCloudWizardDone( int res )

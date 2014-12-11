@@ -36,8 +36,9 @@ public:
         NotConfigured,
         ServerVersionMismatch,
         CredentialsWrong,
-        // actually also used for timeouts or errors on the authed request
-        StatusNotFound
+        StatusNotFound,
+        // actually also used for other errors on the authed request
+        Timeout
     };
 
     void checkConnection();
