@@ -24,22 +24,11 @@ namespace OCC {
 
 ConnectionValidator::ConnectionValidator(Account *account, QObject *parent)
     : QObject(parent),
-      _account(account),
-      _networkError(QNetworkReply::NoError)
+      _account(account)
 {
 }
 
-QStringList ConnectionValidator::errors() const
-{
-    return _errors;
-}
-
-bool ConnectionValidator::networkError() const
-{
-    return _networkError;
-}
-
-QString ConnectionValidator::statusString( Status stat ) const
+QString ConnectionValidator::statusString( Status stat )
 {
     QString re;
 
@@ -56,15 +45,6 @@ QString ConnectionValidator::statusString( Status stat ) const
     case ServerVersionMismatch:
         re = QLatin1String("Server Version Mismatch");
         break;
-    case CredentialsTooManyAttempts:
-        re = QLatin1String("Credentials Too Many Attempts");
-        break;
-     case CredentialError:
-        re = QLatin1String("CredentialError");
-        break;
-    case CredentialsUserCanceled:
-        re = QLatin1String("Credential User Canceled");
-        break;
     case CredentialsWrong:
         re = QLatin1String("Credentials Wrong");
         break;
@@ -77,12 +57,16 @@ QString ConnectionValidator::statusString( Status stat ) const
     return re;
 }
 
+bool ConnectionValidator::isNetworkError( Status status )
+{
+    return status == StatusNotFound;
+}
 
 void ConnectionValidator::checkConnection()
 {
     if( !_account ) {
         _errors << tr("No ownCloud account configured");
-        emit connectionResult( NotConfigured );
+        reportResult( NotConfigured );
         return;
     }
 
@@ -95,7 +79,7 @@ void ConnectionValidator::checkConnection()
         checkJob->setIgnoreCredentialFailure(true);
         connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
         connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
-        connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotStatusTimeout(QUrl)));
+        connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotJobTimeout(QUrl)));
         checkJob->start();
     }
 }
@@ -111,7 +95,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
     if( CheckServerJob::version(info).startsWith("4.0") ) {
         _errors.append( tr("The configured server for this client is too old") );
         _errors.append( tr("Please update to the latest server and restart the client.") );
-        emit connectionResult( ServerVersionMismatch );
+        reportResult( ServerVersionMismatch );
         return;
     }
 
@@ -133,18 +117,16 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 
     _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
     _errors.append( reply->errorString() );
-    _networkError = (reply->error() != QNetworkReply::NoError);
-    emit connectionResult( StatusNotFound );
+    reportResult( StatusNotFound );
 }
 
-void ConnectionValidator::slotStatusTimeout(const QUrl &url)
+void ConnectionValidator::slotJobTimeout(const QUrl &url)
 {
     _account->setState(Account::Disconnected);
 
     _errors.append(tr("Unable to connect to %1").arg(url.toString()));
     _errors.append(tr("timeout"));
-    _networkError = true;
-    emit connectionResult( StatusNotFound );
+    reportResult( StatusNotFound );
 }
 
 
@@ -161,6 +143,7 @@ void ConnectionValidator::slotCheckAuthentication()
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
     connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));
+    connect(job, SIGNAL(timeout(QUrl)), SLOT(slotJobTimeout(QUrl)));
     job->start();
 }
 
@@ -182,13 +165,20 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         _errors << reply->errorString();
     }
 
-    emit connectionResult( stat );
+    reportResult( stat );
 }
 
 void ConnectionValidator::slotAuthSuccess()
 {
     _account->setState(Account::Connected);
-    emit connectionResult(Connected);
+    _errors.clear();
+    reportResult(Connected);
+}
+
+void ConnectionValidator::reportResult(Status status)
+{
+    emit connectionResult(status, _errors);
+    deleteLater();
 }
 
 } // namespace OCC

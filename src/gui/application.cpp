@@ -237,8 +237,8 @@ void Application::slotCheckConnection()
         if (_conValidator)
             _conValidator->deleteLater();
         _conValidator = new ConnectionValidator(account);
-        connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status)),
-                 this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status)) );
+        connect( _conValidator, SIGNAL(connectionResult(ConnectionValidator::Status, QStringList)),
+                 this, SLOT(slotConnectionValidatorResult(ConnectionValidator::Status, QStringList)) );
         _conValidator->checkConnection();
 
     } else {
@@ -303,21 +303,19 @@ void Application::slotCrash()
     Utility::crash();
 }
 
-void Application::slotConnectionValidatorResult(ConnectionValidator::Status status)
+void Application::slotConnectionValidatorResult(ConnectionValidator::Status status,
+                                                const QStringList& errors)
 {
-    qDebug() << "Connection Validator Result: " << _conValidator->statusString(status);
-    QStringList startupFails;
+    qDebug() << "Connection Validator Result: " << ConnectionValidator::statusString(status);
 
-    if( status != ConnectionValidator::Connected ) {
-        startupFails = _conValidator->errors();
-        _startupNetworkError = _conValidator->networkError();
+    bool isConnected = status == ConnectionValidator::Connected;
+    if( !isConnected ) {
+        _startupNetworkError = ConnectionValidator::isNetworkError(status);
         if (_userTriggeredConnect) {
             _userTriggeredConnect = false;
         }
     }
-    _gui->setConnectionErrors( (status == ConnectionValidator::Connected), startupFails);
-
-    _conValidator->deleteLater();
+    _gui->setConnectionErrors( isConnected, errors );
 }
 
 void Application::slotownCloudWizardDone( int res )

@@ -35,41 +35,33 @@ public:
         Connected,
         NotConfigured,
         ServerVersionMismatch,
-        CredentialsTooManyAttempts,
-        CredentialError,
-        CredentialsUserCanceled,
         CredentialsWrong,
+        // actually also used for timeouts or errors on the authed request
         StatusNotFound
-
     };
-
-    QStringList errors() const;
-    bool networkError() const;
 
     void checkConnection();
 
-    QString statusString( Status ) const;
+    static QString statusString( Status );
+    static bool isNetworkError( Status status );
 
 signals:
-    void connectionResult( ConnectionValidator::Status );
-    // void connectionAvailable();
-    // void connectionFailed();
-
-public slots:
+    void connectionResult( ConnectionValidator::Status status, QStringList errors );
 
 protected slots:
     void slotStatusFound(const QUrl&url, const QVariantMap &info);
     void slotNoStatusFound(QNetworkReply *reply);
-    void slotStatusTimeout(const QUrl& url);
+    void slotJobTimeout(const QUrl& url);
 
     void slotCheckAuthentication();
     void slotAuthFailed(QNetworkReply *reply);
     void slotAuthSuccess();
 
 private:
+    void reportResult(Status status);
+
     QStringList _errors;
     Account   *_account;
-    bool  _networkError;
 };
 
 }

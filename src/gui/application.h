@@ -73,7 +73,8 @@ signals:
 protected slots:
     void slotParseOptions( const QString&, QObject* );
     void slotCheckConnection();
-    void slotConnectionValidatorResult(ConnectionValidator::Status);
+    void slotConnectionValidatorResult(ConnectionValidator::Status,
+                                       const QStringList& errors);
     void slotStartUpdateDetector();
     void slotUseMonoIconsChanged( bool );
     void slotLogin();
