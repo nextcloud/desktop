@@ -24,6 +24,7 @@
 #include <QSet>
 #include <QMap>
 #include <QStringList>
+#include <QSharedPointer>
 
 #include <csync.h>
 
