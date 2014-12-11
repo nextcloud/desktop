@@ -1569,7 +1569,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="274"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Seçilmemiş klasörler yerel dosya sisteminizden &lt;b&gt;silinecek&lt;/b&gt; ve bir daha bu bilgisayarda eşitlenmeyecektir</translation>
+        <translation>Seçilmemiş klasörler yerel dosya sisteminizden &lt;b&gt;silinecek&lt;/b&gt; ve bir daha bu bilgisayarla eşitlenmeyecektir</translation>
     </message>
 </context>
 <context>
