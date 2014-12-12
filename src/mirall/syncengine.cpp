@@ -1101,9 +1101,16 @@ void SyncEngine::setSelectiveSyncBlackList(const QStringList& list)
 bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
 {
     Q_UNUSED(t);
+    QString pat(fn);
+    if( t == CSYNC_FTW_TYPE_DIR && ! fn.endsWith(QLatin1Char('/'))) {
+        pat.append(QLatin1Char('/'));
+    }
+
     Q_FOREACH(const SyncFileItem &item, _syncedItems) {
         //qDebug() << Q_FUNC_INFO << fn << item._file << fn.startsWith(item._file) << item._file.startsWith(fn);
-        if (item._file.startsWith(fn)) {
+
+        if (item._file.startsWith(pat) ||
+                item._file == fn /* the same directory or file */) {
             qDebug() << Q_FUNC_INFO << "Setting" << fn << " to STATUS_EVAL";
             s->set(SyncFileStatus::STATUS_EVAL);
             return true;
