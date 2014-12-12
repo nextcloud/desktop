@@ -231,7 +231,7 @@ QString Theme::gitSHA1() const
 QString Theme::about() const
 {
     QString re;
-    re = tr("<p>Version %1 For more information please visit <a href='%2'>%3</a>.</p>")
+    re = tr("<p>Version %1. For more information please visit <a href='%2'>%3</a>.</p>")
             .arg(MIRALL_VERSION_STRING).arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
             .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN));
 
