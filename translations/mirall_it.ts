@@ -2136,7 +2136,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="234"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versione %1. Per ulteriori informazioni vedi &lt;a href=&quot;%2&quot;&gt;3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="238"/>
@@ -2146,7 +2146,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="239"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Distribuito da %1 e sotto licenza GNU General Public License (GPL) versione 2.0.&lt;br/&gt;%2 e il logo di %2 sono marchi registrati di %1 negli Stati Uniti, in altri paesi o entrambi.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
