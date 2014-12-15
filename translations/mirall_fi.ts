@@ -1327,7 +1327,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="755"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostoa ei voitu ladata täysin.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="791"/>
@@ -1537,18 +1537,22 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n tiedosto ohitetaan edellisten virheiden vuoksi.
+</numerusform><numerusform>%n tiedostoa ohitetaan edellisten virheiden vuoksi.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n tiedosto on ladattu osittain.
+</numerusform><numerusform>%n tiedostoa on ladattu osittain.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Yritä synkronoida ne uudelleen.</translation>
     </message>
 </context>
 <context>

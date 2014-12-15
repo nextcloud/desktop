@@ -2141,7 +2141,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="238"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorparated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="239"/>
