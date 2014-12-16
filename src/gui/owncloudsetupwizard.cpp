@@ -148,7 +148,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     account->setUrl(url);
     // Set fake credentials beforfe we check what credential it actually is.
     account->setCredentials(CredentialsFactory::create("dummy"));
-    CheckServerJob *job = new CheckServerJob(_ocWizard->account(), false, this);
+    CheckServerJob *job = new CheckServerJob(_ocWizard->account(), this);
     job->setIgnoreCredentialFailure(true);
     connect(job, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotOwnCloudFoundAuth(QUrl,QVariantMap)));
     connect(job, SIGNAL(instanceNotFound(QNetworkReply*)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));

@@ -46,10 +46,12 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
     : QObject(parent)
     , _duration(0)
     , _timedout(false)
+    , _followRedirects(false)
     , _ignoreCredentialFailure(false)
     , _reply(0)
     , _account(account)
     , _path(path)
+    , _redirectCount(0)
 {
     _timer.setSingleShot(true);
     _timer.setInterval(OwncloudPropagator::httpTimeout() * 1000); // default to 5 minutes.
@@ -163,6 +165,28 @@ void AbstractNetworkJob::slotFinished()
     // get the Date timestamp from reply
     _responseTimestamp = QString::fromAscii(_reply->rawHeader("Date"));
     _duration = _durationTimer.elapsed();
+
+
+    if (_followRedirects) {
+        // ### the qWarnings here should be exported via displayErrors() so they
+        // ### can be presented to the user if the job executor has a GUI
+        QUrl requestedUrl = reply()->request().url();
+        QUrl redirectUrl = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+        if (!redirectUrl.isEmpty()) {
+            _redirectCount++;
+            if (requestedUrl.scheme() == QLatin1String("https") &&
+                    redirectUrl.scheme() == QLatin1String("http")) {
+                qWarning() << this << "HTTPS->HTTP downgrade detected!";
+            } else if (requestedUrl == redirectUrl || _redirectCount >= maxRedirects()) {
+                qWarning() << this << "Redirect loop detected!";
+            } else {
+                resetTimeout();
+                setReply(getRequest(redirectUrl));
+                setupConnections(reply());
+                return;
+            }
+        }
+    }
 
     bool discard = finished();
     AbstractCredentials *creds = _account->credentials();
@@ -367,12 +391,11 @@ const char statusphpC[] = "status.php";
 const char owncloudDirC[] = "owncloud/";
 }
 
-CheckServerJob::CheckServerJob(Account *account, bool followRedirect, QObject *parent)
+CheckServerJob::CheckServerJob(Account *account, QObject *parent)
     : AbstractNetworkJob(account, QLatin1String(statusphpC) , parent)
-    , _followRedirects(followRedirect)
     , _subdirFallback(false)
-    , _redirectCount(0)
 {
+	_followRedirects = true;
     setIgnoreCredentialFailure(true);
 }
 
@@ -413,25 +436,6 @@ bool CheckServerJob::finished()
 {
     account()->setSslConfiguration(reply()->sslConfiguration());
 
-    // ### the qDebugs here should be exported via displayErrors() so they
-    // ### can be presented to the user if the job executor has a GUI
-    QUrl requestedUrl = reply()->request().url();
-    QUrl redirectUrl = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    if (!redirectUrl.isEmpty()) {
-        _redirectCount++;
-        if (requestedUrl.scheme() == QLatin1String("https") &&
-                redirectUrl.scheme() == QLatin1String("http")) {
-                qDebug() << Q_FUNC_INFO << "HTTPS->HTTP downgrade detected!";
-        } else if (requestedUrl == redirectUrl || _redirectCount >= maxRedirects()) {
-                qDebug() << Q_FUNC_INFO << "Redirect loop detected!";
-        } else {
-            resetTimeout();
-            setReply(getRequest(redirectUrl));
-            setupConnections(reply());
-            return false;
-        }
-    }
-
     // The serverInstalls to /owncloud. Let's try that if the file wasn't found
     // at the original location
     if ((reply()->error() == QNetworkReply::ContentNotFoundError) && (!_subdirFallback)) {
@@ -467,7 +471,7 @@ bool CheckServerJob::finished()
 
             emit instanceFound(reply()->url(), status);
         } else {
-            qDebug() << "No proper answer on " << requestedUrl;
+            qDebug() << "No proper answer on " << reply()->url();
             emit instanceNotFound(reply());
         }
     }

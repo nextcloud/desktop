@@ -75,7 +75,7 @@ void ConnectionValidator::checkConnection()
         // gets replied to.
         slotCheckAuthentication();
     } else {
-        CheckServerJob *checkJob = new CheckServerJob(_account, false, this);
+        CheckServerJob *checkJob = new CheckServerJob(_account, this);
         checkJob->setIgnoreCredentialFailure(true);
         connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
         connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));

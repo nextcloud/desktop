@@ -94,6 +94,7 @@ protected:
     QElapsedTimer _durationTimer;
     quint64       _duration;
     bool          _timedout;  // set to true when the timeout slot is recieved
+    bool          _followRedirects;
 
 public:
     // Timeout workarounds (Because of PHP session locking)
@@ -111,6 +112,7 @@ private:
     Account *_account;
     QString _path;
     QTimer _timer;
+    int _redirectCount;
 };
 
 /**
@@ -189,7 +191,7 @@ private slots:
 class OWNCLOUDSYNC_EXPORT CheckServerJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit CheckServerJob(Account *account, bool followRedirect = false, QObject *parent = 0);
+    explicit CheckServerJob(Account *account, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
 
     static QString version(const QVariantMap &info);
@@ -206,9 +208,7 @@ private slots:
     virtual void slotTimeout() Q_DECL_OVERRIDE;
 
 private:
-    bool _followRedirects;
     bool _subdirFallback;
-    int _redirectCount;
 };
 
 
