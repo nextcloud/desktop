@@ -115,12 +115,9 @@ AccountSettings::AccountSettings(QWidget *parent) :
     slotAccountChanged(AccountManager::instance()->account(), 0);
 
     FolderMan *folderMan = FolderMan::instance();
-    connect(folderMan, SIGNAL(folderSyncStateChange(QString)),
-             this, SLOT(slotSyncStateChange(QString)));
     connect(folderMan, SIGNAL(folderListLoaded(Folder::Map)),
             this, SLOT(setFolderList(Folder::Map)));
     setFolderList(FolderMan::instance()->map());
-    slotSyncStateChange();
 }
 
 void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccount)
@@ -790,7 +787,6 @@ void AccountSettings::slotAccountStateChanged(int state)
         foreach (Folder *folder, folderMan->map().values()) {
             slotUpdateFolderState(folder);
         }
-        slotSyncStateChange();
         if (state == Account::Connected) {
             QString user;
             if (AbstractCredentials *cred = _account->credentials()) {
@@ -814,21 +810,6 @@ void AccountSettings::slotAccountStateChanged(int state)
         showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
         ui->_buttonAdd->setEnabled( false);
     }
-}
-
-void AccountSettings::slotSyncStateChange(const QString& alias)
-{
-    Q_UNUSED(alias);
-
-    QIcon icon;
-    if (_account && _account->state() == Account::Connected) {
-        FolderMan *folderMan = FolderMan::instance();
-        SyncResult state = folderMan->accountStatus(folderMan->map().values());
-        icon = Theme::instance()->syncStateIcon(state.status());
-    } else {
-        icon = Theme::instance()->folderOfflineIcon();
-    }
-    emit accountIconChanged(icon);
 }
 
 AccountSettings::~AccountSettings()

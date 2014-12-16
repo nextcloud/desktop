@@ -105,7 +105,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     connect(group, SIGNAL(triggered(QAction*)), SLOT(slotSwitchPage(QAction*)));
 
     connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
-    connect( _accountSettings, SIGNAL(accountIconChanged(QIcon)), SLOT(slotUpdateAccountIcon(QIcon)));
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              gui, SLOT(slotFolderOpenAction(QString)));
 
