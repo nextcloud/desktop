@@ -70,6 +70,7 @@ void GETFileJob::start() {
     } else {
         // Use direct URL
         setReply(davRequest("GET", _directDownloadUrl, req));
+        _followRedirects = true;  // (follow redirections for the direct download)
     }
     setupConnections(reply());
 
