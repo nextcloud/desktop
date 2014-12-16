@@ -584,7 +584,7 @@ Está seguro de que desea realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Introduzca más abajo el nombre de la nueva carpeta a crear &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
@@ -2142,12 +2142,12 @@ No se recomienda usarlo.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="238"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorparated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright ownCloud, Incorparated&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="239"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Distribuido por %1 y con licencia GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 y el lo de %2 son marcas registradas de %1 en los Estados Unidos y otros países, o ambos.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
