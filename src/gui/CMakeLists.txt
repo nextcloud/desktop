@@ -55,6 +55,8 @@ set(client_SRCS
     syncrunfilelog.cpp
     systray.cpp
     accountmigrator.cpp
+    quotainfo.cpp
+    accountstate.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
     wizard/owncloudhttpcredspage.cpp

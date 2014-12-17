@@ -25,6 +25,7 @@
 #include "configfile.h"
 #include "ignorelisteditor.h"
 #include "account.h"
+#include "accountstate.h"
 #include "quotainfo.h"
 #include "selectivesyncdialog.h"
 #include "creds/abstractcredentials.h"
@@ -58,7 +59,7 @@ AccountSettings::AccountSettings(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AccountSettings),
     _wasDisabledBefore(false),
-    _account(AccountManager::instance()->account())
+    _accountState(AccountStateManager::instance()->accountState())
 {
     ui->setupUi(this);
 
@@ -110,9 +111,9 @@ AccountSettings::AccountSettings(QWidget *parent) :
     ui->connectLabel->setText(tr("No account configured."));
     ui->_buttonAdd->setEnabled(false);
 
-    connect(AccountManager::instance(), SIGNAL(accountChanged(Account*,Account*)),
-            this, SLOT(slotAccountChanged(Account*,Account*)));
-    slotAccountChanged(AccountManager::instance()->account(), 0);
+    connect(AccountStateManager::instance(), SIGNAL(accountStateAdded(AccountState*)),
+            this, SLOT(slotAccountStateChanged(AccountState*)));
+    slotAccountStateChanged(AccountStateManager::instance()->accountState());
 
     FolderMan *folderMan = FolderMan::instance();
     connect(folderMan, SIGNAL(folderListLoaded(Folder::Map)),
@@ -120,21 +121,21 @@ AccountSettings::AccountSettings(QWidget *parent) :
     setFolderList(FolderMan::instance()->map());
 }
 
-void AccountSettings::slotAccountChanged(Account *newAccount, Account *oldAccount)
+void AccountSettings::slotAccountStateChanged(AccountState *newAccountState)
 {
-    if (oldAccount) {
-        disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
-        disconnect(oldAccount->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
+    if (_accountState) {
+        disconnect(_accountState, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
+        disconnect(_accountState->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
                     this, SLOT(slotUpdateQuota(qint64,qint64)));
-        disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
+        disconnect(_accountState, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
     }
 
-    _account = newAccount;
-    if (_account) {
-        connect(_account, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
-        slotAccountStateChanged(_account->state());
+    _accountState = newAccountState;
+    if (_accountState) {
+        connect(_accountState, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
+        slotAccountStateChanged(_accountState->state());
 
-        QuotaInfo *quotaInfo = _account->quotaInfo();
+        QuotaInfo *quotaInfo = _accountState->quotaInfo();
         connect( quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
                 this, SLOT(slotUpdateQuota(qint64,qint64)));
         slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
@@ -155,7 +156,7 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
   } else {
       ui->_buttonAdd->setVisible(true);
   }
-  bool isConnected = _account && _account->state() == Account::Connected;
+  bool isConnected = _accountState && _accountState->state() == AccountState::Connected;
   ui->_buttonAdd->setEnabled(isConnected);
   ui->_buttonEnable->setEnabled( isValid );
   ui->_buttonSelectiveSync->setEnabled(isConnected && isValid);
@@ -167,7 +168,7 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
     } else {
       ui->_buttonEnable->setText( tr( "Resume" ) );
     }
-    ui->_buttonEnable->setEnabled( _account && _account->state() == Account::Connected);
+    ui->_buttonEnable->setEnabled( _accountState && _accountState->state() == AccountState::Connected);
   }
 }
 
@@ -233,8 +234,8 @@ void AccountSettings::slotAddFolder( Folder *folder )
 
     QStandardItem *item = new QStandardItem();
     bool isConnected = false;
-    if (_account) {
-        isConnected = (_account->state() == Account::Connected);
+    if (_accountState) {
+        isConnected = (_accountState->state() == AccountState::Connected);
     }
     folderToModelItem( item, folder,  isConnected);
     _model->appendRow( item );
@@ -252,9 +253,9 @@ void AccountSettings::slotButtonsSetEnabled()
 void AccountSettings::setGeneralErrors( const QStringList& errors )
 {
     _generalErrors = errors;
-    if (_account) {
+    if (_accountState) {
         // this will update the message
-        slotAccountStateChanged(_account->state());
+        slotAccountStateChanged(_accountState->state());
     }
 }
 
@@ -539,7 +540,7 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
     }
 
     if( item ) {
-        folderToModelItem( item, folder, _account->state() == Account::Connected );
+        folderToModelItem( item, folder, _accountState->state() == AccountState::Connected );
     } else {
         // the dialog is not visible.
     }
@@ -778,31 +779,32 @@ void AccountSettings::slotIgnoreFilesEditor()
 
 void AccountSettings::slotAccountStateChanged(int state)
 {
-    if (_account) {
-        ui->sslButton->updateAccountInfo(_account);
-        QUrl safeUrl(_account->url());
+    if (_accountState) {
+        ui->sslButton->updateAccountState(_accountState);
+        Account* account = _accountState->account();
+        QUrl safeUrl(account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
         slotButtonsSetEnabled();
         FolderMan *folderMan = FolderMan::instance();
         foreach (Folder *folder, folderMan->map().values()) {
             slotUpdateFolderState(folder);
         }
-        if (state == Account::Connected) {
+        if (state == AccountState::Connected) {
             QString user;
-            if (AbstractCredentials *cred = _account->credentials()) {
+            if (AbstractCredentials *cred = account->credentials()) {
                user = cred->user();
             }
             if (user.isEmpty()) {
-                showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(_account->url().toString(), safeUrl.toString())
+                showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(account->url().toString(), safeUrl.toString())
                                  /*, tr("Version: %1 (%2)").arg(versionStr).arg(version) */ );
             } else {
-                showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a> as <i>%3</i>.").arg(_account->url().toString(), safeUrl.toString(), user)
+                showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a> as <i>%3</i>.").arg(account->url().toString(), safeUrl.toString(), user)
                                  /*, tr("Version: %1 (%2)").arg(versionStr).arg(version) */ );
             }
         } else {
             showConnectionLabel( tr("No connection to %1 at <a href=\"%2\">%3</a>.")
                                  .arg(Theme::instance()->appNameGUI(),
-                                      _account->url().toString(),
+                                      account->url().toString(),
                                       safeUrl.toString()) );
         }
     } else {

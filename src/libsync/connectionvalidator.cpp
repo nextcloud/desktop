@@ -54,7 +54,7 @@ bool ConnectionValidator::isNetworkError( Status status )
     return status == Timeout;
 }
 
-void ConnectionValidator::checkConnection()
+void ConnectionValidator::checkServerAndAuth()
 {
     if( !_account ) {
         _errors << tr("No ownCloud account configured");
@@ -62,18 +62,12 @@ void ConnectionValidator::checkConnection()
         return;
     }
 
-    if( _account->connectionStatus() == Connected ) {
-        // When we're already connected, just make sure a minimal request
-        // gets replied to.
-        slotCheckAuthentication();
-    } else {
-        CheckServerJob *checkJob = new CheckServerJob(_account, this);
-        checkJob->setIgnoreCredentialFailure(true);
-        connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
-        connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
-        connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotJobTimeout(QUrl)));
-        checkJob->start();
-    }
+    CheckServerJob *checkJob = new CheckServerJob(_account, this);
+    checkJob->setIgnoreCredentialFailure(true);
+    connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
+    connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
+    connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotJobTimeout(QUrl)));
+    checkJob->start();
 }
 
 void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &info)
@@ -94,10 +88,10 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
     // now check the authentication
     AbstractCredentials *creds = _account->credentials();
     if (creds->ready()) {
-        QTimer::singleShot( 0, this, SLOT( slotCheckAuthentication() ));
+        QTimer::singleShot( 0, this, SLOT( checkAuthentication() ));
     } else {
         connect( creds, SIGNAL(fetched()),
-                 this, SLOT(slotCheckAuthentication()), Qt::UniqueConnection);
+                 this, SLOT(checkAuthentication()), Qt::UniqueConnection);
         creds->fetch(_account);
     }
 }
@@ -118,11 +112,11 @@ void ConnectionValidator::slotJobTimeout(const QUrl &url)
 }
 
 
-void ConnectionValidator::slotCheckAuthentication()
+void ConnectionValidator::checkAuthentication()
 {
     AbstractCredentials *creds = _account->credentials();
     disconnect( creds, SIGNAL(fetched()),
-                this, SLOT(slotCheckAuthentication()));
+                this, SLOT(checkAuthentication()));
 
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)

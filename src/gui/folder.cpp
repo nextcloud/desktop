@@ -16,6 +16,7 @@
 #include "config.h"
 
 #include "account.h"
+#include "accountstate.h"
 #include "folder.h"
 #include "folderman.h"
 #include "logger.h"
@@ -80,8 +81,8 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
 bool Folder::init()
 {
-    Account *account = AccountManager::instance()->account();
-    if (!account) {
+    AccountState *accountState = AccountStateManager::instance()->accountState();
+    if (!accountState) {
         // Normaly this should not happen, but it could be that there is something
         // wrong with the config and it is better not to crash.
         qWarning() << "WRN: No account  configured, can't sync";
@@ -252,8 +253,9 @@ void Folder::slotRunEtagJob()
     qDebug() << "* Trying to check" << alias() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
 
 
-    Account *account = AccountManager::instance()->account();
-    if (!account) {
+    AccountState* accountState = AccountStateManager::instance()->accountState();
+    Account* account = accountState->account();
+    if (!accountState) {
         qDebug() << Q_FUNC_INFO << alias() << "No valid account object, not trying to sync";
         return;
     }
@@ -263,8 +265,8 @@ void Folder::slotRunEtagJob()
         return;
     }
 
-    if (_paused || account->state() != Account::Connected) {
-        qDebug() << "Not syncing.  :"  << alias() << _paused << account->state();
+    if (_paused || !accountState->isConnected()) {
+        qDebug() << "Not syncing.  :"  << alias() << _paused << AccountState::stateString(accountState->state());
         return;
     }
 

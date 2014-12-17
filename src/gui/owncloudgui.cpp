@@ -28,6 +28,7 @@
 #include "logger.h"
 #include "logbrowser.h"
 #include "account.h"
+#include "accountstate.h"
 #include "openfilemanager.h"
 #include "creds/abstractcredentials.h"
 
@@ -213,13 +214,13 @@ void ownCloudGui::setConnectionErrors( bool /*connected*/, const QStringList& fa
 
 void ownCloudGui::slotComputeOverallSyncStatus()
 {
-    if (Account *a = AccountManager::instance()->account()) {
-        if (a->state() == Account::SignedOut) {
+    if (AccountState *a = AccountStateManager::instance()->accountState()) {
+        if (a->isSignedOut()) {
             _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
             _tray->setToolTip(tr("Please sign in"));
             return;
         }
-        if (a->state() == Account::Disconnected) {
+        if (!a->isConnected()) {
             _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
             _tray->setToolTip(tr("Disconnected from server"));
             return;
@@ -278,13 +279,13 @@ void ownCloudGui::setupContextMenu()
 {
     FolderMan *folderMan = FolderMan::instance();
 
-    Account *a = AccountManager::instance()->account();
+    AccountState *a = AccountStateManager::instance()->accountState();
 
     bool isConfigured = (a != 0);
     _actionOpenoC->setEnabled(isConfigured);
     bool isConnected = false;
     if (isConfigured) {
-        isConnected = (a->state() == Account::Connected);
+        isConnected = a->isConnected();
     }
 
     if ( _contextMenu ) {

@@ -17,7 +17,6 @@
 #include "networkjobs.h"
 #include "configfile.h"
 #include "accessmanager.h"
-#include "quotainfo.h"
 #include "owncloudtheme.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialsfactory.h"
@@ -59,9 +58,11 @@ AccountManager *AccountManager::instance()
 
 void AccountManager::setAccount(Account *account)
 {
-    emit accountAboutToChange(account, _account);
-    std::swap(_account, account);
-    emit accountChanged(_account, account);
+    if (_account) {
+        emit accountRemoved(_account);
+    }
+    _account = account;
+    emit accountAdded(account);
 }
 
 
@@ -69,13 +70,9 @@ Account::Account(AbstractSslErrorHandler *sslErrorHandler, QObject *parent)
     : QObject(parent)
     , _url(Theme::instance()->overrideServerUrl())
     , _sslErrorHandler(sslErrorHandler)
-    , _quotaInfo(new QuotaInfo(this))
     , _am(0)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
-    , _state(Account::Disconnected)
-    , _connectionStatus(ConnectionValidator::Undefined)
-    , _waitingForNewCredentials(false)
     , _davPath("remote.php/webdav/")
     , _wasMigrated(false)
 {
@@ -236,6 +233,8 @@ void Account::setCredentials(AbstractCredentials *cred)
     }
     connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
+    connect(_credentials, SIGNAL(fetched()),
+            SLOT(slotCredentialsFetched()));
 }
 
 QUrl Account::davUrl() const
@@ -367,166 +366,6 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
     }
 }
 
-Account::ConnectionStatus Account::connectionStatus() const
-{
-    return _connectionStatus;
-}
-
-QStringList Account::connectionErrors() const
-{
-    return _connectionErrors;
-}
-
-QString Account::connectionStatusString(ConnectionStatus status)
-{
-    return ConnectionValidator::statusString(status);
-}
-
-Account::State Account::state() const
-{
-    return _state;
-}
-
-void Account::setState(State state)
-{
-    if (_state != state) {
-        qDebug() << "Account state change: "
-                 << stateString(_state) << "->" << stateString(state);
-        State oldState = _state;
-        _state = state;
-
-        if (_state == SignedOut) {
-            _connectionStatus = ConnectionValidator::Undefined;
-            _connectionErrors.clear();
-        } else if (oldState == SignedOut && _state == Disconnected) {
-            checkConnectivity();
-        }
-
-        emit stateChanged(_state);
-    }
-}
-
-QString Account::stateString(State state)
-{
-    switch (state)
-    {
-    case SignedOut:
-        return QLatin1String("SignedOut");
-    case Disconnected:
-        return QLatin1String("Disconnected");
-    case Connected:
-        return QLatin1String("Connected");
-    case NetworkError:
-        return QLatin1String("NetworkError");
-    case ConfigurationError:
-        return QLatin1String("ConfigurationError");
-    }
-    return QLatin1String("Unknown");
-}
-
-bool Account::isSignedOut() const
-{
-    return _state == SignedOut;
-}
-
-void Account::setSignedOut(bool signedOut)
-{
-    if (signedOut) {
-        setState(SignedOut);
-    } else {
-        setState(Disconnected);
-    }
-}
-
-QuotaInfo *Account::quotaInfo()
-{
-    return _quotaInfo;
-}
-
-void Account::checkConnectivity()
-{
-    if (isSignedOut() || _waitingForNewCredentials) {
-        return;
-    }
-
-    ConnectionValidator * conValidator = new ConnectionValidator(this);
-    connect(conValidator, SIGNAL(connectionResult(ConnectionValidator::Status,QStringList)),
-            SLOT(slotConnectionValidatorResult(ConnectionValidator::Status,QStringList)));
-    conValidator->checkConnection();
-}
-
-void Account::slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList& errors)
-{
-    if (isSignedOut()) {
-        return;
-    }
-
-    switch (status)
-    {
-    case ConnectionValidator::Connected:
-        setState(Connected);
-        break;
-    case ConnectionValidator::Undefined:
-    case ConnectionValidator::NotConfigured:
-        setState(Disconnected);
-        break;
-    case ConnectionValidator::ServerVersionMismatch:
-    case ConnectionValidator::StatusNotFound:
-        setState(ConfigurationError);
-        break;
-    case ConnectionValidator::CredentialsWrong:
-        handleInvalidCredentials();
-        break;
-    case ConnectionValidator::Timeout:
-        setState(NetworkError);
-        break;
-    }
-    _connectionErrors = errors;
-
-    if (_connectionStatus != status) {
-        qDebug() << "Account connection status change: "
-                 << connectionStatusString(_connectionStatus) << "->"
-                 << connectionStatusString(status);
-        _connectionStatus = status;
-    }
-}
-
-void Account::handleInvalidCredentials()
-{
-    if (isSignedOut()) {
-        return;
-    }
-
-    setState(ConfigurationError);
-    _waitingForNewCredentials = true;
-
-    // invalidate & forget token/password
-    // but try to re-sign in.
-    connect(_credentials, SIGNAL(fetched()),
-            SLOT(slotCredentialsFetched()), Qt::UniqueConnection);
-    if (_credentials->ready()) {
-        _credentials->invalidateAndFetch(this);
-    } else {
-        _credentials->fetch(this);
-    }
-}
-
-void Account::slotCredentialsFetched()
-{
-    _waitingForNewCredentials = false;
-
-    disconnect(_credentials, SIGNAL(fetched()),
-               this, SLOT(slotCredentialsFetched()));
-
-    if (!_credentials->ready()) {
-        // User canceled the connection or did not give a password
-        setState(SignedOut);
-        return;
-    }
-
-    checkConnectivity();
-}
-
 void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
 {
     NetworkJobTimeoutPauser pauser(reply);
@@ -557,6 +396,24 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
             return;
         }
     }
+}
+
+void Account::slotCredentialsFetched()
+{
+    emit credentialsFetched(_credentials);
+}
+
+void Account::handleInvalidCredentials()
+{
+    // invalidate & forget token/password
+    // but try to re-sign in.
+    if (_credentials->ready()) {
+        _credentials->invalidateAndFetch(this);
+    } else {
+        _credentials->fetch(this);
+    }
+
+    emit invalidCredentials();
 }
 
 bool Account::wasMigrated()

@@ -13,6 +13,7 @@
 
 #include "quotainfo.h"
 #include "account.h"
+#include "accountstate.h"
 #include "networkjobs.h"
 #include "creds/abstractcredentials.h"
 
@@ -27,14 +28,14 @@ static const int failIntervalT = 5*1000;
 static const int initialTimeT = 1*1000;
 }
 
-QuotaInfo::QuotaInfo(Account *account)
-    : QObject(account)
-    , _account(account)
+QuotaInfo::QuotaInfo(AccountState *accountState)
+    : QObject(accountState)
+    , _accountState(accountState)
     , _lastQuotaTotalBytes(0)
     , _lastQuotaUsedBytes(0)
     , _jobRestartTimer(new QTimer(this))
 {
-    connect(_account, SIGNAL(stateChanged(int)),
+    connect(accountState, SIGNAL(stateChanged(int)),
             SLOT(slotAccountStateChanged(int)));
     connect(_jobRestartTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
     _jobRestartTimer->setSingleShot(true);
@@ -43,7 +44,7 @@ QuotaInfo::QuotaInfo(Account *account)
 
 void QuotaInfo::slotAccountStateChanged(int state)
 {
-    if (state == Account::Connected) {
+    if (state == AccountState::Connected) {
         slotCheckQuota();
     } else {
         _jobRestartTimer->stop();
@@ -59,9 +60,15 @@ void QuotaInfo::slotRequestFailed()
 
 void QuotaInfo::slotCheckQuota()
 {
-    if (!_account.isNull() && _account->state() == Account::Connected
-            && _account->credentials() && _account->credentials()->ready()) {
-        CheckQuotaJob *job = new CheckQuotaJob(_account, "/", this);
+    if (!_accountState) {
+        return;
+    }
+
+    Account* account = _accountState->account();
+    if (_accountState->isConnected()
+            && account->credentials()
+            && account->credentials()->ready()) {
+        CheckQuotaJob *job = new CheckQuotaJob(account, "/", this);
         connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
         connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
         job->start();

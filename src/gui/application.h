@@ -79,7 +79,8 @@ protected slots:
     void slotLogin();
     void slotLogout();
     void slotCleanup();
-    void slotAccountChanged(Account *newAccount, Account *oldAccount = 0);
+    void slotAccountStateAdded(AccountState *accountState);
+    void slotAccountStateRemoved(AccountState *accountState);
     void slotAccountStateChanged(int state);
     void slotCrash();
 

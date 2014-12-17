@@ -41,10 +41,15 @@ public:
         Timeout
     };
 
-    void checkConnection();
-
     static QString statusString( Status );
     static bool isNetworkError( Status status );
+
+public slots:
+    /// Checks the server and the authentication.
+    void checkServerAndAuth();
+
+    /// Checks authentication only.
+    void checkAuthentication();
 
 signals:
     void connectionResult( ConnectionValidator::Status status, QStringList errors );
@@ -54,7 +59,6 @@ protected slots:
     void slotNoStatusFound(QNetworkReply *reply);
     void slotJobTimeout(const QUrl& url);
 
-    void slotCheckAuthentication();
     void slotAuthFailed(QNetworkReply *reply);
     void slotAuthSuccess();
 

@@ -14,13 +14,13 @@
  * for more details.
  */
 
+#include "application.h"
+
 #include <iostream>
 
 #include "config.h"
-
-
 #include "account.h"
-#include "application.h"
+#include "accountstate.h"
 #include "connectionvalidator.h"
 #include "folder.h"
 #include "folderman.h"
@@ -108,6 +108,10 @@ Application::Application(int &argc, char **argv) :
 
     connect( this, SIGNAL(messageReceived(QString, QObject*)), SLOT(slotParseOptions(QString, QObject*)));
 
+    // Create the account info manager to ensure it's listening to the
+    // account manager.
+    AccountStateManager::instance();
+
     Account *account = Account::restore();
     if (account) {
         account->setSslErrorHandler(new SslDialogErrorHandler);
@@ -132,11 +136,13 @@ Application::Application(int &argc, char **argv) :
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
 
-    if (account) {
-        slotAccountChanged(account);
+    connect(AccountStateManager::instance(), SIGNAL(accountStateAdded(AccountState*)),
+            SLOT(slotAccountStateAdded(AccountState*)));
+    connect(AccountStateManager::instance(), SIGNAL(accountStateRemoved(AccountState*)),
+            SLOT(slotAccountStateRemoved(AccountState*)));
+    if (AccountState *ai = AccountStateManager::instance()->accountState()) {
+        slotAccountStateAdded(ai);
     }
-    connect(AccountManager::instance(), SIGNAL(accountChanged(Account*,Account*)),
-            this, SLOT(slotAccountChanged(Account*,Account*)));
 
     // startup procedure.
     connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
@@ -162,7 +168,7 @@ Application::~Application()
 
 void Application::slotLogin()
 {
-    Account *a = AccountManager::instance()->account();
+    AccountState *a = AccountStateManager::instance()->accountState();
     if (a) {
         FolderMan::instance()->setupFolders();
         a->setSignedOut(false);
@@ -171,34 +177,36 @@ void Application::slotLogin()
 
 void Application::slotLogout()
 {
-    Account *a = AccountManager::instance()->account();
-    if (a) {
+    AccountState* ai = AccountStateManager::instance()->accountState();
+    if (ai) {
+        Account* a = ai->account();
         // invalidate & forget token/password
         a->credentials()->invalidateToken(a);
         // terminate all syncs and unload folders
         FolderMan *folderMan = FolderMan::instance();
         folderMan->setSyncEnabled(false);
         folderMan->terminateSyncProcess();
-        a->setSignedOut(true);
+        ai->setSignedOut(true);
         // show result
         _gui->slotComputeOverallSyncStatus();
     }
 }
 
-void Application::slotAccountChanged(Account *newAccount, Account *oldAccount)
+void Application::slotAccountStateRemoved(AccountState *accountState)
 {
-    if (oldAccount) {
-        disconnect(oldAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
-        disconnect(oldAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
-        connect(oldAccount->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
-                _gui, SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
-    }
-    connect(newAccount, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
-    connect(newAccount, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
-    connect(newAccount->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
+    disconnect(accountState, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
+    disconnect(accountState, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
+    connect(accountState->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
             _gui, SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
 }
 
+void Application::slotAccountStateAdded(AccountState *accountState)
+{
+    connect(accountState, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
+    connect(accountState, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
+    connect(accountState->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
+            _gui, SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
+}
 
 void Application::slotCleanup()
 {
@@ -222,10 +230,10 @@ void Application::slotStartUpdateDetector()
 
 void Application::slotCheckConnection()
 {
-    Account *account = AccountManager::instance()->account();
+    AccountState *accountState = AccountStateManager::instance()->accountState();
 
-    if( account ) {
-        account->checkConnectivity();
+    if( accountState ) {
+        accountState->checkConnectivity();
 
     } else {
         // let gui open the setup wizard
@@ -239,15 +247,15 @@ void Application::slotAccountStateChanged(int state)
 {
     FolderMan* folderMan = FolderMan::instance();
     switch (state) {
-    case Account::Connected:
+    case AccountState::Connected:
         qDebug() << "Enabling sync scheduler, scheduling all folders";
         folderMan->setSyncEnabled(true);
         folderMan->slotScheduleAllFolders();
         break;
-    case Account::SignedOut:
-    case Account::ConfigurationError:
-    case Account::NetworkError:
-    case Account::Disconnected:
+    case AccountState::SignedOut:
+    case AccountState::ConfigurationError:
+    case AccountState::NetworkError:
+    case AccountState::Disconnected:
         qDebug() << "Disabling sync scheduler, terminating sync";
         folderMan->setSyncEnabled(false);
         folderMan->terminateSyncProcess();
@@ -256,8 +264,8 @@ void Application::slotAccountStateChanged(int state)
 
     // Stop checking the connection if we're manually signed out or
     // when the error is permanent.
-    if (state == Account::SignedOut
-            || state == Account::ConfigurationError) {
+    if (state == AccountState::SignedOut
+            || state == AccountState::ConfigurationError) {
         _checkConnectionTimer.stop();
     } else if (! _checkConnectionTimer.isActive()) {
         _checkConnectionTimer.start();
@@ -273,14 +281,14 @@ void Application::slotCrash()
 
 void Application::slotUpdateConnectionErrors(int accountState)
 {
-    bool isConnected = accountState == Account::Connected;
+    bool isConnected = accountState == AccountState::Connected;
     if( !isConnected ) {
-        _startupNetworkError = accountState == Account::NetworkError;
+        _startupNetworkError = accountState == AccountState::NetworkError;
     }
 
-    Account *account = AccountManager::instance()->account();
-    if (account) {
-        _gui->setConnectionErrors( isConnected, account->connectionErrors() );
+    AccountState *as = AccountStateManager::instance()->accountState();
+    if (as) {
+        _gui->setConnectionErrors( isConnected, as->connectionErrors() );
     }
 }
 

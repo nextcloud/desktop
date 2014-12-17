@@ -39,6 +39,7 @@ class AccountSettings;
 class FolderMan;
 class IgnoreListEditor;
 class Account;
+class AccountState;
 
 class AccountSettings : public QWidget
 {
@@ -96,10 +97,10 @@ private:
     QHash<QStandardItem*, QTimer*> _hideProgressTimers;
     QStringList _generalErrors;
     bool _wasDisabledBefore;
-    Account *_account;
+    AccountState *_accountState;
 private slots:
     void slotFolderSyncStateChange();
-    void slotAccountChanged(Account*,Account*);
+    void slotAccountStateChanged(AccountState*);
 };
 
 } // namespace OCC
