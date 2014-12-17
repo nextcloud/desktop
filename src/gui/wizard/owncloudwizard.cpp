@@ -182,11 +182,11 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
     setOption(QWizard::HaveCustomButton1, id == WizardCommon::Page_AdvancedSetup);
 }
 
-void OwncloudWizard::displayError( const QString& msg )
+void OwncloudWizard::displayError( const QString& msg, bool retryHTTPonly )
 {
     switch (currentId()) {
     case WizardCommon::Page_ServerSetup:
-        _setupPage->setErrorString( msg );
+        _setupPage->setErrorString( msg, retryHTTPonly );
         break;
 
     case WizardCommon::Page_HttpCreds:

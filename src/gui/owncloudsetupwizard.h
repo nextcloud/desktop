@@ -62,7 +62,6 @@ class OwncloudSetupWizard : public QObject
 public:
     /** Run the wizard */
     static void runWizard(QObject *obj, const char* amember, QWidget *parent = 0 );
-
 signals:
     // overall dialog close signal.
     void ownCloudWizardDone( int );
@@ -85,13 +84,13 @@ private slots:
 private:
     explicit OwncloudSetupWizard(QObject *parent = 0 );
     ~OwncloudSetupWizard();
-
     void startWizard();
     void testOwnCloudConnect();
     void createRemoteFolder();
     void finalizeSetup( bool );
     bool ensureStartFromScratch(const QString &localFolder);
     void replaceDefaultAccountWith(Account *newAccount);
+    bool checkDowngradeAdvised(QNetworkReply* reply);
 
     Account* _account;
     OwncloudWizard* _ocWizard;

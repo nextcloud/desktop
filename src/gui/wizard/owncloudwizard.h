@@ -54,7 +54,7 @@ public:
 
     void enableFinishOnResultWidget(bool enable);
 
-    void displayError( const QString& );
+    void displayError( const QString&, bool retryHTTPonly);
     void setMultipleFoldersExist( bool );
     void setConfigExists( bool );
     bool configExists();
