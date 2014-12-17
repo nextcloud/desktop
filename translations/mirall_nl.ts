@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation>Kies wat moet worden gesynchroniseerd</translation>
+        <translation>Wat synchroniseren</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="101"/>
@@ -622,7 +622,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="443"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation>Kies wat u wilt synchroniseren: u kunt optioneel submappen die u niet wilt synch&apos;en deselecteren.</translation>
+        <translation>Wat synchroniseren: u kunt optioneel submappen die u niet wilt synchroniseren deselecteren.</translation>
     </message>
 </context>
 <context>
@@ -1563,7 +1563,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="271"/>
         <source>Choose What to Sync</source>
-        <translation>Kies wat moet worden gesynchroniseerd</translation>
+        <translation>Wat synchroniseren</translation>
     </message>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="274"/>
@@ -2069,7 +2069,7 @@ We adviseren deze site niet te gebruiken.</translation>
         <location filename="../src/mirall/syncengine.cpp" line="877"/>
         <location filename="../src/mirall/syncengine.cpp" line="884"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Genegeerd vanwege de &quot;kies wat te synchen&quot; zwarte lijst</translation>
+        <translation>Genegeerd vanwege de &quot;wat synchroniseren&quot; zwarte lijst</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="902"/>
@@ -2324,7 +2324,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="122"/>
         <source>Choose what to sync</source>
-        <translation>Kies wat gesynchroniseerd moet worden</translation>
+        <translation>Wat synchroniseren</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="178"/>

@@ -425,7 +425,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="239"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Une synchronisation antérieure du journal de %1 a été trouvée, mais ne peut être supprimée. Veuillez vous assurer qu’aucune application n&apos;est utilisée en ce moment.</translation>
+        <translation>Un ancien fichier journal &apos;%1&apos; a été trouvé, mais ne peut être supprimé. Veuillez vous assurer qu’aucune application ne l&apos;utilise en ce moment.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="963"/>
