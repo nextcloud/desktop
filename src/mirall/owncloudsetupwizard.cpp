@@ -228,7 +228,9 @@ void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
         break;
 
     default:
-        _ocWizard->displayError(tr("Error: Wrong credentials."));
+        _ocWizard->show();
+        _ocWizard->back();
+        _ocWizard->displayError(reply->errorString());
         break;
     }
 }
