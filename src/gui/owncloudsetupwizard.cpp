@@ -54,7 +54,7 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject* parent) :
     connect( _ocWizard, SIGNAL(basicSetupFinished(int)),
              this, SLOT(slotAssistantFinished(int)), Qt::QueuedConnection);
     connect( _ocWizard, SIGNAL(finished(int)), SLOT(deleteLater()));
-    connect( _ocWizard, SIGNAL(skipFolderConfiguration()), SLOT(slotSkipFolderConfigruation()));
+    connect( _ocWizard, SIGNAL(skipFolderConfiguration()), SLOT(slotSkipFolderConfiguration()));
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -395,64 +395,29 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
     FolderMan *folderMan = FolderMan::instance();
 
     if( result == QDialog::Rejected ) {
-        // the old config remains valid. Remove the temporary one.
-        _ocWizard->account()->deleteLater();
         qDebug() << "Rejected the new config, use the old!";
+
     } else if( result == QDialog::Accepted ) {
-        AccountPtr newAccount = _ocWizard->account();
-        AccountPtr origAccount = AccountManager::instance()->account();
+        // This may or may not wipe all folder definitions, depending
+        // on whether a new account is activated or the existing one
+        // is changed.
+        applyAccountChanges();
+
+        // But if the user went through with the folder config wizard,
+        // we assume they always want to have only that folder configured.
+        folderMan->removeAllFolderDefinitions();
 
         QString localFolder = QDir::fromNativeSeparators(_ocWizard->localFolder());
         if( !localFolder.endsWith(QLatin1Char('/'))) {
             localFolder.append(QLatin1Char('/'));
         }
 
-        Folder *f = folderMan->folderForPath(localFolder);
-        if( f ) {
-            folderMan->setSyncEnabled(false);
-            f->slotTerminateSync();
-            f->journalDb()->close();
-        }
-
-        bool isInitialSetup = (origAccount == 0);
-
-        // check if either the account or the local folder changed, than reinit
-        bool reinitRequired = _initLocalFolder != localFolder ||
-                newAccount->changed(origAccount, true /* ignoreProtocol, allows http->https */);
         bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
-
-        // This distinguishes three possibilities:
-        // 1. Initial setup, no prior account exists
-        if (isInitialSetup) {
+        if (!startFromScratch || ensureStartFromScratch(localFolder)) {
+            qDebug() << "Adding folder definition for" << localFolder << _remoteFolder;
             folderMan->addFolderDefinition(Theme::instance()->appName(),
                                            localFolder, _remoteFolder, _ocWizard->blacklist() );
-            replaceDefaultAccountWith(newAccount);
-        }
-        // 2. Server URL or user changed, requires reinit of folders
-        else if (reinitRequired) {
-            folderMan->removeAllFolderDefinitions();
-            // 2.1: startFromScratch: (Re)move local data, clean slate sync
-            if (startFromScratch) {
-                if (ensureStartFromScratch(localFolder)) {
-                    folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                                   localFolder, _remoteFolder, _ocWizard->blacklist() );
-                    _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
-                    replaceDefaultAccountWith(newAccount);
-                }
-            }
-            // 2.2: Reinit: Remove journal and start a sync
-            else {
-                folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                               localFolder, _remoteFolder, _ocWizard->blacklist() );
-                _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
-                replaceDefaultAccountWith(newAccount);
-            }
-        }
-        // 3. Existing setup, http -> https or password changed
-        else {
-            // TODO: Adjust instead of replace account, so folders stay around
-            replaceDefaultAccountWith(newAccount);
-            qDebug() << "Only password was changed, no changes to folder configuration.";
+            _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
         }
     }
 
@@ -460,13 +425,39 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
     emit ownCloudWizardDone( result );
 }
 
-void OwncloudSetupWizard::slotSkipFolderConfigruation()
+void OwncloudSetupWizard::slotSkipFolderConfiguration()
 {
-    replaceDefaultAccountWith(_ocWizard->account());
-    _ocWizard->blockSignals(true);
+    applyAccountChanges();
+
+    disconnect( _ocWizard, SIGNAL(basicSetupFinished(int)),
+                this, SLOT(slotAssistantFinished(int)) );
     _ocWizard->close();
-    _ocWizard->blockSignals(false);
     emit ownCloudWizardDone( QDialog::Accepted );
+}
+
+void OwncloudSetupWizard::applyAccountChanges()
+{
+    AccountPtr newAccount = _ocWizard->account();
+    AccountPtr origAccount = AccountManager::instance()->account();
+
+    bool isInitialSetup = (origAccount == 0);
+
+    // check if either the account changed in a major way
+    bool reinitRequired =
+            newAccount->changed(origAccount, true /* ignoreProtocol, allows http->https */);
+
+    // If this is a completely new account, replace it entirely
+    // thereby clearing all folder definitions.
+    if (isInitialSetup || reinitRequired) {
+        replaceDefaultAccountWith(newAccount);
+        qDebug() << "Significant changes or first setup: switched to new account";
+    }
+    // Otherwise, set only URL and credentials
+    else {
+        origAccount->setUrl(newAccount->url());
+        origAccount->setCredentials(_ocWizard->getCredentials());
+        qDebug() << "Only password or schema was changed, adjusted existing account";
+    }
 }
 
 
