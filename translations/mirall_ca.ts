@@ -1100,29 +1100,34 @@ for additional privileges during the process.</source>
         <translation>Configura el sevidor %1</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="106"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Aquesta adreça NO és segura i no és encriptada.
 No és aconsellada usar-la.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="114"/>
         <source>This url is secure. You can use it.</source>
         <translation>Aquesta url és segura. Podeu usar-la.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="153"/>
+        <source>&amp;Next &gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="233"/>
         <source>&lt;p&gt;Could not connect securely:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Do you want to connect unencrypted instead (not recommended)?&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="234"/>
         <source>Connection failed</source>
         <translation>La connexió ha fallat</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="263"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="269"/>
         <source>Update %1 server</source>
         <translation>Actualitza el servidor %1</translation>
     </message>
@@ -1130,13 +1135,13 @@ No és aconsellada usar-la.</translation>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="375"/>
         <source>Folder rename failed</source>
         <translation>Ha fallat en canviar el nom de la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;la carpeta de sincronització %1 s&apos;ha creat correctament!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1151,32 +1156,27 @@ No és aconsellada usar-la.</translation>
         <translation>&lt;font color=&quot;green&quot;&gt;S&apos;ha connectat correctament amb %1: %2 versió %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="231"/>
-        <source>Error: Wrong credentials.</source>
-        <translation>Error: credencials incorrectes.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="245"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="247"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>La carpeta local %1 ja existeix, s&apos;està configurant per sincronitzar.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="249"/>
         <source>Creating local sync folder %1... </source>
         <translation>Creant carpeta local de sincronització %1...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="251"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
         <source>ok</source>
         <translation>correcte</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
         <source>failed.</source>
         <translation>ha fallat.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="257"/>
         <source>Could not create local folder %1</source>
         <translation>No s&apos;ha pogut crear la carpeta local %1</translation>
     </message>
@@ -1187,69 +1187,69 @@ No és aconsellada usar-la.</translation>
         <translation>Ha fallat la connexió amb %1 a %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="280"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
         <source>No remote folder specified!</source>
         <translation>No heu especificat cap carpeta remota!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="286"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="288"/>
         <source>Error: %1</source>
         <translation>Error: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="299"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="301"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>creant la carpeta a ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>La carpeta remota %1 s&apos;ha creat correctament.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>La carpeta remota %1 ja existeix. S&apos;hi està connectant per sincronitzar-les.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="323"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>La creació de la carpeta ha resultat en el codi d&apos;error HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="325"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Ha fallat la creació de la carpeta perquè les credencials proporcionades són incorrectes!&lt;br/&gt;Aneu enrera i comproveu les credencials.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="326"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="328"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;La creació de la carpeta remota ha fallat, probablement perquè les credencials facilitades són incorrectes.&lt;/font&gt;&lt;br/&gt;Comproveu les vostres credencials.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="331"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="332"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="333"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="334"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>La creació de la carpeta remota %1 ha fallat amb l&apos;error &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="348"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="350"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>S&apos;ha establert una connexió de sincronització des de %1 a la carpeta remota %2.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="355"/>
         <source>Successfully connected to %1!</source>
         <translation>Connectat amb èxit a %1!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="360"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="362"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>No s&apos;ha pogut establir la connexió amb %1. Comproveu-ho de nou.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="376"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>No es pot esborrar i restaurar la carpeta perquè una carpeta o un fitxer de dins està obert en un altre programa. Tanqueu la carpeta o el fitxer i intenteu-ho de nou o cancel·leu la configuració.</translation>
     </message>

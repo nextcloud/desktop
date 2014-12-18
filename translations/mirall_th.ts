@@ -1094,28 +1094,33 @@ for additional privileges during the process.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="106"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="114"/>
         <source>This url is secure. You can use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="153"/>
+        <source>&amp;Next &gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="233"/>
         <source>&lt;p&gt;Could not connect securely:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Do you want to connect unencrypted instead (not recommended)?&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="234"/>
         <source>Connection failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="263"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="269"/>
         <source>Update %1 server</source>
         <translation type="unfinished"/>
     </message>
@@ -1123,13 +1128,13 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="375"/>
         <source>Folder rename failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;โฟลเดอร์ภายในเครื่องสำหรับผสานข้อมูล %1 ได้ถูกสร้างขึ้นเรียบร้อยแล้ว!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1144,32 +1149,27 @@ It is not advisable to use it.</source>
         <translation>&lt;font color=&quot;green&quot;&gt;เชื่อมต่อกับ %1: %2 รุ่น %3 (%4) เสร็จเรียบร้อยแล้ว&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="231"/>
-        <source>Error: Wrong credentials.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="245"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="247"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>โฟลเดอร์สำหรับถ่ายโอนข้อมูลภายในเครื่อง %1 มีอยู่แล้ว กรุณาตั้งค่าเพื่อถ่ายข้อมูล &lt;br/&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="249"/>
         <source>Creating local sync folder %1... </source>
         <translation>กำลังสร้างโฟลเดอร์สำหรับโอนถ่ายข้อมูลภายในเครื่อง %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="251"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
         <source>ok</source>
         <translation>ตกลง</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
         <source>failed.</source>
         <translation>ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="257"/>
         <source>Could not create local folder %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1180,69 +1180,69 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="280"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="286"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="288"/>
         <source>Error: %1</source>
         <translation>ข้อผิดพลาด: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="299"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="301"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>กำลังสร้างโฟลเดอร์ใหม่บน ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>โฟลเดอร์ระยะไกล %1 ถูกสร้างเรียบร้อยแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>โฟลเดอร์ระยะไกล %1 มีอยู่แล้ว กำลังเชื่อมต่อเพื่อถ่ายโอนข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="323"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>การสร้างโฟลเดอร์ดังกล่าวส่งผลให้เกิดรหัสข้อผิดพลาด HTTP error code %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="325"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="326"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="328"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;การสร้างโฟลเดอร์ระยะไกลล้มเหลว ซึ่งอาจมีสาเหตุมาจากการกรอกข้อมูลส่วนตัวเพื่อเข้าใช้งานไม่ถูกต้อง.&lt;/font&gt;&lt;br/&gt;กรุณาย้อนกลับไปแล้วตรวจสอบข้อมูลส่วนตัวของคุณอีกครั้ง.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="331"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="332"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="333"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="334"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>การสร้างโฟลเดอร์ระยะไกล %1 ล้มเหลวเนื่องข้อผิดพลาด &lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="348"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="350"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>การเชื่อมต่อเผื่อผสานข้อมูลจาก %1 ไปที่ไดเร็กทอรี่ระยะไกล %2 ได้ถูกติดตั้งแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="355"/>
         <source>Successfully connected to %1!</source>
         <translation>เชื่อมต่อไปที่ %1! สำเร็จ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="360"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="362"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>การเชื่อมต่อกับ %1 ไม่สามารถดำเนินการได้ กรุณาตรวจสอบอีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="376"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation type="unfinished"/>
     </message>

@@ -1100,29 +1100,34 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
         <translation>Nastavi strežnik %1</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="106"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Na naslov URL ni varen, saj ni šifriran.
 Uporaba ni priporočljiva.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="114"/>
         <source>This url is secure. You can use it.</source>
         <translation>Ta naslov URL je varen za uporabo.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="153"/>
+        <source>&amp;Next &gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="233"/>
         <source>&lt;p&gt;Could not connect securely:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Do you want to connect unencrypted instead (not recommended)?&lt;/p&gt;</source>
         <translation>&lt;p&gt;Varne povezave ni mogoče vzpostaviti:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Ali želite vzpostaviti nešifrirano povezavo (ni priporočeno)?&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="234"/>
         <source>Connection failed</source>
         <translation>Povezava je spodletela</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="263"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="269"/>
         <source>Update %1 server</source>
         <translation>Posodobi strežnik %1</translation>
     </message>
@@ -1130,13 +1135,13 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="375"/>
         <source>Folder rename failed</source>
         <translation>Preimenovanje mape je spodletelo</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Krajevno usklajena mapa %1 je uspešno ustvarjena!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1151,32 +1156,27 @@ Uporaba ni priporočljiva.</translation>
         <translation>&lt;font color=&quot;green&quot;&gt;Uspešno vzpostavljena povezava z %1: %2 različica %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="231"/>
-        <source>Error: Wrong credentials.</source>
-        <translation>Napaka: napačna poverila.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="245"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="247"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Krajevna mapa %1 že obstaja. Nastavljena bo za usklajevanje.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="249"/>
         <source>Creating local sync folder %1... </source>
         <translation>Ustvarjanje mape za krajevno usklajevanje %1... </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="251"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
         <source>ok</source>
         <translation>je v redu</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
         <source>failed.</source>
         <translation>je spodletelo.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="257"/>
         <source>Could not create local folder %1</source>
         <translation>Krajevne mape %1 ni mogoče ustvariti.</translation>
     </message>
@@ -1187,69 +1187,69 @@ Uporaba ni priporočljiva.</translation>
         <translation>Povezava z %1 pri %2 je spodletela:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="280"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
         <source>No remote folder specified!</source>
         <translation>Ni navedenega oddaljenega strežnika!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="286"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="288"/>
         <source>Error: %1</source>
         <translation>Napaka: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="299"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="301"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>ustvarjanje mape v oblaku ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Oddaljena mapa %1 je uspešno ustvarjena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Oddaljena mapa %1 že obstaja. Vzpostavljena bo povezava za usklajevanje.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="323"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Ustvarjanje mape je povzročilo napako HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="325"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Ustvarjanje mape na oddaljenem naslovu je spodletelo zaradi napačnih poveril. &lt;br/&gt;Vrnite se in preverite zahtevana gesla.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="326"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="328"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Ustvarjanje oddaljene mape je spodletelo. Najverjetneje je vzrok v neustreznih poverilih.&lt;/font&gt;&lt;br/&gt;Vrnite se na predhodno stran in jih preverite.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="331"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="332"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="333"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="334"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Ustvarjanje oddaljene mape %1 je spodletelo z napako &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="348"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="350"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Povezava za usklajevanje med %1 in oddaljeno mapo %2 je vzpostavljena.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="355"/>
         <source>Successfully connected to %1!</source>
         <translation>Povezava z %1 je  uspešno vzpostavljena!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="360"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="362"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Povezave z %1 ni mogoče vzpostaviti. Preveriti je treba nastavitve.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="376"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Mape ni mogoče odstraniti niti ni mogoče ustvariti varnostne kopije, saj je mapa oziroma dokument v njej odprt v z drugim programom. Zaprite mapo/dokument ali prekinite namestitev.</translation>
     </message>

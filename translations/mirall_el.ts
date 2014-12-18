@@ -1101,29 +1101,34 @@ for additional privileges during the process.</source>
         <translation>Ρύθμιση %1 διακομιστή</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="106"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Αυτή η ιστοσελίδα ΔΕΝ είναι ασφαλής καθώς δεν είναι κρυπτογραφημένη.
 Δεν προτείνεται να τη χρησιμοποιήσετε.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="114"/>
         <source>This url is secure. You can use it.</source>
         <translation>Αυτή η url είναι ασφαλές. Μπορείτε να τη χρησιμοποιήσετε. </translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="153"/>
+        <source>&amp;Next &gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="233"/>
         <source>&lt;p&gt;Could not connect securely:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Do you want to connect unencrypted instead (not recommended)?&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="234"/>
         <source>Connection failed</source>
         <translation>Σύνδεση απέτυχε</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="263"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="269"/>
         <source>Update %1 server</source>
         <translation>Ενημέρωση %1 διακομιστή</translation>
     </message>
@@ -1131,13 +1136,13 @@ It is not advisable to use it.</source>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="375"/>
         <source>Folder rename failed</source>
         <translation>Αποτυχία μετονομασίας φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Επιτυχής δημιουργία τοπικού φακέλου %1 για συγχρονισμό!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1152,32 +1157,27 @@ It is not advisable to use it.</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Επιτυχής σύνδεση στο %1: %2 έκδοση %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="231"/>
-        <source>Error: Wrong credentials.</source>
-        <translation>Σφάλμα: Λάθος διαπιστευτήρια.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="245"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="247"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Ο τοπικός φάκελος συγχρονισμού %1 υπάρχει ήδη, ρύθμιση για συγχρονισμό.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="249"/>
         <source>Creating local sync folder %1... </source>
         <translation>Δημιουργία τοπικού φακέλου %1 για συγχρονισμό... </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="251"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
         <source>ok</source>
         <translation>οκ</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
         <source>failed.</source>
         <translation>απέτυχε.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="257"/>
         <source>Could not create local folder %1</source>
         <translation>Αδυναμία δημιουργίας τοπικού φακέλου %1 </translation>
     </message>
@@ -1188,69 +1188,69 @@ It is not advisable to use it.</source>
         <translation>Αποτυχία σύνδεσης με το %1 στο %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="280"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
         <source>No remote folder specified!</source>
         <translation>Δεν προσδιορίστηκε κανένας απομακρυσμένος φάκελος!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="286"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="288"/>
         <source>Error: %1</source>
         <translation>Σφάλμα: %1 </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="299"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="301"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>δημιουργία φακέλου στο ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Ο απομακρυσμένος φάκελος %1 δημιουργήθηκε με επιτυχία.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Ο απομακρυσμένος φάκελος %1 υπάρχει ήδη. Θα συνδεθεί για συγχρονισμό. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="323"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Η δημιουργία φακέλου είχε ως αποτέλεσμα τον κωδικό σφάλματος HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="325"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Η δημιουργία απομακρυσμένου φακέλλου απέτυχε επειδή τα διαπιστευτήρια είναι λάθος!&lt;br/&gt;Παρακαλώ επιστρέψετε και ελέγξετε τα διαπιστευτήριά σας.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="326"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="328"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Η δημιουργία απομακρυσμένου φακέλου απέτυχε, πιθανώς επειδή τα διαπιστευτήρια που δόθηκαν είναι λάθος.&lt;/font&gt;&lt;br/&gt;Παρακαλώ επιστρέψτε πίσω και ελέγξτε τα διαπιστευτήρια σας.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="331"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="332"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="333"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="334"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Η δημιουργία απομακρυσμένου φακέλου %1 απέτυχε με σφάλμα &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="348"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="350"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Μια σύνδεση συγχρονισμού από τον απομακρυσμένο κατάλογο %1 σε %2 έχει ρυθμιστεί. </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="355"/>
         <source>Successfully connected to %1!</source>
         <translation>Επιτυχής σύνδεση με %1!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="360"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="362"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Αδυναμία σύνδεσης στον %1. Παρακαλώ ελέξτε ξανά.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="376"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Αδυναμία αφαίρεσης και δημιουργίας αντιγράφου ασφαλείας του φακέλου διότι ο φάκελος ή ένα αρχείο του είναι ανοικτό από άλλο πρόγραμμα. Παρακαλώ κλείστε τον φάκελο ή το αρχείο και πατήστε επανάληψη ή ακυρώστε την ρύθμιση.</translation>
     </message>
