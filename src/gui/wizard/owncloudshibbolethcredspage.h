@@ -21,10 +21,10 @@
 #include <QPointer>
 
 #include "wizard/abstractcredswizardpage.h"
+#include "accountfwd.h"
 
 namespace OCC {
 
-class Account;
 class ShibbolethWebView;
 
 class OwncloudShibbolethCredsPage : public AbstractCredentialsWizardPage
@@ -46,7 +46,7 @@ public Q_SLOTS:
   void setVisible(bool visible) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
-  void slotShibbolethCookieReceived(const QNetworkCookie&, Account*);
+  void slotShibbolethCookieReceived(const QNetworkCookie&, AccountPtr);
   void slotBrowserRejected();
 
 private:

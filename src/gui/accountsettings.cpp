@@ -781,7 +781,7 @@ void AccountSettings::slotAccountStateChanged(int state)
 {
     if (_accountState) {
         ui->sslButton->updateAccountState(_accountState);
-        Account* account = _accountState->account();
+        AccountPtr account = _accountState->account();
         QUrl safeUrl(account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
         slotButtonsSetEnabled();

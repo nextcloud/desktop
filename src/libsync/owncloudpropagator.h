@@ -29,6 +29,7 @@
 #include "syncfileitem.h"
 #include "syncjournaldb.h"
 #include "bandwidthmanager.h"
+#include "accountfwd.h"
 
 struct hbf_transfer_s;
 struct ne_session_s;
@@ -36,8 +37,6 @@ struct ne_decompress_s;
 typedef struct ne_prop_result_set_s ne_prop_result_set;
 
 namespace OCC {
-
-class Account;
 
 class SyncJournalDb;
 class OwncloudPropagator;
@@ -254,7 +253,8 @@ public:
 
 
 public:
-    OwncloudPropagator(ne_session_s *session, const QString &localDir, const QString &remoteDir, const QString &remoteFolder,
+    OwncloudPropagator(AccountPtr account, ne_session_s *session, const QString &localDir,
+                       const QString &remoteDir, const QString &remoteFolder,
                        SyncJournalDb *progressDb, QThread *neonThread)
             : _neonThread(neonThread)
             , _session(session)
@@ -266,6 +266,7 @@ public:
             , _bandwidthManager(this)
             , _activeJobs(0)
             , _anotherSyncNeeded(false)
+            , _account(account)
     { }
 
     void start(const SyncFileItemVector &_syncedItems);
@@ -312,6 +313,8 @@ public:
      */
     qint64 timeSinceFileTouched(const QString& fn) const;
 
+    AccountPtr account() const;
+
 
 private slots:
 
@@ -336,6 +339,8 @@ signals:
 
 private:
 
+    AccountPtr _account;
+
     /** Stores the time since a job touched a file. */
     QHash<QString, QElapsedTimer> _touchedFiles;
     mutable QMutex _touchedFilesMutex;
@@ -345,11 +350,11 @@ private:
 class CleanupPollsJob : public QObject {
     Q_OBJECT
     QVector< SyncJournalDb::PollInfo > _pollInfos;
-    Account *_account;
+    AccountPtr _account;
     SyncJournalDb *_journal;
     QString _localPath;
 public:
-    explicit CleanupPollsJob(const QVector< SyncJournalDb::PollInfo > &pollInfos, Account *account,
+    explicit CleanupPollsJob(const QVector< SyncJournalDb::PollInfo > &pollInfos, AccountPtr account,
                              SyncJournalDb *journal, const QString &localPath, QObject* parent = 0)
         : QObject(parent), _pollInfos(pollInfos), _account(account), _journal(journal), _localPath(localPath) {}
 

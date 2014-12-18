@@ -585,7 +585,7 @@ void ownCloudGui::slotToggleLogBrowser()
 
 void ownCloudGui::slotOpenOwnCloud()
 {
-    if (Account *account = AccountManager::instance()->account()) {
+    if (AccountPtr account = AccountManager::instance()->account()) {
         QDesktopServices::openUrl(account->url());
     }
 }

@@ -20,6 +20,7 @@
 #include "socketapi.h"
 #include "account.h"
 #include "accountmigrator.h"
+#include "accountstate.h"
 
 #include <neon/ne_socket.h>
 
@@ -70,6 +71,9 @@ FolderMan::FolderMan(QObject *parent) :
     _etagPollTimer.setInterval( polltime );
     QObject::connect(&_etagPollTimer, SIGNAL(timeout()), this, SLOT(slotEtagPollTimerTimeout()));
     _etagPollTimer.start();
+
+    connect(AccountStateManager::instance(), SIGNAL(accountStateRemoved(AccountState*)),
+            SLOT(slotRemoveFoldersForAccount(AccountState*)));
 }
 
 FolderMan *FolderMan::instance()
@@ -199,7 +203,7 @@ int FolderMan::setupFolders()
 
   if( list.count() == 0 ) {
       // maybe the account was just migrated.
-      Account *acc = AccountManager::instance()->account();
+      AccountPtr acc = AccountManager::instance()->account();
       if ( acc && acc->wasMigrated() ) {
           AccountMigrator accMig;
           list = accMig.migrateFolderDefinitons();
@@ -344,7 +348,13 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
         targetPath.remove(0,1);
     }
 
-    folder = new Folder( alias, path, targetPath, this );
+    AccountState* accountState = AccountStateManager::instance()->accountState();
+    if (!accountState) {
+        qWarning() << "can't create folder without an account";
+        return 0;
+    }
+
+    folder = new Folder( accountState, alias, path, targetPath, this );
     folder->setConfigFile(cfgFile.absoluteFilePath());
     folder->setSelectiveSyncBlackList(blackList);
     qDebug() << "Adding folder to Folder Map " << folder;
@@ -608,6 +618,24 @@ void FolderMan::slotEtagPollTimerTimeout()
              QString alias = i.next();
              QMetaObject::invokeMethod(_folderMap.value(alias), "slotRunEtagJob", Qt::QueuedConnection);
          }
+    }
+}
+
+void FolderMan::slotRemoveFoldersForAccount(AccountState* accountState)
+{
+    QStringList foldersToRemove;
+    Folder::MapIterator i(_folderMap);
+    while (i.hasNext()) {
+        i.next();
+        Folder* folder = i.value();
+        if (folder->accountState() == accountState) {
+            foldersToRemove.append(folder->alias());
+        }
+    }
+
+    qDebug() << "Account was removed, removing associated folders:" << foldersToRemove;
+    foreach (const QString& alias, foldersToRemove) {
+        slotRemoveFolder(alias);
     }
 }
 

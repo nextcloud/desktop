@@ -18,6 +18,7 @@
 #include <QList>
 #include <QPointer>
 #include <QWebView>
+#include "accountfwd.h"
 
 class QNetworkCookie;
 class QUrl;
@@ -26,21 +27,20 @@ namespace OCC
 {
 
 class ShibbolethCookieJar;
-class Account;
 
 class OWNCLOUDSYNC_EXPORT ShibbolethWebView : public QWebView
 {
   Q_OBJECT
 
 public:
-  ShibbolethWebView(Account *account, QWidget* parent = 0);
-  ShibbolethWebView(Account *account, ShibbolethCookieJar* jar, QWidget* parent = 0);
+  ShibbolethWebView(AccountPtr account, QWidget* parent = 0);
+  ShibbolethWebView(AccountPtr account, ShibbolethCookieJar* jar, QWidget* parent = 0);
   ~ShibbolethWebView();
 
   void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 Q_SIGNALS:
-  void shibbolethCookieReceived(const QNetworkCookie &cookie, Account *account);
+  void shibbolethCookieReceived(const QNetworkCookie &cookie, AccountPtr account);
   void rejected();
 
 private Q_SLOTS:
@@ -52,8 +52,8 @@ protected:
   void accept();
 
 private:
-  void setup(Account *account, ShibbolethCookieJar* jar);
-  QPointer<Account> _account;
+  void setup(AccountPtr account, ShibbolethCookieJar* jar);
+  AccountPtr _account;
   bool _accepted;
   bool _cursorOverriden;
 };

@@ -30,7 +30,7 @@
 
 namespace OCC {
 
-SelectiveSyncTreeView::SelectiveSyncTreeView(Account *account, QWidget* parent)
+SelectiveSyncTreeView::SelectiveSyncTreeView(AccountPtr account, QWidget* parent)
     : QTreeWidget(parent), _inserting(false), _account(account)
 {
     _loading = new QLabel(tr("Loading ..."), this);
@@ -249,7 +249,7 @@ QStringList SelectiveSyncTreeView::createBlackList(QTreeWidgetItem* root) const
     return result;
 }
 
-SelectiveSyncDialog::SelectiveSyncDialog(Account * account, Folder* folder, QWidget* parent, Qt::WindowFlags f)
+SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder* folder, QWidget* parent, Qt::WindowFlags f)
     :   QDialog(parent, f), _folder(folder)
 {
     init(account);
@@ -259,14 +259,14 @@ SelectiveSyncDialog::SelectiveSyncDialog(Account * account, Folder* folder, QWid
     connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
 }
 
-SelectiveSyncDialog::SelectiveSyncDialog(Account* account, const QStringList& blacklist, QWidget* parent, Qt::WindowFlags f)
+SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QStringList& blacklist, QWidget* parent, Qt::WindowFlags f)
     : QDialog(parent, f), _folder(0)
 {
     init(account);
     _treeView->setFolderInfo(QString(), QString(), blacklist);
 }
 
-void SelectiveSyncDialog::init(Account *account)
+void SelectiveSyncDialog::init(AccountPtr account)
 {
     setWindowTitle(tr("Choose What to Sync"));
     QVBoxLayout *layout = new QVBoxLayout(this);

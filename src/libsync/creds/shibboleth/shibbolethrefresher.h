@@ -31,7 +31,7 @@ class ShibbolethRefresher : public QObject
     Q_OBJECT
 
 public:
-    ShibbolethRefresher(Account *account, ShibbolethCredentials* creds, CSYNC* csync_ctx, QObject* parent = 0);
+    ShibbolethRefresher(AccountPtr account, ShibbolethCredentials* creds, CSYNC* csync_ctx, QObject* parent = 0);
 
     void refresh();
 
@@ -39,7 +39,7 @@ private Q_SLOTS:
     void onInvalidatedAndFetched(const QByteArray& cookieData);
 
 private:
-    Account* _account;
+    AccountPtr _account;
     ShibbolethCredentials* _creds;
     CSYNC* _csync_ctx;
 };

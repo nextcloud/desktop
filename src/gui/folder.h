@@ -41,18 +41,25 @@ class QThread;
 namespace OCC {
 
 class SyncEngine;
+class AccountState;
 
 class Folder : public QObject
 {
     Q_OBJECT
 
 public:
-    Folder(const QString&, const QString&, const QString& , QObject*parent = 0L);
+    Folder(AccountState* accountState,
+           const QString&, const QString&, const QString& , QObject*parent = 0L);
 
     ~Folder();
 
     typedef QHash<QString, Folder*> Map;
     typedef QHashIterator<QString, Folder*> MapIterator;
+
+    /**
+     * The account the folder is configured on.
+     */
+    AccountState* accountState() const;
 
     /**
      * alias or nickname
@@ -198,6 +205,7 @@ private:
     void createGuiLog(const QString& filename, SyncFileStatus status, int count,
                        const QString& renameTarget = QString::null );
 
+    AccountState* _accountState;
     QString   _path;
     QString   _remotePath;
     QString   _alias;

@@ -27,7 +27,7 @@ void PropagateRemoteMkdir::start()
 
     qDebug() << Q_FUNC_INFO << _item._file;
 
-    _job = new MkColJob(AccountManager::instance()->account(),
+    _job = new MkColJob(_propagator->account(),
                         _propagator->_remoteFolder + _item._file,
                         this);
     connect(_job, SIGNAL(finished(QNetworkReply::NetworkError)), this, SLOT(slotMkcolJobFinished()));

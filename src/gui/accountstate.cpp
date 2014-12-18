@@ -30,8 +30,8 @@ AccountStateManager *AccountStateManager::instance()
 AccountStateManager::AccountStateManager()
     : _accountState(0)
 {
-    connect(AccountManager::instance(), SIGNAL(accountAdded(Account*)),
-            SLOT(slotAccountAdded(Account*)));
+    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountPtr)),
+            SLOT(slotAccountAdded(AccountPtr)));
 }
 
 AccountStateManager::~AccountStateManager()
@@ -46,13 +46,13 @@ void AccountStateManager::setAccountState(AccountState *accountState)
     emit accountStateAdded(accountState);
 }
 
-void AccountStateManager::slotAccountAdded(Account* account)
+void AccountStateManager::slotAccountAdded(AccountPtr account)
 {
     setAccountState(new AccountState(account));
 }
 
-AccountState::AccountState(Account* account)
-    : QObject(account)
+AccountState::AccountState(AccountPtr account)
+    : QObject(account.data())
     , _account(account)
     , _quotaInfo(new QuotaInfo(this))
     , _state(AccountState::Disconnected)
@@ -61,9 +61,9 @@ AccountState::AccountState(Account* account)
 {
     qRegisterMetaType<AccountState*>("AccountState*");
 
-    connect(account, SIGNAL(invalidCredentials()),
+    connect(account.data(), SIGNAL(invalidCredentials()),
             SLOT(slotInvalidCredentials()));
-    connect(account, SIGNAL(credentialsFetched(AbstractCredentials*)),
+    connect(account.data(), SIGNAL(credentialsFetched(AbstractCredentials*)),
             SLOT(slotCredentialsFetched(AbstractCredentials*)));
 }
 
@@ -71,9 +71,9 @@ AccountState::~AccountState()
 {
 }
 
-Account *AccountState::account() const
+AccountPtr AccountState::account() const
 {
-    return _account;
+    return _account.toStrongRef();
 }
 
 AccountState::ConnectionStatus AccountState::connectionStatus() const
@@ -204,7 +204,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         setState(ConfigurationError);
         break;
     case ConnectionValidator::CredentialsWrong:
-        _account->handleInvalidCredentials();
+        account()->handleInvalidCredentials();
         break;
     case ConnectionValidator::Timeout:
         setState(NetworkError);

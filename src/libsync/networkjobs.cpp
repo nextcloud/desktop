@@ -42,7 +42,7 @@ namespace OCC {
 
 bool AbstractNetworkJob::preOc7WasDetected = false;
 
-AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QObject *parent)
+AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
     : QObject(parent)
     , _duration(0)
     , _timedout(false)
@@ -63,7 +63,7 @@ AbstractNetworkJob::AbstractNetworkJob(Account *account, const QString &path, QO
     // This is a workaround for OC instances which only support one
     // parallel up and download
     if (_account) {
-        connect(_account, SIGNAL(propagatorNetworkActivity()), SLOT(resetTimeout()));
+        connect(_account.data(), SIGNAL(propagatorNetworkActivity()), SLOT(resetTimeout()));
     }
 }
 
@@ -237,7 +237,7 @@ void AbstractNetworkJob::slotTimeout()
 
 /*********************************************************************************************/
 
-RequestEtagJob::RequestEtagJob(Account *account, const QString &path, QObject *parent)
+RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
 }
@@ -297,7 +297,7 @@ bool RequestEtagJob::finished()
 
 /*********************************************************************************************/
 
-MkColJob::MkColJob(Account *account, const QString &path, QObject *parent)
+MkColJob::MkColJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
 }
@@ -319,7 +319,7 @@ bool MkColJob::finished()
 
 /*********************************************************************************************/
 
-LsColJob::LsColJob(Account *account, const QString &path, QObject *parent)
+LsColJob::LsColJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
 }
@@ -380,7 +380,7 @@ const char statusphpC[] = "status.php";
 const char owncloudDirC[] = "owncloud/";
 }
 
-CheckServerJob::CheckServerJob(Account *account, QObject *parent)
+CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QLatin1String(statusphpC) , parent)
     , _subdirFallback(false)
 {
@@ -469,7 +469,7 @@ bool CheckServerJob::finished()
 
 /*********************************************************************************************/
 
-PropfindJob::PropfindJob(Account *account, const QString &path, QObject *parent)
+PropfindJob::PropfindJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
 
@@ -557,7 +557,7 @@ bool PropfindJob::finished()
 
 /*********************************************************************************************/
 
-EntityExistsJob::EntityExistsJob(Account *account, const QString &path, QObject *parent)
+EntityExistsJob::EntityExistsJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
 }
@@ -577,7 +577,7 @@ bool EntityExistsJob::finished()
 
 /*********************************************************************************************/
 
-CheckQuotaJob::CheckQuotaJob(Account *account, const QString &path, QObject *parent)
+CheckQuotaJob::CheckQuotaJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
 }

@@ -84,12 +84,12 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 
 }
 
-void OwncloudWizard::setAccount(Account *account)
+void OwncloudWizard::setAccount(AccountPtr account)
 {
     _account = account;
 }
 
-Account *OwncloudWizard::account() const
+AccountPtr OwncloudWizard::account() const
 {
     return _account;
 }

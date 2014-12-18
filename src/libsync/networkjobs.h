@@ -24,12 +24,12 @@
 #include <QElapsedTimer>
 #include <QDateTime>
 #include <QTimer>
+#include "accountfwd.h"
 
 class QUrl;
 
 namespace OCC {
 
-class Account;
 class AbstractSslErrorHandler;
 
 
@@ -50,12 +50,12 @@ private:
 class OWNCLOUDSYNC_EXPORT AbstractNetworkJob : public QObject {
     Q_OBJECT
 public:
-    explicit AbstractNetworkJob(Account *account, const QString &path, QObject* parent = 0);
+    explicit AbstractNetworkJob(AccountPtr account, const QString &path, QObject* parent = 0);
     virtual ~AbstractNetworkJob();
 
     virtual void start();
 
-    Account* account() const { return _account; }
+    AccountPtr account() const { return _account; }
 
     void setPath(const QString &path);
     QString path() const { return _path; }
@@ -109,7 +109,7 @@ private:
     QNetworkReply* addTimer(QNetworkReply *reply);
     bool _ignoreCredentialFailure;
     QPointer<QNetworkReply> _reply; // (QPointer because the NetworkManager may be destroyed before the jobs at exit)
-    Account *_account;
+    AccountPtr _account;
     QString _path;
     QTimer _timer;
     int _redirectCount;
@@ -121,7 +121,7 @@ private:
 class OWNCLOUDSYNC_EXPORT EntityExistsJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit EntityExistsJob(Account *account, const QString &path, QObject* parent = 0);
+    explicit EntityExistsJob(AccountPtr account, const QString &path, QObject* parent = 0);
     void start() Q_DECL_OVERRIDE;
 
 signals:
@@ -137,7 +137,7 @@ private slots:
 class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit LsColJob(Account *account, const QString &path, QObject *parent = 0);
+    explicit LsColJob(AccountPtr account, const QString &path, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
 
 signals:
@@ -153,7 +153,7 @@ private slots:
 class PropfindJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit PropfindJob(Account *account, const QString &path, QObject *parent = 0);
+    explicit PropfindJob(AccountPtr account, const QString &path, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
     void setProperties(QList<QByteArray> properties);
     QList<QByteArray> properties() const;
@@ -175,7 +175,7 @@ private:
 class OWNCLOUDSYNC_EXPORT MkColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit MkColJob(Account *account, const QString &path, QObject *parent = 0);
+    explicit MkColJob(AccountPtr account, const QString &path, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
 
 signals:
@@ -191,7 +191,7 @@ private slots:
 class OWNCLOUDSYNC_EXPORT CheckServerJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit CheckServerJob(Account *account, QObject *parent = 0);
+    explicit CheckServerJob(AccountPtr account, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
 
     static QString version(const QVariantMap &info);
@@ -218,7 +218,7 @@ private:
 class OWNCLOUDSYNC_EXPORT RequestEtagJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit RequestEtagJob(Account *account, const QString &path, QObject *parent = 0);
+    explicit RequestEtagJob(AccountPtr account, const QString &path, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
 
 signals:
@@ -234,7 +234,7 @@ private slots:
 class CheckQuotaJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit CheckQuotaJob(Account *account, const QString &path, QObject *parent = 0);
+    explicit CheckQuotaJob(AccountPtr account, const QString &path, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
 
 signals:

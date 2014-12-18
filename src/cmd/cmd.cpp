@@ -295,10 +295,10 @@ int main(int argc, char **argv) {
     // take the unmodified url to pass to csync_create()
     QByteArray remUrl = options.target_url.toUtf8();
 
-    Account account;
+    AccountPtr account = Account::create();
 
     // Find the folder and the original owncloud url
-    QStringList splitted = url.path().split(account.davPath());
+    QStringList splitted = url.path().split(account->davPath());
     url.setPath(splitted.value(0));
 
     url.setScheme(url.scheme().replace("owncloud", "http"));
@@ -311,11 +311,11 @@ int main(int argc, char **argv) {
     if( options.trustSSL ) {
         cred->setSSLTrusted(true);
     }
-    account.setUrl(url);
-    account.setCredentials(cred);
-    account.setSslErrorHandler(sslErrorHandler);
+    account->setUrl(url);
+    account->setCredentials(cred);
+    account->setSslErrorHandler(sslErrorHandler);
 
-    AccountManager::instance()->setAccount(&account);
+    AccountManager::instance()->setAccount(account);
 
 restart_sync:
 
@@ -400,7 +400,7 @@ restart_sync:
     Cmd cmd;
     SyncJournalDb db(options.source_dir);
 
-    SyncEngine engine(_csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
+    SyncEngine engine(account, _csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(Progress::Info)), &cmd, SLOT(transmissionProgressSlot()));
 

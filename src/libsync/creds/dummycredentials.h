@@ -35,9 +35,9 @@ public:
     QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
-    void fetch(Account*) Q_DECL_OVERRIDE;
-    void persist(Account*) Q_DECL_OVERRIDE;
-    void invalidateToken(Account *) Q_DECL_OVERRIDE {}
+    void fetch(AccountPtr) Q_DECL_OVERRIDE;
+    void persist(AccountPtr) Q_DECL_OVERRIDE;
+    void invalidateToken(AccountPtr) Q_DECL_OVERRIDE {}
 };
 
 } // namespace OCC

@@ -112,7 +112,7 @@ Application::Application(int &argc, char **argv) :
     // account manager.
     AccountStateManager::instance();
 
-    Account *account = Account::restore();
+    AccountPtr account = Account::restore();
     if (account) {
         account->setSslErrorHandler(new SslDialogErrorHandler);
         AccountManager::instance()->setAccount(account);
@@ -162,7 +162,6 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
-    delete AccountManager::instance()->account();
     // qDebug() << "* OCC shutdown";
 }
 
@@ -179,7 +178,7 @@ void Application::slotLogout()
 {
     AccountState* ai = AccountStateManager::instance()->accountState();
     if (ai) {
-        Account* a = ai->account();
+        AccountPtr a = ai->account();
         // invalidate & forget token/password
         a->credentials()->invalidateToken(a);
         // terminate all syncs and unload folders
@@ -212,7 +211,7 @@ void Application::slotCleanup()
 {
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
-    Account *account = AccountManager::instance()->account();
+    AccountPtr account = AccountManager::instance()->account();
     if (account) {
         account->save();
     }

@@ -37,7 +37,7 @@ void OwncloudShibbolethCredsPage::setupBrowser()
         return;
     }
     OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard*>(wizard());
-    Account *account = ocWizard->account();
+    AccountPtr account = ocWizard->account();
 
     // we need to reset the cookie jar to drop temporary cookies (like the shib cookie)
     // i.e. if someone presses "back"
@@ -47,8 +47,8 @@ void OwncloudShibbolethCredsPage::setupBrowser()
     qnam->setCookieJar(jar);
 
     _browser = new ShibbolethWebView(account);
-    connect(_browser, SIGNAL(shibbolethCookieReceived(const QNetworkCookie&, Account*)),
-            this, SLOT(slotShibbolethCookieReceived(const QNetworkCookie&, Account*)), Qt::QueuedConnection);
+    connect(_browser, SIGNAL(shibbolethCookieReceived(const QNetworkCookie&, AccountPtr)),
+            this, SLOT(slotShibbolethCookieReceived(const QNetworkCookie&, AccountPtr)), Qt::QueuedConnection);
     connect(_browser, SIGNAL(rejected()),
             this, SLOT(slotBrowserRejected()));
 
@@ -93,12 +93,12 @@ void OwncloudShibbolethCredsPage::setConnected()
 AbstractCredentials* OwncloudShibbolethCredsPage::getCredentials() const
 {
     const OwncloudWizard *ocWizard = static_cast<const OwncloudWizard*>(wizard());
-    Account *account = ocWizard->account();
+    AccountPtr account = ocWizard->account();
 
     return new ShibbolethCredentials(_cookie, account);
 }
 
-void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived(const QNetworkCookie &cookie, Account*)
+void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived(const QNetworkCookie &cookie, AccountPtr)
 {
     _cookie = cookie;
     emit connectToOCUrl(field("OCUrl").toString().simplified());

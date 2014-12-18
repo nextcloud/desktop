@@ -22,6 +22,7 @@
 #include <QSslCertificate>
 #include <QSslConfiguration>
 #include <QSslError>
+#include <QSharedPointer>
 #include "utility.h"
 
 class QSettings;
@@ -33,6 +34,7 @@ namespace OCC {
 
 class AbstractCredentials;
 class Account;
+typedef QSharedPointer<Account> AccountPtr;
 class QuotaInfo;
 class AccessManager;
 
@@ -42,16 +44,16 @@ public:
     static AccountManager *instance();
     ~AccountManager() {}
 
-    void setAccount(Account *account);
-    Account *account() { return _account; }
+    void setAccount(AccountPtr account);
+    AccountPtr account() { return _account; }
 
 Q_SIGNALS:
-    void accountAdded(Account *account);
-    void accountRemoved(Account *account);
+    void accountAdded(AccountPtr account);
+    void accountRemoved(AccountPtr account);
 
 private:
-    AccountManager() : _account(0) {}
-    Account *_account;
+    AccountManager() {}
+    AccountPtr _account;
     static AccountManager *_instance;
 };
 
@@ -59,7 +61,7 @@ private:
 class AbstractSslErrorHandler {
 public:
     virtual ~AbstractSslErrorHandler() {}
-    virtual bool handleErrors(QList<QSslError>, QList<QSslCertificate>*, Account*) = 0;
+    virtual bool handleErrors(QList<QSslError>, QList<QSslCertificate>*, AccountPtr) = 0;
 };
 
 /**
@@ -71,8 +73,11 @@ public:
     QString davPath() const { return _davPath; }
     void setDavPath(const QString&s) { _davPath = s; }
 
-    Account(AbstractSslErrorHandler *sslErrorHandler = 0, QObject *parent = 0);
+    static AccountPtr create();
     ~Account();
+
+    void setSharedThis(AccountPtr sharedThis);
+    AccountPtr sharedFromThis();
 
     /**
      * Saves the account to a given settings file
@@ -82,14 +87,14 @@ public:
     /**
      * Creates an account object from from a given settings file.
      */
-    static Account* restore();
+    static AccountPtr restore();
 
     /**
      * @brief Checks the Account instance is different from \param other
      *
      * @returns true, if credentials or url have changed, false otherwise
      */
-    bool changed(Account *other, bool ignoreUrlProtocol) const;
+    bool changed(AccountPtr other, bool ignoreUrlProtocol) const;
 
     /** Holds the accounts credentials */
     AbstractCredentials* credentials() const;
@@ -156,6 +161,9 @@ protected Q_SLOTS:
     void slotCredentialsFetched();
 
 private:
+    Account(QObject *parent = 0);
+
+    QWeakPointer<Account> _sharedThis;
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
     QList<QSslCertificate> _approvedCerts;
@@ -171,6 +179,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(OCC::Account*)
+Q_DECLARE_METATYPE(OCC::AccountPtr)
 
 #endif //SERVERCONNECTION_H

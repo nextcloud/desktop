@@ -13,14 +13,14 @@
 #ifndef SIMPLESSLERRORHANDLER_H
 #define SIMPLESSLERRORHANDLER_H
 
-#include "account.h"
+#include "accountfwd.h"
 
 class QSslError;
 class QSslCertificate;
 
 class SimpleSslErrorHandler : public OCC::AbstractSslErrorHandler {
 public:
-    bool handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, OCC::Account*) Q_DECL_OVERRIDE;
+    bool handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, OCC::AccountPtr) Q_DECL_OVERRIDE;
 };
 
 #endif // SIMPLESSLERRORHANDLER_H

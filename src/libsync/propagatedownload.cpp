@@ -30,7 +30,7 @@
 namespace OCC {
 
 // DOES NOT take owncership of the device.
-GETFileJob::GETFileJob(Account* account, const QString& path, QFile *device,
+GETFileJob::GETFileJob(AccountPtr account, const QString& path, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
                     quint64 _resumeStart,  QObject* parent)
 : AbstractNetworkJob(account, path, parent),
@@ -41,7 +41,7 @@ GETFileJob::GETFileJob(Account* account, const QString& path, QFile *device,
 {
 }
 
-GETFileJob::GETFileJob(Account* account, const QUrl& url, QFile *device,
+GETFileJob::GETFileJob(AccountPtr account, const QUrl& url, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers,
                     QObject* parent)
 : AbstractNetworkJob(account, url.toEncoded(), parent),
@@ -87,7 +87,7 @@ void GETFileJob::start() {
     connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(slotMetaDataChanged()));
     connect(reply(), SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
     connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SIGNAL(downloadProgress(qint64,qint64)));
-    connect(this, SIGNAL(networkActivity()), account(), SIGNAL(propagatorNetworkActivity()));
+    connect(this, SIGNAL(networkActivity()), account().data(), SIGNAL(propagatorNetworkActivity()));
 
     AbstractNetworkJob::start();
 }
@@ -329,7 +329,7 @@ void PropagateDownloadFileQNAM::start()
 
     if (_item._directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
-        _job = new GETFileJob(AccountManager::instance()->account(),
+        _job = new GETFileJob(_propagator->account(),
                             _propagator->_remoteFolder + _item._file,
                             &_tmpFile, headers, expectedEtagForResume, startSize);
     } else {
@@ -352,7 +352,7 @@ void PropagateDownloadFileQNAM::start()
         }
 
         QUrl url = QUrl::fromUserInput(_item._directDownloadUrl);
-        _job = new GETFileJob(AccountManager::instance()->account(),
+        _job = new GETFileJob(_propagator->account(),
                               url,
                               &_tmpFile, headers);
     }

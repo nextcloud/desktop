@@ -22,7 +22,7 @@ class MoveJob : public AbstractNetworkJob {
     Q_OBJECT
     const QString _destination;
 public:
-    explicit MoveJob(Account* account, const QString& path, const QString &destination, QObject* parent = 0);
+    explicit MoveJob(AccountPtr account, const QString& path, const QString &destination, QObject* parent = 0);
 
     void start() Q_DECL_OVERRIDE;
     bool finished() Q_DECL_OVERRIDE;

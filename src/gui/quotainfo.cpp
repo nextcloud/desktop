@@ -64,7 +64,7 @@ void QuotaInfo::slotCheckQuota()
         return;
     }
 
-    Account* account = _accountState->account();
+    AccountPtr account = _accountState->account();
     if (_accountState->isConnected()
             && account->credentials()
             && account->credentials()->ready()) {

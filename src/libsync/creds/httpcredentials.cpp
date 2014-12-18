@@ -185,13 +185,13 @@ bool HttpCredentials::ready() const
     return _ready;
 }
 
-QString HttpCredentials::fetchUser(Account* account)
+QString HttpCredentials::fetchUser(AccountPtr account)
 {
     _user = account->credentialSetting(QLatin1String(userC)).toString();
     return _user;
 }
 
-void HttpCredentials::fetch(Account *account)
+void HttpCredentials::fetch(AccountPtr account)
 {
     if( !account ) {
         return;
@@ -246,7 +246,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 {
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(job);
     _password = readJob->textData();
-    Account *account = qvariant_cast<Account*>(readJob->property("account"));
+    AccountPtr account = qvariant_cast<AccountPtr>(readJob->property("account"));
 
     if( _user.isEmpty()) {
         qDebug() << "Strange: User is empty!";
@@ -300,7 +300,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
     }
 }
 
-void HttpCredentials::invalidateToken(Account *account)
+void HttpCredentials::invalidateToken(AccountPtr account)
 {
     _password = QString();
     _ready = false;
@@ -325,7 +325,7 @@ void HttpCredentials::invalidateToken(Account *account)
     account->clearCookieJar();
 }
 
-void HttpCredentials::persist(Account *account)
+void HttpCredentials::persist(AccountPtr account)
 {
     if (_user.isEmpty()) {
         // We never connected or fetched the user, there is nothing to save.

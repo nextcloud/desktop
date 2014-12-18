@@ -42,7 +42,7 @@ signals:
     void accountStateRemoved(AccountState *accountState);
 
 private slots:
-    void slotAccountAdded(Account *account);
+    void slotAccountAdded(AccountPtr account);
 
 private:
     void setAccountState(AccountState *account);
@@ -79,10 +79,11 @@ public:
     /// The actual current connectivity status.
     typedef ConnectionValidator::Status ConnectionStatus;
 
-    AccountState(Account* account);
+    /// Use the account as parent
+    AccountState(AccountPtr account);
     ~AccountState();
 
-    Account* account() const;
+    AccountPtr account() const;
 
     ConnectionStatus connectionStatus() const;
     QStringList connectionErrors() const;
@@ -114,7 +115,9 @@ protected Q_SLOTS:
     void slotCredentialsFetched(AbstractCredentials* creds);
 
 private:
-    Account * _account;
+    // A strong reference here would keep Account and AccountState
+    // alive indefinitely since Account is the parent of AccountState.
+    QWeakPointer<Account> _account;
     QuotaInfo *_quotaInfo;
     State _state;
     ConnectionStatus _connectionStatus;

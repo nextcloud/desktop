@@ -81,10 +81,10 @@ void OwncloudSetupWizard::startWizard()
     FolderMan *folderMan = FolderMan::instance();
     bool multiFolderSetup = folderMan->map().count() > 1;
     // ###
-    Account *account = Account::restore();
+    AccountPtr account = Account::restore();
     if (!account) {
         _ocWizard->setConfigExists(false);
-        account = new Account;
+        account = Account::create();
         account->setCredentials(CredentialsFactory::create("dummy"));
     } else {
         _ocWizard->setConfigExists(true);
@@ -144,7 +144,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     if (!fixedUrl.startsWith("http://") && !fixedUrl.startsWith("https://")) {
         url.setScheme("https");
     }
-    Account *account = _ocWizard->account();
+    AccountPtr account = _ocWizard->account();
     account->setUrl(url);
     // Set fake credentials beforfe we check what credential it actually is.
     account->setCredentials(CredentialsFactory::create("dummy"));
@@ -211,7 +211,7 @@ void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
 
 void OwncloudSetupWizard::testOwnCloudConnect()
 {
-    Account *account = _ocWizard->account();
+    AccountPtr account = _ocWizard->account();
 
     ValidateDavAuthJob *job = new ValidateDavAuthJob(account, this);
     job->setIgnoreCredentialFailure(true);
@@ -381,13 +381,10 @@ bool OwncloudSetupWizard::ensureStartFromScratch(const QString &localFolder) {
     return renameOk;
 }
 
-void OwncloudSetupWizard::replaceDefaultAccountWith(Account *newAccount)
+void OwncloudSetupWizard::replaceDefaultAccountWith(AccountPtr newAccount)
 {
     // new Account
     AccountManager *mgr = AccountManager::instance();
-    if (mgr->account()) {
-        mgr->account()->deleteLater();
-    }
     mgr->setAccount(newAccount);
     newAccount->save();
 }
@@ -402,8 +399,8 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         _ocWizard->account()->deleteLater();
         qDebug() << "Rejected the new config, use the old!";
     } else if( result == QDialog::Accepted ) {
-        Account *newAccount = _ocWizard->account();
-        Account *origAccount = AccountManager::instance()->account();
+        AccountPtr newAccount = _ocWizard->account();
+        AccountPtr origAccount = AccountManager::instance()->account();
 
         QString localFolder = QDir::fromNativeSeparators(_ocWizard->localFolder());
         if( !localFolder.endsWith(QLatin1Char('/'))) {
@@ -453,6 +450,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         }
         // 3. Existing setup, http -> https or password changed
         else {
+            // TODO: Adjust instead of replace account, so folders stay around
             replaceDefaultAccountWith(newAccount);
             qDebug() << "Only password was changed, no changes to folder configuration.";
         }
@@ -472,7 +470,7 @@ void OwncloudSetupWizard::slotSkipFolderConfigruation()
 }
 
 
-DetermineAuthTypeJob::DetermineAuthTypeJob(Account *account, QObject *parent)
+DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
     , _redirects(0)
 {
@@ -515,7 +513,7 @@ bool DetermineAuthTypeJob::finished()
     return true;
 }
 
-ValidateDavAuthJob::ValidateDavAuthJob(Account *account, QObject *parent)
+ValidateDavAuthJob::ValidateDavAuthJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
 {
 }

@@ -21,6 +21,7 @@
 #include <QNetworkReply>
 #include <QPointer>
 
+#include "accountfwd.h"
 #include "theme.h"
 #include "networkjobs.h"
 
@@ -29,12 +30,11 @@
 namespace OCC {
 
 class OwncloudWizard;
-class Account;
 
 class ValidateDavAuthJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    ValidateDavAuthJob(Account* account, QObject *parent = 0);
+    ValidateDavAuthJob(AccountPtr account, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
 signals:
     void authResult(QNetworkReply*);
@@ -45,7 +45,7 @@ private slots:
 class DetermineAuthTypeJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit DetermineAuthTypeJob(Account *account, QObject *parent = 0);
+    explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
 signals:
     void authType(WizardCommon::AuthType);
@@ -91,9 +91,9 @@ private:
     void createRemoteFolder();
     void finalizeSetup( bool );
     bool ensureStartFromScratch(const QString &localFolder);
-    void replaceDefaultAccountWith(Account *newAccount);
+    void replaceDefaultAccountWith(AccountPtr newAccount);
 
-    Account* _account;
+    AccountPtr _account;
     OwncloudWizard* _ocWizard;
     QString _initLocalFolder;
     QString _remoteFolder;

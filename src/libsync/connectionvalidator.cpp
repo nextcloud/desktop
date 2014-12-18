@@ -22,7 +22,7 @@
 
 namespace OCC {
 
-ConnectionValidator::ConnectionValidator(Account *account, QObject *parent)
+ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
     : QObject(parent),
       _account(account)
 {

@@ -51,8 +51,10 @@ namespace OCC {
 
 bool SyncEngine::_syncRunning = false;
 
-SyncEngine::SyncEngine(CSYNC *ctx, const QString& localPath, const QString& remoteURL, const QString& remotePath, OCC::SyncJournalDb* journal)
-  : _csync_ctx(ctx)
+SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
+                       const QString& remoteURL, const QString& remotePath, OCC::SyncJournalDb* journal)
+  : _account(account)
+  , _csync_ctx(ctx)
   , _needsUpdate(false)
   , _localPath(localPath)
   , _remoteUrl(remoteURL)
@@ -529,7 +531,7 @@ void SyncEngine::startSync()
         QVector< SyncJournalDb::PollInfo > pollInfos = _journal->getPollInfos();
         if (!pollInfos.isEmpty()) {
             qDebug() << "Finish Poll jobs before starting a sync";
-            CleanupPollsJob *job = new CleanupPollsJob(pollInfos, AccountManager::instance()->account(),
+            CleanupPollsJob *job = new CleanupPollsJob(pollInfos, _account,
                                                        _journal, _localPath, this);
             connect(job, SIGNAL(finished()), this, SLOT(startSync()));
             connect(job, SIGNAL(aborted(QString)), this, SLOT(slotCleanPollsJobAborted(QString)));
@@ -606,11 +608,7 @@ void SyncEngine::startSync()
     // any way to get "session_key" module property from csync. Had we
     // have it, then we could keep this code and remove it from
     // AbstractCredentials implementations.
-    if (Account *account = AccountManager::instance()->account()) {
-        account->credentials()->syncContextPreStart(_csync_ctx);
-    } else {
-        qDebug() << Q_FUNC_INFO << "No default Account object, huh?";
-    }
+    _account->credentials()->syncContextPreStart(_csync_ctx);
     // if (_lastAuthCookies.length() > 0) {
     //     // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
     //     // when https://github.com/owncloud/core/pull/4042 is merged.
@@ -745,7 +743,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _journal->commit("post treewalk");
 
     _propagator = QSharedPointer<OwncloudPropagator>(
-        new OwncloudPropagator (session, _localPath, _remoteUrl, _remotePath, _journal, &_thread));
+        new OwncloudPropagator (_account, session, _localPath, _remoteUrl, _remotePath, _journal, &_thread));
     connect(_propagator.data(), SIGNAL(completed(SyncFileItem)),
             this, SLOT(slotJobCompleted(SyncFileItem)));
     connect(_propagator.data(), SIGNAL(progress(SyncFileItem,quint64)),

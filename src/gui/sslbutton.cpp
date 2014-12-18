@@ -177,7 +177,7 @@ void SslButton::updateAccountState(AccountState *accountState)
     } else {
         setVisible(true);
     }
-    Account* account = accountState->account();
+    AccountPtr account = accountState->account();
     if(QMenu *oldMenu = menu()) {
         oldMenu->hide(); // Need to be hidden because the QToolButton would be left in invalid state if the menu is deleted while it is visible
         setMenu(0);

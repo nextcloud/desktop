@@ -67,7 +67,7 @@ void PUTFileJob::start() {
     }
 
     connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SIGNAL(uploadProgress(qint64,qint64)));
-    connect(this, SIGNAL(networkActivity()), account(), SIGNAL(propagatorNetworkActivity()));
+    connect(this, SIGNAL(networkActivity()), account().data(), SIGNAL(propagatorNetworkActivity()));
 
     AbstractNetworkJob::start();
 }
@@ -370,7 +370,7 @@ void PropagateUploadFileQNAM::startNextChunk()
     }
 
     if( isOpen ) {
-        PUTFileJob* job = new PUTFileJob(AccountManager::instance()->account(), _propagator->_remoteFolder + path, device, headers, _currentChunk);
+        PUTFileJob* job = new PUTFileJob(_propagator->account(), _propagator->_remoteFolder + path, device, headers, _currentChunk);
         _jobs.append(job);
         connect(job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
         connect(job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
@@ -609,7 +609,7 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
 
 void PropagateUploadFileQNAM::startPollJob(const QString& path)
 {
-    PollJob* job = new PollJob(AccountManager::instance()->account(), path, _item,
+    PollJob* job = new PollJob(_propagator->account(), path, _item,
                                _propagator->_journal, _propagator->_localDir, this);
     connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
     SyncJournalDb::PollInfo info;

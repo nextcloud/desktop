@@ -19,16 +19,15 @@
 #include <QStringList>
 #include <QVariantMap>
 #include <QNetworkReply>
+#include "accountfwd.h"
 
 namespace OCC {
-
-class Account;
 
 class OWNCLOUDSYNC_EXPORT ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectionValidator(Account *account, QObject *parent = 0);
+    explicit ConnectionValidator(AccountPtr account, QObject *parent = 0);
 
     enum Status {
         Undefined,
@@ -66,7 +65,7 @@ private:
     void reportResult(Status status);
 
     QStringList _errors;
-    Account   *_account;
+    AccountPtr   _account;
 };
 
 }
