@@ -29,6 +29,7 @@
 #include "accessmanager.h"
 #include "utility.h"
 #include "theme.h"
+#include "syncengine.h"
 #include "creds/credentialscommon.h"
 #include "creds/httpcredentials.h"
 
@@ -47,8 +48,8 @@ int getauth(const char *prompt,
     int re = 0;
 
     // ### safe?  Not really.  If the wizard is run in the main thread, the caccount could change during the sync.
-    // Ideally, http_credentials could be use userdata,   but userdata is the SyncEngine.
-    HttpCredentials* http_credentials = qobject_cast<HttpCredentials*>(AccountManager::instance()->account()->credentials());
+    SyncEngine* engine = reinterpret_cast<SyncEngine*>(userdata);
+    HttpCredentials* http_credentials = qobject_cast<HttpCredentials*>(engine->account()->credentials());
 
     if (!http_credentials) {
       qDebug() << "Not a HTTP creds instance!";

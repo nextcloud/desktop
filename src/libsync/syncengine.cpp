@@ -1149,6 +1149,11 @@ qint64 SyncEngine::timeSinceFileTouched(const QString& fn) const
     return -1;
 }
 
+AccountPtr SyncEngine::account() const
+{
+    return _account;
+}
+
 void SyncEngine::abort()
 {
     csync_request_abort(_csync_ctx);

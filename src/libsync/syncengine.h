@@ -76,6 +76,8 @@ public:
      */
     qint64 timeSinceFileTouched(const QString& fn) const;
 
+    AccountPtr account() const;
+
 signals:
     void csyncError( const QString& );
     void csyncUnavailable();
