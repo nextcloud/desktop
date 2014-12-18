@@ -1,12 +1,9 @@
 ChangeLog
 =========
-version 1.7.1 (release 2014-12-xx)
- * Win32: improved filesystem watcher
+version 1.7.1 (release 2014-12-18)
  * Documentation fixes and updates
- * Nautilus python plugin fixed for python 3
+ * Nautilus Python plugin fixed for Python 3
  * GUI wording fixes plus improved log messages
- * Win32: Install shortcuts for all users
- * MacOSX: Fixed branding of the pkg file
  * Fix hidning of the database files in the sync directories
  * Compare http download size with the header value to avoid broken 
    downloads, bug #2528
@@ -16,12 +13,20 @@ version 1.7.1 (release 2014-12-xx)
  * Added fallback for distros where XDG_RUNTIME_DIR is undefined
  * Fix the setup wizard, bug #1989, #2264
  * Fix scheduling of ETag check jobs, bug #2553
- * Win32: Improve threading with shell integration
  * Fix to avoid syncing more than one folder at a time, bug #2407
  * Use fife minutes timeout for all network jobs
  * Cleanup for Folderwizard wording
  * Improve journal check: Remove corrupted journal files, bug #2547
  * Fix item count in progress dialog for deletes, bug #1132
+ * Display correct file count on deletion (#1132)
+ * Fix reinitializing the folder using the wizard in certain cases (#2606)
+ * Mac OS: Fixed branding of the pkg file
+ * Mac OS: Fix display of overlay icons in certain situations (#1132)
+ * Mac OS: Use a bundled version of OpenSSL (#764, #2600, #2510)
+ * Win32: improved filesystem watcher
+ * Win32: Improve threading with shell integration
+ * Win32: Upgraded to OpenSSL 1.0.1j
+ * Win32: Improve reliability of Installer, fix removal of Shell Extensions
 
 version 1.7.0 (release 2014-11-07)
 
