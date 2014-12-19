@@ -5,14 +5,13 @@
 #include "json.h"
 #include "folderman.h"
 #include <QBuffer>
-#include <QUrlQuery>
 #include <QMovie>
 
 namespace {
     int SHARETYPE_PUBLIC = 3;
 }
 
-namespace Mirall {
+namespace OCC {
 
 ShareDialog::ShareDialog(QWidget *parent) :
     QDialog(parent),
@@ -278,7 +277,18 @@ void OcsShareJob::start()
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
     qDebug() << ">>>>>>>>" << _url;
     QBuffer *buffer = new QBuffer;
-    buffer->setData(_postData.query().toAscii());
+    //buffer->setData(_postData.query().toAscii());
+
+    QString tmp;
+    auto tmp2 = _postData.queryItems();
+    for (int i = 0; i < tmp2.size(); i++) {
+        if (i != 0) {
+            tmp.append("=");
+        }
+        tmp.append(tmp2[i].first + "=" + tmp2[i].second);
+    }
+    buffer->setData(tmp.toAscii());
+
     setReply(davRequest(_verb, _url, req, buffer));
     //setReply(davRequest("GET", url, req));
     setupConnections(reply());

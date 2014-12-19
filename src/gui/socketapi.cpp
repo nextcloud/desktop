@@ -402,7 +402,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
     sendMessage(socket, message);
 }
 
-void SocketApi::command_SHARE(const QString& argument, QTcpSocket* socket)
+void SocketApi::command_SHARE(const QString& argument, SocketType* socket)
 {
     sendMessage(socket, QString("Openening sharing dialog >").append(argument));
     QString folderForPath = FolderMan::instance()->folderForPath(argument)->path();

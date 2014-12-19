@@ -4,7 +4,7 @@
 #include "networkjobs.h"
 #include <QDialog>
 
-namespace Mirall {
+namespace OCC {
 
 class OcsShareJob : public AbstractNetworkJob {
     Q_OBJECT
