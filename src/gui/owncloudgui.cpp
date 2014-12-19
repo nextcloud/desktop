@@ -323,7 +323,13 @@ void ownCloudGui::setupContextMenu()
         if ( folderCnt > 1) {
             _contextMenu->addAction(tr("Managed Folders:"))->setDisabled(true);
         }
-        foreach (Folder *folder, folderMan->map() ) {
+
+        // Put everything first in a QMap to properly sort
+        QMap<QString, Folder*> folders;
+        for( auto i = folderMan->map().constBegin(); i != folderMan->map().constEnd(); i++) {
+            folders.insert(i.key(), i.value());
+        }
+        foreach (auto folder, folders) {
             QAction *action = new QAction( tr("Open folder '%1'").arg(folder->alias()), this );
             connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
             _folderOpenActionMapper->setMapping( action, folder->alias() );
