@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>Crear un cartafol</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -579,12 +579,12 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Crear un cartafol remoto</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Introduza o nome do novo cartafol que se creará a seguir «%1»:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
@@ -1114,7 +1114,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="153"/>
         <source>&amp;Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Seguinte &gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="233"/>
@@ -2137,17 +2137,17 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="234"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versión %1. Para obter máis información visite &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="238"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorparated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright ownCloud, Incorparated&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="239"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Distribuído por %1 e licenciado baixo a Licenza Pública Xeral (GPL) GNU Versión 2.0.&lt;br/&gt;Os logotipos %2 e %2 son marcas rexistradas de %1 nos Estados Unidos de Norte América e/ou outros países.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

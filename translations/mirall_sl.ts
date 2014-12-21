@@ -1114,7 +1114,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="153"/>
         <source>&amp;Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Naslednja &gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="233"/>
@@ -2141,17 +2141,17 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="234"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Različica %1. Za več podrobnosti si oglejte &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="238"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorparated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Avtorske pravice ownCloud, Inc&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="239"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Programski paket objavlja %1 pod pogoji Splošnega javnega dovoljenja GNU (GNU General Public License - GPL), različice 2.0.&lt;br&gt;%2 in logotip %2 sta blagovni znamki %1 v Združenih državah, drugih državah ali oboje.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
