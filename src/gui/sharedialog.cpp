@@ -283,7 +283,7 @@ void OcsShareJob::start()
     auto tmp2 = _postData.queryItems();
     for (int i = 0; i < tmp2.size(); i++) {
         if (i != 0) {
-            tmp.append("=");
+            tmp.append("&");
         }
         tmp.append(tmp2[i].first + "=" + tmp2[i].second);
     }
