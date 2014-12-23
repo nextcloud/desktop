@@ -404,9 +404,25 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
 
 void SocketApi::command_SHARE(const QString& argument, SocketType* socket)
 {
-    sendMessage(socket, QString("Openening sharing dialog >").append(argument));
-    QString folderForPath = FolderMan::instance()->folderForPath(argument)->path();
-    emit shareCommandReceived(argument.right(argument.count()-folderForPath.count()+1));
+    if (!socket) {
+        qDebug() << "No valid socket object.";
+        return;
+    }
+
+    qDebug() << Q_FUNC_INFO << argument;
+
+    QString statusString;
+
+    Folder *shareFolder = FolderMan::instance()->folderForPath(argument);
+    if (!shareFolder) {
+        QString message = QLatin1String("SHARE:NOP:")+QDir::toNativeSeparators(argument);
+        sendMessage(socket, message);
+    } else {
+        QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(argument);
+        sendMessage(socket, message);
+        QString folderForPath = shareFolder->path();
+        emit shareCommandReceived(argument.right(argument.count()-folderForPath.count()+1));
+    }
 }
 
 void SocketApi::command_VERSION(const QString&, SocketType* socket)
