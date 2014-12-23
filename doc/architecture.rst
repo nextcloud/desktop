@@ -150,7 +150,7 @@ ownCloud Client provides the ability to add custom patterns.
 By default, the ownCloud Client ignores the following files:
 
 - Files matched by one of the patterns defined in :ref:`ignoredFilesEditor-label`.
-- Files containing characters that do not work on certain file systems (`\, :, ?, *, ", >, <, |`).
+- Files containing characters that do not work on certain file systems (`\, /, :, ?, *, ", >, <, |`).
 * Files starting in ``.csync_journal.db*``, as these files are reserved for journalling.
 
 If a pattern selected using a checkbox in the `ignoredFilesEditor-label` (or if
@@ -168,7 +168,7 @@ To match filenames against the exclude patterns, the unix standard C library
 function fnmatch is used. This procesx checks the filename against the
 specified pattern using standard shell wildcard pattern matching. For more
 information, please refer to `The opengroup website
-<http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>`.
+<http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>`_.
 
 The path that is checked is the relative path under the sync root directory.
 
