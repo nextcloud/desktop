@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>Δημιουργια φακελου</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -580,12 +580,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Δημιουργία Απομακρυσμένου Φακέλου</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Εισάγετε το όνομα του νέου φακέλου που θα δημιουργηθεί παρακάτω &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
@@ -1115,12 +1115,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="153"/>
         <source>&amp;Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Επόμενο &gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="233"/>
         <source>&lt;p&gt;Could not connect securely:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Do you want to connect unencrypted instead (not recommended)?&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Αδυναμία ασφαλούς σύνδεσης:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Θα θέλατε  παρ&apos;όλα αυτά να συνδεθείτε χωρίς κρυπτογράφηση (δεν προτείνεται);&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="234"/>
@@ -1332,12 +1332,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="755"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Η λήψη του αρχείου δεν ολοκληρώθηκε πλήρως.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="791"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 δεν είναι δυνατό να αποθηκευτεί λόγω διένεξης με το όνομα ενός τοπικού ονόματος αρχείου!</translation>
     </message>
 </context>
 <context>
@@ -1536,19 +1536,25 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>Προς το παρόν κανένα αρχείο δεν θα αγνοηθεί λόγω προηγούμενων σφαλμάτων και δεν υπάρχουν λήψεις σε εξέλιξη.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n αρχεία αγνοήθηκαν λόγω προηγούμενων σφαλμάτων.
+
+</numerusform><numerusform>%n αρχεία αγνοήθηκαν λόγω προηγούμενων σφαλμάτων.
+
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n αρχεία λήφθηκαν μερικώς.
+</numerusform><numerusform>%n αρχεία λήφθηκαν μερικώς.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
@@ -1566,7 +1572,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/selectivesyncdialog.cpp" line="274"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Οι μη επιλεγμένοι φάκελοι θα &lt;b&gt;αφαιρεθούν&lt;/ b&gt; από το τοπικό σύστημα αρχείων σας και δεν θα συγχρονιστούν πια με αυτόν τον υπολογιστή</translation>
     </message>
 </context>
 <context>
@@ -2021,7 +2027,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>The mounted directory is temporary not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Ο προσαρτημένος φάκελος προσωρινά δεν είναι διαθέσιμος στο διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="186"/>
@@ -2134,17 +2140,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="234"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Έκδοση %1. Για περισσότερες πληροφορίες δείτε &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="238"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorparated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Πνευματικά δικαιώματα ownCloud, Ανώνυμη Εταιρία&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="239"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt; Διανέμεται από 1% και υπό την άδεια GNU General Public License (GPL) έκδοση 2.0. &lt;br/&gt;% 2 και το 2% το λογότυπο είναι σήματα κατατεθέντα της 1% στις Ηνωμένες Πολιτείες, άλλες χώρες, ή και τα δύο. &lt;/ p&gt;</translation>
     </message>
 </context>
 <context>
