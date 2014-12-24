@@ -52,7 +52,7 @@ ShareDialog::ShareDialog(QWidget *parent) :
 void ShareDialog::setExpireDate(QString date)
 {
     _ui->labelCalendarSpinner->show();
-    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(_public_share.value("id").toString()));
+    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
     QUrl postData;
     QList<QPair<QString, QString> > getParams;
     QList<QPair<QString, QString> > postParams;
@@ -101,7 +101,7 @@ void ShareDialog::slotPasswordReturnPressed()
 void ShareDialog::setPassword(QString password)
 {
     _ui->labelPasswordSpinner->show();
-    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(_public_share.value("id").toString()));
+    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
     QUrl postData;
     QList<QPair<QString, QString> > getParams;
     QList<QPair<QString, QString> > postParams;
@@ -143,7 +143,7 @@ void ShareDialog::slotSharesFetched(QString reply)
 
         if (data.value("share_type").toInt() == SHARETYPE_PUBLIC)
         {
-            ShareDialog::_public_share = data;
+            _public_share_id = data.value("id").toULongLong();
 
             _ui->lineEdit_shareLink->show();
             _ui->pushButton_copy->show();
@@ -205,7 +205,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
     else
     {
         _ui->labelShareSpinner->show();
-        QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(_public_share.value("id").toString()));
+        QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
         QList<QPair<QString, QString> > getParams;
         getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
         url.setQueryItems(getParams);
@@ -221,6 +221,7 @@ void ShareDialog::slotCreateShareFetched(QString reply)
     _ui->labelShareSpinner->hide();
     bool success;
     QVariantMap json = QtJson::parse(reply, success).toMap();
+    _public_share_id = json.value("ocs").toMap().values("data")[0].toMap().value("id").toULongLong();
     QString url = json.value("ocs").toMap().values("data")[0].toMap().value("url").toString();
     _ui->lineEdit_shareLink->setText(url);
     _ui->lineEdit_shareLink->show();

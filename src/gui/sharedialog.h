@@ -56,7 +56,7 @@ private:
     Ui::ShareDialog *_ui;
     QString _path;
     QList<QVariant> _shares;
-    QVariantMap _public_share;
+    qulonglong _public_share_id;
     void setPassword(QString password);
     void setExpireDate(QString date);
 };
