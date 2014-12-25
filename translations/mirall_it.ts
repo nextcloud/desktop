@@ -672,7 +672,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation>Lancia all&apos;avvio del sistema</translation>
+        <translation>Esegui all&apos;avvio del sistema</translation>
     </message>
     <message>
         <location filename="../src/mirall/generalsettings.ui" line="33"/>
