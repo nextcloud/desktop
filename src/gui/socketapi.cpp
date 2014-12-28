@@ -421,7 +421,8 @@ void SocketApi::command_SHARE(const QString& argument, SocketType* socket)
         QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(argument);
         sendMessage(socket, message);
         QString folderForPath = shareFolder->path();
-        emit shareCommandReceived(argument.right(argument.count()-folderForPath.count()+1));
+        QString path = shareFolder->remotePath() + argument.right(argument.count()-folderForPath.count()+1);
+        emit shareCommandReceived(path);
     }
 }
 
