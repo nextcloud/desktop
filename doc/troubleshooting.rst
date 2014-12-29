@@ -47,7 +47,7 @@ Identifying Basic Functionality Problems
   authentication backend is configured properly.
 
 :Use a WebDAV command line tool to test:  
-  A more sophisticated test method for troubleshooting syncrhonization issues
+  A more sophisticated test method for troubleshooting synchronization issues
   is to use a WebDAV command line client and log into the ownCloud WebDAV server.
   One such command line client -- called cadaver -- is available for Linux
   distributions. You can use this application to further verify that the WebDAV

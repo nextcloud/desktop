@@ -39,4 +39,4 @@ When selecting a local folder that already contains data, you can choose from tw
   the client are synchronized to the ownCloud server.
 
 * :guilabel:`Start a clean sync`: When selected, all files in the local folder on the
-  client are deleted.  These files are not syncrhonized to the ownCloud server.
+  client are deleted.  These files are not synchronized to the ownCloud server.

@@ -115,7 +115,7 @@ Adding a Folder
 ^^^^^^^^^^^^^^^
 
 The ``Add a Folder ...`` button enables you to add a new folder to the 
-syncrhonization process.
+synchronization process.
 
 To add a new folder:
 
@@ -133,7 +133,7 @@ To add a new folder:
     cannot add a folder that is already contained within another synchronized
     folder. In addition, you cannot add a higher level (parent) folder that
     contains a folder to which you are already synchronizing.  By default, the
-    ownCloud Set Up Wizard syncrhonizes your entire ownCloud account to the root
+    ownCloud Set Up Wizard synchronizes your entire ownCloud account to the root
     folder of the ownCloud server. Due to this default setup, you must first 
     remove the top-level folder prior to specifying new synchronizations.
 
