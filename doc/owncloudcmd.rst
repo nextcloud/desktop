@@ -47,7 +47,7 @@ Credential Handling
 ~~~~~~~~~~~~~~~~~~~
 
 By default, owncloudcmd reads the client configuration and uses the credentials
-of the GUI syncrhonization client. If no client is configured, or if you choose
+of the GUI synchronization client. If no client is configured, or if you choose
 to use a different user to synchronize, you can specify the user password
 setting with the usual URL pattern.  For example::
 
