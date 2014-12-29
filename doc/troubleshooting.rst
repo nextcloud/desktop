@@ -67,12 +67,12 @@ Other issues can affect synchronization of your ownCloud files:
   ensure that the folder to which you are synchronizing is not shared with
   other synchronization applications.
 
-.. note:: Synchronizing the same directory with ownCloud and other
-   synchronization software such as Unison, rsync, Microsoft Windows Offline
-   Folders, or other cloud services such as DropBox or Microsoft SkyDrive is not
-   supported and should not be attempted. In the worst case, it is possible that
-   synchronizing folders or files using ownCloud and other synchronization
-   software or services can result in data loss.
+- Synchronizing the same directory with ownCloud and other
+  synchronization software such as Unison, rsync, Microsoft Windows Offline
+  Folders, or other cloud services such as DropBox or Microsoft SkyDrive is not
+  supported and should not be attempted. In the worst case, it is possible that
+  synchronizing folders or files using ownCloud and other synchronization
+  software or services can result in data loss.
 
 - If you find that only specific files are not synrchronized, the
   synchronization protocol might be having an effect. Some files are
