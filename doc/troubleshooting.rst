@@ -15,21 +15,15 @@ Identifying Basic Functionality Problems
 :Performing a general ownCloud Server test:
   The first step in troubleshooting synchronization issues is to verify that
   you can log on to the ownCloud web application. To verify connectivity to the
-  ownCloud server:
-
-  - Open a browser window and enter the server address to your own server in the location/address bar.
-
-  For example, if your ownCloud instance is installed at URL address
-  ``http://yourserver.com/owncloud``, enter ``http://yourserver.com/owncloud/``
-  into your browsers location/address bar.
-   
+  ownCloud server try logging in via your Web browser.
+  
   If you are not prompted for your username and password, or if a red warning
   box appears on the page, your server setup requires modification. Please verify
   that your server installation is working correctly.
 
 :Ensure the WebDAV API is working:
   If all desktop clients fail to connect to the ownCloud Server, but access
-  using the web interface functions properly, the problem is often a
+  using the Web interface functions properly, the problem is often a
   misconfiguration of the WebDAV API.
 
   The ownCloud Client uses the built-in WebDAV access of the server content.
@@ -49,11 +43,11 @@ Identifying Basic Functionality Problems
 :Use a WebDAV command line tool to test:  
   A more sophisticated test method for troubleshooting syncrhonization issues
   is to use a WebDAV command line client and log into the ownCloud WebDAV server.
-  One such command line client -- called cadaver -- is available for Linux
+  One such command line client -- called ``cadaver`` -- is available for Linux
   distributions. You can use this application to further verify that the WebDAV
   server is running properly using PROPFIND calls.  
 
-  As an example, after installing the cadaver app, you can issue the
+  As an example, after installing the ``cadaver`` app, you can issue the
   ``propget`` command to obtain various properties pertaining to the current
   directory and also verify WebDAV server connection.
 
@@ -200,7 +194,7 @@ You can find more information about Apache logging at
 Core Dumps
 ----------
 
-On MAC OS X and Linux systems, and in the unlikely event the client software
+On Mac OS X and Linux systems, and in the unlikely event the client software
 crashes, the client is able to write a core dump file.  Obtaining a core dump
 file can assist ownCloud Customer Support tremendously in the debugging
 process. 

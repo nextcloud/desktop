@@ -5,11 +5,13 @@ called ``owncloudcmd``.
 owncloudcmd performs a single *sync run* and then exits the synchronization
 process. In this manner, owncloudcmd processes the differences between client
 and server directories and propagates the files to bring both repositories to
-the same state. Contrary to the GUI-based client, owncloudcmd does not repeat
+the same state. Contrary to the GUI-based client, ``owncloudcmd`` does not 
+repeat
 synchronizations on its own. It also does not monitor for file system changes.
 
-To invoke the owncloudcmd, you must provide the local and the remote repository
-urls using the following command::
+To invoke ``owncloudcmd``, you must provide the local and the remote 
+repository
+URL using the following command::
 
   owncloudcmd [OPTIONS...] sourcedir owncloudurl
 
@@ -46,8 +48,9 @@ Other comand line switches supported by owncloudcmd include the following:
 Credential Handling
 ~~~~~~~~~~~~~~~~~~~
 
-By default, owncloudcmd reads the client configuration and uses the credentials
-of the GUI syncrhonization client. If no client is configured, or if you choose
+By default, ``owncloudcmd`` reads the client configuration and uses the 
+credentials
+of the GUI synchronization client. If no client is configured, or if you choose
 to use a different user to synchronize, you can specify the user password
 setting with the usual URL pattern.  For example::
 

@@ -3,16 +3,15 @@ Using the Synchronization Client
 
 .. index:: navigating, usage
 
-The ownCloud Client remains in the background and is visible as an icon in the
-system tray (Windows, KDE), status bar (MAC OS X), or notification area
+The ownCloud Desktop Client remains in the background and is visible as an icon 
+in the system tray (Windows, KDE), status bar (Mac OS X), or notification area 
 (Linux).
 
 .. image:: images/icon.png
 
-This is a status indicator which uses overlay icons to indicate the 
-current status of your synchronization. The green circle with the white checkmark 
-tells you that your synchronization is current and you are connected to your 
-ownCloud server.
+The status indicator uses overlay icons to indicate the current status of your 
+synchronization. The green circle with the white checkmark tells you that your 
+synchronization is current and you are connected to your ownCloud server.
 
 .. image:: images/icon-syncing.png
 
@@ -42,7 +41,7 @@ incorrect login or server URL.
 Using the Desktop Client Menu
 -----------------------------
 
-A left-click on the icon (right-click on Windows) opens the
+A right-click on the icon opens the
 following menu:
 
 .. image:: images/menu.png
@@ -51,13 +50,13 @@ following menu:
 
 The Desktop Client menu provides the following options:
 
-* ``Open ownCloud in browser``: Launches the ownCloud WEB interface.
-* ``Open folder 'ownCloud'``: Opens the ownCloud local folder. If you have 
-  defined multiple synchronization targets, the window displays each local 
-  folder.
+* ``Open ownCloud in browser``: Launches the ownCloud Web interface.
+* ``Open folder 'ownCloud'``: Opens your local ownCloud folder. If you have 
+    defined multiple synchronization targets, the window displays each local 
+    folder.
 * **Disk space indicator**: Indicates the amount of space currently used on the 
   server.
-* Operation indicator: Displays the status of the current synchronization 
+* **Operation indicator**: Displays the status of the current synchronization 
   process or indicates ``Up to date`` if the server and client are in sync.
 * **Recent Changes**: Displays the last six files modified, and shows the 
   current synchronization status listing all changes since the last restart of the 
@@ -73,9 +72,9 @@ Using the Account Settings Window
 
 .. index:: account settings, user, password, Server URL
 
-The ``Account`` window provides a summary for general settings associated with 
-the ownCloud account.  This window enables you to manage any synchronized 
-folders in the account, and to modify which folders you want to sync.
+The ``Account`` window provides a summary for your ownCloud account settings.  
+You can manage which folders and files you want to synchronize, change your 
+account settings, and pause and resume synchronization.
 
 To access and modify the account settings:
 
@@ -97,21 +96,19 @@ The fields and options in this window include:
   button is used when you want to synchronize only a few folders and not the 
   root folder. 
 
-* ``Storage Usage`` field: Indicates the storage utilization on the ownCloud 
-  server.
+* ``Storage Usage`` field: Displays how much space your files are using on the 
+   ownCloud server.
 
 * ``Edit Ignored Files`` button: Launches the Ignored Files Editor.
 
-* ``Modify Account`` button: Use this to change the ownCloud server to which 
-  you are synchronizing. This option launches the ``Setting up an Account`` 
-  dialog (see :doc:`accountsetup`).
-
+* ``Modify Account`` button: Use this to change your ownCloud server settings 
+  by launching the account setup wizard (see :doc:`accountsetup`).
 
 Adding a Folder
 ^^^^^^^^^^^^^^^
 
-The ``Add a Folder ...`` button enables you to add a new folder to the 
-syncrhonization process.
+The ``Add Folder ...`` button enables you to add a new local folder to the 
+synchronization process.
 
 To add a new folder:
 
@@ -121,11 +118,10 @@ To add a new folder:
 
 .. image:: images/folderwizard_local.png
 
-2. Specify a *unique* path and alias name to the folder or use the ``Choose...`` 
-   button to locate the new folder on your system to which you want to 
-   synchronize.
+2. Type a *unique* path and alias name to the folder, or use the ``Choose...`` 
+   button to open a graphical file picker.
 
-.. note:: Nested synchronizations are not supported.  In other words, you
+.. note:: Nested synchronizations are not supported.  You
     cannot add a folder that is already contained within another synchronized
     folder. In addition, you cannot add a higher level (parent) folder that
     contains a folder to which you are already synchronizing.  By default, the
@@ -136,12 +132,12 @@ To add a new folder:
 3. Click 'Next' to continue.
 
   A window opens prompting you to select a remote destination folder on the
-  ownCloud server to which you want to synchronize.
+  ownCloud server to synchronize.
 
 .. image:: images/folderwizard_remote.png
 
 4. Select a folder on the ownCloud server to which you want to synchronize your 
-newly added folder.
+   newly added local folder.
 
 .. note:: A server folder can only be synchronized with a particular client 
   once. If you attempt to sync the root directory, you cannot sync with 
@@ -152,13 +148,13 @@ newly added folder.
 Editing Ignored Files
 ^^^^^^^^^^^^^^^^^^^^^
 
-The :guilabel:`Ignored Files Editor` provides a list of preconfigured files that are 
-ignored (that is, not synchronized) by the client and server during synchronizations. You 
-may add additional files or directories that you want to exclude from the synchronization 
-process. In addition to using standard characters, the Ignored Files Editor enables you 
-to 
-use wild cards (for example, using an asterisk ‘*’ to indicate multiple characters or a 
-question mark ‘?’ to incidate a single character).
+The :guilabel:`Ignored Files Editor` provides a list of  files that are ignored 
+(that is, not synchronized) by the client and server during synchronizations. 
+You may add additional files or directories that you want to exclude from the 
+synchronization process. In addition to using standard characters, the Ignored 
+Files Editor enables you to use wild cards (for example, using an asterisk ‘*’ 
+to indicate multiple characters or a question mark ‘?’ to incidate a single 
+character).
 
 For additional information see `Using the Ignored Files 
 Editor`_
@@ -188,9 +184,8 @@ Using the General Settings Window
 
 .. index:: general settings, auto start, startup, desktop notifications
 
-The General settings window enables you to set general settings for the
-ownCloud Desktop Client, provides information about the software version,
-its creator, and the existence of any updates.
+The General settings window has options for launching the client at system 
+startup, notifications, and using monochrome icons.
 
 .. image:: images/settings_general.png
 
@@ -205,7 +200,7 @@ its creator, and the existence of any updates.
 * ``Use Monochrome Icons`` checkbox: Provides the option to check (enable) or
    uncheck (disable) the use of monochrome (visually less obtrusive) icons.
 
-.. note:: This option can be useful on MAC OSX platforms.
+.. note:: This option can be useful on Mac OS X platforms.
 
 * ``About`` field: Provides information about the software authors along with
   pertinent build conditions.
@@ -230,24 +225,29 @@ Specifying Proxy Settings
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * ``No Proxy`` option: Do not use a proxy.
+
 * ``Use system proxy`` option: Default setting. Follows the systems proxy
   settings.
+
 * ``Specify proxy manually as`` option: Enables you to specify
   the following custom proxy settings:
+
   - ``HTTP(S)``: Used when you are required to use an HTTP(S) proxy server (for 
   example, Squid or Microsoft Forefront TMG). 
-  - ``SOCKSv5``: Typically used in special company LAN setups, or in combination 
-  with the OpenSSH
-  dynamic application level forwarding feature (see ``ssh -D``).
+  
+  - ``SOCKSv5``: Typically used in special company LAN setups, or in 
+  combination with the OpenSSH dynamic application level forwarding feature 
+  (see ``ssh -D``).
+  
   - ``Host``: Host name or IP address of the proxy server along with the port 
   number. HTTP proxies typically listen over Ports 8080 (default) or 3128. 
   SOCKS servers typically listen over port 1080.
+
 * ``Proxy Server requires authentication`` checkbox: Provides the option to 
-  check (enable/require) or
-  uncheck (disable/not require) proxy server authentication. When not checked, 
-  the proxy server must
-  be configured to allow anonymous usage. When checked, a proxy server username 
-  and password is required.
+  check (enable/require) or uncheck (disable/not require) proxy server 
+  authentication. When not checked, the proxy server must be configured to 
+  allow anonymous usage. When checked, a proxy server username and password is 
+  required.
 
 Bandwidth Limiting
 ^^^^^^^^^^^^^^^^^^
@@ -283,8 +283,8 @@ Using the Ignored Files Editor
 
 .. index:: ignored files, exclude files, pattern
 
-You might have some files or directories that you do not want to backup and
-store on the server. To identify and exclude these files or directories, you
+You might have some local files or directories that you do not want to backup 
+and store on the server. To identify and exclude these files or directories, you
 can use the *Ignored Files Editor*.
 
 .. image:: images/ignored_files_editor.png
