@@ -3,15 +3,9 @@ Using the Synchronization Client
 
 .. index:: navigating, usage
 
-<<<<<<< HEAD
-The ownCloud Client remains in the background and is visible as an icon in the
-system tray (Windows, KDE), status bar (MAC OS X), or notification area
-(Ubuntu).
-=======
 The ownCloud Desktop Client remains in the background and is visible as an icon 
 in the system tray (Windows, KDE), status bar (Mac OS X), or notification area 
 (Linux).
->>>>>>> 096511f... Update and correct desktop client manual
 
 .. image:: images/icon.png
 
@@ -47,12 +41,7 @@ incorrect login or server URL.
 Using the Desktop Client Menu
 -----------------------------
 
-<<<<<<< HEAD
-A right click on the icon (left click on Ubuntu and Mac OS X) provides the
-=======
-A right-click on the icon opens the
->>>>>>> 096511f... Update and correct desktop client manual
-following menu:
+A right-click on the icon opens the following menu:
 
 .. image:: images/menu.png
 
@@ -83,15 +72,9 @@ Using the Account Settings Window
 
 .. index:: account settings, user, password, Server URL
 
-<<<<<<< HEAD
-The ``Account`` window provides a summary for general settings associated with 
-the ownCloud account.  This window enalbes you to manage any synchronized 
-folders in the account and enables you to modify them.
-=======
 The ``Account`` window provides a summary for your ownCloud account settings.  
 You can manage which folders and files you want to synchronize, change your 
 account settings, and pause and resume synchronization.
->>>>>>> 096511f... Update and correct desktop client manual
 
 To access and modify the account settings:
 
@@ -121,24 +104,17 @@ The fields and options in this window include:
 
 * ``Edit Ignored Files`` button: Launches the Ignored Files Editor.
 
-<<<<<<< HEAD
 * ``Modify Account`` button: Enables you to change the ownCloud server to which 
   you are synchronizing. This option launches the ``Setting up an Account`` 
   dialog (see :doc:`accountsetup`).
 
-=======
 * ``Modify Account`` button: Use this to change your ownCloud server settings 
   by launching the account setup wizard (see :doc:`accountsetup`).
->>>>>>> 096511f... Update and correct desktop client manual
 
 Adding a Folder
 ^^^^^^^^^^^^^^^
 
-<<<<<<< HEAD
-The ``Add a Folder ...`` button enables you to add a new folder to the 
-=======
 The ``Add Folder ...`` button enables you to add a new local folder to the 
->>>>>>> 096511f... Update and correct desktop client manual
 synchronization process.
 
 To add a new folder:
@@ -179,23 +155,13 @@ To add a new folder:
 Editing Ignored Files
 ^^^^^^^^^^^^^^^^^^^^^
 
-<<<<<<< HEAD
-The :guilabel:`Ignored Files Editor` provides a list of preconfigured files
-that are ignored (that is, not synchronized) by the client and server during
-synchronizations. The Ignored Files Editor enables you to add patterns for
-files or directories that you want to exclude from the synchronization process.
-In addition to using standard characters, the Ignored Files Editor enables you
-to use wild cards (for example, using an asterisk ‘*’ to indicate multiple
-characters or a question mark ‘?’ to incidate a single character).
-=======
 The :guilabel:`Ignored Files Editor` provides a list of  files that are ignored 
 (that is, not synchronized) by the client and server during synchronizations. 
 You may add additional files or directories that you want to exclude from the 
 synchronization process. In addition to using standard characters, the Ignored 
 Files Editor enables you to use wild cards (for example, using an asterisk ‘*’ 
-to indicate multiple characters or a question mark ‘?’ to incidate a single 
+to indicate multiple characters or a question mark ‘?’ to indicate a single 
 character).
->>>>>>> 096511f... Update and correct desktop client manual
 
 For additional information about this editor, see `Using the Ignored Files 
 Editor`_
@@ -225,14 +191,8 @@ Using the General Settings Window
 
 .. index:: general settings, auto start, startup, desktop notifications
 
-<<<<<<< HEAD
-The General settings window enables you to set general settings for the
-ownCloud Desktop Client and provides information about the software version,
-its creator, and the existance of any updates.
-=======
 The General settings window has options for launching the client at system 
 startup, notifications, and using monochrome icons.
->>>>>>> 096511f... Update and correct desktop client manual
 
 .. image:: images/settings_general.png
 
@@ -275,24 +235,16 @@ synchronizations.
 Specifying Proxy Settings
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-<<<<<<< HEAD
 A proxy server is a server (for example, a computer system or an application)
 that functions as an intermediary contact for requests from clients that are
 seeking resources from other servers.  For the ownCloud Desktop Client, you can
 define the following proxy settings:
 
-* ``No Proxy`` option: Specifies that the ownCloud Client circumvent the default 
-  proxy configured on the system.
-* ``Use system proxy`` option: Default setting. Follows the systems proxy
-  settings. On Linux systems, this setting uses the value of the variable
-  ``http_proxy``.
-=======
 * ``No Proxy`` option: Do not use a proxy.
 
 * ``Use system proxy`` option: Default setting. Follows the systems proxy
   settings.
 
->>>>>>> 096511f... Update and correct desktop client manual
 * ``Specify proxy manually as`` option: Enables you to specify
   the following custom proxy settings:
 
@@ -355,16 +307,9 @@ Using the Ignored Files Editor
 
 .. index:: ignored files, exclude files, pattern
 
-<<<<<<< HEAD
-You might have some files or directories that you do not want to backup and
-store on the server. To identify and exclude these files or directories, you
-can use the *Ignored Files Editor* that is embedded in the ownCloud Desktop
-Client.
-=======
 You might have some local files or directories that you do not want to backup 
 and store on the server. To identify and exclude these files or directories, you
 can use the *Ignored Files Editor*.
->>>>>>> 096511f... Update and correct desktop client manual
 
 .. image:: images/ignored_files_editor.png
 
