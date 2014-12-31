@@ -21,12 +21,7 @@ result, the ownCloud Client runs on Linux, Windows, and MacOS.
 The Synchronization Process
 ---------------------------
 
-<<<<<<< HEAD
 The process of synchronization keeps files in two separate repositories the same. When synchronized:
-=======
-The process of synchronization keeps files in two separate repositories the 
-same. When synchronized:
->>>>>>> 096511f... Update and correct desktop client manual
 
 - If a file is added to one repository it is copied to the other synchronized repository.
 - When a file is changed in one repository, the change is propagated to any
@@ -35,11 +30,7 @@ same. When synchronized:
 
 It is important to note that the ownCloud synchronization process does not use
 a typical client/server system where the server is always master.  This is a
-<<<<<<< HEAD
-major difference between the ownCloud synchronizatin process and other systems
-=======
 major difference between the ownCloud synchronization process and other systems
->>>>>>> 096511f... Update and correct desktop client manual
 like a file backup, where only changes to files or folders and the addition of
 new files are propagated, but these files and folders are never deleted unless
 explicitly deleted in the backup.
