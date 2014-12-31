@@ -87,7 +87,7 @@ The fields and options in this window include:
   server to which the client is synchronizing and the user account on that 
   server.
 
-* ``Add Folder...`` button: Provides the ability to add another folder to the 
+* ``Add Folder`` button: Provides the ability to add another folder to the 
   synchronization process (see ``Adding a Folder``).
 
 * ``Pause/Resume`` button: Pauses the current sync (or prevents the client from 
