@@ -1,7 +1,7 @@
 When invoking the client from the command line, the following options are supported:
 
 ``-h``, ``--help``
-        Displays all the options below or, when used on Windows, opens a window displaying all options.
+        Displays all command options.
 
 ``--logwindow``
         Opens a window displaying log output.
