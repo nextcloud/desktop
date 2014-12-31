@@ -21,7 +21,12 @@ result, the ownCloud Client runs on Linux, Windows, and MacOS.
 The Synchronization Process
 ---------------------------
 
+<<<<<<< HEAD
 The process of synchronization keeps files in two separate repositories the same. When synchronized:
+=======
+The process of synchronization keeps files in two separate repositories the 
+same. When synchronized:
+>>>>>>> 096511f... Update and correct desktop client manual
 
 - If a file is added to one repository it is copied to the other synchronized repository.
 - When a file is changed in one repository, the change is propagated to any
@@ -30,7 +35,11 @@ The process of synchronization keeps files in two separate repositories the same
 
 It is important to note that the ownCloud synchronization process does not use
 a typical client/server system where the server is always master.  This is a
+<<<<<<< HEAD
 major difference between the ownCloud synchronizatin process and other systems
+=======
+major difference between the ownCloud synchronization process and other systems
+>>>>>>> 096511f... Update and correct desktop client manual
 like a file backup, where only changes to files or folders and the addition of
 new files are propagated, but these files and folders are never deleted unless
 explicitly deleted in the backup.
@@ -60,7 +69,7 @@ To compare the modification times of two files from different systems, csync
 must operate on the same base. Before ownCloud Client version 1.1.0, csync
 required both device repositories to run on the exact same time.  This
 requirement was achieved through the use of enterprise standard `NTP time
-synchronisation`_ on all machines.
+synchronization`_ on all machines.
 
 Because this timing strategy is rather fragile without the use of NTP, ownCloud
 4.5 introduced a unique number (for each file?) that changes whenever the file
@@ -119,8 +128,9 @@ traverses the file tree and compares the modification time of each file with an
 expected value stored in its database. If the value is not the same, the client
 determines that the file has been modified in the local repository.
 
-.. note:: On the local side, the modificaton time a good attribute to use for detecting changes, because
-the value does not depend on time shifts and such.
+.. note:: On the local side, the modification time a good attribute to use for 
+   detecting changes, because
+   the value does not depend on time shifts and such.
 
 For the remote (that is, ownCloud server) repository, the client compares the
 ETag of each file with its expected value. Again, the expected ETag value is
