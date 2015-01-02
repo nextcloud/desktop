@@ -2141,12 +2141,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="238"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorparated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="239"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Distribué par %1 et sous licence GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 et le logo %2  sont des marques enregistrées de %1 aux Etats-Unis, dans d&apos;autres pays, ou les deux.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

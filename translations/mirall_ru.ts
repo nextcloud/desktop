@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="487"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Синхронизация запущена.&lt;br/&gt;Вы хотите, остановить ее?</translation>
+        <translation>Синхронизация запущена.&lt;br/&gt;Вы хотите её остановить?</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="607"/>
@@ -267,7 +267,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="107"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Пожалуйста, обновите сервер до последней версии и перезапустите клиент.</translation>
+        <translation>Обновите сервер до последней версии и перезапустите клиент.</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="127"/>
@@ -425,7 +425,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="239"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Найден старый журнал синхронизации &apos;%1&apos;, и он не может быть удалён. Пожалуйста убедитесь что он не открыт в каком-либо приложении.</translation>
+        <translation>Найден старый журнал синхронизации &apos;%1&apos;, и он не может быть удалён. Убедитесь что он не открыт в другом приложении.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="963"/>
@@ -561,12 +561,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="167"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation>Псевдоним не может быть пустым. Пожалуйста, укажите описательное слово псевдонима.</translation>
+        <translation>Поле псевдоним не может быть пустым. Укажите псевдоним.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="178"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>Псевдоним &lt;i&gt;%1&lt;/i&gt; уже используется. Выберите другой пожалуйста.</translation>
+        <translation>Псевдоним &lt;i&gt;%1&lt;/i&gt; уже используется. Выберите другой псевдоним.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="211"/>
@@ -584,7 +584,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Введите имя папки, которая должна быть создана в &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
@@ -594,7 +594,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="295"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Невозможно создать директорию по адресу %1. Пожалуйста, попробуйте вручную.</translation>
+        <translation>Невозможно создать директорию по пути %1. Попробуйте создать её вручную.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="344"/>
@@ -711,7 +711,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/creds/httpcredentials.cpp" line="375"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation>Пожалуйста введите пароль от  %1 для пользователя &apos;%2&apos;:</translation>
+        <translation>Введите пароль от %1 для пользователя &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -998,7 +998,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Не удалось загрузить обновление. Пожалуйста, нажмите здесь &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt;%2, для ручной загрузки файлов</translation>
+        <translation>Не удалось загрузить обновление. Для скачивания файлов вручную, нажмите &lt;a href=&apos;%1&apos;&gt;здесь&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
@@ -1008,7 +1008,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation>Доступна новая версия %1. Чтобы его установить, пожалуйста, воспользуйтесь инструментом обновления системы.</translation>
+        <translation>Доступно обновление до версии %1. Чтобы его установить, воспользуйтесь инструментом обновления системы.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="87"/>
@@ -1023,7 +1023,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="93"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>У Вас установлена новейшая версия</translation>
+        <translation>Установлена новейшая версия</translation>
     </message>
 </context>
 <context>
@@ -1114,7 +1114,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="153"/>
         <source>&amp;Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Далее &gt; </translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="233"/>
@@ -1220,12 +1220,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="325"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Не удалось создать удаленную папку — представленные параметры доступа неверны!&lt;br/&gt;Пожалуйста, вернитесь назад и проверьте параметры доступа.&lt;/p&gt;</translation>
+        <translation>Не удалось создать удаленную папку, представленные параметры доступа неверны!&lt;br/&gt;Пожалуйста, вернитесь назад и проверьте параметры доступа.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="328"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Удаленное создание папки не удалось, вероятно, потому, что предоставленные учетные данные неверны.&lt;/font&gt;&lt;br/&gt;Пожалуйста, вернитесь назад и проверьте данные.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Удаленное создание папки не удалось, возможно, указанные учетные данные неверны.&lt;/font&gt;&lt;br/&gt;Вернитесь назад и проверьте учетные данные.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="333"/>
@@ -1246,12 +1246,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="362"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>Подключение к %1 не воможно. Пожалуйста, проверьте еще раз.</translation>
+        <translation>Не удалось соединиться с %1. Попробуйте снова.</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="376"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Невозможно стереть папку и создать её резервную копию так как папка или файл в ней открыты в другой программе. Пожалуйста, закройте папку или файл и нажмите &quot;Повторите попытку&quot;, либо прервите мастер настройки.</translation>
+        <translation>Невозможно стереть папку и создать её резервную копию, папка или файл в ней открыты в другой программе. Закройте папку или файл и нажмите &quot;Повторить попытку&quot;, либо прервите мастер настройки.</translation>
     </message>
 </context>
 <context>
@@ -1409,12 +1409,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="310"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation>Эта папка не должна переименовываться. Пожалуйста, верните ей имя Shared</translation>
+        <translation>Эта папка не должна переименовываться. Присвойте ей изначальное имя: Shared. </translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="325"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation>Этот файл был переименован но является частью опубликованной папки с правами только для чтения. Оригинальный файл был восстановлен.</translation>
+        <translation>Этот файл был переименован но является частью опубликованной папки с правами только для чтения. Восстановлен оригинальный файл.</translation>
     </message>
 </context>
 <context>
@@ -1793,8 +1793,8 @@ It is not advisable to use it.</source>
         <location filename="../src/mirall/sslbutton.cpp" line="219"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation>Эта ссылка НЕ зашифрована.
-Мы не рекомендуем открывать такие ссылки.</translation>
+        <translation>Эта ссылка НЕ безопасна, используется протокол без шифрования.
+</translation>
     </message>
 </context>
 <context>
@@ -1891,7 +1891,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="94"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation>CSync не смог загрузить или создать файл журнала. Убедитесь что вы имеете права чтения и записи в локальной директории.</translation>
+        <translation>CSync не смог открыть или создать файл журнала. Убедитесь, что у вас достаточно прав для чтения и записи в локальной папке синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="98"/>
@@ -1901,12 +1901,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="101"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;%1 плагин для синхронизации не удается загрузить.&lt;br/&gt;Пожалуйста, убедитесь, что он установлен!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Не удается загрузить плагин 1% для csync.&lt;br/&gt;Проверьте установку!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="104"/>
         <source>The system time on this client is different than the system time on the server. Please use a time synchronization service (NTP) on the server and client machines so that the times remain the same.</source>
-        <translation>Системное время на этом клиенте отличается от времени на сервере. Воспользуйтесь сервисом синхронизации времени (NTP) на серверной и клиентской машинах для установки точного времени.</translation>
+        <translation>Системное время на этом клиенте отличается от времени на сервере. Воспользуйтесь сервисом синхронизации времени (NTP) на сервере и клиентском пк, для установки точного времени.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="109"/>
@@ -1951,7 +1951,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="134"/>
         <source>A remote file can not be written. Please check the remote access.</source>
-        <translation>Удаленный файл не может быть записан. Пожалуйста, проверьте удаленный доступ.</translation>
+        <translation>Запись в удаленный файл невозможна. Проверьте доступ к удаленному ресурсу.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="138"/>
@@ -2078,17 +2078,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="902"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation>Недопустимо из-за отсутствия у вас разрешений на добавление подпапок в этой папке</translation>
+        <translation>Недопустимо, у вас не достаточно прав для создания подкаталогов в этой папке</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="908"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
-        <translation>Недопустимо из-за отсутствия у вас разрешений на добавление родительской папки</translation>
+        <translation>Недопустимо, у вас не достаточно прав для создания родительской папки</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="915"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
-        <translation>Недопустимо из-за отсутствия у вас разрешений на добавление файлов в эту папку</translation>
+        <translation>Недопустимо, у вас недостаточно прав для добавления файлов в эту папку</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="935"/>
@@ -2140,17 +2140,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/theme.cpp" line="234"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версия %1. Для получения дополнительной информации посетите &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="238"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorparated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;© ownCloud, Incorparated&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="239"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Распространяется %1 и лицензировано под GNU General Public License (GPL) Версии 2.0.&lt;br/&gt;Логотипы %2 и %2 являются зарегистрированой торговой маркой %1 в США и/или других странах.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2158,7 +2158,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="228"/>
         <source>Please sign in</source>
-        <translation>Пожалуйста войдите в учётную запись</translation>
+        <translation>Войдите в систему</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudgui.cpp" line="233"/>
