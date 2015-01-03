@@ -121,7 +121,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="130"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>&lt;b&gt;Заметьте:&lt;/b&gt; Некоторые папки, включая сетевые или общие, могут иметь разные ограничения.</translation>
+        <translation>&lt;b&gt;Учтите:&lt;/b&gt; Некоторые папки, включая сетевые или общие, могут иметь разные ограничения.</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.cpp" line="171"/>
@@ -521,7 +521,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="71"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation>Псевдоним каталога - наглядное имя для этой синхронизации.</translation>
+        <translation>Псевдоним папки - наглядное имя для этой синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="100"/>
@@ -1056,7 +1056,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="136"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Внимание:&lt;/strong&gt; Локальная папка не пуста. Выберите разрешение&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Внимание:&lt;/strong&gt; Локальная папка не пуста. Выберите способ решения&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
@@ -1349,7 +1349,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/owncloudpropagator.cpp" line="185"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation>Файл или каталог был удалён из опубликованной папки с правами только для чтения, но восстановить его не удалось: %1</translation>
+        <translation>Файл удалён с общего ресурса с правами только для чтения, но его не удалось восстановить: %1</translation>
     </message>
 </context>
 <context>
@@ -1396,7 +1396,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="152"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation>Файл был удалён из опубликованной папки с правами только для чтения. Файл был восстановлен.</translation>
+        <translation>Файл удалён с удаленного общего ресурса с правами только для чтения. Файл был восстановлен.</translation>
     </message>
 </context>
 <context>
@@ -1414,7 +1414,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="325"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation>Этот файл был переименован но является частью опубликованной папки с правами только для чтения. Восстановлен оригинальный файл.</translation>
+        <translation>Файл переименован на удаленном общем ресурсе с правами только для чтения. Файл был восстановлен.</translation>
     </message>
 </context>
 <context>
@@ -1433,7 +1433,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="180"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>Этот файл был изменен локально, но является частью опубликованной папки с правами только для чтения. Он восстановлен и ваши изменения находятся в файле конфликтов.</translation>
+        <translation>Измененный файл принадлежит удаленному общему ресурсу с правами только для чтения. Файл был восстановлен, ваши правки доступны в файле конфликтов.</translation>
     </message>
 </context>
 <context>
@@ -1441,7 +1441,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="296"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>Этот файл был изменен локально, но является частью опубликованной папки с правами только для чтения. Он восстановлен и ваши изменения находятся в файле конфликтов.</translation>
+        <translation>Измененный файл принадлежит удаленному общему ресурсу с правами только для чтения. Файл был восстановлен, ваши правки доступны в файле конфликтов.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
@@ -2062,7 +2062,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="564"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation>Не удалось инициализировать журнал синхронизации.</translation>
+        <translation>Невозможно инициализировать журнал синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="645"/>
@@ -2104,7 +2104,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="987"/>
         <source>Local files and share folder removed.</source>
-        <translation>Локальные файлы и папки, добавленные в общий доступ, удалены.</translation>
+        <translation>Локальные файлы и общая папка удалены.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="1042"/>
