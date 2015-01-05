@@ -226,6 +226,7 @@ bool FolderMan::ensureJournalGone(const QString &localPath)
     // remove old .csync_journal file
     QString stateDbFile = localPath+QLatin1String("/.csync_journal.db");
     while (QFile::exists(stateDbFile) && !QFile::remove(stateDbFile)) {
+        qDebug() << "Could not remove old db file at" << stateDbFile;
         int ret = QMessageBox::warning(0, tr("Could not reset folder state"),
                                        tr("An old sync journal '%1' was found, "
                                           "but could not be removed. Please make sure "
@@ -631,9 +632,12 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
     QTimer::singleShot(200, this, SLOT(slotStartScheduledFolderSync()));
 }
 
-void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceFolder,
-                                    const QString& targetPath, const QStringList &selectiveSyncBlackList )
+bool FolderMan::addFolderDefinition(const QString& alias, const QString& sourceFolder,
+                                    const QString& targetPath, const QStringList& selectiveSyncBlackList)
 {
+    if (! ensureJournalGone(sourceFolder))
+        return false;
+
     QString escapedAlias = escapeAlias(alias);
     // Create a settings file named after the alias
     QSettings settings( _folderConfigPath + QLatin1Char('/') + escapedAlias, QSettings::IniFormat);
@@ -645,6 +649,8 @@ void FolderMan::addFolderDefinition(const QString& alias, const QString& sourceF
     settings.setValue(QLatin1String("connection"),  Theme::instance()->appName());
     settings.setValue(QLatin1String("blackList"), selectiveSyncBlackList);
     settings.sync();
+
+    return true;
 }
 
 Folder *FolderMan::folderForPath(const QString &path)

@@ -615,6 +615,9 @@ bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
                 return true;
             }
         }
+        if(!fn.endsWith(QLatin1Char('/'))) {
+            fn.append(QLatin1Char('/'));
+        }
         if (Utility::doesSetContainPrefix(_stateTaintedFolders, fn)) {
             qDebug() << Q_FUNC_INFO << "Folder is tainted, EVAL!" << fn;
             s->set(SyncFileStatus::STATUS_EVAL);
@@ -651,6 +654,9 @@ void Folder::watcherSlot(QString fn)
     }
     // Make it a relative path depending on the folder
     QString relativePath = fn.remove(0, path().length());
+    if( !relativePath.endsWith(QLatin1Char('/'))) {
+        relativePath.append(QLatin1Char('/'));
+    }
     qDebug() << Q_FUNC_INFO << fi.canonicalFilePath() << fn << relativePath;
     _stateTaintedFolders.insert(relativePath);
 

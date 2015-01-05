@@ -63,14 +63,14 @@ static ContentManager* sharedInstance = nil;
 {
 	NSString *base = path;
 
-	_icnOk   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok.icns"]];
-	_icnSync = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync.icns"]];
-	_icnWarn = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning.icns"]];
-	_icnErr  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error.icns"]];
-	_icnOkSwm   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"ok_swm.icns"]];
-	_icnSyncSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"sync_swm.icns"]];
-	_icnWarnSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"warning_swm.icns"]];
-	_icnErrSwm  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingString:@"error_swm.icns"]];
+	_icnOk   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"ok.icns"]];
+	_icnSync = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"sync.icns"]];
+	_icnWarn = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"warning.icns"]];
+	_icnErr  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"error.icns"]];
+	_icnOkSwm   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"ok_swm.icns"]];
+	_icnSyncSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"sync_swm.icns"]];
+	_icnWarnSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"warning_swm.icns"]];
+	_icnErrSwm  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"error_swm.icns"]];
 
 	NSLog(@"Icon ok identifier: %d from %@", [_icnOk intValue], [base stringByAppendingString:@"ok.icns"]);
 }

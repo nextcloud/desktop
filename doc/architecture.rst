@@ -21,7 +21,8 @@ result, the ownCloud Client runs on Linux, Windows, and MacOS.
 The Synchronization Process
 ---------------------------
 
-The process of synchronization keeps files in two separate repositories the same. When synchronized:
+The process of synchronization keeps files in two separate repositories the 
+same. When synchronized:
 
 - If a file is added to one repository it is copied to the other synchronized repository.
 - When a file is changed in one repository, the change is propagated to any

@@ -228,7 +228,9 @@ void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
         break;
 
     default:
-        _ocWizard->displayError(tr("Error: Wrong credentials."));
+        _ocWizard->show();
+        _ocWizard->back();
+        _ocWizard->displayError(reply->errorString());
         break;
     }
 }
@@ -437,17 +439,19 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             // 2.1: startFromScratch: (Re)move local data, clean slate sync
             if (startFromScratch) {
                 if (ensureStartFromScratch(localFolder)) {
-                    folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                                   localFolder, _remoteFolder, _ocWizard->blacklist() );
-                    _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+                    if (folderMan->addFolderDefinition(Theme::instance()->appName(),
+                                                       localFolder, _remoteFolder, _ocWizard->blacklist() )) {
+                        _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+                    }
                     replaceDefaultAccountWith(newAccount);
                 }
             }
             // 2.2: Reinit: Remove journal and start a sync
             else {
-                folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                               localFolder, _remoteFolder, _ocWizard->blacklist() );
-                _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+                if (folderMan->addFolderDefinition(Theme::instance()->appName(),
+                                                   localFolder, _remoteFolder, _ocWizard->blacklist() )) {
+                    _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+                }
                 replaceDefaultAccountWith(newAccount);
             }
         }

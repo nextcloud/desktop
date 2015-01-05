@@ -42,4 +42,3 @@ When selecting a local folder that already contains data, you can choose from tw
 
 See :doc:`navigating` to learn how to choose specific folders to sync with on 
 your ownCloud server.
-

@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>Skapa mapp</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -129,59 +129,59 @@
         <translation>Återuppta</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="339"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="338"/>
         <source>Confirm Folder Remove</source>
         <translation>Bekräfta radering av mapp</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="340"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="339"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen stoppa synkroniseringen av mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notera:&lt;/b&gt; Detta kommer inte att radera filerna från din klient.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="376"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="375"/>
         <source>Confirm Folder Reset</source>
         <translation>Bekräfta återställning av mapp</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="377"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="376"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen nollställa mappen &lt;i&gt;%1&lt;/i&gt; och återställa din databas?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notera:&lt;/b&gt; Denna funktion är endast designad för underhållsuppgifter. Inga filer raderas, men kan skapa mycket datatrafik och ta allt från några minuter till flera timmar att slutföra, beroende på storleken på mappen. Använd endast detta alternativ om du har blivit uppmanad av din systemadministratör.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="654"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="653"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 av %4)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="658"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="657"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="675"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="678"/>
         <source>file %1 of %2</source>
         <translation>fil %1 av %2</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="763"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="766"/>
         <source>%1 (%3%) of %2 server space in use.</source>
         <translation>%1 (%3%) av %2 server utrymme används.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="807"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="810"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation>Ingen anslutning till %1 vid &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="814"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="817"/>
         <source>No %1 connection configured.</source>
         <translation>Ingen %1 anslutning konfigurerad.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="487"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="486"/>
         <source>Sync Running</source>
         <translation>Synkronisering pågår</translation>
     </message>
@@ -191,40 +191,40 @@
         <translation>Inget konto är konfigurerat.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="488"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="487"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>En synkronisering pågår.&lt;br/&gt;Vill du avbryta den?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="608"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="607"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Söker igenom &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="648"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="647"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
         <translation>%1 %2 (%3 of %4). Tid kvar enskild fil %5. Hastighet %6/s</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="669"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="672"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 av %2, fil %3 av %4
 Total tid kvar %5</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="800"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="803"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>Ansluten till &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="803"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="806"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Ansluten till &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/accountsettings.cpp" line="767"/>
+        <location filename="../src/mirall/accountsettings.cpp" line="770"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Just nu finns ingen utrymmes information tillgänglig</translation>
     </message>
@@ -278,7 +278,7 @@ Total tid kvar %5</translation>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="138"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>timeout</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="167"/>
@@ -386,12 +386,12 @@ Total tid kvar %5</translation>
         <translation>Synk aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="739"/>
+        <location filename="../src/mirall/folder.cpp" line="745"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte läsa systemets exkluderings-fil</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="956"/>
+        <location filename="../src/mirall/folder.cpp" line="962"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -400,17 +400,17 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 Är du säker på att du vill fortsätta?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="960"/>
+        <location filename="../src/mirall/folder.cpp" line="966"/>
         <source>Remove All Files?</source>
         <translation>Ta bort alla filer?</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="962"/>
+        <location filename="../src/mirall/folder.cpp" line="968"/>
         <source>Remove all files</source>
         <translation>Ta bort alla filer</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folder.cpp" line="963"/>
+        <location filename="../src/mirall/folder.cpp" line="969"/>
         <source>Keep files</source>
         <translation>Behåll filer</translation>
     </message>
@@ -418,62 +418,62 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
 <context>
     <name>Mirall::FolderMan</name>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="237"/>
+        <location filename="../src/mirall/folderman.cpp" line="238"/>
         <source>Could not reset folder state</source>
         <translation>Kunde inte återställa mappens skick</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="238"/>
+        <location filename="../src/mirall/folderman.cpp" line="239"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>En gammal synkroniseringsjournal &apos;%1&apos; hittades, men kunde inte raderas. Vänligen se till att inga program för tillfället använder den.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="957"/>
+        <location filename="../src/mirall/folderman.cpp" line="963"/>
         <source>Undefined State.</source>
         <translation>Okänt tillstånd.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="960"/>
+        <location filename="../src/mirall/folderman.cpp" line="966"/>
         <source>Waits to start syncing.</source>
         <translation>Väntar på att starta synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="963"/>
+        <location filename="../src/mirall/folderman.cpp" line="969"/>
         <source>Preparing for sync.</source>
         <translation>Förbereder synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="966"/>
+        <location filename="../src/mirall/folderman.cpp" line="972"/>
         <source>Sync is running.</source>
         <translation>Synkronisering pågår.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="969"/>
+        <location filename="../src/mirall/folderman.cpp" line="975"/>
         <source>Last Sync was successful.</source>
         <translation>Senaste synkronisering lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="974"/>
+        <location filename="../src/mirall/folderman.cpp" line="980"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Senaste synkning lyckades, men det finns varningar för vissa filer!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="977"/>
+        <location filename="../src/mirall/folderman.cpp" line="983"/>
         <source>Setup Error.</source>
         <translation>Inställningsfel.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="980"/>
+        <location filename="../src/mirall/folderman.cpp" line="986"/>
         <source>User Abort.</source>
         <translation>Användare Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="983"/>
+        <location filename="../src/mirall/folderman.cpp" line="989"/>
         <source>Sync is paused.</source>
         <translation>Synkronisering är pausad.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/folderman.cpp" line="989"/>
+        <location filename="../src/mirall/folderman.cpp" line="995"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synk är stoppad)</translation>
     </message>
@@ -579,12 +579,12 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Skapa fjärrmapp</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Ange namnet på den  nya mappen som skall skapas under &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
@@ -649,7 +649,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="540"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Servern returnerade felaktig content-range</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="579"/>
@@ -1100,29 +1100,34 @@ efter ytterligare privilegier under processen.</translation>
         <translation>Installerar %1 server</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="106"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Denna URL är INTE säker eftersom den inte är krypterad.
 Det är inte lämpligt använda den.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="114"/>
         <source>This url is secure. You can use it.</source>
         <translation>Denna url är säker. Du kan använda den.</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="227"/>
-        <source>&lt;p&gt;Could not connect securely:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Do you want to connect unencrypted instead (not recommended)?&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="153"/>
+        <source>&amp;Next &gt;</source>
+        <translation>&amp;Nästa &gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="228"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="233"/>
+        <source>&lt;p&gt;Could not connect securely:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Do you want to connect unencrypted instead (not recommended)?&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Kunde inte ansluta säkert:&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;Vill du ansluta okrypterat istället (rekommenderas ej)?&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="234"/>
         <source>Connection failed</source>
         <translation>Anslutningen misslyckades</translation>
     </message>
     <message>
-        <location filename="../src/wizard/owncloudsetuppage.cpp" line="263"/>
+        <location filename="../src/wizard/owncloudsetuppage.cpp" line="269"/>
         <source>Update %1 server</source>
         <translation>Uppdaterar %1 server</translation>
     </message>
@@ -1130,13 +1135,13 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>Mirall::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="373"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="375"/>
         <source>Folder rename failed</source>
         <translation>Omdöpning av mapp misslyckades</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="442"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="450"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="444"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="453"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokal synkmapp %1 skapad!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1151,32 +1156,27 @@ Det är inte lämpligt använda den.</translation>
         <translation>&lt;font color=&quot;green&quot;&gt;Lyckades ansluta till %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="231"/>
-        <source>Error: Wrong credentials.</source>
-        <translation>Fel: Ogiltiga inloggningsuppgifter.</translation>
-    </message>
-    <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="245"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="247"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokal synkmapp %1 finns redan, aktiverar den för synk.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="247"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="249"/>
         <source>Creating local sync folder %1... </source>
         <translation>Skapar lokal synkmapp %1... </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="251"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="253"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
         <source>failed.</source>
         <translation>misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="255"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="257"/>
         <source>Could not create local folder %1</source>
         <translation>Kunde inte skapa lokal mapp %1</translation>
     </message>
@@ -1187,69 +1187,69 @@ Det är inte lämpligt använda den.</translation>
         <translation>Misslyckades att ansluta till %1 vid %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="280"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
         <source>No remote folder specified!</source>
         <translation>Ingen fjärrmapp specificerad! </translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="286"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="288"/>
         <source>Error: %1</source>
         <translation>Fel: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="299"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="301"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>skapar mapp på ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="315"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Fjärrmapp %1 har skapats.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="317"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Fjärrmappen %1 finns redan. Ansluter den för synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="319"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="321"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="323"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Skapande av mapp resulterade i HTTP felkod %1</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="325"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Det gick inte att skapa mappen efter som du inte har tillräckliga rättigheter!&lt;br/&gt;Vänligen återvänd och kontrollera dina rättigheter.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="326"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="328"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Misslyckades skapa fjärrmappen, troligen p.g.a felaktiga inloggningsuppgifter.&lt;/font&gt;&lt;br/&gt;Kontrollera dina inloggningsuppgifter.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="331"/>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="332"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="333"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="334"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Misslyckades skapa fjärrmapp %1 med fel &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="348"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="350"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>En synkroniseringsanslutning från %1 till fjärrmappen %2 har skapats.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="353"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="355"/>
         <source>Successfully connected to %1!</source>
         <translation>Ansluten till %1!</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="360"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="362"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Anslutningen till %1 kunde inte etableras. Var god kontrollera och försök igen.</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/mirall/owncloudsetupwizard.cpp" line="376"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Kan inte ta bort och göra en säkerhetskopia av mappen på grund av att mappen eller en fil i den används av ett annat program. Vänligen stäng mappen eller filen och försök igen eller avbryt installationen.</translation>
     </message>
@@ -1313,7 +1313,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="444"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Servern returnerade felaktig content-range</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="495"/>
@@ -1331,12 +1331,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="755"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Filen kunde inte laddas ner fullständigt.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="791"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Fil %1 kan inte sparas eftersom namnet krockar med en lokal fil!</translation>
     </message>
 </context>
 <context>
@@ -1370,12 +1370,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="68"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>Fel vid borttagning av &apos;%1&apos;: %2; </translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="79"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte ta bort katalog &apos;%1&apos;; </translation>
     </message>
     <message>
         <location filename="../src/mirall/propagatorjobs.cpp" line="94"/>
@@ -1535,24 +1535,27 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="262"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>För närvarande är inga filer ignorerade på grund av föregående fel och inga nerladdningar pågår.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n fil ignoreras på grund av föregående fel.
+</numerusform><numerusform>%n filer ignoreras på grund av föregående fel.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mirall/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n fil är delvis nerladdad.</numerusform><numerusform>%n filer är delvis nerladdade.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/mirall/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Försök att synkronisera dessa igen.</translation>
     </message>
 </context>
 <context>
@@ -2020,7 +2023,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="183"/>
         <source>The mounted directory is temporary not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Den monterade katalogen är temporärt ej tillgänglig på servern</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="186"/>
@@ -2040,7 +2043,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="364"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Hårda länkar stöds ej vid synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="367"/>
@@ -2131,9 +2134,19 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>Mirall::Theme</name>
     <message>
-        <location filename="../src/mirall/theme.cpp" line="233"/>
-        <source>&lt;p&gt;Version %1 For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <location filename="../src/mirall/theme.cpp" line="234"/>
+        <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Version %1. För mer information vänligen besök &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="238"/>
+        <source>&lt;p&gt;Copyright ownCloud, Incorparated&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Upphovsrätten tillhör ownCloud, Incorparated&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/mirall/theme.cpp" line="239"/>
+        <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Distribueras av %1 och licenserad under GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 och %2 logotyp är registrerade varumärken av %1 i Förenta Staterna, andra länder, eller både och.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2254,22 +2267,22 @@ Det är inte lämpligt använda den.</translation>
         <translation>Söker igenom &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="475"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="476"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Synkroniserar %1 av %2 (%3 kvar)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="480"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="481"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synkroniserar %1 (%2 kvar)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="500"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="501"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/mirall/owncloudgui.cpp" line="528"/>
+        <location filename="../src/mirall/owncloudgui.cpp" line="530"/>
         <source>Up to date</source>
         <translation>Aktuell version</translation>
     </message>
@@ -2279,7 +2292,7 @@ Det är inte lämpligt använda den.</translation>
     <message utf8="true">
         <location filename="../src/mirall/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;br/&gt;Based on Mirall by Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %2. För mer information besök &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Av Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz och andra.&lt;br/&gt;Baserad på Mirall av Duncan Mac-Vicar P.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Upphovsrätt ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensierad under GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud och ownCloud Logon är registerede varumärken som tillhör ownCloud, Inc. i USA, andra länder, eller båda.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
