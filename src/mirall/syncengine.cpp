@@ -45,6 +45,7 @@
 #include <QSslCertificate>
 #include <QProcess>
 #include <QElapsedTimer>
+#include <qtextcodec.h>
 
 namespace Mirall {
 
@@ -314,7 +315,16 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 {
     if( ! file ) return -1;
 
-    QString fileUtf8 = QString::fromUtf8( file->path );
+    QTextCodec::ConverterState utf8State;
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    Q_ASSERT(codec);
+    QString fileUtf8 = codec->toUnicode(file->path, qstrlen(file->path), &utf8State);
+
+    auto instruction = file->instruction;
+    if (utf8State.invalidChars > 0) {
+        qDebug() << "File ignored because of invalid utf-8 sequence: " << file->path;
+        instruction = CSYNC_INSTRUCTION_IGNORE;
+    }
 
     // Gets a default-contructed SyncFileItem or the one from the first walk (=local walk)
     SyncFileItem item = _syncItemMap.value(fileUtf8);
@@ -322,12 +332,12 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._originalFile = item._file;
 
     if (item._instruction == CSYNC_INSTRUCTION_NONE
-            || (item._instruction == CSYNC_INSTRUCTION_IGNORE && file->instruction != CSYNC_INSTRUCTION_NONE)) {
-        item._instruction = file->instruction;
+            || (item._instruction == CSYNC_INSTRUCTION_IGNORE && instruction != CSYNC_INSTRUCTION_NONE)) {
+        item._instruction = instruction;
         item._modtime = file->modtime;
     } else {
-        if (file->instruction != CSYNC_INSTRUCTION_NONE) {
-            qDebug() << "ERROR: Instruction" << item._instruction << "vs" << file->instruction << "for" << fileUtf8;
+        if (instruction != CSYNC_INSTRUCTION_NONE) {
+            qDebug() << "ERROR: Instruction" << item._instruction << "vs" << instruction << "for" << fileUtf8;
             Q_ASSERT(!"Instructions are both unequal NONE");
             return -1;
         }
@@ -379,6 +389,12 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     default:
         Q_ASSERT("Non handled error-status");
         /* No error string */
+    }
+
+    if (item._instruction == CSYNC_INSTRUCTION_IGNORE && utf8State.invalidChars > 0) {
+        item._status = SyncFileItem::NormalError;
+        //item._instruction = CSYNC_INSTRUCTION_ERROR;
+        item._errorString = tr("Filename encoding is not valid");
     }
 
     item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
