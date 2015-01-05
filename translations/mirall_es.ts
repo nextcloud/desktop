@@ -383,7 +383,7 @@ Tiempo restante %5</translation>
     <message>
         <location filename="../src/mirall/folder.cpp" line="500"/>
         <source>Sync Activity</source>
-        <translation>Actividad en la Sincronización</translation>
+        <translation>Actividad de la sincronización</translation>
     </message>
     <message>
         <location filename="../src/mirall/folder.cpp" line="745"/>
@@ -1051,7 +1051,7 @@ pida privilegios adicionales durante el proceso.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="129"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Advertencia:&lt;/strong&gt;Tiene actualmente múltiples carpetas configuradas. Si continua con los ajustes actuales, la carpeta de configuración se descartará y se creará una única carpeta principal!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Advertencia:&lt;/strong&gt;Tiene actualmente múltiples carpetas configuradas. Si continua con los ajustes actuales, ¡la carpeta de configuración se descartará y se creará una única carpeta principal!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="136"/>
@@ -1441,7 +1441,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="296"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>El archivo fue modificado localmente, pero es parte de una carpeta compartida en modo de solo lectura. Ha sido recuperado y tu modificación está en el archivo de conflicto.</translation>
+        <translation>El archivo fue modificado localmente; pero es parte de una carpeta compartida en modo de sólo lectura. Ha sido recuperado y su modificación está en el archivo de conflicto.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="327"/>
@@ -2537,7 +2537,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>% 1 requiere una bandeja del sistema de trabajo. Si está ejecutando XFCE, por favor siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; estas instrucciones &lt;/ a&gt;. De lo contrario, instale una aplicación de la bandeja del sistema, tales como &quot;trayer &apos;y vuelva a intentarlo.</translation>
+        <translation>% 1 requiere una bandeja del sistema de trabajo. Si está ejecutando XFCE, por favor siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; estas instrucciones &lt;/ a&gt;. De lo contrario, instale una aplicación de la bandeja del sistema, tales como &apos;trayer&apos; y vuelva a intentarlo.</translation>
     </message>
 </context>
 <context>
