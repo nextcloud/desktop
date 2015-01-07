@@ -220,7 +220,9 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 
 bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
 {
-    bool downgradeAdvised = (reply->url().scheme() == QLatin1String("https"));
+    if(reply->url().scheme() == QLatin1String("https")) {
+        return false;
+    }
 
     switch (reply->error()) {
     case QNetworkReply::NoError:
@@ -228,16 +230,15 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
     case QNetworkReply::ConnectionRefusedError:
     case QNetworkReply::HostNotFoundError:
     case QNetworkReply::TimeoutError:
-        downgradeAdvised = false;
-        // fall through
+        return false;
     default:
-        _ocWizard->show();
-        _ocWizard->back();
-        // Adhere to HSTS, even though we do not parse it properly
-        downgradeAdvised &= !reply->hasRawHeader("Strict-Transport-Security");
-        break;
     }
-    return downgradeAdvised;
+
+    // Adhere to HSTS, even though we do not parse it properly
+    if (reply->hasRawHeader("Strict-Transport-Security")) {
+        return false;
+    }
+    return true;
 }
 
 void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
@@ -248,6 +249,8 @@ void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
         _ocWizard->successfulStep();
         break;
     default:
+        _ocWizard->show();
+        _ocWizard->back();
         _ocWizard->displayError(reply->errorString(), checkDowngradeAdvised(reply));
         break;
     }
