@@ -90,6 +90,7 @@ void OwncloudSetupPage::setupCustomization()
 // slot hit from textChanged of the url entry field.
 void OwncloudSetupPage::slotUrlChanged(const QString& url)
 {
+    _authTypeKnown = false;
 
     QString newUrl = url;
     if (url.endsWith("index.php")) {
