@@ -2058,7 +2058,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Bestandsnaamcodering is niet geldig</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="580"/>

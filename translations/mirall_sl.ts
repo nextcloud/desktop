@@ -2063,7 +2063,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Kodni zapis imena datoteke ni veljaven.</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="580"/>

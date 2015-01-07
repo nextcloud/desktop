@@ -2058,7 +2058,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Dateikodierung ist ungültig</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="580"/>

@@ -2062,7 +2062,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Кодировка имени файла не верна</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="580"/>
