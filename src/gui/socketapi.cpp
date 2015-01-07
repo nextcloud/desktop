@@ -350,11 +350,7 @@ void SocketApi::broadcastMessage( const QString& verb, const QString& path, cons
     if( !path.isEmpty() ) {
         msg.append(QLatin1Char(':'));
         QFileInfo fi(path);
-        auto canon = fi.canonicalFilePath();
-        if (canon.isEmpty()) { // just in case the file do not exist
-            fi = fi.absoluteFilePath();
-        }
-        msg.append(QDir::toNativeSeparators(canon));
+        msg.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
     }
 
     // sendMessage already has a debug output
