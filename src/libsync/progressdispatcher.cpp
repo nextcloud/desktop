@@ -88,6 +88,12 @@ bool Progress::isWarningKind( SyncFileItem::Status kind)
 
 }
 
+bool Progress::isIgnoredKind( SyncFileItem::Status kind)
+{
+    return  kind == SyncFileItem::FileIgnored;
+
+}
+
 ProgressDispatcher* ProgressDispatcher::instance() {
     if (!_instance) {
         _instance = new ProgressDispatcher();
