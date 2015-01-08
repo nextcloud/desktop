@@ -13,6 +13,7 @@
 
 #include "sslbutton.h"
 #include "account.h"
+#include "accountstate.h"
 #include "utility.h"
 
 #include <QMenu>
@@ -168,14 +169,15 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
 
 }
 
-void SslButton::updateAccountInfo(Account *account)
+void SslButton::updateAccountState(AccountState *accountState)
 {
-    if (!account || account->state() != Account::Connected) {
+    if (!accountState || !accountState->isConnected()) {
         setVisible(false);
         return;
     } else {
         setVisible(true);
     }
+    AccountPtr account = accountState->account();
     if(QMenu *oldMenu = menu()) {
         oldMenu->hide(); // Need to be hidden because the QToolButton would be left in invalid state if the menu is deleted while it is visible
         setMenu(0);

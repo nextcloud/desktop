@@ -144,6 +144,7 @@ private slots:
     // slot to take the next folder from queue and start syncing.
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
+    void slotRemoveFoldersForAccount(AccountState* accountState);
 
 private:
     // finds all folder configuration files

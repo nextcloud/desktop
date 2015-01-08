@@ -18,7 +18,7 @@
 
 namespace OCC {
 
-DeleteJob::DeleteJob(Account* account, const QString& path, QObject* parent)
+DeleteJob::DeleteJob(AccountPtr account, const QString& path, QObject* parent)
     : AbstractNetworkJob(account, path, parent)
 { }
 
@@ -54,9 +54,9 @@ void PropagateRemoteDelete::start()
 
     qDebug() << Q_FUNC_INFO << _item._file;
 
-    _job = new DeleteJob(AccountManager::instance()->account(),
-                              _propagator->_remoteFolder + _item._file,
-                              this);
+    _job = new DeleteJob(_propagator->account(),
+                         _propagator->_remoteFolder + _item._file,
+                         this);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotDeleteJobFinished()));
     _propagator->_activeJobs ++;
     _job->start();

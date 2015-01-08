@@ -18,13 +18,12 @@
 
 #include <csync.h>
 #include "owncloudlib.h"
-
+#include "accountfwd.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
 namespace OCC
 {
-class Account;
 
 class OWNCLOUDSYNC_EXPORT AbstractCredentials : public QObject
 {
@@ -39,12 +38,12 @@ public:
     virtual QString user() const = 0;
     virtual QNetworkAccessManager* getQNAM() const = 0;
     virtual bool ready() const = 0;
-    virtual void fetch(Account *account) = 0;
+    virtual void fetch(AccountPtr account) = 0;
     virtual bool stillValid(QNetworkReply *reply) = 0;
-    virtual void persist(Account *account) = 0;
+    virtual void persist(AccountPtr account) = 0;
     /** Invalidates auth token, or password for basic auth */
-    virtual void invalidateToken(Account *account) = 0;
-    virtual void invalidateAndFetch(Account *account) {
+    virtual void invalidateToken(AccountPtr account) = 0;
+    virtual void invalidateAndFetch(AccountPtr account) {
         invalidateToken(account);
         fetch(account);
     }

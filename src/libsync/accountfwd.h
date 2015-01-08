@@ -11,24 +11,16 @@
  * for more details.
  */
 
-#include "creds/abstractcredentials.h"
-#include "creds/credentialsfactory.h"
-#include "account.h"
-#include "wizard/owncloudwizard.h"
+#ifndef SERVERFWD_H
+#define SERVERFWD_H
 
-#include "wizard/abstractcredswizardpage.h"
+#include <QSharedPointer>
 
 namespace OCC {
 
-void AbstractCredentialsWizardPage::cleanupPage()
-{
-    AccountPtr account = static_cast<OwncloudWizard*>(wizard())->account();
-    AbstractCredentials *creds = account->credentials();
-    if (creds) {
-        if (!creds->inherits("DummyCredentials")) {
-            account->setCredentials(CredentialsFactory::create("dummy"));
-        }
-    }
-}
+class Account;
+typedef QSharedPointer<Account> AccountPtr;
 
-}
+} // namespace OCC
+
+#endif //SERVERFWD

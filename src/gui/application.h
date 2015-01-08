@@ -73,24 +73,21 @@ signals:
 protected slots:
     void slotParseOptions( const QString&, QObject* );
     void slotCheckConnection();
-    void slotConnectionValidatorResult(ConnectionValidator::Status,
-                                       const QStringList& errors);
+    void slotUpdateConnectionErrors(int accountState);
     void slotStartUpdateDetector();
     void slotUseMonoIconsChanged( bool );
     void slotLogin();
     void slotLogout();
     void slotCleanup();
-    void slotAccountChanged(Account *newAccount, Account *oldAccount = 0);
-    void slotCredentialsFetched();
-    void slotToggleFolderman(int state);
+    void slotAccountStateAdded(AccountState *accountState);
+    void slotAccountStateRemoved(AccountState *accountState);
+    void slotAccountStateChanged(int state);
     void slotCrash();
 
 private:
     void setHelp();
 
     QPointer<ownCloudGui> _gui;
-
-    QPointer<ConnectionValidator> _conValidator;
 
     Theme *_theme;
 

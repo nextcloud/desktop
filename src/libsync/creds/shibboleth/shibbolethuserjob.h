@@ -25,7 +25,7 @@ namespace OCC
 class ShibbolethUserJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit ShibbolethUserJob(Account *account, QObject* parent = 0);
+    explicit ShibbolethUserJob(AccountPtr account, QObject* parent = 0);
 public slots:
     void start() Q_DECL_OVERRIDE;
 

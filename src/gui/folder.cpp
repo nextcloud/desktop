@@ -16,6 +16,7 @@
 #include "config.h"
 
 #include "account.h"
+#include "accountstate.h"
 #include "folder.h"
 #include "folderman.h"
 #include "logger.h"
@@ -51,8 +52,13 @@ static void csyncLogCatcher(int /*verbosity*/,
 }
 
 
-Folder::Folder(const QString &alias, const QString &path, const QString& secondPath, QObject *parent)
+Folder::Folder(AccountState* accountState,
+               const QString& alias,
+               const QString& path,
+               const QString& secondPath,
+               QObject* parent)
     : QObject(parent)
+      , _accountState(accountState)
       , _path(path)
       , _remotePath(secondPath)
       , _alias(alias)
@@ -80,14 +86,6 @@ Folder::Folder(const QString &alias, const QString &path, const QString& secondP
 
 bool Folder::init()
 {
-    Account *account = AccountManager::instance()->account();
-    if (!account) {
-        // Normaly this should not happen, but it could be that there is something
-        // wrong with the config and it is better not to crash.
-        qWarning() << "WRN: No account  configured, can't sync";
-        return false;
-    }
-
     // We need to reconstruct the url because the path need to be fully decoded, as csync will  re-encode the path:
     //  Remember that csync will just append the filename to the path and pass it to the vio plugin.
     //  csync_owncloud will then re-encode everything.
@@ -110,11 +108,7 @@ bool Folder::init()
         csync_set_log_callback( csyncLogCatcher );
         csync_set_log_level( 11 );
 
-        if (Account *account = AccountManager::instance()->account()) {
-            account->credentials()->syncContextPreInit(_csync_ctx);
-        } else {
-            qDebug() << Q_FUNC_INFO << "No default Account object, huh?";
-        }
+        _accountState->account()->credentials()->syncContextPreInit(_csync_ctx);
 
         if( csync_init( _csync_ctx ) < 0 ) {
             qDebug() << "Could not initialize csync!" << csync_get_status(_csync_ctx) << csync_get_status_string(_csync_ctx);
@@ -140,6 +134,11 @@ Folder::~Folder()
     }
     // Destroy csync here.
     csync_destroy(_csync_ctx);
+}
+
+AccountState* Folder::accountState() const
+{
+    return _accountState;
 }
 
 void Folder::checkLocalPath()
@@ -196,8 +195,7 @@ QString Folder::remotePath() const
 
 QUrl Folder::remoteUrl() const
 {
-    Account *account = AccountManager::instance()->account();
-    QUrl url = account->davUrl();
+    QUrl url = _accountState->account()->davUrl();
     QString path = url.path();
     if (!path.endsWith('/')) {
         path.append('/');
@@ -252,19 +250,15 @@ void Folder::slotRunEtagJob()
     qDebug() << "* Trying to check" << alias() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
 
 
-    Account *account = AccountManager::instance()->account();
-    if (!account) {
-        qDebug() << Q_FUNC_INFO << alias() << "No valid account object, not trying to sync";
-        return;
-    }
+    AccountPtr account = _accountState->account();
 
     if (!_requestEtagJob.isNull()) {
         qDebug() << Q_FUNC_INFO << alias() << "has ETag job queued, not trying to sync";
         return;
     }
 
-    if (_paused || account->state() != Account::Connected) {
-        qDebug() << "Not syncing.  :"  << alias() << _paused << account->state();
+    if (_paused || !_accountState->isConnected()) {
+        qDebug() << "Not syncing.  :"  << alias() << _paused << AccountState::stateString(_accountState->state());
         return;
     }
 
@@ -305,7 +299,6 @@ void Folder::slotRunEtagJob()
         _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
         // check if the etag is different
         QObject::connect(_requestEtagJob, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
-        QObject::connect(_requestEtagJob, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotNetworkUnavailable()));
         FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
         // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
     }
@@ -322,15 +315,6 @@ void Folder::etagRetreived(const QString& etag)
         _lastEtag = etag;
         emit scheduleToSync(alias());
     }
-}
-
-void Folder::slotNetworkUnavailable()
-{
-    Account *account = AccountManager::instance()->account();
-    if (account && account->state() == Account::Connected) {
-        account->setState(Account::Disconnected);
-    }
-    emit syncStateChange();
 }
 
 void Folder::bubbleUpSyncResult()
@@ -754,9 +738,9 @@ void Folder::startSync(const QStringList &pathList)
             QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection);
             return;
         }
-        _clientProxy.setCSyncProxy(AccountManager::instance()->account()->url(), _csync_ctx);
+        _clientProxy.setCSyncProxy(_accountState->account()->url(), _csync_ctx);
     } else if (proxyDirty()) {
-        _clientProxy.setCSyncProxy(AccountManager::instance()->account()->url(), _csync_ctx);
+        _clientProxy.setCSyncProxy(_accountState->account()->url(), _csync_ctx);
         setProxyDirty(false);
     }
 
@@ -782,7 +766,7 @@ void Folder::startSync(const QStringList &pathList)
         return;
     }
 
-    _engine.reset(new SyncEngine( _csync_ctx, path(), remoteUrl().path(), _remotePath, &_journal));
+    _engine.reset(new SyncEngine( _accountState->account(), _csync_ctx, path(), remoteUrl().path(), _remotePath, &_journal));
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");

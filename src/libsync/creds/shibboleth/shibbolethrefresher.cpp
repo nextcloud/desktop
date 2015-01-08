@@ -20,7 +20,7 @@
 namespace OCC
 {
 
-ShibbolethRefresher::ShibbolethRefresher(Account *account, ShibbolethCredentials* creds, CSYNC* csync_ctx, QObject* parent)
+ShibbolethRefresher::ShibbolethRefresher(AccountPtr account, ShibbolethCredentials* creds, CSYNC* csync_ctx, QObject* parent)
     : QObject(parent),
       _account(account),
       _creds(creds),
@@ -36,7 +36,7 @@ void ShibbolethRefresher::refresh()
     connect(_creds, SIGNAL(invalidatedAndFetched(QByteArray)),
             &loop, SLOT(quit()));
     QMetaObject::invokeMethod(_creds, "invalidateAndFetch",Qt::QueuedConnection,
-                              Q_ARG(Account*, _account));
+                              Q_ARG(AccountPtr, _account));
     loop.exec();
     disconnect(_creds, SIGNAL(invalidatedAndFetched(QByteArray)),
                &loop, SLOT(quit()));

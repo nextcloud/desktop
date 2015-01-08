@@ -34,7 +34,7 @@ namespace Utility {
 }
 #endif
 
-bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, Account *account)
+bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, AccountPtr account)
 {
     if (!certs) {
         qDebug() << "Certs parameter required but is NULL!";
@@ -57,7 +57,7 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, QList<QSslCert
     return false;
 }
 
-SslErrorDialog::SslErrorDialog(Account *account, QWidget *parent) :
+SslErrorDialog::SslErrorDialog(AccountPtr account, QWidget *parent) :
     QDialog(parent), _allTrusted(false), _ui(new Ui::SslErrorDialog), _account(account)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

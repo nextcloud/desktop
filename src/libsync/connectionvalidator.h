@@ -19,16 +19,15 @@
 #include <QStringList>
 #include <QVariantMap>
 #include <QNetworkReply>
+#include "accountfwd.h"
 
 namespace OCC {
-
-class Account;
 
 class OWNCLOUDSYNC_EXPORT ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectionValidator(Account *account, QObject *parent = 0);
+    explicit ConnectionValidator(AccountPtr account, QObject *parent = 0);
 
     enum Status {
         Undefined,
@@ -36,14 +35,20 @@ public:
         NotConfigured,
         ServerVersionMismatch,
         CredentialsWrong,
-        // actually also used for timeouts or errors on the authed request
-        StatusNotFound
+        StatusNotFound,
+        // actually also used for other errors on the authed request
+        Timeout
     };
-
-    void checkConnection();
 
     static QString statusString( Status );
     static bool isNetworkError( Status status );
+
+public slots:
+    /// Checks the server and the authentication.
+    void checkServerAndAuth();
+
+    /// Checks authentication only.
+    void checkAuthentication();
 
 signals:
     void connectionResult( ConnectionValidator::Status status, QStringList errors );
@@ -53,7 +58,6 @@ protected slots:
     void slotNoStatusFound(QNetworkReply *reply);
     void slotJobTimeout(const QUrl& url);
 
-    void slotCheckAuthentication();
     void slotAuthFailed(QNetworkReply *reply);
     void slotAuthSuccess();
 
@@ -61,7 +65,7 @@ private:
     void reportResult(Status status);
 
     QStringList _errors;
-    Account   *_account;
+    AccountPtr   _account;
 };
 
 }

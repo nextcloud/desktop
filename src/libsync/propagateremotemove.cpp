@@ -20,7 +20,7 @@
 
 namespace OCC {
 
-MoveJob::MoveJob(Account* account, const QString& path,
+MoveJob::MoveJob(AccountPtr account, const QString& path,
                  const QString &destination, QObject* parent)
     : AbstractNetworkJob(account, path, parent), _destination(destination)
 { }
@@ -76,7 +76,7 @@ void PropagateRemoteMove::start()
         }
         return;
     } else {
-        _job = new MoveJob(AccountManager::instance()->account(),
+        _job = new MoveJob(_propagator->account(),
                            _propagator->_remoteFolder + _item._file,
                            _propagator->_remoteDir + _item._renameTarget,
                            this);

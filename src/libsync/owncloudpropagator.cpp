@@ -488,6 +488,11 @@ qint64 OwncloudPropagator::timeSinceFileTouched(const QString& fn) const
     return _touchedFiles[fn].elapsed();
 }
 
+AccountPtr OwncloudPropagator::account() const
+{
+    return _account;
+}
+
 // ================================================================================
 
 PropagatorJob::JobParallelism PropagateDirectory::parallelism()

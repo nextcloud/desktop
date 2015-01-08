@@ -149,7 +149,7 @@ void OwncloudAdvancedSetupPage::updateStatus()
 bool OwncloudAdvancedSetupPage::dataChanged()
 {
     OwncloudWizard* ocWizard(dynamic_cast< OwncloudWizard* >(wizard()));
-    Account *oldAccount = AccountManager::instance()->account();
+    AccountPtr oldAccount = AccountManager::instance()->account();
 
     if (!ocWizard || !oldAccount) {
         // If there was no account configured before, the data is new (hence changed)
@@ -272,7 +272,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
     // Because clicking on it also changes it, restore it to the previous state in case the user cancel the dialog
     _ui.rSyncEverything->setChecked(_blacklist.isEmpty());
 
-    Account *acc = static_cast<OwncloudWizard *>(wizard())->account();
+    AccountPtr acc = static_cast<OwncloudWizard *>(wizard())->account();
     SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, _blacklist, this);
     if (dlg->exec() == QDialog::Accepted) {
         _blacklist = dlg->createBlackList();

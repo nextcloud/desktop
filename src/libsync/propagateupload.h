@@ -65,7 +65,7 @@ class PUTFileJob : public AbstractNetworkJob {
 
 public:
     // Takes ownership of the device
-    explicit PUTFileJob(Account* account, const QString& path, QIODevice *device,
+    explicit PUTFileJob(AccountPtr account, const QString& path, QIODevice *device,
                         const QMap<QByteArray, QByteArray> &headers, int chunk, QObject* parent = 0)
         : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers), _chunk(chunk) {}
 
@@ -97,7 +97,7 @@ class PollJob : public AbstractNetworkJob {
 public:
     SyncFileItem _item;
     // Takes ownership of the device
-    explicit PollJob(Account* account, const QString &path, const SyncFileItem &item,
+    explicit PollJob(AccountPtr account, const QString &path, const SyncFileItem &item,
                      SyncJournalDb *journal, const QString &localPath, QObject *parent)
         : AbstractNetworkJob(account, path, parent), _journal(journal), _localPath(localPath), _item(item) {}
 

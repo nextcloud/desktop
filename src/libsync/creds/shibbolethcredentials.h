@@ -41,7 +41,7 @@ public:
     ShibbolethCredentials();
 
     /* create a credentials for an already connected account */
-    ShibbolethCredentials(const QNetworkCookie &cookie, Account *acc);
+    ShibbolethCredentials(const QNetworkCookie &cookie, AccountPtr acc);
 
     void syncContextPreInit(CSYNC* ctx) Q_DECL_OVERRIDE;
     void syncContextPreStart(CSYNC* ctx) Q_DECL_OVERRIDE;
@@ -50,22 +50,22 @@ public:
     QString user() const Q_DECL_OVERRIDE;
     QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
-    void fetch(Account *account) Q_DECL_OVERRIDE;
+    void fetch(AccountPtr account) Q_DECL_OVERRIDE;
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
-    void persist(Account *account) Q_DECL_OVERRIDE;
-    void invalidateToken(Account *account) Q_DECL_OVERRIDE;
+    void persist(AccountPtr account) Q_DECL_OVERRIDE;
+    void invalidateToken(AccountPtr account) Q_DECL_OVERRIDE;
 
-    void showLoginWindow(Account*);
+    void showLoginWindow(AccountPtr);
 
-    static QList<QNetworkCookie> accountCookies(Account*);
-    static QNetworkCookie findShibCookie(Account*, QList<QNetworkCookie> cookies = QList<QNetworkCookie>());
+    static QList<QNetworkCookie> accountCookies(AccountPtr);
+    static QNetworkCookie findShibCookie(AccountPtr, QList<QNetworkCookie> cookies = QList<QNetworkCookie>());
     static QByteArray shibCookieName();
 
 public Q_SLOTS:
-    void invalidateAndFetch(Account *account) Q_DECL_OVERRIDE;
+    void invalidateAndFetch(AccountPtr account) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
-    void onShibbolethCookieReceived(const QNetworkCookie&, Account*);
+    void onShibbolethCookieReceived(const QNetworkCookie&, AccountPtr);
     void slotBrowserRejected();
     void onFetched();
     void slotReadJobDone(QKeychain::Job*);
@@ -79,8 +79,8 @@ Q_SIGNALS:
     void invalidatedAndFetched(const QByteArray& cookieData);
 
 private:
-    void storeShibCookie(const QNetworkCookie &cookie, Account *account);
-    void removeShibCookie(Account *account);
+    void storeShibCookie(const QNetworkCookie &cookie, AccountPtr account);
+    void removeShibCookie(AccountPtr account);
     void addToCookieJar(const QNetworkCookie &cookie);
     QUrl _url;
     QByteArray prepareCookieData() const;

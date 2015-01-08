@@ -18,7 +18,7 @@
 
 namespace OCC {
 
-ShibbolethUserJob::ShibbolethUserJob(Account* account, QObject* parent)
+ShibbolethUserJob::ShibbolethUserJob(AccountPtr account, QObject* parent)
 : AbstractNetworkJob(account, QLatin1String("ocs/v1.php/cloud/user"), parent)
 {
     setIgnoreCredentialFailure(true);

@@ -30,7 +30,7 @@
 namespace OCC
 {
 
-ShibbolethWebView::ShibbolethWebView(Account* account, QWidget* parent)
+ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget* parent)
     : QWebView(parent)
     , _account(account)
     , _accepted(false)

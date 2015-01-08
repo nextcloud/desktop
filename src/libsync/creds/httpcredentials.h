@@ -44,14 +44,14 @@ public:
     QString authType() const Q_DECL_OVERRIDE;
     QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
-    void fetch(Account *account) Q_DECL_OVERRIDE;
+    void fetch(AccountPtr account) Q_DECL_OVERRIDE;
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
-    void persist(Account *account) Q_DECL_OVERRIDE;
+    void persist(AccountPtr account) Q_DECL_OVERRIDE;
     QString user() const Q_DECL_OVERRIDE;
     QString password() const;
     virtual QString queryPassword(bool *ok) = 0;
-    void invalidateToken(Account *account) Q_DECL_OVERRIDE;
-    QString fetchUser(Account *account);
+    void invalidateToken(AccountPtr account) Q_DECL_OVERRIDE;
+    QString fetchUser(AccountPtr account);
     virtual bool sslIsTrusted() { return false; }
 
 private Q_SLOTS:

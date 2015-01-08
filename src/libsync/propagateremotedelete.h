@@ -21,7 +21,7 @@ namespace OCC {
 class DeleteJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit DeleteJob(Account* account, const QString& path, QObject* parent = 0);
+    explicit DeleteJob(AccountPtr account, const QString& path, QObject* parent = 0);
 
     void start() Q_DECL_OVERRIDE;
     bool finished() Q_DECL_OVERRIDE;

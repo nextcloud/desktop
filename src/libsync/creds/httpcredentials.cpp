@@ -29,6 +29,7 @@
 #include "accessmanager.h"
 #include "utility.h"
 #include "theme.h"
+#include "syncengine.h"
 #include "creds/credentialscommon.h"
 #include "creds/httpcredentials.h"
 
@@ -47,8 +48,8 @@ int getauth(const char *prompt,
     int re = 0;
 
     // ### safe?  Not really.  If the wizard is run in the main thread, the caccount could change during the sync.
-    // Ideally, http_credentials could be use userdata,   but userdata is the SyncEngine.
-    HttpCredentials* http_credentials = qobject_cast<HttpCredentials*>(AccountManager::instance()->account()->credentials());
+    SyncEngine* engine = reinterpret_cast<SyncEngine*>(userdata);
+    HttpCredentials* http_credentials = qobject_cast<HttpCredentials*>(engine->account()->credentials());
 
     if (!http_credentials) {
       qDebug() << "Not a HTTP creds instance!";
@@ -185,13 +186,13 @@ bool HttpCredentials::ready() const
     return _ready;
 }
 
-QString HttpCredentials::fetchUser(Account* account)
+QString HttpCredentials::fetchUser(AccountPtr account)
 {
     _user = account->credentialSetting(QLatin1String(userC)).toString();
     return _user;
 }
 
-void HttpCredentials::fetch(Account *account)
+void HttpCredentials::fetch(AccountPtr account)
 {
     if( !account ) {
         return;
@@ -246,7 +247,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 {
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(job);
     _password = readJob->textData();
-    Account *account = qvariant_cast<Account*>(readJob->property("account"));
+    AccountPtr account = qvariant_cast<AccountPtr>(readJob->property("account"));
 
     if( _user.isEmpty()) {
         qDebug() << "Strange: User is empty!";
@@ -300,7 +301,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
     }
 }
 
-void HttpCredentials::invalidateToken(Account *account)
+void HttpCredentials::invalidateToken(AccountPtr account)
 {
     _password = QString();
     _ready = false;
@@ -325,7 +326,7 @@ void HttpCredentials::invalidateToken(Account *account)
     account->clearCookieJar();
 }
 
-void HttpCredentials::persist(Account *account)
+void HttpCredentials::persist(AccountPtr account)
 {
     if (_user.isEmpty()) {
         // We never connected or fetched the user, there is nothing to save.

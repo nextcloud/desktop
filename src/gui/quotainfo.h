@@ -21,12 +21,12 @@ class QTimer;
 
 namespace OCC {
 
-class Account;
+class AccountState;
 
 class QuotaInfo : public QObject {
     Q_OBJECT
 public:
-    QuotaInfo(Account *account);
+    QuotaInfo(AccountState *account);
 
     qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
@@ -36,7 +36,6 @@ public Q_SLOTS:
     void slotCheckQuota();
 
 private Q_SLOTS:
-    void slotAccountChanged(Account *newAccount, Account *oldAccount);
     void slotAccountStateChanged(int state);
     void slotRequestFailed();
 
@@ -44,7 +43,7 @@ Q_SIGNALS:
     void quotaUpdated(qint64 total, qint64 used);
 
 private:
-    QPointer<Account> _account;
+    QPointer<AccountState> _accountState;
     qint64 _lastQuotaTotalBytes;
     qint64 _lastQuotaUsedBytes;
     QTimer *_jobRestartTimer;

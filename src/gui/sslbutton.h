@@ -25,6 +25,7 @@ class QSslConfiguration;
 namespace OCC {
 
 class Account;
+class AccountState;
 
 class SslButton : public QToolButton
 {
@@ -32,7 +33,7 @@ class SslButton : public QToolButton
 public:
     explicit SslButton(QWidget *parent = 0);
     QString protoToString(QSsl::SslProtocol proto);
-    void updateAccountInfo(Account *account);
+    void updateAccountState(AccountState *accountState);
 
 private:
     QMenu* buildCertMenu(QMenu *parent, const QSslCertificate& cert,

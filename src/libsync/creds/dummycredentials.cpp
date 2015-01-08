@@ -56,12 +56,12 @@ bool DummyCredentials::stillValid(QNetworkReply *reply)
     return true;
 }
 
-void DummyCredentials::fetch(Account*)
+void DummyCredentials::fetch(AccountPtr)
 {
     Q_EMIT(fetched());
 }
 
-void DummyCredentials::persist(Account*)
+void DummyCredentials::persist(AccountPtr)
 {}
 
 } // namespace OCC

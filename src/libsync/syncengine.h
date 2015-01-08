@@ -35,22 +35,22 @@
 #include "progressdispatcher.h"
 #include "utility.h"
 #include "syncfilestatus.h"
+#include "accountfwd.h"
 
 class QProcess;
 
 namespace OCC {
 
 class SyncJournalFileRecord;
-
 class SyncJournalDb;
-
 class OwncloudPropagator;
 
 class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
-    SyncEngine(CSYNC *, const QString &localPath, const QString &remoteURL, const QString &remotePath, SyncJournalDb *journal);
+    SyncEngine(AccountPtr account, CSYNC *, const QString &localPath,
+               const QString &remoteURL, const QString &remotePath, SyncJournalDb *journal);
     ~SyncEngine();
 
     static QString csyncErrorToString( CSYNC_STATUS);
@@ -75,6 +75,8 @@ public:
      * Thread-safe.
      */
     qint64 timeSinceFileTouched(const QString& fn) const;
+
+    AccountPtr account() const;
 
 signals:
     void csyncError( const QString& );
@@ -141,6 +143,7 @@ private:
     // sorted and re-adjusted based on permissions.
     SyncFileItemVector _syncedItems;
 
+    AccountPtr _account;
     CSYNC *_csync_ctx;
     bool _needsUpdate;
     QString _localPath;
