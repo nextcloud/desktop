@@ -172,7 +172,7 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName,
 
 qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
 {
-#if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL)
+#if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL) || defined(Q_OS_NETBSD)
     struct statvfs stat;
     statvfs(path.toUtf8().data(), &stat);
     return (qint64) stat.f_bavail * stat.f_frsize;
@@ -370,7 +370,7 @@ bool Utility::isUnix()
 
 bool Utility::isLinux()
 {
-#ifdef Q_OS_LINUX
+#if defined(Q_OS_LINUX) || defined(Q_OS_NETBSD)
     return true;
 #else
     return false;
