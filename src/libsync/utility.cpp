@@ -370,12 +370,22 @@ bool Utility::isUnix()
 
 bool Utility::isLinux()
 {
-#if defined(Q_OS_LINUX) || defined(Q_OS_NETBSD)
+#if defined(Q_OS_LINUX)
     return true;
 #else
     return false;
 #endif
 }
+
+bool Utility::isBSD()
+{
+#if defined(Q_OS_FREEBSD) || defined(Q_OS_NETBSD)
+    return true;
+#else
+    return false;
+#endif
+}
+
 
 void Utility::crash()
 {

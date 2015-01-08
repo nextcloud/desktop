@@ -89,6 +89,7 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT bool isMac();
     OWNCLOUDSYNC_EXPORT bool isUnix();
     OWNCLOUDSYNC_EXPORT bool isLinux(); // use with care
+    OWNCLOUDSYNC_EXPORT bool isBSD(); // use with care, does not match OS X
 
     // crash helper for --debug
     OWNCLOUDSYNC_EXPORT void crash();

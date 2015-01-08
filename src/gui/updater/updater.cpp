@@ -44,6 +44,8 @@ QUrl Updater::addQueryParams(const QUrl &url)
     QString platform = QLatin1String("stranger");
     if (Utility::isLinux()) {
         platform = QLatin1String("linux");
+    } else if (Utility::isBSD()) {
+            platform = QLatin1String("bsd");
     } else if (Utility::isWindows()) {
         platform = QLatin1String("win32");
     } else if (Utility::isMac()) {

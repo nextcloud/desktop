@@ -88,7 +88,7 @@ SocketApi::SocketApi(QObject* parent)
         // We use the generic SyncStateHelper name on OS X since the different branded clients
         // should unfortunately not mention that they are ownCloud :-)
 #endif
-    } else if( Utility::isLinux() ) {
+    } else if( Utility::isLinux() || Utility::isBSD() ) {
         QString runtimeDir;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
