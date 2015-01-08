@@ -597,12 +597,12 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
     quint64 amount = progressChunk * chunkSize();
     sender()->setProperty("byteWritten", sent);
     if (_jobs.count() > 1) {
-        amount += sent;
-    } else {
         amount -= (_jobs.count() -1) * chunkSize();
         foreach (QObject *j, _jobs) {
             amount += j->property("byteWritten").toULongLong();
         }
+    } else {
+        amount += sent;
     }
     emit progress(_item, amount);
 }

@@ -46,6 +46,7 @@
 #include <QSslCertificate>
 #include <QProcess>
 #include <QElapsedTimer>
+#include <qtextcodec.h>
 
 namespace OCC {
 
@@ -311,7 +312,16 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 {
     if( ! file ) return -1;
 
-    QString fileUtf8 = QString::fromUtf8( file->path );
+    QTextCodec::ConverterState utf8State;
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    Q_ASSERT(codec);
+    QString fileUtf8 = codec->toUnicode(file->path, qstrlen(file->path), &utf8State);
+
+    auto instruction = file->instruction;
+    if (utf8State.invalidChars > 0) {
+        qDebug() << "File ignored because of invalid utf-8 sequence: " << file->path;
+        instruction = CSYNC_INSTRUCTION_IGNORE;
+    }
 
     // Gets a default-contructed SyncFileItem or the one from the first walk (=local walk)
     SyncFileItem item = _syncItemMap.value(fileUtf8);
@@ -319,12 +329,12 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._originalFile = item._file;
 
     if (item._instruction == CSYNC_INSTRUCTION_NONE
-            || (item._instruction == CSYNC_INSTRUCTION_IGNORE && file->instruction != CSYNC_INSTRUCTION_NONE)) {
-        item._instruction = file->instruction;
+            || (item._instruction == CSYNC_INSTRUCTION_IGNORE && instruction != CSYNC_INSTRUCTION_NONE)) {
+        item._instruction = instruction;
         item._modtime = file->modtime;
     } else {
-        if (file->instruction != CSYNC_INSTRUCTION_NONE) {
-            qDebug() << "ERROR: Instruction" << item._instruction << "vs" << file->instruction << "for" << fileUtf8;
+        if (instruction != CSYNC_INSTRUCTION_NONE) {
+            qDebug() << "ERROR: Instruction" << item._instruction << "vs" << instruction << "for" << fileUtf8;
             Q_ASSERT(!"Instructions are both unequal NONE");
             return -1;
         }
@@ -378,10 +388,13 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         /* No error string */
     }
 
-    item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
-    if(item._isDirectory) {
-        item._affectedItems = 0; // defaults to 1 for normal items.
+    if (item._instruction == CSYNC_INSTRUCTION_IGNORE && utf8State.invalidChars > 0) {
+        item._status = SyncFileItem::NormalError;
+        //item._instruction = CSYNC_INSTRUCTION_ERROR;
+        item._errorString = tr("Filename encoding is not valid");
     }
+
+    item._isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
 
     // The etag is already set in the previous sync phases somewhere. Maybe we should remove it there
     // and do it here so we have a consistent state about which tree stores information from which source.
@@ -476,6 +489,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         if (Progress::isSizeDependent(file->instruction)) {
             _progressInfo._totalSize += file->size;
         }
+    } else if (file->instruction != CSYNC_INSTRUCTION_NONE) {
+        // Added or removed directories certainly count.
+        _progressInfo._totalFileCount++;
     }
     _needsUpdate = true;
 
@@ -1128,9 +1144,16 @@ void SyncEngine::setSelectiveSyncBlackList(const QStringList& list)
 bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
 {
     Q_UNUSED(t);
+    QString pat(fn);
+    if( t == CSYNC_FTW_TYPE_DIR && ! fn.endsWith(QLatin1Char('/'))) {
+        pat.append(QLatin1Char('/'));
+    }
+
     Q_FOREACH(const SyncFileItem &item, _syncedItems) {
         //qDebug() << Q_FUNC_INFO << fn << item._file << fn.startsWith(item._file) << item._file.startsWith(fn);
-        if (item._file.startsWith(fn)) {
+
+        if (item._file.startsWith(pat) ||
+                item._file == fn /* the same directory or file */) {
             qDebug() << Q_FUNC_INFO << "Setting" << fn << " to STATUS_EVAL";
             s->set(SyncFileStatus::STATUS_EVAL);
             return true;

@@ -16,11 +16,12 @@ Linux
 -----
 
 1. Add the `ownCloud repository from OBS`_.
-2. Install the dependencies (as root, or using ``sudo``) using the following commands for your specific Linux distribution:
-
-  * Debian/Ubuntu: ``apt-get update; apt-get build-dep owncloud-client``
-  * openSUSE: ``zypper ref; zypper si -d owncloud-client``
-  * Fedora/CentOS: ``yum install yum-utils; yum-builddep owncloud-client``
+2. Install the dependencies (as root, or using ``sudo``) using the following 
+   commands for your specific Linux distribution:
+  
+   * Debian/Ubuntu: ``apt-get update; apt-get build-dep owncloud-client``
+   * openSUSE: ``zypper ref; zypper si -d owncloud-client``
+   * Fedora/CentOS: ``yum install yum-utils; yum-builddep owncloud-client``
 
 3. Follow the `generic build instructions`_.
 
@@ -33,7 +34,7 @@ Mac OS X
 --------
 
 In additon to needing XCode (along with the command line tools), developing in
-the MAC OS X environment requires extra dependencies.  You can install these
+the Mac OS X environment requires extra dependencies.  You can install these
 dependencies through MacPorts_ or Homebrew_.  These dependencies are required
 only on the build machine, because non-standard libs are deployed in the app
 bundle.

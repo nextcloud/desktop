@@ -40,10 +40,9 @@ Linux
 ^^^^^
 
 Linux distributions provide their own update tools, so ownCloud clients that use
-the Linux operating system do not perform any updates on their own. Linux
-operating systems do, however, check for the latest version of the ownCloud
-client and passively notify the user (``Settings -> General -> Updates``) when
-an update is available.
+the Linux operating system do not perform any updates on their own. The client 
+will inform you (``Settings -> General -> Updates``) when an update is 
+available.
 
 
 Preventing Automatic Updates
@@ -64,7 +63,7 @@ update check mechanism whereas the second method prevents any manual overrides.
 
 To prevent automatic updates, but allow manual overrides:
 
-1. Migrate to the following directory:
+1. Edit these Registry keys:
 
     a. (32-bit) ``HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud``
     b. (64-bit) ``HKEY_LOCAL_MACHINE\Software\Wow6432Node\ownCloud\ownCloud``
@@ -92,10 +91,10 @@ To prevent automatic updates and disallow manual overrides:
 Preventing Automatic Updates in Mac OS X Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can disable the automatic update mechanism in MAC OS X operating systems
+You can disable the automatic update mechanism in Mac OS X operating systems
 using the system-wide ``.plist`` file.  To access this file:
 
-1. Using the Windows explorer, migrate to the following location::
+1. Go to this directory::
 
  	/Library/Preferences/
 

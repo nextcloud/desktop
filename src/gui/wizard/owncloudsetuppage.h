@@ -46,7 +46,7 @@ public:
   void setAuthType(WizardCommon::AuthType type);
 
 public slots:
-  void setErrorString( const QString&  );
+  void setErrorString( const QString&, bool retryHTTPonly );
   void setConfigExists(  bool );
   void startSpinner();
   void stopSpinner();

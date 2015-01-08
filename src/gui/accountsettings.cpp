@@ -200,10 +200,9 @@ void AccountSettings::slotFolderWizardAccepted()
     QStringList selectiveSyncBlackList
                          = folderWizard->property("selectiveSyncBlackList").toStringList();
 
-    if (!FolderMan::ensureJournalGone( sourceFolder ))
+    if (!folderMan->addFolderDefinition(alias, sourceFolder, targetPath, selectiveSyncBlackList))
         return;
 
-    folderMan->addFolderDefinition(alias, sourceFolder, targetPath, selectiveSyncBlackList );
     Folder *f = folderMan->setupFolderFromConfigFile( alias );
     slotAddFolder( f );
     folderMan->setSyncEnabled(true);
@@ -660,25 +659,29 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     // overall progress
     quint64 completedSize = progress.completedSize();
     quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();
+    if (currentFile == ULLONG_MAX)
+        currentFile = 0;
+    quint64 totalSize = qMax(completedSize, progress._totalSize);
+    quint64 totalFileCount = qMax(currentFile, progress._totalFileCount);
     QString overallSyncString;
-    if (progress._totalSize > 0) {
+    if (totalSize > 0) {
         QString s1 = Utility::octetsToString( completedSize );
-        QString s2 = Utility::octetsToString( progress._totalSize );
+        QString s2 = Utility::octetsToString( totalSize );
         overallSyncString = tr("%1 of %2, file %3 of %4\nTotal time left %5")
             .arg(s1, s2)
-            .arg(currentFile).arg(progress._totalFileCount)
+            .arg(currentFile).arg(totalFileCount)
             .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate(), 3, " ", true) );
-    } else if (progress._totalFileCount > 0) {
+    } else if (totalFileCount > 0) {
         // Don't attemt to estimate the time left if there is no kb to transfer.
-        overallSyncString = tr("file %1 of %2") .arg(currentFile).arg(progress._totalFileCount);
+        overallSyncString = tr("file %1 of %2") .arg(currentFile).arg(totalFileCount);
     }
 
     item->setData( overallSyncString, FolderStatusDelegate::SyncProgressOverallString );
 
     int overallPercent = 0;
-    if( progress._totalFileCount > 0 ) {
+    if( totalFileCount > 0 ) {
         // Add one 'byte' for each files so the percentage is moving when deleting or renaming files
-        overallPercent = qRound(double(completedSize + progress._completedFileCount)/double(progress._totalSize + progress._totalFileCount) * 100.0);
+        overallPercent = qRound(double(completedSize + progress._completedFileCount)/double(totalSize + totalFileCount) * 100.0);
     }
     item->setData( overallPercent, FolderStatusDelegate::SyncProgressOverallPercent);
 }

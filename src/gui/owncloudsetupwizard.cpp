@@ -186,15 +186,14 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
     _ocWizard->displayError(tr("Failed to connect to %1 at %2:<br/>%3")
                             .arg(Theme::instance()->appNameGUI(),
                                  reply->url().toString(),
-                                 reply->errorString()));
+                                 reply->errorString()), checkDowngradeAdvised(reply));
 }
 
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuthTimeout(const QUrl&url)
 {
-    _ocWizard->displayError(tr("Failed to connect to %1 at %2:<br/>%3")
+    _ocWizard->displayError(tr("Timeout while trying to connect to %1 at %2.")
                             .arg(Theme::instance()->appNameGUI(),
-                                 url.toString(),
-                                 "Timeout"));
+                                 url.toString()), false);
 }
 
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
@@ -219,6 +218,30 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     job->start();
 }
 
+bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
+{
+    if(reply->url().scheme() == QLatin1String("https")) {
+        return false;
+    }
+
+    switch (reply->error()) {
+    case QNetworkReply::NoError:
+    case QNetworkReply::ContentNotFoundError:
+    case QNetworkReply::ConnectionRefusedError:
+    case QNetworkReply::HostNotFoundError:
+    case QNetworkReply::TimeoutError:
+        return false;
+    default:
+        break;
+    }
+
+    // Adhere to HSTS, even though we do not parse it properly
+    if (reply->hasRawHeader("Strict-Transport-Security")) {
+        return false;
+    }
+    return true;
+}
+
 void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
 {
     switch (reply->error()) {
@@ -226,9 +249,10 @@ void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
     case QNetworkReply::ContentNotFoundError:
         _ocWizard->successfulStep();
         break;
-
     default:
-        _ocWizard->displayError(tr("Error: Wrong credentials."));
+        _ocWizard->show();
+        _ocWizard->back();
+        _ocWizard->displayError(reply->errorString(), checkDowngradeAdvised(reply));
         break;
     }
 }
@@ -252,7 +276,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
         } else {
             res += tr("failed.");
             qDebug() << "Failed to create " << fi.path();
-            _ocWizard->displayError(tr("Could not create local folder %1").arg(localFolder));
+            _ocWizard->displayError(tr("Could not create local folder %1").arg(localFolder), false);
             nextStep = false;
         }
         _ocWizard->appendToConfigurationLog( res );
@@ -288,7 +312,7 @@ void OwncloudSetupWizard::slotAuthCheckReply(QNetworkReply *reply)
     }
 
     if( !ok ) {
-        _ocWizard->displayError(error);
+        _ocWizard->displayError(error, false);
     }
 
     finalizeSetup( ok );
@@ -316,20 +340,20 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::Network
     } else if( error == 202 ) {
         _ocWizard->appendToConfigurationLog( tr("The remote folder %1 already exists. Connecting it for syncing.").arg(_remoteFolder));
     } else if( error > 202 && error < 300 ) {
-        _ocWizard->displayError( tr("The folder creation resulted in HTTP error code %1").arg((int)error ));
+        _ocWizard->displayError( tr("The folder creation resulted in HTTP error code %1").arg((int)error ), false);
 
         _ocWizard->appendToConfigurationLog( tr("The folder creation resulted in HTTP error code %1").arg((int)error) );
     } else if( error == QNetworkReply::OperationCanceledError ) {
         _ocWizard->displayError( tr("The remote folder creation failed because the provided credentials "
                                     "are wrong!"
-                                    "<br/>Please go back and check your credentials.</p>"));
+                                    "<br/>Please go back and check your credentials.</p>"), false);
         _ocWizard->appendToConfigurationLog( tr("<p><font color=\"red\">Remote folder creation failed probably because the provided credentials are wrong.</font>"
                                                 "<br/>Please go back and check your credentials.</p>"));
         _remoteFolder.clear();
         success = false;
     } else {
         _ocWizard->appendToConfigurationLog( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(error));
-        _ocWizard->displayError( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(error) );
+        _ocWizard->displayError( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(error), false );
         _remoteFolder.clear();
         success = false;
     }

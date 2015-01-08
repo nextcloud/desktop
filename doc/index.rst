@@ -1,7 +1,7 @@
 .. _contents:
 
-Contents
-========
+ownCloud Desktop Client Manual
+==============================
 
 .. toctree::
    :maxdepth: 3

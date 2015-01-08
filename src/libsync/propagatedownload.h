@@ -40,12 +40,12 @@ public:
 
     // DOES NOT take owncership of the device.
     explicit GETFileJob(AccountPtr account, const QString& path, QFile *device,
-                        const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
+                        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
                         quint64 resumeStart, QObject* parent = 0);
     // For directDownloadUrl:
     explicit GETFileJob(AccountPtr account, const QUrl& url, QFile *device,
-                        const QMap<QByteArray, QByteArray> &headers,
-                        QObject* parent = 0);
+                        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
+                        quint64 resumeStart, QObject* parent = 0);
     virtual ~GETFileJob() {
         if (_bandwidthManager) {
             _bandwidthManager->unregisterDownloadJob(this);

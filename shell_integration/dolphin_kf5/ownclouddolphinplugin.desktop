@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Service
+Name=Owncloud
+X-KDE-ServiceTypes=KOverlayIconPlugin
+MimeType=text/plain;
+X-KDE-Library=ownclouddolphinplugin

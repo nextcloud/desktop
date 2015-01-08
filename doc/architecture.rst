@@ -21,16 +21,17 @@ result, the ownCloud Client runs on Linux, Windows, and MacOS.
 The Synchronization Process
 ---------------------------
 
-The process of synchronization keeps files in two separate repositories the same. When syncrhonized:
+The process of synchronization keeps files in two separate repositories the 
+same. When synchronized:
 
 - If a file is added to one repository it is copied to the other synchronized repository.
 - When a file is changed in one repository, the change is propagated to any
-  syncrhonized other repositories- If a file is deleted in one repository, it
+  synchronized other repositories- If a file is deleted in one repository, it
   is deleted in any other.
 
 It is important to note that the ownCloud synchronization process does not use
 a typical client/server system where the server is always master.  This is a
-major difference between the ownCloud syncrhonizatin process and other systems
+major difference between the ownCloud synchronization process and other systems
 like a file backup, where only changes to files or folders and the addition of
 new files are propagated, but these files and folders are never deleted unless
 explicitly deleted in the backup.
@@ -60,7 +61,7 @@ To compare the modification times of two files from different systems, csync
 must operate on the same base. Before ownCloud Client version 1.1.0, csync
 required both device repositories to run on the exact same time.  This
 requirement was achieved through the use of enterprise standard `NTP time
-synchronisation`_ on all machines.
+synchronization`_ on all machines.
 
 Because this timing strategy is rather fragile without the use of NTP, ownCloud
 4.5 introduced a unique number (for each file?) that changes whenever the file
@@ -119,8 +120,9 @@ traverses the file tree and compares the modification time of each file with an
 expected value stored in its database. If the value is not the same, the client
 determines that the file has been modified in the local repository.
 
-.. note:: On the local side, the modificaton time a good attribute to use for detecting changes, because
-the value does not depend on time shifts and such.
+.. note:: On the local side, the modification time a good attribute to use for 
+   detecting changes, because
+   the value does not depend on time shifts and such.
 
 For the remote (that is, ownCloud server) repository, the client compares the
 ETag of each file with its expected value. Again, the expected ETag value is
@@ -150,7 +152,7 @@ ownCloud Client provides the ability to add custom patterns.
 By default, the ownCloud Client ignores the following files:
 
 - Files matched by one of the patterns defined in :ref:`ignoredFilesEditor-label`.
-- Files containing characters that do not work on certain file systems (`\, :, ?, *, ", >, <, |`).
+- Files containing characters that do not work on certain file systems (`\, /, :, ?, *, ", >, <, |`).
 * Files starting in ``.csync_journal.db*``, as these files are reserved for journalling.
 
 If a pattern selected using a checkbox in the `ignoredFilesEditor-label` (or if
@@ -168,7 +170,7 @@ To match filenames against the exclude patterns, the unix standard C library
 function fnmatch is used. This procesx checks the filename against the
 specified pattern using standard shell wildcard pattern matching. For more
 information, please refer to `The opengroup website
-<http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>`.
+<http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>`_.
 
 The path that is checked is the relative path under the sync root directory.
 

@@ -168,6 +168,7 @@ namespace Progress
     OWNCLOUDSYNC_EXPORT QString asResultString(  const SyncFileItem& item );
 
     OWNCLOUDSYNC_EXPORT bool isWarningKind( SyncFileItem::Status );
+    OWNCLOUDSYNC_EXPORT bool isIgnoredKind( SyncFileItem::Status );
 
 }
 

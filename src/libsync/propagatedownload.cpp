@@ -31,22 +31,23 @@ namespace OCC {
 
 // DOES NOT take owncership of the device.
 GETFileJob::GETFileJob(AccountPtr account, const QString& path, QFile *device,
-                    const QMap<QByteArray, QByteArray> &headers, QByteArray expectedEtagForResume,
-                    quint64 _resumeStart,  QObject* parent)
+                    const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
+                    quint64 resumeStart,  QObject* parent)
 : AbstractNetworkJob(account, path, parent),
-  _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume),
-  _resumeStart(_resumeStart) , _errorStatus(SyncFileItem::NoStatus)
+  _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume)
+, _resumeStart(resumeStart) , _errorStatus(SyncFileItem::NoStatus)
 , _bandwidthLimited(false), _bandwidthChoked(false), _bandwidthQuota(0), _bandwidthManager(0)
 , _hasEmittedFinishedSignal(false)
 {
 }
 
 GETFileJob::GETFileJob(AccountPtr account, const QUrl& url, QFile *device,
-                    const QMap<QByteArray, QByteArray> &headers,
-                    QObject* parent)
+                    const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
+                       quint64 resumeStart, QObject* parent)
+
 : AbstractNetworkJob(account, url.toEncoded(), parent),
-  _device(device), _headers(headers), _resumeStart(0),
-  _errorStatus(SyncFileItem::NoStatus), _directDownloadUrl(url)
+  _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume)
+, _resumeStart(resumeStart), _errorStatus(SyncFileItem::NoStatus), _directDownloadUrl(url)
 , _bandwidthLimited(false), _bandwidthChoked(false), _bandwidthQuota(0), _bandwidthManager(0)
 , _hasEmittedFinishedSignal(false)
 {
@@ -336,17 +337,6 @@ void PropagateDownloadFileQNAM::start()
         // We were provided a direct URL, use that one
         qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item._file << _item._directDownloadUrl;
 
-        // Direct URLs don't support resuming, so clear an existing tmp file
-        if (startSize > 0) {
-            qDebug() << Q_FUNC_INFO << "resuming not supported for directDownloadUrl, deleting temporary";
-            _tmpFile.close();
-            if (!_tmpFile.open(QIODevice::WriteOnly | QIODevice::Unbuffered)) {
-                done(SyncFileItem::NormalError, _tmpFile.errorString());
-                return;
-            }
-            startSize = 0;
-        }
-
         if (!_item._directDownloadCookies.isEmpty()) {
             headers["Cookie"] = _item._directDownloadCookies.toUtf8();
         }
@@ -354,7 +344,7 @@ void PropagateDownloadFileQNAM::start()
         QUrl url = QUrl::fromUserInput(_item._directDownloadUrl);
         _job = new GETFileJob(_propagator->account(),
                               url,
-                              &_tmpFile, headers);
+                              &_tmpFile, headers, expectedEtagForResume, startSize);
     }
     _job->setBandwidthManager(&_propagator->_bandwidthManager);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
@@ -392,6 +382,14 @@ void PropagateDownloadFileQNAM::slotGetFinished()
             _tmpFile.close();
             _tmpFile.remove();
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+        }
+
+        if(!_item._directDownloadUrl.isEmpty()) {
+            // If this was with a direct download, retry without direct download
+            qWarning() << "Direct download of" << _item._directDownloadUrl << "failed. Retrying through owncloud.";
+            _item._directDownloadUrl.clear();
+            start();
+            return;
         }
 
         SyncFileItem::Status status = job->errorStatus();

@@ -1,0 +1,267 @@
+From d452ed613a9e02ed81eec2f3226f28babff240c8 Mon Sep 17 00:00:00 2001
+From: Olivier Goffart <ogoffart@woboq.com>
+Date: Thu, 17 Jul 2014 13:26:56 +0200
+Subject: [PATCH] WIP: add KOverlayIconPlugin
+
+Conflicts:
+	dolphin/src/kitemviews/kfileitemmodelrolesupdater.cpp
+	lib/konq/CMakeLists.txt
+---
+ .../src/kitemviews/kfileitemmodelrolesupdater.cpp  | 38 ++++++++++++++-
+ .../src/kitemviews/kfileitemmodelrolesupdater.h    |  9 ++++
+ lib/konq/src/CMakeLists.txt                        |  4 +-
+ lib/konq/src/koverlayiconplugin.cpp                | 30 ++++++++++++
+ lib/konq/src/koverlayiconplugin.desktop            |  4 ++
+ lib/konq/src/koverlayiconplugin.h                  | 57 ++++++++++++++++++++++
+ 6 files changed, 140 insertions(+), 2 deletions(-)
+ create mode 100644 lib/konq/src/koverlayiconplugin.cpp
+ create mode 100644 lib/konq/src/koverlayiconplugin.desktop
+ create mode 100644 lib/konq/src/koverlayiconplugin.h
+
+diff --git a/dolphin/src/kitemviews/kfileitemmodelrolesupdater.cpp b/dolphin/src/kitemviews/kfileitemmodelrolesupdater.cpp
+index df521e2..4d94836 100644
+--- a/dolphin/src/kitemviews/kfileitemmodelrolesupdater.cpp
++++ b/dolphin/src/kitemviews/kfileitemmodelrolesupdater.cpp
+@@ -29,9 +29,11 @@
+ #include <KJobWidgets>
+ #include <KIO/JobUiDelegate>
+ #include <KIO/PreviewJob>
++#include <KServiceTypeTrader>
+ 
+ #include "private/kpixmapmodifier.h"
+ #include "private/kdirectorycontentscounter.h"
++#include <koverlayiconplugin.h>
+ 
+ #include <QApplication>
+ #include <QPainter>
+@@ -129,6 +131,20 @@ KFileItemModelRolesUpdater::KFileItemModelRolesUpdater(KFileItemModel* model, QO
+     m_directoryContentsCounter = new KDirectoryContentsCounter(m_model, this);
+     connect(m_directoryContentsCounter, &KDirectoryContentsCounter::result,
+             this,                       &KFileItemModelRolesUpdater::slotDirectoryContentsCountReceived);
++
++
++    const KService::List pluginServices = KServiceTypeTrader::self()->query("KOverlayIconPlugin");
++
++    for (KService::List::ConstIterator it = pluginServices.constBegin(); it != pluginServices.constEnd(); ++it) {
++        QString error;
++        KOverlayIconPlugin* plugin = (*it)->createInstance<KOverlayIconPlugin>(this, QVariantList(), &error);
++        if (plugin) {
++            m_overlayIconsPlugin.append(plugin);
++            connect(plugin, &KOverlayIconPlugin::overlaysChanged, this, &KFileItemModelRolesUpdater::slotOverlaysChanged);
++        } else {
++            qWarning() << "Could not load plugin " << (*it)->name() << ":" << error;
++        }
++    }
+ }
+ 
+ KFileItemModelRolesUpdater::~KFileItemModelRolesUpdater()
+@@ -1065,7 +1081,11 @@ QHash<QByteArray, QVariant> KFileItemModelRolesUpdater::rolesData(const KFileIte
+         data.insert("type", item.mimeComment());
+     }
+ 
+-    data.insert("iconOverlays", item.overlays());
++    QStringList overlays = item.overlays();
++    foreach(KOverlayIconPlugin *it, m_overlayIconsPlugin) {
++        overlays.append(it->getOverlays(item));
++    }
++    data.insert("iconOverlays", overlays);
+ 
+ #ifdef HAVE_BALOO
+     if (m_balooFileMonitor) {
+@@ -1076,6 +1096,22 @@ QHash<QByteArray, QVariant> KFileItemModelRolesUpdater::rolesData(const KFileIte
+     return data;
+ }
+ 
++void KFileItemModelRolesUpdater::slotOverlaysChanged(const QUrl& url, const QStringList &)
++{
++    KFileItem item = m_model->fileItem(url);
++    if (item.isNull())
++        return;
++    int index = m_model->index(item);
++    QHash <QByteArray, QVariant> data =  m_model->data(index);
++    QStringList overlays = item.overlays();
++    foreach(KOverlayIconPlugin *it, m_overlayIconsPlugin) {
++        overlays.append(it->getOverlays(item));
++    }
++    data.insert("iconOverlays", overlays);
++    m_model->setData(index, data);
++}
++
++
+ void KFileItemModelRolesUpdater::updateAllPreviews()
+ {
+     if (m_state == Paused) {
+diff --git a/dolphin/src/kitemviews/kfileitemmodelrolesupdater.h b/dolphin/src/kitemviews/kfileitemmodelrolesupdater.h
+index 6c82dbe..1e5b98e 100644
+--- a/dolphin/src/kitemviews/kfileitemmodelrolesupdater.h
++++ b/dolphin/src/kitemviews/kfileitemmodelrolesupdater.h
+@@ -32,6 +32,7 @@
+ #include <QSize>
+ #include <QStringList>
+ 
++class KOverlayIconPlugin;
+ class KDirectoryContentsCounter;
+ class KFileItemModel;
+ class QPixmap;
+@@ -183,6 +184,12 @@ private slots:
+     void slotPreviewJobFinished();
+ 
+     /**
++     * Is invoked when one of the KOverlayIconPlugin emit the signal that an overlay has changed
++     */
++    void slotOverlaysChanged(const QUrl& url, const QStringList&);
++
++
++    /**
+      * Resolves the sort role of the next item in m_pendingSortRole, applies it
+      * to the model, and invokes itself if there are any pending items left. If
+      * that is not the case, \a startUpdating() is called.
+@@ -333,6 +340,8 @@ private:
+ 
+     KDirectoryContentsCounter* m_directoryContentsCounter;
+ 
++    QList<KOverlayIconPlugin*> m_overlayIconsPlugin;
++
+ #ifdef HAVE_BALOO
+     Baloo::FileMonitor* m_balooFileMonitor;
+ #endif
+diff --git a/lib/konq/src/CMakeLists.txt b/lib/konq/src/CMakeLists.txt
+index 9c05b9f..0ac0526 100644
+--- a/lib/konq/src/CMakeLists.txt
++++ b/lib/konq/src/CMakeLists.txt
+@@ -15,6 +15,7 @@ set(konq_LIB_SRCS
+    konq_historyprovider.cpp   # konqueror and konqueror/sidebar
+    kversioncontrolplugin.cpp  # used by dolphin and its version control plugins (deprecated)
+    kversioncontrolplugin2.cpp # used by dolphin and its version control plugins
++   koverlayiconplugin.cpp
+ )
+ 
+ add_library(KF5Konq ${konq_LIB_SRCS})
+@@ -64,13 +65,14 @@ install(FILES
+     konq_popupmenuplugin.h
+     kversioncontrolplugin.h
+     kversioncontrolplugin2.h
++    koverlayiconplugin.h
+     ${LibKonq_BINARY_DIR}/src/libkonq_export.h
+ 
+     DESTINATION ${KF5_INCLUDE_INSTALL_DIR}
+     COMPONENT Devel
+ )
+ 
+-install(FILES konqpopupmenuplugin.desktop konqdndpopupmenuplugin.desktop
++install(FILES konqpopupmenuplugin.desktop konqdndpopupmenuplugin.desktop koverlayiconplugin.desktop
+     DESTINATION ${SERVICETYPES_INSTALL_DIR}
+ )
+ 
+diff --git a/lib/konq/src/koverlayiconplugin.cpp b/lib/konq/src/koverlayiconplugin.cpp
+new file mode 100644
+index 0000000..6125040
+--- /dev/null
++++ b/lib/konq/src/koverlayiconplugin.cpp
+@@ -0,0 +1,30 @@
++/*****************************************************************************
++ * Copyright (C) 2014 by Olivier Goffart <ogoffart@woboq.com>                *
++ *                                                                           *
++ * This library is free software; you can redistribute it and/or             *
++ * modify it under the terms of the GNU Library General Public               *
++ * License version 2 as published by the Free Software Foundation.           *
++ *                                                                           *
++ * This library is distributed in the hope that it will be useful,           *
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         *
++ * Library General Public License for more details.                          *
++ *                                                                           *
++ * You should have received a copy of the GNU Library General Public License *
++ * along with this library; see the file COPYING.LIB.  If not, write to      *
++ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,      *
++ * Boston, MA 02110-1301, USA.                                               *
++ *****************************************************************************/
++
++#include "koverlayiconplugin.h"
++#include <KFileItem>
++
++KOverlayIconPlugin::KOverlayIconPlugin(QObject* parent) : QObject(parent)
++{
++}
++
++KOverlayIconPlugin::~KOverlayIconPlugin()
++{
++}
++
++#include "koverlayiconplugin.moc"
+diff --git a/lib/konq/src/koverlayiconplugin.desktop b/lib/konq/src/koverlayiconplugin.desktop
+new file mode 100644
+index 0000000..65a1170
+--- /dev/null
++++ b/lib/konq/src/koverlayiconplugin.desktop
+@@ -0,0 +1,4 @@
++[Desktop Entry]
++Type=ServiceType
++X-KDE-ServiceType=KOverlayIconPlugin
++Comment=Plugin to add overlay icons in Dolphin
+diff --git a/lib/konq/src/koverlayiconplugin.h b/lib/konq/src/koverlayiconplugin.h
+new file mode 100644
+index 0000000..bfdaa2f
+--- /dev/null
++++ b/lib/konq/src/koverlayiconplugin.h
+@@ -0,0 +1,57 @@
++/*****************************************************************************
++ * Copyright (C) 2014 by Olivier Goffart <ogoffart@woboq.com>                *
++ *                                                                           *
++ * This library is free software; you can redistribute it and/or             *
++ * modify it under the terms of the GNU Library General Public               *
++ * License version 2 as published by the Free Software Foundation.           *
++ *                                                                           *
++ * This library is distributed in the hope that it will be useful,           *
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         *
++ * Library General Public License for more details.                          *
++ *                                                                           *
++ * You should have received a copy of the GNU Library General Public License *
++ * along with this library; see the file COPYING.LIB.  If not, write to      *
++ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,      *
++ * Boston, MA 02110-1301, USA.                                               *
++ *****************************************************************************/
++
++
++#ifndef OverlayIconPlugin_H
++#define OverlayIconPlugin_H
++
++#include <QtCore/QObject>
++#include <libkonq_export.h>
++
++class KUrl;
++class KFileItem;
++
++/**
++ * @brief Base class for overlay icon plugins.
++ *
++ * Enables the file manager to show custom overlay icons on files.
++ *
++ * To write a custom plugin you need to create a .desktop file for your plugin with
++ * KDE-ServiceTypes=KOverlayIconPlugin
++ */
++class LIBKONQ_EXPORT KOverlayIconPlugin : public QObject {
++    Q_OBJECT
++    void *d;
++public:
++    explicit KOverlayIconPlugin(QObject *parent = 0);
++    ~KOverlayIconPlugin();
++
++    /**
++     * Returns a list of overlay pixmap to add to a file
++     * This can be a path to an icon, or the icon name
++     */
++    virtual QStringList getOverlays(const KFileItem &item) = 0;
++signals:
++
++    /**
++     * Emit this signal when the list of overlay icon changed for a given URL
++     */
++    void overlaysChanged(const QUrl &url, const QStringList &overlays);
++};
++
++#endif
+-- 
+2.2.1
+
