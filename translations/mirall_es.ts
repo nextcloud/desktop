@@ -2059,7 +2059,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Los caracteres del nombre de fichero no son válidos</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="580"/>
