@@ -232,6 +232,7 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
     case QNetworkReply::TimeoutError:
         return false;
     default:
+        break;
     }
 
     // Adhere to HSTS, even though we do not parse it properly
