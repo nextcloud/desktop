@@ -59,6 +59,7 @@ struct CmdOptions {
     bool useNetrc;
     bool interactive;
     QString exclude;
+    QString unsyncedfolders;
 };
 
 // we can't use csync_set_userdata because the SyncEngine sets it already.
@@ -151,6 +152,7 @@ void help()
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
     std::cout << "  --exclude [file]       Exclude list file" << std::endl;
+    std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced folder (selective sync)" << std::endl;
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
@@ -222,6 +224,8 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
                 options->password = it.next();
         } else if( option == "--exclude" && !it.peekNext().startsWith("-") ) {
                 options->exclude = it.next();
+        } else if( option == "--unsyncedfolders" && !it.peekNext().startsWith("-") ) {
+            options->unsyncedfolders = it.next();
         } else {
             help();
         }
@@ -231,6 +235,55 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
         help();
     }
 }
+
+/* If the selective sync list is different from before, we need to disable the read from db
+  (The normal client does it in SelectiveSyncDialog::accept*)
+ */
+void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
+{
+    if (!journal->exists()) {
+        return;
+    }
+
+    SqlDatabase db;
+    if (!db.openOrCreateReadWrite(journal->databaseFilePath())) {
+        return;
+    }
+
+    SqlQuery select("SELECT path FROM last_selective_sync", db);
+    QSet<QString> oldBlackListSet;
+    if (select.exec()) {
+        while(select.next()) {
+            oldBlackListSet.insert(select.stringValue(0));
+        }
+    }
+
+
+    auto blackListSet = newList.toSet();
+    auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+    foreach(const auto &it, changes) {
+        journal->avoidReadFromDbOnNextSync(it);
+    }
+
+    SqlQuery drop("DROP TABLE last_selective_sync", db);
+    drop.exec();
+
+    if (!newList.isEmpty()) {
+        SqlQuery createQuery(db);
+        createQuery.prepare("CREATE TABLE IF NOT EXISTS last_selective_sync(path VARCHAR(4096));");
+        createQuery.exec();
+
+        SqlQuery insertQuery(db);
+        insertQuery.prepare("INSERT INTO last_selective_sync VALUES (?1);");
+
+        foreach(const auto &s, newList) {
+            insertQuery.reset();
+            insertQuery.bindValue(1, s);
+            insertQuery.exec();
+        }
+    }
+}
+
 
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
@@ -389,6 +442,22 @@ restart_sync:
         loadedUserExcludeList = csync_add_exclude_list(_csync_ctx, options.exclude.toLocal8Bit());
     }
 
+    QStringList selectiveSyncList;
+    if (!options.unsyncedfolders.isEmpty()) {
+        QFile f(options.unsyncedfolders);
+        if (!f.open(QFile::ReadOnly)) {
+            qCritical() << "Could not open file containing the list of unsynced folders: " << options.unsyncedfolders;
+        } else {
+            selectiveSyncList = QString::fromUtf8(f.readAll()).split('\n');
+            for (int i = 0; i < selectiveSyncList.count(); ++i) {
+                if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {
+                    selectiveSyncList[i].append(QLatin1Char('/'));
+                }
+            }
+        }
+    }
+
+
     if (loadedSystemExcludeList != 0 && loadedUserExcludeList != 0) {
         // Always make sure at least one list had been loaded
         qFatal("Cannot load system exclude list or list supplied via --exclude");
@@ -399,10 +468,13 @@ restart_sync:
 
     Cmd cmd;
     SyncJournalDb db(options.source_dir);
+    selectiveSyncFixup(&db, selectiveSyncList);
 
     SyncEngine engine(account, _csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(Progress::Info)), &cmd, SLOT(transmissionProgressSlot()));
+
+    engine.setSelectiveSyncBlackList(selectiveSyncList);
 
     // Have to be done async, else, an error before exec() does not terminate the event loop.
     QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);
