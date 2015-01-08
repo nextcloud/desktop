@@ -486,7 +486,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
 
     _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
 
-    if (!progress._lastCompletedItem.isEmpty()) {
+    if (!progress._lastCompletedItem.isEmpty() && !Progress::isIgnoredKind(progress._lastCompletedItem._status)) {
 
         if (Progress::isWarningKind(progress._lastCompletedItem._status)) {
             // display a warn icon if warnings happend.
