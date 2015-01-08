@@ -25,9 +25,11 @@
 #include "owncloudtheme.h"
 
 #ifdef THEME_INCLUDE
+#  define Mirall OCC // namespace hack to make old themes work
 #  define QUOTEME(M)       #M
 #  define INCLUDE_FILE(M)  QUOTEME(M)
 #  include INCLUDE_FILE(THEME_INCLUDE)
+#  undef Mirall
 #endif
 
 namespace OCC {
