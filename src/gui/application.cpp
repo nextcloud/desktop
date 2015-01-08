@@ -106,6 +106,8 @@ Application::Application(int &argc, char **argv) :
     setupLogging();
     setupTranslations();
 
+    _folderManager.reset(new FolderMan);
+
     connect( this, SIGNAL(messageReceived(QString, QObject*)), SLOT(slotParseOptions(QString, QObject*)));
 
     // Create the account info manager to ensure it's listening to the

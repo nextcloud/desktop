@@ -107,7 +107,7 @@ private:
 
     QTimer _checkConnectionTimer;
 
-    FolderMan folderManager;
+    QScopedPointer<FolderMan> _folderManager;
 
     friend class ownCloudGui; // for _startupNetworkError
 };

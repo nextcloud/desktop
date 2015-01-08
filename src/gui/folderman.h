@@ -37,6 +37,7 @@ class FolderMan : public QObject
 {
     Q_OBJECT
 public:
+    ~FolderMan();
     static FolderMan* instance();
 
     int setupFolders();
@@ -173,7 +174,6 @@ private:
 
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = 0);
-    ~FolderMan();
     friend class OCC::Application;
 };
 
