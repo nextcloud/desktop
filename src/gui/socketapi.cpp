@@ -411,17 +411,15 @@ void SocketApi::command_SHARE(const QString& argument, SocketType* socket)
 
     qDebug() << Q_FUNC_INFO << argument;
 
-    QString statusString;
-
     Folder *shareFolder = FolderMan::instance()->folderForPath(argument);
     if (!shareFolder) {
-        QString message = QLatin1String("SHARE:NOP:")+QDir::toNativeSeparators(argument);
+        const QString message = QLatin1String("SHARE:NOP:")+QDir::toNativeSeparators(argument);
         sendMessage(socket, message);
     } else {
-        QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(argument);
+        const QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(argument);
         sendMessage(socket, message);
-        QString folderForPath = shareFolder->path();
-        QString path = shareFolder->remotePath() + argument.right(argument.count()-folderForPath.count()+1);
+        const QString folderForPath = shareFolder->path();
+        const QString path = shareFolder->remotePath() + argument.right(argument.count()-folderForPath.count()+1);
         emit shareCommandReceived(path);
     }
 }
