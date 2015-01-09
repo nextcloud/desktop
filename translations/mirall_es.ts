@@ -267,7 +267,7 @@ Tiempo restante %5</translation>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="107"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Por favor actualice a la ultima verisón del servidor y reinicie el cliente</translation>
+        <translation>Por favor, actualice a la última versión del servidor y reinicie el cliente</translation>
     </message>
     <message>
         <location filename="../src/mirall/connectionvalidator.cpp" line="127"/>
@@ -998,7 +998,7 @@ pida privilegios adicionales durante el proceso.</translation>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>No se puede descrgar la actualización. Por favor haga click &lt;a href=&apos;%1&apos;&gt;aqui&lt;/a&gt; para iniciar descarga manual.</translation>
+        <translation>No se puede descargar la actualización. Por favor, haga clic &lt;a href=&apos;%1&apos;&gt;aquí&lt;/a&gt; para iniciar una descarga manual.</translation>
     </message>
     <message>
         <location filename="../src/updater/ocupdater.cpp" line="83"/>
@@ -1051,7 +1051,7 @@ pida privilegios adicionales durante el proceso.</translation>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="129"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Advertencia:&lt;/strong&gt;Tiene actualmente múltiples carpetas configuradas. Si continua con los ajustes actuales, ¡la carpeta de configuración se descartará y se creará una única carpeta principal!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Advertencia:&lt;/strong&gt;Tiene actualmente múltiples carpetas configuradas. Si continúa con los ajustes actuales, ¡la carpeta de configuración se descartará y se creará una única carpeta principal!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.cpp" line="136"/>
@@ -1236,7 +1236,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="350"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Una conexión de sincronización desde %1 al directorio remoto %2 ha sido configurada.</translation>
+        <translation>Se ha configarado una conexión de sincronización desde %1 al directorio remoto %2</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="355"/>
