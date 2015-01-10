@@ -1114,7 +1114,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="153"/>
         <source>&amp;Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;İleri &gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="233"/>
@@ -2059,7 +2059,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adı kodlaması geçerli değil</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="580"/>
@@ -2142,7 +2142,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="234"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Sürüm %1. Daha fazla bilgi için lütfen &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt; adresini ziyaret edin.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/theme.cpp" line="238"/>
@@ -2152,7 +2152,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/mirall/theme.cpp" line="239"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 tarafından dağıtılmakta ve GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır.&lt;br/&gt;%2 ve %2 logoları ABD ve/veya diğer ülkelerde %1 tescili markalarıdır.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

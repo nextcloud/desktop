@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation>フォルダを作成</translation>
+        <translation>フォルダーを作成</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizardtargetpage.ui" line="160"/>
@@ -579,12 +579,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="257"/>
         <source>Create Remote Folder</source>
-        <translation>リモートフォルダを追加</translation>
+        <translation>リモートフォルダーを追加</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="258"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation> &apos;%1&apos;の下に新しいフォルダの名前を入力:</translation>
+        <translation> &apos;%1&apos;の下に新しいフォルダーの名前を入力:</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="287"/>
@@ -622,7 +622,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/mirall/folderwizard.cpp" line="443"/>
         <source>Choose What to Sync: You can optionally deselect subfolders you do not wish to synchronize.</source>
-        <translation>何を同期するか選択: 同期したくないサブフォルダは、同期対象から外せます。</translation>
+        <translation>何を同期するか選択: 同期したくないサブフォルダーは、同期対象から外せます。</translation>
     </message>
 </context>
 <context>
@@ -2024,7 +2024,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="184"/>
         <source>The mounted directory is temporary not available on the server</source>
-        <translation>マウントしたディレクトリはサーバー上では一時的に利用出来ません。</translation>
+        <translation>サーバーでは、マウント済ディレクトリが一時的に利用できません。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="187"/>
@@ -2059,7 +2059,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>ファイル名のエンコーディングが無効です。</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="580"/>
@@ -2330,7 +2330,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="122"/>
         <source>Choose what to sync</source>
-        <translation>同期フォルダを選択</translation>
+        <translation>同期フォルダーを選択</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="178"/>
@@ -2340,7 +2340,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="221"/>
         <source>&amp;Start a clean sync (Erases the local folder!)</source>
-        <translation>クリーン同期を開始(&amp;S) (ローカルフォルダは削除)</translation>
+        <translation>クリーン同期を開始(&amp;S) (ローカルフォルダーは削除)</translation>
     </message>
     <message>
         <location filename="../src/wizard/owncloudadvancedsetuppage.ui" line="256"/>
