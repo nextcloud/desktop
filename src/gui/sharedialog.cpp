@@ -95,7 +95,7 @@ void ShareDialog::slotPasswordReturnPressed()
 {
     ShareDialog::setPassword(_ui->lineEdit_password->text());
     _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
-    _ui->lineEdit_password->setText("");
+    _ui->lineEdit_password->setText(QString());
 }
 
 void ShareDialog::setPassword(QString password)
