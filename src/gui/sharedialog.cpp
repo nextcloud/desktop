@@ -239,7 +239,7 @@ void ShareDialog::slotCheckBoxPasswordClicked()
     }
     else
     {
-        ShareDialog::setPassword(QString(""));
+        ShareDialog::setPassword(QString());
         _ui->labelPasswordSpinner->show();
         _ui->lineEdit_password->hide();
     }
@@ -256,7 +256,7 @@ void ShareDialog::slotCheckBoxExpireClicked()
     }
     else
     {
-        ShareDialog::setExpireDate(QString(""));
+        ShareDialog::setExpireDate(QString());
         _ui->calendar->hide();
     }
 }
