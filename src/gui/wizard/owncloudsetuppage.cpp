@@ -154,9 +154,6 @@ void OwncloudSetupPage::initializePage()
         setButtonText(QWizard::CommitButton, tr("&Next >"));
         validatePage();
         setVisible(false);
-        // because the wizard will call show on us right after this call, we need to hide in the
-        // next event loop iteration.
-        QTimer::singleShot(0, this, SLOT(hide()));
     }
 }
 
