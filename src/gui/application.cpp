@@ -167,7 +167,7 @@ Application::~Application()
 
 void Application::slotShowShareDialog(const QString &path)
 {
-    qDebug() << "Opening share dialog";
+    qDebug() << Q_FUNC_INFO << "Opening share dialog";
     ShareDialog *w = new ShareDialog;
     w->setPath(path);
     w->show();

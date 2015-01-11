@@ -217,7 +217,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
 
 void ShareDialog::slotCreateShareFetched(const QString &reply)
 {
-    qDebug() << reply;
+    qDebug() << Q_FUNC_INFO << reply;
     _ui->labelShareSpinner->hide();
     bool success;
     QVariantMap json = QtJson::parse(reply, success).toMap();

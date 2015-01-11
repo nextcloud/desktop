@@ -405,7 +405,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
 void SocketApi::command_SHARE(const QString& argument, SocketType* socket)
 {
     if (!socket) {
-        qDebug() << "No valid socket object.";
+        qDebug() << Q_FUNC_INFO << "No valid socket object.";
         return;
     }
 
