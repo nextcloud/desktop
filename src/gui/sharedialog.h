@@ -42,12 +42,12 @@ public:
     void setPath(const QString &path);
     QString getPath();
 private slots:
-    void slotSharesFetched(QString reply);
-    void slotCreateShareFetched(QString reply);
-    void slotDeleteShareFetched(QString reply);
-    void slotPasswordSet(QString reply);
-    void slotExpireSet(QString reply);
-    void slotCalendarClicked(QDate date);
+    void slotSharesFetched(const QString &reply);
+    void slotCreateShareFetched(const QString &reply);
+    void slotDeleteShareFetched(const QString &reply);
+    void slotPasswordSet(const QString &reply);
+    void slotExpireSet(const QString &reply);
+    void slotCalendarClicked(const QDate &date);
     void slotCheckBoxShareLinkClicked();
     void slotCheckBoxPasswordClicked();
     void slotCheckBoxExpireClicked();

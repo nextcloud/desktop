@@ -65,12 +65,12 @@ void ShareDialog::setExpireDate(QString date)
     job->start();
 }
 
-void ShareDialog::slotExpireSet(QString reply)
+void ShareDialog::slotExpireSet(const QString &reply)
 {
     _ui->labelCalendarSpinner->hide();
 }
 
-void ShareDialog::slotCalendarClicked(QDate date)
+void ShareDialog::slotCalendarClicked(const QDate &date)
 {
     ShareDialog::setExpireDate(date.toString("dd-MM-yyyy"));
 }
@@ -114,7 +114,7 @@ void ShareDialog::setPassword(QString password)
     job->start();
 }
 
-void ShareDialog::slotPasswordSet(QString reply)
+void ShareDialog::slotPasswordSet(const QString &reply)
 {
     _ui->labelPasswordSpinner->hide();
 }
@@ -132,7 +132,7 @@ void ShareDialog::getShares()
     job->start();
 }
 
-void ShareDialog::slotSharesFetched(QString reply)
+void ShareDialog::slotSharesFetched(const QString &reply)
 {
     bool success = false;
     QVariantMap json = QtJson::parse(reply, success).toMap();
@@ -173,7 +173,7 @@ void ShareDialog::slotSharesFetched(QString reply)
     }
 }
 
-void ShareDialog::slotDeleteShareFetched(QString reply)
+void ShareDialog::slotDeleteShareFetched(const QString &reply)
 {
     _ui->labelShareSpinner->hide();
     _ui->lineEdit_shareLink->hide();
@@ -215,7 +215,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
     }
 }
 
-void ShareDialog::slotCreateShareFetched(QString reply)
+void ShareDialog::slotCreateShareFetched(const QString &reply)
 {
     qDebug() << reply;
     _ui->labelShareSpinner->hide();
