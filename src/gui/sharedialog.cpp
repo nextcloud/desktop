@@ -166,8 +166,7 @@ void ShareDialog::slotSharesFetched(const QString &reply)
                 _ui->checkBox_expire->setChecked(true);
             }
 
-            char url[512];
-            sprintf(url, "https://home.azelphur.com/owncloud/public.php?service=files&t=%s", data.value("token").toString().toStdString().c_str());
+            const QString url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("public.php?service=files&t=%1").arg(data.value("token").toString())).toString();
             _ui->lineEdit_shareLink->setText(url);
         }
     }
