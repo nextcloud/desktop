@@ -234,7 +234,7 @@ QString Theme::about() const
             .arg(MIRALL_VERSION_STRING).arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
             .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN));
 
-    re += tr("<p>Copyright ownCloud, Incorparated</p>");
+    re += tr("<p>Copyright ownCloud, Incorporated</p>");
     re += tr("<p>Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.<br/>"
              "%2 and the %2 logo are registered trademarks of %1 in the "
              "United States, other countries, or both.</p>")
