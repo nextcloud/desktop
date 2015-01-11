@@ -1298,7 +1298,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="363"/>
         <source>Sync was aborted by user.</source>
-        <translation>La sincronización ha sido Interrumpida por el usuario</translation>
+        <translation>La sincronización ha sido interrumpida por el usuario</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="416"/>
