@@ -278,15 +278,11 @@ void OcsShareJob::start()
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
     QBuffer *buffer = new QBuffer;
 
-    QString tmp;
-    auto tmp2 = _postData.queryItems();
-    for (int i = 0; i < tmp2.size(); i++) {
-        if (i != 0) {
-            tmp.append("&");
-        }
-        tmp.append(tmp2[i].first + "=" + tmp2[i].second);
+    QStringList tmp;
+    Q_FOREACH(auto tmp2, _postData.queryItems()) {
+        tmp.append(tmp2.first + "=" + tmp2.second);
     }
-    buffer->setData(tmp.toAscii());
+    buffer->setData(tmp.join("&").toAscii());
 
     setReply(davRequest(_verb, _url, req, buffer));
     setupConnections(reply());
