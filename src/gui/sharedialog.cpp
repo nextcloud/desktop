@@ -44,9 +44,9 @@ ShareDialog::ShareDialog(QWidget *parent) :
     _ui->checkBox_password->hide();
     _ui->checkBox_expire->hide();
     _ui->calendar->hide();
-    _ui->lineEdit_shareGroup->setPlaceholderText("Share with group...");
-    _ui->lineEdit_shareUser->setPlaceholderText("Share with user...");
-    _ui->lineEdit_password->setPlaceholderText("Choose a password for the public link");
+    _ui->lineEdit_shareGroup->setPlaceholderText(tr("Share with group..."));
+    _ui->lineEdit_shareUser->setPlaceholderText(tr("Share with user..."));
+    _ui->lineEdit_password->setPlaceholderText(tr("Choose a password for the public link"));
 }
 
 void ShareDialog::setExpireDate(QString date)
@@ -94,7 +94,7 @@ ShareDialog::~ShareDialog()
 void ShareDialog::slotPasswordReturnPressed()
 {
     ShareDialog::setPassword(_ui->lineEdit_password->text());
-    _ui->lineEdit_password->setPlaceholderText("Password Protected");
+    _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
     _ui->lineEdit_password->setText("");
 }
 
@@ -121,7 +121,7 @@ void ShareDialog::slotPasswordSet(const QString &reply)
 
 void ShareDialog::getShares()
 {
-    this->setWindowTitle(QString("Sharing ").append(_path));
+    this->setWindowTitle(tr("Sharing %1").arg(_path));
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
     QList<QPair<QString, QString> > params;
     params.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
