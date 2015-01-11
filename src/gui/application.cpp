@@ -169,7 +169,6 @@ void Application::slotShowShareDialog(const QString &path)
 {
     qDebug() << "Opening share dialog";
     ShareDialog *w = new ShareDialog;
-    //w->setParent(w);
     w->setPath(path);
     w->show();
 }

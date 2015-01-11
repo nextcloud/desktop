@@ -276,9 +276,7 @@ void OcsShareJob::start()
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
-    qDebug() << ">>>>>>>>" << _url;
     QBuffer *buffer = new QBuffer;
-    //buffer->setData(_postData.query().toAscii());
 
     QString tmp;
     auto tmp2 = _postData.queryItems();
@@ -291,7 +289,6 @@ void OcsShareJob::start()
     buffer->setData(tmp.toAscii());
 
     setReply(davRequest(_verb, _url, req, buffer));
-    //setReply(davRequest("GET", url, req));
     setupConnections(reply());
     buffer->setParent(reply());
     AbstractNetworkJob::start();
