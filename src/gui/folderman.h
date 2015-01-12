@@ -94,6 +94,8 @@ public:
     // system, thus need to be escaped.
     static QString escapeAlias( const QString& );
 
+    SocketApi *socketApi();
+
 signals:
     /**
       * signal to indicate a folder named by alias has changed its sync state.

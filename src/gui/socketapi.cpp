@@ -398,6 +398,28 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
     sendMessage(socket, message);
 }
 
+void SocketApi::command_SHARE(const QString& argument, SocketType* socket)
+{
+    if (!socket) {
+        qDebug() << Q_FUNC_INFO << "No valid socket object.";
+        return;
+    }
+
+    qDebug() << Q_FUNC_INFO << argument;
+
+    Folder *shareFolder = FolderMan::instance()->folderForPath(argument);
+    if (!shareFolder) {
+        const QString message = QLatin1String("SHARE:NOP:")+QDir::toNativeSeparators(argument);
+        sendMessage(socket, message);
+    } else {
+        const QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(argument);
+        sendMessage(socket, message);
+        const QString folderForPath = shareFolder->path();
+        const QString path = shareFolder->remotePath() + argument.right(argument.count()-folderForPath.count()+1);
+        emit shareCommandReceived(path);
+    }
+}
+
 void SocketApi::command_VERSION(const QString&, SocketType* socket)
 {
     sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));

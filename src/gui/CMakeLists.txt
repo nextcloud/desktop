@@ -22,6 +22,7 @@ set(client_UI
     networksettings.ui
     protocolwidget.ui
     settingsdialog.ui
+    sharedialog.ui
     sslerrordialog.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudhttpcredspage.ui
@@ -49,6 +50,7 @@ set(client_SRCS
     protocolwidget.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
+    sharedialog.cpp
     socketapi.cpp
     sslbutton.cpp
     sslerrordialog.cpp

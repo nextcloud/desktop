@@ -31,6 +31,7 @@
 #include "theme.h"
 #include "utility.h"
 #include "clientproxy.h"
+#include "sharedialog.h"
 
 #include "updater/updater.h"
 #include "creds/abstractcredentials.h"
@@ -146,6 +147,9 @@ Application::Application(int &argc, char **argv) :
         slotAccountStateAdded(ai);
     }
 
+    connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString)),
+        this, SLOT(slotShowShareDialog(QString)));
+
     // startup procedure.
     connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
     _checkConnectionTimer.setInterval(32 * 1000); // check for connection every 32 seconds.
@@ -160,11 +164,20 @@ Application::Application(int &argc, char **argv) :
     }
 
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
+
 }
 
 Application::~Application()
 {
     // qDebug() << "* OCC shutdown";
+}
+
+void Application::slotShowShareDialog(const QString &path)
+{
+    qDebug() << Q_FUNC_INFO << "Opening share dialog";
+    ShareDialog *w = new ShareDialog;
+    w->setPath(path);
+    w->show();
 }
 
 void Application::slotLogin()
