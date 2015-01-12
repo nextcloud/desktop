@@ -27,7 +27,7 @@ class AccountState;
 class Account;
 class AbstractCredentials;
 
-class OWNCLOUDSYNC_EXPORT AccountStateManager : public QObject {
+class AccountStateManager : public QObject {
     Q_OBJECT
 public:
     static AccountStateManager *instance();
@@ -53,7 +53,7 @@ private:
 /**
  * @brief Extra info about an ownCloud server account.
  */
-class OWNCLOUDSYNC_EXPORT AccountState : public QObject {
+class AccountState : public QObject {
     Q_OBJECT
 public:
     enum State {
