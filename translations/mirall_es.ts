@@ -455,7 +455,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/mirall/folderman.cpp" line="980"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation>La última sincronización salió bien; pero con advertencias para archivos individuales.</translation>
+        <translation>La última sincronización salió bien; pero hay advertencias para archivos individuales.</translation>
     </message>
     <message>
         <location filename="../src/mirall/folderman.cpp" line="983"/>
@@ -1318,7 +1318,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="495"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>¡El fichero %1 no puede ser descargado debido al nombre de la clase de un fichero local!</translation>
+        <translation>¡El archivo %1 no se puede descargar a causa de un conflicto con el nombre de un archivo local!</translation>
     </message>
 </context>
 <context>
@@ -1326,7 +1326,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="593"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>¡El fichero %1 no puede ser descargado debido al nombre de la clase de un fichero local!</translation>
+        <translation>¡El archivo %1 no se puede descargar a causa de un conflicto con el nombre de un archivo local!</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_qnam.cpp" line="755"/>
