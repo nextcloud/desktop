@@ -49,7 +49,7 @@ ShareDialog::ShareDialog(QWidget *parent) :
     _ui->lineEdit_password->setPlaceholderText(tr("Choose a password for the public link"));
 }
 
-void ShareDialog::setExpireDate(QString date)
+void ShareDialog::setExpireDate(const QString &date)
 {
     _ui->labelCalendarSpinner->show();
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
@@ -72,7 +72,7 @@ void ShareDialog::slotExpireSet(const QString &reply)
 
 void ShareDialog::slotCalendarClicked(const QDate &date)
 {
-    ShareDialog::setExpireDate(date.toString("dd-MM-yyyy"));
+    ShareDialog::setExpireDate(date.toString("yyyy-MM-dd"));
 }
 
 QString ShareDialog::getPath()
@@ -159,9 +159,9 @@ void ShareDialog::slotSharesFetched(const QString &reply)
                 _ui->lineEdit_password->show();
             }
 
-            if (data.value("expire_date").isValid())
+            if (data.value("expiration").isValid())
             {
-                _ui->calendar->setSelectedDate(QDate::fromString(data.value("expire_date").toString(), "dd-MM-yyyy"));
+                _ui->calendar->setSelectedDate(QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00"));
                 _ui->calendar->show();
                 _ui->checkBox_expire->setChecked(true);
             }

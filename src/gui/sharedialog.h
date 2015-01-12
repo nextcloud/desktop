@@ -58,7 +58,7 @@ private:
     QList<QVariant> _shares;
     qulonglong _public_share_id;
     void setPassword(QString password);
-    void setExpireDate(QString date);
+    void setExpireDate(const QString &date);
 };
 
 }
