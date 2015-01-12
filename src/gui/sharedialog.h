@@ -69,6 +69,10 @@ private slots:
 
     void slotUserShareWidgetClicked(QTreeWidgetItem *item, int column);
     void slotUpdateUserShare(const QString &);
+    void slotAddUserShareClicked();
+    void slotAddUserShareReply(const QString &reply);
+    void slotDeleteUserShareClicked();
+    void slotDeleteUserShareReply(const QString &reply);
 private:
     Ui::ShareDialog *_ui;
     QString _path;

@@ -15,7 +15,7 @@ namespace {
     int PERM_READ = 1;
     int PERM_UPDATE = 2;
     int PERM_CREATE = 4;
-    int PERM_DELTEE = 8;
+    int PERM_DELETE = 8;
     int PERM_SHARE = 16;
 }
 
@@ -66,6 +66,10 @@ ShareDialog::ShareDialog(QWidget *parent) :
     _ui->treeWidget_shareUser->setColumnCount(5);
     _ui->treeWidget_shareUser->hideColumn(0);
     connect(_ui->treeWidget_shareUser, SIGNAL(itemChanged(QTreeWidgetItem *, int)), SLOT(slotUserShareWidgetClicked(QTreeWidgetItem *, int)));
+
+    connect(_ui->pushButton_shareUser, SIGNAL(clicked()), SLOT(slotAddUserShareClicked()));
+    connect(_ui->lineEdit_shareUser, SIGNAL(returnPressed()), SLOT(slotAddUserShareClicked()));
+    connect(_ui->pushButton_user_deleteShare, SIGNAL(clicked()), SLOT(slotDeleteUserShareClicked()));
 }
 
 void ShareDialog::setExpireDate(const QString &date)
@@ -153,6 +157,8 @@ void ShareDialog::getShares()
 
 void ShareDialog::slotSharesFetched(const QString &reply)
 {
+    _ui->treeWidget_shareUser->clear();
+
     bool success = false;
     QVariantMap json = QtJson::parse(reply, success).toMap();
     ShareDialog::_shares = json.value("ocs").toMap().values("data")[0].toList();
@@ -264,7 +270,6 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
 
 void ShareDialog::slotCreateShareFetched(const QString &reply)
 {
-    qDebug() << Q_FUNC_INFO << reply;
     _ui->labelShareSpinner->hide();
     bool success;
     QVariantMap json = QtJson::parse(reply, success).toMap();
@@ -336,9 +341,67 @@ void ShareDialog::slotUserShareWidgetClicked(QTreeWidgetItem *item, int column)
 
 void ShareDialog::slotUpdateUserShare(const QString &reply)
 {
+}
+
+void ShareDialog::slotAddUserShareClicked()
+{
+    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
+    QUrl postData;
+    QList<QPair<QString, QString> > getParams;
+    QList<QPair<QString, QString> > postParams;
+    getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
+    postParams.append(qMakePair(QString::fromLatin1("path"), _path));
+    postParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_USER)));
+    postParams.append(qMakePair(QString::fromLatin1("shareWith"), _ui->lineEdit_shareUser->text()));
+
+    int perm = 1;
+    if (_ui->checkBox_user_edit->checkState() == Qt::Checked) {
+        perm += PERM_UPDATE;
+    } 
+    if (_ui->checkBox_user_reshare->checkState() == Qt::Checked) {
+        perm += PERM_SHARE;
+    }
+
+    postParams.append(qMakePair(QString("permissions"), QString::number(perm)));
+    url.setQueryItems(getParams);
+    postData.setQueryItems(postParams);
+    OcsShareJob *job = new OcsShareJob("POST", url, postData, AccountManager::instance()->account(), this);
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotAddUserShareReply(QString)));
+    job->start();
+}
+
+void ShareDialog::slotAddUserShareReply(const QString &reply)
+{
+    getShares();
+}
+
+void ShareDialog::slotDeleteUserShareClicked()
+{
+    auto items = _ui->treeWidget_shareUser->selectedItems();
+    if (items.empty()) {
+        return;
+    }
+
+    auto item = items.at(0);
+    int id = item->data(0, Qt::DisplayRole).toInt();
+
+     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(id));
+    QUrl postData;
+    QList<QPair<QString, QString> > getParams;
+    QList<QPair<QString, QString> > postParams;
+    getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
+    url.setQueryItems(getParams);
+    postData.setQueryItems(postParams);
+    OcsShareJob *job = new OcsShareJob("DELETE", url, postData, AccountManager::instance()->account(), this);
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotDeleteUserShareReply(QString)));
+    job->start();
 
 }
 
+void ShareDialog::slotDeleteUserShareReply(const QString &reply)
+{
+    getShares();
+}
 
 OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, const QUrl &postData, AccountPtr account, QObject* parent)
 : AbstractNetworkJob(account, "", parent),

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>535</height>
+    <height>540</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,9 +36,18 @@
          </widget>
         </item>
         <item row="2" column="1">
+         <widget class="QTreeWidget" name="treeWidget_shareUser">
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item row="4" column="1">
          <widget class="QLineEdit" name="lineEdit_shareGroup"/>
         </item>
-        <item row="2" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="groupLabel">
           <property name="text">
            <string>Group</string>
@@ -46,12 +55,38 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QTreeWidget" name="treeWidget_shareUser">
-          <column>
-           <property name="text">
-            <string notr="true">1</string>
-           </property>
-          </column>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QCheckBox" name="checkBox_user_edit">
+            <property name="text">
+             <string>Edit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_user_reshare">
+            <property name="text">
+             <string>Reshare</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_shareUser">
+            <property name="text">
+             <string>Share</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="3" column="1">
+         <widget class="QPushButton" name="pushButton_user_deleteShare">
+          <property name="text">
+           <string>Delete</string>
+          </property>
          </widget>
         </item>
        </layout>
