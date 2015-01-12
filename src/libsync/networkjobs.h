@@ -231,7 +231,7 @@ private slots:
 /**
  * @brief The CheckQuota class
  */
-class CheckQuotaJob : public AbstractNetworkJob {
+class OWNCLOUDSYNC_EXPORT CheckQuotaJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit CheckQuotaJob(AccountPtr account, const QString &path, QObject *parent = 0);
