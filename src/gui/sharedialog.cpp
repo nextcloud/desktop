@@ -65,7 +65,7 @@ void ShareDialog::setExpireDate(const QString &date)
     job->start();
 }
 
-void ShareDialog::slotExpireSet(const QString &reply)
+void ShareDialog::slotExpireSet(const QString & /* reply */)
 {
     _ui->labelCalendarSpinner->hide();
 }
@@ -114,7 +114,7 @@ void ShareDialog::setPassword(QString password)
     job->start();
 }
 
-void ShareDialog::slotPasswordSet(const QString &reply)
+void ShareDialog::slotPasswordSet(const QString & /* reply */)
 {
     _ui->labelPasswordSpinner->hide();
 }
@@ -172,7 +172,7 @@ void ShareDialog::slotSharesFetched(const QString &reply)
     }
 }
 
-void ShareDialog::slotDeleteShareFetched(const QString &reply)
+void ShareDialog::slotDeleteShareFetched(const QString & /* reply */)
 {
     _ui->labelShareSpinner->hide();
     _ui->lineEdit_shareLink->hide();
@@ -260,7 +260,7 @@ void ShareDialog::slotCheckBoxExpireClicked()
     }
 }
 
-OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, const QUrl &postData, Account* account, QObject* parent)
+OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl url, const QUrl postData, AccountPtr account, QObject* parent)
 : AbstractNetworkJob(account, "", parent),
   _verb(verb),
   _url(url),
