@@ -35,14 +35,23 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <widget class="QLineEdit" name="lineEdit_shareGroup"/>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
          <widget class="QLabel" name="groupLabel">
           <property name="text">
            <string>Group</string>
           </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QTreeWidget" name="treeWidget_shareUser">
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
          </widget>
         </item>
        </layout>

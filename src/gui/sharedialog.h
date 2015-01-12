@@ -16,6 +16,7 @@
 
 #include "networkjobs.h"
 #include <QDialog>
+#include <QTreeWidgetItem>
 
 namespace OCC {
 
@@ -65,6 +66,9 @@ private slots:
     void slotCheckBoxPasswordClicked();
     void slotCheckBoxExpireClicked();
     void slotPasswordReturnPressed();
+
+    void slotUserShareWidgetClicked(QTreeWidgetItem *item, int column);
+    void slotUpdateUserShare(const QString &);
 private:
     Ui::ShareDialog *_ui;
     QString _path;

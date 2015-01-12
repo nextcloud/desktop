@@ -8,7 +8,15 @@
 #include <QMovie>
 
 namespace {
+    int SHARETYPE_USER = 0;
+    int SHARETYPE_GROUP = 1;
     int SHARETYPE_PUBLIC = 3;
+
+    int PERM_READ = 1;
+    int PERM_UPDATE = 2;
+    int PERM_CREATE = 4;
+    int PERM_DELTEE = 8;
+    int PERM_SHARE = 16;
 }
 
 namespace OCC {
@@ -47,6 +55,17 @@ ShareDialog::ShareDialog(QWidget *parent) :
     _ui->lineEdit_shareGroup->setPlaceholderText(tr("Share with group..."));
     _ui->lineEdit_shareUser->setPlaceholderText(tr("Share with user..."));
     _ui->lineEdit_password->setPlaceholderText(tr("Choose a password for the public link"));
+
+    QStringList header;
+    header << "share_id";
+    header << tr("User name");
+    header << tr("User");
+    header << tr("Edit");
+    header << tr("Share");
+    _ui->treeWidget_shareUser->setHeaderLabels(header);
+    _ui->treeWidget_shareUser->setColumnCount(5);
+    _ui->treeWidget_shareUser->hideColumn(0);
+    connect(_ui->treeWidget_shareUser, SIGNAL(itemChanged(QTreeWidgetItem *, int)), SLOT(slotUserShareWidgetClicked(QTreeWidgetItem *, int)));
 }
 
 void ShareDialog::setExpireDate(const QString &date)
@@ -140,6 +159,35 @@ void ShareDialog::slotSharesFetched(const QString &reply)
     for(int i = 0; i < ShareDialog::_shares.count(); i++)
     {
         QVariantMap data = ShareDialog::_shares[i].toMap();
+
+        if (data.value("share_type").toInt() == SHARETYPE_USER)
+        {
+            QStringList columns;
+
+            columns << data.value("id").toString();
+            columns << data.value("share_with").toString();
+            columns << data.value("share_with_displayname").toString();
+            columns << "";
+            columns << "";
+
+            QTreeWidgetItem *item = new QTreeWidgetItem(columns);
+
+            int perm = data.value("permissions").toInt();
+
+            if (perm & PERM_UPDATE) {
+                item->setCheckState(3, Qt::Checked);
+            } else {
+                item->setCheckState(3, Qt::Unchecked);
+            }
+
+            if (perm & PERM_SHARE) {
+                item->setCheckState(4, Qt::Checked);
+            } else {
+                item->setCheckState(4, Qt::Unchecked);
+            }
+
+            _ui->treeWidget_shareUser->insertTopLevelItem(0, item);
+        }
 
         if (data.value("share_type").toInt() == SHARETYPE_PUBLIC)
         {
@@ -259,6 +307,38 @@ void ShareDialog::slotCheckBoxExpireClicked()
         _ui->calendar->hide();
     }
 }
+
+void ShareDialog::slotUserShareWidgetClicked(QTreeWidgetItem *item, int column)
+{
+
+    int id = item->data(0, Qt::DisplayRole).toInt();
+
+    int perm = 1;
+    if (item->checkState(3) == Qt::Checked) {
+        perm += PERM_UPDATE;
+    }
+    if (item->checkState(4) == Qt::Checked) {
+        perm += PERM_SHARE;
+    }
+
+    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(id)));
+    QUrl postData;
+    QList<QPair<QString, QString> > getParams;
+    QList<QPair<QString, QString> > postParams;
+    getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
+    postParams.append(qMakePair(QString::fromLatin1("permissions"), QString::number(perm)));
+    url.setQueryItems(getParams);
+    postData.setQueryItems(postParams);
+    OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotUpdateUserShare(QString)));
+    job->start();
+}
+
+void ShareDialog::slotUpdateUserShare(const QString &reply)
+{
+
+}
+
 
 OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, const QUrl &postData, AccountPtr account, QObject* parent)
 : AbstractNetworkJob(account, "", parent),
