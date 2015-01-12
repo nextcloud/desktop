@@ -260,7 +260,7 @@ void ShareDialog::slotCheckBoxExpireClicked()
     }
 }
 
-OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl url, const QUrl postData, AccountPtr account, QObject* parent)
+OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, const QUrl &postData, AccountPtr account, QObject* parent)
 : AbstractNetworkJob(account, "", parent),
   _verb(verb),
   _url(url),
