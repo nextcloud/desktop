@@ -56,20 +56,36 @@ ShareDialog::ShareDialog(QWidget *parent) :
     _ui->lineEdit_shareUser->setPlaceholderText(tr("Share with user..."));
     _ui->lineEdit_password->setPlaceholderText(tr("Choose a password for the public link"));
 
-    QStringList header;
-    header << "share_id";
-    header << tr("User name");
-    header << tr("User");
-    header << tr("Edit");
-    header << tr("Share");
-    _ui->treeWidget_shareUser->setHeaderLabels(header);
+    QStringList headerUser;
+    headerUser << "share_id";
+    headerUser << tr("User name");
+    headerUser << tr("User");
+    headerUser << tr("Edit");
+    headerUser << tr("Share");
+    _ui->treeWidget_shareUser->setHeaderLabels(headerUser);
     _ui->treeWidget_shareUser->setColumnCount(5);
     _ui->treeWidget_shareUser->hideColumn(0);
     connect(_ui->treeWidget_shareUser, SIGNAL(itemChanged(QTreeWidgetItem *, int)), SLOT(slotUserShareWidgetClicked(QTreeWidgetItem *, int)));
-
     connect(_ui->pushButton_shareUser, SIGNAL(clicked()), SLOT(slotAddUserShareClicked()));
     connect(_ui->lineEdit_shareUser, SIGNAL(returnPressed()), SLOT(slotAddUserShareClicked()));
     connect(_ui->pushButton_user_deleteShare, SIGNAL(clicked()), SLOT(slotDeleteUserShareClicked()));
+
+    QStringList headerGroup;
+    headerGroup << "share_id";
+    headerGroup << tr("Group");
+    headerGroup << tr("Edit");
+    headerGroup << tr("Create");
+    headerGroup << tr("Delete");
+    headerGroup << tr("Share");
+    _ui->treeWidget_shareGroup->setHeaderLabels(headerGroup);
+    _ui->treeWidget_shareGroup->setColumnCount(6);
+    _ui->treeWidget_shareGroup->hideColumn(0);
+    connect(_ui->treeWidget_shareGroup, SIGNAL(itemChanged(QTreeWidgetItem *, int)), SLOT(slotGroupShareWidgetClicked(QTreeWidgetItem *, int)));
+    connect(_ui->pushButton_shareGroup, SIGNAL(clicked()), SLOT(slotAddGroupShareClicked()));
+    connect(_ui->lineEdit_shareGroup, SIGNAL(returnPressed()), SLOT(slotAddGroupShareClicked()));
+    connect(_ui->pushButton_group_deleteShare, SIGNAL(clicked()), SLOT(slotDeleteGroupShareClicked()));
+
+
 }
 
 void ShareDialog::setExpireDate(const QString &date)
@@ -158,6 +174,7 @@ void ShareDialog::getShares()
 void ShareDialog::slotSharesFetched(const QString &reply)
 {
     _ui->treeWidget_shareUser->clear();
+    _ui->treeWidget_shareGroup->clear();
 
     bool success = false;
     QVariantMap json = QtJson::parse(reply, success).toMap();
@@ -193,6 +210,49 @@ void ShareDialog::slotSharesFetched(const QString &reply)
             }
 
             _ui->treeWidget_shareUser->insertTopLevelItem(0, item);
+        }
+
+        if (data.value("share_type").toInt() == SHARETYPE_GROUP)
+        {
+            QStringList columns;
+
+            columns << data.value("id").toString();
+            columns << data.value("share_with").toString();
+            columns << "";
+            columns << "";
+            columns << "";
+            columns << "";
+
+            QTreeWidgetItem *item = new QTreeWidgetItem(columns);
+
+            int perm = data.value("permissions").toInt();
+
+            if (perm & PERM_UPDATE) {
+                item->setCheckState(2, Qt::Checked);
+            } else {
+                item->setCheckState(2, Qt::Unchecked);
+            }
+
+            if (perm & PERM_CREATE) {
+                item->setCheckState(3, Qt::Checked);
+            } else {
+                item->setCheckState(3, Qt::Unchecked);
+            }
+
+            if (perm & PERM_DELETE) {
+                item->setCheckState(4, Qt::Checked);
+            } else {
+                item->setCheckState(4, Qt::Unchecked);
+            }
+
+            if (perm & PERM_SHARE) {
+                item->setCheckState(5, Qt::Checked);
+            } else {
+                item->setCheckState(5, Qt::Unchecked);
+            }
+
+            _ui->treeWidget_shareGroup->insertTopLevelItem(0, item);
+ 
         }
 
         if (data.value("share_type").toInt() == SHARETYPE_PUBLIC)
@@ -313,7 +373,7 @@ void ShareDialog::slotCheckBoxExpireClicked()
     }
 }
 
-void ShareDialog::slotUserShareWidgetClicked(QTreeWidgetItem *item, int column)
+void ShareDialog::slotUserShareWidgetClicked(QTreeWidgetItem *item, const int column)
 {
 
     int id = item->data(0, Qt::DisplayRole).toInt();
@@ -402,6 +462,113 @@ void ShareDialog::slotDeleteUserShareReply(const QString &reply)
 {
     getShares();
 }
+
+
+void ShareDialog::slotGroupShareWidgetClicked(QTreeWidgetItem *item, const int column)
+{
+
+    int id = item->data(0, Qt::DisplayRole).toInt();
+
+    int perm = 1;
+    if (item->checkState(2) == Qt::Checked) {
+        perm += PERM_UPDATE;
+    }
+    if (item->checkState(3) == Qt::Checked) {
+        perm += PERM_CREATE;
+    }
+    if (item->checkState(4) == Qt::Checked) {
+        perm += PERM_DELETE;
+    }
+    if (item->checkState(5) == Qt::Checked) {
+        perm += PERM_SHARE;
+    }
+
+    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(id)));
+    QUrl postData;
+    QList<QPair<QString, QString> > getParams;
+    QList<QPair<QString, QString> > postParams;
+    getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
+    postParams.append(qMakePair(QString::fromLatin1("permissions"), QString::number(perm)));
+    url.setQueryItems(getParams);
+    postData.setQueryItems(postParams);
+    OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotUpdateGroupShare(QString)));
+    job->start();
+}
+
+void ShareDialog::slotUpdateGroupShare(const QString &reply)
+{
+}
+
+void ShareDialog::slotAddGroupShareClicked()
+{
+    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
+    QUrl postData;
+    QList<QPair<QString, QString> > getParams;
+    QList<QPair<QString, QString> > postParams;
+    getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
+    postParams.append(qMakePair(QString::fromLatin1("path"), _path));
+    postParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_GROUP)));
+    postParams.append(qMakePair(QString::fromLatin1("shareWith"), _ui->lineEdit_shareGroup->text()));
+
+    int perm = 1;
+    if (_ui->checkBox_group_edit->checkState() == Qt::Checked) {
+        perm += PERM_UPDATE;
+    }
+    if (_ui->checkBox_group_create->checkState() == Qt::Checked) {
+        perm += PERM_CREATE;
+    }
+    if (_ui->checkBox_group_delete->checkState() == Qt::Checked) {
+        perm += PERM_DELETE;
+    }
+    if (_ui->checkBox_group_reshare->checkState() == Qt::Checked) {
+        perm += PERM_SHARE;
+    }
+
+    postParams.append(qMakePair(QString("permissions"), QString::number(perm)));
+    url.setQueryItems(getParams);
+    postData.setQueryItems(postParams);
+    OcsShareJob *job = new OcsShareJob("POST", url, postData, AccountManager::instance()->account(), this);
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotAddGroupShareReply(QString)));
+    job->start();
+}
+
+void ShareDialog::slotAddGroupShareReply(const QString &reply)
+{
+    qDebug() << Q_FUNC_INFO << reply;
+    getShares();
+}
+
+void ShareDialog::slotDeleteGroupShareClicked()
+{
+    auto items = _ui->treeWidget_shareGroup->selectedItems();
+    if (items.empty()) {
+        return;
+    }
+
+    auto item = items.at(0);
+    int id = item->data(0, Qt::DisplayRole).toInt();
+
+     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(id));
+    QUrl postData;
+    QList<QPair<QString, QString> > getParams;
+    QList<QPair<QString, QString> > postParams;
+    getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
+    url.setQueryItems(getParams);
+    postData.setQueryItems(postParams);
+    OcsShareJob *job = new OcsShareJob("DELETE", url, postData, AccountManager::instance()->account(), this);
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotDeleteGroupShareReply(QString)));
+    job->start();
+
+}
+
+void ShareDialog::slotDeleteGroupShareReply(const QString &reply)
+{
+    getShares();
+}
+
+
+
 
 OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, const QUrl &postData, AccountPtr account, QObject* parent)
 : AbstractNetworkJob(account, "", parent),

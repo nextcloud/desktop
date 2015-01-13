@@ -25,6 +25,15 @@
         <string>Share with</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="6" column="1">
+         <widget class="QTreeWidget" name="treeWidget_shareGroup">
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+         </widget>
+        </item>
         <item row="0" column="1">
          <widget class="QLineEdit" name="lineEdit_shareUser"/>
         </item>
@@ -86,6 +95,61 @@
          <widget class="QPushButton" name="pushButton_user_deleteShare">
           <property name="text">
            <string>Delete</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QCheckBox" name="checkBox_group_edit">
+            <property name="text">
+             <string>Edit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_group_create">
+            <property name="text">
+             <string>Create</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_group_delete">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_group_reshare">
+            <property name="text">
+             <string>Share</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_shareGroup">
+            <property name="text">
+             <string>Share</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="7" column="1">
+         <widget class="QPushButton" name="pushButton_group_deleteShare">
+          <property name="text">
+           <string>Delete</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
