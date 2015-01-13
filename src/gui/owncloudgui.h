@@ -70,6 +70,7 @@ public slots:
     void slotHelp();
     void slotOpenPath(const QString& path);
     void slotAccountStateChanged();
+    void slotShowShareDialog(const QString &path);
 
 private slots:
     void slotDisplayIdle();

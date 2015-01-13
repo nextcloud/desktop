@@ -19,6 +19,7 @@
 #include "utility.h"
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"
+#include "sharedialog.h"
 #if defined(Q_OS_MAC)
 #    include "settingsdialogmac.h"
 #    include "macwindow.h" // qtmacgoodies
@@ -632,6 +633,16 @@ void ownCloudGui::raiseDialog( QWidget *raiseWidget )
                    &e);
 #endif
     }
+}
+
+
+void ownCloudGui::slotShowShareDialog(const QString &path)
+{
+    qDebug() << Q_FUNC_INFO << "Opening share dialog";
+    ShareDialog *w = new ShareDialog;
+    w->setAttribute( Qt::WA_DeleteOnClose, true );
+    w->setPath(path);
+    w->show();
 }
 
 

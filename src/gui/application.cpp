@@ -148,7 +148,7 @@ Application::Application(int &argc, char **argv) :
     }
 
     connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString)),
-        this, SLOT(slotShowShareDialog(QString)));
+            _gui, SLOT(slotShowShareDialog(QString)));
 
     // startup procedure.
     connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
@@ -170,14 +170,6 @@ Application::Application(int &argc, char **argv) :
 Application::~Application()
 {
     // qDebug() << "* OCC shutdown";
-}
-
-void Application::slotShowShareDialog(const QString &path)
-{
-    qDebug() << Q_FUNC_INFO << "Opening share dialog";
-    ShareDialog *w = new ShareDialog;
-    w->setPath(path);
-    w->show();
 }
 
 void Application::slotLogin()
