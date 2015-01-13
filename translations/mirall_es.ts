@@ -1103,7 +1103,7 @@ pida privilegios adicionales durante el proceso.</translation>
         <location filename="../src/wizard/owncloudsetuppage.cpp" line="110"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Esta URL NO ES SEGURA pues no está cifrada.
+        <translation>Esta URL NO ES SEGURA; pues no está cifrada.
 No se recomienda usarla.</translation>
     </message>
     <message>
@@ -1184,7 +1184,7 @@ No se recomienda usarla.</translation>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="186"/>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="194"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>Error conectando con %1 en %2:&lt;br/&gt;%3</translation>
+        <translation>Se falló al conectar %1 a %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/mirall/owncloudsetupwizard.cpp" line="282"/>
@@ -1298,7 +1298,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="363"/>
         <source>Sync was aborted by user.</source>
-        <translation>La sincronización ha sido interrumpida por el usuario</translation>
+        <translation>El usuario ha interrumpiado la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/mirall/propagator_legacy.cpp" line="416"/>

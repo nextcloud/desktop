@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>Connecté avec &lt;server&gt; en tant que &lt;user&gt;</translation>
+        <translation>Connecté à &lt;server&gt; en tant que &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="62"/>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="55"/>
         <source>Add Folder...</source>
-        <translation>Ajouter un dossier...</translation>
+        <translation>Ajouter un dossier ...</translation>
     </message>
     <message>
         <location filename="../src/mirall/accountsettings.ui" line="76"/>
@@ -2058,7 +2058,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;encodage du nom de fichier n&apos;est pas valide</translation>
     </message>
     <message>
         <location filename="../src/mirall/syncengine.cpp" line="580"/>
