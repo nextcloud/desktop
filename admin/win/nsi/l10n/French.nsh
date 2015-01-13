@@ -6,7 +6,7 @@ StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Les processus à stopper n'ont pa
 StrCpy $PageReinstall_NEW_Field_1 "Une ancienne version de ${APPLICATION_NAME} est installée sur votre système. Il est recommandé de désinstaller cette version avant de continuer. Sélectionnez l'opération que vous voulez exécuter et cliquez sur Suivant pour continuer."
 StrCpy $PageReinstall_NEW_Field_2 "Désinstaller avant d'installer à nouveau"
 StrCpy $PageReinstall_NEW_Field_3 "Ne pas désinstaller"
-StrCpy $PageReinstall_NEW_MUI_HEADER_TEXT_TITLE "Déjà installée"
+StrCpy $PageReinstall_NEW_MUI_HEADER_TEXT_TITLE "Déjà installé"
 StrCpy $PageReinstall_NEW_MUI_HEADER_TEXT_SUBTITLE "Choisissez comment installer ${APPLICATION_NAME}."
 StrCpy $PageReinstall_OLD_Field_1 "Une version plus récente de ${APPLICATION_NAME} est déjà installée ! Il n'est pas recommandé d'installer une version plus ancienne. Si vous voulez vraiment installer cette version plus ancienne, il est préférable de d'abord désinstaller la version courante. Sélectionnez l'opération que vous voulez exécuter et cliquez sur Suivant pour continuer."
 StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} est déjà installé.\nSélectionnez l'opération que vous voulez exécuter et cliquez sur Suivant pour continuer."
