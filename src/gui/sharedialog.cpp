@@ -12,7 +12,7 @@ namespace {
     int SHARETYPE_GROUP = 1;
     int SHARETYPE_PUBLIC = 3;
 
-    int PERM_READ = 1;
+    //int PERM_READ = 1;    sharing always allows reading
     int PERM_UPDATE = 2;
     int PERM_CREATE = 4;
     int PERM_DELETE = 8;
@@ -381,7 +381,7 @@ void ShareDialog::slotCheckBoxExpireClicked()
     }
 }
 
-void ShareDialog::slotUserShareWidgetClicked(QTreeWidgetItem *item, const int column)
+void ShareDialog::slotUserShareWidgetClicked(QTreeWidgetItem *item, const int /* column */)
 {
 
     int id = item->data(0, Qt::DisplayRole).toInt();
@@ -413,7 +413,7 @@ void ShareDialog::slotUserShareWidgetClicked(QTreeWidgetItem *item, const int co
     job->start();
 }
 
-void ShareDialog::slotUpdateUserShare(const QString &reply)
+void ShareDialog::slotUpdateUserShare(const QString & /*reply*/)
 {
 }
 
@@ -450,7 +450,7 @@ void ShareDialog::slotAddUserShareClicked()
     job->start();
 }
 
-void ShareDialog::slotAddUserShareReply(const QString &reply)
+void ShareDialog::slotAddUserShareReply(const QString &/*reply*/)
 {
     getShares();
 }
@@ -478,13 +478,13 @@ void ShareDialog::slotDeleteUserShareClicked()
 
 }
 
-void ShareDialog::slotDeleteUserShareReply(const QString &reply)
+void ShareDialog::slotDeleteUserShareReply(const QString &/*reply*/)
 {
     getShares();
 }
 
 
-void ShareDialog::slotGroupShareWidgetClicked(QTreeWidgetItem *item, const int column)
+void ShareDialog::slotGroupShareWidgetClicked(QTreeWidgetItem *item, const int /*column*/)
 {
 
     int id = item->data(0, Qt::DisplayRole).toInt();
@@ -516,8 +516,9 @@ void ShareDialog::slotGroupShareWidgetClicked(QTreeWidgetItem *item, const int c
     job->start();
 }
 
-void ShareDialog::slotUpdateGroupShare(const QString &reply)
+void ShareDialog::slotUpdateGroupShare(const QString &/*reply*/)
 {
+    getShares();
 }
 
 void ShareDialog::slotAddGroupShareClicked()
@@ -582,7 +583,7 @@ void ShareDialog::slotDeleteGroupShareClicked()
 
 }
 
-void ShareDialog::slotDeleteGroupShareReply(const QString &reply)
+void ShareDialog::slotDeleteGroupShareReply(const QString &/*reply*/)
 {
     getShares();
 }
