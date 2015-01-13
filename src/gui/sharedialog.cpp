@@ -61,9 +61,11 @@ ShareDialog::ShareDialog(QWidget *parent) :
     headerUser << tr("User name");
     headerUser << tr("User");
     headerUser << tr("Edit");
+    headerUser << tr("Create");
+    headerUser << tr("Delete");
     headerUser << tr("Share");
     _ui->treeWidget_shareUser->setHeaderLabels(headerUser);
-    _ui->treeWidget_shareUser->setColumnCount(5);
+    _ui->treeWidget_shareUser->setColumnCount(7);
     _ui->treeWidget_shareUser->hideColumn(0);
     connect(_ui->treeWidget_shareUser, SIGNAL(itemChanged(QTreeWidgetItem *, int)), SLOT(slotUserShareWidgetClicked(QTreeWidgetItem *, int)));
     connect(_ui->pushButton_shareUser, SIGNAL(clicked()), SLOT(slotAddUserShareClicked()));
@@ -192,6 +194,8 @@ void ShareDialog::slotSharesFetched(const QString &reply)
             columns << data.value("share_with_displayname").toString();
             columns << "";
             columns << "";
+            columns << "";
+            columns << "";
 
             QTreeWidgetItem *item = new QTreeWidgetItem(columns);
 
@@ -202,11 +206,20 @@ void ShareDialog::slotSharesFetched(const QString &reply)
             } else {
                 item->setCheckState(3, Qt::Unchecked);
             }
-
-            if (perm & PERM_SHARE) {
+            if (perm & PERM_CREATE) {
                 item->setCheckState(4, Qt::Checked);
             } else {
                 item->setCheckState(4, Qt::Unchecked);
+            }
+            if (perm & PERM_DELETE) {
+                item->setCheckState(5, Qt::Checked);
+            } else {
+                item->setCheckState(5, Qt::Unchecked);
+            }
+            if (perm & PERM_SHARE) {
+                item->setCheckState(6, Qt::Checked);
+            } else {
+                item->setCheckState(6, Qt::Unchecked);
             }
 
             _ui->treeWidget_shareUser->insertTopLevelItem(0, item);
@@ -232,27 +245,22 @@ void ShareDialog::slotSharesFetched(const QString &reply)
             } else {
                 item->setCheckState(2, Qt::Unchecked);
             }
-
             if (perm & PERM_CREATE) {
                 item->setCheckState(3, Qt::Checked);
             } else {
                 item->setCheckState(3, Qt::Unchecked);
             }
-
             if (perm & PERM_DELETE) {
                 item->setCheckState(4, Qt::Checked);
             } else {
                 item->setCheckState(4, Qt::Unchecked);
             }
-
             if (perm & PERM_SHARE) {
                 item->setCheckState(5, Qt::Checked);
             } else {
                 item->setCheckState(5, Qt::Unchecked);
             }
-
             _ui->treeWidget_shareGroup->insertTopLevelItem(0, item);
- 
         }
 
         if (data.value("share_type").toInt() == SHARETYPE_PUBLIC)
@@ -383,6 +391,12 @@ void ShareDialog::slotUserShareWidgetClicked(QTreeWidgetItem *item, const int co
         perm += PERM_UPDATE;
     }
     if (item->checkState(4) == Qt::Checked) {
+        perm += PERM_CREATE;
+    }
+    if (item->checkState(5) == Qt::Checked) {
+        perm += PERM_DELETE;
+    }
+    if (item->checkState(6) == Qt::Checked) {
         perm += PERM_SHARE;
     }
 
@@ -417,7 +431,13 @@ void ShareDialog::slotAddUserShareClicked()
     int perm = 1;
     if (_ui->checkBox_user_edit->checkState() == Qt::Checked) {
         perm += PERM_UPDATE;
-    } 
+    }
+    if (_ui->checkBox_user_create->checkState() == Qt::Checked) {
+        perm += PERM_CREATE;
+    }
+    if (_ui->checkBox_user_delete->checkState() == Qt::Checked) {
+        perm += PERM_DELETE;
+    }
     if (_ui->checkBox_user_reshare->checkState() == Qt::Checked) {
         perm += PERM_SHARE;
     }

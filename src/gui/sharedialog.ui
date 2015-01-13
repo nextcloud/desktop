@@ -73,6 +73,20 @@
            </widget>
           </item>
           <item>
+           <widget class="QCheckBox" name="checkBox_user_create">
+            <property name="text">
+             <string>Create</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_user_delete">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="checkBox_user_reshare">
             <property name="text">
              <string>Reshare</string>
