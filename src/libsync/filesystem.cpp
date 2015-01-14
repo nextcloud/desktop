@@ -25,6 +25,7 @@
 #ifdef Q_OS_WIN
 #include <windef.h>
 #include <winbase.h>
+#include <fcntl.h>
 #endif
 
 // We use some internals of csync:
@@ -149,6 +150,62 @@ bool FileSystem::renameReplace(const QString& originFileName, const QString& des
     return true;
 }
 
+bool FileSystem::openFileSharedRead(QFile* file, QString* error)
+{
+    bool ok = false;
+    if (error) {
+        error->clear();
+    }
 
+#ifdef Q_OS_WIN
+    //
+    // The following code is adapted from Qt's QFSFileEnginePrivate::nativeOpen()
+    // by including the FILE_SHARE_DELETE share mode.
+    //
+
+    // Enable full sharing.
+    DWORD shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
+
+    int accessRights = GENERIC_READ;
+    DWORD creationDisp = OPEN_EXISTING;
+
+    // Create the file handle.
+    SECURITY_ATTRIBUTES securityAtts = { sizeof(SECURITY_ATTRIBUTES), NULL, FALSE };
+    HANDLE fileHandle = CreateFileW(
+            (const wchar_t*)file->fileName().utf16(),
+            accessRights,
+            shareMode,
+            &securityAtts,
+            creationDisp,
+            FILE_ATTRIBUTE_NORMAL,
+            NULL);
+
+    // Bail out on error.
+    if (fileHandle == INVALID_HANDLE_VALUE) {
+        if (error) {
+            *error = qt_error_string();
+        }
+        return false;
+    }
+
+    // Convert the HANDLE to an fd and pass it to QFile's foreign-open
+    // function. The fd owns the handle, so when QFile later closes
+    // the fd the handle will be closed too.
+    int fd = _open_osfhandle((intptr_t)fileHandle, _O_RDONLY);
+    if (fd == -1) {
+        if (error) {
+            *error = "could not make fd from handle";
+        }
+        return false;
+    }
+    ok = file->open(fd, QIODevice::ReadOnly, QFile::AutoCloseHandle);
+#else
+    ok = file->open(QFile::ReadOnly);
+#endif
+    if (! ok && error) {
+        *error = file->errorString();
+    }
+    return ok;
+}
 
 }

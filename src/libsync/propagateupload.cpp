@@ -348,9 +348,11 @@ void PropagateUploadFileQNAM::startNextChunk()
     QString path = _item._file;
 
     QFile file(_propagator->getFilePath(_item._file), this);
-    if (!file.open(QIODevice::ReadOnly)) {
+    QString openError;
+    // Warning: this clears file->fileName() and makes it unsuitable for QFileInfo!
+    if (!FileSystem::openFileSharedRead(&file, &openError)) {
         // Soft error because this is likely caused by the user modifying his files while syncing
-        abortWithError(SyncFileItem::SoftError, file.errorString());
+        abortWithError(SyncFileItem::SoftError, openError);
         return;
     }
 

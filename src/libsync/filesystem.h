@@ -14,6 +14,7 @@
 #pragma once
 
 #include <QString>
+#include <QFile>
 #include <ctime>
 
 #include <owncloudlib.h>
@@ -48,5 +49,14 @@ bool setModTime(const QString &filename, time_t modTime);
  */
 bool renameReplace(const QString &originFileName, const QString &destinationFileName,
                    QString *errorString);
+
+/**
+ * Replacement for QFile::open(ReadOnly) that sets a more permissive sharing mode
+ * on Windows.
+ *
+ * Warning: The resuting file may have an empty fileName and be unsuitable for use
+ * with QFileInfo!
+ */
+bool openFileSharedRead(QFile* file, QString* error);
 
 }}
