@@ -26,9 +26,12 @@ class BandwidthManager;
 class UploadDevice : public QIODevice {
     Q_OBJECT
 public:
-    UploadDevice(QIODevice *file,  qint64 start, qint64 size, BandwidthManager *bwm);
+    UploadDevice(BandwidthManager *bwm);
     ~UploadDevice();
-    bool open(OpenMode mode) Q_DECL_OVERRIDE;
+
+    /** Reads the data from the file and opens the device */
+    bool prepareAndOpen(const QString& fileName, qint64 start, qint64 size);
+
     qint64 writeData(const char* , qint64 ) Q_DECL_OVERRIDE;
     qint64 readData(char* data, qint64 maxlen) Q_DECL_OVERRIDE;
     bool atEnd() const Q_DECL_OVERRIDE;
@@ -44,13 +47,9 @@ public:
     void giveBandwidthQuota(qint64 bwq);
 private:
 
-    // Used before opening
-    QPointer<QIODevice> _file;
-    qint64 _size;
-    qint64 _start;
-
-    // Used after opening, in order to read
+    // The file data
     QByteArray _data;
+    // Position in the data
     qint64 _read;
 
     // Bandwidth manager related
