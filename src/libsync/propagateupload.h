@@ -26,17 +26,9 @@ class BandwidthManager;
 class UploadDevice : public QIODevice {
     Q_OBJECT
 public:
-    QPointer<QIODevice> _file;
-    qint64 _read;
-    qint64 _size;
-    qint64 _start;
-    BandwidthManager* _bandwidthManager;
-
-    qint64 _bandwidthQuota;
-    qint64 _readWithProgress;
-
     UploadDevice(QIODevice *file,  qint64 start, qint64 size, BandwidthManager *bwm);
     ~UploadDevice();
+    bool open(OpenMode mode) Q_DECL_OVERRIDE;
     qint64 writeData(const char* , qint64 ) Q_DECL_OVERRIDE;
     qint64 readData(char* data, qint64 maxlen) Q_DECL_OVERRIDE;
     bool atEnd() const Q_DECL_OVERRIDE;
@@ -51,8 +43,23 @@ public:
     bool isChoked() { return _choked; }
     void giveBandwidthQuota(qint64 bwq);
 private:
+
+    // Used before opening
+    QPointer<QIODevice> _file;
+    qint64 _size;
+    qint64 _start;
+
+    // Used after opening, in order to read
+    QByteArray _data;
+    qint64 _read;
+
+    // Bandith manager related
+    BandwidthManager* _bandwidthManager;
+    qint64 _bandwidthQuota;
+    qint64 _readWithProgress;
     bool _bandwidthLimited; // if _bandwidthQuota will be used
     bool _choked; // if upload is paused (readData() will return 0)
+    friend class BandwidthManager;
 protected slots:
     void slotJobUploadProgress(qint64 sent, qint64 t);
 };
@@ -117,14 +124,13 @@ signals:
 
 class PropagateUploadFileQNAM : public PropagateItemJob {
     Q_OBJECT
-    QFile *_file;
     int _startChunk;
     int _currentChunk;
     int _chunkCount;
     int _transferId;
     QElapsedTimer _duration;
     QVector<PUTFileJob*> _jobs;
-    bool _finished;
+    bool _finished; // Tells that all the jobs have been finished
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0), _finished(false) {}
@@ -139,6 +145,7 @@ private slots:
     void slotJobDestroyed(QObject *job);
 private:
     void startPollJob(const QString& path);
+    void abortWithError(SyncFileItem::Status status, const QString &error);
 };
 
 }
