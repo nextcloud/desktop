@@ -44,7 +44,7 @@ static void statedb_create_metadata_table(sqlite3 *db)
                           "PRIMARY KEY(phash));";
 
         rc = sqlite3_exec(db, sql, NULL, NULL, NULL);
-        const char *msg = sqlite3_errmsg(db);
+        //const char *msg = sqlite3_errmsg(db);
         assert_int_equal( rc, SQLITE_OK );
     }
 }

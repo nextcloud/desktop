@@ -340,7 +340,6 @@
        <zorder>autoUploadLimitRadioButton</zorder>
        <zorder>uploadLimitRadioButton</zorder>
        <zorder>noUploadLimitRadioButton</zorder>
-       <zorder>horizontalSpacer_2</zorder>
       </widget>
      </item>
     </layout>

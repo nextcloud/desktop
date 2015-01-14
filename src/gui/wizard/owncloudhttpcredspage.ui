@@ -124,9 +124,6 @@
     </widget>
    </item>
   </layout>
-  <zorder>horizontalSpacer</zorder>
-  <zorder>verticalSpacer</zorder>
-  <zorder>horizontalSpacer_2</zorder>
   <zorder>topLabel</zorder>
   <zorder>bottomLabel</zorder>
  </widget>

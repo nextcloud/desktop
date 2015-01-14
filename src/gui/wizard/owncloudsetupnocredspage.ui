@@ -189,7 +189,6 @@
   <zorder>topLabel</zorder>
   <zorder>errorLabel</zorder>
   <zorder>bottomLabel</zorder>
-  <zorder>verticalSpacer</zorder>
  </widget>
  <customwidgets>
   <customwidget>
