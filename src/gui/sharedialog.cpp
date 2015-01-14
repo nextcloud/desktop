@@ -126,8 +126,27 @@ void ShareDialog::setExpireDate(const QString &date)
     job->start();
 }
 
-void ShareDialog::slotExpireSet(const QString & /* reply */)
+void ShareDialog::slotExpireSet(const QString &reply)
 {
+    int code = checkJsonReturnCode(reply);
+
+    qDebug() << Q_FUNC_INFO << "Status code: " << code;
+    if (code == 100) {
+    } else if (code == 400) {
+        QMessageBox msgBox;
+        msgBox.setText("Wrong or no update parameter given");
+        msgBox.exec();
+    } else if (code == 403) {
+        QMessageBox msgBox;
+        msgBox.setText("Public upload disabled by the admin");
+        msgBox.exec();
+    } else if (code == 404) {
+        QMessageBox msgBox;
+        msgBox.setText("Couldn’t update share");
+        msgBox.exec();
+    } else {
+        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
+    }
     _pi_date->stopAnimation();
 }
 
@@ -177,8 +196,28 @@ void ShareDialog::setPassword(const QString &password)
     job->start();
 }
 
-void ShareDialog::slotPasswordSet(const QString & /* reply */)
+void ShareDialog::slotPasswordSet(const QString &reply)
 {
+    int code = checkJsonReturnCode(reply);
+
+    qDebug() << Q_FUNC_INFO << "Status code: " << code;
+    if (code == 100) {
+    } else if (code == 400) {
+        QMessageBox msgBox;
+        msgBox.setText("Wrong or no update parameter given");
+        msgBox.exec();
+    } else if (code == 403) {
+        QMessageBox msgBox;
+        msgBox.setText("Public upload disabled by the admin");
+        msgBox.exec();
+    } else if (code == 404) {
+        QMessageBox msgBox;
+        msgBox.setText("Couldn’t update share");
+        msgBox.exec();
+    } else {
+        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
+    }
+
     _pi_password->stopAnimation();
 }
 
@@ -197,6 +236,25 @@ void ShareDialog::getShares()
 
 void ShareDialog::slotSharesFetched(const QString &reply)
 {
+    int code = checkJsonReturnCode(reply);
+
+    qDebug() << Q_FUNC_INFO << "Status code: " << code;
+    if (code == 100) {
+    } else if (code == 400) {
+        QMessageBox msgBox;
+        msgBox.setText("Not a directory (if the ‘subfile’ argument was used)");
+        msgBox.exec();
+        return;
+    } else if (code == 404) {
+        QMessageBox msgBox;
+        msgBox.setText("File doesn’t exist");
+        msgBox.exec();
+        return;
+    } else {
+        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
+        return;
+    }
+
     _ui->treeWidget_shareUser->clear();
     _ui->treeWidget_shareGroup->clear();
 
@@ -348,6 +406,32 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
 
 void ShareDialog::slotCreateShareFetched(const QString &reply)
 {
+    int code = checkJsonReturnCode(reply);
+
+    qDebug() << Q_FUNC_INFO << "Status code: " << code;
+    if (code == 100) {
+    } else if (code == 400) {
+        QMessageBox msgBox;
+        msgBox.setText("Unknown share type");
+        msgBox.exec();
+        return;
+    } else if (code == 403) {
+        QMessageBox msgBox;
+        msgBox.setText("Public upload was disabled by the admin");
+        msgBox.exec();
+        return;
+    } else if (code == 404) {
+        QMessageBox msgBox;
+        msgBox.setText("File couldn’t be shared");
+        msgBox.exec();
+        return;
+    } else {
+        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
+        return;
+    }
+
+
+
     _pi_link->stopAnimation();
     _pi_password->show();
     _pi_date->show();
