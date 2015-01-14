@@ -59,7 +59,7 @@ protected slots:
 
 class PUTFileJob : public AbstractNetworkJob {
     Q_OBJECT
-    QSharedPointer<QIODevice> _device;
+    QScopedPointer<QIODevice> _device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
 

@@ -195,14 +195,13 @@ void PropagateUploadFileQNAM::start()
 }
 
 UploadDevice::UploadDevice(QIODevice *file,  qint64 start, qint64 size, BandwidthManager *bwm)
-    : QIODevice(file), _file(file), _read(0), _size(size), _start(start),
+    : _file(file), _read(0), _size(size), _start(start),
       _bandwidthManager(bwm),
       _bandwidthQuota(0),
       _readWithProgress(0),
       _bandwidthLimited(false), _choked(false)
 {
     _bandwidthManager->registerUploadDevice(this);
-    _file = QPointer<QIODevice>(file);
 }
 
 
