@@ -83,7 +83,7 @@ private:
     bool _isDir;
     QList<QVariant> _shares;
     qulonglong _public_share_id;
-    void setPassword(QString password);
+    void setPassword(const QString &password);
     void setExpireDate(const QString &date);
     int checkJsonReturnCode(const QString &reply);
 

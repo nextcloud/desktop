@@ -161,7 +161,7 @@ void ShareDialog::slotPasswordReturnPressed()
     _ui->lineEdit_password->clearFocus();
 }
 
-void ShareDialog::setPassword(QString password)
+void ShareDialog::setPassword(const QString &password)
 {
     _pi_password->startAnimation();
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
