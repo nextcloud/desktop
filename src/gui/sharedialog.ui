@@ -215,13 +215,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QLabel" name="labelShareSpinner">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
      <item>
@@ -254,13 +247,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QLabel" name="labelPasswordSpinner">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
      <item>
@@ -280,13 +266,6 @@
         <widget class="QCheckBox" name="checkBox_expire">
          <property name="text">
           <string>Set expiry date</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelCalendarSpinner">
-         <property name="text">
-          <string/>
          </property>
         </widget>
        </item>

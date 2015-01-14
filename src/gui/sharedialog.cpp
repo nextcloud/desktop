@@ -37,6 +37,8 @@ ShareDialog::ShareDialog(const QString &path, const bool &isDir, QWidget *parent
     _pi_link = new QProgressIndicator();
     _pi_password = new QProgressIndicator();
     _pi_date = new QProgressIndicator();
+    _pi_password->hide();
+    _pi_date->hide();
     _ui->horizontalLayout_4->addWidget(_pi_link);
     _ui->horizontalLayout_5->addWidget(_pi_password);
     _ui->horizontalLayout_3->addWidget(_pi_date);
@@ -154,8 +156,9 @@ ShareDialog::~ShareDialog()
 void ShareDialog::slotPasswordReturnPressed()
 {
     ShareDialog::setPassword(_ui->lineEdit_password->text());
-    _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
     _ui->lineEdit_password->setText(QString());
+    _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
+    _ui->lineEdit_password->clearFocus();
 }
 
 void ShareDialog::setPassword(QString password)
@@ -281,7 +284,7 @@ void ShareDialog::slotSharesFetched(const QString &reply)
             if (data.value("share_with").isValid())
             {
                 _ui->checkBox_password->setChecked(true);
-                _ui->lineEdit_password->setText("********");
+                _ui->lineEdit_password->setPlaceholderText("********");
                 _ui->lineEdit_password->show();
             }
 
@@ -300,6 +303,9 @@ void ShareDialog::slotSharesFetched(const QString &reply)
 
 void ShareDialog::slotDeleteShareFetched(const QString & /* reply */)
 {
+    _pi_password->hide();
+    _pi_date->hide();
+
     _pi_link->stopAnimation();
     _ui->lineEdit_shareLink->hide();
     _ui->pushButton_copy->hide();
@@ -343,6 +349,8 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
 void ShareDialog::slotCreateShareFetched(const QString &reply)
 {
     _pi_link->stopAnimation();
+    _pi_password->show();
+    _pi_date->show();
     bool success;
     QVariantMap json = QtJson::parse(reply, success).toMap();
     _public_share_id = json.value("ocs").toMap().values("data")[0].toMap().value("id").toULongLong();
@@ -360,10 +368,12 @@ void ShareDialog::slotCheckBoxPasswordClicked()
     if (_ui->checkBox_password->checkState() == Qt::Checked)
     {
         _ui->lineEdit_password->show();
+        _ui->lineEdit_password->setPlaceholderText(tr("Choose a password for the public link"));
     }
     else
     {
         ShareDialog::setPassword(QString());
+        _ui->lineEdit_password->setPlaceholderText(QString());
         _pi_password->startAnimation();
         _ui->lineEdit_password->hide();
     }
