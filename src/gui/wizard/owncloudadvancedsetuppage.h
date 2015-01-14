@@ -52,6 +52,7 @@ private slots:
   void slotSelectFolder();
   void slotSyncEverythingClicked();
   void slotSelectiveSyncClicked();
+    void slotQuotaRetrieved(qint64,qint64);
 
 private:
   void setupCustomization();

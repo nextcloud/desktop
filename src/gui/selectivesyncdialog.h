@@ -31,6 +31,9 @@ public:
 
     /// Returns a list of blacklisted paths, each including the trailing /
     QStringList createBlackList(QTreeWidgetItem* root = 0) const;
+
+    //Estimate the total size of checked item (recursively)
+    qint64 estimatedSize(QTreeWidgetItem *root = 0);
     void refreshFolders();
 
     // oldBlackList is a list of excluded paths, each including a trailing /
@@ -67,6 +70,9 @@ public:
     virtual void accept() Q_DECL_OVERRIDE;
 
     QStringList createBlackList() const;
+
+    // Estimate the size of the total of sync'ed files from the server
+    quint64 estimatedSize();
 
 private:
 

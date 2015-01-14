@@ -28,6 +28,7 @@
 #include "configfile.h"
 #include "selectivesyncdialog.h"
 #include "creds/abstractcredentials.h"
+#include "networkjobs.h"
 
 namespace OCC
 {
@@ -67,8 +68,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
     _ui.lLocalIcon->setText(QString());
     _ui.lLocalIcon->setPixmap(QPixmap(":/client/resources/folder-sync.png"));
-
-
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -99,12 +98,19 @@ void OwncloudAdvancedSetupPage::initializePage()
     _checking  = false;
     _multipleFoldersExist = false;
     _oldLocalFolder = wizard()->property("oldLocalFolder").toString();
+    _ui.lSelectiveSyncSizeLabel->setText(QString());
+    _ui.lSyncEverythingSizeLabel->setText(QString());
 
     // call to init label
     updateStatus();
 
     // ensure "next" gets the focus, not obSelectLocalFolder
     QTimer::singleShot(0, wizard()->button(QWizard::NextButton), SLOT(setFocus()));
+
+    auto acc = static_cast<OwncloudWizard *>(wizard())->account();
+    auto quotaJob = new CheckQuotaJob(acc, "/", this);
+    connect(quotaJob, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotQuotaRetrieved(qint64,qint64)));
+    quotaJob->start();
 }
 
 // Called if the user changes the user- or url field. Adjust the texts and
@@ -280,8 +286,15 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
             _ui.rSelectiveSync->blockSignals(true);
             _ui.rSelectiveSync->setChecked(true);
             _ui.rSelectiveSync->blockSignals(false);
+            auto s = dlg->estimatedSize();
+            if (s > 0 ) {
+                _ui.lSelectiveSyncSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(s)));
+            } else {
+                _ui.lSelectiveSyncSizeLabel->setText(QString());
+            }
         } else {
             _ui.rSyncEverything->setChecked(true);
+            _ui.lSelectiveSyncSizeLabel->setText(QString());
         }
         wizard()->setProperty("blacklist", _blacklist);
     }
@@ -289,9 +302,15 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 
 void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
 {
+    _ui.lSelectiveSyncSizeLabel->setText(QString());
     _ui.rSyncEverything->setChecked(true);
     _blacklist.clear();
 }
 
+void OwncloudAdvancedSetupPage::slotQuotaRetrieved(qint64, qint64 usedQuota)
+{
+    _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(usedQuota)));
+
+}
 
 } // namespace OCC

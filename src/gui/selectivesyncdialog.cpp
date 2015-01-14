@@ -99,6 +99,7 @@ void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList
             item->setIcon(0, folderIcon);
             item->setText(0, pathTrail.first());
             item->setText(1, Utility::octetsToString(size));
+            item->setData(1, Qt::UserRole, size);
 //            item->setData(0, Qt::UserRole, pathTrail.first());
             item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
         }
@@ -259,6 +260,38 @@ QStringList SelectiveSyncTreeView::createBlackList(QTreeWidgetItem* root) const
     return result;
 }
 
+qint64 SelectiveSyncTreeView::estimatedSize(QTreeWidgetItem* root)
+{
+    if (!root) {
+        root = topLevelItem(0);
+    }
+    if (!root) return -1;
+
+
+    switch(root->checkState(0)) {
+        case Qt::Unchecked:
+            return 0;
+        case  Qt::Checked:
+            return root->data(1, Qt::UserRole).toLongLong();
+        case Qt::PartiallyChecked:
+            break;
+    }
+
+    qint64 result = 0;
+    if (root->childCount()) {
+        for (int i = 0; i < root->childCount(); ++i) {
+            auto r = estimatedSize(root->child(i));
+            if (r < 0) return r;
+            result += r;
+        }
+    } else {
+        // We did not load from the server so we have no idea how much we will sync from this branch
+        return -1;
+    }
+    return result;
+}
+
+
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder* folder, QWidget* parent, Qt::WindowFlags f)
     :   QDialog(parent, f), _folder(folder)
 {
@@ -327,6 +360,12 @@ QStringList SelectiveSyncDialog::createBlackList() const
 {
     return _treeView->createBlackList();
 }
+
+quint64 SelectiveSyncDialog::estimatedSize()
+{
+    return _treeView->estimatedSize();
+}
+
 
 
 
