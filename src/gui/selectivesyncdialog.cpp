@@ -39,8 +39,10 @@ SelectiveSyncTreeView::SelectiveSyncTreeView(AccountPtr account, QWidget* parent
     setSortingEnabled(true);
     sortByColumn(0, Qt::AscendingOrder);
     setColumnCount(2);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     header()->setSectionResizeMode(0, QHeaderView::QHeaderView::ResizeToContents);
     header()->setSectionResizeMode(1, QHeaderView::QHeaderView::ResizeToContents);
+#endif
     header()->setStretchLastSection(true);
     headerItem()->setText(0, tr("Name"));
     headerItem()->setText(1, tr("Size"));
