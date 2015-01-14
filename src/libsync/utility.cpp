@@ -102,10 +102,13 @@ void Utility::setupFavLink(const QString &folder)
 
 QString Utility::octetsToString( qint64 octets )
 {
-    static const qint64 kb = 1024;
-    static const qint64 mb = 1024 * kb;
-    static const qint64 gb = 1024 * mb;
-    static const qint64 tb = 1024 * gb;
+    // SI system defines kB to be 1000 B. If we want to use powers of 2, one would have to use the
+    // the KiB, MiB, ... notation.  But powers of 10 makes more sens for the user because that's
+    // what the human is most confortable with.
+    static const qint64 kb = 1000;
+    static const qint64 mb = 1000 * kb;
+    static const qint64 gb = 1000 * mb;
+    static const qint64 tb = 1000 * gb;
 
     QString s;
     qreal value = octets;
