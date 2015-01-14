@@ -47,7 +47,7 @@ static qint64 chunkSize() {
     if (!chunkSize) {
         chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
         if (chunkSize == 0) {
-            chunkSize = 20*1024*1024; // default to 20 MiB
+            chunkSize = 5*1024*1024; // default to 5 MiB
         }
     }
     return chunkSize;
@@ -380,7 +380,7 @@ void PropagateUploadFileQNAM::startNextChunk()
         _currentChunk++;
 
         QByteArray env = qgetenv("OWNCLOUD_PARALLEL_CHUNK");
-        bool parallelChunkUpload = env=="true" || env =="1";;
+        bool parallelChunkUpload = env!="false" && env != "0";
         if (_currentChunk + _startChunk >= _chunkCount - 1) {
             // Don't do parallel upload of chunk if this might be the last chunk because the server cannot handle that
             // https://github.com/owncloud/core/issues/11106
