@@ -37,13 +37,13 @@ public:
 
     UploadDevice(QIODevice *file,  qint64 start, qint64 size, BandwidthManager *bwm);
     ~UploadDevice();
-    virtual qint64 writeData(const char* , qint64 );
-    virtual qint64 readData(char* data, qint64 maxlen);
-    virtual bool atEnd() const;
-    virtual qint64 size() const;
-    qint64 bytesAvailable() const;
-    virtual bool isSequential() const;
-    virtual bool seek ( qint64 pos );
+    qint64 writeData(const char* , qint64 ) Q_DECL_OVERRIDE;
+    qint64 readData(char* data, qint64 maxlen) Q_DECL_OVERRIDE;
+    bool atEnd() const Q_DECL_OVERRIDE;
+    qint64 size() const Q_DECL_OVERRIDE;
+    qint64 bytesAvailable() const Q_DECL_OVERRIDE;
+    bool isSequential() const Q_DECL_OVERRIDE;
+    bool seek ( qint64 pos ) Q_DECL_OVERRIDE;
 
     void setBandwidthLimited(bool);
     bool isBandwidthLimited() { return _bandwidthLimited; }
