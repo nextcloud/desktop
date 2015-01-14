@@ -393,7 +393,7 @@ void ownCloudGui::slotFolderOpenAction( const QString& alias )
         QString filePath = f->path();
 
         if (filePath.startsWith(QLatin1String("\\\\")) || filePath.startsWith(QLatin1String("//")))
-            url.setUrl(QDir::toNativeSeparators(filePath));
+            url = QUrl::fromLocalFile(QDir::toNativeSeparators(filePath));
         else
             url = QUrl::fromLocalFile(filePath);
 #endif
