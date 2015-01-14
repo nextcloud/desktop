@@ -332,6 +332,7 @@ void LsColJob::start()
                    "<d:propfind xmlns:d=\"DAV:\">\n"
                    "  <d:prop>\n"
                    "    <d:resourcetype/>\n"
+                   "    <d:quota-used-bytes/>\n"
                    "  </d:prop>\n"
                    "</d:propfind>\n");
     QBuffer *buf = new QBuffer(this);
@@ -364,8 +365,19 @@ bool LsColJob::finished()
                 } else if (name == QLatin1String("collection") &&
                            !currentItem.isEmpty()) {
                     folders.append(QUrl::fromEncoded(currentItem.toLatin1()).path());
-                    currentItem.clear();
+                } else if (name == QLatin1String("quota-used-bytes") &&
+                           !currentItem.isEmpty()) {
+                    bool ok = false;
+                    auto s = reader.readElementText().toLongLong(&ok);
+                    if (ok) {
+                        _sizes[currentItem] = s;
+                    }
+
                 }
+            } else if (type == QXmlStreamReader::EndElement &&
+                    reader.namespaceUri() == QLatin1String("DAV:") &&
+                    reader.name() == QLatin1String("response")) {
+                currentItem.clear();
             }
         }
         emit directoryListing(folders);

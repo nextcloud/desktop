@@ -139,6 +139,7 @@ class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob {
 public:
     explicit LsColJob(AccountPtr account, const QString &path, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
+    QHash<QString, qint64> _sizes;
 
 signals:
     void directoryListing(const QStringList &items);

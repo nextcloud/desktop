@@ -46,7 +46,7 @@ private slots:
     void slotItemExpanded(QTreeWidgetItem *);
     void slotItemChanged(QTreeWidgetItem*,int);
 private:
-    void recursiveInsert(QTreeWidgetItem* parent, QStringList pathTrail, QString path);
+    void recursiveInsert(QTreeWidgetItem* parent, QStringList pathTrail, QString path, qint64 size);
     QString _folderPath;
     QString _rootName;
     QStringList _oldBlackList;
