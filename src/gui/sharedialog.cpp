@@ -421,12 +421,34 @@ void ShareDialog::slotUserShareWidgetClicked(QTreeWidgetItem *item, const int /*
     url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
     OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
-    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotUpdateUserShare(QString)));
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotUpdateShareReply(QString)));
     job->start();
 }
 
-void ShareDialog::slotUpdateUserShare(const QString & /*reply*/)
+void ShareDialog::slotUpdateShareReply(const QString &reply)
 {
+    int code = checkJsonReturnCode(reply);
+
+    qDebug() << Q_FUNC_INFO << "Status code: " << code;
+
+    if (code == 100) {
+        getShares();
+    } else if (code == 400) {
+        QMessageBox msgBox;
+        msgBox.setText("Wrong or no update parameter given");
+        msgBox.exec();
+    } else if (code == 403) {
+        QMessageBox msgBox;
+        msgBox.setText("Public upload was disabled by the admin");
+        msgBox.exec();
+    } else if (code == 404) {
+        QMessageBox msgBox;
+        msgBox.setText("Couldn’t update share");
+        msgBox.exec();
+    } else {
+        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
+    }
+
 }
 
 void ShareDialog::slotAddUserShareClicked()
@@ -519,13 +541,8 @@ void ShareDialog::slotGroupShareWidgetClicked(QTreeWidgetItem *item, const int /
     url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
     OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
-    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotUpdateGroupShare(QString)));
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotUpdateShareReply(QString)));
     job->start();
-}
-
-void ShareDialog::slotUpdateGroupShare(const QString &/*reply*/)
-{
-    getShares();
 }
 
 void ShareDialog::slotAddGroupShareClicked()

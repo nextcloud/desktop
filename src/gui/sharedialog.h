@@ -68,15 +68,12 @@ private slots:
     void slotPasswordReturnPressed();
 
     void slotUserShareWidgetClicked(QTreeWidgetItem *item, const int column);
-    void slotUpdateUserShare(const QString &);
+    void slotUpdateShareReply(const QString &reply);
     void slotAddUserShareClicked();
-
     void slotAddShareReply(const QString &reply);
     void slotDeleteUserShareClicked();
     void slotDeleteShareReply(const QString &reply);
-
     void slotGroupShareWidgetClicked(QTreeWidgetItem *item, const int column);
-    void slotUpdateGroupShare(const QString &);
     void slotAddGroupShareClicked();
     void slotDeleteGroupShareClicked();
 private:
