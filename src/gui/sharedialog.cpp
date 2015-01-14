@@ -396,14 +396,20 @@ void ShareDialog::slotUserShareWidgetClicked(QTreeWidgetItem *item, const int /*
     if (item->checkState(3) == Qt::Checked) {
         perm += PERM_UPDATE;
     }
-    if (item->checkState(4) == Qt::Checked) {
-        perm += PERM_CREATE;
-    }
-    if (item->checkState(5) == Qt::Checked) {
-        perm += PERM_DELETE;
-    }
-    if (item->checkState(6) == Qt::Checked) {
-        perm += PERM_SHARE;
+    if (_isDir) {
+        if (item->checkState(4) == Qt::Checked) {
+            perm += PERM_CREATE;
+        }
+        if (item->checkState(5) == Qt::Checked) {
+            perm += PERM_DELETE;
+        }
+        if (item->checkState(6) == Qt::Checked) {
+            perm += PERM_SHARE;
+        }
+    } else {
+        if (item->checkState(4) == Qt::Checked) {
+            perm += PERM_SHARE;
+        }
     }
 
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(id)));
@@ -499,14 +505,20 @@ void ShareDialog::slotGroupShareWidgetClicked(QTreeWidgetItem *item, const int /
     if (item->checkState(2) == Qt::Checked) {
         perm += PERM_UPDATE;
     }
-    if (item->checkState(3) == Qt::Checked) {
-        perm += PERM_CREATE;
-    }
-    if (item->checkState(4) == Qt::Checked) {
-        perm += PERM_DELETE;
-    }
-    if (item->checkState(5) == Qt::Checked) {
-        perm += PERM_SHARE;
+    if (_isDir) {
+        if (item->checkState(3) == Qt::Checked) {
+            perm += PERM_CREATE;
+        }
+        if (item->checkState(4) == Qt::Checked) {
+            perm += PERM_DELETE;
+        }
+        if (item->checkState(5) == Qt::Checked) {
+            perm += PERM_SHARE;
+        }
+    } else {
+        if (item->checkState(3) == Qt::Checked) {
+            perm += PERM_SHARE;
+        }
     }
 
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(id)));
