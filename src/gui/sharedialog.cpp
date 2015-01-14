@@ -4,6 +4,7 @@
 #include "account.h"
 #include "json.h"
 #include "folderman.h"
+#include "QProgressIndicator.h"
 #include <QBuffer>
 #include <QMovie>
 #include <QMessageBox>
@@ -32,23 +33,20 @@ ShareDialog::ShareDialog(const QString &path, const bool &isDir, QWidget *parent
     _ui->setupUi(this);
     _ui->pushButton_copy->setIcon(QIcon::fromTheme("edit-copy"));
     layout()->setSizeConstraint(QLayout::SetFixedSize);
-    QMovie *movie = new QMovie("/home/azelphur/ownCloud-share-tools/loading-icon.gif");
-    movie->start();
-    _ui->labelShareSpinner->setMovie(movie);
-    _ui->labelShareSpinner->hide();
 
-    _ui->labelPasswordSpinner->setMovie(movie);
-    _ui->labelPasswordSpinner->hide();
+    _pi_link = new QProgressIndicator();
+    _pi_password = new QProgressIndicator();
+    _pi_date = new QProgressIndicator();
+    _ui->horizontalLayout_4->addWidget(_pi_link);
+    _ui->horizontalLayout_5->addWidget(_pi_password);
+    _ui->horizontalLayout_3->addWidget(_pi_date);
 
-    _ui->labelCalendarSpinner->setMovie(movie);
-    _ui->labelCalendarSpinner->hide();
     connect(_ui->checkBox_shareLink, SIGNAL(clicked()), this, SLOT(slotCheckBoxShareLinkClicked()));
     connect(_ui->checkBox_password, SIGNAL(clicked()), this, SLOT(slotCheckBoxPasswordClicked()));
     connect(_ui->lineEdit_password, SIGNAL(returnPressed()), this, SLOT(slotPasswordReturnPressed()));
     connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
     connect(_ui->calendar, SIGNAL(clicked(QDate)), SLOT(slotCalendarClicked(QDate)));
 
-    _ui->labelShareSpinner->hide();
     _ui->lineEdit_shareLink->hide();
     _ui->pushButton_copy->hide();
     _ui->lineEdit_password->hide();
@@ -112,7 +110,7 @@ ShareDialog::ShareDialog(const QString &path, const bool &isDir, QWidget *parent
 
 void ShareDialog::setExpireDate(const QString &date)
 {
-    _ui->labelCalendarSpinner->show();
+    _pi_date->startAnimation();
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
     QUrl postData;
     QList<QPair<QString, QString> > getParams;
@@ -128,7 +126,7 @@ void ShareDialog::setExpireDate(const QString &date)
 
 void ShareDialog::slotExpireSet(const QString & /* reply */)
 {
-    _ui->labelCalendarSpinner->hide();
+    _pi_date->stopAnimation();
 }
 
 void ShareDialog::slotCalendarClicked(const QDate &date)
@@ -162,7 +160,7 @@ void ShareDialog::slotPasswordReturnPressed()
 
 void ShareDialog::setPassword(QString password)
 {
-    _ui->labelPasswordSpinner->show();
+    _pi_password->startAnimation();
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
     QUrl postData;
     QList<QPair<QString, QString> > getParams;
@@ -178,7 +176,7 @@ void ShareDialog::setPassword(QString password)
 
 void ShareDialog::slotPasswordSet(const QString & /* reply */)
 {
-    _ui->labelPasswordSpinner->hide();
+    _pi_password->stopAnimation();
 }
 
 void ShareDialog::getShares()
@@ -302,7 +300,7 @@ void ShareDialog::slotSharesFetched(const QString &reply)
 
 void ShareDialog::slotDeleteShareFetched(const QString & /* reply */)
 {
-    _ui->labelShareSpinner->hide();
+    _pi_link->stopAnimation();
     _ui->lineEdit_shareLink->hide();
     _ui->pushButton_copy->hide();
     _ui->lineEdit_password->hide();
@@ -315,7 +313,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
 {
     if (_ui->checkBox_shareLink->checkState() == Qt::Checked)
     {
-        _ui->labelShareSpinner->show();
+        _pi_link->startAnimation();
         QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
         QUrl postData;
         QList<QPair<QString, QString> > getParams;
@@ -331,7 +329,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
     }
     else
     {
-        _ui->labelShareSpinner->show();
+        _pi_link->startAnimation();
         QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
         QList<QPair<QString, QString> > getParams;
         getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
@@ -344,7 +342,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
 
 void ShareDialog::slotCreateShareFetched(const QString &reply)
 {
-    _ui->labelShareSpinner->hide();
+    _pi_link->stopAnimation();
     bool success;
     QVariantMap json = QtJson::parse(reply, success).toMap();
     _public_share_id = json.value("ocs").toMap().values("data")[0].toMap().value("id").toULongLong();
@@ -366,7 +364,7 @@ void ShareDialog::slotCheckBoxPasswordClicked()
     else
     {
         ShareDialog::setPassword(QString());
-        _ui->labelPasswordSpinner->show();
+        _pi_password->startAnimation();
         _ui->lineEdit_password->hide();
     }
 }

@@ -15,6 +15,7 @@
 #define SHAREDIALOG_H
 
 #include "networkjobs.h"
+#include "QProgressIndicator.h"
 #include <QDialog>
 #include <QTreeWidgetItem>
 
@@ -85,6 +86,10 @@ private:
     void setPassword(QString password);
     void setExpireDate(const QString &date);
     int checkJsonReturnCode(const QString &reply);
+
+    QProgressIndicator *_pi_link;
+    QProgressIndicator *_pi_password;
+    QProgressIndicator *_pi_date;
 };
 
 }
