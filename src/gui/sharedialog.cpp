@@ -6,6 +6,7 @@
 #include "folderman.h"
 #include <QBuffer>
 #include <QMovie>
+#include <QMessageBox>
 
 namespace {
     int SHARETYPE_USER = 0;
@@ -561,8 +562,27 @@ void ShareDialog::slotAddGroupShareClicked()
 
 void ShareDialog::slotAddGroupShareReply(const QString &reply)
 {
-    qDebug() << Q_FUNC_INFO << reply;
-    getShares();
+    int code = checkJsonReturnCode(reply);
+
+    qDebug() << Q_FUNC_INFO << "Status code: " << code;
+
+    if (code == 100) {
+        getShares();
+    } else if (code == 400) {
+        QMessageBox msgBox;
+        msgBox.setText("Unknown share type");
+        msgBox.exec(); 
+    } else if (code == 403) {
+        QMessageBox msgBox;
+        msgBox.setText("Public upload was disabled by the admin");
+        msgBox.exec();
+    } else if (code == 404) {
+        QMessageBox msgBox;
+        msgBox.setText("File could not be shared");
+        msgBox.exec();
+    } else {
+        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
+    }
 }
 
 void ShareDialog::slotDeleteGroupShareClicked()
@@ -593,7 +613,20 @@ void ShareDialog::slotDeleteGroupShareReply(const QString &/*reply*/)
     getShares();
 }
 
+int ShareDialog::checkJsonReturnCode(const QString &reply)
+{
+    bool success;
+    QVariantMap json = QtJson::parse(reply, success).toMap();
 
+    if (!success) {
+        qDebug() << Q_FUNC_INFO << "Failed to parse reply";
+    }
+
+    //TODO proper checking
+    int code = json.value("ocs").toMap().value("meta").toMap().value("statuscode").toInt();
+
+    return code;
+}
 
 
 OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, const QUrl &postData, AccountPtr account, QObject* parent)

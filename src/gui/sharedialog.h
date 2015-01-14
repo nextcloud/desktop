@@ -88,6 +88,7 @@ private:
     qulonglong _public_share_id;
     void setPassword(QString password);
     void setExpireDate(const QString &date);
+    int checkJsonReturnCode(const QString &reply);
 };
 
 }
