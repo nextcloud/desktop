@@ -34,7 +34,7 @@ class GETFileJob : public AbstractNetworkJob {
     bool _bandwidthLimited; // if _bandwidthQuota will be used
     bool _bandwidthChoked; // if download is paused (won't read on readyRead())
     qint64 _bandwidthQuota;
-    BandwidthManager *_bandwidthManager;
+    QPointer<BandwidthManager> _bandwidthManager;
     bool _hasEmittedFinishedSignal;
 public:
 

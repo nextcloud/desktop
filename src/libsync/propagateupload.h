@@ -53,8 +53,8 @@ private:
     QByteArray _data;
     qint64 _read;
 
-    // Bandith manager related
-    BandwidthManager* _bandwidthManager;
+    // Bandwidth manager related
+    QPointer<BandwidthManager> _bandwidthManager;
     qint64 _bandwidthQuota;
     qint64 _readWithProgress;
     bool _bandwidthLimited; // if _bandwidthQuota will be used
