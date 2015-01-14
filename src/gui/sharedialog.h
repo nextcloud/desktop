@@ -70,16 +70,15 @@ private slots:
     void slotUserShareWidgetClicked(QTreeWidgetItem *item, const int column);
     void slotUpdateUserShare(const QString &);
     void slotAddUserShareClicked();
-    void slotAddUserShareReply(const QString &reply);
+
+    void slotAddShareReply(const QString &reply);
     void slotDeleteUserShareClicked();
-    void slotDeleteUserShareReply(const QString &reply);
+    void slotDeleteShareReply(const QString &reply);
 
     void slotGroupShareWidgetClicked(QTreeWidgetItem *item, const int column);
     void slotUpdateGroupShare(const QString &);
     void slotAddGroupShareClicked();
-    void slotAddGroupShareReply(const QString &reply);
     void slotDeleteGroupShareClicked();
-    void slotDeleteGroupShareReply(const QString &reply);
 private:
     Ui::ShareDialog *_ui;
     QString _path;

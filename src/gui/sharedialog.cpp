@@ -458,13 +458,8 @@ void ShareDialog::slotAddUserShareClicked()
     url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
     OcsShareJob *job = new OcsShareJob("POST", url, postData, AccountManager::instance()->account(), this);
-    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotAddUserShareReply(QString)));
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotAddShareReply(QString)));
     job->start();
-}
-
-void ShareDialog::slotAddUserShareReply(const QString &/*reply*/)
-{
-    getShares();
 }
 
 void ShareDialog::slotDeleteUserShareClicked()
@@ -485,16 +480,10 @@ void ShareDialog::slotDeleteUserShareClicked()
     url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
     OcsShareJob *job = new OcsShareJob("DELETE", url, postData, AccountManager::instance()->account(), this);
-    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotDeleteUserShareReply(QString)));
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotDeleteShareReply(QString)));
     job->start();
 
 }
-
-void ShareDialog::slotDeleteUserShareReply(const QString &/*reply*/)
-{
-    getShares();
-}
-
 
 void ShareDialog::slotGroupShareWidgetClicked(QTreeWidgetItem *item, const int /*column*/)
 {
@@ -568,11 +557,11 @@ void ShareDialog::slotAddGroupShareClicked()
     url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
     OcsShareJob *job = new OcsShareJob("POST", url, postData, AccountManager::instance()->account(), this);
-    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotAddGroupShareReply(QString)));
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotAddShareReply(QString)));
     job->start();
 }
 
-void ShareDialog::slotAddGroupShareReply(const QString &reply)
+void ShareDialog::slotAddShareReply(const QString &reply)
 {
     int code = checkJsonReturnCode(reply);
 
@@ -615,14 +604,26 @@ void ShareDialog::slotDeleteGroupShareClicked()
     url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
     OcsShareJob *job = new OcsShareJob("DELETE", url, postData, AccountManager::instance()->account(), this);
-    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotDeleteGroupShareReply(QString)));
+    connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotDeleteShareReply(QString)));
     job->start();
 
 }
 
-void ShareDialog::slotDeleteGroupShareReply(const QString &/*reply*/)
+void ShareDialog::slotDeleteShareReply(const QString &reply)
 {
-    getShares();
+    int code = checkJsonReturnCode(reply);
+
+    qDebug() << Q_FUNC_INFO << "Status code: " << code;
+
+    if (code == 100) {
+        getShares();
+    } else if (code == 404) {
+        QMessageBox msgBox;
+        msgBox.setText("File could not be deleted");
+        msgBox.exec();
+    } else {
+        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
+    }
 }
 
 int ShareDialog::checkJsonReturnCode(const QString &reply)
