@@ -293,13 +293,8 @@ bool UploadDevice::isSequential() const{
 }
 
 bool UploadDevice::seek ( qint64 pos ) {
-    if (_file.isNull()) {
-        qDebug() << "Upload file object deleted during upload";
-        close();
-        return false;
-    }
     _read = pos;
-    return _file.data()->seek(pos + _start);
+    return true;
 }
 
 void UploadDevice::giveBandwidthQuota(qint64 bwq) {
