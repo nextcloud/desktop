@@ -123,14 +123,23 @@ bool FileSystem::renameReplace(const QString& originFileName, const QString& des
     // We want a rename that also overwite.  QFile::rename does not overwite.
     // Qt 5.1 has QSaveFile::renameOverwrite we cold use.
     // ### FIXME
-    QFile::remove(destinationFileName);
-    success = orig.rename(destinationFileName);
+    success = true;
+    bool destExists = QFileInfo::exists(destinationFileName);
+    if( destExists && !QFile::remove(destinationFileName) ) {
+        *errorString = orig.errorString();
+        qDebug() << Q_FUNC_INFO << "Target file could not be removed.";
+        success = false;
+    }
+    if( success ) {
+        success = orig.rename(destinationFileName);
+    }
 #endif
     if (!success) {
         *errorString = orig.errorString();
         qDebug() << "FAIL: renaming temp file to final failed: " << *errorString ;
         return false;
     }
+
 #else //Q_OS_WIN
     BOOL ok;
     ok = MoveFileEx((wchar_t*)originFileName.utf16(),
@@ -143,6 +152,7 @@ bool FileSystem::renameReplace(const QString& originFileName, const QString& des
                       (LPWSTR)&string, 0, NULL);
 
         *errorString = QString::fromWCharArray(string);
+        qDebug() << "FAIL: renaming temp file to final failed: " << *errorString;
         LocalFree((HLOCAL)string);
         return false;
     }
