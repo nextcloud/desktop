@@ -105,9 +105,6 @@ CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
   case ERRNO_TIMEOUT:
     status = CSYNC_STATUS_TIMEOUT; /* Network: Timeout error */
     break;
-  case ERRNO_QUOTA_EXCEEDED:
-    status = CSYNC_STATUS_QUOTA_EXCEEDED;   /* Quota exceeded */
-    break;
   case ERRNO_SERVICE_UNAVAILABLE:
     status = CSYNC_STATUS_SERVICE_UNAVAILABLE;  /* Service temporarily down */
     break;
@@ -121,9 +118,6 @@ CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
     status = CSYNC_STATUS_HTTP_ERROR;
     break;
 
-  case ERRNO_TIMEDELTA:
-    status = CSYNC_STATUS_TIMESKEW;
-    break;
   case EPERM:                  /* Operation not permitted */
   case EACCES:                /* Permission denied */
     status = CSYNC_STATUS_PERMISSION_DENIED;

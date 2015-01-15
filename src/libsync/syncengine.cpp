@@ -91,9 +91,6 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_OK:
         errStr = tr("Success.");
         break;
-    case CSYNC_STATUS_NO_LOCK:
-        errStr = tr("CSync failed to create a lock file.");
-        break;
     case CSYNC_STATUS_STATEDB_LOAD_ERROR:
         errStr = tr("CSync failed to load or create the journal file. "
                     "Make sure you have read and write permissions in the local sync directory.");
@@ -103,14 +100,6 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         break;
     case CSYNC_STATUS_NO_MODULE:
         errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appNameGUI());
-        break;
-    case CSYNC_STATUS_TIMESKEW:
-        errStr = tr("The system time on this client is different than the system time on the server. "
-                    "Please use a time synchronization service (NTP) on the server and client machines "
-                    "so that the times remain the same.");
-        break;
-    case CSYNC_STATUS_FILESYSTEM_UNKNOWN:
-        errStr = tr("CSync could not detect the filesystem type.");
         break;
     case CSYNC_STATUS_TREE_ERROR:
         errStr = tr("CSync got an error while processing internal trees.");
@@ -126,23 +115,6 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         break;
     case CSYNC_STATUS_RECONCILE_ERROR:
         errStr = tr("CSync processing step reconcile failed.");
-        break;
-    case CSYNC_STATUS_PROPAGATE_ERROR:
-        errStr = tr("CSync processing step propagate failed.");
-        break;
-    case CSYNC_STATUS_REMOTE_ACCESS_ERROR:
-        errStr = tr("<p>The target directory does not exist.</p><p>Please check the sync setup.</p>");
-        break;
-    case CSYNC_STATUS_REMOTE_CREATE_ERROR:
-    case CSYNC_STATUS_REMOTE_STAT_ERROR:
-        errStr = tr("A remote file can not be written. Please check the remote access.");
-        break;
-    case CSYNC_STATUS_LOCAL_CREATE_ERROR:
-    case CSYNC_STATUS_LOCAL_STAT_ERROR:
-        errStr = tr("The local filesystem can not be written. Please check permissions.");
-        break;
-    case CSYNC_STATUS_PROXY_ERROR:
-        errStr = tr("CSync failed to connect through a proxy.");
         break;
     case CSYNC_STATUS_PROXY_AUTH_ERROR:
         errStr = tr("CSync could not authenticate at the proxy.");
@@ -174,9 +146,6 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_OUT_OF_SPACE:
         errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appNameGUI());
         break;
-    case CSYNC_STATUS_QUOTA_EXCEEDED:
-        errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appNameGUI());
-        break;
     case CSYNC_STATUS_UNSUCCESSFUL:
         errStr = tr("CSync unspecified error.");
         break;
@@ -184,8 +153,8 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("Aborted by the user");
         break;
     case CSYNC_STATUS_SERVICE_UNAVAILABLE:
-	errStr = tr("The mounted directory is temporarily not available on the server");
-	break;
+        errStr = tr("The mounted directory is temporarily not available on the server");
+        break;
     default:
         errStr = tr("An internal error number %1 happened.").arg( (int) err );
     }
