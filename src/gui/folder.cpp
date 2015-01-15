@@ -363,7 +363,7 @@ void Folder::bubbleUpSyncResult()
                 FolderMan::instance()->removeMonitorPath( alias(), path()+item._file );
             }
 
-            if (item._direction == SyncFileItem::Down) {
+            if (!item.hasErrorStatus() && item._direction == SyncFileItem::Down) {
                 switch (item._instruction) {
                 case CSYNC_INSTRUCTION_NEW:
                     newItems++;
@@ -406,9 +406,15 @@ void Folder::bubbleUpSyncResult()
     qDebug() << "Processing result list and logging took " << timer.elapsed() << " Milliseconds.";
     _syncResult.setWarnCount(ignoredItems);
 
-    createGuiLog( firstItemNew._file,     SyncFileStatus::STATUS_NEW, newItems );
-    createGuiLog( firstItemDeleted._file, SyncFileStatus::STATUS_REMOVE, removedItems );
-    createGuiLog( firstItemUpdated._file, SyncFileStatus::STATUS_UPDATED, updatedItems );
+    if( !firstItemNew.isEmpty() ) {
+        createGuiLog( firstItemNew._file,     SyncFileStatus::STATUS_NEW, newItems );
+    }
+    if( !firstItemDeleted.isEmpty() ) {
+        createGuiLog( firstItemDeleted._file, SyncFileStatus::STATUS_REMOVE, removedItems );
+    }
+    if( ! firstItemUpdated.isEmpty() ) {
+        createGuiLog( firstItemUpdated._file, SyncFileStatus::STATUS_UPDATED, updatedItems );
+    }
 
     if( !firstItemRenamed.isEmpty() ) {
         SyncFileStatus status(SyncFileStatus::STATUS_RENAME);
