@@ -125,8 +125,8 @@ static const ne_propname ls_props[] = {
     { "DAV:", "resourcetype" },
     { "DAV:", "getetag"},
     { "http://owncloud.org/ns", "id"},
-    { "http://owncloud.org/ns", "dDU"},
-    { "http://owncloud.org/ns", "dDC"},
+    { "http://owncloud.org/ns", "downloadURL"},
+    { "http://owncloud.org/ns", "dDC"}, // directDownloadCookies
     { "http://owncloud.org/ns", "permissions"},
     { NULL, NULL }
 };
