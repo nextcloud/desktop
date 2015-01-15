@@ -476,7 +476,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
         QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item._modtime));
         if (!f.rename(conflictFileName)) {
             //If the rename fails, don't replace it.
-            done(SyncFileItem::NormalError, f.errorString());
+            done(SyncFileItem::SoftError, f.errorString());
             return;
         }
     }
@@ -491,6 +491,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
     QString error;
     _propagator->addTouchedFile(fn);
     if (!FileSystem::renameReplace(_tmpFile.fileName(), fn, &error)) {
+        qDebug() << Q_FUNC_INFO << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
         // If we moved away the original file due to a conflict but can't
         // put the downloaded file in its place, we are in a bad spot:
         // If we do nothing the next sync run will assume the user deleted
@@ -501,10 +502,9 @@ void PropagateDownloadFileQNAM::downloadFinished()
         if (isConflict) {
             _propagator->_journal->deleteFileRecord(fn);
             _propagator->_journal->commit("download finished");
-            _propagator->_anotherSyncNeeded = true;
         }
-
-        done(SyncFileItem::NormalError, error);
+        _propagator->_anotherSyncNeeded = true;
+        done(SyncFileItem::SoftError, error);
         return;
     }
 
