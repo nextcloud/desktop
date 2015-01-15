@@ -72,7 +72,7 @@ public:
     QStringList createBlackList() const;
 
     // Estimate the size of the total of sync'ed files from the server
-    quint64 estimatedSize();
+    qint64 estimatedSize();
 
 private:
 

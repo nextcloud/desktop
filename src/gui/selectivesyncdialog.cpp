@@ -363,7 +363,7 @@ QStringList SelectiveSyncDialog::createBlackList() const
     return _treeView->createBlackList();
 }
 
-quint64 SelectiveSyncDialog::estimatedSize()
+qint64 SelectiveSyncDialog::estimatedSize()
 {
     return _treeView->estimatedSize();
 }
