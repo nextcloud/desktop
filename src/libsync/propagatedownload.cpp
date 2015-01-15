@@ -142,7 +142,7 @@ void GETFileJob::slotMetaDataChanged()
     }
     if (start != _resumeStart) {
         qDebug() << Q_FUNC_INFO <<  "Wrong content-range: "<< ranges << " while expecting start was" << _resumeStart;
-        if (start == 0) {
+        if (ranges.isEmpty()) {
             // device don't support range, just stry again from scratch
             _device->close();
             if (!_device->open(QIODevice::WriteOnly)) {
