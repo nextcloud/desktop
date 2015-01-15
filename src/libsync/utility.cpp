@@ -110,16 +110,16 @@ QString Utility::octetsToString( qint64 octets )
     QString s;
     qreal value = octets;
     if (octets >= tb) {
-        s = QCoreApplication::translate("Utility", "%L1 TB");
+        s = QCoreApplication::translate("Utility", "%L1 TiB");
         value /= tb;
     } else if (octets >= gb) {
-        s = QCoreApplication::translate("Utility", "%L1 GB");
+        s = QCoreApplication::translate("Utility", "%L1 GiB");
         value /= gb;
     } else if (octets >= mb) {
-        s = QCoreApplication::translate("Utility", "%L1 MB");
+        s = QCoreApplication::translate("Utility", "%L1 MiB");
         value /= mb;
     } else if (octets >= kb) {
-        s = QCoreApplication::translate("Utility", "%L1 kB");
+        s = QCoreApplication::translate("Utility", "%L1 KiB");
         value /= kb;
     } else  {
         s = QCoreApplication::translate("Utility", "%L1 B");
