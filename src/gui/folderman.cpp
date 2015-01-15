@@ -698,7 +698,7 @@ Folder *FolderMan::folderForPath(const QString &path)
             return folder;
         }
     }
-    qDebug() << "ERROR: could not find folder for " << absolutePath;
+
     return 0;
 }
 
