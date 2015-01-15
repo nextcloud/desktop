@@ -131,6 +131,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
 
   if (ctx->statedb.db) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: DB already open");
+      ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
       return -1;
   }
 
@@ -143,6 +144,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
               errmsg ? errmsg : "<no sqlite3 errormsg>");
 
     rc = -1;
+    ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
     goto out;
   }
 
@@ -151,6 +153,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "ERR: sqlite3 integrity check failed - bail out: %s.",
                 errmsg ? errmsg : "<no sqlite3 errormsg>");
       rc = -1;
+      ctx->status_code = CSYNC_STATUS_STATEDB_CORRUPTED;
       goto out;
   }
 

@@ -210,7 +210,6 @@ int csync_update(CSYNC *ctx) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
 
     if (csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db) < 0) {
-      ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
       rc = -1;
       return rc;
     }
@@ -287,7 +286,6 @@ int csync_reconcile(CSYNC *ctx) {
   csync_gettime(&start);
 
   if (csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db) < 0) {
-    ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
     rc = -1;
     return rc;
   }

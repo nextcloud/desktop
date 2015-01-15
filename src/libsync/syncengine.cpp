@@ -98,8 +98,8 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("CSync failed to load or create the journal file. "
                     "Make sure you have read and write permissions in the local sync directory.");
         break;
-    case CSYNC_STATUS_STATEDB_WRITE_ERROR:
-        errStr = tr("CSync failed to write the journal file.");
+    case CSYNC_STATUS_STATEDB_CORRUPTED:
+        errStr = tr("CSync failed to load the journal file. The journal file is corrupted.");
         break;
     case CSYNC_STATUS_NO_MODULE:
         errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appNameGUI());
