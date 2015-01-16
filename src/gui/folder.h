@@ -132,7 +132,8 @@ public:
      bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
 
      RequestEtagJob *etagJob() { return _requestEtagJob; }
-     qint64 msecSinceLastSync() { return _timeSinceLastSync.elapsed(); }
+     qint64 msecSinceLastSync() const { return _timeSinceLastSyncDone.elapsed(); }
+     qint64 msecLastSyncDuration() const { return _lastSyncDuration; }
 
 signals:
     void syncStateChange();
@@ -221,7 +222,9 @@ private:
     bool         _proxyDirty;
     QPointer<RequestEtagJob> _requestEtagJob;
     QString       _lastEtag;
-    QElapsedTimer _timeSinceLastSync;
+    QElapsedTimer _timeSinceLastSyncDone;
+    QElapsedTimer _timeSinceLastSyncStart;
+    qint64        _lastSyncDuration;
     bool          _forceSyncOnPollTimeout;
 
     /// The number of syncs that failed in a row.

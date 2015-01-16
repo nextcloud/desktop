@@ -67,6 +67,7 @@ Folder::Folder(AccountState* accountState,
       , _csyncUnavail(false)
       , _wipeDb(false)
       , _proxyDirty(true)
+      , _lastSyncDuration(0)
       , _forceSyncOnPollTimeout(false)
       , _consecutiveFailingSyncs(0)
       , _consecutiveFollowUpSyncs(0)
@@ -74,7 +75,8 @@ Folder::Folder(AccountState* accountState,
       , _csync_ctx(0)
 {
     qsrand(QTime::currentTime().msec());
-    _timeSinceLastSync.start();
+    _timeSinceLastSyncStart.start();
+    _timeSinceLastSyncDone.start();
 
     _syncResult.setStatus( SyncResult::NotYetStarted );
 
@@ -247,7 +249,7 @@ void Folder::prepareToSync()
 
 void Folder::slotRunEtagJob()
 {
-    qDebug() << "* Trying to check" << alias() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSync.elapsed() / 1000) << "s)";
+    qDebug() << "* Trying to check" << alias() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
 
 
     AccountPtr account = _accountState->account();
@@ -263,7 +265,7 @@ void Folder::slotRunEtagJob()
     }
 
     bool forceSyncIntervalExpired =
-            quint64(_timeSinceLastSync.elapsed()) > ConfigFile().forceSyncInterval();
+            quint64(_timeSinceLastSyncDone.elapsed()) > ConfigFile().forceSyncInterval();
     bool syncAgainAfterFail = _consecutiveFailingSyncs > 0 && _consecutiveFailingSyncs < 3;
 
     // There are several conditions under which we trigger a full-discovery sync:
@@ -278,7 +280,7 @@ void Folder::slotRunEtagJob()
             || syncAgainAfterFail) {
 
         if (forceSyncIntervalExpired) {
-            qDebug() << "** Force Sync, because it has been " << _timeSinceLastSync.elapsed() << "ms "
+            qDebug() << "** Force Sync, because it has been " << _timeSinceLastSyncDone.elapsed() << "ms "
                      << "since the last sync";
         }
         if (_forceSyncOnPollTimeout) {
@@ -758,6 +760,7 @@ void Folder::startSync(const QStringList &pathList)
     _csyncError = false;
     _csyncUnavail = false;
 
+    _timeSinceLastSyncStart.restart();
     _syncResult.clearErrors();
     _syncResult.setStatus( SyncResult::SyncPrepare );
     emit syncStateChange();
@@ -915,7 +918,8 @@ void Folder::slotSyncFinished()
     // all come in.
     QTimer::singleShot(200, this, SLOT(slotEmitFinishedDelayed() ));
 
-    _timeSinceLastSync.restart();
+    _lastSyncDuration = _timeSinceLastSyncStart.elapsed();
+    _timeSinceLastSyncDone.restart();
 
     // Increment the follow-up sync counter if necessary.
     if (anotherSyncNeeded) {
