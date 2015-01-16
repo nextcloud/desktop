@@ -134,6 +134,7 @@ public:
      RequestEtagJob *etagJob() { return _requestEtagJob; }
      qint64 msecSinceLastSync() const { return _timeSinceLastSyncDone.elapsed(); }
      qint64 msecLastSyncDuration() const { return _lastSyncDuration; }
+     int consecutiveFollowUpSyncs() const { return _consecutiveFollowUpSyncs; }
 
 signals:
     void syncStateChange();

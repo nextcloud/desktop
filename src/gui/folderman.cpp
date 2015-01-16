@@ -559,11 +559,22 @@ void FolderMan::startScheduledSyncSoon(qint64 msMinimumDelay)
         msDelay = qMax(msDelay, pause);
     }
 
+    // Punish consecutive follow-up syncs with longer delays.
+    if (Folder* nextFolder = folder(_scheduleQueue.head())) {
+        int followUps = nextFolder->consecutiveFollowUpSyncs();
+        if (followUps >= 2) {
+            // This is okay due to the 1min maximum delay limit below.
+            msDelay *= qPow(followUps, 2);
+        }
+    }
+
     // A minimum of delay here is essential as the sync will not upload
     // files that were changed too recently.
     msDelay = qMax(msDelay, msBetweenRequestAndSync);
 
-    // Delays beyond one minute seem too big.
+    // Delays beyond one minute seem too big, particularly since there
+    // could be things later in the queue that shouldn't be punished by a
+    // long delay!
     msDelay = qMin(msDelay, 60*1000ll);
 
     msDelay = qMax(1ll, msDelay - msSinceLastSync);
