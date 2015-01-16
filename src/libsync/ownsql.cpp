@@ -206,9 +206,9 @@ int SqlQuery::prepare( const QString& sql)
         _errId = rc;
 
         if( _errId != SQLITE_OK ) {
-            qDebug() << "Sqlite prepare statement error:" << _error << "in"<<_sql;
+            _error = QString::fromUtf8(sqlite3_errmsg(_db));
+            qDebug() << "Sqlite prepare statement error:" << _error << "in" <<_sql;
         }
-        // Q_ASSERT(_errId == SQLITE_OK);
     }
     return _errId;
 }
