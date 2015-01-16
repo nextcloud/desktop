@@ -150,6 +150,9 @@ private slots:
     void slotRemoveFoldersForAccount(AccountState* accountState);
 
 private:
+    /** Will start a sync after a bit of delay. */
+    void startScheduledSyncSoon(qint64 msMinimumDelay = 0);
+
     // finds all folder configuration files
     // and create the folders
     QString getBackupName( QString fullPathName ) const;
@@ -164,6 +167,7 @@ private:
     QString        _folderConfigPath;
     QSignalMapper *_folderChangeSignalMapper;
     QString        _currentSyncFolder;
+    QString        _lastSyncFolder;
     bool           _syncEnabled;
     QTimer         _etagPollTimer;
     QPointer<RequestEtagJob>        _currentEtagJob; // alias of Folder running the current RequestEtagJob
@@ -173,6 +177,9 @@ private:
 
     /** The aliases of folders that shall be synced. */
     QQueue<QString> _scheduleQueue;
+
+    /** When the timer expires one of the scheduled syncs will be started. */
+    QTimer          _startScheduledSyncTimer;
 
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = 0);
