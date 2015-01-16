@@ -67,16 +67,6 @@ private slots:
     void slotCheckBoxPasswordClicked();
     void slotCheckBoxExpireClicked();
     void slotPasswordReturnPressed();
-
-    void slotUserShareWidgetClicked(QTreeWidgetItem *item, const int column);
-    void slotUpdateShareReply(const QString &reply);
-    void slotAddUserShareClicked();
-    void slotAddShareReply(const QString &reply);
-    void slotDeleteUserShareClicked();
-    void slotDeleteShareReply(const QString &reply);
-    void slotGroupShareWidgetClicked(QTreeWidgetItem *item, const int column);
-    void slotAddGroupShareClicked();
-    void slotDeleteGroupShareClicked();
 private:
     Ui::ShareDialog *_ui;
     QString _path;
