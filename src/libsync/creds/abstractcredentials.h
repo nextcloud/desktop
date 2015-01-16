@@ -30,7 +30,17 @@ class OWNCLOUDSYNC_EXPORT AbstractCredentials : public QObject
     Q_OBJECT
 
 public:
+    AbstractCredentials();
     // No need for virtual destructor - QObject already has one.
+
+    /** The bound account for the credentials instance.
+     *
+     * Credentials are always used in conjunction with an account.
+     * Calling Account::setCredentials() will call this function.
+     * Credentials only live as long as the underlying account object.
+     */
+    virtual void setAccount(Account* account);
+
     virtual void syncContextPreInit(CSYNC* ctx) = 0;
     virtual void syncContextPreStart(CSYNC* ctx) = 0;
     virtual bool changed(AbstractCredentials* credentials) const = 0;
@@ -38,14 +48,14 @@ public:
     virtual QString user() const = 0;
     virtual QNetworkAccessManager* getQNAM() const = 0;
     virtual bool ready() const = 0;
-    virtual void fetch(AccountPtr account) = 0;
+    virtual void fetch() = 0;
     virtual bool stillValid(QNetworkReply *reply) = 0;
-    virtual void persist(AccountPtr account) = 0;
+    virtual void persist() = 0;
     /** Invalidates auth token, or password for basic auth */
-    virtual void invalidateToken(AccountPtr account) = 0;
-    virtual void invalidateAndFetch(AccountPtr account) {
-        invalidateToken(account);
-        fetch(account);
+    virtual void invalidateToken() = 0;
+    virtual void invalidateAndFetch() {
+        invalidateToken();
+        fetch();
     }
 
 
@@ -53,6 +63,9 @@ public:
 
 Q_SIGNALS:
     void fetched();
+
+protected:
+    Account* _account;
 };
 
 } // namespace OCC

@@ -106,7 +106,7 @@ void Account::save()
     QScopedPointer<QSettings> settings(settingsWithGroup(Theme::instance()->appName()));
     settings->setValue(QLatin1String(urlC), _url.toString());
     if (_credentials) {
-        _credentials->persist(sharedFromThis());
+        _credentials->persist();
         Q_FOREACH(QString key, _settingsMap.keys()) {
             settings->setValue(key, _settingsMap.value(key));
         }
@@ -243,6 +243,7 @@ void Account::setCredentials(AbstractCredentials *cred)
     if (_credentials) {
         credentials()->deleteLater();
     }
+    cred->setAccount(this);
     _credentials = cred;
     _am = _credentials->getQNAM();
     if (jar) {
@@ -425,9 +426,9 @@ void Account::handleInvalidCredentials()
     // invalidate & forget token/password
     // but try to re-sign in.
     if (_credentials->ready()) {
-        _credentials->invalidateAndFetch(sharedFromThis());
+        _credentials->invalidateAndFetch();
     } else {
-        _credentials->fetch(sharedFromThis());
+        _credentials->fetch();
     }
 
     emit invalidCredentials();

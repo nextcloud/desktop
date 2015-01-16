@@ -92,10 +92,7 @@ void OwncloudShibbolethCredsPage::setConnected()
 
 AbstractCredentials* OwncloudShibbolethCredsPage::getCredentials() const
 {
-    const OwncloudWizard *ocWizard = static_cast<const OwncloudWizard*>(wizard());
-    AccountPtr account = ocWizard->account();
-
-    return new ShibbolethCredentials(_cookie, account);
+    return new ShibbolethCredentials(_cookie);
 }
 
 void OwncloudShibbolethCredsPage::slotShibbolethCookieReceived(const QNetworkCookie &cookie, AccountPtr)

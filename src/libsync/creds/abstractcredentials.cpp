@@ -20,6 +20,17 @@
 namespace OCC
 {
 
+AbstractCredentials::AbstractCredentials()
+    : _account(0)
+{
+}
+
+void AbstractCredentials::setAccount(Account *account)
+{
+    Q_ASSERT(!_account);
+    _account = account;
+}
+
 QString AbstractCredentials::keychainKey(const QString &url, const QString &user)
 {
     QString u(url);

@@ -46,13 +46,13 @@ public:
     QString authType() const;
     QNetworkAccessManager* getQNAM() const;
     bool ready() const;
-    void fetch(Account *account);
+    void fetch();
     bool stillValid(QNetworkReply *reply);
-    void persist(Account *account);
+    void persist();
     QString user() const;
     QString password() const;
     QString queryPassword(bool *ok);
-    void invalidateToken(Account *account);
+    void invalidateToken();
 
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply*, QAuthenticator*);

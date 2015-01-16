@@ -92,7 +92,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
     } else {
         connect( creds, SIGNAL(fetched()),
                  this, SLOT(checkAuthentication()), Qt::UniqueConnection);
-        creds->fetch(_account);
+        creds->fetch();
     }
 }
 

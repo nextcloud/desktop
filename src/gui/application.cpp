@@ -187,7 +187,7 @@ void Application::slotLogout()
     if (ai) {
         AccountPtr a = ai->account();
         // invalidate & forget token/password
-        a->credentials()->invalidateToken(a);
+        a->credentials()->invalidateToken();
         // terminate all syncs and unload folders
         FolderMan *folderMan = FolderMan::instance();
         folderMan->setSyncEnabled(false);

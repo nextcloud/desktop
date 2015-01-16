@@ -35,7 +35,7 @@ class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
     Q_OBJECT
 
 public:
-    HttpCredentials();
+    explicit HttpCredentials();
     HttpCredentials(const QString& user, const QString& password);
 
     void syncContextPreInit(CSYNC* ctx) Q_DECL_OVERRIDE;
@@ -44,14 +44,14 @@ public:
     QString authType() const Q_DECL_OVERRIDE;
     QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
-    void fetch(AccountPtr account) Q_DECL_OVERRIDE;
+    void fetch() Q_DECL_OVERRIDE;
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
-    void persist(AccountPtr account) Q_DECL_OVERRIDE;
+    void persist() Q_DECL_OVERRIDE;
     QString user() const Q_DECL_OVERRIDE;
     QString password() const;
     virtual QString queryPassword(bool *ok) = 0;
-    void invalidateToken(AccountPtr account) Q_DECL_OVERRIDE;
-    QString fetchUser(AccountPtr account);
+    void invalidateToken() Q_DECL_OVERRIDE;
+    QString fetchUser();
     virtual bool sslIsTrusted() { return false; }
 
 private Q_SLOTS:
@@ -71,7 +71,7 @@ private:
 
 class OWNCLOUDSYNC_EXPORT HttpCredentialsGui : public HttpCredentials {
 public:
-    HttpCredentialsGui() : HttpCredentials() {}
+    explicit HttpCredentialsGui() : HttpCredentials() {}
     HttpCredentialsGui(const QString& user, const QString& password) : HttpCredentials(user, password) {}
     QString queryPassword(bool *ok) Q_DECL_OVERRIDE;
 };

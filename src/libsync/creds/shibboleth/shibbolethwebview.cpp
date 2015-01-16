@@ -56,7 +56,7 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget* parent)
 
     // If we have a valid cookie, it's most likely expired. We can use this as
     // as a criteria to tell the user why the browser window pops up
-    QNetworkCookie shibCookie = ShibbolethCredentials::findShibCookie(_account, ShibbolethCredentials::accountCookies(_account));
+    QNetworkCookie shibCookie = ShibbolethCredentials::findShibCookie(_account.data(), ShibbolethCredentials::accountCookies(_account.data()));
     if (shibCookie != QNetworkCookie()) {
         Logger::instance()->postOptionalGuiLog(tr("Reauthentication required"), tr("Your session has expired. You need to re-login to continue to use the client."));
     }
@@ -69,7 +69,7 @@ ShibbolethWebView::~ShibbolethWebView()
 void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& url)
 {
     if (url.host() == _account->url().host()) {
-        QNetworkCookie shibCookie = ShibbolethCredentials::findShibCookie(_account, cookieList);
+        QNetworkCookie shibCookie = ShibbolethCredentials::findShibCookie(_account.data(), cookieList);
         if (shibCookie != QNetworkCookie()) {
             Q_EMIT shibbolethCookieReceived(shibCookie, _account);
             accept();

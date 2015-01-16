@@ -71,7 +71,7 @@ void OwncloudHttpCredsPage::initializePage()
     AbstractCredentials *cred = ocWizard->account()->credentials();
     HttpCredentials *httpCreds = qobject_cast<HttpCredentials*>(cred);
     if (httpCreds) {
-        const QString user = httpCreds->fetchUser(ocWizard->account());
+        const QString user = httpCreds->fetchUser();
         if (!user.isEmpty()) {
             _ui.leUsername->setText(user);
         }
