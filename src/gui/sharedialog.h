@@ -51,11 +51,9 @@ class ShareDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShareDialog(const QString &path, const bool &isDir, QWidget *parent = 0);
+    explicit ShareDialog(const QString &sharePath, const QString &localPath, QWidget *parent = 0);
     ~ShareDialog();
     void getShares();
-    void setPath(const QString &path, const bool &isDir);
-    QString getPath();
 private slots:
     void slotSharesFetched(const QString &reply);
     void slotCreateShareFetched(const QString &reply);
@@ -69,8 +67,8 @@ private slots:
     void slotPasswordReturnPressed();
 private:
     Ui::ShareDialog *_ui;
-    QString _path;
-    bool _isDir;
+    QString _sharePath;
+    QString _localPath;
     QList<QVariant> _shares;
     qulonglong _public_share_id;
     void setPassword(const QString &password);

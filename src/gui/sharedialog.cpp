@@ -8,6 +8,7 @@
 #include <QBuffer>
 #include <QMovie>
 #include <QMessageBox>
+#include <QFileIconProvider>
 
 namespace {
     int SHARETYPE_PUBLIC = 3;
@@ -15,11 +16,11 @@ namespace {
 
 namespace OCC {
 
-ShareDialog::ShareDialog(const QString &path, const bool &isDir, QWidget *parent) :
+ShareDialog::ShareDialog(const QString &sharePath, const QString &localPath, QWidget *parent) :
    QDialog(parent),
     _ui(new Ui::ShareDialog),
-    _path(path),
-    _isDir(isDir)
+    _sharePath(sharePath),
+    _localPath(localPath)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     _ui->setupUi(this);
@@ -47,6 +48,20 @@ ShareDialog::ShareDialog(const QString &path, const bool &isDir, QWidget *parent
     _ui->checkBox_password->hide();
     _ui->checkBox_expire->hide();
     _ui->calendar->hide();
+
+    QFileInfo f_info(_localPath);
+    QFileIconProvider icon_provider;
+    QIcon icon = icon_provider.icon(f_info);
+    _ui->label_icon->setPixmap(icon.pixmap(40,40));
+    if (f_info.isDir()) {
+        _ui->lineEdit_name->setText(f_info.dir().dirName());
+        _ui->lineEdit_type->setText("Directory");
+    } else {
+        _ui->lineEdit_name->setText(f_info.fileName());
+        _ui->lineEdit_type->setText("File");
+    }
+    _ui->lineEdit_localPath->setText(_localPath);
+    _ui->lineEdit_sharePath->setText(_sharePath);
 }
 
 void ShareDialog::setExpireDate(const QString &date)
@@ -92,18 +107,6 @@ void ShareDialog::slotExpireSet(const QString &reply)
 void ShareDialog::slotCalendarClicked(const QDate &date)
 {
     ShareDialog::setExpireDate(date.toString("yyyy-MM-dd"));
-}
-
-QString ShareDialog::getPath()
-{
-    return _path;
-}
-
-void ShareDialog::setPath(const QString &path, const bool &isDir)
-{
-    _path = path;
-    _isDir = isDir;
-    ShareDialog::getShares();
 }
 
 ShareDialog::~ShareDialog()
@@ -162,11 +165,11 @@ void ShareDialog::slotPasswordSet(const QString &reply)
 
 void ShareDialog::getShares()
 {
-    this->setWindowTitle(tr("Sharing %1").arg(_path));
+    this->setWindowTitle(tr("Sharing %1").arg(_sharePath));
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
     QList<QPair<QString, QString> > params;
     params.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
-    params.append(qMakePair(QString::fromLatin1("path"), _path));
+    params.append(qMakePair(QString::fromLatin1("path"), _sharePath));
     url.setQueryItems(params);
     OcsShareJob *job = new OcsShareJob("GET", url, QUrl(), AccountManager::instance()->account(), this);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotSharesFetched(QString)));
@@ -256,7 +259,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
         QList<QPair<QString, QString> > getParams;
         QList<QPair<QString, QString> > postParams;
         getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
-        postParams.append(qMakePair(QString::fromLatin1("path"), _path));
+        postParams.append(qMakePair(QString::fromLatin1("path"), _sharePath));
         postParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_PUBLIC)));
         url.setQueryItems(getParams);
         postData.setQueryItems(postParams);

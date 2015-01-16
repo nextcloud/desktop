@@ -636,10 +636,10 @@ void ownCloudGui::raiseDialog( QWidget *raiseWidget )
 }
 
 
-void ownCloudGui::slotShowShareDialog(const QString &path, const bool &isDir)
+void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath)
 {
     qDebug() << Q_FUNC_INFO << "Opening share dialog";
-    ShareDialog *w = new ShareDialog(path, isDir);
+    ShareDialog *w = new ShareDialog(sharePath, localPath);
     w->getShares();
     w->setAttribute( Qt::WA_DeleteOnClose, true );
     w->show();
