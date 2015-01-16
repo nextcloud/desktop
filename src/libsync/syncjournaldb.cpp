@@ -333,11 +333,11 @@ bool SyncJournalDb::checkConnect()
         // case insensitively
         sql += QLatin1String(" COLLATE NOCASE");
     }
-    _getBlacklistQuery.reset(new SqlQuery(_db));
-    _getBlacklistQuery->prepare(sql);
+    _getErrorBlacklistQuery.reset(new SqlQuery(_db));
+    _getErrorBlacklistQuery->prepare(sql);
 
-    _setBlacklistQuery.reset(new SqlQuery(_db));
-    _setBlacklistQuery->prepare("INSERT OR REPLACE INTO blacklist "
+    _setErrorBlacklistQuery.reset(new SqlQuery(_db));
+    _setErrorBlacklistQuery->prepare("INSERT OR REPLACE INTO blacklist "
                                 "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration) "
                                 "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7)");
 
@@ -369,7 +369,7 @@ void SyncJournalDb::close()
     _deleteUploadInfoQuery.reset(0);
     _deleteFileRecordPhash.reset(0);
     _deleteFileRecordRecursively.reset(0);
-    _getBlacklistQuery.reset(0);
+    _getErrorBlacklistQuery.reset(0);
     _possibleUpgradeFromMirall_1_5 = false;
 
     _db.close();
@@ -381,7 +381,7 @@ bool SyncJournalDb::updateDatabaseStructure()
 {
     if (!updateMetadataTableStructure())
         return false;
-    if (!updateBlacklistTableStructure())
+    if (!updateErrorBlacklistTableStructure())
         return false;
     return true;
 }
@@ -456,7 +456,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
     return re;
 }
 
-bool SyncJournalDb::updateBlacklistTableStructure()
+bool SyncJournalDb::updateErrorBlacklistTableStructure()
 {
     QStringList columns = tableColumns("blacklist");
     bool re = true;
@@ -985,39 +985,39 @@ bool SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
     return deleteBatch(*_deleteUploadInfoQuery, superfluousPaths, "uploadinfo");
 }
 
-SyncJournalBlacklistRecord SyncJournalDb::blacklistEntry( const QString& file )
+SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry( const QString& file )
 {
     QMutexLocker locker(&_mutex);
-    SyncJournalBlacklistRecord entry;
+    SyncJournalErrorBlacklistRecord entry;
 
     if( file.isEmpty() ) return entry;
 
     // SELECT lastTryEtag, lastTryModtime, retrycount, errorstring
 
     if( checkConnect() ) {
-        _getBlacklistQuery->reset();
-        _getBlacklistQuery->bindValue( 1, file );
-        if( _getBlacklistQuery->exec() ){
-            if( _getBlacklistQuery->next() ) {
-                entry._lastTryEtag    = _getBlacklistQuery->baValue(0);
-                entry._lastTryModtime = _getBlacklistQuery->int64Value(1);
-                entry._retryCount     = _getBlacklistQuery->intValue(2);
-                entry._errorString    = _getBlacklistQuery->stringValue(3);
-                entry._lastTryTime    = _getBlacklistQuery->int64Value(4);
-                entry._ignoreDuration = _getBlacklistQuery->int64Value(5);
+        _getErrorBlacklistQuery->reset();
+        _getErrorBlacklistQuery->bindValue( 1, file );
+        if( _getErrorBlacklistQuery->exec() ){
+            if( _getErrorBlacklistQuery->next() ) {
+                entry._lastTryEtag    = _getErrorBlacklistQuery->baValue(0);
+                entry._lastTryModtime = _getErrorBlacklistQuery->int64Value(1);
+                entry._retryCount     = _getErrorBlacklistQuery->intValue(2);
+                entry._errorString    = _getErrorBlacklistQuery->stringValue(3);
+                entry._lastTryTime    = _getErrorBlacklistQuery->int64Value(4);
+                entry._ignoreDuration = _getErrorBlacklistQuery->int64Value(5);
                 entry._file           = file;
             }
-            _getBlacklistQuery->reset();
+            _getErrorBlacklistQuery->reset();
         } else {
-            qWarning() << "Exec error blacklist: " << _getBlacklistQuery->lastQuery() <<  " : "
-                       << _getBlacklistQuery->error();
+            qWarning() << "Exec error blacklist: " << _getErrorBlacklistQuery->lastQuery() <<  " : "
+                       << _getErrorBlacklistQuery->error();
         }
     }
 
     return entry;
 }
 
-bool SyncJournalDb::deleteStaleBlacklistEntries(const QSet<QString> &keep)
+bool SyncJournalDb::deleteStaleErrorBlacklistEntries(const QSet<QString> &keep)
 {
     QMutexLocker locker(&_mutex);
 
@@ -1048,7 +1048,7 @@ bool SyncJournalDb::deleteStaleBlacklistEntries(const QSet<QString> &keep)
     return deleteBatch(delQuery, superfluousPaths, "blacklist");
 }
 
-int SyncJournalDb::blackListEntryCount()
+int SyncJournalDb::errorBlackListEntryCount()
 {
     int re = 0;
 
@@ -1066,7 +1066,7 @@ int SyncJournalDb::blackListEntryCount()
     return re;
 }
 
-int SyncJournalDb::wipeBlacklist()
+int SyncJournalDb::wipeErrorBlacklist()
 {
     QMutexLocker locker(&_mutex);
     if( checkConnect() ) {
@@ -1083,7 +1083,7 @@ int SyncJournalDb::wipeBlacklist()
     return -1;
 }
 
-void SyncJournalDb::wipeBlacklistEntry( const QString& file )
+void SyncJournalDb::wipeErrorBlacklistEntry( const QString& file )
 {
     if( file.isEmpty() ) {
         return;
@@ -1101,7 +1101,7 @@ void SyncJournalDb::wipeBlacklistEntry( const QString& file )
     }
 }
 
-void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item )
+void SyncJournalDb::updateErrorBlacklistEntry( const SyncJournalErrorBlacklistRecord& item )
 {
     if( !checkConnect() ) {
         return;
@@ -1109,21 +1109,21 @@ void SyncJournalDb::updateBlacklistEntry( const SyncJournalBlacklistRecord& item
 
     QMutexLocker locker(&_mutex);
 
-    _setBlacklistQuery->bindValue(1, item._file);
-    _setBlacklistQuery->bindValue(2, item._lastTryEtag);
-    _setBlacklistQuery->bindValue(3, QString::number(item._lastTryModtime));
-    _setBlacklistQuery->bindValue(4, item._retryCount);
-    _setBlacklistQuery->bindValue(5, item._errorString);
-    _setBlacklistQuery->bindValue(6, QString::number(item._lastTryTime));
-    _setBlacklistQuery->bindValue(7, QString::number(item._ignoreDuration));
-    if( !_setBlacklistQuery->exec() ) {
-        QString bug = _setBlacklistQuery->error();
+    _setErrorBlacklistQuery->bindValue(1, item._file);
+    _setErrorBlacklistQuery->bindValue(2, item._lastTryEtag);
+    _setErrorBlacklistQuery->bindValue(3, QString::number(item._lastTryModtime));
+    _setErrorBlacklistQuery->bindValue(4, item._retryCount);
+    _setErrorBlacklistQuery->bindValue(5, item._errorString);
+    _setErrorBlacklistQuery->bindValue(6, QString::number(item._lastTryTime));
+    _setErrorBlacklistQuery->bindValue(7, QString::number(item._ignoreDuration));
+    if( !_setErrorBlacklistQuery->exec() ) {
+        QString bug = _setErrorBlacklistQuery->error();
         qDebug() << "SQL exec blacklistitem insert or replace failed: "<< bug;
     }
     qDebug() << "set blacklist entry for " << item._file << item._retryCount
              << item._errorString << item._lastTryTime << item._ignoreDuration
              << item._lastTryModtime << item._lastTryEtag;
-    _setBlacklistQuery->reset();
+    _setErrorBlacklistQuery->reset();
 
 }
 

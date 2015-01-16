@@ -24,7 +24,7 @@
 
 namespace OCC {
 class SyncJournalFileRecord;
-class SyncJournalBlacklistRecord;
+class SyncJournalErrorBlacklistRecord;
 
 /**
  * Class that handle the sync database
@@ -47,10 +47,10 @@ public:
     QString databaseFilePath();
     static qint64 getPHash(const QString& );
 
-    void updateBlacklistEntry( const SyncJournalBlacklistRecord& item );
-    void wipeBlacklistEntry(const QString& file);
-    int wipeBlacklist();
-    int blackListEntryCount();
+    void updateErrorBlacklistEntry( const SyncJournalErrorBlacklistRecord& item );
+    void wipeErrorBlacklistEntry(const QString& file);
+    int wipeErrorBlacklist();
+    int errorBlackListEntryCount();
 
     struct DownloadInfo {
         DownloadInfo() : _errorCount(0), _valid(false) {}
@@ -84,8 +84,8 @@ public:
     void setUploadInfo(const QString &file, const UploadInfo &i);
     bool deleteStaleUploadInfos(const QSet<QString>& keep);
 
-    SyncJournalBlacklistRecord blacklistEntry( const QString& );
-    bool deleteStaleBlacklistEntries(const QSet<QString>& keep);
+    SyncJournalErrorBlacklistRecord errorBlacklistEntry( const QString& );
+    bool deleteStaleErrorBlacklistEntries(const QSet<QString>& keep);
 
     void avoidRenamesOnNextSync(const QString &path);
     void setPollInfo(const PollInfo &);
@@ -121,7 +121,7 @@ public:
 private:
     bool updateDatabaseStructure();
     bool updateMetadataTableStructure();
-    bool updateBlacklistTableStructure();
+    bool updateErrorBlacklistTableStructure();
     bool sqlFail(const QString& log, const SqlQuery &query );
     void commitInternal(const QString &context, bool startTrans = true);
     void startTransaction();
@@ -144,8 +144,8 @@ private:
     QScopedPointer<SqlQuery> _deleteUploadInfoQuery;
     QScopedPointer<SqlQuery> _deleteFileRecordPhash;
     QScopedPointer<SqlQuery> _deleteFileRecordRecursively;
-    QScopedPointer<SqlQuery> _getBlacklistQuery;
-    QScopedPointer<SqlQuery> _setBlacklistQuery;
+    QScopedPointer<SqlQuery> _getErrorBlacklistQuery;
+    QScopedPointer<SqlQuery> _setErrorBlacklistQuery;
 
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing

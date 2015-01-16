@@ -198,9 +198,9 @@ QString OwncloudAdvancedSetupPage::localFolder() const
     return folder;
 }
 
-QStringList OwncloudAdvancedSetupPage::blacklist() const
+QStringList OwncloudAdvancedSetupPage::selectiveSyncBlacklist() const
 {
-    return _blacklist;
+    return _selectiveSyncBlacklist;
 }
 
 bool OwncloudAdvancedSetupPage::validatePage()
@@ -276,13 +276,13 @@ void OwncloudAdvancedSetupPage::setConfigExists(bool config)
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 {
     // Because clicking on it also changes it, restore it to the previous state in case the user cancel the dialog
-    _ui.rSyncEverything->setChecked(_blacklist.isEmpty());
+    _ui.rSyncEverything->setChecked(_selectiveSyncBlacklist.isEmpty());
 
     AccountPtr acc = static_cast<OwncloudWizard *>(wizard())->account();
-    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, _blacklist, this);
+    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, _selectiveSyncBlacklist, this);
     if (dlg->exec() == QDialog::Accepted) {
-        _blacklist = dlg->createBlackList();
-        if (!_blacklist.isEmpty()) {
+        _selectiveSyncBlacklist = dlg->createBlackList();
+        if (!_selectiveSyncBlacklist.isEmpty()) {
             _ui.rSelectiveSync->blockSignals(true);
             _ui.rSelectiveSync->setChecked(true);
             _ui.rSelectiveSync->blockSignals(false);
@@ -296,7 +296,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
             _ui.rSyncEverything->setChecked(true);
             _ui.lSelectiveSyncSizeLabel->setText(QString());
         }
-        wizard()->setProperty("blacklist", _blacklist);
+        wizard()->setProperty("blacklist", _selectiveSyncBlacklist);
     }
 }
 
@@ -304,7 +304,7 @@ void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
 {
     _ui.lSelectiveSyncSizeLabel->setText(QString());
     _ui.rSyncEverything->setChecked(true);
-    _blacklist.clear();
+    _selectiveSyncBlacklist.clear();
 }
 
 void OwncloudAdvancedSetupPage::slotQuotaRetrieved(qint64, qint64 usedQuota)

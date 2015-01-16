@@ -440,7 +440,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         if (!startFromScratch || ensureStartFromScratch(localFolder)) {
             qDebug() << "Adding folder definition for" << localFolder << _remoteFolder;
             folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                           localFolder, _remoteFolder, _ocWizard->blacklist() );
+                                           localFolder, _remoteFolder, _ocWizard->selectiveSyncBlacklist() );
             _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
         }
     }

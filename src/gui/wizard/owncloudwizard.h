@@ -50,7 +50,7 @@ public:
     void setupCustomMedia( QVariant, QLabel* );
     QString ocUrl() const;
     QString localFolder() const;
-    QStringList blacklist() const;
+    QStringList selectiveSyncBlacklist() const;
 
     void enableFinishOnResultWidget(bool enable);
 

@@ -125,7 +125,7 @@ void ProtocolWidget::slotRetrySync()
     Folder::Map folders = folderMan->map();
 
     foreach( Folder *f, folders ) {
-        int num = f->slotWipeBlacklist();
+        int num = f->slotWipeErrorBlacklist();
         qDebug() << num << "entries were removed from"
                  << f->alias() << "blacklist";
 
@@ -255,7 +255,7 @@ void ProtocolWidget::computeResyncButtonEnabled()
     int blacklist_cnt = 0;
     int downloads_cnt = 0;
     foreach( Folder *f, folders ) {
-        blacklist_cnt += f->blackListEntryCount();
+        blacklist_cnt += f->errorBlackListEntryCount();
         downloads_cnt += f->downloadInfoCount();
     }
 

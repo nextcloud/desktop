@@ -95,17 +95,17 @@ static time_t getMaxBlacklistTime()
     return 24*60*60; // 1 day
 }
 
-bool SyncJournalBlacklistRecord::isValid() const
+bool SyncJournalErrorBlacklistRecord::isValid() const
 {
     return ! _file.isEmpty()
         && (!_lastTryEtag.isEmpty() || _lastTryModtime != 0)
         && _lastTryTime > 0 && _ignoreDuration > 0;
 }
 
-SyncJournalBlacklistRecord SyncJournalBlacklistRecord::update(
-        const SyncJournalBlacklistRecord& old, const SyncFileItem& item)
+SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::update(
+        const SyncJournalErrorBlacklistRecord& old, const SyncFileItem& item)
 {
-    SyncJournalBlacklistRecord entry;
+    SyncJournalErrorBlacklistRecord entry;
     if (item._httpErrorCode == 0  // Do not blacklist local errors. (#1985)
 #ifdef OWNCLOUD_5XX_NO_BLACKLIST
         || item._httpErrorCode / 100 == 5 // In this configuration, never blacklist error 5xx

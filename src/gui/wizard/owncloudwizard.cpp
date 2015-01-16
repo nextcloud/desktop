@@ -104,9 +104,9 @@ QString OwncloudWizard::localFolder() const
     return(_advancedSetupPage->localFolder());
 }
 
-QStringList OwncloudWizard::blacklist() const
+QStringList OwncloudWizard::selectiveSyncBlacklist() const
 {
-    return _advancedSetupPage->blacklist();
+    return _advancedSetupPage->selectiveSyncBlacklist();
 }
 
 

@@ -57,13 +57,13 @@ int OwncloudPropagator::maximumActiveJob()
  */
 static bool blacklist(SyncJournalDb* journal, const SyncFileItem& item)
 {
-    SyncJournalBlacklistRecord oldEntry = journal->blacklistEntry(item._file);
-    SyncJournalBlacklistRecord newEntry = SyncJournalBlacklistRecord::update(oldEntry, item);
+    SyncJournalErrorBlacklistRecord oldEntry = journal->errorBlacklistEntry(item._file);
+    SyncJournalErrorBlacklistRecord newEntry = SyncJournalErrorBlacklistRecord::update(oldEntry, item);
 
     if (newEntry.isValid()) {
-        journal->updateBlacklistEntry(newEntry);
+        journal->updateErrorBlacklistEntry(newEntry);
     } else if (oldEntry.isValid()) {
-        journal->wipeBlacklistEntry(item._file);
+        journal->wipeErrorBlacklistEntry(item._file);
     }
 
     return newEntry.isValid();
@@ -106,10 +106,10 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     case SyncFileItem::Restoration:
         if( _item._hasBlacklistEntry ) {
             // wipe blacklist entry.
-            _propagator->_journal->wipeBlacklistEntry(_item._file);
+            _propagator->_journal->wipeErrorBlacklistEntry(_item._file);
             // remove a blacklist entry in case the file was moved.
             if( _item._originalFile != _item._file ) {
-                _propagator->_journal->wipeBlacklistEntry(_item._originalFile);
+                _propagator->_journal->wipeErrorBlacklistEntry(_item._originalFile);
             }
         }
         break;

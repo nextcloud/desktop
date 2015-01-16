@@ -516,14 +516,14 @@ int Folder::downloadInfoCount()
     return _journal.downloadInfoCount();
 }
 
-int Folder::blackListEntryCount()
+int Folder::errorBlackListEntryCount()
 {
-    return _journal.blackListEntryCount();
+    return _journal.errorBlackListEntryCount();
 }
 
-int Folder::slotWipeBlacklist()
+int Folder::slotWipeErrorBlacklist()
 {
-    return _journal.wipeBlacklist();
+    return _journal.wipeErrorBlacklist();
 }
 
 void Folder::slotWatchedPathChanged(const QString& path)

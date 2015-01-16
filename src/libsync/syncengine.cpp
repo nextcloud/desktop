@@ -163,14 +163,14 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
 
 }
 
-bool SyncEngine::checkBlacklisting( SyncFileItem *item )
+bool SyncEngine::checkErrorBlacklisting( SyncFileItem *item )
 {
     if( !_journal ) {
         qWarning() << "Journal is undefined!";
         return false;
     }
 
-    SyncJournalBlacklistRecord entry = _journal->blacklistEntry(item->_file);
+    SyncJournalErrorBlacklistRecord entry = _journal->errorBlacklistEntry(item->_file);
     item->_hasBlacklistEntry = false;
 
     if( !entry.isValid() ) {
@@ -254,7 +254,7 @@ void SyncEngine::deleteStaleUploadInfos()
     _journal->deleteStaleUploadInfos(upload_file_paths);
 }
 
-void SyncEngine::deleteStaleBlacklistEntries()
+void SyncEngine::deleteStaleErrorBlacklistEntries()
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> blacklist_file_paths;
@@ -264,7 +264,7 @@ void SyncEngine::deleteStaleBlacklistEntries()
     }
 
     // Delete from journal.
-    _journal->deleteStaleBlacklistEntries(blacklist_file_paths);
+    _journal->deleteStaleErrorBlacklistEntries(blacklist_file_paths);
 }
 
 int SyncEngine::treewalkLocal( TREE_WALK_FILE* file, void *data )
@@ -451,7 +451,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item._direction = dir;
     // check for blacklisting of this item.
     // if the item is on blacklist, the instruction was set to IGNORE
-    checkBlacklisting( &item );
+    checkErrorBlacklisting( &item );
 
     if (!item._isDirectory) {
         _progressInfo._totalFileCount++;
@@ -741,7 +741,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     deleteStaleDownloadInfos();
     deleteStaleUploadInfos();
-    deleteStaleBlacklistEntries();
+    deleteStaleErrorBlacklistEntries();
     _journal->commit("post stale entry removal");
 
     // Emit the started signal only after the propagator has been set up.

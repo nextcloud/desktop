@@ -162,8 +162,8 @@ public slots:
 
       int slotDiscardDownloadProgress();
       int downloadInfoCount();
-      int slotWipeBlacklist();
-      int blackListEntryCount();
+      int slotWipeErrorBlacklist();
+      int errorBlackListEntryCount();
 
       /**
        * Triggered by the folder watcher when a file/dir in this folder

@@ -48,10 +48,10 @@ bool OWNCLOUDSYNC_EXPORT
 operator==(const SyncJournalFileRecord & lhs,
            const SyncJournalFileRecord & rhs);
 
-class SyncJournalBlacklistRecord
+class SyncJournalErrorBlacklistRecord
 {
 public:
-    SyncJournalBlacklistRecord()
+    SyncJournalErrorBlacklistRecord()
         : _retryCount(0)
         , _lastTryModtime(0)
         , _lastTryTime(0)
@@ -83,8 +83,8 @@ public:
      * If the returned record is invalid, the file shall not be
      * blacklisted.
      */
-    static SyncJournalBlacklistRecord update(
-            const SyncJournalBlacklistRecord& old, const SyncFileItem& item);
+    static SyncJournalErrorBlacklistRecord update(
+            const SyncJournalErrorBlacklistRecord& old, const SyncFileItem& item);
 };
 
 }
