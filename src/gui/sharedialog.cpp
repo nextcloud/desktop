@@ -30,11 +30,9 @@ ShareDialog::ShareDialog(const QString &sharePath, const QString &localPath, QWi
     _pi_link = new QProgressIndicator();
     _pi_password = new QProgressIndicator();
     _pi_date = new QProgressIndicator();
-    _pi_password->hide();
-    _pi_date->hide();
-    _ui->horizontalLayout_4->addWidget(_pi_link);
-    _ui->horizontalLayout_5->addWidget(_pi_password);
-    _ui->horizontalLayout_3->addWidget(_pi_date);
+    _ui->horizontalLayout_shareLink->addWidget(_pi_link);
+    _ui->horizontalLayout_password->addWidget(_pi_password);
+    _ui->horizontalLayout_expire->addWidget(_pi_date);
 
     connect(_ui->checkBox_shareLink, SIGNAL(clicked()), this, SLOT(slotCheckBoxShareLinkClicked()));
     connect(_ui->checkBox_password, SIGNAL(clicked()), this, SLOT(slotCheckBoxPasswordClicked()));
@@ -42,11 +40,8 @@ ShareDialog::ShareDialog(const QString &sharePath, const QString &localPath, QWi
     connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
     connect(_ui->calendar, SIGNAL(clicked(QDate)), SLOT(slotCalendarClicked(QDate)));
 
-    _ui->lineEdit_shareLink->hide();
-    _ui->pushButton_copy->hide();
+    _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
-    _ui->checkBox_password->hide();
-    _ui->checkBox_expire->hide();
     _ui->calendar->hide();
 
     QFileInfo f_info(_localPath);
@@ -208,11 +203,7 @@ void ShareDialog::slotSharesFetched(const QString &reply)
         {
             _public_share_id = data.value("id").toULongLong();
 
-            _ui->lineEdit_shareLink->show();
-            _ui->pushButton_copy->show();
-            _ui->checkBox_password->show();
-            _ui->checkBox_expire->show();
-            _ui->pushButton_copy->show();
+            _ui->widget_shareLink->show();
             _ui->checkBox_shareLink->setChecked(true);
 
             if (data.value("share_with").isValid())
@@ -241,11 +232,8 @@ void ShareDialog::slotDeleteShareFetched(const QString & /* reply */)
     _pi_date->hide();
 
     _pi_link->stopAnimation();
-    _ui->lineEdit_shareLink->hide();
-    _ui->pushButton_copy->hide();
+    _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
-    _ui->checkBox_password->hide();
-    _ui->checkBox_expire->hide();
     _ui->calendar->hide();
 }
 
@@ -309,18 +297,13 @@ void ShareDialog::slotCreateShareFetched(const QString &reply)
 
 
     _pi_link->stopAnimation();
-    _pi_password->show();
-    _pi_date->show();
     bool success;
     QVariantMap json = QtJson::parse(reply, success).toMap();
     _public_share_id = json.value("ocs").toMap().values("data")[0].toMap().value("id").toULongLong();
     QString url = json.value("ocs").toMap().values("data")[0].toMap().value("url").toString();
     _ui->lineEdit_shareLink->setText(url);
-    _ui->lineEdit_shareLink->show();
-    _ui->pushButton_copy->show();
-    _ui->checkBox_password->show();
-    _ui->checkBox_expire->show();
-    _ui->pushButton_copy->show();
+
+    _ui->widget_shareLink->show();
 }
 
 void ShareDialog::slotCheckBoxPasswordClicked()
