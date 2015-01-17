@@ -73,7 +73,7 @@ private:
     qulonglong _public_share_id;
     void setPassword(const QString &password);
     void setExpireDate(const QString &date);
-    int checkJsonReturnCode(const QString &reply);
+    int checkJsonReturnCode(const QString &reply, QString &message);
 
     QProgressIndicator *_pi_link;
     QProgressIndicator *_pi_password;

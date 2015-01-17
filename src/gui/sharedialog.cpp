@@ -77,25 +77,17 @@ void ShareDialog::setExpireDate(const QString &date)
 
 void ShareDialog::slotExpireSet(const QString &reply)
 {
-    int code = checkJsonReturnCode(reply);
+    QString message;
+    int code = checkJsonReturnCode(reply, message);
 
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
-    if (code == 100) {
-    } else if (code == 400) {
+    if (code != 100) {
         QMessageBox msgBox;
-        msgBox.setText("Wrong or no update parameter given");
+        msgBox.setText(message);
+        msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
         msgBox.exec();
-    } else if (code == 403) {
-        QMessageBox msgBox;
-        msgBox.setText("Public upload disabled by the admin");
-        msgBox.exec();
-    } else if (code == 404) {
-        QMessageBox msgBox;
-        msgBox.setText("Couldn’t update share");
-        msgBox.exec();
-    } else {
-        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
-    }
+    } 
+
     _pi_date->stopAnimation();
 }
 
@@ -135,24 +127,15 @@ void ShareDialog::setPassword(const QString &password)
 
 void ShareDialog::slotPasswordSet(const QString &reply)
 {
-    int code = checkJsonReturnCode(reply);
+    QString message;
+    int code = checkJsonReturnCode(reply, message);
 
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
-    if (code == 100) {
-    } else if (code == 400) {
+    if (code != 100) {
         QMessageBox msgBox;
-        msgBox.setText("Wrong or no update parameter given");
+        msgBox.setText(message);
+        msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
         msgBox.exec();
-    } else if (code == 403) {
-        QMessageBox msgBox;
-        msgBox.setText("Public upload disabled by the admin");
-        msgBox.exec();
-    } else if (code == 404) {
-        QMessageBox msgBox;
-        msgBox.setText("Couldn’t update share");
-        msgBox.exec();
-    } else {
-        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
     }
 
     _pi_password->stopAnimation();
@@ -173,23 +156,15 @@ void ShareDialog::getShares()
 
 void ShareDialog::slotSharesFetched(const QString &reply)
 {
-    int code = checkJsonReturnCode(reply);
+    QString message;
+    int code = checkJsonReturnCode(reply, message);
 
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
-    if (code == 100) {
-    } else if (code == 400) {
+    if (code != 100) {
         QMessageBox msgBox;
-        msgBox.setText("Not a directory (if the ‘subfile’ argument was used)");
+        msgBox.setText(message);
+        msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
         msgBox.exec();
-        return;
-    } else if (code == 404) {
-        QMessageBox msgBox;
-        msgBox.setText("File doesn’t exist");
-        msgBox.exec();
-        return;
-    } else {
-        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
-        return;
     }
 
     bool success = false;
@@ -270,31 +245,16 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
 
 void ShareDialog::slotCreateShareFetched(const QString &reply)
 {
-    int code = checkJsonReturnCode(reply);
+    QString message;
+    int code = checkJsonReturnCode(reply, message);
 
-    qDebug() << Q_FUNC_INFO << "Status code: " << code;
-    if (code == 100) {
-    } else if (code == 400) {
+    if (code != 100) {
         QMessageBox msgBox;
-        msgBox.setText("Unknown share type");
+        msgBox.setText(message);
+        msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
         msgBox.exec();
-        return;
-    } else if (code == 403) {
-        QMessageBox msgBox;
-        msgBox.setText("Public upload was disabled by the admin");
-        msgBox.exec();
-        return;
-    } else if (code == 404) {
-        QMessageBox msgBox;
-        msgBox.setText("File couldn’t be shared");
-        msgBox.exec();
-        return;
-    } else {
-        qDebug() << Q_FUNC_INFO << "Unkown status code: " << code;
         return;
     }
-
-
 
     _pi_link->stopAnimation();
     bool success;
@@ -338,7 +298,7 @@ void ShareDialog::slotCheckBoxExpireClicked()
     }
 }
 
-int ShareDialog::checkJsonReturnCode(const QString &reply)
+int ShareDialog::checkJsonReturnCode(const QString &reply, QString &message)
 {
     bool success;
     QVariantMap json = QtJson::parse(reply, success).toMap();
@@ -349,6 +309,7 @@ int ShareDialog::checkJsonReturnCode(const QString &reply)
 
     //TODO proper checking
     int code = json.value("ocs").toMap().value("meta").toMap().value("statuscode").toInt();
+    message = json.value("ocs").toMap().value("meta").toMap().value("message").toString();
 
     return code;
 }
