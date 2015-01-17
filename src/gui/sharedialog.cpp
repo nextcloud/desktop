@@ -178,9 +178,9 @@ void ShareDialog::slotSharesFetched(const QString &reply)
     bool success = false;
     QVariantMap json = QtJson::parse(reply, success).toMap();
     ShareDialog::_shares = json.value("ocs").toMap().values("data")[0].toList();
-    for(int i = 0; i < ShareDialog::_shares.count(); i++)
+    Q_FOREACH(auto share, ShareDialog::_shares)
     {
-        QVariantMap data = ShareDialog::_shares[i].toMap();
+        QVariantMap data = share.toMap();
 
         if (data.value("share_type").toInt() == SHARETYPE_PUBLIC)
         {
