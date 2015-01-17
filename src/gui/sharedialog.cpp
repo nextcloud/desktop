@@ -198,9 +198,8 @@ void ShareDialog::slotSharesFetched(const QString &reply)
 
             if (data.value("expiration").isValid())
             {
-                const QDate date = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
-                _ui->calendar->setSelectedDate(date);
-                _ui->calendar->setMinimumDate(date);
+                _ui->calendar->setSelectedDate(QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00"));
+                _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
                 _ui->calendar->show();
                 _ui->checkBox_expire->setChecked(true);
             }
@@ -296,9 +295,10 @@ void ShareDialog::slotCheckBoxExpireClicked()
 {
     if (_ui->checkBox_expire->checkState() == Qt::Checked)
     {
-        QDate date = QDate::currentDate().addDays(1);
+        const QDate date = QDate::currentDate().addDays(1);
         ShareDialog::setExpireDate(date.toString("dd-MM-yyyy"));
         _ui->calendar->setSelectedDate(date);
+        _ui->calendar->setMinimumDate(date);
         _ui->calendar->show();
     }
     else
