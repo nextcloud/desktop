@@ -59,7 +59,7 @@ ShareDialog::ShareDialog(const QString &sharePath, const QString &localPath, QWi
     _ui->lineEdit_sharePath->setText(_sharePath);
 }
 
-void ShareDialog::setExpireDate(const QString &date)
+void ShareDialog::setExpireDate(const QDate &date)
 {
     _pi_date->startAnimation();
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
@@ -67,7 +67,13 @@ void ShareDialog::setExpireDate(const QString &date)
     QList<QPair<QString, QString> > getParams;
     QList<QPair<QString, QString> > postParams;
     getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
-    postParams.append(qMakePair(QString::fromLatin1("expireDate"), date));
+
+    if (date.isValid()) {
+        postParams.append(qMakePair(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd")));
+    } else {
+        postParams.append(qMakePair(QString::fromLatin1("expireDate"), QString()));
+    }
+
     url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
     OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
@@ -93,7 +99,7 @@ void ShareDialog::slotExpireSet(const QString &reply)
 
 void ShareDialog::slotCalendarClicked(const QDate &date)
 {
-    ShareDialog::setExpireDate(date.toString("yyyy-MM-dd"));
+    ShareDialog::setExpireDate(date);
 }
 
 ShareDialog::~ShareDialog()
@@ -304,14 +310,14 @@ void ShareDialog::slotCheckBoxExpireClicked()
     if (_ui->checkBox_expire->checkState() == Qt::Checked)
     {
         const QDate date = QDate::currentDate().addDays(1);
-        ShareDialog::setExpireDate(date.toString("dd-MM-yyyy"));
+        ShareDialog::setExpireDate(date);
         _ui->calendar->setSelectedDate(date);
         _ui->calendar->setMinimumDate(date);
         _ui->calendar->show();
     }
     else
     {
-        ShareDialog::setExpireDate(QString());
+        ShareDialog::setExpireDate(QDate());
         _ui->calendar->hide();
     }
 }
