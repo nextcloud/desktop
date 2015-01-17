@@ -210,10 +210,18 @@ void ShareDialog::slotSharesFetched(const QString &reply)
     }
 }
 
-void ShareDialog::slotDeleteShareFetched(const QString & /* reply */)
+void ShareDialog::slotDeleteShareFetched(const QString &reply)
 {
-    _pi_password->hide();
-    _pi_date->hide();
+    QString message;
+    int code = checkJsonReturnCode(reply, message);
+
+    qDebug() << Q_FUNC_INFO << "Status code: " << code;
+    if (code != 100) {
+        QMessageBox msgBox;
+        msgBox.setText(message);
+        msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
+        msgBox.exec();
+    }
 
     _pi_link->stopAnimation();
     _ui->widget_shareLink->hide();
