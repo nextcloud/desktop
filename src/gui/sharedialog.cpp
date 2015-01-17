@@ -62,7 +62,7 @@ ShareDialog::ShareDialog(const QString &sharePath, const QString &localPath, QWi
 void ShareDialog::setExpireDate(const QString &date)
 {
     _pi_date->startAnimation();
-    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
+    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
     QUrl postData;
     QList<QPair<QString, QString> > getParams;
     QList<QPair<QString, QString> > postParams;
@@ -112,7 +112,7 @@ void ShareDialog::slotPasswordReturnPressed()
 void ShareDialog::setPassword(const QString &password)
 {
     _pi_password->startAnimation();
-    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
+    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
     QUrl postData;
     QList<QPair<QString, QString> > getParams;
     QList<QPair<QString, QString> > postParams;
@@ -243,7 +243,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
     else
     {
         _pi_link->startAnimation();
-        QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/").append(QString::number(_public_share_id)));
+        QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
         QList<QPair<QString, QString> > getParams;
         getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
         url.setQueryItems(getParams);
