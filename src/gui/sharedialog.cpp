@@ -131,11 +131,19 @@ void ShareDialog::slotPasswordSet(const QString &reply)
     int code = checkJsonReturnCode(reply, message);
 
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
+
     if (code != 100) {
         QMessageBox msgBox;
         msgBox.setText(message);
         msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
         msgBox.exec();
+    } else {
+        /*
+         * When setting/deleting a password from a share the old share is
+         * deleted and a new one is created. So we need to refetch the shares
+         * at this point.
+         */
+        getShares();
     }
 
     _pi_password->stopAnimation();
@@ -190,7 +198,9 @@ void ShareDialog::slotSharesFetched(const QString &reply)
 
             if (data.value("expiration").isValid())
             {
-                _ui->calendar->setSelectedDate(QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00"));
+                const QDate date = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
+                _ui->calendar->setSelectedDate(date);
+                _ui->calendar->setMinimumDate(date);
                 _ui->calendar->show();
                 _ui->checkBox_expire->setChecked(true);
             }
