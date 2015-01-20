@@ -58,7 +58,7 @@ public slots:
     void slotClearExcludesList();
 
 signals:
-    void shareCommandReceived(const QString &path);
+    void shareCommandReceived(const QString &sharePath, const QString &localPath);
 
 private slots:
     void slotNewConnection();
