@@ -5,7 +5,7 @@ direct these to the [mailing list][mailinglist] or our [forum][forum].
 We are also available on [IRC][irc].
 
 ### Bug Reporting Guidelines
-* Important: Report the issue using our [template][template], it includes all the
+* __Important__: Report the issue using our [template][template], it includes all the
   informations we need to track down the issue.  
 * This repository is *only* for issues within the ownCloud desktop client. 
   Issues in other compontents should be reported in their own repositores: 
@@ -40,7 +40,7 @@ application or how to test the ownCloud code with phpunit.
 
 [agreement]: http://owncloud.org/about/contributor-agreement/
 [devmanual]: http://owncloud.org/dev/
-[desktopman]: http://doc.owncloud.org/desktop/1.1/
+[desktopman]: http://doc.owncloud.org/desktop/1.7/
 
 ## Translations
 Please submit translations via [Transifex][transifex].
