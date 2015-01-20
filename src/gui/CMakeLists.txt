@@ -253,7 +253,7 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
         BUNDLE  DESTINATION "."
  )
 
-
+# FIXME: The following lines are dup in src/gui and src/cmd because it needs to be done after both are installed
 #FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary
 # currently it needs to be done because the code right above needs to be executed no matter
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
