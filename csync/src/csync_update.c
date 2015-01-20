@@ -30,6 +30,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include <time.h>
+#include <math.h>
 
 #include "c_lib.h"
 #include "c_jhash.h"
@@ -104,6 +105,23 @@ static bool _csync_sameextension(const char *p1, const char *p2) {
 static bool _last_db_return_error(CSYNC* ctx) {
     return ctx->statedb.lastReturnValue != SQLITE_OK && ctx->statedb.lastReturnValue != SQLITE_DONE && ctx->statedb.lastReturnValue != SQLITE_ROW;
 }
+
+
+/* Return true if two mtime are considered equal
+ * We consider mtime that are one hour difference to be equal if they are one hour appart
+ * because on some system (FAT) the date is changing when the daylight saving is changing */
+static bool _csync_mtime_equal(time_t a, time_t b)
+{
+    if (a == b)
+        return true;
+
+    /* 1h of difference +- 1 second because the accuracy of FAT is 2 seconds (#2438) */
+    if (fabs(3600 - fabs(difftime(a, b))) < 2)
+        return true;
+
+    return false;
+}
+
 
 static int _csync_detect_update(CSYNC *ctx, const char *file,
     const csync_vio_file_stat_t *fs, const int type) {
@@ -267,10 +285,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             goto out;
         }
         if((ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag ))
-            || (ctx->current == LOCAL_REPLICA && ((fs->mtime != tmp->modtime
-                                                        /* Ignore when there is exactly one hour difference because of summer time switches */
-                                                        && (int64_t)difftime(fs->mtime, tmp->modtime) != 3600
-                                                        && (int64_t)difftime(fs->mtime, tmp->modtime) != -3600)
+            || (ctx->current == LOCAL_REPLICA && (!_csync_mtime_equal(fs->mtime, tmp->modtime)
                                                   // zero size in statedb can happen during migration
                                                   || (tmp->size != 0 && fs->size != tmp->size)
 #if 0
