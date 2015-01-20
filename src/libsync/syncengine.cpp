@@ -618,7 +618,7 @@ void SyncEngine::startSync()
     // This is used for the DiscoveryJob to be able to request the main thread/
     // to read in directory contents.
     qDebug() << Q_FUNC_INFO << _remotePath << _remoteUrl;
-    _discoveryMainThread->setupHooks(_csync_ctx, discoveryJob, _remotePath);
+    _discoveryMainThread->setupHooks( discoveryJob, _remotePath);
 
     // Starts the update in a seperate thread
     QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);

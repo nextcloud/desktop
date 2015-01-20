@@ -222,7 +222,7 @@ static csync_vio_file_stat_t* propertyMapToFileStat(QMap<QString,QString> map)
                 file_stat->remotePerm[0] = ' ';
                 // see _csync_detect_update()
                 file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERM;
-            } else if (value.length() < sizeof(file_stat->remotePerm)) {
+            } else if (value.length() < int(sizeof(file_stat->remotePerm))) {
                 strncpy(file_stat->remotePerm, value.toUtf8(), sizeof(file_stat->remotePerm));
                 file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERM;
             } else {
@@ -291,7 +291,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     deleteLater();
 }
 
-void DiscoveryMainThread::setupHooks(CSYNC *ctx, DiscoveryJob *discoveryJob, QString pathPrefix)
+void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &pathPrefix)
 {
     qDebug() << Q_FUNC_INFO;
     _discoveryJob = discoveryJob;

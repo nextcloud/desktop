@@ -34,12 +34,12 @@ class Account;
  * if the files are new, or changed.
  */
 
-typedef struct {
+struct DiscoveryDirectoryResult {
     QString msg;
     int code;
     QLinkedList<csync_vio_file_stat_t*>::iterator iterator;
     QLinkedList<csync_vio_file_stat_t *> list;
-} DiscoveryDirectoryResult;
+};
 
 // Run in the main thread, reporting to the DiscoveryJobMainThread object
 class DiscoverySingleDirectoryJob : public QObject {
@@ -74,12 +74,12 @@ class DiscoveryMainThread : public QObject {
     // If it is not in this map it needs to be requested
     QMap<QString, QLinkedList<csync_vio_file_stat_t*> > _directoryContents;
 
-    DiscoveryDirectoryResult *_currentDiscoveryDirectoryResult;
 
     QPointer<DiscoveryJob> _discoveryJob;
     QPointer<DiscoverySingleDirectoryJob> _singleDirJob;
     QString _pathPrefix;
     AccountPtr _account;
+    DiscoveryDirectoryResult *_currentDiscoveryDirectoryResult;
 
 public:
     DiscoveryMainThread(AccountPtr account) : QObject(), _account(account), _currentDiscoveryDirectoryResult(0) {
@@ -100,7 +100,7 @@ public slots:
     void singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, QString msg);
     void singleDirectoryJobFirstDirectoryPermissionsSlot(QString);
 public:
-    void setupHooks(CSYNC *ctx, DiscoveryJob *discoveryJob, QString pathPrefix);
+    void setupHooks(DiscoveryJob* discoveryJob, const QString &pathPrefix);
 };
 
 
