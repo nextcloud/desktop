@@ -86,7 +86,17 @@ public:
 
     }
     ~DiscoveryMainThread() {
-          // FIXME We need to do the deletion of each item inside the map and list _directoryContents
+        QMutableMapIterator<QString, QLinkedList<csync_vio_file_stat_t*> > im(_directoryContents);
+         while (im.hasNext()) {
+             im.next();
+             QMutableLinkedListIterator<csync_vio_file_stat_t*> il(im.value());
+             while (il.hasNext()){
+                 il.next();
+                 csync_vio_file_stat_destroy(il.value());
+                 il.remove();
+             }
+             im.remove();
+         }
     }
     void abort();
 
