@@ -269,7 +269,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             _tray->setToolTip(trayMessage);
         } else {
             // undefined because there are no folders.
-            QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
+            QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Problem, true);
             _tray->setIcon( icon );
             _tray->setToolTip(tr("There are no sync folders configured."));
         }
