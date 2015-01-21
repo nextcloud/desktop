@@ -192,7 +192,7 @@ void ShareDialog::slotSharesFetched(const QString &reply)
     int code = checkJsonReturnCode(reply, message);
 
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
-    if (code != 100) {
+    if (code != 100 & code != 404) {
         displayError(code);
     }
 
