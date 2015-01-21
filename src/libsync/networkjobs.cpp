@@ -361,10 +361,10 @@ bool LsColJob::finished()
                     reader.namespaceUri() == QLatin1String("DAV:")) {
                 QString name = reader.name().toString();
                 if (name == QLatin1String("href")) {
-                    currentItem = reader.readElementText();
+                    currentItem = QUrl::fromPercentEncoding(reader.readElementText().toLatin1());
                 } else if (name == QLatin1String("collection") &&
                            !currentItem.isEmpty()) {
-                    folders.append(QUrl::fromEncoded(currentItem.toLatin1()).path());
+                    folders.append(currentItem);
                 } else if (name == QLatin1String("quota-used-bytes") &&
                            !currentItem.isEmpty()) {
                     bool ok = false;
