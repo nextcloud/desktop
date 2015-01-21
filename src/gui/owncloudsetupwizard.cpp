@@ -220,16 +220,17 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 
 bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
 {
-    if(reply->url().scheme() == QLatin1String("https")) {
+    qWarning() << reply->url() << reply->errorString() << reply->error() << reply->hasRawHeader("Strict-Transport-Security");
+
+    if(reply->url().scheme() != QLatin1String("https")) {
         return false;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError:
     case QNetworkReply::ContentNotFoundError:
-    case QNetworkReply::ConnectionRefusedError:
+    case QNetworkReply::AuthenticationRequiredError:
     case QNetworkReply::HostNotFoundError:
-    case QNetworkReply::TimeoutError:
         return false;
     default:
         break;
@@ -251,8 +252,10 @@ void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
         break;
     default:
         _ocWizard->show();
-        _ocWizard->back();
-        _ocWizard->displayError(reply->errorString(), checkDowngradeAdvised(reply));
+        if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds) {
+            _ocWizard->back();
+        }
+        _ocWizard->displayError(reply->errorString(), _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
         break;
     }
 }

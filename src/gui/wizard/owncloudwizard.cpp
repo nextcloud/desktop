@@ -180,6 +180,12 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
     }
 
     setOption(QWizard::HaveCustomButton1, id == WizardCommon::Page_AdvancedSetup);
+
+    if (id == WizardCommon::Page_AdvancedSetup) {
+        // Going back from this page messes the state as the account is created already
+        button(QWizard::BackButton)->setDisabled(true);
+    }
+
 }
 
 void OwncloudWizard::displayError( const QString& msg, bool retryHTTPonly )
