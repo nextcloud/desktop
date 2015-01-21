@@ -48,6 +48,12 @@ SelectiveSyncTreeView::SelectiveSyncTreeView(AccountPtr account, QWidget* parent
     headerItem()->setText(1, tr("Size"));
 }
 
+QSize SelectiveSyncTreeView::sizeHint() const
+{
+    return QTreeView::sizeHint().expandedTo(QSize(400, 400));
+}
+
+
 void SelectiveSyncTreeView::refreshFolders()
 {
     LsColJob *job = new LsColJob(_account, _folderPath, this);
@@ -56,7 +62,7 @@ void SelectiveSyncTreeView::refreshFolders()
     job->start();
     clear();
     _loading->show();
-    _loading->move(10,10);
+    _loading->move(10,header()->height() + 10);
 }
 
 static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)

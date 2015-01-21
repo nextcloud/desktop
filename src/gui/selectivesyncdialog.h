@@ -44,6 +44,8 @@ public:
         _oldBlackList = oldBlackList;
         refreshFolders();
     }
+
+    QSize sizeHint() const Q_DECL_OVERRIDE;
 private slots:
     void slotUpdateDirectories(const QStringList &);
     void slotItemExpanded(QTreeWidgetItem *);
