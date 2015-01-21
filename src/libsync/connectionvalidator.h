@@ -36,6 +36,7 @@ public:
         ServerVersionMismatch,
         CredentialsWrong,
         StatusNotFound,
+        UserCanceledCredentials,
         // actually also used for other errors on the authed request
         Timeout
     };

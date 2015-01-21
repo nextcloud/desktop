@@ -43,6 +43,8 @@ QString ConnectionValidator::statusString( Status stat )
         return QLatin1String("Credentials Wrong");
     case StatusNotFound:
         return QLatin1String("Status not found");
+    case UserCanceledCredentials:
+        return QLatin1String("User canceled credentials");
     case Timeout:
         return QLatin1String("Timeout");
     }
@@ -117,6 +119,10 @@ void ConnectionValidator::checkAuthentication()
     AbstractCredentials *creds = _account->credentials();
     disconnect( creds, SIGNAL(fetched()),
                 this, SLOT(checkAuthentication()));
+
+    if (!creds->ready()) { // The user canceled
+        reportResult(UserCanceledCredentials);
+    }
 
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)

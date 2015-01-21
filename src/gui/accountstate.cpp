@@ -206,6 +206,9 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::CredentialsWrong:
         account()->handleInvalidCredentials();
         break;
+    case ConnectionValidator::UserCanceledCredentials:
+        setState(SignedOut);
+        break;
     case ConnectionValidator::Timeout:
         setState(NetworkError);
         break;
