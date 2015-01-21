@@ -4,10 +4,12 @@
 #include "account.h"
 #include "json.h"
 #include "folderman.h"
+#include "folder.h"
+#include "theme.h"
+#include "syncresult.h"
+
 #include "QProgressIndicator.h"
 #include <QBuffer>
-#include <QMovie>
-#include <QMessageBox>
 #include <QFileIconProvider>
 
 namespace {
@@ -25,11 +27,12 @@ ShareDialog::ShareDialog(const QString &sharePath, const QString &localPath, QWi
     setAttribute(Qt::WA_DeleteOnClose);
     _ui->setupUi(this);
     _ui->pushButton_copy->setIcon(QIcon::fromTheme("edit-copy"));
-    layout()->setSizeConstraint(QLayout::SetFixedSize);
 
-    _pi_link = new QProgressIndicator();
+    // the following progress indicator widgets are added to layouts which makes them
+    // automatically deleted once the dialog dies.
+    _pi_link     = new QProgressIndicator();
     _pi_password = new QProgressIndicator();
-    _pi_date = new QProgressIndicator();
+    _pi_date     = new QProgressIndicator();
     _ui->horizontalLayout_shareLink->addWidget(_pi_link);
     _ui->horizontalLayout_password->addWidget(_pi_password);
     _ui->horizontalLayout_expire->addWidget(_pi_date);
@@ -48,15 +51,37 @@ ShareDialog::ShareDialog(const QString &sharePath, const QString &localPath, QWi
     QFileIconProvider icon_provider;
     QIcon icon = icon_provider.icon(f_info);
     _ui->label_icon->setPixmap(icon.pixmap(40,40));
-    if (f_info.isDir()) {
-        _ui->lineEdit_name->setText(f_info.dir().dirName());
-        _ui->lineEdit_type->setText("Directory");
+
+    QString name;
+    if( f_info.isDir() ) {
+        name = QString("Share directory %2").arg(_localPath);
     } else {
-        _ui->lineEdit_name->setText(f_info.fileName());
-        _ui->lineEdit_type->setText("File");
+        name = QString("Share file %1").arg(_localPath);
     }
-    _ui->lineEdit_localPath->setText(_localPath);
-    _ui->lineEdit_sharePath->setText(_sharePath);
+    _ui->label_name->setText(name);
+    _ui->label_sharePath->setWordWrap(true);
+    _ui->label_sharePath->setText(tr("%1 path: %2").arg(Theme::instance()->appNameGUI()).arg(_sharePath));
+    this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
+
+    // check if the file is already inside of a synced folder
+    if( sharePath.isEmpty() ) {
+        // The file is not yet in ownCloud. It must be copied into first.
+        _ui->checkBox_shareLink->setEnabled(false);
+        uploadExternalFile();
+    }
+
+    // error label, red box and stuff
+    _ui->errorLabel->setLineWidth(1);
+    _ui->errorLabel->setFrameStyle(QFrame::Plain);
+
+    QPalette errPalette = _ui->errorLabel->palette();
+    errPalette.setColor(QPalette::Active, QPalette::Base, QColor(0xaa, 0x4d, 0x4d));
+    errPalette.setColor(QPalette::Active, QPalette::WindowText, QColor(0xaa, 0xaa, 0xaa));
+
+    _ui->errorLabel->setPalette(errPalette);
+    _ui->errorLabel->setFrameShape(QFrame::Box);
+    _ui->errorLabel->setContentsMargins(QMargins(12,12,12,12));
+
 }
 
 void ShareDialog::setExpireDate(const QDate &date)
@@ -88,10 +113,7 @@ void ShareDialog::slotExpireSet(const QString &reply)
 
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
     if (code != 100) {
-        QMessageBox msgBox;
-        msgBox.setText(message);
-        msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
-        msgBox.exec();
+        displayError(code);
     } 
 
     _pi_date->stopAnimation();
@@ -139,10 +161,7 @@ void ShareDialog::slotPasswordSet(const QString &reply)
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
 
     if (code != 100) {
-        QMessageBox msgBox;
-        msgBox.setText(message);
-        msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
-        msgBox.exec();
+        displayError(100);
     } else {
         /*
          * When setting/deleting a password from a share the old share is
@@ -157,7 +176,6 @@ void ShareDialog::slotPasswordSet(const QString &reply)
 
 void ShareDialog::getShares()
 {
-    this->setWindowTitle(tr("Sharing %1").arg(_sharePath));
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
     QList<QPair<QString, QString> > params;
     params.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
@@ -175,10 +193,7 @@ void ShareDialog::slotSharesFetched(const QString &reply)
 
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
     if (code != 100) {
-        QMessageBox msgBox;
-        msgBox.setText(message);
-        msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
-        msgBox.exec();
+        displayError(code);
     }
 
     bool success = false;
@@ -223,10 +238,7 @@ void ShareDialog::slotDeleteShareFetched(const QString &reply)
 
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
     if (code != 100) {
-        QMessageBox msgBox;
-        msgBox.setText(message);
-        msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
-        msgBox.exec();
+        displayError(code);
     }
 
     _pi_link->stopAnimation();
@@ -272,10 +284,7 @@ void ShareDialog::slotCreateShareFetched(const QString &reply)
     int code = checkJsonReturnCode(reply, message);
 
     if (code != 100) {
-        QMessageBox msgBox;
-        msgBox.setText(message);
-        msgBox.setWindowTitle(QString("Server replied with code %1").arg(code));
-        msgBox.exec();
+        displayError(code);
         return;
     }
 
@@ -338,13 +347,125 @@ int ShareDialog::checkJsonReturnCode(const QString &reply, QString &message)
     return code;
 }
 
+void ShareDialog::displayError(int code)
+{
+    const QString errMsg = tr("OCS API error code: %1").arg(code);
+    _ui->errorLabel->setText( errMsg );
+}
+
+void ShareDialog::displayInfo( const QString& msg )
+{
+    _ui->label_sharePath->setText(msg);
+}
+
+bool ShareDialog::uploadExternalFile()
+{
+    bool re = false;
+    const QString folderName = QString("ownCloud"); // FIXME: get a proper folder name
+
+    Folder *folder = 0;
+    Folder::Map folders = FolderMan::instance()->map();
+    if( folders.isEmpty() ) {
+        // no folder to work on.
+        return false;
+    }
+    if( folders.contains( Theme::instance()->appNameGUI()) ) {
+        folder = folders.value(Theme::instance()->appNameGUI());
+    }
+    if( !folder ) {
+        folder = folders.value( folders.keys().at(0));
+    }
+    FolderMan::instance()->folder(folderName);
+    if( ! folder ) {
+        qDebug() << "Folder not defined: " << folderName;
+        return false;
+    }
+
+    QFileInfo fi(_localPath);
+    if( fi.isDir() ) {
+        // we can not do this for directories yet.
+        displayInfo(tr("Sharing of external directories is not yet working."));
+        return false;
+    }
+    _sharePath = folder->remotePath()+QLatin1Char('/')+fi.fileName();
+    _folderAlias = folderName;
+
+    // connect the finish signal of the folder before the file to upload
+    // is copied to the sync folder.
+    connect( folder, SIGNAL(syncFinished(SyncResult)), this, SLOT(slotNextSyncFinished(SyncResult)) );
+
+    // copy the file
+    _expectedSyncFile = folder->path()+fi.fileName();
+
+    QFileInfo target(_expectedSyncFile);
+    if( target.exists() ) {
+        _ui->label_sharePath->setText(tr("A sync file with the same name exists. "
+                                         "The file can not be registered to sync."));
+        // TODO: Add a file comparison here. If the existing file is still the same
+        // then the file-to-copy we can share it.
+        _sharePath.clear();
+    } else {
+        _uploadFails = 0;
+        _ui->pi_share->startAnimation();
+        QFile file( _localPath);
+        if( file.copy(_expectedSyncFile) ) {
+            // copying succeeded.
+            re = true;
+            displayInfo(tr("Waiting to upload..."));
+        } else {
+            displayInfo(tr("Unable to register in sync space."));
+        }
+    }
+    return re;
+}
+
+void ShareDialog::slotNextSyncFinished( const SyncResult& result )
+{
+    // FIXME: Check for state!
+    SyncFileItemVector itemVector = result.syncFileItemVector();
+    SyncFileItem targetItem;
+    Folder *folder = FolderMan::instance()->folder(_folderAlias);
+    const QString folderPath = folder->path();
+
+    _ui->pi_share->stopAnimation();
+
+    foreach( SyncFileItem item, itemVector ) {
+        const QString fullSyncedFile = folderPath + item._file;
+        if( item._direction == SyncFileItem::Up &&
+                fullSyncedFile == _expectedSyncFile) {
+            // found the item!
+            targetItem = item;
+            continue;
+        }
+    }
+
+    if( targetItem.isEmpty() ) {
+        // The item was not in this sync run. Lets wait for the next one. FIXME
+        _uploadFails ++;
+        if( _uploadFails > 2 ) {
+            // stop the upload job
+            displayInfo(tr("The file can not be synced."));
+        }
+    } else {
+        // it's there and the sync was successful.
+        // The server should be able to generate a share link now.
+        // Enable the sharing link
+        if( targetItem._status == SyncFileItem::Success ) {
+            _ui->checkBox_shareLink->setEnabled(true);
+            _ui->label_sharePath->setText(tr("%1 path: %2").arg(Theme::instance()->appNameGUI()).arg(_sharePath));
+        } else {
+            displayInfo(tr("Sync of registered file was not successful yet."));
+        }
+    }
+    _expectedSyncFile.clear();
+}
+
 
 OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, const QUrl &postData, AccountPtr account, QObject* parent)
 : AbstractNetworkJob(account, "", parent),
   _verb(verb),
   _url(url),
   _postData(postData)
-
 {
     setIgnoreCredentialFailure(true);
 }
@@ -373,7 +494,5 @@ bool OcsShareJob::finished()
     emit jobFinished(reply()->readAll());
     return true;
 }
-
-
 
 }

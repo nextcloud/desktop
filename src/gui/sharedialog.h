@@ -45,6 +45,7 @@ class AbstractCredentials;
 class Account;
 class QuotaInfo;
 class MirallAccessManager;
+class SyncResult;
 
 class ShareDialog : public QDialog
 {
@@ -54,6 +55,10 @@ public:
     explicit ShareDialog(const QString &sharePath, const QString &localPath, QWidget *parent = 0);
     ~ShareDialog();
     void getShares();
+
+public slots:
+    void slotNextSyncFinished( const SyncResult& result );
+
 private slots:
     void slotSharesFetched(const QString &reply);
     void slotCreateShareFetched(const QString &reply);
@@ -66,9 +71,18 @@ private slots:
     void slotCheckBoxExpireClicked();
     void slotPasswordReturnPressed();
 private:
+    void displayError(int code);
+    void displayInfo( const QString& msg );
+
+    bool uploadExternalFile();
+
     Ui::ShareDialog *_ui;
     QString _sharePath;
     QString _localPath;
+    QString _folderAlias;
+    int     _uploadFails;
+    QString _expectedSyncFile;
+
     QList<QVariant> _shares;
     qulonglong _public_share_id;
     void setPassword(const QString &password);

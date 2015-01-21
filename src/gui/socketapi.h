@@ -78,7 +78,7 @@ private:
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketType* socket);
     Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType* socket);
-    Q_INVOKABLE void command_SHARE(const QString& argument, SocketType* socket);
+    Q_INVOKABLE void command_SHARE(const QString& localFile, SocketType* socket);
 
     Q_INVOKABLE void command_VERSION(const QString& argument, SocketType* socket);
 

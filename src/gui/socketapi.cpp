@@ -398,26 +398,30 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
     sendMessage(socket, message);
 }
 
-void SocketApi::command_SHARE(const QString& argument, SocketType* socket)
+void SocketApi::command_SHARE(const QString& localFile, SocketType* socket)
 {
     if (!socket) {
         qDebug() << Q_FUNC_INFO << "No valid socket object.";
         return;
     }
 
-    qDebug() << Q_FUNC_INFO << argument;
+    qDebug() << Q_FUNC_INFO << localFile;
 
-    Folder *shareFolder = FolderMan::instance()->folderForPath(argument);
+    Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
     if (!shareFolder) {
-        const QString message = QLatin1String("SHARE:NOP:")+QDir::toNativeSeparators(argument);
+        const QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(localFile);
+        // FIXME: We could send here a "SHARE:PROGRESS" message back as this op will probably
+        // take longer. But currently we lack a way of getting a message once that has successfully
+        // worked.
+        emit shareCommandReceived(QString(), localFile);
         sendMessage(socket, message);
     } else {
-        const QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(argument);
+        const QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(localFile);
         sendMessage(socket, message);
 
         const QString folderForPath = shareFolder->path();
-        const QString path = shareFolder->remotePath() + argument.right(argument.count()-folderForPath.count()+1);
-        emit shareCommandReceived(path, argument);
+        const QString remotePath = shareFolder->remotePath() + localFile.right(localFile.count()-folderForPath.count()+1);
+        emit shareCommandReceived(remotePath, localFile);
     }
 }
 
