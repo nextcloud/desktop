@@ -41,6 +41,7 @@ class SocketConnect(GObject.GObject):
     _connected = False
     _watch_id = 0
     _sock = None
+    registered_paths = {}
 
     def __init__(self):
         GObject.GObject.__init__(self)
@@ -96,10 +97,22 @@ class MenuExtension( Nautilus.MenuProvider, SocketConnect):
         file=files[0]
         items=[]
 
+        # internal or external file?!
+        syncedFile = False
+        for reg_path in self.registered_paths:
+            if file.get_name().startswith(reg_path):
+                syncedFile = True
+
+        # if it is neither in a synced folder or is a directory
+        if (not syncedFile and file.is_directory()):
+            return items
+
+        # create an menu item
         item = Nautilus.MenuItem(name='NautilusPython::ShareItem', label='ownCloud Share...' ,
 				 tip='Share file %s through ownCloud' % file.get_name())
         item.connect("activate", self.menu_share, file)
         items.append(item)
+
         return items
 
 
@@ -111,7 +124,7 @@ class MenuExtension( Nautilus.MenuProvider, SocketConnect):
 class syncStateExtension(Nautilus.ColumnProvider, Nautilus.InfoProvider, SocketConnect):
 
     nautilusVFSFile_table = {}
-    registered_paths = {}
+
     remainder = ''
 
     def find_item_for_file(self, path):
