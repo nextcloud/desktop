@@ -185,6 +185,13 @@ public:
      */
     virtual QString updateCheckUrl() const;
 
+
+    /**
+     * When true, the setup wizard will show the selective sync dialog by default and default
+     * to nothing selected
+     */
+    virtual bool wizardSelectiveSyncDefaultNothing() const;
+
 protected:
     QIcon themeIcon(const QString& name, bool sysTray = false) const;
     Theme();

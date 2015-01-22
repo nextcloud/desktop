@@ -94,7 +94,7 @@ void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList
                     || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
                 foreach(const QString &str , _oldBlackList) {
-                    if (str == path) {
+                    if (str == path || str == QLatin1String("/")) {
                         item->setCheckState(0, Qt::Unchecked);
                         break;
                     } else if (str.startsWith(path)) {

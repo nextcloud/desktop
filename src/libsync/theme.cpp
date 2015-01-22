@@ -351,5 +351,11 @@ QPixmap Theme::wizardHeaderBanner() const
 }
 #endif
 
+bool Theme::wizardSelectiveSyncDefaultNothing() const
+{
+    return false;
+}
+
+
 } // end namespace mirall
 

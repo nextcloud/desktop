@@ -111,6 +111,12 @@ void OwncloudAdvancedSetupPage::initializePage()
     auto quotaJob = new CheckQuotaJob(acc, "/", this);
     connect(quotaJob, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotQuotaRetrieved(qint64,qint64)));
     quotaJob->start();
+
+
+    if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
+        _selectiveSyncBlacklist = QStringList("/");
+        QTimer::singleShot(0, this, SLOT(slotSelectiveSyncClicked()));
+    }
 }
 
 // Called if the user changes the user- or url field. Adjust the texts and
