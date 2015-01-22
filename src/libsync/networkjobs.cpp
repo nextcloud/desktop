@@ -435,7 +435,6 @@ bool LsColJob::finished()
 
             // End elements with DAV:
             if (type == QXmlStreamReader::EndElement) {
-                qDebug() << Q_FUNC_INFO << "EndElement" << name;
                 if (reader.namespaceUri() == QLatin1String("DAV:")) {
                     if (reader.name() == "response") {
                         if (currentHref.endsWith('/')) {

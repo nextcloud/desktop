@@ -185,10 +185,9 @@ void DiscoverySingleDirectoryJob::abort()
 static csync_vio_file_stat_t* propertyMapToFileStat(QMap<QString,QString> map)
 {
     csync_vio_file_stat_t* file_stat = csync_vio_file_stat_new();
-    qDebug() << Q_FUNC_INFO;
 
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
-        qDebug() << it.key() << it.value();
+        //qDebug() << it.key() << it.value();
         QString property = it.key();
         QString value = it.value();
         if (property == "resourcetype") {
@@ -236,11 +235,10 @@ static csync_vio_file_stat_t* propertyMapToFileStat(QMap<QString,QString> map)
 
 void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap<QString,QString> map)
 {
-    qDebug() << Q_FUNC_INFO << _subPath << file << map.count() << map.keys() << _account->davPath() << _lsColJob->reply()->request().url().path();
+    //qDebug() << Q_FUNC_INFO << _subPath << file << map.count() << map.keys() << _account->davPath() << _lsColJob->reply()->request().url().path();
     if (!_ignoredFirst) {
         // First result is the directory itself. Maybe should have a better check for that? FIXME
         _ignoredFirst = true;
-        qDebug() << "...ignoring";
         if (map.contains("permissions")) {
             emit firstDirectoryPermissions(map.value("permissions"));
         }
@@ -259,7 +257,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
 
         csync_vio_file_stat_t *file_stat = propertyMapToFileStat(map);
         file_stat->name = strdup(file.toUtf8());
-        qDebug() << "!!!!" << file_stat << file_stat->name << file_stat->file_id << map.count();
+        //qDebug() << "!!!!" << file_stat << file_stat->name << file_stat->file_id << map.count();
         _results.append(file_stat);
     }
 
@@ -293,7 +291,6 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
 
 void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &pathPrefix)
 {
-    qDebug() << Q_FUNC_INFO;
     _discoveryJob = discoveryJob;
     _pathPrefix = pathPrefix;
 
@@ -400,7 +397,7 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
 {
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob*>(userdata);
     if (discoveryJob) {
-        qDebug() << Q_FUNC_INFO << discoveryJob << url << "Calling...";
+        qDebug() << Q_FUNC_INFO << discoveryJob << url << "Calling into main thread...";
 
         DiscoveryDirectoryResult *directoryResult = new DiscoveryDirectoryResult();
         directoryResult->code = EIO;
@@ -411,7 +408,7 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
         discoveryJob->_vioWaitCondition.wait(&discoveryJob->_vioMutex, ULONG_MAX); // FIXME timeout?
         discoveryJob->_vioMutex.unlock();
 
-        qDebug() << Q_FUNC_INFO << discoveryJob << url << "Returned";
+        qDebug() << Q_FUNC_INFO << discoveryJob << url << "...Returned from main thread";
 
         // Upon awakening from the _vioWaitCondition, iterator should be a valid iterator.
         if (directoryResult->code != 0) {
@@ -431,20 +428,11 @@ csync_vio_file_stat_t* DiscoveryJob::remote_vio_readdir_hook (csync_vio_handle_t
 {
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob*>(userdata);
     if (discoveryJob) {
-        qDebug() << Q_FUNC_INFO << discoveryJob;
-
         DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult*>(dhandle);
-
         if (directoryResult->iterator != directoryResult->list.end()) {
             csync_vio_file_stat_t *file_stat = *(directoryResult->iterator);
-
-            qDebug() << Q_FUNC_INFO << file_stat;
-            qDebug() << Q_FUNC_INFO << file_stat->file_id;
-
-            qDebug() << Q_FUNC_INFO << file_stat->name;
             directoryResult->iterator++;
-
-            // Make a copy, csync_update will delete
+            // Make a copy, csync_update will delete the copy
             return csync_vio_file_stat_copy(file_stat);
         }
     }
