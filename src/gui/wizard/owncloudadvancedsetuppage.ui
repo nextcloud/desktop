@@ -215,6 +215,9 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QRadioButton" name="rSyncEverything">
             <property name="text">
