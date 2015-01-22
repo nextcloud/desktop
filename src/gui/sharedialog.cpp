@@ -161,7 +161,7 @@ void ShareDialog::slotPasswordSet(const QString &reply)
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
 
     if (code != 100) {
-        displayError(100);
+        displayError(code);
     } else {
         /*
          * When setting/deleting a password from a share the old share is
@@ -366,7 +366,7 @@ bool ShareDialog::uploadExternalFile()
     Folder *folder = 0;
     Folder::Map folders = FolderMan::instance()->map();
     if( folders.isEmpty() ) {
-        // no folder to work on.
+        displayInfo(tr("There is no sync folder configured."));
         return false;
     }
     if( folders.contains( Theme::instance()->appNameGUI()) ) {
@@ -378,6 +378,7 @@ bool ShareDialog::uploadExternalFile()
     FolderMan::instance()->folder(folderName);
     if( ! folder ) {
         qDebug() << "Folder not defined: " << folderName;
+        displayInfo(tr("Can not find an folder to upload to."));
         return false;
     }
 
