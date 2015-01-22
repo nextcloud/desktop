@@ -63,7 +63,7 @@ bool CommunicationSocket::Connect(const std::wstring &pipename)
     return true;
 }
 
-bool CommunicationSocket::SendMsg(const wchar_t* message)
+bool CommunicationSocket::SendMsg(const wchar_t* message) const
 {
 	auto utf8_msg = StringUtil::toUtf8(message);
 
@@ -73,13 +73,13 @@ bool CommunicationSocket::SendMsg(const wchar_t* message)
     if (result) {
         return true;
     } else {
-        Close();
+		const_cast<CommunicationSocket*>(this)->Close();
 
         return false;
     }
 }
 
-bool CommunicationSocket::ReadLine(wstring* response)
+bool CommunicationSocket::ReadLine(wstring* response, bool block)
 {
 	if (!response) {
 		return false;
@@ -91,6 +91,12 @@ bool CommunicationSocket::ReadLine(wstring* response)
         return false;
     }
 
+	COMMTIMEOUTS timeout = { };
+	timeout.ReadIntervalTimeout = 10;
+	timeout.ReadTotalTimeoutMultiplier = 0;
+	timeout.WriteTotalTimeoutMultiplier = 0;
+
+	SetCommTimeouts(_pipe, &timeout);
 
 	while (true) {
         int lbPos = 0;
@@ -104,17 +110,18 @@ bool CommunicationSocket::ReadLine(wstring* response)
         std::array<char, 128> resp_utf8;
         DWORD numBytesRead = 0;
 		DWORD totalBytesAvailable = 0;
-		auto result = PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0);
-		if (!result) {
-			Close();
-			return false;
-		}
-		if (totalBytesAvailable == 0) {
-			return false;
+
+		if (/*!block*/ true) {
+			if (!PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0)) {
+				Close();
+				return false;
+			}
+			if (totalBytesAvailable == 0) {
+				return false;
+			}
 		}
 
-        result = ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, NULL);
-        if (!result) {
+		if (!ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, NULL)) {
             Close();
             return false;
         }

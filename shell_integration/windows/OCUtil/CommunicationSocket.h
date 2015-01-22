@@ -32,8 +32,8 @@ public:
 	bool Connect(const std::wstring& pipename);
 	bool Close();
 
-	bool SendMsg(const wchar_t*);
-	bool ReadLine(std::wstring*);
+	bool SendMsg(const wchar_t*) const;
+	bool ReadLine(std::wstring*, bool block = false);
 
     HANDLE Event() { return _pipe; }
 
