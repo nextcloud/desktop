@@ -108,7 +108,8 @@ class MenuExtension( Nautilus.MenuProvider, SocketConnect):
             return items
 
         # create an menu item
-        item = Nautilus.MenuItem(name='NautilusPython::ShareItem', label='ownCloud Share...' ,
+        labelStr = "Share with "+appname+"..."
+        item = Nautilus.MenuItem(name='NautilusPython::ShareItem', label=labelStr ,
 				 tip='Share file %s through ownCloud' % file.get_name())
         item.connect("activate", self.menu_share, file)
         items.append(item)
