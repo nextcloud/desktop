@@ -45,7 +45,7 @@ void RemotePathChecker::workerThreadLoop()
 
         if (!connected) {
             asked.clear();
-            if (!WaitNamedPipe(pipename.data(), 5 * 1000)) {
+            if (!WaitNamedPipe(pipename.data(), 100)) {
                 continue;
             }
             if (!socket.Connect(pipename)) {
