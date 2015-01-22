@@ -319,6 +319,7 @@ void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResul
 
     // Result gets written in there
     _currentDiscoveryDirectoryResult = r;
+    _currentDiscoveryDirectoryResult->path = fullPath;
 
     // Schedule the DiscoverySingleDirectoryJob
     _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
@@ -335,9 +336,10 @@ void DiscoveryMainThread::singleDirectoryJobResultSlot(QLinkedList<csync_vio_fil
     if (!_currentDiscoveryDirectoryResult) {
         return; // possibly aborted
     }
-    qDebug() << Q_FUNC_INFO << "Have" << result.count() << "results.";
+    qDebug() << Q_FUNC_INFO << "Have" << result.count() << "results for " << _currentDiscoveryDirectoryResult->path;
 
-    _directoryContents.insert("/", result);
+
+    _directoryContents.insert(_currentDiscoveryDirectoryResult->path, result);
 
     _currentDiscoveryDirectoryResult->list = result;
     _currentDiscoveryDirectoryResult->code = 0;

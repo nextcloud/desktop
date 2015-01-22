@@ -35,6 +35,7 @@ class Account;
  */
 
 struct DiscoveryDirectoryResult {
+    QString path;
     QString msg;
     int code;
     QLinkedList<csync_vio_file_stat_t*>::iterator iterator;
