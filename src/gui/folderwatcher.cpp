@@ -77,18 +77,22 @@ bool FolderWatcher::pathIsIgnored( const QString& path )
         return true;
     }
 
-    // Remember: here only directories are checked!
-    // If that changes to files too at some day, remember to check
-    // for the database name as well as the trailing slash rule for
-    // dirs only. Best use csync_ignore than somehow.
+    // TODO: Best use csync_excluded_no_ctx() here somehow!
     foreach (QString pattern, _ignores) {
+        // The leading ] is a tag and not part of the pattern.
+        if (pattern.startsWith(']')) {
+            pattern.remove(0, 1);
+        }
+
+        if(pattern.endsWith('/')) {
+            // directory only pattern. But since path components are
+            // checked later, we cut off the trailing dir.
+            pattern.chop(1);
+        }
+
         QRegExp regexp(pattern);
         regexp.setPatternSyntax(QRegExp::Wildcard);
 
-        if(pattern.endsWith('/')) {
-            // directory only pattern. But since only dirs here, we cut off the trailing dir.
-            pattern.remove(pattern.length()-1, 1); // remove the last char.
-        }
         // if the pattern contains / it needs to match the entire path
         if (pattern.contains('/') && regexp.exactMatch(path)) {
             qDebug() << "* Discarded by ignore pattern: " << path;
