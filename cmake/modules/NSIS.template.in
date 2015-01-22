@@ -401,8 +401,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 
    SetOutPath "$INSTDIR\platforms"
    File "${PLATFORMS_DLL_PATH}\qwindows.dll"
-   SetOutPath "$INSTDIR\accessible"
-   File "${ACCESSIBLE_DLL_PATH}\qtaccessiblewidgets.dll"
    SetOutPath "$INSTDIR\imageformats"
    File "${IMAGEFORMATS_DLL_PATH}\qgif.dll"
    File "${IMAGEFORMATS_DLL_PATH}\qjpeg.dll"

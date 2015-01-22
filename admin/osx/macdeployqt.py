@@ -33,7 +33,6 @@ FRAMEWORK_SEARCH_PATH=[
 LIBRARY_SEARCH_PATH=['/usr/local/lib', '.']
 
 QT_PLUGINS = [
-    'accessible/libqtaccessiblewidgets.dylib',
     'sqldrivers/libqsqlite.dylib',
     'platforms/libqcocoa.dylib',
     'imageformats/libqgif.dylib',
