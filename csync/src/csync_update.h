@@ -23,7 +23,6 @@
 #define _CSYNC_UPDATE_H
 
 #include "csync.h"
-#include "vio/csync_vio_file_stat.h"
 
 /**
  * @file csync_update.h

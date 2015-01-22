@@ -213,8 +213,8 @@ static int configureProxy( csync_owncloud_ctx_t *ctx, ne_session *session )
             re = 2;
         } else {
             DEBUG_WEBDAV("%s requested but no proxy host defined.", ctx->dav_session.proxy_type );
-	    /* we used to try ne_system_session_proxy here, but we should rather err out
-	       to behave exactly like the caller. */
+        /* we used to try ne_system_session_proxy here, but we should rather err out
+           to behave exactly like the caller. */
         }
     } else {
         DEBUG_WEBDAV( "Unsupported Proxy: %s", ctx->dav_session.proxy_type );
@@ -374,7 +374,7 @@ static int post_send_hook(ne_request *req, void *userdata,
  * This function sets the flag _connected if the connection is established
  * and returns if the flag is set, so calling it frequently is save.
  */
-static int dav_connect(csync_owncloud_ctx_t *ctx,  const char *base_url) {
+int dav_connect(CSYNC *csyncCtx,  const char *base_url) {
     int useSSL = 0;
     int rc;
     char protocol[6] = {'\0'};
@@ -384,6 +384,7 @@ static int dav_connect(csync_owncloud_ctx_t *ctx,  const char *base_url) {
     char *host = NULL;
     unsigned int port = 0;
     int proxystate = -1;
+    csync_owncloud_ctx_t *ctx = csyncCtx->owncloud_context;
 
     if (ctx->_connected) {
         return 0;
@@ -477,276 +478,6 @@ out:
     return rc;
 }
 
-/*
- * result parsing list.
- * This function is called to parse the result of the propfind request
- * to list directories on the WebDAV server. I takes a single resource
- * and fills a resource struct and stores it to the result list which
- * is stored in the listdir_context.
- */
-static void propfind_results_callback(void *userdata,
-                    const ne_uri *uri,
-                    const ne_prop_result_set *set)
-{
-    struct listdir_context *fetchCtx = userdata;
-    struct resource *newres = 0;
-    const ne_status *status = NULL;
-    char *path = ne_path_unescape( uri->path );
-
-    (void) status;
-
-    if( ! fetchCtx->target ) {
-        DEBUG_WEBDAV("error: target must not be zero!" );
-        return;
-    }
-
-    /* Fill the resource structure with the data about the file */
-    newres = c_malloc(sizeof(struct resource));
-    newres->uri =  path; /* no need to strdup because ne_path_unescape already allocates */
-    newres->name = c_basename( path );
-    fill_webdav_properties_into_resource(newres, set);
-
-    /* prepend the new resource to the result list */
-    newres->next   = fetchCtx->list;
-    fetchCtx->list = newres;
-    fetchCtx->result_count = fetchCtx->result_count + 1;
-    /* DEBUG_WEBDAV( "results for URI %s: %d %d", newres->name, (int)newres->size, (int)newres->type ); */
-}
-
-
-
-/*
- * fetches a resource list from the WebDAV server. This is equivalent to list dir.
- */
-static struct listdir_context *fetch_resource_list(csync_owncloud_ctx_t *ctx, const char *uri, int depth)
-{
-    struct listdir_context *fetchCtx;
-    int ret = 0;
-    ne_propfind_handler *hdl = NULL;
-    ne_request *request = NULL;
-    const char *content_type = NULL;
-    char *curi = NULL;
-    const ne_status *req_status = NULL;
-
-    curi = _cleanPath( uri );
-
-    /* The old legacy one-level PROPFIND cache. Also gets filled
-       by the recursive cache if 'infinity' did not suceed. */
-    if (ctx->propfind_cache) {
-        if (c_streq(curi, ctx->propfind_cache->target)) {
-            DEBUG_WEBDAV("fetch_resource_list Using simple PROPFIND cache %s", curi);
-            ctx->propfind_cache->ref++;
-            SAFE_FREE(curi);
-            return ctx->propfind_cache;
-        }
-    }
-
-    if( ctx->csync_ctx->callbacks.update_callback ) {
-	ctx->csync_ctx->callbacks.update_callback(false, curi, 
-              ctx->csync_ctx->callbacks.update_callback_userdata);
-    }
-
-    fetchCtx = c_malloc( sizeof( struct listdir_context ));
-    if (!fetchCtx) {
-        errno = ENOMEM;
-        SAFE_FREE(curi);
-        return NULL;
-    }
-    fetchCtx->list = NULL;
-    fetchCtx->target = curi;
-    fetchCtx->currResource = NULL;
-    fetchCtx->ref = 1;
-
-    /* do a propfind request and parse the results in the results function, set as callback */
-    hdl = ne_propfind_create(ctx->dav_session.ctx, curi, depth);
-
-    if(hdl) {
-        ret = ne_propfind_named(hdl, ls_props, propfind_results_callback, fetchCtx);
-        request = ne_propfind_get_request( hdl );
-        req_status = ne_get_status( request );
-    }
-
-    if( ret == NE_OK ) {
-        fetchCtx->currResource = fetchCtx->list;
-        /* Check the request status. */
-        if( req_status && req_status->klass != 2 ) {
-            set_errno_from_http_errcode(req_status->code);
-            DEBUG_WEBDAV("ERROR: Request failed: status %d (%s)", req_status->code,
-                         req_status->reason_phrase);
-            ret = NE_CONNECT;
-            set_error_message(ctx, req_status->reason_phrase);
-        }
-        DEBUG_WEBDAV("Simple propfind result code %d.", req_status ? req_status->code : -1);
-    } else {
-        if( ret == NE_ERROR && req_status->code == 404) {
-            errno = ENOENT;
-        } else {
-            set_errno_from_neon_errcode(ctx, ret);
-        }
-    }
-
-    if( ret == NE_OK ) {
-        /* Check the content type. If the server has a problem, ie. database is gone or such,
-         * the content type is not xml but a html error message. Stop on processing if it's
-         * not XML.
-         * FIXME: Generate user error message from the reply content.
-         */
-        content_type =  ne_get_response_header( request, "Content-Type" );
-        if( !(content_type && c_streq(content_type, "application/xml; charset=utf-8") ) ) {
-            DEBUG_WEBDAV("ERROR: Content type of propfind request not XML: %s.",
-                         content_type ?  content_type: "<empty>");
-            errno = ERRNO_WRONG_CONTENT;
-            set_error_message(ctx, "Server error: PROPFIND reply is not XML formatted!");
-            ret = NE_CONNECT;
-        }
-    }
-
-    if( ret != NE_OK ) {
-        const char *err = NULL;
-        set_errno_from_neon_errcode(ctx, ret);
-
-        err = ne_get_error( ctx->dav_session.ctx );
-        if(err) {
-            set_error_message(ctx, err);
-        }
-        DEBUG_WEBDAV("WRN: propfind named failed with %d, request error: %s", ret, err ? err : "<nil>");
-    }
-
-    if( hdl )
-        ne_propfind_destroy(hdl);
-
-    if( ret != NE_OK ) {
-        free_fetchCtx(fetchCtx);
-        return NULL;
-    }
-
-    free_fetchCtx(ctx->propfind_cache);
-    ctx->propfind_cache = fetchCtx;
-    ctx->propfind_cache->ref++;
-    return fetchCtx;
-}
-
-static struct listdir_context *fetch_resource_list_attempts(csync_owncloud_ctx_t *ctx, const char *uri, int depth)
-{
-    int i;
-
-    struct listdir_context *fetchCtx = NULL;
-    for(i = 0; i < 10; ++i) {
-        fetchCtx = fetch_resource_list(ctx, uri, depth);
-        if(fetchCtx) break;
-        /* only loop in case the content is not XML formatted. Otherwise for every
-         * non successful stat (for non existing directories) its tried 10 times. */
-        if( errno != ERRNO_WRONG_CONTENT ) break;
-
-        DEBUG_WEBDAV("=> Errno after fetch resource list for %s: %d", uri, errno);
-        DEBUG_WEBDAV("   New attempt %i", i);
-    }
-    return fetchCtx;
-}
-
-
-/*
- * directory functions
- */
-csync_vio_handle_t *owncloud_opendir(CSYNC *ctx, const char *uri) {
-    struct listdir_context *fetchCtx = NULL;
-    char *curi = NULL;
-
-    DEBUG_WEBDAV("opendir method called on %s", uri );
-
-    if (dav_connect( ctx->owncloud_context, uri ) < 0) {
-        DEBUG_WEBDAV("connection failed");
-        return NULL;
-    }
-
-    curi = _cleanPath( uri );
-    if (ctx->owncloud_context->is_first_propfind && !ctx->owncloud_context->dav_session.no_recursive_propfind) {
-        ctx->owncloud_context->is_first_propfind = false;
-        // Try to fill it
-        fill_recursive_propfind_cache(ctx->owncloud_context, uri, curi);
-    }
-    if (ctx->owncloud_context->propfind_recursive_cache) {
-        // Try to fetch from recursive cache (if we have one)
-        fetchCtx = get_listdir_context_from_recursive_cache(ctx->owncloud_context, curi);
-    }
-    SAFE_FREE(curi);
-    ctx->owncloud_context->is_first_propfind = false;
-    if (fetchCtx) {
-        return fetchCtx;
-    }
-
-    /* fetchCtx = fetch_resource_list( uri, NE_DEPTH_ONE ); */
-    fetchCtx = fetch_resource_list_attempts( ctx->owncloud_context, uri, NE_DEPTH_ONE);
-    if( !fetchCtx ) {
-        /* errno is set properly in fetch_resource_list */
-        DEBUG_WEBDAV("Errno set to %d", errno);
-        return NULL;
-    } else {
-        fetchCtx->currResource = fetchCtx->list;
-        DEBUG_WEBDAV("opendir returning handle %p (count=%d)", (void*) fetchCtx, fetchCtx->result_count );
-        return fetchCtx;
-    }
-    /* no freeing of curi because its part of the fetchCtx and gets freed later */
-}
-
-int owncloud_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
-    struct listdir_context *fetchCtx = dhandle;
-    free_fetchCtx(fetchCtx);
-    (void)ctx;
-    return 0;
-}
-
-csync_vio_file_stat_t *owncloud_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
-    struct listdir_context *fetchCtx = dhandle;
-    (void)ctx;
-
-//    DEBUG_WEBDAV("owncloud_readdir" );
-//    DEBUG_WEBDAV("owncloud_readdir %s ", fetchCtx->target);
-//    DEBUG_WEBDAV("owncloud_readdir %d", fetchCtx->result_count );
-//    DEBUG_WEBDAV("owncloud_readdir %p %p", fetchCtx->currResource, fetchCtx->list );
-
-    if( fetchCtx == NULL) {
-        /* DEBUG_WEBDAV("An empty dir or at end"); */
-        return NULL;
-    }
-
-    while( fetchCtx->currResource ) {
-        resource* currResource = fetchCtx->currResource;
-        char *escaped_path = NULL;
-
-        /* set pointer to next element */
-        fetchCtx->currResource = fetchCtx->currResource->next;
-
-        /* It seems strange: first uri->path is unescaped to escape it in the next step again.
-         * The reason is that uri->path is not completely escaped (ie. it seems only to have
-         * spaces escaped), while the fetchCtx->target is fully escaped.
-         * See http://bugs.owncloud.org/thebuggenie/owncloud/issues/oc-613
-         */
-        escaped_path = ne_path_escape( currResource->uri );
-        if (ne_path_compare(fetchCtx->target, escaped_path) != 0) {
-            // Convert the resource for the caller
-            csync_vio_file_stat_t* lfs = csync_vio_file_stat_new();
-            resourceToFileStat(lfs, currResource);
-
-            SAFE_FREE( escaped_path );
-            return lfs;
-        } else {
-            /* The first item is the root item, memorize its permissions */
-            if (!ctx->remote.root_perms) {
-                if (strlen(currResource->remotePerm) > 0) {
-                    /* Only copy if permissions contain something. Empty string means server didn't return them */
-                    ctx->remote.root_perms = c_strdup(currResource->remotePerm);
-                }
-            }
-        }
-
-        /* This is the target URI */
-        SAFE_FREE( escaped_path );
-    }
-
-    return NULL;
-}
-
 char *owncloud_error_string(CSYNC* ctx)
 {
     return ctx->owncloud_context->dav_session.error_string;
@@ -757,19 +488,12 @@ int owncloud_commit(CSYNC* ctx) {
         return 0;
     }
 
-    clear_propfind_recursive_cache(ctx->owncloud_context);
-
-    free_fetchCtx(ctx->owncloud_context->propfind_cache);
-    ctx->owncloud_context->propfind_cache = NULL;
-
     if( ctx->owncloud_context->dav_session.ctx ) {
         ne_forget_auth(ctx->owncloud_context->dav_session.ctx);
         ne_session_destroy(ctx->owncloud_context->dav_session.ctx );
         ctx->owncloud_context->dav_session.ctx = 0;
     }
 
-    ctx->owncloud_context->is_first_propfind = true;
-    ctx->owncloud_context->dav_session.no_recursive_propfind = true;
   /* DEBUG_WEBDAV( "********** vio_module_shutdown" ); */
 
   ctx->owncloud_context->dav_session.ctx = 0;
@@ -819,10 +543,6 @@ int owncloud_set_property(CSYNC* ctx, const char *key, void *data) {
         *(ne_session**)data = ctx->owncloud_context->dav_session.ctx;
         return 0;
     }
-    if( c_streq(key, "no_recursive_propfind")) {
-        ctx->owncloud_context->dav_session.no_recursive_propfind = *(bool*)(data);
-        return 0;
-    }
     if( c_streq(key, "redirect_callback")) {
         if (data) {
             csync_owncloud_redirect_callback_t* cb_wrapper = data;
@@ -840,10 +560,7 @@ void owncloud_init(CSYNC* ctx) {
 
     ctx->owncloud_context = c_malloc( sizeof( struct csync_owncloud_ctx_s ));
     ctx->owncloud_context->csync_ctx = ctx; // back reference
-    ctx->owncloud_context->is_first_propfind = true;
 
-    /* Disable it, Mirall can enable it for the first sync (= no DB)*/
-    ctx->owncloud_context->dav_session.no_recursive_propfind = true;
 }
 
 /* vim: set ts=4 sw=4 et cindent: */

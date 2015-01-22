@@ -33,8 +33,7 @@ extern "C" int c_utimes(const char *, const struct timeval *);
 extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
 
 extern "C" {
-#include "vio/csync_vio_handle.h"
-#include "vio/csync_vio_file_stat.h"
+#include "csync.h"
 #include "vio/csync_vio_local.h"
 }
 

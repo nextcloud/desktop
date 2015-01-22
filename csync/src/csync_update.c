@@ -386,6 +386,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                     st->instruction = CSYNC_INSTRUCTION_NEW;
                     goto out;
                 }
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "remote rename detected based on fileid %s %s", tmp->path, file);
                 st->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
                     csync_rename_record(ctx, tmp->path, path);
@@ -597,7 +598,21 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto done;
   }
 
-  if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
+  const char *uri_for_vio = uri;
+  if (ctx->current == REMOTE_REPLICA) {
+      uri_for_vio += strlen(ctx->remote.uri);
+      if (strlen(uri_for_vio) > 0 && uri_for_vio[0] == '/') {
+          uri_for_vio++; // cut leading slash
+      }
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "URI without fuzz for %s is \"%s\"", uri, uri_for_vio);
+  }
+
+  if ((dh = csync_vio_opendir(ctx, uri_for_vio)) == NULL) {
+      if (ctx->abort) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
+          ctx->status_code = CSYNC_STATUS_ABORTED;
+          goto error;
+      }
       int asp = 0;
       /* permission denied */
       ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);

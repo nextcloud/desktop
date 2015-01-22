@@ -57,7 +57,7 @@ QSize SelectiveSyncTreeView::sizeHint() const
 void SelectiveSyncTreeView::refreshFolders()
 {
     LsColJob *job = new LsColJob(_account, _folderPath, this);
-    connect(job, SIGNAL(directoryListing(QStringList)),
+    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             this, SLOT(slotUpdateDirectories(QStringList)));
     job->start();
     clear();
@@ -173,7 +173,7 @@ void SelectiveSyncTreeView::slotItemExpanded(QTreeWidgetItem *item)
         prefix = _folderPath + QLatin1Char('/');
     }
     LsColJob *job = new LsColJob(_account, prefix + dir, this);
-    connect(job, SIGNAL(directoryListing(QStringList)),
+    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();
 }

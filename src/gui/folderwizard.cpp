@@ -356,7 +356,7 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
 void FolderWizardRemotePath::slotRefreshFolders()
 {
     LsColJob *job = new LsColJob(AccountManager::instance()->account(), "/", this);
-    connect(job, SIGNAL(directoryListing(QStringList)),
+    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();
     _ui.folderTreeWidget->clear();
@@ -366,7 +366,7 @@ void FolderWizardRemotePath::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
     LsColJob *job = new LsColJob(AccountManager::instance()->account(), dir, this);
-    connect(job, SIGNAL(directoryListing(QStringList)),
+    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();
 }

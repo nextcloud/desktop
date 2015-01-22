@@ -57,7 +57,6 @@
 #include "c_private.h"
 #include "httpbf.h"
 
-#include "vio/csync_vio_file_stat.h"
 #include "vio/csync_vio.h"
 
 #include "csync_log.h"
@@ -87,21 +86,11 @@ struct dav_session_s {
 
     int read_timeout;
 
-    bool no_recursive_propfind;
-
     csync_owncloud_redirect_callback_t redir_callback;
 };
 
 struct csync_owncloud_ctx_s {
     CSYNC *csync_ctx;
-
-    // For the PROPFIND results
-    bool is_first_propfind;
-    struct listdir_context *propfind_cache;
-    c_rbtree_t *propfind_recursive_cache;
-    int propfind_recursive_cache_depth;
-    int propfind_recursive_cache_file_count;
-    int propfind_recursive_cache_folder_count;
 
     // For the WebDAV connection
     struct dav_session_s dav_session; /* The DAV Session, initialised in dav_connect */
@@ -111,74 +100,6 @@ struct csync_owncloud_ctx_s {
 typedef struct csync_owncloud_ctx_s csync_owncloud_ctx_t;
 //typedef csync_owncloud_ctx_t* csync_owncloud_ctx_p;
 
-enum resource_type {
-    resr_normal = 0,
-    resr_collection,
-    resr_reference,
-    resr_error
-};
-
-/* The list of properties that is fetched in PropFind on a collection */
-static const ne_propname ls_props[] = {
-    { "DAV:", "getlastmodified" },
-    { "DAV:", "getcontentlength" },
-    { "DAV:", "resourcetype" },
-    { "DAV:", "getetag"},
-    { "http://owncloud.org/ns", "id"},
-    { "http://owncloud.org/ns", "downloadURL"},
-    { "http://owncloud.org/ns", "dDC"}, // directDownloadCookies
-    { "http://owncloud.org/ns", "permissions"},
-    { NULL, NULL }
-};
-
-/* Struct to store data for each resource found during an opendir operation.
- * It represents a single file entry.
- */
-typedef struct resource {
-    char *uri;           /* The complete uri */
-    char *name;          /* The filename only */
-
-    enum resource_type type;
-    int64_t              size;
-    time_t             modtime;
-    char*              md5;
-    char               file_id[FILE_ID_BUF_SIZE+1];
-    // Those two are optional from the server. We can use those URL to download the file directly
-    // without going through the ownCloud instance.
-    char *directDownloadUrl;
-    char *directDownloadCookies;
-    // See https://github.com/owncloud/core/issues/8322
-    char remotePerm[REMOTE_PERM_BUF_SIZE+1];
-
-    struct resource    *next;
-} resource;
-
-/* Struct to hold the context of a WebDAV PropFind operation to fetch
- * a directory listing from the server.
- */
-struct listdir_context {
-    struct resource *list;           /* The list of result resources */
-    struct resource *currResource;   /* A pointer to the current resource */
-    char            *target;        /* Request-URI of the PROPFIND */
-    unsigned int     result_count;   /* number of elements stored in list */
-    int ref; /* reference count, only destroy when it reaches 0 */
-};
-
-
-/* Values are propfind_recursive_element: */
-struct propfind_recursive_element {
-    struct resource *self;
-    struct resource *children;
-    struct propfind_recursive_element *parent;
-};
-typedef struct propfind_recursive_element propfind_recursive_element_t;
-
-void clear_propfind_recursive_cache(csync_owncloud_ctx_t *ctx);
-struct listdir_context *get_listdir_context_from_recursive_cache(csync_owncloud_ctx_t *ctx, const char *curi);
-void fill_recursive_propfind_cache(csync_owncloud_ctx_t *ctx, const char *uri, const char *curi);
-struct listdir_context *get_listdir_context_from_cache(csync_owncloud_ctx_t *ctx, const char *curi);
-void fetch_resource_list_recursive(csync_owncloud_ctx_t *ctx, const char *uri, const char *curi);
-
 void set_errno_from_http_errcode( int err );
 void set_error_message( csync_owncloud_ctx_t *ctx, const char *msg );
 void set_errno_from_neon_errcode(csync_owncloud_ctx_t *ctx, int neon_code );
@@ -187,15 +108,8 @@ void set_errno_from_session(csync_owncloud_ctx_t *ctx);
 
 time_t oc_httpdate_parse( const char *date );
 
-char *_cleanPath( const char* uri );
-
-void fill_webdav_properties_into_resource(struct resource* newres, const ne_prop_result_set *set);
-
-void resourceToFileStat( csync_vio_file_stat_t *lfs, struct resource *res );
-void resource_free(struct resource* o);
-struct resource* resource_dup(struct resource* o);
-void free_fetchCtx( struct listdir_context *ctx );
-
 const char* csync_owncloud_get_platform(void);
+
+char *_cleanPath( const char* uri );
 
 #endif // CSYNC_OWNCLOUD_PRIVATE_H

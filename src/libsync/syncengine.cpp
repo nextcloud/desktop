@@ -155,6 +155,9 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_SERVICE_UNAVAILABLE:
         errStr = tr("The mounted directory is temporarily not available on the server");
         break;
+    case CSYNC_STATUS_OPENDIR_ERROR:
+        errStr = tr("An error opening a directory happened");
+        break;
     default:
         errStr = tr("An internal error number %1 happened.").arg( (int) err );
     }
@@ -596,18 +599,29 @@ void SyncEngine::startSync()
     int timeout = OwncloudPropagator::httpTimeout();
     csync_set_module_property(_csync_ctx, "timeout", &timeout);
 
-
     _stopWatch.start();
 
     qDebug() << "#### Discovery start #################################################### >>";
 
-    DiscoveryJob *job = new DiscoveryJob(_csync_ctx);
-    job->_selectiveSyncBlackList = _selectiveSyncBlackList;
-    job->moveToThread(&_thread);
-    connect(job, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
-    connect(job, SIGNAL(folderDiscovered(bool,QString)),
+    _discoveryMainThread = new DiscoveryMainThread(account());
+    _discoveryMainThread->setParent(this);
+    connect(this, SIGNAL(finished()), _discoveryMainThread, SLOT(deleteLater()));
+
+
+    DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx);
+    discoveryJob->_selectiveSyncBlackList = _selectiveSyncBlackList;
+    discoveryJob->moveToThread(&_thread);
+    connect(discoveryJob, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
+    connect(discoveryJob, SIGNAL(folderDiscovered(bool,QString)),
             this, SIGNAL(folderDiscovered(bool,QString)));
-    QMetaObject::invokeMethod(job, "start", Qt::QueuedConnection);
+
+    // This is used for the DiscoveryJob to be able to request the main thread/
+    // to read in directory contents.
+    qDebug() << Q_FUNC_INFO << _remotePath << _remoteUrl;
+    _discoveryMainThread->setupHooks( discoveryJob, _remotePath);
+
+    // Starts the update in a seperate thread
+    QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);
 }
 
 void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
@@ -691,6 +705,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
+    // FIXME: The propagator could create his session in propagator_legacy.cpp
+    // There's no reason to keep csync_owncloud.c around
     ne_session_s *session = 0;
     // that call to set property actually is a get which will return the session
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
@@ -1132,9 +1148,16 @@ AccountPtr SyncEngine::account() const
 
 void SyncEngine::abort()
 {
+    // Aborts the discovery phase job
+    if (_discoveryMainThread) {
+        _discoveryMainThread->abort();
+    }
+    // Sets a flag for the update phase
     csync_request_abort(_csync_ctx);
-    if(_propagator)
+    // For the propagator
+    if(_propagator) {
         _propagator->abort();
+    }
 }
 
 } // namespace OCC
