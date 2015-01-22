@@ -31,6 +31,7 @@ private slots:
     void slotMkcolJobFinished();
     void propfindResult(const QVariantMap &);
     void propfindError();
+    void success();
 };
 
 }

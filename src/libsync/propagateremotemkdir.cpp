@@ -88,8 +88,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         _job = propfindJob;
         return;
     }
-
-   done(SyncFileItem::Success);
+    success();
 }
 
 void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
@@ -101,7 +100,7 @@ void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
     if (result.contains("id")) {
         _item._fileId = result["id"].toByteArray();
     }
-    done(SyncFileItem::Success);
+    success();
 }
 
 void PropagateRemoteMkdir::propfindError()
@@ -110,6 +109,16 @@ void PropagateRemoteMkdir::propfindError()
     _propagator->_activeJobs--;
     done(SyncFileItem::Success);
 }
+
+void PropagateRemoteMkdir::success()
+{
+    // save the file id already so we can detect rename or remove
+    SyncJournalFileRecord record(_item, _propagator->_localDir + _item.destination());
+    _propagator->_journal->setFileRecord(record);
+
+    done(SyncFileItem::Success);
+}
+
 
 
 }
