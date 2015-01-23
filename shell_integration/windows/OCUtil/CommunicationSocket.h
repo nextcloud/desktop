@@ -32,7 +32,7 @@ public:
 	bool Connect(const std::wstring& pipename);
 	bool Close();
 
-	bool SendMsg(const wchar_t*);
+	bool SendMsg(const wchar_t*) const;
 	bool ReadLine(std::wstring*);
 
     HANDLE Event() { return _pipe; }
