@@ -155,7 +155,7 @@ set_target_properties( ${synclib_NAME}  PROPERTIES
 	SOVERSION ${MIRALL_SOVERSION}
 )
 set_target_properties( ${synclib_NAME} PROPERTIES
-	INSTALL_RPATH "${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
+	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
 
 target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )
 
