@@ -55,7 +55,6 @@
 #include "csync_misc.h"
 #include "csync_macros.h"
 #include "c_private.h"
-#include "httpbf.h"
 
 #include "vio/csync_vio.h"
 
