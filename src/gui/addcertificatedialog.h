@@ -19,7 +19,7 @@ public:
     ~AddCertificateDialog();
     QString getCertificatePath();
     QString getCertificatePasswd();
-    void showErrorMessage(QString message);
+    void showErrorMessage(const QString message);
     void Reinit();
 
 private slots:

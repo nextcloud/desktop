@@ -146,7 +146,7 @@ public:
     QVariant credentialSetting(const QString& key) const;
     void setCredentialSetting(const QString& key, const QVariant &value);
 
-    void setCertificate(QByteArray certficate = QByteArray(), QString privateKey = QString());
+    void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
     
     void clearCookieJar();
 

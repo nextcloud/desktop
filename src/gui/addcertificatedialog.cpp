@@ -34,7 +34,7 @@ QString AddCertificateDialog::getCertificatePasswd()
     return ui->lineEditPWDCertificate->text();
 }
 
-void AddCertificateDialog::showErrorMessage(QString message)
+void AddCertificateDialog::showErrorMessage(const QString message)
 {
     ui->labelErrorCertif->setText(message);
 }

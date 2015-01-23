@@ -21,8 +21,6 @@
 
 #include "p12topem.h"
 
-using namespace std;
-
 /**
  * \fn string x509ToString (BIO)
  * \brief Return string from BIO SSL

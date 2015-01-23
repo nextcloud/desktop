@@ -805,7 +805,6 @@ int owncloud_commit(CSYNC* ctx) {
   SAFE_FREE( ctx->owncloud_context->dav_session.pwd );
   SAFE_FREE( ctx->owncloud_context->dav_session.session_key);
   SAFE_FREE( ctx->owncloud_context->dav_session.error_string );
-
   return 0;
 }
 

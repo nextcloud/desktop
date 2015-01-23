@@ -311,7 +311,7 @@ QNetworkReply *Account::davRequest(const QByteArray &verb, const QUrl &url, QNet
     return _am->sendCustomRequest(req, verb, data);
 }
 
-void Account::setCertificate(QByteArray certficate, QString privateKey)
+void Account::setCertificate(const QByteArray certficate, const QString privateKey)
 {
     _pemCertificate=certficate;
     _pemPrivateKey=privateKey;

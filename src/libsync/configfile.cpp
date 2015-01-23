@@ -216,7 +216,6 @@ QString ConfigFile::excludeFile(Scope scope) const
     // prefer sync-exclude.lst, but if it does not exist, check for
     // exclude.lst for compatibility reasons in the user writeable
     // directories.
-    const QString exclFile("sync-exclude.lst");
     QFileInfo fi;
 
     if (scope != SystemScope) {
@@ -266,9 +265,6 @@ QString ConfigFile::excludeFileFromSystem()
 
 QString ConfigFile::configFile() const
 {
-    if( qApp->applicationName().isEmpty() ) {
-        qApp->setApplicationName( Theme::instance()->appNameGUI() );
-    }
     return configPath() + Theme::instance()->configFileName();
 }
 
