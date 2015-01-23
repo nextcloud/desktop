@@ -23,7 +23,6 @@
 
 #include "c_macro.h"
 #include "c_alloc.h"
-#include "c_list.h"
 #include "c_path.h"
 #include "c_rbtree.h"
 #include "c_string.h"

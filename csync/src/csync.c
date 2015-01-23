@@ -128,8 +128,6 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->status_code = CSYNC_STATUS_OK;
 
-  ctx->local.list     = 0;
-  ctx->remote.list    = 0;
   ctx->current_fs = NULL;
 
   ctx->abort = false;
@@ -557,12 +555,7 @@ static void _csync_clean_ctx(CSYNC *ctx)
 
     /* free memory */
     c_rbtree_free(ctx->local.tree);
-    c_list_free(ctx->local.list);
     c_rbtree_free(ctx->remote.tree);
-    c_list_free(ctx->remote.list);
-
-    ctx->remote.list = 0;
-    ctx->local.list = 0;
 
     SAFE_FREE(ctx->statedb.file);
     SAFE_FREE(ctx->remote.root_perms);

@@ -111,14 +111,12 @@ struct csync_s {
   struct {
     char *uri;
     c_rbtree_t *tree;
-    c_list_t *list;
     enum csync_replica_e type;
   } local;
 
   struct {
     char *uri;
     c_rbtree_t *tree;
-    c_list_t *list;
     enum csync_replica_e type;
     int  read_from_db;
     const char *root_perms; /* Permission of the root folder. (Since the root folder is not in the db tree, we need to keep a separate entry.) */
