@@ -22,8 +22,6 @@
 #include "accountmigrator.h"
 #include "accountstate.h"
 
-#include <neon/ne_socket.h>
-
 #ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
 #endif
@@ -58,7 +56,6 @@ FolderMan::FolderMan(QObject *parent) :
     connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),
             this, SIGNAL(folderSyncStateChange(const QString &)));
 
-    ne_sock_init();
     Q_ASSERT(!_instance);
     _instance = this;
 
@@ -88,7 +85,6 @@ FolderMan *FolderMan::instance()
 FolderMan::~FolderMan()
 {
     qDeleteAll(_folderMap);
-    ne_sock_exit();
     _instance = 0;
 }
 

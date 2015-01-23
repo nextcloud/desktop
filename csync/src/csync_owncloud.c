@@ -514,6 +514,7 @@ void owncloud_destroy(CSYNC* ctx)
     owncloud_commit(ctx);
     SAFE_FREE(ctx->owncloud_context);
     ctx->owncloud_context = 0;
+    ne_sock_exit();
 }
 
 int owncloud_set_property(CSYNC* ctx, const char *key, void *data) {
@@ -557,6 +558,8 @@ int owncloud_set_property(CSYNC* ctx, const char *key, void *data) {
 }
 
 void owncloud_init(CSYNC* ctx) {
+
+    ne_sock_init();
 
     ctx->owncloud_context = c_malloc( sizeof( struct csync_owncloud_ctx_s ));
     ctx->owncloud_context->csync_ctx = ctx; // back reference

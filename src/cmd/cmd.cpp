@@ -20,8 +20,6 @@
 #include <QFile>
 #include <qdebug.h>
 
-#include <neon/ne_socket.h>
-
 #include "account.h"
 #include "clientproxy.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
@@ -379,10 +377,6 @@ restart_sync:
         qFatal("Unable to create csync-context!");
         return EXIT_FAILURE;
     }
-    int rc = ne_sock_init();
-    if (rc < 0) {
-        qFatal("ne_sock_init failed!");
-    }
 
     csync_set_log_level(options.silent ? 1 : 11);
 
@@ -482,8 +476,6 @@ restart_sync:
     app.exec();
 
     csync_destroy(_csync_ctx);
-
-    ne_sock_exit();
 
     if (engine.isAnotherSyncNeeded()) {
         qDebug() << "Restarting Sync, because another sync is needed";

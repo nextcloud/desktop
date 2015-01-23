@@ -121,7 +121,6 @@ ENDIF(NOT APPLE)
 list(APPEND libsync_LINK_TARGETS
     ${QT_LIBRARIES}
     ocsync
-    httpbf
     ${OS_SPECIFIC_LINK_LIBRARIES}
 )
 
@@ -131,13 +130,12 @@ if(QTKEYCHAIN_FOUND OR QT5KEYCHAIN_FOUND)
 endif()
 
 if(NEON_FOUND)
-    list(APPEND libsync_LINK_TARGETS ${NEON_LIBRARIES})
+    list(APPEND libsync_LINK_TARGETS ${NEON_LIBRARIES} httpbf)
     include_directories(${NEON_INCLUDE_DIRS})
 
     if(NEON_WITH_LFS)
         add_definitions(-DNE_LFS)
     endif()
-
 endif()
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})

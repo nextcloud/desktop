@@ -13,11 +13,9 @@ include_directories(${CMAKE_SOURCE_DIR}/src/libsync
 
 # csync is required.
 include_directories(${CMAKE_SOURCE_DIR}/csync/src
-                    ${CMAKE_SOURCE_DIR}/csync/src/httpbf/src
                     ${CMAKE_BINARY_DIR}/csync
                     ${CMAKE_BINARY_DIR}/csync/src
                    )
-include_directories(${NEON_INCLUDE_DIRS})
 
 if(NOT BUILD_LIBRARIES_ONLY)
    add_executable(${cmd_NAME}  ${cmd_SRC})

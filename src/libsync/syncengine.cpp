@@ -558,8 +558,6 @@ void SyncEngine::startSync()
     qDebug() <<  "=====Using SSL library version"
              <<  QSslSocket::sslLibraryVersionString().toUtf8().data();
 #endif
-    // Note that this seems to output the OpenSSL build version not runtime version:
-    qDebug() <<  "=====Using" << ne_version_string();
 
     fileRecordCount = _journal->getFileRecordCount(); // this creates the DB if it does not exist yet
     bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();

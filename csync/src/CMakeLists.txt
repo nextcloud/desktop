@@ -1,7 +1,9 @@
 project(libcsync)
 
 add_subdirectory(std)
-add_subdirectory(httpbf)
+if(USE_NEON)
+    add_subdirectory(httpbf)
+endif()
 
 # Statically include sqlite
 
@@ -28,8 +30,6 @@ set(CSYNC_LINK_LIBRARIES
   ${CSTDLIB_LIBRARY}
   ${CSYNC_REQUIRED_LIBRARIES}
   ${SQLITE3_LIBRARIES}
-  ${NEON_LIBRARIES}
-  ${HTTPBF_LIBRARY}
 )
 
 if(HAVE_ICONV AND WITH_ICONV)
@@ -66,6 +66,9 @@ if(USE_NEON)
     list(APPEND csync_SRCS
         csync_owncloud.c
         csync_owncloud_util.c
+    )
+    list(APPEND CSYNC_LINK_LIBRARIES
+        ${NEON_LIBRARIES}
     )
     add_definitions(-DUSE_NEON)
 endif(USE_NEON)
