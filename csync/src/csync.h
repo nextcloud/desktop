@@ -350,31 +350,6 @@ int csync_commit(CSYNC *ctx);
 int csync_destroy(CSYNC *ctx);
 
 /**
- * @brief Check if csync is the required version or get the version
- * string.
- *
- * @param req_version   The version required.
- *
- * @return              If the version of csync is newer than the version
- *                      required it will return a version string.
- *                      NULL if the version is older.
- *
- * Example:
- *
- * @code
- *  if (csync_version(CSYNC_VERSION_INT(0,42,1)) == NULL) {
- *    fprintf(stderr, "libcsync version is too old!\n");
- *    exit(1);
- *  }
- *
- *  if (debug) {
- *    printf("csync %s\n", csync_version(0));
- *  }
- * @endcode
- */
-const char *csync_version(int req_version);
-
-/**
  * @brief Add an additional exclude list.
  *
  * @param ctx           The context to add the exclude list.

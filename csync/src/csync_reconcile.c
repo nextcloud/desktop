@@ -32,10 +32,6 @@
 
 #include "inttypes.h"
 
-#define ACCEPTED_TIME_DIFF 5
-#define ONE_HOUR 3600
-
-
 /* Check if a file is ignored because one parent is ignored.
  * return the node of the ignored directoy if it's the case, or NULL if it is not ignored */
 static c_rbnode_t *_csync_check_ignored(c_rbtree_t *tree, const char *path, int pathlen) {

@@ -111,22 +111,12 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   while(len > 0 && local[len - 1] == '/') --len;
 
   ctx->local.uri = c_strndup(local, len);
-  if (ctx->local.uri == NULL) {
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    free(ctx);
-    return -1;
-  }
 
   /* remove trailing slashes */
   len = strlen(remote);
   while(len > 0 && remote[len - 1] == '/') --len;
 
   ctx->remote.uri = c_strndup(remote, len);
-  if (ctx->remote.uri == NULL) {
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    free(ctx);
-    return -1;
-  }
 
   ctx->status_code = CSYNC_STATUS_OK;
 
@@ -657,15 +647,6 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx);
 
   return rc;
-}
-
-/* Check if csync is the required version or get the version string. */
-const char *csync_version(int req_version) {
-  if (req_version <= LIBCSYNC_VERSION_INT) {
-    return CSYNC_STRINGIFY(LIBCSYNC_VERSION);
-  }
-
-  return NULL;
 }
 
 int csync_add_exclude_list(CSYNC *ctx, const char *path) {
