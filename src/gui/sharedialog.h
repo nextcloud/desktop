@@ -24,7 +24,9 @@ namespace OCC {
 class OcsShareJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit OcsShareJob(const QByteArray& verb, const QUrl& url, const QUrl& postData, AccountPtr account, QObject* parent = 0);
+    explicit OcsShareJob(const QByteArray& verb, const QUrl& url, const QList<QPair<QString, QString>>& postData, AccountPtr account, QObject* parent = 0);
+    explicit OcsShareJob(const QByteArray& verb, const QUrl& url, AccountPtr account, QObject* parent = 0);
+
 public slots:
     void start() Q_DECL_OVERRIDE;
 signals:

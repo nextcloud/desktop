@@ -88,7 +88,6 @@ void ShareDialog::setExpireDate(const QDate &date)
 {
     _pi_date->startAnimation();
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
-    QUrl postData;
     QList<QPair<QString, QString> > postParams;
 
     if (date.isValid()) {
@@ -97,8 +96,7 @@ void ShareDialog::setExpireDate(const QDate &date)
         postParams.append(qMakePair(QString::fromLatin1("expireDate"), QString()));
     }
 
-    postData.setQueryItems(postParams);
-    OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
+    OcsShareJob *job = new OcsShareJob("PUT", url, postParams, AccountManager::instance()->account(), this);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotExpireSet(QString)));
     job->start();
 }
@@ -138,11 +136,9 @@ void ShareDialog::setPassword(const QString &password)
 {
     _pi_password->startAnimation();
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
-    QUrl postData;
     QList<QPair<QString, QString> > postParams;
     postParams.append(qMakePair(QString::fromLatin1("password"), password));
-    postData.setQueryItems(postParams);
-    OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
+    OcsShareJob *job = new OcsShareJob("PUT", url, postParams, AccountManager::instance()->account(), this);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotPasswordSet(QString)));
     job->start();
 }
@@ -174,7 +170,7 @@ void ShareDialog::getShares()
     QList<QPair<QString, QString> > params;
     params.append(qMakePair(QString::fromLatin1("path"), _sharePath));
     url.setQueryItems(params);
-    OcsShareJob *job = new OcsShareJob("GET", url, QUrl(), AccountManager::instance()->account(), this);
+    OcsShareJob *job = new OcsShareJob("GET", url, AccountManager::instance()->account(), this);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotSharesFetched(QString)));
     job->start();
 }
@@ -246,12 +242,10 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
     {
         _pi_link->startAnimation();
         QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
-        QUrl postData;
         QList<QPair<QString, QString> > postParams;
         postParams.append(qMakePair(QString::fromLatin1("path"), _sharePath));
         postParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_PUBLIC)));
-        postData.setQueryItems(postParams);
-        OcsShareJob *job = new OcsShareJob("POST", url, postData, AccountManager::instance()->account(), this);
+        OcsShareJob *job = new OcsShareJob("POST", url, postParams, AccountManager::instance()->account(), this);
         connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotCreateShareFetched(QString)));
         job->start();
     }
@@ -259,7 +253,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
     {
         _pi_link->startAnimation();
         QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
-        OcsShareJob *job = new OcsShareJob("DELETE", url, QUrl(), AccountManager::instance()->account(), this);
+        OcsShareJob *job = new OcsShareJob("DELETE", url, AccountManager::instance()->account(), this);
         connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotDeleteShareFetched(QString)));
         job->start();
     }
@@ -449,13 +443,13 @@ void ShareDialog::slotNextSyncFinished( const SyncResult& result )
 }
 
 
-OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, const QUrl &postData, AccountPtr account, QObject* parent)
+OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, const QList<QPair<QString, QString>> &postData, AccountPtr account, QObject* parent)
 : AbstractNetworkJob(account, "", parent),
   _verb(verb),
-  _url(url),
-  _postData(postData)
+  _url(url)
 {
     setIgnoreCredentialFailure(true);
+    _postData.setQueryItems(postData);
 }
 
 void OcsShareJob::start()
