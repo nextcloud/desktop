@@ -89,9 +89,7 @@ void ShareDialog::setExpireDate(const QDate &date)
     _pi_date->startAnimation();
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
     QUrl postData;
-    QList<QPair<QString, QString> > getParams;
     QList<QPair<QString, QString> > postParams;
-    getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
 
     if (date.isValid()) {
         postParams.append(qMakePair(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd")));
@@ -99,7 +97,6 @@ void ShareDialog::setExpireDate(const QDate &date)
         postParams.append(qMakePair(QString::fromLatin1("expireDate"), QString()));
     }
 
-    url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
     OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotExpireSet(QString)));
@@ -142,11 +139,8 @@ void ShareDialog::setPassword(const QString &password)
     _pi_password->startAnimation();
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
     QUrl postData;
-    QList<QPair<QString, QString> > getParams;
     QList<QPair<QString, QString> > postParams;
-    getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
     postParams.append(qMakePair(QString::fromLatin1("password"), password));
-    url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
     OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotPasswordSet(QString)));
@@ -178,7 +172,6 @@ void ShareDialog::getShares()
 {
     QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
     QList<QPair<QString, QString> > params;
-    params.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
     params.append(qMakePair(QString::fromLatin1("path"), _sharePath));
     url.setQueryItems(params);
     OcsShareJob *job = new OcsShareJob("GET", url, QUrl(), AccountManager::instance()->account(), this);
@@ -254,12 +247,9 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
         _pi_link->startAnimation();
         QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
         QUrl postData;
-        QList<QPair<QString, QString> > getParams;
         QList<QPair<QString, QString> > postParams;
-        getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
         postParams.append(qMakePair(QString::fromLatin1("path"), _sharePath));
         postParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_PUBLIC)));
-        url.setQueryItems(getParams);
         postData.setQueryItems(postParams);
         OcsShareJob *job = new OcsShareJob("POST", url, postData, AccountManager::instance()->account(), this);
         connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotCreateShareFetched(QString)));
@@ -269,9 +259,6 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
     {
         _pi_link->startAnimation();
         QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
-        QList<QPair<QString, QString> > getParams;
-        getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
-        url.setQueryItems(getParams);
         OcsShareJob *job = new OcsShareJob("DELETE", url, QUrl(), AccountManager::instance()->account(), this);
         connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotDeleteShareFetched(QString)));
         job->start();
@@ -483,6 +470,10 @@ void OcsShareJob::start()
         tmp.append(tmp2.first + "=" + tmp2.second);
     }
     buffer->setData(tmp.join("&").toAscii());
+
+    auto queryItems = _url.queryItems();
+    queryItems.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
+    _url.setQueryItems(queryItems);
 
     setReply(davRequest(_verb, _url, req, buffer));
     setupConnections(reply());
