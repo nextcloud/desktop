@@ -182,7 +182,6 @@ void SocketApi::slotNewConnection()
     }
     broadcastMessage(QLatin1String("ICON_PATH"), iconPath );
 #endif
-    broadcastMessage(QLatin1String("SHARE_MENU_TITLE"), QString(), tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
 
     foreach( QString alias, FolderMan::instance()->map().keys() ) {
        slotRegisterPath(alias);
@@ -428,6 +427,11 @@ void SocketApi::command_SHARE(const QString& localFile, SocketType* socket)
 void SocketApi::command_VERSION(const QString&, SocketType* socket)
 {
     sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
+}
+
+void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketType* socket)
+{
+    sendMessage(socket, QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
 }
 
 SqlQuery* SocketApi::getSqlQuery( Folder *folder )

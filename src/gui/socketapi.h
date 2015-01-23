@@ -82,6 +82,8 @@ private:
 
     Q_INVOKABLE void command_VERSION(const QString& argument, SocketType* socket);
 
+    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, SocketType* socket);
+
 #ifdef SOCKETAPI_TCP
     QTcpServer _localServer;
 #else
