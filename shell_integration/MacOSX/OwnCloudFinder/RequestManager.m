@@ -204,6 +204,8 @@ static RequestManager* sharedInstance = nil;
 	_isConnected = YES;
 	_isRunning = NO;
 
+    [self askOnSocket:@"" query:@"SHARE_MENU_TITLE"];
+
 	if( [_requestQueue count] > 0 ) {
 		NSLog( @"We have to empty the queue");
 		for( NSString *path in _requestQueue ) {
