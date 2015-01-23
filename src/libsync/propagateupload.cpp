@@ -14,7 +14,6 @@
 
 #include "propagateupload.h"
 #include "owncloudpropagator_p.h"
-#include "propagator_legacy.h"
 #include "networkjobs.h"
 #include "account.h"
 #include "syncjournaldb.h"
@@ -562,11 +561,15 @@ void PropagateUploadFileQNAM::slotPutFinished()
     if (job->reply()->rawHeader("X-OC-MTime") != "accepted") {
         // X-OC-MTime is supported since owncloud 5.0.   But not when chunking.
         // Normaly Owncloud 6 always put X-OC-MTime
-        qDebug() << "Server do not support X-OC-MTime";
+        qWarning() << "Server do not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
+#ifdef USE_NEON
         PropagatorJob *newJob = new UpdateMTimeAndETagJob(_propagator, _item);
         QObject::connect(newJob, SIGNAL(completed(SyncFileItem)), this, SLOT(finalize(SyncFileItem)));
         QMetaObject::invokeMethod(newJob, "start");
         return;
+#else
+        // Well, the mtime was not set
+#endif
     }
     finalize(_item);
 }

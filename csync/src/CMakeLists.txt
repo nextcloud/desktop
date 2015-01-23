@@ -60,10 +60,16 @@ set(csync_SRCS
   vio/csync_vio.c
   vio/csync_vio_file_stat.c
   vio/csync_vio_local.c
-
-  csync_owncloud.c
-  csync_owncloud_util.c
 )
+
+if(USE_NEON)
+    list(APPEND csync_SRCS
+        csync_owncloud.c
+        csync_owncloud_util.c
+    )
+    add_definitions(-DUSE_NEON)
+endif(USE_NEON)
+
 
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 

@@ -22,7 +22,9 @@
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
 #include "propagatorjobs.h"
+#ifdef USE_NEON
 #include "propagator_legacy.h"
+#endif
 #include "configfile.h"
 #include "utility.h"
 #include <json.h>
@@ -154,7 +156,11 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
                 downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
             }
             downloadItem._direction = SyncFileItem::Down;
+#ifdef USE_NEON
             newJob = new PropagateDownloadFileLegacy(_propagator, downloadItem);
+#else
+            newJob = new PropagateDownloadFileQNAM(_propagator, downloadItem);
+#endif
         } else {
             // Directories are harder to recover.
             // But just re-create the directory, next sync will be able to recover the files
@@ -213,13 +219,16 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
                 // Should we set the mtime?
                 return 0;
             }
+#ifdef USE_NEON
             if (useLegacyJobs()) {
                 if (item._direction != SyncFileItem::Up) {
                     return new PropagateDownloadFileLegacy(this, item);
                 } else {
                     return new PropagateUploadFileLegacy(this, item);
                 }
-            } else {
+            } else
+#endif
+            {
                 if (item._direction != SyncFileItem::Up) {
                     return new PropagateDownloadFileQNAM(this, item);
                 } else {
@@ -349,6 +358,7 @@ bool OwncloudPropagator::isInSharedDirectory(const QString& file)
  */
 bool OwncloudPropagator::useLegacyJobs()
 {
+#ifdef USE_NEON
     // Allow an environement variable for debugging
     QByteArray env = qgetenv("OWNCLOUD_USE_LEGACY_JOBS");
     if (env=="true" || env =="1") {
@@ -382,7 +392,7 @@ bool OwncloudPropagator::useLegacyJobs()
         return true;
 #endif
     }
-
+#endif // USE_NEON
     return false;
 }
 

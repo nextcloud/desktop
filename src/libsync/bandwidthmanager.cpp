@@ -16,7 +16,6 @@
 #include "propagatedownload.h"
 #include "propagateupload.h"
 #include "propagatorjobs.h"
-#include "propagator_legacy.h"
 #include "utility.h"
 
 #ifdef Q_OS_WIN

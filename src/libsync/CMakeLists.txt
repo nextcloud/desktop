@@ -47,7 +47,6 @@ set(libsync_SRCS
     owncloudtheme.cpp
     progressdispatcher.cpp
     propagatorjobs.cpp
-    propagator_legacy.cpp
     propagatedownload.cpp
     propagateupload.cpp
     propagateremotedelete.cpp
@@ -84,6 +83,12 @@ else()
         authenticationdialog.cpp
     )
 endif()
+
+if(USE_NEON)
+    list(APPEND libsync_SRCS
+        propagator_legacy.cpp
+    )
+endif(USE_NEON)
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS

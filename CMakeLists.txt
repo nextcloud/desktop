@@ -121,13 +121,13 @@ endif()
 #endif()
 
 
-set(NO_NEON_REQUIRED FALSE)
+set(USE_NEON TRUE)
 if(HAVE_QT5)
   message(STATUS "Using Qt ${Qt5Core_VERSION_MAJOR}.${Qt5Core_VERSION_MINOR}.x")
   if (${Qt5Core_VERSION_MAJOR} EQUAL "5")
     if (${Qt5Core_VERSION_MINOR} EQUAL "4" OR ${Qt5Core_VERSION_MINOR} GREATER 4)
       message(STATUS "We would not require Neon in this setup, compile without! FIXME!")
-      set(NO_NEON_REQUIRED TRUE)
+      set(USE_NEON FALSE)
     else()
       message(STATUS "Still requiring Neon with this Qt version :-( Qt 5.4 is better!")
     endif()
@@ -139,8 +139,9 @@ else()
  message(STATUS "###########################################################")
 endif()
 
-# FIXME only require when cannot build without neon
-find_package(Neon REQUIRED)
+if (USE_NEON)
+  find_package(Neon REQUIRED)
+endif(USE_NEON)
 
 if(NOT TOKEN_AUTH_ONLY)
     if (Qt5Core_DIR)

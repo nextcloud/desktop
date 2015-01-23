@@ -15,7 +15,6 @@
 
 #include "propagatorjobs.h"
 #include "owncloudpropagator_p.h"
-#include "propagator_legacy.h"
 
 #include "utility.h"
 #include "syncjournaldb.h"

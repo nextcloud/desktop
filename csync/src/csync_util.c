@@ -148,3 +148,88 @@ bool csync_file_locked_or_open( const char *dir, const char *fname) {
     SAFE_FREE(tmp_uri);
     return ret;
 }
+
+#ifndef HAVE_TIMEGM
+#ifdef _WIN32
+static int is_leap(unsigned y) {
+    y += 1900;
+    return (y % 4) == 0 && ((y % 100) != 0 || (y % 400) == 0);
+}
+
+static time_t timegm(struct tm *tm) {
+    static const unsigned ndays[2][12] = {
+    {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+    {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };
+
+    time_t res = 0;
+    int i;
+
+    for (i = 70; i < tm->tm_year; ++i)
+        res += is_leap(i) ? 366 : 365;
+
+    for (i = 0; i < tm->tm_mon; ++i)
+        res += ndays[is_leap(tm->tm_year)][i];
+     res += tm->tm_mday - 1;
+     res *= 24;
+     res += tm->tm_hour;
+     res *= 60;
+     res += tm->tm_min;
+     res *= 60;
+     res += tm->tm_sec;
+     return res;
+}
+#else
+/* A hopefully portable version of timegm */
+static time_t timegm(struct tm *tm ) {
+     time_t ret;
+     char *tz;
+
+     tz = getenv("TZ");
+     setenv("TZ", "", 1);
+     tzset();
+     ret = mktime(tm);
+     if (tz)
+         setenv("TZ", tz, 1);
+     else
+         unsetenv("TZ");
+     tzset();
+     return ret;
+}
+#endif /* Platform switch */
+#endif /* HAVE_TIMEGM */
+
+#define RFC1123_FORMAT "%3s, %02d %3s %4d %02d:%02d:%02d GMT"
+static const char short_months[12][4] = {
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+};
+/*
+ * This function is borrowed from libneon's ne_httpdate_parse.
+ * Unfortunately that one converts to local time but here UTC is
+ * needed.
+ * This one uses timegm instead, which returns UTC.
+ */
+time_t oc_httpdate_parse( const char *date ) {
+    struct tm gmt;
+    char wkday[4], mon[4];
+    int n;
+    time_t result = 0;
+
+    memset(&gmt, 0, sizeof(struct tm));
+
+    /*  it goes: Sun, 06 Nov 1994 08:49:37 GMT */
+    n = sscanf(date, RFC1123_FORMAT,
+               wkday, &gmt.tm_mday, mon, &gmt.tm_year, &gmt.tm_hour,
+               &gmt.tm_min, &gmt.tm_sec);
+    /* Is it portable to check n==7 here? */
+    gmt.tm_year -= 1900;
+    for (n=0; n<12; n++)
+        if (strcmp(mon, short_months[n]) == 0)
+            break;
+    /* tm_mon comes out as 12 if the month is corrupt, which is desired,
+     * since the mktime will then fail */
+    gmt.tm_mon = n;
+    gmt.tm_isdst = -1;
+    result = timegm(&gmt);
+    return result;
+}
