@@ -327,7 +327,10 @@ void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResul
                      this, SLOT(singleDirectoryJobResultSlot(QLinkedList<csync_vio_file_stat_t*>)));
     QObject::connect(_singleDirJob, SIGNAL(finishedWithError(int,QString)),
                      this, SLOT(singleDirectoryJobFinishedWithErrorSlot(int,QString)));
-    QObject::connect(_singleDirJob, SIGNAL(firstDirectoryEtag(QString)), this, SIGNAL(rootEtag(QString)));
+    QObject::connect(_singleDirJob, SIGNAL(firstDirectoryPermissions(QString)),
+                     this, SLOT(singleDirectoryJobFirstDirectoryPermissionsSlot(QString)));
+    QObject::connect(_singleDirJob, SIGNAL(firstDirectoryEtag(QString)),
+                     this, SIGNAL(rootEtag(QString)));
     _singleDirJob->start();
 }
 

@@ -54,7 +54,7 @@ signals:
     void firstDirectoryPermissions(const QString &);
     void firstDirectoryEtag(const QString &);
     void finishedWithResult(QLinkedList<csync_vio_file_stat_t*>);
-    void finishedWithError(int csyncErrnoCode, QString &msg);
+    void finishedWithError(int csyncErrnoCode, QString msg);
 private slots:
     void directoryListingIteratedSlot(QString,QMap<QString,QString>);
     void lsJobFinishedWithoutErrorSlot();
