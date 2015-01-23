@@ -249,7 +249,9 @@ void RequestEtagJob::start()
         /* For the root directory, we need to query the etags of all the sub directories
          * because, at the time I am writing this comment (Owncloud 5.0.9), the etag of the
          * root directory is not updated when the sub directories changes */
-        req.setRawHeader("Depth", "1");
+        //req.setRawHeader("Depth", "1");
+        //This should be fixed since oC6 https://github.com/owncloud/core/issues/5255
+        req.setRawHeader("Depth", "0");
     } else {
         req.setRawHeader("Depth", "0");
     }

@@ -242,6 +242,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
         if (map.contains("permissions")) {
             emit firstDirectoryPermissions(map.value("permissions"));
         }
+        if (map.contains("getetag")) {
+            emit firstDirectoryEtag(map.value("getetag"));
+        }
     } else {
         // Remove /remote.php/webdav/folder/ from /remote.php/webdav/folder/subfile.txt
         file.remove(0, _lsColJob->reply()->request().url().path().length());
@@ -324,6 +327,7 @@ void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResul
                      this, SLOT(singleDirectoryJobResultSlot(QLinkedList<csync_vio_file_stat_t*>)));
     QObject::connect(_singleDirJob, SIGNAL(finishedWithError(int,QString)),
                      this, SLOT(singleDirectoryJobFinishedWithErrorSlot(int,QString)));
+    QObject::connect(_singleDirJob, SIGNAL(firstDirectoryEtag(QString)), this, SIGNAL(rootEtag(QString)));
     _singleDirJob->start();
 }
 

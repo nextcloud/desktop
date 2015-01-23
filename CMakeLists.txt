@@ -120,6 +120,8 @@ endif()
 #    find_package(Qt4 4.7.0 COMPONENTS QtDBus REQUIRED )
 #endif()
 
+
+set(NO_NEON_REQUIRED FALSE)
 if(HAVE_QT5)
   message(STATUS "Using Qt ${Qt5Core_VERSION_MAJOR}.${Qt5Core_VERSION_MINOR}.x")
   if (${Qt5Core_VERSION_MAJOR} EQUAL "5")

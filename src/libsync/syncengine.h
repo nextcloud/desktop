@@ -84,6 +84,7 @@ signals:
     void csyncUnavailable();
 
     // During update, before reconcile
+    void rootEtag(QString);
     void folderDiscovered(bool local, QString folderUrl);
 
     // before actual syncing (after update+reconcile) for each item
@@ -108,6 +109,7 @@ signals:
     void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
 
 private slots:
+    void slotRootEtagReceived(QString);
     void slotJobCompleted(const SyncFileItem& item);
     void slotFinished();
     void slotProgress(const SyncFileItem& item, quint64 curent);
@@ -150,6 +152,7 @@ private:
     QString _localPath;
     QString _remoteUrl;
     QString _remotePath;
+    QString _remoteRootEtag;
     SyncJournalDb *_journal;
     QPointer<DiscoveryMainThread> _discoveryMainThread;
     QSharedPointer <OwncloudPropagator> _propagator;

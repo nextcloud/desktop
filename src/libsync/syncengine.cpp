@@ -606,6 +606,7 @@ void SyncEngine::startSync()
     _discoveryMainThread = new DiscoveryMainThread(account());
     _discoveryMainThread->setParent(this);
     connect(this, SIGNAL(finished()), _discoveryMainThread, SLOT(deleteLater()));
+    connect(_discoveryMainThread, SIGNAL(rootEtag(QString)), this, SLOT(slotRootEtagReceived(QString)));
 
 
     DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx);
@@ -622,6 +623,14 @@ void SyncEngine::startSync()
 
     // Starts the update in a seperate thread
     QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);
+}
+
+void SyncEngine::slotRootEtagReceived(QString e) {
+    qDebug() << Q_FUNC_INFO << e;
+    if (_remoteRootEtag.isEmpty()) {
+        _remoteRootEtag = e;
+        emit rootEtag(_remoteRootEtag);
+    }
 }
 
 void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)

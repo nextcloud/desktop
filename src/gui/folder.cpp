@@ -319,6 +319,13 @@ void Folder::etagRetreived(const QString& etag)
     }
 }
 
+void Folder::etagRetreivedFromSyncEngine(const QString& etag)
+{
+    qDebug() << "Root etag from during sync:" << etag;
+    _lastEtag = etag;
+}
+
+
 void Folder::bubbleUpSyncResult()
 {
     // count new, removed and updated items
@@ -780,6 +787,7 @@ void Folder::startSync(const QStringList &pathList)
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
 
+    connect(_engine.data(), SIGNAL(rootEtag(QString)), this, SLOT(etagRetreivedFromSyncEngine(QString)));
     connect( _engine.data(), SIGNAL(treeWalkResult(const SyncFileItemVector&)),
               this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
     connect( _engine.data(), SIGNAL(aboutToPropagate(const SyncFileItemVector&)),
