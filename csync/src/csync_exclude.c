@@ -103,11 +103,6 @@ int csync_exclude_load(const char *fname, c_strlist_t **list) {
     goto out;
   }
   buf = c_malloc(size + 1);
-  if (buf == NULL) {
-      rc = -1;
-      goto out;
-  }
-
   if (read(fd, buf, size) != size) {
     rc = -1;
     goto out;

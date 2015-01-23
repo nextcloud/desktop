@@ -260,9 +260,6 @@ static char* get_transfer_url( hbf_transfer_t *transfer, int indx ) {
       len += strlen("-chunking---");
 
       res = malloc(len);
-      if( res == NULL ) {
-        return NULL;
-      }
 
       /* Note: must be %u for unsigned because one does not want '--' */
       if( sprintf(res, "%s-chunking-%u-%u-%u", transfer->url, transfer->transfer_id,

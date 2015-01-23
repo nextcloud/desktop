@@ -47,10 +47,6 @@ int c_rbtree_create(c_rbtree_t **rbtree, c_rbtree_compare_func *key_compare, c_r
   }
 
   tree = c_malloc(sizeof(*tree));
-  if (tree == NULL) {
-    return -1;
-  }
-
   tree->root = NIL;
   tree->key_compare = key_compare;
   tree->data_compare = data_compare;
@@ -400,10 +396,6 @@ int c_rbtree_insert(c_rbtree_t *tree, void *data) {
   }
 
   x = (c_rbnode_t *) c_malloc(sizeof(c_rbnode_t));
-  if (x == NULL) {
-    errno = ENOMEM;
-    return -1;
-  }
 
   x->tree = tree;
   x->data = data;

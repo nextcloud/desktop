@@ -201,10 +201,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   size = sizeof(csync_file_stat_t) + len + 1;
 
   st = c_malloc(size);
-  if (st == NULL) {
-    ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-    return -1;
-  }
 
   /* Set instruction by default to none */
   st->instruction = CSYNC_INSTRUCTION_NONE;

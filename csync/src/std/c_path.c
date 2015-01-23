@@ -67,9 +67,6 @@ char *c_dirname (const char *path) {
   while(len > 0 && path[len - 1] == '/') --len;
 
   newbuf = c_malloc(len + 1);
-  if (newbuf == NULL) {
-    return NULL;
-  }
 
   strncpy(newbuf, path, len);
   newbuf[len] = '\0';
@@ -107,9 +104,6 @@ char *c_basename (const char *path) {
   }
 
   newbuf = c_malloc(len + 1);
-  if (newbuf == NULL) {
-    return NULL;
-  }
 
   strncpy(newbuf, s, len);
   newbuf[len] = '\0';

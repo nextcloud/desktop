@@ -251,9 +251,6 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
             /* phash, pathlen, path, inode, uid, gid, mode, modtime */
             len = sqlite3_column_int(stmt, 1);
             *st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
-            if (*st == NULL) {
-                return SQLITE_NOMEM;
-            }
             /* clear the whole structure */
             ZERO_STRUCTP(*st);
 

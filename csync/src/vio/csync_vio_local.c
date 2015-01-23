@@ -53,10 +53,6 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   mbchar_t *dirname = c_utf8_to_locale(name);
 
   handle = c_malloc(sizeof(dhandle_t));
-  if (handle == NULL) {
-    c_free_locale_string(dirname);
-    return NULL;
-  }
 
   handle->dh = _topendir( dirname );
   if (handle->dh == NULL) {

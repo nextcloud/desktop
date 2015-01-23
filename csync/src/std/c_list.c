@@ -179,9 +179,6 @@ c_list_t *c_list_alloc(void) {
   c_list_t *list = NULL;
 
   list = c_malloc(sizeof(c_list_t));
-  if (list == NULL) {
-    return NULL;
-  }
 
   list->data = NULL;
 

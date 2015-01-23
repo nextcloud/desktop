@@ -115,10 +115,6 @@ static char *c_iconv(const char* str, enum iconv_direction dir)
   out = c_malloc(outsize);
   out_in = out;
 
-  if (out == NULL) {
-      return NULL;
-  }
-
   if (dir == iconv_to_native) {
       ret = iconv(_iconvs.to, &in, &size, &out, &outsize);
   } else {
@@ -173,10 +169,6 @@ c_strlist_t *c_strlist_new(size_t size) {
   }
 
   strlist->vector = (char **) c_malloc(size * sizeof(char *));
-  if (strlist->vector == NULL) {
-    SAFE_FREE(strlist);
-    return NULL;
-  }
   strlist->count = 0;
   strlist->size = size;
 
@@ -267,10 +259,6 @@ char* c_utf8_from_locale(const mbchar_t *wstr)
   size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr, len, NULL, 0, NULL, NULL);
   if (size_needed > 0) {
     mdst = c_malloc(size_needed + 1);
-    if (mdst == NULL) {
-      errno = ENOMEM;
-      return NULL;
-    }
 
     memset(mdst, 0, size_needed + 1);
     WideCharToMultiByte(CP_UTF8, 0, wstr, len, mdst, size_needed, NULL, NULL);
@@ -305,11 +293,6 @@ mbchar_t* c_utf8_to_locale(const char *str)
   if (size_needed > 0) {
     int size_char = (size_needed + 1) * sizeof(mbchar_t);
     dst = c_malloc(size_char);
-    if (dst == NULL) {
-      errno = ENOMEM;
-      return NULL;
-    }
-
     memset((void*)dst, 0, size_char);
     MultiByteToWideChar(CP_UTF8, 0, str, -1, dst, size_needed);
   }
