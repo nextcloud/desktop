@@ -19,7 +19,6 @@
 #include "utility.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
-#include <httpbf.h>
 #include <qfile.h>
 #include <qdir.h>
 #include <qdiriterator.h>

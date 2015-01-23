@@ -16,7 +16,6 @@
 #pragma once
 
 #include "owncloudpropagator.h"
-#include <httpbf.h>
 #include <QFile>
 #include <qdebug.h>
 

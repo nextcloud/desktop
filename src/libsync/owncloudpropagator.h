@@ -15,7 +15,6 @@
 #ifndef OWNCLOUDPROPAGATOR_H
 #define OWNCLOUDPROPAGATOR_H
 
-#include <neon/ne_request.h>
 #include <QHash>
 #include <QObject>
 #include <QMap>
