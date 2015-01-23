@@ -8,7 +8,7 @@ include (MacroLogFeature)
 option(BUILD_WITH_QT4 "Build with Qt4 no matter if Qt5 was found" OFF)
 
 if( BUILD_WITH_QT4 )
-    message(STATUS "Search for Qt5 was disalbed by option BUILD_WITH_QT4")
+    message(STATUS "Search for Qt5 was disabled by option BUILD_WITH_QT4")
 else( BUILD_WITH_QT4 )
     find_package(Qt5Core QUIET)
 endif( BUILD_WITH_QT4 )
