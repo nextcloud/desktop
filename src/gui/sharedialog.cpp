@@ -81,7 +81,7 @@ ShareDialog::ShareDialog(const QString &sharePath, const QString &localPath, QWi
     _ui->errorLabel->setPalette(errPalette);
     _ui->errorLabel->setFrameShape(QFrame::Box);
     _ui->errorLabel->setContentsMargins(QMargins(12,12,12,12));
-
+    _ui->errorLabel->hide();
 }
 
 void ShareDialog::setExpireDate(const QDate &date)
@@ -161,7 +161,7 @@ void ShareDialog::slotPasswordSet(const QString &reply)
     qDebug() << Q_FUNC_INFO << "Status code: " << code;
 
     if (code != 100) {
-        displayError(100);
+        displayError(code);
     } else {
         /*
          * When setting/deleting a password from a share the old share is
@@ -351,6 +351,7 @@ void ShareDialog::displayError(int code)
 {
     const QString errMsg = tr("OCS API error code: %1").arg(code);
     _ui->errorLabel->setText( errMsg );
+    _ui->errorLabel->show();
 }
 
 void ShareDialog::displayInfo( const QString& msg )
