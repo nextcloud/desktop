@@ -130,6 +130,11 @@ if(HAVE_QT5)
       message(STATUS "Still requiring Neon with this Qt version :-( Qt 5.4 is better!")
     endif()
   endif()
+else()
+ message(STATUS "###########################################################")
+ message(STATUS "You are a very naughty boy/girl for still using Qt 4.x")
+ message(STATUS "Please compile me with Qt 5.4 which is much faster/better.")
+ message(STATUS "###########################################################")
 endif()
 
 # FIXME only require when cannot build without neon

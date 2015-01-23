@@ -73,29 +73,26 @@ static MenuManager* sharedInstance = nil;
 
 - (void)addItemsToMenu:(TContextMenu*)menu forFiles:(NSArray*)files
 {
-	// no menu items for now:
-	return;
-
-	// NSArray* menuItemsArray = [[RequestManager sharedInstance] menuItemsForFiles:files];
-	NSArray* menuItemsArray;
-
-	if (menuItemsArray == nil)
-	{
+	RequestManager *requestManager = [RequestManager sharedInstance];
+	NSString *shareItemTitle = [requestManager shareItemTitle];
+	if (!shareItemTitle || shareItemTitle.length == 0) {
 		return;
 	}
 
-	if ([menuItemsArray count] == 0)
-	{
-		return;
-	}
+	NSMutableArray* menuItemsArray = [[[NSMutableArray alloc] init] autorelease];
+	NSMutableDictionary *firstEntry = [[[NSMutableDictionary alloc] init] autorelease];
+	[firstEntry setValue:[NSNumber numberWithBool:YES] forKey:@"enabled"];
+	[firstEntry setValue:shareItemTitle forKey:@"title"];
+	[menuItemsArray addObject:firstEntry];
 
-	NSInteger menuIndex = 4;
-
-	BOOL hasSeparatorBefore = [[menu itemAtIndex:menuIndex - 1] isSeparatorItem];
-
-	if (!hasSeparatorBefore)
-	{
-		[menu insertItem:[NSMenuItem separatorItem] atIndex:menuIndex];
+	// Find the menu with a submenu which should be the share menu position
+	NSInteger menuIndex = MIN(4, menu.itemArray.count);
+	for (int i = menuIndex; i < menu.itemArray.count; i++) {
+		if ([[menu itemAtIndex:i] hasSubmenu]) {
+			menuIndex = i;
+			//NSLog(@"addItemsToMenu: menuIndex --> %lu (count=%lu)", menuIndex, (unsigned long)menu.itemArray.count);
+			break;
+		}
 	}
 
 	for (int i = 0; i < [menuItemsArray count]; ++i)
@@ -125,13 +122,6 @@ static MenuManager* sharedInstance = nil;
 		{
 			[self createActionMenuItemIn:menu withTitle:mainMenuTitle withIndex:menuIndex enabled:enabled withUuid:uuid forFiles:files];
 		}
-	}
-
-	BOOL hasSeparatorAfter = [[menu itemAtIndex:menuIndex + 1] isSeparatorItem];
-
-	if (!hasSeparatorAfter)
-	{
-		[menu insertItem:[NSMenuItem separatorItem] atIndex:menuIndex + 1];
 	}
 }
 

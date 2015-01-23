@@ -33,6 +33,8 @@ static RequestManager* sharedInstance = nil;
 
 		_registeredPathes = [[NSMutableDictionary alloc] init];
 
+		_shareMenuTitle = nil;
+
 		[self start];
 	}
 
@@ -165,6 +167,9 @@ static RequestManager* sharedInstance = nil;
 		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"ICON_PATH"] ) {
 			NSString *path = [chunks objectAtIndex:1];
 			[[ContentManager sharedInstance] loadIconResourcePath:path];
+		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"SHARE_MENU_TITLE"] ) {
+			_shareMenuTitle = [[chunks objectAtIndex:1] copy];
+				NSLog(@"Received shar menu title: %@", _shareMenuTitle);
 		} else {
 			NSLog(@"Unknown command %@", [chunks objectAtIndex:0]);
 		}
@@ -270,5 +275,24 @@ static RequestManager* sharedInstance = nil;
 		 _isRunning = YES;
 	}
 }
+
+- (void)menuItemClicked:(NSDictionary*)actionDictionary
+{
+	NSLog(@"RequestManager menuItemClicked %@", actionDictionary);
+	NSArray *filePaths = [actionDictionary valueForKey:@"files"];
+	for (int i = 0; i < filePaths.count; i++) {
+		[self askOnSocket:[filePaths objectAtIndex:i] query:@"SHARE"];
+	}
+}
+
+- (NSString*) shareItemTitle
+{
+	if (_socket && _socket.isConnected && _shareMenuTitle) {
+		return _shareMenuTitle;
+	}
+	return nil;
+}
+
+
 
 @end

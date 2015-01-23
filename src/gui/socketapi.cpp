@@ -182,7 +182,7 @@ void SocketApi::slotNewConnection()
     }
     broadcastMessage(QLatin1String("ICON_PATH"), iconPath );
 #endif
-
+    broadcastMessage(QLatin1String("SHARE_MENU_TITLE"), QString(), tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
 
     foreach( QString alias, FolderMan::instance()->map().keys() ) {
        slotRegisterPath(alias);
