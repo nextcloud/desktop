@@ -27,6 +27,8 @@ extern long g_cDllRef;
 
 #define IDM_SHARE             0
 
+
+
 OCContextMenu::OCContextMenu(void) 
 	: m_cRef(1)
 	, m_pszMenuText(L"&Share")

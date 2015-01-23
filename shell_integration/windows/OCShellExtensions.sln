@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OCOverlays", "OCOverlays\OCOverlays.vcxproj", "{42EFEC79-5ACA-4F76-955F-15CE4340F6BC}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -9,6 +9,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OCOverlays", "OCOverlays\OC
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OCUtil", "OCUtil\OCUtil.vcxproj", "{E4F63E19-808D-4234-8DF0-69C5F47C9CD3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OCContextMenu", "OCContextMenu\OCContextMenu.vcxproj", "{FF34851F-1346-4809-A68A-B1188D7DFF32}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E4F63E19-808D-4234-8DF0-69C5F47C9CD3} = {E4F63E19-808D-4234-8DF0-69C5F47C9CD3}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +39,14 @@ Global
 		{E4F63E19-808D-4234-8DF0-69C5F47C9CD3}.Release|Win32.Build.0 = Release|Win32
 		{E4F63E19-808D-4234-8DF0-69C5F47C9CD3}.Release|x64.ActiveCfg = Release|x64
 		{E4F63E19-808D-4234-8DF0-69C5F47C9CD3}.Release|x64.Build.0 = Release|x64
+		{FF34851F-1346-4809-A68A-B1188D7DFF32}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FF34851F-1346-4809-A68A-B1188D7DFF32}.Debug|Win32.Build.0 = Debug|Win32
+		{FF34851F-1346-4809-A68A-B1188D7DFF32}.Debug|x64.ActiveCfg = Debug|x64
+		{FF34851F-1346-4809-A68A-B1188D7DFF32}.Debug|x64.Build.0 = Debug|x64
+		{FF34851F-1346-4809-A68A-B1188D7DFF32}.Release|Win32.ActiveCfg = Release|Win32
+		{FF34851F-1346-4809-A68A-B1188D7DFF32}.Release|Win32.Build.0 = Release|Win32
+		{FF34851F-1346-4809-A68A-B1188D7DFF32}.Release|x64.ActiveCfg = Release|x64
+		{FF34851F-1346-4809-A68A-B1188D7DFF32}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

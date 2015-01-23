@@ -60,6 +60,7 @@ bool CommunicationSocket::Connect(const std::wstring &pipename)
     if (_pipe == INVALID_HANDLE_VALUE) {
         return false;
     }
+
     return true;
 }
 
@@ -79,7 +80,7 @@ bool CommunicationSocket::SendMsg(const wchar_t* message) const
     }
 }
 
-bool CommunicationSocket::ReadLine(wstring* response, bool block)
+bool CommunicationSocket::ReadLine(wstring* response)
 {
 	if (!response) {
 		return false;
@@ -90,13 +91,6 @@ bool CommunicationSocket::ReadLine(wstring* response, bool block)
     if (_pipe == INVALID_HANDLE_VALUE) {
         return false;
     }
-
-	COMMTIMEOUTS timeout = { };
-	timeout.ReadIntervalTimeout = 10;
-	timeout.ReadTotalTimeoutMultiplier = 0;
-	timeout.WriteTotalTimeoutMultiplier = 0;
-
-	SetCommTimeouts(_pipe, &timeout);
 
 	while (true) {
         int lbPos = 0;
@@ -111,14 +105,12 @@ bool CommunicationSocket::ReadLine(wstring* response, bool block)
         DWORD numBytesRead = 0;
 		DWORD totalBytesAvailable = 0;
 
-		if (/*!block*/ true) {
-			if (!PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0)) {
-				Close();
-				return false;
-			}
-			if (totalBytesAvailable == 0) {
-				return false;
-			}
+		if (!PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0)) {
+			Close();
+			return false;
+		}
+		if (totalBytesAvailable == 0) {
+			return false;
 		}
 
 		if (!ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, NULL)) {

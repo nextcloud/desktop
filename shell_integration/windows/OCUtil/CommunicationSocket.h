@@ -33,7 +33,7 @@ public:
 	bool Close();
 
 	bool SendMsg(const wchar_t*) const;
-	bool ReadLine(std::wstring*, bool block = false);
+	bool ReadLine(std::wstring*);
 
     HANDLE Event() { return _pipe; }
 

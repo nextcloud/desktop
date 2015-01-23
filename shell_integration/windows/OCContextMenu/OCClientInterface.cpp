@@ -49,7 +49,8 @@ std::vector<std::wstring> OCClientInterface::WatchedDirectories()
 	}
 	std::vector<std::wstring> watchedDirectories;
 	std::wstring response;
-	while (socket.ReadLine(&response, true)) {
+	Sleep(50);
+	while (socket.ReadLine(&response)) {
 		if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
 			wstring responsePath = response.substr(14); // length of REGISTER_PATH
 			watchedDirectories.push_back(responsePath);
