@@ -50,6 +50,8 @@ public:
     void showHelp();
     bool debugMode();
 
+    void showSettingsDialog();
+
 public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);

@@ -223,7 +223,9 @@ void AccountSettings::slotFolderWizardRejected()
 
 void AccountSettings::slotOpenAccountWizard()
 {
-    this->topLevelWidget()->close();
+    if (QSystemTrayIcon::isSystemTrayAvailable()) {
+        topLevelWidget()->close();
+    }
     OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
 }
 

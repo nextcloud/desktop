@@ -106,17 +106,28 @@ int main(int argc, char **argv)
         }
         return 0;
     } else {
-        int attempts = 0;
-        forever {
-            if (!QSystemTrayIcon::isSystemTrayAvailable() && qgetenv("DESKTOP_SESSION") != "ubuntu") {
-                Utility::sleep(1);
-                attempts++;
-                if (attempts < 30) continue;
-            } else {
-                break;
+        if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+            Utility::sleep(1);
+            auto desktopSession = qgetenv("XDG_CURRENT_DESKTOP").toLower();
+            if (desktopSession.isEmpty()) {
+                desktopSession = qgetenv("DESKTOP_SESSION").toLower();
             }
-            warnSystray();
-            break;
+            if (desktopSession == "xfce") {
+                int attempts = 0;
+                forever {
+                    if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+                        Utility::sleep(1);
+                        attempts++;
+                        if (attempts < 30) continue;
+                    } else {
+                        break;
+                    }
+                    warnSystray();
+                }
+            }
+            if (!QSystemTrayIcon::isSystemTrayAvailable() && desktopSession != "ubuntu") {
+                app.showSettingsDialog();
+            }
         }
     }
     return app.exec();

@@ -346,6 +346,10 @@ void Application::slotParseOptions(const QString &opts, QObject*)
     QStringList options = opts.split(QLatin1Char('|'));
     parseOptions(options);
     setupLogging();
+
+    //This function is calld happens when someone tries to run another instance of ownCloud
+    // show the settings dialog
+    showSettingsDialog();
 }
 
 void Application::parseOptions(const QStringList &options)
@@ -554,5 +558,12 @@ bool Application::giveHelp()
 {
     return _helpOnly;
 }
+
+void Application::showSettingsDialog()
+{
+    _gui->slotShowSettings();
+}
+
+
 } // namespace OCC
 
