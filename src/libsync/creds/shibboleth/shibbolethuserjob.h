@@ -22,19 +22,17 @@ namespace OCC
 /**
   * @brief Fetch the user name of the shibboleth connection
   */
-class ShibbolethUserJob : public AbstractNetworkJob {
+class ShibbolethUserJob : public JsonApiJob {
     Q_OBJECT
 public:
     explicit ShibbolethUserJob(AccountPtr account, QObject* parent = 0);
-public slots:
-    void start() Q_DECL_OVERRIDE;
 
 signals:
     // is always emitted when the job is finished.  user is empty in case of error.
     void userFetched(const QString &user);
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    void slotJsonRecieved(const QVariantMap &);
 };
 
 

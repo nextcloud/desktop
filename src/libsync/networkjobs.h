@@ -249,6 +249,31 @@ private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 };
 
+/**
+ * @brief Job to check an API that return JSON
+ *
+ * Note! you need to be in the connected state before calling this because of a server bug:
+ * https://github.com/owncloud/core/issues/12930
+ *
+ * To be used like this
+ * _job = new JsonApiJob(account, QLatin1String("ocs/v1.php/foo/bar"), this);
+ * connect(job, SIGNAL(jsonRecieved(QVariantMap)), ...)
+ * The recieved QVariantMap is empty in case of error  or otherwise is a map as parsed by QtJson
+ *
+ */
+class OWNCLOUDSYNC_EXPORT JsonApiJob : public AbstractNetworkJob {
+    Q_OBJECT
+public:
+    explicit JsonApiJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
+public slots:
+    void start() Q_DECL_OVERRIDE;
+protected:
+    bool finished() Q_DECL_OVERRIDE;
+signals:
+    void jsonRecieved(const QVariantMap &json);
+};
+
+
 } // namespace OCC
 
 #endif // NETWORKJOBS_H

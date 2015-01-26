@@ -747,4 +747,43 @@ NetworkJobTimeoutPauser::~NetworkJobTimeoutPauser()
     }
 }
 
+JsonApiJob::JsonApiJob(const AccountPtr &account, const QString& path, QObject* parent): AbstractNetworkJob(account, path, parent)
+{ }
+
+void JsonApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Account::concatUrlPath(account()->url(), path());
+    url.setQueryItems(QList<QPair<QString, QString> >() << qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
+    setReply(davRequest("GET", url, req));
+    setupConnections(reply());
+    AbstractNetworkJob::start();
+}
+
+bool JsonApiJob::finished()
+{
+    if (reply()->error() != QNetworkReply::NoError) {
+        qWarning() << "Network error: " << path() << reply()->errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        emit jsonRecieved(QVariantMap());
+        return true;
+    }
+
+    bool success = false;
+    QString jsonStr = QString::fromUtf8(reply()->readAll());
+    QVariantMap json = QtJson::parse(jsonStr, success).toMap();
+    // empty or invalid response
+    if (!success || json.isEmpty()) {
+        qWarning() << "invalid JSON!" << jsonStr;
+        emit jsonRecieved(QVariantMap());
+        return true;
+    }
+
+    emit jsonRecieved(json);
+    return true;
+}
+
+
+
+
 } // namespace OCC

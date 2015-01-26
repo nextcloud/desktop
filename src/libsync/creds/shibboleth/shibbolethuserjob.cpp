@@ -19,39 +19,17 @@
 namespace OCC {
 
 ShibbolethUserJob::ShibbolethUserJob(AccountPtr account, QObject* parent)
-: AbstractNetworkJob(account, QLatin1String("ocs/v1.php/cloud/user"), parent)
+    : JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"), parent)
 {
     setIgnoreCredentialFailure(true);
+    connect(this, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotJsonRecieved(QVariantMap)));
 }
 
-void ShibbolethUserJob::start()
+void ShibbolethUserJob::slotJsonRecieved(const QVariantMap &json)
 {
-    QNetworkRequest req;
-    req.setRawHeader("OCS-APIREQUEST", "true");
-    QUrl url = Account::concatUrlPath(account()->url(), path());
-    url.setQueryItems(QList<QPair<QString, QString> >() << qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
-    setReply(davRequest("GET", url, req));
-    setupConnections(reply());
-    AbstractNetworkJob::start();
-}
-
-bool ShibbolethUserJob::finished()
-{
-    bool success = false;
-    QVariantMap json = QtJson::parse(QString::fromUtf8(reply()->readAll()), success).toMap();
-    // empty or invalid response
-    if (!success || json.isEmpty()) {
-        qDebug() << "cloud/user: invalid JSON!";
-        emit userFetched(QString());
-        return true;
-    }
-
     QString user =  json.value("ocs").toMap().value("data").toMap().value("id").toString();
     //qDebug() << "cloud/user: " << json << "->" << user;
     emit userFetched(user);
-    return true;
 }
-
-
 
 }
