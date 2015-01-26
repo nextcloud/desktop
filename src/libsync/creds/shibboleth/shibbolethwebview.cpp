@@ -71,7 +71,7 @@ void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieL
     if (url.host() == _account->url().host()) {
         QNetworkCookie shibCookie = ShibbolethCredentials::findShibCookie(_account.data(), cookieList);
         if (shibCookie != QNetworkCookie()) {
-            Q_EMIT shibbolethCookieReceived(shibCookie, _account);
+            Q_EMIT shibbolethCookieReceived(shibCookie);
             accept();
             close();
         }

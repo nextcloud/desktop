@@ -46,7 +46,7 @@ public Q_SLOTS:
   void setVisible(bool visible) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
-  void slotShibbolethCookieReceived(const QNetworkCookie&, AccountPtr);
+  void slotShibbolethCookieReceived(const QNetworkCookie&);
   void slotBrowserRejected();
 
 private:

@@ -377,8 +377,8 @@ void ShibbolethCredentials::showLoginWindow()
     jar->clearSessionCookies();
 
     _browser = new ShibbolethWebView(_account->sharedFromThis());
-    connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie, AccountPtr)),
-            this, SLOT(onShibbolethCookieReceived(QNetworkCookie, AccountPtr)), Qt::QueuedConnection);
+    connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
+            this, SLOT(onShibbolethCookieReceived(QNetworkCookie)), Qt::QueuedConnection);
     connect(_browser, SIGNAL(rejected()), this, SLOT(slotBrowserRejected()));
 
     _browser->show();

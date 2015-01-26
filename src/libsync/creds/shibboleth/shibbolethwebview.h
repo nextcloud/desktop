@@ -40,7 +40,7 @@ public:
   void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 Q_SIGNALS:
-  void shibbolethCookieReceived(const QNetworkCookie &cookie, AccountPtr account);
+  void shibbolethCookieReceived(const QNetworkCookie &cookie);
   void rejected();
 
 private Q_SLOTS:
