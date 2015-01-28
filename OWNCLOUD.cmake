@@ -1,5 +1,5 @@
 set( APPLICATION_NAME       "ownCloud" )
-set( APPLICATION_SHORTNAME  ${APPLICATION_NAME} )
+set( APPLICATION_SHORTNAME  "owncloud" )
 set( APPLICATION_EXECUTABLE "owncloud" )
 set( APPLICATION_DOMAIN     "owncloud.com" )
 set( APPLICATION_VENDOR     "ownCloud" )
