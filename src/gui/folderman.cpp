@@ -564,16 +564,18 @@ void FolderMan::startScheduledSyncSoon(qint64 msMinimumDelay)
         }
     }
 
-    // A minimum of delay here is essential as the sync will not upload
-    // files that were changed too recently.
-    msDelay = qMax(msDelay, msBetweenRequestAndSync);
-
     // Delays beyond one minute seem too big, particularly since there
     // could be things later in the queue that shouldn't be punished by a
     // long delay!
     msDelay = qMin(msDelay, 60*1000ll);
 
+    // Time since the last sync run counts against the delay
     msDelay = qMax(1ll, msDelay - msSinceLastSync);
+
+    // A minimum of delay here is essential as the sync will not upload
+    // files that were changed too recently.
+    msDelay = qMax(msBetweenRequestAndSync, msDelay);
+
     qDebug() << "Scheduling a sync in" << (msDelay/1000) << "seconds";
     _startScheduledSyncTimer.start(msDelay);
 }
