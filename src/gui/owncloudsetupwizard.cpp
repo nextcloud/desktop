@@ -220,8 +220,6 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 
 bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
 {
-    qWarning() << reply->url() << reply->errorString() << reply->error() << reply->hasRawHeader("Strict-Transport-Security");
-
     if(reply->url().scheme() != QLatin1String("https")) {
         return false;
     }
