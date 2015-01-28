@@ -242,17 +242,23 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
 
 void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
 {
+    QString msg = reply->errorString();
     switch (reply->error()) {
     case QNetworkReply::NoError:
     case QNetworkReply::ContentNotFoundError:
         _ocWizard->successfulStep();
         break;
     default:
+        if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 403) {
+            msg = tr("Access forbidden by server. To verify that you have proper access, "
+                     "<a href=\"%1\">click here</a> to access the service with your browser.")
+                    .arg(_ocWizard->account()->url().toString());
+        }
         _ocWizard->show();
         if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds) {
             _ocWizard->back();
         }
-        _ocWizard->displayError(reply->errorString(), _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
+        _ocWizard->displayError(msg, _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
         break;
     }
 }
