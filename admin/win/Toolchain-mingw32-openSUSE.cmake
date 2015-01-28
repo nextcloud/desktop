@@ -22,8 +22,8 @@ SET(QMAKESPEC               win32-g++-cross)
 
 # dirs
 SET(QT_LIBRARY_DIR          /usr/${MINGW_PREFIX}/bin)
-SET(QT_PLUGINS_DIR          ${CMAKE_FIND_ROOT_PATH}/lib/qt4/plugins)
-SET(QT_MKSPECS_DIR          ${CMAKE_FIND_ROOT_PATH}/share/qt4/mkspecs)
+SET(QT_PLUGINS_DIR          ${CMAKE_FIND_ROOT_PATH}/lib/qt5/plugins)
+SET(QT_MKSPECS_DIR          ${CMAKE_FIND_ROOT_PATH}/share/qt5/mkspecs)
 SET(QT_QT_INCLUDE_DIR       ${CMAKE_FIND_ROOT_PATH}/include)
 
 # qt tools
