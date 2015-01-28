@@ -39,11 +39,11 @@ void AddCertificateDialog::showErrorMessage(const QString message)
     ui->labelErrorCertif->setText(message);
 }
 
-void AddCertificateDialog::Reinit()
+void AddCertificateDialog::reinit()
 {
-    ui->labelErrorCertif->setText("");
-    ui->lineEditCertificatePath->setText("");
-    ui->lineEditPWDCertificate->setText("");
+    ui->labelErrorCertif->clear();
+    ui->lineEditCertificatePath->clear();
+    ui->lineEditPWDCertificate->clear();
 }
 
 }

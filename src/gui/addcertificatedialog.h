@@ -20,7 +20,7 @@ public:
     QString getCertificatePath();
     QString getCertificatePasswd();
     void showErrorMessage(const QString message);
-    void Reinit();
+    void reinit();
 
 private slots:
     void on_pushButtonBrowseCertificate_clicked();

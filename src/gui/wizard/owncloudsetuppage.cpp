@@ -288,6 +288,15 @@ void OwncloudSetupPage::slotAskSSLClientCertificate()
     connect(addCertDial, SIGNAL(accepted()),this,SLOT(slotCertificateAccepted()));
 }
 
+QString subjectInfoHelper(const QSslCertificate& cert, const QByteArray &qa)
+{
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+    return cert.subjectInfo(qa);
+#else
+    return cert.subjectInfo(qa).join(QLatin1Char('/'));
+#endif
+}
+
 //called during the validation of the client certificate.
 void OwncloudSetupPage::slotCertificateAccepted()
 {
@@ -301,44 +310,14 @@ void OwncloudSetupPage::slotCertificateAccepted()
         QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(ba, QSsl::Pem);
         sslCertificate = sslCertificateList.takeAt(0);
 
-        this->_ocWizard->ownCloudCertificate = ba;
-        this->_ocWizard->ownCloudPrivateKey = certif.PrivateKey.c_str();
-        this->_ocWizard->ownCloudCertificatePath = addCertDial->getCertificatePath();
-        this->_ocWizard->ownCloudCertificatePasswd = addCertDial->getCertificatePasswd();
+        _ocWizard->ownCloudCertificate = ba;
+        _ocWizard->ownCloudPrivateKey = certif.PrivateKey.c_str();
+        _ocWizard->ownCloudCertificatePath = addCertDial->getCertificatePath();
+        _ocWizard->ownCloudCertificatePasswd = addCertDial->getCertificatePasswd();
 
-        //FIXME qknight: hacky code ahead
-        AccountPtr acc = this->_ocWizard->account();
+        AccountPtr acc = _ocWizard->account();
         acc->setCertificate(_ocWizard->ownCloudCertificate, _ocWizard->ownCloudPrivateKey);
-
-        QList<QByteArray> qba = sslCertificate.subjectInfoAttributes();
-        QString _DN = "";
-        QString _C,_ST, _L, _O, _OU, _CN, _emailAddress;
-        foreach(QByteArray qa, qba)
-        {
-            if(strcmp(qa.data(),"C")==0){
-                _C="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
-            }
-            else if(strcmp(qa.data(),"ST")==0){
-                _ST="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
-            }
-            else if(strcmp(qa.data(),"L")==0){
-                _L="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
-            }
-            else if(strcmp(qa.data(),"O")==0){
-                _O="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
-            }
-            else if(strcmp(qa.data(),"OU")==0){
-                _OU="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
-            }
-            else if(strcmp(qa.data(),"CN")==0){
-                _CN="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
-            }
-            else if(strcmp(qa.data(),"emailAddress")==0){
-                _emailAddress="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
-            }
-        }
-        _DN += _C+_ST+_L+_O+_OU+_CN+_emailAddress;
-        addCertDial->Reinit();
+        addCertDial->reinit();
         validatePage();
     } else {
         QString message;
