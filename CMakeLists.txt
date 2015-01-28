@@ -120,6 +120,7 @@ endif()
 #    find_package(Qt4 4.7.0 COMPONENTS QtDBus REQUIRED )
 #endif()
 find_package(Neon REQUIRED)
+find_package(OpenSSL)
 
 if(NOT TOKEN_AUTH_ONLY)
     if (Qt5Core_DIR)

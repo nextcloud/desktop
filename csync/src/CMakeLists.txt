@@ -89,7 +89,6 @@ include_directories(
   ${CSYNC_PRIVATE_INCLUDE_DIRS}
 )
 
-find_package(OpenSSL)
 FIND_LIBRARY(CRYPTO_LIBRARY NAMES crypto)
 
 add_library(${CSYNC_LIBRARY} SHARED ${csync_SRCS})
