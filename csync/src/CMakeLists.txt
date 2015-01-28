@@ -68,6 +68,7 @@ if(USE_NEON)
     )
     list(APPEND CSYNC_LINK_LIBRARIES
         ${NEON_LIBRARIES}
+        ${CRYPTO_LIBRARY}
     )
     add_definitions(-DUSE_NEON)
 endif(USE_NEON)
@@ -92,6 +93,8 @@ include_directories(
   ${CSYNC_PUBLIC_INCLUDE_DIRS}
   ${CSYNC_PRIVATE_INCLUDE_DIRS}
 )
+
+FIND_LIBRARY(CRYPTO_LIBRARY NAMES crypto)
 
 add_library(${CSYNC_LIBRARY} SHARED ${csync_SRCS})
 #add_library(${CSYNC_LIBRARY}_static STATIC ${csync_SRCS})

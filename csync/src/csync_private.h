@@ -79,6 +79,7 @@ typedef struct csync_file_stat_s csync_file_stat_t;
 
 struct csync_owncloud_ctx_s; // csync_owncloud.c
 
+
 /**
  * @brief csync public structure
  */
@@ -96,6 +97,9 @@ struct csync_s {
   } callbacks;
   c_strlist_t *excludes;
 
+  // needed for SSL client certificate support
+  struct csync_client_certs_s *clientCerts;
+  
   struct {
     char *file;
     sqlite3 *db;

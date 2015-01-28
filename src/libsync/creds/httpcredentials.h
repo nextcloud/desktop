@@ -36,7 +36,7 @@ class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
 
 public:
     explicit HttpCredentials();
-    HttpCredentials(const QString& user, const QString& password);
+    HttpCredentials(const QString& user, const QString& password, const QString& certificatePath, const QString& certificateDate, const QString& certificatePasswd);
 
     void syncContextPreInit(CSYNC* ctx) Q_DECL_OVERRIDE;
     void syncContextPreStart(CSYNC* ctx) Q_DECL_OVERRIDE;
@@ -53,6 +53,9 @@ public:
     void invalidateToken() Q_DECL_OVERRIDE;
     QString fetchUser();
     virtual bool sslIsTrusted() { return false; }
+    QString certificatePath() const;
+    QString certificateDate() const;
+    QString certificatePasswd() const;
 
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply*, QAuthenticator*);
@@ -64,6 +67,9 @@ protected:
     QString _password;
 
 private:
+    QString _certificatePath;
+    QString _certificateDate;
+    QString _certificatePasswd;
     bool _ready;
     bool _fetchJobInProgress; //True if the keychain job is in progress or the input dialog visible
     bool _readPwdFromDeprecatedPlace;
@@ -72,7 +78,7 @@ private:
 class OWNCLOUDSYNC_EXPORT HttpCredentialsGui : public HttpCredentials {
 public:
     explicit HttpCredentialsGui() : HttpCredentials() {}
-    HttpCredentialsGui(const QString& user, const QString& password) : HttpCredentials(user, password) {}
+    HttpCredentialsGui(const QString& user, const QString& password, const QString& certificatePath, const QString& certificateDate, const QString& certificatePasswd) : HttpCredentials(user, password, certificatePath, certificateDate, certificatePasswd) {}
     QString queryPassword(bool *ok) Q_DECL_OVERRIDE;
 };
 

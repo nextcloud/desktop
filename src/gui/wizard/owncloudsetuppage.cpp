@@ -19,17 +19,21 @@
 #include <QTimer>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QSsl>
+#include <QSslCertificate>
 
 #include "QProgressIndicator.h"
 
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudsetuppage.h"
+#include "../3rdparty/certificates/p12topem.h"
 #include "theme.h"
+#include "account.h"
 
 namespace OCC
 {
 
-OwncloudSetupPage::OwncloudSetupPage()
+OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
   : QWizardPage(),
     _ui(),
     _oCUrl(),
@@ -58,6 +62,10 @@ OwncloudSetupPage::OwncloudSetupPage()
 
     connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(slotUrlChanged(QString)));
     connect(_ui.leUrl, SIGNAL(editingFinished()), SLOT(slotUrlEditFinished()));
+
+    addCertDial = new AddCertificateDialog(this);
+    _ocWizard = qobject_cast<OwncloudWizard *>(parent);
+    connect(_ocWizard,SIGNAL(needCertificate()),this,SLOT(slotAskSSLClientCertificate()));
 }
 
 void OwncloudSetupPage::setServerUrl( const QString& newUrl )
@@ -228,14 +236,18 @@ void OwncloudSetupPage::setErrorString( const QString& err, bool retryHTTPonly )
         _ui.errorLabel->setVisible(false);
     } else {
         if (retryHTTPonly) {
-            QString msg = tr("<p>Could not connect securely:</p><p>%1</p><p>Do you want to connect unencrypted instead (not recommended)?</p>").arg(err);
-            QString title = tr("Connection failed");
-            if (QMessageBox::question(this, title, msg, QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-                QUrl url(_ui.leUrl->text());
-                url.setScheme("http");
-                _ui.leUrl->setText(url.toString());
-                // skip ahead to next page, since the user would expect us to retry automatically
-                wizard()->next();
+            if (err.contains("SSL handshake failed", Qt::CaseInsensitive)) {
+                slotAskSSLClientCertificate();
+            } else {
+                QString msg = tr("<p>Could not connect securely:</p><p>%1</p><p>Do you want to connect unencrypted instead (not recommended)?</p>").arg(err);
+                QString title = tr("Connection failed");
+                if (QMessageBox::question(this, title, msg, QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+                    QUrl url(_ui.leUrl->text());
+                    url.setScheme("http");
+                    _ui.leUrl->setText(url.toString());
+                    // skip ahead to next page, since the user would expect us to retry automatically
+                    wizard()->next();
+                }
             }
         }
 
@@ -267,6 +279,78 @@ void OwncloudSetupPage::setConfigExists(  bool config )
         setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update %1 server")
                                                          .arg(Theme::instance()->appNameGUI())));
     }
+}
+
+
+void OwncloudSetupPage::slotAskSSLClientCertificate()
+{
+    addCertDial->show();
+    connect(addCertDial, SIGNAL(accepted()),this,SLOT(slotCertificateAccepted()));
+}
+
+//called during the validation of the client certificate.
+void OwncloudSetupPage::slotCertificateAccepted()
+{
+    QSslCertificate sslCertificate;
+
+    resultP12ToPem certif = p12ToPem(addCertDial->getCertificatePath().toStdString() , addCertDial->getCertificatePasswd().toStdString());
+    if(certif.ReturnCode){
+        QString s = QString::fromStdString(certif.Certificate);
+        QByteArray ba = s.toLocal8Bit();
+
+        QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(ba, QSsl::Pem);
+        sslCertificate = sslCertificateList.takeAt(0);
+
+        this->_ocWizard->ownCloudCertificate = ba;
+        this->_ocWizard->ownCloudPrivateKey = certif.PrivateKey.c_str();
+        this->_ocWizard->ownCloudCertificatePath = addCertDial->getCertificatePath();
+        this->_ocWizard->ownCloudCertificatePasswd = addCertDial->getCertificatePasswd();
+
+        //FIXME qknight: hacky code ahead
+        AccountPtr acc = this->_ocWizard->account();
+        acc->setCertificate(_ocWizard->ownCloudCertificate, _ocWizard->ownCloudPrivateKey);
+
+        QList<QByteArray> qba = sslCertificate.subjectInfoAttributes();
+        QString _DN = "";
+        QString _C,_ST, _L, _O, _OU, _CN, _emailAddress;
+        foreach(QByteArray qa, qba)
+        {
+            if(strcmp(qa.data(),"C")==0){
+                _C="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
+            }
+            else if(strcmp(qa.data(),"ST")==0){
+                _ST="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
+            }
+            else if(strcmp(qa.data(),"L")==0){
+                _L="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
+            }
+            else if(strcmp(qa.data(),"O")==0){
+                _O="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
+            }
+            else if(strcmp(qa.data(),"OU")==0){
+                _OU="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
+            }
+            else if(strcmp(qa.data(),"CN")==0){
+                _CN="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
+            }
+            else if(strcmp(qa.data(),"emailAddress")==0){
+                _emailAddress="/"+QString(qa)+"="+sslCertificate.subjectInfo(qa).join('/');
+            }
+        }
+        _DN += _C+_ST+_L+_O+_OU+_CN+_emailAddress;
+        addCertDial->Reinit();
+        validatePage();
+    } else {
+        QString message;
+        message = certif.Comment.c_str();
+        addCertDial->showErrorMessage(message);
+        addCertDial->show();
+    }
+}
+
+OwncloudSetupPage::~OwncloudSetupPage()
+{
+    delete addCertDial;
 }
 
 } // namespace OCC

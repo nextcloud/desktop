@@ -12,8 +12,8 @@
  * for more details.
  */
 
-#ifndef MIRALLCONFIGFILE_H
-#define MIRALLCONFIGFILE_H
+#ifndef CONFIGFILE_H
+#define CONFIGFILE_H
 
 #include "owncloudlib.h"
 #include <QSharedPointer>
@@ -116,6 +116,13 @@ public:
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
 
+    QString certificatePath() const;
+    void setCertificatePath(const QString& cPath);
+    QString certificateDate() const;
+    void setCertificateDate(const QString& cDate);
+    QString certificatePasswd() const;
+    void setCertificatePasswd(const QString& cPasswd);
+
 protected:
     QVariant getPolicySetting(const QString& policy, const QVariant& defaultValue = QVariant()) const;
     void storeData(const QString& group, const QString& key, const QVariant& value);
@@ -137,4 +144,4 @@ private:
 };
 
 }
-#endif // MIRALLCONFIGFILE_H
+#endif // CONFIGFILE_H

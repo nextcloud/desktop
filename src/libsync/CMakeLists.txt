@@ -66,6 +66,7 @@ set(libsync_SRCS
     creds/http/httpconfigfile.cpp
     creds/credentialscommon.cpp
     ../3rdparty/qjson/json.cpp
+    ../3rdparty/certificates/p12topem.cpp
 )
 if(TOKEN_AUTH_ONLY)
 	set (libsync_SRCS
@@ -122,6 +123,7 @@ list(APPEND libsync_LINK_TARGETS
     ${QT_LIBRARIES}
     ocsync
     ${OS_SPECIFIC_LINK_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
 )
 
 if(QTKEYCHAIN_FOUND OR QT5KEYCHAIN_FOUND)

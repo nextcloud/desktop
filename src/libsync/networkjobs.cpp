@@ -154,6 +154,10 @@ void AbstractNetworkJob::slotFinished()
 {
     _timer.stop();
 
+    if( _reply->error() == QNetworkReply::SslHandshakeFailedError ) {
+        qDebug() << "SslHandshakeFailedError: " << reply()->errorString() << " : can be caused by a webserver wanting SSL client certificates";
+    }
+    
     if( _reply->error() != QNetworkReply::NoError ) {
         qDebug() << Q_FUNC_INFO << _reply->error() << _reply->errorString();
         if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {

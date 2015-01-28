@@ -46,6 +46,11 @@
 extern "C" {
 #endif
 
+struct csync_client_certs_s {
+  char *certificatePath;
+  char *certificatePasswd;
+};  
+  
 /**
   * Instruction enum. In the file traversal structure, it describes
   * the csync state of a file.

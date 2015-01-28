@@ -301,6 +301,7 @@ void Folder::slotRunEtagJob()
         _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
         // check if the etag is different
         QObject::connect(_requestEtagJob, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
+        QObject::connect(_requestEtagJob, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotNetworkUnavailable()));
         FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
         // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
     }

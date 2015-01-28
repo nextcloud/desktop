@@ -24,6 +24,8 @@ set(client_UI
     settingsdialog.ui
     sharedialog.ui
     sslerrordialog.ui
+    owncloudsetuppage.ui
+    addcertificatedialog.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudhttpcredspage.ui
     wizard/owncloudsetupnocredspage.ui
@@ -59,6 +61,7 @@ set(client_SRCS
     accountmigrator.cpp
     quotainfo.cpp
     accountstate.cpp
+    addcertificatedialog.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
     wizard/owncloudhttpcredspage.cpp
@@ -106,6 +109,7 @@ set(3rdparty_SRC
     ../3rdparty/qtsingleapplication/qtlocalpeer.cpp
     ../3rdparty/qtsingleapplication/qtsingleapplication.cpp
     ../3rdparty/qtsingleapplication/qtsinglecoreapplication.cpp
+    ../3rdparty/certificates/p12topem.cpp
    )
 
 if (APPLE)
@@ -250,6 +254,7 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
         ARCHIVE DESTINATION lib
         BUNDLE  DESTINATION "."
  )
+
 
 # FIXME: The following lines are dup in src/gui and src/cmd because it needs to be done after both are installed
 #FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary

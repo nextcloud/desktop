@@ -17,6 +17,7 @@
 #define MIRALL_OWNCLOUD_HTTP_CREDS_PAGE_H
 
 #include "wizard/abstractcredswizardpage.h"
+#include "wizard/owncloudwizard.h"
 
 #include "ui_owncloudhttpcredspage.h"
 
@@ -28,7 +29,7 @@ class OwncloudHttpCredsPage : public AbstractCredentialsWizardPage
 {
   Q_OBJECT
 public:
-  OwncloudHttpCredsPage();
+  OwncloudHttpCredsPage(QWidget* parent);
 
   AbstractCredentials* getCredentials() const Q_DECL_OVERRIDE;
 
@@ -53,6 +54,7 @@ private:
   bool _checking;
   bool _configExists;
   QProgressIndicator* _progressIndi;
+  OwncloudWizard* _ocWizard;
 };
 
 } // namespace OCC

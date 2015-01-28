@@ -96,6 +96,7 @@ struct csync_owncloud_ctx_s {
     int _connected;                   /* flag to indicate if a connection exists, ie.
                                          the dav_session is valid */
 };
+
 typedef struct csync_owncloud_ctx_s csync_owncloud_ctx_t;
 //typedef csync_owncloud_ctx_t* csync_owncloud_ctx_p;
 

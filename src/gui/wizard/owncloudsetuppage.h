@@ -19,6 +19,10 @@
 #include <QWizard>
 
 #include "wizard/owncloudwizardcommon.h"
+#include "wizard/owncloudwizard.h"
+
+#include "../addcertificatedialog.h"
+
 #include "ui_owncloudsetupnocredspage.h"
 
 class QLabel;
@@ -31,7 +35,8 @@ class OwncloudSetupPage: public QWizardPage
 {
     Q_OBJECT
 public:
-  OwncloudSetupPage();
+  OwncloudSetupPage(QWidget *parent=0);
+  ~OwncloudSetupPage();
 
   virtual bool isComplete() const Q_DECL_OVERRIDE;
   virtual void initializePage() Q_DECL_OVERRIDE;
@@ -50,6 +55,8 @@ public slots:
   void setConfigExists(  bool );
   void startSpinner();
   void stopSpinner();
+  void slotAskSSLClientCertificate();
+  void slotCertificateAccepted();
 
 protected slots:
   void slotUrlChanged(const QString&);
@@ -64,14 +71,20 @@ private:
   bool urlHasChanged();
 
   Ui_OwncloudSetupPage _ui;
+  
   QString _oCUrl;
   QString _ocUser;
   bool    _authTypeKnown;
   bool    _checking;
+  bool    _configExists;
+  bool    _multipleFoldersExist;
   WizardCommon::AuthType _authType;
 
   QProgressIndicator* _progressIndi;
+  QButtonGroup* _selectiveSyncButtons;
   QString _remoteFolder;
+  AddCertificateDialog* addCertDial;
+  OwncloudWizard* _ocWizard;
 };
 
 } // namespace OCC
