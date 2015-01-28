@@ -385,7 +385,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    ;Main executable & csync
    File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
    File "${BUILD_PATH}\bin\${APPLICATION_CMD_EXECUTABLE}"
-   File "${BUILD_PATH}\bin\socketapiclient.exe"
    File "${BUILD_PATH}\src\libsync\lib${APPLICATION_SHORTNAME}sync.dll"
    File "${BUILD_PATH}\csync\src\libocsync.dll"
 
