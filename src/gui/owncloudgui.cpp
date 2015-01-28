@@ -644,8 +644,14 @@ void ownCloudGui::raiseDialog( QWidget *raiseWidget )
 
 void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath)
 {
+    AccountPtr account = AccountManager::instance()->account();
+    if (!account) {
+        qDebug() << "Could not open share dialog because no account is configured";
+        return;
+    }
+
     qDebug() << Q_FUNC_INFO << "Opening share dialog";
-    ShareDialog *w = new ShareDialog(sharePath, localPath);
+    ShareDialog *w = new ShareDialog(account, sharePath, localPath);
     w->getShares();
     w->setAttribute( Qt::WA_DeleteOnClose, true );
     w->show();

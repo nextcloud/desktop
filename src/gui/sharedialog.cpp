@@ -18,9 +18,10 @@ namespace {
 
 namespace OCC {
 
-ShareDialog::ShareDialog(const QString &sharePath, const QString &localPath, QWidget *parent) :
+ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QString &localPath, QWidget *parent) :
    QDialog(parent),
     _ui(new Ui::ShareDialog),
+    _account(account),
     _sharePath(sharePath),
     _localPath(localPath)
 {
@@ -87,7 +88,7 @@ ShareDialog::ShareDialog(const QString &sharePath, const QString &localPath, QWi
 void ShareDialog::setExpireDate(const QDate &date)
 {
     _pi_date->startAnimation();
-    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
+    QUrl url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
     QUrl postData;
     QList<QPair<QString, QString> > getParams;
     QList<QPair<QString, QString> > postParams;
@@ -101,7 +102,7 @@ void ShareDialog::setExpireDate(const QDate &date)
 
     url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
-    OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
+    OcsShareJob *job = new OcsShareJob("PUT", url, postData, _account, this);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotExpireSet(QString)));
     job->start();
 }
@@ -140,7 +141,7 @@ void ShareDialog::slotPasswordReturnPressed()
 void ShareDialog::setPassword(const QString &password)
 {
     _pi_password->startAnimation();
-    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
+    QUrl url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
     QUrl postData;
     QList<QPair<QString, QString> > getParams;
     QList<QPair<QString, QString> > postParams;
@@ -148,7 +149,7 @@ void ShareDialog::setPassword(const QString &password)
     postParams.append(qMakePair(QString::fromLatin1("password"), password));
     url.setQueryItems(getParams);
     postData.setQueryItems(postParams);
-    OcsShareJob *job = new OcsShareJob("PUT", url, postData, AccountManager::instance()->account(), this);
+    OcsShareJob *job = new OcsShareJob("PUT", url, postData, _account, this);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotPasswordSet(QString)));
     job->start();
 }
@@ -176,12 +177,12 @@ void ShareDialog::slotPasswordSet(const QString &reply)
 
 void ShareDialog::getShares()
 {
-    QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
+    QUrl url = Account::concatUrlPath(_account->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
     QList<QPair<QString, QString> > params;
     params.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
     params.append(qMakePair(QString::fromLatin1("path"), _sharePath));
     url.setQueryItems(params);
-    OcsShareJob *job = new OcsShareJob("GET", url, QUrl(), AccountManager::instance()->account(), this);
+    OcsShareJob *job = new OcsShareJob("GET", url, QUrl(), _account, this);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotSharesFetched(QString)));
     job->start();
 }
@@ -225,7 +226,7 @@ void ShareDialog::slotSharesFetched(const QString &reply)
                 _ui->checkBox_expire->setChecked(true);
             }
 
-            const QString url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("public.php?service=files&t=%1").arg(data.value("token").toString())).toString();
+            const QString url = Account::concatUrlPath(_account->url(), QString("public.php?service=files&t=%1").arg(data.value("token").toString())).toString();
             _ui->lineEdit_shareLink->setText(url);
         }
     }
@@ -252,7 +253,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
     if (_ui->checkBox_shareLink->checkState() == Qt::Checked)
     {
         _pi_link->startAnimation();
-        QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
+        QUrl url = Account::concatUrlPath(_account->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
         QUrl postData;
         QList<QPair<QString, QString> > getParams;
         QList<QPair<QString, QString> > postParams;
@@ -261,18 +262,18 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
         postParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_PUBLIC)));
         url.setQueryItems(getParams);
         postData.setQueryItems(postParams);
-        OcsShareJob *job = new OcsShareJob("POST", url, postData, AccountManager::instance()->account(), this);
+        OcsShareJob *job = new OcsShareJob("POST", url, postData, _account, this);
         connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotCreateShareFetched(QString)));
         job->start();
     }
     else
     {
         _pi_link->startAnimation();
-        QUrl url = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
+        QUrl url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
         QList<QPair<QString, QString> > getParams;
         getParams.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
         url.setQueryItems(getParams);
-        OcsShareJob *job = new OcsShareJob("DELETE", url, QUrl(), AccountManager::instance()->account(), this);
+        OcsShareJob *job = new OcsShareJob("DELETE", url, QUrl(), _account, this);
         connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotDeleteShareFetched(QString)));
         job->start();
     }

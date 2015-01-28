@@ -15,6 +15,7 @@
 #define SHAREDIALOG_H
 
 #include "networkjobs.h"
+#include "accountfwd.h"
 #include "QProgressIndicator.h"
 #include <QDialog>
 #include <QTreeWidgetItem>
@@ -42,7 +43,6 @@ class ShareDialog;
 }
 
 class AbstractCredentials;
-class Account;
 class QuotaInfo;
 class MirallAccessManager;
 class SyncResult;
@@ -52,7 +52,7 @@ class ShareDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShareDialog(const QString &sharePath, const QString &localPath, QWidget *parent = 0);
+    explicit ShareDialog(AccountPtr account, const QString &sharePath, const QString &localPath, QWidget *parent = 0);
     ~ShareDialog();
     void getShares();
 
@@ -77,6 +77,7 @@ private:
     bool uploadExternalFile();
 
     Ui::ShareDialog *_ui;
+    AccountPtr _account;
     QString _sharePath;
     QString _localPath;
     QString _folderAlias;
