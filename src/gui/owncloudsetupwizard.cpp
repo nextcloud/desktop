@@ -38,7 +38,6 @@ namespace OCC {
 
 OwncloudSetupWizard::OwncloudSetupWizard(QObject* parent) :
     QObject( parent ),
-    _account(0),
     _ocWizard(new OwncloudWizard),
     _remoteFolder()
 {

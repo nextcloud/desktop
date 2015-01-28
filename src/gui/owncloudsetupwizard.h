@@ -93,7 +93,6 @@ private:
     void applyAccountChanges();
     bool checkDowngradeAdvised(QNetworkReply* reply);
 
-    AccountPtr _account;
     OwncloudWizard* _ocWizard;
     QString _initLocalFolder;
     QString _remoteFolder;
