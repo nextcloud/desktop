@@ -537,13 +537,12 @@ void owncloud_destroy(CSYNC* ctx)
 {
     owncloud_commit(ctx);
     SAFE_FREE(ctx->owncloud_context);
-    
-    SAFE_FREE(ctx->clientCerts->certificatePasswd);
-    SAFE_FREE(ctx->clientCerts->certificatePath);
-    SAFE_FREE(ctx->clientCerts);
-    ctx->clientCerts = NULL;
 
-    ctx->owncloud_context = 0;
+    if (ctx->clientCerts) {
+        SAFE_FREE(ctx->clientCerts->certificatePasswd);
+        SAFE_FREE(ctx->clientCerts->certificatePath);
+        SAFE_FREE(ctx->clientCerts);
+    }
     ne_sock_exit();
 }
 
