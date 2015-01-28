@@ -179,7 +179,7 @@ void AccountSettings::slotAddFolder()
     FolderMan *folderMan = FolderMan::instance();
     folderMan->setSyncEnabled(false); // do not start more syncs.
 
-    FolderWizard *folderWizard = new FolderWizard(this);
+    FolderWizard *folderWizard = new FolderWizard(AccountManager::instance()->account(), this);
 
     connect(folderWizard, SIGNAL(accepted()), SLOT(slotFolderWizardAccepted()));
     connect(folderWizard, SIGNAL(rejected()), SLOT(slotFolderWizardRejected()));

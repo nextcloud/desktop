@@ -224,9 +224,10 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
 }
 
 // =================================================================================
-FolderWizardRemotePath::FolderWizardRemotePath()
+FolderWizardRemotePath::FolderWizardRemotePath(AccountPtr account)
     : FormatWarningsWizardPage()
     ,_warnWasVisible(false)
+    ,_account(account)
 
 {
     _ui.setupUi(this);
@@ -272,7 +273,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
     }
     fullPath += "/" + folder;
 
-    MkColJob *job = new MkColJob(AccountManager::instance()->account(), fullPath, this);
+    MkColJob *job = new MkColJob(_account, fullPath, this);
     /* check the owncloud configuration file and query the ownCloud */
     connect(job, SIGNAL(finished(QNetworkReply::NetworkError)),
                  SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
@@ -334,7 +335,7 @@ void FolderWizardRemotePath::recursiveInsert(QTreeWidgetItem *parent, QStringLis
 
 void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
 {
-    QString webdavFolder = QUrl(AccountManager::instance()->account()->davUrl()).path();
+    QString webdavFolder = QUrl(_account->davUrl()).path();
 
     QTreeWidgetItem *root = _ui.folderTreeWidget->topLevelItem(0);
     if (!root) {
@@ -355,7 +356,7 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
 
 void FolderWizardRemotePath::slotRefreshFolders()
 {
-    LsColJob *job = new LsColJob(AccountManager::instance()->account(), "/", this);
+    LsColJob *job = new LsColJob(_account, "/", this);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();
@@ -365,7 +366,7 @@ void FolderWizardRemotePath::slotRefreshFolders()
 void FolderWizardRemotePath::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
-    LsColJob *job = new LsColJob(AccountManager::instance()->account(), dir, this);
+    LsColJob *job = new LsColJob(_account, dir, this);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();
@@ -436,10 +437,10 @@ void FolderWizardRemotePath::showWarn( const QString& msg ) const
 
 // ====================================================================================
 
-FolderWizardSelectiveSync::FolderWizardSelectiveSync()
+FolderWizardSelectiveSync::FolderWizardSelectiveSync(AccountPtr account)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    _treeView = new SelectiveSyncTreeView(AccountManager::instance()->account(), this);
+    _treeView = new SelectiveSyncTreeView(account, this);
     layout->addWidget(new QLabel(tr("Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.")));
     layout->addWidget(_treeView);
 }
@@ -484,16 +485,16 @@ void FolderWizardSelectiveSync::cleanupPage()
  * Folder wizard itself
  */
 
-FolderWizard::FolderWizard( QWidget *parent )
+FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     : QWizard(parent),
     _folderWizardSourcePage(new FolderWizardLocalPath),
     _folderWizardTargetPage(0),
-    _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync)
+    _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(Page_Source, _folderWizardSourcePage );
     if (!Theme::instance()->singleSyncFolder()) {
-        _folderWizardTargetPage = new FolderWizardRemotePath();
+        _folderWizardTargetPage = new FolderWizardRemotePath(account);
         setPage(Page_Target, _folderWizardTargetPage );
     }
     setPage(Page_SelectiveSync, _folderWizardSelectiveSyncPage);

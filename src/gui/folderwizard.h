@@ -20,6 +20,7 @@
 #include <QTimer>
 
 #include "folder.h"
+#include "accountfwd.h"
 
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
@@ -67,7 +68,7 @@ class FolderWizardRemotePath : public FormatWarningsWizardPage
 {
     Q_OBJECT
 public:
-    FolderWizardRemotePath();
+    explicit FolderWizardRemotePath(AccountPtr account);
     ~FolderWizardRemotePath();
 
     virtual bool isComplete() const Q_DECL_OVERRIDE;
@@ -89,7 +90,7 @@ private:
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     Ui_FolderWizardTargetPage _ui;
     bool _warnWasVisible;
-
+    AccountPtr _account;
 };
 
 
@@ -97,7 +98,7 @@ class FolderWizardSelectiveSync : public QWizardPage
 {
     Q_OBJECT
 public:
-    FolderWizardSelectiveSync();
+    explicit FolderWizardSelectiveSync(AccountPtr account);
     ~FolderWizardSelectiveSync();
 
     virtual bool validatePage() Q_DECL_OVERRIDE;
@@ -125,7 +126,7 @@ public:
         Page_SelectiveSync
     };
 
-    FolderWizard(QWidget *parent = 0);
+    explicit FolderWizard(AccountPtr account, QWidget *parent = 0);
     ~FolderWizard();
 
 private:
