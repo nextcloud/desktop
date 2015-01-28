@@ -74,6 +74,7 @@ private Q_SLOTS:
     void slotReplyFinished(QNetworkReply*);
     void slotUserFetched(const QString& user);
     void slotFetchUser();
+    void slotFetchUserHelper();
 
 Q_SIGNALS:
     void newCookie(const QNetworkCookie& cookie);

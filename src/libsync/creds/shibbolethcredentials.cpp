@@ -107,11 +107,10 @@ void ShibbolethCredentials::setAccount(Account* account)
 {
     AbstractCredentials::setAccount(account);
 
-    if (_ready) {
-        /* The _user has not yet been fetched, so fetch it now */
-        ShibbolethUserJob *job = new ShibbolethUserJob(account->sharedFromThis(), this);
-        connect(job, SIGNAL(userFetched(QString)), this, SLOT(slotUserFetched(QString)));
-        QTimer::singleShot(1234, job, SLOT(start()));
+    // When constructed with a cookie (by the wizard), we usually don't know the
+    // user name yet. Request it now.
+    if (_ready && _user.isEmpty()) {
+        QTimer::singleShot(1234, this, SLOT(slotFetchUser()));
     }
 }
 
@@ -264,26 +263,32 @@ void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& shi
     _shibCookie = shibCookie;
     addToCookieJar(shibCookie);
 
-    // Now fetch the user...
-    // But we must first do a request to webdav so the session is enabled.
+    slotFetchUser();
+}
+
+void ShibbolethCredentials::slotFetchUser()
+{
+    // We must first do a request to webdav so the session is enabled.
     // (because for some reason we wan't access the API without that..  a bug in the server maybe?)
     EntityExistsJob* job = new EntityExistsJob(_account->sharedFromThis(), _account->davPath(), this);
-    connect(job, SIGNAL(exists(QNetworkReply*)), this, SLOT(slotFetchUser()));
+    connect(job, SIGNAL(exists(QNetworkReply*)), this, SLOT(slotFetchUserHelper()));
     job->setIgnoreCredentialFailure(true);
     job->start();
 }
 
-void ShibbolethCredentials::slotFetchUser()
+void ShibbolethCredentials::slotFetchUserHelper()
 {
     ShibbolethUserJob *job = new ShibbolethUserJob(_account->sharedFromThis(), this);
     connect(job, SIGNAL(userFetched(QString)), this, SLOT(slotUserFetched(QString)));
     job->start();
 }
 
-
 void ShibbolethCredentials::slotUserFetched(const QString &user)
 {
     if (_user.isEmpty()) {
+        if (user.isEmpty()) {
+            qDebug() << "Failed to fetch the shibboleth user";
+        }
         _user = user;
     } else if (user != _user) {
         qDebug() << "Wrong user: " << user << "!=" << _user;
