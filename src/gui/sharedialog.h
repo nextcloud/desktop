@@ -25,7 +25,10 @@ namespace OCC {
 class OcsShareJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
-    explicit OcsShareJob(const QByteArray& verb, const QUrl& url, const QUrl& postData, AccountPtr account, QObject* parent = 0);
+    explicit OcsShareJob(const QByteArray& verb, const QUrl& url, AccountPtr account, QObject* parent = 0);
+
+    void setPostParams(const QList<QPair<QString, QString>>& postParams);
+
 public slots:
     void start() Q_DECL_OVERRIDE;
 signals:
@@ -35,7 +38,7 @@ private slots:
 private:
     QByteArray _verb;
     QUrl _url;
-    QUrl _postData;
+    QList<QPair<QString, QString>> _postParams;
 };
 
 namespace Ui {
