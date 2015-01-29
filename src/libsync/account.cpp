@@ -355,8 +355,6 @@ QSslConfiguration Account::createSslConfig()
         sslConfig.setLocalCertificate(sslClientCertificate);
         sslConfig.setPrivateKey(privateKey);
         qDebug() << "Added SSL client certificate to the query";
-    } else {
-        qDebug() << "Failed to add the SSL client certificate to the query!";
     }
 
     return sslConfig;
