@@ -53,7 +53,7 @@ class SocketConnect(GObject.GObject):
             SocketConnect._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             postfix = "/"+appname+"/socket"
             sock_file = get_runtime_dir()+postfix
-            print ("XXXX " + sock_file + " <=> " + postfix)
+            print ("Socket: " + sock_file + " <=> " + postfix)
             if sock_file != postfix:
                 try:
                     print("Socket File: "+sock_file)
@@ -100,11 +100,12 @@ class MenuExtension( Nautilus.MenuProvider, SocketConnect):
         # internal or external file?!
         syncedFile = False
         for reg_path in self.registered_paths:
-            if file.get_name().startswith(reg_path):
+        filename = get_local_path(file.get_uri())
+            if filename.startswith(reg_path):
                 syncedFile = True
 
         # if it is neither in a synced folder or is a directory
-        if (not syncedFile and file.is_directory()):
+        if (not syncedFile):
             return items
 
         # create an menu item
