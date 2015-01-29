@@ -408,11 +408,8 @@ void SocketApi::command_SHARE(const QString& localFile, SocketType* socket)
 
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
     if (!shareFolder) {
-        const QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(localFile);
-        // FIXME: We could send here a "SHARE:PROGRESS" message back as this op will probably
-        // take longer. But currently we lack a way of getting a message once that has successfully
-        // worked.
-        emit shareCommandReceived(QString(), localFile);
+        const QString message = QLatin1String("SHARE:NOP:")+QDir::toNativeSeparators(localFile);
+        // files that are not within a sync folder are not synced.
         sendMessage(socket, message);
     } else {
         const QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(localFile);

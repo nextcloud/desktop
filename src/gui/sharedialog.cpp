@@ -66,9 +66,14 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     // check if the file is already inside of a synced folder
     if( sharePath.isEmpty() ) {
-        // The file is not yet in ownCloud. It must be copied into first.
-        _ui->checkBox_shareLink->setEnabled(false);
-        uploadExternalFile();
+        // The file is not yet in an ownCloud synced folder. We could automatically
+        // copy it over, but that is skipped as not all questions can be anwered that
+        // are involved in that, see https://github.com/owncloud/client/issues/2732
+        //
+        // _ui->checkBox_shareLink->setEnabled(false);
+        // uploadExternalFile();
+        qDebug() << Q_FUNC_INFO << "Unable to share files not in a sync folder.";
+        return;
     }
 
     // error label, red box and stuff
@@ -344,6 +349,11 @@ void ShareDialog::displayInfo( const QString& msg )
     _ui->label_sharePath->setText(msg);
 }
 
+#if 0
+/*
+ * This code is disabled for now as we do not have answers for all the questions involved
+ * here, see https://github.com/owncloud/client/issues/2732
+ */
 bool ShareDialog::uploadExternalFile()
 {
     bool re = false;
@@ -446,7 +456,7 @@ void ShareDialog::slotNextSyncFinished( const SyncResult& result )
     }
     _expectedSyncFile.clear();
 }
-
+#endif
 
 OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, AccountPtr account, QObject* parent)
 : AbstractNetworkJob(account, "", parent),

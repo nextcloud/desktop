@@ -59,9 +59,6 @@ public:
     ~ShareDialog();
     void getShares();
 
-public slots:
-    void slotNextSyncFinished( const SyncResult& result );
-
 private slots:
     void slotSharesFetched(const QString &reply);
     void slotCreateShareFetched(const QString &reply);
@@ -76,8 +73,6 @@ private slots:
 private:
     void displayError(int code);
     void displayInfo( const QString& msg );
-
-    bool uploadExternalFile();
 
     Ui::ShareDialog *_ui;
     AccountPtr _account;
