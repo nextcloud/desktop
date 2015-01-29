@@ -19,7 +19,6 @@
 #pragma once
 
 #include <unknwn.h>     // For IClassFactory
-#include <minwindef.h>
 
 class OCContextMenuFactory : public IClassFactory
 {

@@ -12,7 +12,7 @@
 * details.
 */
 
-
+#include "stdafx.h"
 
 #include "OCClientInterface.h"
 
@@ -28,7 +28,6 @@
 #include <sstream>
 #include <iterator>
 #include <unordered_set>
-#include <cassert>
 
 using namespace std;
 

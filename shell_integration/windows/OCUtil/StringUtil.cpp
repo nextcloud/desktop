@@ -17,7 +17,7 @@
 
 #include "StringUtil.h"
 
-std::string StringUtil::toUtf8(const wchar_t *utf16, int len)
+std::string StringUtil::toUtf8(const wchar_t *utf16, size_t len)
 {
 	if (len < 0) {
 		len = wcslen(utf16);
@@ -26,7 +26,7 @@ std::string StringUtil::toUtf8(const wchar_t *utf16, int len)
     return converter.to_bytes(utf16, utf16+len);
 }
 
-std::wstring StringUtil::toUtf16(const char *utf8, int len)
+std::wstring StringUtil::toUtf16(const char *utf8, size_t len)
 {
 	if (len < 0) {
 		len = strlen(utf8);
