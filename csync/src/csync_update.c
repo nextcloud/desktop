@@ -692,7 +692,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
             || c_streq(path, ".csync_journal.db.ctmp-journal")
             || c_streq(path, ".csync-progressdatabase")
             || c_streq(path, ".csync_journal.db-shm")
-            || c_streq(path, ".csync_journal.db-wal")) {
+            || c_streq(path, ".csync_journal.db-wal")
+            || c_streq(path, ".csync_journal.db-journal")) {
         csync_vio_file_stat_destroy(dirent);
         dirent = NULL;
         SAFE_FREE(filename);

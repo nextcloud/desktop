@@ -140,13 +140,28 @@ bool SyncJournalDb::checkConnect()
         qDebug() << "sqlite3 version" << pragma1.stringValue(0);
     }
 
-    pragma1.prepare("PRAGMA journal_mode=WAL;");
+    // Enable WAL by default but allow switching the journal mode for debugging
+    static QString env_journal_mode = QString::fromLocal8Bit(qgetenv("OWNCLOUD_SQLITE_JOURNAL_MODE"));
+    QString journal_mode = env_journal_mode;
+    if (journal_mode.isEmpty()) {
+        journal_mode = "WAL";
+    }
+    pragma1.prepare(QString("PRAGMA journal_mode=%1;").arg(journal_mode));
     if (!pragma1.exec()) {
-        return sqlFail("Set PRAGMA synchronous", pragma1);
+        return sqlFail("Set PRAGMA journal_mode", pragma1);
     } else {
         pragma1.next();
         qDebug() << "sqlite3 journal_mode=" << pragma1.stringValue(0);
+    }
 
+    // For debugging purposes, allow temp_store to be set
+    static QString env_temp_store = QString::fromLocal8Bit(qgetenv("OWNCLOUD_SQLITE_TEMP_STORE"));
+    if (!env_temp_store.isEmpty()) {
+        pragma1.prepare(QString("PRAGMA temp_store = %1;").arg(env_temp_store));
+        if (!pragma1.exec()) {
+            return sqlFail("Set PRAGMA temp_store", pragma1);
+        }
+        qDebug() << "sqlite3 with temp_store =" << env_temp_store;
     }
 
     pragma1.prepare("PRAGMA synchronous = 1;");
@@ -348,6 +363,7 @@ bool SyncJournalDb::checkConnect()
     FileSystem::setFileHidden(databaseFilePath(), true);
     FileSystem::setFileHidden(databaseFilePath() + "-wal", true);
     FileSystem::setFileHidden(databaseFilePath() + "-shm", true);
+    FileSystem::setFileHidden(databaseFilePath() + "-journal", true);
 
     return rc;
 }

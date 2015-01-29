@@ -706,6 +706,7 @@ void Folder::wipe()
     QFile::remove( stateDbFile + ".ctmp" );
     QFile::remove( stateDbFile + "-shm" );
     QFile::remove( stateDbFile + "-wal" );
+    QFile::remove( stateDbFile + "-journal" );
 }
 
 bool Folder::setIgnoredFiles()
