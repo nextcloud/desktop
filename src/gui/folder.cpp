@@ -858,7 +858,7 @@ void Folder::slotSyncError(const QString& err)
 
 void Folder::slotSyncStarted()
 {
-    qDebug() << "    * csync thread started";
+    qDebug() << "#### Propagation start #################################################### >>";
     _syncResult.setStatus(SyncResult::SyncRunning);
     emit syncStateChange();
 }
