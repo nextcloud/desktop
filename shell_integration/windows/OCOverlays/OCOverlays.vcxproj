@@ -134,6 +134,7 @@
       <AdditionalLibraryDirectories>..\$(Configuration)\$(Platform);</AdditionalLibraryDirectories>
       <AdditionalDependencies>OCUtil_x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>OCOverlays.def</ModuleDefinitionFile>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,6 +152,7 @@
       <AdditionalLibraryDirectories>..\$(Configuration)\$(Platform);</AdditionalLibraryDirectories>
       <AdditionalDependencies>OCUtil_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>OCOverlays.def</ModuleDefinitionFile>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
