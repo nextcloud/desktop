@@ -86,7 +86,7 @@ static RequestManager* sharedInstance = nil;
 	BOOL registered = NO;
 
 	NSString* checkPath = [NSString stringWithString:path];
-	if (isDir) {
+	if (isDir && ![checkPath hasSuffix:@"/"]) {
 		// append a slash
 		checkPath = [path stringByAppendingString:@"/"];
 	}

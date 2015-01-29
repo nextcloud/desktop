@@ -79,6 +79,16 @@ static MenuManager* sharedInstance = nil;
 		return;
 	}
 
+	for (int i = 0; i < files.count; i++) {
+		NSString *fn = [files objectAtIndex:i];
+		BOOL isDir = false;
+		if ([[NSFileManager defaultManager] fileExistsAtPath:fn isDirectory:&isDir]) {
+			if (![requestManager isRegisteredPath:fn isDirectory:isDir]) {
+				return;
+			}
+		}
+	}
+
 	NSMutableArray* menuItemsArray = [[[NSMutableArray alloc] init] autorelease];
 	NSMutableDictionary *firstEntry = [[[NSMutableDictionary alloc] init] autorelease];
 	[firstEntry setValue:[NSNumber numberWithBool:YES] forKey:@"enabled"];
