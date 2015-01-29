@@ -241,6 +241,10 @@ bool SqlQuery::exec()
         } while( (n < SQLITE_REPEAT_COUNT) && ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)));
         _errId = rc;
 
+        if (_errId != SQLITE_DONE && _errId != SQLITE_ROW) {
+            _error = QString::fromUtf8(sqlite3_errmsg(_db));
+            qDebug() << "Sqlite exec statement error:" << _errId << _error << "in" <<_sql;
+        }
         return (_errId == SQLITE_DONE); // either SQLITE_ROW or SQLITE_DONE
     }
 
