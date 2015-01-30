@@ -8,7 +8,6 @@ ownCloud Desktop Client Manual
 
    introduction
    installing
-   accountsetup
    navigating
    advancedusage
    autoupdate
