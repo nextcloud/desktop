@@ -87,7 +87,7 @@ public:
 
     QString errorString() {
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;
-    };
+    }
 
     virtual void slotTimeout() Q_DECL_OVERRIDE;
 

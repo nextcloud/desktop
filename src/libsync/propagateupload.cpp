@@ -635,9 +635,14 @@ void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
 
 void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64 total)
 {
+    // Completion is signaled with sent=0, total=0; avoid accidentally
+    // resetting progress due to the sent being zero by ignoring it.
+    // finishedSignal() is bound to be emitted soon anyway.
+    // See https://bugreports.qt.io/browse/QTBUG-44782.
     if (sent == 0 && total == 0) {
-        return; // QNAM bug https://bugreports.qt.io/browse/QTBUG-44782
+        return;
     }
+
     int progressChunk = _currentChunk + _startChunk - 1;
     if (progressChunk >= _chunkCount)
         progressChunk = _currentChunk - 1;
