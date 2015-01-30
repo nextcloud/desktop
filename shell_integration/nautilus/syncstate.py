@@ -100,7 +100,7 @@ class MenuExtension( Nautilus.MenuProvider, SocketConnect):
         # internal or external file?!
         syncedFile = False
         for reg_path in self.registered_paths:
-        filename = get_local_path(file.get_uri())
+            filename = get_local_path(file.get_uri())
             if filename.startswith(reg_path):
                 syncedFile = True
 
