@@ -386,6 +386,7 @@ void SyncJournalDb::close()
     _deleteFileRecordPhash.reset(0);
     _deleteFileRecordRecursively.reset(0);
     _getErrorBlacklistQuery.reset(0);
+    _setErrorBlacklistQuery.reset(0);
     _possibleUpgradeFromMirall_1_5 = false;
 
     _db.close();
