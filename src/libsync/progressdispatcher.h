@@ -32,9 +32,12 @@ namespace OCC {
 namespace Progress
 {
     /** Return true is the size need to be taken in account in the total amount of time */
-    inline bool isSizeDependent(csync_instructions_e instruction) {
-        return instruction == CSYNC_INSTRUCTION_CONFLICT || instruction == CSYNC_INSTRUCTION_SYNC
-            || instruction == CSYNC_INSTRUCTION_NEW;
+    static inline bool isSizeDependent(const SyncFileItem & item)
+    {
+        return ! item._isDirectory && (
+               item._instruction == CSYNC_INSTRUCTION_CONFLICT
+            || item._instruction == CSYNC_INSTRUCTION_SYNC
+            || item._instruction == CSYNC_INSTRUCTION_NEW);
     }
 
 
@@ -50,7 +53,13 @@ namespace Progress
         quint64 _completedSize;
         // Should this be in a separate file?
         struct EtaEstimate {
-            EtaEstimate() :  _startedTime(QDateTime::currentMSecsSinceEpoch()), _agvEtaMSecs(0),_effectivProgressPerSec(0),_sampleCount(1) {}
+            EtaEstimate()
+                : _startedTime(QDateTime::currentMSecsSinceEpoch())
+                , _agvEtaMSecs(0)
+                , _effectivProgressPerSec(0)
+                , _sampleCount(1)
+            {
+            }
             
             static const int MAX_AVG_DIVIDER=60;
             static const int INITAL_WAIT_TIME=5;
@@ -115,11 +124,9 @@ namespace Progress
         void setProgressComplete(const SyncFileItem &item) {
             _currentItems.remove(item._file);
             _completedFileCount += item._affectedItems;
-            if (!item._isDirectory) {
-                if (Progress::isSizeDependent(item._instruction)) {
-                    _completedSize += item._size;
-                }
-            } 
+            if (Progress::isSizeDependent(item)) {
+                _completedSize += item._size;
+            }
             _lastCompletedItem = item;
             this->updateEstimation();
         }
@@ -142,7 +149,7 @@ namespace Progress
         quint64 completedSize() const {
             quint64 r = _completedSize;
             foreach(const ProgressItem &i, _currentItems) {
-                if (!i._item._isDirectory)
+                if (Progress::isSizeDependent(i._item))
                     r += i._completedSize;
             }
             return r;

@@ -631,7 +631,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     qint64 curItemProgress = -1; // -1 means finished
     quint64 biggerItemSize = -1;
     foreach(const Progress::Info::ProgressItem &citm, progress._currentItems) {
-        if (curItemProgress == -1 || (Progress::isSizeDependent(citm._item._instruction)
+        if (curItemProgress == -1 || (Progress::isSizeDependent(citm._item)
                                       && biggerItemSize < citm._item._size)) {
             curItemProgress = citm._completedSize;
             curItem = citm._item;
@@ -648,7 +648,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
 
 
     QString fileProgressString;
-    if (Progress::isSizeDependent(curItem._instruction)) {
+    if (Progress::isSizeDependent(curItem)) {
         QString s1 = Utility::octetsToString( curItemProgress );
         QString s2 = Utility::octetsToString( curItem._size );
         quint64 estimatedBw = progress.getFileEstimate(curItem).getEstimatedBandwidth();

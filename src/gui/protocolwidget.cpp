@@ -224,7 +224,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
         icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
     }
 
-    if (Progress::isSizeDependent(item._instruction)) {
+    if (Progress::isSizeDependent(item)) {
         columns << Utility::octetsToString( item._size );
     }
 

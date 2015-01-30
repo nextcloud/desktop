@@ -496,7 +496,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     if (!item->_isDirectory) {
         _progressInfo._totalFileCount++;
-        if (Progress::isSizeDependent(file->instruction)) {
+        if (Progress::isSizeDependent(item)) {
             _progressInfo._totalSize += file->size;
         }
     } else if (file->instruction != CSYNC_INSTRUCTION_NONE) {
