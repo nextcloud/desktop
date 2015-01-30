@@ -20,17 +20,60 @@
 #include <QTime>
 #include <QQueue>
 #include <QElapsedTimer>
+#include <QTimer>
 #include <QDebug>
 
 #include "syncfileitem.h"
 
 namespace OCC {
 
-/**
- * @brief The FolderScheduler class schedules folders for sync
- */
-namespace Progress
+class ProgressInfo : public QObject
 {
+    Q_OBJECT
+public:
+    ProgressInfo()
+        : _totalSizeOfCompletedJobs(0)
+        , _maxFilesPerSecond(2.0)
+        , _maxBytesPerSecond(100000.0)
+    {}
+
+    /**
+     * Called when propagation starts.
+     *
+     * hasStarted() will return true afterwards.
+     */
+    void start();
+
+    /**
+     * Returns true when propagation has started (start() was called).
+     *
+     * This is used when the SyncEngine wants to indicate a new sync
+     * is about to start via the transmissionProgress() signal. The
+     * first ProgressInfo will have hasStarted() == false.
+     */
+    bool hasStarted() const;
+
+    /**
+     * Increase the file and size totals by the amount indicated in item.
+     */
+    void adjustTotalsForFile(const SyncFileItem & item);
+
+    /**
+     * Adjust the total size by some value.
+     *
+     * Deprecated. Used only in the legacy propagator.
+     */
+    void adjustTotalSize(qint64 change);
+
+    quint64 totalFiles() const;
+    quint64 completedFiles() const;
+
+    quint64 totalSize() const;
+    quint64 completedSize() const;
+
+    /** Number of a file that is currently in progress. */
+    quint64 currentFile() const;
+
     /** Return true is the size need to be taken in account in the total amount of time */
     static inline bool isSizeDependent(const SyncFileItem & item)
     {
@@ -40,136 +83,110 @@ namespace Progress
             || item._instruction == CSYNC_INSTRUCTION_NEW);
     }
 
+    /**
+     * Holds estimates about progress, returned to the user.
+     */
+    struct Estimates
+    {
+        /// Estimated completion amount per second. (of bytes or files)
+        quint64 estimatedBandwidth;
 
-    struct Info {
-        Info() : _totalFileCount(0), _totalSize(0), _completedFileCount(0), _completedSize(0) {}
-
-        // Used during local and remote update phase
-        QString _currentDiscoveredFolder;
-
-        quint64 _totalFileCount;
-        quint64 _totalSize;
-        quint64 _completedFileCount;
-        quint64 _completedSize;
-        // Should this be in a separate file?
-        struct EtaEstimate {
-            EtaEstimate()
-                : _startedTime(QDateTime::currentMSecsSinceEpoch())
-                , _agvEtaMSecs(0)
-                , _effectivProgressPerSec(0)
-                , _sampleCount(1)
-            {
-            }
-            
-            static const int MAX_AVG_DIVIDER=60;
-            static const int INITAL_WAIT_TIME=5;
-            
-            quint64     _startedTime ;
-            quint64     _agvEtaMSecs;
-            quint64     _effectivProgressPerSec;
-            float      _sampleCount;
-            
-            /**
-             * reset the estiamte.
-             */
-            void reset() {
-                _startedTime = QDateTime::currentMSecsSinceEpoch();
-                _sampleCount =1;
-                _effectivProgressPerSec = _agvEtaMSecs = 0;
-            }
-            
-            /**
-             * update the estimated eta time with more current data.
-             * @param quint64 completed the amount the was completed.
-             * @param quint64 total the total amout that should be completed.
-             */
-            void updateTime(quint64 completed, quint64 total) {
-                quint64 elapsedTime = QDateTime::currentMSecsSinceEpoch() -  this->_startedTime ;
-                //don't start until you have some good data to process, prevents jittring estiamtes at the start of the syncing process                    
-                if(total != 0 && completed != 0 && elapsedTime > INITAL_WAIT_TIME ) {
-                    if(_sampleCount < MAX_AVG_DIVIDER) { _sampleCount+=0.01f; }
-                    // (elapsedTime-1) is an hack to avoid float "rounding" issue (ie. 0.99999999999999999999....)
-                    _agvEtaMSecs = _agvEtaMSecs + (((static_cast<float>(total) / completed) * elapsedTime) - (elapsedTime-1)) - this->getEtaEstimate();
-                    _effectivProgressPerSec = ( total - completed ) / (1+this->getEtaEstimate()/1000);
-                }
-            }
-            
-            /**
-             * Get the eta estimate in milliseconds 
-             * @return quint64 the estimate amount of milliseconds to end the process.
-             */
-            quint64 getEtaEstimate() const {
-               return _agvEtaMSecs / _sampleCount;
-           }
-            
-           /**
-            * Get the estimated average bandwidth usage.
-            * @return quint64 the estimated bandwidth usage in bytes.
-            */
-           quint64 getEstimatedBandwidth() const {
-               return _effectivProgressPerSec;
-           }
-        };
-        EtaEstimate _totalEtaEstimate;
-
-        struct ProgressItem {
-            ProgressItem() : _completedSize(0) {}
-            SyncFileItem _item;
-            quint64 _completedSize;
-            EtaEstimate _etaEstimate;
-        };
-        QHash<QString, ProgressItem> _currentItems;
-        SyncFileItem _lastCompletedItem;
-
-        void setProgressComplete(const SyncFileItem &item) {
-            _currentItems.remove(item._file);
-            _completedFileCount += item._affectedItems;
-            if (Progress::isSizeDependent(item)) {
-                _completedSize += item._size;
-            }
-            _lastCompletedItem = item;
-            this->updateEstimation();
-        }
-        void setProgressItem(const SyncFileItem &item, quint64 size) {
-            _currentItems[item._file]._item = item;
-            _currentItems[item._file]._completedSize = size;
-            _lastCompletedItem = SyncFileItem();
-            this->updateEstimation();
-            _currentItems[item._file]._etaEstimate.updateTime(size,item._size);
-        }
-        
-        void updateEstimation() {
-            if(this->_totalSize > 0) {
-                _totalEtaEstimate.updateTime(this->completedSize(),this->_totalSize);
-            } else {
-                _totalEtaEstimate.updateTime(this->_completedFileCount,this->_totalFileCount);
-            }
-        }
-
-        quint64 completedSize() const {
-            quint64 r = _completedSize;
-            foreach(const ProgressItem &i, _currentItems) {
-                if (Progress::isSizeDependent(i._item))
-                    r += i._completedSize;
-            }
-            return r;
-        }
-        /**
-         * Get the total completion estimate structure 
-         * @return EtaEstimate a structure containing the total completion information.
-         */
-        EtaEstimate totalEstimate() const {
-            return _totalEtaEstimate;
-        }
-
-        /**
-         * Get the current file completion estimate structure 
-         * @return EtaEstimate a structure containing the current file completion information.
-         */
-        EtaEstimate getFileEstimate(const SyncFileItem &item) const {
-            return _currentItems[item._file]._etaEstimate;
-        }               
+        /// Estimated eta in milliseconds.
+        quint64 estimatedEta;
     };
+
+    /**
+     * Holds the current state of something making progress and maintains an
+     * estimate of the current progress per second.
+     */
+    struct Progress
+    {
+        Progress()
+            : _progressPerSec(0)
+            , _completed(0)
+            , _prevCompleted(0)
+            , _total(0)
+            , _initialSmoothing(1.0)
+        {
+        }
+
+        /** Returns the estimates about progress per second and eta. */
+        Estimates estimates() const;
+
+        quint64 completed() const;
+        quint64 remaining() const;
+
+    private:
+        /**
+         * Update the exponential moving average estimate of _progressPerSec.
+         */
+        void update();
+
+        double _progressPerSec;
+        quint64 _completed;
+        quint64 _prevCompleted;
+        quint64 _total;
+
+        // Used to get to a good value faster when
+        // progress measurement stats. See update().
+        double _initialSmoothing;
+
+        friend class ProgressInfo;
+    };
+
+    struct ProgressItem
+    {
+        SyncFileItem _item;
+        Progress _progress;
+    };
+    QHash<QString, ProgressItem> _currentItems;
+
+    SyncFileItem _lastCompletedItem;
+
+    // Used during local and remote update phase
+    QString _currentDiscoveredFolder;
+
+    void setProgressComplete(const SyncFileItem &item);
+
+    void setProgressItem(const SyncFileItem &item, quint64 size);
+
+    /**
+     * Get the total completion estimate
+     */
+    Estimates totalProgress() const;
+
+    /**
+     * Get the current file completion estimate structure
+     */
+    Estimates fileProgress(const SyncFileItem &item) const;
+
+private slots:
+    /**
+     * Called every second once started, this function updates the
+     * estimates.
+     */
+    void updateEstimates();
+
+private:
+    // Sets the completed size by summing finished jobs with the progress
+    // of active ones.
+    void recomputeCompletedSize();
+
+    // Triggers the update() slot every second once propagation started.
+    QTimer _updateEstimatesTimer;
+
+    Progress _sizeProgress;
+    Progress _fileProgress;
+
+    // All size from completed jobs only.
+    quint64 _totalSizeOfCompletedJobs;
+
+    // The fastest observed rate of files per second in this sync.
+    double _maxFilesPerSecond;
+    double _maxBytesPerSecond;
+};
+
+namespace Progress {
 
     OWNCLOUDSYNC_EXPORT QString asActionString( const SyncFileItem& item );
     OWNCLOUDSYNC_EXPORT QString asResultString(  const SyncFileItem& item );
@@ -205,7 +222,7 @@ signals:
       @param[out]  progress   A struct with all progress info.
 
      */
-    void progressInfo( const QString& folder, const Progress::Info& progress );
+    void progressInfo( const QString& folder, const ProgressInfo& progress );
     /**
      * @brief: the item's job is completed
      */
@@ -214,7 +231,7 @@ signals:
     void syncItemDiscovered(const QString &folder, const SyncFileItem & item);
 
 protected:
-    void setProgressInfo(const QString& folder, const Progress::Info& progress);
+    void setProgressInfo(const QString& folder, const ProgressInfo& progress);
 
 private:
     ProgressDispatcher(QObject* parent = 0);

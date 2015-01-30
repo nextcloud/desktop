@@ -99,7 +99,7 @@ signals:
     // after sync is done
     void treeWalkResult(const SyncFileItemVector&);
 
-    void transmissionProgress( const Progress::Info& progress );
+    void transmissionProgress( const ProgressInfo& progress );
 
     void csyncStateDbFile( const QString& );
     void wipeDb();
@@ -176,7 +176,7 @@ private:
 
     QThread _thread;
 
-    Progress::Info _progressInfo;
+    QScopedPointer<ProgressInfo> _progressInfo;
 
     Utility::StopWatch _stopWatch;
 

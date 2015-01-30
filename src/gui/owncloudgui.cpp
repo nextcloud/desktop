@@ -79,8 +79,8 @@ ownCloudGui::ownCloudGui(Application *parent) :
             this, SLOT(slotOpenPath(QString)));
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
-    connect( pd, SIGNAL(progressInfo(QString,Progress::Info)), this,
-             SLOT(slotUpdateProgress(QString,Progress::Info)) );
+    connect( pd, SIGNAL(progressInfo(QString,ProgressInfo)), this,
+             SLOT(slotUpdateProgress(QString,ProgressInfo)) );
 
     FolderMan *folderMan = FolderMan::instance();
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
@@ -469,24 +469,24 @@ void ownCloudGui::slotRebuildRecentMenus()
 }
 
 
-void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info& progress)
+void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& progress)
 {
     Q_UNUSED(folder);
 
     if (!progress._currentDiscoveredFolder.isEmpty()) {
         _actionStatus->setText( tr("Discovering '%1'")
                                 .arg( progress._currentDiscoveredFolder ));
-    } else if (progress._totalSize == 0 ) {
-        quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();
-        quint64 totalFileCount = qMax(progress._totalFileCount, currentFile);
+    } else if (progress.totalSize() == 0 ) {
+        quint64 currentFile = progress.currentFile();
+        quint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
         _actionStatus->setText( tr("Syncing %1 of %2  (%3 left)")
             .arg( currentFile ).arg( totalFileCount )
-            .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate(), 2, " ",true) ) );
+            .arg( Utility::timeToDescriptiveString(progress.totalProgress().estimatedEta, 2, " ",true) ) );
     } else {
-        QString totalSizeStr = Utility::octetsToString( progress._totalSize );
+        QString totalSizeStr = Utility::octetsToString( progress.totalSize() );
         _actionStatus->setText( tr("Syncing %1 (%2 left)")
             .arg( totalSizeStr )
-            .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate(), 2, " ",true) ) );
+            .arg( Utility::timeToDescriptiveString(progress.totalProgress().estimatedEta, 2, " ",true) ) );
     }
 
 
@@ -524,8 +524,8 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const Progress::Info
         slotRebuildRecentMenus();
     }
 
-    if (progress._completedFileCount != ULLONG_MAX
-            && progress._completedFileCount >= progress._totalFileCount
+    if (progress.hasStarted()
+            && progress.completedFiles() >= progress.totalFiles()
             && progress._currentDiscoveredFolder.isEmpty()) {
         QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
     }

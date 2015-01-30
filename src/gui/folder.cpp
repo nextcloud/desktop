@@ -804,7 +804,7 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)));
     connect(_engine.data(), SIGNAL(folderDiscovered(bool,QString)), this, SLOT(slotFolderDiscovered(bool,QString)));
-    connect(_engine.data(), SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
+    connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
     connect(_engine.data(), SIGNAL(jobCompleted(const SyncFileItem &)), this, SLOT(slotJobCompleted(const SyncFileItem &)));
     connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
 
@@ -959,7 +959,7 @@ void Folder::slotEmitFinishedDelayed()
 
 void Folder::slotFolderDiscovered(bool, QString folderName)
 {
-    Progress::Info pi;
+    ProgressInfo pi;
     pi._currentDiscoveredFolder = folderName;
     ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
 }
@@ -967,10 +967,10 @@ void Folder::slotFolderDiscovered(bool, QString folderName)
 
 // the progress comes without a folder and the valid path set. Add that here
 // and hand the result over to the progress dispatcher.
-void Folder::slotTransmissionProgress(const Progress::Info &pi)
+void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 {
-    if( pi._completedFileCount ) {
-        // No job completed yet, this is the beginning of a sync, set the warning level to 0
+    if( !pi.hasStarted() ) {
+        // this is the beginning of a sync, set the warning level to 0
         _syncResult.setWarnCount(0);
     }
     ProgressDispatcher::instance()->setProgressInfo(alias(), pi);

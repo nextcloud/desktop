@@ -181,7 +181,7 @@ private slots:
     void slotSyncFinished();
 
     void slotFolderDiscovered(bool local, QString folderName);
-    void slotTransmissionProgress(const Progress::Info& pi);
+    void slotTransmissionProgress(const ProgressInfo& pi);
     void slotJobCompleted(const SyncFileItem&);
     void slotSyncItemDiscovered(const SyncFileItem & item);
 

@@ -40,8 +40,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 {
     _ui->setupUi(this);
 
-    connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString,Progress::Info)),
-            this, SLOT(slotProgressInfo(QString,Progress::Info)));
+    connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString,ProgressInfo)),
+            this, SLOT(slotProgressInfo(QString,ProgressInfo)));
 
     connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(slotOpenFile(QTreeWidgetItem*,int)));
 
@@ -224,7 +224,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
         icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
     }
 
-    if (Progress::isSizeDependent(item)) {
+    if (ProgressInfo::isSizeDependent(item)) {
         columns << Utility::octetsToString( item._size );
     }
 
@@ -266,13 +266,13 @@ void ProtocolWidget::computeResyncButtonEnabled()
 
 }
 
-void ProtocolWidget::slotProgressInfo( const QString& folder, const Progress::Info& progress )
+void ProtocolWidget::slotProgressInfo( const QString& folder, const ProgressInfo& progress )
 {
-    if( progress._completedFileCount == ULLONG_MAX ) {
+    if( !progress.hasStarted() ) {
         // The sync is restarting, clean the old items
         cleanIgnoreItems(folder);
         computeResyncButtonEnabled();
-    } else if (progress._completedFileCount >= progress._totalFileCount) {
+    } else if (progress.completedFiles() >= progress.totalFiles()) {
         //Sync completed
         computeResyncButtonEnabled();
     }

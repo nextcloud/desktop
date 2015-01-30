@@ -136,8 +136,6 @@ Application::Application(int &argc, char **argv) :
 
     setQuitOnLastWindowClosed(false);
 
-    qRegisterMetaType<Progress::Info>("Progress::Info");
-
     ConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect (_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));

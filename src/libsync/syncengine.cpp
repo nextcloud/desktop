@@ -65,6 +65,7 @@ SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
   , _remoteUrl(remoteURL)
   , _remotePath(remotePath)
   , _journal(journal)
+  , _progressInfo(new ProgressInfo)
   , _hasNoneFiles(false)
   , _hasRemoveFile(false)
   , _uploadLimit(0)
@@ -73,7 +74,6 @@ SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
-    qRegisterMetaType<Progress::Info>("Progress::Info");
 
     _thread.setObjectName("CSync_Neon_Thread");
     _thread.start();
@@ -494,15 +494,8 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         checkErrorBlacklisting( *item );
     }
 
-    if (!item->_isDirectory) {
-        _progressInfo._totalFileCount++;
-        if (Progress::isSizeDependent(item)) {
-            _progressInfo._totalSize += file->size;
-        }
-    } else if (file->instruction != CSYNC_INSTRUCTION_NONE) {
-        // Added or removed directories certainly count.
-        _progressInfo._totalFileCount++;
-    }
+    _progressInfo->adjustTotalsForFile(*item);
+
     _needsUpdate = true;
 
     item->log._etag          = file->etag;
@@ -702,8 +695,6 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     qDebug() << "<<#### Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Reconcile Finished"));
 
-    _progressInfo = Progress::Info();
-
     _hasNoneFiles = false;
     _hasRemoveFile = false;
     bool walkOk = true;
@@ -744,9 +735,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // To announce the beginning of the sync
     emit aboutToPropagate(_syncedItems);
-    _progressInfo._completedFileCount = ULLONG_MAX; // indicate the start with max
-    emit transmissionProgress(_progressInfo);
-    _progressInfo._completedFileCount = 0;
+    // it's important to do this before ProgressInfo::start(), to announce start of new sync
+    emit transmissionProgress(*_progressInfo);
+    _progressInfo->start();
 
     if (!_hasNoneFiles && _hasRemoveFile) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be changed, asking the user";
@@ -843,13 +834,13 @@ void SyncEngine::slotJobCompleted(const SyncFileItem &item)
     const char * instruction_str = csync_instruction_str(item._instruction);
     qDebug() << Q_FUNC_INFO << item._file << instruction_str << item._status << item._errorString;
 
-    _progressInfo.setProgressComplete(item);
+    _progressInfo->setProgressComplete(item);
 
     if (item._status == SyncFileItem::FatalError) {
         emit csyncError(item._errorString);
     }
 
-    emit transmissionProgress(_progressInfo);
+    emit transmissionProgress(*_progressInfo);
     emit jobCompleted(item);
 }
 
@@ -891,14 +882,14 @@ void SyncEngine::finalize()
 
 void SyncEngine::slotProgress(const SyncFileItem& item, quint64 current)
 {
-    _progressInfo.setProgressItem(item, current);
-    emit transmissionProgress(_progressInfo);
+    _progressInfo->setProgressItem(item, current);
+    emit transmissionProgress(*_progressInfo);
 }
 
 
 void SyncEngine::slotAdjustTotalTransmissionSize(qint64 change)
 {
-    _progressInfo._totalSize += change;
+    _progressInfo->adjustTotalSize(change);
 }
 
 /* Given a path on the remote, give the path as it is when the rename is done */

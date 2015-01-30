@@ -593,7 +593,7 @@ QString AccountSettings::shortenFilename( const QString& folder, const QString& 
     return shortFile;
 }
 
-void AccountSettings::slotSetProgress(const QString& folder, const Progress::Info &progress )
+void AccountSettings::slotSetProgress(const QString& folder, const ProgressInfo &progress )
 {
     if (!isVisible()) {
         return; // for https://github.com/owncloud/client/issues/2648#issuecomment-71377909
@@ -630,10 +630,10 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     SyncFileItem curItem = progress._lastCompletedItem;
     qint64 curItemProgress = -1; // -1 means finished
     quint64 biggerItemSize = -1;
-    foreach(const Progress::Info::ProgressItem &citm, progress._currentItems) {
-        if (curItemProgress == -1 || (Progress::isSizeDependent(citm._item)
+    foreach(const ProgressInfo::ProgressItem &citm, progress._currentItems) {
+        if (curItemProgress == -1 || (ProgressInfo::isSizeDependent(citm._item)
                                       && biggerItemSize < citm._item._size)) {
-            curItemProgress = citm._completedSize;
+            curItemProgress = citm._progress.completed();
             curItem = citm._item;
             biggerItemSize = citm._item._size;
         }
@@ -648,15 +648,15 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
 
 
     QString fileProgressString;
-    if (Progress::isSizeDependent(curItem)) {
+    if (ProgressInfo::isSizeDependent(curItem)) {
         QString s1 = Utility::octetsToString( curItemProgress );
         QString s2 = Utility::octetsToString( curItem._size );
-        quint64 estimatedBw = progress.getFileEstimate(curItem).getEstimatedBandwidth();
+        quint64 estimatedBw = progress.fileProgress(curItem).estimatedBandwidth;
         if (estimatedBw) {
             //: Example text: "uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
             fileProgressString = tr("%1 %2 (%3 of %4) %5 left at a rate of %6/s")
                 .arg(kindString, itemFileName, s1, s2,
-                    Utility::timeToDescriptiveString(progress.getFileEstimate(curItem).getEtaEstimate(), 3, " ", true),
+                    Utility::timeToDescriptiveString(progress.fileProgress(curItem).estimatedEta, 3, " ", true),
                     Utility::octetsToString(estimatedBw) );
         } else {
             //: Example text: "uploading foobar.png (2MB of 2MB)"
@@ -670,11 +670,12 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
 
     // overall progress
     quint64 completedSize = progress.completedSize();
-    quint64 currentFile =  progress._completedFileCount + progress._currentItems.count();
+    quint64 completedFile = progress.completedFiles();
+    quint64 currentFile = progress.currentFile();
     if (currentFile == ULLONG_MAX)
         currentFile = 0;
-    quint64 totalSize = qMax(completedSize, progress._totalSize);
-    quint64 totalFileCount = qMax(currentFile, progress._totalFileCount);
+    quint64 totalSize = qMax(completedSize, progress.totalSize());
+    quint64 totalFileCount = qMax(currentFile, progress.totalFiles());
     QString overallSyncString;
     if (totalSize > 0) {
         QString s1 = Utility::octetsToString( completedSize );
@@ -682,7 +683,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
         overallSyncString = tr("%1 of %2, file %3 of %4\nTotal time left %5")
             .arg(s1, s2)
             .arg(currentFile).arg(totalFileCount)
-            .arg( Utility::timeToDescriptiveString(progress.totalEstimate().getEtaEstimate(), 3, " ", true) );
+            .arg( Utility::timeToDescriptiveString(progress.totalProgress().estimatedEta, 3, " ", true) );
     } else if (totalFileCount > 0) {
         // Don't attemt to estimate the time left if there is no kb to transfer.
         overallSyncString = tr("file %1 of %2") .arg(currentFile).arg(totalFileCount);
@@ -693,7 +694,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
     int overallPercent = 0;
     if( totalFileCount > 0 ) {
         // Add one 'byte' for each files so the percentage is moving when deleting or renaming files
-        overallPercent = qRound(double(completedSize + progress._completedFileCount)/double(totalSize + totalFileCount) * 100.0);
+        overallPercent = qRound(double(completedSize + completedFile)/double(totalSize + totalFileCount) * 100.0);
     }
     overallPercent = qBound(0, overallPercent, 100);
     item->setData( overallPercent, FolderStatusDelegate::SyncProgressOverallPercent);
