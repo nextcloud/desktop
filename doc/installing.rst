@@ -88,7 +88,8 @@ ownCloud share dialog looks like the following example:
 .. image:: images/client9.png
 
 You have the same options for creating a link share as you do when you're 
-logged into the ownCloud Web GUI.
+logged into the ownCloud Web GUI: you may optionally set a password and 
+expiration date.
 
 .. image:: images/client10.png
 
