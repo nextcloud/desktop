@@ -717,7 +717,6 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     ne_session_s *session = 0;
     // that call to set property actually is a get which will return the session
     csync_set_module_property(_csync_ctx, "get_dav_session", &session);
-    Q_ASSERT(session);
 
     // post update phase script: allow to tweak stuff by a custom script in debug mode.
     if( !qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT").isEmpty() ) {
