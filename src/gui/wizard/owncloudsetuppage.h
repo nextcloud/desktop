@@ -22,6 +22,7 @@
 #include "wizard/owncloudwizard.h"
 
 #include "../addcertificatedialog.h"
+#include "wizard/owncloudconnectionmethoddialog.h"
 
 #include "ui_owncloudsetupnocredspage.h"
 
