@@ -27,6 +27,7 @@ set(client_UI
     owncloudsetuppage.ui
     addcertificatedialog.ui
     wizard/owncloudadvancedsetuppage.ui
+    wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
     wizard/owncloudsetupnocredspage.ui
     wizard/owncloudwizardresultpage.ui
@@ -64,6 +65,7 @@ set(client_SRCS
     addcertificatedialog.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
+    wizard/owncloudconnectionmethoddialog.cpp
     wizard/owncloudhttpcredspage.cpp
     wizard/owncloudsetuppage.cpp
     wizard/owncloudshibbolethcredspage.cpp

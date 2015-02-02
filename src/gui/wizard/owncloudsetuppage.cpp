@@ -26,6 +26,7 @@
 
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudsetuppage.h"
+#include "wizard/owncloudconnectionmethoddialog.h"
 #include "../3rdparty/certificates/p12topem.h"
 #include "theme.h"
 #include "account.h"
@@ -236,17 +237,31 @@ void OwncloudSetupPage::setErrorString( const QString& err, bool retryHTTPonly )
         _ui.errorLabel->setVisible(false);
     } else {
         if (retryHTTPonly) {
-            if (err.contains("SSL handshake failed", Qt::CaseInsensitive)) {
-                slotAskSSLClientCertificate();
-            } else {
-                QString msg = tr("<p>Could not connect securely:</p><p>%1</p><p>Do you want to connect unencrypted instead (not recommended)?</p>").arg(err);
-                QString title = tr("Connection failed");
-                if (QMessageBox::question(this, title, msg, QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-                    QUrl url(_ui.leUrl->text());
-                    url.setScheme("http");
-                    _ui.leUrl->setText(url.toString());
-                    // skip ahead to next page, since the user would expect us to retry automatically
-                    wizard()->next();
+            QUrl url(_ui.leUrl->text());
+            if (url.scheme() == "https") {
+                // Ask the user how to proceed when connecting to a https:// URL fails.
+                // It is possible that the server is secured with client-side TLS certificates,
+                // but that it has no way of informing the owncloud client that this is the case.
+
+                OwncloudConnectionMethodDialog dialog;
+                int retVal = dialog.exec();
+
+                switch (retVal) {
+                case OwncloudConnectionMethodDialog::No_TLS:
+                    {
+                        url.setScheme("http");
+                        _ui.leUrl->setText(url.toString());
+                        // skip ahead to next page, since the user would expect us to retry automatically
+                        wizard()->next();
+                    }
+                    break;
+                case OwncloudConnectionMethodDialog::Client_Side_TLS:
+                    slotAskSSLClientCertificate();
+                    break;
+                case OwncloudConnectionMethodDialog::Back:
+                default:
+                    // No-op.
+                    break;
                 }
             }
         }
