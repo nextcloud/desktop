@@ -21,6 +21,9 @@ public:
         Client_Side_TLS,
         Back
     };
+    
+    // The URL that was tried
+    void setUrl(const QUrl &);
 
 public slots:
     void returnNoTLS();

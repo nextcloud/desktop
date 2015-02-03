@@ -244,6 +244,7 @@ void OwncloudSetupPage::setErrorString( const QString& err, bool retryHTTPonly )
                 // but that it has no way of informing the owncloud client that this is the case.
 
                 OwncloudConnectionMethodDialog dialog;
+                dialog.setUrl(url);
                 int retVal = dialog.exec();
 
                 switch (retVal) {

@@ -1,4 +1,6 @@
 #include "wizard/owncloudconnectionmethoddialog.h"
+#include "utility.h"
+#include <QUrl>
 
 OwncloudConnectionMethodDialog::OwncloudConnectionMethodDialog(QWidget *parent) :
     QDialog(parent),
@@ -10,6 +12,13 @@ OwncloudConnectionMethodDialog::OwncloudConnectionMethodDialog(QWidget *parent) 
     connect(ui->btnClientSideTLS, SIGNAL(clicked(bool)), this, SLOT(returnClientSideTLS()));
     connect(ui->btnBack, SIGNAL(clicked(bool)), this, SLOT(returnBack()));
 }
+
+void OwncloudConnectionMethodDialog::setUrl(const QUrl &url)
+{
+    ui->label->setText(tr("<html><head/><body><p>Failed to connect to the secure server address <em>%1</em>. How do you wish to proceed?</p></body></html>")
+        .arg(OCC::Utility::escape(url.toDisplayString())));
+}
+
 
 void OwncloudConnectionMethodDialog::returnNoTLS()
 {
