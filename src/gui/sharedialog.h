@@ -70,6 +70,7 @@ private slots:
     void slotCheckBoxPasswordClicked();
     void slotCheckBoxExpireClicked();
     void slotPasswordReturnPressed();
+    void slotPushButtonCopyLinkPressed();
 private:
     void displayError(int code);
     void displayInfo( const QString& msg );
