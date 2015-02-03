@@ -16,7 +16,11 @@ OwncloudConnectionMethodDialog::OwncloudConnectionMethodDialog(QWidget *parent) 
 void OwncloudConnectionMethodDialog::setUrl(const QUrl &url)
 {
     ui->label->setText(tr("<html><head/><body><p>Failed to connect to the secure server address <em>%1</em>. How do you wish to proceed?</p></body></html>")
-        .arg(OCC::Utility::escape(url.toDisplayString())));
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+        .arg(OCC::Utility::escape(url.toString())));
+#else
+        .arg(url.toDisplayString().toHtmlEscaped()));
+#endif
 }
 
 
