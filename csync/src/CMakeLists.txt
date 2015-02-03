@@ -70,6 +70,7 @@ if(USE_NEON)
         ${NEON_LIBRARIES}
         ${CRYPTO_LIBRARY}
     )
+    include_directories(${NEON_INCLUDE_DIRS})
     add_definitions(-DUSE_NEON)
 endif(USE_NEON)
 
