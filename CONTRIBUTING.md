@@ -39,8 +39,8 @@ Manuals][devmanual] to get useful infos like how to create your first
 application or how to test the ownCloud code with phpunit.
 
 [agreement]: http://owncloud.org/about/contributor-agreement/
-[devmanual]: http://owncloud.org/dev/
-[desktopman]: http://doc.owncloud.org/desktop/1.7/
+[devmanual]: http://owncloud.org/dev
+[desktopman]: http://doc.owncloud.org/desktop
 
 ## Translations
 Please submit translations via [Transifex][transifex].
