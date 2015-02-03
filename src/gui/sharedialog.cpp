@@ -11,6 +11,7 @@
 #include "QProgressIndicator.h"
 #include <QBuffer>
 #include <QFileIconProvider>
+#include <QClipboard>
 
 namespace {
     int SHARETYPE_PUBLIC = 3;
@@ -28,6 +29,8 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     setAttribute(Qt::WA_DeleteOnClose);
     _ui->setupUi(this);
     _ui->pushButton_copy->setIcon(QIcon::fromTheme("edit-copy"));
+    _ui->pushButton_copy->setText("Copy URL");
+    connect(_ui->pushButton_copy, SIGNAL(clicked(bool)), SLOT(slotPushButtonCopyLinkPressed()));
 
     // the following progress indicator widgets are added to layouts which makes them
     // automatically deleted once the dialog dies.
@@ -319,6 +322,12 @@ void ShareDialog::slotCheckBoxExpireClicked()
         ShareDialog::setExpireDate(QDate());
         _ui->calendar->hide();
     }
+}
+
+void ShareDialog::slotPushButtonCopyLinkPressed()
+{
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(_ui->lineEdit_shareLink->text());
 }
 
 int ShareDialog::checkJsonReturnCode(const QString &reply, QString &message)
