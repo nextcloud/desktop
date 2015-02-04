@@ -998,10 +998,8 @@ void SyncEngine::checkForPermission()
                     // delete jobs intact. It is not physically tried to remove this files
                     // underneath, propagator sees that.
                     if( it->_isDirectory ) {
-                        SyncFileItemVector::iterator it_prev = it - 1;
-
                         // put a more descriptive message if really a top level share dir is removed.
-                        if( it_prev != _syncedItems.begin() && !(path.startsWith(it_prev->_file)) ) {
+                        if( it == _syncedItems.begin() || !(path.startsWith((it-1)->_file)) ) {
                             it->_errorString = tr("Local files and share folder removed.");
                         }
 
