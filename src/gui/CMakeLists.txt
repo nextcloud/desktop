@@ -138,6 +138,7 @@ set(3rdparty_INC
     )
 
 include_directories(${3rdparty_INC})
+include_directories(${OPENSSL_INCLUDE_DIR})
 
 # csync is required.
 include_directories(${CMAKE_SOURCE_DIR}/csync/src

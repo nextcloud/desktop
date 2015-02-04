@@ -12,6 +12,7 @@ include_directories(${CMAKE_SOURCE_DIR}/csync/src
                     ${CMAKE_BINARY_DIR}/csync/src
                    )
 include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/qjson)
+include_directories(${OPENSSL_INCLUDE_DIR})
 
 if ( APPLE )
     list(APPEND OS_SPECIFIC_LINK_LIBRARIES
@@ -158,6 +159,7 @@ endif()
 set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${MIRALL_VERSION}
 	SOVERSION ${MIRALL_SOVERSION}
+	RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
 set_target_properties( ${synclib_NAME} PROPERTIES
 	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )

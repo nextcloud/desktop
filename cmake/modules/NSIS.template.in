@@ -385,8 +385,8 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    ;Main executable & csync
    File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
    File "${BUILD_PATH}\bin\${APPLICATION_CMD_EXECUTABLE}"
-   File "${BUILD_PATH}\src\libsync\lib${APPLICATION_SHORTNAME}sync.dll"
-   File "${BUILD_PATH}\csync\src\libocsync.dll"
+   File "${BUILD_PATH}\bin\lib${APPLICATION_SHORTNAME}sync.dll"
+   File "${BUILD_PATH}\bin\libocsync.dll"
 
    File "${BUILD_PATH}\src\gui\mirall_*.qm"
    ; Make sure only to copy qt, not qt_help, etc

@@ -72,11 +72,63 @@ To set up your build enviroment for development using HomeBrew_:
           compiling for OS X, as this will build a disk image, and will not
           work correctly.
 
-Windows (Cross-Compile)
+Windows Development Build
 -----------------------
 
-Due to the large number of dependencies, building the client for Windows is
-**currently only supported on openSUSE**, by using the MinGW cross compiler.
+If you want to test some changes and deploy them locally, you can build natively
+on Windows using MinGW. If you want to generate an installer for deployment, please
+follow `Windows Installer Build (Cross-Compile)`_ instead.
+
+1. Get the required dependencies:
+
+   * Make sure that you have CMake_ and Git_.
+   * Download the Qt_ MinGW package. You will use the MinGW version bundled with it.
+   * Download an `OpenSSL Windows Build`_ (the non-"Light" version)
+
+2. Get the QtKeychain_ sources as well as the latest versions of the ownCloud client
+   from Git as follows::
+
+    git clone https://github.com/frankosterfeld/qtkeychain.git
+    git clone git://github.com/owncloud/client.git
+
+3. Open the Qt MinGW shortcut console from the Start Menu
+
+4. Make sure that OpenSSL's ``bin`` directory, as well as your is in your PATH.
+   This will allow CMake to find the library and headers, as well as allow the
+   ownCloud client to find the DLLs at runtime::
+
+    set PATH=C:\<OpenSSL Install Dir>\bin;%PATH%
+    set PATH=C:\<qtkeychain Clone Dir>;%PATH%
+
+5. Build qtkeychain directly in the source directory so that the DLL is built
+   in the same directory as the headers::
+
+    cd <qtkeychain Clone Dir>
+    cmake -G "MinGW Makefiles" .
+    mingw32-make
+    cd ..
+
+6. Create the build directory::
+
+    mkdir client-build
+    cd client-build
+
+7. Build the client::
+
+    cmake -G "MinGW Makefiles" ../client
+    mingw32-make
+
+  .. note:: You can try using ninja to build parallelly using
+     ``cmake -G Ninja ../client`` and ``ninja`` instead.
+  .. note:: Refer to the `generic build instructions`_ section for additional options.
+
+  The owncloud binary will appear in the ``bin`` directory.
+
+Windows Installer Build (Cross-Compile)
+-----------------------
+
+Due to the large number of dependencies, building the client installer for Windows
+is **currently only officially supported on openSUSE**, by using the MinGW cross compiler.
 You can set up openSUSE 12.1, 12.2, or 13.1 in a virtual machine if you do not
 have it installed already.
 
@@ -151,13 +203,13 @@ To build the most up to date version of the client:
 
   ``git clone git://github.com/owncloud/client.git``
 
-2. Create build directories:
+2. Create the build directory:
 
   ``mkdir client-build``
+  ``cd client-build``
 
-3. Build the client:
+3. Configure the client build:
 
-  ``cd ../client-build``
   ``cmake -DCMAKE_BUILD_TYPE="Debug" ../client``
 
   ..note:: You must use absolute paths for the ``include`` and ``library``
@@ -169,7 +221,7 @@ To build the most up to date version of the client:
 
 4. Call ``make``.
 
-  The owncloud binary appear in the ``bin`` directory.
+  The owncloud binary will appear in the ``bin`` directory.
 
 The following are known cmake parameters:
 
@@ -183,9 +235,12 @@ The following are known cmake parameters:
 * ``CMAKE_INSTALL_PREFIX=path``: Set an install prefix. This is mandatory on Mac OS
 
 .. _`ownCloud repository from OBS`: http://software.opensuse.org/download/package?project=isv:ownCloud:desktop&package=owncloud-client
+.. _CMake: http://www.cmake.org/download
 .. _CSync: http://www.csync.org
 .. _`Client Download Page`: http://owncloud.org/sync-clients/
 .. _Git: http://git-scm.com
 .. _MacPorts: http://www.macports.org
 .. _Homebrew: http://mxcl.github.com/homebrew/
+.. _`OpenSSL Windows Build`: http://slproweb.com/products/Win32OpenSSL.html
+.. _Qt: http://www.qt.io/download
 .. _QtKeychain: https://github.com/frankosterfeld/qtkeychain
