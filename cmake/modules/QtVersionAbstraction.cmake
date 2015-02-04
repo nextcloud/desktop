@@ -103,6 +103,9 @@ endif()
 
     #Enable deprecated symbols
     add_definitions("-DQT_DISABLE_DEPRECATED_BEFORE=0")
+
+    add_definitions("-DQT_USE_QSTRINGBUILDER") #optimize string concatenation
+    add_definitions("-DQT_MESSAGELOGCONTEXT") #enable function name and line number in debug output
 endif( Qt5Core_FOUND )
 
 if(NOT Qt5Core_FOUND)
