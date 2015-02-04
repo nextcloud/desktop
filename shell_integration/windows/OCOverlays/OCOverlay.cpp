@@ -12,6 +12,8 @@
  * details.
  */
 
+#include "stdafx.h"
+
 #include "OCOverlay.h"
 
 #include "OCOverlayFactory.h"

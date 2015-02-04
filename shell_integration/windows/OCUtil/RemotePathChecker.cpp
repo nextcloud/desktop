@@ -11,6 +11,8 @@
 * details.
 */
 
+#include "stdafx.h"
+
 #include "CommunicationSocket.h"
 
 #include "RemotePathChecker.h"

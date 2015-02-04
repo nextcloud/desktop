@@ -17,8 +17,6 @@
 
 #pragma once
 
-#include "stdafx.h"
-
 enum State {
 	State_Error = 0, State_ErrorShared,
 	State_OK, State_OKShared,

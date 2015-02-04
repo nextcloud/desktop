@@ -15,8 +15,6 @@
 #ifndef OCOVERLAY_H
 #define OCOVERLAY_H
 
-#include "stdafx.h"
-
 #pragma once
 
 class RemotePathChecker;

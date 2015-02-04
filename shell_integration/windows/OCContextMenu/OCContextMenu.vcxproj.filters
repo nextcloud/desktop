@@ -36,6 +36,9 @@
     <ClInclude Include="OCClientInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RegDelnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

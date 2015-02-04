@@ -12,8 +12,9 @@
  * details.
  */
 
-#include "OCOverlayRegistrationHandler.h"
 #include "stdafx.h"
+
+#include "OCOverlayRegistrationHandler.h"
 
 #include <iostream>
 #include <fstream>

@@ -12,9 +12,10 @@
  * details.
  */
 
+#include "stdafx.h"
+
 #include "OCOverlayRegistrationHandler.h"
 #include "OCOverlayFactory.h"
-#include "stdafx.h"
 
 HINSTANCE instanceHandle = NULL;
 

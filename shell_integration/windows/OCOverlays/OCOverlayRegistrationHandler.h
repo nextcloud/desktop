@@ -17,8 +17,6 @@
 
 #pragma once
 
-#include "stdafx.h"
-
 class __declspec(dllexport) OCOverlayRegistrationHandler 
 {
 	public:
