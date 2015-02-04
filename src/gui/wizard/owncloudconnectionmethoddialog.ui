@@ -59,7 +59,7 @@
        <item>
         <widget class="QPushButton" name="btnNoTLS">
          <property name="text">
-          <string>Retry unencrypted over HTTP (unsecure)</string>
+          <string>Retry unencrypted over HTTP (insecure)</string>
          </property>
         </widget>
        </item>
