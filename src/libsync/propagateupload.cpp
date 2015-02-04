@@ -531,7 +531,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
         auto currentChunk = job->_chunk;
         foreach (auto *job, _jobs) {
             // Take the minimum finished one
-            currentChunk = qMin(currentChunk, job->_chunk);
+            currentChunk = qMin(currentChunk, job->_chunk - 1);
         }
         pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount ; // next chunk to start with
         pi._transferid = _transferId;
