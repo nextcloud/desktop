@@ -167,7 +167,7 @@ static ContentManager* sharedInstance = nil;
 // it clears the entries from the hash to make it call again home to the desktop client.
 - (void)clearFileNameCacheForPath:(NSString*)path
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
+	//NSLog(@"%@", NSStringFromSelector(_cmd));
 	NSMutableArray *keysToDelete = [NSMutableArray array];
 	
 	if( path != nil ) {
@@ -243,7 +243,7 @@ static ContentManager* sharedInstance = nil;
 
 - (void)repaintAllWindows
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
+	//NSLog(@"%@", NSStringFromSelector(_cmd));
 	NSArray* windows = [[NSApplication sharedApplication] windows];
 
 	for (int i = 0; i < [windows count]; i++)

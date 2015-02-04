@@ -25,7 +25,6 @@
 
 	NSString *_shareMenuTitle;
 	
-	BOOL _isRunning;
 	BOOL _isConnected;
 }
 

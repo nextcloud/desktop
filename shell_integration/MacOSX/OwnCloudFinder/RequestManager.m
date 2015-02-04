@@ -28,14 +28,13 @@ static RequestManager* sharedInstance = nil;
 	{
 		_socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
 
-		_isRunning = NO;
 		_isConnected = NO;
 
 		_registeredPathes = [[NSMutableDictionary alloc] init];
 
 		_shareMenuTitle = nil;
 
-		[self start];
+		[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(start) userInfo:nil repeats:YES];
 	}
 
 	return self;
@@ -189,22 +188,10 @@ static RequestManager* sharedInstance = nil;
 }
 
 -(void)socket:(GCDAsyncSocket*)socket didConnectToUrl:(NSURL *)url {
-	NSLog(@"didConnectToUrl %@", url);
-	[self socketDidConnect:socket];
-}
-
-- (void)socket:(GCDAsyncSocket*)socket didConnectToHost:(NSString*)host port:(UInt16)port
-{
-	[self socketDidConnect:socket];
-}
-
-// Our impl
-- (void)socketDidConnect:(GCDAsyncSocket*)socket  {
-	NSLog( @"Connected to sync client successfully!");
+	NSLog( @"Connected to sync client successfully on %@", url);
 	_isConnected = YES;
-	_isRunning = NO;
 
-    [self askOnSocket:@"" query:@"SHARE_MENU_TITLE"];
+	[self askOnSocket:@"" query:@"SHARE_MENU_TITLE"];
 
 	if( [_requestQueue count] > 0 ) {
 		NSLog( @"We have to empty the queue");
@@ -216,22 +203,17 @@ static RequestManager* sharedInstance = nil;
 	ContentManager *contentman = [ContentManager sharedInstance];
 	[contentman clearFileNameCacheForPath:nil];
 	[contentman repaintAllWindows];
-	
+
 	// Read for the UPDATE_VIEW requests
 	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
 	[_socket readDataToData:stop withTimeout:-1 tag:READ_TAG];
-	
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket*)socket withError:(NSError*)err
 {
-	NSLog(@"Socket DISconnected!");
+	NSLog(@"Socket DISconnected! %@", [err localizedDescription]);
 
 	_isConnected = NO;
-	_isRunning = NO;
-	if( err ) {
-		NSLog(@"ERROR: %@", [err localizedDescription]);
-	}
 
 	// clear the registered pathes.
 	[_registeredPathes release];
@@ -241,40 +223,74 @@ static RequestManager* sharedInstance = nil;
 	ContentManager *contentman = [ContentManager sharedInstance];
 	[contentman clearFileNameCacheForPath:nil];
 	[contentman repaintAllWindows];
+}
 
-	[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(start) userInfo:nil repeats:NO];
+- (NSDate*)fileDate:(NSString*)fn
+{
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSError *error = 0;
+	NSDictionary *oneAttributes = [fileManager attributesOfItemAtPath:fn error:&error];
+	if (!error) {
+		return [oneAttributes valueForKey:NSFileModificationDate];
+	}
+	return nil;
+}
 
+- (NSString*) getNewerFileOne:(NSString*)one two:(NSString*)two
+{
+	if (!one) {
+		return two;
+	}
+	NSDate *oneDate = [self fileDate:one];
+	NSDate *twoDate = [self fileDate:two];
+	if (oneDate && twoDate) {
+		if ([oneDate compare:twoDate] == NSOrderedDescending) {
+			return one;
+		} else if ([oneDate compare:twoDate] == NSOrderedAscending) {
+			return two;
+		} else {
+			return two;
+		}
+	}
+	return one;
 }
 
 
 - (void)start
 {
-	if (!_isRunning)
+	if (!_isConnected && ![_socket isConnected])
 	{
 		NSError *err = nil;
-		BOOL useTcp = NO;
-		if (useTcp) {
-			NSLog(@"Connect Socket");
-		    if (![_socket connectToHost:@"localhost" onPort:34001 withTimeout:5 error:&err]) {
-				// If there was an error, it's likely something like "already connected" or "no delegate set"
-				NSLog(@"I goofed: %@", err);
-			}
-		} else if (!useTcp) {
-			NSURL *url = nil;
-			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-			if ([paths count])
-			{
-				// file:///Users/guruz/Library/Caches/SyncStateHelper/ownCloud.socket
-				// FIXME Generify this and support all sockets there since multiple sync clients might be running
-				url =[NSURL fileURLWithPath:[[[paths objectAtIndex:0] stringByAppendingPathComponent:@"SyncStateHelper"] stringByAppendingPathComponent:@"ownCloud.socket"]];
-			}
-			if (url) {
-				NSLog(@"Connect Socket to %@", url);
-				[_socket connectToUrl:url withTimeout:5 error:&err];
+		NSURL *url = nil;
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+		if ([paths count])
+		{
+			// e.g file:///Users/guruz/Library/Caches/SyncStateHelper/ownCloud.socket
+			NSString *syncStateHelperDir = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"SyncStateHelper"];
+			NSError *pnsError = NULL;
+			NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:syncStateHelperDir error:&pnsError];
+			if (!pnsError && paths && [paths count] > 0) {
+				NSString *currentLatestPath = nil;
+				if (paths.count > 1) {
+					NSLog(@"Possible paths: %@", paths);
+				}
+				for (int i = 0; i < paths.count; i++) {
+					NSString *currentPath = [syncStateHelperDir stringByAppendingPathComponent:[paths objectAtIndex:i]];
+					if (![currentPath hasSuffix:@".socket"]) {
+						continue;
+					}
+					currentLatestPath = [self getNewerFileOne:currentLatestPath two:currentPath];
+				}
+				// FIXME Instead of connecting to the newest socket we could go multi-socket to support multiple instances
+				if (currentLatestPath) {
+					url = [NSURL fileURLWithPath:currentLatestPath];
+				}
 			}
 		}
-		
-		 _isRunning = YES;
+		if (url) {
+			NSLog(@"Connect Socket to %@", url);
+			[_socket connectToUrl:url withTimeout:1 error:&err];
+		}
 	}
 }
 
