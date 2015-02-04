@@ -597,6 +597,9 @@ QString AccountSettings::shortenFilename( const QString& folder, const QString& 
 
 void AccountSettings::slotSetProgress(const QString& folder, const Progress::Info &progress )
 {
+    if (!isVisible()) {
+        return; // for https://github.com/owncloud/client/issues/2648#issuecomment-71377909
+    }
     QStandardItem *item = itemForFolder( folder );
     if( !item ) return;
 
