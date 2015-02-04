@@ -12,6 +12,7 @@ include_directories(${CMAKE_SOURCE_DIR}/csync/src
                     ${CMAKE_BINARY_DIR}/csync/src
                    )
 include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/qjson)
+include_directories(${OPENSSL_INCLUDE_DIR})
 
 if ( APPLE )
     list(APPEND OS_SPECIFIC_LINK_LIBRARIES

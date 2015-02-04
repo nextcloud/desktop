@@ -9,7 +9,12 @@
 #  QTKEYCHAIN_LIBRARIES - The libraries needed to use QtKeychain
 #  QTKEYCHAIN_DEFINITIONS - Compiler switches required for using LibXml2
 
-find_path(QTKEYCHAIN_INCLUDE_DIR qt5keychain/keychain.h)
+find_path(QTKEYCHAIN_INCLUDE_DIR
+            NAMES
+              keychain.h
+            PATH_SUFFIXES
+              qt5keychain
+            )
 
 find_library(QTKEYCHAIN_LIBRARY
             NAMES
