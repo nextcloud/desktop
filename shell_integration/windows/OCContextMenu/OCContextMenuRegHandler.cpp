@@ -15,6 +15,7 @@
 #include "stdafx.h"
 
 #include "OCContextMenuRegHandler.h"
+#include "RegDelnode.h"
 #include <strsafe.h>
 #include <objbase.h>
 
@@ -125,7 +126,7 @@ HRESULT OCContextMenuRegHandler::UnregisterInprocServer(const CLSID& clsid)
 	hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), L"CLSID\\%s", szCLSID);
 	if (SUCCEEDED(hr))
 	{
-		hr = HRESULT_FROM_WIN32(RegDeleteTree(HKEY_CLASSES_ROOT, szSubkey));
+		hr = HRESULT_FROM_WIN32(RegDelnode(HKEY_CLASSES_ROOT, szSubkey));
 	}
 
 	return hr;
@@ -210,7 +211,7 @@ HRESULT OCContextMenuRegHandler::UnregisterShellExtContextMenuHandler(
 		L"%s\\shellex\\ContextMenuHandlers\\%s", pszFileType, pszFriendlyName);
 	if (SUCCEEDED(hr))
 	{
-		hr = HRESULT_FROM_WIN32(RegDeleteTree(HKEY_CLASSES_ROOT, szSubkey));
+		hr = HRESULT_FROM_WIN32(RegDelnode(HKEY_CLASSES_ROOT, szSubkey));
 	}
 
 	return hr;
