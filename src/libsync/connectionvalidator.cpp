@@ -24,7 +24,8 @@ namespace OCC {
 
 ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
     : QObject(parent),
-      _account(account)
+      _account(account),
+      _isCheckingServerAndAuth(false)
 {
 }
 
@@ -63,6 +64,7 @@ void ConnectionValidator::checkServerAndAuth()
         reportResult( NotConfigured );
         return;
     }
+    _isCheckingServerAndAuth = true;
 
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
     checkJob->setIgnoreCredentialFailure(true);
@@ -155,8 +157,29 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 void ConnectionValidator::slotAuthSuccess()
 {
     _errors.clear();
-    reportResult(Connected);
+    if (!_isCheckingServerAndAuth) {
+        reportResult(Connected);
+        return;
+    }
+    checkServerCapabilities();
 }
+
+void ConnectionValidator::checkServerCapabilities()
+{
+    JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
+    QObject::connect(job, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotCapabilitiesRecieved(QVariantMap)));
+    job->start();
+}
+
+void ConnectionValidator::slotCapabilitiesRecieved(const QVariantMap &json)
+{
+    auto caps = json.value("ocs").toMap().value("data").toMap().value("capabilities");
+    qDebug() << "Server capabilities" << caps;
+    _account->setCapabilities(caps.toMap());
+    reportResult(Connected);
+    return;
+}
+
 
 void ConnectionValidator::reportResult(Status status)
 {

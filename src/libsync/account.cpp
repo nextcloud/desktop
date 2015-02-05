@@ -493,4 +493,15 @@ void Account::setMigrated(bool mig)
     _wasMigrated = mig;
 }
 
+QVariantMap Account::capabilities()
+{
+    return _capabilities;
+}
+
+void Account::setCapabilities(const QVariantMap &caps)
+{
+    _capabilities = caps;
+}
+
+
 } // namespace OCC
