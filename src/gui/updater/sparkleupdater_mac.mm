@@ -24,7 +24,7 @@
 #include <QDebug>
 
 // Does not work yet
-@interface DelegateObject : NSObject
+@interface DelegateObject : NSObject <SUUpdaterDelegate>
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;
 @end
 @implementation DelegateObject //(SUUpdaterDelegateInformalProtocol)
@@ -43,6 +43,7 @@
 }
 
 // Sent when a valid update is not found.
+// Does not seem to get called ever.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update
 {
     qDebug() << Q_FUNC_INFO;
@@ -53,6 +54,18 @@
 {
     qDebug() << Q_FUNC_INFO;
 }
+
+// Tried implementing those methods, but they never ever seem to get called
+//- (void) updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
+//{
+//    qDebug() << Q_FUNC_INFO << [error localizedDescription];
+//}
+
+//- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
+//{
+//    qDebug() << Q_FUNC_INFO << appcast;
+//}
+
 
 @end
 
