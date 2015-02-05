@@ -139,7 +139,7 @@ endif()
 if (USE_NEON)
   find_package(Neon REQUIRED)
 endif(USE_NEON)
-find_package(OpenSSL)
+find_package(OpenSSL 1.0.0 REQUIRED)
 
 if(NOT TOKEN_AUTH_ONLY)
     if (Qt5Core_DIR)
