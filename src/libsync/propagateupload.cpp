@@ -118,7 +118,7 @@ bool PollJob::finished()
     qDebug() << Q_FUNC_INFO << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QVariantMap status = QtJson::parse(QString::fromUtf8(jsonData), ok).toMap();
     if (!ok || status.isEmpty()) {
-        _item._errorString = tr("Invalid json reply from the poll URL");
+        _item._errorString = tr("Invalid JSON reply from the poll URL");
         _item._status = SyncFileItem::NormalError;
         emit finishedSignal();
         return true;
