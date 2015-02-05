@@ -303,7 +303,7 @@ qint64 SelectiveSyncTreeView::estimatedSize(QTreeWidgetItem* root)
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder* folder, QWidget* parent, Qt::WindowFlags f)
     :   QDialog(parent, f), _folder(folder)
 {
-    init(account);
+    init(account, tr("Unchecked folders will be <b>removed</b> from your local file system and will not be synchronized to this computer anymore"));
     _treeView->setFolderInfo(_folder->remotePath(), _folder->alias(), _folder->selectiveSyncBlackList());
 
     // Make sure we don't get crashes if the folder is destroyed while we are still open
@@ -313,16 +313,19 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder* folder, QWi
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QStringList& blacklist, QWidget* parent, Qt::WindowFlags f)
     : QDialog(parent, f), _folder(0)
 {
-    init(account);
+    init(account,
+         Theme::instance()->wizardSelectiveSyncDefaultNothing() ?
+            tr("Choose What to Sync: Select remote subfolders you wish to synchronize.") :
+            tr("Choose What to Sync: Deselect remote subfolders you do not wish to synchronize."));
     _treeView->setFolderInfo(QString(), QString(), blacklist);
 }
 
-void SelectiveSyncDialog::init(AccountPtr account)
+void SelectiveSyncDialog::init(const AccountPtr &account, const QString &labelText)
 {
     setWindowTitle(tr("Choose What to Sync"));
     QVBoxLayout *layout = new QVBoxLayout(this);
     _treeView = new SelectiveSyncTreeView(account, this);
-    QLabel *label = new QLabel(tr("Unchecked folders will be <b>removed</b> from your local file system and will not be synchronized to this computer anymore"));
+    auto label = new QLabel(labelText);
     label->setWordWrap(true);
     layout->addWidget(label);
     layout->addWidget(_treeView);

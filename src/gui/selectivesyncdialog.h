@@ -78,7 +78,7 @@ public:
 
 private:
 
-    void init(AccountPtr account);
+    void init(const AccountPtr &account, const QString &label);
 
     SelectiveSyncTreeView *_treeView;
 
