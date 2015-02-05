@@ -288,7 +288,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
         _ocWizard->appendToConfigurationLog( res );
     }
     if (nextStep) {
-        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), remoteFolder, this);
+        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), _ocWizard->account()->davPath() + remoteFolder, this);
         connect(job, SIGNAL(exists(QNetworkReply*)), SLOT(slotAuthCheckReply(QNetworkReply*)));
         job->start();
     } else {
