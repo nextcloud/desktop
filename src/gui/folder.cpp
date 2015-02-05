@@ -373,7 +373,7 @@ void Folder::bubbleUpSyncResult()
                 FolderMan::instance()->removeMonitorPath( alias(), path()+item._file );
             }
 
-            if (!item.hasErrorStatus() && item._direction == SyncFileItem::Up) {
+            if (!item.hasErrorStatus() && item._direction == SyncFileItem::Down) {
                 switch (item._instruction) {
                 case CSYNC_INSTRUCTION_NEW:
                     newItems++;
