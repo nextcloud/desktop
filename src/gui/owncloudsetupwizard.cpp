@@ -274,7 +274,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
         // ownCloud is newly created.
         _ocWizard->appendToConfigurationLog( tr("Local sync folder %1 already exists, setting it up for sync.<br/><br/>").arg(localFolder));
     } else {
-        QString res = tr("Creating local sync folder %1... ").arg(localFolder);
+        QString res = tr("Creating local sync folder %1...").arg(localFolder);
         if( fi.mkpath( localFolder ) ) {
             Utility::setupFavLink( localFolder );
             // FIXME: Create a local sync folder.

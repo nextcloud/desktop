@@ -78,7 +78,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         if( status == SyncFileItem::Success || status == SyncFileItem::Conflict) {
             status = SyncFileItem::Restoration;
         } else {
-            _item._errorString += tr("; Restoration Failed: ") + errorString;
+            _item._errorString += tr("; Restoration Failed: %1").arg(errorString);
         }
     } else {
         if( _item._errorString.isEmpty() ) {
@@ -101,7 +101,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         if (blacklist(_propagator->_journal, _item) && _item._hasBlacklistEntry) {
             // do not error if the item was, and continues to be, blacklisted
             status = SyncFileItem::FileIgnored;
-            _item._errorString.prepend(tr("Continue blacklisting: "));
+            _item._errorString.prepend(tr("Continue blacklisting:") + " ");
         }
         break;
     case SyncFileItem::Success:

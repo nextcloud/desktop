@@ -64,7 +64,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         // Normaly we expect "201 Created"
         // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
         // throw an error.
-        done(SyncFileItem::NormalError, tr("Wrong HTTP code returned by server. Expected 201, but recieved \"%1 %2\".")
+        done(SyncFileItem::NormalError, tr("Wrong HTTP code returned by server. Expected 201, but received \"%1 %2\".")
             .arg(_item._httpErrorCode).arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
         return;
     }

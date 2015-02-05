@@ -433,7 +433,7 @@ bool ShareDialog::uploadExternalFile()
     FolderMan::instance()->folder(folderName);
     if( ! folder ) {
         qDebug() << "Folder not defined: " << folderName;
-        displayInfo(tr("Can not find a folder to upload to."));
+        displayInfo(tr("Cannot find an folder to upload to."));
         return false;
     }
 
@@ -456,7 +456,7 @@ bool ShareDialog::uploadExternalFile()
     QFileInfo target(_expectedSyncFile);
     if( target.exists() ) {
         _ui->label_sharePath->setText(tr("A sync file with the same name exists. "
-                                         "The file can not be registered to sync."));
+                                         "The file cannot be registered to sync."));
         // TODO: Add a file comparison here. If the existing file is still the same
         // then the file-to-copy we can share it.
         _sharePath.clear();
@@ -500,7 +500,7 @@ void ShareDialog::slotNextSyncFinished( const SyncResult& result )
         _uploadFails ++;
         if( _uploadFails > 2 ) {
             // stop the upload job
-            displayInfo(tr("The file can not be synced."));
+            displayInfo(tr("The file cannot be synced."));
         }
     } else {
         // it's there and the sync was successful.

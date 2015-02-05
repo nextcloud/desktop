@@ -42,9 +42,9 @@ QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) co
 {
     QString ret;
     if (warnings.count() == 1) {
-        ret = tr("<b>Warning:</b> ") + warnings.first();
+        ret = tr("<b>Warning:</b> %1").arg(warnings.first());
     } else if (warnings.count() > 1) {
-        ret = tr("<b>Warning:</b> ") + "<ul>";
+        ret = tr("<b>Warning:</b>") + " <ul>";
         Q_FOREACH(QString warning, warnings) {
             ret += QString::fromLatin1("<li>%1</li>").arg(warning);
         }

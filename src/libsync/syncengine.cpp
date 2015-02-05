@@ -138,7 +138,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("CSync failed due to not handled permission deniend.");
         break;
     case CSYNC_STATUS_NOT_FOUND:
-        errStr = tr("CSync failed to access "); // filename gets added.
+        errStr = tr("CSync failed to access") + " "; // filename gets added.
         break;
     case CSYNC_STATUS_FILE_EXISTS:
         errStr = tr("CSync tried to create a directory that already exists.");
@@ -156,10 +156,10 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("The mounted directory is temporarily not available on the server");
         break;
     case CSYNC_STATUS_OPENDIR_ERROR:
-        errStr = tr("An error opening a directory happened");
+        errStr = tr("An error occurred while opening a directory");
         break;
     default:
-        errStr = tr("An internal error number %1 happened.").arg( (int) err );
+        errStr = tr("An internal error number %1 occurred.").arg( (int) err );
     }
 
     return errStr;
