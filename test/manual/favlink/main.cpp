@@ -10,7 +10,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include "../../../src/utility.h"
+#include "../../../src/libsync/utility.h"
 
 #include <QDir>
 

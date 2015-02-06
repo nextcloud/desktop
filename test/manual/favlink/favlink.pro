@@ -12,5 +12,5 @@ macx {
 }
 
 # Input
-HEADERS += ../../../src/mirall/utility.h
-SOURCES += main.cpp ../../../src/mirall/utility.cpp
+HEADERS += ../../../src/libsync/utility.h
+SOURCES += main.cpp ../../../src/libsync/utility.cpp
