@@ -53,7 +53,6 @@ QSize SelectiveSyncTreeView::sizeHint() const
     return QTreeView::sizeHint().expandedTo(QSize(400, 400));
 }
 
-
 void SelectiveSyncTreeView::refreshFolders()
 {
     LsColJob *job = new LsColJob(_account, _folderPath, this);
@@ -63,6 +62,18 @@ void SelectiveSyncTreeView::refreshFolders()
     clear();
     _loading->show();
     _loading->move(10,header()->height() + 10);
+}
+
+void SelectiveSyncTreeView::setFolderInfo(const QString& folderPath, const QString& rootName, const QStringList& oldBlackList)
+{
+    _folderPath = folderPath;
+    if (_folderPath.startsWith(QLatin1Char('/'))) {
+        // remove leading '/'
+        _folderPath = folderPath.mid(1);
+    }
+    _rootName = rootName;
+    _oldBlackList = oldBlackList;
+    refreshFolders();
 }
 
 static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)
@@ -310,14 +321,15 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder* folder, QWi
     connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
 }
 
-SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QStringList& blacklist, QWidget* parent, Qt::WindowFlags f)
+SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &folder,
+                                         const QStringList& blacklist, QWidget* parent, Qt::WindowFlags f)
     : QDialog(parent, f), _folder(0)
 {
     init(account,
          Theme::instance()->wizardSelectiveSyncDefaultNothing() ?
             tr("Choose What to Sync: Select remote subfolders you wish to synchronize.") :
             tr("Choose What to Sync: Deselect remote subfolders you do not wish to synchronize."));
-    _treeView->setFolderInfo(QString(), QString(), blacklist);
+    _treeView->setFolderInfo(folder, QString(), blacklist);
 }
 
 void SelectiveSyncDialog::init(const AccountPtr &account, const QString &labelText)

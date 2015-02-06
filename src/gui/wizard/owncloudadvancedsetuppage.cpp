@@ -108,7 +108,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     QTimer::singleShot(0, wizard()->button(QWizard::NextButton), SLOT(setFocus()));
 
     auto acc = static_cast<OwncloudWizard *>(wizard())->account();
-    auto quotaJob = new CheckQuotaJob(acc, "/", this);
+    auto quotaJob = new CheckQuotaJob(acc, _remoteFolder, this);
     connect(quotaJob, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotQuotaRetrieved(qint64,qint64)));
     quotaJob->start();
 
@@ -285,7 +285,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
     _ui.rSyncEverything->setChecked(_selectiveSyncBlacklist.isEmpty());
 
     AccountPtr acc = static_cast<OwncloudWizard *>(wizard())->account();
-    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, _selectiveSyncBlacklist, this);
+    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, _remoteFolder, _selectiveSyncBlacklist, this);
     if (dlg->exec() == QDialog::Accepted) {
         _selectiveSyncBlacklist = dlg->createBlackList();
         if (!_selectiveSyncBlacklist.isEmpty()) {
