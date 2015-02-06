@@ -60,172 +60,173 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="20"/>
         <source>Account to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизируемая учётная запись</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Подключен к &lt;server&gt; как &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="55"/>
         <source>Add Folder...</source>
-        <translation type="unfinished"/>
+        <translation>Добавить каталог...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="62"/>
         <location filename="../src/gui/accountsettings.cpp" line="167"/>
         <source>Pause</source>
-        <translation type="unfinished"/>
+        <translation>Пауза</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="69"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Что синхронизировать</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="101"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>Использование хранилища</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="123"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>Получение информации об использовании...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="130"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Заметка:&lt;/b&gt; Некоторые каталоги, включая сетевые или общие, могут иметь разные ограничения.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="143"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>Обслуживание учётной записи</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Изменить игнорируемые файлы</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>Изменить учётную запись</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="111"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись не настроена.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="169"/>
         <source>Resume</source>
-        <translation type="unfinished"/>
+        <translation>Продолжить</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="338"/>
         <source>Confirm Folder Remove</source>
-        <translation type="unfinished"/>
+        <translation>Подтвердите удаление каталога</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="339"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Вы действительно хотите прекратить синхронизацию папки  &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Заметка:&lt;/b&gt; Это действие не удалит файлы с клиента.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="375"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>Подтвердить сброс каталога</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="376"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Вы действительно хотите сбросить каталог &lt;i&gt;%1&lt;/i&gt; и перестроить клиентскую базу данных?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Заметка:&lt;/b&gt; Данный функционал предназначен только для технического обслуживания. Файлы не будут удалены, но, в зависимости от размера каталога, операция может занять от нескольких минут до нескольких часов и может вызвать передачу большого объема данных. Используйте данную операцию только по рекомендации администратора.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="486"/>
         <source>Sync Running</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация запущена</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="487"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация запущена.&lt;br/&gt;Вы хотите её остановить?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="610"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ищем &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="650"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 / %4) Осталось %5 на скорости %6/сек.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 из %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="660"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="675"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 / %2, файл %3 / %4
+Оставшееся время: %5</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="681"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>файл %1 из %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="769"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>Используется %1 (%3%) из %2 места на сервере.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="773"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>В данный момент информация о заполненности хранилища недоступна.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="806"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Соединились с &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="809"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Подключён к &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; как &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="813"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Нет связи с %1 по адресу &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="820"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Нет настроенного подключения %1.</translation>
     </message>
 </context>
 <context>
@@ -271,22 +272,22 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Требуется аутентификация </translation>
     </message>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Введите имя пользователя и пароль для &apos;%1&apos; в %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Пользователь:</translation>
     </message>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Пароль:</translation>
     </message>
 </context>
 <context>
@@ -294,33 +295,33 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="63"/>
         <source>No ownCloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись OwnCloud не настроена</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="86"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Настроенный сервер слишком стар для этого клиента</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="87"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Обновите сервер до последней версии и перезапустите клиент.</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="106"/>
         <location filename="../src/libsync/connectionvalidator.cpp" line="113"/>
         <source>Unable to connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно подключиться к %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="114"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>тайм-аут</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="147"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>Введённые учётные данные не верны</translation>
     </message>
 </context>
 <context>
@@ -336,126 +337,128 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="107"/>
         <source>Unable to create csync-context</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно создать контекст csync</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="162"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Локальный каталог %1 не существует.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="165"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 должен быть каталогом, но не является таковым.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="168"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 не читается.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="359"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="459"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; и ещё %2 других файлов были удалены.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="461"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; был удалён</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="466"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; и ещё %2 других файлов были загружены.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="468"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 был загружен.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="473"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 и ещё %2 других файла были обновлены.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="475"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 был обновлён.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="480"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>%1 был переименован в %2 и ещё %3 других файлов были переименованы.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="482"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 был переименован в %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="487"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>%1 был перемещён в %2 и ещё %3 других файлов были перемещены.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="489"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 был перемещён в %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="494"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 и %2 другие файлы не могут быть синхронизированы из-за ошибок. Смотрите детали в журнале.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="496"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 не может быть синхронизирован из-за ошибки. Смотрите детали в журнале.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="504"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Журнал синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="782"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно прочесть исключенный системный файл</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1002"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Это действие может удалить все файлы в локальном каталоге &apos;%1&apos;.
+Это может произойти из-за того, что этот каталог был незаметно перенастроен, или все файлы были удалены вручную.
+Вы уверены, что хотите выполнить операцию?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1006"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Удалить все файлы?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1008"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Удалить все файлы</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1009"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить файлы</translation>
     </message>
 </context>
 <context>
@@ -463,62 +466,62 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="232"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно сбросить состояние каталога</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="233"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Найден старый журнал синхронизации &apos;%1&apos;, и он не может быть удалён. Убедитесь что он не открыт в другом приложении.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1021"/>
         <source>Undefined State.</source>
-        <translation type="unfinished"/>
+        <translation>Неопределенное состояние.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1024"/>
         <source>Waits to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Ожидает синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1027"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Подготовка к синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1030"/>
         <source>Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>Идет синхронизация.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1033"/>
         <source>Last Sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Последняя синхронизация прошла успешно.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1038"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>Последняя синхронизация прошла успешно, но были предупреждения для некоторых файлов.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1041"/>
         <source>Setup Error.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка установки.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1044"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Отмена пользователем.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1047"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация приостановлена.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1053"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%! (синхронизация приостановлена)</translation>
     </message>
 </context>
 <context>
@@ -527,17 +530,17 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderstatusmodel.cpp" line="95"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="264"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Файл</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Syncing all files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы в вашей учётной записи синхронизируются с</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="221"/>
         <source>Remote path: %1</source>
-        <translation type="unfinished"/>
+        <translation>Удаленный путь: %1</translation>
     </message>
 </context>
 <context>
@@ -546,7 +549,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderwizard.cpp" line="502"/>
         <location filename="../src/gui/folderwizard.cpp" line="504"/>
         <source>Add Folder</source>
-        <translation type="unfinished"/>
+        <translation>Добавить каталог</translation>
     </message>
 </context>
 <context>
@@ -554,67 +557,67 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="63"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Кликните, чтобы выбрать локальный каталог для синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Укажите путь к локальному каталогу.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="71"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>Псевдоним каталога - это наглядное имя для этой синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="100"/>
         <source>No valid local folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Локальный каталог не выбран!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="105"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>У вас недостаточно прав для записи в выбранный каталог!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="129"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Локальный путь %1 уже загружается на сервер. Пожалуйста, выберите другой!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="134"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>Для данной записи каталог уже настроен.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="141"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Выбранный каталог является симолической ссылкой. В каталоге, на который указывает ссылка, присутствует каталог, который синхронизируется.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="148"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Выбранный подкаталог принадлежит уже синхронизируемому каталогу.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="154"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Выбранный каталог является символической ссылкой. Ссылка указывает на подкаталог, который принадлежит уже синхронизируемому каталогу.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="167"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation type="unfinished"/>
+        <translation>Поле псевдоним не может быть пустым. Пожалуйста укажите псевдоним.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="178"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>Псевдоним &lt;i&gt;%1&lt;/i&gt; уже используется. Выберите другой псевдоним.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="211"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>Выберите исходный каталог</translation>
     </message>
 </context>
 <context>
@@ -622,42 +625,42 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="258"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Создать Удалённый Каталог</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="259"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Введите имя каталога, который должен быть создан под &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="288"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>Каталог успешно создан на %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="296"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно создать каталог по пути %1. Попробуйте создать его вручную.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="345"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Нажмите здесь для синхронизации всей учётной записи</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="400"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Этот каталог уже выбран для синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="402"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Каталог &lt;i&gt;%1&lt;/i&gt; уже настроен для синхронизации, и он является родительским для каталога &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="406"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>В данный момент включена синхронизация всех файлов. Синхронизация другого каталога в этом режиме &lt;b&gt;не&lt;/b&gt; поддерживается. Удалите синхронизацию корневого каталога сервера для синхронизации нескольких локальных каталогов.</translation>
     </message>
 </context>
 <context>
@@ -674,7 +677,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderwizard.cpp" line="45"/>
         <location filename="../src/gui/folderwizard.cpp" line="47"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; </source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Предупреждение:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -682,22 +685,22 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="122"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>E-Tag от сервера не получен, проверьте настройки прокси/шлюза.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="129"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Мы получили другой E-Tag для возобновления. Повторите попытку позже.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="156"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Сервер вернул неверный диапазон содержимого</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="257"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Время ожидания подключения истекло</translation>
     </message>
 </context>
 <context>
@@ -705,27 +708,27 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation type="unfinished"/>
+        <translation>Основные настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>Запускать при старте системы</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Показывать уведомления на рабочем столе</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
         <source>Use Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Использовать монохромные значки</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="47"/>
@@ -736,17 +739,17 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <location filename="../src/gui/generalsettings.ui" line="63"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>О программе</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Обновления</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="98"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Перезапуск и обновление</translation>
     </message>
 </context>
 <context>
@@ -754,12 +757,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="400"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Введите пароль</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="401"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Введите пароль от %1 для пользователя &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -767,59 +770,61 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>Редактор игнорированных файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="53"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="63"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="35"/>
         <source>Files or directories matching a pattern will not be synchronized.
 
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Файлы или каталоги, соответствующие шаблонам игнорирования не будут синхронизированы.
+
+Выбранные элементы также будут удалены если они не позволят удалить каталог. Это полезно для метаданных.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="97"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно открыть файл</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="98"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно записать изменения в &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="105"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Добавить шаблон игнорирования</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="106"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Добавить новый шаблон игнорирования:</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="128"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Изменить шаблон игнорирования</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Изменить шаблон игнорирования:</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Эта запись сделана системой в &apos;%1&apos; и не может быть изменена в этом представлении.</translation>
     </message>
 </context>
 <context>
@@ -827,52 +832,52 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="59"/>
         <source>Log Output</source>
-        <translation type="unfinished"/>
+        <translation>Выйти</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="71"/>
         <source>&amp;Search: </source>
-        <translation type="unfinished"/>
+        <translation>&amp;Поиск:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="79"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Найти</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="97"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Очистить</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="98"/>
         <source>Clear the log display.</source>
-        <translation type="unfinished"/>
+        <translation>Очистить журнал.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="104"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="105"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить файл журнала на диск для отладки.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="184"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить файл журнала</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>Не удается произвести запись в файл журнала</translation>
     </message>
 </context>
 <context>
@@ -880,12 +885,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/libsync/logger.cpp" line="148"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/libsync/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Файл &apos;%1&apos;&lt;br/&gt;не может быть открыт на запись.&lt;br/&gt;&lt;br/&gt;Журнал &lt;b&gt;не может&lt;/b&gt; быть сохранён!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -901,27 +906,27 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="256"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Доступна новая версия</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="262"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Доступна новая версия приложения %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; доступна для загрузки. Установленная версия: %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="275"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Пропустить эту версию</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="276"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Пропустить в этот раз</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="277"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Получить обновление</translation>
     </message>
 </context>
 <context>
@@ -929,100 +934,100 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/networksettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки прокси</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Без прокси</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Использовать системный прокси</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>Задать настройки прокси вручную как</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Сервер</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="100"/>
         <source>:</source>
-        <translation type="unfinished"/>
+        <translation>:</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="134"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Прокси-сервер требует авторизации</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Скорость загрузки с сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
         <location filename="../src/gui/networksettings.ui" line="278"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>Ограничить до</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="218"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>Кбайт/сек</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="227"/>
         <location filename="../src/gui/networksettings.ui" line="295"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Без ограничений</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Скорость закачки на сервер</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>Ограничивать автоматически</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Адрес прокси сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Пользователь прокси-сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Пароль прокси-сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S)-прокси</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5-прокси</translation>
     </message>
 </context>
 <context>
@@ -1030,53 +1035,54 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Новое обновление готово</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Новое обновление в процессе установки. Установщик может запросить 
+дополнительные права во время обновления.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Загрузка версии %1. Пожалуйста, подождите...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="79"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Доступна версия %1. Перезапустите приложение для начала процедуры обновления.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось загрузить обновление. Для скачивания файлов вручную, нажмите &lt;a href=&apos;%1&apos;&gt;здесь&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="83"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось проверить наличие новых обновлений.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="85"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Доступна новая версия %1. Чтобы её установить, воспользуйтесь инструментом обновления системы.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Проверка наличия обновлений на сервере...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Статус обновления неизвестен: Не удалось проверить наличие обновлений.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="93"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Обновлений нет. Установлена последняя версия.</translation>
     </message>
 </context>
 <context>
@@ -1084,42 +1090,42 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Подключиться к %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="51"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>Изменить настройки локальных каталогов</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>Соединение...</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="135"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation type="unfinished"/>
+        <translation>%1 каталог &apos;%2&apos; синхронизирован с локальным каталогом &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="141"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Предупреждение:&lt;/strong&gt; У вас настроено несколько каталогов. Если вы продолжите с текущими настройками, то будет создан один корневой каталог для синхронизации. а параметры каталогов - проигнорированы!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="148"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local directory is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Внимание:&lt;/strong&gt; Локальный каталог не пуст. Выберите способ решения&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Локальный каталог синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>Update advanced setup</source>
-        <translation type="unfinished"/>
+        <translation>Обновить дополнительные настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
@@ -1133,17 +1139,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="46"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Подключиться к %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="47"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Ввести учётные данные</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="164"/>
         <source>Update user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Обновить учётные данные</translation>
     </message>
 </context>
 <context>
@@ -1151,33 +1157,34 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="50"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Подключиться к %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Настроить сервер %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="120"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Эта ссылка НЕ безопасна, так как не зашифрована.
+Мы не рекомендуем её использовать.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="124"/>
         <source>This url is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Данная ссылка безопасна. Вы можете её использовать.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="163"/>
         <source>&amp;Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Далее &gt; </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="295"/>
         <source>Update %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Обновить сервер %1</translation>
     </message>
 </context>
 <context>
@@ -1185,12 +1192,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="161"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Успешное подключение к %1: %2 версия %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="185"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось подключиться к %1 в %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="193"/>
@@ -1200,7 +1207,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="204"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation type="unfinished"/>
+        <translation>Попытка соединиться с %1 на %2...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
@@ -1210,104 +1217,104 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Локальный каталог синхронизации %1 уже существует, используем его для синхронизации.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
         <source>Creating local sync folder %1... </source>
-        <translation type="unfinished"/>
+        <translation>Создается локальный каталог синхронизации %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="281"/>
         <source>ok</source>
-        <translation type="unfinished"/>
+        <translation>ок</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="283"/>
         <source>failed.</source>
-        <translation type="unfinished"/>
+        <translation>не удалось.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="285"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось создать локальный каталог синхронизации %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="310"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Не указан удалённый каталог!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="316"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
         <source>creating folder on ownCloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>создание каталога на ownCloud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="345"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Удалённый каталог %1 успешно создан.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="347"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Удалённый каталог %1 уже существует. Подключение к нему для синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="349"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="351"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>Создание каталога завершилось с HTTP-ошибкой %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="353"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось создать удаленный каталог, так как представленные параметры доступа неверны!&lt;br/&gt;Пожалуйста, вернитесь назад и проверьте учетные данные.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Не удалось создать удаленный каталог, возможно, указанные учетные данные неверны.&lt;/font&gt;&lt;br/&gt;Вернитесь назад и проверьте учетные данные.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="361"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="362"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Удаленный каталог %1 не создан из-за ошибки &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="378"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished"/>
+        <translation>Установлено соединение синхронизации %1 к удалённому каталогу %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="383"/>
         <source>Successfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>Соединение с  %1 установлено успешно!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось соединиться с %1. Попробуйте снова.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
         <source>Folder rename failed</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка переименования каталога</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="404"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно удалить каталог и создать его резервную копию, каталог или файл в ней открыт в другой программе. Закройте каталог или файл и нажмите &quot;Повторить попытку&quot;, либо прервите мастер настройки.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локальный каталог синхронизации %1 успешно создан!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -1315,12 +1322,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="74"/>
         <source>%1 Connection Wizard</source>
-        <translation type="unfinished"/>
+        <translation>Мастер подключения %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="83"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Пропустить настройку каталогов</translation>
     </message>
 </context>
 <context>
@@ -1328,17 +1335,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="38"/>
         <source>Everything set up!</source>
-        <translation type="unfinished"/>
+        <translation>Всё готово!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="42"/>
         <source>Open Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Открыть локальный каталог</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Открыть %1 в Браузере</translation>
     </message>
 </context>
 <context>
@@ -1346,14 +1353,14 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="76"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Время ожидания подключения истекло</translation>
     </message>
 </context>
 <context>
     <name>OCC::PollJob</name>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="121"/>
-        <source>Invalid json reply from the poll URL</source>
+        <source>Invalid JSON reply from the poll URL</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1362,27 +1369,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="435"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация прервана пользователем.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="488"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>E-Tag от сервера не получен, проверьте настройки прокси/шлюза.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="494"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Мы получили другой E-Tag для возобновления. Повторите попытку позже.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="516"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Сервер вернул неверный диапазон содержимого</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="567"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 не может быть загружен из-за локального конфликта имен!</translation>
     </message>
 </context>
 <context>
@@ -1390,17 +1397,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="271"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 не может быть загружен из-за локального конфликта имен!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="429"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно полностью загрузить файл.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="465"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 не может быть сохранён из-за локального конфликта имен!</translation>
     </message>
 </context>
 <context>
@@ -1408,7 +1415,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="81"/>
         <source>; Restoration Failed: </source>
-        <translation type="unfinished"/>
+        <translation>; Восстановление не удалось:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
@@ -1418,7 +1425,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="200"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Файл или каталог был удалён с общего ресурса только для чтения, но его не удалось восстановить: %1</translation>
     </message>
 </context>
 <context>
@@ -1426,12 +1433,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Внимание, возможен конфликт чувствительности к регистру с %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="121"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>не удалось создать каталог %1</translation>
     </message>
 </context>
 <context>
@@ -1439,17 +1446,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="57"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>Ошибка при удалении &apos;%1&apos;: %2; </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="68"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation type="unfinished"/>
+        <translation>Невозможно удалить каталог &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="83"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Не удается удалить %1 из-за локального конфликта имен</translation>
     </message>
 </context>
 <context>
@@ -1457,7 +1464,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="148"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 не может быть переименован в %2 из-за локального конфликта имен</translation>
     </message>
 </context>
 <context>
@@ -1465,7 +1472,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="87"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Файл удалён с удаленного общего ресурса только для чтения. Файл был восстановлен.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="103"/>
@@ -1486,17 +1493,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="73"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>Этот каталог не должен переименовываться. Ему будет присвоено изначальное имя. </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="75"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>Этот каталог не должен переименовываться. Присвойте ему изначальное имя: Shared. </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="111"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Файл переименован на удаленном общем ресурсе только для чтения. Файл был восстановлен.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
@@ -1510,17 +1517,17 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagator_legacy.cpp" line="243"/>
         <location filename="../src/libsync/propagator_legacy.cpp" line="302"/>
         <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation type="unfinished"/>
+        <translation>Локальный файл изменился в процессе синхронизации, повторяем процесс</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="246"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация прервана пользователем.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="252"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Измененный файл принадлежит удаленному общему ресурсу только для чтения. Файл был восстановлен, ваши правки доступны в файле конфликтов.</translation>
     </message>
 </context>
 <context>
@@ -1534,12 +1541,12 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateupload.cpp" line="171"/>
         <location filename="../src/libsync/propagateupload.cpp" line="510"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Локальный файл изменился в процессе синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="438"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Измененный файл принадлежит удаленному общему ресурсу только для чтения. Файл был восстановлен, ваши правки доступны в файле конфликтов.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="468"/>
@@ -1549,12 +1556,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="493"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Локальный файл был удалён в процессе синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="525"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>Сервер не смог подтвердить последнюю часть данных.(Отсутствовали теги e-tag)</translation>
     </message>
 </context>
 <context>
@@ -1562,77 +1569,77 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Журнал синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="49"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="54"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="50"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Время</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="51"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Файл</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="52"/>
         <source>Folder</source>
-        <translation type="unfinished"/>
+        <translation>Каталог</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="53"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>Действие</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="54"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Размер</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="68"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>Повторить попытку синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="72"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="73"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Скопировать журнал синхронизации в буфер обмена.</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="118"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Скопировано в буфер обмена</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="118"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Статус синхронизации скопирован в буфер обмена.</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="262"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>В настоящий момент из-за предыдущих ошибок ни один из файлов не игнорируется и нет ни одной активной загрузки.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="265"/>
@@ -1649,7 +1656,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="267"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Попробовать синхронизировать позже</translation>
     </message>
 </context>
 <context>
@@ -1657,7 +1664,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="306"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Не отмеченные каталоги будут &lt;b&gt;удалены&lt;/b&gt; из вашей локальной файловой системы и больше не будут синхронизироваться на этом компьютере</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="318"/>
@@ -1672,7 +1679,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="325"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Что синхронизировать</translation>
     </message>
 </context>
 <context>
@@ -1680,17 +1687,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="36"/>
         <source>Loading ...</source>
-        <translation type="unfinished"/>
+        <translation>Загрузка ...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="47"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Имя</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="48"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Размер</translation>
     </message>
 </context>
 <context>
@@ -1698,27 +1705,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="72"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="77"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>События</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="83"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Основные</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="89"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Сеть</translation>
     </message>
 </context>
 <context>
@@ -1726,27 +1733,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="63"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="67"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="71"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>События</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="75"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Основные</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="79"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Сеть</translation>
     </message>
 </context>
 <context>
@@ -1765,7 +1772,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharedialog.ui" line="34"/>
         <location filename="../src/gui/sharedialog.ui" line="177"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="53"/>
@@ -1780,7 +1787,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="89"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Поделиться ссылкой</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="127"/>
@@ -1811,7 +1818,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="299"/>
         <source>Choose a password for the public link</source>
-        <translation type="unfinished"/>
+        <translation>Укажите пароль для публичной ссылки</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="351"/>
@@ -1864,12 +1871,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/creds/shibbolethcredentials.cpp" line="291"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка входа</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/shibbolethcredentials.cpp" line="291"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Вы должны войти как пользователь %1</translation>
     </message>
 </context>
 <context>
@@ -1877,22 +1884,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="55"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Авторизация</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="61"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>Требуется повторная аутентификация</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="61"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation type="unfinished"/>
+        <translation>Срок действия вашей сессии истек. Нужно перезайти, чтобы продолжить пользоваться приложением.</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="108"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
 </context>
 <context>
@@ -1909,114 +1916,116 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="97"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Детали сертификата&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="100"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Общее имя (CN):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="101"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Альтернативное имя субъекта:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="103"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Организация (О):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="104"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Организационное подразделение (OU):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Область/район:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="106"/>
         <source>Country:</source>
-        <translation type="unfinished"/>
+        <translation>Страна:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="107"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Номер:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="110"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Издатель&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="113"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Издатель:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="114"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Выдан:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="115"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Истекает:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="118"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Отпечаток&lt;/ h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="122"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD5:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="124"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="126"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="130"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Заметка:&lt;/b&gt; Этот сертификат был одобрен вручную&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="150"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (самоподписанный)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="152"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="189"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Это соединение зашифровано %1-битным %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="192"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Информация сертификата:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="221"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Это соединение НЕ безопасно, используется протокол без шифрования.
+</translation>
     </message>
 </context>
 <context>
@@ -2024,78 +2033,78 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Доверять этому сертификату в любом случае</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="44"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>SSL соединение </translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="134"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation type="unfinished"/>
+        <translation>Предупреждения о текущем SSL соединении:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="169"/>
         <source>with Certificate %1</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="177"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="178"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;не указано&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="200"/>
         <source>Organization: %1</source>
-        <translation type="unfinished"/>
+        <translation>Организация: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="201"/>
         <source>Unit: %1</source>
-        <translation type="unfinished"/>
+        <translation>Подразделение: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
         <source>Country: %1</source>
-        <translation type="unfinished"/>
+        <translation>Страна: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Отпечаток (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="190"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Отпечаток (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
         <source>Effective Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Дата вступления в силу: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
         <source>Expiration Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Дата окончания: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Issuer: %1</source>
-        <translation type="unfinished"/>
+        <translation>Издатель: %1</translation>
     </message>
 </context>
 <context>
@@ -2103,12 +2112,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="92"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>Успешно.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="95"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не смог открыть или создать файл журнала. Убедитесь, что у вас достаточно прав для чтения и записи в локальном каталоге синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="99"/>
@@ -2118,92 +2127,92 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="102"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Не удается загрузить плагин 1% для csync.&lt;br/&gt;Проверьте установку!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="105"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation type="unfinished"/>
+        <translation>CSync получил сообщение об ошибке при обработке внутренних деревьев.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="108"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не удалось зарезервировать память.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="111"/>
         <source>CSync fatal parameter error.</source>
-        <translation type="unfinished"/>
+        <translation>Критическая ошибка параметра CSync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="114"/>
         <source>CSync processing step update failed.</source>
-        <translation type="unfinished"/>
+        <translation>Процесс обновления CSync не удался.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="117"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>Процесс согласования CSync не удался.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="120"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не удалось авторизоваться на прокси сервере.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не удалось найти прокси сервер.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="126"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не удалось авторизоваться на сервере %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не удалось подключиться к сети.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="132"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>Вышло время ожидания подключения к сети.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="135"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>Произошла ошибка передачи HTTP.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не работает из-за неожиданного отказа в доступе.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>CSync failed to access </source>
-        <translation type="unfinished"/>
+        <translation>CSync не имеет доступа</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync пытался создать каталог, который уже существует.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Нет свободного пространства на сервере %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>Неизвестная ошибка CSync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="153"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Прервано пользователем</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
@@ -2218,104 +2227,104 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
         <source>An internal error number %1 happened.</source>
-        <translation type="unfinished"/>
+        <translation>Произошла внутренняя ошибка номер %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="217"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>Элемент не синхронизируется из-за произошедших ошибок: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="340"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация символических ссылок не поддерживается.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="343"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация жёстких ссылок не поддерживаются.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="346"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Файл присутствует в списке игнорируемых.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="349"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>Файл содержит недопустимые символы, которые невозможно синхронизировать между платформами.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="366"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Кодировка имени файла не верна</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="567"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно инициализировать журнал синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="648"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Не удаётся открыть журнал синхронизации</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="895"/>
         <location filename="../src/libsync/syncengine.cpp" line="902"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Игнорируется из-за черного списка в &quot;что синхронизировать&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="920"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Не допускается, так как у вас нет прав для создания подкаталогов в этом каталоге</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="926"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
-        <translation type="unfinished"/>
+        <translation>Не допускается, так как у вас нет прав для создания родительской папки</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="933"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Не допускается, так как у вас нет прав для добавления файлов в этот каталог</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="953"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Не допускается загрузка этого файла, так как на сервере он помечен только для чтения, восстанавливаем</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="970"/>
         <location filename="../src/libsync/syncengine.cpp" line="990"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Не допускается удаление, восстанавливаем</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1003"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Локальные файлы и общий каталог удалены.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1058"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Перемещение не допускается, элемент восстановлен</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1067"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>Перемещение не допускается, поскольку %1 помечен только для чтения</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1068"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>назначение</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1068"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>источник</translation>
     </message>
 </context>
 <context>
@@ -2323,7 +2332,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="49"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -2331,7 +2340,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="233"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версия %1. Для получения дополнительной информации посетите &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="237"/>
@@ -2341,7 +2350,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="238"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Распространяется %1 и лицензировано под GNU General Public License (GPL) Версии 2.0.&lt;br/&gt;Логотипы %2 и %2 являются зарегистрированной торговой маркой %1 в США и/или других странах.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2349,97 +2358,97 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="221"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Пожалуйста войдите в систему</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="226"/>
         <source>Disconnected from server</source>
-        <translation type="unfinished"/>
+        <translation>Отсоединен от сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="259"/>
         <source>Folder %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Каталог %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="264"/>
         <source>No sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Нет каталогов для синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Нет настроенных каталогов для синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>Нет.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="299"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>Недавние изменения</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="316"/>
         <source>Open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>Открыть каталог %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="326"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>Управляемые каталоги:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Открыть каталог &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="412"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Открыть %1 в браузере</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="414"/>
         <source>Calculating quota...</source>
-        <translation type="unfinished"/>
+        <translation>Выполняется расчёт квоты...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="416"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>Неизвестный статус</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>Настройки...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>Детали...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Помощь</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="426"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>Закрыть %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="429"/>
         <source>Sign in...</source>
-        <translation type="unfinished"/>
+        <translation>Войти...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="431"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>Выйти из аккаунта</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="435"/>
@@ -2449,42 +2458,42 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>Quota n/a</source>
-        <translation type="unfinished"/>
+        <translation>Квота недоступна</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="453"/>
         <source>%1% of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>Используется %1% из %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="465"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>Недавно ничего не синхронизировалось</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="477"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ищем &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="482"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация %1 из %2  (осталось %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="487"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация %1 (осталось %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="507"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="536"/>
         <source>Up to date</source>
-        <translation type="unfinished"/>
+        <translation>Актуальная версия</translation>
     </message>
 </context>
 <context>
@@ -2564,7 +2573,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Сбой подключения</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>

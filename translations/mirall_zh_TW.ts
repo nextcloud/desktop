@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="20"/>
@@ -70,23 +70,23 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>以&lt;user&gt;的身分連接&lt;server&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="55"/>
         <source>Add Folder...</source>
-        <translation type="unfinished"/>
+        <translation>新增資料夾…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="62"/>
         <location filename="../src/gui/accountsettings.cpp" line="167"/>
         <source>Pause</source>
-        <translation type="unfinished"/>
+        <translation>暫停</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="69"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>移除</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -96,32 +96,32 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="101"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>空間用途</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="123"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>取得用途資訊...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="130"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;注意:&lt;/b&gt; 有些資料夾，包括網路掛載或分享資料夾，可能有不同的限制。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="143"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>帳號維護</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>編輯忽略的檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>修改帳號</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="111"/>
@@ -131,22 +131,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="169"/>
         <source>Resume</source>
-        <translation type="unfinished"/>
+        <translation>繼續</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="338"/>
         <source>Confirm Folder Remove</source>
-        <translation type="unfinished"/>
+        <translation>確認移除資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="339"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;您確定要停止同步資料夾&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt; 這不會從您的裝置移除檔案。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="375"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>資料夾重設確認</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="376"/>
@@ -156,12 +156,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="486"/>
         <source>Sync Running</source>
-        <translation type="unfinished"/>
+        <translation>同步中</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="487"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation type="unfinished"/>
+        <translation>正在同步中&lt;br/&gt;你真的想要中斷？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="610"/>
@@ -225,7 +225,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="820"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>無%1連線設定</translation>
     </message>
 </context>
 <context>
@@ -286,7 +286,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;密碼:</translation>
     </message>
 </context>
 <context>
@@ -310,7 +310,7 @@ Total time left %5</source>
         <location filename="../src/libsync/connectionvalidator.cpp" line="106"/>
         <location filename="../src/libsync/connectionvalidator.cpp" line="113"/>
         <source>Unable to connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>無法連線到 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="114"/>
@@ -341,22 +341,22 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="162"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>本地資料夾 %1 不存在</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="165"/>
         <source>%1 should be a directory but is not.</source>
-        <translation type="unfinished"/>
+        <translation>資料夾不存在, %1 必須是資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="168"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 是不可讀的</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="359"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="459"/>
@@ -428,7 +428,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="504"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>同步啟用</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="782"/>
@@ -445,17 +445,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1006"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>移除所有檔案?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1008"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>移除所有檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1009"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>保留檔案</translation>
     </message>
 </context>
 <context>
@@ -463,37 +463,37 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="232"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>無法重置資料夾狀態</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="233"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>發現較舊的同步處理日誌&apos;%1&apos;，但無法移除。請確認沒有應用程式正在使用它。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1021"/>
         <source>Undefined State.</source>
-        <translation type="unfinished"/>
+        <translation>未知狀態</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1024"/>
         <source>Waits to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>等待啟動同步</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1027"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>正在準備同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1030"/>
         <source>Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>同步執行中</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1033"/>
         <source>Last Sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>最後一次同步成功</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1038"/>
@@ -503,22 +503,22 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1041"/>
         <source>Setup Error.</source>
-        <translation type="unfinished"/>
+        <translation>安裝失敗</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1044"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>使用者中斷。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1047"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>同步已暫停</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1053"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (同步暫停)</translation>
     </message>
 </context>
 <context>
@@ -527,7 +527,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderstatusmodel.cpp" line="95"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="264"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
@@ -537,7 +537,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="221"/>
         <source>Remote path: %1</source>
-        <translation type="unfinished"/>
+        <translation>遠端路徑: %1</translation>
     </message>
 </context>
 <context>
@@ -546,7 +546,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderwizard.cpp" line="502"/>
         <location filename="../src/gui/folderwizard.cpp" line="504"/>
         <source>Add Folder</source>
-        <translation type="unfinished"/>
+        <translation>新增資料夾</translation>
     </message>
 </context>
 <context>
@@ -574,7 +574,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="105"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>您沒有權限來寫入被選取的資料夾!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="129"/>
@@ -584,7 +584,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="134"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>此項目中包含了已經設定同步的資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="141"/>
@@ -604,7 +604,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="167"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
-        <translation type="unfinished"/>
+        <translation>別名不能空白, 請提供一個描述性的別名</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="178"/>
@@ -614,7 +614,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="211"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>選擇來源資料夾</translation>
     </message>
 </context>
 <context>
@@ -632,7 +632,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="288"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>資料夾成功建立在%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="296"/>
@@ -674,7 +674,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderwizard.cpp" line="45"/>
         <location filename="../src/gui/folderwizard.cpp" line="47"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; </source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;警告:&lt;/b&gt; </translation>
     </message>
 </context>
 <context>
@@ -705,7 +705,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
@@ -715,17 +715,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>當系統開機時啟用</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>顯示桌面通知</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
         <source>Use Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>使用單色圖示</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="47"/>
@@ -736,17 +736,17 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <location filename="../src/gui/generalsettings.ui" line="63"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>關於</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="98"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>重新啟動並更新</translation>
     </message>
 </context>
 <context>
@@ -754,12 +754,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="400"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>輸入密碼</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="401"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>請輸入使用者 %2 的密碼 %1 :</translation>
     </message>
 </context>
 <context>
@@ -772,12 +772,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="53"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>增加</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="63"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>移除</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="35"/>
@@ -789,12 +789,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="97"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>無法開啟檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="98"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>%1 無法寫入變更。</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="105"/>
@@ -827,52 +827,52 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="59"/>
         <source>Log Output</source>
-        <translation type="unfinished"/>
+        <translation>記錄輸出</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="71"/>
         <source>&amp;Search: </source>
-        <translation type="unfinished"/>
+        <translation>&amp;搜尋:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="79"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;尋找:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="97"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>清除</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="98"/>
         <source>Clear the log display.</source>
-        <translation type="unfinished"/>
+        <translation>清除所顯示的記錄</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="104"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>儲存</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="105"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation type="unfinished"/>
+        <translation>將記錄檔儲存到硬碟用於除錯</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="184"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>儲存記錄檔</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Could not write to log file </source>
-        <translation type="unfinished"/>
+        <translation>無法寫入記錄檔</translation>
     </message>
 </context>
 <context>
@@ -880,12 +880,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/libsync/logger.cpp" line="148"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;檔案 &apos;%1&apos;&lt;br/&gt;無法開啟與寫入&lt;br/&gt;&lt;br/&gt;記錄 &lt;b&gt;無法&lt;/b&gt; 被儲存&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -901,7 +901,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="256"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>有新版本</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="262"/>
@@ -911,17 +911,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="275"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>跳過這個版本</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="276"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>跳過這次更新</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="277"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>取得更新</translation>
     </message>
 </context>
 <context>
@@ -929,22 +929,22 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/networksettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器設定</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>不使用代理伺服器</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>使用系統預設代理伺服器</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
@@ -954,12 +954,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>主機</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="100"/>
         <source>:</source>
-        <translation type="unfinished"/>
+        <translation>:</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="134"/>
@@ -969,60 +969,60 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>下載頻寬</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
         <location filename="../src/gui/networksettings.ui" line="278"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>限制到</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="218"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>KBytes/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="227"/>
         <location filename="../src/gui/networksettings.ui" line="295"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>沒有限制</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>上傳頻寬</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>自動限制</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器主機名稱</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器使用者名稱</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器密碼</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) 代理伺服器</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 代理伺服器</translation>
     </message>
 </context>
 <context>
@@ -1084,22 +1084,22 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>連線到 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="51"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>設定本地資料夾選項</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>連線中...</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="135"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation type="unfinished"/>
+        <translation>%1 資料夾 &apos;%2&apos; 與本地資料夾 &apos;%3&apos; 同步</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="141"/>
@@ -1114,12 +1114,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>本地同步資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>Update advanced setup</source>
-        <translation type="unfinished"/>
+        <translation>更新進階設定</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
@@ -1133,17 +1133,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="46"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>連線到 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="47"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>請輸入使用者憑證</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="164"/>
         <source>Update user credentials</source>
-        <translation type="unfinished"/>
+        <translation>更新使用者憑證</translation>
     </message>
 </context>
 <context>
@@ -1151,12 +1151,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="50"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>連線到 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>設定 %1 伺服器</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="120"/>
@@ -1167,7 +1167,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="124"/>
         <source>This url is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>這個 URL 是安全的，您可以使用它。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="163"/>
@@ -1177,7 +1177,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="295"/>
         <source>Update %1 server</source>
-        <translation type="unfinished"/>
+        <translation>更新 %1 伺服器</translation>
     </message>
 </context>
 <context>
@@ -1185,7 +1185,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="161"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;成功連線到 %1: %2 版本 %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="185"/>
@@ -1200,7 +1200,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="204"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation type="unfinished"/>
+        <translation>嘗試連線到%1從%2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
@@ -1210,27 +1210,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>本地同步資料夾%1已存在, 將其設置為同步&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
         <source>Creating local sync folder %1... </source>
-        <translation type="unfinished"/>
+        <translation>建立本地同步資料夾 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="281"/>
         <source>ok</source>
-        <translation type="unfinished"/>
+        <translation>ok</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="283"/>
         <source>failed.</source>
-        <translation type="unfinished"/>
+        <translation>失敗</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="285"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>無法建立本地資料夾 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="310"/>
@@ -1240,64 +1240,64 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="316"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>錯誤： %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
         <source>creating folder on ownCloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>在 ownCloud 建立資料夾： %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="345"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished"/>
+        <translation>遠端資料夾%1建立成功!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="347"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished"/>
+        <translation>遠端資料夾%1已存在,連線同步中</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="349"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="351"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>在HTTP建立資料夾失敗, error code %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="353"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>由於帳號或密碼錯誤，遠端資料夾建立失敗&lt;br/&gt;請檢查您的帳號密碼。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;遠端資料夾建立失敗,也許是因為所提供的帳號密碼錯誤&lt;/font&gt;&lt;br/&gt;請重新檢查您的帳號密碼&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="361"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="362"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>建立遠端資料夾%1發生錯誤&lt;tt&gt;%2&lt;/tt&gt;失敗</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="378"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished"/>
+        <translation>從%1到遠端資料夾%2的連線已建立</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="383"/>
         <source>Successfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>成功連接到 %1 ！</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>無法建立連線%1, 請重新檢查</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
         <source>Folder rename failed</source>
-        <translation type="unfinished"/>
+        <translation>重新命名資料夾失敗</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="404"/>
@@ -1307,7 +1307,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;本地同步資料夾 %1 建立成功!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -1315,7 +1315,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="74"/>
         <source>%1 Connection Wizard</source>
-        <translation type="unfinished"/>
+        <translation>%1連線精靈</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="83"/>
@@ -1333,7 +1333,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="42"/>
         <source>Open Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>打開本地資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="50"/>
@@ -1353,7 +1353,7 @@ It is not advisable to use it.</source>
     <name>OCC::PollJob</name>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="121"/>
-        <source>Invalid json reply from the poll URL</source>
+        <source>Invalid JSON reply from the poll URL</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1562,57 +1562,57 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>同步啟用</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="49"/>
         <source>3</source>
-        <translation type="unfinished"/>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="54"/>
         <source>4</source>
-        <translation type="unfinished"/>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="50"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="51"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="52"/>
         <source>Folder</source>
-        <translation type="unfinished"/>
+        <translation>資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="53"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>動作</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="54"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>大小</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="68"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>重試同步</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="72"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>複製</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="73"/>
@@ -1622,7 +1622,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="118"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>複製至剪貼簿中</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="118"/>
@@ -1680,17 +1680,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="36"/>
         <source>Loading ...</source>
-        <translation type="unfinished"/>
+        <translation>載入中…</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="47"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名稱</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="48"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>大小</translation>
     </message>
 </context>
 <context>
@@ -1698,27 +1698,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>設定</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="72"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>帳號</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="77"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>活動</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="83"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>一般</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="89"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>網路</translation>
     </message>
 </context>
 <context>
@@ -1726,27 +1726,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="63"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="67"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>帳號</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="71"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>活動</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="75"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>一般</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="79"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>網路</translation>
     </message>
 </context>
 <context>
@@ -1765,7 +1765,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharedialog.ui" line="34"/>
         <location filename="../src/gui/sharedialog.ui" line="177"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>文字標籤</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="53"/>
@@ -1780,7 +1780,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="89"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>分享連結</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="127"/>
@@ -1811,7 +1811,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="299"/>
         <source>Choose a password for the public link</source>
-        <translation type="unfinished"/>
+        <translation>為公開連結選一個密碼</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="351"/>
@@ -1892,7 +1892,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="108"/>
         <source>%1 - %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2</translation>
     </message>
 </context>
 <context>
@@ -1934,17 +1934,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>州或省:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="106"/>
         <source>Country:</source>
-        <translation type="unfinished"/>
+        <translation>國家：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="107"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>序號:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="110"/>
@@ -1964,7 +1964,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="115"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>過期於:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="118"/>
@@ -1974,7 +1974,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="122"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="124"/>
@@ -1984,7 +1984,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="126"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="130"/>
@@ -1999,7 +1999,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="152"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="189"/>
@@ -2010,7 +2010,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="192"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>憑證資訊:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="221"/>
@@ -2024,68 +2024,68 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>信任此憑證</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="44"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>SSL Connection</source>
-        <translation type="unfinished"/>
+        <translation>SSL連線</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="134"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation type="unfinished"/>
+        <translation>目前的SSL連線的警告</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="169"/>
         <source>with Certificate %1</source>
-        <translation type="unfinished"/>
+        <translation>使用認證%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="177"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="178"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;未指定&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="200"/>
         <source>Organization: %1</source>
-        <translation type="unfinished"/>
+        <translation>組織:%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="201"/>
         <source>Unit: %1</source>
-        <translation type="unfinished"/>
+        <translation>單位:%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
         <source>Country: %1</source>
-        <translation type="unfinished"/>
+        <translation>國家:%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>指紋 (MD5): &amp;lt;tt&amp;gt;%1&amp;lt;/tt&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="190"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>指紋 (SHA1): &amp;lt;tt&amp;gt;%1&amp;lt;/tt&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
         <source>Effective Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>有效日期:%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
@@ -2095,7 +2095,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Issuer: %1</source>
-        <translation type="unfinished"/>
+        <translation>發行者:%1</translation>
     </message>
 </context>
 <context>
@@ -2103,7 +2103,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="92"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>成功。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="95"/>
@@ -2118,32 +2118,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="102"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;用於csync的套件%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="105"/>
         <source>CSync got an error while processing internal trees.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 處理內部資料樹時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="108"/>
         <source>CSync failed to reserve memory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 無法取得記憶體空間。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="111"/>
         <source>CSync fatal parameter error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 參數錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="114"/>
         <source>CSync processing step update failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 處理步驟 &quot;update&quot; 失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="117"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 處理步驟 &quot;reconcile&quot; 失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="120"/>
@@ -2153,17 +2153,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 查詢代理伺服器或伺服器失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="126"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 於伺服器 %1 認證失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 無法連接到網路。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="132"/>
@@ -2173,12 +2173,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="135"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>HTTP 傳輸錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>
         <source>CSync failed due to not handled permission deniend.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 失敗，由於未處理的存取被拒。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
@@ -2188,17 +2188,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>CSync tried to create a directory that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 試圖建立一個已經存在的目錄。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync：伺服器 %1 沒有可用空間。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 未知的錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="153"/>
@@ -2323,7 +2323,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="49"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -2349,7 +2349,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="221"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>請登入</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="226"/>
@@ -2359,12 +2359,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="259"/>
         <source>Folder %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>資料夾 %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="264"/>
         <source>No sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>尚未指定同步資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>
@@ -2374,7 +2374,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>無。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="299"/>
@@ -2384,22 +2384,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="316"/>
         <source>Open %1 folder</source>
-        <translation type="unfinished"/>
+        <translation>開啟%1資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="326"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>管理的資料夾:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>開啟 %1 資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="412"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>瀏覽器中開啟 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="414"/>
@@ -2409,37 +2409,37 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="416"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>未知狀態</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>設定…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>細節…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>說明</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="426"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>離開 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="429"/>
         <source>Sign in...</source>
-        <translation type="unfinished"/>
+        <translation>登入中...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="431"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>登出</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="435"/>
@@ -2449,7 +2449,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>Quota n/a</source>
-        <translation type="unfinished"/>
+        <translation>無配額</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="453"/>
@@ -2484,7 +2484,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="536"/>
         <source>Up to date</source>
-        <translation type="unfinished"/>
+        <translation>最新的</translation>
     </message>
 </context>
 <context>
