@@ -245,7 +245,9 @@ qint64 UploadDevice::readData(char* data, qint64 maxlen) {
     //qDebug() << Q_FUNC_INFO << maxlen << _read << _size << _bandwidthQuota;
     if (_data.size() - _read <= 0) {
         // at end
-        _bandwidthManager->unregisterUploadDevice(this);
+        if (_bandwidthManager) {
+            _bandwidthManager->unregisterUploadDevice(this);
+        }
         return -1;
     }
     maxlen = qMin(maxlen, _data.size() - _read);

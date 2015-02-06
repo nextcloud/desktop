@@ -83,6 +83,11 @@ BandwidthManager::BandwidthManager(OwncloudPropagator *p) : QObject(),
     _relativeDownloadDelayTimer.setSingleShot(true); // will be restarted from the measuring timer
 }
 
+BandwidthManager::~BandwidthManager()
+{
+    qDebug() << Q_FUNC_INFO;
+}
+
 void BandwidthManager::registerUploadDevice(UploadDevice *p)
 {
     qDebug() << Q_FUNC_INFO << p;
