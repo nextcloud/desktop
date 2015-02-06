@@ -19,6 +19,7 @@
 
 class QTreeWidgetItem;
 class QTreeWidget;
+class QNetworkReply;
 class QLabel;
 namespace OCC {
 
@@ -45,6 +46,7 @@ private slots:
     void slotUpdateDirectories(const QStringList &);
     void slotItemExpanded(QTreeWidgetItem *);
     void slotItemChanged(QTreeWidgetItem*,int);
+    void slotLscolFinishedWithError(QNetworkReply*);
 private:
     void recursiveInsert(QTreeWidgetItem* parent, QStringList pathTrail, QString path, qint64 size);
     QString _folderPath;

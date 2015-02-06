@@ -58,6 +58,8 @@ void SelectiveSyncTreeView::refreshFolders()
     LsColJob *job = new LsColJob(_account, _folderPath, this);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             this, SLOT(slotUpdateDirectories(QStringList)));
+    connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
+            this, SLOT(slotLscolFinishedWithError(QNetworkReply*)));
     job->start();
     clear();
     _loading->show();
@@ -135,9 +137,16 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
     QScopedValueRollback<bool> isInserting(_inserting);
     _inserting = true;
 
-    _loading->hide();
-
     QTreeWidgetItem *root = topLevelItem(0);
+
+    if (!root && list.size() <= 1) {
+        _loading->setText(tr("No subfolders currently on the server."));
+        _loading->resize(_loading->sizeHint()); // because it's not in a layout
+        return;
+    } else {
+        _loading->hide();
+    }
+
     if (!root) {
         root = new QTreeWidgetItem(this);
         root->setText(0, _rootName);
@@ -173,6 +182,16 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
     }
 
     root->setExpanded(true);
+}
+
+void SelectiveSyncTreeView::slotLscolFinishedWithError(QNetworkReply *r)
+{
+    if (r->error() == QNetworkReply::ContentNotFoundError) {
+        _loading->setText(tr("No subfolders currently on the server."));
+    } else {
+        _loading->setText(tr("An error occured while loading the list of sub folders."));
+    }
+    _loading->resize(_loading->sizeHint()); // because it's not in a layout
 }
 
 void SelectiveSyncTreeView::slotItemExpanded(QTreeWidgetItem *item)
