@@ -93,15 +93,15 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 
 3. Open the Qt MinGW shortcut console from the Start Menu
 
-4. Make sure that OpenSSL's ``bin`` directory, as well as your is in your PATH.
-   This will allow CMake to find the library and headers, as well as allow the
-   ownCloud client to find the DLLs at runtime::
+4. Make sure that OpenSSL's ``bin`` directory as well as your qtkeychain source
+   directories are in your PATH. This will allow CMake to find the library and
+   headers, as well as allow the ownCloud client to find the DLLs at runtime::
 
     set PATH=C:\<OpenSSL Install Dir>\bin;%PATH%
     set PATH=C:\<qtkeychain Clone Dir>;%PATH%
 
-5. Build qtkeychain directly in the source directory so that the DLL is built
-   in the same directory as the headers::
+5. Build qtkeychain **directly in the source directory** so that the DLL is built
+   in the same directory as the headers to let CMake find them together through PATH::
 
     cd <qtkeychain Clone Dir>
     cmake -G "MinGW Makefiles" .
