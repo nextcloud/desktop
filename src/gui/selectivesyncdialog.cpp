@@ -348,7 +348,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &fold
          Theme::instance()->wizardSelectiveSyncDefaultNothing() ?
             tr("Choose What to Sync: Select remote subfolders you wish to synchronize.") :
             tr("Choose What to Sync: Deselect remote subfolders you do not wish to synchronize."));
-    _treeView->setFolderInfo(folder, QString(), blacklist);
+    _treeView->setFolderInfo(folder, folder, blacklist);
 }
 
 void SelectiveSyncDialog::init(const AccountPtr &account, const QString &labelText)

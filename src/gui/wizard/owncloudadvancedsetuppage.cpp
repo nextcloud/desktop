@@ -135,6 +135,7 @@ void OwncloudAdvancedSetupPage::updateStatus()
             t = tr("%1 folder '%2' is synced to local folder '%3'")
                 .arg(Theme::instance()->appName()).arg(_remoteFolder)
                 .arg(QDir::toNativeSeparators(locFolder));
+              _ui.rSyncEverything->setText(tr("Sync the directory '%1'").arg(_remoteFolder));
         }
 
         if ( _multipleFoldersExist ) {
