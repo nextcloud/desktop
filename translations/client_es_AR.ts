@@ -441,7 +441,7 @@ Total time left %5</source>
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
         <translation>Esta sincronización borraría todos los archivos en el directorio local de sincronización &apos;%1&apos;.
-Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o a que todos los archivos fueron borrados manualmente.
+Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o a que todos los archivos fueron borrados manualmente. 
 ¿Estás seguro de que querés realizar esta operación?</translation>
     </message>
     <message>

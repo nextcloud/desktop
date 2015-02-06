@@ -1041,7 +1041,7 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Yeni bir güncelleme kurulmak üzere. Güncelleyici
+        <translation>Yeni bir güncelleme kurulmak üzere. Güncelleyici 
 bu süreç sırasında ek yetki talebinde bulunabilir.</translation>
     </message>
     <message>

@@ -1041,7 +1041,7 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Новое обновление в процессе установки. Установщик может запросить
+        <translation>Новое обновление в процессе установки. Установщик может запросить 
 дополнительные права во время обновления.</translation>
     </message>
     <message>

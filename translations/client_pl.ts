@@ -1041,7 +1041,7 @@ Zaznaczone przedmioty także będą usunięte, jeżeli będą przeszkadzać w us
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Nowa aktualizacja ma zostać zainstalowana. Instalator może
+        <translation>Nowa aktualizacja ma zostać zainstalowana. Instalator może 
 poprosić o dodatkowe uprawnienia podczas tego procesu.</translation>
     </message>
     <message>

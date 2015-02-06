@@ -786,7 +786,7 @@ Se você, ou o seu administrador, reiniciou  a sua conta no servidor, escolha &q
         <source>Files or directories matching a pattern will not be synchronized.
 
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Os ficheiros ou diretórios que correspondam a uma regra não serão sincronizados.
+        <translation>Os ficheiros ou diretórios que correspondam a uma regra não serão sincronizados. 
 
 Itens verificados também serão removidos se evitarem que um diretório seja removido. Isto é útil para os metadados.</translation>
     </message>
