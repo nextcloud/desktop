@@ -24,7 +24,8 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _ui(new Ui::ShareDialog),
     _account(account),
     _sharePath(sharePath),
-    _localPath(localPath)
+    _localPath(localPath),
+    _public_share_id(0)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     _ui->setupUi(this);
@@ -66,7 +67,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _ui->label_sharePath->setWordWrap(true);
     _ui->label_sharePath->setText(tr("%1 path: %2").arg(Theme::instance()->appNameGUI()).arg(_sharePath));
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
-
+    _ui->label_password->setText(tr("Set password"));
     // check if the file is already inside of a synced folder
     if( sharePath.isEmpty() ) {
         // The file is not yet in an ownCloud synced folder. We could automatically
@@ -95,6 +96,10 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
 void ShareDialog::setExpireDate(const QDate &date)
 {
+    if( _public_share_id == 0 ) {
+        // no public share so far.
+        return;
+    }
     _pi_date->startAnimation();
     QUrl url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
     QList<QPair<QString, QString> > postParams;
@@ -126,7 +131,7 @@ void ShareDialog::slotExpireSet(const QString &reply)
 
 void ShareDialog::slotCalendarClicked(const QDate &date)
 {
-    ShareDialog::setExpireDate(date);
+    setExpireDate(date);
 }
 
 ShareDialog::~ShareDialog()
@@ -136,7 +141,7 @@ ShareDialog::~ShareDialog()
 
 void ShareDialog::slotPasswordReturnPressed()
 {
-    ShareDialog::setPassword(_ui->lineEdit_password->text());
+    setPassword(_ui->lineEdit_password->text());
     _ui->lineEdit_password->setText(QString());
     _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
     _ui->lineEdit_password->clearFocus();
@@ -145,11 +150,30 @@ void ShareDialog::slotPasswordReturnPressed()
 void ShareDialog::setPassword(const QString &password)
 {
     _pi_password->startAnimation();
-    QUrl url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
-    QList<QPair<QString, QString> > postParams;
-    postParams.append(qMakePair(QString::fromLatin1("password"), password));
-    OcsShareJob *job = new OcsShareJob("PUT", url, _account, this);
-    job->setPostParams(postParams);
+    QUrl url;
+    QList<QPair<QString, QString> > requestParams;
+    QByteArray verb("PUT");
+
+    if( _public_share_id > 0 ) {
+        url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
+        requestParams.append(qMakePair(QString::fromLatin1("password"), password));
+    } else {
+        // lets create a new share.
+        url = Account::concatUrlPath(_account->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
+        requestParams.append(qMakePair(QString::fromLatin1("path"), _sharePath));
+        requestParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_PUBLIC)));
+        requestParams.append(qMakePair(QString::fromLatin1("password"), password));
+        verb = "POST";
+
+        if( _ui->checkBox_expire->isChecked() ) {
+            QDate date = _ui->calendar->selectedDate();
+            if( date.isValid() ) {
+                requestParams.append(qMakePair(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd")));
+            }
+        }
+    }
+    OcsShareJob *job = new OcsShareJob(verb, url, _account, this);
+    job->setPostParams(requestParams);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotPasswordSet(QString)));
     job->start();
 }
@@ -242,8 +266,11 @@ void ShareDialog::slotDeleteShareFetched(const QString &reply)
     }
 
     _pi_link->stopAnimation();
+    _ui->lineEdit_password->clear();
+    _ui->lineEdit_shareLink->clear();
     _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
+    _ui->checkBox_expire->setChecked(false);
     _ui->calendar->hide();
 }
 
@@ -275,13 +302,23 @@ void ShareDialog::slotCreateShareFetched(const QString &reply)
 {
     QString message;
     int code = checkJsonReturnCode(reply, message);
+    _pi_link->stopAnimation();
 
-    if (code != 100) {
+    if (code == 403) {
+        // there needs to be a password
+        _ui->checkBox_password->setChecked(true);
+        _ui->checkBox_password->setVisible(false);
+        _ui->label_password->setText(tr("Public sharing requires a password:"));
+        _ui->lineEdit_password->setFocus();
+        _ui->widget_shareLink->show();
+
+        slotCheckBoxPasswordClicked();
+        return;
+    } else if (code != 100) {
         displayError(code);
         return;
     }
 
-    _pi_link->stopAnimation();
     bool success;
     QVariantMap json = QtJson::parse(reply, success).toMap();
     _public_share_id = json.value("ocs").toMap().values("data")[0].toMap().value("id").toULongLong();
