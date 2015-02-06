@@ -1361,7 +1361,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="121"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>Getirme URL&apos;sinden geçersiz JSON yanıtı</translation>
     </message>
 </context>
 <context>
