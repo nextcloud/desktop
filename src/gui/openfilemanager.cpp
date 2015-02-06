@@ -94,15 +94,22 @@ void showInFileManager(const QString &localPath)
 
         // canonicalFilePath returns empty if the file does not exist
         if( !fi.canonicalFilePath().isEmpty() ) {
+            QString nativeArgs;
             if (!fi.isDir()) {
-                explorer += QLatin1String("/select,");
+                nativeArgs += QLatin1String("/select,");
             }
-            explorer += QLatin1Char('"');
-            explorer += QDir::toNativeSeparators(fi.canonicalFilePath());
-            explorer += QLatin1Char('"');
+            nativeArgs += QLatin1Char('"');
+            nativeArgs += QDir::toNativeSeparators(fi.canonicalFilePath());
+            nativeArgs += QLatin1Char('"');
 
-            qDebug() << "OO Open explorer commandline:" << explorer;
+            qDebug() << "OO Open explorer commandline:" << explorer << nativeArgs;
             QProcess p;
+#ifdef Q_OS_WIN
+            // QProcess on Windows tries to wrap the whole argument/program string
+            // with quotes if it detects a space in it, but explorer wants the quotes
+            // only around the path. Use setNativeArguments to bypass this logic.
+            p.setNativeArguments(nativeArgs);
+#endif
             p.start(explorer);
             p.waitForFinished(5000);
         }
