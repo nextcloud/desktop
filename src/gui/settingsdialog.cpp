@@ -35,9 +35,9 @@
 
 namespace {
   const char TOOLBAR_CSS[] =
-    "QToolBar { background: white; margin: 0; padding: 0; border: none; border-bottom: 1px solid grey; spacing: 0; } "
-    "QToolBar QToolButton { background: white; border: none; border-bottom: 1px solid grey; margin: 0; padding: 0; } "
-    "QToolBar QToolButton:checked { background: %1; color: %2; }";
+    "QToolBar { background: white; margin: 0; padding: 0; border: none; border-bottom: 1px solid %1; spacing: 0; } "
+    "QToolBar QToolButton { background: white; border: none; border-bottom: 1px solid %1; margin: 0; padding: 0; } "
+    "QToolBar QToolButton:checked { background: %2; color: %3; }";
 }
 
 namespace OCC {
@@ -54,7 +54,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     toolBar->setIconSize(QSize(32,32));
     QString highlightColor(palette().highlight().color().name());
     QString altBase(palette().alternateBase().color().name());
-    toolBar->setStyleSheet(QString::fromAscii(TOOLBAR_CSS).arg(highlightColor).arg(altBase));
+    QString dark(palette().dark().color().name());
+    toolBar->setStyleSheet(QString::fromAscii(TOOLBAR_CSS).arg(dark).arg(highlightColor).arg(altBase));
     toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     layout()->setMenuBar(toolBar);
 
