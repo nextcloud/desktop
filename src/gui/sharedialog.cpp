@@ -29,7 +29,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     setAttribute(Qt::WA_DeleteOnClose);
     _ui->setupUi(this);
     _ui->pushButton_copy->setIcon(QIcon::fromTheme("edit-copy"));
-    _ui->pushButton_copy->setText("Copy URL");
+    _ui->pushButton_copy->setText(tr("Copy Link"));
     connect(_ui->pushButton_copy, SIGNAL(clicked(bool)), SLOT(slotPushButtonCopyLinkPressed()));
 
     // the following progress indicator widgets are added to layouts which makes them
@@ -58,9 +58,9 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     QString name;
     if( f_info.isDir() ) {
-        name = QString("Share directory %2").arg(_localPath);
+        name = tr("Share directory %2").arg(_localPath);
     } else {
-        name = QString("Share file %1").arg(_localPath);
+        name = tr("Share file %1").arg(_localPath);
     }
     _ui->label_name->setText(name);
     _ui->label_sharePath->setWordWrap(true);
