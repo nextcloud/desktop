@@ -152,6 +152,23 @@ chunkFileTest( "twoChunkSizeminusone.bin", 2*$ChunkSize-1);
 printInfo("Big file exactly as big as 2*chunk size plus 1 byte");
 chunkFileTest( "twoChunkSizeplusone.bin", 2*$ChunkSize+1);
 
+printInfo("Big file with many chunks");
+chunkFileTest( "bigFileManyChunk.bin", 10*$ChunkSize);
+
+
+printInfo("Big file with many chunks reuploaded twice (1)");
+createLocalFile( "BIG4.file", 21762122 );
+csync();
+assertLocalAndRemoteDir( '', 1);
+
+
+printInfo("Big file with many chunks reuploaded twice (2)");
+
+createLocalFile( "BIG4.file", 21783424 );
+csync();
+assertLocalAndRemoteDir( '', 1);
+
+
 
 # ==================================================================
 
