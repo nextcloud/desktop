@@ -519,7 +519,7 @@ void Application::setupTranslations()
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
         lang = substLang(lang);
         const QString trPath = applicationTrPath();
-        const QString trFile = QLatin1String("mirall_") + lang;
+        const QString trFile = QLatin1String("client_") + lang;
         if (translator->load(trFile, trPath) ||
             lang.startsWith(QLatin1String("en"))) {
             // Permissive approach: Qt and keychain translations
