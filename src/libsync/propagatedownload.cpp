@@ -37,7 +37,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QString& path, QFile *device,
   _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume)
 , _resumeStart(resumeStart) , _errorStatus(SyncFileItem::NoStatus)
 , _bandwidthLimited(false), _bandwidthChoked(false), _bandwidthQuota(0), _bandwidthManager(0)
-, _hasEmittedFinishedSignal(false)
+, _hasEmittedFinishedSignal(false), _lastModified()
 {
 }
 
@@ -49,7 +49,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QUrl& url, QFile *device,
   _device(device), _headers(headers), _expectedEtagForResume(expectedEtagForResume)
 , _resumeStart(resumeStart), _errorStatus(SyncFileItem::NoStatus), _directDownloadUrl(url)
 , _bandwidthLimited(false), _bandwidthChoked(false), _bandwidthQuota(0), _bandwidthManager(0)
-, _hasEmittedFinishedSignal(false)
+, _hasEmittedFinishedSignal(false), _lastModified()
 {
 }
 
@@ -160,6 +160,10 @@ void GETFileJob::slotMetaDataChanged()
         }
     }
 
+    auto lastModified = reply()->header(QNetworkRequest::LastModifiedHeader);
+    if (!lastModified.isNull()) {
+        _lastModified = Utility::qDateTimeToTime_t(lastModified.toDateTime());
+    }
 }
 
 void GETFileJob::setBandwidthManager(BandwidthManager *bwm)
@@ -409,6 +413,11 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         // The etag will be empty if we used a direct download URL.
         // (If it was really empty by the server, the GETFileJob will have errored
         _item._etag = parseEtag(job->etag());
+    }
+    if (job->lastModified()) {
+        // It is possible that the file was modified on the server since we did the discovery phase
+        // so make sure we have the up-to-date time
+        _item._modtime = job->lastModified();
     }
     _item._requestDuration = job->duration();
     _item._responseTimeStamp = job->responseTimestamp();

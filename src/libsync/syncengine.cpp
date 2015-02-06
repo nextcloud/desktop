@@ -726,7 +726,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         qDebug() << "OOO => Post Update Script: " << script;
         QProcess::execute(script.toUtf8());
 #else
-    qDebug() << "**** Attention: POST_UPDATE_SCRIPT installed, but not executed because compiled with NDEBUG";
+    qWarning() << "**** Attention: POST_UPDATE_SCRIPT installed, but not executed because compiled with NDEBUG";
 #endif
     }
 

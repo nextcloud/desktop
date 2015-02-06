@@ -125,6 +125,10 @@ while(readdir $dh) {
 closedir $dh;
 assert( $seen == 1, "No conflict file created on precondition failed!" );
 unlink($script);
+$ENV{'OWNCLOUD_POST_UPDATE_SCRIPT'} = "";
+
+assertLocalAndRemoteDir( '', 1);
+
 
 # Set a custom chunk size in environment.
 my $ChunkSize = 1*1024*1024;

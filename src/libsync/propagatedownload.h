@@ -36,6 +36,7 @@ class GETFileJob : public AbstractNetworkJob {
     qint64 _bandwidthQuota;
     QPointer<BandwidthManager> _bandwidthManager;
     bool _hasEmittedFinishedSignal;
+    time_t _lastModified;
 public:
 
     // DOES NOT take owncership of the device.
@@ -86,6 +87,7 @@ public:
 
     QByteArray &etag() { return _etag; }
     quint64 resumeStart() { return _resumeStart; }
+    time_t lastModified() { return _lastModified; }
 
 
 signals:
