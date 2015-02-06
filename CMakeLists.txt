@@ -57,12 +57,12 @@ include(QtVersionAbstraction)
 setup_qt()
 
 include(GetGitRevisionDescription)
+
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 
 # if we cannot get it from git, directly try .tag (packages)
 # this will work if the tar balls have been properly created
 # via git-archive.
-if (GIT_SHA1)
 if (${GIT_SHA1} STREQUAL "GITDIR-NOTFOUND")
     file(READ ${CMAKE_SOURCE_DIR}/.tag sha1_candidate)
     string(REPLACE "\n" "" sha1_candidate ${sha1_candidate})
@@ -72,7 +72,6 @@ if (${GIT_SHA1} STREQUAL "GITDIR-NOTFOUND")
     endif()
 endif()
 message(STATUS "GIT_SHA1 ${GIT_SHA1}")
-endif()
 
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
 set(DATADIR ${DATA_INSTALL_DIR})
