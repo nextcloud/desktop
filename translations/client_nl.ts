@@ -239,7 +239,7 @@ Totaal resterende tijd %5</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation type="unfinished"/>
+        <translation>De server vereist vermoedelijk een SSL client certificaat.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -329,7 +329,7 @@ Totaal resterende tijd %5</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="41"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Verbinding time-out</translation>
     </message>
 </context>
 <context>
@@ -668,7 +668,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Kies wat u wilt synchroniseren: u kunt optioneel submappen die u niet wilt synchroniseren deselecteren.</translation>
     </message>
 </context>
 <context>
@@ -733,7 +733,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="47"/>
         <source>Show crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Toon crash reporter</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
@@ -898,7 +898,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="45"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Verbinding time-out</translation>
     </message>
 </context>
 <context>
@@ -1202,7 +1202,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="193"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Time-out bij verbinden met %1 om %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="204"/>
@@ -1212,7 +1212,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Toegang door server verboden. Om te verifiëren dat u toegang mag hebben, &lt;a href=&quot;%1&quot;&gt;klik hier&lt;/a&gt; om met uw browser toegang tot de service te krijgen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
@@ -1361,7 +1361,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="121"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>Ongeldig JSON antwoord van de peilingen URL</translation>
     </message>
 </context>
 <context>
@@ -1420,7 +1420,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
         <source>Continue blacklisting: </source>
-        <translation type="unfinished"/>
+        <translation>Doorgaan met zwartelijst:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="200"/>
@@ -1477,7 +1477,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="103"/>
         <source>Wrong HTTP code returned by server. Expected 204, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Foutieve HTTP code ontvangen van de server. Verwacht 204, maar ontvangen &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1485,7 +1485,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="67"/>
         <source>Wrong HTTP code returned by server. Expected 201, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Foutieve HTTP code ontvangen van de server. Verwacht 201, maar ontvangen &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1508,7 +1508,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
         <source>Wrong HTTP code returned by server. Expected 201, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Foutieve HTTP code ontvangen van de server. Verwacht 201, maar ontvangen &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1535,7 +1535,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="156"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Bestand verwijderd</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="171"/>
@@ -1551,7 +1551,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="468"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>URL peiling ontbreekt</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="493"/>
@@ -1645,13 +1645,17 @@ We adviseren deze site niet te gebruiken.</translation>
         <location filename="../src/gui/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n bestand genegeerd wegens eerdere fouten.
+</numerusform><numerusform>%n bestanden genegeerd wegens eerdere fouten.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n bestand gedeeltelijk gedownload.
+</numerusform><numerusform>%n bestanden gedeeltelijk gedownload.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="267"/>
@@ -1669,12 +1673,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="318"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Kies wat u wilt synchroniseren: Selecteer externe submappen die u wilt synchroniseren.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="319"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Kies wat u wilt synchroniseren: u kunt submappen die u niet wilt synchroniseren deselecteren.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="325"/>
@@ -1761,12 +1765,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Delen NieuwDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="26"/>
         <source>Share Info</source>
-        <translation type="unfinished"/>
+        <translation>Delen info</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="34"/>
@@ -1777,7 +1781,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="53"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>deel label</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="75"/>
@@ -1797,7 +1801,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="149"/>
         <source>Set expiry date</source>
-        <translation type="unfinished"/>
+        <translation>Stel vervaldatum in</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="67"/>
@@ -1813,7 +1817,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="141"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>Wachtwoord beveiligd</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="299"/>
@@ -1823,47 +1827,47 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="351"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>OCS API foutcode: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="374"/>
         <source>There is no sync folder configured.</source>
-        <translation type="unfinished"/>
+        <translation>Er is geen sync map geconfigureerd.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>Can not find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Kan geen map vinden om naar te uploaden.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="393"/>
         <source>Sharing of external directories is not yet working.</source>
-        <translation type="unfinished"/>
+        <translation>Delen van externe mappen werkt nog niet.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="408"/>
         <source>A sync file with the same name exists. The file can not be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Er bestaat al een sync bestand met dezelfde naam. Het bestand kan niet worden aangemeld voor sync.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="420"/>
         <source>Waiting to upload...</source>
-        <translation type="unfinished"/>
+        <translation>Wachten om te uploaden...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="422"/>
         <source>Unable to register in sync space.</source>
-        <translation type="unfinished"/>
+        <translation>Kan niet aanmelden in sync ruimte.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="453"/>
         <source>The file can not be synced.</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand kan niet worden gesynchroniseerd.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="463"/>
         <source>Sync of registered file was not successful yet.</source>
-        <translation type="unfinished"/>
+        <translation>Sync van aangemeld bestand nog niet succesvol.</translation>
     </message>
 </context>
 <context>
@@ -2122,7 +2126,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="99"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
-        <translation type="unfinished"/>
+        <translation>CSync kon het journal bestand niet inladen. Het journal bestand is kapot.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="102"/>
@@ -2217,12 +2221,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>The mounted directory is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>De gemounte map is tijdelijk niet beschikbaar op de server</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
         <source>An error opening a directory happened</source>
-        <translation type="unfinished"/>
+        <translation>Er trad een fout op bij het openen van een map</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
@@ -2453,7 +2457,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="435"/>
         <source>Crash now</source>
-        <translation type="unfinished"/>
+        <translation>Crash nu</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="446"/>
@@ -2501,7 +2505,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message utf8="true">
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versie %2. Bezoek voor meer informatie bezoek &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Door Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz en anderen.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Gelicenseerd onder de GNU Genertal Public License (GPL) Versie 2.0&lt;br&gt;ownCloud en het ownCloud logo zijn geregistreerde handelsmerken van ownCloud, Inc. in de Verenigde Staten, andere landen, of beide.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2560,7 +2564,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>S&amp;ync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>S&amp;ynchroniseer alles vanaf de server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="306"/>
@@ -2578,27 +2582,27 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kon niet verbinden met het opgegeven beveiligde serveradres. Hoe wilt u verder gaan?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Selecteer een andere URL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Probeer onversleuteld over HTTP (onbeveiligd)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Configureer client-side TLS certificaat</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="18"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kon niet verbinden met het opgegeven beveiligde serveradres &lt;em&gt;%1&lt;/em&gt;.Hoe wilt u verder gaan?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

@@ -668,7 +668,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Scegli cosa sincronizzare: puoi deselezionare opzionalmente le sottocartelle remote che non desideri sincronizzare.</translation>
     </message>
 </context>
 <context>
@@ -1293,7 +1293,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="383"/>
         <source>Successfully connected to %1!</source>
-        <translation>Connessi con successo a %1!</translation>
+        <translation>Connesso con successo a %1!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
@@ -1303,7 +1303,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
         <source>Folder rename failed</source>
-        <translation>Rinomina cartella non riuscita</translation>
+        <translation>Rinomina della cartella non riuscita</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="404"/>
@@ -1313,7 +1313,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Cartella locale %1 creta correttamente!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Cartella locale %1 creata correttamente!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -1644,13 +1644,17 @@ Non è consigliabile utilizzarlo.</translation>
         <location filename="../src/gui/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n file è stato ignorato a causa di errori precedenti.
+</numerusform><numerusform>%n file sono ignorati a causa di errori precedenti.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n file è stato scaricato parzialmente.
+</numerusform><numerusform>%n file sono stati scaricati parzialmente.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="267"/>
@@ -1668,12 +1672,12 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="318"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Scegli cosa sincronizzare: seleziona le sottocartelle remote che desideri sincronizzare.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="319"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Scegli cosa sincronizzare: deseleziona le sottocartelle remote che non desideri sincronizzare.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="325"/>
@@ -1760,7 +1764,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Condividi NuovoDocumento.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="26"/>
@@ -1822,22 +1826,22 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="351"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>Codice di errore API OCS: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="374"/>
         <source>There is no sync folder configured.</source>
-        <translation type="unfinished"/>
+        <translation>Non è stata configurata alcuna cartella per la sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>Can not find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile trovare una cartella di destinazione.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="393"/>
         <source>Sharing of external directories is not yet working.</source>
-        <translation type="unfinished"/>
+        <translation>La condivisione di cartelle esterne non funziona ancora.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="408"/>
@@ -2500,7 +2504,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message utf8="true">
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versione %2. Per ulteriori informazioni, visita &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Di Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz e altri.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Sotto licenza GNU General Public License (GPL) versione 2.0&lt;br/&gt;ownCloud e il logo di ownCloud sono marchi registrati di ownCloud, Inc. negli Stati Uniti, in altri paesi o entrambi&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2559,7 +2563,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>S&amp;ync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Sincroni&amp;zza tutto dal server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="306"/>
@@ -2577,7 +2581,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Connessione all&apos;indirizzo sicuro del server specificato non riuscita. Come desideri procedere?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
@@ -2587,17 +2591,17 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Riprova senza cifratura su HTTP (non sicuro)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Configura certificato TLS lato client</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="18"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Connessione all&apos;indirizzo sicuro del server &lt;em&gt;%1&lt;/em&gt; non riuscita. Come desideri procedere?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

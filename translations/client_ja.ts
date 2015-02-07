@@ -234,37 +234,37 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>SSLクライアント証明書認証</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation type="unfinished"/>
+        <translation>おそらく、このサーバーにはSSLクライアント証明書が必要です。</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate :</source>
-        <translation type="unfinished"/>
+        <translation>証明書：</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse...</source>
-        <translation type="unfinished"/>
+        <translation>参照...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password :</source>
-        <translation type="unfinished"/>
+        <translation>証明書のパスワード：</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="23"/>
         <source>Select a certificate</source>
-        <translation type="unfinished"/>
+        <translation>証明書を選択</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="23"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished"/>
+        <translation>証明書ファイル (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -282,12 +282,12 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation>&amp;User:</translation>
+        <translation>ユーザー(&amp;U):</translation>
     </message>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation>パスワード(&amp;P)</translation>
+        <translation>パスワード(&amp;P):</translation>
     </message>
 </context>
 <context>
@@ -329,7 +329,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="41"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>接続タイムアウト</translation>
     </message>
 </context>
 <context>
@@ -733,7 +733,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="47"/>
         <source>Show crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>クラッシュ報告を表示</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
@@ -819,7 +819,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation>除外するファイルパターンを編集</translation>
+        <translation>除外するファイルパターンを編集:</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
@@ -898,7 +898,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="45"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>接続タイムアウト</translation>
     </message>
 </context>
 <context>
@@ -1130,7 +1130,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
         <source>(%1)</source>
-        <translation type="unfinished"/>
+        <translation>(%1)</translation>
     </message>
 </context>
 <context>
@@ -1200,7 +1200,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="193"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>%2 の %1 へ接続を試みた際にタイムアウトしました。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="204"/>
@@ -1533,7 +1533,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="156"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>ファイルを削除しました</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="171"/>
@@ -1759,12 +1759,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Share NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="26"/>
         <source>Share Info</source>
-        <translation type="unfinished"/>
+        <translation>共有情報</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="34"/>
@@ -1775,12 +1775,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="53"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>共有ラベル</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="75"/>
         <source>OwnCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>OwnCloudのパス:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="89"/>
@@ -1790,28 +1790,28 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="127"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>パスワードを設定</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="149"/>
         <source>Set expiry date</source>
-        <translation type="unfinished"/>
+        <translation>有効期限を設定</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="67"/>
         <location filename="../src/gui/sharedialog.cpp" line="461"/>
         <source>%1 path: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 のパス: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="68"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>%1 を共有中</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="141"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>パスワード保護</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="299"/>
@@ -1846,7 +1846,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="420"/>
         <source>Waiting to upload...</source>
-        <translation type="unfinished"/>
+        <translation>アップロード待ち...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="422"/>
@@ -1856,7 +1856,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="453"/>
         <source>The file can not be synced.</source>
-        <translation type="unfinished"/>
+        <translation>このファイルは同期されません。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="463"/>
@@ -1906,7 +1906,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="431"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation type="unfinished"/>
+        <translation>%1 と共有</translation>
     </message>
 </context>
 <context>
@@ -2059,7 +2059,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslerrordialog.cpp" line="178"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation>&amp;lt;指定されていませんd&amp;gt;</translation>
+        <translation>&amp;lt;指定されていません&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
@@ -2343,7 +2343,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="237"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="238"/>
@@ -2538,7 +2538,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>&amp;Start a clean sync (Erases the local folder!)</source>
-        <translation>クリーン同期を開始(&amp;S) (ローカルフォルダーは削除)</translation>
+        <translation>クリーン同期を開始(ローカルフォルダーは削除)(&amp;S)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="209"/>
@@ -2558,7 +2558,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>S&amp;ync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>サーバーからすべてのファイルを同期(&amp;Y)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="306"/>
@@ -2576,27 +2576,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;指定された安全なサーバーアドレスに接続できませんでした。どのように進めますか？&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>異なるURLを選択</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>HTTP経由で暗号化せずに再度行う(安全でない)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>クライアントサイドTLS証明書を設定</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="18"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;安全なサーバーアドレス &lt;em&gt;%1&lt;/em&gt; に接続できませんでした。どのように進めますか？&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -2663,7 +2663,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="75"/>
         <source>&amp;Username:</source>
-        <translation>ユーザー名(&amp;U)</translation>
+        <translation>ユーザー名(&amp;U):</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="85"/>
@@ -2673,7 +2673,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="92"/>
         <source>&amp;Password:</source>
-        <translation>パスワード(&amp;P)</translation>
+        <translation>パスワード(&amp;P):</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="102"/>
@@ -2745,22 +2745,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/utility.cpp" line="113"/>
         <source>%L1 TiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="116"/>
         <source>%L1 GiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="119"/>
         <source>%L1 MiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="122"/>
         <source>%L1 KiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="125"/>

@@ -235,7 +235,7 @@ Gesamtzeit übrig %5</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>SSL-Client-Zertifikatsauthentifizierung</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -330,7 +330,7 @@ Gesamtzeit übrig %5</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="41"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Zeitüberschreitung bei der Verbindung</translation>
     </message>
 </context>
 <context>
@@ -669,7 +669,7 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Zu synchronisierende Elemente auswählen: Sie können optional Unterordner des Servers abwählen, die nicht synchronisiert werden sollen.</translation>
     </message>
 </context>
 <context>
@@ -734,7 +734,7 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="47"/>
         <source>Show crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Crash-Reporter anzeigen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
@@ -899,7 +899,7 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="45"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Zeitüberschreitung bei der Verbindung</translation>
     </message>
 </context>
 <context>
@@ -1132,7 +1132,7 @@ nach zusätzlichen Privilegien während des Prozesses.</translation>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
         <source>(%1)</source>
-        <translation type="unfinished"/>
+        <translation>(%1)</translation>
     </message>
 </context>
 <context>
@@ -1478,7 +1478,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="103"/>
         <source>Wrong HTTP code returned by server. Expected 204, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Falschen HTTP-Code vom Server zurückerhalten. Erwartet war 204, empfangen wurde aber „%1 %2“.</translation>
     </message>
 </context>
 <context>
@@ -1486,7 +1486,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="67"/>
         <source>Wrong HTTP code returned by server. Expected 201, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Falschen HTTP-Code vom Server zurückerhalten. Erwartet war 201, empfangen wurde aber „%1 %2“.</translation>
     </message>
 </context>
 <context>
@@ -1509,7 +1509,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
         <source>Wrong HTTP code returned by server. Expected 201, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Falschen HTTP-Code vom Server zurückerhalten. Erwartet war 201, empfangen wurde aber „%1 %2“.</translation>
     </message>
 </context>
 <context>
@@ -1675,12 +1675,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="318"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Zu synchronisierende Elemente auswählen: Sie können Unterordner des Servers auswählen, die synchronisiert werden sollen.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="319"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Zu synchronisierende Elemente auswählen: Sie können Unterordner des Servers abwählen, die nicht synchronisiert werden sollen.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="325"/>
@@ -1788,7 +1788,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="75"/>
         <source>OwnCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud-Pfad:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="89"/>
@@ -1849,7 +1849,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="408"/>
         <source>A sync file with the same name exists. The file can not be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Eine Sync-Datei dieses Namens existiert bereits. Die Datei kann nicht für die Synchronisation registriert werden.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="420"/>
@@ -1869,7 +1869,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="463"/>
         <source>Sync of registered file was not successful yet.</source>
-        <translation type="unfinished"/>
+        <translation>Die Synchronisation der registrierten Datei war noch nicht erfolgreich.</translation>
     </message>
 </context>
 <context>

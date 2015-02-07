@@ -1787,7 +1787,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="34"/>
-        <location filename="../src/gui/sharedialog.ui" line="177"/>
+        <location filename="../src/gui/sharedialog.ui" line="174"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1802,98 +1802,104 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="89"/>
+        <location filename="../src/gui/sharedialog.ui" line="165"/>
         <source>Share link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="127"/>
+        <location filename="../src/gui/sharedialog.ui" line="108"/>
+        <location filename="../src/gui/sharedialog.cpp" line="70"/>
         <source>Set password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="149"/>
+        <location filename="../src/gui/sharedialog.ui" line="119"/>
         <source>Set expiry date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="32"/>
+        <location filename="../src/gui/sharedialog.cpp" line="33"/>
         <source>Copy Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="61"/>
+        <location filename="../src/gui/sharedialog.cpp" line="62"/>
         <source>Share directory %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="63"/>
+        <location filename="../src/gui/sharedialog.cpp" line="64"/>
         <source>Share file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="67"/>
-        <location filename="../src/gui/sharedialog.cpp" line="461"/>
+        <location filename="../src/gui/sharedialog.cpp" line="68"/>
+        <location filename="../src/gui/sharedialog.cpp" line="498"/>
         <source>%1 path: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="68"/>
+        <location filename="../src/gui/sharedialog.cpp" line="69"/>
         <source>%1 Sharing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="141"/>
+        <location filename="../src/gui/sharedialog.cpp" line="146"/>
         <source>Password Protected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="299"/>
+        <location filename="../src/gui/sharedialog.cpp" line="311"/>
+        <source>Public sharing requires a password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Choose a password for the public link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="351"/>
+        <location filename="../src/gui/sharedialog.cpp" line="388"/>
         <source>OCS API error code: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="374"/>
+        <location filename="../src/gui/sharedialog.cpp" line="411"/>
         <source>There is no sync folder configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="386"/>
+        <location filename="../src/gui/sharedialog.cpp" line="423"/>
         <source>Can not find a folder to upload to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="393"/>
+        <location filename="../src/gui/sharedialog.cpp" line="430"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="408"/>
+        <location filename="../src/gui/sharedialog.cpp" line="445"/>
         <source>A sync file with the same name exists. The file can not be registered to sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="420"/>
+        <location filename="../src/gui/sharedialog.cpp" line="457"/>
         <source>Waiting to upload...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="422"/>
+        <location filename="../src/gui/sharedialog.cpp" line="459"/>
         <source>Unable to register in sync space.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="453"/>
+        <location filename="../src/gui/sharedialog.cpp" line="490"/>
         <source>The file can not be synced.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="463"/>
+        <location filename="../src/gui/sharedialog.cpp" line="500"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation type="unfinished"></translation>
     </message>
