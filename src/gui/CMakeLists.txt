@@ -84,8 +84,8 @@ set(updater_SRCS
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
-
     list(APPEND client_SRCS settingsdialogmac.cpp)
+    list(APPEND client_SRCS systray.mm)
 
     if(SPARKLE_FOUND)
        # Define this, we need to check in updater.cpp

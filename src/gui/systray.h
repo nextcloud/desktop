@@ -21,6 +21,11 @@ class QIcon;
 
 namespace OCC {
 
+#ifdef Q_OS_OSX
+bool canOsXSendUserNotification();
+void sendOsXUserNotification(const QString &title, const QString &message);
+#endif
+
 class Systray : public QSystemTrayIcon
 {
     Q_OBJECT

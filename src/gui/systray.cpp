@@ -14,6 +14,7 @@
 
 #include "systray.h"
 #include "theme.h"
+#include <QDebug>
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
@@ -37,6 +38,11 @@ void Systray::showMessage(const QString & title, const QString & message, Messag
         QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, "Notify");
         method.setArguments(args);
         QDBusConnection::sessionBus().asyncCall(method);
+    } else
+#endif
+#ifdef Q_OS_OSX
+    if (canOsXSendUserNotification()) {
+        sendOsXUserNotification(title, message);
     } else
 #endif
     {
