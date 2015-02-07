@@ -103,7 +103,7 @@ private slots:
         Utility::writeRandomFile(QString("%1/a1/random.bin").arg(_root));
 #else
         QString cmd;
-        cmd = QString("/usr/bin/touch %1").arg(file);
+        cmd = QString("touch %1").arg(file);
         qDebug() << "Command: " << cmd;
         system(cmd.toLocal8Bit());
 #endif
