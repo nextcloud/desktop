@@ -185,8 +185,8 @@ if( WIN32 )
 add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
 endif( WIN32 )
 
-# Handle Translations, pick all mirall_* files from trans directory.
-file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/mirall_*.ts)
+# Handle Translations, pick all client_* files from trans directory.
+file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
 set(TRANSLATIONS ${TRANS_FILES})
 
 add_subdirectory(csync)

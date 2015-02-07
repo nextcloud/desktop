@@ -2,9 +2,9 @@
 
 ## Introduction
 
-Translations on transifex: http://www.transifex.com/projects/p/owncloud/resource/mirall-wininstaller/
+Translations on transifex: http://www.transifex.com/projects/p/owncloud/resource/client-nsis/
 
-Daily sync job: https://ci.owncloud.org/view/translation-sync/job/translation-sync-mirall-wininstaller/
+Daily sync job: https://ci.owncloud.org/view/translation-sync/job/translation-sync-client-nsis/
 
 ## How to add a new translation string?
 
