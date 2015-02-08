@@ -428,7 +428,7 @@ bool LsColJob::finished()
                 // All those elements are properties
                 QString propertyContent = readContentsAsString(reader);
                 if (name == QLatin1String("resourcetype") && propertyContent.contains("collection")) {
-                    folders.append(QUrl::fromEncoded(currentHref.toLatin1()).path());
+                    folders.append(currentHref);
                 } else if (name == QLatin1String("quota-used-bytes")) {
                     bool ok = false;
                     auto s = propertyContent.toLongLong(&ok);
