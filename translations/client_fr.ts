@@ -234,7 +234,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>Authentification du certificat SSL client</translation>
+        <translation>Authentification par certificat SSL client</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -305,7 +305,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="87"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Veuillez mettre à jour avec la dernière version du serveur et redémarrer le client.</translation>
+        <translation>Veuillez mettre à jour le serveur vers la dernière version et redémarrer le client.</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="106"/>
@@ -347,7 +347,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="165"/>
         <source>%1 should be a directory but is not.</source>
-        <translation>%1 doit être un répertoire, mais ce n&apos;en ai pas un.</translation>
+        <translation>%1 doit être un répertoire, mais ce n&apos;en est pas un.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="168"/>
@@ -501,7 +501,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1038"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation>La dernière synchronisation s&apos;est achevée avec succès mais avec des messages d&apos;avertissement à propos de certains fichiers.</translation>
+        <translation>La dernière synchronisation s&apos;est achevée avec succès mais avec des avertissement à propos de certains fichiers.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1041"/>
@@ -577,7 +577,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="105"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Vous n&apos;avez pas les permissions d&apos;écrire dans le dossier selectionné</translation>
+        <translation>Vous n&apos;avez pas la permission d&apos;écrire dans le dossier selectionné</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="129"/>
@@ -587,7 +587,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="134"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation>L&apos;entrée sélectionnée contient déjà un dossier configuré.</translation>
+        <translation>L&apos;entrée sélectionnée contient un dossier déjà configuré.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="141"/>
@@ -1207,7 +1207,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="204"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>Tentative de connexion de %1 à %2 ...</translation>
+        <translation>Tentative de connexion à %1 sur %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
