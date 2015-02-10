@@ -265,6 +265,7 @@ void ShareDialog::slotDeleteShareFetched(const QString &reply)
         displayError(code);
     }
 
+    _public_share_id = 0;
     _pi_link->stopAnimation();
     _ui->lineEdit_password->clear();
     _ui->lineEdit_shareLink->clear();
