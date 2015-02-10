@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Wählen Sie...</translation>
+        <translation>Aus&amp;wählen…</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="55"/>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="128"/>
         <source>Select a remote destination folder</source>
-        <translation>Zielordner auf Gegenseite auswählen</translation>
+        <translation>Entfernten Zielordner auswählen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="140"/>
@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="107"/>
         <source>TextLabel</source>
-        <translation>Textfeld</translation>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="55"/>
         <source>Add Folder...</source>
-        <translation>Ordner hinzufügen …</translation>
+        <translation>Ordner hinzufügen…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="62"/>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="123"/>
         <source>Retrieving usage information...</source>
-        <translation>Nutzungsinformationen werden abgerufen ...</translation>
+        <translation>Nutzungsinformationen werden abgerufen…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="130"/>
@@ -167,7 +167,7 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="610"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation>»%1« wird entdeckt</translation>
+        <translation>„%1“ wird entdeckt</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="650"/>
@@ -750,7 +750,7 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="98"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Neustarten &amp;&amp; Aktualisieren</translation>
+        <translation>&amp;Neustarten &amp;&amp; aktualisieren</translation>
     </message>
 </context>
 <context>
@@ -868,7 +868,7 @@ Aktivierte Elemente werden ebenfalls gelöscht, wenn diese das Löschen eines Ve
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="184"/>
         <source>Save log file</source>
-        <translation>Log-Datei speichern</translation>
+        <translation>Logdatei speichern</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
@@ -1101,7 +1101,7 @@ nach zusätzlichen Privilegien während des Prozesses.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
         <source>Connect...</source>
-        <translation>Verbinden …</translation>
+        <translation>Verbinden…</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="135"/>
@@ -1203,7 +1203,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="193"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Zeitüberschreitung beim Verbindungsversuch mit %1 unter %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="204"/>
@@ -1213,7 +1213,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Zugang vom Server nicht erlaubt. &lt;a href=&quot;%1&quot;&gt;Klicken Sie hier&lt;/a&gt; zum Zugriff auf den Dienst mithilfe Ihres Browsers, so dass Sie sicherstellen können, dass Ihr Zugang ordnungsgemäß funktioniert.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
@@ -1243,7 +1243,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="310"/>
         <source>No remote folder specified!</source>
-        <translation>Keinen fernen Ordner spezifiziert!</translation>
+        <translation>Keinen entfernten Ordner angegeben!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="316"/>
@@ -1362,7 +1362,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="121"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>Ungültige JSON Antwort von der Poll URL</translation>
+        <translation>Ungültige JSON-Antwort von der Poll-URL</translation>
     </message>
 </context>
 <context>
@@ -1421,7 +1421,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
         <source>Continue blacklisting: </source>
-        <translation type="unfinished"/>
+        <translation>Blacklisting fortsetzen:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="200"/>
@@ -1552,7 +1552,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="468"/>
         <source>Poll URL missing</source>
-        <translation>Poll URL fehlt</translation>
+        <translation>Poll-URL fehlt</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="493"/>
@@ -1693,7 +1693,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="36"/>
         <source>Loading ...</source>
-        <translation>Ladevorgang …</translation>
+        <translation>Laden…</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="47"/>
@@ -1772,18 +1772,18 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="26"/>
         <source>Share Info</source>
-        <translation type="unfinished"/>
+        <translation>Freigabe-Info</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="34"/>
         <location filename="../src/gui/sharedialog.ui" line="177"/>
         <source>TextLabel</source>
-        <translation>Textfeld</translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="53"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>Freigabe-Label</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="75"/>
@@ -1809,17 +1809,17 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <location filename="../src/gui/sharedialog.cpp" line="67"/>
         <location filename="../src/gui/sharedialog.cpp" line="461"/>
         <source>%1 path: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1-Pfad: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="68"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>%1-Freigabe</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="141"/>
         <source>Password Protected</source>
-        <translation>Kennwortgeschützt</translation>
+        <translation>passwortgeschützt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="299"/>
@@ -1844,7 +1844,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="393"/>
         <source>Sharing of external directories is not yet working.</source>
-        <translation>Das teilen von externen Verzeichnissen funktioniert noch nicht.</translation>
+        <translation>Das Teilen von externen Verzeichnissen funktioniert noch nicht.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="408"/>
@@ -1859,7 +1859,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="422"/>
         <source>Unable to register in sync space.</source>
-        <translation type="unfinished"/>
+        <translation>Registrierung im Synchronisationsraum nicht möglich.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="453"/>
@@ -2128,7 +2128,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="99"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
-        <translation type="unfinished"/>
+        <translation>CSync konnte die Journaldatei nicht laden. Die Journaldatei ist beschädigt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="102"/>
@@ -2223,7 +2223,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>The mounted directory is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Das eingehängte Verzeichnis ist auf dem Server vorübergehend nicht verfügbar</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
@@ -2459,7 +2459,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="435"/>
         <source>Crash now</source>
-        <translation type="unfinished"/>
+        <translation>Jetzt abstürzen lassen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="446"/>
@@ -2507,7 +2507,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message utf8="true">
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Version %2. Weitere Informationen unter &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Von Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz und anderen.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Lizensiert unter den Bedigungen der GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud und das ownCloud Logo sind eingetragene Warenzeichen der ownCloud Inc. in den USA, anderen Ländern, oder beidem.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Version %2. Weitere Informationen unter &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Von Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz und anderen.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Lizensiert unter den Bedingungen der GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud und das ownCloud Logo sind eingetragene Warenzeichen der ownCloud Inc. in den USA, anderen Ländern, oder beidem.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2526,7 +2526,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="299"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="322"/>
         <source>TextLabel</source>
-        <translation>Textfeld</translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="88"/>
@@ -2584,7 +2584,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verbindung mit der angegebenen sicheren Serveradresse fehlgeschlagen. Wie möchten Sie fortfahren?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
@@ -2627,13 +2627,13 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation>Fehlerbezeichnung</translation>
+        <translation>Fehler-Label</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="109"/>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="122"/>
         <source>TextLabel</source>
-        <translation>Textfeld</translation>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>
@@ -2656,7 +2656,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="187"/>
         <source>TextLabel</source>
-        <translation>Textbeschriftung</translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="47"/>
@@ -2721,7 +2721,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="157"/>
         <source>Error Label</source>
-        <translation>Error Label</translation>
+        <translation>Fehler-Label</translation>
     </message>
 </context>
 <context>
@@ -2734,7 +2734,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="20"/>
         <source>TextLabel</source>
-        <translation>Textfeld</translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>

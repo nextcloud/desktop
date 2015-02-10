@@ -668,7 +668,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>何を同期するか選択: 同期したくないリモートのサブフォルダーは、同期対象から外せます。</translation>
     </message>
 </context>
 <context>
@@ -1046,7 +1046,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="77"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>バージョン %1 をダウンロードしています。しばらくお待ちください。</translation>
+        <translation>バージョン %1 をダウンロードしています。しばらくお待ちください...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="79"/>
@@ -2421,7 +2421,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Settings...</source>
-        <translation>設定</translation>
+        <translation>設定...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
