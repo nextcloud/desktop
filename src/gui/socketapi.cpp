@@ -135,6 +135,7 @@ SocketApi::~SocketApi()
 {
     DEBUG << "dtor";
     _localServer.close();
+    qDeleteAll(_listeners);
     slotClearExcludesList();
 }
 
@@ -194,6 +195,7 @@ void SocketApi::onLostConnection()
 
     SocketType* socket = qobject_cast<SocketType*>(sender());
     _listeners.removeAll(socket);
+    socket->deleteLater();
 }
 
 
