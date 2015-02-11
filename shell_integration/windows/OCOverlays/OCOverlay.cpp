@@ -40,15 +40,24 @@ extern HINSTANCE instanceHandle;
 
 OCOverlay::OCOverlay(int state) 
 	: _referenceCount(1)
+	, _checker(nullptr)
 	, _state(state)
-
 {
-    static RemotePathChecker s_remotePathChecker;
-    _checker = &s_remotePathChecker;
 }
 
 OCOverlay::~OCOverlay(void)
 {
+}
+
+void OCOverlay::lazyInit()
+{
+	// On Vista we'll run into issue #2680 if we try to create the thread+pipe connection
+	// on any DllGetClassObject of our registered classes.
+	// Work around the issue by creating the static RemotePathChecker only once actually needed.
+	if (_checker)
+		return;
+	static RemotePathChecker s_remotePathChecker;
+	_checker = &s_remotePathChecker;
 }
 
 IFACEMETHODIMP_(ULONG) OCOverlay::AddRef()
@@ -119,7 +128,9 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
 
  IFACEMETHODIMP OCOverlay::IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib)
 {
-    auto watchedDirectories = _checker->WatchedDirectories();
+	lazyInit();
+	assert(_checker);
+	auto watchedDirectories = _checker->WatchedDirectories();
 
 	wstring wpath(pwszPath);
 	wpath.append(L"\\");
