@@ -59,4 +59,11 @@ bool renameReplace(const QString &originFileName, const QString &destinationFile
  */
 bool openFileSharedRead(QFile* file, QString* error);
 
+#ifdef Q_OS_WIN
+/**
+ * Returns the file system used at the given path.
+ */
+QString fileSystemForPath(const QString & path);
+#endif
+
 }}

@@ -106,6 +106,22 @@ bool SyncJournalDb::sqlFail( const QString& log, const SqlQuery& query )
     return false;
 }
 
+static QString defaultJournalMode(const QString & dbPath)
+{
+#ifdef Q_OS_WIN
+    // See #2693: Some exFAT file systems seem unable to cope with the
+    // WAL journaling mode. They work fine with DELETE.
+    QString fileSystem = FileSystem::fileSystemForPath(dbPath);
+    if (fileSystem.contains("FAT")) {
+        qDebug() << "Detected filesystem" << fileSystem << "- using DELETE journal mode";
+        return "DELETE";
+    }
+#else
+    Q_UNUSED(dbPath)
+#endif
+    return "WAL";
+}
+
 bool SyncJournalDb::checkConnect()
 {
     if( _db.isOpen() ) {
@@ -140,11 +156,11 @@ bool SyncJournalDb::checkConnect()
         qDebug() << "sqlite3 version" << pragma1.stringValue(0);
     }
 
-    // Enable WAL by default but allow switching the journal mode for debugging
+    // Allow forcing the journal mode for debugging
     static QString env_journal_mode = QString::fromLocal8Bit(qgetenv("OWNCLOUD_SQLITE_JOURNAL_MODE"));
     QString journal_mode = env_journal_mode;
     if (journal_mode.isEmpty()) {
-        journal_mode = "WAL";
+        journal_mode = defaultJournalMode(_dbFile);
     }
     pragma1.prepare(QString("PRAGMA journal_mode=%1;").arg(journal_mode));
     if (!pragma1.exec()) {
