@@ -40,20 +40,19 @@ public:
     TokenCredentials();
     TokenCredentials(const QString& user, const QString& password, const QString &token);
 
-    void syncContextPreInit(CSYNC* ctx);
-    void syncContextPreStart(CSYNC* ctx);
-    bool changed(AbstractCredentials* credentials) const;
-    QString authType() const;
-    QNetworkAccessManager* getQNAM() const;
-    bool ready() const;
-    void fetch();
-    bool stillValid(QNetworkReply *reply);
-    void persist();
-    QString user() const;
-    QString password() const;
-    QString queryPassword(bool *ok);
-    void invalidateToken();
+    void syncContextPreInit(CSYNC* ctx) Q_DECL_OVERRIDE;
+    void syncContextPreStart(CSYNC* ctx) Q_DECL_OVERRIDE;
+    bool changed(AbstractCredentials* credentials) const Q_DECL_OVERRIDE;
+    QString authType() const Q_DECL_OVERRIDE;
+    QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
+    bool ready() const Q_DECL_OVERRIDE;
+    void fetch() Q_DECL_OVERRIDE;
+    bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
+    void persist() Q_DECL_OVERRIDE;
+    QString user() const Q_DECL_OVERRIDE;
+    void invalidateToken() Q_DECL_OVERRIDE;
 
+    QString password() const;
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply*, QAuthenticator*);
 

@@ -165,11 +165,8 @@ bool TokenCredentials::ready() const
     return _ready;
 }
 
-void TokenCredentials::fetch(Account *account)
+void TokenCredentials::fetch()
 {
-    if( !account ) {
-        return;
-    }
     Q_EMIT fetched();
 }
 
@@ -181,22 +178,17 @@ bool TokenCredentials::stillValid(QNetworkReply *reply)
                 || !reply->property(authenticationFailedC).toBool()));
 }
 
-QString TokenCredentials::queryPassword(bool *ok)
-{
-    return QString();
-}
-
-void TokenCredentials::invalidateToken(Account *account)
+void TokenCredentials::invalidateToken()
 {
     qDebug() << Q_FUNC_INFO;
     _ready = false;
-    account->clearCookieJar();
+    _account->clearCookieJar();
     _token = QString();
     _user = QString();
     _password = QString();
 }
 
-void TokenCredentials::persist(Account *account)
+void TokenCredentials::persist()
 {
 }
 

@@ -31,9 +31,10 @@ namespace CredentialsFactory
 AbstractCredentials* create(const QString& type)
 {
 #ifdef TOKEN_AUTH_ONLY
+    Q_UNUSED(type);
 	return new TokenCredentials;
 #else
-	
+
     // empty string might happen for old version of configuration
     if (type == "http" || type == "") {
         return new HttpCredentialsGui;
