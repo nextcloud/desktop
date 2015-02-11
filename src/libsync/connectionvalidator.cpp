@@ -52,11 +52,6 @@ QString ConnectionValidator::statusString( Status stat )
     return QLatin1String("status undeclared.");
 }
 
-bool ConnectionValidator::isNetworkError( Status status )
-{
-    return status == Timeout;
-}
-
 void ConnectionValidator::checkServerAndAuth()
 {
     if( !_account ) {
@@ -100,7 +95,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
     }
 }
 
-// status.php could not be loaded.
+// status.php could not be loaded (network or server issue!).
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
     _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));

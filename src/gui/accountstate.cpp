@@ -200,8 +200,13 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         setState(Disconnected);
         break;
     case ConnectionValidator::ServerVersionMismatch:
-    case ConnectionValidator::StatusNotFound:
         setState(ConfigurationError);
+        break;
+    case ConnectionValidator::StatusNotFound:
+        // This can happen either because the server does not exist
+        // or because we are having network issues. The latter one is
+        // much more likely, so keep trying to connect.
+        setState(NetworkError);
         break;
     case ConnectionValidator::CredentialsWrong:
         account()->handleInvalidCredentials();

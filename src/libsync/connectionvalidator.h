@@ -80,7 +80,6 @@ public:
     };
 
     static QString statusString( Status );
-    static bool isNetworkError( Status status );
 
 public slots:
     /// Checks the server and the authentication.
