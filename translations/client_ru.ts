@@ -1645,13 +1645,19 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n файл пропущен из-за предыдущих ошибок.
+</numerusform><numerusform>%n файлов пропущено из-за предыдущих ошибок.
+</numerusform><numerusform>%n файлов пропущено из-за предыдущих ошибок.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n файл частично загружен.
+</numerusform><numerusform>%n файлов частично загружены.
+</numerusform><numerusform>%n файлов частично загружены.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="267"/>

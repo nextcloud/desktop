@@ -250,7 +250,7 @@ Gesamtzeit übrig %5</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse...</source>
-        <translation>Durchsuchen...</translation>
+        <translation>Durchsuchen…</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -1208,7 +1208,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="204"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>Versuche zu %1 an %2 zu verbinden...</translation>
+        <translation>Verbindungsversuch mit %1 unter %2…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
@@ -1223,7 +1223,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
         <source>Creating local sync folder %1... </source>
-        <translation>Erstelle lokalen Sync-Ordner %1...</translation>
+        <translation>Erstellen eines lokalen Synchronisationsordners %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="281"/>
@@ -1854,7 +1854,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="420"/>
         <source>Waiting to upload...</source>
-        <translation>Warten auf das Hochladen...</translation>
+        <translation>Warten auf das Hochladen…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="422"/>
@@ -2716,7 +2716,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="99"/>
         <source>https://...</source>
-        <translation>https://...</translation>
+        <translation>https://…</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="157"/>
