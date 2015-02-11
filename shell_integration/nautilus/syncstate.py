@@ -205,7 +205,7 @@ class syncStateExtension(Nautilus.ColumnProvider, Nautilus.InfoProvider, SocketC
                 # check if there are non pathes any more, if so, its usual
                 # that mirall went away. Try reconnect.
                 if not self.registered_paths:
-                    self.sock.close()
+                    self._sock.close()
                     self._connected = False
                     GObject.source_remove(self._watch_id)
                     GObject.timeout_add(5000, self.connectToSocketServer)
