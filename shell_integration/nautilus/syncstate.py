@@ -24,7 +24,6 @@ appname = 'ownCloud'
 def get_local_path(path):
     return path.replace("file://", "")
 
-
 def get_runtime_dir():
     """Returns the value of $XDG_RUNTIME_DIR, a directory path.
 
@@ -36,70 +35,124 @@ def get_runtime_dir():
         fallback = '/tmp/runtime-' + os.environ['USER']
         return fallback
 
+
+
 class SocketConnect(GObject.GObject):
-
-    _connected = False
-    _watch_id = 0
-    _sock = None
-    registered_paths = {}
-
     def __init__(self):
         GObject.GObject.__init__(self)
+        self.connected = False
+        self.registered_paths = {}
+        self._watch_id = 0
+        self._sock = None
+        self._listeners = [self._update_registered_paths]
+        self._remainder = ''
 
-    def connectToSocketServer(self):
-        do_reconnect = True
+        # returns true when one should try again!
+        if self._connectToSocketServer():
+            GObject.timeout_add(5000, self._connectToSocketServer)
 
+    def reconnect(self):
+        self._sock.close()
+        self.connected = False
+        GObject.source_remove(self._watch_id)
+        GObject.timeout_add(5000, self._connectToSocketServer)
+
+    def sendCommand(self, cmd):
+        if self.connected:
+            try:
+                self._sock.send(cmd)
+            except:
+                print("Sending failed.")
+                self.reconnect()
+        else:
+            print "Cannot send, not connected!"
+
+    def addListener(self, listener):
+        self._listeners.append(listener)
+
+    def _connectToSocketServer(self):
         try:
-            SocketConnect._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            self._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             postfix = "/"+appname+"/socket"
             sock_file = get_runtime_dir()+postfix
             print ("Socket: " + sock_file + " <=> " + postfix)
             if sock_file != postfix:
                 try:
                     print("Socket File: "+sock_file)
-                    SocketConnect._sock.connect(sock_file)
-                    SocketConnect._connected = True
-                    print("Setting connected to %r" % self._connected )
-                    do_reconnect = False
+                    self._sock.connect(sock_file)
+                    self.connected = True
+                    print("Setting connected to %r" % self.connected )
+                    self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
+                    print "Socket watch id: "+str(self._watch_id)
+                    return False # don't run again
                 except Exception as e:
                     print("Could not connect to unix socket." + str(e))
             else:
                 print("Sock-File not valid: "+sock_file)
         except Exception as e:
             print("Connect could not be established, try again later ")
-            SocketConnect._sock.close()
-        # print("Returning %r" % do_reconnect)
-        return do_reconnect
+            self._sock.close()
 
-    def sendCommand(self, cmd):
-        if self._connected:
-            try:
-                SocketConnect._sock.send(cmd)
-            except:
-                print("Sending failed.")
-                GObject.source_remove(self._watch_id)
-                self._connected = False
-                GObject.timeout_add(5000, self.connectToSocketServer)
+        return True # run again, if enabled via timeout_add()
+
+    # notify is the raw answer from the socket
+    def _handle_notify(self, source, condition):
+        data = source.recv(1024)
+        # prepend the remaining data from last call
+        if len(self._remainder) > 0:
+            data = self._remainder+data
+            self._remainder = ''
+
+        if len(data) > 0:
+            # remember the remainder for next round
+            lastNL = data.rfind('\n');
+            if lastNL > -1 and lastNL < len(data):
+                self._remainder = data[lastNL+1:]
+                data = data[:lastNL]
+
+            for l in data.split('\n'):
+                self._handle_server_response(l)
         else:
-            print "Cannot send, not connected!"
+            return False
 
-    def addSocketWatch(self, callback):
-        self._watch_id = GObject.io_add_watch(SocketConnect._sock, GObject.IO_IN, callback)
-        print "Socket watch id: "+str(self._watch_id)
+        return True # run again
 
-class MenuExtension( Nautilus.MenuProvider, SocketConnect):
+    def _handle_server_response(self, line):
+        print("Server response: "+line)
+        parts = line.split(':')
+        action = parts[0]
+        args = parts[1:]
+
+        for listener in self._listeners:
+            listener(action, args)
+
+    def _update_registered_paths(self, action, args):
+        if action == 'REGISTER_PATH':
+            self.registered_paths[args[0]] = 1
+        elif action == 'UNREGISTER_PATH':
+            del self.registered_paths[args[0]]
+
+            # Check if there are no paths left. If so, its usual
+            # that mirall went away. Try reconnecting.
+            if not self.registered_paths:
+                self.reconnect()
+
+socketConnect = SocketConnect()
+
+
+class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
     def __init__(self):
-	pass
+        GObject.GObject.__init__(self)
 
     def get_file_items(self, window, files):
         if len(files) != 1:
-	    return
+            return
         file=files[0]
         items=[]
 
         # internal or external file?!
         syncedFile = False
-        for reg_path in self.registered_paths:
+        for reg_path in socketConnect.registered_paths:
             filename = get_local_path(file.get_uri())
             if filename.startswith(reg_path):
                 syncedFile = True
@@ -110,8 +163,8 @@ class MenuExtension( Nautilus.MenuProvider, SocketConnect):
 
         # create an menu item
         labelStr = "Share with "+appname+"..."
-        item = Nautilus.MenuItem(name='NautilusPython::ShareItem', label=labelStr ,
-				 tip='Share file %s through ownCloud' % file.get_name())
+        item = Nautilus.MenuItem(name='NautilusPython::ShareItem', label=labelStr,
+                tip='Share file %s through ownCloud' % file.get_name())
         item.connect("activate", self.menu_share, file)
         items.append(item)
 
@@ -121,13 +174,15 @@ class MenuExtension( Nautilus.MenuProvider, SocketConnect):
     def menu_share(self, menu, file):
         filename = get_local_path(file.get_uri())
         print "Share file "+filename
-        self.sendCommand("SHARE:"+filename+"\n")
+        socketConnect.sendCommand("SHARE:"+filename+"\n")
 
-class syncStateExtension(Nautilus.ColumnProvider, Nautilus.InfoProvider, SocketConnect):
 
-    nautilusVFSFile_table = {}
+class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoProvider):
+    def __init__(self):
+        GObject.GObject.__init__(self)
 
-    remainder = ''
+        self.nautilusVFSFile_table = {}
+        socketConnect.addListener(self.handle_commands)
 
     def find_item_for_file(self, path):
         if path in self.nautilusVFSFile_table:
@@ -138,10 +193,10 @@ class syncStateExtension(Nautilus.ColumnProvider, Nautilus.InfoProvider, SocketC
     def askForOverlay(self, file):
         # print("Asking for overlay for "+file)
         if os.path.isdir(file):
-            folderStatus = self.sendCommand("RETRIEVE_FOLDER_STATUS:"+file+"\n");
+            folderStatus = socketConnect.sendCommand("RETRIEVE_FOLDER_STATUS:"+file+"\n");
 
         if os.path.isfile(file):
-            fileStatus = self.sendCommand("RETRIEVE_FILE_STATUS:"+file+"\n");
+            fileStatus = socketConnect.sendCommand("RETRIEVE_FILE_STATUS:"+file+"\n");
 
     def invalidate_items_underneath(self, path):
         update_items = []
@@ -157,7 +212,7 @@ class syncStateExtension(Nautilus.ColumnProvider, Nautilus.InfoProvider, SocketC
                 item.invalidate_extension_info()
 
     # Handles a single line of server respoonse and sets the emblem
-    def handle_server_response(self, l):
+    def handle_commands(self, action, args):
         Emblems = { 'OK'        : appname +'_ok',
                     'SYNC'      : appname +'_sync',
                     'NEW'       : appname +'_sync',
@@ -171,73 +226,29 @@ class syncStateExtension(Nautilus.ColumnProvider, Nautilus.InfoProvider, SocketC
                     'NOP'       : appname +'_error'
                   }
 
-        print("Server response: "+l)
-        parts = l.split(':')
-        if len(parts) > 0:
-            action = parts[0]
+        # file = args[0]
+        # print "Action for " + file + ": "+args[0]
+        if action == 'STATUS':
+            newState = args[0]
+            emblem = Emblems[newState]
+            if emblem:
+                itemStore = self.find_item_for_file(args[1])
+                if itemStore:
+                    if( not itemStore['state'] or newState != itemStore['state'] ):
+                        item = itemStore['item']
+                        item.add_emblem(emblem)
+                        # print "Setting emblem on " + args[1]+ "<>"+emblem+"<>"
+                        self.nautilusVFSFile_table[args[1]] = {'item': item, 'state':newState}
 
-            # file = parts[1]
-            # print "Action for " + file + ": "+parts[0]
-            if action == 'STATUS':
-                newState = parts[1]
-                emblem = Emblems[newState]
-                if emblem:
-                    itemStore = self.find_item_for_file(parts[2])
-                    if itemStore:
-                        if( not itemStore['state'] or newState != itemStore['state'] ):
-                            item = itemStore['item']
-                            item.add_emblem(emblem)
-                            # print "Setting emblem on " + parts[2]+ "<>"+emblem+"<>"
-                            self.nautilusVFSFile_table[parts[2]] = {'item': item, 'state':newState}
+        elif action == 'UPDATE_VIEW':
+            # Search all items underneath this path and invalidate them
+            if args[0] in socketConnect.registered_paths:
+                self.invalidate_items_underneath(args[0])
 
-            elif action == 'UPDATE_VIEW':
-                # Search all items underneath this path and invalidate them
-                if parts[1] in self.registered_paths:
-                    self.invalidate_items_underneath(parts[1])
-
-            elif action == 'REGISTER_PATH':
-                self.registered_paths[parts[1]] = 1
-                self.invalidate_items_underneath(parts[1])
-            elif action == 'UNREGISTER_PATH':
-                del self.registered_paths[parts[1]]
-                self.invalidate_items_underneath(parts[1])
-
-                # check if there are non pathes any more, if so, its usual
-                # that mirall went away. Try reconnect.
-                if not self.registered_paths:
-                    self._sock.close()
-                    self._connected = False
-                    GObject.source_remove(self._watch_id)
-                    GObject.timeout_add(5000, self.connectToSocketServer)
-
-            else:
-                # print "We got unknown action " + action
-                1
-
-    # notify is the raw answer from the socket
-    def handle_notify(self, source, condition):
-
-        data = source.recv(1024)
-        # prepend the remaining data from last call
-        if len(self.remainder) > 0:
-            data = self.remainder+data
-            self.remainder = ''
-
-        if len(data) > 0:
-            # remember the remainder for next round
-            lastNL = data.rfind('\n');
-            if lastNL > -1 and lastNL < len(data):
-                self.remainder = data[lastNL+1:]
-                data = data[:lastNL]
-
-            for l in data.split('\n'):
-                self.handle_server_response(l)
-        else:
-            return False
-
-        return True # run again
-
-
+        elif action == 'REGISTER_PATH':
+            self.invalidate_items_underneath(args[0])
+        elif action == 'UNREGISTER_PATH':
+            self.invalidate_items_underneath(args[0])
 
     def update_file_info(self, item):
         if item.get_uri_scheme() != 'file':
@@ -247,7 +258,7 @@ class syncStateExtension(Nautilus.ColumnProvider, Nautilus.InfoProvider, SocketC
         if item.is_directory():
             filename += '/'
 
-        for reg_path in self.registered_paths:
+        for reg_path in socketConnect.registered_paths:
             if filename.startswith(reg_path):
                 self.nautilusVFSFile_table[filename] = {'item': item, 'state':''}
 
@@ -257,12 +268,3 @@ class syncStateExtension(Nautilus.ColumnProvider, Nautilus.InfoProvider, SocketC
             else:
                 # print("Not in scope:"+filename)
                 pass
-
-    def __init__(self):
-        self.connectToSocketServer()
-        if not self._connected:
-            # try again in 5 seconds - attention, logic inverted!
-            print "Not yet connected, pull timer."
-            GObject.timeout_add(5000, self.connectToSocketServer)
-        else:
-            self.addSocketWatch(self.handle_notify)
