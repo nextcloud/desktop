@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>362</width>
-    <height>401</height>
+    <height>427</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,9 +84,6 @@
    <item row="2" column="0">
     <widget class="QWidget" name="widget_shareLink" native="true">
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="4" column="0">
-       <widget class="QCalendarWidget" name="calendar"/>
-      </item>
       <item row="1" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_password">
         <item>
@@ -122,6 +119,27 @@
         </item>
        </layout>
       </item>
+      <item row="2" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <item>
+         <widget class="QLineEdit" name="lineEdit_password">
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_setPassword">
+          <property name="text">
+           <string>Set Password</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="4" column="0">
+       <widget class="QCalendarWidget" name="calendar"/>
+      </item>
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="sizeConstraint">
@@ -138,17 +156,6 @@
          <widget class="QPushButton" name="pushButton_copy">
           <property name="text">
            <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="2" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_14">
-        <item>
-         <widget class="QLineEdit" name="lineEdit_password">
-          <property name="echoMode">
-           <enum>QLineEdit::Password</enum>
           </property>
          </widget>
         </item>
