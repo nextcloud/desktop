@@ -88,17 +88,11 @@ public:
 
     }
     ~DiscoveryMainThread() {
-        QMutableMapIterator<QString, QLinkedList<csync_vio_file_stat_t*> > im(_directoryContents);
-         while (im.hasNext()) {
-             im.next();
-             QMutableLinkedListIterator<csync_vio_file_stat_t*> il(im.value());
-             while (il.hasNext()){
-                 il.next();
-                 csync_vio_file_stat_destroy(il.value());
-                 il.remove();
-             }
-             im.remove();
-         }
+        foreach (const QLinkedList<csync_vio_file_stat_t*> & list, _directoryContents) {
+            foreach (csync_vio_file_stat_t* stat, list) {
+                csync_vio_file_stat_destroy(stat);
+            }
+        }
     }
     void abort();
 
