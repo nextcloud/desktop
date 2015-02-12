@@ -252,6 +252,8 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
 
 void OwncloudPropagator::start(const SyncFileItemVector& items)
 {
+    Q_ASSERT(std::is_sorted(items.begin(), items.end()));
+
     /* This builds all the job needed for the propagation.
      * Each directories is a PropagateDirectory job, which contains the files in it.
      * In order to do that we loop over the items. (which are sorted by destination)

@@ -64,7 +64,33 @@ public:
 
     friend bool operator<(const SyncFileItem& item1, const SyncFileItem& item2) {
         // Sort by destination
-        return item1.destination() < item2.destination();
+        auto d1 = item1.destination();
+        auto d2 = item2.destination();
+
+        // But this we need to order it so the slash come first. It should be this order:
+        //  "foo", "foo/bar", "foo-bar"
+        // This is important since we assume that the contents of a folder directly follows
+        // its contents
+
+        auto data1 = d1.constData();
+        auto data2 = d2.constData();
+
+        // Find the lenght of the largest prefix
+        int prefixL = 0;
+        auto minSize = std::min(d1.size(), d2.size());
+        while (prefixL < minSize && data1[prefixL] == data2[prefixL]) { prefixL++; }
+
+        if (prefixL == d1.size())
+            return true;
+        if (prefixL == d2.size())
+            return false;
+
+        if (data1[prefixL] == '/')
+            return true;
+        if (data2[prefixL] == '/')
+            return false;
+
+        return data1[prefixL] < data2[prefixL];
     }
 
     QString destination() const {
