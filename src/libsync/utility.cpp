@@ -448,6 +448,7 @@ quint64 Utility::StopWatch::durationOfLap( const QString& lapName ) const
 
 QString Utility::hidpiFileName(const QString &fileName, QPaintDevice *dev)
 {
+#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
     qreal devicePixelRatio = dev ? dev->devicePixelRatio() :
                                    qApp->primaryScreen()->devicePixelRatio();
     if (devicePixelRatio <= 1.0) {
@@ -465,6 +466,7 @@ QString Utility::hidpiFileName(const QString &fileName, QPaintDevice *dev)
             return at2xfileName;
         }
     }
+#endif
 
     return fileName;
 }
