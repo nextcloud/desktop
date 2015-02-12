@@ -294,33 +294,33 @@ Total time left %5</source>
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="63"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="58"/>
         <source>No ownCloud account configured</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="86"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="81"/>
         <source>The configured server for this client is too old</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="87"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="82"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="106"/>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="113"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="101"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="108"/>
         <source>Unable to connect to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="114"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="109"/>
         <source>timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="147"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="142"/>
         <source>The provided credentials are not correct</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1943,7 +1943,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="431"/>
+        <location filename="../src/gui/socketapi.cpp" line="433"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation type="unfinished"></translation>

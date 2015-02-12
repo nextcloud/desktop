@@ -342,7 +342,7 @@ Tiempo restante %5</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="162"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Carpeta local %1 no existe.</translation>
+        <translation>La carpeta local %1 no existe.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="165"/>
@@ -582,7 +582,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="129"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation>La ruta local %1 ya es una carpetas de subidas. Por favor, seleccione otra</translation>
+        <translation>La ruta local %1 ya es una carpeta de subidas. Por favor, seleccione otra</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="134"/>
@@ -612,7 +612,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="178"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation>El alias &lt;i&gt;%1&lt;/i&gt; está en uso. Por favor, introduce otro.</translation>
+        <translation>El alias &lt;i&gt;%1&lt;/i&gt; está en uso. Por favor, introduzca otro.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="211"/>
@@ -635,7 +635,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="288"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Carpeta fue creada con éxito en %1.</translation>
+        <translation>La carpeta fue creada con éxito en %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="296"/>
@@ -668,7 +668,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>Elige qué sinconizar: Opcionalmente puede deseleccionar subcarpetas remotas que no desee sincronizar</translation>
+        <translation>Elija qué sinconizar: Opcionalmente puede deseleccionar subcarpetas remotas que no desee sincronizar</translation>
     </message>
 </context>
 <context>
@@ -1420,7 +1420,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
         <source>Continue blacklisting: </source>
-        <translation>Continue agregando a su Lista Negra:</translation>
+        <translation>Continúe agregando a su Lista Negra:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="200"/>
