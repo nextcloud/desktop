@@ -67,7 +67,7 @@ HRESULT RegDelnodeRecurse(HKEY hKeyRoot, LPTSTR lpSubKey)
 
 			StringCchCopy(lpEnd, MAX_PATH * 2, szName);
 
-			if (!RegDelnodeRecurse(hKeyRoot, lpSubKey)) {
+			if (RegDelnodeRecurse(hKeyRoot, lpSubKey) != ERROR_SUCCESS) {
 				break;
 			}
 
