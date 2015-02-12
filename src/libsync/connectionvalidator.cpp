@@ -92,8 +92,9 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
     if (creds->ready()) {
         QTimer::singleShot( 0, this, SLOT( checkAuthentication() ));
     } else {
-        connect( creds, SIGNAL(fetched()),
-                 this, SLOT(checkAuthentication()), Qt::UniqueConnection);
+        // We can't proceed with the auth check because we don't have credentials.
+        // Fetch them now! Once fetched, a new connectivity check will be
+        // initiated anyway.
         creds->fetch();
     }
 }
@@ -117,8 +118,6 @@ void ConnectionValidator::slotJobTimeout(const QUrl &url)
 void ConnectionValidator::checkAuthentication()
 {
     AbstractCredentials *creds = _account->credentials();
-    disconnect( creds, SIGNAL(fetched()),
-                this, SLOT(checkAuthentication()));
 
     if (!creds->ready()) { // The user canceled
         reportResult(UserCanceledCredentials);
