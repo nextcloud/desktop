@@ -250,7 +250,15 @@ void ShareDialog::slotSharesFetched(const QString &reply)
                 _ui->checkBox_expire->setChecked(true);
             }
 
-            const QString url = Account::concatUrlPath(_account->url(), QString("public.php?service=files&t=%1").arg(data.value("token").toString())).toString();
+            const QString versionString = AccountManager::instance()->account()->serverVersion();
+
+            QString url;
+            // From ownCloud server version 8 on, a different share link scheme is used.
+            if (versionString.contains('.') && versionString.split('.')[0].toInt() >= 8) {
+                url = Account::concatUrlPath(_account->url(), QString("index.php/s/%1").arg(data.value("token").toString())).toString();
+            } else {
+                url = Account::concatUrlPath(_account->url(), QString("public.php?service=files&t=%1").arg(data.value("token").toString())).toString();
+            }
             _ui->lineEdit_shareLink->setText(url);
         }
     }
