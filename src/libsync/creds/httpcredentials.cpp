@@ -217,7 +217,6 @@ void HttpCredentials::fetch()
     fetchUser();
     _certificatePath = _account->credentialSetting(QLatin1String(certifPathC)).toString();
     _certificatePasswd = _account->credentialSetting(QLatin1String(certifPasswdC)).toString();
-    _certificateDate = _account->credentialSetting(QLatin1String(certifDateC)).toString();
 
     QSettings *settings = _account->settingsWithGroup(Theme::instance()->appName());
     const QString kck = keychainKey(_account->url().toString(), _user );
