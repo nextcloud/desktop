@@ -538,7 +538,7 @@ bool PropagateDirectory::scheduleNextJob()
         _state = Running;
 
         if (!_firstJob && _subJobs.isEmpty()) {
-            slotSubJobFinished(SyncFileItem::Success);
+            finalize();
             return true;
         }
     }
@@ -602,27 +602,33 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
     // We finished to processing all the jobs
     // check if we finished
     if (_current >= total) {
-        if (!_item.isEmpty() && _hasError == SyncFileItem::NoStatus) {
-            if( !_item._renameTarget.isEmpty() ) {
-                _item._file = _item._renameTarget;
-            }
-
-            if (_item._should_update_etag && _item._instruction != CSYNC_INSTRUCTION_REMOVE) {
-                if (PropagateRemoteMkdir* mkdir = qobject_cast<PropagateRemoteMkdir*>(_firstJob.data())) {
-                    // special case from MKDIR, get the fileId from the job there
-                    if (_item._fileId.isEmpty() && !mkdir->_item._fileId.isEmpty()) {
-                        _item._fileId = mkdir->_item._fileId;
-                    }
-                }
-                SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
-                _propagator->_journal->setFileRecord(record);
-            }
-        }
-        _state = Finished;
-        emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
+        Q_ASSERT(!_runningNow); // how can we finished if there are still jobs running now
+        finalize();
     } else {
         emit ready();
     }
+}
+
+void PropagateDirectory::finalize()
+{
+    if (!_item.isEmpty() && _hasError == SyncFileItem::NoStatus) {
+        if( !_item._renameTarget.isEmpty() ) {
+            _item._file = _item._renameTarget;
+        }
+
+        if (_item._should_update_etag && _item._instruction != CSYNC_INSTRUCTION_REMOVE) {
+            if (PropagateRemoteMkdir* mkdir = qobject_cast<PropagateRemoteMkdir*>(_firstJob.data())) {
+                // special case from MKDIR, get the fileId from the job there
+                if (_item._fileId.isEmpty() && !mkdir->_item._fileId.isEmpty()) {
+                    _item._fileId = mkdir->_item._fileId;
+                }
+            }
+            SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
+            _propagator->_journal->setFileRecord(record);
+        }
+    }
+    _state = Finished;
+    emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
 }
 
 void CleanupPollsJob::start()

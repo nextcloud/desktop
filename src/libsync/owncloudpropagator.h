@@ -202,6 +202,8 @@ public:
         _firstJob->_item._affectedItems++;
     }
 
+    void finalize();
+
 private slots:
     bool possiblyRunNextJob(PropagatorJob *next) {
         if (next->_state == NotYetStarted) {
