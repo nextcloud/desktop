@@ -96,7 +96,9 @@ Application::Application(int &argc, char **argv) :
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
     setApplicationName( _theme->appNameGUI() );
     setWindowIcon( _theme->applicationIcon() );
+#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+#endif
     parseOptions(arguments());
     //no need to waste time;
     if ( _helpOnly ) return;
