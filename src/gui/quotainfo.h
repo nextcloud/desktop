@@ -43,6 +43,8 @@ Q_SIGNALS:
     void quotaUpdated(qint64 total, qint64 used);
 
 private:
+    bool canGetQuota() const;
+
     QPointer<AccountState> _accountState;
     qint64 _lastQuotaTotalBytes;
     qint64 _lastQuotaUsedBytes;

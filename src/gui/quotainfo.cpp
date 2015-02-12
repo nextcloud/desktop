@@ -39,13 +39,15 @@ QuotaInfo::QuotaInfo(AccountState *accountState)
             SLOT(slotAccountStateChanged(int)));
     connect(_jobRestartTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
     _jobRestartTimer->setSingleShot(true);
-    _jobRestartTimer->start(initialTimeT);
+    if (canGetQuota()) {
+        _jobRestartTimer->start(initialTimeT);
+    }
 }
 
-void QuotaInfo::slotAccountStateChanged(int state)
+void QuotaInfo::slotAccountStateChanged(int /*state*/)
 {
-    if (state == AccountState::Connected) {
-        slotCheckQuota();
+    if (canGetQuota()) {
+        _jobRestartTimer->start(initialTimeT);
     } else {
         _jobRestartTimer->stop();
     }
@@ -58,21 +60,28 @@ void QuotaInfo::slotRequestFailed()
     _jobRestartTimer->start(failIntervalT);
 }
 
+bool QuotaInfo::canGetQuota() const
+{
+    if (! _accountState) {
+        return false;
+    }
+    AccountPtr account = _accountState->account();
+    return _accountState->isConnected()
+        && account->credentials()
+        && account->credentials()->ready();
+}
+
 void QuotaInfo::slotCheckQuota()
 {
-    if (!_accountState) {
+    if (! canGetQuota()) {
         return;
     }
 
     AccountPtr account = _accountState->account();
-    if (_accountState->isConnected()
-            && account->credentials()
-            && account->credentials()->ready()) {
-        CheckQuotaJob *job = new CheckQuotaJob(account, "/", this);
-        connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
-        connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
-        job->start();
-    }
+    CheckQuotaJob *job = new CheckQuotaJob(account, "/", this);
+    connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
+    connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
+    job->start();
 }
 
 void QuotaInfo::slotUpdateLastQuota(qint64 total, qint64 used)
