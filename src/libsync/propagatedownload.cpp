@@ -517,11 +517,10 @@ void PropagateDownloadFileQNAM::downloadFinished()
         return;
     }
 
-    existingFile.refresh();
     // Maybe we downloaded a newer version of the file than we thought we would...
     // Get up to date information for the journal.
     FileSystem::setModTime(fn, _item._modtime);
-    _item._size = existingFile.size();
+    _item._size = FileSystem::getSize(fn);
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());

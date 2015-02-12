@@ -159,7 +159,7 @@ void PropagateUploadFileQNAM::start()
 
     // Update the mtime and size, it might have changed since discovery.
     _item._modtime = FileSystem::getModTime(fi.absoluteFilePath());
-    quint64 fileSize = fi.size();
+    quint64 fileSize = FileSystem::getSize(fi.absoluteFilePath());
     _item._size = fileSize;
 
     // But skip the file if the mtime is too close to 'now'!
@@ -220,7 +220,7 @@ bool UploadDevice::prepareAndOpen(const QString& fileName, qint64 start, qint64 
         return false;
     }
 
-    size = qMin(file.size(), size);
+    size = qMin(FileSystem::getSize(fileName), size);
     _data.resize(size);
     if (!file.seek(start)) {
         setErrorString(file.errorString());
@@ -501,7 +501,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
 
     // compare expected and real modification time of the file and size
     const time_t new_mtime = FileSystem::getModTime(fi.absoluteFilePath());
-    const quint64 new_size = static_cast<quint64>(fi.size());
+    const quint64 new_size = static_cast<quint64>(FileSystem::getSize(fi.absoluteFilePath()));
     if (new_mtime != _item._modtime || new_size != _item._size) {
         qDebug() << "The local file has changed during upload:"
                  << "mtime: " << _item._modtime << "<->" << new_mtime

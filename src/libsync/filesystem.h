@@ -43,6 +43,13 @@ time_t OWNCLOUDSYNC_EXPORT getModTime(const QString &filename);
 
 bool setModTime(const QString &filename, time_t modTime);
 
+/** Get the size for a file.
+ *
+ * Use this over QFileInfo::size() to avoid bugs with lnk files on Windows.
+ * See https://bugreports.qt.io/browse/QTBUG-24831.
+ */
+qint64 OWNCLOUDSYNC_EXPORT getSize(const QString& filename);
+
 /**
  * Rename the file \a originFileName to \a destinationFileName, and overwrite the destination if it
  * already exists

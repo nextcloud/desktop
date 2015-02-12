@@ -48,6 +48,8 @@ static bool removeRecursively(const QString &path, QString &error)
         di.next();
         const QFileInfo& fi = di.fileInfo();
         bool ok;
+        // The use of isSymLink here is okay:
+        // we never want to go into this branch for .lnk files
         if (fi.isDir() && !fi.isSymLink()) {
             ok = removeRecursively(di.filePath(), error); // recursive
         } else {

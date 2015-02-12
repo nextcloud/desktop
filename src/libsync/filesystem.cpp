@@ -49,7 +49,7 @@ bool FileSystem::fileEquals(const QString& fn1, const QString& fn2)
         return false;
     }
 
-    if (f1.size() != f2.size()) {
+    if (getSize(fn1) != getSize(fn2)) {
         return false;
     }
 
@@ -82,12 +82,9 @@ time_t FileSystem::getModTime(const QString &filename)
     csync_vio_file_stat_t* stat = csync_vio_file_stat_new();
     qint64 result = -1;
     if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
-            && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_MTIME))
-    {
+            && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_MTIME)) {
         result = stat->mtime;
-    }
-    else
-    {
+    } else {
         qDebug() << "Could not get modification time for" << filename
                  << "with csync, using QFileInfo";
         result = Utility::qDateTimeToTime_t(QFileInfo(filename).lastModified());
@@ -215,6 +212,26 @@ bool FileSystem::openFileSharedRead(QFile* file, QString* error)
         *error = file->errorString();
     }
     return ok;
+}
+
+qint64 FileSystem::getSize(const QString& filename)
+{
+#ifdef Q_OS_WIN
+    if (filename.endsWith(".lnk")) {
+        // Use csync to get the file size. Qt seems unable to get at it.
+        qint64 result = 0;
+        csync_vio_file_stat_t* stat = csync_vio_file_stat_new();
+        if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
+                && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
+            result = stat->size;
+        } else {
+            qDebug() << "Could not get size time for" << filename << "with csync";
+        }
+        csync_vio_file_stat_destroy(stat);
+        return result;
+    }
+#endif
+    return QFileInfo(filename).size();
 }
 
 #ifdef Q_OS_WIN
