@@ -40,7 +40,6 @@ Q_DECLARE_METATYPE(QTimer*)
 
 namespace OCC {
 
-bool AbstractNetworkJob::preOc7WasDetected = false;
 
 AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
     : QObject(parent)
@@ -553,11 +552,6 @@ bool CheckServerJob::finished()
         if( status.contains("installed")
                 && status.contains("version")
                 && status.contains("versionstring") ) {
-
-            QString versionString = status.value("version").toString();
-            if (versionString.contains('.') && versionString.split('.')[0].toInt() < 7) {
-                AbstractNetworkJob::preOc7WasDetected = true;
-            }
 
             emit instanceFound(reply()->url(), status);
         } else {

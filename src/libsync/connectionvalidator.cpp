@@ -77,7 +77,10 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
              << CheckServerJob::versionString(info)
              << "(" << CheckServerJob::version(info) << ")";
 
-    if( CheckServerJob::version(info).startsWith("4.0") ) {
+    QString version = CheckServerJob::version(info);
+    _account->setServerVersion(version);
+
+    if (version.contains('.') && version.split('.')[0].toInt() < 5) {
         _errors.append( tr("The configured server for this client is too old") );
         _errors.append( tr("Please update to the latest server and restart the client.") );
         reportResult( ServerVersionMismatch );

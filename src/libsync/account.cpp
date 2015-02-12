@@ -531,5 +531,14 @@ void Account::setCapabilities(const QVariantMap &caps)
     _capabilities = caps;
 }
 
+QString Account::serverVersion()
+{
+    return _serverVersion;
+}
+
+void Account::setServerVersion(const QString& version)
+{
+    _serverVersion = version;
+}
 
 } // namespace OCC

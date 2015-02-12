@@ -64,26 +64,33 @@ void PropagateRemoteMove::start()
         // The parents has been renamed already so there is nothing more to do.
         finalize();
         return;
-    } else if (AbstractNetworkJob::preOc7WasDetected && _item._file == QLatin1String("Shared") ) {
-        // Check if it is the toplevel Shared folder and do not propagate it.
-        QString originalFile(_propagator->getFilePath(QLatin1String("Shared")));
-        _propagator->addTouchedFile(originalFile);
-        _propagator->addTouchedFile(targetFile);
-        if( QFile::rename( targetFile, originalFile) ) {
-            done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
-        } else {
-            done(SyncFileItem::NormalError, tr("This folder must not be renamed. Please name it back to Shared."));
-        }
-        return;
-    } else {
-        _job = new MoveJob(_propagator->account(),
-                           _propagator->_remoteFolder + _item._file,
-                           _propagator->_remoteDir + _item._renameTarget,
-                           this);
-        connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
-        _propagator->_activeJobs++;
-        _job->start();
     }
+    if (_item._file == QLatin1String("Shared") ) {
+        // Before owncloud 7, there was no permissions system. At the time all the shared files were
+        // in a directory called "Shared" and were not supposed to be moved, otherwise bad things happens
+
+        QString versionString = _propagator->account()->serverVersion();
+        if (versionString.contains('.') && versionString.split('.')[0].toInt() < 7) {
+            QString originalFile(_propagator->getFilePath(QLatin1String("Shared")));
+            _propagator->addTouchedFile(originalFile);
+            _propagator->addTouchedFile(targetFile);
+            if( QFile::rename( targetFile, originalFile) ) {
+                done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
+            } else {
+                done(SyncFileItem::NormalError, tr("This folder must not be renamed. Please name it back to Shared."));
+            }
+            return;
+        }
+    }
+
+    _job = new MoveJob(_propagator->account(),
+                        _propagator->_remoteFolder + _item._file,
+                        _propagator->_remoteDir + _item._renameTarget,
+                        this);
+    connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
+    _propagator->_activeJobs++;
+    _job->start();
+
 }
 
 void PropagateRemoteMove::abort()

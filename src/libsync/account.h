@@ -147,9 +147,11 @@ public:
     void setCredentialSetting(const QString& key, const QVariant &value);
 
     void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
-    
+
     void setCapabilities(const QVariantMap &caps);
     QVariantMap capabilities();
+    void setServerVersion(const QString &version);
+    QString serverVersion();
 
     void clearCookieJar();
 
@@ -176,6 +178,7 @@ private:
     QList<QSslCertificate> _approvedCerts;
     QSslConfiguration _sslConfiguration;
     QVariantMap _capabilities;
+    QString _serverVersion;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QuotaInfo *_quotaInfo;
     QNetworkAccessManager *_am;

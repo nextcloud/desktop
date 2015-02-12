@@ -96,11 +96,6 @@ protected:
     bool          _timedout;  // set to true when the timeout slot is recieved
     bool          _followRedirects;
 
-public:
-    // Timeout workarounds (Because of PHP session locking)
-    static bool preOc7WasDetected;
-
-
 private slots:
     void slotFinished();
     virtual void slotTimeout();
