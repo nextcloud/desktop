@@ -208,13 +208,6 @@ void ShareDialog::getShares()
     OcsShareJob *job = new OcsShareJob("GET", url, _account, this);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotSharesFetched(QString)));
     job->start();
-
-    if (QFileInfo(_localPath).isFile()) {
-        QUrl url2 = Account::concatUrlPath(AccountManager::instance()->account()->url(), QString("index.php/apps/files/api/v1/thumbnail/150/150/%1").arg(_sharePath));
-        ThumbnailJob *job2 = new ThumbnailJob(url2, AccountManager::instance()->account(), this);
-        connect(job2, SIGNAL(jobFinished(int, QByteArray)), SLOT(slotThumbnailFetched(int, QByteArray)));
-        job2->start();
-    }
 }
 
 void ShareDialog::slotSharesFetched(const QString &reply)
@@ -563,27 +556,6 @@ void OcsShareJob::start()
 bool OcsShareJob::finished()
 {
     emit jobFinished(reply()->readAll());
-    return true;
-}
-
-ThumbnailJob::ThumbnailJob(const QUrl &url, AccountPtr account, QObject* parent)
-: AbstractNetworkJob(account, "", parent),
-  _url(url)
-{
-    setIgnoreCredentialFailure(true);
-}
-
-void ThumbnailJob::start()
-{
-    qDebug() << Q_FUNC_INFO;
-    setReply(getRequest(_url));
-    setupConnections(reply());
-    AbstractNetworkJob::start();
-}
-
-bool ThumbnailJob::finished()
-{
-    emit jobFinished(reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(), reply()->readAll());
     return true;
 }
 

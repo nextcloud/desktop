@@ -42,22 +42,6 @@ private:
 };
 
 
-class ThumbnailJob : public AbstractNetworkJob {
-    Q_OBJECT
-public:
-    explicit ThumbnailJob(const QUrl& url, AccountPtr account, QObject* parent = 0);
-public slots:
-    void start() Q_DECL_OVERRIDE;
-signals:
-    void jobFinished(int statusCode, QByteArray reply);
-private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
-private:
-    QUrl _url;
-};
-
-
-
 namespace Ui {
 class ShareDialog;
 }
