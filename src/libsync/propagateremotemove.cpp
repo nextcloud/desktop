@@ -17,6 +17,7 @@
 #include "account.h"
 #include "syncjournalfilerecord.h"
 #include <QFile>
+#include <QStringList>
 
 namespace OCC {
 
