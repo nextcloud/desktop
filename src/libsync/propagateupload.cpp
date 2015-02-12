@@ -397,8 +397,27 @@ void PropagateUploadFileQNAM::startNextChunk()
     _propagator->_activeJobs++;
     _currentChunk++;
 
+    bool parallelChunkUpload = true;
     QByteArray env = qgetenv("OWNCLOUD_PARALLEL_CHUNK");
-    bool parallelChunkUpload = env!="false" && env != "0";
+    if (!env.isEmpty()) {
+        parallelChunkUpload = env != "false" && env != "0";
+    } else {
+        auto version = _propagator->account()->serverVersion();
+        auto dotPos = version.indexOf('.');
+        if (dotPos > 0) {
+            if (version.leftRef(dotPos)
+#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
+                    .toString()  // QStringRef::toInt was added in Qt 5.1
+#endif
+                    .toInt() < 8) {
+
+                // Disable parallel chunk upload on older sever to avoid too many
+                // internal sever errors (#2743)
+                parallelChunkUpload = false;
+            }
+        }
+    }
+
     if (_currentChunk + _startChunk >= _chunkCount - 1) {
         // Don't do parallel upload of chunk if this might be the last chunk because the server cannot handle that
         // https://github.com/owncloud/core/issues/11106
