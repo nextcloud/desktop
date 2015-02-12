@@ -65,7 +65,6 @@ static const char downloadLimitC[]    = "BWLimit/downloadLimit";
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
 const char certPath[] = "http_certificatePath";
-const char certDate[] = "http_certificateDate";
 const char certPasswd[] = "http_certificatePasswd";
 QString ConfigFile::_confDir = QString::null;
 bool    ConfigFile::_askedUser = false;
@@ -581,18 +580,6 @@ void ConfigFile::setCertificatePath(const QString& cPath)
 {
      QSettings settings(configFile(), QSettings::IniFormat);
      settings.setValue( QLatin1String(certPath), cPath);
-     settings.sync();
-}
-
-QString ConfigFile::certificateDate() const
-{
-    return retrieveData(QString(), QLatin1String(certDate)).toString();
-}
-
-void ConfigFile::setCertificateDate(const QString& cDate)
-{
-     QSettings settings(configFile(), QSettings::IniFormat);
-     settings.setValue( QLatin1String(certDate), cDate);
      settings.sync();
 }
 

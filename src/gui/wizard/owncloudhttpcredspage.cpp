@@ -152,8 +152,7 @@ void OwncloudHttpCredsPage::setErrorString(const QString& err)
 
 AbstractCredentials* OwncloudHttpCredsPage::getCredentials() const
 {
-    QDateTime now = QDateTime::currentDateTime();
-    return new HttpCredentialsGui(_ui.leUsername->text(), _ui.lePassword->text(), _ocWizard->ownCloudCertificatePath, now.toString(QLatin1String("yyyy-MM-dd")), _ocWizard->ownCloudCertificatePasswd);
+    return new HttpCredentialsGui(_ui.leUsername->text(), _ui.lePassword->text(), _ocWizard->ownCloudCertificatePath, _ocWizard->ownCloudCertificatePasswd);
 }
 
 void OwncloudHttpCredsPage::setConfigExists(bool config)

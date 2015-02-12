@@ -118,8 +118,6 @@ public:
 
     QString certificatePath() const;
     void setCertificatePath(const QString& cPath);
-    QString certificateDate() const;
-    void setCertificateDate(const QString& cDate);
     QString certificatePasswd() const;
     void setCertificatePasswd(const QString& cPasswd);
 
