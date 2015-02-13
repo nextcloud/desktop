@@ -33,14 +33,16 @@
 
 #include "config_test.h"
 
+#if USE_NEON
 #include "httpbf.c"
-
+#endif
 
 // A test case that does nothing and succeeds.
 static void null_test_success(void **state) {
     (void) state;
 }
 
+#if USE_NEON
 
 static char* test_file( const char* name ) {
     char path[260];
@@ -220,16 +222,20 @@ static void test_hbf_splitlist_zero( void **state ){
     hbf_free_transfer( list );
 }
 
+#endif
 
 
 int main(void) {
     const UnitTest tests[] = {
         unit_test(null_test_success),
+#if USE_NEON
         unit_test(test_hbf_splitlist_odd),
         unit_test(test_hbf_splitlist_zero),
         unit_test(test_hbf_init_transfer),
         unit_test(test_get_transfer_url),
         unit_test(test_get_transfer_url_bigfile)
+#endif
     };
     return run_tests(tests);
 }
+
