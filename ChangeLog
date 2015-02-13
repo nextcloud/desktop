@@ -1,11 +1,38 @@
 ChangeLog
 =========
+version 1.8.0 (release 2015-02-xx)
+ * Mac OS: HIDPI support
+ * Support Sharing from desktop: Added a share dialog that can be
+   opened by context menu in the file managers (Win, Mac, Nautilus)
+   Supports public links with password enforcement
+ * Enhanced usage of parallel HTTP requests for ownCloud 8 servers
+ * Renamed github repository from mirall to client.
+ * Mac OS: Use native notification support
+ * Selective Sync: allow to enforce selective sync in brandings.
+ * Added ability to build on Windows utilizing MingGW
+ * SQLite database fixes if running on FAT filesystems
+ * Improved detection of changing files to upload from local
+ * Preparations for the muli-account feature
+ * Fixed experience for Window manager without system tray
+ * Build with Qt 5.4
+ * Dropped libneon dependency if Qt 5.4 is available
+ * Keep files open very short, that avoid lock problems on Windows
+   especially with office software but also others.
+ * Merged some NetBSD patches
+ * Selective sync support for owncloudcmd
+ * Reorganize the source repository
+ * Prepared direct download
+ * Added Crashreporter feature to be switched on on demand
+ * A huge amount of bug fixes in all areas of the client.
+
+ * more than 7000 commits since 1.7.0
+
 version 1.7.1 (release 2014-12-18)
  * Documentation fixes and updates
  * Nautilus Python plugin fixed for Python 3
  * GUI wording fixes plus improved log messages
  * Fix hidning of the database files in the sync directories
- * Compare http download size with the header value to avoid broken 
+ * Compare http download size with the header value to avoid broken
    downloads, bug #2528
  * Avoid initial ETag fetch job at startup, which is not needed.
  * Add chunk size http header to PUT requests
@@ -135,7 +162,7 @@ version 1.6.0 (release 2014-05-30 )
  * Improve Cookie support (e.g. for cookie-based load-balancers)
  * Introduce a general timeout of 300s for network operations
  * Improve error handling, blacklisting
- * Job-based change propagation, enables faster parallel up/downloads 
+ * Job-based change propagation, enables faster parallel up/downloads
    (right now only if no bandwidth limit is set and no proxy is used)
  * Significantly reduced CPU load when checking for local and remote changes
  * Speed up file stat code on Windows
@@ -148,7 +175,7 @@ version 1.6.0 (release 2014-05-30 )
    Qt 5.2 or later
  * Forward server exception messages to client error messages
  * Mac OS X: Support Notification Center in OS X 10.8+
- * Mac OS X: Use native settings dialog 
+ * Mac OS X: Use native settings dialog
  * Mac OS X: Fix UI inconsistencies on Mavericks
  * Shibboleth: Warn if authenticating with a different user
  * Remove vio abstraction in csync
@@ -183,7 +210,7 @@ version 1.5.2 (release 2014-02-26 )
   * Shibboleth: Proper invalidation if timeout during sync
   * Shibboleth: Do not pop up IdP login immediately when modifying account
   * Shibboleth: Avoid auth on restart by storing cookies in the wallet
-  * Fix license headers 
+  * Fix license headers
 
 version 1.5.1 (release 2014-02-13 )
   * Added an auto updater that updates the client if a
@@ -268,7 +295,7 @@ version 1.4.2 (release 2013-10-18 ), csync 0.90.4 required
 version 1.4.1 (release 2013-09-24 ), csync 0.90.1 required
 
   * Translation and documentation fixes.
-  * Fixed error display in settings/status dialog, displays multi 
+  * Fixed error display in settings/status dialog, displays multi
     line error messages now correctly.
   * Wait up to 30 secs before complaining about missing systray
     Fixes bug #949
@@ -349,7 +376,7 @@ version 1.3.0 (release 2013-06-25 ), csync 0.80.0 required
 version 1.2.5 (release 2013-04-23 ), csync 0.70.7 required
   * [Fixes] NSIS installer fixes
   * [Fixes] Fix crash race by making certificateChain() thread safe
-  * [Fixes] Build with older CMake versions (CentOS/RHEL 6) 
+  * [Fixes] Build with older CMake versions (CentOS/RHEL 6)
   * [Fixes] Wording in GUI
   * [Fixes] Silently ignore "installed = true" status.php
   * Set log verbosity before calling csync_init.
@@ -359,7 +386,7 @@ version 1.2.5 (release 2013-04-23 ), csync 0.70.7 required
 version 1.2.4 (release 2013-04-11 ), csync 0.70.6 required
   * [Fixes] Clarify string in folder wizard
   * [Fixes] Fixed some valgrind warnings
-  * [Fixes] Ensure that only one sync thread can ever run 
+  * [Fixes] Ensure that only one sync thread can ever run
   * [Fixes] Fix default config storage path
   * [Fixes] Skip folders with no absolute path
   * [Fixes] Allow setting the configuration directory on command line
