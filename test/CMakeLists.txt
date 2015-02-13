@@ -30,6 +30,7 @@ owncloud_add_test(NetrcParser ../src/cmd/netrcparser.cpp)
 owncloud_add_test(OwnSql "")
 owncloud_add_test(SyncJournalDB "")
 owncloud_add_test(SyncFileItem "")
+owncloud_add_test(ConcatUrl "")
 
 
 

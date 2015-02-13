@@ -380,43 +380,22 @@ void Account::setUrl(const QUrl &url)
     _url = url;
 }
 
-QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath)
+QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath,
+                            const QList< QPair<QString, QString> > &queryItems)
 {
-    QUrl tmpUrl = url;
-    QString path = tmpUrl.path();
-    // avoid '//'
-    if (path.endsWith('/') && concatPath.startsWith('/')) {
-        path.chop(1);
-    } // avoid missing '/'
-    else if (!path.endsWith('/') && !concatPath.startsWith('/')) {
-        path += QLatin1Char('/');
-    }
-    path += concatPath; // put togehter the complete path
-
-    QList< QPair<QString, QString> > queryItems;
-    // Check if there are query items within the path and if so, add them properly to the url.
-    if( path.contains(QLatin1Char('?')) ) {
-        // get the position of the delimiter between path and query items.
-        // remember: myphpscript.php?queryItem1=foo&queryItem2=bar
-        int cutPos = path.indexOf(QLatin1Char('?'));
-        if( cutPos > -1 ) {
-            QString itemStr = path.right(path.length() - cutPos-1);
-
-            // remote the query item part from the path.
-            if( cutPos < path.length() ) {
-                path.truncate(cutPos);
-            }
-
-            // parse the query items into the list of QPairs of Strings.
-            QStringList items = itemStr.split(QLatin1Char('&'));
-            Q_FOREACH( QString item, items ) {
-                QStringList pair = item.split(QLatin1Char('='));
-                if( pair.size() > 1 ) {
-                    queryItems.append( QPair<QString, QString>(pair.at(0), pair.at(1)) );
-                }
-            }
+    QString path = url.path();
+    if (! concatPath.isEmpty()) {
+        // avoid '//'
+        if (path.endsWith('/') && concatPath.startsWith('/')) {
+            path.chop(1);
+        } // avoid missing '/'
+        else if (!path.endsWith('/') && !concatPath.startsWith('/')) {
+            path += QLatin1Char('/');
         }
+        path += concatPath; // put the complete path together
     }
+
+    QUrl tmpUrl = url;
     tmpUrl.setPath(path);
     if( queryItems.size() > 0 ) {
         tmpUrl.setQueryItems(queryItems);
