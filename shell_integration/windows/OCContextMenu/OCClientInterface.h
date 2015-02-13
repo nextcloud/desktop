@@ -43,7 +43,11 @@ class CommunicationSocket;
 class OCClientInterface
 {
 public:
-	static std::vector<std::wstring> WatchedDirectories();
+	struct ContextMenuInfo {
+		std::vector<std::wstring> watchedDirectories;
+		std::wstring shareMenuTitle;
+	};
+	static ContextMenuInfo FetchInfo();
 	static void ShareObject(const std::wstring &path);
 };
 

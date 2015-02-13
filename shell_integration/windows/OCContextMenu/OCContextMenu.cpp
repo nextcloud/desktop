@@ -150,8 +150,9 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 		return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(0));
 	}
 
+	OCClientInterface::ContextMenuInfo info = OCClientInterface::FetchInfo();
 	bool skip = true;
-	for (const std::wstring path : OCClientInterface::WatchedDirectories()) {
+	for (const std::wstring path : info.watchedDirectories) {
 		if (StringUtil::begins_with(std::wstring(m_szSelectedFile), path)) {
 			skip = false;
 			break;
@@ -165,11 +166,12 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 	InsertSeperator(hMenu, indexMenu);
 	indexMenu++;
 
+	assert(!info.shareMenuTitle.empty());
 	MENUITEMINFO mii = { sizeof(mii) };
 	mii.fMask = MIIM_BITMAP | MIIM_STRING | MIIM_FTYPE | MIIM_ID | MIIM_STATE;
 	mii.wID = idCmdFirst + IDM_SHARE;
 	mii.fType = MFT_STRING;
-	mii.dwTypeData = m_pszMenuText;
+	mii.dwTypeData = &info.shareMenuTitle[0];
 	mii.fState = MFS_ENABLED;
 	if (!InsertMenuItem(hMenu, indexMenu, TRUE, &mii))
 	{

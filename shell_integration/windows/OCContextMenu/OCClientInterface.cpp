@@ -34,28 +34,33 @@ using namespace std;
 #define PIPE_TIMEOUT  5*1000 //ms
 #define SOCK_BUFFER 4096
 
-std::vector<std::wstring> OCClientInterface::WatchedDirectories()
+OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo()
 {
 	auto pipename = std::wstring(L"\\\\.\\pipe\\");
 	pipename += L"ownCloud";
 
 	CommunicationSocket socket;
 	if (!WaitNamedPipe(pipename.data(), PIPE_TIMEOUT)) {
-		return std::vector<std::wstring>();
+		return {};
 	}
 	if (!socket.Connect(pipename)) {
-		return std::vector<std::wstring>();
+		return {};
 	}
-	std::vector<std::wstring> watchedDirectories;
+	socket.SendMsg(L"SHARE_MENU_TITLE\n");
+
+	ContextMenuInfo info;
 	std::wstring response;
 	Sleep(50);
 	while (socket.ReadLine(&response)) {
 		if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
 			wstring responsePath = response.substr(14); // length of REGISTER_PATH
-			watchedDirectories.push_back(responsePath);
+			info.watchedDirectories.push_back(responsePath);
+		}
+		else if (StringUtil::begins_with(response, wstring(L"SHARE_MENU_TITLE:"))) {
+			info.shareMenuTitle = response.substr(17); // length of SHARE_MENU_TITLE:
 		}
 	}
-	return watchedDirectories;
+	return info;
 }
 
 void OCClientInterface::ShareObject(const std::wstring &path)

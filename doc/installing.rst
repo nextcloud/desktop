@@ -81,7 +81,7 @@ file manager integration works.
 .. image:: images/client8.png
 
 When you are in your local ownCloud folder you can right-click any file or 
-folder, and then left-click Share to create a share link. Note that Windows 
+folder, and then left-click "Share with ownCloud" to create a share link. Note that Windows
 may also have a Share With option. This is not the ownCloud Share option. The 
 ownCloud share dialog looks like the following example:
 
