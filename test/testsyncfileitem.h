@@ -24,29 +24,29 @@ private slots:
     void cleanupTestCase() {
     }
 
+    SyncFileItem createItem( const QString& file ) {
+        SyncFileItem i;
+        i._file = file;
+        return i;
+    }
+
     void testComparator_data() {
         QTest::addColumn<SyncFileItem>("a");
         QTest::addColumn<SyncFileItem>("b");
         QTest::addColumn<SyncFileItem>("c");
 
-        auto i = [](const QString &file) {
-            SyncFileItem itm;
-            itm._file = file;
-            return itm;
-        };
-
-        QTest::newRow("a1") << i("client") << i("client/build") << i("client-build") ;
-        QTest::newRow("a2") << i("test/t1") << i("test/t2") << i("test/t3") ;
-        QTest::newRow("a3") << i("ABCD") << i("abcd") << i("zzzz");
+        QTest::newRow("a1") << createItem("client") << createItem("client/build") << createItem("client-build") ;
+        QTest::newRow("a2") << createItem("test/t1") << createItem("test/t2") << createItem("test/t3") ;
+        QTest::newRow("a3") << createItem("ABCD") << createItem("abcd") << createItem("zzzz");
 
         SyncFileItem movedItem1;
         movedItem1._file = "folder/source/file.f";
         movedItem1._renameTarget = "folder/destination/file.f";
         movedItem1._instruction = CSYNC_INSTRUCTION_RENAME;
 
-        QTest::newRow("move1") << i("folder/destination") << movedItem1 << i("folder/destination-2");
-        QTest::newRow("move2") << i("folder/destination/1") << movedItem1 << i("folder/source");
-        QTest::newRow("move3") << i("abc") << movedItem1 << i("ijk");
+        QTest::newRow("move1") << createItem("folder/destination") << movedItem1 << createItem("folder/destination-2");
+        QTest::newRow("move2") << createItem("folder/destination/1") << movedItem1 << createItem("folder/source");
+        QTest::newRow("move3") << createItem("abc") << movedItem1 << createItem("ijk");
     }
 
     void testComparator() {
