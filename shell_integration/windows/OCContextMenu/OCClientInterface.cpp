@@ -50,14 +50,21 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo()
 
 	ContextMenuInfo info;
 	std::wstring response;
-	Sleep(50);
-	while (socket.ReadLine(&response)) {
-		if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
-			wstring responsePath = response.substr(14); // length of REGISTER_PATH
-			info.watchedDirectories.push_back(responsePath);
+	int sleptCount = 0;
+	while (sleptCount < 5) {
+		if (socket.ReadLine(&response)) {
+			if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
+				wstring responsePath = response.substr(14); // length of REGISTER_PATH
+				info.watchedDirectories.push_back(responsePath);
+			}
+			else if (StringUtil::begins_with(response, wstring(L"SHARE_MENU_TITLE:"))) {
+				info.shareMenuTitle = response.substr(17); // length of SHARE_MENU_TITLE:
+				break; // Stop once we received the last sent request
+			}
 		}
-		else if (StringUtil::begins_with(response, wstring(L"SHARE_MENU_TITLE:"))) {
-			info.shareMenuTitle = response.substr(17); // length of SHARE_MENU_TITLE:
+		else {
+			Sleep(50);
+			++sleptCount;
 		}
 	}
 	return info;
