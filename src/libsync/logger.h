@@ -43,6 +43,7 @@ class OWNCLOUDSYNC_EXPORT Logger : public QObject
 public:
 
   void log(Log log);
+  void doLog(const QString &log);
 
   static void csyncLog( const QString& message );
   static void mirallLog( const QString& message );

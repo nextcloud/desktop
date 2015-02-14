@@ -31,14 +31,16 @@ static void mirallLogCatcher(QtMsgType type, const char *msg)
 static void qInstallMessageHandler(QtMsgHandler h) {
     qInstallMsgHandler(h);
 }
-#else
+#elif QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
 static void mirallLogCatcher(QtMsgType, const QMessageLogContext &ctx, const QString &message) {
-    Q_UNUSED(ctx);
-
     QByteArray file = ctx.file;
     file = file.mid(file.lastIndexOf('/') + 1);
     Logger::instance()->mirallLog( QString::fromLocal8Bit(file) + QLatin1Char(':') + QString::number(ctx.line)
                                     + QLatin1Char(' ')  + message) ;
+}
+#else
+static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
+    Logger::instance()->doLog( qFormatLogMessage(type, ctx, message) ) ;
 }
 #endif
 
@@ -51,6 +53,9 @@ Logger *Logger::instance()
 Logger::Logger( QObject* parent) : QObject(parent),
   _showTime(true), _doLogging(false), _doFileFlush(false), _logExpire(0)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
+    qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} %{threadid} %{function}: %{message}");
+#endif
     qInstallMessageHandler(mirallLogCatcher);
 }
 
@@ -91,6 +96,11 @@ void Logger::log(Log log)
     // _logs.append(log);
     // std::cout << qPrintable(log.message) << std::endl;
 
+    doLog(msg);
+}
+
+void Logger::doLog(const QString& msg)
+{
     {
         QMutexLocker lock(&_mutex);
         if( _logstream ) {
@@ -98,7 +108,6 @@ void Logger::log(Log log)
             if( _doFileFlush ) _logstream->flush();
         }
     }
-
     emit newLog(msg);
 }
 
