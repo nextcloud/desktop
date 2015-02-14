@@ -1035,13 +1035,13 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="55"/>
         <source>New Update Ready</source>
-        <translation>Une nouvelle mise à jour est disponible</translation>
+        <translation>Une nouvelle mise à jour est prête</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Une nouvelle mise à jour est sur le point d&apos;être installée. L&apos;assistant 
+        <translation>Une mise à jour est sur le point d&apos;être installée. L&apos;assistant 
 peut demander des privilèges additionnels durant le processus.</translation>
     </message>
     <message>
@@ -1057,7 +1057,7 @@ peut demander des privilèges additionnels durant le processus.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="81"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Impossible de télécharger la mise à jour. Veuillez cliquer &lt;a href=&apos;%1&apos;&gt;ici&lt;/a&gt; afin de télécharger la mise à jour manuellement.</translation>
+        <translation>Impossible de télécharger la mise à jour. &lt;a href=&apos;%1&apos;&gt;Veuillez cliquer ici afin de télécharger la mise à jour manuellement.&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="83"/>
@@ -1072,17 +1072,17 @@ peut demander des privilèges additionnels durant le processus.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="87"/>
         <source>Checking update server...</source>
-        <translation>Vérification du serveur de mises à jour...</translation>
+        <translation>Interrogation du serveur de mises à jour...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="89"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>L&apos;état du processus de mise à jour est inconnu. Impossible de vérifier la présence de nouvelles mises à jour.</translation>
+        <translation>L&apos;état du processus de mise à jour est inconnu. Impossible de vérifier la présence de mises à jour.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="93"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>Aucune mise à jour détectée. Votre installation est à jour.</translation>
+        <translation>Aucune mise à jour disponible. Votre installation est à jour.</translation>
     </message>
 </context>
 <context>
@@ -1105,12 +1105,12 @@ peut demander des privilèges additionnels durant le processus.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="135"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 le dossier &apos;%2&apos; est synchronisé vers le dossier local &apos;%3&apos;</translation>
+        <translation>le dossier %1 &apos;%2&apos; est synchronisé avec le dossier local &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="141"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Attention :&lt;/strong&gt; Vous avez de multiples dossiers configurés. Si vous continuez avec les paramètres courants, les configurations du dossier seront perdues et seule la racine des dossiers synchronisés sera créée !&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Attention :&lt;/strong&gt; Vous avez de multiples dossiers configurés. Si vous continuez avec les nouveaux paramètres, les configuration de dossiers actuelles seront perdues et une synchronisation de la racine de votre compte vers un seul dossier sera mise en place !&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="148"/>
