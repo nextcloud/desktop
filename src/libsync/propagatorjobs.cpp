@@ -56,8 +56,8 @@ static bool removeRecursively(const QString &path, QString &error)
             QFile f(di.filePath());
             ok = f.remove();
             if (!ok) {
-                error += PropagateLocalRemove::tr("Error removing '%1': %2; ").
-                    arg(QDir::toNativeSeparators(f.fileName()), f.errorString());
+                error += PropagateLocalRemove::tr("Error removing '%1': %2;").
+                    arg(QDir::toNativeSeparators(f.fileName()), f.errorString()) + " ";
                 qDebug() << "Error removing " << f.fileName() << ':' << f.errorString();
             }
         }
@@ -67,8 +67,8 @@ static bool removeRecursively(const QString &path, QString &error)
     if (success) {
         success = QDir().rmdir(path);
         if (!success) {
-            error += PropagateLocalRemove::tr("Could not remove directory '%1'; ")
-                .arg(QDir::toNativeSeparators(path));
+            error += PropagateLocalRemove::tr("Could not remove directory '%1';")
+                .arg(QDir::toNativeSeparators(path)) + " ";
             qDebug() << "Error removing directory" << path;
         }
     }

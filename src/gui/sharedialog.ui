@@ -72,7 +72,7 @@
            </font>
           </property>
           <property name="text">
-           <string>OwnCloud Path:</string>
+           <string>ownCloud Path:</string>
           </property>
          </widget>
         </item>
@@ -113,7 +113,7 @@
         <item>
          <widget class="QCheckBox" name="checkBox_expire">
           <property name="text">
-           <string>Set expiry date</string>
+           <string>Set expiration date</string>
           </property>
          </widget>
         </item>

@@ -68,7 +68,7 @@ LogBrowser::LogBrowser(QWidget *parent) :
     mainLayout->addLayout( toolLayout );
 
     // Search input field
-    QLabel *lab = new QLabel(tr("&Search: "));
+    QLabel *lab = new QLabel(tr("&Search:") + " ");
     _findTermEdit = new QLineEdit;
     lab->setBuddy( _findTermEdit );
     toolLayout->addWidget(lab);
@@ -191,7 +191,7 @@ void LogBrowser::slotSave()
             stream << _logWidget->toPlainText();
             file.close();
         } else {
-            QMessageBox::critical(this, tr("Error"), tr("Could not write to log file ")+ saveFile);
+            QMessageBox::critical(this, tr("Error"), tr("Could not write to log file %1").arg(saveFile));
         }
     }
     _saveBtn->setEnabled(true);
