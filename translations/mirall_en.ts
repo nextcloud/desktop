@@ -674,8 +674,12 @@ Are you sure you want to perform this operation?</source>
     <name>OCC::FormatWarningsWizardPage</name>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="45"/>
+        <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderwizard.cpp" line="47"/>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; </source>
+        <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -833,7 +837,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="71"/>
-        <source>&amp;Search: </source>
+        <source>&amp;Search:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -873,19 +877,19 @@ Checked items will also be deleted if they prevent a directory from being remove
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
-        <source>Could not write to log file </source>
+        <source>Could not write to log file %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="148"/>
+        <location filename="../src/libsync/logger.cpp" line="157"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="149"/>
+        <location filename="../src/libsync/logger.cpp" line="158"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1221,7 +1225,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
-        <source>Creating local sync folder %1... </source>
+        <source>Creating local sync folder %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1414,12 +1418,12 @@ It is not advisable to use it.</source>
     <name>OCC::PropagateItemJob</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="81"/>
-        <source>; Restoration Failed: </source>
+        <source>; Restoration Failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
-        <source>Continue blacklisting: </source>
+        <source>Continue blacklisting:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1445,12 +1449,12 @@ It is not advisable to use it.</source>
     <name>OCC::PropagateLocalRemove</name>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="59"/>
-        <source>Error removing &apos;%1&apos;: %2; </source>
+        <source>Error removing &apos;%1&apos;: %2;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="70"/>
-        <source>Could not remove directory &apos;%1&apos;; </source>
+        <source>Could not remove directory &apos;%1&apos;;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1476,7 +1480,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="103"/>
-        <source>Wrong HTTP code returned by server. Expected 204, but recieved &quot;%1 %2&quot;.</source>
+        <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1484,7 +1488,7 @@ It is not advisable to use it.</source>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="67"/>
-        <source>Wrong HTTP code returned by server. Expected 201, but recieved &quot;%1 %2&quot;.</source>
+        <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1507,7 +1511,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="135"/>
-        <source>Wrong HTTP code returned by server. Expected 201, but recieved &quot;%1 %2&quot;.</source>
+        <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1798,7 +1802,12 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="75"/>
-        <source>OwnCloud Path:</source>
+        <source>ownCloud Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.ui" line="116"/>
+        <source>Set expiration date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1815,11 +1824,6 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharedialog.ui" line="105"/>
         <location filename="../src/gui/sharedialog.cpp" line="71"/>
         <source>Set password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="116"/>
-        <source>Set expiry date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1875,17 +1879,22 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="436"/>
-        <source>Can not find a folder to upload to.</source>
+        <source>Cannot find an folder to upload to.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="458"/>
+        <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="503"/>
+        <source>The file cannot be synced.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="443"/>
         <source>Sharing of external directories is not yet working.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="458"/>
-        <source>A sync file with the same name exists. The file can not be registered to sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1896,11 +1905,6 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="472"/>
         <source>Unable to register in sync space.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="503"/>
-        <source>The file can not be synced.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2231,11 +2235,6 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="141"/>
-        <source>CSync failed to access </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation type="unfinished"></translation>
@@ -2261,13 +2260,18 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="141"/>
+        <source>CSync failed to access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
-        <source>An error opening a directory happened</source>
+        <source>An error occurred while opening a directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
-        <source>An internal error number %1 happened.</source>
+        <source>An internal error number %1 occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

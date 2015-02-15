@@ -2543,7 +2543,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>&amp;Start a clean sync (Erases the local folder!)</source>
-        <translation>&amp;Iniciar unha nova sincronización (Elimina o cartafol local!)</translation>
+        <translation>&amp;Iniciar unha nova sincronización (Borra o cartafol local!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="209"/>
