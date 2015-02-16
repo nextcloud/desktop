@@ -16,6 +16,6 @@
         <file>resources/lock-http@2x.png</file>
         <file>resources/lock-https.png</file>
         <file>resources/lock-https@2x.png</file>
-        <file>resources/accounts.png</file>
+        <file>resources/account.png</file>
     </qresource>
 </RCC>

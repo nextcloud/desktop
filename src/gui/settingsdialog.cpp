@@ -69,7 +69,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 
     setWindowTitle(Theme::instance()->appNameGUI());
 
-    QIcon accountIcon(QLatin1String(":/client/resources/accounts.png"));
+    QIcon accountIcon(QLatin1String(":/client/resources/account.png"));
     QAction *accountAction = toolBar->addAction(accountIcon, tr("Account"));
     accountAction->setCheckable(true);
     _ui->stack->addWidget(_accountSettings);

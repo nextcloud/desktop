@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="64" width="64" version="1.0" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs>
+  <linearGradient id="a" y2="62.102" gradientUnits="userSpaceOnUse" x2="32" y1="2.1695" x1="32">
+   <stop offset="0"/>
+   <stop stop-color="#363636" offset="1"/>
+  </linearGradient>
+ </defs>
+ <path opacity=".7" d="m32 2-20 36h22l-2 24 20-36h-22z" fill="url(#a)"/>
+</svg>
