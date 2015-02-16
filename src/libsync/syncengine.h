@@ -78,6 +78,7 @@ public:
     qint64 timeSinceFileTouched(const QString& fn) const;
 
     AccountPtr account() const;
+    SyncJournalDb *journal() const { return _journal; }
 
 signals:
     void csyncError( const QString& );
