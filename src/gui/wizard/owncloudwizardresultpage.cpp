@@ -21,7 +21,6 @@
 #include "wizard/owncloudwizardresultpage.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "theme.h"
-#include "utility.h"
 
 namespace OCC
 {
@@ -41,7 +40,7 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     setSubTitle( QLatin1String(" ") );
 
     _ui.pbOpenLocal->setText(tr("Open Local Folder"));
-    _ui.pbOpenLocal->setIcon(QIcon(Utility::hidpiFileName(":/client/resources/folder-sync.png")));
+    _ui.pbOpenLocal->setIcon(QIcon(Theme::hidpiFileName(":/client/resources/folder-sync.png")));
     _ui.pbOpenLocal->setIconSize(QSize(48, 48));
     _ui.pbOpenLocal->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     connect(_ui.pbOpenLocal, SIGNAL(clicked()), SLOT(slotOpenLocal()));

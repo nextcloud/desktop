@@ -155,6 +155,31 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
     return icon;
 }
 
+QString Theme::hidpiFileName(const QString &fileName, QPaintDevice *dev)
+{
+    #if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
+    qreal devicePixelRatio = dev ? dev->devicePixelRatio() :
+    qApp->primaryScreen()->devicePixelRatio();
+    if (devicePixelRatio <= 1.0) {
+        return fileName;
+    }
+    // try to find a 2x version
+
+
+
+    const int dotIndex = fileName.lastIndexOf(QLatin1Char('.'));
+    if (dotIndex != -1) {
+        QString at2xfileName = fileName;
+        at2xfileName.insert(dotIndex, QStringLiteral("@2x"));
+        if (QFile::exists(at2xfileName))  {
+            return at2xfileName;
+        }
+    }
+    #endif
+    return fileName;
+}
+
+
 #endif
 
 Theme::Theme() :

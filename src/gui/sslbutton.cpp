@@ -15,6 +15,7 @@
 #include "account.h"
 #include "accountstate.h"
 #include "utility.h"
+#include "theme.h"
 
 #include <QMenu>
 #include <QUrl>
@@ -184,7 +185,7 @@ void SslButton::updateAccountState(AccountState *accountState)
         oldMenu->deleteLater();  // setMenu do not delete the previous menu.
     }
     if (account->url().scheme() == QLatin1String("https")) {
-        setIcon(QIcon(QPixmap(Utility::hidpiFileName(":/client/resources/lock-https.png"))));
+        setIcon(QIcon(QPixmap(Theme::hidpiFileName(":/client/resources/lock-https.png"))));
         QSslCipher cipher = account->sslConfiguration().sessionCipher();
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
         QMenu *menu = new QMenu(this);
@@ -217,7 +218,7 @@ void SslButton::updateAccountState(AccountState *accountState)
         }
         setMenu(menu);
     } else {
-        setIcon(QIcon(QPixmap(Utility::hidpiFileName(":/client/resources/lock-http.png"))));
+        setIcon(QIcon(QPixmap(Theme::hidpiFileName(":/client/resources/lock-http.png"))));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
     }
 }

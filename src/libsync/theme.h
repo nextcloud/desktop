@@ -23,6 +23,7 @@ class QString;
 class QObject;
 class QPixmap;
 class QColor;
+class QPaintDevice;
 
 namespace OCC {
 
@@ -80,6 +81,8 @@ public:
     virtual QString configFileName() const = 0;
 
 #ifndef TOKEN_AUTH_ONLY
+    static QString hidpiFileName(const QString &fileName, QPaintDevice *dev = 0);
+
     /**
       * the icon that is shown in the tray context menu left of the folder name
       */

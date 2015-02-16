@@ -22,9 +22,6 @@
 #include <QElapsedTimer>
 #include <QHash>
 
-class QPaintDevice;
-class QWidget;
-
 namespace OCC {
 
 namespace Utility
@@ -100,8 +97,6 @@ namespace Utility
     // that means "test" means the same as "TEST" for filenames.
     // if false, the two cases are two different files.
     OWNCLOUDSYNC_EXPORT bool fsCasePreserving();
-
-    OWNCLOUDSYNC_EXPORT QString hidpiFileName(const QString &fileName, QPaintDevice *dev = 0);
 
     class OWNCLOUDSYNC_EXPORT StopWatch {
     private:

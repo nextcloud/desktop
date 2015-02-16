@@ -16,7 +16,8 @@
 
 #include "version.h"
 
-#include <QApplication>
+// Note:  This file must compile without QtGui
+#include <QCoreApplication>
 #include <QSettings>
 #include <QTextStream>
 #include <QDir>
@@ -27,8 +28,6 @@
 #include <QThread>
 #include <QDateTime>
 #include <QSysInfo>
-#include <QPaintDevice>
-#include <QScreen>
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QTextDocument>
 #else
@@ -444,31 +443,6 @@ QDateTime Utility::StopWatch::timeOfLap( const QString& lapName ) const
 quint64 Utility::StopWatch::durationOfLap( const QString& lapName ) const
 {
     return _lapTimes.value(lapName, 0);
-}
-
-QString Utility::hidpiFileName(const QString &fileName, QPaintDevice *dev)
-{
-#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
-    qreal devicePixelRatio = dev ? dev->devicePixelRatio() :
-                                   qApp->primaryScreen()->devicePixelRatio();
-    if (devicePixelRatio <= 1.0) {
-        return fileName;
-    }
-    // try to find a 2x version
-
-
-
-    const int dotIndex = fileName.lastIndexOf(QLatin1Char('.'));
-    if (dotIndex != -1) {
-        QString at2xfileName = fileName;
-        at2xfileName.insert(dotIndex, QStringLiteral("@2x"));
-        if (QFile::exists(at2xfileName))  {
-            return at2xfileName;
-        }
-    }
-#endif
-
-    return fileName;
 }
 
 } // namespace OCC

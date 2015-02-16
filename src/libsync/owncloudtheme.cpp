@@ -25,7 +25,6 @@
 #include <QCoreApplication>
 #include <QDebug>
 
-#include "utility.h"
 #include "version.h"
 #include "config.h"
 
@@ -108,7 +107,7 @@ QColor ownCloudTheme::wizardHeaderTitleColor() const
 
 QPixmap ownCloudTheme::wizardHeaderLogo() const
 {
-    return QPixmap(Utility::hidpiFileName(":/client/theme/colored/wizard_logo.png"));
+    return QPixmap(hidpiFileName(":/client/theme/colored/wizard_logo.png"));
 }
 #endif
 
