@@ -189,7 +189,7 @@ private slots:
     void etagRetreived(const QString &);
     void etagRetreivedFromSyncEngine(const QString &);
 
-    void slotAboutToPropagate(const SyncFileItemVector& );
+    void slotAboutToPropagate(SyncFileItemVector& );
     void slotThreadTreeWalkResult(const SyncFileItemVector& ); // after sync is done
 
     void slotEmitFinishedDelayed();

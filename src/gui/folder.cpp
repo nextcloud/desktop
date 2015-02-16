@@ -590,7 +590,7 @@ void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
     _syncResult.setSyncFileItemVector(items);
 }
 
-void Folder::slotAboutToPropagate(const SyncFileItemVector& items)
+void Folder::slotAboutToPropagate(SyncFileItemVector& items)
 {
     // empty the tainted list since the status generation code will use the _syncedItems
     // (which imply the folder) to generate the syncing state icon now.
@@ -791,8 +791,8 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(rootEtag(QString)), this, SLOT(etagRetreivedFromSyncEngine(QString)));
     connect( _engine.data(), SIGNAL(treeWalkResult(const SyncFileItemVector&)),
               this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
-    connect( _engine.data(), SIGNAL(aboutToPropagate(const SyncFileItemVector&)),
-              this, SLOT(slotAboutToPropagate(const SyncFileItemVector&)), Qt::QueuedConnection);
+    connect( _engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector&)),
+              this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
 
     connect(_engine.data(), SIGNAL(started()),  SLOT(slotSyncStarted()), Qt::QueuedConnection);
     connect(_engine.data(), SIGNAL(finished()), SLOT(slotSyncFinished()), Qt::QueuedConnection);
