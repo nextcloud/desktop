@@ -654,7 +654,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
     ShareDialog *w = new ShareDialog(account, sharePath, localPath);
     w->getShares();
     w->setAttribute( Qt::WA_DeleteOnClose, true );
-    w->show();
+    raiseDialog(w);
 }
 
 
