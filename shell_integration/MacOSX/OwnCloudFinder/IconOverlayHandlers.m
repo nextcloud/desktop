@@ -21,7 +21,7 @@
 
 @implementation NSObject (IconOverlayHandlers)
 
-- (void)IconOverlayHandlers_drawIconWithFrame:(struct CGRect)arg1
+- (void)OCIconOverlayHandlers_drawIconWithFrame:(struct CGRect)arg1
 {
 	[self OCIconOverlayHandlers_drawIconWithFrame:arg1];
 
