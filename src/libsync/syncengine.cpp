@@ -288,16 +288,29 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     Q_ASSERT(codec);
     QString fileUtf8 = codec->toUnicode(file->path, qstrlen(file->path), &utf8State);
+    QString renameTarget;
+    QString key = fileUtf8;
 
     auto instruction = file->instruction;
-    if (utf8State.invalidChars > 0) {
-        qDebug() << "File ignored because of invalid utf-8 sequence: " << file->path;
+    if (utf8State.invalidChars > 0 || utf8State.remainingChars > 0) {
+        qWarning() << "File ignored because of invalid utf-8 sequence: " << file->path;
         instruction = CSYNC_INSTRUCTION_IGNORE;
+    } else {
+        renameTarget = codec->toUnicode(file->rename_path, qstrlen(file->rename_path), &utf8State);
+        if (utf8State.invalidChars > 0 || utf8State.remainingChars > 0) {
+            qWarning() << "File ignored because of invalid utf-8 sequence in the rename_path: " << file->path << file->rename_path;
+            instruction = CSYNC_INSTRUCTION_IGNORE;
+        }
+        if (instruction == CSYNC_INSTRUCTION_RENAME) {
+            key = renameTarget;
+        }
     }
 
     // Gets a default-contructed SyncFileItem or the one from the first walk (=local walk)
-    SyncFileItem item = _syncItemMap.value(fileUtf8);
-    item._file = fileUtf8;
+    SyncFileItem item = _syncItemMap.value(key);
+    if (item._file.isEmpty() || instruction == CSYNC_INSTRUCTION_RENAME) {
+        item._file = fileUtf8;
+    }
     item._originalFile = item._file;
 
     if (item._instruction == CSYNC_INSTRUCTION_NONE
@@ -360,7 +373,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         /* No error string */
     }
 
-    if (item._instruction == CSYNC_INSTRUCTION_IGNORE && utf8State.invalidChars > 0) {
+    if (item._instruction == CSYNC_INSTRUCTION_IGNORE && (utf8State.invalidChars > 0 || utf8State.remainingChars > 0)) {
         item._status = SyncFileItem::NormalError;
         //item._instruction = CSYNC_INSTRUCTION_ERROR;
         item._errorString = tr("Filename encoding is not valid");
@@ -426,7 +439,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         break;
     case CSYNC_INSTRUCTION_RENAME:
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
-        item._renameTarget = QString::fromUtf8( file->rename_path );
+        item._renameTarget = renameTarget;
         if (item._isDirectory)
             _renamedFolders.insert(item._file, item._renameTarget);
         break;
@@ -481,7 +494,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     item.log._other_modtime     = file->other.modtime;
     item.log._other_size        = file->other.size;
 
-    _syncItemMap.insert(fileUtf8, item);
+    _syncItemMap.insert(key, item);
 
     emit syncItemDiscovered(item);
     return re;
