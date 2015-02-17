@@ -61,6 +61,10 @@ private slots:
         QVERIFY(!(b < a));
         QVERIFY(!(c < b));
         QVERIFY(!(c < a));
+
+        QVERIFY(!(a < a));
+        QVERIFY(!(b < b));
+        QVERIFY(!(c < c));
     }
 };
 

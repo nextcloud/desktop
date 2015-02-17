@@ -80,10 +80,10 @@ public:
         auto minSize = std::min(d1.size(), d2.size());
         while (prefixL < minSize && data1[prefixL] == data2[prefixL]) { prefixL++; }
 
-        if (prefixL == d1.size())
-            return true;
         if (prefixL == d2.size())
             return false;
+        if (prefixL == d1.size())
+            return true;
 
         if (data1[prefixL] == '/')
             return true;
