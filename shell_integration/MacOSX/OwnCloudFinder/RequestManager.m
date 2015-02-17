@@ -138,7 +138,7 @@ static RequestManager* sharedInstance = nil;
 	ContentManager *contentman = [ContentManager sharedInstance];
 
 	if( chunks && [chunks count] > 0 && tag == READ_TAG ) {
-		NSLog(@"READ from socket (%ld): <%@>", tag, answer);
+		// NSLog(@"READ from socket (%ld): <%@>", tag, answer);
 		if( [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
 			NSString *path = [chunks objectAtIndex:2];
 			if( [chunks count] > 3 ) {
@@ -154,7 +154,7 @@ static RequestManager* sharedInstance = nil;
 		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"REGISTER_PATH"] ) {
 			NSNumber *one = [NSNumber numberWithInt:1];
 			NSString *path = [chunks objectAtIndex:1];
-			NSLog(@"Registering path: %@", path);
+			// NSLog(@"Registering path: %@", path);
 			[_registeredPathes setObject:one forKey:path];
 			
 			[contentman repaintAllWindows];
@@ -168,12 +168,12 @@ static RequestManager* sharedInstance = nil;
 			[[ContentManager sharedInstance] loadIconResourcePath:path];
 		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"SHARE_MENU_TITLE"] ) {
 			_shareMenuTitle = [[chunks objectAtIndex:1] copy];
-				NSLog(@"Received shar menu title: %@", _shareMenuTitle);
+				// NSLog(@"Received shar menu title: %@", _shareMenuTitle);
 		} else {
-			NSLog(@"Unknown command %@", [chunks objectAtIndex:0]);
+			NSLog(@"OwnCloud: Unknown command %@", [chunks objectAtIndex:0]);
 		}
 	} else if (tag != READ_TAG) {
-		NSLog(@"Received unknown tag %ld <%@>", tag, answer);
+		NSLog(@"OwnCloud: Received unknown tag %ld <%@>", tag, answer);
 	}
 	// Read on and on
 	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
@@ -188,13 +188,13 @@ static RequestManager* sharedInstance = nil;
 }
 
 -(void)socket:(GCDAsyncSocket*)socket didConnectToUrl:(NSURL *)url {
-	NSLog( @"Connected to sync client successfully on %@", url);
+	// NSLog( @"Connected to sync client successfully on %@", url);
 	_isConnected = YES;
 
 	[self askOnSocket:@"" query:@"SHARE_MENU_TITLE"];
 
 	if( [_requestQueue count] > 0 ) {
-		NSLog( @"We have to empty the queue");
+		// NSLog( @"We have to empty the queue");
 		for( NSString *path in _requestQueue ) {
 			[self askOnSocket:path query:@"RETRIEVE_FILE_STATUS"];
 		}
@@ -211,7 +211,7 @@ static RequestManager* sharedInstance = nil;
 
 - (void)socketDidDisconnect:(GCDAsyncSocket*)socket withError:(NSError*)err
 {
-	NSLog(@"Socket DISconnected! %@", [err localizedDescription]);
+	// NSLog(@"Socket DISconnected! %@", [err localizedDescription]);
 
 	_isConnected = NO;
 
@@ -272,7 +272,7 @@ static RequestManager* sharedInstance = nil;
 			if (!pnsError && paths && [paths count] > 0) {
 				NSString *currentLatestPath = nil;
 				if (paths.count > 1) {
-					NSLog(@"Possible paths: %@", paths);
+					// NSLog(@"Possible paths: %@", paths);
 				}
 				for (int i = 0; i < paths.count; i++) {
 					NSString *currentPath = [syncStateHelperDir stringByAppendingPathComponent:[paths objectAtIndex:i]];
@@ -288,7 +288,7 @@ static RequestManager* sharedInstance = nil;
 			}
 		}
 		if (url) {
-			NSLog(@"Connect Socket to %@", url);
+			// NSLog(@"Connect Socket to %@", url);
 			[_socket connectToUrl:url withTimeout:1 error:&err];
 		}
 	}
@@ -296,7 +296,7 @@ static RequestManager* sharedInstance = nil;
 
 - (void)menuItemClicked:(NSDictionary*)actionDictionary
 {
-	NSLog(@"RequestManager menuItemClicked %@", actionDictionary);
+	// NSLog(@"RequestManager menuItemClicked %@", actionDictionary);
 	NSArray *filePaths = [actionDictionary valueForKey:@"files"];
 	for (int i = 0; i < filePaths.count; i++) {
 		[self askOnSocket:[filePaths objectAtIndex:i] query:@"SHARE"];

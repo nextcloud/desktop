@@ -78,14 +78,14 @@ static OSErr loadBundle(LNBundleType type, AppleEvent* reply, long refcon) {
       minVersion = FINDER_MIN_TESTED_VERSION;
       break;
     default:
-      NSLog(@"Failed to load bundle for type %d", type);
+      NSLog(@"OwnCloudInjector: Failed to load bundle for type %d", type);
       return 8;
 
       break;
   }
 
   if (isLoaded) {
-    NSLog(@"OwnCloudInjector: %@ already loaded.", bundleName);
+    // NSLog(@"OwnCloudInjector: %@ already loaded.", bundleName);
     return noErr;
   }
 
@@ -149,7 +149,7 @@ static OSErr loadBundle(LNBundleType type, AppleEvent* reply, long refcon) {
     }
     id principalClassObject = NSClassFromString(NSStringFromClass(principalClass));
     if ([principalClassObject respondsToSelector:@selector(install)]) {
-      NSLog(@"LiferayNativityInjector: Installing %@ ...", bundleName);
+      // NSLog(@"OwnCloudInjector: Installing %@ ...", bundleName);
       [principalClassObject install];
     }
 
@@ -232,7 +232,7 @@ EXPORT OSErr HandleUnloadEvent(const AppleEvent* ev, AppleEvent* reply, long ref
     @autoreleasepool {
       @try {
         if (!liferayNativityLoaded) {
-          NSLog(@"OwnCloudInjector: not loaded.");
+          // NSLog(@"OwnCloudInjector: not loaded.");
           return noErr;
         }
 
@@ -253,7 +253,7 @@ EXPORT OSErr HandleUnloadEvent(const AppleEvent* ev, AppleEvent* reply, long ref
         }
         id principalClassObject = NSClassFromString(NSStringFromClass(principalClass));
         if ([principalClassObject respondsToSelector:@selector(uninstall)]) {
-          NSLog(@"LiferayNativityInjector: Uninstalling %@ ...", bundleName);
+          // NSLog(@"OwnCloudInjector: Uninstalling %@ ...", bundleName);
           [principalClassObject uninstall];
         }
 

@@ -72,7 +72,7 @@ static ContentManager* sharedInstance = nil;
 	_icnWarnSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"warning_swm.icns"]];
 	_icnErrSwm  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"error_swm.icns"]];
 
-	NSLog(@"Icon ok identifier: %d from %@", [_icnOk intValue], [base stringByAppendingString:@"ok.icns"]);
+	// NSLog(@"Icon ok identifier: %d from %@", [_icnOk intValue], [base stringByAppendingString:@"ok.icns"]);
 }
 
 - (void)enableFileIcons:(BOOL)enable
@@ -111,7 +111,7 @@ static ContentManager* sharedInstance = nil;
 	}else if( [result isEqualToString:@"NOP"]) {
 		// Nothing.
 	} else {
-		NSLog(@"Unknown status code %@", result);
+		NSLog(@"OwnCloud: Unknown status code %@", result);
 	}
 	
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
@@ -129,7 +129,7 @@ static ContentManager* sharedInstance = nil;
 	//NSLog(@"%@ %@", NSStringFromSelector(_cmd), path);
 	if (!_fileIconsEnabled)
 	{
-		NSLog(@"Icons are NOT ENABLED!");
+		NSLog(@"OwnCloud: Icons are NOT ENABLED!");
 		// return nil;
 	}
 
