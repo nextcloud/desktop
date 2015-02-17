@@ -432,7 +432,7 @@ void ownCloudGui::setupActions()
     connect(_actionLogout, SIGNAL(triggered()), _app, SLOT(slotLogout()));
 
     if(_app->debugMode()) {
-        _actionCrash = new QAction(tr("Crash now"), this);
+        _actionCrash = new QAction(tr("Crash now", "Only shows in debug mode to allow testing the crash handler"), this);
         connect(_actionCrash, SIGNAL(triggered()), _app, SLOT(slotCrash()));
     } else {
         _actionCrash = 0;
