@@ -19,6 +19,7 @@
 #include <QWebPage>
 #include <QMessageBox>
 #include <QNetworkReply>
+#include <QSettings>
 
 #include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibbolethcredentials.h"
@@ -26,6 +27,11 @@
 #include "logger.h"
 #include "accessmanager.h"
 #include "theme.h"
+#include "configfile.h"
+
+namespace {
+    const char ShibbolethWebViewGeometryC[] = "ShibbolethWebView/Geometry";
+}
 
 namespace OCC
 {
@@ -39,6 +45,7 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget* parent)
     // no minimize
     setWindowFlags(Qt::Dialog);
     setAttribute(Qt::WA_DeleteOnClose);
+
     QWebPage* page = new QWebPage(this);
     page->setNetworkAccessManager(account->networkAccessManager());
     connect(page, SIGNAL(loadStarted()),
@@ -60,10 +67,18 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget* parent)
     if (shibCookie != QNetworkCookie()) {
         Logger::instance()->postOptionalGuiLog(tr("Reauthentication required"), tr("Your session has expired. You need to re-login to continue to use the client."));
     }
+
+    ConfigFile config;
+    QSettings settings(config.configFile());
+    resize(900, 700); // only effective the first time, later overridden by restoreGeometry
+    restoreGeometry(settings.value(ShibbolethWebViewGeometryC).toByteArray());
 }
 
 ShibbolethWebView::~ShibbolethWebView()
 {
+    ConfigFile config;
+    QSettings settings(config.configFile());
+    settings.setValue(ShibbolethWebViewGeometryC, saveGeometry());
 }
 
 void ShibbolethWebView::onNewCookiesForUrl (const QList<QNetworkCookie>& cookieList, const QUrl& url)
@@ -105,7 +120,7 @@ void ShibbolethWebView::slotLoadFinished(bool success)
     }
 
     if (!title().isNull()) {
-        setWindowTitle(tr("%1 - %2").arg(Theme::instance()->appNameGUI(), title()));
+        setWindowTitle(QString::fromLatin1("%1 - %2 (%3)").arg(Theme::instance()->appNameGUI(), title(), url().host()));
     }
 
     if (!success) {
