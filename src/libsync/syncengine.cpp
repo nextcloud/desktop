@@ -416,7 +416,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             dir = SyncFileItem::None;
         } else {
             // No need to do anything.
-            _hasNoneFiles = true;
+            if (file->other.instruction == CSYNC_INSTRUCTION_NONE) {
+                _hasNoneFiles = true;
+            }
 
             emit syncItemDiscovered(item);
             return re;
