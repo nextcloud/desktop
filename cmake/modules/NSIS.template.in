@@ -264,7 +264,7 @@ FunctionEnd
 !macro ConfirmEndProcess processName
    MessageBox MB_YESNO|MB_ICONEXCLAMATION \
      $ConfirmEndProcess_MESSAGEBOX_TEXT \
-     IDYES process_${processName}_kill IDNO process_${processName}_ended
+     /SD IDYES IDYES process_${processName}_kill IDNO process_${processName}_ended
    process_${processName}_kill:
       DetailPrint $ConfirmEndProcess_KILLING_PROCESSES_TEXT
       Processes::KillProcess ${processName}
