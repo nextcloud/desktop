@@ -19,6 +19,7 @@
 #include "creds/abstractcredentials.h"
 #include "../3rdparty/certificates/p12topem.h"
 #include "capabilities.h"
+#include "theme.h"
 
 #include <QSettings>
 #include <QMutex>
@@ -40,7 +41,7 @@ Account::Account(QObject *parent)
     , _am(0)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
-    , _davPath("remote.php/webdav/")
+    , _davPath( Theme::instance()->webDavPath() )
     , _wasMigrated(false)
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");

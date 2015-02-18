@@ -368,7 +368,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 bool OwncloudPropagator::isInSharedDirectory(const QString& file)
 {
     bool re = false;
-    if( _remoteDir.contains("remote.php/webdav/Shared") ) {
+    if( _remoteDir.contains( _account->davPath() + QLatin1String("Shared") ) ) {
         // The Shared directory is synced as its own sync connection
         re = true;
     } else {

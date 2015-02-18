@@ -193,7 +193,7 @@ private:
     static QString _configFileName;
     QByteArray _pemCertificate; 
     QString _pemPrivateKey;  
-    QString _davPath; // default "remote.php/webdav/";
+    QString _davPath; // defaults to value from theme, might be overwritten in brandings
     bool _wasMigrated;
     friend class AccountManager;
 };

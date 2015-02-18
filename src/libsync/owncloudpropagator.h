@@ -249,8 +249,8 @@ public:
     ne_session_s * const _session;
 
     const QString _localDir; // absolute path to the local directory. ends with '/'
-    const QString _remoteDir; // path to the root of the remote. ends with '/'  (include remote.php/webdav)
-    const QString _remoteFolder; // folder. (same as remoteDir but without remote.php/webdav)
+    const QString _remoteDir; // path to the root of the remote. ends with '/'  (include WebDAV path)
+    const QString _remoteFolder; // folder. (same as remoteDir but without the WebDAV path)
 
     SyncJournalDb * const _journal;
     bool _finishedEmited; // used to ensure that finished is only emit once

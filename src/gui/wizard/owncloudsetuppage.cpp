@@ -106,11 +106,15 @@ void OwncloudSetupPage::slotUrlChanged(const QString& url)
     if (url.endsWith("index.php")) {
         newUrl.chop(9);
     }
-    if (url.endsWith("remote.php/webdav")) {
-        newUrl.chop(17);
+    QString webDavPath = Theme::instance()->webDavPath();
+    if (url.endsWith(webDavPath)) {
+        newUrl.chop( webDavPath.length() );
     }
-    if (url.endsWith("remote.php/webdav/")) {
-        newUrl.chop(18);
+    if( webDavPath.endsWith(QLatin1Char('/')) ) {
+        webDavPath.chop(1); // cut off the slash
+        if( url.endsWith(webDavPath)) {
+            newUrl.chop(webDavPath.length());
+        }
     }
     if (newUrl != url) {
         _ui.leUrl->setText(newUrl);

@@ -655,7 +655,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         if (rec._remotePerm.isNull()) {
             // probably owncloud 6, that does not have permissions flag yet.
             QString url = folder->remoteUrl().toString() + fileName;
-            if (url.contains(QLatin1String("/remote.php/webdav/Shared/"))) {
+            if (url.contains( Theme::instance()->webDavPath() + QLatin1String("Shared/") )) {
                 status.setSharedWithMe(true);
             }
         } else if (rec._remotePerm.contains("S")) {
