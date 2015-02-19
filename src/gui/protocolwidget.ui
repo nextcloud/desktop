@@ -26,7 +26,7 @@
          <bool>true</bool>
         </property>
         <property name="rootIsDecorated">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="uniformRowHeights">
          <bool>true</bool>
@@ -46,12 +46,12 @@
         </column>
         <column>
          <property name="text">
-          <string>3</string>
+          <string notr="true">3</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>4</string>
+          <string notr="true">4</string>
          </property>
         </column>
        </widget>
