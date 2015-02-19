@@ -161,17 +161,13 @@ QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) con
 {
     QLocale loc = QLocale::system();
     QString timeStr;
-    QDate today = QDate::currentDate();
 
     if( format == QLocale::NarrowFormat ) {
-        if( dt.date().day() == today.day() ) {
-            timeStr = loc.toString(dt.time(), QLocale::NarrowFormat);
-        } else {
-            timeStr = loc.toString(dt, QLocale::NarrowFormat);
-        }
+        timeStr = loc.toString(dt, QLocale::NarrowFormat);
     } else {
         timeStr = loc.toString(dt, format);
     }
+
     return timeStr;
 }
 
