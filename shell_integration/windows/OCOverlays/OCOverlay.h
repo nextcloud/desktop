@@ -17,8 +17,6 @@
 
 #pragma once
 
-class RemotePathChecker;
-
 class OCOverlay : public IShellIconOverlayIdentifier
 
 {
@@ -36,12 +34,8 @@ protected:
     ~OCOverlay();
 
 private:
-	//bool _GenerateMessage(const wchar_t*, std::wstring*);
-	void lazyInit();
-
 	bool _IsOverlaysEnabled();
     long _referenceCount;
-	RemotePathChecker* _checker;
 	int _state;
 };
 

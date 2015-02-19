@@ -28,6 +28,7 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <memory>
 
 using namespace std;
 
@@ -38,9 +39,24 @@ extern HINSTANCE instanceHandle;
 #define IDM_DISPLAY 0  
 #define IDB_OK 101
 
+namespace {
+
+unique_ptr<RemotePathChecker> s_instance;
+
+RemotePathChecker *getGlobalChecker()
+{
+	// On Vista we'll run into issue #2680 if we try to create the thread+pipe connection
+	// on any DllGetClassObject of our registered classes.
+	// Work around the issue by creating the static RemotePathChecker only once actually needed.
+	static once_flag s_onceFlag;
+	call_once(s_onceFlag, [] { s_instance.reset(new RemotePathChecker); });
+
+	return s_instance.get();
+}
+
+}
 OCOverlay::OCOverlay(int state) 
 	: _referenceCount(1)
-	, _checker(nullptr)
 	, _state(state)
 {
 }
@@ -49,16 +65,6 @@ OCOverlay::~OCOverlay(void)
 {
 }
 
-void OCOverlay::lazyInit()
-{
-	// On Vista we'll run into issue #2680 if we try to create the thread+pipe connection
-	// on any DllGetClassObject of our registered classes.
-	// Work around the issue by creating the static RemotePathChecker only once actually needed.
-	if (_checker)
-		return;
-	static RemotePathChecker s_remotePathChecker;
-	_checker = &s_remotePathChecker;
-}
 
 IFACEMETHODIMP_(ULONG) OCOverlay::AddRef()
 {
@@ -128,9 +134,8 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
 
  IFACEMETHODIMP OCOverlay::IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib)
 {
-	lazyInit();
-	assert(_checker);
-	auto watchedDirectories = _checker->WatchedDirectories();
+	RemotePathChecker* checker = getGlobalChecker();
+	auto watchedDirectories = checker->WatchedDirectories();
 
 	wstring wpath(pwszPath);
 	wpath.append(L"\\");
@@ -147,7 +152,7 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
 	}
 
 	int state = 0;
-	if (!_checker->IsMonitoredPath(pwszPath, &state)) {
+	if (!checker->IsMonitoredPath(pwszPath, &state)) {
 		return MAKE_HRESULT(S_FALSE, 0, 0);
 	}
 	return MAKE_HRESULT(state == _state ? S_OK : S_FALSE, 0, 0);
