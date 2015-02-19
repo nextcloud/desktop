@@ -73,7 +73,7 @@ signals:
     void folderStateChanged(Folder*);
 
 protected slots:
-    void slotParseOptions( const QString&, QObject* );
+    void slotParseMessage(const QString&, QObject*);
     void slotCheckConnection();
     void slotUpdateConnectionErrors(int accountState);
     void slotStartUpdateDetector();
