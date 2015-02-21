@@ -1581,16 +1581,6 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.ui" line="49"/>
-        <source>3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.ui" line="54"/>
-        <source>4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/protocolwidget.cpp" line="50"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
@@ -1641,12 +1631,12 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="262"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="258"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="265"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="261"/>
         <source>%n files are ignored because of previous errors.
 </source>
         <translation type="unfinished">
@@ -1655,7 +1645,7 @@ It is not advisable to use it.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="266"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="262"/>
         <source>%n files are partially downloaded.
 </source>
         <translation type="unfinished">
@@ -1664,7 +1654,7 @@ It is not advisable to use it.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="267"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="263"/>
         <source>Try to sync these again.</source>
         <translation type="unfinished"></translation>
     </message>
