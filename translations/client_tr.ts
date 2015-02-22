@@ -1197,7 +1197,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="185"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>%2 üzerinde %1 bağlantısı yapılamadı:&lt;br/&gt;%3</translation>
+        <translation>%2 üzerinde %1 adresine bağlanılamadı:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="193"/>
@@ -2236,7 +2236,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="217"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation>Bu öge önceki hatalar koşullarından dolayı eşitlenemiyor: %1</translation>
+        <translation>Bu öge, önceki hatalardan dolayı eşitlenemiyor: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="340"/>

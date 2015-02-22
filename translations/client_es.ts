@@ -259,7 +259,7 @@ Tiempo restante %5</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="23"/>
         <source>Select a certificate</source>
-        <translation>Seleccionar un certificado</translation>
+        <translation>Seleccione un certificado</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="23"/>
@@ -1226,7 +1226,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="281"/>
         <source>ok</source>
-        <translation>ok</translation>
+        <translation>bien</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="283"/>
@@ -1419,7 +1419,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
         <source>Continue blacklisting: </source>
-        <translation>Continúe agregando a su Lista Negra:</translation>
+        <translation>Continúe agregando a su lista negra:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="200"/>
@@ -2003,7 +2003,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="150"/>
         <source>%1 (self-signed)</source>
-        <translation>%1 (self-signed)</translation>
+        <translation>%1 (autofirmado)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="152"/>
@@ -2347,7 +2347,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="237"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Copyright ownCloud, Incorporado&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Copyright ownCloud, incorporado&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="238"/>
