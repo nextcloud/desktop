@@ -66,12 +66,12 @@ void DiscoveryJob::update_job_update_callback (bool local,
     DiscoveryJob *updateJob = static_cast<DiscoveryJob*>(userdata);
     if (updateJob) {
         // Don't wanna overload the UI
-        if (!updateJob->lastUpdateProgressCallbackCall.isValid()) {
-            updateJob->lastUpdateProgressCallbackCall.restart(); // first call
-        } else if (updateJob->lastUpdateProgressCallbackCall.elapsed() < 200) {
+        if (!updateJob->_lastUpdateProgressCallbackCall.isValid()) {
+            updateJob->_lastUpdateProgressCallbackCall.restart(); // first call
+        } else if (updateJob->_lastUpdateProgressCallbackCall.elapsed() < 200) {
             return;
         } else {
-            updateJob->lastUpdateProgressCallbackCall.restart();
+            updateJob->_lastUpdateProgressCallbackCall.restart();
         }
 
         QString path(QUrl::fromPercentEncoding(QByteArray(dirUrl)).section('/', -1));
@@ -472,7 +472,7 @@ void DiscoveryJob::start() {
     csync_set_log_callback(_log_callback);
     csync_set_log_level(_log_level);
     csync_set_log_userdata(_log_userdata);
-    lastUpdateProgressCallbackCall.invalidate();
+    _lastUpdateProgressCallbackCall.invalidate();
     int ret = csync_update(_csync_ctx);
 
     _csync_ctx->checkSelectiveSyncBlackListHook = 0;
