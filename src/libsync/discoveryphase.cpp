@@ -421,6 +421,8 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
         if (directoryResult->code != 0) {
             qDebug() << Q_FUNC_INFO << directoryResult->code << "when opening" << url;
             errno = directoryResult->code;
+            // save the error string to the context
+            discoveryJob->_csync_ctx->error_string = qstrdup( directoryResult->msg.toUtf8().constData() );
             return NULL;
         }
 
