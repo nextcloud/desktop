@@ -117,11 +117,11 @@ public:
 class DiscoveryJob : public QObject {
     Q_OBJECT
     friend class DiscoveryMainThread;
-    CSYNC *_csync_ctx;
-    csync_log_callback _log_callback;
-    int _log_level;
-    void* _log_userdata;
-    QElapsedTimer lastUpdateProgressCallbackCall;
+    CSYNC              *_csync_ctx;
+    csync_log_callback  _log_callback;
+    int                 _log_level;
+    void*               _log_userdata;
+    QElapsedTimer       _lastUpdateProgressCallbackCall;
 
     /**
      * return true if the given path should be synced,
