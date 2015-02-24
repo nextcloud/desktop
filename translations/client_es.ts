@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="140"/>
         <source>Create Folder</source>
-        <translation>Crear Carpeta</translation>
+        <translation>Crear carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="160"/>
@@ -70,7 +70,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>Conectado al &lt;servidor&gt; como &lt;usuario&gt;</translation>
+        <translation>Conectado a &lt;server&gt; como &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="55"/>
@@ -126,7 +126,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="111"/>
         <source>No account configured.</source>
-        <translation>No se ha configurado la cuenta.</translation>
+        <translation>No se ha configurado ninguna cuenta.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="169"/>
@@ -259,7 +259,7 @@ Tiempo restante %5</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="23"/>
         <source>Select a certificate</source>
-        <translation>Seleccionar un certificado</translation>
+        <translation>Seleccione un certificado</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="23"/>
@@ -272,7 +272,7 @@ Tiempo restante %5</translation>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation>Autenticación requerida</translation>
+        <translation>Se requiere autenticación</translation>
     </message>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="31"/>
@@ -511,7 +511,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderman.cpp" line="1044"/>
         <source>User Abort.</source>
-        <translation>Interrumpir.</translation>
+        <translation>Interrumpido por el usuario.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1047"/>
@@ -540,7 +540,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="221"/>
         <source>Remote path: %1</source>
-        <translation>Ruta Remota: %1</translation>
+        <translation>Ruta remota: %1</translation>
     </message>
 </context>
 <context>
@@ -572,7 +572,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="100"/>
         <source>No valid local folder selected!</source>
-        <translation>Ninguna carpeta local válida seleccionada </translation>
+        <translation>¡No se ha seleccionado ninguna carpeta local válida!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="105"/>
@@ -592,7 +592,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="141"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation>La carpeta seleccionada es un enlace simbólico. Ya existe una carpeta configurada en la carpeta a la que apunta este vínculo.</translation>
+        <translation>La carpeta seleccionada es un enlace simbólico. Ya existe una carpeta configurada en la carpeta a la que apunta este enlace.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="148"/>
@@ -617,7 +617,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="211"/>
         <source>Select the source folder</source>
-        <translation>Seleccione la carpeta de origen.</translation>
+        <translation>Seleccione la carpeta de origen</translation>
     </message>
 </context>
 <context>
@@ -762,7 +762,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="401"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation>Por favor, introduzca su %1 contraseña para el usuario &apos;%2&apos;:</translation>
+        <translation>Por favor, introduzca la contraseña de %1 para el usuario &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -787,7 +787,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
         <source>Files or directories matching a pattern will not be synchronized.
 
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Los archivos o directorios concordantes con el patrón no serán sincronizados.
+        <translation>Los archivos o directorios que concuerden con el patrón no se sincronizarán.
 
 Los elementos marcados también se eliminarán si impiden la eliminación de algún directorio. Esto es útil para los metadatos</translation>
     </message>
@@ -1041,8 +1041,7 @@ Los elementos marcados también se eliminarán si impiden la eliminación de alg
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>A new update is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Está a punto de instalarse una nueva actualización. Puede que el gestor de actualizaciones
-pida privilegios adicionales durante el proceso.</translation>
+        <translation>Está a punto de instalarse una nueva actualización. Puede que el gestor de actualizaciones pida privilegios adicionales durante el proceso.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="77"/>
@@ -1144,7 +1143,7 @@ pida privilegios adicionales durante el proceso.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="47"/>
         <source>Enter user credentials</source>
-        <translation>Digite credenciales de usuario</translation>
+        <translation>Introduzca las credenciales de usuario</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="164"/>
@@ -1197,7 +1196,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="185"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>Se falló al conectar %1 a %2:&lt;br/&gt;%3</translation>
+        <translation>Fallo al conectar %1 a %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="193"/>
@@ -1227,7 +1226,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="281"/>
         <source>ok</source>
-        <translation>ok</translation>
+        <translation>bien</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="283"/>
@@ -1420,7 +1419,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
         <source>Continue blacklisting: </source>
-        <translation>Continúe agregando a su Lista Negra:</translation>
+        <translation>Continúe agregando a su lista negra:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="200"/>
@@ -2004,7 +2003,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="150"/>
         <source>%1 (self-signed)</source>
-        <translation>%1 (self-signed)</translation>
+        <translation>%1 (autofirmado)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="152"/>
@@ -2348,7 +2347,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="237"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Copyright ownCloud, Incorporado&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Copyright ownCloud, incorporado&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="238"/>

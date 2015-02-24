@@ -2303,7 +2303,7 @@ We adviseren deze site niet te gebruiken.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="970"/>
         <location filename="../src/libsync/syncengine.cpp" line="990"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>Niet toegestaan te verwijderen, herstellen</translation>
+        <translation>Niet toegestaan om te verwijderen, herstellen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1003"/>
@@ -2597,7 +2597,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation>Configureer client-side TLS certificaat</translation>
+        <translation>Configureer het client-side TLS-certificaat</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="18"/>
@@ -2631,7 +2631,7 @@ We adviseren deze site niet te gebruiken.</translation>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="109"/>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="122"/>
         <source>TextLabel</source>
-        <translation>TekstLabel</translation>
+        <translation>Tekstlabel</translation>
     </message>
 </context>
 <context>
@@ -2732,7 +2732,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="20"/>
         <source>TextLabel</source>
-        <translation>TekstLabel</translation>
+        <translation>Tekstlabel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
@@ -2743,7 +2743,7 @@ We adviseren deze site niet te gebruiken.</translation>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="120"/>
         <source>PushButton</source>
-        <translation>DrukKnop</translation>
+        <translation>Drukknop</translation>
     </message>
 </context>
 <context>

@@ -96,14 +96,16 @@ int main(int argc, char **argv)
     }
 
     // if the application is already running, notify it.
-    if( app.isRunning() ) {
+    if(app.isRunning()) {
         qDebug() << Q_FUNC_INFO << "Already running, exiting...";
         QStringList args = app.arguments();
-        if ( args.size() > 1 && ! app.giveHelp() ) {
-            QString msg = args.join( QLatin1String("|") );
-            if( ! app.sendMessage( msg ) )
+        if (args.size() > 1) {
+            QString msg = args.join(QLatin1String("|"));
+            if(!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg))
                 return -1;
         }
+        if(!app.sendMessage(QLatin1String("MSG_SHOWSETTINGS")))
+            return -1;
         return 0;
     } else {
         if (!QSystemTrayIcon::isSystemTrayAvailable()) {

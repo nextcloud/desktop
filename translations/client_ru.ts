@@ -352,7 +352,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="168"/>
         <source>%1 is not readable.</source>
-        <translation>%1 не читается.</translation>
+        <translation>%1 не может быть прочитан.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="359"/>
@@ -434,7 +434,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="782"/>
         <source>Could not read system exclude file</source>
-        <translation>Невозможно прочесть исключенный системный файл</translation>
+        <translation>Невозможно прочесть системный файл исключений</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1002"/>

@@ -59,7 +59,7 @@ public:
     }
 
     friend bool operator==(const SyncFileItem& item1, const SyncFileItem& item2) {
-        return item1._file == item2._file;
+        return item1._originalFile == item2._originalFile;
     }
 
     friend bool operator<(const SyncFileItem& item1, const SyncFileItem& item2) {

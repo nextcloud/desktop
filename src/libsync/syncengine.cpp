@@ -341,6 +341,10 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     // record the seen files to be able to clean the journal later
     _seenFiles.insert(item._file);
+    if (!renameTarget.isEmpty()) {
+        // Yes, this record both the rename renameTarget and the original so we keep both in case of a rename
+        _seenFiles.insert(renameTarget);
+    }
 
     if (remote && file->remotePerm && file->remotePerm[0]) {
         _remotePerms[item._file] = file->remotePerm;

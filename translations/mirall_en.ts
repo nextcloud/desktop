@@ -884,12 +884,12 @@ Checked items will also be deleted if they prevent a directory from being remove
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="157"/>
+        <location filename="../src/libsync/logger.cpp" line="163"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="158"/>
+        <location filename="../src/libsync/logger.cpp" line="164"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1581,16 +1581,6 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.ui" line="49"/>
-        <source>3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.ui" line="54"/>
-        <source>4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/protocolwidget.cpp" line="50"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
@@ -1641,12 +1631,12 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="262"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="258"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="265"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="261"/>
         <source>%n files are ignored because of previous errors.
 </source>
         <translation type="unfinished">
@@ -1655,7 +1645,7 @@ It is not advisable to use it.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="266"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="262"/>
         <source>%n files are partially downloaded.
 </source>
         <translation type="unfinished">
@@ -1664,7 +1654,7 @@ It is not advisable to use it.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="267"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="263"/>
         <source>Try to sync these again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2275,94 +2265,94 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="340"/>
+        <location filename="../src/libsync/syncengine.cpp" line="357"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="343"/>
+        <location filename="../src/libsync/syncengine.cpp" line="360"/>
         <source>Hard links are not supported in syncing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="346"/>
+        <location filename="../src/libsync/syncengine.cpp" line="363"/>
         <source>File is listed on the ignore list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="349"/>
+        <location filename="../src/libsync/syncengine.cpp" line="366"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="366"/>
+        <location filename="../src/libsync/syncengine.cpp" line="383"/>
         <source>Filename encoding is not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="569"/>
+        <location filename="../src/libsync/syncengine.cpp" line="586"/>
         <source>Unable to initialize a sync journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="650"/>
+        <location filename="../src/libsync/syncengine.cpp" line="667"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="897"/>
-        <location filename="../src/libsync/syncengine.cpp" line="904"/>
+        <location filename="../src/libsync/syncengine.cpp" line="914"/>
+        <location filename="../src/libsync/syncengine.cpp" line="921"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="922"/>
+        <location filename="../src/libsync/syncengine.cpp" line="939"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="928"/>
+        <location filename="../src/libsync/syncengine.cpp" line="945"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="935"/>
+        <location filename="../src/libsync/syncengine.cpp" line="952"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="955"/>
+        <location filename="../src/libsync/syncengine.cpp" line="972"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="972"/>
-        <location filename="../src/libsync/syncengine.cpp" line="992"/>
+        <location filename="../src/libsync/syncengine.cpp" line="989"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1009"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1022"/>
         <source>Local files and share folder removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1060"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Move not allowed, item restored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1069"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1086"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1070"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1087"/>
         <source>the destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1070"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1087"/>
         <source>the source</source>
         <translation type="unfinished"></translation>
     </message>

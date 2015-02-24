@@ -102,6 +102,11 @@ if(TOKEN_AUTH_ONLY)
    add_definitions(-DTOKEN_AUTH_ONLY=1)
 endif()
 
+option(NO_MSG_HANDLER "Don't redirect QDebug outputs to the log window/file" OFF)
+if(NO_MSG_HANDLER)
+   add_definitions(-DNO_MSG_HANDLER=1)
+endif()
+
 # this option creates only libocsync and libowncloudsync
 option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 

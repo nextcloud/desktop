@@ -111,7 +111,7 @@ Application::Application(int &argc, char **argv) :
 
     _folderManager.reset(new FolderMan);
 
-    connect( this, SIGNAL(messageReceived(QString, QObject*)), SLOT(slotParseOptions(QString, QObject*)));
+    connect(this, SIGNAL(messageReceived(QString, QObject*)), SLOT(slotParseMessage(QString, QObject*)));
 
     // Create the account info manager to ensure it's listening to the
     // account manager.
@@ -343,15 +343,16 @@ void Application::slotUseMonoIconsChanged(bool)
     _gui->slotComputeOverallSyncStatus();
 }
 
-void Application::slotParseOptions(const QString &opts, QObject*)
+void Application::slotParseMessage(const QString &msg, QObject*)
 {
-    QStringList options = opts.split(QLatin1Char('|'));
-    parseOptions(options);
-    setupLogging();
-
-    //This function is calld happens when someone tries to run another instance of ownCloud
-    // show the settings dialog
-    showSettingsDialog();
+    if (msg.startsWith(QLatin1String("MSG_PARSEOPTIONS:"))) {
+        const int lengthOfMsgPrefix = 17;
+        QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
+        parseOptions(options);
+        setupLogging();
+    } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
+        showSettingsDialog();
+    }
 }
 
 void Application::parseOptions(const QStringList &options)

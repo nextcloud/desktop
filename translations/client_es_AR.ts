@@ -743,7 +743,7 @@ Esto se puede deber a que el directorio fue reconfigurado de manera silenciosa o
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Actualizaciones</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="98"/>
