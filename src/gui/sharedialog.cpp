@@ -33,6 +33,11 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _ui->pushButton_copy->setText(tr("Copy Link"));
     connect(_ui->pushButton_copy, SIGNAL(clicked(bool)), SLOT(slotPushButtonCopyLinkPressed()));
 
+    QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
+    if( closeButton ) {
+        connect( closeButton, SIGNAL(clicked()), this, SLOT(close()) );
+    }
+
     // the following progress indicator widgets are added to layouts which makes them
     // automatically deleted once the dialog dies.
     _pi_link     = new QProgressIndicator();
