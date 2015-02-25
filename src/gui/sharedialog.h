@@ -74,6 +74,7 @@ private slots:
     void slotPushButtonCopyLinkPressed();
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
 private:
+    void setShareCheckBoxTitle(bool haveShares);
     void displayError(int code);
     void displayInfo( const QString& msg );
 
@@ -85,6 +86,7 @@ private:
     int     _uploadFails;
     QString _expectedSyncFile;
 
+    bool _passwordJobRunning;
     QList<QVariant> _shares;
     qulonglong _public_share_id;
     void setPassword(const QString &password);
@@ -94,6 +96,7 @@ private:
     QProgressIndicator *_pi_link;
     QProgressIndicator *_pi_password;
     QProgressIndicator *_pi_date;
+
 };
 
 }

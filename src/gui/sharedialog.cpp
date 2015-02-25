@@ -1,4 +1,4 @@
-#include "sharedialog.h"
+﻿#include "sharedialog.h"
 #include "ui_sharedialog.h"
 #include "networkjobs.h"
 #include "account.h"
@@ -25,6 +25,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _account(account),
     _sharePath(sharePath),
     _localPath(localPath),
+    _passwordJobRunning(false),
     _public_share_id(0)
 {
     setAttribute(Qt::WA_DeleteOnClose);
@@ -56,6 +57,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
+    _ui->pushButton_setPassword->hide();
     _ui->calendar->hide();
 
     QFileInfo f_info(_localPath);
@@ -65,11 +67,18 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     QString name;
     if( f_info.isDir() ) {
-        name = tr("Share directory %2").arg(_localPath);
+        name = tr("Share Directory");
     } else {
-        name = tr("Share file %1").arg(_localPath);
+        name = tr("Share File");
     }
-    _ui->label_name->setText(name);
+    _ui->groupBox->setTitle(name);
+
+    QString lPath(_localPath);
+    if( lPath.length() > 50) {
+        lPath = QLatin1String("...")+lPath.right(50);
+    }
+    _ui->label_name->setText(tr("Local path: %1").arg(lPath));
+
     _ui->label_sharePath->setWordWrap(true);
     _ui->label_sharePath->setText(tr("%1 path: %2").arg(Theme::instance()->appNameGUI()).arg(_sharePath));
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
@@ -155,6 +164,10 @@ void ShareDialog::slotPasswordReturnPressed()
 
 void ShareDialog::setPassword(const QString &password)
 {
+    if( _passwordJobRunning ) {
+        // This happens because the entry field and the button both trigger this slot.
+        return;
+    }
     _pi_password->startAnimation();
     QUrl url;
     QList<QPair<QString, QString> > requestParams;
@@ -182,6 +195,7 @@ void ShareDialog::setPassword(const QString &password)
     job->setPostParams(requestParams);
     connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotPasswordSet(QString)));
     job->start();
+    _passwordJobRunning = true;
 }
 
 void ShareDialog::slotPasswordSet(const QString &reply)
@@ -193,15 +207,15 @@ void ShareDialog::slotPasswordSet(const QString &reply)
 
     if (code != 100) {
         displayError(code);
-    } else {
-        /*
+    }
+    /*
          * When setting/deleting a password from a share the old share is
          * deleted and a new one is created. So we need to refetch the shares
          * at this point.
          */
-        getShares();
-    }
+    getShares();
 
+    _passwordJobRunning = false;
     _pi_password->stopAnimation();
 }
 
@@ -229,33 +243,38 @@ void ShareDialog::slotSharesFetched(const QString &reply)
     bool success = false;
     QVariantMap json = QtJson::parse(reply, success).toMap();
     ShareDialog::_shares = json.value("ocs").toMap().value("data").toList();
-    Q_FOREACH(auto share, ShareDialog::_shares)
-    {
+    const QString versionString = AccountManager::instance()->account()->serverVersion();
+
+    Q_FOREACH(auto share, ShareDialog::_shares) {
         QVariantMap data = share.toMap();
 
-        if (data.value("share_type").toInt() == SHARETYPE_PUBLIC)
-        {
+        if (data.value("share_type").toInt() == SHARETYPE_PUBLIC) {
             _public_share_id = data.value("id").toULongLong();
 
             _ui->widget_shareLink->show();
             _ui->checkBox_shareLink->setChecked(true);
 
-            if (data.value("share_with").isValid())
-            {
+            if (data.value("share_with").isValid()) {
                 _ui->checkBox_password->setChecked(true);
                 _ui->lineEdit_password->setPlaceholderText("********");
                 _ui->lineEdit_password->show();
+                _ui->pushButton_setPassword->show();
+            } else {
+                _ui->checkBox_password->setChecked(false);
+                // _ui->lineEdit_password->setPlaceholderText("********");
+                _ui->lineEdit_password->hide();
+                _ui->pushButton_setPassword->hide();
             }
 
-            if (data.value("expiration").isValid())
-            {
+            if (data.value("expiration").isValid()) {
                 _ui->calendar->setSelectedDate(QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00"));
                 _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
                 _ui->calendar->show();
                 _ui->checkBox_expire->setChecked(true);
+            } else {
+                _ui->calendar->hide();
+                _ui->checkBox_expire->setChecked(false);
             }
-
-            const QString versionString = AccountManager::instance()->account()->serverVersion();
 
             QString url;
             // From ownCloud server version 8 on, a different share link scheme is used.
@@ -270,6 +289,7 @@ void ShareDialog::slotSharesFetched(const QString &reply)
             _ui->lineEdit_shareLink->setText(url);
         }
     }
+    setShareCheckBoxTitle(_shares.count() > 0);
 }
 
 void ShareDialog::slotDeleteShareFetched(const QString &reply)
@@ -288,14 +308,17 @@ void ShareDialog::slotDeleteShareFetched(const QString &reply)
     _ui->lineEdit_shareLink->clear();
     _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
+    _ui->pushButton_setPassword->hide();
     _ui->checkBox_expire->setChecked(false);
     _ui->calendar->hide();
+
+    setShareCheckBoxTitle(false);
+
 }
 
 void ShareDialog::slotCheckBoxShareLinkClicked()
 {
-    if (_ui->checkBox_shareLink->checkState() == Qt::Checked)
-    {
+    if (_ui->checkBox_shareLink->checkState() == Qt::Checked) {
         _pi_link->startAnimation();
         QUrl url = Account::concatUrlPath(_account->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
         QList<QPair<QString, QString> > postParams;
@@ -305,9 +328,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
         job->setPostParams(postParams);
         connect(job, SIGNAL(jobFinished(QString)), this, SLOT(slotCreateShareFetched(QString)));
         job->start();
-    }
-    else
-    {
+    } else {
         _pi_link->startAnimation();
         QUrl url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
         OcsShareJob *job = new OcsShareJob("DELETE", url, _account, this);
@@ -342,6 +363,7 @@ void ShareDialog::slotCreateShareFetched(const QString &reply)
     _public_share_id = json.value("ocs").toMap().values("data")[0].toMap().value("id").toULongLong();
     QString url = json.value("ocs").toMap().values("data")[0].toMap().value("url").toString();
     _ui->lineEdit_shareLink->setText(url);
+    setShareCheckBoxTitle(true);
 
     _ui->widget_shareLink->show();
 }
@@ -351,6 +373,7 @@ void ShareDialog::slotCheckBoxPasswordClicked()
     if (_ui->checkBox_password->checkState() == Qt::Checked)
     {
         _ui->lineEdit_password->show();
+        _ui->pushButton_setPassword->show();
         _ui->lineEdit_password->setPlaceholderText(tr("Choose a password for the public link"));
     }
     else
@@ -359,6 +382,7 @@ void ShareDialog::slotCheckBoxPasswordClicked()
         _ui->lineEdit_password->setPlaceholderText(QString());
         _pi_password->startAnimation();
         _ui->lineEdit_password->hide();
+        _ui->pushButton_setPassword->hide();
     }
 }
 
@@ -399,6 +423,19 @@ int ShareDialog::checkJsonReturnCode(const QString &reply, QString &message)
     message = json.value("ocs").toMap().value("meta").toMap().value("message").toString();
 
     return code;
+}
+
+void ShareDialog::setShareCheckBoxTitle(bool haveShares)
+{
+    const QString noSharesTitle(tr("Check to share by public link"));
+    const QString haveSharesTitle(tr("Shared by public link (uncheck to delete share)"));
+
+    if( haveShares ) {
+        _ui->checkBox_shareLink->setText( haveSharesTitle );
+    } else {
+        _ui->checkBox_shareLink->setText( noSharesTitle );
+    }
+
 }
 
 void ShareDialog::displayError(int code)
