@@ -156,7 +156,7 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
   } else {
       ui->_buttonAdd->setVisible(true);
   }
-  bool isConnected = _accountState && _accountState->state() == AccountState::Connected;
+  bool isConnected = _accountState && _accountState->isConnected();
   ui->_buttonAdd->setEnabled(isConnected);
   ui->_buttonEnable->setEnabled( isValid );
   ui->_buttonSelectiveSync->setEnabled(isConnected && isValid);
@@ -168,7 +168,7 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
     } else {
       ui->_buttonEnable->setText( tr( "Resume" ) );
     }
-    ui->_buttonEnable->setEnabled( _accountState && _accountState->state() == AccountState::Connected);
+    ui->_buttonEnable->setEnabled(isConnected);
   }
 }
 
@@ -234,11 +234,7 @@ void AccountSettings::slotAddFolder( Folder *folder )
     if( ! folder || folder->alias().isEmpty() ) return;
 
     QStandardItem *item = new QStandardItem();
-    bool isConnected = false;
-    if (_accountState) {
-        isConnected = (_accountState->state() == AccountState::Connected);
-    }
-    folderToModelItem( item, folder,  isConnected);
+    folderToModelItem( item, folder, _accountState && _accountState->isConnectedOrMaintenance());
     _model->appendRow( item );
     // in order to update the enabled state of the "Sync now" button
     connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChange()), Qt::UniqueConnection);
@@ -541,7 +537,7 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
     }
 
     if( item ) {
-        folderToModelItem( item, folder, _accountState->state() == AccountState::Connected );
+        folderToModelItem( item, folder, _accountState->isConnectedOrMaintenance() );
     } else {
         // the dialog is not visible.
     }
@@ -798,7 +794,7 @@ void AccountSettings::slotAccountStateChanged(int state)
         foreach (Folder *folder, folderMan->map().values()) {
             slotUpdateFolderState(folder);
         }
-        if (state == AccountState::Connected) {
+        if (state == AccountState::Connected || state == AccountState::ServerMaintenance) {
             QString user;
             if (AbstractCredentials *cred = account->credentials()) {
                user = cred->user();
