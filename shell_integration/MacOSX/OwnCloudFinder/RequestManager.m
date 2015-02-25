@@ -170,10 +170,10 @@ static RequestManager* sharedInstance = nil;
 			_shareMenuTitle = [[chunks objectAtIndex:1] copy];
 				// NSLog(@"Received shar menu title: %@", _shareMenuTitle);
 		} else {
-			NSLog(@"OwnCloud: Unknown command %@", [chunks objectAtIndex:0]);
+			NSLog(@"SyncState: Unknown command %@", [chunks objectAtIndex:0]);
 		}
 	} else if (tag != READ_TAG) {
-		NSLog(@"OwnCloud: Received unknown tag %ld <%@>", tag, answer);
+		NSLog(@"SyncState: Received unknown tag %ld <%@>", tag, answer);
 	}
 	// Read on and on
 	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];

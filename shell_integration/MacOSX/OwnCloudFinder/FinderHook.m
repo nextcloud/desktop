@@ -44,12 +44,12 @@ static BOOL installed = NO;
 {
 	if (installed)
 	{
-		// NSLog(@"OwnCloudFinder: already installed");
+		// NSLog(@"SyncStateFinder: already installed");
 
 		return;
 	}
 
-	// NSLog(@"OwnCloudFinder: installing ownCloud Shell extension");
+	// NSLog(@"SyncStateFinder: installing SyncState Shell extension");
 
 	[RequestManager sharedInstance];
 
@@ -81,19 +81,19 @@ static BOOL installed = NO;
 
 	installed = YES;
 
-    // NSLog(@"OwnCloudFinder: installed");
+    // NSLog(@"SyncStateFinder: installed");
 }
 
 + (void)uninstall
 {
 	if (!installed)
 	{
-		// NSLog(@"OwnCloudFinder: not installed");
+		// NSLog(@"SyncStateFinder: not installed");
 
 		return;
 	}
 
-	// NSLog(@"OwnCloudFinder: uninstalling");
+	// NSLog(@"SyncStateFinder: uninstalling");
 
 	[[ContentManager sharedInstance] dealloc];
 
@@ -119,7 +119,7 @@ static BOOL installed = NO;
 
 	installed = NO;
 
-    // NSLog(@"OwnCloudFinder: uninstalled");
+    // NSLog(@"SyncStateFinder: uninstalled");
 }
 
 @end

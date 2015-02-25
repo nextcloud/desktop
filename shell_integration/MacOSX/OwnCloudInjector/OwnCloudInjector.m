@@ -7,7 +7,7 @@
 #define WAIT_FOR_APPLE_EVENT_TO_ENTER_HANDLER_IN_SECONDS 1.0
 #define FINDER_MIN_TESTED_VERSION @"10.7"
 #define FINDER_MAX_TESTED_VERSION @"10.8.5"
-#define LIFERAYNATIVITY_INJECTED_NOTIFICATION @"OwnCloudInjectedNotification"
+#define LIFERAYNATIVITY_INJECTED_NOTIFICATION @"SyncStateInjectedNotification"
 
 EXPORT OSErr HandleLoadEvent(const AppleEvent* ev, AppleEvent* reply, long refcon);
 
@@ -78,14 +78,14 @@ static OSErr loadBundle(LNBundleType type, AppleEvent* reply, long refcon) {
       minVersion = FINDER_MIN_TESTED_VERSION;
       break;
     default:
-      NSLog(@"OwnCloudInjector: Failed to load bundle for type %d", type);
+      NSLog(@"SyncStateInjector: Failed to load bundle for type %d", type);
       return 8;
 
       break;
   }
 
   if (isLoaded) {
-    // NSLog(@"OwnCloudInjector: %@ already loaded.", bundleName);
+    // NSLog(@"SyncStateInjector: %@ already loaded.", bundleName);
     return noErr;
   }
 
@@ -149,7 +149,7 @@ static OSErr loadBundle(LNBundleType type, AppleEvent* reply, long refcon) {
     }
     id principalClassObject = NSClassFromString(NSStringFromClass(principalClass));
     if ([principalClassObject respondsToSelector:@selector(install)]) {
-      // NSLog(@"OwnCloudInjector: Installing %@ ...", bundleName);
+      // NSLog(@"SyncStateInjector: Installing %@ ...", bundleName);
       [principalClassObject install];
     }
 
@@ -186,7 +186,7 @@ EXPORT OSErr HandleLoadEvent(const AppleEvent* ev, AppleEvent* reply, long refco
       NSString* injectorVersion = [injectorBundle objectForInfoDictionaryKey:@"CFBundleVersion"];
 
       if (!injectorVersion || ![injectorVersion isKindOfClass:[NSString class]]) {
-        reportError(reply, [NSString stringWithFormat:@"Unable to determine OwnCloudInjector version!"]);
+        reportError(reply, [NSString stringWithFormat:@"Unable to determine SyncStateInjector version!"]);
         return 7;
       }
 
@@ -232,7 +232,7 @@ EXPORT OSErr HandleUnloadEvent(const AppleEvent* ev, AppleEvent* reply, long ref
     @autoreleasepool {
       @try {
         if (!liferayNativityLoaded) {
-          // NSLog(@"OwnCloudInjector: not loaded.");
+          // NSLog(@"SyncStateInjector: not loaded.");
           return noErr;
         }
 
@@ -253,7 +253,7 @@ EXPORT OSErr HandleUnloadEvent(const AppleEvent* ev, AppleEvent* reply, long ref
         }
         id principalClassObject = NSClassFromString(NSStringFromClass(principalClass));
         if ([principalClassObject respondsToSelector:@selector(uninstall)]) {
-          // NSLog(@"OwnCloudInjector: Uninstalling %@ ...", bundleName);
+          // NSLog(@"SyncStateInjector: Uninstalling %@ ...", bundleName);
           [principalClassObject uninstall];
         }
 
