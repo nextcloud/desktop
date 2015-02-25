@@ -536,7 +536,13 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     }
 
     // file is ignored?
-    if( fi.isSymLink() ) {
+    // Qt considers .lnk files symlinks on Windows so we need to work
+    // around that here.
+    if( fi.isSymLink()
+#ifdef Q_OS_WIN
+            && fi.suffix() != "lnk"
+#endif
+            ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 
