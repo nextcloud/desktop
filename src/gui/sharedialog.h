@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by
+ * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
