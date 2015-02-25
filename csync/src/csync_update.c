@@ -619,11 +619,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           if (asp < 0) {
               CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
           }
-      } else if(errno == ERRNO_SERVICE_UNAVAILABLE) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Service was not available!");
+      } else if(errno == ERRNO_STORAGE_UNAVAILABLE) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Storage was not available!");
           if (ctx->current_fs) {
               ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
-              ctx->current_fs->error_status = CSYNC_STATUS_SERVICE_UNAVAILABLE;
+              ctx->current_fs->error_status = CSYNC_STATUS_STORAGE_UNAVAILABLE;
               /* If a directory has ignored files, put the flag on the parent directory as well */
               if( previous_fs ) {
                   previous_fs->has_ignored_files = true;

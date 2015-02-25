@@ -80,7 +80,7 @@ void DiscoveryJob::update_job_update_callback (bool local,
 }
 
 
-int get_errno_from_http_errcode( int err ) {
+int get_errno_from_http_errcode( int err, const QString & reason ) {
     int new_errno = 0;
 
     switch(err) {
@@ -143,8 +143,11 @@ int get_errno_from_http_errcode( int err ) {
         new_errno = EIO;
         break;
     case 503:           /* Service Unavailable */
-        new_errno = ERRNO_SERVICE_UNAVAILABLE;
-        // FIXME Distinguish between service unavailable and storage unavilable
+        if (reason == "Storage not available") {
+            new_errno = ERRNO_STORAGE_UNAVAILABLE;
+        } else {
+            new_errno = ERRNO_SERVICE_UNAVAILABLE;
+        }
         break;
     case 413:           /* Request Entity too Large */
         new_errno = EFBIG;
@@ -276,11 +279,12 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
 {
     QString contentType = r->header(QNetworkRequest::ContentTypeHeader).toString();
     int httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    QString httpReason = r->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     QString msg = r->errorString();
     int errnoCode = 0;
     qDebug() << Q_FUNC_INFO << r->errorString() << httpCode << r->error();
     if (httpCode != 0 && httpCode != 207) {
-        errnoCode = get_errno_from_http_errcode(httpCode);
+        errnoCode = get_errno_from_http_errcode(httpCode, httpReason);
     } else if (r->error() != QNetworkReply::NoError) {
         errnoCode = EIO;
     } else if (!contentType.contains("application/xml; charset=utf-8")) {
