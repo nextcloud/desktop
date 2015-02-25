@@ -152,14 +152,14 @@ void PropagateUploadFileQNAM::start()
         return;
 
     QFileInfo fi(_propagator->getFilePath(_item._file));
-    if (!fi.exists()) {
+    if (!FileSystem::fileExists(fi)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
         return;
     }
 
     // Update the mtime and size, it might have changed since discovery.
     _item._modtime = FileSystem::getModTime(fi.absoluteFilePath());
-    quint64 fileSize = FileSystem::getSize(fi.absoluteFilePath());
+    quint64 fileSize = FileSystem::getSize(fi);
     _item._size = fileSize;
 
     // But skip the file if the mtime is too close to 'now'!
@@ -509,7 +509,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
     QFileInfo fi(_propagator->getFilePath(_item._file));
 
     // Check if the file still exists
-    if( !fi.exists() ) {
+    if( !FileSystem::fileExists(fi) ) {
         if (!finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
@@ -520,7 +520,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
 
     // compare expected and real modification time of the file and size
     const time_t new_mtime = FileSystem::getModTime(fi.absoluteFilePath());
-    const quint64 new_size = static_cast<quint64>(FileSystem::getSize(fi.absoluteFilePath()));
+    const quint64 new_size = static_cast<quint64>(FileSystem::getSize(fi));
     if (new_mtime != _item._modtime || new_size != _item._size) {
         qDebug() << "The local file has changed during upload:"
                  << "mtime: " << _item._modtime << "<->" << new_mtime

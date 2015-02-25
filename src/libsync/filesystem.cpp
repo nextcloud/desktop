@@ -120,7 +120,7 @@ bool FileSystem::renameReplace(const QString& originFileName, const QString& des
     // Qt 5.1 has QSaveFile::renameOverwrite we cold use.
     // ### FIXME
     success = true;
-    bool destExists = QFileInfo::exists(destinationFileName);
+    bool destExists = fileExists(destinationFileName);
     if( destExists && !QFile::remove(destinationFileName) ) {
         *errorString = orig.errorString();
         qDebug() << Q_FUNC_INFO << "Target file could not be removed.";
@@ -214,24 +214,88 @@ bool FileSystem::openFileSharedRead(QFile* file, QString* error)
     return ok;
 }
 
+#ifdef Q_OS_WIN
+static bool isLnkFile(const QString& filename)
+{
+    return filename.endsWith(".lnk");
+}
+
+static bool isLnkFile(const QFileInfo& fi)
+{
+    return fi.suffix() == "lnk";
+}
+
+static qint64 getSizeWithCsync(const QString& filename)
+{
+    qint64 result = 0;
+    csync_vio_file_stat_t* stat = csync_vio_file_stat_new();
+    if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
+            && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
+        result = stat->size;
+    } else {
+        qDebug() << "Could not get size time for" << filename << "with csync";
+    }
+    csync_vio_file_stat_destroy(stat);
+    return result;
+}
+#endif
+
 qint64 FileSystem::getSize(const QString& filename)
 {
 #ifdef Q_OS_WIN
-    if (filename.endsWith(".lnk")) {
+    if (isLnkFile(filename)) {
         // Use csync to get the file size. Qt seems unable to get at it.
-        qint64 result = 0;
-        csync_vio_file_stat_t* stat = csync_vio_file_stat_new();
-        if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
-                && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
-            result = stat->size;
-        } else {
-            qDebug() << "Could not get size time for" << filename << "with csync";
-        }
-        csync_vio_file_stat_destroy(stat);
-        return result;
+        return getSizeWithCsync(filename);
     }
 #endif
     return QFileInfo(filename).size();
+}
+
+qint64 FileSystem::getSize(const QFileInfo& fi)
+{
+#ifdef Q_OS_WIN
+    if (isLnkFile(fi)) {
+        // Use csync to get the file size. Qt seems unable to get at it.
+        return getSizeWithCsync(fi.absoluteFilePath());
+    }
+#endif
+    return fi.size();
+}
+
+#ifdef Q_OS_WIN
+static bool fileExistsWin(const QString& filename)
+{
+    WIN32_FIND_DATA FindFileData;
+    HANDLE hFind;
+    hFind = FindFirstFileW( (wchar_t*)filename.utf16(), &FindFileData);
+    if (hFind == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+    FindClose(hFind);
+    return true;
+}
+#endif
+
+bool FileSystem::fileExists(const QString& filename)
+{
+#ifdef Q_OS_WIN
+    if (isLnkFile(filename)) {
+        // Use a native check.
+        return fileExistsWin(filename);
+    }
+#endif
+    return QFileInfo::exists(filename);
+}
+
+bool FileSystem::fileExists(const QFileInfo& fi)
+{
+#ifdef Q_OS_WIN
+    if (isLnkFile(fi)) {
+        // Use a native check.
+        return fileExistsWin(fi.absoluteFilePath());
+    }
+#endif
+    return fi.exists();
 }
 
 #ifdef Q_OS_WIN

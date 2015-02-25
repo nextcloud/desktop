@@ -530,7 +530,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
 
     QFileInfo fi(file);
 
-    if( !fi.exists() ) {
+    if( !FileSystem::fileExists(fi) ) {
         qDebug() << "OO File " << file << " is not existing";
         return SyncFileStatus(SyncFileStatus::STATUS_STAT_ERROR);
     }

@@ -14,10 +14,12 @@
 #pragma once
 
 #include <QString>
-#include <QFile>
 #include <ctime>
 
 #include <owncloudlib.h>
+
+class QFile;
+class QFileInfo;
 
 namespace OCC {
 
@@ -39,7 +41,7 @@ void OWNCLOUDSYNC_EXPORT setFileHidden(const QString& filename, bool hidden);
  * Use this over QFileInfo::lastModified() to avoid timezone related bugs. See
  * owncloud/core#9781 for details.
  */
-time_t OWNCLOUDSYNC_EXPORT getModTime(const QString &filename);
+time_t OWNCLOUDSYNC_EXPORT getModTime(const QString& filename);
 
 bool setModTime(const QString &filename, time_t modTime);
 
@@ -49,6 +51,15 @@ bool setModTime(const QString &filename, time_t modTime);
  * See https://bugreports.qt.io/browse/QTBUG-24831.
  */
 qint64 OWNCLOUDSYNC_EXPORT getSize(const QString& filename);
+qint64 OWNCLOUDSYNC_EXPORT getSize(const QFileInfo& fi);
+
+/** Checks whether a file exists.
+ *
+ * Use this over QFileInfo::exists() and QFile::exists() to avoid bugs with lnk
+ * files, see above.
+ */
+bool OWNCLOUDSYNC_EXPORT fileExists(const QString& filename);
+bool OWNCLOUDSYNC_EXPORT fileExists(const QFileInfo& fi);
 
 /**
  * Rename the file \a originFileName to \a destinationFileName, and overwrite the destination if it
