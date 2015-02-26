@@ -31,16 +31,23 @@
 namespace OCC {
 
 /**
- * The mtime of a file must be at least this many milliseconds in
- * the past for an upload to be started. Otherwise the propagator will
- * assume it's still being changed and skip it.
+ * We do not want to upload files that are currently being modified.
+ * To avoid that, we don't upload files that have a modification time
+ * that is too close to the current time.
  *
- * This value must be smaller than the msBetweenRequestAndSync in
- * the folder manager.
- *
- * Two seconds has shown to be a good value in tests.
+ * This interacts with the msBetweenRequestAndSync delay in the folder
+ * manager. If that delay between file-change notification and sync
+ * has passed, we should accept the file for upload here.
  */
-static int minFileAgeForUpload = 2000;
+static bool fileIsStillChanging(const SyncFileItem & item)
+{
+    const QDateTime modtime = Utility::qDateTimeFromTime_t(item._modtime);
+    const qint64 msSinceMod = modtime.msecsTo(QDateTime::currentDateTime());
+
+    return msSinceMod < 2000
+            // if the mtime is too much in the future we *do* upload the file
+            && msSinceMod > -10000;
+}
 
 static qint64 chunkSize() {
     static uint chunkSize;
@@ -165,8 +172,7 @@ void PropagateUploadFileQNAM::start()
     // But skip the file if the mtime is too close to 'now'!
     // That usually indicates a file that is still being changed
     // or not yet fully copied to the destination.
-    QDateTime modtime = Utility::qDateTimeFromTime_t(_item._modtime);
-    if (modtime.msecsTo(QDateTime::currentDateTime()) < minFileAgeForUpload) {
+    if (fileIsStillChanging(_item)) {
         _propagator->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("Local file changed during sync."));
         return;

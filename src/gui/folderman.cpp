@@ -43,8 +43,9 @@ FolderMan* FolderMan::_instance = 0;
  * The minimum time between a sync being requested and it
  * being executed in milliseconds.
  *
- * This delay must be larger than the minFileAgeForUpload in
- * the propagator.
+ * This delay must be large enough to ensure fileIsStillChanging()
+ * in the upload propagator doesn't decide to skip the file because
+ * the modification was too recent.
  */
 static qint64 msBetweenRequestAndSync = 2000;
 
