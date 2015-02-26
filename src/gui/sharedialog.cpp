@@ -603,13 +603,19 @@ void OcsShareJob::start()
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
-    QBuffer *buffer = new QBuffer;
 
-    QStringList tmp;
+    // Url encode the _postParams and put them in a buffer.
+    QByteArray postData;
     Q_FOREACH(auto tmp2, _postParams) {
-        tmp.append(tmp2.first + "=" + tmp2.second);
+        if (! postData.isEmpty()) {
+            postData.append("&");
+        }
+        postData.append(QUrl::toPercentEncoding(tmp2.first));
+        postData.append("=");
+        postData.append(QUrl::toPercentEncoding(tmp2.second));
     }
-    buffer->setData(tmp.join("&").toAscii());
+    QBuffer *buffer = new QBuffer;
+    buffer->setData(postData);
 
     auto queryItems = _url.queryItems();
     queryItems.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));

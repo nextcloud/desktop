@@ -21,8 +21,10 @@ from gi.repository import GObject, Nautilus
 # do not touch the following line.
 appname = 'ownCloud'
 
-def get_local_path(path):
-    return path.replace("file://", "")
+def get_local_path(url):
+    if url[0:7] == 'file://':
+        url = url[7:]
+    return urllib.unquote(url)
 
 def get_runtime_dir():
     """Returns the value of $XDG_RUNTIME_DIR, a directory path.
@@ -254,7 +256,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
         if item.get_uri_scheme() != 'file':
             return
 
-        filename = urllib.unquote(item.get_uri()[7:])
+        filename = get_local_path(item.get_uri())
         if item.is_directory():
             filename += '/'
 
