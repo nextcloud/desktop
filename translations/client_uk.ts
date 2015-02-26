@@ -668,7 +668,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть, що Синхронізувати: Ви можете вимкнути синхронізацію для деяких підкаталогів.</translation>
     </message>
 </context>
 <context>
