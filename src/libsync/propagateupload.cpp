@@ -475,6 +475,10 @@ void PropagateUploadFileQNAM::slotPutFinished()
             errorString += QLatin1String(" (") + rx.cap(1) + QLatin1Char(')');
         }
 
+        if (job->reply()->hasRawHeader("OC-ErrorString")) {
+            errorString = job->reply()->rawHeader("OC-ErrorString");
+        }
+
         if (_item._httpErrorCode == 412) {
             // Precondition Failed:   Maybe the bad etag is in the database, we need to clear the
             // parent folder etag so we won't read from DB next sync.

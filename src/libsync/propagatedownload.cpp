@@ -263,6 +263,17 @@ void GETFileJob::slotTimeout()
     reply()->abort();
 }
 
+QString GETFileJob::errorString() const
+{
+    if (!_errorString.isEmpty()) {
+        return _errorString;
+    } else if (reply()->hasRawHeader("OC-ErrorString")) {
+        return reply()->rawHeader("OC-ErrorString");
+    } else {
+        return reply()->errorString();
+    }
+}
+
 void PropagateDownloadFileQNAM::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))

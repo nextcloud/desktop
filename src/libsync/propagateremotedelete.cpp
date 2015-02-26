@@ -38,7 +38,13 @@ void DeleteJob::start()
 
 QString DeleteJob::errorString()
 {
-    return _timedout ? tr("Connection timed out") :  reply()->errorString();
+    if (_timedout) {
+        return tr("Connection timed out");
+    } else if (reply()->hasRawHeader("OC-ErrorString")) {
+        return reply()->rawHeader("OC-ErrorString");
+    } else {
+        return reply()->errorString();
+    }
 }
 
 bool DeleteJob::finished()
