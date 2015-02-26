@@ -224,7 +224,8 @@ CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path
   }
 
   rc = csync_fnmatch(".csync_journal.db*", bname, 0);
-  if (rc == 0) {
+  // check the strlen and ignore the file silently if its name is longer than 254 chars.
+  if (strlen(bname) > 254 || rc == 0) {
       match = CSYNC_FILE_SILENTLY_EXCLUDED;
       SAFE_FREE(bname);
       SAFE_FREE(dname);
