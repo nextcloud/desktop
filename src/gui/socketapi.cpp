@@ -313,7 +313,14 @@ void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem
         return;
     }
 
-    const QString path = f->path() + item.destination();
+    QString path = f->path() + item.destination();
+
+    // the trailing slash for directories must be appended as the filenames coming in
+    // from the plugins have that too. Otherwise the according entry item is not found
+    // in the plugin.
+    if( item._type == SyncFileItem::Type::Directory ) {
+        path += QLatin1Char('/');
+    }
 
     const QString command = QLatin1String("SYNC");
     broadcastMessage(QLatin1String("STATUS"), path, command);
@@ -386,8 +393,6 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
         DEBUG << "folder offline or not watched:" << argument;
         statusString = QLatin1String("NOP");
     } else {
-
-
         const QString file = QDir::cleanPath(argument).mid(QDir::cleanPath(syncFolder->path()).length()+1);
         SyncFileStatus fileStatus = this->fileStatus(syncFolder, file, _excludes);
 
