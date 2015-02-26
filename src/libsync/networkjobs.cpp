@@ -575,7 +575,7 @@ void PropfindJob::start()
     QList<QByteArray> properties = _properties;
 
     if (properties.isEmpty()) {
-        properties << "allprop";
+        qWarning() << "Propfind with no properties!";
     }
     QNetworkRequest req;
     req.setRawHeader("Depth", "0");

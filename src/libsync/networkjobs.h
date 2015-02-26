@@ -148,12 +148,23 @@ private slots:
 
 /**
  * @brief The PropfindJob class
+ *
+ * Setting the desired properties with setProperties() is mandatory.
  */
 class PropfindJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit PropfindJob(AccountPtr account, const QString &path, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
+
+    /**
+     * Used to specify which properties shall be retrieved.
+     *
+     * The properties can
+     *  - contain no colon: they refer to a property in the DAV: namespace
+     *  - contain a colon: and thus specify an explicit namespace,
+     *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
+     */
     void setProperties(QList<QByteArray> properties);
     QList<QByteArray> properties() const;
 
