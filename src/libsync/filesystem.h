@@ -51,7 +51,6 @@ bool setModTime(const QString &filename, time_t modTime);
  * See https://bugreports.qt.io/browse/QTBUG-24831.
  */
 qint64 OWNCLOUDSYNC_EXPORT getSize(const QString& filename);
-qint64 OWNCLOUDSYNC_EXPORT getSize(const QFileInfo& fi);
 
 /** Checks whether a file exists.
  *
@@ -59,7 +58,6 @@ qint64 OWNCLOUDSYNC_EXPORT getSize(const QFileInfo& fi);
  * files, see above.
  */
 bool OWNCLOUDSYNC_EXPORT fileExists(const QString& filename);
-bool OWNCLOUDSYNC_EXPORT fileExists(const QFileInfo& fi);
 
 /**
  * Rename the file \a originFileName to \a destinationFileName, and overwrite the destination if it

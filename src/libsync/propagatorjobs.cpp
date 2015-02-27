@@ -96,7 +96,7 @@ void PropagateLocalRemove::start()
         }
     } else {
         QFile file(filename);
-        if (FileSystem::fileExists(file) && !file.remove()) {
+        if (FileSystem::fileExists(filename) && !file.remove()) {
             done(SyncFileItem::NormalError, file.errorString());
             return;
         }

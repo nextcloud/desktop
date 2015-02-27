@@ -251,17 +251,6 @@ qint64 FileSystem::getSize(const QString& filename)
     return QFileInfo(filename).size();
 }
 
-qint64 FileSystem::getSize(const QFileInfo& fi)
-{
-#ifdef Q_OS_WIN
-    if (isLnkFile(fi)) {
-        // Use csync to get the file size. Qt seems unable to get at it.
-        return getSizeWithCsync(fi.absoluteFilePath());
-    }
-#endif
-    return fi.size();
-}
-
 #ifdef Q_OS_WIN
 static bool fileExistsWin(const QString& filename)
 {
@@ -286,17 +275,6 @@ bool FileSystem::fileExists(const QString& filename)
 #endif
     QFileInfo file(filename);
     return file.exists();
-}
-
-bool FileSystem::fileExists(const QFileInfo& fi)
-{
-#ifdef Q_OS_WIN
-    if (isLnkFile(fi)) {
-        // Use a native check.
-        return fileExistsWin(fi.absoluteFilePath());
-    }
-#endif
-    return fi.exists();
 }
 
 #ifdef Q_OS_WIN

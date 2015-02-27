@@ -155,18 +155,20 @@ bool PollJob::finished()
 
 void PropagateUploadFileQNAM::start()
 {
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
+    }
 
-    QFileInfo fi(_propagator->getFilePath(_item._file));
-    if (!FileSystem::fileExists(fi)) {
+    const QString fullFilePath(_propagator->getFilePath(_item._file));
+
+    if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
         return;
     }
 
     // Update the mtime and size, it might have changed since discovery.
-    _item._modtime = FileSystem::getModTime(fi.absoluteFilePath());
-    quint64 fileSize = FileSystem::getSize(fi);
+    _item._modtime = FileSystem::getModTime(fullFilePath);
+    quint64 fileSize = FileSystem::getSize(fullFilePath);
     _item._size = fileSize;
 
     // But skip the file if the mtime is too close to 'now'!
@@ -515,11 +517,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
     bool finished = job->reply()->hasRawHeader("ETag")
             || job->reply()->hasRawHeader("OC-ETag");
 
-
-    QFileInfo fi(_propagator->getFilePath(_item._file));
-
     // Check if the file still exists
-    if( !FileSystem::fileExists(fi) ) {
+    const QString fullFilePath(_propagator->getFilePath(_item._file));
+    if( !FileSystem::fileExists(fullFilePath) ) {
         if (!finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
@@ -529,8 +529,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
     }
 
     // compare expected and real modification time of the file and size
-    const time_t new_mtime = FileSystem::getModTime(fi.absoluteFilePath());
-    const quint64 new_size = static_cast<quint64>(FileSystem::getSize(fi));
+    const time_t new_mtime = FileSystem::getModTime(fullFilePath);
+    const quint64 new_size = static_cast<quint64>(FileSystem::getSize(fullFilePath));
+    QFileInfo fi(_propagator->getFilePath(_item._file));
     if (new_mtime != _item._modtime || new_size != _item._size) {
         qDebug() << "The local file has changed during upload:"
                  << "mtime: " << _item._modtime << "<->" << new_mtime
