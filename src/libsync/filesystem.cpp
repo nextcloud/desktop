@@ -284,7 +284,8 @@ bool FileSystem::fileExists(const QString& filename)
         return fileExistsWin(filename);
     }
 #endif
-    return QFileInfo::exists(filename);
+    QFileInfo file(filename);
+    return file.exists();
 }
 
 bool FileSystem::fileExists(const QFileInfo& fi)
