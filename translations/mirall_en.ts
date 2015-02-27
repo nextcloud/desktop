@@ -328,7 +328,7 @@ Total time left %5</source>
 <context>
     <name>OCC::DeleteJob</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="41"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="42"/>
         <source>Connection timed out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -463,62 +463,62 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="232"/>
+        <location filename="../src/gui/folderman.cpp" line="233"/>
         <source>Could not reset folder state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="233"/>
+        <location filename="../src/gui/folderman.cpp" line="234"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1021"/>
+        <location filename="../src/gui/folderman.cpp" line="1022"/>
         <source>Undefined State.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1024"/>
+        <location filename="../src/gui/folderman.cpp" line="1025"/>
         <source>Waits to start syncing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1027"/>
+        <location filename="../src/gui/folderman.cpp" line="1028"/>
         <source>Preparing for sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1030"/>
+        <location filename="../src/gui/folderman.cpp" line="1031"/>
         <source>Sync is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1033"/>
+        <location filename="../src/gui/folderman.cpp" line="1034"/>
         <source>Last Sync was successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1038"/>
+        <location filename="../src/gui/folderman.cpp" line="1039"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1041"/>
+        <location filename="../src/gui/folderman.cpp" line="1042"/>
         <source>Setup Error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1044"/>
+        <location filename="../src/gui/folderman.cpp" line="1045"/>
         <source>User Abort.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1047"/>
+        <location filename="../src/gui/folderman.cpp" line="1048"/>
         <source>Sync is paused.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1053"/>
+        <location filename="../src/gui/folderman.cpp" line="1054"/>
         <source>%1 (Sync is paused)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -897,7 +897,7 @@ Checked items will also be deleted if they prevent a directory from being remove
 <context>
     <name>OCC::MoveJob</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="46"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="47"/>
         <source>Connection timed out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1355,7 +1355,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="76"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="83"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1363,7 +1363,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="121"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="128"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1399,17 +1399,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="275"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="286"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="438"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="449"/>
         <source>The file could not be downloaded completely.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="474"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="485"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1474,12 +1474,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="87"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="93"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="103"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="109"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1487,7 +1487,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="67"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="71"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1495,22 +1495,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="79"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="85"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="81"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="87"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="119"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="125"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="135"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="141"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1537,33 +1537,33 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="156"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="163"/>
         <source>File Removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="171"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="531"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="177"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="541"/>
         <source>Local file changed during sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="459"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="465"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="489"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="499"/>
         <source>Poll URL missing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="514"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="524"/>
         <source>The local file was removed during sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="546"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="556"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1952,7 +1952,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="433"/>
+        <location filename="../src/gui/socketapi.cpp" line="438"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation type="unfinished"></translation>
