@@ -94,27 +94,25 @@ OCC::Folder::Map FolderMan::map()
     return _folderMap;
 }
 
-// Attention: this function deletes the folder object to which
-// the alias refers. Do NOT USE the folder pointer any more after
-// having this called.
 void FolderMan::unloadFolder( const QString& alias )
 {
-    Folder *f = folder(alias);
-    if( f ) {
-        if( _socketApi ) {
-            _socketApi->slotUnregisterPath(alias);
-        }
-
-        _folderChangeSignalMapper->removeMappings(f);
-        if( _folderWatchers.contains(alias)) {
-            _folderWatchers.remove(alias);
-        }
-        _folderMap.remove( alias );
-        delete f;
+    Folder* f = folder(alias);
+    if( !f ) {
+        return;
     }
+
+    if( _socketApi ) {
+        _socketApi->slotUnregisterPath(alias);
+    }
+
+    _folderChangeSignalMapper->removeMappings(f);
+    if( _folderWatchers.contains(alias)) {
+        _folderWatchers.remove(alias);
+    }
+    _folderMap.remove( alias );
 }
 
-int FolderMan::unloadAllFolders()
+int FolderMan::unloadAndDeleteAllFolders()
 {
     int cnt = 0;
 
@@ -122,7 +120,9 @@ int FolderMan::unloadAllFolders()
     Folder::MapIterator i(_folderMap);
     while (i.hasNext()) {
         i.next();
+        Folder* f = i.value();
         unloadFolder(i.key());
+        delete f;
         cnt++;
     }
     _lastSyncFolder.clear();
@@ -188,7 +188,7 @@ int FolderMan::setupFolders()
 {
   qDebug() << "* Setup folders from " << _folderConfigPath;
 
-  unloadAllFolders();
+  unloadAndDeleteAllFolders();
 
   ConfigFile cfg;
   QDir storageDir(cfg.configPath());
@@ -761,48 +761,37 @@ void FolderMan::removeAllFolderDefinitions()
 
 void FolderMan::slotRemoveFolder( const QString& alias )
 {
-    if( alias.isEmpty() ) return;
+    Folder *f = folder(alias);
+    if( !f ) {
+        qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
+        return;
+    }
 
-    if( _currentSyncFolder == alias ) {
-        // terminate if the sync is currently underway.
+    qDebug() << "Removing " << alias;
+
+    const bool currentlyRunning = (_currentSyncFolder == alias);
+    if( currentlyRunning ) {
+        // let the folder delete itself when done and
+        // abort the sync now
+        connect(f, SIGNAL(syncFinished(SyncResult)), f, SLOT(deleteLater()));
         terminateSyncProcess();
     }
-    removeFolder(alias);
-}
-
-// remove a folder from the map. Should be sure n
-void FolderMan::removeFolder( const QString& alias )
-{
-    Folder *f = 0;
 
     _scheduleQueue.removeAll(alias);
 
-    if( _folderMap.contains( alias )) {
-        qDebug() << "Removing " << alias;
-        f = _folderMap[alias]; // do not remove from the map, that is done in unloadFolder.
-    } else {
-        qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
+    f->wipe();
+    f->setSyncPaused(true);
+
+    // remove the folder configuration
+    QFile file(f->configFile() );
+    if( file.exists() ) {
+        qDebug() << "Remove folder config file " << file.fileName();
+        file.remove();
     }
 
-    if( f ) {
-        f->wipe();
-
-        // can be removed if we are able to delete the folder object.
-        f->setSyncPaused(true);
-
-        // remove the folder configuration
-        QFile file(f->configFile() );
-        if( file.exists() ) {
-            qDebug() << "Remove folder config file " << file.fileName();
-            file.remove();
-        }
-
-        unloadFolder( alias ); // now the folder object is gone.
-
-        // FIXME: this is a temporar dirty fix against a crash happening because
-        // the csync owncloud module still has static components. Activate the
-        // delete once the module is fixed.
-        // f->deleteLater();
+    unloadFolder( alias );
+    if( !currentlyRunning ) {
+        delete f;
     }
 }
 

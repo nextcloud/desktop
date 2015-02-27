@@ -224,7 +224,7 @@ void Application::slotCleanup()
     if (account) {
         account->save();
     }
-    FolderMan::instance()->unloadAllFolders();
+    FolderMan::instance()->unloadAndDeleteAllFolders();
 
     _gui->slotShutdown();
     _gui->deleteLater();
