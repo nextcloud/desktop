@@ -416,6 +416,8 @@ out:
       st->error_status = CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST; /* File listed on ignore list. */
     } else if (excluded == CSYNC_FILE_EXCLUDE_INVALID_CHAR) {
       st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS;  /* File contains invalid characters. */
+    } else if (excluded == CSYNC_FILE_EXCLUDE_LONG_FILENAME) {
+      st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME; /* File name is too long. */
     }
   }
   if (st->instruction != CSYNC_INSTRUCTION_NONE && st->instruction != CSYNC_INSTRUCTION_IGNORE
