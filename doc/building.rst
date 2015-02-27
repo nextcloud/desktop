@@ -129,30 +129,23 @@ Windows Installer Build (Cross-Compile)
 
 Due to the large number of dependencies, building the client installer for Windows
 is **currently only officially supported on openSUSE**, by using the MinGW cross compiler.
-You can set up openSUSE 12.1, 12.2, or 13.1 in a virtual machine if you do not
+You can set up openSUSE 13.1, 13.2 or openSUSE Factory in a virtual machine if you do not
 have it installed already.
 
 To cross-compile:
 
-1. Add the following repositories using YaST or ``zypper ar`` (adjust when using openSUSE 12.2 or 13.1)::
+1. Add the following repositories using YaST or ``zypper ar`` (adjust when using another openSUSE version)::
 
-    zypper ar http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_13.1/windows:mingw:win32.repo
-    zypper ar http://download.opensuse.org/repositories/windows:/mingw/openSUSE_13.1/windows:mingw.repo
+    zypper ar http://download.opensuse.org/repositories/windows:/mingw/openSUSE_13.2/windows:mingw.repo
+    zypper ar http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_13.2/windows:mingw:win32.repo
 
 2. Install the cross-compiler packages and the cross-compiled dependencies::
 
     zypper install cmake make mingw32-cross-binutils mingw32-cross-cpp mingw32-cross-gcc \
-                 mingw32-cross-gcc-c++ mingw32-cross-pkg-config mingw32-filesystem \
-                 mingw32-headers mingw32-runtime site-config mingw32-libqt4-sql \
-                 mingw32-libqt4-sql-sqlite mingw32-sqlite mingw32-libsqlite-devel \
-                 mingw32-dlfcn-devel mingw32-libssh2-devel kdewin-png2ico \
-                 mingw32-libqt4 mingw32-libqt4-devel mingw32-libgcrypt \
-                 mingw32-libgnutls mingw32-libneon-openssl mingw32-libneon-devel \
-                 mingw32-libbeecrypt mingw32-libopenssl mingw32-openssl \
-                 mingw32-libpng-devel mingw32-libsqlite mingw32-qtkeychain \
-                 mingw32-qtkeychain-devel mingw32-dlfcn mingw32-libintl-devel \
-                 mingw32-libneon-devel mingw32-libopenssl-devel mingw32-libproxy-devel \
-                 mingw32-libxml2-devel mingw32-zlib-devel
+                      mingw32-cross-gcc-c++ mingw32-cross-pkg-config mingw32-filesystem \
+                      mingw32-headers mingw32-runtime site-config \
+                      mingw32-cross-libqt5-qmake mingw32-cross-libqt5-qttools mingw32-libqt5* \
+                      mingw32-cross-nsis
 
 3. For the installer, install the NSIS installer package::
 
@@ -170,24 +163,43 @@ To cross-compile:
   .. note:: These files also work for more recent openSUSE versions!
 
   ::
+    # RPM depends on curl for installs from HTTP
+    zypper install curl
 
     rpm -ivh http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-processes-0-1.1.x86_64.rpm
     rpm -ivh http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-uac-0-3.1.x86_64.rpm
 
 6. Follow the `generic build instructions`_
 
-  .. note:: When building for Windows platforms, you must specify a special
+.. note:: When building for Windows platforms, you must specify a special
      toolchain file that enables cmake to locate the platform-specific tools. To add
      this parameter to the call to cmake, enter
      ``-DCMAKE_TOOLCHAIN_FILE=../client/admin/win/Toolchain-mingw32-openSUSE.cmake``.
 
 7. Build by running ``make``.
 
-  .. note:: Using ``make package`` produces an NSIS-based installer, provided
+.. note:: Using ``make package`` produces an NSIS-based installer, provided
     the NSIS mingw32 packages are installed.
 
-.. _`generic build instructions`:
+8. If you want to sign the installer, acquire a `Microsoft Authenticode`_ Certificate and install ``osslsigncode`` to sign the installer::
 
+    zypper install osslsigncode
+
+9. Sign the package::
+
+    osslsigncode -pkcs12 $HOME/.codesign/packages.pfx -h sha1 \
+               -pass yourpass \
+               -n "ACME Client" \
+               -i "http://acme.com" \
+               -ts "http://timestamp.server/" \
+               -in ${unsigned_file} \
+               -out ${installer_file}
+
+   for ``-in``, use URL to the time stamping server provided by your CA along with the Authenticode certificate. Alternatively,
+   you may use the official Microsoft ``signtool`` utility on Microsoft Windows.
+
+
+.. _`generic build instructions`:
 Generic Build Instructions
 --------------------------
 
@@ -243,4 +255,5 @@ The following are known cmake parameters:
 .. _Homebrew: http://mxcl.github.com/homebrew/
 .. _`OpenSSL Windows Build`: http://slproweb.com/products/Win32OpenSSL.html
 .. _Qt: http://www.qt.io/download
+.. _`Microsoft Authenticode`: https://msdn.microsoft.com/en-us/library/ie/ms537361%28v=vs.85%29.aspx
 .. _QtKeychain: https://github.com/frankosterfeld/qtkeychain
