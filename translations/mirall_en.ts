@@ -473,52 +473,52 @@ Are you sure you want to perform this operation?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1022"/>
+        <location filename="../src/gui/folderman.cpp" line="1011"/>
         <source>Undefined State.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1025"/>
+        <location filename="../src/gui/folderman.cpp" line="1014"/>
         <source>Waits to start syncing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1028"/>
+        <location filename="../src/gui/folderman.cpp" line="1017"/>
         <source>Preparing for sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1031"/>
+        <location filename="../src/gui/folderman.cpp" line="1020"/>
         <source>Sync is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1034"/>
+        <location filename="../src/gui/folderman.cpp" line="1023"/>
         <source>Last Sync was successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1039"/>
+        <location filename="../src/gui/folderman.cpp" line="1028"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1042"/>
+        <location filename="../src/gui/folderman.cpp" line="1031"/>
         <source>Setup Error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1045"/>
+        <location filename="../src/gui/folderman.cpp" line="1034"/>
         <source>User Abort.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1048"/>
+        <location filename="../src/gui/folderman.cpp" line="1037"/>
         <source>Sync is paused.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1054"/>
+        <location filename="../src/gui/folderman.cpp" line="1043"/>
         <source>%1 (Sync is paused)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1537,23 +1537,23 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="163"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="165"/>
         <source>File Removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="177"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="541"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="179"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="542"/>
         <source>Local file changed during sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="465"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="467"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="499"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="501"/>
         <source>Poll URL missing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1563,7 +1563,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="556"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="557"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1952,7 +1952,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="438"/>
+        <location filename="../src/gui/socketapi.cpp" line="439"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation type="unfinished"></translation>
@@ -2305,74 +2305,79 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="389"/>
+        <location filename="../src/libsync/syncengine.cpp" line="372"/>
+        <source>Filename is too long.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="392"/>
         <source>Filename encoding is not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="592"/>
+        <location filename="../src/libsync/syncengine.cpp" line="595"/>
         <source>Unable to initialize a sync journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="673"/>
+        <location filename="../src/libsync/syncengine.cpp" line="676"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="920"/>
-        <location filename="../src/libsync/syncengine.cpp" line="927"/>
+        <location filename="../src/libsync/syncengine.cpp" line="923"/>
+        <location filename="../src/libsync/syncengine.cpp" line="930"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="945"/>
+        <location filename="../src/libsync/syncengine.cpp" line="948"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="951"/>
+        <location filename="../src/libsync/syncengine.cpp" line="954"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="958"/>
+        <location filename="../src/libsync/syncengine.cpp" line="961"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="978"/>
+        <location filename="../src/libsync/syncengine.cpp" line="981"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="995"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1015"/>
+        <location filename="../src/libsync/syncengine.cpp" line="998"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1031"/>
         <source>Local files and share folder removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1083"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1086"/>
         <source>Move not allowed, item restored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1092"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1095"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1096"/>
         <source>the destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1096"/>
         <source>the source</source>
         <translation type="unfinished"></translation>
     </message>
