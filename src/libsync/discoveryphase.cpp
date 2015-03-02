@@ -169,6 +169,11 @@ void DiscoverySingleDirectoryJob::start()
 {
     // Start the actual HTTP job
     LsColJob *lsColJob = new LsColJob(_account, _subPath, this);
+    lsColJob->setProperties(QList<QByteArray>() << "resourcetype" << "getlastmodified"
+                        << "getcontentlength" << "getetag" << "http://owncloud.org/ns:id"
+                        << "http://owncloud.org/ns:downloadURL" << "http://owncloud.org/ns:dDC"
+                        << "http://owncloud.org/ns:permissions");
+
     QObject::connect(lsColJob, SIGNAL(directoryListingIterated(QString,QMap<QString,QString>)),
                      this, SLOT(directoryListingIteratedSlot(QString,QMap<QString,QString>)));
     QObject::connect(lsColJob, SIGNAL(finishedWithError(QNetworkReply*)), this, SLOT(lsJobFinishedWithErrorSlot(QNetworkReply*)));

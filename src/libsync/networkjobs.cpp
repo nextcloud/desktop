@@ -329,24 +329,44 @@ LsColJob::LsColJob(AccountPtr account, const QString &path, QObject *parent)
 {
 }
 
+void LsColJob::setProperties(QList<QByteArray> properties)
+{
+    _properties = properties;
+}
+
+QList<QByteArray> LsColJob::properties() const
+{
+    return _properties;
+}
+
 void LsColJob::start()
 {
+    QList<QByteArray> properties = _properties;
+
+    if (properties.isEmpty()) {
+        qWarning() << "Propfind with no properties!";
+    }
+    QByteArray propStr;
+    foreach (const QByteArray &prop, properties) {
+        if (prop.contains(':')) {
+            int colIdx = prop.lastIndexOf(":");
+            auto ns = prop.left(colIdx);
+            if (ns == "http://owncloud.org/ns") {
+                propStr += "    <oc:" + prop.mid(colIdx+1) + " />\n";
+            } else {
+                propStr += "    <" + prop.mid(colIdx+1) + " xmlns=\"" + ns + "\" />\n";
+            }
+        } else {
+            propStr += "    <d:" + prop + " />\n";
+        }
+    }
+
     QNetworkRequest req;
     req.setRawHeader("Depth", "1");
-    // FIXME The results are delivered without namespace, if this is ever a problem we need to check it..
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\">\n"
                    "  <d:prop>\n"
-                   "    <d:resourcetype/>\n"
-                   "    <d:quota-used-bytes/>\n"
-                   "    <d:getlastmodified/>\n"
-                   "    <d:getcontentlength/>\n"
-                   "    <d:resourcetype/>\n"
-                   "    <d:getetag/>\n"
-                   "    <oc:id/>\n"
-                   "    <oc:downloadURL/>\n"
-                   "    <oc:dDC/>\n"
-                   "    <oc:permissions/>\n"
+                   + propStr +
                    "  </d:prop>\n"
                    "</d:propfind>\n");
     QBuffer *buf = new QBuffer(this);
