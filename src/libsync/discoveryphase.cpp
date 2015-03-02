@@ -309,6 +309,15 @@ void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &
     connect(discoveryJob, SIGNAL(doOpendirSignal(QString,DiscoveryDirectoryResult*)),
             this, SLOT(doOpendirSlot(QString,DiscoveryDirectoryResult*)),
             Qt::QueuedConnection);
+    connect(discoveryJob, SIGNAL(doClosedirSignal(QString)),
+            this, SLOT(doClosedirSlot(QString)),
+            Qt::QueuedConnection);
+}
+
+void DiscoveryMainThread::doClosedirSlot(QString path)
+{
+    //qDebug() << Q_FUNC_INFO << "Invalidating" << path;
+    deleteCacheEntry(path);
 }
 
 // Coming from owncloud_opendir -> DiscoveryJob::vio_opendir_hook -> doOpendirSignal
@@ -461,9 +470,11 @@ void DiscoveryJob::remote_vio_closedir_hook (csync_vio_handle_t *dhandle,  void 
 {
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob*>(userdata);
     if (discoveryJob) {
-        qDebug() << Q_FUNC_INFO << discoveryJob;
         DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult*> (dhandle);
+        QString path = directoryResult->path;
+        qDebug() << Q_FUNC_INFO << discoveryJob << path;
         delete directoryResult; // just deletes the struct and the iterator, the data itself is owned by the SyncEngine/DiscoveryMainThread
+        emit discoveryJob->doClosedirSignal(path);
     }
 }
 
