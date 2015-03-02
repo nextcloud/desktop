@@ -337,7 +337,7 @@ int csync_update(CSYNC *ctx);
 int csync_reconcile(CSYNC *ctx);
 
 /**
- * @brief Commit the sync results to journal
+ * @brief Re-initializes the csync context
  *
  * @param ctx  The context to commit.
  *

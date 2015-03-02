@@ -708,8 +708,12 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         qDebug() << "Permissions of the root folder: " << _remotePerms[QLatin1String("")];
     }
 
+    // Re-init the csync context to free memory
+    csync_commit(_csync_ctx);
+
     // The map was used for merging trees, convert it to a list:
     _syncedItems = _syncItemMap.values().toVector();
+    _syncItemMap.clear(); // free memory
 
     // Adjust the paths for the renames.
     for (SyncFileItemVector::iterator it = _syncedItems.begin();
@@ -863,6 +867,12 @@ void SyncEngine::finalize()
 {
     _thread.quit();
     _thread.wait();
+
+#ifdef USE_NEON
+    // De-init the neon HTTP(S) connections
+    csync_owncloud_commit(ctx);
+#endif
+
     csync_commit(_csync_ctx);
 
     qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
