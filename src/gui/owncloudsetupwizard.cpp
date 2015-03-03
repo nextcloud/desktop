@@ -211,9 +211,11 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 {
     AccountPtr account = _ocWizard->account();
 
-    ValidateDavAuthJob *job = new ValidateDavAuthJob(account, this);
+    auto *job = new PropfindJob(account, "/", this);
     job->setIgnoreCredentialFailure(true);
-    connect(job, SIGNAL(authResult(QNetworkReply*)), SLOT(slotConnectionCheck(QNetworkReply*)));
+    job->setProperties(QList<QByteArray>() << "getlastmodified");
+    connect(job, SIGNAL(result(QVariantMap)),  _ocWizard, SLOT(successfulStep()));
+    connect(job, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotConnectionCheck(QNetworkReply*)));
     job->start();
 }
 
@@ -249,7 +251,7 @@ void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
         _ocWizard->successfulStep();
         break;
     default:
-        if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 403) {
+        if (!_ocWizard->account()->credentials()->stillValid(reply)) {
             msg = tr("Access forbidden by server. To verify that you have proper access, "
                      "<a href=\"%1\">click here</a> to access the service with your browser.")
                     .arg(_ocWizard->account()->url().toString());
@@ -531,26 +533,6 @@ bool DetermineAuthTypeJob::finished()
             emit authType(WizardCommon::HttpCreds);
         }
     }
-    return true;
-}
-
-ValidateDavAuthJob::ValidateDavAuthJob(AccountPtr account, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
-{
-}
-
-void ValidateDavAuthJob::start()
-{
-    QString p = account()->davPath();
-    QNetworkReply *reply = getRequest(p);
-    setReply(reply);
-    setupConnections(reply);
-    AbstractNetworkJob::start();
-}
-
-bool ValidateDavAuthJob::finished()
-{
-    emit authResult(reply());
     return true;
 }
 
