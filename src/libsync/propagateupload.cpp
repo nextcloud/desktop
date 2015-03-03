@@ -628,13 +628,19 @@ void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
     done(SyncFileItem::Success);
 }
 
-void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
+void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64 total)
 {
+    if (sent == 0 && total == 0) {
+        return; // QNAM bug https://bugreports.qt.io/browse/QTBUG-44782
+    }
     int progressChunk = _currentChunk + _startChunk - 1;
     if (progressChunk >= _chunkCount)
         progressChunk = _currentChunk - 1;
+
     quint64 amount = progressChunk * chunkSize();
     sender()->setProperty("byteWritten", sent);
+    // FIXME: This calculation will mess up if we at some point also send the last chunks in parallel.
+    // At the moment we send the last chunk sequentially.
     if (_jobs.count() > 1) {
         amount -= (_jobs.count() -1) * chunkSize();
         foreach (QObject *j, _jobs) {
