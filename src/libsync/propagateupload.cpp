@@ -28,6 +28,10 @@
 #include <cmath>
 #include <cstring>
 
+#ifdef USE_NEON
+#include "propagator_legacy.h"
+#endif
+
 namespace OCC {
 
 /**

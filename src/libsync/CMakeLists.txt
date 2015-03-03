@@ -90,6 +90,7 @@ if(USE_NEON)
     list(APPEND libsync_SRCS
         propagator_legacy.cpp
     )
+    add_definitions(-DUSE_NEON)
 endif(USE_NEON)
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps

@@ -48,6 +48,10 @@
 #include <QElapsedTimer>
 #include <qtextcodec.h>
 
+#ifdef USE_NEON
+extern "C" int owncloud_commit(CSYNC* ctx);
+#endif
+
 namespace OCC {
 
 bool SyncEngine::_syncRunning = false;
@@ -870,7 +874,7 @@ void SyncEngine::finalize()
 
 #ifdef USE_NEON
     // De-init the neon HTTP(S) connections
-    csync_owncloud_commit(ctx);
+    owncloud_commit(_csync_ctx);
 #endif
 
     csync_commit(_csync_ctx);
