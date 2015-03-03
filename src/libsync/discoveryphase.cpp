@@ -74,8 +74,12 @@ void DiscoveryJob::update_job_update_callback (bool local,
             updateJob->_lastUpdateProgressCallbackCall.restart();
         }
 
-        QString path(QUrl::fromPercentEncoding(QByteArray(dirUrl)).section('/', -1));
-        emit updateJob->folderDiscovered(local, path);
+        QByteArray pPath(dirUrl);
+        int indx = pPath.lastIndexOf('/');
+        if(indx>-1) {
+            const QString path = QUrl::fromPercentEncoding( pPath.mid(indx+1));
+            emit updateJob->folderDiscovered(local, path);
+        }
     }
 }
 
@@ -332,8 +336,9 @@ void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResul
     while (fullPath.endsWith('/')) {
         fullPath.chop(1);
     }
-    qDebug() << Q_FUNC_INFO << _pathPrefix << subPath << fullPath;
 
+    // emit _discoveryJob->folderDiscovered(false, subPath);
+    _discoveryJob->update_job_update_callback (false, subPath.toUtf8(), _discoveryJob);
 
     // Result gets written in there
     _currentDiscoveryDirectoryResult = r;
@@ -428,7 +433,7 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
         directoryResult->code = EIO;
 
         discoveryJob->_vioMutex.lock();
-        QString qurl = QString::fromUtf8(url);
+        const QString qurl = QString::fromUtf8(url);
         emit discoveryJob->doOpendirSignal(qurl, directoryResult);
         discoveryJob->_vioWaitCondition.wait(&discoveryJob->_vioMutex, ULONG_MAX); // FIXME timeout?
         discoveryJob->_vioMutex.unlock();
