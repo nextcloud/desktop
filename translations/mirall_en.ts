@@ -1214,109 +1214,109 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="255"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
         <source>Creating local sync folder %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="281"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="283"/>
         <source>ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="283"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="285"/>
         <source>failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="285"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="287"/>
         <source>Could not create local folder %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="310"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="312"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="316"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="318"/>
         <source>Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
         <source>creating folder on ownCloud: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="345"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="347"/>
         <source>Remote folder %1 created successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="347"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="349"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="349"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="351"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="353"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="353"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="355"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="361"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="362"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="364"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="378"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="380"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="383"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>Successfully connected to %1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="392"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="405"/>
         <source>Folder rename failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="404"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="406"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1355,7 +1355,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="83"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="87"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1363,7 +1363,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="128"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="132"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1537,33 +1537,33 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="165"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="169"/>
         <source>File Removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="179"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="542"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="183"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="546"/>
         <source>Local file changed during sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="467"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="471"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="501"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="505"/>
         <source>Poll URL missing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="524"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="528"/>
         <source>The local file was removed during sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="557"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="561"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2155,229 +2155,229 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SyncEngine</name>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="92"/>
+        <location filename="../src/libsync/syncengine.cpp" line="96"/>
         <source>Success.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="95"/>
+        <location filename="../src/libsync/syncengine.cpp" line="99"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="99"/>
+        <location filename="../src/libsync/syncengine.cpp" line="103"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="102"/>
+        <location filename="../src/libsync/syncengine.cpp" line="106"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="105"/>
+        <location filename="../src/libsync/syncengine.cpp" line="109"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="108"/>
+        <location filename="../src/libsync/syncengine.cpp" line="112"/>
         <source>CSync failed to reserve memory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="111"/>
+        <location filename="../src/libsync/syncengine.cpp" line="115"/>
         <source>CSync fatal parameter error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="114"/>
+        <location filename="../src/libsync/syncengine.cpp" line="118"/>
         <source>CSync processing step update failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="117"/>
+        <location filename="../src/libsync/syncengine.cpp" line="121"/>
         <source>CSync processing step reconcile failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="120"/>
+        <location filename="../src/libsync/syncengine.cpp" line="124"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="123"/>
+        <location filename="../src/libsync/syncengine.cpp" line="127"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="126"/>
+        <location filename="../src/libsync/syncengine.cpp" line="130"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="129"/>
+        <location filename="../src/libsync/syncengine.cpp" line="133"/>
         <source>CSync failed to connect to the network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="136"/>
         <source>A network connection timeout happened.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="135"/>
+        <location filename="../src/libsync/syncengine.cpp" line="139"/>
         <source>A HTTP transmission error happened.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="138"/>
+        <location filename="../src/libsync/syncengine.cpp" line="142"/>
         <source>CSync failed due to not handled permission deniend.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="144"/>
+        <location filename="../src/libsync/syncengine.cpp" line="148"/>
         <source>CSync tried to create a directory that already exists.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="147"/>
+        <location filename="../src/libsync/syncengine.cpp" line="151"/>
         <source>CSync: No space on %1 server available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="150"/>
+        <location filename="../src/libsync/syncengine.cpp" line="154"/>
         <source>CSync unspecified error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="153"/>
+        <location filename="../src/libsync/syncengine.cpp" line="157"/>
         <source>Aborted by the user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="159"/>
+        <location filename="../src/libsync/syncengine.cpp" line="163"/>
         <source>The mounted directory is temporarily not available on the server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="141"/>
+        <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>CSync failed to access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="156"/>
+        <location filename="../src/libsync/syncengine.cpp" line="160"/>
         <source>The service is temporarily unavailable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="162"/>
+        <location filename="../src/libsync/syncengine.cpp" line="166"/>
         <source>An error occurred while opening a directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="165"/>
+        <location filename="../src/libsync/syncengine.cpp" line="169"/>
         <source>An internal error number %1 occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="220"/>
+        <location filename="../src/libsync/syncengine.cpp" line="224"/>
         <source>The item is not synced because of previous errors: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="360"/>
+        <location filename="../src/libsync/syncengine.cpp" line="364"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="363"/>
+        <location filename="../src/libsync/syncengine.cpp" line="367"/>
         <source>Hard links are not supported in syncing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="366"/>
+        <location filename="../src/libsync/syncengine.cpp" line="370"/>
         <source>File is listed on the ignore list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="369"/>
+        <location filename="../src/libsync/syncengine.cpp" line="373"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="372"/>
+        <location filename="../src/libsync/syncengine.cpp" line="376"/>
         <source>Filename is too long.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="392"/>
+        <location filename="../src/libsync/syncengine.cpp" line="396"/>
         <source>Filename encoding is not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="595"/>
+        <location filename="../src/libsync/syncengine.cpp" line="599"/>
         <source>Unable to initialize a sync journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="676"/>
+        <location filename="../src/libsync/syncengine.cpp" line="680"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="933"/>
-        <location filename="../src/libsync/syncengine.cpp" line="940"/>
+        <location filename="../src/libsync/syncengine.cpp" line="937"/>
+        <location filename="../src/libsync/syncengine.cpp" line="944"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="958"/>
+        <location filename="../src/libsync/syncengine.cpp" line="962"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="964"/>
+        <location filename="../src/libsync/syncengine.cpp" line="968"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="971"/>
+        <location filename="../src/libsync/syncengine.cpp" line="975"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="991"/>
+        <location filename="../src/libsync/syncengine.cpp" line="995"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1008"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1012"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1032"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1045"/>
         <source>Local files and share folder removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1096"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1100"/>
         <source>Move not allowed, item restored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1109"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
         <source>the destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
         <source>the source</source>
         <translation type="unfinished"></translation>
     </message>
