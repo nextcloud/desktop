@@ -107,6 +107,11 @@ bool PollJob::finished()
         _item._httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         _item._status = classifyError(err, _item._httpErrorCode);
         _item._errorString = reply()->errorString();
+
+        if (reply()->hasRawHeader("OC-ErrorString")) {
+            _item._errorString = reply()->rawHeader("OC-ErrorString");
+        }
+
         if (_item._status == SyncFileItem::FatalError || _item._httpErrorCode >= 400) {
             if (_item._status != SyncFileItem::FatalError
                     && _item._httpErrorCode != 503) {
