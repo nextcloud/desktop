@@ -96,6 +96,12 @@ signals:
     void uploadProgress(qint64,qint64);
 };
 
+/**
+ * This job implements the assynchronous PUT
+ * If the server replies to a PUT with a OC-Finish-Poll url, we will query this url until the server
+ * replies with an etag
+ * https://github.com/owncloud/core/issues/12097
+ */
 class PollJob : public AbstractNetworkJob {
     Q_OBJECT
     SyncJournalDb *_journal;
@@ -123,12 +129,23 @@ signals:
 
 class PropagateUploadFileQNAM : public PropagateItemJob {
     Q_OBJECT
+
+    /**
+     * That's the start chunk that was stored in the database for resuming.
+     * In the non-resuming case it is 0.
+     * If we are resuming, this is the first chunk we need to send
+     */
     int _startChunk;
+    /**
+     * This is the next chunk that we need to send. Starting from 0 even if _startChunk != 0
+     * (In other words,  _startChunk + _currentChunk is really the number of the chunk we need to send next)
+     * (In other words, _currentChunk is the number of chunk that we already sent or start sending)
+     */
     int _currentChunk;
-    int _chunkCount;
-    int _transferId;
+    int _chunkCount; /// Total number of chunks for this file
+    int _transferId; /// transfer id (part of the url)
     QElapsedTimer _duration;
-    QVector<PUTFileJob*> _jobs;
+    QVector<PUTFileJob*> _jobs; /// network jobs that are currently in transit
     bool _finished; // Tells that all the jobs have been finished
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)

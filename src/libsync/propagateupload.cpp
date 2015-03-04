@@ -351,6 +351,8 @@ void PropagateUploadFileQNAM::startNextChunk()
         // Don't do parallel upload of chunk if this might be the last chunk because the server cannot handle that
         // https://github.com/owncloud/core/issues/11106
         // We return now and when the _jobs will be finished we will proceed the last chunk
+        // NOTE: Some other part of the code such as slotUploadProgress assume also that the last chunk
+        // is sent last.
         return;
     }
     quint64 fileSize = _item._size;
@@ -637,16 +639,20 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64 total)
     if (progressChunk >= _chunkCount)
         progressChunk = _currentChunk - 1;
 
+    // amount is the number of bytes already sent by all the other chunks that were sent
+    // not including this one.
+    // FIXME: this assume all chunks have the same size, which is true only if the last chunk
+    // has not been finished (which should not happen because the last chunk is sent sequentially)
     quint64 amount = progressChunk * chunkSize();
+
     sender()->setProperty("byteWritten", sent);
-    // FIXME: This calculation will mess up if we at some point also send the last chunks in parallel.
-    // At the moment we send the last chunk sequentially.
     if (_jobs.count() > 1) {
         amount -= (_jobs.count() -1) * chunkSize();
         foreach (QObject *j, _jobs) {
             amount += j->property("byteWritten").toULongLong();
         }
     } else {
+        // sender() is the only current job, no need to look at the byteWritten properties
         amount += sent;
     }
     emit progress(_item, amount);
