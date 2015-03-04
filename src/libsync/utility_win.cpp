@@ -14,19 +14,62 @@
 #include <shlobj.h>
 #include <winbase.h>
 #include <windows.h>
+#include <shlguid.h>
+#include <string>
+#include <QLibrary>
 
 static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
+typedef HRESULT (WINAPI *SHGetKnownFolderPathFun)(
+    const GUID &rfid, 
+    DWORD dwFlags, 
+    HANDLE hToken, 
+    PWSTR *ppszPath
+);
+typedef HRESULT (WINAPI *SHGetFolderPathFun)(
+    HWND hwndOwner, 
+    int nFolder, 
+    HANDLE hToken, 
+    DWORD dwFlags, 
+    LPWSTR pszPath
+);
+     
 static void setupFavLink_private(const QString &folder)
 {
     // Windows Explorer: Place under "Favorites" (Links)
-    wchar_t path[MAX_PATH];
-    SHGetSpecialFolderPath(0, path, CSIDL_PROFILE, FALSE);
-    QString profile =  QDir::fromNativeSeparators(QString::fromWCharArray(path));
+    
+    SHGetKnownFolderPathFun SHGetKnownFolderPathPtr = NULL;
+    SHGetFolderPathFun SHGetFolderPathPtr = NULL;
+    QString linkName; 
     QDir folderDir(QDir::fromNativeSeparators(folder));
-    QString linkName = profile+QLatin1String("/Links/") + folderDir.dirName() + QLatin1String(".lnk");
+    if((!SHGetKnownFolderPathPtr) && (!SHGetFolderPathPtr))
+    {
+      QLibrary kernel32Lib("shell32.dll");
+      if(kernel32Lib.load())
+      {
+        SHGetKnownFolderPathPtr = (SHGetKnownFolderPathFun) kernel32Lib.resolve("SHGetKnownFolderPath");
+        SHGetFolderPathPtr = (SHGetFolderPathFun) kernel32Lib.resolve("SHGetFolderPathW");
+      }
+    }
+     
+    if(SHGetKnownFolderPathPtr) {
+        /* Use new WINAPI functions */
+        wchar_t *path = NULL;
+        if(SHGetKnownFolderPathPtr(FOLDERID_Links, 0, NULL, &path) == S_OK) {
+            QString Links= QDir::fromNativeSeparators(QString::fromWCharArray(path)); 
+            linkName = Links + folderDir.dirName() + QLatin1String(".lnk");
+        }
+    } else {
+        /* Use legacy functions */
+        wchar_t path[MAX_PATH];
+        SHGetSpecialFolderPath(0, path, CSIDL_PROFILE, FALSE);
+        QString profile = QDir::fromNativeSeparators(QString::fromWCharArray(path));
+        linkName = profile+QLatin1String("/Links/") + folderDir.dirName() + QLatin1String(".lnk");
+    }
+    qDebug() << Q_FUNC_INFO << " creating link from " << linkName << " to " << folder;
     if (!QFile::link(folder, linkName))
         qDebug() << Q_FUNC_INFO << "linking" << folder << "to" << linkName << "failed!";
+
 }
 
 bool hasLaunchOnStartup_private(const QString &appName)
