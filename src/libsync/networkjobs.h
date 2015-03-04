@@ -168,7 +168,7 @@ private:
  * Note that this job is only for querying one item.
  * There is also the LsColJob which can be used to list collections
  */
-class PropfindJob : public AbstractNetworkJob {
+class OWNCLOUDSYNC_EXPORT PropfindJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit PropfindJob(AccountPtr account, const QString &path, QObject *parent = 0);
