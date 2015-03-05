@@ -636,7 +636,7 @@ void SyncEngine::startSync()
     _discoveryMainThread = new DiscoveryMainThread(account());
     _discoveryMainThread->setParent(this);
     connect(this, SIGNAL(finished()), _discoveryMainThread, SLOT(deleteLater()));
-    connect(_discoveryMainThread, SIGNAL(rootEtag(QString)), this, SLOT(slotRootEtagReceived(QString)));
+    connect(_discoveryMainThread, SIGNAL(etagConcatenation(QString)), this, SLOT(slotRootEtagReceived(QString)));
 
 
     DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx);

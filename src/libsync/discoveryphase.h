@@ -52,7 +52,7 @@ public:
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(const QString &);
-    void firstDirectoryEtag(const QString &);
+    void etagConcatenation(const QString &);
     void finishedWithResult(QLinkedList<csync_vio_file_stat_t*>);
     void finishedWithError(int csyncErrnoCode, QString msg);
 private slots:
@@ -62,6 +62,7 @@ private slots:
 private:
     QLinkedList<csync_vio_file_stat_t*> _results;
     QString _subPath;
+    QString _etagConcatenation;
     AccountPtr _account;
     bool _ignoredFirst;
     QPointer<LsColJob> _lsColJob;
@@ -116,7 +117,7 @@ public slots:
     void singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, QString msg);
     void singleDirectoryJobFirstDirectoryPermissionsSlot(QString);
 signals:
-    void rootEtag(QString);
+    void etagConcatenation(QString);
 public:
     void setupHooks(DiscoveryJob* discoveryJob, const QString &pathPrefix);
 };
