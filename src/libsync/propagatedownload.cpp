@@ -399,7 +399,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         }
 
-        if(!_item._directDownloadUrl.isEmpty()) {
+        if(!_item._directDownloadUrl.isEmpty() && err != QNetworkReply::OperationCanceledError) {
             // If this was with a direct download, retry without direct download
             qWarning() << "Direct download of" << _item._directDownloadUrl << "failed. Retrying through owncloud.";
             _item._directDownloadUrl.clear();
