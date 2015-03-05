@@ -383,7 +383,7 @@ void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrno
     if (!_currentDiscoveryDirectoryResult) {
         return; // possibly aborted
     }
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << csyncErrnoCode << msg;
 
      _currentDiscoveryDirectoryResult->code = csyncErrnoCode;
      _currentDiscoveryDirectoryResult->msg = msg;
@@ -405,20 +405,22 @@ void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(QStrin
 
 // called from SyncEngine
 void DiscoveryMainThread::abort() {
-    if (_currentDiscoveryDirectoryResult) {
-        if (_discoveryJob->_vioMutex.tryLock()) {
-            _currentDiscoveryDirectoryResult->code = EIO; // FIXME aborted
-            _currentDiscoveryDirectoryResult = 0;
-            _discoveryJob->_vioWaitCondition.wakeAll();
-            _discoveryJob->_vioMutex.unlock();
-        }
-    }
     if (_singleDirJob) {
         _singleDirJob->disconnect(SIGNAL(finishedWithError(int,QString)), this);
         _singleDirJob->disconnect(SIGNAL(firstDirectoryPermissions(QString)), this);
         _singleDirJob->disconnect(SIGNAL(finishedWithResult(QLinkedList<csync_vio_file_stat_t*>)), this);
         _singleDirJob->abort();
     }
+    if (_currentDiscoveryDirectoryResult) {
+        if (_discoveryJob->_vioMutex.tryLock()) {
+            _currentDiscoveryDirectoryResult->msg = tr("Aborted by the user"); // Actually also created somewhere else by sync engine
+            _currentDiscoveryDirectoryResult->code = EIO;
+            _currentDiscoveryDirectoryResult = 0;
+            _discoveryJob->_vioWaitCondition.wakeAll();
+            _discoveryJob->_vioMutex.unlock();
+        }
+    }
+
 
 }
 
@@ -442,7 +444,7 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
 
         // Upon awakening from the _vioWaitCondition, iterator should be a valid iterator.
         if (directoryResult->code != 0) {
-            qDebug() << Q_FUNC_INFO << directoryResult->code << "when opening" << url;
+            qDebug() << Q_FUNC_INFO << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
             errno = directoryResult->code;
             // save the error string to the context
             discoveryJob->_csync_ctx->error_string = qstrdup( directoryResult->msg.toUtf8().constData() );

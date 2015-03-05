@@ -1194,6 +1194,7 @@ AccountPtr SyncEngine::account() const
 
 void SyncEngine::abort()
 {
+    qDebug() << Q_FUNC_INFO << _discoveryMainThread;
     // Aborts the discovery phase job
     if (_discoveryMainThread) {
         _discoveryMainThread->abort();
