@@ -245,16 +245,27 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
 void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
 {
     QString msg = reply->errorString();
-    switch (reply->error()) {
+    QNetworkReply::NetworkError err = reply->error();
+
+    // int errCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    switch (err) {
     case QNetworkReply::NoError:
     case QNetworkReply::ContentNotFoundError:
         _ocWizard->successfulStep();
         break;
     default:
-        if (!_ocWizard->account()->credentials()->stillValid(reply)) {
-            msg = tr("Access forbidden by server. To verify that you have proper access, "
-                     "<a href=\"%1\">click here</a> to access the service with your browser.")
-                    .arg(_ocWizard->account()->url().toString());
+        if( authenticationFailHappened(reply) ) {
+            // if the authentication fails, the request is canceled in HttpCredentials::slotAuthentication
+            // because of that, we need to check this here.
+            msg = tr("Credential Error: The entered username or password is wrong.");
+        } else {
+
+            if (!_ocWizard->account()->credentials()->stillValid(reply)) {
+                msg = tr("Access forbidden by server. To verify that you have proper access, "
+                         "<a href=\"%1\">click here</a> to access the service with your browser.")
+                        .arg(_ocWizard->account()->url().toString());
+            }
         }
         _ocWizard->show();
         if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds) {

@@ -104,8 +104,14 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
 // status.php could not be loaded (network or server issue!).
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
+    if( authenticationFailHappened(reply) ) {
+        // it is an authentication problem, username and password are wrong.
+        // see HttpCredentials::slotAuthentication
+        _errors.append(tr("Authentication error: Either username or password are wrong."));
+    } else {
+        _errors.append( reply->errorString() );
+    }
     _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
-    _errors.append( reply->errorString() );
     reportResult( StatusNotFound );
 }
 
