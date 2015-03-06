@@ -27,7 +27,7 @@
         <key>CFBundleShortVersionString</key>
         <string>@MIRALL_VERSION_STRING@</string>
         <key>NSHumanReadableCopyright</key>
-        <string>(C) 2014 @APPLICATION_VENDOR@</string>
+        <string>(C) 2014-2015 @APPLICATION_VENDOR@</string>
         <key>SUShowReleaseNotes</key>
         <false/>
         <key>LSMinimumBundleVersion</key>
