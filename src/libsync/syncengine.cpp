@@ -656,8 +656,8 @@ void SyncEngine::startSync()
 }
 
 void SyncEngine::slotRootEtagReceived(QString e) {
-    qDebug() << Q_FUNC_INFO << e;
     if (_remoteRootEtag.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << e;
         _remoteRootEtag = e;
         emit rootEtag(_remoteRootEtag);
     }
