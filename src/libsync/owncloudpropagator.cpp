@@ -126,8 +126,6 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 
     emit completed(_item);
     emit finished(status);
-
-    deleteLater();
 }
 
 /**
