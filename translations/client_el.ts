@@ -245,7 +245,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate :</source>
-        <translation type="unfinished"/>
+        <translation>Πιστοποιητικό :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -255,17 +255,17 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password :</source>
-        <translation type="unfinished"/>
+        <translation>Πιστοποιήστε τον κωδικό :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="23"/>
         <source>Select a certificate</source>
-        <translation type="unfinished"/>
+        <translation>Επιλέξτε ένα πιστοποιητικό.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="23"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished"/>
+        <translation>Πιστοποιήστε τα αρχεία (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -330,7 +330,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="41"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Λήξη χρόνου σύνδεσης.</translation>
     </message>
 </context>
 <context>
@@ -899,7 +899,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="45"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Η σύνδεση έληξε.</translation>
     </message>
 </context>
 <context>
@@ -1767,7 +1767,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="26"/>
         <source>Share Info</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιρασμός Πληροφοριών</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="34"/>
@@ -1798,7 +1798,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="149"/>
         <source>Set expiry date</source>
-        <translation type="unfinished"/>
+        <translation>Ορισμός ημερομηνίας λήξης</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="67"/>
@@ -1809,7 +1809,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="68"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>%1 Διαμοιράστηκε</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="141"/>
@@ -1829,12 +1829,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="374"/>
         <source>There is no sync folder configured.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν έχει οριστεί φάκελος συνχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>Can not find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν βρέθηκε φάκελος για την προσθήκη αρχείου.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="393"/>
@@ -1849,7 +1849,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="420"/>
         <source>Waiting to upload...</source>
-        <translation type="unfinished"/>
+        <translation>Αναμονή για μεταφόρτωση</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="422"/>
@@ -1859,7 +1859,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="453"/>
         <source>The file can not be synced.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο δεν μπορεί να συγχρονιστεί.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="463"/>
@@ -2223,7 +2223,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
         <source>An error opening a directory happened</source>
-        <translation type="unfinished"/>
+        <translation>Ένα σφάλμα συνέβη κατά το άνοιγμα ενός καταλόγου.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
@@ -2584,7 +2584,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Επιλέξτε μια διαφορετική διεύθυνση.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
