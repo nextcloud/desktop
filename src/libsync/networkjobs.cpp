@@ -167,7 +167,7 @@ void AbstractNetworkJob::slotFinished()
     }
 
     // get the Date timestamp from reply
-    _responseTimestamp = QString::fromAscii(_reply->rawHeader("Date"));
+    _responseTimestamp = _reply->rawHeader("Date");
     _duration = _durationTimer.elapsed();
 
     if (_followRedirects) {
@@ -207,7 +207,7 @@ quint64 AbstractNetworkJob::duration()
     return _duration;
 }
 
-QString AbstractNetworkJob::responseTimestamp()
+QByteArray AbstractNetworkJob::responseTimestamp()
 {
     return _responseTimestamp;
 }

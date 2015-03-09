@@ -140,7 +140,7 @@ public:
     Status               _status;
     QString              _errorString; // Contains a string only in case of error
     int                  _httpErrorCode;
-    QString              _responseTimeStamp;
+    QByteArray           _responseTimeStamp;
     quint64              _requestDuration;
     bool                 _isRestoration; // The original operation was forbidden, and this is a restoration
     int                  _affectedItems; // the number of affected items by the operation on this item.

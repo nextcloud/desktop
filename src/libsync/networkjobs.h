@@ -70,7 +70,7 @@ public:
     void setIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
 
-    QString responseTimestamp();
+    QByteArray responseTimestamp();
     quint64 duration();
 
 public slots:
@@ -94,7 +94,7 @@ protected:
 
     int maxRedirects() const { return 10; }
     virtual bool finished() = 0;
-    QString       _responseTimestamp;
+    QByteArray    _responseTimestamp;
     QElapsedTimer _durationTimer;
     quint64       _duration;
     bool          _timedout;  // set to true when the timeout slot is recieved
