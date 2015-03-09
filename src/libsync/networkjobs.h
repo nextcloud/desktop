@@ -44,7 +44,8 @@ private:
 };
 
 
-bool authenticationFailHappened( QNetworkReply *reply );
+bool OWNCLOUDSYNC_EXPORT authenticationFailHappened( QNetworkReply *reply );
+
 void setAuthenticationFailed( QNetworkReply *reply);
 
 /**
