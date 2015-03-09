@@ -45,7 +45,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     setAttribute(Qt::WA_DeleteOnClose);
     _ui->setupUi(this);
     _ui->pushButton_copy->setIcon(QIcon::fromTheme("edit-copy"));
-    _ui->pushButton_copy->setText(tr("Copy Link"));
+    _ui->pushButton_copy->setEnabled(false);
     connect(_ui->pushButton_copy, SIGNAL(clicked(bool)), SLOT(slotPushButtonCopyLinkPressed()));
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
@@ -60,7 +60,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _pi_date     = new QProgressIndicator();
     _ui->horizontalLayout_shareLink->addWidget(_pi_link);
     _ui->horizontalLayout_password->addWidget(_pi_password);
-    _ui->horizontalLayout_expire->addWidget(_pi_date);
+    // _ui->horizontalLayout_expire->addWidget(_pi_date);
 
     connect(_ui->checkBox_shareLink, SIGNAL(clicked()), this, SLOT(slotCheckBoxShareLinkClicked()));
     connect(_ui->checkBox_password, SIGNAL(clicked()), this, SLOT(slotCheckBoxPasswordClicked()));
@@ -72,7 +72,9 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
     _ui->pushButton_setPassword->hide();
-    _ui->calendar->hide();
+
+    _ui->calendar->setDate(QDate::currentDate().addDays(1));
+    _ui->calendar->setEnabled(false);
 
     QFileInfo f_info(_localPath);
     QFileIconProvider icon_provider;
@@ -96,7 +98,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _ui->label_sharePath->setWordWrap(true);
     _ui->label_sharePath->setText(tr("%1 path: %2").arg(Theme::instance()->appNameGUI()).arg(_sharePath));
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
-    _ui->label_password->setText(tr("Set password"));
+    _ui->label_password->setText(tr("Set p&assword"));
     // check if the file is already inside of a synced folder
     if( sharePath.isEmpty() ) {
         // The file is not yet in an ownCloud synced folder. We could automatically
@@ -199,7 +201,7 @@ void ShareDialog::setPassword(const QString &password)
         verb = "POST";
 
         if( _ui->checkBox_expire->isChecked() ) {
-            QDate date = _ui->calendar->selectedDate();
+            QDate date = _ui->calendar->date();
             if( date.isValid() ) {
                 requestParams.append(qMakePair(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd")));
             }
@@ -281,12 +283,12 @@ void ShareDialog::slotSharesFetched(const QString &reply)
             }
 
             if (data.value("expiration").isValid()) {
-                _ui->calendar->setSelectedDate(QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00"));
+                _ui->calendar->setDate(QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00"));
                 _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
-                _ui->calendar->show();
+                _ui->calendar->setEnabled(true);
                 _ui->checkBox_expire->setChecked(true);
             } else {
-                _ui->calendar->hide();
+                _ui->calendar->setEnabled(false);
                 _ui->checkBox_expire->setChecked(false);
             }
 
@@ -300,10 +302,34 @@ void ShareDialog::slotSharesFetched(const QString &reply)
                 queryArgs.append(qMakePair(QString("t"), data.value("token").toString()));
                 url = Account::concatUrlPath(_account->url(), QLatin1String("public.php"), queryArgs).toString();
             }
-            _ui->lineEdit_shareLink->setText(url);
+            setShareLink(url);
+
+            _ui->pushButton_copy->setEnabled(true);
         }
     }
-    setShareCheckBoxTitle(_shares.count() > 0);
+    if( _shares.count()>0 ) {
+        setShareCheckBoxTitle(true);
+    } else {
+        // check the checkbox to create a link.
+        _ui->checkBox_shareLink->setChecked(true);
+        slotCheckBoxShareLinkClicked();
+    }
+}
+
+void ShareDialog::setShareLink( const QString& url )
+{
+    // FIXME: shorten the url for output.
+    const QUrl realUrl(url);
+    if( realUrl.isValid() ) {
+        const QString u = QString("<a href=\"%1\">%2</a>").arg(realUrl.toString(QUrl::None)).arg(url);
+        _ui->_labelShareLink->setText(u);
+        _shareUrl = url;
+        _ui->pushButton_copy->setEnabled(true);
+    } else {
+        _shareUrl.clear();
+        _ui->_labelShareLink->setText(QString::null);
+    }
+
 }
 
 void ShareDialog::slotDeleteShareFetched(const QString &reply)
@@ -319,12 +345,16 @@ void ShareDialog::slotDeleteShareFetched(const QString &reply)
     _public_share_id = 0;
     _pi_link->stopAnimation();
     _ui->lineEdit_password->clear();
-    _ui->lineEdit_shareLink->clear();
+    _ui->_labelShareLink->clear();
+    _ui->pushButton_copy->setEnabled(false);
     _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
     _ui->pushButton_setPassword->hide();
     _ui->checkBox_expire->setChecked(false);
-    _ui->calendar->hide();
+    _ui->checkBox_password->setChecked(false);
+    _ui->calendar->setEnabled(false);
+
+    _shareUrl.clear();
 
     setShareCheckBoxTitle(false);
 
@@ -361,7 +391,7 @@ void ShareDialog::slotCreateShareFetched(const QString &reply)
         // there needs to be a password
         _ui->checkBox_password->setChecked(true);
         _ui->checkBox_password->setVisible(false);
-        _ui->label_password->setText(tr("Public sharing requires a password:"));
+        _ui->label_password->setText(tr("Public sh&aring requires a password:"));
         _ui->lineEdit_password->setFocus();
         _ui->widget_shareLink->show();
 
@@ -376,7 +406,9 @@ void ShareDialog::slotCreateShareFetched(const QString &reply)
     QVariantMap json = QtJson::parse(reply, success).toMap();
     _public_share_id = json.value("ocs").toMap().values("data")[0].toMap().value("id").toULongLong();
     QString url = json.value("ocs").toMap().values("data")[0].toMap().value("url").toString();
-    _ui->lineEdit_shareLink->setText(url);
+
+    setShareLink(url);
+
     setShareCheckBoxTitle(true);
 
     _ui->widget_shareLink->show();
@@ -384,14 +416,12 @@ void ShareDialog::slotCreateShareFetched(const QString &reply)
 
 void ShareDialog::slotCheckBoxPasswordClicked()
 {
-    if (_ui->checkBox_password->checkState() == Qt::Checked)
-    {
+    if (_ui->checkBox_password->checkState() == Qt::Checked) {
         _ui->lineEdit_password->show();
         _ui->pushButton_setPassword->show();
         _ui->lineEdit_password->setPlaceholderText(tr("Choose a password for the public link"));
-    }
-    else
-    {
+        _ui->lineEdit_password->setFocus();
+    } else {
         ShareDialog::setPassword(QString());
         _ui->lineEdit_password->setPlaceholderText(QString());
         _pi_password->startAnimation();
@@ -406,21 +436,21 @@ void ShareDialog::slotCheckBoxExpireClicked()
     {
         const QDate date = QDate::currentDate().addDays(1);
         ShareDialog::setExpireDate(date);
-        _ui->calendar->setSelectedDate(date);
+        _ui->calendar->setDate(date);
         _ui->calendar->setMinimumDate(date);
-        _ui->calendar->show();
+        _ui->calendar->setEnabled(true);
     }
     else
     {
         ShareDialog::setExpireDate(QDate());
-        _ui->calendar->hide();
+        _ui->calendar->setEnabled(false);
     }
 }
 
 void ShareDialog::slotPushButtonCopyLinkPressed()
 {
     QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setText(_ui->lineEdit_shareLink->text());
+    clipboard->setText(_shareUrl);
 }
 
 int ShareDialog::checkJsonReturnCode(const QString &reply, QString &message)
@@ -441,8 +471,8 @@ int ShareDialog::checkJsonReturnCode(const QString &reply, QString &message)
 
 void ShareDialog::setShareCheckBoxTitle(bool haveShares)
 {
-    const QString noSharesTitle(tr("Check to share by public link"));
-    const QString haveSharesTitle(tr("Shared by public link (uncheck to delete share)"));
+    const QString noSharesTitle(tr("Check to &share by public link"));
+    const QString haveSharesTitle(tr("&Shared by public link (uncheck to delete share)"));
 
     if( haveShares ) {
         _ui->checkBox_shareLink->setText( haveSharesTitle );

@@ -78,14 +78,18 @@ private:
     void setShareCheckBoxTitle(bool haveShares);
     void displayError(int code);
     void displayInfo( const QString& msg );
+    void setShareLink( const QString& url );
 
     Ui::ShareDialog *_ui;
     AccountPtr _account;
     QString _sharePath;
     QString _localPath;
+    QString _shareUrl;
+#if 0
     QString _folderAlias;
     int     _uploadFails;
     QString _expectedSyncFile;
+#endif
 
     bool _passwordJobRunning;
     QList<QVariant> _shares;
