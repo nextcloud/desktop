@@ -40,6 +40,7 @@ Q_DECLARE_METATYPE(QTimer*)
 
 namespace OCC {
 
+
 AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
     : QObject(parent)
     , _duration(0)
@@ -152,15 +153,13 @@ void AbstractNetworkJob::slotFinished()
 {
     _timer.stop();
 
-    QNetworkReply::NetworkError error = _reply->error();
-
-    if( error == QNetworkReply::SslHandshakeFailedError ) {
+    if( _reply->error() == QNetworkReply::SslHandshakeFailedError ) {
         qDebug() << "SslHandshakeFailedError: " << reply()->errorString() << " : can be caused by a webserver wanting SSL client certificates";
     }
     
-    if( error != QNetworkReply::NoError ) {
-        qDebug() << Q_FUNC_INFO << error << _reply->errorString();
-        if (error == QNetworkReply::ProxyAuthenticationRequiredError) {
+    if( _reply->error() != QNetworkReply::NoError ) {
+        qDebug() << Q_FUNC_INFO << _reply->error() << _reply->errorString();
+        if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
             qDebug() << Q_FUNC_INFO << _reply->rawHeader("Proxy-Authenticate");
         }
         emit networkError(_reply);
@@ -495,20 +494,6 @@ bool LsColJob::finished()
 namespace {
 const char statusphpC[] = "status.php";
 const char owncloudDirC[] = "owncloud/";
-const char authenticationFailedC[] = "owncloud-authentication-failed";
-}
-
-bool authenticationFailHappened( QNetworkReply *reply )
-{
-    return ( reply && reply->error() == QNetworkReply::OperationCanceledError &&
-             reply->property(authenticationFailedC).toBool() );
-}
-
-void setAuthenticationFailed( QNetworkReply *reply)
-{
-    if( reply ) {
-        reply->setProperty(authenticationFailedC, true);
-    }
 }
 
 CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)

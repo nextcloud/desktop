@@ -77,6 +77,7 @@ namespace
 const char userC[] = "user";
 const char certifPathC[] = "certificatePath";
 const char certifPasswdC[] = "certificatePasswd";
+const char authenticationFailedC[] = "owncloud-authentication-failed";
 } // ns
 
 class HttpCredentialsAccessManager : public AccessManager {
@@ -246,12 +247,12 @@ void HttpCredentials::fetch()
         _readPwdFromDeprecatedPlace = true;
     }
 }
-
 bool HttpCredentials::stillValid(QNetworkReply *reply)
 {
     return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
             // returned if user or password is incorrect
-            && !authenticationFailHappened(reply));
+            && (reply->error() != QNetworkReply::OperationCanceledError
+                || !reply->property(authenticationFailedC).toBool()));
 }
 
 void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
@@ -376,7 +377,7 @@ void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* a
     // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
     // those credentials were invalid and we terminate.
     qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
-    setAuthenticationFailed(reply);
+    reply->setProperty(authenticationFailedC, true);
     reply->close();
 }
 

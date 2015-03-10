@@ -32,6 +32,7 @@ namespace OCC {
 
 class AbstractSslErrorHandler;
 
+
 /**
  * @brief Internal Helper class
  */
@@ -42,11 +43,6 @@ public:
 private:
     QPointer<QTimer> _timer;
 };
-
-
-bool OWNCLOUDSYNC_EXPORT authenticationFailHappened( QNetworkReply *reply );
-
-void setAuthenticationFailed( QNetworkReply *reply);
 
 /**
  * @brief The AbstractNetworkJob class

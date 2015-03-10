@@ -293,12 +293,8 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished(QNetworkReply::Netwo
 void FolderWizardRemotePath::slotHandleNetworkError(QNetworkReply *reply)
 {
     qDebug() << "** webdav mkdir request failed:" << reply->error();
-    if( authenticationFailHappened(reply)) {
-        showWarn(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
-    } else {
-        showWarn(tr("Failed to create the folder on %1. Please check manually.")
-                 .arg(Theme::instance()->appNameGUI()));
-    }
+    showWarn(tr("Failed to create the folder on %1. Please check manually.")
+             .arg(Theme::instance()->appNameGUI()));
 }
 
 static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)
