@@ -1672,7 +1672,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="325"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>選擇要同步的項目</translation>
     </message>
 </context>
 <context>
