@@ -422,18 +422,14 @@ void PropagateUploadFileQNAM::startNextChunk()
         parallelChunkUpload = env != "false" && env != "0";
     } else {
         auto version = _propagator->account()->serverVersion();
-        auto dotPos = version.indexOf('.');
-        if (dotPos > 0) {
-            if (version.leftRef(dotPos)
-#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
-                    .toString()  // QStringRef::toInt was added in Qt 5.1
-#endif
-                    .toInt() < 8) {
-
-                // Disable parallel chunk upload on older sever to avoid too many
-                // internal sever errors (#2743)
-                parallelChunkUpload = false;
-            }
+        auto components = version.split('.');
+        int versionNum = (components.value(0).toInt() << 16)
+                       + (components.value(1).toInt() << 8)
+                       + components.value(2).toInt();
+        if (versionNum < 0x080003) {
+            // Disable parallel chunk upload severs older than 8.0.3 to avoid too many
+            // internal sever errors (#2743, #2938)
+            parallelChunkUpload = false;
         }
     }
 
