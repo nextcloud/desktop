@@ -33,6 +33,9 @@
 
 namespace OCC {
 
+//
+// Whenever you change something here check both settingsdialog.cpp and settingsdialogmac.cpp !
+//
 SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     : MacPreferencesWindow(parent)
 {
@@ -81,6 +84,10 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     FolderMan *folderMan = FolderMan::instance();
     connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
              this, SLOT(slotSyncStateChange(QString)));
+
+    connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
+    connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
+             gui, SLOT(slotFolderOpenAction(QString)));
 
     connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
              _accountSettings, SLOT(slotSetProgress(QString, Progress::Info)) );
