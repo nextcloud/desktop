@@ -12,6 +12,8 @@
  * details.
  */
 
+#include "stdafx.h"
+
 #include "CommunicationSocket.h"
 #include "UtilConstants.h"
 #include "StringUtil.h"
