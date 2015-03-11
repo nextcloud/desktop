@@ -155,9 +155,9 @@ void PropagateLocalRename::start()
 
         _propagator->addTouchedFile(existingFile);
         _propagator->addTouchedFile(targetFile);
-        QFile file(existingFile);
-        if (!file.rename(targetFile)) {
-            done(SyncFileItem::NormalError, file.errorString());
+        QString renameError;
+        if (!FileSystem::rename(existingFile, targetFile, &renameError)) {
+            done(SyncFileItem::NormalError, renameError);
             return;
         }
     }

@@ -16,6 +16,7 @@
 #include "owncloudpropagator_p.h"
 #include "account.h"
 #include "syncjournalfilerecord.h"
+#include "filesystem.h"
 #include <QFile>
 #include <QStringList>
 
@@ -81,7 +82,8 @@ void PropagateRemoteMove::start()
             QString originalFile(_propagator->getFilePath(QLatin1String("Shared")));
             _propagator->addTouchedFile(originalFile);
             _propagator->addTouchedFile(targetFile);
-            if( QFile::rename( targetFile, originalFile) ) {
+            QString renameError;
+            if( FileSystem::rename(targetFile, originalFile, &renameError) ) {
                 done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
             } else {
                 done(SyncFileItem::NormalError, tr("This folder must not be renamed. Please name it back to Shared."));

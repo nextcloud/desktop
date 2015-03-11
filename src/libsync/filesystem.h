@@ -60,6 +60,14 @@ qint64 OWNCLOUDSYNC_EXPORT getSize(const QString& filename);
 bool OWNCLOUDSYNC_EXPORT fileExists(const QString& filename);
 
 /**
+ * Rename the file \a originFileName to \a destinationFileName.
+ *
+ * It behaves as QFile::rename() but handles .lnk files correctly on Windows.
+ */
+bool OWNCLOUDSYNC_EXPORT rename(const QString& originFileName,
+                                const QString& destinationFileName,
+                                QString* errorString = NULL);
+/**
  * Rename the file \a originFileName to \a destinationFileName, and overwrite the destination if it
  * already exists
  */

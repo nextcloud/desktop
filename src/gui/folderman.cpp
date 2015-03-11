@@ -21,6 +21,7 @@
 #include "account.h"
 #include "accountmigrator.h"
 #include "accountstate.h"
+#include "filesystem.h"
 
 #ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
@@ -852,9 +853,10 @@ bool FolderMan::startFromScratch( const QString& localFolder )
 
         // Make a backup of the folder/file.
         QString newName = getBackupName( parentDir.absoluteFilePath( folderName ) );
-        if( !parentDir.rename( fi.absoluteFilePath(), newName ) ) {
+        QString renameError;
+        if( !FileSystem::rename( fi.absoluteFilePath(), newName, &renameError ) ) {
             qDebug() << "startFromScratch: Could not rename" << fi.absoluteFilePath()
-                     << "to" << newName;
+                     << "to" << newName << "error:" << renameError;
             return false;
         }
     }

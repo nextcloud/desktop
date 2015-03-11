@@ -107,6 +107,54 @@ bool FileSystem::setModTime(const QString& filename, time_t modTime)
     return true;
 }
 
+#ifdef Q_OS_WIN
+static bool isLnkFile(const QString& filename)
+{
+    return filename.endsWith(".lnk");
+}
+#endif
+
+bool FileSystem::rename(const QString &originFileName,
+                        const QString &destinationFileName,
+                        QString *errorString)
+{
+    bool success = false;
+    QString error;
+#ifdef Q_OS_WIN
+    if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
+        success = MoveFileEx((wchar_t*)originFileName.utf16(),
+                             (wchar_t*)destinationFileName.utf16(),
+                             MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
+        if (!success) {
+            wchar_t *string = 0;
+            FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+                          NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                          (LPWSTR)&string, 0, NULL);
+
+            error = QString::fromWCharArray(string);
+            LocalFree((HLOCAL)string);
+        }
+    } else
+#endif
+    {
+        QFile orig(originFileName);
+        success = orig.rename(destinationFileName);
+        if (!success) {
+            error = orig.errorString();
+        }
+    }
+
+    if (!success) {
+        qDebug() << "FAIL: renaming file" << originFileName
+                 << "to" << destinationFileName
+                 << "failed: " << error;
+        if (errorString) {
+            *errorString = error;
+        }
+    }
+    return success;
+}
+
 bool FileSystem::renameReplace(const QString& originFileName, const QString& destinationFileName, QString* errorString)
 {
 #ifndef Q_OS_WIN
@@ -215,16 +263,6 @@ bool FileSystem::openFileSharedRead(QFile* file, QString* error)
 }
 
 #ifdef Q_OS_WIN
-static bool isLnkFile(const QString& filename)
-{
-    return filename.endsWith(".lnk");
-}
-
-static bool isLnkFile(const QFileInfo& fi)
-{
-    return fi.suffix() == "lnk";
-}
-
 static qint64 getSizeWithCsync(const QString& filename)
 {
     qint64 result = 0;

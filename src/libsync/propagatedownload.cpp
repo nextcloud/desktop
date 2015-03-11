@@ -492,11 +492,11 @@ void PropagateDownloadFileQNAM::downloadFinished()
     bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT
             && !FileSystem::fileEquals(fn, _tmpFile.fileName());
     if (isConflict) {
-        QFile f(fn);
+        QString renameError;
         QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item._modtime));
-        if (!f.rename(conflictFileName)) {
+        if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
             //If the rename fails, don't replace it.
-            done(SyncFileItem::SoftError, f.errorString());
+            done(SyncFileItem::SoftError, renameError);
             return;
         }
     }
