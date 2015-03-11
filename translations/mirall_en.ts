@@ -309,23 +309,23 @@ Total time left %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="110"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="108"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="114"/>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="120"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="110"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="118"/>
         <source>Unable to connect to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="121"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="119"/>
         <source>timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="152"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="150"/>
         <source>The provided credentials are not correct</source>
         <translation type="unfinished"></translation>
     </message>
@@ -558,8 +558,8 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="508"/>
-        <location filename="../src/gui/folderwizard.cpp" line="510"/>
+        <location filename="../src/gui/folderwizard.cpp" line="509"/>
+        <location filename="../src/gui/folderwizard.cpp" line="511"/>
         <source>Add Folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -567,67 +567,67 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="63"/>
+        <location filename="../src/gui/folderwizard.cpp" line="64"/>
         <source>Click to select a local folder to sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="67"/>
+        <location filename="../src/gui/folderwizard.cpp" line="68"/>
         <source>Enter the path to the local folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="71"/>
+        <location filename="../src/gui/folderwizard.cpp" line="72"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="100"/>
+        <location filename="../src/gui/folderwizard.cpp" line="101"/>
         <source>No valid local folder selected!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="105"/>
+        <location filename="../src/gui/folderwizard.cpp" line="106"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="129"/>
+        <location filename="../src/gui/folderwizard.cpp" line="130"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="134"/>
+        <location filename="../src/gui/folderwizard.cpp" line="135"/>
         <source>An already configured folder is contained in the current entry.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="141"/>
+        <location filename="../src/gui/folderwizard.cpp" line="142"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="148"/>
+        <location filename="../src/gui/folderwizard.cpp" line="149"/>
         <source>An already configured folder contains the currently entered folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="154"/>
+        <location filename="../src/gui/folderwizard.cpp" line="155"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="167"/>
+        <location filename="../src/gui/folderwizard.cpp" line="168"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="178"/>
+        <location filename="../src/gui/folderwizard.cpp" line="179"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="211"/>
+        <location filename="../src/gui/folderwizard.cpp" line="212"/>
         <source>Select the source folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -635,47 +635,47 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="258"/>
+        <location filename="../src/gui/folderwizard.cpp" line="259"/>
         <source>Create Remote Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="259"/>
+        <location filename="../src/gui/folderwizard.cpp" line="260"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="288"/>
+        <location filename="../src/gui/folderwizard.cpp" line="289"/>
         <source>Folder was successfully created on %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="297"/>
+        <location filename="../src/gui/folderwizard.cpp" line="298"/>
         <source>Authentication failed accessing %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="299"/>
+        <location filename="../src/gui/folderwizard.cpp" line="300"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="349"/>
+        <location filename="../src/gui/folderwizard.cpp" line="350"/>
         <source>Choose this to sync the entire account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="406"/>
+        <location filename="../src/gui/folderwizard.cpp" line="407"/>
         <source>This folder is already being synced.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="408"/>
+        <location filename="../src/gui/folderwizard.cpp" line="409"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="412"/>
+        <location filename="../src/gui/folderwizard.cpp" line="413"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -683,7 +683,7 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="450"/>
+        <location filename="../src/gui/folderwizard.cpp" line="451"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -691,12 +691,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FormatWarningsWizardPage</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="45"/>
+        <location filename="../src/gui/folderwizard.cpp" line="46"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="47"/>
+        <location filename="../src/gui/folderwizard.cpp" line="48"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -776,12 +776,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/libsync/creds/httpcredentials.cpp" line="386"/>
+        <location filename="../src/libsync/creds/httpcredentials.cpp" line="387"/>
         <source>Enter Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/httpcredentials.cpp" line="387"/>
+        <location filename="../src/libsync/creds/httpcredentials.cpp" line="388"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1232,114 +1232,109 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="261"/>
-        <source>Credential Error: The entered username or password is wrong.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="265"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="255"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="288"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="290"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
         <source>Creating local sync folder %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="294"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="283"/>
         <source>ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="296"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="285"/>
         <source>failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="298"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="287"/>
         <source>Could not create local folder %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="312"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="318"/>
         <source>Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="342"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
         <source>creating folder on ownCloud: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="347"/>
         <source>Remote folder %1 created successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="360"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="349"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="362"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="364"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="351"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="353"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="366"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="355"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="369"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="374"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="364"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="380"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="396"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>Successfully connected to %1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="392"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="416"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="405"/>
         <source>Folder rename failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="406"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="463"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation type="unfinished"></translation>
     </message>
