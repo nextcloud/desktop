@@ -61,9 +61,8 @@ int main(int argc, char **argv)
 
 
 #ifdef WITH_CRASHREPORTER
-    CrashReporter::Handler* handler = new CrashReporter::Handler( QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE );
-    ConfigFile cfgFile;
-    handler->setActive(cfgFile.crashReporter());
+    if (ConfigFile().crashReporter())
+        new CrashReporter::Handler( QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE );
 #endif
 
 #ifndef Q_OS_WIN
