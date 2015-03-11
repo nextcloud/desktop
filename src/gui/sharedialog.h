@@ -57,7 +57,8 @@ class ShareDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShareDialog(AccountPtr account, const QString &sharePath, const QString &localPath, QWidget *parent = 0);
+    explicit ShareDialog(AccountPtr account, const QString &sharePath, const QString &localPath,
+                         bool resharingAllowed, QWidget *parent = 0);
     ~ShareDialog();
     void getShares();
 
@@ -77,7 +78,7 @@ private slots:
 private:
     void setShareCheckBoxTitle(bool haveShares);
     void displayError(int code);
-    void displayInfo( const QString& msg );
+    void displayError(const QString& errMsg);
     void setShareLink( const QString& url );
 
     Ui::ShareDialog *_ui;
@@ -102,6 +103,7 @@ private:
     QProgressIndicator *_pi_password;
     QProgressIndicator *_pi_date;
 
+    bool _resharingAllowed;
 };
 
 }

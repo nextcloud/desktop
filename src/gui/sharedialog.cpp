@@ -33,14 +33,15 @@ namespace {
 
 namespace OCC {
 
-ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QString &localPath, QWidget *parent) :
+ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QString &localPath, bool resharingAllowed, QWidget *parent) :
    QDialog(parent),
     _ui(new Ui::ShareDialog),
     _account(account),
     _sharePath(sharePath),
     _localPath(localPath),
     _passwordJobRunning(false),
-    _public_share_id(0)
+    _public_share_id(0),
+    _resharingAllowed(resharingAllowed)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     _ui->setupUi(this);
@@ -310,9 +311,15 @@ void ShareDialog::slotSharesFetched(const QString &reply)
     if( _shares.count()>0 ) {
         setShareCheckBoxTitle(true);
     } else {
-        // check the checkbox to create a link.
-        _ui->checkBox_shareLink->setChecked(true);
-        slotCheckBoxShareLinkClicked();
+        // If there are no shares yet, check the checkbox to create a link automatically.
+        // If its clear that resharing is not allowed, display an error
+        if( !_resharingAllowed ) {
+            displayError(tr("The file can not be shared because it was shared without sharing permission."));
+            _ui->checkBox_shareLink->setEnabled(false);
+        } else {
+            _ui->checkBox_shareLink->setChecked(true);
+            slotCheckBoxShareLinkClicked();
+        }
     }
 }
 
@@ -482,19 +489,24 @@ void ShareDialog::setShareCheckBoxTitle(bool haveShares)
 
 }
 
-void ShareDialog::displayError(int code)
+void ShareDialog::displayError(const QString& errMsg)
 {
-    const QString errMsg = tr("OCS API error code: %1").arg(code);
     _ui->errorLabel->setText( errMsg );
     _ui->errorLabel->show();
 }
 
+void ShareDialog::displayError(int code)
+{
+    const QString errMsg = tr("OCS API error code: %1").arg(code);
+    displayError(errMsg);
+}
+
+#if 0
 void ShareDialog::displayInfo( const QString& msg )
 {
     _ui->label_sharePath->setText(msg);
 }
 
-#if 0
 /*
  * This code is disabled for now as we do not have answers for all the questions involved
  * here, see https://github.com/owncloud/client/issues/2732

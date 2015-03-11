@@ -58,7 +58,7 @@ public slots:
     void slotClearExcludesList();
 
 signals:
-    void shareCommandReceived(const QString &sharePath, const QString &localPath);
+    void shareCommandReceived(const QString &sharePath, const QString &localPath, bool resharingAllowed);
 
 private slots:
     void slotNewConnection();
