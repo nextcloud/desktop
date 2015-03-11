@@ -51,10 +51,10 @@ public:
     };
 
     SyncFileItem() : _type(UnknownType),  _direction(None), _isDirectory(false),
-        _instruction(CSYNC_INSTRUCTION_NONE), _modtime(0),
-        _size(0), _inode(0), _should_update_etag(false), _hasBlacklistEntry(false),
-        _status(NoStatus), _httpErrorCode(0), _requestDuration(0), _isRestoration(false),
-        _affectedItems(1)
+        _hasBlacklistEntry(false), _status(NoStatus),
+        _isRestoration(false), _should_update_etag(false),
+        _httpErrorCode(0), _requestDuration(0), _affectedItems(1),
+        _instruction(CSYNC_INSTRUCTION_NONE), _modtime(0), _size(0), _inode(0)
     {
     }
 
@@ -114,49 +114,49 @@ public:
     // Variables usefull for everybody
     QString _file;
     QString _renameTarget;
-    Type      _type;
-    Direction _direction;
-    bool _isDirectory;
+    Type _type:3;
+    Direction _direction:2;
+    bool _isDirectory:1;
+
+    /// Whether there's an entry in the blacklist table.
+    /// Note: that entry may have retries left, so this can be true
+    /// without the status being FileIgnored.
+    bool                 _hasBlacklistEntry:1;
+
+    // Variables usefull to report to the user
+    Status               _status:4;
+    bool                 _isRestoration:1; // The original operation was forbidden, and this is a restoration
+    bool                 _should_update_etag:1;
+    quint16              _httpErrorCode;
+    QString              _errorString; // Contains a string only in case of error
+    QByteArray           _responseTimeStamp;
+    quint64              _requestDuration;
+    quint32              _affectedItems; // the number of affected items by the operation on this item.
+     // usually this value is 1, but for removes on dirs, it might be much higher.
 
     // Variables used by the propagator
-    QString              _originalFile; // as it is in the csync tree
     csync_instructions_e _instruction;
+    QString              _originalFile; // as it is in the csync tree
     time_t               _modtime;
     QByteArray           _etag;
     quint64              _size;
     quint64              _inode;
-    bool                 _should_update_etag;
     QByteArray           _fileId;
     QByteArray           _remotePerm;
     QString              _directDownloadUrl;
     QString              _directDownloadCookies;
 
-    /// Whether there's an entry in the blacklist table.
-    /// Note: that entry may have retries left, so this can be true
-    /// without the status being FileIgnored.
-    bool                 _hasBlacklistEntry;
-
-    // Variables usefull to report to the user
-    Status               _status;
-    QString              _errorString; // Contains a string only in case of error
-    int                  _httpErrorCode;
-    QByteArray           _responseTimeStamp;
-    quint64              _requestDuration;
-    bool                 _isRestoration; // The original operation was forbidden, and this is a restoration
-    int                  _affectedItems; // the number of affected items by the operation on this item.
-     // usually this value is 1, but for removes on dirs, it might be much higher.
     struct {
         quint64     _size;
         time_t      _modtime;
         QByteArray  _etag;
         QByteArray  _fileId;
-        enum csync_instructions_e _instruction;
         quint64     _other_size;
         time_t      _other_modtime;
         QByteArray  _other_etag;
         QByteArray  _other_fileId;
-        QByteArray  _other_remotePerm;
-        enum csync_instructions_e _other_instruction;
+        enum csync_instructions_e _instruction:16;
+        enum csync_instructions_e _other_instruction:16;
     } log;
 };
 
