@@ -69,7 +69,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     connect(_ui->lineEdit_password, SIGNAL(textChanged(QString)), this, SLOT(slotPasswordChanged(QString)));
     connect(_ui->pushButton_setPassword, SIGNAL(clicked(bool)), SLOT(slotPasswordReturnPressed()));
     connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
-    connect(_ui->calendar, SIGNAL(clicked(QDate)), SLOT(slotCalendarClicked(QDate)));
+    connect(_ui->calendar, SIGNAL(dateChanged(QDate)), SLOT(slotCalendarClicked(QDate)));
 
     _ui->pushButton_setPassword->setEnabled(false);
     _ui->widget_shareLink->hide();
