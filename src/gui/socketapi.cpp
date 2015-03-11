@@ -491,6 +491,10 @@ SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString file
         fileName.remove(0, folder->path().length());
     }
 
+    // remove trailing slash
+    if( fileName.endsWith( QLatin1Char('/') ) ) {
+        fileName.truncate(fileName.length()-1);
+    }
     SqlQuery *query = getSqlQuery(folder);
     SyncJournalFileRecord rec;
 
