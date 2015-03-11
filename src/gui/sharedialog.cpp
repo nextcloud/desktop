@@ -66,10 +66,12 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     connect(_ui->checkBox_shareLink, SIGNAL(clicked()), this, SLOT(slotCheckBoxShareLinkClicked()));
     connect(_ui->checkBox_password, SIGNAL(clicked()), this, SLOT(slotCheckBoxPasswordClicked()));
     connect(_ui->lineEdit_password, SIGNAL(returnPressed()), this, SLOT(slotPasswordReturnPressed()));
+    connect(_ui->lineEdit_password, SIGNAL(textChanged(QString)), this, SLOT(slotPasswordChanged(QString)));
     connect(_ui->pushButton_setPassword, SIGNAL(clicked(bool)), SLOT(slotPasswordReturnPressed()));
     connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
     connect(_ui->calendar, SIGNAL(clicked(QDate)), SLOT(slotCalendarClicked(QDate)));
 
+    _ui->pushButton_setPassword->setEnabled(false);
     _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
     _ui->pushButton_setPassword->hide();
@@ -177,6 +179,12 @@ void ShareDialog::slotPasswordReturnPressed()
     _ui->lineEdit_password->setText(QString());
     _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
     _ui->lineEdit_password->clearFocus();
+}
+
+void ShareDialog::slotPasswordChanged(const QString& newText)
+{
+    // disable the set-passwort button
+    _ui->pushButton_setPassword->setEnabled( newText.length() > 0 );
 }
 
 void ShareDialog::setPassword(const QString &password)
@@ -356,6 +364,7 @@ void ShareDialog::slotDeleteShareFetched(const QString &reply)
     _ui->pushButton_copy->setEnabled(false);
     _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
+    _ui->pushButton_setPassword->setEnabled(false);
     _ui->pushButton_setPassword->hide();
     _ui->checkBox_expire->setChecked(false);
     _ui->checkBox_password->setChecked(false);

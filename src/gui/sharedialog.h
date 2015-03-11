@@ -73,6 +73,7 @@ private slots:
     void slotCheckBoxPasswordClicked();
     void slotCheckBoxExpireClicked();
     void slotPasswordReturnPressed();
+    void slotPasswordChanged(const QString& newText);
     void slotPushButtonCopyLinkPressed();
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
 private:
