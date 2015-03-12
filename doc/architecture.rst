@@ -212,8 +212,8 @@ In the communication between client and server a couple of custom WebDAV propert
 were introduced. They are either needed for sync functionality or help have a positive
 effect on synchronization performance.
 
-This chapter describes additional xml elemeents which the server returns in response
-to a successful PROPFIND request on a file or directory. The elemnts are returned in
+This chapter describes additional xml elements which the server returns in response
+to a successful PROPFIND request on a file or directory. The elements are returned in
 the namespace oc.
 
 Server Side  Permissions
