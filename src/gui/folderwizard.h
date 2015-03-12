@@ -86,11 +86,17 @@ protected slots:
     void slotUpdateDirectories(const QStringList&);
     void slotRefreshFolders();
     void slotItemExpanded(QTreeWidgetItem*);
+    void slotCurrentItemChanged(QTreeWidgetItem*);
+    void slotFolderEntryEdited(const QString& text);
+    void slotLsColFolderEntry();
+    void slotTypedPathFound(const QStringList& subpaths);
 private:
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
+    bool selectByPath(QString path);
     Ui_FolderWizardTargetPage _ui;
     bool _warnWasVisible;
     AccountPtr _account;
+    QTimer _lscolTimer;
 };
 
 

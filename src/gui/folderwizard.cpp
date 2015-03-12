@@ -239,10 +239,13 @@ FolderWizardRemotePath::FolderWizardRemotePath(AccountPtr account)
 
     connect(_ui.addFolderButton, SIGNAL(clicked()), SLOT(slotAddRemoteFolder()));
     connect(_ui.refreshButton, SIGNAL(clicked()), SLOT(slotRefreshFolders()));
-    connect(_ui.folderTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SIGNAL(completeChanged()));
-    connect(_ui.folderTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SIGNAL(completeChanged()));
     connect(_ui.folderTreeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(slotItemExpanded(QTreeWidgetItem*)));
+    connect(_ui.folderTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), SLOT(slotCurrentItemChanged(QTreeWidgetItem*)));
+    connect(_ui.folderEntry, SIGNAL(textEdited(QString)), SLOT(slotFolderEntryEdited(QString)));
 
+    _lscolTimer.setInterval(500);
+    _lscolTimer.setSingleShot(true);
+    connect(&_lscolTimer, SIGNAL(timeout()), SLOT(slotLsColFolderEntry()));
 }
 
 void FolderWizardRemotePath::slotAddRemoteFolder()
@@ -315,27 +318,58 @@ static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& t
 
 void FolderWizardRemotePath::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
 {
-    QFileIconProvider prov;
-    QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
-    if (pathTrail.size() == 0) {        
-        if (path.endsWith('/')) {
-            path.chop(1);
-        }
-        parent->setToolTip(0, path);
-        parent->setData(0, Qt::UserRole, path);
-    } else {
-        QTreeWidgetItem *item = findFirstChild(parent, pathTrail.first());
-        if (!item) {
-            item = new QTreeWidgetItem(parent);
-            item->setIcon(0, folderIcon);
-            item->setText(0, pathTrail.first());
-            item->setData(0, Qt::UserRole, pathTrail.first());
-            item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-        }
+    if (pathTrail.isEmpty())
+        return;
 
-        pathTrail.removeFirst();
-        recursiveInsert(item, pathTrail, path);
+    const QString parentPath = parent->data(0, Qt::UserRole).toString();
+    const QString folderName = pathTrail.first();
+    QString folderPath;
+    if (parentPath == QLatin1String("/")) {
+        folderPath = folderName;
+    } else {
+        folderPath = parentPath + "/" + folderName;
     }
+    QTreeWidgetItem *item = findFirstChild(parent, folderName);
+    if (!item) {
+        item = new QTreeWidgetItem(parent);
+        QFileIconProvider prov;
+        QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
+        item->setIcon(0, folderIcon);
+        item->setText(0, folderName);
+        item->setData(0, Qt::UserRole, folderPath);
+        item->setToolTip(0, folderPath);
+        item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+    }
+
+    pathTrail.removeFirst();
+    recursiveInsert(item, pathTrail, path);
+}
+
+bool FolderWizardRemotePath::selectByPath(QString path)
+{
+    if (path.startsWith(QLatin1Char('/'))) {
+        path = path.mid(1);
+    }
+    if (path.endsWith(QLatin1Char('/'))) {
+        path.chop(1);
+    }
+
+    QTreeWidgetItem *it = _ui.folderTreeWidget->topLevelItem(0);
+    if (!path.isEmpty()) {
+        const QStringList pathTrail = path.split(QLatin1Char('/'));
+        foreach (const QString& path, pathTrail) {
+            if (!it) {
+                return false;
+            }
+            it = findFirstChild(it, path);
+        }
+    }
+    if (!it) {
+        return false;
+    }
+
+    _ui.folderTreeWidget->setCurrentItem(it);
+    return true;
 }
 
 void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
@@ -367,6 +401,7 @@ void FolderWizardRemotePath::slotRefreshFolders()
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();
     _ui.folderTreeWidget->clear();
+    _ui.folderEntry->clear();
 }
 
 void FolderWizardRemotePath::slotItemExpanded(QTreeWidgetItem *item)
@@ -377,6 +412,49 @@ void FolderWizardRemotePath::slotItemExpanded(QTreeWidgetItem *item)
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();
+}
+
+void FolderWizardRemotePath::slotCurrentItemChanged(QTreeWidgetItem *item)
+{
+    if (item) {
+        QString dir = item->data(0, Qt::UserRole).toString();
+        if (!dir.startsWith(QLatin1Char('/'))) {
+            dir.prepend(QLatin1Char('/'));
+        }
+        _ui.folderEntry->setText(dir);
+    }
+
+    emit completeChanged();
+}
+
+void FolderWizardRemotePath::slotFolderEntryEdited(const QString& text)
+{
+    if (selectByPath(text)) {
+        _lscolTimer.stop();
+        return;
+    }
+
+    _ui.folderTreeWidget->setCurrentItem(0);
+    _lscolTimer.start(); // avoid sending a request on each keystroke
+}
+
+void FolderWizardRemotePath::slotLsColFolderEntry()
+{
+    QString path = _ui.folderEntry->text();
+    if (path.startsWith(QLatin1Char('/')))
+        path = path.mid(1);
+
+    LsColJob *job = new LsColJob(_account, path, this);
+    job->setProperties(QList<QByteArray>() << "resourcetype");
+    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
+            SLOT(slotTypedPathFound(QStringList)));
+    job->start();
+}
+
+void FolderWizardRemotePath::slotTypedPathFound(const QStringList& subpaths)
+{
+    slotUpdateDirectories(subpaths);
+    selectByPath(_ui.folderEntry->text());
 }
 
 FolderWizardRemotePath::~FolderWizardRemotePath()
