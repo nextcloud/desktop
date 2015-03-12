@@ -21,6 +21,13 @@
 
 #include <csync.h>
 
+#if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
+ // openSuse 12.3 didn't like enum bitfields.
+ #define BITFIELD(size)
+#else
+ #define BITFIELD(size) :size
+#endif
+
 namespace OCC {
 
 class SyncFileItem {
@@ -114,19 +121,19 @@ public:
     // Variables usefull for everybody
     QString _file;
     QString _renameTarget;
-    Type _type:3;
-    Direction _direction:2;
-    bool _isDirectory:1;
+    Type _type BITFIELD(3);
+    Direction _direction BITFIELD(2);
+    bool _isDirectory BITFIELD(1);
 
     /// Whether there's an entry in the blacklist table.
     /// Note: that entry may have retries left, so this can be true
     /// without the status being FileIgnored.
-    bool                 _hasBlacklistEntry:1;
+    bool                 _hasBlacklistEntry BITFIELD(1);
 
     // Variables usefull to report to the user
-    Status               _status:4;
-    bool                 _isRestoration:1; // The original operation was forbidden, and this is a restoration
-    bool                 _should_update_etag:1;
+    Status               _status BITFIELD(4);
+    bool                 _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
+    bool                 _should_update_etag BITFIELD(1);
     quint16              _httpErrorCode;
     QString              _errorString; // Contains a string only in case of error
     QByteArray           _responseTimeStamp;
@@ -155,8 +162,8 @@ public:
         time_t      _other_modtime;
         QByteArray  _other_etag;
         QByteArray  _other_fileId;
-        enum csync_instructions_e _instruction:16;
-        enum csync_instructions_e _other_instruction:16;
+        enum csync_instructions_e _instruction BITFIELD(16);
+        enum csync_instructions_e _other_instruction BITFIELD(16);
     } log;
 };
 
