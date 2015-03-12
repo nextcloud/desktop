@@ -25,7 +25,6 @@ ProgressDispatcher* ProgressDispatcher::_instance = 0;
 QString Progress::asResultString( const SyncFileItem& item)
 {
     switch(item._instruction) {
-    case CSYNC_INSTRUCTION_CONFLICT:
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_NEW:
         if (item._direction != SyncFileItem::Up) {
@@ -33,6 +32,8 @@ QString Progress::asResultString( const SyncFileItem& item)
         } else {
             return QCoreApplication::translate( "progress", "Uploaded");
         }
+    case CSYNC_INSTRUCTION_CONFLICT:
+        return QCoreApplication::translate( "progress", "Downloaded, renamed conflicting file");
     case CSYNC_INSTRUCTION_REMOVE:
         return QCoreApplication::translate( "progress", "Deleted");
     case CSYNC_INSTRUCTION_EVAL_RENAME:

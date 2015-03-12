@@ -201,33 +201,28 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
     QDateTime timestamp = QDateTime::currentDateTime();
     const QString timeStr = timeString(timestamp);
     const QString longTimeStr = timeString(timestamp, QLocale::LongFormat);
-    QIcon icon;
-    QString message;
 
     columns << timeStr;
     columns << fixupFilename(item._file);
     columns << folder;
-    if (Progress::isWarningKind(item._status)) {
-        message= item._errorString;
-        columns << message;
-        if (item._status == SyncFileItem::NormalError || item._status == SyncFileItem::FatalError) {
-            icon = Theme::instance()->syncStateIcon(SyncResult::Error);
-        } else {
-            icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
-        }
 
-    } else {
-        // if the error string is set, it's prefered because it is a usefull user message.
-        // at least should be...
-        if(item._errorString.isEmpty()) {
-            message = Progress::asResultString(item);
-        } else {
-            message = item._errorString;
-        }
-        columns << message;
-        if (Progress::isSizeDependent(item._instruction)) {
-            columns <<  Utility::octetsToString( item._size );
-        }
+    // If the error string is set, it's prefered because it is a useful user message.
+    QString message = item._errorString;
+    if (message.isEmpty()) {
+        message = Progress::asResultString(item);
+    }
+    columns << message;
+
+    QIcon icon;
+    if (item._status == SyncFileItem::NormalError
+            || item._status == SyncFileItem::FatalError) {
+        icon = Theme::instance()->syncStateIcon(SyncResult::Error);
+    } else if (Progress::isWarningKind(item._status)) {
+        icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
+    }
+
+    if (Progress::isSizeDependent(item._instruction)) {
+        columns << Utility::octetsToString( item._size );
     }
 
     QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
