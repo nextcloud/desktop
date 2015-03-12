@@ -216,9 +216,10 @@ This chapter describes additional xml elemeents which the server returns in resp
 to a successful PROPFIND request on a file or directory. The elemnts are returned in
 the namespace oc.
 
-###Server Side  Permissions
+Server Side  Permissions
+------------------------
 
-The XML element <oc:permissions> represents the permission- and sharing state of the
+The XML element ``<oc:permissions>`` represents the permission- and sharing state of the
 item. It is a list of characters, and each of the chars has a meaning as outlined
 in the table below:
 
@@ -245,29 +246,26 @@ in the table below:
 +---+----------------+-------------------------------------------|
 
 Example:
-```
-        <oc:permissions>RDNVCK</oc:permissions>
-```
 
-###File- or Directory Size
+  <oc:permissions>RDNVCK</oc:permissions>
 
-The XML element <oc:size> represents the file- or directory size in bytes. For
+File- or Directory Size
+-----------------------
+
+The XML element ``<oc:size>`` represents the file- or directory size in bytes. For
 directories, the size of the whole file tree underneath the directory is accumulated.
 
 Example:
-```
-        <oc:size>2429176697</oc:size>
-```
 
-###FileID
+  <oc:size>2429176697</oc:size>
 
+FileID
+------
 
-The XML element <oc:id> represents the so called file ID. It is a non volatile string id
+The XML element ``<oc:id>`` represents the so called file ID. It is a non volatile string id
 that stays constant as long as the file exists. It is not changed if the file changes or
 is renamed or moved.
 
-
 Example:
-```
-        <oc:id>00000020oc5cfy6qqizm</oc:id>
-```
+
+  <oc:id>00000020oc5cfy6qqizm</oc:id>
