@@ -232,17 +232,13 @@ bool UploadDevice::prepareAndOpen(const QString& fileName, qint64 start, qint64 
 
     QFile file(fileName);
     QString openError;
-    if (!FileSystem::openFileSharedRead(&file, &openError)) {
+    if (!FileSystem::openAndSeekFileSharedRead(&file, &openError, start)) {
         setErrorString(openError);
         return false;
     }
 
-    size = qMin(FileSystem::getSize(fileName), size);
+    size = qBound(0ll, size, FileSystem::getSize(fileName) - start);
     _data.resize(size);
-    if (!file.seek(start)) {
-        setErrorString(file.errorString());
-        return false;
-    }
     auto read = file.read(_data.data(), size);
     if (read != size) {
         setErrorString(file.errorString());

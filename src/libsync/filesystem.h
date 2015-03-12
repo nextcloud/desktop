@@ -75,13 +75,13 @@ bool renameReplace(const QString &originFileName, const QString &destinationFile
                    QString *errorString);
 
 /**
- * Replacement for QFile::open(ReadOnly) that sets a more permissive sharing mode
- * on Windows.
+ * Replacement for QFile::open(ReadOnly) followed by a seek().
+ * This version sets a more permissive sharing mode on Windows.
  *
  * Warning: The resuting file may have an empty fileName and be unsuitable for use
- * with QFileInfo!
+ * with QFileInfo! Calling seek() on the QFile with >32bit signed values will fail!
  */
-bool openFileSharedRead(QFile* file, QString* error);
+bool openAndSeekFileSharedRead(QFile* file, QString* error, qint64 seek);
 
 #ifdef Q_OS_WIN
 /**
