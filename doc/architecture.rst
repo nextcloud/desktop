@@ -151,9 +151,9 @@ ownCloud Client provides the ability to add custom patterns.
 
 By default, the ownCloud Client ignores the following files:
 
-- Files matched by one of the patterns defined in :ref:`ignoredFilesEditor-label`.
-- Files containing characters that do not work on certain file systems (`\, /, :, ?, *, ", >, <, |`).
-* Files starting in ``.csync_journal.db*``, as these files are reserved for journalling.
+* Files matched by one of the patterns defined in the Ignored Files Editor
+* Files containing characters that do not work on certain file systems ``(`\, /, :, ?, *, ", >, <, |`)``.
+* Files starting in ``.csync_journal.db``, as these files are reserved for journalling.
 
 If a pattern selected using a checkbox in the `ignoredFilesEditor-label` (or if
 a line in the exclude file starts with the character `]` directly followed by
@@ -223,27 +223,28 @@ The XML element ``<oc:permissions>`` represents the permission- and sharing stat
 item. It is a list of characters, and each of the chars has a meaning as outlined
 in the table below:
 
-+------+-------------+-------------------------------------------+
-| Code | Resource    | Description                               |
-|======+=============+===========================================|
-| S | File or Folder | is shared                                 |
-+---+----------------+-------------------------------------------|
-| R | File or Folder | can share (includes reshare)              |
-+---+----------------+-------------------------------------------|
-| M | File or Folder | is mounted (like on DropBox, Samba, etc.) |
-+---+----------------+-------------------------------------------|
-| W | File           | can write file                            |
-+---+----------------+-------------------------------------------|
-| C | Folder         |can create file in folder                  |
-+---+----------------+-------------------------------------------|
-| K | Folder         | can create folder (mkdir)                 |
-+---+----------------+-------------------------------------------|
-| D | File or Folder |can delete file or folder                  |
-+---+----------------+-------------------------------------------|
-| N | File or Folder | can rename file or folder                 |
-+---+----------------+-------------------------------------------|
-| V | File or Folder | can move file or folder                   |
-+---+----------------+-------------------------------------------|
++----+----------------+-------------------------------------------+
+|Code|   Resource     |  Description                              |
++----+----------------+-------------------------------------------+
+| S  | File or Folder | is shared                                 |
++----+----------------+-------------------------------------------+
+| R  | File or Folder | can share (includes reshare)              |
++----+----------------+-------------------------------------------+
+| M  | File or Folder | is mounted (like on DropBox, Samba, etc.) |
++----+----------------+-------------------------------------------+
+| W  | File           | can write file                            |
++----+----------------+-------------------------------------------+
+| C  | Folder         |can create file in folder                  |
++----+----------------+-------------------------------------------+
+| K  | Folder         | can create folder (mkdir)                 |
++----+----------------+-------------------------------------------+
+| D  | File or Folder |can delete file or folder                  |
++----+----------------+-------------------------------------------+
+| N  | File or Folder | can rename file or folder                 |
++----+----------------+-------------------------------------------+
+| V  | File or Folder | can move file or folder                   |
++----+----------------+-------------------------------------------+
+
 
 Example:
 
