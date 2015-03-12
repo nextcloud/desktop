@@ -1,6 +1,6 @@
 ChangeLog
 =========
-version 1.8.0 (release 2015-02-xx)
+version 1.8.0 (release 2015-03-xx)
  * Mac OS: HIDPI support
  * Support Sharing from desktop: Added a share dialog that can be
    opened by context menu in the file managers (Win, Mac, Nautilus)
@@ -12,7 +12,7 @@ version 1.8.0 (release 2015-02-xx)
  * Added ability to build on Windows utilizing MingGW
  * SQLite database fixes if running on FAT filesystems
  * Improved detection of changing files to upload from local
- * Preparations for the muli-account feature
+ * Preparations for the multi-account feature
  * Fixed experience for Window manager without system tray
  * Build with Qt 5.4
  * Dropped libneon dependency if Qt 5.4 is available
@@ -24,8 +24,7 @@ version 1.8.0 (release 2015-02-xx)
  * Prepared direct download
  * Added Crashreporter feature to be switched on on demand
  * A huge amount of bug fixes in all areas of the client.
-
- * more than 7000 commits since 1.7.0
+ * almost 700 commits since 1.7.1
 
 version 1.7.1 (release 2014-12-18)
  * Documentation fixes and updates
