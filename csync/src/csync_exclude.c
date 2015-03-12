@@ -151,11 +151,12 @@ CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
     return match;
 }
 
-// See http://support.microsoft.com/kb/74496
-static const char *win_reserved_words[] = {"CON","PRN","AUX", "NUL",
-                                           "COM1", "COM2", "COM3", "COM4",
-                                           "LPT1", "LPT2", "LPT3", "CLOCK$" };
-
+// See http://support.microsoft.com/kb/74496 and
+// https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
+// Additionally, we ignore '$Recycle.Bin', see https://github.com/owncloud/client/issues/2955
+static const char* win_reserved_words[] = {"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
+                                           "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4",
+                                           "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "CLOCK$", "$Recycle.Bin" };
 
 bool csync_is_windows_reserved_word(const char* filename) {
 
