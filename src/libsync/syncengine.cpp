@@ -21,7 +21,6 @@
 #include "syncjournalfilerecord.h"
 #include "discoveryphase.h"
 #include "creds/abstractcredentials.h"
-#include "csync_util.h"
 #include "syncfilestatus.h"
 #include "csync_private.h"
 
@@ -51,6 +50,7 @@
 #ifdef USE_NEON
 extern "C" int owncloud_commit(CSYNC* ctx);
 #endif
+extern "C" const char *csync_instruction_str(enum csync_instructions_e instr);
 
 namespace OCC {
 
@@ -827,7 +827,8 @@ void SyncEngine::setNetworkLimits(int upload, int download)
 
 void SyncEngine::slotJobCompleted(const SyncFileItem &item)
 {
-    qDebug() << Q_FUNC_INFO << item._file << item._status << item._errorString;
+    const char * instruction_str = csync_instruction_str(item._instruction);
+    qDebug() << Q_FUNC_INFO << item._file << instruction_str << item._status << item._errorString;
 
     /* Update the _syncedItems vector */
     int idx = _syncedItems.indexOf(item);
