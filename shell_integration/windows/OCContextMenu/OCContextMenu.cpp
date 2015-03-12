@@ -168,7 +168,7 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 
 	assert(!info.shareMenuTitle.empty());
 	MENUITEMINFO mii = { sizeof(mii) };
-	mii.fMask = MIIM_BITMAP | MIIM_STRING | MIIM_FTYPE | MIIM_ID | MIIM_STATE;
+	mii.fMask = MIIM_STRING | MIIM_FTYPE | MIIM_ID | MIIM_STATE;
 	mii.wID = idCmdFirst + IDM_SHARE;
 	mii.fType = MFT_STRING;
 	mii.dwTypeData = &info.shareMenuTitle[0];
