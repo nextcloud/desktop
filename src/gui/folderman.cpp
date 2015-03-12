@@ -106,7 +106,6 @@ void FolderMan::unloadFolder( const QString& alias )
         _socketApi->slotUnregisterPath(alias);
     }
 
-    _folderChangeSignalMapper->removeMappings(f);
     if( _folderWatchers.contains(alias)) {
         _folderWatchers.remove(alias);
     }
