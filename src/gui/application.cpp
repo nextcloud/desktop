@@ -42,6 +42,10 @@
 #include <windows.h>
 #endif
 
+#if defined(WITH_CRASHREPORTER)
+#include <libcrashreporter-handler/Handler.h>
+#endif
+
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
@@ -105,6 +109,11 @@ Application::Application(int &argc, char **argv) :
 
     if (isRunning())
         return;
+
+#if defined(WITH_CRASHREPORTER)
+    if (ConfigFile().crashReporter())
+        _crashHandler.reset(new CrashReporter::Handler( QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE ));
+#endif
 
     setupLogging();
     setupTranslations();

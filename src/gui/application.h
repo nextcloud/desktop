@@ -34,6 +34,10 @@ class QMessageBox;
 class QSystemTrayIcon;
 class QSocket;
 
+namespace CrashReporter {
+class Handler;
+}
+
 namespace OCC {
 class Theme;
 class Folder;
@@ -109,6 +113,9 @@ private:
 
     QTimer _checkConnectionTimer;
 
+#if defined(WITH_CRASHREPORTER)
+    QScopedPointer<CrashReporter::Handler> _crashHandler;
+#endif
     QScopedPointer<FolderMan> _folderManager;
 
     friend class ownCloudGui; // for _startupNetworkError

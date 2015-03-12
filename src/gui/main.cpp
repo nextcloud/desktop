@@ -28,13 +28,6 @@
 
 #include "updater/updater.h"
 
-
-#include "config.h"
-#ifdef WITH_CRASHREPORTER
-    #include "configfile.h"
-    #include <libcrashreporter-handler/Handler.h>
-#endif
-
 #include <QTimer>
 #include <QMessageBox>
 
@@ -58,12 +51,6 @@ int main(int argc, char **argv)
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
     OCC::Application app(argc, argv);
-
-
-#ifdef WITH_CRASHREPORTER
-    if (ConfigFile().crashReporter())
-        new CrashReporter::Handler( QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE );
-#endif
 
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
