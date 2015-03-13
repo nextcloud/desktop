@@ -141,6 +141,7 @@ private:
 
     static bool _syncRunning; //true when one sync is running somewhere (for debugging)
 
+    // Must only be acessed during update and reconcile
     QMap<QString, SyncFileItem> _syncItemMap;
 
     // should be called _syncItems (present tense). It's the items from the _syncItemMap but

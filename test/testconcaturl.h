@@ -19,7 +19,7 @@ using namespace OCC;
 
 typedef QList< QPair<QString,QString> > QueryItems;
 
-Q_DECLARE_METATYPE(QueryItems);
+Q_DECLARE_METATYPE(QueryItems)
 
 static QueryItems make()
 {

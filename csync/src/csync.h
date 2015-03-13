@@ -91,6 +91,7 @@ enum csync_status_codes_e {
   CSYNC_STATUS_OUT_OF_SPACE,
   CSYNC_STATUS_QUOTA_EXCEEDED, /* UNUSED */
   CSYNC_STATUS_SERVICE_UNAVAILABLE,
+  CSYNC_STATUS_STORAGE_UNAVAILABLE,
   CSYNC_STATUS_FILE_SIZE_ERROR,
   CSYNC_STATUS_CONTEXT_LOST,
   CSYNC_STATUS_MERGE_FILETREE_ERROR,
@@ -104,6 +105,7 @@ enum csync_status_codes_e {
     CSYNC_STATUS_INDIVIDUAL_IS_HARDLINK,
     CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST,
     CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS,
+    CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME,
     CYSNC_STATUS_FILE_LOCKED_OR_OPEN
 };
 
@@ -335,7 +337,7 @@ int csync_update(CSYNC *ctx);
 int csync_reconcile(CSYNC *ctx);
 
 /**
- * @brief Commit the sync results to journal
+ * @brief Re-initializes the csync context
  *
  * @param ctx  The context to commit.
  *

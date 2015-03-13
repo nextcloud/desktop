@@ -68,7 +68,6 @@ int getauth(const char *prompt,
     return re;
 }
 
-const char userC[] = "user";
 const char authenticationFailedC[] = "owncloud-authentication-failed";
 
 } // ns
@@ -80,8 +79,8 @@ public:
         : AccessManager(parent), _cred(cred) {}
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) {
-        if (_cred->user().isEmpty() || _cred->password().isEmpty() || _cred->_token.isEmpty()) {
-            qWarning() << Q_FUNC_INFO << "Empty user/password/token provided!";
+        if (_cred->user().isEmpty() || _cred->password().isEmpty()) {
+            qWarning() << Q_FUNC_INFO << "Empty user/password provided!";
         }
 
         QNetworkRequest req(request);
@@ -91,7 +90,9 @@ protected:
 
         // A pre-authenticated cookie
         QByteArray token = _cred->_token.toUtf8();
-        setRawCookie(token, request.url());
+        if (token.length() > 0) {
+            setRawCookie(token, request.url());
+        }
 
         return AccessManager::createRequest(op, req, outgoingData);
     }

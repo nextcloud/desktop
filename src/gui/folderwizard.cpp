@@ -19,6 +19,7 @@
 #include "networkjobs.h"
 #include "account.h"
 #include "selectivesyncdialog.h"
+#include "creds/abstractcredentials.h"
 
 #include <QDebug>
 #include <QDesktopServices>
@@ -293,8 +294,12 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished(QNetworkReply::Netwo
 void FolderWizardRemotePath::slotHandleNetworkError(QNetworkReply *reply)
 {
     qDebug() << "** webdav mkdir request failed:" << reply->error();
-    showWarn(tr("Failed to create the folder on %1. Please check manually.")
-             .arg(Theme::instance()->appNameGUI()));
+    if( reply && !_account->credentials()->stillValid(reply) ) {
+        showWarn(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
+    } else {
+        showWarn(tr("Failed to create the folder on %1. Please check manually.")
+                 .arg(Theme::instance()->appNameGUI()));
+    }
 }
 
 static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)
@@ -357,6 +362,7 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
 void FolderWizardRemotePath::slotRefreshFolders()
 {
     LsColJob *job = new LsColJob(_account, "/", this);
+    job->setProperties(QList<QByteArray>() << "resourcetype");
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();
@@ -367,6 +373,7 @@ void FolderWizardRemotePath::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
     LsColJob *job = new LsColJob(_account, dir, this);
+    job->setProperties(QList<QByteArray>() << "resourcetype");
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();

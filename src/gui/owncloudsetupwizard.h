@@ -31,17 +31,6 @@ namespace OCC {
 
 class OwncloudWizard;
 
-class ValidateDavAuthJob : public AbstractNetworkJob {
-    Q_OBJECT
-public:
-    ValidateDavAuthJob(AccountPtr account, QObject *parent = 0);
-    void start() Q_DECL_OVERRIDE;
-signals:
-    void authResult(QNetworkReply*);
-private slots:
-    bool finished() Q_DECL_OVERRIDE;
-};
-
 class DetermineAuthTypeJob : public AbstractNetworkJob {
     Q_OBJECT
 public:

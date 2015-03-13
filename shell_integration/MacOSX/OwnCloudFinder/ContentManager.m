@@ -111,7 +111,7 @@ static ContentManager* sharedInstance = nil;
 	}else if( [result isEqualToString:@"NOP"]) {
 		// Nothing.
 	} else {
-		NSLog(@"OwnCloud: Unknown status code %@", result);
+		NSLog(@"SyncState: Unknown status code %@", result);
 	}
 	
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
@@ -129,7 +129,7 @@ static ContentManager* sharedInstance = nil;
 	//NSLog(@"%@ %@", NSStringFromSelector(_cmd), path);
 	if (!_fileIconsEnabled)
 	{
-		NSLog(@"OwnCloud: Icons are NOT ENABLED!");
+		NSLog(@"SyncState: Icons are NOT ENABLED!");
 		// return nil;
 	}
 
@@ -284,7 +284,7 @@ static ContentManager* sharedInstance = nil;
 				}
 				else
 				{
-					NSLog(@"OwnCloudFinder: refreshing icon badges failed");
+					NSLog(@"SyncState: refreshing icon badges failed");
 
 					return;
 				}
@@ -333,7 +333,7 @@ static ContentManager* sharedInstance = nil;
 				}
 				else
 				{
-					NSLog(@"OwnCloudFinder: refreshing icon badges failed");
+					NSLog(@"SyncState: refreshing icon badges failed");
 
 					return;
 				}

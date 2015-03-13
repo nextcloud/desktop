@@ -166,7 +166,7 @@ void AbstractNetworkJob::slotFinished()
     }
 
     // get the Date timestamp from reply
-    _responseTimestamp = QString::fromAscii(_reply->rawHeader("Date"));
+    _responseTimestamp = _reply->rawHeader("Date");
     _duration = _durationTimer.elapsed();
 
     if (_followRedirects) {
@@ -206,7 +206,7 @@ quint64 AbstractNetworkJob::duration()
     return _duration;
 }
 
-QString AbstractNetworkJob::responseTimestamp()
+QByteArray AbstractNetworkJob::responseTimestamp()
 {
     return _responseTimestamp;
 }
@@ -248,16 +248,12 @@ RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject 
 void RequestEtagJob::start()
 {
     QNetworkRequest req;
-    if (path().isEmpty() || path() == QLatin1String("/")) {
-        /* For the root directory, we need to query the etags of all the sub directories
-         * because, at the time I am writing this comment (Owncloud 5.0.9), the etag of the
-         * root directory is not updated when the sub directories changes */
-        //req.setRawHeader("Depth", "1");
-        //This should be fixed since oC6 https://github.com/owncloud/core/issues/5255
-        req.setRawHeader("Depth", "0");
-    } else {
-        req.setRawHeader("Depth", "0");
-    }
+    // Let's always request all entries inside a directory. There are/were bugs in the server
+    // where a root or root-folder ETag is not updated when its contents change. We work around
+    // this by concatenating the ETags of the root and its contents.
+    req.setRawHeader("Depth", "1");
+    // See https://github.com/owncloud/core/issues/5255 and others
+
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\">\n"
                    "  <d:prop>\n"
@@ -329,24 +325,44 @@ LsColJob::LsColJob(AccountPtr account, const QString &path, QObject *parent)
 {
 }
 
+void LsColJob::setProperties(QList<QByteArray> properties)
+{
+    _properties = properties;
+}
+
+QList<QByteArray> LsColJob::properties() const
+{
+    return _properties;
+}
+
 void LsColJob::start()
 {
+    QList<QByteArray> properties = _properties;
+
+    if (properties.isEmpty()) {
+        qWarning() << "Propfind with no properties!";
+    }
+    QByteArray propStr;
+    foreach (const QByteArray &prop, properties) {
+        if (prop.contains(':')) {
+            int colIdx = prop.lastIndexOf(":");
+            auto ns = prop.left(colIdx);
+            if (ns == "http://owncloud.org/ns") {
+                propStr += "    <oc:" + prop.mid(colIdx+1) + " />\n";
+            } else {
+                propStr += "    <" + prop.mid(colIdx+1) + " xmlns=\"" + ns + "\" />\n";
+            }
+        } else {
+            propStr += "    <d:" + prop + " />\n";
+        }
+    }
+
     QNetworkRequest req;
     req.setRawHeader("Depth", "1");
-    // FIXME The results are delivered without namespace, if this is ever a problem we need to check it..
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\">\n"
                    "  <d:prop>\n"
-                   "    <d:resourcetype/>\n"
-                   "    <d:quota-used-bytes/>\n"
-                   "    <d:getlastmodified/>\n"
-                   "    <d:getcontentlength/>\n"
-                   "    <d:resourcetype/>\n"
-                   "    <d:getetag/>\n"
-                   "    <oc:id/>\n"
-                   "    <oc:downloadURL/>\n"
-                   "    <oc:dDC/>\n"
-                   "    <oc:permissions/>\n"
+                   + propStr +
                    "  </d:prop>\n"
                    "</d:propfind>\n");
     QBuffer *buf = new QBuffer(this);
@@ -575,7 +591,7 @@ void PropfindJob::start()
     QList<QByteArray> properties = _properties;
 
     if (properties.isEmpty()) {
-        properties << "allprop";
+        qWarning() << "Propfind with no properties!";
     }
     QNetworkRequest req;
     req.setRawHeader("Depth", "0");

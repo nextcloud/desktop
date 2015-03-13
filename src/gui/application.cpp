@@ -42,6 +42,10 @@
 #include <windows.h>
 #endif
 
+#if defined(WITH_CRASHREPORTER)
+#include <libcrashreporter-handler/Handler.h>
+#endif
+
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
@@ -106,6 +110,11 @@ Application::Application(int &argc, char **argv) :
     if (isRunning())
         return;
 
+#if defined(WITH_CRASHREPORTER)
+    if (ConfigFile().crashReporter())
+        _crashHandler.reset(new CrashReporter::Handler( QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE ));
+#endif
+
     setupLogging();
     setupTranslations();
 
@@ -149,8 +158,8 @@ Application::Application(int &argc, char **argv) :
         slotAccountStateAdded(ai);
     }
 
-    connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString, QString)),
-            _gui, SLOT(slotShowShareDialog(QString, QString)));
+    connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString, QString, bool)),
+            _gui, SLOT(slotShowShareDialog(QString, QString, bool)));
 
     // startup procedure.
     connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
@@ -224,7 +233,7 @@ void Application::slotCleanup()
     if (account) {
         account->save();
     }
-    FolderMan::instance()->unloadAllFolders();
+    FolderMan::instance()->unloadAndDeleteAllFolders();
 
     _gui->slotShutdown();
     _gui->deleteLater();
@@ -260,6 +269,7 @@ void Application::slotAccountStateChanged(int state)
         folderMan->setSyncEnabled(true);
         folderMan->slotScheduleAllFolders();
         break;
+    case AccountState::ServerMaintenance:
     case AccountState::SignedOut:
     case AccountState::ConfigurationError:
     case AccountState::NetworkError:

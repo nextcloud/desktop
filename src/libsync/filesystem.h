@@ -14,10 +14,12 @@
 #pragma once
 
 #include <QString>
-#include <QFile>
 #include <ctime>
 
 #include <owncloudlib.h>
+
+class QFile;
+class QFileInfo;
 
 namespace OCC {
 
@@ -39,7 +41,7 @@ void OWNCLOUDSYNC_EXPORT setFileHidden(const QString& filename, bool hidden);
  * Use this over QFileInfo::lastModified() to avoid timezone related bugs. See
  * owncloud/core#9781 for details.
  */
-time_t OWNCLOUDSYNC_EXPORT getModTime(const QString &filename);
+time_t OWNCLOUDSYNC_EXPORT getModTime(const QString& filename);
 
 bool setModTime(const QString &filename, time_t modTime);
 
@@ -50,6 +52,21 @@ bool setModTime(const QString &filename, time_t modTime);
  */
 qint64 OWNCLOUDSYNC_EXPORT getSize(const QString& filename);
 
+/** Checks whether a file exists.
+ *
+ * Use this over QFileInfo::exists() and QFile::exists() to avoid bugs with lnk
+ * files, see above.
+ */
+bool OWNCLOUDSYNC_EXPORT fileExists(const QString& filename);
+
+/**
+ * Rename the file \a originFileName to \a destinationFileName.
+ *
+ * It behaves as QFile::rename() but handles .lnk files correctly on Windows.
+ */
+bool OWNCLOUDSYNC_EXPORT rename(const QString& originFileName,
+                                const QString& destinationFileName,
+                                QString* errorString = NULL);
 /**
  * Rename the file \a originFileName to \a destinationFileName, and overwrite the destination if it
  * already exists
@@ -58,13 +75,13 @@ bool renameReplace(const QString &originFileName, const QString &destinationFile
                    QString *errorString);
 
 /**
- * Replacement for QFile::open(ReadOnly) that sets a more permissive sharing mode
- * on Windows.
+ * Replacement for QFile::open(ReadOnly) followed by a seek().
+ * This version sets a more permissive sharing mode on Windows.
  *
  * Warning: The resuting file may have an empty fileName and be unsuitable for use
- * with QFileInfo!
+ * with QFileInfo! Calling seek() on the QFile with >32bit signed values will fail!
  */
-bool openFileSharedRead(QFile* file, QString* error);
+bool openAndSeekFileSharedRead(QFile* file, QString* error, qint64 seek);
 
 #ifdef Q_OS_WIN
 /**

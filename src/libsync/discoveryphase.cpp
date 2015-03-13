@@ -74,13 +74,17 @@ void DiscoveryJob::update_job_update_callback (bool local,
             updateJob->_lastUpdateProgressCallbackCall.restart();
         }
 
-        QString path(QUrl::fromPercentEncoding(QByteArray(dirUrl)).section('/', -1));
-        emit updateJob->folderDiscovered(local, path);
+        QByteArray pPath(dirUrl);
+        int indx = pPath.lastIndexOf('/');
+        if(indx>-1) {
+            const QString path = QUrl::fromPercentEncoding( pPath.mid(indx+1));
+            emit updateJob->folderDiscovered(local, path);
+        }
     }
 }
 
 
-int get_errno_from_http_errcode( int err ) {
+int get_errno_from_http_errcode( int err, const QString & reason ) {
     int new_errno = 0;
 
     switch(err) {
@@ -143,8 +147,11 @@ int get_errno_from_http_errcode( int err ) {
         new_errno = EIO;
         break;
     case 503:           /* Service Unavailable */
-        new_errno = ERRNO_SERVICE_UNAVAILABLE;
-        // FIXME Distinguish between service unavailable and storage unavilable
+        if (reason == "Storage not available") {
+            new_errno = ERRNO_STORAGE_UNAVAILABLE;
+        } else {
+            new_errno = ERRNO_SERVICE_UNAVAILABLE;
+        }
         break;
     case 413:           /* Request Entity too Large */
         new_errno = EFBIG;
@@ -166,6 +173,11 @@ void DiscoverySingleDirectoryJob::start()
 {
     // Start the actual HTTP job
     LsColJob *lsColJob = new LsColJob(_account, _subPath, this);
+    lsColJob->setProperties(QList<QByteArray>() << "resourcetype" << "getlastmodified"
+                        << "getcontentlength" << "getetag" << "http://owncloud.org/ns:id"
+                        << "http://owncloud.org/ns:downloadURL" << "http://owncloud.org/ns:dDC"
+                        << "http://owncloud.org/ns:permissions");
+
     QObject::connect(lsColJob, SIGNAL(directoryListingIterated(QString,QMap<QString,QString>)),
                      this, SLOT(directoryListingIteratedSlot(QString,QMap<QString,QString>)));
     QObject::connect(lsColJob, SIGNAL(finishedWithError(QNetworkReply*)), this, SLOT(lsJobFinishedWithErrorSlot(QNetworkReply*)));
@@ -242,9 +254,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
         if (map.contains("permissions")) {
             emit firstDirectoryPermissions(map.value("permissions"));
         }
-        if (map.contains("getetag")) {
-            emit firstDirectoryEtag(map.value("getetag"));
-        }
+
     } else {
         // Remove /remote.php/webdav/folder/ from /remote.php/webdav/folder/subfile.txt
         file.remove(0, _lsColJob->reply()->request().url().path().length());
@@ -264,10 +274,15 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
         _results.append(file_stat);
     }
 
+    //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
+    if (map.contains("getetag")) {
+       _etagConcatenation += map.value("getetag");
+    }
 }
 
 void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
 {
+    emit etagConcatenation(_etagConcatenation);
     emit finishedWithResult(_results);
     deleteLater();
 }
@@ -276,13 +291,14 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
 {
     QString contentType = r->header(QNetworkRequest::ContentTypeHeader).toString();
     int httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    QString httpReason = r->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     QString msg = r->errorString();
     int errnoCode = 0;
     qDebug() << Q_FUNC_INFO << r->errorString() << httpCode << r->error();
-    if (r->error() != QNetworkReply::NoError) {
+    if (httpCode != 0 && httpCode != 207) {
+        errnoCode = get_errno_from_http_errcode(httpCode, httpReason);
+    } else if (r->error() != QNetworkReply::NoError) {
         errnoCode = EIO;
-    } else if (httpCode != 207) {
-        errnoCode = get_errno_from_http_errcode(httpCode);
     } else if (!contentType.contains("application/xml; charset=utf-8")) {
         msg = QLatin1String("Server error: PROPFIND reply is not XML formatted!");
         errnoCode = ERRNO_WRONG_CONTENT;
@@ -300,6 +316,15 @@ void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &
     connect(discoveryJob, SIGNAL(doOpendirSignal(QString,DiscoveryDirectoryResult*)),
             this, SLOT(doOpendirSlot(QString,DiscoveryDirectoryResult*)),
             Qt::QueuedConnection);
+    connect(discoveryJob, SIGNAL(doClosedirSignal(QString)),
+            this, SLOT(doClosedirSlot(QString)),
+            Qt::QueuedConnection);
+}
+
+void DiscoveryMainThread::doClosedirSlot(QString path)
+{
+    //qDebug() << Q_FUNC_INFO << "Invalidating" << path;
+    deleteCacheEntry(path);
 }
 
 // Coming from owncloud_opendir -> DiscoveryJob::vio_opendir_hook -> doOpendirSignal
@@ -314,8 +339,9 @@ void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResul
     while (fullPath.endsWith('/')) {
         fullPath.chop(1);
     }
-    qDebug() << Q_FUNC_INFO << _pathPrefix << subPath << fullPath;
 
+    // emit _discoveryJob->folderDiscovered(false, subPath);
+    _discoveryJob->update_job_update_callback (false, subPath.toUtf8(), _discoveryJob);
 
     // Result gets written in there
     _currentDiscoveryDirectoryResult = r;
@@ -329,8 +355,8 @@ void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResul
                      this, SLOT(singleDirectoryJobFinishedWithErrorSlot(int,QString)));
     QObject::connect(_singleDirJob, SIGNAL(firstDirectoryPermissions(QString)),
                      this, SLOT(singleDirectoryJobFirstDirectoryPermissionsSlot(QString)));
-    QObject::connect(_singleDirJob, SIGNAL(firstDirectoryEtag(QString)),
-                     this, SIGNAL(rootEtag(QString)));
+    QObject::connect(_singleDirJob, SIGNAL(etagConcatenation(QString)),
+                     this, SIGNAL(etagConcatenation(QString)));
     _singleDirJob->start();
 }
 
@@ -360,7 +386,7 @@ void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrno
     if (!_currentDiscoveryDirectoryResult) {
         return; // possibly aborted
     }
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << csyncErrnoCode << msg;
 
      _currentDiscoveryDirectoryResult->code = csyncErrnoCode;
      _currentDiscoveryDirectoryResult->msg = msg;
@@ -382,20 +408,22 @@ void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(QStrin
 
 // called from SyncEngine
 void DiscoveryMainThread::abort() {
-    if (_currentDiscoveryDirectoryResult) {
-        if (_discoveryJob->_vioMutex.tryLock()) {
-            _currentDiscoveryDirectoryResult->code = EIO; // FIXME aborted
-            _currentDiscoveryDirectoryResult = 0;
-            _discoveryJob->_vioWaitCondition.wakeAll();
-            _discoveryJob->_vioMutex.unlock();
-        }
-    }
     if (_singleDirJob) {
         _singleDirJob->disconnect(SIGNAL(finishedWithError(int,QString)), this);
         _singleDirJob->disconnect(SIGNAL(firstDirectoryPermissions(QString)), this);
         _singleDirJob->disconnect(SIGNAL(finishedWithResult(QLinkedList<csync_vio_file_stat_t*>)), this);
         _singleDirJob->abort();
     }
+    if (_currentDiscoveryDirectoryResult) {
+        if (_discoveryJob->_vioMutex.tryLock()) {
+            _currentDiscoveryDirectoryResult->msg = tr("Aborted by the user"); // Actually also created somewhere else by sync engine
+            _currentDiscoveryDirectoryResult->code = EIO;
+            _currentDiscoveryDirectoryResult = 0;
+            _discoveryJob->_vioWaitCondition.wakeAll();
+            _discoveryJob->_vioMutex.unlock();
+        }
+    }
+
 
 }
 
@@ -410,7 +438,7 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
         directoryResult->code = EIO;
 
         discoveryJob->_vioMutex.lock();
-        QString qurl = QString::fromUtf8(url);
+        const QString qurl = QString::fromUtf8(url);
         emit discoveryJob->doOpendirSignal(qurl, directoryResult);
         discoveryJob->_vioWaitCondition.wait(&discoveryJob->_vioMutex, ULONG_MAX); // FIXME timeout?
         discoveryJob->_vioMutex.unlock();
@@ -419,7 +447,7 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
 
         // Upon awakening from the _vioWaitCondition, iterator should be a valid iterator.
         if (directoryResult->code != 0) {
-            qDebug() << Q_FUNC_INFO << directoryResult->code << "when opening" << url;
+            qDebug() << Q_FUNC_INFO << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
             errno = directoryResult->code;
             // save the error string to the context
             discoveryJob->_csync_ctx->error_string = qstrdup( directoryResult->msg.toUtf8().constData() );
@@ -452,9 +480,11 @@ void DiscoveryJob::remote_vio_closedir_hook (csync_vio_handle_t *dhandle,  void 
 {
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob*>(userdata);
     if (discoveryJob) {
-        qDebug() << Q_FUNC_INFO << discoveryJob;
         DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult*> (dhandle);
+        QString path = directoryResult->path;
+        qDebug() << Q_FUNC_INFO << discoveryJob << path;
         delete directoryResult; // just deletes the struct and the iterator, the data itself is owned by the SyncEngine/DiscoveryMainThread
+        emit discoveryJob->doClosedirSignal(path);
     }
 }
 

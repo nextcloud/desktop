@@ -263,6 +263,17 @@ void GETFileJob::slotTimeout()
     reply()->abort();
 }
 
+QString GETFileJob::errorString() const
+{
+    if (!_errorString.isEmpty()) {
+        return _errorString;
+    } else if (reply()->hasRawHeader("OC-ErrorString")) {
+        return reply()->rawHeader("OC-ErrorString");
+    } else {
+        return reply()->errorString();
+    }
+}
+
 void PropagateDownloadFileQNAM::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
@@ -388,7 +399,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
             _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
         }
 
-        if(!_item._directDownloadUrl.isEmpty()) {
+        if(!_item._directDownloadUrl.isEmpty() && err != QNetworkReply::OperationCanceledError) {
             // If this was with a direct download, retry without direct download
             qWarning() << "Direct download of" << _item._directDownloadUrl << "failed. Retrying through owncloud.";
             _item._directDownloadUrl.clear();
@@ -481,17 +492,17 @@ void PropagateDownloadFileQNAM::downloadFinished()
     bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT
             && !FileSystem::fileEquals(fn, _tmpFile.fileName());
     if (isConflict) {
-        QFile f(fn);
+        QString renameError;
         QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item._modtime));
-        if (!f.rename(conflictFileName)) {
+        if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
             //If the rename fails, don't replace it.
-            done(SyncFileItem::SoftError, f.errorString());
+            done(SyncFileItem::SoftError, renameError);
             return;
         }
     }
 
     QFileInfo existingFile(fn);
-    if(existingFile.exists() && existingFile.permissions() != _tmpFile.permissions()) {
+    if(FileSystem::fileExists(fn) && existingFile.permissions() != _tmpFile.permissions()) {
         _tmpFile.setPermissions(existingFile.permissions());
     }
 

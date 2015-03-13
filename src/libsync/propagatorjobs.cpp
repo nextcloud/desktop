@@ -19,6 +19,7 @@
 #include "utility.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
+#include "filesystem.h"
 #include <qfile.h>
 #include <qdir.h>
 #include <qdiriterator.h>
@@ -95,7 +96,7 @@ void PropagateLocalRemove::start()
         }
     } else {
         QFile file(filename);
-        if (file.exists() && !file.remove()) {
+        if (FileSystem::fileExists(filename) && !file.remove()) {
             done(SyncFileItem::NormalError, file.errorString());
             return;
         }
@@ -154,9 +155,9 @@ void PropagateLocalRename::start()
 
         _propagator->addTouchedFile(existingFile);
         _propagator->addTouchedFile(targetFile);
-        QFile file(existingFile);
-        if (!file.rename(targetFile)) {
-            done(SyncFileItem::NormalError, file.errorString());
+        QString renameError;
+        if (!FileSystem::rename(existingFile, targetFile, &renameError)) {
+            done(SyncFileItem::NormalError, renameError);
             return;
         }
     }

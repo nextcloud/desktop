@@ -151,9 +151,9 @@ ownCloud Client provides the ability to add custom patterns.
 
 By default, the ownCloud Client ignores the following files:
 
-- Files matched by one of the patterns defined in :ref:`ignoredFilesEditor-label`.
-- Files containing characters that do not work on certain file systems (`\, /, :, ?, *, ", >, <, |`).
-* Files starting in ``.csync_journal.db*``, as these files are reserved for journalling.
+* Files matched by one of the patterns defined in the Ignored Files Editor
+* Files containing characters that do not work on certain file systems ``(`\, /, :, ?, *, ", >, <, |`)``.
+* Files starting in ``.csync_journal.db``, as these files are reserved for journalling.
 
 If a pattern selected using a checkbox in the `ignoredFilesEditor-label` (or if
 a line in the exclude file starts with the character `]` directly followed by
@@ -204,3 +204,69 @@ journal. This function can be used to recreate the journal database.
 
 .. note:: We recommend that you use this function only when advised to do so by
    ownCloud support staff.
+
+Custom WebDAV Properties
+------------------------
+
+In the communication between client and server a couple of custom WebDAV properties
+were introduced. They are either needed for sync functionality or help have a positive
+effect on synchronization performance.
+
+This chapter describes additional xml elements which the server returns in response
+to a successful PROPFIND request on a file or directory. The elements are returned in
+the namespace oc.
+
+Server Side  Permissions
+------------------------
+
+The XML element ``<oc:permissions>`` represents the permission- and sharing state of the
+item. It is a list of characters, and each of the chars has a meaning as outlined
+in the table below:
+
++----+----------------+-------------------------------------------+
+|Code|   Resource     |  Description                              |
++----+----------------+-------------------------------------------+
+| S  | File or Folder | is shared                                 |
++----+----------------+-------------------------------------------+
+| R  | File or Folder | can share (includes reshare)              |
++----+----------------+-------------------------------------------+
+| M  | File or Folder | is mounted (like on DropBox, Samba, etc.) |
++----+----------------+-------------------------------------------+
+| W  | File           | can write file                            |
++----+----------------+-------------------------------------------+
+| C  | Folder         |can create file in folder                  |
++----+----------------+-------------------------------------------+
+| K  | Folder         | can create folder (mkdir)                 |
++----+----------------+-------------------------------------------+
+| D  | File or Folder |can delete file or folder                  |
++----+----------------+-------------------------------------------+
+| N  | File or Folder | can rename file or folder                 |
++----+----------------+-------------------------------------------+
+| V  | File or Folder | can move file or folder                   |
++----+----------------+-------------------------------------------+
+
+
+Example:
+
+  <oc:permissions>RDNVCK</oc:permissions>
+
+File- or Directory Size
+-----------------------
+
+The XML element ``<oc:size>`` represents the file- or directory size in bytes. For
+directories, the size of the whole file tree underneath the directory is accumulated.
+
+Example:
+
+  <oc:size>2429176697</oc:size>
+
+FileID
+------
+
+The XML element ``<oc:id>`` represents the so called file ID. It is a non volatile string id
+that stays constant as long as the file exists. It is not changed if the file changes or
+is renamed or moved.
+
+Example:
+
+  <oc:id>00000020oc5cfy6qqizm</oc:id>

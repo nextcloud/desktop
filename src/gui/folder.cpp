@@ -29,6 +29,7 @@
 #include "syncengine.h"
 #include "syncrunfilelog.h"
 #include "theme.h"
+#include "filesystem.h"
 
 
 #include "creds/abstractcredentials.h"
@@ -145,12 +146,12 @@ AccountState* Folder::accountState() const
 
 void Folder::checkLocalPath()
 {
-    QFileInfo fi(_path);
+    const QFileInfo fi(_path);
 
     if( fi.isDir() && fi.isReadable() ) {
         qDebug() << "Checked local path ok";
     } else {
-        if( !fi.exists() ) {
+        if( !FileSystem::fileExists(_path) ) {
             // try to create the local dir
             QDir d(_path);
             if( d.mkpath(_path) ) {
@@ -158,7 +159,7 @@ void Folder::checkLocalPath()
             }
         }
         // Check directory again
-        if( !fi.exists() ) {
+        if( !FileSystem::fileExists(_path) ) {
             _syncResult.setErrorString(tr("Local folder %1 does not exist.").arg(_path));
             _syncResult.setStatus( SyncResult::SetupError );
         } else if( !fi.isDir() ) {

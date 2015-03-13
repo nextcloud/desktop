@@ -58,7 +58,7 @@ public slots:
     void slotClearExcludesList();
 
 signals:
-    void shareCommandReceived(const QString &sharePath, const QString &localPath);
+    void shareCommandReceived(const QString &sharePath, const QString &localPath, bool resharingAllowed);
 
 private slots:
     void slotNewConnection();
@@ -70,7 +70,6 @@ private slots:
 private:
     SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes );
     SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName );
-    SyncFileStatus recursiveFolderStatus(Folder *folder, const QString& fileName, c_strlist_t *excludes  );
     SqlQuery *getSqlQuery( Folder *folder );
 
     void sendMessage(SocketType* socket, const QString& message, bool doWait = false);

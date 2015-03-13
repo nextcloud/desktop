@@ -90,6 +90,7 @@ if(USE_NEON)
     list(APPEND libsync_SRCS
         propagator_legacy.cpp
     )
+    add_definitions(-DUSE_NEON)
 endif(USE_NEON)
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
@@ -151,9 +152,9 @@ GENERATE_EXPORT_HEADER( ${synclib_NAME}
 
 
 if(TOKEN_AUTH_ONLY)
-    qt5_use_modules(${synclib_NAME} Network Xml Sql)
+    qt5_use_modules(${synclib_NAME} Network)
 else()
-    qt5_use_modules(${synclib_NAME} Widgets Network Xml WebKitWidgets Sql)
+    qt5_use_modules(${synclib_NAME} Widgets Network WebKitWidgets)
 endif()
 
 set_target_properties( ${synclib_NAME}  PROPERTIES

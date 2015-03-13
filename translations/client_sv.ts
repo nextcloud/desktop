@@ -244,27 +244,27 @@ Total tid kvar %5</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate :</source>
-        <translation type="unfinished"/>
+        <translation>Certifikat :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse...</source>
-        <translation type="unfinished"/>
+        <translation>Bläddra...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password :</source>
-        <translation type="unfinished"/>
+        <translation>Certifikatlösenord :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="23"/>
         <source>Select a certificate</source>
-        <translation type="unfinished"/>
+        <translation>Välj ett certifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="23"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished"/>
+        <translation>Certifikatfiler (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -329,7 +329,7 @@ Total tid kvar %5</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="41"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Tidsgräns för anslutningen överskreds</translation>
     </message>
 </context>
 <context>
@@ -898,7 +898,7 @@ Valda objekt kommer också att raderas om dom hindrar en mapp från att tas bort
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="45"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Tidsgräns för anslutningen överskreds</translation>
     </message>
 </context>
 <context>
@@ -1131,7 +1131,7 @@ efter ytterligare privilegier under processen.</translation>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
         <source>(%1)</source>
-        <translation type="unfinished"/>
+        <translation>(%1)</translation>
     </message>
 </context>
 <context>
@@ -1535,7 +1535,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="156"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Filen Raderad</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="171"/>
@@ -1792,12 +1792,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="127"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Ange lösenord</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="149"/>
         <source>Set expiry date</source>
-        <translation type="unfinished"/>
+        <translation>Sätt utgångsdatum</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="67"/>
@@ -1813,7 +1813,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="141"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>Lösenordsskyddad</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="299"/>
@@ -1858,7 +1858,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="453"/>
         <source>The file can not be synced.</source>
-        <translation type="unfinished"/>
+        <translation>Filen kan inte synkas.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="463"/>
@@ -1908,7 +1908,7 @@ Det är inte lämpligt använda den.</translation>
         <location filename="../src/gui/socketapi.cpp" line="431"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation type="unfinished"/>
+        <translation>Dela med %1</translation>
     </message>
 </context>
 <context>

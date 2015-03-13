@@ -1,5 +1,6 @@
 /*
  * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
+ * Copyright (C) 2015 by Klaas Freitag <freitag@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +57,8 @@ class ShareDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShareDialog(AccountPtr account, const QString &sharePath, const QString &localPath, QWidget *parent = 0);
+    explicit ShareDialog(AccountPtr account, const QString &sharePath, const QString &localPath,
+                         bool resharingAllowed, QWidget *parent = 0);
     ~ShareDialog();
     void getShares();
 
@@ -71,20 +73,27 @@ private slots:
     void slotCheckBoxPasswordClicked();
     void slotCheckBoxExpireClicked();
     void slotPasswordReturnPressed();
+    void slotPasswordChanged(const QString& newText);
     void slotPushButtonCopyLinkPressed();
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
 private:
+    void setShareCheckBoxTitle(bool haveShares);
     void displayError(int code);
-    void displayInfo( const QString& msg );
+    void displayError(const QString& errMsg);
+    void setShareLink( const QString& url );
 
     Ui::ShareDialog *_ui;
     AccountPtr _account;
     QString _sharePath;
     QString _localPath;
+    QString _shareUrl;
+#if 0
     QString _folderAlias;
     int     _uploadFails;
     QString _expectedSyncFile;
+#endif
 
+    bool _passwordJobRunning;
     QList<QVariant> _shares;
     qulonglong _public_share_id;
     void setPassword(const QString &password);
@@ -94,6 +103,8 @@ private:
     QProgressIndicator *_pi_link;
     QProgressIndicator *_pi_password;
     QProgressIndicator *_pi_date;
+
+    bool _resharingAllowed;
 };
 
 }

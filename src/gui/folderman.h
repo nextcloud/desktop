@@ -121,10 +121,8 @@ public slots:
      */
     void terminateSyncProcess();
 
-    /* unload and delete on folder object */
-    void unloadFolder( const QString& alias );
     /* delete all folder objects */
-    int unloadAllFolders();
+    int unloadAndDeleteAllFolders();
 
     // if enabled is set to false, no new folders will start to sync.
     // the current one will finish.
@@ -150,6 +148,9 @@ private slots:
     void slotRemoveFoldersForAccount(AccountState* accountState);
 
 private:
+    /* unloads a folder object, does not delete it */
+    void unloadFolder( const QString& alias );
+
     /** Will start a sync after a bit of delay. */
     void startScheduledSyncSoon(qint64 msMinimumDelay = 0);
 
@@ -159,8 +160,6 @@ private:
     void registerFolderMonitor( Folder *folder );
 
     QString unescapeAlias( const QString& ) const;
-
-    void removeFolder( const QString& );
 
     QSet<Folder*>  _disabledFolders;
     Folder::Map    _folderMap;

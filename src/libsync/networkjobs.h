@@ -66,7 +66,7 @@ public:
     void setIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
 
-    QString responseTimestamp();
+    QByteArray responseTimestamp();
     quint64 duration();
 
 public slots:
@@ -90,7 +90,7 @@ protected:
 
     int maxRedirects() const { return 10; }
     virtual bool finished() = 0;
-    QString       _responseTimestamp;
+    QByteArray    _responseTimestamp;
     QElapsedTimer _durationTimer;
     quint64       _duration;
     bool          _timedout;  // set to true when the timeout slot is recieved
@@ -136,24 +136,52 @@ public:
     void start() Q_DECL_OVERRIDE;
     QHash<QString, qint64> _sizes;
 
+    /**
+     * Used to specify which properties shall be retrieved.
+     *
+     * The properties can
+     *  - contain no colon: they refer to a property in the DAV: namespace
+     *  - contain a colon: and thus specify an explicit namespace,
+     *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
+     */
+    void setProperties(QList<QByteArray> properties);
+    QList<QByteArray> properties() const;
+
 signals:
     void directoryListingSubfolders(const QStringList &items);
-    void directoryListingIterated(const QString name, QMap<QString,QString> properties);
+    void directoryListingIterated(const QString &name, const QMap<QString,QString> &properties);
     void finishedWithError(QNetworkReply *reply);
     void finishedWithoutError();
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
+
+private:
+    QList<QByteArray> _properties;
 };
 
 /**
  * @brief The PropfindJob class
+ *
+ * Setting the desired properties with setProperties() is mandatory.
+ *
+ * Note that this job is only for querying one item.
+ * There is also the LsColJob which can be used to list collections
  */
-class PropfindJob : public AbstractNetworkJob {
+class OWNCLOUDSYNC_EXPORT PropfindJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit PropfindJob(AccountPtr account, const QString &path, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
+
+    /**
+     * Used to specify which properties shall be retrieved.
+     *
+     * The properties can
+     *  - contain no colon: they refer to a property in the DAV: namespace
+     *  - contain a colon: and thus specify an explicit namespace,
+     *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
+     */
     void setProperties(QList<QByteArray> properties);
     QList<QByteArray> properties() const;
 

@@ -107,6 +107,54 @@ bool FileSystem::setModTime(const QString& filename, time_t modTime)
     return true;
 }
 
+#ifdef Q_OS_WIN
+static bool isLnkFile(const QString& filename)
+{
+    return filename.endsWith(".lnk");
+}
+#endif
+
+bool FileSystem::rename(const QString &originFileName,
+                        const QString &destinationFileName,
+                        QString *errorString)
+{
+    bool success = false;
+    QString error;
+#ifdef Q_OS_WIN
+    if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
+        success = MoveFileEx((wchar_t*)originFileName.utf16(),
+                             (wchar_t*)destinationFileName.utf16(),
+                             MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
+        if (!success) {
+            wchar_t *string = 0;
+            FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+                          NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                          (LPWSTR)&string, 0, NULL);
+
+            error = QString::fromWCharArray(string);
+            LocalFree((HLOCAL)string);
+        }
+    } else
+#endif
+    {
+        QFile orig(originFileName);
+        success = orig.rename(destinationFileName);
+        if (!success) {
+            error = orig.errorString();
+        }
+    }
+
+    if (!success) {
+        qDebug() << "FAIL: renaming file" << originFileName
+                 << "to" << destinationFileName
+                 << "failed: " << error;
+        if (errorString) {
+            *errorString = error;
+        }
+    }
+    return success;
+}
+
 bool FileSystem::renameReplace(const QString& originFileName, const QString& destinationFileName, QString* errorString)
 {
 #ifndef Q_OS_WIN
@@ -120,7 +168,7 @@ bool FileSystem::renameReplace(const QString& originFileName, const QString& des
     // Qt 5.1 has QSaveFile::renameOverwrite we cold use.
     // ### FIXME
     success = true;
-    bool destExists = QFileInfo::exists(destinationFileName);
+    bool destExists = fileExists(destinationFileName);
     if( destExists && !QFile::remove(destinationFileName) ) {
         *errorString = orig.errorString();
         qDebug() << Q_FUNC_INFO << "Target file could not be removed.";
@@ -156,12 +204,12 @@ bool FileSystem::renameReplace(const QString& originFileName, const QString& des
     return true;
 }
 
-bool FileSystem::openFileSharedRead(QFile* file, QString* error)
+bool FileSystem::openAndSeekFileSharedRead(QFile* file, QString* errorOrNull, qint64 seek)
 {
-    bool ok = false;
-    if (error) {
-        error->clear();
-    }
+    QString errorDummy;
+    // avoid many if (errorOrNull) later.
+    QString& error = errorOrNull ? *errorOrNull : errorDummy;
+    error.clear();
 
 #ifdef Q_OS_WIN
     //
@@ -188,9 +236,7 @@ bool FileSystem::openFileSharedRead(QFile* file, QString* error)
 
     // Bail out on error.
     if (fileHandle == INVALID_HANDLE_VALUE) {
-        if (error) {
-            *error = qt_error_string();
-        }
+        error = qt_error_string();
         return false;
     }
 
@@ -199,39 +245,87 @@ bool FileSystem::openFileSharedRead(QFile* file, QString* error)
     // the fd the handle will be closed too.
     int fd = _open_osfhandle((intptr_t)fileHandle, _O_RDONLY);
     if (fd == -1) {
-        if (error) {
-            *error = "could not make fd from handle";
-        }
+        error = "could not make fd from handle";
         return false;
     }
-    ok = file->open(fd, QIODevice::ReadOnly, QFile::AutoCloseHandle);
-#else
-    ok = file->open(QFile::ReadOnly);
-#endif
-    if (! ok && error) {
-        *error = file->errorString();
+    if (!file->open(fd, QIODevice::ReadOnly, QFile::AutoCloseHandle)) {
+        error = file->errorString();
+        return false;
     }
-    return ok;
+
+    // Seek to the right spot
+    LARGE_INTEGER *li = reinterpret_cast<LARGE_INTEGER*>(&seek);
+    DWORD newFilePointer = SetFilePointer(fileHandle, li->LowPart, &li->HighPart, FILE_BEGIN);
+    if (newFilePointer == 0xFFFFFFFF && GetLastError() != NO_ERROR) {
+        error = qt_error_string();
+        return false;
+    }
+
+    return true;
+#else
+    if (!file->open(QFile::ReadOnly)) {
+        error = file->errorString();
+        return false;
+    }
+    if (!file->seek(seek)) {
+        error = file->errorString();
+        return false;
+    }
+    return true;
+#endif
 }
+
+#ifdef Q_OS_WIN
+static qint64 getSizeWithCsync(const QString& filename)
+{
+    qint64 result = 0;
+    csync_vio_file_stat_t* stat = csync_vio_file_stat_new();
+    if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
+            && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
+        result = stat->size;
+    } else {
+        qDebug() << "Could not get size time for" << filename << "with csync";
+    }
+    csync_vio_file_stat_destroy(stat);
+    return result;
+}
+#endif
 
 qint64 FileSystem::getSize(const QString& filename)
 {
 #ifdef Q_OS_WIN
-    if (filename.endsWith(".lnk")) {
+    if (isLnkFile(filename)) {
         // Use csync to get the file size. Qt seems unable to get at it.
-        qint64 result = 0;
-        csync_vio_file_stat_t* stat = csync_vio_file_stat_new();
-        if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
-                && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
-            result = stat->size;
-        } else {
-            qDebug() << "Could not get size time for" << filename << "with csync";
-        }
-        csync_vio_file_stat_destroy(stat);
-        return result;
+        return getSizeWithCsync(filename);
     }
 #endif
     return QFileInfo(filename).size();
+}
+
+#ifdef Q_OS_WIN
+static bool fileExistsWin(const QString& filename)
+{
+    WIN32_FIND_DATA FindFileData;
+    HANDLE hFind;
+    hFind = FindFirstFileW( (wchar_t*)filename.utf16(), &FindFileData);
+    if (hFind == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+    FindClose(hFind);
+    return true;
+}
+#endif
+
+bool FileSystem::fileExists(const QString& filename)
+{
+#ifdef Q_OS_WIN
+    if (isLnkFile(filename)) {
+        // Use a native check.
+        return fileExistsWin(filename);
+    }
+#endif
+    QFileInfo file(filename);
+    return file.exists();
 }
 
 #ifdef Q_OS_WIN

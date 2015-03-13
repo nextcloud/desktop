@@ -77,9 +77,7 @@ public:
     void giveBandwidthQuota(qint64 q);
     qint64 currentDownloadPosition();
 
-    QString errorString() {
-        return _errorString.isEmpty() ? reply()->errorString() : _errorString;
-    }
+    QString errorString() const;
 
     SyncFileItem::Status errorStatus() { return _errorStatus; }
 

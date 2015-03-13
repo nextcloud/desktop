@@ -58,7 +58,11 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         // This happens when the directory already exist. Nothing to do.
     } else if (err != QNetworkReply::NoError) {
         SyncFileItem::Status status = classifyError(err, _item._httpErrorCode);
-        done(status, _job->reply()->errorString());
+        auto errorString = _job->reply()->errorString();
+        if (_job->reply()->hasRawHeader("OC-ErrorString")) {
+            errorString = _job->reply()->rawHeader("OC-ErrorString");
+        }
+        done(status, errorString);
         return;
     } else if (_item._httpErrorCode != 201) {
         // Normaly we expect "201 Created"

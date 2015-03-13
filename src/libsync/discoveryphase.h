@@ -52,7 +52,7 @@ public:
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(const QString &);
-    void firstDirectoryEtag(const QString &);
+    void etagConcatenation(const QString &);
     void finishedWithResult(QLinkedList<csync_vio_file_stat_t*>);
     void finishedWithError(int csyncErrnoCode, QString msg);
 private slots:
@@ -62,6 +62,7 @@ private slots:
 private:
     QLinkedList<csync_vio_file_stat_t*> _results;
     QString _subPath;
+    QString _etagConcatenation;
     AccountPtr _account;
     bool _ignoredFirst;
     QPointer<LsColJob> _lsColJob;
@@ -87,7 +88,16 @@ public:
     DiscoveryMainThread(AccountPtr account) : QObject(), _account(account), _currentDiscoveryDirectoryResult(0) {
 
     }
+    void deleteCacheEntry(QString path) {
+        //qDebug() << path << _directoryContents.value(path).count();
+        foreach (csync_vio_file_stat_t* stat, _directoryContents.value(path)) {
+            csync_vio_file_stat_destroy(stat);
+        }
+        _directoryContents.remove(path);
+    }
+
     ~DiscoveryMainThread() {
+        // Delete the _contents_ of the list-map explicitly:
         foreach (const QLinkedList<csync_vio_file_stat_t*> & list, _directoryContents) {
             foreach (csync_vio_file_stat_t* stat, list) {
                 csync_vio_file_stat_destroy(stat);
@@ -100,13 +110,14 @@ public:
 public slots:
     // From DiscoveryJob:
     void doOpendirSlot(QString url, DiscoveryDirectoryResult* );
+    void doClosedirSlot(QString path);
 
     // From Job:
     void singleDirectoryJobResultSlot(QLinkedList<csync_vio_file_stat_t*>);
     void singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, QString msg);
     void singleDirectoryJobFirstDirectoryPermissionsSlot(QString);
 signals:
-    void rootEtag(QString);
+    void etagConcatenation(QString);
 public:
     void setupHooks(DiscoveryJob* discoveryJob, const QString &pathPrefix);
 };
@@ -164,6 +175,8 @@ signals:
 
     // After the discovery job has been woken up again (_vioWaitCondition)
     void doOpendirSignal(QString url, DiscoveryDirectoryResult*);
+    // to tell the main thread to invalidate its directory data
+    void doClosedirSignal(QString path);
 };
 
 }

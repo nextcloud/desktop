@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="130"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>&lt;b&gt;注:&lt;/b&gt; 外部ネットワークストレージや共有フォルダーを含むフォルダーの場合は、容量の上限値が異なる可能性があります。</translation>
+        <translation>&lt;b&gt;注:&lt;/b&gt; 外部ネットワークストレージや共有フォルダーを含むフォルダーがある場合は、容量の上限値が異なる可能性があります。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="143"/>
@@ -739,7 +739,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <location filename="../src/gui/generalsettings.ui" line="63"/>
         <source>About</source>
-        <translation>について</translation>
+        <translation>バージョン情報</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>

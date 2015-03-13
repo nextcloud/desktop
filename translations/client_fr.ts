@@ -1675,12 +1675,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="318"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation>Choisissez le contenu à synchroniser : sélectionnez les sous-dossiers distants que vous voulez synchroniser.</translation>
+        <translation>Choisir le contenu à synchroniser : Sélectionnez les sous-dossiers distants que vous voulez synchroniser.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="319"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>Choisissez le contenu à synchroniser : désélectionnez les sous-dossiers distants que vous ne voulez pas synchroniser.</translation>
+        <translation>Choisir le contenu à synchroniser : Désélectionnez les sous-dossiers distants que vous ne voulez pas synchroniser.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="325"/>
@@ -1814,7 +1814,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="68"/>
         <source>%1 Sharing</source>
-        <translation>%1 Partagé</translation>
+        <translation>Partage %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="141"/>
@@ -1844,7 +1844,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="393"/>
         <source>Sharing of external directories is not yet working.</source>
-        <translation>Le partage de dossiers externes n&apos;est pas encore supporté actuellement.</translation>
+        <translation>Le partage de dossiers externes n&apos;est pas encore pris en charge.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="408"/>

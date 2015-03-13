@@ -206,7 +206,7 @@ Celkový zbývající čas %5</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="773"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>Momentálně nejsou k dispozici žádné informace o využití úložiště</translation>
+        <translation>Momentálně nejsou k dispozici žádné informace o využití úložiště.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="806"/>
@@ -577,7 +577,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="105"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Nemáte oprávněné pro zápis do zvolené složky!</translation>
+        <translation>Nemáte oprávnění pro zápis do zvolené složky!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="129"/>
@@ -625,12 +625,12 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="258"/>
         <source>Create Remote Folder</source>
-        <translation>Vytvořit vzdálený adresář</translation>
+        <translation>Vytvořit vzdálenou složku</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="259"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Zadejte název nově vytvářeného adresáře níže &apos;%1&apos;:</translation>
+        <translation>Zadejte název nově vytvářené složky níže &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="288"/>
@@ -668,7 +668,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>Výběr synchronizace: Můžete dodatečně označit podadresáře, které si nepřejete synchronizovat.</translation>
+        <translation>Výběr synchronizace: Můžete dodatečně označit podsložky, které si nepřejete synchronizovat.</translation>
     </message>
 </context>
 <context>
@@ -1144,12 +1144,12 @@ si může v průběhu vyžádat dodatečná práva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="47"/>
         <source>Enter user credentials</source>
-        <translation>Zadejte uživatelské údaje</translation>
+        <translation>Zadejte přihlašovací údaje</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="164"/>
         <source>Update user credentials</source>
-        <translation>Upravte uživatelské údaje</translation>
+        <translation>Upravte přihlašovací údaje</translation>
     </message>
 </context>
 <context>
@@ -1327,7 +1327,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="83"/>
         <source>Skip folders configuration</source>
-        <translation>Přeskočit konfiguraci adresářů</translation>
+        <translation>Přeskočit konfiguraci složek</translation>
     </message>
 </context>
 <context>
@@ -1456,7 +1456,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="83"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Nelze odstranit %1 z důvodu kolize názvu se souborem v místním systému!</translation>
+        <translation>Nelze odstranit %1 z důvodu kolize názvu se souborem v místním systému</translation>
     </message>
 </context>
 <context>
@@ -1645,9 +1645,9 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation><numerusform>%n soubor je ignorováno kvůli předchozím chybovým hlášením.
-</numerusform><numerusform>%n soubory jsou ignorovány kvůli předchozím chybovým hlášením.
-</numerusform><numerusform>%n souborů je ignorováno kvůli předchozím chybovým hlášením.
+        <translation><numerusform>%n soubor je ignorován kvůli předchozím chybám.
+</numerusform><numerusform>%n soubory jsou ignorovány kvůli předchozím chybám.
+</numerusform><numerusform>%n souborů je ignorováno kvůli předchozím chybám.
 </numerusform></translation>
     </message>
     <message numerus="yes">
@@ -1670,17 +1670,17 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="306"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Neoznačené adresáře budou &lt;b&gt;odstraněny&lt;/b&gt; z místního souborového systému a nebudou již synchronizovány na tento počítač</translation>
+        <translation>Neoznačené složky budou &lt;b&gt;odstraněny&lt;/b&gt; z místního souborového systému a nebudou již synchronizovány na tento počítač</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="318"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation>Výběr synchronizace: Označte vzdálené podadresáře, které si přejete synchronizovat.</translation>
+        <translation>Výběr synchronizace: Označte vzdálené podsložky, které si přejete synchronizovat.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="319"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>Výběr synchronizace: Označte vzdálené podadresáře, které si nepřejete synchronizovat.</translation>
+        <translation>Výběr synchronizace: Odznačte vzdálené podsložky, které si nepřejete synchronizovat.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="325"/>
@@ -1834,12 +1834,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="374"/>
         <source>There is no sync folder configured.</source>
-        <translation>Není nakonfigurován žádný synchronizační adresář.</translation>
+        <translation>Není nakonfigurována žádná synchronizační složka.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>Can not find an folder to upload to.</source>
-        <translation>Nelze nalézt adresář pro nahrávání.</translation>
+        <translation>Nelze nalézt složka pro nahrávání.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="393"/>
@@ -2044,7 +2044,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation>Přesto certifikátu důvěřovat</translation>
+        <translation>Přesto tomuto certifikátu důvěřovat</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="44"/>
@@ -2055,7 +2055,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="134"/>
         <source>Warnings about current SSL Connection:</source>
-        <translation>Varování v aktuálním SSL spojení:</translation>
+        <translation>Varování o aktuálním SSL spojení:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="169"/>
@@ -2284,7 +2284,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="920"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation>Není povoleno, protože nemáte oprávnění vytvářet podadresáře v tomto adresáři.</translation>
+        <translation>Není povoleno, protože nemáte oprávnění vytvářet podadresáře v tomto adresáři</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="926"/>
@@ -2310,7 +2310,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1003"/>
         <source>Local files and share folder removed.</source>
-        <translation>Místní soubory a sdílený adresář byly odstraněny.</translation>
+        <translation>Místní soubory a sdílená složka byly odstraněny.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1058"/>
@@ -2584,7 +2584,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nezdařilo se připojení k uvedenému zabezpečenému serveru. Jak si přejete dále postupovat?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nezdařilo se připojení k uvedené zabezpečené adrese serveru. Jak si přejete dále postupovat?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>

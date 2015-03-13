@@ -28,19 +28,30 @@
 #include <cmath>
 #include <cstring>
 
+#ifdef USE_NEON
+#include "propagator_legacy.h"
+#endif
+
 namespace OCC {
 
 /**
- * The mtime of a file must be at least this many milliseconds in
- * the past for an upload to be started. Otherwise the propagator will
- * assume it's still being changed and skip it.
+ * We do not want to upload files that are currently being modified.
+ * To avoid that, we don't upload files that have a modification time
+ * that is too close to the current time.
  *
- * This value must be smaller than the msBetweenRequestAndSync in
- * the folder manager.
- *
- * Two seconds has shown to be a good value in tests.
+ * This interacts with the msBetweenRequestAndSync delay in the folder
+ * manager. If that delay between file-change notification and sync
+ * has passed, we should accept the file for upload here.
  */
-static int minFileAgeForUpload = 2000;
+static bool fileIsStillChanging(const SyncFileItem & item)
+{
+    const QDateTime modtime = Utility::qDateTimeFromTime_t(item._modtime);
+    const qint64 msSinceMod = modtime.msecsTo(QDateTime::currentDateTime());
+
+    return msSinceMod < 2000
+            // if the mtime is too much in the future we *do* upload the file
+            && msSinceMod > -10000;
+}
 
 static qint64 chunkSize() {
     static uint chunkSize;
@@ -96,6 +107,11 @@ bool PollJob::finished()
         _item._httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         _item._status = classifyError(err, _item._httpErrorCode);
         _item._errorString = reply()->errorString();
+
+        if (reply()->hasRawHeader("OC-ErrorString")) {
+            _item._errorString = reply()->rawHeader("OC-ErrorString");
+        }
+
         if (_item._status == SyncFileItem::FatalError || _item._httpErrorCode >= 400) {
             if (_item._status != SyncFileItem::FatalError
                     && _item._httpErrorCode != 503) {
@@ -148,25 +164,26 @@ bool PollJob::finished()
 
 void PropagateUploadFileQNAM::start()
 {
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
+    }
 
-    QFileInfo fi(_propagator->getFilePath(_item._file));
-    if (!fi.exists()) {
+    const QString fullFilePath(_propagator->getFilePath(_item._file));
+
+    if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
         return;
     }
 
     // Update the mtime and size, it might have changed since discovery.
-    _item._modtime = FileSystem::getModTime(fi.absoluteFilePath());
-    quint64 fileSize = FileSystem::getSize(fi.absoluteFilePath());
+    _item._modtime = FileSystem::getModTime(fullFilePath);
+    quint64 fileSize = FileSystem::getSize(fullFilePath);
     _item._size = fileSize;
 
     // But skip the file if the mtime is too close to 'now'!
     // That usually indicates a file that is still being changed
     // or not yet fully copied to the destination.
-    QDateTime modtime = Utility::qDateTimeFromTime_t(_item._modtime);
-    if (modtime.msecsTo(QDateTime::currentDateTime()) < minFileAgeForUpload) {
+    if (fileIsStillChanging(_item)) {
         _propagator->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("Local file changed during sync."));
         return;
@@ -215,17 +232,13 @@ bool UploadDevice::prepareAndOpen(const QString& fileName, qint64 start, qint64 
 
     QFile file(fileName);
     QString openError;
-    if (!FileSystem::openFileSharedRead(&file, &openError)) {
+    if (!FileSystem::openAndSeekFileSharedRead(&file, &openError, start)) {
         setErrorString(openError);
         return false;
     }
 
-    size = qMin(FileSystem::getSize(fileName), size);
+    size = qBound(0ll, size, FileSystem::getSize(fileName) - start);
     _data.resize(size);
-    if (!file.seek(start)) {
-        setErrorString(file.errorString());
-        return false;
-    }
     auto read = file.read(_data.data(), size);
     if (read != size) {
         setErrorString(file.errorString());
@@ -339,6 +352,8 @@ void PropagateUploadFileQNAM::startNextChunk()
         // Don't do parallel upload of chunk if this might be the last chunk because the server cannot handle that
         // https://github.com/owncloud/core/issues/11106
         // We return now and when the _jobs will be finished we will proceed the last chunk
+        // NOTE: Some other part of the code such as slotUploadProgress assume also that the last chunk
+        // is sent last.
         return;
     }
     quint64 fileSize = _item._size;
@@ -403,18 +418,14 @@ void PropagateUploadFileQNAM::startNextChunk()
         parallelChunkUpload = env != "false" && env != "0";
     } else {
         auto version = _propagator->account()->serverVersion();
-        auto dotPos = version.indexOf('.');
-        if (dotPos > 0) {
-            if (version.leftRef(dotPos)
-#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
-                    .toString()  // QStringRef::toInt was added in Qt 5.1
-#endif
-                    .toInt() < 8) {
-
-                // Disable parallel chunk upload on older sever to avoid too many
-                // internal sever errors (#2743)
-                parallelChunkUpload = false;
-            }
+        auto components = version.split('.');
+        int versionNum = (components.value(0).toInt() << 16)
+                       + (components.value(1).toInt() << 8)
+                       + components.value(2).toInt();
+        if (versionNum < 0x080003) {
+            // Disable parallel chunk upload severs older than 8.0.3 to avoid too many
+            // internal sever errors (#2743, #2938)
+            parallelChunkUpload = false;
         }
     }
 
@@ -469,6 +480,10 @@ void PropagateUploadFileQNAM::slotPutFinished()
             errorString += QLatin1String(" (") + rx.cap(1) + QLatin1Char(')');
         }
 
+        if (job->reply()->hasRawHeader("OC-ErrorString")) {
+            errorString = job->reply()->rawHeader("OC-ErrorString");
+        }
+
         if (_item._httpErrorCode == 412) {
             // Precondition Failed:   Maybe the bad etag is in the database, we need to clear the
             // parent folder etag so we won't read from DB next sync.
@@ -505,11 +520,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
     bool finished = job->reply()->hasRawHeader("ETag")
             || job->reply()->hasRawHeader("OC-ETag");
 
-
-    QFileInfo fi(_propagator->getFilePath(_item._file));
-
     // Check if the file still exists
-    if( !fi.exists() ) {
+    const QString fullFilePath(_propagator->getFilePath(_item._file));
+    if( !FileSystem::fileExists(fullFilePath) ) {
         if (!finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
@@ -519,8 +532,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
     }
 
     // compare expected and real modification time of the file and size
-    const time_t new_mtime = FileSystem::getModTime(fi.absoluteFilePath());
-    const quint64 new_size = static_cast<quint64>(FileSystem::getSize(fi.absoluteFilePath()));
+    const time_t new_mtime = FileSystem::getModTime(fullFilePath);
+    const quint64 new_size = static_cast<quint64>(FileSystem::getSize(fullFilePath));
+    QFileInfo fi(_propagator->getFilePath(_item._file));
     if (new_mtime != _item._modtime || new_size != _item._size) {
         qDebug() << "The local file has changed during upload:"
                  << "mtime: " << _item._modtime << "<->" << new_mtime
@@ -613,12 +627,21 @@ void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
     done(SyncFileItem::Success);
 }
 
-void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
+void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64 total)
 {
+    if (sent == 0 && total == 0) {
+        return; // QNAM bug https://bugreports.qt.io/browse/QTBUG-44782
+    }
     int progressChunk = _currentChunk + _startChunk - 1;
     if (progressChunk >= _chunkCount)
         progressChunk = _currentChunk - 1;
+
+    // amount is the number of bytes already sent by all the other chunks that were sent
+    // not including this one.
+    // FIXME: this assume all chunks have the same size, which is true only if the last chunk
+    // has not been finished (which should not happen because the last chunk is sent sequentially)
     quint64 amount = progressChunk * chunkSize();
+
     sender()->setProperty("byteWritten", sent);
     if (_jobs.count() > 1) {
         amount -= (_jobs.count() -1) * chunkSize();
@@ -626,6 +649,7 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64)
             amount += j->property("byteWritten").toULongLong();
         }
     } else {
+        // sender() is the only current job, no need to look at the byteWritten properties
         amount += sent;
     }
     emit progress(_item, amount);

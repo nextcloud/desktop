@@ -55,7 +55,8 @@ enum csync_exclude_type_e {
   CSYNC_FILE_SILENTLY_EXCLUDED,
   CSYNC_FILE_EXCLUDE_AND_REMOVE,
   CSYNC_FILE_EXCLUDE_LIST,
-  CSYNC_FILE_EXCLUDE_INVALID_CHAR
+  CSYNC_FILE_EXCLUDE_INVALID_CHAR,
+  CSYNC_FILE_EXCLUDE_LONG_FILENAME
 };
 typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
 
@@ -313,7 +314,14 @@ void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem
         return;
     }
 
-    const QString path = f->path() + item.destination();
+    QString path = f->path() + item.destination();
+
+    // the trailing slash for directories must be appended as the filenames coming in
+    // from the plugins have that too. Otherwise the according entry item is not found
+    // in the plugin.
+    if( item._type == SyncFileItem::Type::Directory ) {
+        path += QLatin1Char('/');
+    }
 
     const QString command = QLatin1String("SYNC");
     broadcastMessage(QLatin1String("STATUS"), path, command);
@@ -386,8 +394,6 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
         DEBUG << "folder offline or not watched:" << argument;
         statusString = QLatin1String("NOP");
     } else {
-
-
         const QString file = QDir::cleanPath(argument).mid(QDir::cleanPath(syncFolder->path()).length()+1);
         SyncFileStatus fileStatus = this->fileStatus(syncFolder, file, _excludes);
 
@@ -414,12 +420,22 @@ void SocketApi::command_SHARE(const QString& localFile, SocketType* socket)
         // files that are not within a sync folder are not synced.
         sendMessage(socket, message);
     } else {
+        const QString folderForPath = shareFolder->path();
+        const QString remotePath = shareFolder->remotePath() + localFile.right(localFile.count()-folderForPath.count()+1);
+
+        SyncJournalFileRecord rec = dbFileRecord_capi(shareFolder, localFile);
+
+        bool allowReshare = true; // lets assume the good
+        if( rec.isValid() ) {
+            // check the permission: Is resharing allowed?
+            if( !rec._remotePerm.contains('R') ) {
+                allowReshare = false;
+            }
+        }
         const QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(localFile);
         sendMessage(socket, message);
 
-        const QString folderForPath = shareFolder->path();
-        const QString remotePath = shareFolder->remotePath() + localFile.right(localFile.count()-folderForPath.count()+1);
-        emit shareCommandReceived(remotePath, localFile);
+        emit shareCommandReceived(remotePath, localFile, allowReshare);
     }
 }
 
@@ -485,6 +501,10 @@ SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString file
         fileName.remove(0, folder->path().length());
     }
 
+    // remove trailing slash
+    if( fileName.endsWith( QLatin1Char('/') ) ) {
+        fileName.truncate(fileName.length()-1);
+    }
     SqlQuery *query = getSqlQuery(folder);
     SyncJournalFileRecord rec;
 
@@ -528,15 +548,20 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         fileNameSlash += QLatin1Char('/');
     }
 
-    QFileInfo fi(file);
-
-    if( !fi.exists() ) {
+    if( !FileSystem::fileExists(file) ) {
         qDebug() << "OO File " << file << " is not existing";
         return SyncFileStatus(SyncFileStatus::STATUS_STAT_ERROR);
     }
 
     // file is ignored?
-    if( fi.isSymLink() ) {
+    // Qt considers .lnk files symlinks on Windows so we need to work
+    // around that here.
+    const QFileInfo fi(file);
+    if( fi.isSymLink()
+#ifdef Q_OS_WIN
+            && fi.suffix() != "lnk"
+#endif
+            ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 

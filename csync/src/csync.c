@@ -573,15 +573,6 @@ int csync_commit(CSYNC *ctx) {
   }
   ctx->statedb.db = NULL;
 
-#ifdef USE_NEON
-  rc = owncloud_commit(ctx);
-  if (rc < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "commit failed: %s",
-              ctx->error_string ? ctx->error_string : "");
-    goto out;
-  }
-#endif
-
   _csync_clean_ctx(ctx);
 
   ctx->remote.read_from_db = 0;

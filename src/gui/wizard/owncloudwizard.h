@@ -58,7 +58,6 @@ public:
     void setMultipleFoldersExist( bool );
     void setConfigExists( bool );
     bool configExists();
-    void successfulStep();
     AbstractCredentials* getCredentials() const;
 
     void raiseCertificatePopup();
@@ -72,6 +71,7 @@ public slots:
     void setRemoteFolder( const QString& );
     void appendToConfigurationLog( const QString& msg, LogType type = LogParagraph );
     void slotCurrentPageChanged( int );
+    void successfulStep();
 
 signals:
     void clearPendingRequests();

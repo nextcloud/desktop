@@ -21,7 +21,6 @@
 #include "syncjournalfilerecord.h"
 #include "discoveryphase.h"
 #include "creds/abstractcredentials.h"
-#include "csync_util.h"
 #include "syncfilestatus.h"
 #include "csync_private.h"
 
@@ -47,6 +46,11 @@
 #include <QProcess>
 #include <QElapsedTimer>
 #include <qtextcodec.h>
+
+#ifdef USE_NEON
+extern "C" int owncloud_commit(CSYNC* ctx);
+#endif
+extern "C" const char *csync_instruction_str(enum csync_instructions_e instr);
 
 namespace OCC {
 
@@ -153,6 +157,9 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("Aborted by the user");
         break;
     case CSYNC_STATUS_SERVICE_UNAVAILABLE:
+        errStr = tr("The service is temporarily unavailable");
+        break;
+    case CSYNC_STATUS_STORAGE_UNAVAILABLE:
         errStr = tr("The mounted directory is temporarily not available on the server");
         break;
     case CSYNC_STATUS_OPENDIR_ERROR:
@@ -365,10 +372,16 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS:
         item._errorString = tr("File contains invalid characters that can not be synced cross platform.");
         break;
+    case CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME:
+        item._errorString = tr("Filename is too long.");
+        break;
     case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
         item._errorString = QLatin1String("File locked"); // don't translate, internal use!
         break;
     case CSYNC_STATUS_SERVICE_UNAVAILABLE:
+        item._errorString = QLatin1String("Server temporarily unavailable.");
+        break;
+    case CSYNC_STATUS_STORAGE_UNAVAILABLE:
         item._errorString = QLatin1String("Directory temporarily not available on server.");
         item._status = SyncFileItem::SoftError;
         break;
@@ -623,7 +636,7 @@ void SyncEngine::startSync()
     _discoveryMainThread = new DiscoveryMainThread(account());
     _discoveryMainThread->setParent(this);
     connect(this, SIGNAL(finished()), _discoveryMainThread, SLOT(deleteLater()));
-    connect(_discoveryMainThread, SIGNAL(rootEtag(QString)), this, SLOT(slotRootEtagReceived(QString)));
+    connect(_discoveryMainThread, SIGNAL(etagConcatenation(QString)), this, SLOT(slotRootEtagReceived(QString)));
 
 
     DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx);
@@ -643,8 +656,8 @@ void SyncEngine::startSync()
 }
 
 void SyncEngine::slotRootEtagReceived(QString e) {
-    qDebug() << Q_FUNC_INFO << e;
     if (_remoteRootEtag.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << e;
         _remoteRootEtag = e;
         emit rootEtag(_remoteRootEtag);
     }
@@ -699,8 +712,12 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         qDebug() << "Permissions of the root folder: " << _remotePerms[QLatin1String("")];
     }
 
+    // Re-init the csync context to free memory
+    csync_commit(_csync_ctx);
+
     // The map was used for merging trees, convert it to a list:
     _syncedItems = _syncItemMap.values().toVector();
+    _syncItemMap.clear(); // free memory
 
     // Adjust the paths for the renames.
     for (SyncFileItemVector::iterator it = _syncedItems.begin();
@@ -810,7 +827,8 @@ void SyncEngine::setNetworkLimits(int upload, int download)
 
 void SyncEngine::slotJobCompleted(const SyncFileItem &item)
 {
-    qDebug() << Q_FUNC_INFO << item._file << item._status << item._errorString;
+    const char * instruction_str = csync_instruction_str(item._instruction);
+    qDebug() << Q_FUNC_INFO << item._file << instruction_str << item._status << item._errorString;
 
     /* Update the _syncedItems vector */
     int idx = _syncedItems.indexOf(item);
@@ -854,6 +872,12 @@ void SyncEngine::finalize()
 {
     _thread.quit();
     _thread.wait();
+
+#ifdef USE_NEON
+    // De-init the neon HTTP(S) connections
+    owncloud_commit(_csync_ctx);
+#endif
+
     csync_commit(_csync_ctx);
 
     qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
@@ -1171,6 +1195,7 @@ AccountPtr SyncEngine::account() const
 
 void SyncEngine::abort()
 {
+    qDebug() << Q_FUNC_INFO << _discoveryMainThread;
     // Aborts the discovery phase job
     if (_discoveryMainThread) {
         _discoveryMainThread->abort();

@@ -56,6 +56,7 @@ QSize SelectiveSyncTreeView::sizeHint() const
 void SelectiveSyncTreeView::refreshFolders()
 {
     LsColJob *job = new LsColJob(_account, _folderPath, this);
+    job->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             this, SLOT(slotUpdateDirectories(QStringList)));
     connect(job, SIGNAL(finishedWithError(QNetworkReply*)),

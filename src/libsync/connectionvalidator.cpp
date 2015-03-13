@@ -46,6 +46,8 @@ QString ConnectionValidator::statusString( Status stat )
         return QLatin1String("Status not found");
     case UserCanceledCredentials:
         return QLatin1String("User canceled credentials");
+    case ServerMaintenance:
+        return QLatin1String("Server in maintenance mode");
     case Timeout:
         return QLatin1String("Timeout");
     }
@@ -102,8 +104,12 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
 // status.php could not be loaded (network or server issue!).
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
-    _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
-    _errors.append( reply->errorString() );
+    if( reply && ! _account->credentials()->stillValid(reply)) {
+        _errors.append(tr("Authentication error: Either username or password are wrong."));
+    }  else {
+        _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
+        _errors.append( reply->errorString() );
+    }
     reportResult( StatusNotFound );
 }
 
@@ -138,7 +144,7 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
     Status stat = Timeout;
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
-            reply->error() == QNetworkReply::OperationCanceledError ) { // returned if the user/pwd is wrong.
+             !_account->credentials()->stillValid(reply)) {
         qDebug() <<  reply->error() << reply->errorString();
         qDebug() << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
@@ -146,6 +152,18 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 
     } else if( reply->error() != QNetworkReply::NoError ) {
         _errors << reply->errorString();
+
+        const int httpStatus =
+                reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        if ( httpStatus == 503 ) {
+            // Is this a maintenance mode reply from the server
+            // or a regular 503 from somewhere else?
+            QByteArray body = reply->readAll();
+            if ( body.contains("Sabre\\DAV\\Exception\\ServiceUnavailable") ) {
+                _errors.clear();
+                stat = ServerMaintenance;
+            }
+        }
     }
 
     reportResult( stat );

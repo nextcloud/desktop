@@ -42,6 +42,9 @@ namespace {
 
 namespace OCC {
 
+//
+// Whenever you change something here check both settingsdialog.cpp and settingsdialogmac.cpp !
+//
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     QDialog(parent)
     , _ui(new Ui::SettingsDialog)

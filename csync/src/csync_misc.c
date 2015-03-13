@@ -108,6 +108,9 @@ CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
   case ERRNO_SERVICE_UNAVAILABLE:
     status = CSYNC_STATUS_SERVICE_UNAVAILABLE;  /* Service temporarily down */
     break;
+  case ERRNO_STORAGE_UNAVAILABLE:
+    status = CSYNC_STATUS_STORAGE_UNAVAILABLE;  /* Storage temporarily unavailable */
+    break;
   case EFBIG:
     status = CSYNC_STATUS_FILE_SIZE_ERROR;          /* File larger than 2MB */
     break;
