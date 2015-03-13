@@ -85,9 +85,10 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->reply()->errorString());
 
     QNetworkReply::NetworkError err = _job->reply()->error();
-    _item._httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    const int httpStatus = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item._httpErrorCode = httpStatus;
 
-    if (err != QNetworkReply::NoError) {
+    if (err != QNetworkReply::NoError && err != QNetworkReply::ContentNotFoundError) {
 
         if( checkForProblemsWithShared(_item._httpErrorCode,
             tr("The file has been removed from a read only share. It was restored.")) ) {
@@ -102,7 +103,11 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     _item._requestDuration = _job->duration();
     _item._responseTimeStamp = _job->responseTimestamp();
 
-    if (_item._httpErrorCode != 204 ) {
+    // A 404 reply is also considered a success here: We want to make sure
+    // a file is gone from the server. It not being there in the first place
+    // is ok. This will happen for files that are in the DB but not on
+    // the server or the local file system.
+    if (httpStatus != 204 && httpStatus != 404) {
         // Normaly we expect "204 No Content"
         // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
         // throw an error.
