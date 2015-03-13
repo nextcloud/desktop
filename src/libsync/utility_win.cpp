@@ -57,14 +57,14 @@ static void setupFavLink_private(const QString &folder)
         wchar_t *path = NULL;
         if(SHGetKnownFolderPathPtr(FOLDERID_Links, 0, NULL, &path) == S_OK) {
             QString Links= QDir::fromNativeSeparators(QString::fromWCharArray(path)); 
-            linkName = Links + folderDir.dirName() + QLatin1String(".lnk");
+            linkName = QDir(Links).filePath(folderDir.dirName() + QLatin1String(".lnk"));
         }
     } else {
         /* Use legacy functions */
         wchar_t path[MAX_PATH];
         SHGetSpecialFolderPath(0, path, CSIDL_PROFILE, FALSE);
         QString profile = QDir::fromNativeSeparators(QString::fromWCharArray(path));
-        linkName = profile+QLatin1String("/Links/") + folderDir.dirName() + QLatin1String(".lnk");
+        linkName = QDir(profile).filePath(QDir(QLatin1String("Links")).filePath(folderDir.dirName() + QLatin1String(".lnk")));
     }
     qDebug() << Q_FUNC_INFO << " creating link from " << linkName << " to " << folder;
     if (!QFile::link(folder, linkName))
