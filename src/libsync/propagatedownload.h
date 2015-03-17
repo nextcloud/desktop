@@ -78,8 +78,10 @@ public:
     qint64 currentDownloadPosition();
 
     QString errorString() const;
+    void setErrorString(const QString& s) { _errorString = s; }
 
     SyncFileItem::Status errorStatus() { return _errorStatus; }
+    void setErrorStatus(const SyncFileItem::Status & s) { _errorStatus = s; }
 
     virtual void slotTimeout() Q_DECL_OVERRIDE;
 
