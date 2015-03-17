@@ -2265,7 +2265,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="567"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation>Non é posíbel iniciar un rexistro de sincronización.</translation>
+        <translation>Non é posíbel preparar un rexistro de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="648"/>
