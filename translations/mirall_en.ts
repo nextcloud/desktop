@@ -1422,12 +1422,12 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="449"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>The file could not be downloaded completely.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="485"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation type="unfinished"></translation>
     </message>
