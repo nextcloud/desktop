@@ -179,6 +179,15 @@ void AccountState::checkConnectivity()
         conValidator->checkAuthentication();
     } else {
         // Check the server and then the auth.
+
+#ifdef Q_OS_WIN
+        // There seems to be a bug in Qt on Windows where QNAM sometimes stops
+        // working correctly after the computer woke up from sleep. See #2895 #2899
+        // and #2973.
+        // As an attempted workaround, reset the QNAM regularly if the account is
+        // disconnected.
+        account()->resetNetworkAccessManager();
+#endif
         conValidator->checkServerAndAuth();
     }
 }
