@@ -68,11 +68,12 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
 {
-    if (_reply) {
-        _reply->deleteLater();
-    }
-    reply->setProperty("doNotHandleAuth", true);
+    if (reply)
+        reply->setProperty("doNotHandleAuth", true);
+
+    QNetworkReply *old = _reply;
     _reply = reply;
+    delete old;
 }
 
 void AbstractNetworkJob::setTimeout(qint64 msec)
@@ -213,9 +214,7 @@ QByteArray AbstractNetworkJob::responseTimestamp()
 
 AbstractNetworkJob::~AbstractNetworkJob()
 {
-    if (_reply) {
-        _reply->deleteLater();
-    }
+    setReply(0);
 }
 
 void AbstractNetworkJob::start()

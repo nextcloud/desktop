@@ -64,6 +64,12 @@ static qint64 chunkSize() {
     return chunkSize;
 }
 
+PUTFileJob::~PUTFileJob()
+{
+    // Make sure that we destroy the QNetworkReply before our _device of which it keeps an internal pointer.
+    setReply(0);
+}
+
 void PUTFileJob::start() {
     QNetworkRequest req;
     for(QMap<QByteArray, QByteArray>::const_iterator it = _headers.begin(); it != _headers.end(); ++it) {
