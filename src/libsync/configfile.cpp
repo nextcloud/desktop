@@ -147,7 +147,7 @@ void ConfigFile::saveGeometryHeader(QHeaderView *header)
 {
 #ifndef TOKEN_AUTH_ONLY
     if(!header) return;
-    Q_ASSERT(!header->objectName().isNull());
+    Q_ASSERT(!header->objectName().isEmpty());
 
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(header->objectName());
@@ -164,7 +164,7 @@ void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(header->objectName());
-    header->restoreState(getValue(geometryC, header->objectName()).toByteArray());
+    header->restoreState(settings.value(geometryC).toByteArray());
 #endif
 }
 

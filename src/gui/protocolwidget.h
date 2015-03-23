@@ -39,8 +39,6 @@ public:
     explicit ProtocolWidget(QWidget *parent = 0);
     ~ProtocolWidget();
 
-signals:
-
 public slots:
     void slotProgressInfo( const QString& folder, const Progress::Info& progress );
     void slotOpenFile( QTreeWidgetItem* item, int );
@@ -48,6 +46,10 @@ public slots:
 protected slots:
     void copyToClipboard();
     void slotRetrySync();
+
+protected:
+    void showEvent(QShowEvent *);
+    void hideEvent(QHideEvent *);
 
 signals:
     void guiLog(const QString&, const QString&);
