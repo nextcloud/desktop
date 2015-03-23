@@ -403,7 +403,10 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QLatin1String("--confdir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 QString confDir = it.next();
-                ConfigFile::setConfDir( confDir );
+                if (!ConfigFile::setConfDir( confDir )) {
+                    std::cerr << "Invalid path passed to --confdir" << std::endl;
+                    std::exit(1);
+                }
             } else {
                 showHelp();
             }

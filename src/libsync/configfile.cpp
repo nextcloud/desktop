@@ -85,10 +85,10 @@ ConfigFile::ConfigFile()
     // qDebug() << Q_FUNC_INFO << "Loading config: " << config << " (URL is " << settings.value("url").toString() << ")";
 }
 
-void ConfigFile::setConfDir(const QString &value)
+bool ConfigFile::setConfDir(const QString &value)
 {
     QString dirPath = value;
-    if( dirPath.isEmpty() ) return;
+    if( dirPath.isEmpty() ) return false;
 
     QFileInfo fi(dirPath);
     if ( !fi.exists() && !fi.isAbsolute() ) {
@@ -101,7 +101,9 @@ void ConfigFile::setConfDir(const QString &value)
         dirPath = fi.absoluteFilePath();
         qDebug() << "** Using custom config dir " << dirPath;
         _confDir=dirPath;
+        return true;
     }
+    return false;
 }
 
 bool ConfigFile::optionalDesktopNotifications() const
