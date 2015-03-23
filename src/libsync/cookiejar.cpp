@@ -103,7 +103,7 @@ void CookieJar::save()
     qDebug() << storagePath();
     file.open(QIODevice::WriteOnly);
     QDataStream stream(&file);
-    stream << allCookies();
+    stream << removeExpired(allCookies());
     file.close();
 }
 

@@ -916,7 +916,7 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="275"/>
         <source>Skip this version</source>
-        <translation>Ignorer cette version.</translation>
+        <translation>Ignorer cette version</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="276"/>
@@ -1007,7 +1007,7 @@ Les items cochés seront également supprimés s&apos;ils empêchent la suppress
     <message>
         <location filename="../src/gui/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation>Nom d&apos;hôte ou serveur mandataire</translation>
+        <translation>Nom d&apos;hôte du serveur mandataire</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="35"/>
@@ -2389,7 +2389,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>None.</source>
-        <translation>Aucun.</translation>
+        <translation>Aucune</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="299"/>

@@ -67,7 +67,7 @@ class SocketConnect(GObject.GObject):
                 print("Sending failed.")
                 self.reconnect()
         else:
-            print "Cannot send, not connected!"
+            print("Cannot send, not connected!")
 
     def addListener(self, listener):
         self._listeners.append(listener)
@@ -85,7 +85,7 @@ class SocketConnect(GObject.GObject):
                     self.connected = True
                     print("Setting connected to %r" % self.connected )
                     self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
-                    print "Socket watch id: "+str(self._watch_id)
+                    print("Socket watch id: "+str(self._watch_id))
                     return False # don't run again
                 except Exception as e:
                     print("Could not connect to unix socket." + str(e))
@@ -175,7 +175,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
 
     def menu_share(self, menu, file):
         filename = get_local_path(file.get_uri())
-        print "Share file "+filename
+        print("Share file "+filename)
         socketConnect.sendCommand("SHARE:"+filename+"\n")
 
 

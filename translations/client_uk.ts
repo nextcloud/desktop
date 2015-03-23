@@ -733,7 +733,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="47"/>
         <source>Show crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Показати звіти про помилки</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
@@ -1202,7 +1202,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="193"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Перевищено час очікування з&apos;єднання до %1 на %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="204"/>
@@ -1212,7 +1212,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Доступ заборонений сервером. Щоб довести, що у Вас є права доступу, &lt;a href=&quot;%1&quot;&gt;клікніть тут&lt;/a&gt; для входу через Ваш браузер.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
@@ -1361,7 +1361,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="121"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>Неправильна JSON відповідь на сформований URL</translation>
     </message>
 </context>
 <context>
@@ -1420,7 +1420,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
         <source>Continue blacklisting: </source>
-        <translation type="unfinished"/>
+        <translation>Продовжити занесення до чорного списку:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="200"/>
@@ -1477,7 +1477,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="103"/>
         <source>Wrong HTTP code returned by server. Expected 204, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер відповів неправильним HTTP кодом. Очікувався 204, але отриманий &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1485,7 +1485,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="67"/>
         <source>Wrong HTTP code returned by server. Expected 201, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер відповів неправильним HTTP кодом. Очікувався 201, але отриманий &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1508,7 +1508,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
         <source>Wrong HTTP code returned by server. Expected 201, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер відповів неправильним HTTP кодом. Очікувався 201, але отриманий &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1551,7 +1551,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="468"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Не вистачає сформованого URL</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="493"/>
@@ -1645,13 +1645,19 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n файл пропущено через попередні помилки.
+</numerusform><numerusform>%n файлів пропущено через попередні помилки.
+</numerusform><numerusform>%n файлів пропущено через попередні помилки.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n файлів частково завантажений.
+</numerusform><numerusform>%n файлів частково завантажені.
+</numerusform><numerusform>%n файлів частково завантажено.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="267"/>
@@ -1669,12 +1675,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="318"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть Що Синхронізувати: Виберіть папки на віддаленому сервері, які Ви хотіли б синхронізувати.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="319"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть Що Синхронізувати: Зніміть вибір папок на віддаленому сервері, які Ви не хочете синхронізувати.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="325"/>
@@ -1761,12 +1767,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Поділитися NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="26"/>
         <source>Share Info</source>
-        <translation type="unfinished"/>
+        <translation>Поділитися Інформацією</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="34"/>
@@ -1777,12 +1783,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="53"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>поділитися міткою</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="75"/>
         <source>OwnCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Шлях до OwnCloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="89"/>
@@ -1803,12 +1809,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharedialog.cpp" line="67"/>
         <location filename="../src/gui/sharedialog.cpp" line="461"/>
         <source>%1 path: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 шлях: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="68"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Ви поділилися %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="141"/>
@@ -1823,27 +1829,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="351"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>OCS API код помилки: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="374"/>
         <source>There is no sync folder configured.</source>
-        <translation type="unfinished"/>
+        <translation>Немає папок налаштованих для синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>Can not find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо знайти папку для завантаження в неї.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="393"/>
         <source>Sharing of external directories is not yet working.</source>
-        <translation type="unfinished"/>
+        <translation>Функція відкриття доступу до зовнішніх папок поки не працює.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="408"/>
         <source>A sync file with the same name exists. The file can not be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Існує файл з ім&apos;ям як у синхронізованого. Файл не може бути прийнятий до синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="420"/>
@@ -1853,17 +1859,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="422"/>
         <source>Unable to register in sync space.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо зареєструватися в синхронізованому просторі.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="453"/>
         <source>The file can not be synced.</source>
-        <translation type="unfinished"/>
+        <translation>Файл не може бути синхронізований.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="463"/>
         <source>Sync of registered file was not successful yet.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація зареєстрованого файлу поки не була успішною.</translation>
     </message>
 </context>
 <context>
@@ -1908,7 +1914,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="431"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation type="unfinished"/>
+        <translation>Поділитися з %1</translation>
     </message>
 </context>
 <context>
@@ -2122,7 +2128,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="99"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не вдалося завантажити файл журналу. Файл журналу пошкоджений.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="102"/>
@@ -2217,12 +2223,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>The mounted directory is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Приєднана тека тимчасово недоступна на сервері</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
         <source>An error opening a directory happened</source>
-        <translation type="unfinished"/>
+        <translation>Сталася помилка при відкритті теки</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
@@ -2345,7 +2351,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="237"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt; Права належать ownCloud, Incorporated &lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="238"/>
@@ -2453,7 +2459,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="435"/>
         <source>Crash now</source>
-        <translation type="unfinished"/>
+        <translation>Критична помилка</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="446"/>
@@ -2501,7 +2507,7 @@ It is not advisable to use it.</source>
     <message utf8="true">
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версія %2. Для більш детальної інформації відвідайте &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt; &lt;p&gt;&lt;small&gt; Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz та інші.&lt;/ small&gt;&lt;/p&gt; &lt;p&gt; Права належать ownCloud, Inc. &lt;/p&gt; &lt;p&gt; Під ліцензією GNU General Public License (GPL) Version 2.0 &lt;br/&gt; ownCloud і логотип ownCloud є зареєстрованими товарними знаками ownCloud, Inc. в США та інших країнах. &lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2560,7 +2566,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>S&amp;ync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізувати все з сервером</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="306"/>
@@ -2578,7 +2584,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Не вдалося підключитися до безпечного серверу за наданною адресою. Як Ви хочете продовжити? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
@@ -2588,17 +2594,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Спробувати без шифрування через HTTP (небезпечно)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Налаштувати TLS сертифікат клієнта</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="18"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Не вдалося підключитися до безпечного серверу за адресою &lt;em&gt;%1&lt;/em&gt;. Як Ви хочете продовжити?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -2747,22 +2753,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/utility.cpp" line="113"/>
         <source>%L1 TiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 Тіб</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="116"/>
         <source>%L1 GiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 ГіБ</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="119"/>
         <source>%L1 MiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 МіБ</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="122"/>
         <source>%L1 KiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 КіБ </translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="125"/>

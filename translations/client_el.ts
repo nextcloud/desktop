@@ -1783,7 +1783,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="75"/>
         <source>OwnCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Διαδρομή ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="89"/>
@@ -1909,7 +1909,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="431"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation type="unfinished"/>
+        <translation>Διαμοιρασμός με %1</translation>
     </message>
 </context>
 <context>
@@ -2218,7 +2218,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>The mounted directory is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Ο προσαρτημένος κατάλογος δεν είναι προσωρινά διαθέσιμος στον δικομιστή</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>

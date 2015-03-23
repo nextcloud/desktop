@@ -1926,7 +1926,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="101"/>
         <source>Subject Alternative Names:</source>
-        <translation>Subject Alternative Names(サブジェクトの別名):</translation>
+        <translation>サブジェクトの別名:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="103"/>
@@ -1971,7 +1971,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="115"/>
         <source>Expires on:</source>
-        <translation>期限切れ期日:</translation>
+        <translation>有効期限:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="118"/>

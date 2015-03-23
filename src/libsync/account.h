@@ -156,6 +156,7 @@ public:
 
     void clearCookieJar();
 
+    void resetNetworkAccessManager();
     QNetworkAccessManager* networkAccessManager();
 
     /// Called by network jobs on credential errors.

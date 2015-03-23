@@ -271,6 +271,21 @@ void Account::clearCookieJar()
     _am->setCookieJar(new CookieJar);
 }
 
+void Account::resetNetworkAccessManager()
+{
+    if (!_credentials || !_am) {
+        return;
+    }
+
+    qDebug() << "Resetting QNAM";
+    QNetworkCookieJar* jar = _am->cookieJar();
+    _am->deleteLater();
+    _am = _credentials->getQNAM();
+    _am->setCookieJar(jar); // takes ownership of the old cookie jar
+    connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
+            SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
+}
+
 QNetworkAccessManager *Account::networkAccessManager()
 {
     return _am;

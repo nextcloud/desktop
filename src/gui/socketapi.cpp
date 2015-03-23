@@ -185,8 +185,9 @@ void SocketApi::slotNewConnection()
     broadcastMessage(QLatin1String("ICON_PATH"), iconPath );
 #endif
 
-    foreach( QString alias, FolderMan::instance()->map().keys() ) {
-       slotRegisterPath(alias);
+    foreach( Folder *f, FolderMan::instance()->map() ) {
+        QString message = buildRegisterPathMessage(f->path());
+        sendMessage(socket, message);
     }
 }
 
@@ -226,7 +227,10 @@ void SocketApi::slotRegisterPath( const QString& alias )
 {
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
-        broadcastMessage(QLatin1String("REGISTER_PATH"), f->path() );
+        QString message = buildRegisterPathMessage(f->path());
+        foreach(SocketType *socket, _listeners) {
+            sendMessage(socket, message);
+        }
     }
 }
 
@@ -447,6 +451,14 @@ void SocketApi::command_VERSION(const QString&, SocketType* socket)
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketType* socket)
 {
     sendMessage(socket, QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
+}
+
+QString SocketApi::buildRegisterPathMessage(const QString& path)
+{
+    QFileInfo fi(path);
+    QString message = QLatin1String("REGISTER_PATH:");
+    message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+    return message;
 }
 
 SqlQuery* SocketApi::getSqlQuery( Folder *folder )
