@@ -190,6 +190,12 @@ void SslButton::updateAccountState(AccountState *accountState)
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
         QMenu *menu = new QMenu(this);
         QList<QSslCertificate> chain = account->sslConfiguration().peerCertificateChain();
+
+        if (chain.isEmpty()) {
+            qWarning() << "empty certificate chain";
+            return;
+        }
+
         menu->addAction(tr("Certificate information:"))->setEnabled(false);
 
         QList<QSslCertificate> tmpChain;
