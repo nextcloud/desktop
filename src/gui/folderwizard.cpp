@@ -297,6 +297,8 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished(QNetworkReply::Netwo
         qDebug() << "** webdav mkdir request finished";
         showWarn(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
         slotRefreshFolders();
+        _ui.folderEntry->setText(static_cast<MkColJob *>(sender())->path());
+        slotLsColFolderEntry();
     }
 }
 
