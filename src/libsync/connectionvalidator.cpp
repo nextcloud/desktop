@@ -13,11 +13,13 @@
 
 #include <QtCore>
 #include <QNetworkReply>
+#include <QNetworkProxyFactory>
 
 #include "connectionvalidator.h"
 #include "theme.h"
 #include "account.h"
 #include "networkjobs.h"
+#include "clientproxy.h"
 #include <creds/abstractcredentials.h>
 
 namespace OCC {
@@ -63,6 +65,34 @@ void ConnectionValidator::checkServerAndAuth()
     }
     _isCheckingServerAndAuth = true;
 
+    // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
+    if (ClientProxy::isUsingSystemDefault()) {
+        qDebug() << "Trying to look up system proxy";
+        ClientProxy::lookupSystemProxyAsync(_account->url(),
+                                            this, SLOT(systemProxyLookupDone(QNetworkProxy)));
+    } else {
+        // use a queued invocation so we're as asynchronous as with the other code path
+        QMetaObject::invokeMethod(this, "slotCheckServerAndAuth", Qt::QueuedConnection);
+    }
+}
+
+void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy) {
+    if (!_account) {
+        qDebug() << "Bailing out, Account had been deleted";
+        return;
+    }
+
+    if (proxy.type() != QNetworkProxy::DefaultProxy) {
+        qDebug() << Q_FUNC_INFO << "Setting QNAM proxy to be system proxy" << proxy;
+        _account->networkAccessManager()->setProxy(proxy);
+    }
+
+    slotCheckServerAndAuth();
+}
+
+// The actual check
+void ConnectionValidator::slotCheckServerAndAuth()
+{
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
     checkJob->setIgnoreCredentialFailure(true);
     connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));

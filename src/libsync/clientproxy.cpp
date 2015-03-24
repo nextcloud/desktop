@@ -15,6 +15,7 @@
 
 #include "configfile.h"
 #include <QUrl>
+#include <QThreadPool>
 
 namespace OCC {
 
@@ -23,7 +24,7 @@ ClientProxy::ClientProxy(QObject *parent) :
 {
 }
 
-QNetworkProxy ClientProxy::proxyFromConfig(const ConfigFile& cfg)
+static QNetworkProxy proxyFromConfig(const ConfigFile& cfg)
 {
     QNetworkProxy proxy;
 
@@ -37,6 +38,17 @@ QNetworkProxy ClientProxy::proxyFromConfig(const ConfigFile& cfg)
         proxy.setPassword(cfg.proxyPassword());
     }
     return proxy;
+}
+
+bool ClientProxy::isUsingSystemDefault() {
+    OCC::ConfigFile cfg;
+
+    // if there is no config file, default to system proxy.
+    if( cfg.exists() ) {
+        return cfg.proxyType() == QNetworkProxy::DefaultProxy;
+    }
+
+    return false;
 }
 
 void ClientProxy::setupQtProxyFromConfig()
@@ -57,15 +69,18 @@ void ClientProxy::setupQtProxyFromConfig()
         QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
         break;
     case QNetworkProxy::DefaultProxy:
+        qDebug() << "Set proxy configuration to use system configuration";
         QNetworkProxyFactory::setUseSystemConfiguration(true);
         break;
     case QNetworkProxy::Socks5Proxy:
         proxy.setType(QNetworkProxy::Socks5Proxy);
+        qDebug() << "Set proxy configuration to SOCKS5" << proxy;
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;
     case QNetworkProxy::HttpProxy:
         proxy.setType(QNetworkProxy::HttpProxy);
+        qDebug() << "Set proxy configuration to HTTP" << proxy;
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;
@@ -96,6 +111,7 @@ const char* ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 
 void ClientProxy::setCSyncProxy( const QUrl& url, CSYNC *csync_ctx )
 {
+#ifdef USE_NEON
     /* Store proxy */
     QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(url));
     // We set at least one in Application
@@ -118,7 +134,36 @@ void ClientProxy::setCSyncProxy( const QUrl& url, CSYNC *csync_ctx )
     csync_set_module_property( csync_ctx, "proxy_port", &proxy_port );
     csync_set_module_property( csync_ctx, "proxy_user", proxy.user().toUtf8().data());
     csync_set_module_property( csync_ctx, "proxy_pwd",  proxy.password().toUtf8().data());
+#endif
+}
+
+
+
+void ClientProxy::lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot)
+{
+    SystemProxyRunnable *runnable = new SystemProxyRunnable(url);
+    QObject::connect(runnable, SIGNAL(systemProxyLookedUp(QNetworkProxy)), dst, slot);
+    QThreadPool::globalInstance()->start(runnable); // takes ownership and deletes
+}
+
+SystemProxyRunnable::SystemProxyRunnable(const QUrl &url) : QObject(), QRunnable(), _url(url)
+{
 
 }
+
+void SystemProxyRunnable::run()
+{
+    qDebug() << Q_FUNC_INFO << "Starting system proxy lookup";
+    QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(QNetworkProxyQuery(_url));
+    qDebug() << Q_FUNC_INFO << proxies.count() << "proxies: " << proxies;
+
+    if (proxies.isEmpty()) {
+        emit systemProxyLookedUp(QNetworkProxy(QNetworkProxy::NoProxy));
+    } else {
+        emit systemProxyLookedUp(proxies.first());
+        // FIXME Would we really ever return more?
+    }
+}
+
 
 }

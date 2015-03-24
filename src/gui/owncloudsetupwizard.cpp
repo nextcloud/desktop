@@ -145,6 +145,9 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     }
     AccountPtr account = _ocWizard->account();
     account->setUrl(url);
+    // Reset the proxy which might had been determined previously in ConnectionValidator::checkServerAndAuth()
+    // when there was a previous account.
+    account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
     // Set fake credentials beforfe we check what credential it actually is.
     account->setCredentials(CredentialsFactory::create("dummy"));
     CheckServerJob *job = new CheckServerJob(_ocWizard->account(), this);

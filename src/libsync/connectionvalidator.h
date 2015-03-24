@@ -36,6 +36,8 @@ namespace OCC {
 
 
 *---> checkServerAndAuth  (check status.php)
+        Will asynchronously check for system proxy (if using system proxy)
+        And then invoke slotCheckServerAndAuth
         CheckServerJob
         |
         +-> slotNoStatusFound --> X
@@ -85,6 +87,7 @@ public:
 public slots:
     /// Checks the server and the authentication.
     void checkServerAndAuth();
+    void systemProxyLookupDone(const QNetworkProxy &proxy);
 
     /// Checks authentication only.
     void checkAuthentication();
@@ -93,6 +96,8 @@ signals:
     void connectionResult( ConnectionValidator::Status status, QStringList errors );
 
 protected slots:
+    void slotCheckServerAndAuth();
+
     void slotStatusFound(const QUrl&url, const QVariantMap &info);
     void slotNoStatusFound(QNetworkReply *reply);
     void slotJobTimeout(const QUrl& url);
