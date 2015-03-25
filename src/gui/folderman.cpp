@@ -873,6 +873,13 @@ void FolderMan::setDirtyProxy(bool value)
     foreach( Folder *f, _folderMap.values() ) {
         if(f) {
             f->setProxyDirty(value);
+
+            if (f->accountState() && f->accountState()->account()
+                    && f->accountState()->account()->networkAccessManager()) {
+                // Need to do this have us not use the old determined system proxy
+                f->accountState()->account()->networkAccessManager()->setProxy(
+                            QNetworkProxy(QNetworkProxy::DefaultProxy));
+            }
         }
     }
 }

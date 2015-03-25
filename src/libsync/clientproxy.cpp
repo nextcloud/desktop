@@ -65,6 +65,7 @@ void ClientProxy::setupQtProxyFromConfig()
 
     switch(proxyType) {
     case QNetworkProxy::NoProxy:
+        qDebug() << "Set proxy configuration to use NO proxy";
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
         break;
