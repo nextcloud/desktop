@@ -31,6 +31,10 @@ SslButton::SslButton(QWidget *parent) :
 {
     setPopupMode(QToolButton::InstantPopup);
     setAutoRaise(true);
+
+    setMenu(new QMenu(this));
+    QObject::connect(menu(), SIGNAL(aboutToShow()),
+                     this, SLOT(slotUpdateMenu()));
 }
 
 QString SslButton::protoToString(QSsl::SslProtocol proto)
@@ -178,17 +182,31 @@ void SslButton::updateAccountState(AccountState *accountState)
     } else {
         setVisible(true);
     }
-    AccountPtr account = accountState->account();
-    if(QMenu *oldMenu = menu()) {
-        oldMenu->hide(); // Need to be hidden because the QToolButton would be left in invalid state if the menu is deleted while it is visible
-        setMenu(0);
-        oldMenu->deleteLater();  // setMenu do not delete the previous menu.
-    }
+    _accountState = accountState;
+
+    AccountPtr account = _accountState->account();
     if (account->url().scheme() == QLatin1String("https")) {
-        setIcon(QIcon(QPixmap(Theme::hidpiFileName(":/client/resources/lock-https.png"))));
+        QPixmap pm(Theme::hidpiFileName(":/client/resources/lock-https.png"));
+        setIcon(QIcon(pm));
         QSslCipher cipher = account->sslConfiguration().sessionCipher();
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
-        QMenu *menu = new QMenu(this);
+    } else {
+        setIcon(QIcon(QPixmap(Theme::hidpiFileName(":/client/resources/lock-http.png"))));
+        setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
+    }
+}
+
+void SslButton::slotUpdateMenu() {
+    menu()->clear();
+
+    if (!_accountState) {
+        return;
+    }
+
+    AccountPtr account = _accountState->account();
+
+    if (account->url().scheme() == QLatin1String("https")) {
+
         QList<QSslCertificate> chain = account->sslConfiguration().peerCertificateChain();
 
         if (chain.isEmpty()) {
@@ -196,7 +214,7 @@ void SslButton::updateAccountState(AccountState *accountState)
             return;
         }
 
-        menu->addAction(tr("Certificate information:"))->setEnabled(false);
+        menu()->addAction(tr("Certificate information:"))->setEnabled(false);
 
         QList<QSslCertificate> tmpChain;
         foreach(QSslCertificate cert, chain) {
@@ -219,13 +237,9 @@ void SslButton::updateAccountState(AccountState *accountState)
         it.toBack();
         int i = 0;
         while (it.hasPrevious()) {
-            menu->addMenu(buildCertMenu(menu, it.previous(), account->approvedCerts(), i));
+            menu()->addMenu(buildCertMenu(menu(), it.previous(), account->approvedCerts(), i));
             i++;
         }
-        setMenu(menu);
-    } else {
-        setIcon(QIcon(QPixmap(Theme::hidpiFileName(":/client/resources/lock-http.png"))));
-        setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
     }
 }
 
