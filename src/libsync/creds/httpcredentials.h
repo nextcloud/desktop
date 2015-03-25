@@ -64,6 +64,7 @@ private Q_SLOTS:
 protected:
     QString _user;
     QString _password;
+    QString _previousPassword;
 
 private:
     QString _certificatePath;
