@@ -84,24 +84,20 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     QIcon icon = icon_provider.icon(f_info);
     _ui->label_icon->setPixmap(icon.pixmap(40,40));
 
-    QString name;
-    if( f_info.isDir() ) {
-        name = tr("Share Directory");
-    } else {
-        name = tr("Share File");
-    }
-    _ui->groupBox->setTitle(name);
-
-    QString lPath(_localPath);
-    if( lPath.length() > 50) {
-        lPath = QLatin1String("...")+lPath.right(50);
-    }
-    _ui->label_name->setText(tr("Local path: %1").arg(lPath));
+    QFileInfo lPath(_localPath);
+    QString fileName = lPath.fileName();
+    _ui->label_name->setText(tr("%1").arg(fileName));
+    QFont f( _ui->label_name->font());
+    f.setPointSize( f.pointSize() * 1.4 );
+    _ui->label_name->setFont( f );
 
     _ui->label_sharePath->setWordWrap(true);
-    _ui->label_sharePath->setText(tr("%1 path: %2").arg(Theme::instance()->appNameGUI()).arg(_sharePath));
+    QString ocDir(_sharePath);
+    ocDir.truncate(ocDir.length()-fileName.length());
+
+    _ui->label_sharePath->setText(tr("%1 path: %2").arg(Theme::instance()->appNameGUI()).arg(ocDir));
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
-    _ui->label_password->setText(tr("Set p&assword"));
+    _ui->checkBox_password->setText(tr("Set p&assword"));
     // check if the file is already inside of a synced folder
     if( sharePath.isEmpty() ) {
         // The file is not yet in an ownCloud synced folder. We could automatically
@@ -336,7 +332,12 @@ void ShareDialog::setShareLink( const QString& url )
     // FIXME: shorten the url for output.
     const QUrl realUrl(url);
     if( realUrl.isValid() ) {
-        const QString u = QString("<a href=\"%1\">%2</a>").arg(realUrl.toString(QUrl::None)).arg(url);
+        QFontMetrics fm( _ui->_labelShareLink->font() );
+        int linkLengthPixel = _ui->_labelShareLink->width();
+
+        QString elidedUrl = fm.elidedText(url, Qt::ElideRight, linkLengthPixel);
+
+        const QString u = QString("<a href=\"%1\">%2</a>").arg(realUrl.toString(QUrl::None)).arg(elidedUrl);
         _ui->_labelShareLink->setText(u);
         _shareUrl = url;
         _ui->pushButton_copy->setEnabled(true);
@@ -407,7 +408,7 @@ void ShareDialog::slotCreateShareFetched(const QString &reply)
         // there needs to be a password
         _ui->checkBox_password->setChecked(true);
         _ui->checkBox_password->setVisible(false);
-        _ui->label_password->setText(tr("Public sh&aring requires a password:"));
+        _ui->checkBox_password->setText(tr("Public sh&aring requires a password:"));
         _ui->lineEdit_password->setFocus();
         _ui->widget_shareLink->show();
 
