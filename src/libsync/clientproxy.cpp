@@ -51,6 +51,11 @@ bool ClientProxy::isUsingSystemDefault() {
     return false;
 }
 
+QString printProxy(const QNetworkProxy &proxy)
+{
+    return QString("%1://%2:%3").arg(proxy.type()).arg(proxy.hostName()).arg(proxy.port());
+}
+
 void ClientProxy::setupQtProxyFromConfig()
 {
     OCC::ConfigFile cfg;
@@ -75,13 +80,13 @@ void ClientProxy::setupQtProxyFromConfig()
         break;
     case QNetworkProxy::Socks5Proxy:
         proxy.setType(QNetworkProxy::Socks5Proxy);
-        qDebug() << "Set proxy configuration to SOCKS5" << proxy;
+        qDebug() << "Set proxy configuration to SOCKS5" << printProxy(proxy);
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;
     case QNetworkProxy::HttpProxy:
         proxy.setType(QNetworkProxy::HttpProxy);
-        qDebug() << "Set proxy configuration to HTTP" << proxy;
+        qDebug() << "Set proxy configuration to HTTP" << printProxy(proxy);
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;
@@ -135,6 +140,9 @@ void ClientProxy::setCSyncProxy( const QUrl& url, CSYNC *csync_ctx )
     csync_set_module_property( csync_ctx, "proxy_port", &proxy_port );
     csync_set_module_property( csync_ctx, "proxy_user", proxy.user().toUtf8().data());
     csync_set_module_property( csync_ctx, "proxy_pwd",  proxy.password().toUtf8().data());
+#else
+    Q_UNUSED(url);
+    Q_UNUSED(csync_ctx);
 #endif
 }
 
@@ -156,7 +164,6 @@ void SystemProxyRunnable::run()
 {
     qDebug() << Q_FUNC_INFO << "Starting system proxy lookup";
     QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(QNetworkProxyQuery(_url));
-    qDebug() << Q_FUNC_INFO << proxies.count() << "proxies: " << proxies;
 
     if (proxies.isEmpty()) {
         emit systemProxyLookedUp(QNetworkProxy(QNetworkProxy::NoProxy));
