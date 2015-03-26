@@ -76,6 +76,8 @@ private slots:
     void slotPasswordChanged(const QString& newText);
     void slotPushButtonCopyLinkPressed();
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
+
+    void done( int r );
 private:
     void setShareCheckBoxTitle(bool haveShares);
     void displayError(int code);

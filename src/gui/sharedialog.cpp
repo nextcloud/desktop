@@ -21,6 +21,7 @@
 #include "folder.h"
 #include "theme.h"
 #include "syncresult.h"
+#include "configfile.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -44,6 +45,8 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _resharingAllowed(resharingAllowed)
 {
     setAttribute(Qt::WA_DeleteOnClose);
+    setObjectName("SharingDialog"); // required as group for saveGeometry call
+
     _ui->setupUi(this);
     _ui->pushButton_copy->setIcon(QIcon::fromTheme("edit-copy"));
     _ui->pushButton_copy->setEnabled(false);
@@ -95,9 +98,20 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     QString ocDir(_sharePath);
     ocDir.truncate(ocDir.length()-fileName.length());
 
-    _ui->label_sharePath->setText(tr("%1 path: %2").arg(Theme::instance()->appNameGUI()).arg(ocDir));
+    if( ocDir == QLatin1String("/")) {
+        _ui->label_sharePath->setText(QString());
+    } else {
+        if( ocDir.startsWith(QLatin1Char('/')) ) {
+            ocDir = ocDir.mid(1, -1);
+        }
+        if( ocDir.endsWith(QLatin1Char('/')) ) {
+            ocDir.chop(1);
+        }
+        _ui->label_sharePath->setText(tr("Folder: %2").arg(ocDir));
+    }
+
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
-    _ui->checkBox_password->setText(tr("Set p&assword"));
+    _ui->checkBox_password->setText(tr("P&assword protect"));
     // check if the file is already inside of a synced folder
     if( sharePath.isEmpty() ) {
         // The file is not yet in an ownCloud synced folder. We could automatically
@@ -122,6 +136,12 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _ui->errorLabel->setFrameShape(QFrame::Box);
     _ui->errorLabel->setContentsMargins(QMargins(12,12,12,12));
     _ui->errorLabel->hide();
+}
+
+void ShareDialog::done( int r ) {
+    ConfigFile cfg;
+    cfg.saveGeometry(this);
+    QDialog::done(r);
 }
 
 void ShareDialog::setExpireDate(const QDate &date)
@@ -498,8 +518,8 @@ int ShareDialog::checkJsonReturnCode(const QString &reply, QString &message)
 
 void ShareDialog::setShareCheckBoxTitle(bool haveShares)
 {
-    const QString noSharesTitle(tr("Check to &share by public link"));
-    const QString haveSharesTitle(tr("&Shared by public link (uncheck to delete share)"));
+    const QString noSharesTitle(tr("&Share link"));
+    const QString haveSharesTitle(tr("&Share link"));
 
     if( haveShares ) {
         _ui->checkBox_shareLink->setText( haveSharesTitle );

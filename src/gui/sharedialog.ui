@@ -68,6 +68,9 @@
    </item>
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_shareLink">
+     <property name="topMargin">
+      <number>10</number>
+     </property>
      <item>
       <widget class="QCheckBox" name="checkBox_shareLink">
        <property name="text">
@@ -85,6 +88,9 @@
       </property>
       <property name="topMargin">
        <number>1</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
       </property>
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -116,7 +122,7 @@
         <item>
          <widget class="QPushButton" name="pushButton_copy">
           <property name="text">
-           <string>Copy &amp;Link</string>
+           <string>Copy &amp;link</string>
           </property>
          </widget>
         </item>
@@ -173,7 +179,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Set &amp;Password</string>
+           <string>Set &amp;password </string>
           </property>
          </widget>
         </item>
