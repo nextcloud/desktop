@@ -327,24 +327,40 @@ void ShareDialog::slotSharesFetched(const QString &reply)
     }
 }
 
+void ShareDialog::resizeEvent(QResizeEvent *e)
+{
+    QDialog::resizeEvent(e);
+    redrawElidedUrl();
+}
+
+void ShareDialog::redrawElidedUrl()
+{
+    QString u;
+
+    if( !_shareUrl.isEmpty() ) {
+        QFontMetrics fm( _ui->_labelShareLink->font() );
+        int linkLengthPixel = _ui->_labelShareLink->width();
+
+        const QUrl realUrl(_shareUrl);
+        QString elidedUrl = fm.elidedText(_shareUrl, Qt::ElideRight, linkLengthPixel);
+
+        u = QString("<a href=\"%1\">%2</a>").arg(realUrl.toString(QUrl::None)).arg(elidedUrl);
+    }
+    _ui->_labelShareLink->setText(u);
+}
+
 void ShareDialog::setShareLink( const QString& url )
 {
     // FIXME: shorten the url for output.
     const QUrl realUrl(url);
     if( realUrl.isValid() ) {
-        QFontMetrics fm( _ui->_labelShareLink->font() );
-        int linkLengthPixel = _ui->_labelShareLink->width();
-
-        QString elidedUrl = fm.elidedText(url, Qt::ElideRight, linkLengthPixel);
-
-        const QString u = QString("<a href=\"%1\">%2</a>").arg(realUrl.toString(QUrl::None)).arg(elidedUrl);
-        _ui->_labelShareLink->setText(u);
         _shareUrl = url;
         _ui->pushButton_copy->setEnabled(true);
     } else {
         _shareUrl.clear();
         _ui->_labelShareLink->setText(QString::null);
     }
+    redrawElidedUrl();
 
 }
 

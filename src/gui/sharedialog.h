@@ -81,6 +81,8 @@ private:
     void displayError(int code);
     void displayError(const QString& errMsg);
     void setShareLink( const QString& url );
+    void resizeEvent(QResizeEvent *e);
+    void redrawElidedUrl();
 
     Ui::ShareDialog *_ui;
     AccountPtr _account;
