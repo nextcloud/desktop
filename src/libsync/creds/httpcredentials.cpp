@@ -336,6 +336,14 @@ void HttpCredentials::invalidateToken()
     job->setKey(kck);
     job->start();
 
+    // Also ensure the password is deleted from the deprecated place
+    // otherwise we'd possibly read and use it again and again.
+    DeletePasswordJob *job2 = new DeletePasswordJob(Theme::instance()->appName());
+    // no job2->setSettings() call here, to make it use the deprecated location.
+    job2->setInsecureFallback(true);
+    job2->setKey(kck);
+    job2->start();
+
     _account->clearCookieJar();
 }
 
