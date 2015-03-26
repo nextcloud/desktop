@@ -17,6 +17,7 @@
 #include <QObject>
 #include <QNetworkProxy>
 #include <QRunnable>
+#include <QUrl>
 
 #include <csync.h>
 #include "utility.h"
