@@ -51,7 +51,7 @@ bool ClientProxy::isUsingSystemDefault() {
     return false;
 }
 
-QString printProxy(const QNetworkProxy &proxy)
+QString printQNetworkProxy(const QNetworkProxy &proxy)
 {
     return QString("%1://%2:%3").arg(proxy.type()).arg(proxy.hostName()).arg(proxy.port());
 }
@@ -80,13 +80,13 @@ void ClientProxy::setupQtProxyFromConfig()
         break;
     case QNetworkProxy::Socks5Proxy:
         proxy.setType(QNetworkProxy::Socks5Proxy);
-        qDebug() << "Set proxy configuration to SOCKS5" << printProxy(proxy);
+        qDebug() << "Set proxy configuration to SOCKS5" << printQNetworkProxy(proxy);
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;
     case QNetworkProxy::HttpProxy:
         proxy.setType(QNetworkProxy::HttpProxy);
-        qDebug() << "Set proxy configuration to HTTP" << printProxy(proxy);
+        qDebug() << "Set proxy configuration to HTTP" << printQNetworkProxy(proxy);
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;

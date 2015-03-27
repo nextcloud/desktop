@@ -54,6 +54,9 @@ private:
     QUrl _url;
 };
 
+QString printQNetworkProxy(const QNetworkProxy &proxy);
+
+
 }
 
 #endif // CLIENTPROXY_H

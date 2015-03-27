@@ -85,7 +85,7 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy) {
     }
 
     if (proxy.type() != QNetworkProxy::DefaultProxy) {
-        qDebug() << Q_FUNC_INFO << "Setting QNAM proxy to be system proxy" << proxy;
+        qDebug() << Q_FUNC_INFO << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
         _account->networkAccessManager()->setProxy(proxy);
     }
 
