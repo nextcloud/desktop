@@ -246,6 +246,12 @@ FolderWizardRemotePath::FolderWizardRemotePath(AccountPtr account)
     _lscolTimer.setInterval(500);
     _lscolTimer.setSingleShot(true);
     connect(&_lscolTimer, SIGNAL(timeout()), SLOT(slotLsColFolderEntry()));
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    _ui.folderTreeWidget->header()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
+    // Make sure that there will be a scrollbar when the contents is too wide
+    _ui.folderTreeWidget->header()->setStretchLastSection(false);
+#endif
 }
 
 void FolderWizardRemotePath::slotAddRemoteFolder()
@@ -291,6 +297,8 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished(QNetworkReply::Netwo
         qDebug() << "** webdav mkdir request finished";
         showWarn(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
         slotRefreshFolders();
+        _ui.folderEntry->setText(static_cast<MkColJob *>(sender())->path());
+        slotLsColFolderEntry();
     }
 }
 

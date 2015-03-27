@@ -24,7 +24,6 @@ class QSslConfiguration;
 
 namespace OCC {
 
-class Account;
 class AccountState;
 
 class SslButton : public QToolButton
@@ -35,9 +34,13 @@ public:
     QString protoToString(QSsl::SslProtocol proto);
     void updateAccountState(AccountState *accountState);
 
+public slots:
+    void slotUpdateMenu();
+
 private:
     QMenu* buildCertMenu(QMenu *parent, const QSslCertificate& cert,
                          const QList<QSslCertificate>& userApproved, int pos);
+    QPointer<AccountState> _accountState;
 };
 
 } // namespace OCC

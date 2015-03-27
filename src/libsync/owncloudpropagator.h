@@ -270,6 +270,8 @@ public:
             , _account(account)
     { }
 
+    ~OwncloudPropagator();
+
     void start(const SyncFileItemVector &_syncedItems);
 
     QAtomicInt _downloadLimit;
@@ -358,6 +360,8 @@ public:
     explicit CleanupPollsJob(const QVector< SyncJournalDb::PollInfo > &pollInfos, AccountPtr account,
                              SyncJournalDb *journal, const QString &localPath, QObject* parent = 0)
         : QObject(parent), _pollInfos(pollInfos), _account(account), _journal(journal), _localPath(localPath) {}
+
+    ~CleanupPollsJob();
 
     void start();
 signals:

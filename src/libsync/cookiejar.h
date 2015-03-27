@@ -34,10 +34,11 @@ public:
     using QNetworkCookieJar::setAllCookies;
     using QNetworkCookieJar::allCookies;
 
+    void save();
+
 signals:
     void newCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
 private:
-    void save();
     void restore();
     QList<QNetworkCookie> removeExpired(const QList<QNetworkCookie> &cookies);
     QString storagePath() const;

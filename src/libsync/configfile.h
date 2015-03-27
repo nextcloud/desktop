@@ -96,7 +96,7 @@ public:
     void setUploadLimit(int kbytes);
     void setDownloadLimit(int kbytes);
 
-    static void setConfDir(const QString &value);
+    static bool setConfDir(const QString &value);
 
     bool optionalDesktopNotifications() const;
     void setOptionalDesktopNotifications(bool show);

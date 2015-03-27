@@ -74,6 +74,7 @@ public:
     explicit PUTFileJob(AccountPtr account, const QString& path, QIODevice *device,
                         const QMap<QByteArray, QByteArray> &headers, int chunk, QObject* parent = 0)
         : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers), _chunk(chunk) {}
+    ~PUTFileJob();
 
     int _chunk;
 

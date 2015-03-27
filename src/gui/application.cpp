@@ -180,7 +180,8 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
-    // qDebug() << "* OCC shutdown";
+    // Remove the account from the account manager so it can be deleted.
+    AccountManager::instance()->setAccount(AccountPtr());
 }
 
 void Application::slotLogin()
@@ -403,7 +404,10 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QLatin1String("--confdir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 QString confDir = it.next();
-                ConfigFile::setConfDir( confDir );
+                if (!ConfigFile::setConfDir( confDir )) {
+                    std::cerr << "Invalid path passed to --confdir" << std::endl;
+                    std::exit(1);
+                }
             } else {
                 showHelp();
             }

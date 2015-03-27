@@ -421,13 +421,7 @@ void ShareDialog::slotCreateShareFetched(const QString &reply)
     bool success;
     QVariantMap json = QtJson::parse(reply, success).toMap();
     _public_share_id = json.value("ocs").toMap().values("data")[0].toMap().value("id").toULongLong();
-    QString url = json.value("ocs").toMap().values("data")[0].toMap().value("url").toString();
-
-    setShareLink(url);
-
-    setShareCheckBoxTitle(true);
-
-    _ui->widget_shareLink->show();
+    getShares();
 }
 
 void ShareDialog::slotCheckBoxPasswordClicked()

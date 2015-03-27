@@ -186,7 +186,6 @@ private:
     QNetworkAccessManager *_am;
     AbstractCredentials* _credentials;
     bool _treatSslErrorsAsFailure;
-    int _state;
     static QString _configFileName;
     QByteArray _pemCertificate; 
     QString _pemPrivateKey;  

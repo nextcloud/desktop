@@ -16,6 +16,8 @@
 
 #include <QObject>
 #include <QNetworkProxy>
+#include <QRunnable>
+#include <QUrl>
 
 #include <csync.h>
 #include "utility.h"
@@ -30,16 +32,30 @@ class OWNCLOUDSYNC_EXPORT ClientProxy : public QObject
 public:
     explicit ClientProxy(QObject *parent = 0);
 
-signals:
+    static bool isUsingSystemDefault();
+    static void lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot);
 
 public slots:
     void setCSyncProxy( const QUrl& url, CSYNC *csync_ctx );
     void setupQtProxyFromConfig();
 
 private:
-    QNetworkProxy proxyFromConfig(const ConfigFile& cfg);
     const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
 };
+
+class SystemProxyRunnable : public QObject, public QRunnable {
+    Q_OBJECT
+public:
+    SystemProxyRunnable(const QUrl &url);
+    void run();
+signals:
+    void systemProxyLookedUp(const QNetworkProxy &url);
+private:
+    QUrl _url;
+};
+
+QString printQNetworkProxy(const QNetworkProxy &proxy);
+
 
 }
 

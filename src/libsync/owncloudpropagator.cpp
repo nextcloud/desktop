@@ -27,6 +27,7 @@
 #endif
 #include "configfile.h"
 #include "utility.h"
+#include "account.h"
 #include <json.h>
 
 #ifdef Q_OS_WIN
@@ -42,6 +43,9 @@
 #include <QTimerEvent>
 
 namespace OCC {
+
+OwncloudPropagator::~OwncloudPropagator()
+{}
 
 /* The maximum number of active job in parallel  */
 int OwncloudPropagator::maximumActiveJob()
@@ -630,6 +634,9 @@ void PropagateDirectory::finalize()
     _state = Finished;
     emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
 }
+
+CleanupPollsJob::~CleanupPollsJob()
+{}
 
 void CleanupPollsJob::start()
 {

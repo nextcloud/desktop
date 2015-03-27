@@ -63,7 +63,9 @@ void AccountManager::setAccount(AccountPtr account)
         emit accountRemoved(_account);
     }
     _account = account;
-    emit accountAdded(account);
+    if (account) {
+        emit accountAdded(account);
+    }
 }
 
 
@@ -128,6 +130,15 @@ void Account::save()
     }
     if (!certs.isEmpty()) {
         settings->setValue( QLatin1String(caCertsKeyC), certs );
+    }
+
+    // Save cookies.
+    if (_am) {
+        CookieJar* jar = qobject_cast<CookieJar*>(_am->cookieJar());
+        if (jar) {
+            qDebug() << "Saving cookies.";
+            jar->save();
+        }
     }
 }
 

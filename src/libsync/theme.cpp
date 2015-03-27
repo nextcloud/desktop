@@ -122,11 +122,14 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
         flavor = QLatin1String("colored");
     }
 
-    QIcon icon;
     if( QIcon::hasThemeIcon( name )) {
         // use from theme
-        icon = QIcon::fromTheme( name );
-    } else {
+        return QIcon::fromTheme( name );
+    }
+
+    QString key = name + "," + flavor;
+    QIcon & cached = _iconCache[key];
+    if (cached.isNull()) {
         QList<int> sizes;
         sizes <<16 << 22 << 32 << 48 << 64 << 128 << 256;
         foreach (int size, sizes) {
@@ -140,19 +143,20 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
                     p.setPen(QColor("#dfdbd2"));
                     p.drawPixmap(px.rect(), mask, mask.rect());
                 }
-                icon.addPixmap(px);
+                cached.addPixmap(px);
             }
         }
-        if (icon.isNull()) {
+        if (cached.isNull()) {
             foreach (int size, sizes) {
                 QString pixmapName = QString::fromLatin1(":/client/resources/%1-%2.png").arg(name).arg(size);
                 if (QFile::exists(pixmapName)) {
-                    icon.addFile(pixmapName);
+                    cached.addFile(pixmapName);
                 }
             }
         }
     }
-    return icon;
+
+    return cached;
 }
 
 QString Theme::hidpiFileName(const QString &fileName, QPaintDevice *dev)

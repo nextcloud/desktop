@@ -484,9 +484,11 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
 
     item._direction = dir;
-    // check for blacklisting of this item.
-    // if the item is on blacklist, the instruction was set to IGNORE
-    checkErrorBlacklisting( &item );
+    if (instruction != CSYNC_INSTRUCTION_NONE) {
+        // check for blacklisting of this item.
+        // if the item is on blacklist, the instruction was set to ERROR
+        checkErrorBlacklisting( &item );
+    }
 
     if (!item._isDirectory) {
         _progressInfo._totalFileCount++;

@@ -73,16 +73,10 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
     _copyBtn->setEnabled(false);
     connect(_copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
-
-    ConfigFile cfg;
-    cfg.restoreGeometryHeader(_ui->_treeWidget->header());
 }
 
 ProtocolWidget::~ProtocolWidget()
 {
-    ConfigFile cfg;
-    cfg.saveGeometryHeader(_ui->_treeWidget->header() );
-
     delete _ui;
 }
 
@@ -135,6 +129,20 @@ void ProtocolWidget::slotRetrySync()
     }
 
     folderMan->slotScheduleAllFolders();
+}
+
+void ProtocolWidget::showEvent(QShowEvent *ev)
+{
+    ConfigFile cfg;
+    cfg.restoreGeometryHeader(_ui->_treeWidget->header());
+    QWidget::showEvent(ev);
+}
+
+void ProtocolWidget::hideEvent(QHideEvent *ev)
+{
+    ConfigFile cfg;
+    cfg.saveGeometryHeader(_ui->_treeWidget->header() );
+    QWidget::hideEvent(ev);
 }
 
 void ProtocolWidget::cleanIgnoreItems(const QString& folder)

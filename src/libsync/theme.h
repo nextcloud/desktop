@@ -208,7 +208,7 @@ private:
 
     static Theme* _instance;
     bool _mono;
-
+    mutable QHash<QString, QIcon> _iconCache;
 };
 
 }

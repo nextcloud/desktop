@@ -313,6 +313,9 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 
 void HttpCredentials::invalidateToken()
 {
+    if (! _password.isEmpty()) {
+        _previousPassword = _password;
+    }
     _password = QString();
     _ready = false;
 
@@ -332,6 +335,14 @@ void HttpCredentials::invalidateToken()
     job->setInsecureFallback(true);
     job->setKey(kck);
     job->start();
+
+    // Also ensure the password is deleted from the deprecated place
+    // otherwise we'd possibly read and use it again and again.
+    DeletePasswordJob *job2 = new DeletePasswordJob(Theme::instance()->appName());
+    // no job2->setSettings() call here, to make it use the deprecated location.
+    job2->setInsecureFallback(true);
+    job2->setKey(kck);
+    job2->start();
 
     _account->clearCookieJar();
 }
@@ -387,7 +398,7 @@ QString HttpCredentialsGui::queryPassword(bool *ok)
         QString str = QInputDialog::getText(0, tr("Enter Password"),
                                      tr("Please enter %1 password for user '%2':")
                                      .arg(Theme::instance()->appNameGUI(), _user),
-                                     QLineEdit::Password, QString(), ok);
+                                     QLineEdit::Password, _previousPassword, ok);
         return str;
     } else {
         return QString();
