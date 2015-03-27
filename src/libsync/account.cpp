@@ -63,7 +63,9 @@ void AccountManager::setAccount(AccountPtr account)
         emit accountRemoved(_account);
     }
     _account = account;
-    emit accountAdded(account);
+    if (account) {
+        emit accountAdded(account);
+    }
 }
 
 

@@ -180,7 +180,8 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
-    // qDebug() << "* OCC shutdown";
+    // Remove the account from the account manager so it can be deleted.
+    AccountManager::instance()->setAccount(AccountPtr());
 }
 
 void Application::slotLogin()

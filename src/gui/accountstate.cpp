@@ -43,7 +43,9 @@ void AccountStateManager::setAccountState(AccountState *accountState)
         emit accountStateRemoved(_accountState);
     }
     _accountState = accountState;
-    emit accountStateAdded(accountState);
+    if (accountState) {
+        emit accountStateAdded(accountState);
+    }
 }
 
 void AccountStateManager::slotAccountAdded(AccountPtr account)
