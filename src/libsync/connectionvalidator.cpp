@@ -130,6 +130,9 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
         // Fetch them now! Once fetched, a new connectivity check will be
         // initiated anyway.
         creds->fetch();
+
+        // no result is reported
+        deleteLater();
     }
 }
 
